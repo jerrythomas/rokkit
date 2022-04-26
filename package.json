@@ -1,0 +1,32 @@
+{
+  "name": "svelte-kit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "cd packages/list && pnpm lint",
+    "prepare": "husky install"
+  },
+  "author": "Jerry Thomas<me@jerrythomas.name",
+  "license": "MIT",
+  "workspaces": [
+    "packages/alert",
+    "packages/chart",
+    "packages/input",
+    "packages/list",
+    "packages/markdown",
+    "sites/playground"
+  ],
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6",
+    "prettier": "^2.6.2"
+  },
+  "lint-staged": {
+    "*.{js,svelte}": "eslint --cache --fix",
+    "*.{js,svelte,md,json}": "prettier --write"
+  }
+}

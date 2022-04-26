@@ -1,0 +1,45 @@
+{
+	"name": "@sparsh-ui/list",
+	"version": "1.0.0",
+	"description": "Svelte list view components",
+	"author": "Jerry Thomas <me@jerrythomas.name>",
+	"license": "MIT",
+	"main": "index.js",
+	"svelte": "src/index.js",
+	"module": "src/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"prepublishOnly": "tsc",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"test": "uvu -i fixtures spec",
+		"test:vi": "vitest",
+		"test:ui": "vitest --ui",
+    "vi:coverage": "vitest run --coverage",
+		"release": "release-it --preRelease=beta",
+		"coverage": "c8 --include src --all pnpm test"
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "^1.0.0-next.41",
+		"@testing-library/svelte": "^3.1.1",
+		"@types/jsdom": "^16.2.14",
+		"@vitest/ui": "^0.10.0",
+		"c8": "^7.11.2",
+		"d3-collection": "^1.0.7",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.5.0",
+		"js-yaml": "^4.1.0",
+		"jsdom": "^19.0.0",
+		"prettier": "^2.6.2",
+		"release-it": "^14.14.2",
+		"svelte": "^3.47.0",
+		"uvu": "^0.5.3",
+		"vite": "^2.9.5",
+		"vitest": "^0.10.0",
+		"windicss": "^3.5.1"
+	}
+}
