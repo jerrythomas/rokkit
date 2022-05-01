@@ -1,0 +1,23 @@
+[
+	{
+		"key": "Alpha",
+		"value": [
+			{ "date": "2020-01-01", "team": "x", "score": 1, "pct": "10" },
+			{ "date": "2020-01-01", "team": "y", "score": 2, "pct": "20" },
+			{ "date": "2020-02-01", "team": "x", "score": 2, "pct": "20" },
+			{ "date": "2020-02-01", "team": "y", "score": 3, "pct": "30" },
+			{ "date": "2020-02-01", "team": "z", "score": 4, "pct": "40" }
+		]
+	},
+	{
+		"key": "Beta",
+		"value": [
+			{ "date": "2020-01-01", "team": "x", "score": 1, "pct": "10" },
+			{ "date": "2020-01-01", "team": "y", "score": 2, "pct": "20" },
+			{ "date": "2020-01-01", "team": "z", "score": 3, "pct": "30" },
+			{ "date": "2020-02-01", "team": "x", "score": 3, "pct": "30" },
+			{ "date": "2020-02-01", "team": "y", "score": 4, "pct": "40" },
+			{ "date": "2020-02-01", "team": "z", "score": 5, "pct": "50" }
+		]
+	}
+]

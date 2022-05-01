@@ -1,0 +1,14 @@
+@import '@fontsource/victor-mono';
+@import '@fontsource/montserrat-alternates';
+@import '@fontsource/montserrat-alternates/200.css';
+@import '@fontsource/montserrat-alternates/300.css';
+@import '@fontsource/montserrat-alternates/400.css';
+@import '@fontsource/montserrat-alternates/500.css';
+@import '@fontsource/montserrat-alternates/700.css';
+
+@layer base {
+	html,
+	body {
+		@apply flex flex-row w-full h-screen sm:h-screen relative font-body;
+	}
+}

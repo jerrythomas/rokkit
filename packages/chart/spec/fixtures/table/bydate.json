@@ -1,0 +1,24 @@
+[
+	{
+		"key": "2020-01-01",
+		"value": [
+			{ "team": "x", "group": "Alpha", "score": 1, "pct": "10" },
+			{ "team": "y", "group": "Alpha", "score": 2, "pct": "20" },
+			{ "team": "x", "group": "Beta", "score": 1, "pct": "10" },
+			{ "team": "y", "group": "Beta", "score": 2, "pct": "20" },
+			{ "team": "z", "group": "Beta", "score": 3, "pct": "30" },
+			{ "score": 0, "pct": 0, "team": "z", "group": "Alpha" }
+		]
+	},
+	{
+		"key": "2020-02-01",
+		"value": [
+			{ "team": "x", "group": "Alpha", "score": 2, "pct": "20" },
+			{ "team": "y", "group": "Alpha", "score": 3, "pct": "30" },
+			{ "team": "z", "group": "Alpha", "score": 4, "pct": "40" },
+			{ "team": "x", "group": "Beta", "score": 3, "pct": "30" },
+			{ "team": "y", "group": "Beta", "score": 4, "pct": "40" },
+			{ "team": "z", "group": "Beta", "score": 5, "pct": "50" }
+		]
+	}
+]

@@ -1,7 +1,7 @@
 <script>
 	import List from './List.svelte'
 	import Slider from './Slider.svelte'
-	import DropDownIcon from './DropDownIcon.svelte'
+	import DropDownIcon from './icons/DropDownIcon.svelte'
 
 	export let data
 	export let component = null

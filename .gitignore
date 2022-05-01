@@ -6,3 +6,4 @@ coverage
 .temp
 .cache
 __snapshots__
+*.code-workspace

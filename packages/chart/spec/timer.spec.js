@@ -1,5 +1,5 @@
 import { expect, it, vi } from 'vitest'
-import { timer, elapsed } from '../src/timer'
+import { timer, elapsed } from '../src/lib/timer'
 import { getSubscribedData } from './helpers'
 
 describe('Timer', () => {

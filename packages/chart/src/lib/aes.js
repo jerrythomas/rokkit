@@ -1,27 +1,21 @@
+import { pick } from 'ramda'
+import { compact } from './utils'
+
+export const AestheticKeys = ['x', 'y', 'fill', 'color', 'timelapse']
 /**
  *
- * @typedef AesMapping
- * @field {string} x
- * @field {string} y
- * @field {string} fill
- * @field {string} color
- * @field {string} pattern
- * @field {object} animate
+ * @typedef Aesthetics
+ * @property {string} x
+ * @property {string} y
+ * @property {string} fill
+ * @property {string} color
+ * @property {string} timelapse
  */
 /**
  *
- * @param {AesMapping} fields
+ * @param {Aesthetics} fields
  * @returns
  */
 export function aes(fields) {
-	let mapping = {
-		x: undefined,
-		y: undefined,
-		fill: undefined,
-		color: undefined,
-		pattern: undefined,
-		animate: undefined,
-		...fields
-	}
-	return mapping
+	return compact(pick(allowedKeys, fields))
 }

@@ -1,407 +1,364 @@
-import fs from 'fs'
-import yaml from 'js-yaml'
-import { suite } from 'uvu'
-import * as assert from 'uvu/assert'
-import { compare, quickSearch } from '../src/list.js'
-import { list } from '../src/index.js'
-import { nest } from 'd3-collection'
+import { compare, quickSearch, list } from '../src/lib/list'
+import * as context from './fixtures/list-data'
 import { getSubscribedData } from './helpers.js'
 
-const ListSuite = suite('List Data')
+describe('List Data', () => {
+	it('Should create a list', () => {
+		let l = list(context.data)
+		expect(l.data).toBe(context.data)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBeFalsy()
+		expect(l.sorter).toBeFalsy()
+		expect(l.groupKey).toBeFalsy()
+		expect(l.filterKey).toBeFalsy()
+		expect(l.filter).toBeFalsy()
+		expect(getSubscribedData(l.filtered)).toBe(context.data)
+	})
 
-ListSuite.before(async (context) => {
-	context.data = [
-		{ id: 2, name: 'Beta', lookup_id: 1 },
-		{ id: 3, name: 'Charlie', lookup_id: 1 },
-		{ id: 1, name: 'Alpha', lookup_id: 1 },
-		{ id: 4, name: 'Delta', lookup_id: 2 },
-		{ id: 5, name: 'Echo', lookup_id: 2 }
-	]
-	context.sorted = [
-		{ id: 1, name: 'Alpha', lookup_id: 1 },
-		{ id: 2, name: 'Beta', lookup_id: 1 },
-		{ id: 3, name: 'Charlie', lookup_id: 1 },
-		{ id: 4, name: 'Delta', lookup_id: 2 },
-		{ id: 5, name: 'Echo', lookup_id: 2 }
-	]
-	context.lookup = { 1: 'One', 2: 'Two', 3: 'Three' }
-	context.grouped = nest()
-		.key((d) => d.lookup_id)
-		.entries(context.data)
-		.map(({ key, values }) => ({
-			key,
-			name: context.lookup[key],
-			data: values
-		}))
+	it('Should create a sorted list', () => {
+		let l = list([...context.data]).sortBy('name')
 
-	context.sortedAndGrouped = nest()
-		.key((d) => d.lookup_id)
-		.entries(context.sorted)
-		.map(({ key, values }) => ({
-			key,
-			name: context.lookup[key],
-			data: values
-		}))
+		expect(l.data).toEqual(context.sorted)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBe('name')
+		expect(l.sorter).toEqual(compare)
+		expect(l.groupKey).toBeFalsy()
+		expect(l.filterKey).toBeFalsy()
+		expect(l.filter).toBeFalsy()
+		expect(getSubscribedData(l.filtered)).toEqual(context.sorted)
+	})
 
-	context.searchResult = [{ id: 1, name: 'Alpha', lookup_id: 1 }]
-	context.groupSearchResult = [
-		{
-			key: '1',
-			name: 'One',
-			data: [{ id: 1, name: 'Alpha', lookup_id: 1 }]
-		}
-	]
+	it('Should create a grouped list', () => {
+		let l = list([...context.data]).groupBy('lookup_id', context.lookup)
 
-	try {
-		context.remove = yaml.load(fs.readFileSync('spec/fixtures/list/remove.yml'))
-		context.add = yaml.load(fs.readFileSync('spec/fixtures/list/add.yml'))
-		context.modify = yaml.load(fs.readFileSync('spec/fixtures/list/modify.yml'))
-		context.altKey = yaml.load(
-			fs.readFileSync('spec/fixtures/list/alt-key.yml')
-		)
-		context.sorting = yaml.load(fs.readFileSync('spec/fixtures/list/sort.yml'))
-	} catch (err) {
-		console.error(err)
-	}
-})
+		expect(l.data).toEqual(context.data)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBeFalsy()
+		expect(l.sorter).toBeFalsy()
+		expect(l.groupKey).toBe('lookup_id')
+		expect(l.filterKey).toBeFalsy()
+		expect(l.filter).toBeFalsy()
+		expect(getSubscribedData(l.filtered)).toEqual(context.grouped)
+	})
+	it('Should create a sorted and grouped list', () => {
+		let l = list([...context.data])
+			.sortBy('name')
+			.groupBy('lookup_id', context.lookup)
 
-ListSuite('Should create a list', (context) => {
-	let l = list(context.data)
-	assert.equal(l.data, context.data)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.not(l.sortKey)
-	assert.not(l.sorter)
-	assert.not(l.groupKey)
-	assert.not(l.filterKey)
-	assert.not(l.filter)
-	assert.equal(getSubscribedData(l.filtered), context.data)
-})
+		expect(l.data).toEqual(context.sorted)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBe('name')
+		expect(l.sorter).toBe(compare)
+		expect(l.groupKey).toBe('lookup_id')
+		expect(l.filterKey).toBeFalsy()
+		expect(l.filter).toBeFalsy()
+		expect(getSubscribedData(l.filtered)).toEqual(context.sortedAndGrouped)
+	})
 
-ListSuite('Should create a sorted list', (context) => {
-	let l = list([...context.data]).sortBy('name')
+	it('Should create a searchable list', () => {
+		let l = list([...context.data]).filterBy('name')
 
-	assert.equal(l.data, context.sorted)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.equal(l.sortKey, 'name')
-	assert.equal(l.sorter, compare)
-	assert.not(l.groupKey)
-	assert.not(l.filterKey)
-	assert.not(l.filter)
-	assert.equal(getSubscribedData(l.filtered), context.sorted)
-})
+		expect(l.data).toEqual(context.data)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBeFalsy()
+		expect(l.sorter).toBeFalsy()
+		expect(l.groupKey).toBeFalsy()
+		expect(l.filterKey).toBe('name')
+		expect(l.filter).toBe(quickSearch)
+		expect(getSubscribedData(l.filtered)).toEqual(context.data)
 
-ListSuite('Should create a grouped list', (context) => {
-	let l = list([...context.data]).groupBy('lookup_id', context.lookup)
+		l.search('Alpha')
+		expect(getSubscribedData(l.filtered)).toEqual(context.searchResult)
+	})
 
-	assert.equal(l.data, context.data)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.not(l.sortKey)
-	assert.not(l.sorter)
-	assert.equal(l.groupKey, 'lookup_id')
-	assert.not(l.filterKey)
-	assert.not(l.filter)
-	assert.equal(getSubscribedData(l.filtered), context.grouped)
-})
-ListSuite('Should create a sorted and grouped list', (context) => {
-	let l = list([...context.data])
-		.sortBy('name')
-		.groupBy('lookup_id', context.lookup)
+	it('Should create a searchable sorted list', () => {
+		let l = list([...context.data])
+			.filterBy('name')
+			.sortBy('name')
 
-	assert.equal(l.data, context.sorted)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.equal(l.sortKey, 'name')
-	assert.equal(l.sorter, compare)
-	assert.equal(l.groupKey, 'lookup_id')
-	assert.not(l.filterKey)
-	assert.not(l.filter)
-	assert.equal(getSubscribedData(l.filtered), context.sortedAndGrouped)
-})
+		expect(l.data).toEqual(context.sorted)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBe('name')
+		expect(l.sorter).toBe(compare)
+		expect(l.groupKey).toBeFalsy()
+		expect(l.filterKey).toBe('name')
+		expect(l.filter).toBe(quickSearch)
+		expect(getSubscribedData(l.filtered)).toEqual(context.sorted)
 
-ListSuite('Should create a searchable list', (context) => {
-	let l = list([...context.data]).filterBy('name')
+		l.search('Alpha')
+		expect(getSubscribedData(l.filtered)).toEqual(context.searchResult)
+	})
 
-	assert.equal(l.data, context.data)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.not(l.sortKey)
-	assert.not(l.sorter)
-	assert.not(l.groupKey)
-	assert.equal(l.filterKey, 'name')
-	assert.equal(l.filter, quickSearch)
-	assert.equal(getSubscribedData(l.filtered), context.data)
+	it('Should create a searchable grouped list', () => {
+		let l = list([...context.data])
+			.filterBy('name')
+			.groupBy('lookup_id', context.lookup)
 
-	l.search('Alpha')
-	assert.equal(getSubscribedData(l.filtered), context.searchResult)
-})
+		expect(l.data).toEqual(context.data)
+		expect(l.primaryKey).toBe('id')
+		expect(l.searchText).toBe('')
+		expect(l.sortKey).toBeFalsy()
+		expect(l.sorter).toBeFalsy()
+		expect(l.groupKey).toBe('lookup_id')
+		expect(l.filterKey).toBe('name')
+		expect(l.filter).toBe(quickSearch)
+		expect(getSubscribedData(l.filtered)).toEqual(context.grouped)
 
-ListSuite('Should create a searchable sorted list', (context) => {
-	let l = list([...context.data])
-		.filterBy('name')
-		.sortBy('name')
+		l.search('Alpha')
+		expect(getSubscribedData(l.filtered)).toEqual(context.groupSearchResult)
+	})
 
-	assert.equal(l.data, context.sorted)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.equal(l.sortKey, 'name')
-	assert.equal(l.sorter, compare)
-	assert.not(l.groupKey)
-	assert.equal(l.filterKey, 'name')
-	assert.equal(l.filter, quickSearch)
-	assert.equal(getSubscribedData(l.filtered), context.sorted)
+	it('Should create a searchable sorted & grouped list', () => {
+		let l = list([...context.data])
+			.filterBy('name')
+			.sortBy('name')
+			.groupBy('lookup_id', context.lookup)
 
-	l.search('Alpha')
-	assert.equal(getSubscribedData(l.filtered), context.searchResult)
-})
+		expect(l.data).toEqual(context.sorted)
+		expect(l.primaryKey, 'id')
+		expect(l.searchText, '')
+		expect(l.sortKey, 'name')
+		expect(l.sorter, compare)
+		expect(l.groupKey, 'lookup_id')
+		expect(l.filterKey, 'name')
+		expect(l.filter, quickSearch)
+		expect(getSubscribedData(l.filtered)).toEqual(context.sortedAndGrouped)
 
-ListSuite('Should create a searchable grouped list', (context) => {
-	let l = list([...context.data])
-		.filterBy('name')
-		.groupBy('lookup_id', context.lookup)
+		l.search('Alpha')
+		expect(getSubscribedData(l.filtered)).toEqual(context.groupSearchResult)
+	})
 
-	assert.equal(l.data, context.data)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.not(l.sortKey)
-	assert.not(l.sorter)
-	assert.equal(l.groupKey, 'lookup_id')
-	assert.equal(l.filterKey, 'name')
-	assert.equal(l.filter, quickSearch)
-	assert.equal(getSubscribedData(l.filtered), context.grouped)
+	it('Should add an item to list', () => {
+		const data = context.add
+		let l = list([...data.start])
 
-	l.search('Alpha')
-	assert.equal(getSubscribedData(l.filtered), context.groupSearchResult)
-})
+		data.additions.map(({ item, result }) => {
+			l.add(item)
+			expect(l.data).toEqual(result.data.unsorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.data.unsorted,
+				'Should update store after add'
+			)
+		})
+	})
 
-ListSuite('Should create a searchable sorted & grouped list', (context) => {
-	let l = list([...context.data])
-		.filterBy('name')
-		.sortBy('name')
-		.groupBy('lookup_id', context.lookup)
+	it('Should add an item to sorted list', () => {
+		const data = context.add
+		let l = list([...data.start]).sortBy('id')
 
-	assert.equal(l.data, context.sorted)
-	assert.equal(l.primaryKey, 'id')
-	assert.equal(l.searchText, '')
-	assert.equal(l.sortKey, 'name')
-	assert.equal(l.sorter, compare)
-	assert.equal(l.groupKey, 'lookup_id')
-	assert.equal(l.filterKey, 'name')
-	assert.equal(l.filter, quickSearch)
-	assert.equal(getSubscribedData(l.filtered), context.sortedAndGrouped)
+		data.additions.map(({ item, result }) => {
+			l.add(item)
+			expect(l.data).toEqual(result.data.sorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.data.sorted,
+				'Should update store after add'
+			)
+		})
+	})
 
-	l.search('Alpha')
-	assert.equal(getSubscribedData(l.filtered), context.groupSearchResult)
-})
+	it('Should add an item to grouped list', () => {
+		const data = context.add
+		let l = list([...data.start]).groupBy('lookup_id', context.lookup)
 
-ListSuite('Should add an item to list', (context) => {
-	const data = context.add
-	let l = list([...data.start])
+		data.additions.map(({ item, result }) => {
+			l.add(item)
+			expect(l.data).toEqual(result.data.unsorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.grouped.unsorted,
+				'Should update store after add'
+			)
+		})
+	})
 
-	data.additions.map(({ item, result }) => {
-		l.add(item)
-		assert.equal(l.data, result.data.unsorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.data.unsorted,
-			'Should update store after add'
-		)
+	it('Should add an item to sorted and grouped list', () => {
+		const data = context.add
+		let l = list([...data.start])
+			.groupBy('lookup_id', context.lookup)
+			.sortBy('id')
+
+		data.additions.map(({ item, result }) => {
+			l.add(item)
+			expect(l.data).toEqual(result.data.sorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.grouped.sorted,
+				'Should update store after add'
+			)
+		})
+	})
+
+	it('Should remove an item from list', () => {
+		const data = context.remove
+		let l = list([...data.start])
+
+		data.removals.map(({ item, result }) => {
+			l.remove(item)
+			expect(l.data).toEqual(result.data.unsorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.data.unsorted,
+				'Should update store after remove'
+			)
+		})
+	})
+
+	it('Should remove an item from sorted list', () => {
+		const data = context.remove
+		let l = list([...data.start]).sortBy('name')
+
+		data.removals.map(({ item, result }) => {
+			l.remove(item)
+			expect(l.data).toEqual(result.data.sorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.data.sorted,
+				'Should update store after remove'
+			)
+		})
+	})
+
+	it('Should remove an item from grouped list', () => {
+		const data = context.remove
+		let l = list([...data.start]).groupBy('lookup_id', data.lookup)
+
+		data.removals.map(({ item, result }) => {
+			l.remove(item)
+			expect(l.data).toEqual(result.data.unsorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.grouped.unsorted,
+				'Should update store after remove'
+			)
+		})
+	})
+
+	it('Should remove an item from sorted and grouped list', () => {
+		const data = context.remove
+		let l = list([...data.start])
+			.groupBy('lookup_id', data.lookup)
+			.sortBy('name')
+
+		data.removals.map(({ item, result }) => {
+			l.remove(item)
+			expect(l.data).toEqual(result.data.sorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.grouped.sorted,
+				'Should update store after remove'
+			)
+		})
+	})
+
+	it('Should modify an item in list', () => {
+		const data = context.modify
+		let l = list([...data.start])
+
+		data.modifications.map(({ item, result }) => {
+			l.modify(item)
+
+			expect(l.data).toEqual(result.data.unsorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.data.unsorted,
+				'Should update store after modify'
+			)
+		})
+	})
+
+	it('Should modify an item in sorted list', () => {
+		const data = context.modify
+		let l = list([...data.start]).sortBy('name')
+
+		data.modifications.map(({ item, result }) => {
+			l.modify(item)
+			expect(l.data).toEqual(result.data.sorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.data.sorted,
+				'Should update store after modify'
+			)
+		})
+	})
+
+	it('Should modify an item in grouped list', () => {
+		const data = context.modify
+		let l = list([...data.start]).groupBy('lookup_id', data.lookup)
+
+		data.modifications.map(({ item, result }) => {
+			l.modify(item)
+			expect(l.data).toEqual(result.data.unsorted)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.grouped.unsorted,
+				'Should update store after modify'
+			)
+		})
+	})
+
+	it('Should modify an item in sorted and grouped list', () => {
+		const data = context.modify
+		let l = list([...data.start])
+			.groupBy('lookup_id', data.lookup)
+			.sortBy('name')
+
+		data.modifications.map(({ item, result }) => {
+			l.modify(item)
+			expect(l.data).toEqual(result.grouped.data)
+			expect(getSubscribedData(l.filtered)).toEqual(
+				result.grouped.sorted,
+				'Should update store after modify'
+			)
+		})
+	})
+
+	it('Should handle alternate key', () => {
+		const { start, actions } = context.altKey
+
+		let l = list([...start]).key('key')
+		l.add(actions.add.item)
+		expect(l.data).toEqual(actions.add.result)
+		l.remove(actions.remove.item)
+		expect(l.data).toEqual(actions.remove.result)
+		l.modify(actions.modify.item)
+		expect(l.data).toEqual(actions.modify.result)
+	})
+
+	it('Should handle missing lookup', () => {
+		const { start, lookup } = context.altKey
+
+		let l = list([...start])
+			.key('key')
+			.groupBy('lookup_key')
+		expect(l.lookup).toEqual(lookup)
+	})
+
+	it('Should sort by group first', () => {
+		let l = list([...context.sorting.items])
+			.groupBy('lookup_id', context.sorting.lookup)
+			.sortBy('name')
+		l.data.sort((a, b) => compare(a, b, l))
+		expect(l.data).toEqual(context.sorting.result.data)
+	})
+
+	it('Should handle alternate key (missing)', () => {
+		const input = [{ name: 'alpha' }, { name: 'beta' }, { name: 'charlie' }]
+
+		let l = list([...input])
+			.key('key')
+			.sortBy('name')
+
+		expect(l.data.length).toBe(3)
+		expect(l.data.map(({ key }) => key).length).toBe(3)
+
+		let delta = { name: 'delta' }
+		l.add(delta)
+		expect(l.data.length).toBe(4)
+		let beta = l.data.find(({ name }) => name === 'beta')
+
+		l.remove(beta)
+		expect(l.data.length).toEqual(3)
+		delta = { ...l.data.find(({ name }) => name === 'delta'), name: 'foxtrot' }
+		l.modify(delta)
+		expect(l.data.length).toBe(3)
+		let modifiedItem = l.data.find(({ key }) => key === delta.key)
+		expect(modifiedItem).toEqual({ key: delta.key, name: 'foxtrot' })
 	})
 })
-ListSuite('Should add an item to sorted list', (context) => {
-	const data = context.add
-	let l = list([...data.start]).sortBy('id')
-
-	data.additions.map(({ item, result }) => {
-		l.add(item)
-		assert.equal(l.data, result.data.sorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.data.sorted,
-			'Should update store after add'
-		)
-	})
-})
-ListSuite('Should add an item to grouped list', (context) => {
-	const data = context.add
-	let l = list([...data.start]).groupBy('lookup_id', context.lookup)
-
-	data.additions.map(({ item, result }) => {
-		l.add(item)
-		assert.equal(l.data, result.data.unsorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.grouped.unsorted,
-			'Should update store after add'
-		)
-	})
-})
-ListSuite('Should add an item to sorted and grouped list', (context) => {
-	const data = context.add
-	let l = list([...data.start])
-		.groupBy('lookup_id', context.lookup)
-		.sortBy('id')
-
-	data.additions.map(({ item, result }) => {
-		l.add(item)
-		assert.equal(l.data, result.data.sorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.grouped.sorted,
-			'Should update store after add'
-		)
-	})
-})
-
-ListSuite('Should remove an item from list', (context) => {
-	const data = context.remove
-	let l = list([...data.start])
-
-	data.removals.map(({ item, result }) => {
-		l.remove(item)
-		assert.equal(l.data, result.data.unsorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.data.unsorted,
-			'Should update store after remove'
-		)
-	})
-})
-
-ListSuite('Should remove an item from sorted list', (context) => {
-	const data = context.remove
-	let l = list([...data.start]).sortBy('name')
-
-	data.removals.map(({ item, result }) => {
-		l.remove(item)
-		assert.equal(l.data, result.data.sorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.data.sorted,
-			'Should update store after remove'
-		)
-	})
-})
-ListSuite('Should remove an item from grouped list', (context) => {
-	const data = context.remove
-	let l = list([...data.start]).groupBy('lookup_id', data.lookup)
-
-	data.removals.map(({ item, result }) => {
-		l.remove(item)
-		assert.equal(l.data, result.data.unsorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.grouped.unsorted,
-			'Should update store after remove'
-		)
-	})
-})
-ListSuite('Should remove an item from sorted and grouped list', (context) => {
-	const data = context.remove
-	let l = list([...data.start])
-		.groupBy('lookup_id', data.lookup)
-		.sortBy('name')
-
-	data.removals.map(({ item, result }) => {
-		l.remove(item)
-		assert.equal(l.data, result.data.sorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.grouped.sorted,
-			'Should update store after remove'
-		)
-	})
-})
-
-ListSuite('Should modify an item in list', (context) => {
-	const data = context.modify
-	let l = list([...data.start])
-
-	data.modifications.map(({ item, result }) => {
-		l.modify(item)
-
-		assert.equal(l.data, result.data.unsorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.data.unsorted,
-			'Should update store after modify'
-		)
-	})
-})
-ListSuite('Should modify an item in sorted list', (context) => {
-	const data = context.modify
-	let l = list([...data.start]).sortBy('name')
-
-	data.modifications.map(({ item, result }) => {
-		l.modify(item)
-		assert.equal(l.data, result.data.sorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.data.sorted,
-			'Should update store after modify'
-		)
-	})
-})
-ListSuite('Should modify an item in grouped list', (context) => {
-	const data = context.modify
-	let l = list([...data.start]).groupBy('lookup_id', data.lookup)
-
-	data.modifications.map(({ item, result }) => {
-		l.modify(item)
-		assert.equal(l.data, result.data.unsorted)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.grouped.unsorted,
-			'Should update store after modify'
-		)
-	})
-})
-ListSuite('Should modify an item in sorted and grouped list', (context) => {
-	const data = context.modify
-	let l = list([...data.start])
-		.groupBy('lookup_id', data.lookup)
-		.sortBy('name')
-
-	data.modifications.map(({ item, result }) => {
-		l.modify(item)
-		assert.equal(l.data, result.grouped.data)
-		assert.equal(
-			getSubscribedData(l.filtered),
-			result.grouped.sorted,
-			'Should update store after modify'
-		)
-	})
-})
-
-ListSuite('Should handle alternate key', (context) => {
-	const { start, actions } = context.altKey
-
-	let l = list([...start]).key('key')
-	l.add(actions.add.item)
-	assert.equal(l.data, actions.add.result)
-	l.remove(actions.remove.item)
-	assert.equal(l.data, actions.remove.result)
-	l.modify(actions.modify.item)
-	assert.equal(l.data, actions.modify.result)
-})
-
-ListSuite('Should handle missing lookup', (context) => {
-	const { start, lookup } = context.altKey
-
-	let l = list([...start])
-		.key('key')
-		.groupBy('lookup_key')
-	assert.equal(l.lookup, lookup)
-})
-
-ListSuite('Should sort by group first', (context) => {
-	let l = list([...context.sorting.items])
-		.groupBy('lookup_id', context.sorting.lookup)
-		.sortBy('name')
-	l.data.sort((a, b) => compare(a, b, l))
-	assert.equal(l.data, context.sorting.result.data)
-})
-
-ListSuite.run()

@@ -11,11 +11,9 @@
   "author": "Jerry Thomas<me@jerrythomas.name",
   "license": "MIT",
   "workspaces": [
-    "packages/alert",
     "packages/chart",
-    "packages/input",
+    "packages/icon",
     "packages/list",
-    "packages/markdown",
     "sites/playground"
   ],
   "devDependencies": {
