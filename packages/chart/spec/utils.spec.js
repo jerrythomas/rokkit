@@ -120,12 +120,12 @@ describe('Utility functions', () => {
 		let scale = getScale(mpg, [0, 100])
 		let minValue = Math.min(...mpg)
 		let maxValue = Math.max(...mpg)
-		expect(scale.domain()).toEqual([minValue, maxValue])
+		expect(scale.domain()).toEqual([0, maxValue])
 		expect(scale.range()).toEqual([0, 100])
 
 		scale = getScale(mpg, [0, 100], 0.1)
-		let margin = (maxValue - minValue) * 0.1
-		expect(scale.domain()).toEqual([minValue - margin, maxValue + margin])
+		let margin = (maxValue - 0) * 0.1
+		expect(scale.domain()).toEqual([0 - margin, maxValue + margin])
 		expect(scale.range()).toEqual([0, 100])
 
 		scale = getScale([-3, -5, 1, 2, 10], [0, 100])
@@ -150,16 +150,26 @@ describe('Utility functions', () => {
 
 	it('should get scales from data for x & y', () => {
 		const mtcars = JSON.parse(fs.readFileSync('./spec/fixtures/mtcars.json'))
-		const { scaleX, scaleY } = getScales(mtcars, 'model', 'mpg', 300, 200)
 		const models = [...new Set(mtcars.map(({ model }) => model))]
 		const mpg = mtcars.map(({ mpg }) => mpg)
+
+		let scales = getScales(mtcars, 'model', 'mpg', 300, 200, 0)
 		let minValue = Math.min(...mpg)
 		let maxValue = Math.max(...mpg)
-		let margin = (maxValue - minValue) * 0.1
-		expect(scaleX.range()).toEqual([0, 300])
-		expect(scaleX.domain()).toEqual(models)
-		expect(scaleY.range()).toEqual([200, 0])
-		expect(scaleY.domain()).toEqual([minValue - margin, maxValue + margin])
+		let offset = (maxValue - 0) * 0.1
+		expect(scales.x.range()).toEqual([0, 300])
+		expect(scales.x.domain()).toEqual(models)
+		expect(scales.y.range()).toEqual([200, 0])
+		expect(scales.y.domain()).toEqual([0 - offset, maxValue + offset])
+
+		scales = getScales(mtcars, 'model', 'mpg', 300, 200)
+		minValue = Math.min(...mpg)
+		maxValue = Math.max(...mpg)
+		offset = (maxValue - 0) * 0.1
+		expect(scales.x.range()).toEqual([10, 290])
+		expect(scales.x.domain()).toEqual(models)
+		expect(scales.y.range()).toEqual([190, 10])
+		expect(scales.y.domain()).toEqual([0 - offset, maxValue + offset])
 	})
 
 	it('should generate statistical summary', (context) => {

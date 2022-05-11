@@ -5,15 +5,8 @@ import { table } from '../src/lib/table'
 
 describe('Utility functions', () => {
 	beforeAll((suite) => {
-		suite.input = JSON.parse(
-			fs.readFileSync('./spec/fixtures/table/input.json')
-		)
-		suite.byTeam = JSON.parse(
-			fs.readFileSync('./spec/fixtures/table/byteam.json')
-		)
-		suite.byDate = JSON.parse(
-			fs.readFileSync('./spec/fixtures/table/bydate.json')
-		)
+		suite.input = JSON.parse(fs.readFileSync('./spec/fixtures/table.json'))
+		suite.byTeam = JSON.parse(fs.readFileSync('./spec/fixtures/by-team.json'))
 	})
 
 	it('should create table for data', (context) => {
@@ -49,21 +42,6 @@ describe('Utility functions', () => {
 		expect(getSubscribedData(t.data)).toEqual(context.meta.suite.byTeam)
 	})
 	it('should set and apply sorting', (context) => {})
-	it('should set and apply timelapse', (context) => {
-		const input = context.meta.suite.input
-		let t = table(input, { timelapseBy: 'date' })
-		expect(t.options).toEqual({
-			filters: [],
-			groupBy: 'date',
-			numericFields: ['score', 'pct'],
-			sortBy: undefined,
-			stringFields: ['date', 'team', 'group'],
-			timelapseBy: 'date'
-		})
-		expect(getSubscribedData(t.data)).toEqual([])
-		t.apply()
-		expect(getSubscribedData(t.data)).toEqual(context.meta.suite.byDate)
-	})
 
 	it('should set and apply filters', (context) => {
 		let data = context.meta.suite.input

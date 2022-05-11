@@ -1,13 +1,13 @@
-import colors from 'windicss/colors'
-const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+import colors from 'windicss/colors';
+const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 function hsla(cssVariable) {
 	return ({ opacityValue }) => {
 		if (opacityValue !== undefined) {
-			return `hsla(var(${cssVariable}), ${opacityValue})`
+			return `hsla(var(${cssVariable}), ${opacityValue})`;
 		}
-		return `hsl(var(${cssVariable}))`
-	}
+		return `hsl(var(${cssVariable}))`;
+	};
 }
 
 const config = {
@@ -21,8 +21,9 @@ const config = {
 	extract: {
 		include: [
 			'./**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@jerrythomas/sentry/src/**/*.{html,js,svelte,ts,css}',
-			'./node_modules/svelte-themable-ui/src/**/*.{html,js,svelte,ts,css}'
+			'./node_modules/@sparsh-ui/base/src/**/*.{html,js,svelte,ts,css}',
+			'./node_modules/@sparsh-ui/list/src/**/*.{html,js,svelte,ts,css}',
+			'./node_modules/@sparsh-ui/chart/src/**/*.{html,js,svelte,ts,css}'
 		]
 	},
 	theme: {
@@ -99,6 +100,6 @@ const config = {
 		}
 	},
 	plugins: [require('windicss/plugin/typography')]
-}
+};
 
-module.exports = config
+module.exports = config;

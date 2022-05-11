@@ -1,16 +1,7 @@
 import { ascending, descending } from 'd3-array'
 import { nest } from 'd3-collection'
 import { writable } from 'svelte/store'
-import {
-	pipe,
-	map,
-	difference,
-	pick,
-	omit,
-	uniq,
-	zipObj,
-	mergeRight
-} from 'ramda'
+import { omit } from 'ramda'
 
 class DataTable {
 	#input = []
@@ -23,14 +14,7 @@ class DataTable {
 	#data = writable([])
 
 	constructor(data, options) {
-		const {
-			groupBy,
-			sortBy,
-			filters,
-			numericFields,
-			stringFields,
-			timelapseBy
-		} = options || {}
+		const { groupBy, sortBy, filters, timelapseBy } = options || {}
 
 		this.#input = data
 
@@ -43,15 +27,15 @@ class DataTable {
 		if (sortBy) this.sortBy(sortBy.attribute, sortBy.ascending)
 		if (timelapseBy) this.timelapseBy(timelapseBy)
 
-		if (Array.isArray(stringFields) && Array.isArray(numericFields)) {
-			this.#stringFields = stringFields
-			this.#numericFields = numericFields
-		} else {
-			Object.keys(data[0]).map((key) => {
-				if (data.map((d) => d[key]).some(isNaN)) this.#stringFields.push(key)
-				else this.#numericFields.push(key)
-			})
-		}
+		// if (Array.isArray(stringFields) && Array.isArray(numericFields)) {
+		// 	this.#stringFields = stringFields
+		// 	this.#numericFields = numericFields
+		// } else {
+		Object.keys(data[0]).map((key) => {
+			if (data.map((d) => d[key]).some(isNaN)) this.#stringFields.push(key)
+			else this.#numericFields.push(key)
+		})
+		// }
 	}
 
 	get data() {
@@ -104,8 +88,8 @@ class DataTable {
 	 * @returns {DataTable} this instance
 	 */
 	apply() {
-		let stringFields = []
-		let combinations = []
+		// let stringFields = []
+		// let combinations = []
 		let data = [...this.#input]
 
 		this.#filters.map(({ attribute, value }) => {
@@ -124,10 +108,10 @@ class DataTable {
 			)
 		}
 
-		if (this.#timelapseBy) {
-			stringFields = this.#stringFields.filter((f) => f !== this.#timelapseBy)
-			combinations = pipe(map(pick(stringFields)), uniq)(data)
-		}
+		// if (this.#timelapseBy) {
+		// 	stringFields = this.#stringFields.filter((f) => f !== this.#timelapseBy)
+		// 	combinations = pipe(map(pick(stringFields)), uniq)(data)
+		// }
 
 		if (this.#groupBy) {
 			data = nest()
@@ -135,23 +119,23 @@ class DataTable {
 				.rollup((values) => values.map((value) => omit([this.#groupBy], value)))
 				.entries(data)
 
-			if (this.#timelapseBy) {
-				const imputedValues = zipObj(
-					this.#numericFields,
-					Array(this.#numericFields.length).fill(0)
-				)
-				const missingRows = pipe(
-					map(pick(stringFields)),
-					uniq,
-					difference(combinations),
-					map(mergeRight(imputedValues))
-				)
+			// if (this.#timelapseBy) {
+			// 	const imputedValues = zipObj(
+			// 		this.#numericFields,
+			// 		Array(this.#numericFields.length).fill(0)
+			// 	)
+			// 	const missingRows = pipe(
+			// 		map(pick(stringFields)),
+			// 		uniq,
+			// 		difference(combinations),
+			// 		map(mergeRight(imputedValues))
+			// 	)
 
-				data = data.map(({ key, value }) => ({
-					key,
-					value: [...value, ...missingRows(value)]
-				}))
-			}
+			// 	data = data.map(({ key, value }) => ({
+			// 		key,
+			// 		value: [...value, ...missingRows(value)]
+			// 	}))
+			// }
 		}
 
 		this.data.set(data)

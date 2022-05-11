@@ -7,7 +7,7 @@
 			{ "team": "x", "group": "Beta", "score": 1, "pct": "10" },
 			{ "team": "y", "group": "Beta", "score": 2, "pct": "20" },
 			{ "team": "z", "group": "Beta", "score": 3, "pct": "30" },
-			{ "score": 0, "pct": 0, "team": "z", "group": "Alpha" }
+			{ "team": "z", "group": "Alpha", "score": 0, "pct": 0 }
 		]
 	},
 	{

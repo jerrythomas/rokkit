@@ -88,14 +88,13 @@ export function swatch(count, size, pad = 0, columns, rows) {
  * @param {number} buffer
  * @returns
  */
-export function getScale(values, bounds, buffer = 0) {
-	if (values.some(isNaN)) {
+export function getScale(values, bounds, buffer = 0, ordinal = false) {
+	if (ordinal || values.some(isNaN)) {
 		return scaleBand().range(bounds).domain(values).padding(0.5)
 	} else {
-		// ensure that all numeric values are converted to numbers so that d3 min/max provide correct results
-		values = values.map((n) => +n)
+		values = values.map((x) => +x)
 
-		let minValue = min(values)
+		let minValue = min([...values, 0])
 		let maxValue = max(values)
 
 		if (minValue < 0 && maxValue > 0) {
@@ -118,13 +117,13 @@ export function getScale(values, bounds, buffer = 0) {
  * @param {number} height
  * @returns
  */
-export function getScales(data, x, y, width, height) {
+export function getScales(data, x, y, width, height, margin, ordinal) {
 	const xValues = [...new Set(data.map((item) => item[x]))]
 	const yValues = [...new Set(data.map((item) => item[y]))]
 
 	return {
-		scaleX: getScale(xValues, [0, width]),
-		scaleY: getScale(yValues, [height, 0], 0.1)
+		x: getScale(xValues, [0 + margin.left, width - margin.right], 0, ordinal.x),
+		y: getScale(yValues, [height - margin.top, margin.bottom], 0.1, ordinal.y)
 	}
 }
 
@@ -184,4 +183,17 @@ export function toNested(data, key, label) {
 		.key((d) => d[key])
 		.rollup((values) => values.map((value) => omit([key], value)))
 		.entries(data.sort((a, b) => ascending(a[label], b[label])))
+}
+/**
+ * Repeats array items of b using array items of a ask keys
+ *
+ * @param {Array} b
+ * @param {Array} a
+ * @returns {Object} with keys as items in a and values as items in b
+ */
+export function repeatAcross(b, a) {
+	return a.reduce(
+		(acc, item, index) => ({ ...acc, [item]: b[index % b.length] }),
+		{}
+	)
 }
