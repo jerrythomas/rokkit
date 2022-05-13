@@ -19,3 +19,39 @@ export const AestheticKeys = ['x', 'y', 'fill', 'color', 'timelapse']
 export function aes(fields) {
 	return compact(pick(allowedKeys, fields))
 }
+
+/*
+
+class structure
+
+chart
+  - data
+	- aes
+	  - x
+		- y
+		- fill
+		- color
+		- size (for scatter plots)
+		- stat (stat used for plotting)
+	- axis
+	  - ticks
+		- grid
+		- tick labels
+		- label
+		- offset
+		- tick size + space between tick & label
+	- plot
+	  - value labels
+	- props
+	  - range
+		- scale
+		- domain
+		- origin
+		- margin
+		- padding
+	- legend
+	- title
+
+
+
+*/

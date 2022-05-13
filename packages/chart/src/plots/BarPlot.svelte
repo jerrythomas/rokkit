@@ -1,8 +1,14 @@
 <script>
 	import { getContext } from 'svelte'
+	import { colorBrewer } from '../lib/colors'
 
 	let chart = getContext('chart')
 
+	export let labels = false
+	export let fontSize = $chart.height / 32
+	export let color = 'white'
+
+	$: fills = colorBrewer($chart.data.map((d) => d.fill))
 	// export let limit = 8
 
 	$: data = $chart.data.map((d) => ({
@@ -15,23 +21,35 @@
 		height: $chart.flipCoords
 			? $chart.scale.y.bandwidth()
 			: $chart.scale.y(0) - $chart.scale.y(d.y),
-		fill: 'red',
-		xlabel: d.x,
-		ylabel: d.y
+		fill: fills[d.fill],
+		label: {
+			x: $chart.flipCoords
+				? $chart.scale.x(d.x) - $chart.scale.x(0) - 10
+				: $chart.scale.x.bandwidth() / 2,
+			y: $chart.flipCoords ? $chart.scale.y.bandwidth() / 2 : 10,
+			angle: $chart.flipCoords ? 0 : -90,
+			text: $chart.flipCoords ? d.y + ' (' + d.x + ')' : d.x + ' (' + d.y + ')'
+		}
 	}))
 
-	$: console.log(data)
+	// $: console.log(data)
 </script>
 
-{#each data as { x, y, width, height, fill }}
+{#each data as { x, y, width, height, fill, label }}
 	<rect {x} {y} {width} {height} {fill} />
-	<!-- <text
-		x={size(item[fields.x])}
-		y={top(item[fields.y])}
-		font-size="8"
-		text-anchor="middle"
-	>
-		{item[fields.y]}
-	</text> -->
-	<!-- <text x="10" y={top(item[fields.y]) + 10}>{item[fields.x]}</text> -->
+	{#if labels}
+		{@const tx = x + label.x}
+		{@const ty = y + label.y}
+		<text
+			x={tx}
+			y={ty}
+			transform="rotate({label.angle},{tx},{ty})"
+			font-size={fontSize}
+			text-anchor="end"
+			alignment-baseline="middle"
+			fill={color}
+		>
+			{label.text}
+		</text>
+	{/if}
 {/each}

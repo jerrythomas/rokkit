@@ -19,10 +19,10 @@
 
 {#each $axis.ticks as tick}
 	<line
-		x1={tick.x + tick.offset.x}
-		y1={tick.y + tick.offset.y}
-		x2={tick.x + tick.offset.x + dx * size}
-		y2={tick.y + tick.offset.y + dy * size}
+		x1={tick.x + tick.offset.x + $axis.offset * dx}
+		y1={tick.y + tick.offset.y + $axis.offset * dy}
+		x2={tick.x + tick.offset.x + dx * size + $axis.offset * dx}
+		y2={tick.y + tick.offset.y + dy * size + $axis.offset * dy}
 		class="tick"
 	/>
 {/each}

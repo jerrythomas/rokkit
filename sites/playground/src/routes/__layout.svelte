@@ -1,10 +1,10 @@
 <script>
-	import 'virtual:windi.css';
-	import '../palette.css';
-	import '../app.css';
+	import 'virtual:windi.css'
+	import '../palette.css'
+	import '../app.css'
 	// import {Sidebar } from '@sparsh-ui/base'
 
-	import { browser } from '$app/env';
+	import { browser } from '$app/env'
 	// if (browser) import('virtual:windi-devtools');
 </script>
 

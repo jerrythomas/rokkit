@@ -50,3 +50,29 @@ export function axisTicks(scale, opts) {
 
 	return ticks
 }
+
+class Axis {
+	#offset
+	#name
+	#chart
+
+	constructor(name, chart, offset) {
+		this.#name = ['x', 'y'].includes(value) ? value : 'x'
+		this.#chart = chart
+		this.offset = offset
+	}
+
+	set offset(value) {
+		const [min, max] = this.#chart.scale[this.#name].range()
+		const otherAxis = this.#name === 'x' ? 'y' : 'x'
+		const origin = this.#chart.origin[otherAxis]
+
+		this.#offset = value * (origin == min ? 1 : origin == max ? -1 : 0)
+	}
+	get domain() {
+		let coords =
+			(coords[axis + '1'] =
+			coords[axis + '2'] =
+				origin[axis] - offset[axis])
+	}
+}

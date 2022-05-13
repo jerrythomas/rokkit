@@ -14,13 +14,13 @@
 	export let fill = x
 	export let width = 512
 	export let height = 512
-	export let padding = 16
+	export let padding = height / 16
 	export let marginLeft = 0
 	export let marginRight = 0
 	export let marginTop = 0
 	export let marginBottom = 0
 	export let flipCoords = false
-	// export let spacing = 0.1
+	export let spacing = 0.1
 
 	$: margin = {
 		left: marginLeft,
@@ -39,7 +39,8 @@
 			height,
 			padding,
 			margin,
-			flipCoords
+			flipCoords,
+			spacing
 		})
 	)
 </script>
@@ -48,15 +49,15 @@
 	viewBox="0 0 {$config.width} {$config.height}"
 	width={$config.width}
 	height={$config.height}
-	class="w-full h-full"
+	class="w-full h-full chart"
 >
-	<rect
+	<!-- <rect
 		x="0"
 		y="0"
 		width={$config.width}
 		height={$config.height}
 		fill="none"
 		stroke="currentColor"
-	/>
+	/> -->
 	<slot />
 </svg>

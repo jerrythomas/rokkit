@@ -55,8 +55,10 @@ class Chart {
 		this.#color = opts.color || opts.fill
 		this.#shape = opts.shape || opts.fill
 
-		this.#padding = +opts.padding || 16
-		this.#spacing = +opts.spacing || 0.1
+		this.#padding = opts.padding !== undefined ? +opts.padding : 32
+
+		this.#spacing =
+			+opts.spacing >= 0 && +opts.spacing <= 0.5 ? +opts.spacing : 0
 		this.#margin = {
 			top: +opts.margin?.top || 0,
 			left: +opts.margin?.left || 0,
@@ -79,19 +81,8 @@ class Chart {
 			color: d[this.#color],
 			shape: d[this.#shape]
 		}))
-		this.refresh()
-		// 		this.size(opts.width||512, opts.height||512)
-	}
 
-	size(x, y) {
-		if (x < 512 || y < 512) {
-			this.#width = x > y ? (x * 512) / y : 512
-			this.#width = x < y ? (y * 512) / x : 512
-		} else {
-			this.#width = x
-			this.#height = y
-		}
-		return this.refresh()
+		this.refresh()
 	}
 
 	padding(value) {
@@ -146,6 +137,12 @@ class Chart {
 	get margin() {
 		return this.#margin
 	}
+	get range() {
+		const [x1, x2] = this.scale.x.range()
+		const [y1, y2] = this.scale.y.range()
+
+		return { x1, y1, x2, y2 }
+	}
 	get data() {
 		// aggregate data group by x,y,fill,shape, color
 		// stat = [min, max, avg, std, q1, q3, median, sum, count, box, all]
@@ -179,10 +176,10 @@ class Chart {
 
 		count =
 			count ||
-			Math.abs((maxRange - minRange) / (fontSize * (axis === 'y' ? 2 : 5)))
+			Math.abs((maxRange - minRange) / (fontSize * (axis === 'y' ? 3 : 5)))
 
 		if (scale.ticks) {
-			ticks = scale.ticks(count)
+			ticks = scale.ticks(Math.round(count))
 		} else {
 			offset = scale.bandwidth() / 2
 			count = Math.min(Math.round(count), scale.domain().length)

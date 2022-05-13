@@ -7,21 +7,42 @@
 	setContext('axis', config)
 
 	export let name = 'x'
-	export let fontSize = 8
+	export let fontSize = $chart.height / 32
 	export let count = null
+	export let gap = 0
 
-	let scale = $chart.scale
-	let [y1, y2] = scale.y.range()
-	let [x1, x2] = scale.x.range()
+	function axisOffset(axis, origin, range, gap) {
+		// let
+		let offset =
+			gap *
+			(origin[axis] == range[axis + '1']
+				? 1
+				: origin[axis] == range[axis + '2']
+				? -1
+				: 0)
+		return offset
+	}
 
-	$: config.set({ ticks: $chart.ticks(name, count, fontSize), name, fontSize })
+	function axisDomain(axis, origin, range, offset) {
+		let coords = { ...range }
+		let d = axis === 'x' ? -1 : 1
+		coords[axis + '1'] = coords[axis + '2'] = origin[axis] + d * offset
+		return coords
+	}
+	$: otherAxis = name === 'x' ? 'y' : 'x'
+	$: offset = axisOffset(name, $chart.origin, $chart.range, gap)
+	$: line = axisDomain(otherAxis, $chart.origin, $chart.range, offset)
+
+	$: config.set({
+		ticks: $chart.ticks(name, count, fontSize),
+		scale: $chart.scale,
+		name,
+		fontSize,
+		offset: offset
+	})
 </script>
 
 <g class="axis">
-	{#if name === 'x'}
-		<line {x1} {x2} y1={$chart.origin.y} y2={$chart.origin.y} class="domain" />
-	{:else}
-		<line x1={$chart.origin.x} x2={$chart.origin.x} {y1} {y2} class="domain" />
-	{/if}
+	<line {...line} class="domain" />
 	<slot />
 </g>
