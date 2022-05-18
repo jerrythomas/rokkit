@@ -124,6 +124,7 @@ importers:
       '@sparsh-ui/list': link:../../packages/list
       '@sveltejs/adapter-auto': next
       '@sveltejs/kit': next
+      '@types/d3-time-format': ^4.0.0
       d3-array: ^3.1.6
       d3-collection: ^1.0.7
       d3-scale: ^4.0.2
@@ -151,7 +152,8 @@ importers:
       '@sparsh-ui/chart': link:../../packages/chart
       '@sparsh-ui/list': link:../../packages/list
       '@sveltejs/adapter-auto': 1.0.0-next.40
-      '@sveltejs/kit': 1.0.0-next.326_svelte@3.48.0
+      '@sveltejs/kit': 1.0.0-next.328_svelte@3.48.0
+      '@types/d3-time-format': 4.0.0
       d3-array: 3.1.6
       d3-collection: 1.0.7
       d3-scale: 4.0.2
@@ -1042,8 +1044,8 @@ packages:
       esbuild: 0.14.38
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.326_svelte@3.48.0:
-    resolution: {integrity: sha512-prJqmXZ2H1wmFfnMw7wDujfbkcA8vuubuqUkpVVmXhfh2+SEzQscPTNwxoE5EJxb5sywtLWEvYx3hv1gPS4Lvg==}
+  /@sveltejs/kit/1.0.0-next.328_svelte@3.48.0:
+    resolution: {integrity: sha512-L1RJ7wwLkOgo7aE+JiYppJEtVsSIpGPfgBZtjrS3J0avXVYUSTy+AfXbvjFJxTdk94uuCcTLUk/0vVODFm+Khg==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -1137,6 +1139,10 @@ packages:
 
   /@types/chai/4.3.1:
     resolution: {integrity: sha512-/zPMqDkzSZ8t3VtxOa4KPq7uzzW978M9Tvh+j7GHKuo6k6GTLxPJ4J5gE5cjfJ26pnXst0N5Hax8Sr0T2Mi9zQ==}
+    dev: true
+
+  /@types/d3-time-format/4.0.0:
+    resolution: {integrity: sha512-yjfBUe6DJBsDin2BMIulhSHmr5qNR5Pxs17+oW4DoVPyVIXZ+m6bs7j1UVKP08Emv6jRmYrYqxYzO63mQxy1rw==}
     dev: true
 
   /@types/istanbul-lib-coverage/2.0.4:

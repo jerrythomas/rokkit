@@ -69,6 +69,10 @@ class Axis {
 
 		this.#offset = value * (origin == min ? 1 : origin == max ? -1 : 0)
 	}
+	get offset() {
+		return this.#offset
+	}
+
 	get domain() {
 		let coords =
 			(coords[axis + '1'] =

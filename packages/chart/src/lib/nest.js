@@ -11,7 +11,6 @@ export function tweenable() {
 	let combinations
 	let combiCounts
 	let missingRows
-	const dummy = { y: 0, isTweenHidden: true }
 
 	let f = {
 		key: (k) => {
@@ -33,14 +32,13 @@ export function tweenable() {
 		apply: (input) => {
 			let data = input
 
-			if (groupBy.length && valueField) {
+			if ((groupBy.length || nestBy) && valueField) {
 				const fields = nestBy ? [nestBy] : []
 				data = flatObjectGroup(input, [...fields, ...groupBy], valueField)
-				console.log(data)
 			}
 
 			if (nestBy) {
-				let fields = [...groupBy, nestBy, valueField, 'valueCount']
+				let fields = [...groupBy, nestBy, valueField]
 				combinations = pipe(map(pick(groupBy)), uniq)(input)
 				combiCounts = combinations
 					.map((d) => JSON.stringify(d))
@@ -52,6 +50,7 @@ export function tweenable() {
 					difference(combinations),
 					map(mergeLeft({ [valueField]: [] }))
 				)
+
 				data = nest()
 					.key((d) => d[nestBy])
 					.sortKeys(sortOrder)
@@ -65,19 +64,16 @@ export function tweenable() {
 					})
 				)
 
-				data = data
-					.map(({ key, value }) => ({
-						key,
-						value: [...value, ...missingRows(value)]
-					}))
-					.map((d) =>
-						d.value.map((x) => {
-							const key = JSON.stringify(pick(groupBy, x))
-							const diff = combiCounts[key] - x[valueField].length
-							x[valueField] = [...x[valueField], ...Array(diff).fill(dummy)]
-							return x
-						})
+				data = data.map(({ key, value }) => ({
+					key,
+					value: addHiddenValues(
+						value,
+						missingRows,
+						combiCounts,
+						valueField,
+						groupBy
 					)
+				}))
 			}
 			return data
 		}
@@ -86,6 +82,17 @@ export function tweenable() {
 	return f
 }
 
+function addHiddenValues(values, missingRows, counts, valueField, groupBy) {
+	const dummy = { y: 0, tweenVisibility: 0 }
+	const result = [...values, ...missingRows(values)].map((item) => {
+		const key = JSON.stringify(pick(groupBy, item))
+		const diff = counts[key] - item[valueField].length
+		item[valueField] = [...item[valueField], ...Array(diff).fill(dummy)]
+		return item
+	})
+
+	return result
+}
 /**
  *
  * @param {Array} array
@@ -102,28 +109,7 @@ function flatObjectGroup(data, fields, y) {
 		)
 		.map((d) => ({
 			...d,
-			[y]: d[y].map((v) => ({ y: v[y], isTweenHidden: false }))
-		}))
-
-	return grouped
-}
-// stages
-// 1. Group by fields and roll up value
-// 2. Identify combinations and max counts
-// 3. Nest by
-// 4. Fill missing groups
-// 5. Fill missing values
-
-function rollup(array, nestBy, groupBy, value) {
-	const attr = fields.map((x) => (d) => d[x])
-	const keys = [...fields, y]
-	let grouped = flatGroup(data, ...attr)
-		.map((x) =>
-			x.reduce((acc, item, index) => ({ ...acc, [keys[index]]: item }), {})
-		)
-		.map((d) => ({
-			...d,
-			[y]: d[y].map((v) => ({ y: v[y], isTweenHidden: false }))
+			[y]: d[y].map((v) => ({ y: v[y], tweenVisibility: 1 }))
 		}))
 
 	return grouped
@@ -135,43 +121,12 @@ function evaluate(input, groupBy) {
 		.map(JSON.stringify())
 		.reduce((acc, item) => ({ ...acc, [item]: 0 }), {})
 
-	missingRows = pipe(
+	const missingRows = pipe(
 		map(pick(groupBy)),
 		uniq,
 		difference(combinations),
 		map(mergeLeft({ [valueField]: [] }))
 	)
-}
 
-function bundle(array, nestBy) {
-	data = nest()
-		.key((d) => d[nestBy])
-		.sortKeys(sortOrder)
-		.rollup((values) => values.map(omit([nestBy])))
-		.entries(data.map(pick(fields)))
-}
-
-function fillMissingGroups(data, groupBy) {
-	data.map((d) =>
-		d.value.map((x) => {
-			const key = JSON.stringify(pick(groupBy, x))
-			combiCounts[key] = Math.max(combiCounts[key], x[valueField].length)
-		})
-	)
-	data = data.map(({ key, value }) => ({
-		key,
-		value: addHiddenValues(value, missingRows, combiCounts, valueField, groupBy)
-	}))
-}
-
-function fillMissingValues(values, missingRows, counts, valueField, groupBy) {
-	const dummy = { y: 0, isTweenHidden: true }
-	const result = [...values, ...missingRows(values)].map((x) => {
-		const key = JSON.stringify(pick(groupBy, x))
-		const diff = counts[key] - x[valueField].length
-		x[valueField] = [...x[valueField], ...Array(diff).fill(dummy)]
-		return x
-	})
-
-	return result
+	return { groups, groupCounts, missingRows }
 }
