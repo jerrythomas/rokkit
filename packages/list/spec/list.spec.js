@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { compare, quickSearch, list } from '../src/lib/list'
 import * as context from './fixtures/list-data'
 import { getSubscribedData } from './helpers.js'

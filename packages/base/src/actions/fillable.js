@@ -27,7 +27,7 @@ export function fillable(node, { options, current, check }) {
 		blanks[ref]['data-index'] = ref
 	})
 
-	function fill(options, current, check) {
+	function fill(options, current) {
 		if (current > -1 && current < Object.keys(blanks).length) {
 			let index = data.options.findIndex(
 				({ actualIndex }) => actualIndex == current

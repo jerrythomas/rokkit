@@ -8,6 +8,7 @@
 		"test": "turbo run test",
 		"coverage": "turbo run coverage",
 		"lint": "turbo run lint",
+		"format": "turbo run format",
 		"prepare": "husky install"
 	},
 	"author": "Jerry Thomas<me@jerrythomas.name",

@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/svelte'
+import { describe, expect, it } from 'vitest'
+import { cleanup, render } from '@testing-library/svelte'
 import Sidebar from '../src/Sidebar.svelte'
 
 describe('Sidebar.svelte', () => {

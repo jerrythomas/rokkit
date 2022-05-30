@@ -9,10 +9,10 @@
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
-		"test": "playwright test",
+		"test:e2e": "playwright test",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-		"test:ui": "vitest --ui",
+		"test": "vitest",
 		"coverage": "vitest run --coverage"
 	},
 	"devDependencies": {

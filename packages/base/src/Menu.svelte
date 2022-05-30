@@ -7,7 +7,11 @@
 
 <nav class="menu">
 	{#each items as item}
-		<a href={item.target} class:isCurrent={item.target === activePage}>
+		<a
+			href={item.target}
+			class:isCurrent={item.target === activePage}
+			class="first:rounded-t-lg last:rounded-b-lg"
+		>
 			{#if item.icon}
 				<Icon name={item.icon} title={item.label} />
 			{/if}
@@ -22,7 +26,6 @@
 	}
 	.menu a {
 		@apply flex flex-row w-full items-center px-4 py-3 gap-4;
-		@apply first:rounded-t-lg last:rounded-b-lg;
 	}
 	.menu p {
 		@apply flex flex-grow;

@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/svelte'
+import { describe, expect, it } from 'vitest'
+import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { iconStore } from '../src/store'
 import Icon from '../src/Icon.svelte'
 import box from './fixtures/box.svelte'
