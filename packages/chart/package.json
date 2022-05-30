@@ -18,6 +18,7 @@
 		"format": "prettier --write --plugin-search-dir=. .",
 		"release": "release-it --preRelease=beta",
 		"test": "vitest",
+		"test:once": "vitest run",
 		"test:ui": "vitest --ui",
 		"coverage": "vitest run --coverage"
 	},

@@ -12,7 +12,7 @@
 		"test:e2e": "playwright test",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-		"test": "vitest",
+		"test:once": "vitest run",
 		"coverage": "vitest run --coverage"
 	},
 	"devDependencies": {
