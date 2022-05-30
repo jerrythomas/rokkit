@@ -25,11 +25,11 @@ export function tweenable() {
 			groupBy = [...new Set(fields)]
 			return f
 		},
-		value: (field) => {
+		rollup: (field) => {
 			valueField = field
 			return f
 		},
-		apply: (input) => {
+		transform: (input) => {
 			let data = input
 
 			if ((groupBy.length || nestBy) && valueField) {
@@ -37,7 +37,7 @@ export function tweenable() {
 				data = flatObjectGroup(input, [...fields, ...groupBy], valueField)
 			}
 
-			if (nestBy) {
+			if (nestBy && valueField) {
 				let fields = [...groupBy, nestBy, valueField]
 				combinations = pipe(map(pick(groupBy)), uniq)(input)
 				combiCounts = combinations
@@ -66,14 +66,19 @@ export function tweenable() {
 
 				data = data.map(({ key, value }) => ({
 					key,
-					value: addHiddenValues(
-						value,
-						missingRows,
-						combiCounts,
-						valueField,
-						groupBy
+					value: spread(
+						addHiddenValues(
+							value,
+							missingRows,
+							combiCounts,
+							valueField,
+							groupBy
+						),
+						valueField
 					)
 				}))
+			} else if (groupBy.length && valueField) {
+				data = spread(data, valueField)
 			}
 			return data
 		}
@@ -84,12 +89,15 @@ export function tweenable() {
 
 function addHiddenValues(values, missingRows, counts, valueField, groupBy) {
 	const dummy = { y: 0, tweenVisibility: 0 }
-	const result = [...values, ...missingRows(values)].map((item) => {
-		const key = JSON.stringify(pick(groupBy, item))
-		const diff = counts[key] - item[valueField].length
-		item[valueField] = [...item[valueField], ...Array(diff).fill(dummy)]
-		return item
-	})
+	const sorter = multiAttributeSorter(groupBy)
+	const result = [...values, ...missingRows(values)]
+		.sort(sorter)
+		.map((item) => {
+			const key = JSON.stringify(pick(groupBy, item))
+			const diff = counts[key] - item[valueField].length
+			item[valueField] = [...item[valueField], ...Array(diff).fill(dummy)]
+			return item
+		})
 
 	return result
 }
@@ -115,18 +123,49 @@ function flatObjectGroup(data, fields, y) {
 	return grouped
 }
 
-function evaluate(input, groupBy) {
-	const groups = pipe(map(pick(groupBy)), uniq)(input)
-	const groupCounts = groups
-		.map(JSON.stringify())
-		.reduce((acc, item) => ({ ...acc, [item]: 0 }), {})
+/**
+ * Spreads an object into an array repeating all attributes for every item in the valueField array
+ *
+ * @param {Array} data
+ * @param {String} valueField
+ * @returns {Array} of objects
+ */
+function spread(data, valueField) {
+	let result = []
 
-	const missingRows = pipe(
-		map(pick(groupBy)),
-		uniq,
-		difference(combinations),
-		map(mergeLeft({ [valueField]: [] }))
-	)
+	data.map((d) => {
+		if (Array.isArray(d[valueField])) {
+			let groups = omit([valueField], d)
+			result = [
+				...result,
+				...d[valueField].map((v) => ({
+					...groups,
+					[valueField]: v.y,
+					tweenVisibility: v.tweenVisibility
+				}))
+			]
+		} else {
+			result = [...result, d]
+		}
+	})
+	return result
+}
 
-	return { groups, groupCounts, missingRows }
+/**
+ * https://stackoverflow.com/a/38037580
+ *
+ * @param {*} props
+ * @returns
+ */
+function multiAttributeSorter(props) {
+	return function (a, b) {
+		for (var i = 0; i < props.length; i++) {
+			var prop = props[i]
+			var name = prop.name || prop
+			var reverse = prop.reverse || false
+			if (a[name] < b[name]) return reverse ? 1 : -1
+			if (a[name] > b[name]) return reverse ? -1 : 1
+		}
+		return 0
+	}
 }

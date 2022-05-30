@@ -15,10 +15,10 @@
 	}
 </script>
 
-<ul class="flex flex-col list">
+<ul class="flex flex-col w-full list">
 	{#each items as item}
 		<li
-			class="flex flex-shrink-0 flex-grow-0 px-4 min-h-12 items-center cursor-pointer leading-loose w-full gap-2 item"
+			class="flex flex-shrink-0 flex-grow-0 min-h-12 items-center cursor-pointer leading-loose w-full gap-2 item"
 			class:selected={item[key] === selected}
 			on:click={() => handleClick(item)}
 		>

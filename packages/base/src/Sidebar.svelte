@@ -2,12 +2,17 @@
 	import Menu from './Menu.svelte'
 
 	export let items
+	export let activePage
 </script>
 
-<aside
-	class="bg-accent-200 text-accent-500 p-8 h-full w-80 space-y-6 flex-shrink-0"
->
+<aside class="sidebar">
 	<slot name="header" />
-	<Menu {items} />
+	<Menu {items} {activePage} />
 	<slot name="footer" />
 </aside>
+
+<style lang="postcss">
+	aside {
+		@apply flex flex-col p-8 h-full w-80 flex-shrink-0;
+	}
+</style>

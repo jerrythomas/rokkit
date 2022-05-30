@@ -1,0 +1,161 @@
+team-score:
+  - team: x
+    score: 1
+    tweenVisibility: 1
+  - team: x
+    score: 2
+    tweenVisibility: 1
+  - team: x
+    score: 3
+    tweenVisibility: 1
+  - team: x
+    score: 4
+    tweenVisibility: 1
+  - team: y
+    score: 10
+    tweenVisibility: 1
+  - team: y
+    score: 20
+    tweenVisibility: 1
+  - team: y
+    score: 30
+    tweenVisibility: 1
+  - team: y
+    score: 40
+    tweenVisibility: 1
+  - team: z
+    score: 20
+    tweenVisibility: 1
+  - team: z
+    score: 25
+    tweenVisibility: 1
+  - team: z
+    score: 30
+    tweenVisibility: 1
+
+group-score:
+  - group: Alpha
+    score: 1
+    tweenVisibility: 1
+  - group: Alpha
+    score: 10
+    tweenVisibility: 1
+  - group: Alpha
+    score: 3
+    tweenVisibility: 1
+  - group: Alpha
+    score: 30
+    tweenVisibility: 1
+  - group: Alpha
+    score: 25
+    tweenVisibility: 1
+  - group: Beta
+    score: 2
+    tweenVisibility: 1
+  - group: Beta
+    score: 20
+    tweenVisibility: 1
+  - group: Beta
+    score: 20
+    tweenVisibility: 1
+  - group: Beta
+    score: 4
+    tweenVisibility: 1
+  - group: Beta
+    score: 40
+    tweenVisibility: 1
+  - group: Beta
+    score: 30
+    tweenVisibility: 1
+
+group-team-score:
+  - group: Alpha
+    team: x
+    score: 1
+    tweenVisibility: 1
+  - group: Alpha
+    team: x
+    score: 3
+    tweenVisibility: 1
+  - group: Alpha
+    team: y
+    score: 10
+    tweenVisibility: 1
+  - group: Alpha
+    team: y
+    score: 30
+    tweenVisibility: 1
+  - group: Alpha
+    team: z
+    score: 25
+    tweenVisibility: 1
+  - group: Beta
+    team: x
+    score: 2
+    tweenVisibility: 1
+  - group: Beta
+    team: x
+    score: 4
+    tweenVisibility: 1
+  - group: Beta
+    team: y
+    score: 20
+    tweenVisibility: 1
+  - group: Beta
+    team: y
+    score: 40
+    tweenVisibility: 1
+  - group: Beta
+    team: z
+    score: 20
+    tweenVisibility: 1
+  - group: Beta
+    team: z
+    score: 30
+    tweenVisibility: 1
+
+group-team-pct:
+  - group: Alpha
+    team: x
+    pct: 10
+    tweenVisibility: 1
+  - group: Alpha
+    team: x
+    pct: 20
+    tweenVisibility: 1
+  - group: Alpha
+    team: y
+    pct: 20
+    tweenVisibility: 1
+  - group: Alpha
+    team: y
+    pct: 30
+    tweenVisibility: 1
+  - group: Alpha
+    team: z
+    pct: 40
+    tweenVisibility: 1
+  - group: Beta
+    team: x
+    pct: 10
+    tweenVisibility: 1
+  - group: Beta
+    team: x
+    pct: 30
+    tweenVisibility: 1
+  - group: Beta
+    team: y
+    pct: 20
+    tweenVisibility: 1
+  - group: Beta
+    team: y
+    pct: 40
+    tweenVisibility: 1
+  - group: Beta
+    team: z
+    pct: 30
+    tweenVisibility: 1
+  - group: Beta
+    team: z
+    pct: 50
+    tweenVisibility: 1

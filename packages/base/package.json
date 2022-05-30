@@ -20,15 +20,24 @@
 		"test:ui": "vitest --ui",
 		"coverage": "vitest run --coverage"
 	},
+	"exports": {
+		"./package.json": "./package.json",
+		".": "./src/index.js",
+		"./index.d.ts": "./dist/index.d.ts",
+		"./theme.css": "./src/theme.css"
+	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^1.0.0-next.42",
+		"@sveltejs/vite-plugin-svelte": "^1.0.0-next.45",
 		"@testing-library/svelte": "^3.1.1",
-		"@vitest/ui": "^0.10.1",
-		"eslint": "^8.14.0",
+		"@vitest/ui": "~0.12.10",
+		"d3-format": "^3.1.0",
+		"d3-shape": "^3.1.0",
+		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.5.0",
 		"prettier": "^2.6.2",
 		"svelte": "^3.48.0",
-		"vite": "^2.9.7",
-		"vitest": "^0.10.1"
+		"typescript": "~4.6.4",
+		"vite": "^2.9.9",
+		"vitest": "~0.12.10"
 	}
 }

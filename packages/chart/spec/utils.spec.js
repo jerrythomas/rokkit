@@ -148,29 +148,29 @@ describe('Utility functions', () => {
 		expect(scale.padding()).toBe(0.5)
 	})
 
-	it('should get scales from data for x & y', () => {
-		const mtcars = JSON.parse(fs.readFileSync('./spec/fixtures/mtcars.json'))
-		const models = [...new Set(mtcars.map(({ model }) => model))]
-		const mpg = mtcars.map(({ mpg }) => mpg)
+	// it('should get scales from data for x & y', () => {
+	// 	const mtcars = JSON.parse(fs.readFileSync('./spec/fixtures/mtcars.json'))
+	// 	const models = [...new Set(mtcars.map(({ model }) => model))]
+	// 	const mpg = mtcars.map(({ mpg }) => mpg)
 
-		let scales = getScales(mtcars, 'model', 'mpg', 300, 200, 0)
-		let minValue = Math.min(...mpg)
-		let maxValue = Math.max(...mpg)
-		let offset = (maxValue - 0) * 0.1
-		expect(scales.x.range()).toEqual([0, 300])
-		expect(scales.x.domain()).toEqual(models)
-		expect(scales.y.range()).toEqual([200, 0])
-		expect(scales.y.domain()).toEqual([0 - offset, maxValue + offset])
+	// 	let scales = getScales(mtcars, 'model', 'mpg', 300, 200, 0)
+	// 	let minValue = Math.min(...mpg)
+	// 	let maxValue = Math.max(...mpg)
+	// 	let offset = (maxValue - 0) * 0.1
+	// 	expect(scales.x.range()).toEqual([0, 300])
+	// 	expect(scales.x.domain()).toEqual(models)
+	// 	expect(scales.y.range()).toEqual([200, 0])
+	// 	expect(scales.y.domain()).toEqual([0 - offset, maxValue + offset])
 
-		scales = getScales(mtcars, 'model', 'mpg', 300, 200)
-		minValue = Math.min(...mpg)
-		maxValue = Math.max(...mpg)
-		offset = (maxValue - 0) * 0.1
-		expect(scales.x.range()).toEqual([10, 290])
-		expect(scales.x.domain()).toEqual(models)
-		expect(scales.y.range()).toEqual([190, 10])
-		expect(scales.y.domain()).toEqual([0 - offset, maxValue + offset])
-	})
+	// 	scales = getScales(mtcars, 'model', 'mpg', 300, 200)
+	// 	minValue = Math.min(...mpg)
+	// 	maxValue = Math.max(...mpg)
+	// 	offset = (maxValue - 0) * 0.1
+	// 	expect(scales.x.range()).toEqual([10, 290])
+	// 	expect(scales.x.domain()).toEqual(models)
+	// 	expect(scales.y.range()).toEqual([190, 10])
+	// 	expect(scales.y.domain()).toEqual([0 - offset, maxValue + offset])
+	// })
 
 	it('should generate statistical summary', (context) => {
 		let result = aggregate(context.meta.suite.data, 'group', 'score')

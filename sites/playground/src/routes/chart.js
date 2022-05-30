@@ -1,6 +1,5 @@
-/** @type {import('./').RequestHandler} */
+/** @type {import('./__types/chart').RequestHandler} */
 export async function get() {
-	// `params.id` comes from [id].js
 	const data = [
 		{
 			year: '2000-01-01',

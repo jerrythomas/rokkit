@@ -5,14 +5,14 @@ semi: false
 singleQuote: true
 trailingComma: none
 overrides:
-  - files: "*.svelte"
+  - files: '*.svelte'
     options:
       svelteSortOrder: options-scripts-markup-styles
   - files:
-      - "*.md"
-      - "*.yml"
-      - "*.yaml"
-      - "*.sql"
-      - "*.ddl"
+      - '*.md'
+      - '*.yml'
+      - '*.yaml'
+      - '*.sql'
+      - '*.ddl'
     options:
       useTabs: false

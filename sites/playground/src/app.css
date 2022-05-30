@@ -1,5 +1,13 @@
 @import '@fontsource/victor-mono';
+@import '@fontsource/poppins';
+@import '@fontsource/poppins/100.css';
+@import '@fontsource/poppins/200.css';
+@import '@fontsource/poppins/300.css';
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/700.css';
 @import '@fontsource/montserrat-alternates';
+@import '@fontsource/montserrat-alternates/100.css';
 @import '@fontsource/montserrat-alternates/200.css';
 @import '@fontsource/montserrat-alternates/300.css';
 @import '@fontsource/montserrat-alternates/400.css';
@@ -11,4 +19,26 @@
 	body {
 		@apply flex flex-row w-full h-screen sm:h-screen relative font-body;
 	}
+}
+
+.sidebar {
+	@apply border-r border-skin-200 bg-skin-50;
+	@apply bg-texture;
+}
+
+.menu {
+	@apply border border-skin-300 border-opacity-50;
+	@apply bg-opacity-80 bg-skin-100;
+}
+
+.menu a {
+	@apply border-b last:border-b-0 border-skin-200;
+}
+
+.menu a:not(.isCurrent):hover {
+	@apply bg-skin-base;
+}
+
+.isCurrent {
+	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-gray-50;
 }

@@ -7,3 +7,5 @@ coverage
 .cache
 __snapshots__
 *.code-workspace
+.turbo
+.eslintcache

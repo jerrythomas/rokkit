@@ -9,6 +9,7 @@ import {
 	pick,
 	omit,
 	uniq,
+	groupBy,
 	zipObj,
 	mergeLeft,
 	mergeRight
@@ -86,10 +87,10 @@ export class Data {
 		if (this.#options.time && this.#options.group) {
 			uniqueGroups = map(pick(this.#options.group), uniq)(this.#input)
 			data = map(
-				groupby(this.#options.time),
+				groupBy(this.#options.time),
 				map(
 					omit([this.#options.time]),
-					groupby(this.#options.group),
+					groupBy(this.#options.group),
 					map(omit[this.#options.group])
 				)
 			)(data)

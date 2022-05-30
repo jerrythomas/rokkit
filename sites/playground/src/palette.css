@@ -9,6 +9,16 @@
 		--skin-hue: 233;
 		--skin-saturation: 11.9%;
 
+		/* Gecko */
+		--primary-hue: 151;
+		--primary-saturation: 43%;
+		--secondary-hue: 188;
+		--secondary-saturation: 35%;
+		--accent-hue: 329;
+		--accent-saturation: 80%;
+		--skin-hue: 233;
+		--skin-saturation: 11.9%;
+
 		--text-white: var(--skin-hue), var(--skin-saturation), 100%;
 		--text-black: var(--skin-hue), var(--skin-saturation), 20%;
 

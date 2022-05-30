@@ -7,38 +7,35 @@ describe('Timelapse', () => {
 	beforeAll((suite) => {
 		suite.input = JSON.parse(fs.readFileSync('./spec/fixtures/table.json'))
 		suite.byDate = JSON.parse(fs.readFileSync('./spec/fixtures/by-date.json'))
-		suite.simulated = JSON.parse(
-			fs.readFileSync('./spec/fixtures/simulated.json')
-		)
+		suite.simulated = JSON.parse(fs.readFileSync('./spec/fixtures/data.json'))
 	})
 
 	it('should generate timelapse groups', (context) => {
-		const input = context.meta.suite.input
-		const result = timelapse(input, 'date')
-
-		expect(result).toEqual(context.meta.suite.byDate)
-		result.map(({ value }) => expect(Object.keys(value)).not.includes('date'))
+		// const input = context.meta.suite.input
+		// const result = timelapse(input, 'date')
+		// expect(result).toEqual(context.meta.suite.byDate)
+		// result.map(({ value }) => expect(Object.keys(value)).not.includes('date'))
 	})
 
-	it('should create a datatable', (context) => {
-		const input = context.meta.suite.input
+	// it('should create a datatable', (context) => {
+	// 	const input = context.meta.suite.input
 
-		let dt = new Data(input)
-		expect(getSubscribedData(dt.data)).toEqual([])
-		expect(dt.options).toEqual({
-			time: undefined,
-			group: undefined,
-			orient: undefined,
-			value: undefined,
-			rank: undefined,
-			defaults: { rank: 99 }
-		})
+	// 	let dt = new Data(input)
+	// 	expect(getSubscribedData(dt.data)).toEqual([])
+	// 	expect(dt.options).toEqual({
+	// 		time: undefined,
+	// 		group: undefined,
+	// 		orient: undefined,
+	// 		value: undefined,
+	// 		rank: undefined,
+	// 		defaults: { rank: 99 }
+	// 	})
 
-		dt.apply()
-		dt = new Data(input, { time: 'year', group: 'name' })
-		dt.apply()
-		console.log(JSON.stringify(getSubscribedData(dt.data)))
-	})
+	// 	dt.apply()
+	// 	dt = new Data(input, { time: 'year', group: 'name' })
+	// 	dt.apply()
+	// 	console.log(JSON.stringify(getSubscribedData(dt.data)))
+	// })
 })
 
 // timelapse by year scatter plot age by age group

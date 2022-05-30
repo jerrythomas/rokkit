@@ -35,4 +35,7 @@
 		flex-shrink: 0;
 		flex-grow: 0;
 	}
+	svg:focus {
+		outline: none;
+	}
 </style>

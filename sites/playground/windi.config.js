@@ -1,13 +1,13 @@
-import colors from 'windicss/colors';
-const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+import colors from 'windicss/colors'
+const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 function hsla(cssVariable) {
 	return ({ opacityValue }) => {
 		if (opacityValue !== undefined) {
-			return `hsla(var(${cssVariable}), ${opacityValue})`;
+			return `hsla(var(${cssVariable}), ${opacityValue})`
 		}
-		return `hsl(var(${cssVariable}))`;
-	};
+		return `hsl(var(${cssVariable}))`
+	}
 }
 
 const config = {
@@ -30,7 +30,7 @@ const config = {
 		fontFamily: {
 			mono: ['Victor-Mono', 'monospace'],
 			serif: ['Montserrat Alternates', 'ui-serif', 'sans-serif'],
-			body: ['Montserrat Alternates', 'ui-serif', 'sans-serif']
+			body: ['Poppins', 'ui-serif', 'sans-serif']
 		},
 
 		extend: {
@@ -100,6 +100,6 @@ const config = {
 		}
 	},
 	plugins: [require('windicss/plugin/typography')]
-};
+}
 
-module.exports = config;
+module.exports = config
