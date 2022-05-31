@@ -17,7 +17,7 @@
 @layer base {
 	html,
 	body {
-		@apply flex flex-row w-full h-screen sm:h-screen relative font-body;
+		@apply flex flex-row flex-grow sm:h-screen relative font-body;
 	}
 }
 
@@ -42,3 +42,17 @@
 .isCurrent {
 	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-gray-50;
 }
+
+/* input[type='range'] {
+	appearance: none;
+	@apply flex flex-col text-black-500 relative bottom-3 h-10;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+	appearance: none;
+	@apply h-2 bg-primary-400 rounded-full;
+}
+input[type='range']::-webkit-slider-thumb {
+	appearance: none;
+	@apply relative bottom-1 h-4 w-4 rounded-full bg-primary-400 shadow;
+} */

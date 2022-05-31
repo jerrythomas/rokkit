@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "turbo run build",
-		"test": "turbo run test:once",
+		"test": "turbo run test",
 		"coverage": "turbo run coverage",
 		"lint": "turbo run lint",
 		"format": "turbo run format",

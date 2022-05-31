@@ -17,9 +17,9 @@
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. .",
 		"release": "release-it --preRelease=beta",
-		"test": "vitest",
-		"test:once": "vitest run",
+		"test": "vitest run",
 		"test:ui": "vitest --ui",
+		"test:watch": "vitest",
 		"coverage": "vitest run --coverage"
 	},
 	"devDependencies": {

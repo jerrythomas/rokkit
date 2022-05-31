@@ -12,6 +12,6 @@
 
 <Sidebar items={menu()} activePage={$page.url.pathname} />
 
-<content class="flex w-full">
+<content class="flex flex-grow">
 	<slot />
 </content>

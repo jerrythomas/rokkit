@@ -1,5 +1,5 @@
 <script>
-	import { Stepper, StepperSVG } from '@sparsh-ui/base'
+	import { Stepper, Range } from '@sparsh-ui/base'
 	import ControlPanel from './ControlPanel.svelte'
 
 	export let data = []
@@ -18,9 +18,13 @@
 		: data.slice(0, stages).map((d) => ({ progress: d.progress }))
 </script>
 
-<section class="w-full flex flex-col p-8">
+<section class="flex flex-col flex-grow p-8">
 	<Stepper stages={filtered} {steps} {formatString} on:click={handleClick} />
 	<!-- <StepperSVG size="8em" {steps} stages={filtered} /> -->
+	<div class="flex p-6" width="100px">
+		<Range />
+	</div>
+
 	{#if clickData}
 		<div class="flex flex-col p-4 gap-4">
 			{#if clickData.step}

@@ -1,5 +1,4 @@
 <script>
-	import { list, List } from '@sparsh-ui/list'
 	import EditItem from './EditItem.svelte'
 
 	export let stages = 2
@@ -12,7 +11,7 @@
 </script>
 
 <aside
-	class="flex flex-col p-6 gap-6 h-full bg-skin-100 border-l w-80 flex-shrink-0 overflow-scroll-y"
+	class="flex flex-col p-6 gap-6 h-full bg-skin-100 flex-shrink-0 flex-grow-0 w-80"
 >
 	<label for="stages">
 		Number of Stages
@@ -47,27 +46,26 @@
 	{#if showLabels || steps > 0}
 		<label for="data">
 			Edit data
-			<fieldset id="data" class="flex flex-col gap-2 w-full list">
+			<fieldset id="data">
 				{#each data as { label, progress }}
-					<div
-						class="flex flex-shrink-0 flex-grow-0 min-h-12 items-center cursor-pointer leading-loose w-full gap-2 item"
-					>
-						<EditItem bind:label bind:progress bind:steps />
-					</div>
+					<EditItem bind:label bind:progress bind:steps />
 				{/each}
 			</fieldset>
-			<datalist id="progress-ticks">
-				{#each ticks as tick, index}
-					<option value={tick}>{index + 1}</option>
-				{/each}
-			</datalist>
 		</label>
+		<datalist id="progress-ticks">
+			{#each ticks as tick, index}
+				<option value={tick}>{index + 1}</option>
+			{/each}
+		</datalist>
 	{/if}
 </aside>
 
 <style lang="postcss">
 	label {
-		@apply flex flex-col w-full gap-2;
+		@apply flex flex-col gap-2;
+	}
+	fieldset {
+		@apply flex flex-col flex-shrink w-full gap-2 min-w-0;
 	}
 	.row {
 		@apply flex-row items-center;

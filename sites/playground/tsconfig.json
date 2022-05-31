@@ -1,11 +1,3 @@
 {
-	"include": ["src/**/*.js"],
-	"compilerOptions": {
-		"allowJs": true,
-		"lib": ["es2015"],
-		"declaration": true,
-		"emitDeclarationOnly": true,
-		"outDir": "dist",
-		"declarationMap": true
-	}
+  "extends": "./.svelte-kit/tsconfig.json"
 }

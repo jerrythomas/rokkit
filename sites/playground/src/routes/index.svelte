@@ -10,6 +10,4 @@
 	]
 </script>
 
-<main class="w-full flex flex-row">
-	<StepperDemo {data} />
-</main>
+<StepperDemo {data} />
