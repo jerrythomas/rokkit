@@ -1,0 +1,39 @@
+name: Automated Test
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  sentry:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+        pnpm-version: [7.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Intall pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ matrix.pnpm-version }}
+    - name: Install dependencies
+      run: pnpm i
+    - name: Run tests
+      run: pnpm test
+    - name: Test & publish code coverage
+      uses: paambaati/codeclimate-action@v3.0.0
+      env:
+        CC_TEST_REPORTER_ID: 1070ef7c1ffcea099336a5104ef80f9e0fef127ad75772d3e95c2f60605158d6
+      with:
+        coverageCommand: pnpm coverage
+        debug: true
+
+

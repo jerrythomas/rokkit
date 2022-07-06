@@ -1,0 +1,27 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"baseBranch": "origin/main",
+	"pipeline": {
+		"build": {
+			"dependsOn": ["test"],
+			"outputs": [".svelte-kit/**", "dist/**"]
+		},
+		"test": {
+			"outputs": [],
+			"dependsOn": []
+		},
+		"coverage": {
+			"outputs": ["coverage/**"]
+		},
+		"lint": {
+			"outputs": [],
+			"dependsOn": ["format"]
+		},
+		"format": {
+			"outputs": []
+		},
+		"dev": {
+			"cache": false
+		}
+	}
+}

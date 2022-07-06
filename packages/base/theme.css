@@ -1,0 +1,159 @@
+body {
+	@apply text-skin-contrast bg-skin-base;
+}
+button {
+	@apply bg-skin-200 text-skin-900 rounded-md px-4 py-2;
+}
+button[role='switch'] {
+	@apply bg-gradient-to-r from-primary-700  bg-secondary-700 border-2 border-skin-base;
+	@apply focus-visible:ring-white;
+}
+button[role='switch'][aria-checked='true'] {
+	@apply bg-gradient-to-r from-primary-500  bg-secondary-500;
+}
+.alert {
+	@apply py-2 px-4 rounded-sm my-2;
+}
+
+.primary,
+.isPrimary {
+	@apply bg-gradient-to-br from-primary-500  bg-secondary-500 text-skin-50;
+}
+
+.disabled,
+.isDisabled {
+	@apply cursor-not-allowed bg-skin-200 text-skin-600;
+}
+
+.warn,
+.hasWarning {
+	@apply bg-warn-200 text-warn-600;
+}
+
+.pass,
+.hasPassed {
+	@apply bg-pass-200 text-pass-600;
+}
+
+.fail,
+.hasError {
+	@apply bg-error-200 text-error-600;
+}
+
+.info,
+.hasInfo {
+	@apply bg-info-200 text-info-600 border-info-600 rounded-md;
+}
+
+button[role='switch'] mark {
+	@apply bg-skin-base;
+}
+
+input,
+textarea {
+	@apply bg-skin-50 text-skin-900 border-box rounded;
+	@apply border border-skin-400 focus:outline-none focus:ring-secondary focus:border-secondary-400 px-2 leading-loose;
+}
+input[type='number'] {
+	@apply p-0 pl-2;
+}
+input[type='search'] {
+	@apply rounded-full px-3;
+}
+input[type='number'] {
+	@apply text-right pr-2;
+}
+.sidebar {
+	@apply border-r border-skin-200 bg-skin-50;
+	@apply bg-texture gap-4 p-4 w-72 flex-shrink-0;
+}
+
+.menu {
+	@apply border border-skin-300 border-opacity-50;
+	@apply bg-opacity-80 bg-skin-100;
+}
+
+.menu a {
+	@apply border-b last:border-b-0 border-skin-200;
+}
+
+.menu a:not(.isCurrent):hover {
+	@apply bg-skin-base;
+}
+
+.isCurrent {
+	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-gray-50;
+}
+
+.avatar {
+	@apply rounded-full w-16 h-16 shadow-lg;
+}
+
+.user h1 {
+	@apply bg-gradient-to-r from-primary-500 via-primary-500 to-secondary-500 bg-clip-text text-xl text-transparent px-4 capitalize;
+}
+
+fill .isEmpty {
+	@apply bg-primary-300 text-skin-contrast;
+}
+
+fill .isFilled {
+	@apply bg-blue-200 text-blue-600;
+}
+.icon.isActive {
+	@apply text-primary-300;
+}
+a {
+	@apply cursor-pointer;
+}
+pre,
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+	@apply rounded-md shadow-md font-mono;
+}
+
+.markdown-body {
+	@apply bg-skin-base text-skin-contrast font-serif;
+}
+
+kbd,
+code,
+pre,
+.commit-tease-sha,
+.blob-num,
+.blob-code-inner {
+	@apply font-mono;
+}
+
+pill,
+.pill {
+	@apply flex justify-center items-center leading-loose rounded-full px-4 select-none gap-1 content-fit;
+}
+
+pill,
+.pill {
+	@apply bg-skin-200 text-black;
+}
+
+pill svg,
+.pill svg {
+	@apply text-skin-700;
+}
+
+pill:hover svg,
+.pill:hover svg {
+	@apply text-white;
+}
+
+pill:hover,
+.pill:hover {
+	@apply bg-gradient-to-r from-primary-500 to-secondary-500 text-white;
+}
+
+list {
+	@apply shadow;
+}
+item:hover,
+.list-item:hover {
+	@apply bg-gradient-to-r from-primary-100 to-secondary-100 text-black;
+}

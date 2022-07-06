@@ -1,0 +1,18 @@
+---
+tabWidth: 2
+useTabs: true
+semi: false
+singleQuote: true
+trailingComma: none
+overrides:
+  - files: '*.svelte'
+    options:
+      svelteSortOrder: options-scripts-markup-styles
+  - files:
+      - '*.md'
+      - '*.yml'
+      - '*.yaml'
+      - '*.sql'
+      - '*.ddl'
+    options:
+      useTabs: false

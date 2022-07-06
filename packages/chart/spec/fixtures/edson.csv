@@ -1,0 +1,111 @@
+year,name,city,gender,age,fired,hits,age_range
+2000-01-01,Dusty Fog,Rio Hondo,Male,0,0,0,0 - 5
+2001-01-01,Dusty Fog,Rio Hondo,Male,1.0027397260273974,3,3,0 - 5
+2002-01-01,Dusty Fog,Rio Hondo,Male,2.0027397260273974,14,14,0 - 5
+2003-01-01,Dusty Fog,Rio Hondo,Male,3.0027397260273974,24,4,0 - 5
+2004-01-01,Dusty Fog,Rio Hondo,Male,4.002739726027397,30,26,0 - 5
+2004-01-01,Alice Fayde,Rio Hondo,Female,0.8904109589041096,6,3,0 - 5
+2005-01-01,Dusty Fog,Rio Hondo,Male,5.005479452054795,10,14,5 - 10
+2005-01-01,Waco,Rio Hondo,Female,0.9780821917808219,8,3,0 - 5
+2005-01-01,Calamity Jane,Rio Hondo,Female,0.8931506849315068,1,5,0 - 5
+2005-01-01,Alice Fayde,Rio Hondo,Female,1.893150684931507,0,3,0 - 5
+2006-01-01,Dusty Fog,Rio Hondo,Male,6.005479452054795,50,57,5 - 10
+2006-01-01,Mark Counter,Gusher City,Female,0.9753424657534246,5,5,0 - 5
+2006-01-01,Waco,Rio Hondo,Female,1.978082191780822,1,1,0 - 5
+2006-01-01,Belle Starr,Gusher City,Female,0.9068493150684932,2,5,0 - 5
+2006-01-01,Calamity Jane,Rio Hondo,Female,1.893150684931507,18,8,0 - 5
+2006-01-01,Alice Fayde,Rio Hondo,Female,2.893150684931507,16,8,0 - 5
+2007-01-01,Dusty Fog,Rio Hondo,Male,7.005479452054795,48,32,5 - 10
+2007-01-01,Ysable Kid,Gusher City,Female,0.9753424657534246,3,1,0 - 5
+2007-01-01,Mark Counter,Gusher City,Female,1.9753424657534246,15,19,0 - 5
+2007-01-01,Waco,Rio Hondo,Female,2.978082191780822,15,27,0 - 5
+2007-01-01,Belle Starr,Gusher City,Female,1.906849315068493,1,14,0 - 5
+2007-01-01,Calamity Jane,Rio Hondo,Female,2.893150684931507,9,12,0 - 5
+2007-01-01,Alice Fayde,Rio Hondo,Female,3.893150684931507,3,33,0 - 5
+2008-01-01,Dusty Fog,Rio Hondo,Male,8.005479452054795,61,48,5 - 10
+2008-01-01,Ysable Kid,Gusher City,Female,1.9753424657534246,6,19,0 - 5
+2008-01-01,Mark Counter,Gusher City,Female,2.9753424657534246,21,27,0 - 5
+2008-01-01,Waco,Rio Hondo,Female,3.978082191780822,6,11,0 - 5
+2008-01-01,Belle Starr,Gusher City,Female,2.9068493150684933,27,16,0 - 5
+2008-01-01,Calamity Jane,Rio Hondo,Female,3.893150684931507,24,19,0 - 5
+2008-01-01,Alice Fayde,Rio Hondo,Female,4.8931506849315065,27,19,5 - 10
+2009-01-01,Dusty Fog,Rio Hondo,Male,9.008219178082191,23,21,5 - 10
+2009-01-01,Ysable Kid,Gusher City,Female,2.978082191780822,10,22,0 - 5
+2009-01-01,Mark Counter,Gusher City,Female,3.978082191780822,5,15,0 - 5
+2009-01-01,Waco,Rio Hondo,Female,4.980821917808219,29,25,5 - 10
+2009-01-01,Belle Starr,Gusher City,Female,3.9095890410958902,27,27,0 - 5
+2009-01-01,Calamity Jane,Rio Hondo,Female,4.895890410958904,40,46,5 - 10
+2009-01-01,Alice Fayde,Rio Hondo,Female,5.895890410958904,23,19,5 - 10
+2010-01-01,Dusty Fog,Rio Hondo,Male,10.008219178082191,34,19,10 - 15
+2010-01-01,Ysable Kid,Gusher City,Female,3.978082191780822,20,40,0 - 5
+2010-01-01,Mark Counter,Gusher City,Female,4.978082191780822,34,9,5 - 10
+2010-01-01,Waco,Rio Hondo,Female,5.980821917808219,21,54,5 - 10
+2010-01-01,Belle Starr,Gusher City,Female,4.909589041095891,42,39,5 - 10
+2010-01-01,Calamity Jane,Rio Hondo,Female,5.895890410958904,4,13,5 - 10
+2010-01-01,Alice Fayde,Rio Hondo,Female,6.895890410958904,38,59,5 - 10
+2011-01-01,Dusty Fog,Rio Hondo,Male,11.008219178082191,14,31,10 - 15
+2011-01-01,Ysable Kid,Gusher City,Female,4.978082191780822,18,22,5 - 10
+2011-01-01,Mark Counter,Gusher City,Female,5.978082191780822,56,14,5 - 10
+2011-01-01,Waco,Rio Hondo,Female,6.980821917808219,54,20,5 - 10
+2011-01-01,Belle Starr,Gusher City,Female,5.909589041095891,22,41,5 - 10
+2011-01-01,Calamity Jane,Rio Hondo,Female,6.895890410958904,25,36,5 - 10
+2011-01-01,Alice Fayde,Rio Hondo,Female,7.895890410958904,77,38,5 - 10
+2012-01-01,Dusty Fog,Rio Hondo,Male,12.008219178082191,117,26,10 - 15
+2012-01-01,Ysable Kid,Gusher City,Female,5.978082191780822,14,31,5 - 10
+2012-01-01,Mark Counter,Gusher City,Female,6.978082191780822,59,59,5 - 10
+2012-01-01,Waco,Rio Hondo,Female,7.980821917808219,72,39,5 - 10
+2012-01-01,Belle Starr,Gusher City,Female,6.909589041095891,37,15,5 - 10
+2012-01-01,Calamity Jane,Rio Hondo,Female,7.895890410958904,74,40,5 - 10
+2012-01-01,Alice Fayde,Rio Hondo,Female,8.895890410958904,81,7,5 - 10
+2013-01-01,Dusty Fog,Rio Hondo,Male,13.01095890410959,56,19,10 - 15
+2013-01-01,Ysable Kid,Gusher City,Female,6.980821917808219,47,11,5 - 10
+2013-01-01,Mark Counter,Gusher City,Female,7.980821917808219,24,51,5 - 10
+2013-01-01,Waco,Rio Hondo,Female,8.983561643835616,7,83,5 - 10
+2013-01-01,Belle Starr,Gusher City,Female,7.912328767123288,67,33,5 - 10
+2013-01-01,Calamity Jane,Rio Hondo,Female,8.898630136986302,83,56,5 - 10
+2013-01-01,Alice Fayde,Rio Hondo,Female,9.898630136986302,86,55,10 - 15
+2014-01-01,Dusty Fog,Rio Hondo,Male,14.01095890410959,110,82,10 - 15
+2014-01-01,Ysable Kid,Gusher City,Female,7.980821917808219,55,50,5 - 10
+2014-01-01,Mark Counter,Gusher City,Female,8.98082191780822,78,55,5 - 10
+2014-01-01,Waco,Rio Hondo,Female,9.983561643835616,31,14,10 - 15
+2014-01-01,Belle Starr,Gusher City,Female,8.912328767123288,24,89,5 - 10
+2014-01-01,Calamity Jane,Rio Hondo,Female,9.898630136986302,61,59,10 - 15
+2014-01-01,Alice Fayde,Rio Hondo,Female,10.898630136986302,92,8,10 - 15
+2015-01-01,Dusty Fog,Rio Hondo,Male,15.01095890410959,132,68,15 - 20
+2015-01-01,Ysable Kid,Gusher City,Female,8.98082191780822,86,22,5 - 10
+2015-01-01,Mark Counter,Gusher City,Female,9.98082191780822,5,27,10 - 15
+2015-01-01,Waco,Rio Hondo,Female,10.983561643835616,43,2,10 - 15
+2015-01-01,Belle Starr,Gusher City,Female,9.912328767123288,40,87,10 - 15
+2015-01-01,Calamity Jane,Rio Hondo,Female,10.898630136986302,30,22,10 - 15
+2015-01-01,Alice Fayde,Rio Hondo,Female,11.898630136986302,70,85,10 - 15
+2016-01-01,Dusty Fog,Rio Hondo,Male,16.01095890410959,59,129,15 - 20
+2016-01-01,Ysable Kid,Gusher City,Female,9.98082191780822,53,98,10 - 15
+2016-01-01,Mark Counter,Gusher City,Female,10.98082191780822,36,53,10 - 15
+2016-01-01,Waco,Rio Hondo,Female,11.983561643835616,34,76,10 - 15
+2016-01-01,Belle Starr,Gusher City,Female,10.912328767123288,28,57,10 - 15
+2016-01-01,Calamity Jane,Rio Hondo,Female,11.898630136986302,116,60,10 - 15
+2016-01-01,Alice Fayde,Rio Hondo,Female,12.898630136986302,70,57,10 - 15
+2017-01-01,Ysable Kid,Gusher City,Female,10.983561643835616,63,17,10 - 15
+2017-01-01,Mark Counter,Gusher City,Female,11.983561643835616,81,39,10 - 15
+2017-01-01,Waco,Rio Hondo,Female,12.986301369863014,39,40,10 - 15
+2017-01-01,Belle Starr,Gusher City,Female,11.915068493150685,101,34,10 - 15
+2017-01-01,Calamity Jane,Rio Hondo,Female,12.901369863013699,102,92,10 - 15
+2017-01-01,Alice Fayde,Rio Hondo,Female,13.901369863013699,27,44,10 - 15
+2018-01-01,Ysable Kid,Gusher City,Female,11.983561643835616,76,56,10 - 15
+2018-01-01,Waco,Rio Hondo,Female,13.986301369863014,13,96,10 - 15
+2018-01-01,Belle Starr,Gusher City,Female,12.915068493150685,67,78,10 - 15
+2018-01-01,Calamity Jane,Rio Hondo,Female,13.901369863013699,9,84,10 - 15
+2018-01-01,Alice Fayde,Rio Hondo,Female,14.901369863013699,44,102,15 - 20
+2019-01-01,Ysable Kid,Gusher City,Female,12.983561643835616,20,17,10 - 15
+2019-01-01,Belle Starr,Gusher City,Female,13.915068493150685,52,3,10 - 15
+2019-01-01,Calamity Jane,Rio Hondo,Female,14.901369863013699,5,41,15 - 20
+2019-01-01,Alice Fayde,Rio Hondo,Female,15.901369863013699,41,2,15 - 20
+2020-01-01,Belle Starr,Gusher City,Female,14.915068493150685,102,20,15 - 20
+2020-01-01,Calamity Jane,Rio Hondo,Female,15.901369863013699,53,1,15 - 20
+2020-01-01,Alice Fayde,Rio Hondo,Female,16.9013698630137,27,4,15 - 20
+2021-01-01,Belle Starr,Gusher City,Female,15.917808219178083,30,146,15 - 20
+2021-01-01,Calamity Jane,Rio Hondo,Female,16.904109589041095,54,0,15 - 20
+2021-01-01,Alice Fayde,Rio Hondo,Female,17.904109589041095,102,21,15 - 20
+2022-01-01,Belle Starr,Gusher City,Female,16.91780821917808,110,150,15 - 20
+2022-01-01,Calamity Jane,Rio Hondo,Female,17.904109589041095,56,43,15 - 20
+2022-01-01,Alice Fayde,Rio Hondo,Female,18.904109589041095,72,175,15 - 20
