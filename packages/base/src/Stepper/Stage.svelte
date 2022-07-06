@@ -1,31 +1,24 @@
 <script>
 	import Icon from '../Icon.svelte'
 
-	export let number
-	export let progress
-
-	$: completed = progress == 1
-	$: active = progress > 0 && progress < 1
+	export let text
+	export let completed
+	export let active
 </script>
 
-<div class="flex flex-col gap-6 first:col-start-2">
-	<box class="px-6 flex flex-col justify-center items-center">
-		<div
-			class="w-16 h-16 circle stage select-none cursor-pointer"
-			class:completed
-			class:active
-			size="48px"
-			on:click
-		>
-			{#if completed}
-				<Icon name="tick" size="2.5em" on:click />
-			{:else}
-				<p class="w-full h-full border-2 circle">
-					{number}
-				</p>
-			{/if}
-		</div>
-	</box>
+<div
+	class="w-16 h-16 circle stage select-none cursor-pointer"
+	class:completed
+	class:active
+	on:click
+>
+	{#if completed}
+		<Icon name="tick" size="80%" on:click />
+	{:else}
+		<p class="w-full h-full border-2 circle">
+			{text}
+		</p>
+	{/if}
 </div>
 
 <style lang="postcss">

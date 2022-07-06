@@ -1,9 +1,5 @@
 <script>
-  // import RadioGroup from '$lib/input/RadioGroup'
-  // import Radio from '$lib/input/Radio'
-  import RadioOff from '$lib/icons/RadioOff.svelte'
-  import RadioOn from '$lib/icons/RadioOn.svelte'
-  import Icon from '$lib/Icon.svelte'
+  import Icon from '../Icon.svelte'
   import { createEventDispatcher } from 'svelte'
 
   const dispatch = createEventDispatcher()
@@ -19,10 +15,12 @@
     checked = !checked
     dispatch('change', { checked })
   }
+
   function handleKeypress(event) {
     if (event.key === ' ') toggle()
   }
-  $: icon = checked ? RadioOn : RadioOff
+
+  $: icon = checked ? 'RadioOn' : 'RadioOff'
   $: text = header == '' ? label : `${header}. ${label}`
 
   $: console.log('header', header)
@@ -37,7 +35,7 @@
   class:pass
   class:fail
 >
-  <Icon {icon} title={text} />
+  <Icon name={icon} title={text} />
   <span class="flex-grow space-y-2">
     {#if header}
       <h1 class="font-bold">{header}</h1>

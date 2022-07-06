@@ -1,7 +1,5 @@
 <script>
-	import Tick from './Tick.svelte'
-	import Thumb from './icons/Thumb.svelte'
-	import Icon from './Icon.svelte'
+	import Tick from './RangeTick.svelte'
 
 	export let count = 5
 	export let min = 0
@@ -9,7 +7,7 @@
 	export let tickWidth = 30
 	export let value = 0
 
-	const thumbSize = 24
+	const thumbSize = 18
 	let width
 
 	$: gapSize = width ? (width - tickWidth * (count + 1)) / count : 0
@@ -39,7 +37,12 @@
 				/>
 			{/each}
 		</div>
-		<Icon icon={Thumb} size="{thumbSize}px" class="thumb" />
+		<span
+			class="absolute bg-primary-500 border-2 border-primary-600 top-0 cursor-pointer rounded-full shadow-lg thumb"
+			style:width="{thumbSize}px"
+			style:height="{thumbSize}px"
+			style:left="{thumbAt}px"
+		/>
 	{/if}
 </div>
 
@@ -51,9 +54,5 @@
 		display: grid;
 		grid-template-columns: repeat(var(--count), var(--tick-width));
 		gap: var(--gap-size);
-	}
-	:global(.thumb) {
-		@apply absolute fill-current text-primary-800 top-0 cursor-pointer;
-		left: var(--left);
 	}
 </style>

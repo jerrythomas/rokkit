@@ -1,61 +1,67 @@
 <script>
-	import { format } from 'd3-format'
+	// import { format } from 'd3-format'
 	import { createEventDispatcher } from 'svelte'
+
 	import Stage from './Stage.svelte'
-	import Steps from './Steps.svelte'
+	import Steps from './ProgressDots.svelte'
 
 	const dispatch = createEventDispatcher()
 
-	export let stages = 4
-	export let steps = 4
-	export let formatString = ''
+	export let data
+	export let currentStep
+	export let currentStage
 
-	$: formatter = format(formatString)
-	$: stages = Array.isArray(stages)
-		? stages.map((x, i) => ({ ...x, stage: formatter(i + 1) }))
-		: Array.from({ length: stages }, (v, i) => ({
-				stage: formatter(i + 1),
-				steps
-		  }))
+	// $: data = data.map((d) => ({
+	// 	completed: d.steps?.value == d.steps?.count,
+	// 	...d
+	// }))
+	function handleClick(d) {
+		dispatch('click', { ...d, data: data[d.stage] })
+	}
 </script>
 
 <div
 	class="p-8 flex flex-col w-full gap-3 border rounded shadow items-center stepper"
-	style:--count={stages.length}
+	style:--count={data.length}
 >
-	<div>
-		{#each stages as { stage, progress }, i}
-			<Stage
-				number={stage}
-				{progress}
-				on:click={(e) => dispatch('click', { stage: i + 1, progress })}
-			/>
-			{#if stage < stages.length}
-				<Steps
-					count={steps}
-					{progress}
-					on:click={(e) =>
-						dispatch('click', { stage: i + 1, progress, ...e.detail })}
+	<row>
+		{#each data as { text, completed, active, steps }, stage}
+			<div class="flex flex-col justify-center items-center first:col-start-2">
+				<Stage
+					{text}
+					{completed}
+					{active}
+					on:click={(e) => handleClick({ stage })}
 				/>
+			</div>
+			{#if steps}
+				<div class="flex flex-col justify-center items-center col-span-2">
+					<Steps
+						count={steps.count}
+						bind:value={steps.value}
+						bind:current={steps.current}
+						on:click={(e) => handleClick({ ...e.detail, stage })}
+					/>
+				</div>
 			{/if}
 		{/each}
-	</div>
-	<div>
-		{#each stages as { label, progress }}
+	</row>
+	<row>
+		{#each data as { label }, stage}
 			{#if label}
 				<p
 					class="w-full flex justify-center text-center col-span-3 font-medium text-skin-800 leading-loose"
-					class:pending={progress == 0}
+					class:pending={stage > currentStage}
 				>
 					{label}
 				</p>
 			{/if}
 		{/each}
-	</div>
+	</row>
 </div>
 
 <style lang="postcss">
-	.stepper div {
+	.stepper row {
 		@apply w-full grid;
 		grid-template-columns: repeat(var(--count), 2fr 6fr 2fr);
 	}

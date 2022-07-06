@@ -2,12 +2,32 @@
 	import StepperDemo from '../pages/stepper/index.svelte'
 
 	export let data = [
-		{ label: 'Account Holder Detail', progress: 1 },
-		{ label: 'Vehicle Detail', progress: 0.6 },
-		{ label: 'Vehicle Usage', progress: 0 },
-		{ label: 'Additional Drivers', progress: 0 },
-		{ label: 'Summary', progress: 0 }
+		{
+			text: '01',
+			label: 'Account Holder Detail',
+			steps: { count: 4, value: 4, current: -1 },
+			completed: true,
+			active: false
+		},
+		{
+			text: '02',
+			label: 'Vehicle Detail',
+			steps: { count: 4, value: 2, current: 3 },
+			active: true
+		},
+		{
+			text: '03',
+			label: 'Vehicle Usage',
+			steps: { count: 4, value: -1, current: -1 }
+		},
+		{
+			text: '04',
+			label: 'Additional Drivers',
+			steps: { count: 4, value: -1, current: -1 }
+		},
+		{ text: '05', label: 'Summary' }
 	]
+	let currentStage = 2
 </script>
 
-<StepperDemo {data} />
+<StepperDemo {data} {currentStage} />

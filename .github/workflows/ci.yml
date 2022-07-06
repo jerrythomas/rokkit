@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
-        pnpm-version: [6.x]
+        node-version: [16.x]
+        pnpm-version: [7.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
     - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: 1070ef7c1ffcea099336a5104ef80f9e0fef127ad75772d3e95c2f60605158d6
       with:
-        coverageCommand: pnpm coverage:lcov
+        coverageCommand: pnpm coverage
         debug: true
 
 

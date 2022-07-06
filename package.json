@@ -24,8 +24,8 @@
 		"eslint-config-prettier": "^8.5.0",
 		"husky": "^7.0.4",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.6.2",
-		"turbo": "^1.2.14"
+		"prettier": "^2.7.0",
+		"turbo": "^1.2.16"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",

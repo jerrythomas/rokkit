@@ -1,5 +1,5 @@
 <script>
-	import { Stepper, Range } from '@sparsh-ui/base'
+	import { Stepper, Range, ProgressDots } from '@sparsh-ui/base'
 	import ControlPanel from './ControlPanel.svelte'
 
 	export let data = []
@@ -7,6 +7,8 @@
 	export let steps = 4
 	export let showLabels = true
 	export let formatString = '02'
+	export let currentStage = 2
+	export let currentStep = 2
 
 	let clickData
 	function handleClick(e) {
@@ -19,8 +21,14 @@
 </script>
 
 <section class="flex flex-col flex-grow p-8">
-	<Stepper stages={filtered} {steps} {formatString} on:click={handleClick} />
-	<!-- <StepperSVG size="8em" {steps} stages={filtered} /> -->
+	<ProgressDots count={5} value={-1} current={-1} />
+	<Stepper
+		data={filtered}
+		{steps}
+		{currentStage}
+		{currentStep}
+		on:click={handleClick}
+	/>
 	<div class="flex p-6" width="100px">
 		<Range />
 	</div>

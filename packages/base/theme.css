@@ -26,26 +26,22 @@ button[role='switch'][aria-checked='true'] {
 }
 
 .warn,
-.hasWarning,
-.isWarning {
+.hasWarning {
 	@apply bg-warn-200 text-warn-600;
 }
 
 .pass,
-.hasPassed,
-.isSuccess {
+.hasPassed {
 	@apply bg-pass-200 text-pass-600;
 }
 
 .fail,
-.hasError,
-.isError {
+.hasError {
 	@apply bg-error-200 text-error-600;
 }
 
 .info,
-.hasInfo,
-.isInfo {
+.hasInfo {
 	@apply bg-info-200 text-info-600 border-info-600 rounded-md;
 }
 

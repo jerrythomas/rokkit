@@ -18,7 +18,7 @@ This component library borrows concepts from the following articles, products, a
 Get started quickly using [degit](https://github.com/Rich-Harris/degit).
 
 ```bash
-degit jerrythomas/svelte-ui/examples/graphs my-app
+degit jerrythomas/sparsh-ui/sites/playground my-app
 ```
 
 ## Features
@@ -30,22 +30,24 @@ degit jerrythomas/svelte-ui/examples/graphs my-app
 
 ### Plots
 
-- [ ] Box
+- [x] Box
 - [ ] Violin
-- [ ] Scatter
+- [x] Scatter
 - [ ] Line
 - [ ] Histogram
 - [ ] StackedBar
-
-All plots are vertical for now.
+- [ ] Funnel
 
 ### Chart
 
 - [x] Axis
-- [x] Grid
+  - [x] Labels
+  - [x] Grid
+  - [x] Ticks
 - [ ] Margins
 - [ ] Legend
 - [ ] Composable
+- [ ] Facet Grid
 - [ ] Combine multiple plots
 - [ ] Animation
 - [ ] Time lapse
