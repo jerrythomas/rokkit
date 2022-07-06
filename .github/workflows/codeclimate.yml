@@ -1,4 +1,4 @@
-name: Automated Test
+name: code-climate-reporter
 
 on:
   push:
@@ -7,7 +7,8 @@ on:
     branches: [ develop ]
 
 jobs:
-  sentry:
+  analyze:
+    name: code-climate-reporter
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -31,9 +32,15 @@ jobs:
     - name: Test & publish code coverage
       uses: paambaati/codeclimate-action@v3.0.0
       env:
-        CC_TEST_REPORTER_ID: 1070ef7c1ffcea099336a5104ef80f9e0fef127ad75772d3e95c2f60605158d6
+        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
       with:
         coverageCommand: pnpm coverage
         debug: true
+        coverageLocations: |
+          ${{github.workspace}}/packages/base/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/list/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/icons/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/chart/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/markdown/coverage/lcov.info:lcov
 
 

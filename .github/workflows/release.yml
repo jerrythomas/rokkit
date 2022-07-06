@@ -1,4 +1,4 @@
-name: Release
+name: release
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
       - alpha
 jobs:
   sentry:
-    name: Release
+    name: release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

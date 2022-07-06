@@ -26,6 +26,7 @@
 		"@sparsh-ui/chart": "workspace:*",
 		"@sparsh-ui/list": "workspace:*",
 		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/adapter-node": "1.0.0-next.78",
 		"@sveltejs/kit": "next",
 		"@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
 		"@testing-library/svelte": "^3.1.3",
