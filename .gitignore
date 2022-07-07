@@ -5,7 +5,6 @@ coverage
 *.log
 .temp
 .cache
-__snapshots__
 *.code-workspace
 .turbo
 .eslintcache

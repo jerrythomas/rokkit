@@ -2,4 +2,4 @@
 static/**
 build/**
 node_modules/**
-coverage/**
+coverage

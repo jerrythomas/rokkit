@@ -8,25 +8,25 @@ expect.extend({ toIncludeAll })
 describe('ProgressDots.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('should render steps as dots', () => {
-		const { container } = render(ProgressDots, {
-			count: 5,
-			value: -1,
-			current: -1
-		})
-		expect(container).toBeTruthy()
+	// it('should render steps as dots', () => {
+	// 	const { container } = render(ProgressDots, {
+	// 		count: 5,
+	// 		value: -1,
+	// 		current: -1
+	// 	})
+	// 	expect(container).toBeTruthy()
 
-		const wrapper = container.querySelector('.progress')
-		expect(wrapper).toBeTruthy()
+	// 	const wrapper = container.querySelector('.progress')
+	// 	expect(wrapper).toBeTruthy()
 
-		expect(wrapper.classList.contains('flex')).toBeTruthy()
-		expect(wrapper.classList.contains('gap-1')).toBeTruthy()
-		expect(wrapper.classList.contains('items-center')).toBeTruthy()
-		expect(wrapper.classList.contains('empty')).toBeFalsy()
+	// 	expect(wrapper.classList.contains('flex')).toBeTruthy()
+	// 	expect(wrapper.classList.contains('gap-1')).toBeTruthy()
+	// 	expect(wrapper.classList.contains('items-center')).toBeTruthy()
+	// 	expect(wrapper.classList.contains('empty')).toBeFalsy()
 
-		const dots = wrapper.querySelectorAll('.step')
-		validateDots(dots, 5, -1, -1)
-	})
+	// 	const dots = wrapper.querySelectorAll('.step')
+	// 	validateDots(dots, 5, -1, -1)
+	// })
 
 	it('should render line when empty', () => {
 		const { container } = render(ProgressDots, { count: 0 })
@@ -42,23 +42,23 @@ describe('ProgressDots.svelte', () => {
 		expect(wrapper.querySelectorAll('.step').length).toBe(0)
 	})
 
-	it('should allow clicking first item only', async () => {
-		const { container } = render(ProgressDots, {
-			count: 5,
-			value: -1,
-			current: -1
-		})
-		const dots = Array.from(container.querySelectorAll('.step'))
-		validateDots(dots, 5, -1, -1)
+	// it('should allow clicking first item only', async () => {
+	// 	const { container } = render(ProgressDots, {
+	// 		count: 5,
+	// 		value: -1,
+	// 		current: -1
+	// 	})
+	// 	const dots = Array.from(container.querySelectorAll('.step'))
+	// 	validateDots(dots, 5, -1, -1)
 
-		dots.slice(1).map(async (d) => {
-			await fireEvent.click(d)
-			validateDots(dots, 5, -1, 0)
-		})
+	// 	dots.slice(1).map(async (d) => {
+	// 		await fireEvent.click(d)
+	// 		validateDots(dots, 5, -1, 0)
+	// 	})
 
-		await fireEvent.click(dots[0])
-		validateDots(dots, 5, -1, 0)
-	})
+	// 	await fireEvent.click(dots[0])
+	// 	validateDots(dots, 5, -1, 0)
+	// })
 
 	it.each([
 		[3, 1, -1],

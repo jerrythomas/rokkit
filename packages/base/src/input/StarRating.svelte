@@ -1,6 +1,5 @@
 <script>
-
-	import Icon from '../Icon.svelte'
+	import { Icon } from '@sparsh-ui/icons'
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()

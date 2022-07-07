@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, beforeEach, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import HomePage from '../src/routes/index.svelte'
 

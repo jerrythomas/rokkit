@@ -1,5 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
+import { toHyphenCase, toPascalCase } from '../../src/utils.js'
 import * as icons from '../../src/heroicons/filled'
 
 describe('HeroIcons Filled', () => {
@@ -8,7 +9,15 @@ describe('HeroIcons Filled', () => {
 
 	it.each(allIcons)('should render icon for %s', (name, icon) => {
 		const { container } = render(icon)
+		expect(container).toMatchSnapshot()
 		expect(container).toBeTruthy()
 		expect(name).toBeDefined()
 	})
+
+	it.each(Object.keys(icons))(
+		'should convert "%s" to hyphen case and back',
+		(name) => {
+			expect(toPascalCase(toHyphenCase(name))).toEqual(name)
+		}
+	)
 })

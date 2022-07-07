@@ -1,5 +1,5 @@
 <script>
-	import Icon from './Icon.svelte'
+	import { Icon } from '@sparsh-ui/icons'
 
 	export let items
 	export let activePage

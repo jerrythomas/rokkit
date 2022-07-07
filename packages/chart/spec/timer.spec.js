@@ -1,4 +1,4 @@
-import { expect, it, vi } from 'vitest'
+import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest'
 import { timer, elapsed } from '../src/lib/timer'
 import { getSubscribedData } from './helpers'
 
@@ -58,8 +58,8 @@ describe('Timer', () => {
 	})
 
 	it('should not change the elapsed value when used outside browser environment', () => {
-		const backup = window
-		window = undefined
+		const backup = global.window
+		global.window = undefined
 
 		const initialValue = getSubscribedData(elapsed)
 
@@ -71,6 +71,6 @@ describe('Timer', () => {
 		vi.advanceTimersByTime(1000)
 		expect(getSubscribedData(elapsed)).toBe(initialValue)
 
-		window = backup // restore window
+		global.window = backup // restore window
 	})
 })

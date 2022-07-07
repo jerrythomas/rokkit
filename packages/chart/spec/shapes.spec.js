@@ -1,9 +1,8 @@
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { namedShapes } from '../src/lib/shapes'
 
 describe('Utility functions', () => {
-	it('should generate a unique id', () => {
-		// builtIn.map(({ shape }) => console.log(shape(10)))
-		console.log(namedShapes['crosshair'](10))
+	it.each(Object.keys(namedShapes))('should generate a unique id', (name) => {
+		expect(namedShapes[name]).toMatchSnapshot()
 	})
 })
