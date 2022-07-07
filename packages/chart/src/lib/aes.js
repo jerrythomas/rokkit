@@ -17,7 +17,7 @@ export const AestheticKeys = ['x', 'y', 'fill', 'color', 'timelapse']
  * @returns
  */
 export function aes(fields) {
-	return compact(pick(allowedKeys, fields))
+	return compact(pick(AestheticKeys, fields))
 }
 
 /*

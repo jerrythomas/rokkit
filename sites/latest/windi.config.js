@@ -94,7 +94,7 @@ const config = {
 					900: hsla('--skin-900')
 				}
 			},
-			backgroundImage: (theme) => ({
+			backgroundImage: () => ({
 				texture: "url('/subtle-grey.png')"
 			})
 		}

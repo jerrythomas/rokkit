@@ -1,7 +1,7 @@
 import fs from 'fs'
-import { beforeAll, describe, expect, it } from 'vitest'
-import { timelapse, Data } from '../src/lib/timelapse'
-import { getSubscribedData } from './helpers'
+import { beforeAll, describe, it } from 'vitest'
+// import { timelapse, Data } from '../src/lib/timelapse'
+// import { getSubscribedData } from './helpers'
 
 describe('Timelapse', () => {
 	beforeAll((suite) => {
@@ -10,7 +10,7 @@ describe('Timelapse', () => {
 		suite.simulated = JSON.parse(fs.readFileSync('./spec/fixtures/data.json'))
 	})
 
-	it('should generate timelapse groups', (context) => {
+	it('should generate timelapse groups', () => {
 		// const input = context.meta.suite.input
 		// const result = timelapse(input, 'date')
 		// expect(result).toEqual(context.meta.suite.byDate)

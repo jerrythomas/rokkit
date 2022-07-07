@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store'
 import { nest } from 'd3-collection'
 import { v4 as uuid } from '@lukeed/uuid'
+import { compareStrings } from '@sparsh-ui/icons'
 
 /**
  * Compares two items for sorting. When grouped, uses group comparison before item comparison
@@ -14,20 +15,13 @@ export function compare(a, b, list) {
 	let result = 0
 
 	if (list.groupKey) {
-		result =
-			list.lookup[a[list.groupKey]] < list.lookup[b[list.groupKey]]
-				? -1
-				: list.lookup[a[list.groupKey]] > list.lookup[b[list.groupKey]]
-				? 1
-				: 0
+		result = compareStrings(
+			list.lookup[a[list.groupKey]],
+			list.lookup[b[list.groupKey]]
+		)
 	}
 	if (result == 0) {
-		result =
-			a[list.sortKey] < b[list.sortKey]
-				? -1
-				: a[list.sortKey] > b[list.sortKey]
-				? 1
-				: 0
+		result = compareStrings(a[list.sortKey], b[list.sortKey])
 	}
 	return result
 }
@@ -46,59 +40,28 @@ export function quickSearch(list, value) {
 }
 
 export class List {
-	#data = []
-	#primaryKey = 'id'
-	#filterKey
-	#sortKey
-	#groupKey
-	#lookup
-	#searchText = ''
-
-	#filterUsing
-	#sortUsing
-
-	filtered = writable([])
-
 	/**
 	 *
 	 * @param {Array<object>} data
 	 */
 	constructor(data) {
-		this.#data = data
-		this.filtered.set(data)
-	}
+		this.data = data
 
-	get primaryKey() {
-		return this.#primaryKey
-	}
-	get filterKey() {
-		return this.#filterKey
-	}
-	get groupKey() {
-		return this.#groupKey
-	}
-	get sortKey() {
-		return this.#sortKey
-	}
-	get lookup() {
-		return this.#lookup
-	}
-	get data() {
-		return this.#data
-	}
-	get searchText() {
-		return this.#searchText
-	}
-	get filter() {
-		return this.#filterUsing
-	}
-	get sorter() {
-		return this.#sortUsing
+		this.primaryKey = 'id'
+		this.filterKey = undefined
+		this.sortKey = undefined
+		this.groupKey = undefined
+		this.lookup = {}
+		this.searchText = ''
+
+		this.filterUsing = undefined
+		this.sortUsing = undefined
+		this.filtered = writable(data)
 	}
 
 	key(value) {
-		this.#primaryKey = value
-		this.#data = this.data.map((item) =>
+		this.primaryKey = value
+		this.data = this.data.map((item) =>
 			value in item ? item : { ...item, [value]: uuid() }
 		)
 
@@ -106,18 +69,18 @@ export class List {
 	}
 
 	sortBy(key, using = compare) {
-		this.#sortKey = key
-		this.#sortUsing = using
+		this.sortKey = key
+		this.sortUsing = using
 
 		return this.sort().refresh()
 	}
 
 	groupBy(key, lookup) {
-		this.#groupKey = key
+		this.groupKey = key
 
-		if (lookup) this.#lookup = lookup
+		if (lookup) this.lookup = lookup
 		else
-			this.#lookup = this.data
+			this.lookup = this.data
 				.map((item) => item[key])
 				.reduce((obj, value) => ({ ...obj, [value]: value }), {})
 
@@ -125,13 +88,13 @@ export class List {
 	}
 
 	filterBy(key, using = quickSearch) {
-		this.#filterKey = key
-		this.#filterUsing = using
+		this.filterKey = key
+		this.filterUsing = using
 		return this
 	}
 
 	sort() {
-		if (this.sorter) this.data.sort((a, b) => this.sorter(a, b, this))
+		if (this.sortUsing) this.data.sort((a, b) => this.sortUsing(a, b, this))
 		return this
 	}
 
@@ -154,7 +117,7 @@ export class List {
 			(d) => d[this.primaryKey] === item[this.primaryKey]
 		)
 		if (index > -1) {
-			this.#data = [...this.data.slice(0, index), ...this.data.slice(index + 1)]
+			this.data = [...this.data.slice(0, index), ...this.data.slice(index + 1)]
 			this.refresh()
 		}
 		return this
@@ -172,7 +135,7 @@ export class List {
 	}
 
 	search(text) {
-		this.#searchText = text
+		this.searchText = text
 		return this.refresh()
 	}
 
@@ -180,7 +143,7 @@ export class List {
 		let data = [...this.data]
 
 		if (this.filterKey && this.searchText) {
-			data = this.filter(this, this.searchText)
+			data = this.filterUsing(this, this.searchText)
 		}
 
 		if (this.groupKey) {

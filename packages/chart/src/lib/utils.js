@@ -163,7 +163,7 @@ export function aggregate(data, x, y) {
  * @returns
  */
 export function getPaletteForValues(values, palette, fallback) {
-	return values.map(({}, index) =>
+	return values.map((_, index) =>
 		index < palette.length ? palette[index] : fallback
 	)
 }

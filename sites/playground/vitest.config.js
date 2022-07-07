@@ -5,6 +5,9 @@ export default defineConfig({
 	plugins: [svelte({ hot: !process.env.VITEST })],
 	test: {
 		globals: true,
-		environment: 'jsdom'
+		environment: 'jsdom',
+		coverage: {
+			reporter: ['text', 'lcov']
+		}
 	}
 })

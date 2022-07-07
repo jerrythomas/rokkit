@@ -13,7 +13,7 @@ export function getSubscribedData(store) {
 	return result
 }
 
-export function generator(keys, filled = false) {
+export function generator() {
 	const dates = [
 		'2020-01-01',
 		'2020-02-01',

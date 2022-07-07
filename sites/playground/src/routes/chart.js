@@ -1112,8 +1112,4 @@ export async function get() {
 	return {
 		body: { data }
 	}
-
-	return {
-		status: 404
-	}
 }

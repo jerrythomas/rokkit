@@ -18,103 +18,103 @@ function getScale(domain, range, padding = 0) {
 }
 
 class Chart {
-	#data = []
-	#width = 512
-	#height = 512
-	#origin = { x: 0, y: 0 }
-	#range = {
-		x: [0, this.#width],
-		y: [this.#height, 0]
-	}
-	#x
-	#y
-	#stat = 'identity'
-	#scale
-	#fill
-	#color
-	#value
-	#shape
-	#valueFormat
-	#valueLabel
-	#domain
-	#margin
-	#spacing
-	#padding
-	#flipCoords = false
+	// data = []
+	// width = 512
+	// height = 512
+	// origin = { x: 0, y: 0 }
+	// range = {
+	// 	x: [0, this.width],
+	// 	y: [this.height, 0]
+	// }
+	// x
+	// y
+	// stat = 'identity'
+	// scale
+	// fill
+	// color
+	// value
+	// shape
+	// valueFormat
+	// valueLabel
+	// domain
+	// margin
+	// spacing
+	// padding
+	// flipCoords = false
 
 	constructor(data, opts) {
-		this.#width = +opts.width || 512
-		this.#height = +opts.height || 512
-		this.#flipCoords = opts.flipCoords || false
-		this.#x = opts.x
-		this.#y = opts.y
-		this.#value = opts.value || opts.y
-		this.#valueLabel = opts.valueLabel || this.#value
-		this.#valueFormat = opts.valueFormat || ((d) => d)
-		this.#fill = opts.fill || opts.x
-		this.#color = opts.color || opts.fill
-		this.#shape = opts.shape || opts.fill
+		this.width = +opts.width || 512
+		this.height = +opts.height || 512
+		this.flipCoords = opts.flipCoords || false
+		this.x = opts.x
+		this.y = opts.y
+		this.value = opts.value || opts.y
+		this.valueLabel = opts.valueLabel || this.value
+		this.valueFormat = opts.valueFormat || ((d) => d)
+		this.fill = opts.fill || opts.x
+		this.color = opts.color || opts.fill
+		this.shape = opts.shape || opts.fill
 
-		this.#padding = opts.padding !== undefined ? +opts.padding : 32
+		this.padding = opts.padding !== undefined ? +opts.padding : 32
 
-		this.#spacing =
+		this.spacing =
 			+opts.spacing >= 0 && +opts.spacing <= 0.5 ? +opts.spacing : 0
-		this.#margin = {
+		this.margin = {
 			top: +opts.margin?.top || 0,
 			left: +opts.margin?.left || 0,
 			right: +opts.margin?.right || 0,
 			bottom: +opts.margin?.bottom || 0
 		}
-		this.#domain = {
-			x: [...new Set(data.map((d) => d[this.#x]))],
-			y: [...new Set(data.map((d) => d[this.#y]))]
+		this.domain = {
+			x: [...new Set(data.map((d) => d[this.x]))],
+			y: [...new Set(data.map((d) => d[this.y]))]
 		}
-		if (this.#flipCoords) {
-			this.#domain = { y: this.#domain.x, x: this.#domain.y }
+		if (this.flipCoords) {
+			this.domain = { y: this.domain.x, x: this.domain.y }
 		}
-		this.#stat = opts.stat || 'identity'
+		this.stat = opts.stat || 'identity'
 
-		this.#data = data.map((d) => ({
-			x: this.#flipCoords ? d[this.#y] : d[this.#x],
-			y: this.#flipCoords ? d[this.#x] : d[this.#y],
-			fill: d[this.#fill],
-			color: d[this.#color],
-			shape: d[this.#shape]
+		this.data = data.map((d) => ({
+			x: this.flipCoords ? d[this.y] : d[this.x],
+			y: this.flipCoords ? d[this.x] : d[this.y],
+			fill: d[this.fill],
+			color: d[this.color],
+			shape: d[this.shape]
 		}))
 
 		this.refresh()
 	}
 
 	padding(value) {
-		this.#padding = value
+		this.padding = value
 		return this.refresh()
 	}
 
 	// 	margin(value) {
-	// 		this.#margin = value
+	// 		this.margin = value
 	// 		return this.refresh()
 	// 	}
 
 	refresh() {
-		this.#range = {
+		this.range = {
 			x: [
-				this.#margin.left + this.#padding,
-				this.#width - this.#margin.right - this.#padding
+				this.margin.left + this.padding,
+				this.width - this.margin.right - this.padding
 			],
 			y: [
-				this.#height - this.#padding - this.#margin.bottom,
-				this.#margin.top + this.#padding
+				this.height - this.padding - this.margin.bottom,
+				this.margin.top + this.padding
 			]
 		}
 
 		let scale = {
-			x: getScale(this.#domain.x, this.#range.x, this.#spacing),
-			y: getScale(this.#domain.y, this.#range.y, this.#spacing)
+			x: getScale(this.domain.x, this.range.x, this.spacing),
+			y: getScale(this.domain.y, this.range.y, this.spacing)
 		}
 
-		// scale['value'] = this.#value === this.#x ? scale.x : scale.y
+		// scale['value'] = this.value === this.x ? scale.x : scale.y
 
-		this.#origin = {
+		this.origin = {
 			x: scale.x.ticks
 				? scale.x(Math.max(0, Math.min(...scale.x.domain())))
 				: scale.x.range()[0],
@@ -123,19 +123,19 @@ class Chart {
 				: scale.y.range()[0]
 		}
 
-		this.#scale = scale
+		this.scale = scale
 
 		return this
 	}
 
 	get scale() {
-		return this.#scale
+		return this.scale
 	}
 	get origin() {
-		return this.#origin
+		return this.origin
 	}
 	get margin() {
-		return this.#margin
+		return this.margin
 	}
 	get range() {
 		const [x1, x2] = this.scale.x.range()
@@ -147,29 +147,29 @@ class Chart {
 		// aggregate data group by x,y,fill,shape, color
 		// stat = [min, max, avg, std, q1, q3, median, sum, count, box, all]
 
-		return this.#data
+		return this.data
 	}
 	get width() {
-		return this.#width
+		return this.width
 	}
 	get height() {
-		return this.#height
+		return this.height
 	}
 	get domain() {
-		return this.#domain
+		return this.domain
 	}
 	get flipCoords() {
-		return this.#flipCoords
+		return this.flipCoords
 	}
 	aggregate(value, stat) {
-		this.#value = stat
-		this.#stat = stat
+		this.value = value
+		this.stat = stat
 
-		this.#data = nestthis.#data
+		// this.data = nest(this.data)
 	}
 
 	ticks(axis, count, fontSize = 8) {
-		const scale = this.#scale[axis]
+		const scale = this.scale[axis]
 		const [minRange, maxRange] = scale.range()
 		let ticks = []
 		let offset = 0

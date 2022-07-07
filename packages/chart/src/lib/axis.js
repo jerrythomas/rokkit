@@ -1,4 +1,4 @@
-export function axis(scale, format) {
+export function axis(scale) {
 	const origin = {
 		x: scale.x.ticks
 			? scale.x(Math.max(0, Math.min(...scale.x.domain())))
@@ -34,7 +34,7 @@ export function axisTicks(scale, opts) {
 			let diff = scale.domain().length - count
 			ticks = ticks.filter((d, i) => i % diff == 0)
 		}
-		let diff = scale.domain().length - count
+		// let diff = scale.domain().length - count
 	}
 	ticks = ticks
 		.map((t) => ({
@@ -51,32 +51,25 @@ export function axisTicks(scale, opts) {
 	return ticks
 }
 
-class Axis {
-	#offset
-	#name
-	#chart
-
+export class Axis {
 	constructor(name, chart, offset) {
-		this.#name = ['x', 'y'].includes(value) ? value : 'x'
-		this.#chart = chart
+		this.name = ['x', 'y'].includes(name) ? name : 'x'
+		this.chart = chart
 		this.offset = offset
 	}
 
 	set offset(value) {
-		const [min, max] = this.#chart.scale[this.#name].range()
-		const otherAxis = this.#name === 'x' ? 'y' : 'x'
-		const origin = this.#chart.origin[otherAxis]
+		const [min, max] = this.chart.scale[this.name].range()
+		const otherAxis = this.name === 'x' ? 'y' : 'x'
+		const origin = this.chart.origin[otherAxis]
 
-		this.#offset = value * (origin == min ? 1 : origin == max ? -1 : 0)
-	}
-	get offset() {
-		return this.#offset
+		this.offset = value * (origin == min ? 1 : origin == max ? -1 : 0)
 	}
 
-	get domain() {
-		let coords =
-			(coords[axis + '1'] =
-			coords[axis + '2'] =
-				origin[axis] - offset[axis])
-	}
+	// get domain() {
+	// 	let coords =
+	// 		(coords[axis + '1'] =
+	// 		coords[axis + '2'] =
+	// 			origin[axis] - offset[axis])
+	// }
 }

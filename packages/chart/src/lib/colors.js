@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+// import { writable } from 'svelte/store'
 import { repeatAcross } from '../lib/utils'
 
 const palette = [
@@ -17,18 +17,13 @@ const palette = [
 	'#7EFFF5'
 ]
 
-class Palette {
-	#colors = palette
-
-	constructor(colors) {
+export class Palette {
+	constructor(colors = palette) {
 		this.colors = colors
 	}
 
-	get colors() {
-		return this.#colors
-	}
-	set colors(colors) {
-		if (colors && Array.isArray(colors)) this.#colors = colors
+	set colors(value) {
+		if (value && Array.isArray(value)) this.colors = value
 	}
 }
 

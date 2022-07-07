@@ -1,5 +1,5 @@
 import { ascending, descending } from 'd3-array'
-import { nest, values } from 'd3-collection'
+import { nest } from 'd3-collection'
 import { writable } from 'svelte/store'
 
 import {
@@ -57,12 +57,10 @@ export function timelapse(data, by, forward = true, defaults = {}) {
 }
 
 export class Data {
-	#input
-	#data = writable([])
-	#options
 	constructor(input, options) {
-		this.#input = input
-		this.#options = {
+		this.data = writable([])
+		this.input = input
+		this.options = {
 			time: undefined,
 			group: undefined,
 			orient: undefined,
@@ -74,27 +72,27 @@ export class Data {
 	}
 
 	get data() {
-		return this.#data
+		return this.data
 	}
 
 	get options() {
-		return this.#options
+		return this.options
 	}
 
 	apply() {
-		let uniqueGroups = []
+		// let uniqueGroups = []
 		let data = []
-		if (this.#options.time && this.#options.group) {
-			uniqueGroups = map(pick(this.#options.group), uniq)(this.#input)
+		if (this.options.time && this.options.group) {
+			// uniqueGroups = map(pick(this.options.group), uniq)(this.input)
 			data = map(
-				groupBy(this.#options.time),
+				groupBy(this.options.time),
 				map(
-					omit([this.#options.time]),
-					groupBy(this.#options.group),
-					map(omit[this.#options.group])
+					omit([this.options.time]),
+					groupBy(this.options.group),
+					map(omit[this.options.group])
 				)
 			)(data)
 		}
-		this.#data.set(data)
+		this.data.set(data)
 	}
 }

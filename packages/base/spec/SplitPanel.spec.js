@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import SplitPane from '../src/SplitPane.svelte'
 

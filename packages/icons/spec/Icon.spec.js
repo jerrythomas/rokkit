@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { iconStore } from '../src/store'
 import Icon from '../src/Icon.svelte'

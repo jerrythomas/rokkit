@@ -93,7 +93,7 @@ export function tweenable() {
  * @param {String} y
  * @returns a flat grouped object array
  */
-function flatObjectGroup(data, fields, y) {
+export function flatObjectGroup(data, fields, y) {
 	const attr = fields.map((x) => (d) => d[x])
 	const keys = [...fields, y]
 	let grouped = flatGroup(data, ...attr)
@@ -114,57 +114,63 @@ function flatObjectGroup(data, fields, y) {
 // 4. Fill missing groups
 // 5. Fill missing values
 
-function rollup(array, nestBy, groupBy, value) {
-	const attr = fields.map((x) => (d) => d[x])
-	const keys = [...fields, y]
-	let grouped = flatGroup(data, ...attr)
-		.map((x) =>
-			x.reduce((acc, item, index) => ({ ...acc, [keys[index]]: item }), {})
-		)
-		.map((d) => ({
-			...d,
-			[y]: d[y].map((v) => ({ y: v[y], isTweenHidden: false }))
-		}))
+// export function rollup(array, nestBy, groupBy, value) {
+// 	const attr = fields.map((x) => (d) => d[x])
+// 	const keys = [...fields, y]
+// 	let grouped = flatGroup(data, ...attr)
+// 		.map((x) =>
+// 			x.reduce((acc, item, index) => ({ ...acc, [keys[index]]: item }), {})
+// 		)
+// 		.map((d) => ({
+// 			...d,
+// 			[y]: d[y].map((v) => ({ y: v[y], isTweenHidden: false }))
+// 		}))
 
-	return grouped
-}
+// 	return grouped
+// }
 
-function evaluate(input, groupBy) {
-	const groups = pipe(map(pick(groupBy)), uniq)(input)
-	const groupCounts = groups
-		.map(JSON.stringify())
-		.reduce((acc, item) => ({ ...acc, [item]: 0 }), {})
+// export function evaluate(input, groupBy) {
+// 	const groups = pipe(map(pick(groupBy)), uniq)(input)
+// 	const groupCounts = groups
+// 		.map(JSON.stringify())
+// 		.reduce((acc, item) => ({ ...acc, [item]: 0 }), {})
 
-	missingRows = pipe(
-		map(pick(groupBy)),
-		uniq,
-		difference(combinations),
-		map(mergeLeft({ [valueField]: [] }))
-	)
-}
+// 	missingRows = pipe(
+// 		map(pick(groupBy)),
+// 		uniq,
+// 		difference(combinations),
+// 		map(mergeLeft({ [valueField]: [] }))
+// 	)
+// }
 
-function bundle(array, nestBy) {
-	data = nest()
-		.key((d) => d[nestBy])
-		.sortKeys(sortOrder)
-		.rollup((values) => values.map(omit([nestBy])))
-		.entries(data.map(pick(fields)))
-}
+// export function bundle(array, nestBy) {
+// 	data = nest()
+// 		.key((d) => d[nestBy])
+// 		.sortKeys(sortOrder)
+// 		.rollup((values) => values.map(omit([nestBy])))
+// 		.entries(data.map(pick(fields)))
+// }
 
-function fillMissingGroups(data, groupBy) {
-	data.map((d) =>
-		d.value.map((x) => {
-			const key = JSON.stringify(pick(groupBy, x))
-			combiCounts[key] = Math.max(combiCounts[key], x[valueField].length)
-		})
-	)
-	data = data.map(({ key, value }) => ({
-		key,
-		value: addHiddenValues(value, missingRows, combiCounts, valueField, groupBy)
-	}))
-}
+// export function fillMissingGroups(data, groupBy) {
+// 	data.map((d) =>
+// 		d.value.map((x) => {
+// 			const key = JSON.stringify(pick(groupBy, x))
+// 			combiCounts[key] = Math.max(combiCounts[key], x[valueField].length)
+// 		})
+// 	)
+// 	data = data.map(({ key, value }) => ({
+// 		key,
+// 		value: addHiddenValues(value, missingRows, combiCounts, valueField, groupBy)
+// 	}))
+// }
 
-function fillMissingValues(values, missingRows, counts, valueField, groupBy) {
+export function fillMissingValues(
+	values,
+	missingRows,
+	counts,
+	valueField,
+	groupBy
+) {
 	const dummy = { y: 0, isTweenHidden: true }
 	const result = [...values, ...missingRows(values)].map((x) => {
 		const key = JSON.stringify(pick(groupBy, x))

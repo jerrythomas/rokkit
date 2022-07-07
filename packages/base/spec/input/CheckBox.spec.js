@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/svelte'
+import { describe, expect, beforeEach, it } from 'vitest'
+import { cleanup, render } from '@testing-library/svelte'
 import CheckBox from '../../src/input/CheckBox.svelte'
 
 describe('CheckBox.svelte', () => {

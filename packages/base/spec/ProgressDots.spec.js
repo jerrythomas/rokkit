@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { cleanup, render, fireEvent } from '@testing-library/svelte'
+import { cleanup, render } from '@testing-library/svelte'
 import { toIncludeAll } from 'validators'
 import ProgressDots from '../src/Stepper/ProgressDots.svelte'
 

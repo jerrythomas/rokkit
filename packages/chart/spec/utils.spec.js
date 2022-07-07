@@ -1,5 +1,13 @@
 import fs from 'fs'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import {
+	beforeAll,
+	beforeEach,
+	afterEach,
+	describe,
+	expect,
+	it,
+	vi
+} from 'vitest'
 import {
 	uniqueId,
 	initCap,
@@ -7,7 +15,7 @@ import {
 	toHexString,
 	swatch,
 	getScale,
-	getScales,
+	// getScales,
 	toNested,
 	getPaletteForValues,
 	aggregate
@@ -118,7 +126,7 @@ describe('Utility functions', () => {
 
 		expect(mpg.some(isNaN)).toBeFalsy()
 		let scale = getScale(mpg, [0, 100])
-		let minValue = Math.min(...mpg)
+		// let minValue = Math.min(...mpg)
 		let maxValue = Math.max(...mpg)
 		expect(scale.domain()).toEqual([0, maxValue])
 		expect(scale.range()).toEqual([0, 100])
