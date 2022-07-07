@@ -1,5 +1,9 @@
-export { default as RadioOn } from './RadioOn.svelte'
-export { default as RadioOff } from './RadioOff.svelte'
-export { default as Thumb } from './Thumb.svelte'
-export { default as Tick } from './Tick.svelte'
-export { default as Star } from './Star.svelte'
+import { iconStore } from '@sparsh-ui/icons'
+
+import RadioOn from './RadioOn.svelte'
+import RadioOff from './RadioOff.svelte'
+import Thumb from './Thumb.svelte'
+import Tick from './Tick.svelte'
+import Star from './Star.svelte'
+
+iconStore.set({ RadioOn, RadioOff, Thumb, Tick, Star })
