@@ -2,16 +2,19 @@ export function pannable(node) {
 	let x
 	let y
 
-	function handleMousedown(event) {
+	function track(event, name, delta = {}) {
 		x = event.clientX
 		y = event.clientY
 
 		node.dispatchEvent(
-			new CustomEvent('panstart', {
-				detail: { x, y }
+			new CustomEvent(name, {
+				detail: { x, y, ...delta }
 			})
 		)
+	}
 
+	function handleMousedown(event) {
+		track(event, 'panstart')
 		window.addEventListener('mousemove', handleMousemove)
 		window.addEventListener('mouseup', handleMouseup)
 	}
@@ -19,24 +22,12 @@ export function pannable(node) {
 	function handleMousemove(event) {
 		const dx = event.clientX - x
 		const dy = event.clientY - y
-		x = event.clientX
-		y = event.clientY
-		node.dispatchEvent(
-			new CustomEvent('panmove', {
-				detail: { x, y, dx, dy }
-			})
-		)
+
+		track(event, 'panmove', { dx, dy })
 	}
 
 	function handleMouseup(event) {
-		x = event.clientX
-		y = event.clientY
-
-		node.dispatchEvent(
-			new CustomEvent('panend', {
-				detail: { x, y }
-			})
-		)
+		track(event, 'panend')
 
 		window.removeEventListener('mousemove', handleMousemove)
 		window.removeEventListener('mouseup', handleMouseup)

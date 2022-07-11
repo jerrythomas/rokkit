@@ -1,0 +1,42 @@
+/* Write your global styles here, in PostCSS syntax */
+.google {
+	background-color: #ffffff;
+	color: #757575;
+}
+.github {
+	background-color: #333333;
+	color: #ffffff;
+}
+.microsoft {
+	background-color: #2f2f2f;
+	color: #ffffff;
+}
+.facebook {
+	background-color: #3b5998;
+	color: #ffffff;
+}
+
+.twitter {
+	background-color: #55acee;
+	color: #ffffff;
+}
+.apple {
+	background-color: black;
+	color: #ffffff;
+}
+.mail {
+	background-color: #db4437;
+	color: #ffffff;
+}
+.phone {
+	background-color: #02bd7e;
+	color: #ffffff;
+}
+.anonymous {
+	background-color: #55acee;
+	color: #ffffff;
+}
+.magic {
+	background-color: #55acee;
+	color: #ffffff;
+}

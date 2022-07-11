@@ -1,0 +1,23 @@
+{
+	"name": "eslint-config-shared",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"format": "prettier --write --plugin-search-dir=. .",
+		"upgrade": "pnpm upgrade"
+	},
+	"dependencies": {
+		"eslint": "^8.19.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"prettier": "^2.7.1",
+		"prettier-plugin-svelte": "^2.7.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"devDependencies": {
+		"svelte": "^3.49.0"
+	}
+}

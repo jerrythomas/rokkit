@@ -1,6 +1,6 @@
 # Sparsh UI
 
-![Sparsh](sparsh.svg)
+![Sparsh](docs/sparsh.svg)
 
 A set of composable, data-driven and themeable UI components.
 

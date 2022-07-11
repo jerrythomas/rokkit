@@ -15,13 +15,14 @@
 		"test:ui": "vitest run ui",
 		"test:watch": "vitest",
 		"e2e": "playwright test",
-		"coverage": "vitest run --coverage"
+		"coverage": "vitest run --coverage",
+		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
 		"@fontsource/montserrat-alternates": "^4.5.9",
 		"@fontsource/victor-mono": "^4.5.4",
 		"@observablehq/plot": "^0.4.3",
-		"@playwright/test": "^1.23.1",
+		"@playwright/test": "^1.23.2",
 		"@sparsh-ui/base": "workspace:1.0.0",
 		"@sparsh-ui/chart": "workspace:1.0.0",
 		"@sparsh-ui/icons": "workspace:1.0.0",
@@ -47,7 +48,7 @@
 		"prettier": "^2.7.1",
 		"prettier-plugin-svelte": "^2.7.0",
 		"ramda": "^0.28.0",
-		"svelte": "^3.48.0",
+		"svelte": "^3.49.0",
 		"svelte-check": "^2.8.0",
 		"typescript": "~4.6.4",
 		"vite": "^2.9.13",

@@ -11,18 +11,16 @@
 		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
 		"e2e": "playwright test",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --write --plugin-search-dir=. ."
+		"format": "prettier --write --plugin-search-dir=. .",
+		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.23.1",
+		"@playwright/test": "^1.23.2",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
+		"eslint-config-shared": "workspace:*",
 		"eslint": "^8.19.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier": "^2.7.1",
-		"prettier-plugin-svelte": "^2.7.0",
-		"svelte": "^3.48.0",
+		"svelte": "^3.49.0",
 		"svelte-check": "^2.8.0",
 		"typescript": "^4.7.4",
 		"vite": "^2.9.13",
