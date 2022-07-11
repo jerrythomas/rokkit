@@ -20,7 +20,8 @@
 		"test:ui": "vitest --ui",
 		"test:watch": "vitest",
 		"coverage": "vitest run --coverage",
-		"release": "release-it --preRelease=beta"
+		"release": "release-it --preRelease=beta",
+		"upgrade": "pnpm upgrade"
 	},
 	"exports": {
 		"./package.json": "./package.json",
@@ -38,7 +39,7 @@
 		"marked": "^4.0.17",
 		"prettier": "^2.7.1",
 		"prismjs": "^1.28.0",
-		"svelte": "^3.48.0",
+		"svelte": "^3.49.0",
 		"typescript": "~4.6.4",
 		"validators": "workspace:1.0.0",
 		"vite": "^2.9.13",

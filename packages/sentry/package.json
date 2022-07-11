@@ -1,0 +1,75 @@
+{
+	"name": "@sparsh-ui/sentry",
+	"version": "1.0.0",
+	"description": "Drop in authentication for SvelteKit apps using popular auth kits",
+	"type": "module",
+	"svelte": "src/index.js",
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"prepublishOnly": "tsc",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"test": "vitest run",
+		"test:ui": "vitest --ui",
+		"test:watch": "vitest",
+		"coverage": "vitest run --coverage",
+		"release": "release-it --preRelease=beta"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jerrythomas/sentry.git"
+	},
+	"exports": {
+		"./package.json": "./package.json",
+		"./.npmignore": "./.npmignore",
+		"./global.css": "./global.css",
+		"./sentry.svg": "./sentry.svg",
+		".": {
+			"import": "./src/index.js"
+		},
+		"./firebase": {
+			"import": "./src/firebase.js"
+		}
+	},
+	"keywords": [
+		"svelte",
+		"auth",
+		"firebase",
+		"supabase",
+		"amplify",
+		"auth0",
+		"sentry",
+		"guard"
+	],
+	"author": "Jerry Thomas <me@jerrythomas.name>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/jerrythomas/sentry/issues"
+	},
+	"homepage": "https://github.com/jerrythomas/sentry#readme",
+	"devDependencies": {
+		"@supabase/supabase-js": "^1.33.3",
+		"@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
+		"@vitest/ui": "0.18",
+		"auto-changelog": "^2.4.0",
+		"c8": "^7.11.0",
+		"eslint": "^7.32.0",
+		"eslint-config-shared": "workspace:*",
+		"firebase": "^9.6.10",
+		"js-yaml": "^4.1.0",
+		"release-it": "^15.1.1",
+		"supabase": "^0.5.0",
+		"svelte": "^3.46.6",
+		"vite": "^2.9.14",
+		"vitest": "0.18",
+		"windicss": "^3.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"auto-changelog": {
+		"unreleased": false
+	}
+}

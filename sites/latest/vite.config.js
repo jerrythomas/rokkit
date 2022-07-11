@@ -1,6 +1,6 @@
-import path from 'path';
-import { sveltekit } from '@sveltejs/kit/vite';
-import WindiCSS from 'vite-plugin-windicss';
+import path from 'path'
+import { sveltekit } from '@sveltejs/kit/vite'
+import WindiCSS from 'vite-plugin-windicss'
 
 /** @type {import('vite').UserConfig} */
 const config = {
@@ -10,6 +10,6 @@ const config = {
 			$config: path.resolve('./src/config')
 		}
 	}
-};
+}
 
-export default config;
+export default config

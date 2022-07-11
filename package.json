@@ -1,5 +1,5 @@
 {
-	"name": "svelte-kit",
+	"name": "sparsh-ui",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -9,15 +9,22 @@
 		"coverage": "turbo run coverage",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"upgrade": "pnpm upgrade",
+		"upgrade:all": "turbo run upgrade"
 	},
 	"author": "Jerry Thomas<me@jerrythomas.name",
 	"license": "MIT",
 	"workspaces": [
+		"packages/base",
 		"packages/chart",
-		"packages/icon",
+		"packages/icons",
 		"packages/list",
-		"sites/playground"
+		"packages/markdown",
+		"shared/linter",
+		"shared/validators",
+		"sites/playground",
+		"sites/latest"
 	],
 	"devDependencies": {
 		"eslint": "^7.32.0",

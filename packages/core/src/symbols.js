@@ -1,0 +1,5 @@
+export const KEY = Symbol('key')
+export const COLS = Symbol('columns')
+export const DATA = Symbol('data')
+export const INDEX = Symbol('index')
+export const IS_GROUPED = Symbol('isGrouped')

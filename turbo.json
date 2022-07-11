@@ -25,6 +25,7 @@
 		},
 		"release": {
 			"dependsOn": ["test"]
-		}
+		},
+		"upgrade": {}
 	}
 }
