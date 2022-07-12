@@ -6,7 +6,7 @@
 
 	export let labels = false
 	export let fontSize = $chart.height / 32
-	export let color = 'white'
+	// export let color = 'white'
 
 	$: colors = colorBrewer($chart.data.map((d) => d.color))
 	// export let limit = 8
@@ -21,7 +21,7 @@
 		height: $chart.flipCoords
 			? $chart.scale.y.bandwidth()
 			: $chart.scale.y(0) - $chart.scale.y(d.y),
-		fill: fills[d.fill],
+		color: colors[d.color],
 		label: {
 			x: $chart.flipCoords
 				? $chart.scale.x(d.x) - $chart.scale.x(0) - 10

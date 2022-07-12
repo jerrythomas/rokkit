@@ -1,7 +1,6 @@
 root: true
 extends:
-  - 'eslint:recommended'
-  - 'prettier'
+  - 'shared'
 parserOptions:
   sourceType: 'module'
   ecmaVersion: 2021

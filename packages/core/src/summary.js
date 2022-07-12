@@ -1,5 +1,6 @@
 import { quantile } from 'd3-array'
 import { omit, pick } from 'ramda'
+import { deriveAggregators } from './infer'
 
 export const counter = (values) => values.length
 
@@ -15,22 +16,28 @@ export function groupBy(...cols) {
 	let opts = {
 		by: cols,
 		exclude: [],
-		include: undefined
+		include: undefined,
+		agg: []
 	}
 
 	const exclude = (...cols) => {
 		opts.exclude = cols
-		return { from }
+		return { aggregate, from }
 	}
 	const include = (...cols) => {
 		opts.include = cols
+		return { aggregate, from }
+	}
+
+	const aggregate = (...cols) => {
+		opts.agg = cols
 		return { from }
 	}
 
 	const from = (data) => {
 		const select = opts.include ? pick(opts.include) : omit(opts.exclude)
 
-		const grouped = data.reduce((acc, cur) => {
+		let grouped = data.reduce((acc, cur) => {
 			const group = pick(opts.by, cur)
 			const value = select(cur)
 			const key = JSON.stringify(group)
@@ -39,60 +46,44 @@ export function groupBy(...cols) {
 			else acc[key] = { ...group, _df: [value] }
 			return acc
 		}, {})
-		return Object.values(grouped)
+		grouped = Object.values(grouped)
+		if (opts.agg.length > 0) {
+			return grouped.map((row) => ({
+				...omit(['_df'], row),
+				...summarize(row._df, ...opts.agg)
+			}))
+		}
+		return grouped
 	}
 
-	return { exclude, include, from }
+	return { exclude, include, aggregate, from }
 }
 
-export function addSuffix(row, suffix) {
-	return Object.entries(row).reduce(
-		(acc, [key, value]) => ({ ...acc, [key + suffix]: value }),
-		{}
-	)
-}
+export function summarize(data, ...cols) {
+	const rename = (name, suffix) => {
+		return suffix ? [name, suffix].join('_') : name
+	}
 
-/**
- * @typedef JoinOptions
- * @property {object} a
- * @property {object} b
- * @property {function} query the query used to match rows
- */
-/**
- * Joins data from to object arrays using a matching query
- *
- *   - first table's attributes override second table's attributes with same names
- *   - Use suffix option for a or b to add a suffix
- *   - include option allows you to select attributes in result
- *   - exclude option allows you to remove unwanted columns from result
- *   - include takes precendence over exclude when both are provided
- *
- * @param {Array<object>} a
- * @param {Array<object>} b
- * @param {JoinOptions} opts
- * @returns
- */
-export function innerJoin(a, b, opts) {
-	opts = { a: {}, b: {}, ...opts }
+	const opts = deriveAggregators(...cols)
+	const result = opts
+		.map((col) => {
+			const values = data.map((row) => +row[col.column])
+			let result = col.aggregator(values)
 
-	const selectA = opts.a.include
-		? pick(opts.a.include)
-		: omit(opts.a.exclude || [])
-	const renameA = opts.a.suffix ? (x) => addSuffix(x, opts.a.suffix) : (x) => x
-	const selectB = opts.b.include
-		? pick(opts.b.include)
-		: omit(opts.b.exclude || [])
-	const renameB = opts.b.suffix ? (x) => addSuffix(x, opts.b.suffix) : (x) => x
-
-	const res = a
-		.map((x) => {
-			const xattr = renameA(selectA(x))
-			const matched = b
-				.filter((y) => opts.query(x, y))
-				.map((y) => ({ ...renameB(selectB(y)), ...xattr }))
-			return matched
+			if (typeof result === 'object') {
+				result = Object.keys(result).reduce(
+					(acc, suffix) => ({
+						...acc,
+						[rename(col.column, suffix)]: result[suffix]
+					}),
+					{}
+				)
+			} else {
+				const name = rename(col.column, col.suffix)
+				result = { [name]: result }
+			}
+			return result
 		})
-		.reduce((acc, cur) => [...acc, ...cur], [])
-
-	return res
+		.reduce((acc, curr) => ({ ...acc, ...curr }), {})
+	return result
 }

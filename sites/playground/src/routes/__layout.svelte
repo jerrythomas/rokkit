@@ -6,7 +6,7 @@
 	import { Sidebar } from '@sparsh-ui/base'
 	import { page } from '$app/stores'
 
-	import { browser } from '$app/env'
+	// import { browser } from '$app/env'
 	// if (browser) import('virtual:windi-devtools');
 </script>
 

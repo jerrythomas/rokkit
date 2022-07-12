@@ -12,7 +12,7 @@ const actions = {
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get({ params, request, url }) {
+export async function get({ params, url }) {
 	const { entity } = params
 
 	const { data, error, status } = await actions.get(

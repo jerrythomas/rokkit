@@ -1,23 +1,20 @@
 {
-	"name": "svelte-windi",
-	"version": "0.0.1",
+	"name": "sentry-firebase",
+	"version": "1.0.0",
 	"scripts": {
-		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
+		"dev": "vite dev",
+		"build": "vite build",
 		"package": "svelte-kit package",
-		"preview": "svelte-kit preview",
-		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+		"preview": "vite preview",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@jerrythomas/sentry": "link:../..",
+		"@sparsh-ui/sentry": "workspace:*",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"eslint": "^7.32.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-svelte3": "^3.2.1",
-		"prettier": "^2.4.1",
-		"prettier-plugin-svelte": "^2.4.0",
+		"eslint-config-shared": "workspace:*",
 		"svelte": "^3.44.0",
 		"vite-plugin-windicss": "^1.5.4",
 		"windicss": "^3.2.1"

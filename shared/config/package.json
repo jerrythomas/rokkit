@@ -1,0 +1,24 @@
+{
+	"name": "shared-config",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"format": "prettier --write --plugin-search-dir=. .",
+		"upgrade": "pnpm upgrade"
+	},
+	"exports": {
+		"./package.json": "./package.json",
+		"./windi.config.js": "./windi.config.js",
+		"./svelte-lib.json": "./svelte-lib.json",
+		"./jsconfig.json": "./jsconfig.json",
+		"./vitest.config.js": "./vitest.config.js"
+	},
+	"dependencies": {
+		"eslint": "^8.19.0",
+		"eslint-config-shared": "workspace:*"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

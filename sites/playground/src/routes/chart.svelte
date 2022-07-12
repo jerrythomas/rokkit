@@ -9,9 +9,9 @@
 		AxisLabels,
 		AxisGrid,
 		BarPlot,
-		LinePlot,
-		BoxPlot,
-		ViolinPlot,
+		// LinePlot,
+		// BoxPlot,
+		// ViolinPlot,
 		ScatterPlot
 	} from '@sparsh-ui/chart'
 	export let data = []
