@@ -8,7 +8,7 @@
 	const dispatch = createEventDispatcher()
 
 	export let data
-	export let currentStep
+	// export let currentStep
 	export let currentStage
 
 	// $: data = data.map((d) => ({
@@ -31,7 +31,7 @@
 					{text}
 					{completed}
 					{active}
-					on:click={(e) => handleClick({ stage })}
+					on:click={() => handleClick({ stage })}
 				/>
 			</div>
 			{#if steps}

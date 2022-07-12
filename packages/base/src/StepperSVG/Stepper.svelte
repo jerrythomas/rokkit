@@ -8,7 +8,7 @@
 
 	const stepSize = 6
 
-	$: hasLabels = stages[0].hasOwnProperty('label')
+	$: hasLabels = 'labels' in stages[0] //.hasOwnProperty('label')
 	$: count = stages.length
 	$: gap = Math.max(steps || 5, 5) * 3 * stepSize + 2 * stepSize
 	$: stageSize = 100

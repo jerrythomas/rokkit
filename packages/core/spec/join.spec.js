@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { data } from './fixtures/data'
 import { pick } from 'ramda'
-import { join, renamer, selector } from '../src/join'
+import {
+	join,
+	renamer,
+	selector,
+	innerJoin,
+	outerJoin,
+	fullJoin
+} from '../src/join'
 
 describe('join', () => {
 	const byRank = (a, b) => a.rank === b.rank
@@ -33,10 +40,10 @@ describe('join', () => {
 		const B = data.slice(0, 2).map((d) => pick(['age', 'rank'], d))
 		const AB = data.slice(0, 2).map((d) => pick(['name', 'age', 'rank'], d))
 
-		let res = join(A, B).inner(byRank)
-		expect(res).toEqual(AB)
-		res = join(A, B).outer(byRank)
-		expect(res).toEqual(AB)
+		expect(join(A, B).inner(byRank)).toEqual(AB)
+		expect(join(A, B).outer(byRank)).toEqual(AB)
+		expect(innerJoin(A, B, byRank)).toEqual(AB)
+		expect(outerJoin(A, B, byRank)).toEqual(AB)
 	})
 
 	it('should multiply rows when joining', () => {
@@ -48,10 +55,10 @@ describe('join', () => {
 			{ age: 18, country: 'Germany', name: 'Simon Brunner' },
 			{ age: 37, country: 'Germany', name: 'Simon Brunner' }
 		]
-		let res = join(A, B).inner(byCountry)
-		expect(res).toEqual(AB)
-		res = join(A, B).outer(byCountry)
-		expect(res).toEqual(AB)
+		expect(join(A, B).inner(byCountry)).toEqual(AB)
+		expect(join(A, B).outer(byCountry)).toEqual(AB)
+		expect(innerJoin(A, B, byCountry)).toEqual(AB)
+		expect(outerJoin(A, B, byCountry)).toEqual(AB)
 	})
 
 	it('should drop unmatched rows when joining', () => {
@@ -59,16 +66,16 @@ describe('join', () => {
 		const B = data.slice(2).map((d) => pick(['age', 'rank'], d))
 		const AB = data.slice(2, 4).map((d) => pick(['age', 'rank', 'name'], d))
 
-		const res = join(A, B).inner(byRank)
-		expect(res).toEqual(AB)
+		expect(join(A, B).inner(byRank)).toEqual(AB)
+		expect(innerJoin(A, B, byRank)).toEqual(AB)
 	})
 
 	it('should first data set when no matches exist', () => {
 		const A = data.slice(0, 2).map((d) => pick(['name', 'rank'], d))
 		const B = []
 
-		const res = join(A, B).outer(byRank)
-		expect(res).toEqual(A)
+		expect(join(A, B).outer(byRank)).toEqual(A)
+		expect(outerJoin(A, B, byRank)).toEqual(A)
 	})
 
 	it('should include unmatched rows when joining', () => {
@@ -80,8 +87,8 @@ describe('join', () => {
 				index < 2 ? pick(['rank', 'name'], d) : pick(['age', 'rank', 'name'], d)
 			)
 
-		const res = join(A, B).outer(byRank)
-		expect(res).toEqual(AB)
+		expect(join(A, B).outer(byRank)).toEqual(AB)
+		expect(outerJoin(A, B, byRank)).toEqual(AB)
 	})
 
 	it('should include all rows from both sides', () => {
@@ -97,8 +104,8 @@ describe('join', () => {
 					: pick(['age', 'rank'], d)
 			)
 
-		const res = join(A, B).full(byRank)
-		expect(res).toEqual(AB)
+		expect(join(A, B).full(byRank)).toEqual(AB)
+		expect(fullJoin(A, B, byRank)).toEqual(AB)
 	})
 
 	it('should add prefix to columns when joining', () => {

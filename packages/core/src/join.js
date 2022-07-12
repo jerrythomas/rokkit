@@ -160,3 +160,13 @@ export const join = (a, b) => {
 	options({}, {})
 	return { options, inner, outer, full }
 }
+
+export function innerJoin(a, b, query) {
+	return join(a, b).inner(query)
+}
+export function outerJoin(a, b, query) {
+	return join(a, b).outer(query)
+}
+export function fullJoin(a, b, query) {
+	return join(a, b).full(query)
+}

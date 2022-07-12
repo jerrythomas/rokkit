@@ -15,7 +15,6 @@
 	import { SentryAuth } from '@jerrythomas/sentry'
 	import { providers } from '$config/providers'
 	import { onMount } from 'svelte'
-	import { page } from '$app/stores'
 	import { sentry } from '$config'
 
 	onMount(async () => {
