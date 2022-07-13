@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { nest } from 'd3-collection'
 import { v4 as uuid } from '@lukeed/uuid'
-import { compareStrings } from '@sparsh-ui/icons'
+import { ascending } from 'd3-array'
 
 /**
  * Compares two items for sorting. When grouped, uses group comparison before item comparison
@@ -15,13 +15,13 @@ export function compare(a, b, list) {
 	let result = 0
 
 	if (list.groupKey) {
-		result = compareStrings(
+		result = ascending(
 			list.lookup[a[list.groupKey]],
 			list.lookup[b[list.groupKey]]
 		)
 	}
 	if (result == 0) {
-		result = compareStrings(a[list.sortKey], b[list.sortKey])
+		result = ascending(a[list.sortKey], b[list.sortKey])
 	}
 	return result
 }

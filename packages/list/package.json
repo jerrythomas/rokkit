@@ -44,5 +44,8 @@
 		"vite": "^2.9.13",
 		"vitest": "~0.12.10",
 		"windicss": "^3.5.6"
+	},
+	"dependencies": {
+		"@sparsh-ui/core": "workspace:*"
 	}
 }

@@ -8,3 +8,5 @@ coverage
 *.code-workspace
 .turbo
 .eslintcache
+lcov.info
+.idea
