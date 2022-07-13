@@ -13,7 +13,7 @@
 			class="first:rounded-t-lg last:rounded-b-lg"
 		>
 			{#if item.icon}
-				<Icon name={item.icon} title={item.label} />
+				<Icon icon={item.icon} title={item.label} />
 			{/if}
 			<p>{item.label}</p>
 		</a>

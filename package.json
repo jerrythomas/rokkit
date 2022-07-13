@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"prepublishOnly": "turbo run prepublishOnly",
 		"build": "turbo run build",
 		"test": "turbo run test",
 		"coverage": "turbo run coverage",

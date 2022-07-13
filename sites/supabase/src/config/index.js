@@ -1,4 +1,4 @@
-import { sentry } from '@jerrythomas/sentry'
+import { sentry } from '@sparsh-ui/sentry'
 import { supabase } from './auth'
 import { routes } from './routes'
 

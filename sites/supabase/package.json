@@ -6,25 +6,27 @@
 		"build": "vite build",
 		"package": "svelte-kit package",
 		"preview": "vite preview",
-		"test": "playwright test",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --write --plugin-search-dir=. ."
+		"format": "prettier --write --plugin-search-dir=. .",
+		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@sparsh-ui/sentry": "workspace:*",
-		"@playwright/test": "^1.20.2",
+		"@playwright/test": "^1.23.2",
+		"@sparsh-ui/sentry": "workspace:1.0.0",
+		"@supabase/supabase-js": "^1.33.3",
 		"@sveltejs/adapter-node": "1.0.0-next.79",
 		"@sveltejs/kit": "next",
 		"eslint": "^7.32.0",
-		"eslint-config-shared": "workspace:*",
-		"svelte": "^3.46.6",
+		"eslint-config-shared": "workspace:1.0.0",
+		"supabase": "^0.5.0",
+		"svelte": "^3.49.0",
 		"vite": "^2.9.14",
-		"vite-plugin-windicss": "^1.8.3",
-		"windicss": "^3.5.1"
+		"vite-plugin-windicss": "^1.8.6",
+		"windicss": "^3.5.6"
 	},
 	"type": "module",
 	"dependencies": {
-		"@fontsource/fira-mono": "^4.5.7",
+		"@fontsource/fira-mono": "^4.5.8",
 		"@lukeed/uuid": "^2.0.0"
 	}
 }

@@ -3,11 +3,12 @@
 	import { iconStore } from './store.js'
 
 	export let size = '1.5em'
-	export let name
+	export let name = ''
 	export let title = name
 	export let fill = 'none'
 	export let stroke = 'currentColor'
 	export let isActive = false
+
 	export let icon = $iconStore[toPascalCase(name)]
 </script>
 

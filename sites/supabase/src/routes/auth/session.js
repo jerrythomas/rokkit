@@ -1,4 +1,4 @@
-import { cookiesFromSession } from '@jerrythomas/sentry'
+import { cookiesFromSession } from '@sparsh-ui/sentry'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
