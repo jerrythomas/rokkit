@@ -237,7 +237,7 @@ describe('dataframe', () => {
 	})
 
 	it('Should group data', () => {
-		let df = dataframe(data).groupBy('country')
+		let df = dataframe(data).groupBy(['country'])
 		expect(df).toBeInstanceOf(DataFrame)
 		expect(df.data).toEqual(grouped.country)
 		expect(df.pkey).toBeUndefined()

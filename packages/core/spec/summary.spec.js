@@ -35,23 +35,24 @@ describe('aggregators', () => {
 	})
 
 	it('should group by one or more columns', () => {
-		let result = groupBy('country').from(data)
+		let result = groupBy(data, ['country'])
+
 		expect(result).toEqual(grouped.country)
-		result = groupBy('country', 'rank').from(data)
+		result = groupBy(data, ['country', 'rank'])
 		expect(result).toEqual(grouped.countryAndRank)
 	})
 
 	it('should group by and handle exclusion', () => {
-		let result = groupBy('country').exclude('name').from(data)
+		let result = groupBy(data, ['country'], { exclude: ['name'] })
 		expect(result).toEqual(exclusions.country)
-		result = groupBy('country', 'rank').exclude('name', 'age').from(data)
+		result = groupBy(data, ['country', 'rank'], { exclude: ['name', 'age'] })
 		expect(result).toEqual(exclusions.countryAndRank)
 	})
 
 	it('should group by and handle inclusion', () => {
-		let result = groupBy('country').include('name').from(data)
+		let result = groupBy(data, ['country'], { include: ['name'] })
 		expect(result).toEqual(inclusions.country)
-		result = groupBy('country', 'rank').include('name', 'age').from(data)
+		result = groupBy(data, ['country', 'rank'], { include: ['name', 'age'] })
 		expect(result).toEqual(inclusions.countryAndRank)
 	})
 
@@ -86,29 +87,5 @@ describe('aggregators', () => {
 			country_count: 12,
 			rank_std: 3.605551275463989
 		})
-	})
-
-	it('should aggregate with group by', () => {
-		let result = groupBy('country').aggregate('name').from(data)
-		expect(result).toEqual([
-			{ country: 'South Korea', name_count: 2 },
-			{ country: 'Germany', name_count: 2 },
-			{ country: 'Brazil', name_count: 2 },
-			{ country: 'Mexico', name_count: 2 },
-			{ country: 'United States', name_count: 2 },
-			{ country: 'Japan', name_count: 2 }
-		])
-		result = groupBy('country')
-			.aggregate(['age', mean], ['rank', min, 'min'], ['rank', max, 'max'])
-			.from(data)
-
-		expect(result).toEqual([
-			{ country: 'South Korea', age: 33.5, rank_min: 1, rank_max: 11 },
-			{ country: 'Germany', age: 27.5, rank_min: 2, rank_max: 6 },
-			{ country: 'Brazil', age: 27.5, rank_min: 3, rank_max: 12 },
-			{ country: 'Mexico', age: 32.5, rank_min: 4, rank_max: 5 },
-			{ country: 'United States', age: 28.5, rank_min: 7, rank_max: 8 },
-			{ country: 'Japan', age: 37, rank_min: 9, rank_max: 10 }
-		])
 	})
 })

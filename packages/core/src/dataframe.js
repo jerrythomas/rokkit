@@ -111,7 +111,7 @@ export class DataFrame {
 	}
 
 	groupBy(...cols) {
-		return new DataFrame(groupBy(...cols).from(this[__data__]))
+		return new DataFrame(groupBy(this[__data__], cols))
 	}
 
 	summarize(...cols) {
