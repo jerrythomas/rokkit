@@ -1,5 +1,5 @@
 import { sentry } from './config'
-import { sessionFromCookies } from '@jerrythomas/sentry'
+import { sessionFromCookies } from '@sparsh-ui/sentry'
 
 export const handle = async ({ event, resolve }) => {
 	const response = await resolve(event)

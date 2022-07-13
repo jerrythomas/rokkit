@@ -7,7 +7,7 @@
 	const iconSets = { outline, filled }
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col overflow-y-auto">
 	<ShowAllIcons
 		icons={iconSets.outline}
 		name="Heroicons Outline"

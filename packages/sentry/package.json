@@ -59,7 +59,6 @@
 		"eslint-config-shared": "workspace:*",
 		"firebase": "^9.6.10",
 		"js-yaml": "^4.1.0",
-		"release-it": "^15.1.1",
 		"supabase": "^0.5.0",
 		"svelte": "^3.46.6",
 		"vite": "^2.9.14",

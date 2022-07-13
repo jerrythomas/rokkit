@@ -28,7 +28,8 @@ export function renameUsing(opts = {}) {
 			{}
 		)
 }
-function leftJoin(a, b, query, inner = true, opts = {}) {
+function leftJoin(a, b, query, opts = {}) {
+	const { inner } = { inner: true, ...opts }
 	const rename = renameUsing(opts)
 	return a
 		.map((x) => {
@@ -40,10 +41,10 @@ function leftJoin(a, b, query, inner = true, opts = {}) {
 		.reduce((acc, cur) => [...acc, ...cur], [])
 }
 export function innerJoin(a, b, query, opts = {}) {
-	return leftJoin(a, b, query, true, opts)
+	return leftJoin(a, b, query, opts)
 }
 export function outerJoin(a, b, query, opts = {}) {
-	return leftJoin(a, b, query, false, opts)
+	return leftJoin(a, b, query, { inner: false, ...opts })
 }
 export function fullJoin(a, b, query, opts) {
 	const rename = renameUsing(opts)

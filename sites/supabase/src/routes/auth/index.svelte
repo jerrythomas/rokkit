@@ -12,7 +12,7 @@
 </script>
 
 <script>
-	import { SentryAuth } from '@jerrythomas/sentry'
+	import { SentryAuth } from '@sparsh-ui/sentry'
 	import { providers } from '$config/providers'
 	import { onMount } from 'svelte'
 	import { sentry } from '$config'

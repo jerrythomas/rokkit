@@ -1,23 +1,29 @@
-// import * as icons from './icons'
+import * as icons from './icons'
 
 export function menu() {
 	let items = [
 		{
-			// icon: icons.Vikalp,
+			icon: icons.ChartBar,
 			label: 'Home',
 			target: '/',
 			role: 'authenticated'
 		},
 		{
-			// icon: icons.Academics,
+			icon: icons.ChartBar,
 			label: 'Chart',
 			target: '/chart',
 			role: 'authenticated'
 		},
 		{
-			// icon: icons.Certificate,
+			icon: icons.Beaker,
 			label: 'Labs',
 			target: '/labs',
+			role: 'authenticated'
+		},
+		{
+			icon: icons.Sparkles,
+			label: 'Icons',
+			target: '/icons',
 			role: 'authenticated'
 		}
 	]
