@@ -1,10 +1,11 @@
+import { filter } from 'ramda'
 /**
- * Capitalize a string
+ * Capitalizes the first letter of input string
  *
- * @param {String} text
- * @returns
+ * @param {String} str
+ * @returns {String}
  */
-export function toCapitalCase(text) {
+export function toInitCapCase(text) {
 	return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
 }
 
@@ -17,7 +18,7 @@ export function toCapitalCase(text) {
 export function toPascalCase(text) {
 	return text
 		.split('-')
-		.map((part) => toCapitalCase(part))
+		.map((part) => toInitCapCase(part))
 		.join('')
 }
 
@@ -59,4 +60,36 @@ export function sortByParts(a, b) {
  */
 export function compareStrings(a, b) {
 	return a > b ? 1 : a < b ? -1 : 0
+}
+
+/**
+ * Generates a unique id from current timestamp
+ *
+ * @returns {String} timestamp based unique id
+ */
+export function uniqueId(prefix = '', separator = '-') {
+	let pair = prefix && prefix.length > 0 ? [prefix] : []
+	pair.push(Date.now().toString(36))
+	return pair.join(separator)
+}
+
+/**
+ * Removes undefined and null values from the input object.
+ *
+ * @param {Object} obj
+ * @returns {Object}
+ */
+export function compact(obj) {
+	return filter((x) => x !== undefined && x !== null, obj)
+}
+
+/**
+ * Converts an input number into it's hexadecimal representation, with optional left padded zeroes based on the `size`
+ *
+ * @param {number} value
+ * @param {number} size
+ * @returns
+ */
+export function toHexString(value, size = 2) {
+	return value.toString(16).padStart(size, '0')
 }

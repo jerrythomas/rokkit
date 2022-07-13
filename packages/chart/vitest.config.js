@@ -7,7 +7,9 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		coverage: {
-			reporter: ['text', 'lcov']
+			reporter: ['text', 'lcov'],
+			all: false,
+			include: ['src']
 		}
 	}
 })

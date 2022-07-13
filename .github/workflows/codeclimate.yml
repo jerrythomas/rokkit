@@ -34,13 +34,8 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
       with:
-        coverageCommand: pnpm coverage
+        coverageCommand: pnpm coverage:lcov
         debug: true
         coverageLocations: |
-          ${{github.workspace}}/packages/base/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/list/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/icons/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/chart/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/markdown/coverage/lcov.info:lcov
-
+          ${{github.workspace}}/lcov.info:lcov
 

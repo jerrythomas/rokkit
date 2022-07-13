@@ -195,11 +195,13 @@ describe('dataframe', () => {
 		const B = data.slice(0, 2).map((d) => pick(['age', 'rank'], d))
 		const AB = data.slice(0, 2).map((d) => pick(['name', 'age', 'rank'], d))
 
-		const res = dataframe(A)
-			.join(dataframe(B))
-			.inner((x, y) => x.rank === y.rank)
-
-		expect(res).toEqual(AB)
+		const res = dataframe(A).join(
+			dataframe(B),
+			(x, y) => x.rank === y.rank,
+			'inner'
+		)
+		expect(res).toBeInstanceOf(DataFrame)
+		expect(res.data).toEqual(AB)
 	})
 
 	it('should join another data set', () => {
@@ -207,11 +209,9 @@ describe('dataframe', () => {
 		const B = data.slice(0, 2).map((d) => pick(['age', 'rank'], d))
 		const AB = data.slice(0, 2).map((d) => pick(['name', 'age', 'rank'], d))
 
-		const res = dataframe(A)
-			.join(B)
-			.inner((x, y) => x.rank === y.rank)
-
-		expect(res).toEqual(AB)
+		const res = dataframe(A).join(B, (x, y) => x.rank === y.rank, 'inner')
+		expect(res).toBeInstanceOf(DataFrame)
+		expect(res.data).toEqual(AB)
 	})
 
 	it('should throw error when invalid data is passed', () => {

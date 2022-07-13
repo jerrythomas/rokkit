@@ -87,11 +87,11 @@ export class DataFrame {
 		}
 	}
 
-	join(df) {
+	join(df, query, opts = {}) {
 		if (df instanceof DataFrame) {
-			return join(this[__data__], df.data)
+			return new DataFrame(join(this[__data__], df.data, query, opts))
 		} else if (Array.isArray(df)) {
-			return join(this[__data__], df)
+			return new DataFrame(join(this[__data__], df, query, opts))
 		}
 		throw new TypeError(`expected DataFrame or Array, got ${typeof df}`)
 	}

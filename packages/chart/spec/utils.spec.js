@@ -9,10 +9,6 @@ import {
 	vi
 } from 'vitest'
 import {
-	uniqueId,
-	initCap,
-	compact,
-	toHexString,
 	swatch,
 	getScale,
 	// getScales,
@@ -37,37 +33,6 @@ describe('Utility functions', () => {
 	})
 	afterEach(() => {
 		vi.useRealTimers()
-	})
-
-	it('should generate a unique id', () => {
-		let value = uniqueId()
-		expect(uniqueId()).toEqual(value)
-		vi.advanceTimersByTime(1)
-		expect(uniqueId()).not.toEqual(value)
-
-		value = uniqueId('xyz')
-		expect(value.split('-')[0]).toEqual('xyz')
-		expect(uniqueId('xyz')).toEqual(value)
-		vi.advanceTimersByTime(1)
-		expect(uniqueId('xyz')).not.toEqual(value)
-	})
-
-	it('should capitalize first letter', () => {
-		expect(initCap('HELLO')).toEqual('Hello')
-		expect(initCap('hello')).toEqual('Hello')
-		expect(initCap('heLLo')).toEqual('Hello')
-		expect(initCap('heLLo world')).toEqual('Hello world')
-	})
-
-	it('should remove undefined and null values', () => {
-		let result = compact({ x: undefined, y: null, fill: 'something' })
-		expect(result).toEqual({ fill: 'something' })
-	})
-
-	it('should convert to hex string', () => {
-		expect(toHexString(15)).toEqual('0f')
-		expect(toHexString(16, 0)).toEqual('10')
-		expect(toHexString(31, 4)).toEqual('001f')
 	})
 
 	it('should create a 2 by 2 swatch', () => {

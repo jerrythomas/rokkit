@@ -1,5 +1,8 @@
 import colors from 'windicss/colors'
 
+/**
+ * @param {string} cssVariable
+ */
 function withOpacity(cssVariable) {
 	return ({ opacityValue }) => {
 		if (opacityValue !== undefined) {

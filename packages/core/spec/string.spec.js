@@ -1,8 +1,15 @@
-import { describe, expect, it } from 'vitest'
-import { toPascalCase, toHyphenCase, sortByParts } from '../src/string'
-// import { names } from './names.js'
+import { describe, expect, it, vi } from 'vitest'
+import {
+	toPascalCase,
+	toHyphenCase,
+	sortByParts,
+	toInitCapCase,
+	uniqueId,
+	toHexString,
+	compact
+} from '../src/string'
 
-describe('Icon.svelte', () => {
+describe('Utility Functions', () => {
 	const hyphenVariations = [
 		['small', 'Small'],
 		['search-circle', 'SearchCircle'],
@@ -28,11 +35,6 @@ describe('Icon.svelte', () => {
 	it.each(pascalCased)('Should convert %s to %s', (input, expected) => {
 		expect(toHyphenCase(input)).toEqual(expected)
 	})
-
-	// it.each(names)('Should convert "%s" to hyphenCase and back', (name) => {
-	// 	const hyphenated = toHyphenCase(name)
-	// 	expect(toPascalCase(hyphenated)).toEqual(name)
-	// })
 
 	it('Should generate ordered list of names', () => {
 		const values = [
@@ -69,5 +71,38 @@ describe('Icon.svelte', () => {
 			'arrows-expand',
 			'circle-down'
 		])
+	})
+
+	it('should generate a unique id', () => {
+		vi.useFakeTimers()
+		let value = uniqueId()
+		expect(uniqueId()).toEqual(value)
+		vi.advanceTimersByTime(1)
+		expect(uniqueId()).not.toEqual(value)
+
+		value = uniqueId('xyz')
+		expect(value.split('-')[0]).toEqual('xyz')
+		expect(uniqueId('xyz')).toEqual(value)
+		vi.advanceTimersByTime(1)
+		expect(uniqueId('xyz')).not.toEqual(value)
+		vi.useRealTimers()
+	})
+
+	it('should capitalize first letter', () => {
+		expect(toInitCapCase('HELLO')).toEqual('Hello')
+		expect(toInitCapCase('hello')).toEqual('Hello')
+		expect(toInitCapCase('heLLo')).toEqual('Hello')
+		expect(toInitCapCase('heLLo world')).toEqual('Hello world')
+	})
+
+	it('should remove undefined and null values', () => {
+		let result = compact({ x: undefined, y: null, fill: 'something' })
+		expect(result).toEqual({ fill: 'something' })
+	})
+
+	it('should convert to hex string', () => {
+		expect(toHexString(15)).toEqual('0f')
+		expect(toHexString(16, 0)).toEqual('10')
+		expect(toHexString(31, 4)).toEqual('001f')
 	})
 })

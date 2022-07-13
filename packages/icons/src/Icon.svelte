@@ -1,5 +1,5 @@
 <script>
-	import { toPascalCase } from './utils.js'
+	import { toPascalCase } from '@sparsh-ui/core'
 	import { iconStore } from './store.js'
 
 	export let size = '1.5em'
