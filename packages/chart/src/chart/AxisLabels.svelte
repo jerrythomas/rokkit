@@ -1,6 +1,4 @@
 <script>
-	// import { offset } from '@observablehq/plot/src/style'
-
 	import { getContext } from 'svelte'
 
 	const axis = getContext('axis')

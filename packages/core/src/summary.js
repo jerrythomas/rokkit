@@ -12,51 +12,18 @@ export const quantiles = (values) => {
 	return { q1, q3, iqr, qr_min: q1 - 1.5 * iqr, qr_max: q1 + 1.5 * iqr }
 }
 
-export function groupBy(...cols) {
-	let opts = {
-		by: cols,
-		exclude: [],
-		include: undefined,
-		agg: []
-	}
+export function groupBy(data, by, opts = {}) {
+	const select = opts.include ? pick(opts.include) : omit(opts.exclude || [])
+	const grouped = data.reduce((acc, cur) => {
+		const group = pick(by, cur)
+		const value = select(cur)
+		const key = JSON.stringify(group)
 
-	const exclude = (...cols) => {
-		opts.exclude = cols
-		return { aggregate, from }
-	}
-	const include = (...cols) => {
-		opts.include = cols
-		return { aggregate, from }
-	}
-
-	const aggregate = (...cols) => {
-		opts.agg = cols
-		return { from }
-	}
-
-	const from = (data) => {
-		const select = opts.include ? pick(opts.include) : omit(opts.exclude)
-
-		let grouped = data.reduce((acc, cur) => {
-			const group = pick(opts.by, cur)
-			const value = select(cur)
-			const key = JSON.stringify(group)
-
-			if (key in acc) acc[key]._df = [...acc[key]._df, value]
-			else acc[key] = { ...group, _df: [value] }
-			return acc
-		}, {})
-		grouped = Object.values(grouped)
-		if (opts.agg.length > 0) {
-			return grouped.map((row) => ({
-				...omit(['_df'], row),
-				...summarize(row._df, ...opts.agg)
-			}))
-		}
-		return grouped
-	}
-
-	return { exclude, include, aggregate, from }
+		if (key in acc) acc[key]._df = [...acc[key]._df, value]
+		else acc[key] = { ...group, _df: [value] }
+		return acc
+	}, {})
+	return Object.values(grouped)
 }
 
 export function summarize(data, ...cols) {
