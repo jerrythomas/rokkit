@@ -1,3 +1,23 @@
+function vector(size, prefix, points) {
+	return prefix + points.map((x) => (x * size) / 10).join(' ')
+}
+function shape(size, list) {
+	return list.map((x) => vector(size, x[0], x.slice(1))).join(' ')
+}
+
+const data = {
+	square: [
+		['M', 1, 0],
+		['A', 1, 1, 0, 0, 0, 1],
+		['V', 9],
+		['A', 1, 1, 0, 0, 0, 1, 10],
+		['H', 9],
+		['A', 1, 1, 0, 0, 0, 10, 9],
+		['V', 1],
+		['A', 1, 1, 0, 0, 0, 9, 0],
+		['Z']
+	]
+}
 export const namedShapes = {
 	square: (s) =>
 		`M${0.1 * s} 0` +

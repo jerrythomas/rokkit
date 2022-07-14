@@ -13,7 +13,7 @@
 		"prepare": "husky install",
 		"upgrade": "pnpm upgrade",
 		"upgrade:all": "turbo run upgrade",
-		"coverage:lcov": "pnpm coverage && lcov-result-merger ./**/coverage/lcov.info lcov.info --prepend-source-files"
+		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
 	},
 	"author": "Jerry Thomas<me@jerrythomas.name",
 	"license": "MIT",
