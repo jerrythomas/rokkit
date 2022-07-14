@@ -1,11 +1,4 @@
 {
-	"include": ["src/**/*.js"],
-	"compilerOptions": {
-		"allowJs": true,
-		"lib": ["es2015"],
-		"declaration": true,
-		"emitDeclarationOnly": true,
-		"outDir": "dist",
-		"declarationMap": true
-	}
+	"extends": "shared-config/svelte-lib.json",
+	"include": ["src/**/*.js", "src/**/*.svelte"]
 }

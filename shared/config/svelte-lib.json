@@ -1,8 +1,7 @@
 {
-	"include": ["src/**/*.js"],
 	"compilerOptions": {
 		"allowJs": true,
-		"lib": ["es2015"],
+		"lib": ["es2020", "dom"],
 		"declaration": true,
 		"emitDeclarationOnly": true,
 		"outDir": "dist",

@@ -36,13 +36,14 @@ importers:
       validators: workspace:1.0.0
       vite: ^2.9.14
       vitest: ~0.12.10
-    devDependencies:
+    dependencies:
       '@sparsh-ui/icons': link:../icons
+      d3-format: 3.1.0
+      d3-shape: 3.1.0
+    devDependencies:
       '@sveltejs/vite-plugin-svelte': 1.0.0-next.49_svelte@3.49.0+vite@2.9.14
       '@testing-library/svelte': 3.1.3_svelte@3.49.0
       '@vitest/ui': 0.12.10
-      d3-format: 3.1.0
-      d3-shape: 3.1.0
       eslint: 8.19.0
       eslint-config-shared: link:../../shared/linter
       shared-config: link:../../shared/config
@@ -250,6 +251,7 @@ importers:
       shared-config: workspace:^1.0.0
       supabase: ^0.5.0
       svelte: ^3.46.6
+      typescript: ^4.7.4
       vite: ^2.9.14
       vitest: '0.18'
       windicss: ^3.5.1
@@ -266,6 +268,7 @@ importers:
       shared-config: link:../../shared/config
       supabase: 0.5.0
       svelte: 3.49.0
+      typescript: 4.7.4
       vite: 2.9.14
       vitest: 0.18.0_mgybkclz2skvtxizyqevjp4toa
       windicss: 3.5.6
@@ -276,6 +279,7 @@ importers:
       eslint: ^8.19.0
       eslint-config-shared: workspace:1.0.0
       svelte: ^3.49.0
+      typescript: ^4.7.4
       vite: ^2.9.14
       vitest: ^0.18.0
       windicss: ^3.5.6
@@ -284,6 +288,7 @@ importers:
       eslint: 8.19.0
       eslint-config-shared: link:../linter
       svelte: 3.49.0
+      typescript: 4.7.4
       vite: 2.9.14
       vitest: 0.18.0
       windicss: 3.5.6
@@ -359,9 +364,9 @@ importers:
       '@sparsh-ui/core': link:../../packages/core
       '@sparsh-ui/icons': link:../../packages/icons
       '@sparsh-ui/list': link:../../packages/list
-      '@sveltejs/adapter-auto': 1.0.0-next.57
+      '@sveltejs/adapter-auto': 1.0.0-next.59
       '@sveltejs/adapter-node': 1.0.0-next.79
-      '@sveltejs/kit': 1.0.0-next.370_svelte@3.49.0+vite@2.9.14
+      '@sveltejs/kit': 1.0.0-next.372_svelte@3.49.0+vite@2.9.14
       '@sveltejs/vite-plugin-svelte': 1.0.0-next.49_svelte@3.49.0+vite@2.9.14
       '@testing-library/svelte': 3.1.3_svelte@3.49.0
       '@types/d3-time-format': 4.0.0
@@ -409,7 +414,7 @@ importers:
       '@sparsh-ui/sentry': link:../../packages/sentry
       '@supabase/supabase-js': 1.35.4
       '@sveltejs/adapter-node': 1.0.0-next.79
-      '@sveltejs/kit': 1.0.0-next.370_svelte@3.49.0+vite@2.9.14
+      '@sveltejs/kit': 1.0.0-next.372_svelte@3.49.0+vite@2.9.14
       eslint: 7.32.0
       eslint-config-shared: link:../../shared/linter
       supabase: 0.5.0
@@ -1233,19 +1238,19 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/adapter-auto/1.0.0-next.57:
-    resolution: {integrity: sha512-OuIt5CZzezKvncs8sPwGAv3MbQRKJ7rqofAfMvBiHO4XEtOUneUSaKQ78o3Td6AH3JNfHJQkTykhLBWUOmQLOg==}
+  /@sveltejs/adapter-auto/1.0.0-next.59:
+    resolution: {integrity: sha512-52X2eOjApECUhxYJugO5sXnBuDT26OKkgmib7fvUO4H8gLB2CpCe8yN+WP7D22XJRO3ItJreEDyYlq7K0o7Opw==}
     dependencies:
-      '@sveltejs/adapter-cloudflare': 1.0.0-next.27
+      '@sveltejs/adapter-cloudflare': 1.0.0-next.28
       '@sveltejs/adapter-netlify': 1.0.0-next.68
-      '@sveltejs/adapter-vercel': 1.0.0-next.60
+      '@sveltejs/adapter-vercel': 1.0.0-next.61
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: true
 
-  /@sveltejs/adapter-cloudflare/1.0.0-next.27:
-    resolution: {integrity: sha512-uon/ciCBalRt8vyeUbEsVjDBHzNC61lTtmqIJi9GbvTm8i4xbHoyJ97+wO9qug75jFg63pjT51sL7b+Cb1MFYw==}
+  /@sveltejs/adapter-cloudflare/1.0.0-next.28:
+    resolution: {integrity: sha512-2vkHZ5s8yo0URjo1ZTShHuoa3QmCfkeGOk8apZkneOPVAjiG3R3+h4C0lGu29lIO4beT6uzYXcq/3ox0LtS91g==}
     dependencies:
       '@cloudflare/workers-types': 3.14.1
       esbuild: 0.14.49
@@ -1267,8 +1272,8 @@ packages:
       tiny-glob: 0.2.9
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.0-next.60:
-    resolution: {integrity: sha512-Xq+gaxQ2iKvP9G+7C8+r4xScMOUEhBouDEFyLCOzKrwmd+JWBzCl1N0qKeKm71MbR7l4YJn8J+e7105j8x+RXA==}
+  /@sveltejs/adapter-vercel/1.0.0-next.61:
+    resolution: {integrity: sha512-eqL1JovBPtM1h6MFoFHup2MSyR38jUPpZvU2qIozAZJ4MThiOwT6Jyd89znJ3vaSSpRXaQ+GEBs+XDSTpQKJBA==}
     dependencies:
       '@vercel/nft': 0.20.1
       esbuild: 0.14.49
@@ -1277,8 +1282,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.370_svelte@3.49.0+vite@2.9.14:
-    resolution: {integrity: sha512-HAQtw8IjXs9yOPWKpuwpGgDT8x6Dgqm14NmFx0emF52vo5wn3tQzu0cBx299Po2RdRgfSDFKrNqVSlL1hVTHcA==}
+  /@sveltejs/kit/1.0.0-next.372_svelte@3.49.0+vite@2.9.14:
+    resolution: {integrity: sha512-pcnDfV8YQwj7d/SCaKWT7yPBrmgkPH9Dc4UIeX8yTLXDu8IPzI5kukEOy4xf6LjyJsuSGPy1Ch91ULugtVIdAQ==}
     engines: {node: '>=16.9'}
     hasBin: true
     peerDependencies:
@@ -2182,7 +2187,6 @@ packages:
   /d3-path/3.0.1:
     resolution: {integrity: sha512-gq6gZom9AFZby0YLduxT1qmrp4xpBA1YZr19OI717WIdKE2OM5ETq5qrHLb301IgxhLwcuxvGZVLeeWc/k1I6w==}
     engines: {node: '>=12'}
-    dev: true
 
   /d3-polygon/3.0.1:
     resolution: {integrity: sha512-3vbA7vXYwfe1SYhED++fPUQlWSYTTGmFmQiany/gdbiWgU/iEyQzyymwL9SkJjFFuCS4902BSzewVGsHHmHtXg==}
@@ -2227,7 +2231,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       d3-path: 3.0.1
-    dev: true
 
   /d3-time-format/4.1.0:
     resolution: {integrity: sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==}
@@ -5469,7 +5472,6 @@ packages:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /uglify-js/3.16.2:
     resolution: {integrity: sha512-AaQNokTNgExWrkEYA24BTNMSjyqEXPSfhqoS0AxmHkCJ4U+Dyy5AvbGV/sqxuxficEfGGoX3zWw9R7QpLFfEsg==}
