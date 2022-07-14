@@ -7,7 +7,9 @@ import {
 	grouped,
 	byName,
 	byAgeNameDesc,
-	byAgeDescNameAsc
+	byAgeDescNameAsc,
+	rawMissing,
+	filled
 } from './fixtures/data'
 
 describe('dataframe', () => {
@@ -282,5 +284,15 @@ describe('dataframe', () => {
 			isGrouped: false,
 			hasSurrogatePK: false
 		})
+	})
+
+	it('Should fill missing groups', () => {
+		let df = dataframe(rawMissing)
+			.groupByUsing({ exclude: ['country'] }, 'country')
+			.fillMissingGroups(['gender'])
+
+		expect(df.data).toEqual(filled)
+		df = dataframe(rawMissing).fillMissingGroups(['gender'])
+		expect(df.data).toEqual(rawMissing)
 	})
 })

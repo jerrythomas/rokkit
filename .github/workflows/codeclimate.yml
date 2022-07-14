@@ -39,6 +39,5 @@ jobs:
       with:
         coverageCommand: pnpm coverage:lcov
         debug: true
-        coverageLocations: |
-          ${{github.workspace}}/lcov.info:lcov
+        coverageLocations: lcov.info:lcov
 
