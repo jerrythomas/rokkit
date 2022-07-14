@@ -1,8 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import { sum, min, max, mean, deviation } from 'd3-array'
-import { data, grouped, exclusions, inclusions } from './fixtures/data'
+import {
+	data,
+	grouped,
+	exclusions,
+	inclusions,
+	missing,
+	filled
+} from './fixtures/data'
 
-import { counter, quantiles, groupBy, summarize } from '../src/summary'
+import {
+	counter,
+	quantiles,
+	groupBy,
+	summarize,
+	fillMissingGroups
+} from '../src/summary'
+import { omit, pick } from 'ramda'
 
 describe('aggregators', () => {
 	const custom = (values) => ({
@@ -87,5 +101,25 @@ describe('aggregators', () => {
 			country_count: 12,
 			rank_std: 3.605551275463989
 		})
+	})
+
+	it('Should fill missing groups', () => {
+		expect(() => fillMissingGroups([])).toThrowError(
+			/cols must be an array of column names/
+		)
+
+		expect(() => fillMissingGroups([], [])).toThrowError(
+			/cols must contain at least one column/
+		)
+
+		let result = fillMissingGroups(missing, ['gender'])
+		expect(result).toEqual(filled)
+		result = fillMissingGroups(missing, ['gender'], { defaults: { count: 0 } })
+		let withValues = filled.map((d) => ({
+			...d,
+			_df: d._df.map((x) => ({ ...x, count: x.count === null ? 0 : x.count }))
+		}))
+
+		expect(result).toEqual(withValues)
 	})
 })

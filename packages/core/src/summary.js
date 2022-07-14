@@ -1,6 +1,16 @@
 import { quantile } from 'd3-array'
-import { omit, pick } from 'ramda'
-import { deriveAggregators } from './infer'
+import {
+	omit,
+	pick,
+	mergeLeft,
+	mergeRight,
+	zipObj,
+	map,
+	difference,
+	uniq,
+	pipe
+} from 'ramda'
+import { deriveAggregators, deriveDataTypes } from './infer'
 
 export const counter = (values) => values.length
 
@@ -19,8 +29,13 @@ export function groupBy(data, by, opts = {}) {
 		const value = select(cur)
 		const key = JSON.stringify(group)
 
-		if (key in acc) acc[key]._df = [...acc[key]._df, value]
-		else acc[key] = { ...group, _df: [value] }
+		let _df = Object.keys(value).length > 0 ? [value] : []
+
+		if (key in acc) {
+			acc[key]._df = [...acc[key]._df, ..._df]
+		} else {
+			acc[key] = { ...group, _df }
+		}
 		return acc
 	}, {})
 	return Object.values(grouped)
@@ -53,4 +68,47 @@ export function summarize(data, ...cols) {
 		})
 		.reduce((acc, curr) => ({ ...acc, ...curr }), {})
 	return result
+}
+
+export function getGeneratorForMissingRows(data, cols, opts = {}) {
+	// let subset = data.map((d) => d._df).reduce((acc, d) => [...acc, ...d], [])
+	// let fieldsOfType = deriveDataTypes(subset)
+	let columns = opts.cols || Object.keys(data[0])
+
+	let remaining = columns
+		.filter((x) => !cols.includes(x))
+		.reduce((acc, x) => ({ ...acc, [x]: null }), {})
+
+	const imputedValues = { ...remaining, ...(opts.defaults || {}) }
+	//mergeRight(
+	// zipObj(fieldsOfType.numeric, Array(fieldsOfType.numeric.length).fill(0)),
+	//pick(fieldsOfType.string, opts.defaults)
+	//)
+
+	const groups = pipe(map(pick(cols)), uniq)(data)
+
+	const generator = pipe(
+		map(pick(cols)),
+		uniq,
+		difference(groups),
+		map(mergeLeft(imputedValues))
+	)
+
+	return generator
+}
+
+export function fillMissingGroups(data, cols, opts) {
+	if (!Array.isArray(cols))
+		throw new TypeError('cols must be an array of column names')
+
+	if (cols.length == 0) throw new Error('cols must contain at least one column')
+
+	let subset = data.map((d) => d._df).reduce((acc, x) => acc.concat(x), [])
+
+	const generateRows = getGeneratorForMissingRows(subset, cols, opts)
+
+	return data.map((d) => ({
+		...d,
+		_df: [...d._df, ...generateRows(d._df)]
+	}))
 }

@@ -3,7 +3,7 @@ import { omit } from 'ramda'
 import { deriveColumns, deriveSortableColumns } from './infer'
 import { __data__, __cols__, __opts__, __pkey__, __subdf__ } from './symbols'
 import { join } from './join'
-import { groupBy, summarize } from './summary'
+import { groupBy, summarize, fillMissingGroups } from './summary'
 
 const defaultOpts = {
 	missingColumns: false
@@ -112,6 +112,16 @@ export class DataFrame {
 
 	groupBy(...cols) {
 		return new DataFrame(groupBy(this[__data__], cols))
+	}
+
+	fillMissingGroups(cols, opts) {
+		if (this[__opts__].isGrouped) {
+			return new DataFrame(fillMissingGroups(this[__data__], cols, opts))
+		}
+		return this
+	}
+	groupByUsing(opts = {}, ...cols) {
+		return new DataFrame(groupBy(this[__data__], cols, opts))
 	}
 
 	summarize(...cols) {

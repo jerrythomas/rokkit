@@ -40,3 +40,16 @@ export function deriveColumns(data) {
 		data.map((row) => Object.keys(row)).reduce((p, n) => new Set([...p, ...n]))
 	)
 }
+
+export function deriveDataTypes(data) {
+	let dataTypes = Object.keys(data[0])
+		.map((field) => ({
+			field,
+			type: data.map((d) => d[field]).some(isNaN) ? 'string' : 'numeric'
+		}))
+		.reduce(
+			(acc, cur) => ({ ...acc, [cur.type]: [...acc[cur.type], cur.field] }),
+			{ string: [], numeric: [] }
+		)
+	return dataTypes
+}

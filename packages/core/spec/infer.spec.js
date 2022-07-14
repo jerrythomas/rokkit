@@ -1,16 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { data } from './fixtures/sample'
+import { data } from './fixtures/data'
 import { counter } from '../src/summary'
 import { ascending, descending } from 'd3-array'
 
 import {
 	deriveColumns,
 	deriveAggregators,
-	deriveSortableColumns
+	deriveSortableColumns,
+	deriveDataTypes
 } from '../src/infer'
 
 describe('utils', () => {
-	const aggCols = [['fired'], ['fired', 'hits'], ['fired', 'hits', 'name']]
+	const aggCols = [['score'], ['score', 'time'], ['score', 'time', 'name']]
 
 	it('should derive column names', () => {
 		expect(deriveColumns([])).toEqual([])
@@ -50,6 +51,14 @@ describe('utils', () => {
 
 		agg.map((col) => {
 			expect(col.aggregator([1, 2, 3, 4])).toEqual(4)
+		})
+	})
+
+	it('should infer string and numeric columns', () => {
+		const dataTypes = deriveDataTypes(data)
+		expect(dataTypes).toEqual({
+			string: ['country', 'name'],
+			numeric: ['age', 'score', 'time', 'rank', 'level']
 		})
 	})
 })

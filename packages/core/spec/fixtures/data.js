@@ -78,7 +78,7 @@ export const data = [
 		name: 'Takehide Sato',
 		age: 34,
 		score: 40,
-		time: '3:28',
+		time: 208,
 		rank: 9,
 		level: 1
 	},
@@ -230,3 +230,58 @@ export const inclusions = {
 		{ country: 'Brazil', rank: 12, _df: [data[11]] }
 	].map((d) => ({ ...d, _df: d._df.map((x) => pick(['name', 'age'], x)) }))
 }
+
+export const rawMissing = [
+	{ country: 'South Korea', gender: 'Male', count: 1 },
+	{ country: 'Germany', gender: 'Female', count: 1 },
+	{ country: 'Japan' },
+	{
+		country: 'Brazil',
+		gender: 'Female',
+		count: 1
+	},
+	{ country: 'Brazil', gender: 'Male', count: 1 }
+]
+export const missing = [
+	{ country: 'South Korea', _df: [{ gender: 'Male', count: 1 }] },
+	{ country: 'Germany', _df: [{ gender: 'Female', count: 1 }] },
+	{ country: 'Japan', _df: [] },
+	{
+		country: 'Brazil',
+		_df: [
+			{ gender: 'Female', count: 1 },
+			{ gender: 'Male', count: 1 }
+		]
+	}
+]
+
+export const filled = [
+	{
+		country: 'South Korea',
+		_df: [
+			{ gender: 'Male', count: 1 },
+			{ gender: 'Female', count: null }
+		]
+	},
+	{
+		country: 'Germany',
+		_df: [
+			{ gender: 'Female', count: 1 },
+			{ gender: 'Male', count: null }
+		]
+	},
+	{
+		country: 'Japan',
+		_df: [
+			{ gender: 'Male', count: null },
+			{ gender: 'Female', count: null }
+		]
+	},
+	{
+		country: 'Brazil',
+		_df: [
+			{ gender: 'Female', count: 1 },
+			{ gender: 'Male', count: 1 }
+		]
+	}
+]
