@@ -1,4 +1,4 @@
-name: code-climate-reporter
+name: code-climate
 
 on:
   push:
@@ -16,14 +16,14 @@ jobs:
         pnpm-version: [7.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-    - uses: danielealbano/lcov-action@v1
-      with:
-        remove_patterns: 3rdparties,benchmarks
+
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Install lcov
+      run: sudo apt-get install -y lcov
     - name: Intall pnpm
       uses: pnpm/action-setup@v2
       with:
