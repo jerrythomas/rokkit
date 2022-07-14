@@ -16,6 +16,9 @@ jobs:
         pnpm-version: [7.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
+    - uses: danielealbano/lcov-action@v1
+      with:
+        remove_patterns: 3rdparties,benchmarks
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2

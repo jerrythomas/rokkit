@@ -2,6 +2,7 @@
 	"name": "shared-config",
 	"version": "1.0.0",
 	"main": "index.js",
+	"type": "module",
 	"license": "MIT",
 	"scripts": {
 		"format": "prettier --write --plugin-search-dir=. .",
