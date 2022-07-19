@@ -1,9 +1,10 @@
 <script>
+	import { createEventDispatcher } from 'svelte'
+
 	import { Icon } from '@sparsh-ui/icons'
+	import { defaultFields } from './constants'
 	import List from './List.svelte'
 	import ListItem from './ListItem.svelte'
-
-	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -13,9 +14,12 @@
 	export let items = []
 	export let expanded = false
 
-	export let component = ListItem
-	export let key = 'id'
+	export let component = null
+	// export let key = 'id'
 	export let selected = null
+	export let fields
+
+	$: fields = { ...defaultFields, ...fields }
 
 	function toggle() {
 		expanded = !expanded
@@ -27,7 +31,7 @@
 
 <span
 	class:expanded
-	on:click|stopPropagation={toggle}
+	on:click={toggle}
 	class="flex flex-shrink-0 items-center w-full leading-loose h-10 border-b px-4 min-h-12 justify-between select-none cursor-pointer collapsible"
 >
 	{#if icon}
@@ -42,5 +46,5 @@
 </span>
 
 {#if expanded}
-	<List bind:items bind:selected {key} {component} on:select on:change />
+	<List bind:items bind:selected {fields} {component} on:select on:change />
 {/if}

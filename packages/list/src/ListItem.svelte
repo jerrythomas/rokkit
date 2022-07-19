@@ -1,14 +1,18 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	import { defaultFields } from './constants'
 
 	const dispatch = createEventDispatcher()
 
 	export let item
 	export let component = null
+	export let fields
+
+	$: fields = { ...defaultFields, ...fields }
 
 	$: isObject = item && typeof item === 'object'
 	$: hasIcon = isObject && 'iconURL' in item
-	$: label = isObject ? item.title || item.label || item.name : item || ''
+	$: label = isObject ? item[fields.text] : item || ''
 </script>
 
 {#if component}
