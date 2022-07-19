@@ -1,7 +1,1 @@
----
-tabWidth: 2
-useTabs: true
-semi: false
-singleQuote: true
-trailingComma: none
-svelteSortOrder: options-scripts-markup-styles
+../../.prettierrc.yaml

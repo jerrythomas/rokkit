@@ -10,3 +10,4 @@ coverage
 .eslintcache
 lcov.info
 .idea
+build

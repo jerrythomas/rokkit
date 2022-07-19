@@ -1,23 +1,27 @@
 <script>
-	import Collapsible from './Collapsible.svelte'
 	import { onMount } from 'svelte'
+	import { defaultFields } from './constants'
+	import Collapsible from './Collapsible.svelte'
 
 	export let data = []
 	export let component
-	export let groupKey = 'key'
-	export let itemKey = 'id'
 	export let selected
 	export let autoClose = false
-	export let lookup = {}
+	export let fields
 
+	$: fields = { ...defaultFields, ...fields }
 	let previous = null
 	let expanded = {}
 
 	onMount(() => {
-		expanded = Object.keys(lookup).reduce(
-			(obj, k) => ({ ...obj, [k]: false }),
+		expanded = data.reduce(
+			(acc, d) => ({ ...acc, [d[fields.groupId]]: false }),
 			{}
 		)
+		// expanded = Object.keys(lookup).reduce(
+		// 	(obj, k) => ({ ...obj, [k]: false }),
+		// 	{}
+		// )
 	})
 
 	function collapseOthers(event) {
@@ -33,13 +37,13 @@
 <accordion class="flex flex-col flex-shrink-0 w-full">
 	{#each data as parent}
 		<Collapsible
-			id={parent[groupKey]}
-			bind:name={parent.name}
-			bind:items={parent.data}
+			id={parent[fields.groupId]}
+			bind:name={parent[fields.text]}
+			bind:items={parent[fields.data]}
 			bind:selected
-			bind:expanded={expanded[parent[groupKey]]}
-			key={itemKey}
-			icon={parent.icon}
+			bind:expanded={expanded[parent[fields.groupId]]}
+			key={fields.itemId}
+			icon={parent[fields.icon]}
 			{component}
 			on:expand={collapseOthers}
 			on:select
