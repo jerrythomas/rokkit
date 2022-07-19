@@ -4,10 +4,10 @@
 	"pipeline": {
 		"prepublishOnly": {},
 		"build": {
-			"dependsOn": ["test"],
+			"dependsOn": ["test:ci"],
 			"outputs": [".svelte-kit/**", "dist/**"]
 		},
-		"test": {
+		"test:ci": {
 			"outputs": [],
 			"dependsOn": []
 		},

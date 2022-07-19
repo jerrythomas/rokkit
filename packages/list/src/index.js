@@ -1,5 +1,3 @@
-export { list } from './lib/list'
-
 export { default as ListItem } from './ListItem.svelte'
 export { default as List } from './List.svelte'
 export { default as Searchable } from './Searchable.svelte'

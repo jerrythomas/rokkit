@@ -1,0 +1,112 @@
+// Vitest Snapshot v1
+
+exports[`Collapsible.svelte > Should collapse and expand on click > expanded 1`] = `
+<body>
+  <div>
+    <span
+      class="flex flex-shrink-0 items-center w-full leading-loose h-10 border-b px-4 min-h-12 justify-between select-none cursor-pointer collapsible expanded"
+    >
+       
+      <p>
+        Hello
+      </p>
+       
+      <svg
+        class="icon svelte-10m412s"
+        fill="none"
+        height="1.5em"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>
+          Collapse
+        </title>
+        <path
+          d="M19 9l-7 7-7-7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+     
+    <ul
+      class="flex flex-col w-full list"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`Collapsible.svelte > Should render with name 1`] = `
+<body>
+  <div>
+    <span
+      class="flex flex-shrink-0 items-center w-full leading-loose h-10 border-b px-4 min-h-12 justify-between select-none cursor-pointer collapsible"
+    >
+       
+      <p>
+        Header
+      </p>
+       
+      <svg
+        class="icon svelte-10m412s"
+        fill="none"
+        height="1.5em"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>
+          Expand
+        </title>
+        <path
+          d="M9 5l7 7-7 7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+     
+    
+  </div>
+</body>
+`;
+
+exports[`Collapsible.svelte > Should render without params 1`] = `
+<body>
+  <div>
+    <span
+      class="flex flex-shrink-0 items-center w-full leading-loose h-10 border-b px-4 min-h-12 justify-between select-none cursor-pointer collapsible"
+    >
+       
+      <p>
+        ?
+      </p>
+       
+      <svg
+        class="icon svelte-10m412s"
+        fill="none"
+        height="1.5em"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        width="1.5em"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>
+          Expand
+        </title>
+        <path
+          d="M9 5l7 7-7 7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+     
+    
+  </div>
+</body>
+`;
