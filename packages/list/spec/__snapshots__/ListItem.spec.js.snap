@@ -1,0 +1,11 @@
+// Vitest Snapshot v1
+
+exports[`ListItem.svelte > should render 1`] = `
+<body>
+  <div>
+     
+    
+    
+  </div>
+</body>
+`;

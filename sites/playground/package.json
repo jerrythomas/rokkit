@@ -11,9 +11,9 @@
 		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-		"test": "vitest run",
+		"test:ci": "vitest run",
 		"test:ui": "vitest run ui",
-		"test:watch": "vitest",
+		"test": "vitest",
 		"e2e": "playwright test",
 		"coverage": "vitest run --coverage",
 		"upgrade": "pnpm upgrade"

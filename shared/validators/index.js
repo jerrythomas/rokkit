@@ -1,3 +1,9 @@
+export {
+	stdMock,
+	stdMockRestore,
+	consoleMock,
+	consoleMockRestore
+} from './mock'
 export const toIncludeAll = (received, expected) => {
 	const result = expected.every((v) => received.includes(v))
 	if (!result) {
@@ -28,4 +34,8 @@ export function getSubscribedData(store) {
 	})
 	unsubscribe()
 	return result
+}
+
+export function getComponentProp(component, prop) {
+	return component.$$.ctx[component.$$.props[prop]]
 }

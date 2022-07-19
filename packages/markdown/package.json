@@ -16,9 +16,9 @@
 		"prepublishOnly": "tsc",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"test": "vitest run",
+		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
-		"test:watch": "vitest",
+		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"release": "release-it --preRelease=beta",
 		"upgrade": "pnpm upgrade"
@@ -29,12 +29,12 @@
 		"./index.d.ts": "./dist/index.d.ts"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^1.0.0-next.49",
+		"@sveltejs/vite-plugin-svelte": "^1.0.1",
 		"@testing-library/svelte": "^3.1.3",
 		"@types/marked": "^4.0.3",
 		"@types/prismjs": "^1.26.0",
 		"@vitest/ui": "~0.12.10",
-		"eslint": "^8.19.0",
+		"eslint": "^8.20.0",
 		"eslint-config-shared": "workspace:1.0.0",
 		"marked": "^4.0.18",
 		"prismjs": "^1.28.0",
@@ -42,7 +42,7 @@
 		"svelte": "^3.49.0",
 		"typescript": "~4.6.4",
 		"validators": "workspace:1.0.0",
-		"vite": "^2.9.14",
+		"vite": "^3.0.1",
 		"vitest": "~0.12.10"
 	}
 }

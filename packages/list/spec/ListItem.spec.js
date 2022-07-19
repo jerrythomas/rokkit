@@ -9,5 +9,6 @@ describe('ListItem.svelte', () => {
 	it('should render', () => {
 		const { container } = render(ListItem)
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
 	})
 })

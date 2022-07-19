@@ -1,20 +1,21 @@
 <script>
-	import Collapsed from './icons/Collapsed.svelte'
-	import Expanded from './icons/Expanded.svelte'
+	import { Icon } from '@sparsh-ui/icons'
 	import List from './List.svelte'
+	import ListItem from './ListItem.svelte'
+
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
 
 	export let id
-	export let icon
-	export let name
-	export let items
+	export let icon = null
+	export let text = '?'
+	export let items = []
 	export let expanded = false
 
-	export let component
+	export let component = ListItem
 	export let key = 'id'
-	export let selected
+	export let selected = null
 
 	function toggle() {
 		expanded = !expanded
@@ -22,23 +23,21 @@
 			dispatch('expand', { id })
 		}
 	}
-
-	// $: console.log(expanded, items)
 </script>
 
 <span
 	class:expanded
-	on:click={toggle}
+	on:click|stopPropagation={toggle}
 	class="flex flex-shrink-0 items-center w-full leading-loose h-10 border-b px-4 min-h-12 justify-between select-none cursor-pointer collapsible"
 >
 	{#if icon}
-		<svelte:component this={icon} />
+		<Icon name={icon} />
 	{/if}
-	{name}
+	<p>{text}</p>
 	{#if expanded}
-		<Expanded />
+		<Icon name="chevron-down" title="Collapse" />
 	{:else}
-		<Collapsed />
+		<Icon name="chevron-right" title="Expand" />
 	{/if}
 </span>
 
