@@ -1,8 +1,9 @@
 <script>
+	import { Icon } from '@sparsh-ui/icons'
 	import List from './List.svelte'
 	import ListItem from './ListItem.svelte'
 	import Slider from './Slider.svelte'
-	import DropDownIcon from './icons/DropDownIcon.svelte'
+	// import DropDownIcon from './icons/DropDownIcon.svelte'
 
 	export let data
 	export let component = null
@@ -29,7 +30,8 @@
 		<span class="flex flex-grow">
 			<ListItem {component} item={selected} />
 		</span>
-		<DropDownIcon />
+		<Icon name="selector" />
+		<!-- <DropDownIcon /> -->
 	</div>
 
 	{#if opened}

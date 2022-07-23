@@ -1,0 +1,21 @@
+// Vitest Snapshot v1
+
+exports[`List.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <ul
+      class="flex flex-col w-full list"
+    />
+  </div>
+</body>
+`;
+
+exports[`List.svelte > should render 1`] = `
+<body>
+  <div>
+    <ul
+      class="flex flex-col w-full list"
+    />
+  </div>
+</body>
+`;

@@ -1,0 +1,21 @@
+// Vitest Snapshot v1
+
+exports[`Accordion.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <accordion
+      class="flex flex-col flex-shrink-0 w-full"
+    />
+  </div>
+</body>
+`;
+
+exports[`Accordion.svelte > should render 1`] = `
+<body>
+  <div>
+    <accordion
+      class="flex flex-col flex-shrink-0 w-full"
+    />
+  </div>
+</body>
+`;

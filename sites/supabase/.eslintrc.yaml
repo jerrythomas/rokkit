@@ -1,11 +1,1 @@
-root: true
-extends:
-  - 'eslint:recommended'
-  - 'prettier'
-parserOptions:
-  sourceType: 'module'
-  ecmaVersion: 2021
-env:
-  browser: true
-  es2021: true
-  node: true
+../../.eslintrc.yaml
