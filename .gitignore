@@ -10,3 +10,5 @@ coverage
 .eslintcache
 lcov.info
 .idea
+build
+playwright-report

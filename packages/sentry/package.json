@@ -11,9 +11,9 @@
 		"prepublishOnly": "tsc",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"test": "vitest run",
+		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
-		"test:watch": "vitest",
+		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"release": "release-it --preRelease=beta"
 	},
@@ -63,7 +63,7 @@
 		"supabase": "^0.5.0",
 		"svelte": "^3.46.6",
 		"typescript": "^4.7.4",
-		"vite": "^2.9.14",
+		"vite": "3",
 		"vitest": "0.18",
 		"windicss": "^3.5.1"
 	},
