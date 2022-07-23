@@ -3,5 +3,7 @@ export const defaultFields = {
 	data: 'data',
 	icon: 'icon',
 	groupId: 'id',
-	itemId: 'id'
+	itemId: 'id',
+	url: 'url',
+	component: 'component'
 }
