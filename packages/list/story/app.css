@@ -30,6 +30,19 @@ body,
 	@apply bg-orange-200 text-black;
 }
 
+/* list {
+	@apply border border-red-500;
+} */
+/*list node {
+	@apply border border-green-500;
+}
+box {
+	@apply bg-yellow-100;
+}
+box i {
+	@apply border-white;
+}*/
+
 @media (prefers-color-scheme: light) {
 	:root {
 		color: #213547;

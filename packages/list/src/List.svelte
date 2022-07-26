@@ -1,5 +1,5 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
+	import { onMount, createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text } from './items'
 
@@ -8,26 +8,35 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
-	export let selected = null
 
+	let active = []
+
+	onMount(() => {
+		active = Array.from({ length: items.length }, (_) => false)
+	})
+
+	let previous = null
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
+	$: style = $$props.class || 'list'
 
-	function handleClick(item) {
-		selected = item[fields.id]
-		dispatch('select', item)
+	function handleClick(index) {
+		if (previous !== null) active[previous] = false
+		active[index] = true
+		previous = index
+		dispatch('click', items[index])
 	}
 </script>
 
-<ul class="flex flex-col w-full list">
-	{#each items as item}
+<ul class="flex flex-col w-full flex-shrink-0 select-none {style}">
+	{#each items as item, index}
 		{@const component = item[fields.component]
 			? using[item[fields.component]] || using.default
 			: using.default}
 		<li
-			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer leading-loose w-full gap-2 item"
-			class:selected={item[fields.id] === selected}
-			on:click={() => handleClick(item)}
+			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer leading-loose w-full gap-2 select-none item"
+			class:active={active[index]}
+			on:click={() => handleClick(index)}
 		>
 			<svelte:component
 				this={component}

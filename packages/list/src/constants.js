@@ -2,8 +2,7 @@ export const defaultFields = {
 	text: 'text',
 	data: 'data',
 	icon: 'icon',
-	groupId: 'id',
-	itemId: 'id',
+	id: 'id',
 	url: 'url',
 	component: 'component'
 }

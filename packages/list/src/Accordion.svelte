@@ -1,42 +1,59 @@
 <script>
 	import { onMount } from 'svelte'
 	import { defaultFields } from './constants'
-	import Collapsible from './Collapsible.svelte'
+	import List from './List.svelte'
+	import Collapsible from './items/Collapsible.svelte'
 
-	export let data = []
-	export let component
+	export let items = []
+	export let fields = {}
+	export let using = {}
 	export let selected
 	export let autoClose = false
-	export let fields
-
-	$: fields = { ...defaultFields, ...fields }
 	let previous = null
 	let expanded = {}
 
+	$: fields = { ...defaultFields, ...fields }
+	$: using = { collapsible: Collapsible, ...using }
+
 	onMount(() => {
-		expanded = data.reduce(
-			(acc, d) => ({ ...acc, [d[fields.groupId]]: false }),
-			{}
-		)
-		// expanded = Object.keys(lookup).reduce(
-		// 	(obj, k) => ({ ...obj, [k]: false }),
-		// 	{}
-		// )
+		if (autoClose) {
+			items = items.map((item) => ({ ...item, collapsed: true }))
+		}
+
+		// expanded = items.reduce((acc, d) => ({ ...acc, [d[fields.id]]: false }), {})
 	})
 
-	function collapseOthers(event) {
+	function handleToggle(event) {
+		console.log(event)
 		if (autoClose) {
-			if (previous && previous !== event.detail.id) {
-				expanded[previous] = false
+			if (previous && previous != event.detail && !previous.collapsed) {
+				previous.collapsed = true
 			}
-			previous = event.detail.id
+			previous = event.detail
 		}
 	}
 </script>
 
-<accordion class="flex flex-col flex-shrink-0 w-full">
-	{#each data as parent}
-		<Collapsible
+<accordion class="flex flex-col flex-shrink-0 w-full select-none">
+	{#each items as item}
+		<svelte:component
+			this={using.collapsible}
+			bind:content={item}
+			{fields}
+			on:toggle={handleToggle}
+		/>
+		{#if item[fields.data] && !item.collapsed}
+			<List
+				bind:items={item[fields.data]}
+				{fields}
+				{using}
+				bind:selected
+				on:click
+				on:change
+			/>
+		{/if}
+
+		<!-- <Collapsible
 			id={parent[fields.groupId]}
 			bind:name={parent[fields.text]}
 			bind:items={parent[fields.data]}
@@ -48,6 +65,6 @@
 			on:expand={collapseOthers}
 			on:select
 			on:change
-		/>
+		/> -->
 	{/each}
 </accordion>
