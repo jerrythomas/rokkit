@@ -1,0 +1,42 @@
+{
+	"name": "stories",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"package": "svelte-kit package",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync",
+		"check": "svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
+		"test": "playwright test",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.22.2",
+		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/kit": "next",
+		"@unocss/core": "^0.44.5",
+		"@unocss/preset-icons": "^0.44.5",
+		"@unocss/preset-uno": "^0.44.5",
+		"@unocss/reset": "^0.44.5",
+		"@unocss/transformer-directives": "^0.44.5",
+		"eslint": "^8.16.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"prettier": "^2.6.2",
+		"prettier-plugin-svelte": "^2.7.0",
+		"svelte": "^3.44.0",
+		"svelte-check": "^2.7.1",
+		"typescript": "^4.7.4",
+		"unocss": "^0.44.5",
+		"vite": "^3.0.0"
+	},
+	"dependencies": {
+		"@fontsource/montserrat-alternates": "^4.5.9",
+		"@sparsh-ui/icons": "workspace:^1.0.0",
+		"@sparsh-ui/list": "workspace:^1.0.0"
+	},
+	"type": "module"
+}

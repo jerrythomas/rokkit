@@ -31,7 +31,7 @@
 				items: [
 					{ name: 'Panda', url: '/1', component: 'Link' },
 					{ name: 'Monkey' },
-					{ name: 'Viper', icon: 'i-carbon-sun', component: 'Link' }
+					{ name: 'Viper', icon: 'sun', component: 'Link' }
 				],
 				fields: { text: 'name' },
 				using: all

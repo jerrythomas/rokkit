@@ -1,0 +1,47 @@
+@import '@fontsource/montserrat-alternates';
+@import '@fontsource/montserrat-alternates/100.css';
+@import '@fontsource/montserrat-alternates/200.css';
+@import '@fontsource/montserrat-alternates/300.css';
+@import '@fontsource/montserrat-alternates/400.css';
+@import '@fontsource/montserrat-alternates/500.css';
+@import '@fontsource/montserrat-alternates/700.css';
+@import './palette.css';
+
+body {
+	@apply h-screen w-screen flex;
+	font-family: 'Montserrat Alternates';
+}
+
+header {
+	font-family: 'Montserrat Alternates';
+}
+.sidebar {
+	@apply border-r border-gray-300;
+}
+.menu .item {
+	@apply px-3 border-b border-orange-200 py-1;
+}
+.menu .item:hover {
+	@apply bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-black;
+}
+.menu .item.active {
+	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
+}
+
+.list .item.active {
+	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
+}
+
+content > div > div > .list {
+	@apply border gap-1 p-1 border-gray-400;
+}
+content > div > div > .list .item {
+	@apply border border-gray-400 px-2;
+}
+
+accordion collapsible {
+	@apply px-4 py-2 border-b bg-skin-200 border-skin-300;
+}
+accordion .list .item {
+	@apply px-4 py-2;
+}
