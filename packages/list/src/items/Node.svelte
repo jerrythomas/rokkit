@@ -9,7 +9,7 @@
 	export let linesVisible
 
 	function toggle() {
-		content.collapsed = !content.collapsed
+		content.isOpen = !content.isOpen
 	}
 </script>
 
@@ -23,10 +23,10 @@
 
 	{#if hasChildren}
 		<span class="flex flex-col w-4 h-full items-center justify-center">
-			{#if content.collapsed}
-				<Icon size="100%" name="folder" title="Expand" />
+			{#if content.isOpen}
+				<Icon size="100%" name="node-open" title="Collapse" />
 			{:else}
-				<Icon size="100%" name="folder-open" title="Collapse" />
+				<Icon size="100%" name="node-closed" title="Expand" />
 			{/if}
 		</span>
 	{/if}

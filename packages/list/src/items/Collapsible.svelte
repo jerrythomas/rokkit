@@ -7,7 +7,7 @@
 	export let fields
 
 	function toggle() {
-		content.collapsed = !content.collapsed
+		content.isOpen = !content.isOpen
 		dispatch('toggle', content)
 	}
 </script>
@@ -27,9 +27,9 @@
 		<Icon name={content[fields.icon]} title={content[fields.text]} />
 	{/if}
 	<p class="flex flex-grow">{content[fields.text]}</p>
-	{#if content.collapsed}
-		<Icon name="chevron-right" title="Expand" />
-	{:else}
+	{#if content.isOpen}
 		<Icon name="chevron-down" title="Collapse" />
+	{:else}
+		<Icon name="chevron-right" title="Expand" />
 	{/if}
 </collapsible>

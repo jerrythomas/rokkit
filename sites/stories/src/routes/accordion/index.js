@@ -7,8 +7,7 @@ const variants = [
 				{ id: 1, text: 'Alpha', data: [{ text: 'One' }] },
 				{ id: 2, text: 'Beta', data: [{ text: 'One' }, { text: 'Two' }] },
 				{ id: 3, text: 'Delta' }
-			],
-			linesVisible: false
+			]
 		}
 	}
 ]

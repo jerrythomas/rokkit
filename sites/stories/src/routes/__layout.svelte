@@ -2,34 +2,13 @@
 	import 'uno.css';
 	import '@unocss/reset/tailwind.css';
 	import '../app.css';
-	import '../config';
+	import { menu } from '../config';
 	import { List, Link } from '@sparsh-ui/list';
 	import { page } from '$app/stores';
 
-	let items = [
-		{
-			text: 'Home',
-			url: '/'
-		},
-		{
-			text: 'List',
-			url: '/list'
-		},
-		{
-			text: 'Tree',
-			url: '/tree'
-		},
-		{
-			text: 'Nested List',
-			url: '/nested'
-		},
-		{
-			text: 'Accordion',
-			url: '/accordion'
-		}
-	];
 	const fields = { id: 'url' };
 	const using = { default: Link };
+	$: activeItem = menu.filter((m) => m.url == $page.url.pathname)[0];
 </script>
 
 <aside class="flex flex-col flex-shrink-0 flex-grow-0 w-80 sidebar">
@@ -38,7 +17,7 @@
 	>
 		Components
 	</header>
-	<List {items} {using} {fields} activeId={$page.url.pathname} class="menu" />
+	<List items={menu} {using} {fields} {activeItem} class="menu" />
 </aside>
 <main class="flex flex-grow bg-grey-300">
 	<slot />

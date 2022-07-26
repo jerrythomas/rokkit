@@ -5,7 +5,7 @@
 	export let variants;
 	let props;
 
-	$: variants[3].props.using = { Link };
+	$: variants[2].props.using = { Link };
 </script>
 
 <StoryWrapper component={'List'} {variants} bind:props>

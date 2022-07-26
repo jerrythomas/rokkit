@@ -1,7 +1,6 @@
 <script>
 	import { Node } from './items'
 	import { defaultFields } from './constants'
-	import { position } from './pos'
 
 	export let items = []
 	export let fields = {}
@@ -11,7 +10,9 @@
 
 	$: using = { default: Node, ...using }
 	$: fields = { ...defaultFields, ...fields }
-	$: nodeTypes = items.map((_, index) => position(index, items.length))
+	$: nodeTypes = items.map((_, index) =>
+		index === items.length - 1 ? 'last' : 'middle'
+	)
 </script>
 
 <list class="flex flex-col w-full">
@@ -31,7 +32,7 @@
 			types={[...connectors, nodeTypes[index]]}
 			{linesVisible}
 		/>
-		{#if hasChildren && !content.collapsed}
+		{#if hasChildren && content.isOpen}
 			<svelte:self
 				items={content[fields.data]}
 				{fields}
