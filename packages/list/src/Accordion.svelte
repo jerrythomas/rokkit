@@ -1,5 +1,4 @@
 <script>
-	import { onMount } from 'svelte'
 	import { defaultFields } from './constants'
 	import List from './List.svelte'
 	import Collapsible from './items/Collapsible.svelte'
@@ -7,29 +6,20 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
-	export let selected
 	export let autoClose = false
-	let previous = null
-	let expanded = {}
+
+	let activeItem = null
+	let activeGroup = null
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { collapsible: Collapsible, ...using }
 
-	onMount(() => {
-		if (autoClose) {
-			items = items.map((item) => ({ ...item, collapsed: true }))
-		}
-
-		// expanded = items.reduce((acc, d) => ({ ...acc, [d[fields.id]]: false }), {})
-	})
-
 	function handleToggle(event) {
-		console.log(event)
 		if (autoClose) {
-			if (previous && previous != event.detail && !previous.collapsed) {
-				previous.collapsed = true
+			if (activeGroup && activeGroup !== event.detail && activeGroup.isOpen) {
+				activeGroup.isOpen = false
 			}
-			previous = event.detail
+			activeGroup = event.detail
 		}
 	}
 </script>
@@ -42,29 +32,14 @@
 			{fields}
 			on:toggle={handleToggle}
 		/>
-		{#if item[fields.data] && !item.collapsed}
+		{#if item.isOpen}
 			<List
 				bind:items={item[fields.data]}
+				bind:activeItem
 				{fields}
 				{using}
-				bind:selected
 				on:click
-				on:change
 			/>
 		{/if}
-
-		<!-- <Collapsible
-			id={parent[fields.groupId]}
-			bind:name={parent[fields.text]}
-			bind:items={parent[fields.data]}
-			bind:selected
-			bind:expanded={expanded[parent[fields.groupId]]}
-			key={fields.itemId}
-			icon={parent[fields.icon]}
-			{component}
-			on:expand={collapseOthers}
-			on:select
-			on:change
-		/> -->
 	{/each}
 </accordion>

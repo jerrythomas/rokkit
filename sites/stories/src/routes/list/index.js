@@ -1,13 +1,8 @@
 const variants = [
 	{
-		title: 'Simple Array',
-		summary: 'A List can be created by passing an array if strings. ',
-		props: { items: ['Alpha', 'Beta', 'Delta'] }
-	},
-	{
 		title: 'Object Array',
 		summary:
-			'You can also pass an array of objects with a text attribute containing the values to be displayed.',
+			'Pass an array of objects with a text attribute containing the values to be displayed.',
 		props: { items: [{ text: 'One' }, { text: 'Two' }, { text: 'Three' }] }
 	},
 	{
