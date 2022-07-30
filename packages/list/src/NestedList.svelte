@@ -7,6 +7,7 @@
 	export let using = {}
 	export let types = []
 	export let linesVisible = true
+	export let rtl = false
 
 	$: using = { default: Node, ...using }
 	$: fields = { ...defaultFields, ...fields }
@@ -15,7 +16,7 @@
 	)
 </script>
 
-<list class="flex flex-col w-full">
+<list class="flex flex-col w-full" class:rtl>
 	{#each items as content, index}
 		{@const type = nodeTypes[index] === 'middle' ? 'line' : 'empty'}
 		{@const hasChildren = fields.data in content}
@@ -31,6 +32,7 @@
 			{hasChildren}
 			types={[...connectors, nodeTypes[index]]}
 			{linesVisible}
+			{rtl}
 		/>
 		{#if hasChildren && content.isOpen}
 			<svelte:self

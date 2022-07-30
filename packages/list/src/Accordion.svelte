@@ -1,6 +1,6 @@
 <script>
 	import { defaultFields } from './constants'
-	import List from './List.svelte'
+	import ListItems from './ListItems.svelte'
 	import Collapsible from './items/Collapsible.svelte'
 
 	export let items = []
@@ -24,6 +24,13 @@
 	}
 </script>
 
+<!-- {#if editable}
+	<ListActions
+		on:delete={deleteSelection}
+		on:clear={clearSelection}
+		on:add={addItem}
+	/>
+{/if} -->
 <accordion class="flex flex-col flex-shrink-0 w-full select-none">
 	{#each items as item}
 		<svelte:component
@@ -33,7 +40,7 @@
 			on:toggle={handleToggle}
 		/>
 		{#if item.isOpen}
-			<List
+			<ListItems
 				bind:items={item[fields.data]}
 				bind:activeItem
 				{fields}

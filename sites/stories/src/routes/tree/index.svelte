@@ -1,9 +1,9 @@
 <script>
-	import StoryWrapper from '$lib/StoryWrapper.svelte';
-	import { Tree } from '@sparsh-ui/list';
+	import StoryWrapper from '$lib/StoryWrapper.svelte'
+	import { Tree } from '@sparsh-ui/list'
 
-	export let variants;
-	let props;
+	export let variants
+	let props
 </script>
 
 <StoryWrapper component={'Tree'} {variants} bind:props>

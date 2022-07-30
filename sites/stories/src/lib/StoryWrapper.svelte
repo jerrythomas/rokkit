@@ -1,11 +1,11 @@
 <script>
-	export let variants = [];
-	export let component;
-	export let props;
+	export let variants = []
+	export let component
+	export let props
 
-	let active = 0;
-	$: summary = variants[active].summary;
-	$: props = variants[active].props;
+	let active = 0
+	$: summary = variants[active].summary
+	$: props = variants[active].props
 	// $: console.log(variants, summary);
 </script>
 
@@ -21,7 +21,9 @@
 		</select>
 	</h1>
 	<content class="flex flex-row flex-grow">
-		<div class="flex flex-grow flex-col items-center p-4 bg-gray-100 border-gray-300 border-r ">
+		<div
+			class="flex flex-grow flex-col items-center p-4 bg-gray-100 border-gray-300 border-r "
+		>
 			<slot name="component" />
 			<article class="flex w-100 p-4">
 				{summary}

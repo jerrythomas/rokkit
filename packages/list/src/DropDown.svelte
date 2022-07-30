@@ -1,6 +1,6 @@
 <script>
 	import { Icon } from '@sparsh-ui/icons'
-	import List from './List.svelte'
+	import ListItems from './ListItems.svelte'
 	import Text from './items/Text.svelte'
 	import Slider from './Slider.svelte'
 	// import DropDownIcon from './icons/DropDownIcon.svelte'
@@ -36,7 +36,7 @@
 
 	{#if opened}
 		<Slider class="h-60 absolute top-12 w-full z-1">
-			<List
+			<ListItems
 				bind:items={data}
 				{key}
 				{component}

@@ -1,41 +1,49 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from './constants'
-	import { Text } from './items'
-
-	const dispatch = createEventDispatcher()
+	// import ListActions from './ListActions.svelte'
+	import ListItems from './ListItems.svelte'
 
 	export let items = []
 	export let fields = {}
 	export let using = {}
 	export let activeItem = null
+	export let searchable = false
+	// export let editable = false
 
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
-	$: style = $$props.class || 'list'
-
-	function handleClick(item) {
-		activeItem = item
-		dispatch('click', item)
+	let search
+	let filtered
+	function addItem() {
+		items = [...items, {}]
+		activeItem = items[items.length - 1]
 	}
+	function deleteSelection() {
+		if (activeItem) activeItem.isDeleted = true
+	}
+	function clearSelection() {
+		activeItem = null
+	}
+
+	$: filtered = items //items.filter((item) => item[fields.text].includes(search))
 </script>
 
-<ul class="flex flex-col w-full flex-shrink-0 select-none {style}">
-	{#each items as item}
-		{@const component = item[fields.component]
-			? using[item[fields.component]] || using.default
-			: using.default}
-		<li
-			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer leading-loose w-full gap-2 select-none item"
-			class:active={activeItem === item}
-			on:click={() => handleClick(item)}
-		>
-			<svelte:component
-				this={component}
-				bind:content={item}
-				{fields}
-				on:change
+<list>
+	{#if searchable}
+		<search>
+			<input
+				type="search"
+				bind:value={search}
+				class="rounded-full px-3 leading-loose"
+				placeholder="search"
 			/>
-		</li>
-	{/each}
-</ul>
+		</search>
+	{/if}
+	<!-- {#if editable}
+		<ListActions
+			on:delete={deleteSelection}
+			on:clear={clearSelection}
+			on:add={addItem}
+		/>
+	{/if} -->
+	<scroll class="flex flex-col h-full overflow-scroll">
+		<ListItems bind:items={filtered} {fields} {using} {activeItem} />
+	</scroll>
+</list>

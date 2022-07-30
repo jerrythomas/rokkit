@@ -1,14 +1,14 @@
 <script>
-	import StoryWrapper from '$lib/StoryWrapper.svelte';
-	import { Connector } from '@sparsh-ui/list';
+	import StoryWrapper from '$lib/StoryWrapper.svelte'
+	import { Connector } from '@sparsh-ui/list'
 
 	let variants = [
 		{ title: 'last', props: { type: 'last' } },
 		{ title: 'middle', props: { type: 'middle' } },
 		{ title: 'line', props: { type: 'line' } },
 		{ title: 'empty', props: { type: 'empty' } }
-	];
-	let props;
+	]
+	let props
 </script>
 
 <StoryWrapper component={'Connector'}>
