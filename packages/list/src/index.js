@@ -1,3 +1,9 @@
+export * from './input'
+
+export { default as Form } from './Form.svelte'
+export { default as DataList } from './DataList.svelte'
+export { default as FieldSet } from './FieldSet.svelte'
+
 export { default as List } from './List.svelte'
 export { default as Tree } from './Tree.svelte'
 export { default as Accordion } from './Accordion.svelte'

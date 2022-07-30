@@ -25,7 +25,7 @@
 	$: filtered = items //items.filter((item) => item[fields.text].includes(search))
 </script>
 
-<list>
+<list class={$$restProps.class}>
 	{#if searchable}
 		<search>
 			<input

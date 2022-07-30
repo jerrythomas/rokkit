@@ -7,7 +7,7 @@
 	export let fields
 	export let add = false
 	export let closeable = false
-	export let limit
+	// export let limit
 	export let label
 
 	let item = value[0]
@@ -19,7 +19,7 @@
 		{#if label}
 			<label for={id}>{label}</label>
 		{/if}
-		<Tabs bind:items={value} {limit} {add} {closeable} bind:activeItem={item} />
+		<Tabs bind:items={value} {add} {closeable} bind:activeItem={item} />
 		<content>
 			<FormFields bind:data={item} {fields} />
 		</content>
