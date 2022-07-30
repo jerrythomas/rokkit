@@ -17,8 +17,7 @@
 		items[index].isClosed = true
 	}
 
-	$: console.log('tabItems', items)
-	$: filtered = items //items.filter((item) => !item.isClosed)
+	$: filtered = items.filter((item) => !item.isClosed)
 </script>
 
 {#each filtered as item, index}

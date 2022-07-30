@@ -1,5 +1,5 @@
 <script>
-	import { Form, FormFields, DataList } from '@sparsh-ui/core'
+	import { Form, FormFields, DataList } from '@sparsh-ui/list'
 
 	let data = {
 		name: 'hello',
@@ -20,11 +20,6 @@
 		{ key: 'age', type: 'number', props: { label: 'Age' } },
 		{ key: 'male', type: 'checkbox', props: { label: 'Male?' } },
 		{
-			key: 'type',
-			type: 'text',
-			props: { label: 'Input Type', list: 'input-types', autocomplete: 'on' }
-		},
-		{
 			key: 'data',
 			type: 'array',
 			props: {
@@ -32,7 +27,11 @@
 					{ key: 'name', type: 'text' },
 					{ key: 'url', type: 'text' },
 					{ key: 'icon', type: 'text' },
-					{ key: 'component', type: 'text' }
+					{
+						key: 'component',
+						type: 'text',
+						props: { list: 'input-types', autocomplete: 'on' }
+					}
 				],
 				closeable: true,
 				add: true
@@ -48,7 +47,7 @@
 	<Form>
 		<DataList
 			id="input-types"
-			values={['text', 'json', 'number', 'checkbox']}
+			values={['text', 'json', 'number', 'checkbox', 'Link']}
 		/>
 		<FormFields bind:data {fields} />
 	</Form>

@@ -4,9 +4,9 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let icon
+	export let icon = null
 	export let label
-	export let active
+	export let active = false
 
 	export let closeable = false
 </script>

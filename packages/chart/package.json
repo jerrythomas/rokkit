@@ -34,8 +34,8 @@
 		"shared-config": "workspace:^1.0.0",
 		"svelte": "^3.49.0",
 		"typescript": "^4.7.4",
-		"vite": "^3.0.3",
-		"vitest": "0.19"
+		"vite": "^3.0.4",
+		"vitest": "~0.19.1"
 	},
 	"dependencies": {
 		"@sparsh-ui/core": "workspace:^1.0.0",

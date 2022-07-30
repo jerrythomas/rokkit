@@ -41,12 +41,11 @@
 		"svelte": "^3.49.0",
 		"typescript": "~4.6.4",
 		"validators": "workspace:1.0.0",
-		"vite": "^3.0.3",
-		"vitest": "0.19"
+		"vite": "^3.0.4",
+		"vitest": "~0.19.1"
 	},
 	"dependencies": {
 		"@lukeed/uuid": "^2.0.0",
-		"@sparsh-ui/icons": "workspace:^1.0.0",
 		"d3-array": "^3.2.0",
 		"ramda": "^0.28.0"
 	}
