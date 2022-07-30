@@ -1,11 +1,11 @@
 <script>
-	import StoryWrapper from '$lib/StoryWrapper.svelte';
-	import { Accordion } from '@sparsh-ui/list';
+	import StoryWrapper from '$lib/StoryWrapper.svelte'
+	import { Accordion } from '@sparsh-ui/list'
 
-	export let variants;
-	let props;
-	let using = {};
-	let autoClose = true;
+	export let variants
+	let props
+	let using = {}
+	let autoClose = true
 </script>
 
 <StoryWrapper component={'Accordion'} {variants} bind:props>

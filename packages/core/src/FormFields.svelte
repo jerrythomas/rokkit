@@ -1,0 +1,27 @@
+<script>
+	import { inputTypes } from './input'
+
+	export let data
+	export let fields = []
+	export let using
+
+	$: using = { ...inputTypes, ...using }
+</script>
+
+{#each fields as { key, type, props }}
+	{@const component = using[type]}
+	{@const inputProps = { label: key, ...props }}
+
+	{#if component}
+		<svelte:component
+			this={component}
+			id={key}
+			bind:value={data[key]}
+			{...inputProps}
+		/>
+	{:else}
+		<error>
+			Unknown field type '{type}'. Add custom fields with the 'using' property.
+		</error>
+	{/if}
+{/each}

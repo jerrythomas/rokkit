@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+		"svelte.svelte-vscode",
+		"ardenivanov.svelte-intellisense",
+    "antfu.browse-lite",
+    "antfu.iconify",
+    "antfu.unocss",
+    "antfu.vite",
+    "antfu.where-am-i",
+    "lokalise.i18n-ally",
+    "dbaeumer.vscode-eslint",
+    "tabnine.tabnine-vscode",
+		"esbenp.prettier-vscode",
+    "usernamehw.errorlens"
+  ]
+}

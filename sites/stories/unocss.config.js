@@ -20,11 +20,13 @@ export default defineConfig({
 			serif: ['Montserrat Alternates', 'ui-serif', 'sans-serif'],
 			body: ['Montserrat Alternates', 'ui-serif', 'sans-serif']
 		},
+		shortcuts: {
+			error: 'red'
+		},
 		colors: {
-			// info: colors.blue,
-			// error: colors.red,
-			// warn: colors.yellow,
-			// pass: colors.green,
+			info: 'blue',
+			warn: '.yellow',
+			pass: '.green',
 			primary: {
 				DEFAULT: 'hsl(var(--primary-500))',
 				50: 'hsl(var(--primary-50))',

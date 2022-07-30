@@ -24,7 +24,7 @@
 	on:hover
 	on:mouseover
 	on:focus
-	on:click
+	on:click|stopPropagation
 >
 	<title>{title}</title>
 	<svelte:component this={icon} />

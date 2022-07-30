@@ -1,11 +1,11 @@
 <script>
-	import StoryWrapper from '$lib/StoryWrapper.svelte';
-	import { List, Link } from '@sparsh-ui/list';
+	import StoryWrapper from '$lib/StoryWrapper.svelte'
+	import { List, Link } from '@sparsh-ui/list'
 
-	export let variants;
-	let props;
+	export let variants
+	let props
 
-	$: variants[2].props.using = { Link };
+	$: variants[2].props.using = { Link }
 </script>
 
 <StoryWrapper component={'List'} {variants} bind:props>

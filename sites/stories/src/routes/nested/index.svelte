@@ -1,10 +1,10 @@
 <script>
-	import StoryWrapper from '$lib/StoryWrapper.svelte';
-	import { NestedList, Node, Text, Collapsible } from '@sparsh-ui/list';
+	import StoryWrapper from '$lib/StoryWrapper.svelte'
+	import { NestedList, Node, Text, Collapsible } from '@sparsh-ui/list'
 
-	export let variants;
-	let props;
-	let using = { default: Node, collapsible: Collapsible };
+	export let variants
+	let props
+	let using = { default: Node, collapsible: Collapsible }
 </script>
 
 <StoryWrapper component={'NestedList'} {variants} bind:props>

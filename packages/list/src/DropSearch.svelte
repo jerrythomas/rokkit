@@ -1,8 +1,7 @@
 <script>
 	import { Icon } from '@sparsh-ui/icons'
-	import List from './List.svelte'
+	import List from './ListItems.svelte'
 	import Slider from './Slider.svelte'
-	// import DropDownIcon from './icons/DropDownIcon.svelte'
 
 	export let data
 	export let component = null

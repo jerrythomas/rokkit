@@ -5,7 +5,9 @@ import {
 	Folder,
 	FolderOpen,
 	ChevronDown,
-	ChevronRight
+	ChevronRight,
+	ChevronLeft,
+	XCircle
 } from '@sparsh-ui/icons/heroicons/outline'
 
 import NodeClosed from './NodeCollapsed.svelte'
@@ -18,5 +20,8 @@ iconStore.set({
 	ChevronDown,
 	ChevronRight,
 	NodeOpen,
-	NodeClosed
+	NodeClosed,
+	Previous: ChevronLeft,
+	Next: ChevronRight,
+	Close: XCircle
 })

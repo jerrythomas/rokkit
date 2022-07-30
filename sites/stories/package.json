@@ -2,6 +2,7 @@
 	"name": "stories",
 	"version": "0.0.1",
 	"scripts": {
+		"prebuild": "[[ $CI = true ]] && npx pnpm install -r --store=node_modules/.pnpm-store || echo skiping pnpm install",
 		"dev": "vite dev",
 		"build": "vite build",
 		"package": "svelte-kit package",
@@ -27,6 +28,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
+		"sass": "^1.54.0",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"typescript": "^4.7.4",
@@ -35,6 +37,7 @@
 	},
 	"dependencies": {
 		"@fontsource/montserrat-alternates": "^4.5.9",
+		"@sparsh-ui/core": "workspace:^1.0.0",
 		"@sparsh-ui/icons": "workspace:^1.0.0",
 		"@sparsh-ui/list": "workspace:^1.0.0"
 	},
