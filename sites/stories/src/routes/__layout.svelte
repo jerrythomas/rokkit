@@ -1,9 +1,10 @@
 <script>
 	import 'uno.css'
 	import '@unocss/reset/tailwind.css'
+
 	import '../app.scss'
 	import { menu } from '../config'
-	import { List, Link } from '@sparsh-ui/list'
+	import { List, Link } from '@sparsh-ui/core'
 	import { page } from '$app/stores'
 
 	const fields = { id: 'url' }
@@ -15,6 +16,6 @@
 	<header class="flex flex-col justify-center">Components</header>
 	<List items={menu} {using} {fields} {activeItem} class="menu" />
 </aside>
-<main class="flex flex-grow bg-grey-300">
+<main class="flex flex-col flex-grow bg-grey-300">
 	<slot />
 </main>

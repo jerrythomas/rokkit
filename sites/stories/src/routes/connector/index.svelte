@@ -1,6 +1,6 @@
 <script>
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { Connector } from '@sparsh-ui/list'
+	import { Connector } from '@sparsh-ui/core'
 
 	let variants = [
 		{ title: 'last', props: { type: 'last' } },
@@ -11,13 +11,25 @@
 	let props
 </script>
 
-<StoryWrapper component={'Connector'}>
-	<div class="flex w-60 border px-4 py-2 border-gray-400" slot="component">
+<content>
+	<div class="flex w-60 border px-4 py-2 gap-2 border-gray-400">
 		{#each variants as { title, props }}
-			<div class="flex-1">
+			<div class="flex flex-col items-center">
 				<h1 class="flex-start">{title}</h1>
-				<Connector {...props} />
+				<span class="w-4 h-8 border border-gray-200">
+					<Connector {...props} />
+				</span>
 			</div>
 		{/each}
 	</div>
-</StoryWrapper>
+	<div class="flex w-60 border px-4 py-2 gap-2 border-gray-400">
+		{#each variants as { title, props }}
+			<div class="flex flex-col  items-center">
+				<h1 class="flex-start">{title}</h1>
+				<span class="w-4 h-8 border border-gray-200">
+					<Connector {...props} rtl />
+				</span>
+			</div>
+		{/each}
+	</div>
+</content>
