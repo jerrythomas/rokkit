@@ -15,6 +15,10 @@
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
+		"@iconify-json/carbon": "^1.1.7",
+		"@iconify-json/clarity": "^1.1.4",
+		"@iconify-json/eva": "^1.1.2",
+		"@iconify-json/fluent": "^1.1.14",
 		"@playwright/test": "^1.22.2",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
@@ -39,7 +43,7 @@
 		"@fontsource/montserrat-alternates": "^4.5.9",
 		"@sparsh-ui/core": "workspace:^1.0.0",
 		"@sparsh-ui/icons": "workspace:^1.0.0",
-		"@sparsh-ui/list": "workspace:^1.0.0"
+		"ramda": "^0.28.0"
 	},
 	"type": "module"
 }

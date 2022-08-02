@@ -1,5 +1,5 @@
 <script>
-	import { Form, FormFields, DataList } from '@sparsh-ui/list'
+	import { Form, FormFields, DataList } from '@sparsh-ui/core'
 
 	let data = {
 		name: 'hello',

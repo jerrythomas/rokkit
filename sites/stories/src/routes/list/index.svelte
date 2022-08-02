@@ -1,6 +1,6 @@
 <script>
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { List, Link } from '@sparsh-ui/list'
+	import { List, Link } from '@sparsh-ui/core'
 
 	export let variants
 	let props

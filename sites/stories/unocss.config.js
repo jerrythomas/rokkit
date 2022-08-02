@@ -3,25 +3,19 @@ import presetUno from '@unocss/preset-uno'
 import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
 import { extractorSvelte } from '@unocss/core'
+import { iconShortcuts } from '@sparsh-ui/core/themes'
 // const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 export default defineConfig({
-	// safelist: [
-	// 	shades.map((i) => `bg-primary-${i}`),
-	// 	shades.map((i) => `bg-secondary-${i}`),
-	// 	shades.map((i) => `bg-accent-${i}`),
-	// 	shades.map((i) => `bg-skin-${i}`),
-	// 	shades.map((i) => `border-skin-${i}`),
-	// 	shades.map((i) => `text-skin-${i}`)
-	// ],
+	safelist: [...Object.keys(iconShortcuts)],
+	shortcuts: {
+		...iconShortcuts
+	},
 	theme: {
 		fontFamily: {
 			mono: ['Victor-Mono', 'monospace'],
 			serif: ['Montserrat Alternates', 'ui-serif', 'sans-serif'],
 			body: ['Montserrat Alternates', 'ui-serif', 'sans-serif']
-		},
-		shortcuts: {
-			error: 'red'
 		},
 		colors: {
 			info: 'blue',

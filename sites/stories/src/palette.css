@@ -9,6 +9,7 @@
 		--skin-hue: 233;
 		--skin-saturation: 11.9%;
 
+
 		--text-white: var(--skin-hue), var(--skin-saturation), 100%;
 		--text-black: var(--skin-hue), var(--skin-saturation), 20%;
 
