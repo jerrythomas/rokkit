@@ -28,5 +28,5 @@
 	class:pass
 	class:fail
 	class:disabled={readOnly}
-	on:click|preventDefault={toggle}
+	on:click|stopPropagation={toggle}
 />

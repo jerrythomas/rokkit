@@ -2,8 +2,29 @@ body {
 	@apply h-screen w-screen flex font-body;
 }
 input, textarea, select {
-	@apply leading-loose px-2 border border-skin-300  outline-primary-400;
+	@apply leading-loose px-2 border border-skin-300 outline-primary-400;
 }
+
+.readOnly {
+	@apply text-skin-400;
+}
+.pass {
+	@apply text-emerald-600;
+}
+.fail {
+	@apply text-red-500;
+}
+
+input.readOnly, textarea.readOnly, select.readOnly{
+	@apply outline-gray-400;
+}
+input.pass, textarea.pass, select.pass{
+	@apply outline-emerald-600 border-emerald-600;
+}
+input.fail, textarea.fail, select.fail{
+	@apply outline-red-500 border-red-600;
+}
+
 input[type="number"] {
 	@apply text-right;
 }
@@ -111,44 +132,35 @@ list {
 // 	}
 // }
 
-// tabs {
-// 		@apply gap-1 items-center;
+tabs {
+		@apply gap-1 items-center;
 
-// 		// tab:last-child:after,
-// 		// tab:first-child:before,
-// 		// tab.active:before,
-// 		// tab.active:after {
-// 		// 	content: "";
-// 		// 	@apply w-2 h-2 bg-skin-100;
-// 		// }
+		tab {
+			@apply px-2 leading-loose flex bg-skin-100 border border-b-0 border-secondary-200 rounded-t-md;
 
-// 		tab {
-// 			@apply px-2 leading-loose flex bg-skin-100 rounded-t-md;
+			p {
+				@apply flex-grow px-2 text-center;
+			}
+		}
 
-// 			p {
-// 				@apply flex-grow px-2 text-center;
-// 			}
-// 		}
+		tab.active {
+			@apply bg-secondary-200  z-1;
+		}
+}
+tab-edit {
+	tabs {
+		@apply border-b  border-secondary-200;
+	}
+	content {
+		@apply p-4 pt-1 border border-skin-200;
+	}
+}
 
-// 		tab.active {
-// 			@apply bg-secondary-200  z-1;
-// 		}
-// 		// tab.active:before,
-// 		// tab.active:after {
-// 		// 	@apply bg-secondary-500;
-// 		// }
-// }
-// tab-edit {
-// 	// label {
-// 	// 	@apply mb-2;
-// 	// }
-// 	tabs {
-// 		@apply border-b  border-secondary-200;
-// 	}
-// 	content {
-// 		@apply p-4 pt-1 border border-skin-200;
-// 	}
-// }
+rating {
+	@apply text-secondary-400;
+}
+
+
 
 // form {
 // 	@apply p-4 gap-2;

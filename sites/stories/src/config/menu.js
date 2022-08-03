@@ -1,4 +1,11 @@
+import { inputTypes } from '@sparsh-ui/core'
+
+const inputs = Object.keys(inputTypes).map((type) => ({
+	text: 'input ' + type,
+	url: '/input/' + type
+}))
 export const menu = [
+	...inputs,
 	{
 		text: 'Home',
 		url: '/'

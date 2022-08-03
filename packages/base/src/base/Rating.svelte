@@ -19,7 +19,7 @@
 	$: stars = [...Array(max).keys()].map((i) => i < value)
 </script>
 
-<rating {id} class="flex cursor-pointer select-none">
+<rating {id} class="flex cursor-pointer select-none" class:readOnly>
 	{#each stars as selected, index}
 		{#if selected}
 			<icon class={stateIcons.filled} on:click={() => handleClick(index)} />

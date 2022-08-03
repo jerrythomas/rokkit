@@ -18,6 +18,7 @@
 			id={key}
 			bind:value={data[key]}
 			{...inputProps}
+			on:change
 		/>
 	{:else}
 		<error>
