@@ -10,23 +10,26 @@
 
 	let text
 
-	function convert(input) {
+	function convert() {
 		try {
-			const parsed = JSON.parse(input)
+			const parsed = JSON.parse(text)
 			if (parsed && typeof parsed === 'object') {
 				value = parsed
 			}
 		} catch (err) {}
-		return value
 	}
-	onMount(async () => {
-		text = JSON.stringify(value, null, 2)
-	})
 
-	$: value = convert(text)
+	$: text = JSON.stringify(value, null, 2)
 </script>
 
 <div class="flex flex-col gap-1">
 	<label for={id}>{label}</label>
-	<textarea {id} bind:value={text} {rows} {required} {readOnly} />
+	<textarea
+		{id}
+		bind:value={text}
+		{rows}
+		{required}
+		{readOnly}
+		on:change={convert}
+	/>
 </div>

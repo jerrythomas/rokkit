@@ -4,8 +4,8 @@
 
 	export let items = []
 	export let fields = {}
-	export let add = false
-	export let closeable = false
+	export let allowAdd = false
+	export let allowClose = false
 	export let activeItem = items[0]
 
 	function addTab() {
@@ -15,8 +15,8 @@
 </script>
 
 <tabs class="flex flex-row flex-grow select-none cursor-pointer">
-	<TabItems {items} {fields} {closeable} bind:activeItem on:close />
-	{#if add}
+	<TabItems {items} {fields} {allowClose} bind:activeItem on:close />
+	{#if allowAdd}
 		<TabItem label="+" on:click={addTab} />
 	{/if}
 </tabs>

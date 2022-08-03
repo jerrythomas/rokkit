@@ -6,7 +6,7 @@
 
 	export let items = []
 	export let fields = {}
-	export let closeable = false
+	export let allowClose = false
 	export let activeItem = items[0]
 
 	function activate(item) {
@@ -25,7 +25,7 @@
 	<TabItem
 		icon={item[fields.icon]}
 		{label}
-		{closeable}
+		{allowClose}
 		active={activeItem == item}
 		on:click={() => activate(item)}
 		on:close={() => closeTab(index)}

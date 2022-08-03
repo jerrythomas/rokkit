@@ -5,6 +5,8 @@
 	export let value
 	export let fields
 	export let label
+
+	$: console.log('object', fields)
 </script>
 
 {#if typeof value === 'object'}
