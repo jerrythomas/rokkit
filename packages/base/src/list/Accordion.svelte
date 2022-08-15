@@ -31,22 +31,26 @@
 		on:add={addItem}
 	/>
 {/if} -->
-<accordion class="flex flex-col flex-shrink-0 w-full select-none">
+<accordion
+	class="flex flex-col flex-shrink-0 w-full select-none {$$restProps.class}"
+>
 	{#each items as item}
-		<svelte:component
-			this={using.collapsible}
-			bind:content={item}
-			{fields}
-			on:toggle={handleToggle}
-		/>
-		{#if item.isOpen}
-			<ListItems
-				bind:items={item[fields.data]}
-				bind:activeItem
+		<group>
+			<svelte:component
+				this={using.collapsible}
+				bind:content={item}
 				{fields}
-				{using}
-				on:click
+				on:toggle={handleToggle}
 			/>
-		{/if}
+			{#if item.isOpen}
+				<ListItems
+					bind:items={item[fields.data]}
+					bind:activeItem
+					{fields}
+					{using}
+					on:click
+				/>
+			{/if}
+		</group>
 	{/each}
 </accordion>

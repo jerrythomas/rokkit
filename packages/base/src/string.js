@@ -1,4 +1,7 @@
 import { filter } from 'ramda'
+import ShortUniqueId from 'short-unique-id'
+
+export const shortId = new ShortUniqueId()
 /**
  * Capitalizes the first letter of input string
  *

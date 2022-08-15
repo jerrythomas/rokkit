@@ -7,9 +7,33 @@ import { iconShortcuts } from '@sparsh-ui/core/themes'
 // const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 export default defineConfig({
-	safelist: [...Object.keys(iconShortcuts)],
+	safelist: [
+		...Object.keys(iconShortcuts),
+		'i-iconoir-input-field',
+		'i-carbon-tree-view',
+		'i-carbon:tree-view-alt',
+		'i-carbon:list-dropdown'
+	],
 	shortcuts: {
-		...iconShortcuts
+		...iconShortcuts,
+		'bg-error': 'bg-red-100',
+		'text-error': 'text-red-800',
+		'border-error': 'border-red-200',
+		'bg-info': 'bg-blue-100',
+		'text-info': 'text-blue-800',
+		'border-info': 'border-blue-200',
+		'bg-warn': 'bg-orange-100',
+		'text-warn': 'text-orange-800',
+		'border-warn': 'border-orange-200',
+		'bg-pass': 'bg-green-100',
+		'text-pass': 'text-green-800',
+		'border-pass': 'border-green-200',
+		'bg-disabled': 'bg-skin-100',
+		'text-disabled': 'text-skin-300',
+		'border-disabled': 'border-skin-300',
+		'item-selected': 'border-l-3 border-secondary',
+		'item-hover':
+			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast'
 	},
 	theme: {
 		fontFamily: {
@@ -18,9 +42,6 @@ export default defineConfig({
 			body: ['Montserrat Alternates', 'ui-serif', 'sans-serif']
 		},
 		colors: {
-			info: 'blue',
-			warn: '.yellow',
-			pass: '.green',
 			primary: {
 				DEFAULT: 'hsl(var(--primary-500))',
 				50: 'hsl(var(--primary-50))',

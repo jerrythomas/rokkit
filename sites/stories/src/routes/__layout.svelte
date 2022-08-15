@@ -4,7 +4,7 @@
 
 	import '../app.scss'
 	import { menu } from '../config'
-	import { List, Link } from '@sparsh-ui/core'
+	import { Accordion, Link, Sidebar } from '@sparsh-ui/core'
 	import { page } from '$app/stores'
 
 	const fields = { id: 'url' }
@@ -12,10 +12,20 @@
 	$: activeItem = menu.filter((m) => m.url == $page.url.pathname)[0]
 </script>
 
-<aside class="flex flex-col flex-shrink-0 flex-grow-0 w-60 sidebar">
-	<header class="flex flex-col justify-center">Components</header>
-	<List items={menu} {using} {fields} {activeItem} class="menu" />
-</aside>
+<Sidebar>
+	<div class="flex flex-col justify-center" slot="header">Components</div>
+	<scroll class="flex flex-col flex-shrink-0 overflow-hidden">
+		<Accordion
+			items={menu}
+			{using}
+			{fields}
+			{activeItem}
+			autoClose
+			class="menu"
+		/>
+	</scroll>
+</Sidebar>
+
 <main class="flex flex-col flex-grow bg-grey-300">
 	<slot />
 </main>

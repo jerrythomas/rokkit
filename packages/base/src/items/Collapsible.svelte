@@ -24,12 +24,12 @@
 		/>
 	{/if}
 	{#if content[fields.icon]}
-		<Icon name={content[fields.icon]} title={content[fields.text]} />
+		<icon class={content[fields.icon]} />
 	{/if}
 	<p class="flex flex-grow">{content[fields.text]}</p>
 	{#if content.isOpen}
-		<Icon name="accordion-opened" aria-label="expand" />
+		<icon class="accordion-opened" aria-label="expand" />
 	{:else}
-		<Icon name="accordion-closed" aria-label="collapse" />
+		<icon class="accordion-closed" aria-label="collapse" />
 	{/if}
 </collapsible>

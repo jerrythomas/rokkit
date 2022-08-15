@@ -1,32 +1,42 @@
 <script>
-	import { defaultStateIcons } from '../constants'
+	import { defaultStateIcons, defaultOptions } from '../constants'
 
-	export let options = []
+	let className = ''
+	export { className as class }
+	export let id = null
+	export let name
+	export let fields
+	export let items = []
 	export let value
-	export let fail = false
-	export let pass = false
-	export let readOnly = false
+	export let status = 'default'
+	export let disabled = false
 	export let stateIcons = defaultStateIcons.radio
 
-	let index = options.findIndex((option) => option['isDefault'])
-	$: value = index > -1 ? options[index] : null
-	$: readOnly = readOnly || pass || fail
+	$: fields = { ...defaultOptions, ...fields }
+	$: pass = status === 'pass'
+	$: fail = status === 'fail'
 </script>
 
-<radio-group
-	class="flex flex-col cursor-pointer select-none"
-	class:readOnly
-	class:fail
+<radio
+	{id}
+	class="flex flex-col cursor-pointer select-none {className}"
+	class:disabled
 	class:pass
+	class:fail
 >
-	{#each options as { label }, i}
-		<div
-			class="flex flex-row items-center gap-1"
-			on:click={() => (index = readOnly ? index : i)}
-		>
-			<icon id={i} class={index == i ? stateIcons.on : stateIcons.off} />
-			<!-- <Radio id={i} checked={index == i} alignTop /> -->
-			<label class="flex flex-grow" for={i}>{label}</label>
-		</div>
+	{#each items as item}
+		{@const state = item[fields.value] === value ? 'on' : 'off'}
+		<label class="flex flex-row items-center gap-2">
+			<input
+				hidden
+				type="radio"
+				{name}
+				bind:group={value}
+				value={item[fields.value]}
+				readOnly={disabled}
+			/>
+			<icon class={stateIcons[state]} />
+			<p>{item[fields.label]}</p>
+		</label>
 	{/each}
-</radio-group>
+</radio>
