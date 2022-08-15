@@ -1,30 +1,37 @@
-import { inputTypes } from '@sparsh-ui/core'
+// import { inputTypes } from '@sparsh-ui/core'
+import { inputMenu } from './models'
+// const inputs = Object.entries(inputTypes).map(([k, v]) => ({
+// 	text: String(v.name).replace('Proxy', ''),
+// 	url: '/input/' + k,
+// 	icon: 'i-iconoir-input-field'
+// }))
 
-const inputs = Object.keys(inputTypes).map((type) => ({
-	text: 'input ' + type,
-	url: '/input/' + type
-}))
 export const menu = [
-	...inputs,
 	{
 		text: 'Home',
 		url: '/'
 	},
+	{ text: 'Input', data: inputMenu },
 	{
-		text: 'List',
-		url: '/list'
-	},
-	{
-		text: 'Accordion',
-		url: '/accordion'
-	},
-	{
-		text: 'Nested List',
-		url: '/nested'
-	},
-	{
-		text: 'Tree',
-		url: '/tree'
+		text: 'Lists',
+		data: [
+			{ text: '<List>', url: '/list', icon: 'i-carbon:list-dropdown' },
+			{
+				text: '<Accordion>',
+				url: '/accordion',
+				icon: 'i-carbon:list-dropdown'
+			},
+			{
+				text: '<NestedList>',
+				url: '/nested',
+				icon: 'i-carbon-tree-view'
+			},
+			{
+				text: '<Tree>',
+				url: '/tree',
+				icon: 'i-carbon:tree-view-alt'
+			}
+		]
 	},
 	{
 		text: 'Connectors',

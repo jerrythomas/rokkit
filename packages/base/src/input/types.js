@@ -1,19 +1,19 @@
-import { default as InputText } from './InputText.svelte'
 import { default as InputJSON } from './InputJSON.svelte'
 import { default as InputArray } from './InputArray.svelte'
-import { default as InputNumber } from './InputNumber.svelte'
 import { default as InputObject } from './InputObject.svelte'
-import { default as InputCheckBox } from './InputCheckBox.svelte'
-import { default as InputRating } from './InputRating.svelte'
+import { default as Toggle } from './Toggle.svelte'
+import { default as Switch } from './Switch.svelte'
+import { default as CheckBox } from './CheckBox.svelte'
 import { default as RadioGroup } from './RadioGroup.svelte'
+import { default as Input } from './Input.svelte'
 
 export const inputTypes = {
-	text: InputText,
+	input: Input,
 	json: InputJSON,
 	array: InputArray,
-	number: InputNumber,
 	object: InputObject,
-	checkbox: InputCheckBox,
-	rating: InputRating,
-	radio: RadioGroup
+	radio: RadioGroup,
+	checkbox: CheckBox,
+	toggle: Toggle,
+	switch: Switch
 }

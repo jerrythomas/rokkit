@@ -1,5 +1,4 @@
 <script>
-	import Icon from '../layout/Icon.svelte'
 	export let content
 	export let fields
 
@@ -14,6 +13,6 @@
 	/>
 {/if}
 {#if content[fields.icon]}
-	<Icon name={content[fields.icon]} title={content[fields.text]} />
+	<icon class={content[fields.icon]} />
 {/if}
 <p class="flex flex-grow">{text}</p>

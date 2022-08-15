@@ -1,28 +1,55 @@
 body {
 	@apply h-screen w-screen flex font-body;
 }
-input, textarea, select {
+input, textarea, select, fieldset {
 	@apply leading-loose px-2 border border-skin-300 outline-primary-400;
 }
+button {
+	@apply border rounded leading-10 bg-skin-200 border-skin-300;
 
-.readOnly {
-	@apply text-skin-400;
-}
-.pass {
-	@apply text-emerald-600;
-}
-.fail {
-	@apply text-red-500;
+	span {
+		@apply border-r border-skin-300;
+
+		icon {
+			@apply text-2xl;
+		}
+	}
+	p {
+		@apply flex flex-grow justify-center;
+	}
 }
 
-input.readOnly, textarea.readOnly, select.readOnly{
-	@apply outline-gray-400;
+overlay {
+	@apply bg-skin-50 bg-opacity-50;
 }
-input.pass, textarea.pass, select.pass{
-	@apply outline-emerald-600 border-emerald-600;
+alert-list {
+	@apply bottom-4 right-4 w-80;
 }
-input.fail, textarea.fail, select.fail{
-	@apply outline-red-500 border-red-600;
+
+.flex-square {
+	@apply flex flex-col aspect-square items-center justify-center;
+}
+fieldset {
+	@apply px-4 py-2 rounded-md;
+
+	legend {
+		@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
+	}
+	icon {
+		@apply text-2xl;
+	}
+}
+aside.sidebar {
+	@apply flex flex-col min-w-100 bg-skin-200 h-full p-8 gap-4 overflow-hidden;
+}
+.disabled {
+	@apply text-disabled;
+}
+
+label.disabled input,
+label.disabled textarea,
+label.disabled select {
+	@apply outline-disabled;
 }
 
 input[type="number"] {
@@ -34,34 +61,85 @@ input[type=number]::-webkit-inner-spin-button,
 			margin: 0;
 	}
 
-error, .error {
-	@apply bg-error-light text-error-dark;
+	alert, error, info, warning, success {
+		@apply px-4 py-2 border rounded select-none cursor-pointer;
+	}
+	alert.error {
+		@apply bg-error text-error border-error;
+	}
+	alert.info, info {
+    @apply bg-info text-info border-info;
+	}
+	alert.warning, warning {
+    @apply bg-warn text-warn border-warn;
+	}
+	alert.success, success {
+    @apply bg-pass text-pass border-pass;
+	}
+	label.error, label.fail {
+		input,
+	  textarea,
+	   select {
+	   @apply text-error border-error;
+   }
+	}
+	label.info {
+		input,
+	  textarea,
+	   select {
+	@apply  text-info border-info;}
 }
-info, .info {
-	@apply bg-info-light text-info-dark;
+ label.warn {
+	input,
+	  textarea,
+	   select {
+	@apply text-warn border-warn;}
 }
-warn, .warn {
-	@apply bg-warn-light text-warn-dark;
-}
-pass, .pass {
-	@apply bg-pass-light text-pass-dark;
+ label.pass {
+	input,
+	  textarea,
+	   select {
+	@apply text-pass border-pass;}
 }
 
 list {
+
 	.item {
 		@apply px-3 border-b border-primary-200 py-1;
 	}
 	.item:hover {
-		@apply bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast;
+		@apply item-hover;
 	}
 	.item.active {
 		@apply text-primary-600;
 	}
 }
 
-list.menu {
+accordion.menu {
+	@apply  text-md overflow-y-scroll text-skin-800 gap-2;
+
+	group {
+		@apply rounded-lg overflow-hidden;
+	}
+	ul {
+		@apply gap-1 bg-skin-200;
+		gap:1px;
+		padding-top: 1px;
+		padding-bottom: 1px;
+	}
+	.item, collapsible {
+		@apply leading-12 px-4 bg-skin-100;
+	}
+	.item {
+		icon {
+			@apply text-secondary;
+		}
+	}
+	collapsible {
+		@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
+	}
 	.item.active {
-		@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-base;
+		@apply item-selected ;
 	}
 }
 
@@ -74,17 +152,7 @@ header {
 label {
 	@apply leading-loose;
 }
-list {
-	.item {
-		@apply px-3 border-b border-primary-200 py-1;
-	}
-	.item:hover {
-		@apply bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-black;
-	}
-	.item.active {
-		@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
-	}
-}
+
 
 // .list .item.active {
 // 	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
@@ -156,10 +224,15 @@ tab-edit {
 	}
 }
 
-rating {
-	@apply text-secondary-400;
+icon {
+	@apply text-xl;
 }
-
+rating {
+	@apply text-secondary-400 gap-2 text-xl;
+}
+checkbox{
+	@apply gap-2
+}
 
 
 // form {

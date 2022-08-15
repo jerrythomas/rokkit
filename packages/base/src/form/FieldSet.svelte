@@ -1,10 +1,14 @@
 <script>
+	let className = ''
+	export { className as class }
 	export let label
 </script>
 
-<fieldset class="flex flex-col">
+<fieldset class={className}>
 	{#if label}
 		<legend>{label}</legend>
 	{/if}
-	<slot />
+	<div class="flex flex-col">
+		<slot />
+	</div>
 </fieldset>
