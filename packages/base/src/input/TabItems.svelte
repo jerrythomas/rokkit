@@ -1,5 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	import { defaultFields } from '../constants'
 	import TabItem from './TabItem.svelte'
 
 	const dispatch = createEventDispatcher()
@@ -16,7 +17,7 @@
 	function closeTab(index) {
 		items[index].isClosed = true
 	}
-
+	$: fields = { ...defaultFields, ...fields }
 	$: filtered = items.filter((item) => !item.isClosed)
 </script>
 

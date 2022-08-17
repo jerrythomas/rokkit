@@ -5,7 +5,8 @@ export function pannable(node) {
 	function track(event, name, delta = {}) {
 		x = event.clientX
 		y = event.clientY
-
+		event.stopPropagation()
+		event.preventDefault()
 		node.dispatchEvent(
 			new CustomEvent(name, {
 				detail: { x, y, ...delta }

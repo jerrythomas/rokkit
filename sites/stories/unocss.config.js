@@ -18,19 +18,19 @@ export default defineConfig({
 		...iconShortcuts,
 		'bg-error': 'bg-red-100',
 		'text-error': 'text-red-800',
-		'border-error': 'border-red-200',
+		'border-error': 'border-red-700',
 		'bg-info': 'bg-blue-100',
 		'text-info': 'text-blue-800',
-		'border-info': 'border-blue-200',
+		'border-info': 'border-blue-700',
 		'bg-warn': 'bg-orange-100',
 		'text-warn': 'text-orange-800',
-		'border-warn': 'border-orange-200',
+		'border-warn': 'border-orange-700',
 		'bg-pass': 'bg-green-100',
 		'text-pass': 'text-green-800',
-		'border-pass': 'border-green-200',
+		'border-pass': 'border-green-700',
 		'bg-disabled': 'bg-skin-100',
 		'text-disabled': 'text-skin-300',
-		'border-disabled': 'border-skin-300',
+		'border-disabled': 'border-skin-700',
 		'item-selected': 'border-l-3 border-secondary',
 		'item-hover':
 			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast'
@@ -98,16 +98,6 @@ export default defineConfig({
 				900: 'hsl(var(--skin-900))'
 			}
 		}
-		// fontSize: {
-		// 	xs: ['0.75rem', 'var(--du-line-height-normal)'],
-		// 	sm: ['0.875rem', 'var(--du-line-height-normal)'],
-		// 	base: ['1rem', 'var(--du-line-height-normal)'],
-		// 	lg: ['var(--du-text-lg)', 'var(--du-line-height-heading)'],
-		// 	xl: ['var(--du-text-xl)', 'var(--du-line-height-heading)'],
-		// 	'2xl': ['var(--du-text-2xl)', 'var(--du-line-height-heading)'],
-		// 	'3xl': ['var(--du-text-3xl)', 'var(--du-line-height-heading)'],
-		// 	'4xl': ['var(--du-text-4xl)', 'var(--du-line-height-heading)']
-		// }
 	},
 	presets: [presetUno(), presetIcons({})],
 	extractors: [extractorSvelte],

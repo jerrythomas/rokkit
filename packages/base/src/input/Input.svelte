@@ -1,11 +1,11 @@
 <script>
+	import { pick, omit } from 'ramda'
 	import InputWrapper from '../base/InputWrapper.svelte'
 
 	let className = ''
 	export { className as class }
-	export let id = null
 	export let name
-	export let label = null
+	export let label = undefined
 	export let icon = null
 	export let value
 	export let type = 'text'
@@ -17,16 +17,16 @@
 	$: pass = status === 'pass'
 	$: fail = status === 'fail'
 	$: warn = status === 'warn'
-
+	$: rootProps = pick(['id'], $$restProps)
 	$: props = {
 		required,
 		readOnly: disabled,
-		...$$restProps
+		...omit(['id'], $$restProps)
 	}
 </script>
 
 <input-field
-	{id}
+	{...rootProps}
 	class="flex flex-col {className}"
 	class:disabled
 	class:pass
@@ -36,17 +36,17 @@
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="flex flex-col">
 		{#if label}
-			<p for={id}>{label}</p>
+			<p>{label}</p>
 		{/if}
 		{#if icon}
 			<field class="flex flex-row w-full">
 				<span class="flex aspect-square items-center justify-center h-full">
 					<icon class={icon} />
 				</span>
-				<InputWrapper bind:value {id} {name} {type} {...props} />
+				<InputWrapper bind:value {name} {type} {...props} />
 			</field>
 		{:else}
-			<InputWrapper bind:value {id} {name} {type} {...props} />
+			<InputWrapper bind:value {name} {type} {...props} />
 		{/if}
 	</label>
 	{#if message}

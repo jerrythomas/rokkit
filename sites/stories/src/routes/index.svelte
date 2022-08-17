@@ -2,13 +2,12 @@
 	// import { v4 as uuid } from '@lukeed/uuid'
 	import {
 		FieldSet,
-		CheckBox,
 		Rating,
-		IconButton,
-		Icon,
 		Alerts,
 		alerts,
-		Input
+		Input,
+		Tabs,
+		Range
 	} from '@sparsh-ui/core'
 
 	function add() {
@@ -24,25 +23,19 @@
 	let value = 'haha'
 	let rValue
 	let chkValue
-
+	let items = [{ text: 'one' }, { text: 'two' }, { text: 'three' }]
+	let activeItem
 	$: console.log(rValue, chkValue)
 </script>
 
 <content class="flex flex-col p-4 gap-4">
-	<Input
-		icon="i-iconoir-input-field"
-		label="some text"
-		name="ff1"
-		type="color"
-		bind:value
-		maxlength="4"
-		state="disabled"
-	/>
-
-	<IconButton label="sta icon button" leftIcon="i-carbon-star" on:click={add} />
-
-	<Icon name="rating-empty" />
-
+	<!-- <FieldSet label="group" class="p-4"> -->
+	<Tabs {items} bind:activeItem title="[ data ]">
+		{activeItem?.text}
+		<Range min="0" max="100" />
+		<Range min="0" max="100" count="0" />
+	</Tabs>
+	<!-- </FieldSet> -->
 	<FieldSet label="group" class="border">
 		<icon class="rating-empty" />
 		<Rating value="3" />
