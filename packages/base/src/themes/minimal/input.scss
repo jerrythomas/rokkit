@@ -1,3 +1,43 @@
-@layer base {
-
+input,
+textarea,
+select,
+fieldset {
+	@apply rounded leading-loose px-2 border border-skin-300 outline-primary-400;
 }
+
+input-field.fail {
+	@apply bg-error rounded px-2;
+}
+
+range-input {
+	@apply gap-2px;
+	range-track {
+		@apply rounded-full border border-primary-500 bg-primary-400;
+		span {
+			@apply rounded-full -right-1px -top-1px -bottom-1px border bg-skin-200 border-skin-300;
+		}
+	}
+	range-ticks {
+		tick {
+			span {
+				@apply border-skin-500 h-5px;
+			}
+		}
+
+	}
+	thumb {
+		@apply bg-primary-400 rounded-full shadow-xl border border-primary;
+	}
+	thumb.sliding::before {
+		content: '';
+		@apply absolute left-0 top-0 right-0 bottom-0 bg-primary-500 rounded-full opacity-30;
+		transform: scale(2, 2);
+
+	}
+}
+
+
+// input[type=range]::-webkit-slider-thumb {
+// 	-webkit-appearance: none;
+// 	@apply h-4 w-4 rounded-full shadow-lg border-primary-500 border mt-0 bg-white border-0;
+// }

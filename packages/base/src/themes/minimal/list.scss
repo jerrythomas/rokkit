@@ -1,0 +1,28 @@
+accordion.menu {
+	@apply text-md h-full overflow-y-scroll text-skin-800 gap-2;
+
+	& > group {
+		@apply rounded-lg overflow-hidden;
+	}
+	ul {
+		@apply gap-1 bg-skin-200;
+		gap: 1px;
+		padding-top: 1px;
+		padding-bottom: 1px;
+	}
+	.item,
+	collapsible {
+		@apply leading-12 px-4 bg-skin-50;
+	}
+	.item {
+		icon {
+			@apply text-secondary;
+		}
+	}
+	collapsible {
+		@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
+	}
+	.item.active {
+		@apply item-selected;
+	}
+}

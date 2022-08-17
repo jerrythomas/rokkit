@@ -1,9 +1,11 @@
+@import './minimal/input.scss';
+@import './minimal/tabs.scss';
+@import './minimal/list.scss';
+
 body {
-	@apply h-screen w-screen flex font-body;
+	@apply h-screen w-screen flex flex-row font-body;
 }
-input, textarea, select, fieldset {
-	@apply leading-loose px-2 border border-skin-300 outline-primary-400;
-}
+
 button {
 	@apply border rounded leading-10 bg-skin-200 border-skin-300;
 
@@ -46,64 +48,74 @@ aside.sidebar {
 	@apply text-disabled;
 }
 
-label.disabled input,
-label.disabled textarea,
-label.disabled select {
+.disabled input,
+.disabled textarea,
+.disabled select {
 	@apply outline-disabled;
 }
 
-input[type="number"] {
+input[type='number'] {
 	@apply text-right;
 }
-input[type=number]::-webkit-inner-spin-button,
-	input[type=number]::-webkit-outer-spin-button {
-			-webkit-appearance: none;
-			margin: 0;
-	}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
-	alert, error, info, warning, success {
-		@apply px-4 py-2 border rounded select-none cursor-pointer;
-	}
-	alert.error {
-		@apply bg-error text-error border-error;
-	}
-	alert.info, info {
-    @apply bg-info text-info border-info;
-	}
-	alert.warning, warning {
-    @apply bg-warn text-warn border-warn;
-	}
-	alert.success, success {
-    @apply bg-pass text-pass border-pass;
-	}
-	label.error, label.fail {
-		input,
-	  textarea,
-	   select {
-	   @apply text-error border-error;
-   }
-	}
-	label.info {
-		input,
-	  textarea,
-	   select {
-	@apply  text-info border-info;}
+alert,
+error,
+info,
+warning,
+success {
+	@apply px-4 py-2 border rounded select-none cursor-pointer;
 }
- label.warn {
-	input,
-	  textarea,
-	   select {
-	@apply text-warn border-warn;}
+alert.error {
+	@apply bg-error text-error border-error;
 }
- label.pass {
+alert.info,
+info {
+	@apply bg-info text-info border-info;
+}
+alert.warning,
+warning {
+	@apply bg-warn text-warn border-warn;
+}
+alert.success,
+success {
+	@apply bg-pass text-pass border-pass;
+}
+.error,
+.fail {
 	input,
-	  textarea,
-	   select {
-	@apply text-pass border-pass;}
+	textarea,
+	select {
+		@apply text-error border-error;
+	}
+}
+.info {
+	input,
+	textarea,
+	select {
+		@apply text-info border-info;
+	}
+}
+.warn {
+	input,
+	textarea,
+	select {
+		@apply text-warn border-warn;
+	}
+}
+.pass {
+	input,
+	textarea,
+	select {
+		@apply text-pass border-pass;
+	}
 }
 
 list {
-
 	.item {
 		@apply px-3 border-b border-primary-200 py-1;
 	}
@@ -115,44 +127,17 @@ list {
 	}
 }
 
-accordion.menu {
-	@apply  text-md overflow-y-scroll text-skin-800 gap-2;
 
-	group {
-		@apply rounded-lg overflow-hidden;
-	}
-	ul {
-		@apply gap-1 bg-skin-200;
-		gap:1px;
-		padding-top: 1px;
-		padding-bottom: 1px;
-	}
-	.item, collapsible {
-		@apply leading-12 px-4 bg-skin-100;
-	}
-	.item {
-		icon {
-			@apply text-secondary;
-		}
-	}
-	collapsible {
-		@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
-	}
-	.item.active {
-		@apply item-selected ;
-	}
-}
 
 header {
 	@apply px-4 h-14 border-b bg-gray-200 border-gray-300 text-xl font-serif;
 }
 .sidebar {
-	@apply border-r border-gray-300;
+	@apply border-r border-gray-300 h-full;
 }
 label {
 	@apply leading-loose;
 }
-
 
 // .list .item.active {
 // 	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
@@ -175,7 +160,6 @@ label {
 // 		}
 // 	}
 // }
-
 
 // .list-edit:focus-within{
 // 	@apply border-primary-100 ;
@@ -200,29 +184,7 @@ label {
 // 	}
 // }
 
-tabs {
-		@apply gap-1 items-center;
 
-		tab {
-			@apply px-2 leading-loose flex bg-skin-100 border border-b-0 border-secondary-200 rounded-t-md;
-
-			p {
-				@apply flex-grow px-2 text-center;
-			}
-		}
-
-		tab.active {
-			@apply bg-secondary-200  z-1;
-		}
-}
-tab-edit {
-	tabs {
-		@apply border-b  border-secondary-200;
-	}
-	content {
-		@apply p-4 pt-1 border border-skin-200;
-	}
-}
 
 icon {
 	@apply text-xl;
@@ -230,10 +192,9 @@ icon {
 rating {
 	@apply text-secondary-400 gap-2 text-xl;
 }
-checkbox{
-	@apply gap-2
+checkbox {
+	@apply gap-2;
 }
-
 
 // form {
 // 	@apply p-4 gap-2;

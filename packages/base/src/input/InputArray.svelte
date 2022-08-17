@@ -5,12 +5,11 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let id
 	export let value
 	export let fields
 	export let allowAdd = false
 	export let allowClose = false
-	// export let limit
+
 	export let label
 
 	function onChange() {
@@ -22,15 +21,15 @@
 </script>
 
 {#if Array.isArray(value)}
-	<tab-edit {id} class="flex flex-col w-full">
-		{#if label}
-			<label for={id}>{label}</label>
-		{/if}
-		<Tabs bind:items={value} {allowAdd} {allowClose} bind:activeItem={item} />
-		<content>
-			<FormFields bind:data={item} {fields} on:change={onChange} />
-		</content>
-	</tab-edit>
+	<Tabs
+		bind:items={value}
+		bind:activeItem={item}
+		title={label}
+		{allowAdd}
+		{allowClose}
+	>
+		<FormFields bind:data={item} {fields} on:change={onChange} />
+	</Tabs>
 {:else}
 	<error>Property `value` should be an array of objects.</error>
 {/if}

@@ -26,6 +26,6 @@
 	</scroll>
 </Sidebar>
 
-<main class="flex flex-col flex-grow bg-grey-300">
+<main class="flex flex-col w-full bg-grey-300 overflow-scroll">
 	<slot />
 </main>
