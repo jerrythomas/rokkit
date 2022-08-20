@@ -12,3 +12,4 @@ export { default as Range } from './Range.svelte'
 
 export { default as RadioGroup } from './RadioGroup.svelte'
 export { default as CheckBoxGroup } from './CheckBoxGroup.svelte'
+export { default as RangeSlider } from './RangeSlider.svelte'

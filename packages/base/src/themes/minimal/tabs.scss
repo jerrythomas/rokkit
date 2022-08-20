@@ -1,6 +1,6 @@
-tab-view{
+tab-view {
 	tabs {
-		@apply px-4 gap-2 leading-loose ;
+		@apply px-4 gap-2 leading-loose;
 
 		& > p {
 			@apply pr-4;
@@ -16,10 +16,10 @@ tab-view{
 				@apply absolute -left-3px top-0 bottom-0 -right-3px -z-1;
 				@apply bg-skin-200 border border-b-0 border-skin-500 rounded-t-md;
 				transform: scale(1.2, 1.5) perspective(1em) rotateX(10deg);
-				transform-origin: bottom ;
-		  }
-			&.active::before{
-			  @apply border-primary-500 bg-primary-200 -bottom-1px;
+				transform-origin: bottom;
+			}
+			&.active::before {
+				@apply border-primary-500 bg-primary-200 -bottom-1px;
 			}
 			// &.active::after {
 			// 	content: '';
@@ -47,7 +47,6 @@ tab-view{
 // 			@apply flex-grow px-2 text-center;
 // 		}
 // 	}
-
 
 // }
 
