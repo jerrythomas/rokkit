@@ -1,0 +1,11 @@
+// Vitest Snapshot v1
+
+exports[`Slider.svelte > Should render 1`] = `
+<body>
+  <div>
+    <scroll
+      class="flex flex-col absolute h-full w-full h-60 top-12 overflow-scroll undefined"
+    />
+  </div>
+</body>
+`;

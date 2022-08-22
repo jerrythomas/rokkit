@@ -1,7 +1,9 @@
 <script>
 	import Text from './Text.svelte'
+	import { defaultFields } from '../constants'
+
 	export let content
-	export let fields
+	export let fields = defaultFields
 </script>
 
 <a
