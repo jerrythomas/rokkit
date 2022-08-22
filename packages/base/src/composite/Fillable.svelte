@@ -1,6 +1,6 @@
 <script>
 	import { marked } from 'marked'
-	import { fillable } from './actions/fillable'
+	import { fillable } from '../actions/fillable'
 
 	export let text = ''
 	export let options = []

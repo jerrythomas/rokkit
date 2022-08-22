@@ -1,0 +1,24 @@
+// Vitest Snapshot v1
+
+exports[`Collapsible.svelte > Should render without params 1`] = `
+<body>
+  <div>
+    <collapsible
+      class="flex flex-row flex-shrink-0 items-center w-full leading-loose cursor-pointer min-h-8"
+    >
+       
+       
+      <p
+        class="flex flex-grow"
+      >
+        hello
+      </p>
+       
+      <icon
+        aria-label="collapse"
+        class="accordion-closed"
+      />
+    </collapsible>
+  </div>
+</body>
+`;

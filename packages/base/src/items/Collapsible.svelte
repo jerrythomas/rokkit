@@ -1,10 +1,10 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import Icon from '../layout/Icon.svelte'
+	import { defaultFields } from '../constants'
 
 	const dispatch = createEventDispatcher()
 	export let content
-	export let fields
+	export let fields = defaultFields
 
 	function toggle() {
 		content.isOpen = !content.isOpen

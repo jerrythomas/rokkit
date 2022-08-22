@@ -1,0 +1,390 @@
+// Vitest Snapshot v1
+
+exports[`InputWrapper.svelte > should render input for type "color" 1`] = `
+<input
+  type="color"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "color" as readonly 1`] = `
+<input
+  readonly="true"
+  type="color"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "color" as required 1`] = `
+<input
+  readonly="true"
+  type="color"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "date" 1`] = `
+<input
+  type="date"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "date" as readonly 1`] = `
+<input
+  readonly="true"
+  type="date"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "date" as required 1`] = `
+<input
+  readonly="true"
+  type="date"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "datetime" 1`] = `
+<input
+  type="datetime-local"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "datetime" as readonly 1`] = `
+<input
+  readonly="true"
+  type="datetime-local"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "datetime" as required 1`] = `
+<input
+  readonly="true"
+  type="datetime-local"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "email" 1`] = `
+<input
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "email" as readonly 1`] = `
+<input
+  readonly="true"
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "email" as required 1`] = `
+<input
+  readonly="true"
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "file" 1`] = `
+<input
+  type="file"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "file" as readonly 1`] = `
+<input
+  readonly="true"
+  type="file"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "file" as required 1`] = `
+<input
+  readonly="true"
+  type="file"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "month" 1`] = `
+<input
+  type="month"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "month" as readonly 1`] = `
+<input
+  readonly="true"
+  type="month"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "month" as required 1`] = `
+<input
+  readonly="true"
+  type="month"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "number" 1`] = `
+<input
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "number" as readonly 1`] = `
+<input
+  readonly="true"
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "number" as required 1`] = `
+<input
+  readonly="true"
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "number" with custom props 1`] = `
+<input
+  max="10"
+  min="3"
+  type="number"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "password" 1`] = `
+<input
+  type="password"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "password" as readonly 1`] = `
+<input
+  readonly="true"
+  type="password"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "password" as required 1`] = `
+<input
+  readonly="true"
+  type="password"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "range" 1`] = `
+<input
+  type="range"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "range" as readonly 1`] = `
+<input
+  readonly="true"
+  type="range"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "range" as required 1`] = `
+<input
+  readonly="true"
+  type="range"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "rating" 1`] = `
+<rating
+  class="flex cursor-pointer select-none"
+  tabindex="0"
+>
+   
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+</rating>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "rating" as required 1`] = `
+<rating
+  class="flex cursor-pointer select-none"
+  tabindex="0"
+>
+   
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+  <icon
+    class="rating-empty"
+  />
+</rating>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "rating" with custom props 1`] = `
+<rating
+  class="flex cursor-pointer select-none"
+  tabindex="0"
+>
+  <input
+    hidden=""
+    max="3"
+    min="0"
+    name="rating"
+    type="number"
+  />
+   
+  <icon
+    class="rating-filled"
+  />
+  <icon
+    class="rating-filled"
+  />
+  <icon
+    class="rating-empty"
+  />
+</rating>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "tel" 1`] = `
+<input
+  type="url"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "tel" as readonly 1`] = `
+<input
+  readonly="true"
+  type="url"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "tel" as required 1`] = `
+<input
+  readonly="true"
+  type="url"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "text" 1`] = `
+<input
+  type="text"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "text" as readonly 1`] = `
+<input
+  readonly="true"
+  type="text"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "text" as required 1`] = `
+<input
+  readonly="true"
+  type="text"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "text" with custom props 1`] = `
+<input
+  maxlength="10"
+  minlength="3"
+  type="text"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "textarea" 1`] = `
+<textarea
+  type="week"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "textarea" as readonly 1`] = `
+<textarea
+  readonly="true"
+  type="week"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "textarea" as required 1`] = `
+<textarea
+  readonly="true"
+  type="week"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "time" 1`] = `
+<input
+  type="time"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "time" as readonly 1`] = `
+<input
+  readonly="true"
+  type="time"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "time" as required 1`] = `
+<input
+  readonly="true"
+  type="time"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "url" 1`] = `
+<input
+  type="url"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "url" as readonly 1`] = `
+<input
+  readonly="true"
+  type="url"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "url" as required 1`] = `
+<input
+  readonly="true"
+  type="url"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "week" 1`] = `
+<input
+  type="week"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "week" as readonly 1`] = `
+<input
+  readonly="true"
+  type="week"
+/>
+`;
+
+exports[`InputWrapper.svelte > should render input for type "week" as required 1`] = `
+<input
+  readonly="true"
+  type="week"
+/>
+`;

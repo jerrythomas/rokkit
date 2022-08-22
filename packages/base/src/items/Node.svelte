@@ -1,9 +1,10 @@
 <script>
 	import Connector from './Connector.svelte'
 	import Icon from '../layout/Icon.svelte'
+	import { defaultFields } from '../constants'
 
 	export let content
-	export let fields = {}
+	export let fields = defaultFields
 	export let types = []
 	export let hasChildren = false
 	export let linesVisible

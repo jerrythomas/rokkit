@@ -29,18 +29,30 @@
 	let bounds = [0, 100]
 	let bounds2 = [0, 20]
 	let bounds3 = [0, 30]
-	$: console.log(rValue, chkValue)
 </script>
 
 <content class="flex flex-col p-4 gap-4">
 	<!-- <FieldSet label="group" class="p-4"> -->
 	<Tabs {items} bind:activeItem title="[ data ]">
 		{activeItem?.text}
-		<!-- <Range min="0" max="100" />
-		<Range min="0" max="100" count="0" /> -->
-		<RangeSlider min={0} max={100} ticks={10} bind:value={bounds} />
-		<RangeSlider min={0} max={100} ticks={10} bind:value={bounds2} step={5} />
-		<RangeSlider min={0} max={100} ticks={10} bind:value={bounds3} single />
+		<Range min={10} max={100} tickStep={10} step={1} />
+		<Range min={0} max={100} step={10} />
+		<RangeSlider
+			min={0}
+			max={100}
+			tickStep={2}
+			labelSkip={4}
+			bind:value={bounds}
+		/>
+		<RangeSlider
+			min={10}
+			max={100}
+			tickStep={10}
+			bind:value={bounds2}
+			step={5}
+			class="bookend"
+		/>
+		<RangeSlider min={0} max={100} tickStep={10} bind:value={bounds3} single />
 	</Tabs>
 	<!-- </FieldSet> -->
 	<FieldSet label="group" class="border">

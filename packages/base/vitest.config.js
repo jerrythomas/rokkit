@@ -9,7 +9,8 @@ export default defineConfig({
 		coverage: {
 			reporter: ['text', 'lcov'],
 			all: false,
-			include: ['src']
+			include: ['src'],
+			exclude: ['src/**/*.spec.js']
 		}
 	}
 })

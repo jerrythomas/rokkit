@@ -1,0 +1,15 @@
+// Vitest Snapshot v1
+
+exports[`Text.svelte > Should render 1`] = `
+<body>
+  <div>
+     
+     
+    <p
+      class="flex flex-grow"
+    >
+      hello
+    </p>
+  </div>
+</body>
+`;

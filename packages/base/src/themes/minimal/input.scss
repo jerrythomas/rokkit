@@ -10,46 +10,57 @@ input-field.fail {
 }
 
 range-input {
-	@apply border border-skin-300;
-	range-track {
-		@apply h-2 mt-1 relative;
 
-		// edge {
-		// 	@apply bg-skin-600 w-4px border -top-2 -bottom-2;
-		// }
-		// edge:first-of-type	 {
-		// 	@apply -left-2px;
-		// }
-		// edge:last-of-type	 {
-		// 	@apply -right-4px;
-		// }
+	range-track {
+		@apply h-2 mt-2 relative;
+
 		span {
-			@apply border bg-skin-200 border-skin-300 rounded-full;
+			@apply bg-skin-200 border box-border border-skin-300 rounded-full;
 		}
 		selected {
 			@apply border -top-0px -bottom-0px border-primary-500 bg-primary-400 rounded-full;
 		}
 		thumb {
-			@apply rounded-sm mt-1px;
+			@apply rounded-sm;
 		}
 	}
 	range-ticks {
 		font-size: 6px;
 		@apply bg-primary-100;
 	}
+
+	&.bookend {
+		range-track {
+			span {
+				&::before, &::after {
+					content: '';
+					@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+				}
+				&::before	 {
+					@apply -left-1px;
+				}
+				&::after	 {
+					@apply -right-2px;
+				}
+			}
+		}
+	}
 }
+
+
 tick {
-	font-size: 8px;
+
 	@apply h-6;
 	span {
 		@apply border-skin-500 h-full;
 	}
 	p {
 		@apply items-top;
+		font-size: 8px;
 	}
 }
 thumb {
-	@apply bg-primary-400  shadow-xl border border-primary;
+	@apply bg-primary-300  shadow-xl border border-primary-400;
 }
 thumb.sliding::before {
 	content: '';
