@@ -59,7 +59,7 @@
 {#if !Array.isArray(value)}
 	<error>Expected value to be an array</error>
 {:else}
-	<range-input class="relative h-10 grid grid-rows-2 {className}">
+	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<range-track class="relative grid">
 			<span class="col-start-2 relative box-border" bind:clientWidth={width} />
 			<selected
@@ -92,7 +92,7 @@
 				<RangeTick {label} {value} on:click={handleClick} />
 			{/each}
 		</ticks>
-	</range-input>
+	</input-range>
 {/if}
 
 <style>

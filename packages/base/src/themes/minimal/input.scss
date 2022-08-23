@@ -9,8 +9,7 @@ input-field.fail {
 	@apply bg-error rounded px-2;
 }
 
-range-input {
-
+input-range {
 	range-track {
 		@apply h-2 mt-2 relative;
 
@@ -32,14 +31,15 @@ range-input {
 	&.bookend {
 		range-track {
 			span {
-				&::before, &::after {
+				&::before,
+				&::after {
 					content: '';
 					@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 				}
-				&::before	 {
+				&::before {
 					@apply -left-1px;
 				}
-				&::after	 {
+				&::after {
 					@apply -right-2px;
 				}
 			}
@@ -47,9 +47,7 @@ range-input {
 	}
 }
 
-
 tick {
-
 	@apply h-6;
 	span {
 		@apply border-skin-500 h-full;
@@ -66,4 +64,10 @@ thumb.sliding::before {
 	content: '';
 	@apply absolute left-0 top-0 right-0 bottom-0 bg-primary-500  opacity-30 rounded-sm;
 	transform: scale(2, 2);
+}
+
+input-select {
+	slide {
+		@apply z-1 border border-red-500 h-33 top-8;
+	}
 }

@@ -185,6 +185,12 @@ label {
 icon {
 	@apply text-xl;
 }
+icon.sm {
+	@apply text-sm;
+}
+icon.md {
+	@apply text-base;
+}
 rating {
 	@apply text-secondary-400 gap-2 text-xl;
 }

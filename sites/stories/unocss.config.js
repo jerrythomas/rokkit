@@ -12,7 +12,8 @@ export default defineConfig({
 		'i-iconoir-input-field',
 		'i-carbon-tree-view',
 		'i-carbon:tree-view-alt',
-		'i-carbon:list-dropdown'
+		'i-carbon:list-dropdown',
+		'i-carbon-chevron-sort'
 	],
 	shortcuts: {
 		...iconShortcuts,

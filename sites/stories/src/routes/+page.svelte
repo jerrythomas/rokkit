@@ -8,7 +8,8 @@
 		Input,
 		Tabs,
 		Range,
-		RangeSlider
+		RangeSlider,
+		Select
 	} from '@sparsh-ui/core'
 
 	function add() {
@@ -29,11 +30,22 @@
 	let bounds = [0, 100]
 	let bounds2 = [0, 20]
 	let bounds3 = [0, 30]
+	let x
+	let options = [
+		{ text: 'one' },
+		{ text: 'two' },
+		{ text: 'three' },
+		{ text: 'four' },
+		{ text: 'five' },
+		{ text: 'six' }
+	]
 </script>
 
 <content class="flex flex-col p-4 gap-4">
+	<Rating />
 	<!-- <FieldSet label="group" class="p-4"> -->
-	<Tabs {items} bind:activeItem title="[ data ]">
+	<Select bind:value={x} {options} searchable />
+	<!-- <Tabs {items} bind:activeItem title="[ data ]">
 		{activeItem?.text}
 		<Range min={10} max={100} tickStep={10} step={1} />
 		<Range min={0} max={100} step={10} />
@@ -53,9 +65,9 @@
 			class="bookend"
 		/>
 		<RangeSlider min={0} max={100} tickStep={10} bind:value={bounds3} single />
-	</Tabs>
+	</Tabs> -->
 	<!-- </FieldSet> -->
-	<FieldSet label="group" class="border">
+	<!-- <FieldSet label="group" class="border">
 		<icon class="rating-empty" />
 		<Rating value="3" />
 		<Rating
@@ -63,5 +75,5 @@
 			stateIcons={{ empty: 'i-carbon-moon', filled: 'i-carbon-sun' }}
 		/>
 	</FieldSet>
-	<Alerts />
+	<Alerts /> -->
 </content>

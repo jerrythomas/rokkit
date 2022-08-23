@@ -1,5 +1,5 @@
 <script>
-	import { inputTypes } from '../types'
+	import { inputTypes } from './types'
 
 	export let data
 	export let fields = []
