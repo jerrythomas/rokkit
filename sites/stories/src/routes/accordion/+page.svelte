@@ -1,4 +1,8 @@
 <script>
+	throw new Error(
+		'@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)'
+	)
+
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
 	import { Accordion } from '@sparsh-ui/core'
 
@@ -15,7 +19,8 @@
 		{/if}
 	</div>
 	<div slot="control">
-		<label>Auto Close</label>
-		<input type="checkbox" bind:checked={autoClose} />
+		<label>
+			<input type="checkbox" bind:checked={autoClose} /> Auto Close
+		</label>
 	</div>
 </StoryWrapper>

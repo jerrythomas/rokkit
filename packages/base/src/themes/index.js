@@ -11,6 +11,8 @@ export const defaultIcons = {
 	'accordion-closed': 'i-carbon-chevron-right',
 	'close-outline': 'i-carbon-close-outline',
 	'close-filled': 'i-carbon-close-filled',
+	remove: 'i-carbon-close-filled',
+	select: 'i-carbon-chevron-sort',
 	'delete-outline': 'i-carbon-trash-can',
 	'theme-light': 'i-carbon-sun',
 	'theme-dark': 'i-carbon-moon',

@@ -21,13 +21,3 @@ export const wrappedInput = {
 	textarea: base.TextArea,
 	rating: custom.Rating
 }
-export const inputTypes = {
-	input: Input,
-	json: custom.InputJSON,
-	array: nested.InputArray,
-	object: nested.InputObject,
-	radio: custom.RadioGroup,
-	checkbox: custom.CheckBox,
-	toggle: custom.Toggle,
-	switch: custom.Switch
-}
