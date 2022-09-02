@@ -4,16 +4,28 @@ import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
 import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts } from '@sparsh-ui/core/themes'
+import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 // const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-
+const inputIcons = [
+	'text',
+	'number',
+	'email',
+	'url',
+	'array',
+	'tel',
+	'time',
+	'date',
+	'color',
+	'password'
+].map((type) => 'i-sparsh:input-' + type)
 export default defineConfig({
 	safelist: [
 		...Object.keys(iconShortcuts),
-		'i-iconoir-input-field',
 		'i-carbon-tree-view',
 		'i-carbon:tree-view-alt',
 		'i-carbon:list-dropdown',
-		'i-carbon-chevron-sort'
+		'i-carbon-chevron-sort',
+		...inputIcons
 	],
 	shortcuts: {
 		...iconShortcuts,
@@ -23,9 +35,9 @@ export default defineConfig({
 		'bg-info': 'bg-blue-100',
 		'text-info': 'text-blue-800',
 		'border-info': 'border-blue-700',
-		'bg-warn': 'bg-orange-100',
-		'text-warn': 'text-orange-800',
-		'border-warn': 'border-orange-700',
+		'bg-warn': 'bg-yellow-100',
+		'text-warn': 'text-yellow-700',
+		'border-warn': 'border-yellow-700',
 		'bg-pass': 'bg-green-100',
 		'text-pass': 'text-green-800',
 		'border-pass': 'border-green-700',
@@ -100,7 +112,16 @@ export default defineConfig({
 			}
 		}
 	},
-	presets: [presetUno(), presetIcons({})],
+	presets: [
+		presetUno(),
+		presetIcons({
+			collections: {
+				sparsh: FileSystemIconLoader('./static/assets', (svg) =>
+					svg.replace(/black/, 'currentColor')
+				)
+			}
+		})
+	],
 	extractors: [extractorSvelte],
 	transformers: [transformer()]
 })

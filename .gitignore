@@ -12,3 +12,4 @@ lcov.info
 .idea
 build
 playwright-report
+discard

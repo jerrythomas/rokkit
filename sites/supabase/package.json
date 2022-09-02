@@ -1,32 +1,47 @@
 {
-	"name": "sentry-supabase",
-	"version": "1.0.0",
+	"name": "supabase",
+	"version": "0.0.1",
+	"private": true,
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"package": "svelte-kit package",
 		"preview": "vite preview",
-		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --write --plugin-search-dir=. .",
-		"upgrade": "pnpm upgrade"
+		"check": "svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
+		"test": "playwright test",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.24.2",
-		"@sparsh-ui/sentry": "workspace:1.0.0",
-		"@supabase/supabase-js": "^1.35.4",
-		"@sveltejs/adapter-node": "1.0.0-next.79",
+		"@playwright/test": "^1.25.0",
+		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"eslint": "^7.32.0",
-		"eslint-config-shared": "workspace:1.0.0",
-		"supabase": "^0.5.0",
-		"svelte": "^3.49.0",
-		"vite": "^3.0.4",
-		"vite-plugin-windicss": "^1.8.7",
-		"windicss": "^3.5.6"
+		"eslint": "^8.16.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"prettier": "^2.6.2",
+		"prettier-plugin-svelte": "^2.7.0",
+		"svelte": "^3.44.0",
+		"svelte-check": "^2.7.1",
+		"typescript": "^4.7.4",
+		"vite": "^3.0.4"
 	},
 	"type": "module",
 	"dependencies": {
-		"@fontsource/fira-mono": "^4.5.8",
-		"@lukeed/uuid": "^2.0.0"
+		"@fontsource/montserrat-alternates": "^4.5.10",
+		"@iconify-json/brandico": "^1.1.2",
+		"@iconify-json/entypo-social": "^1.1.2",
+		"@iconify-json/fa-brands": "^1.1.2",
+		"@iconify-json/flat-color-icons": "^1.1.2",
+		"@iconify-json/logos": "^1.1.14",
+		"@jerrythomas/sentry": "workspace:^1.0.0",
+		"@sparsh-ui/core": "workspace:^1.0.0",
+		"@supabase/supabase-js": "^1.35.6",
+		"@unocss/core": "^0.44.7",
+		"@unocss/preset-uno": "^0.44.7",
+		"@unocss/reset": "^0.44.7",
+		"@unocss/transformer-directives": "^0.44.7",
+		"pino": "^8.4.2",
+		"unocss": "^0.44.7"
 	}
 }

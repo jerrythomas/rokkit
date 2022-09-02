@@ -1,6 +1,7 @@
 <script>
 	import Slider from '../../list/Slider.svelte'
-	import List from '../../list/List.svelte'
+	import ListItems from '../../list/ListItems.svelte'
+	import { defaultFields } from '../../constants'
 
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
@@ -12,31 +13,57 @@
 	export let fields = {}
 	export let using = {}
 	export let searchable = false
-	let search = ''
+
+	let search = value ? value[fields.text] : ''
 	let visible = false
 
-	function handleSelect(event) {
-		value = event.detail
+	function handleFocusIn() {
+		visible = true
+	}
+	function handleFocusOut() {
+		visible = false
+	}
+	function handleSelect() {
+		if (value != null) search = value[fields.text]
+		visible = false
 		dispatch('select', value)
 	}
+	$: fields = { ...defaultFields, ...fields }
 	$: filtered = search.trim().length
 		? options.filter((opt) => opt[fields.text].includes(search))
 		: options
 </script>
 
-<input-select class="flex flex-col relative {className}">
-	<span
-		class="flex flex-row w-full items-center"
-		on:focus={() => (visible = true)}
-		on:blur={() => (visible = false)}
-	>
-		<input type="text" bind:value={search} class:searchable class="flex" />
-		<icon class="i-carbon-chevron-sort" />
+<input-select
+	class="flex flex-col relative {className}"
+	on:focusin={handleFocusIn}
+	on:focusout={handleFocusOut}
+	tabindex="0"
+>
+	<span class="flex flex-row w-full items-center relative">
+		<input
+			type="text"
+			bind:value={search}
+			class:searchable
+			class:inactive={!visible}
+			class="flex flex-grow"
+		/>
+		<sk-square
+			class="flex flex-col items-center justify-center aspect-square h-full position-absolute right-0"
+		>
+			<icon class="i-carbon-chevron-sort" />
+		</sk-square>
 	</span>
 	<slot />
 	{#if visible}
 		<Slider>
-			<List items={filtered} {fields} {using} on:select={handleSelect} />
+			<ListItems
+				items={filtered}
+				{fields}
+				{using}
+				bind:activeItem={value}
+				on:click={handleSelect}
+			/>
 		</Slider>
 	{/if}
 </input-select>

@@ -1,5 +1,5 @@
 {
-	"name": "@sparsh-ui/sentry",
+	"name": "@jerrythomas/sentry",
 	"version": "1.0.0",
 	"description": "Drop in authentication for SvelteKit apps using popular auth kits",
 	"type": "module",
@@ -72,5 +72,8 @@
 	},
 	"auto-changelog": {
 		"unreleased": false
+	},
+	"dependencies": {
+		"@sparsh-ui/core": "workspace:^1.0.0"
 	}
 }

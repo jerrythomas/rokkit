@@ -1,4 +1,5 @@
 <script>
+	/** @type {string} */
 	export let value
 </script>
 

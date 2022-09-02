@@ -5,9 +5,30 @@ fieldset {
 	@apply rounded leading-loose px-2 border border-skin-300 outline-primary-400;
 }
 
-input-field.fail {
-	@apply bg-error rounded px-2;
+input-field {
+	@apply w-full m-0 p-0 gap-1;
+	label {
+		@apply leading-loose w-full;
+		field {
+			@apply border rounded border-skin-300 overflow-hidden;
+			@apply focus-within:outline focus-within:outline-primary-400 focus-within:border-primary-400;
+
+			span {
+				@apply border-r border-skin-300 bg-skin-100;
+			}
+			input {
+				@apply flex-grow border-0 outline-0;
+			}
+		}
+
+	}
+	message {
+		@apply px-2 py-1 bg-skin-100 rounded;
+	}
 }
+// input-field.fail {
+// 	@apply bg-error rounded px-2;
+// }
 
 input-range {
 	range-track {
@@ -66,8 +87,46 @@ thumb.sliding::before {
 	transform: scale(2, 2);
 }
 
-input-select {
-	slide {
-		@apply z-1 border border-red-500 h-33 top-8;
+
+
+.error,
+.fail {
+	input,
+	textarea,
+	select {
+		@apply text-error border-error bg-error;
+	}
+	message {
+		@apply text-error bg-error rounded-md;
+	}
+}
+.info {
+	input,
+	textarea,
+	select {
+		@apply text-info border-info;
+	}
+	message {
+		@apply text-info bg-info rounded-md;
+	}
+}
+.warn {
+	input,
+	textarea,
+	select {
+		@apply text-warn border-warn bg-warn;
+	}
+	message {
+		@apply text-warn bg-warn rounded-md;
+	}
+}
+.pass {
+	input,
+	textarea,
+	select {
+		@apply text-pass border-pass bg-pass;
+	}
+	message {
+		@apply text-pass bg-pass rounded-md;
 	}
 }

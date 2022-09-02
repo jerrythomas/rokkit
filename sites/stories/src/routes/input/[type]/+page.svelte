@@ -1,23 +1,17 @@
 <script>
-	throw new Error(
-		'@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)'
-	)
-
 	import { Input } from '@sparsh-ui/core'
 	import Story from '$lib/Story.svelte'
 
-	export let type
-	export let variants
-	export let props
-	export let fields
+	export let data
+	// $: { type, variants, props, fields } = data
 </script>
 
-{#if props}
+{#if data.props}
 	<Story
-		title="<Input type='{type}'>"
+		title="<Input type='{data.type}'>"
 		component={Input}
-		{variants}
-		{props}
-		{fields}
+		variants={data.variants}
+		props={{ type: data.type, ...data.props }}
+		fields={data.fields}
 	/>
 {/if}

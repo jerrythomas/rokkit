@@ -1,24 +1,10 @@
 @import './minimal/input.scss';
 @import './minimal/tabs.scss';
 @import './minimal/list.scss';
+@import './minimal/form.scss';
 
 body {
 	@apply h-screen w-screen flex flex-row font-body;
-}
-
-button {
-	@apply border rounded leading-10 bg-skin-200 border-skin-300;
-
-	span {
-		@apply border-r border-skin-300;
-
-		icon {
-			@apply text-2xl;
-		}
-	}
-	p {
-		@apply flex flex-grow justify-center;
-	}
 }
 
 overlay {
@@ -85,47 +71,8 @@ alert.success,
 success {
 	@apply bg-pass text-pass border-pass;
 }
-.error,
-.fail {
-	input,
-	textarea,
-	select {
-		@apply text-error border-error;
-	}
-}
-.info {
-	input,
-	textarea,
-	select {
-		@apply text-info border-info;
-	}
-}
-.warn {
-	input,
-	textarea,
-	select {
-		@apply text-warn border-warn;
-	}
-}
-.pass {
-	input,
-	textarea,
-	select {
-		@apply text-pass border-pass;
-	}
-}
 
-list {
-	.item {
-		@apply px-3 border-b border-primary-200 py-1;
-	}
-	.item:hover {
-		@apply item-hover;
-	}
-	.item.active {
-		@apply text-primary-600;
-	}
-}
+
 
 header {
 	@apply px-4 h-14 border-b bg-gray-200 border-gray-300 text-xl font-serif;
@@ -137,9 +84,8 @@ label {
 	@apply leading-loose;
 }
 
-// .list .item.active {
-// 	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
-// }
+
+
 
 // content > div > div > .list {
 // 	@apply border gap-1 p-1 border-gray-400;
@@ -198,73 +144,4 @@ checkbox {
 	@apply gap-2;
 }
 
-// form {
-// 	@apply p-4 gap-2;
-// }
-// btn-group {
-// 	@apply rounded-sm overflow-hidden border-skin-200;
 
-// 	input[type="number"] {
-// 		@apply border-t-0 border-b-0;
-// 	}
-// 	input[type=number]::-webkit-inner-spin-button,
-// 	input[type=number]::-webkit-outer-spin-button {
-// 			-webkit-appearance: none;
-// 			margin: 0;
-// 	}
-
-// 	svg {
-// 		@apply bg-skin-100 border-skin-200;
-//   }
-// }
-
-// section {
-// 	display: flex;
-// 	flex-direction: column;
-// 	border-radius: 2mm;
-// 	background-color: var(--bg-600);
-// 	color: var(--fg-600);
-// 	padding: 0.5em 1em;
-// }
-// div {
-// 	display: flex;
-// 	flex-direction: row;
-// 	align-items: center;
-// 	padding: 0.3em 0;
-// 	line-height: 1.5em;
-// 	border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
-// 	border-radius: 0;
-// }
-// div:first-child {
-// 	border-radius: 2mm 2mm 0 0;
-// }
-// div:last-child {
-// 	border: none;
-// 	border-radius: 0 0 2mm 2mm;
-// }
-// label {
-// 	display: flex;
-// 	flex: 1 1 auto;
-// 	padding-left: 1em;
-// }
-// .disabled {
-// 	color: var(--fg-disabled);
-// }
-// .fail {
-// 	background-color: var(--bg-fail);
-// 	color: var(--fg-fail);
-// }
-// .pass {
-// 	background-color: var(--bg-pass);
-// 	color: var(--fg-pass);
-// }
-// .warn {
-// 	background-color: var(--bg-warn);
-// 	color: var(--fg-warn);
-// }
-// .item-pass {
-// 	color: var(--fg-pass);
-// }
-// .item-fail {
-// 	color: var(--fg-fail);
-// }
