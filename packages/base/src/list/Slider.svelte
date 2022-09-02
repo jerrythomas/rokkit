@@ -1,18 +1,14 @@
 <script>
 	import { fly, fade } from 'svelte/transition'
 
-	let height
-
-	export let direction = 'down'
-
-	$: down = direction === 'down'
+	let className = ''
+	export { className as class }
 </script>
 
 <slide
-	bind:clientHeight={height}
-	in:fly={{ y: height * (down ? -1 : 1), duration: 500 }}
+	in:fade={{ duration: 250 }}
 	out:fade={{ duration: 250 }}
-	class="flex flex-col absolute w-full overflow-scroll {$$props.class}"
+	class="flex flex-col absolute w-full top-9 overflow-scroll {className}"
 >
 	<slot />
 </slide>

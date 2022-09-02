@@ -26,3 +26,37 @@ accordion.menu {
 		@apply item-selected;
 	}
 }
+
+list, slide {
+	.item {
+		@apply px-3 border-b border-skin-100 py-1 last:border-0;
+	}
+	.item:hover {
+		@apply item-hover;
+	}
+	.item.active {
+		@apply bg-skin-100 text-secondary-900;
+	}
+}
+// .list .item.active {
+// 	@apply bg-gradient-to-r from-primary-500 via-primary-500 bg-secondary-500 text-skin-50;
+// }
+label {
+	list {
+		@apply border border-skin-300  rounded-md bg-skin-base overflow-hidden;
+
+		// scroll {
+		// 	ul {
+		// 		li {
+		// 			@apply last:border-0;
+		// 		}
+		// 	}
+		// }
+	}
+}
+
+input-select {
+	slide {
+		@apply shadow-lg rounded-b h-33 top-8;
+	}
+}

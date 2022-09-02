@@ -128,22 +128,10 @@ import * as types from '../../../config/models/input'
 /** @type {import('./[types]__types').PageServerLoad}  */
 export async function load({ params }) {
 	if (params.type in types) {
-		throw new Error(
-			'@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292699)'
-		)
-		return {
-			status: 200,
-			headers: {},
-			body: { type: params.type, ...types[params.type] }
-		}
+		return { type: params.type, ...types[params.type] }
 	} else {
-		throw new Error(
-			'@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292699)'
-		)
 		return {
-			status: 200,
-			headers: {},
-			body: { type: params.type }
+			type: params.type
 		}
 	}
 }

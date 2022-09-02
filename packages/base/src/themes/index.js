@@ -1,6 +1,6 @@
 export const defaultIcons = {
-	'checkbox-checked': 'i-fluent-checkbox-checked-24-filled',
-	'checkbox-unchecked': 'i-fluent-checkbox-unchecked-24-filled',
+	'checkbox-checked': 'i-sparsh-checkbox-checked',
+	'checkbox-unchecked': 'i-sparsh-checkbox-unchecked',
 	'checkbox-unknown': 'i-fluent-checkbox-indeterminate-24-filled',
 	'rating-empty': 'i-carbon-star',
 	'rating-half': 'i-carbon-star-half',

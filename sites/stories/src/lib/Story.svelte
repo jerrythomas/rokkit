@@ -7,20 +7,41 @@
 	export let fields
 	export let component
 	export let variants = [{}]
-
-	// $: console.log(fields)
 </script>
 
-<story class="flex flex-col flex-grow">
+<story class="h-full grid">
 	<header class="flex flex-col justify-center">{title}</header>
-	<content class="flex flex-row flex-grow w-full">
-		<board class="flex flex-row flex-grow flex-wrap p-4 gap-4">
+	<h1 class="flex flex-col items-center justify-center bg-skin-300">
+		Properties
+	</h1>
+	<content class="flex flex-row flex-grow p-4 items-center justify-around">
+		<board class="flex flex-row flex-wrap p-4 gap-4">
 			{#each variants as variant}
 				<Variant {component} {variant} {props} />
 			{/each}
 		</board>
-		<props class="flex flex-col p-4 min-w-80 bg-skin-100">
-			<FormFields bind:data={props} {fields} />
-		</props>
 	</content>
+	<props class="flex flex-col p-4 min-w-80 bg-skin-100">
+		<FormFields bind:data={props} {fields} />
+	</props>
 </story>
+
+<style>
+	story {
+		grid-template-rows: 3.5em auto 20rem;
+		grid-template-columns: 8fr 2fr;
+		grid-template-areas:
+			'header propHeader'
+			'content props'
+			'desc props';
+	}
+	header {
+		grid-area: header;
+	}
+	content {
+		grid-area: content;
+	}
+	props {
+		grid-area: props;
+	}
+</style>

@@ -1,0 +1,12 @@
+@import './palette.css';
+@import '@sparsh-ui/core/themes/minimal.scss';
+@import '$lib/provider.css';
+
+error {
+	@apply bg-error bg-red-100;
+}
+
+body,
+body > div {
+	@apply h-screen w-screen flex;
+}

@@ -2,6 +2,7 @@
 	// import { v4 as uuid } from '@lukeed/uuid'
 	import {
 		FieldSet,
+		Calendar,
 		Rating,
 		Alerts,
 		alerts,
@@ -42,6 +43,15 @@
 </script>
 
 <content class="flex flex-col p-4 gap-4">
+	<span class="flex gap-2 text-secondary">
+		<icon class="i-sparsh:input-text" />
+		<icon class="i-sparsh:input-date" />
+		<icon class="i-sparsh:input-time" />
+	</span>
+
+	<span class="flex justify-center">
+		<Calendar />
+	</span>
 	<Rating />
 	<!-- <FieldSet label="group" class="p-4"> -->
 	<Select bind:value={x} {options} searchable />

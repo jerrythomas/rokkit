@@ -1,50 +1,38 @@
-# Svelte with Supabase
+# create-svelte
 
-A basic template that can be used as a starter for your supabase + svelte apps.
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-- Public routes
-  - home
-  - about
-  - login
-- Authenticated routes
-  - todos
+## Creating a project
 
-Todo's are stored into supabase as todos table
-
-```sql
-create table public.todos
-(
-  id        uuid not null primary key default extensions.uuid_generate_v4()
-, text      varchar
-, done      boolean default false
-, user_id   uuid references auth.users(id)
-);
-```
-
-Row level security enabled on user id
-
-## Getting started
-
-Get started quickly using [degit](https://github.com/Rich-Harris/degit).
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-degit jerrythomas/sentry/examples/supabase my-app
-cd my-app
-npm i --save-dev @jerrythomas/sentry@beta
-npm run dev
+# create a new project in the current directory
+npm create svelte@latest
+
+# create a new project in my-app
+npm create svelte@latest my-app
 ```
 
-```
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
 
 ## Building
 
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
+To create a production version of your app:
 
 ```bash
 npm run build
 ```
 
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

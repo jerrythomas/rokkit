@@ -1,9 +1,4 @@
-export const variants = [
-	{ title: 'Default', summary: '', attr: {} },
-	{ title: 'Disabled', summary: '', attr: { disabled: true } },
-	{ title: 'Success', summary: '', attr: { status: 'pass' } },
-	{ title: 'Error', summary: '', attr: { status: 'fail' } }
-]
+export const variants = [{ title: 'Default', summary: '', attr: {} }]
 export const props = {
 	label: 'Some label',
 	value: 'some value'
@@ -30,8 +25,21 @@ export const fields = [
 		props: {}
 	},
 	{
+		key: 'disabled',
+		type: 'checkbox',
+		props: {}
+	},
+	{
+		key: 'status',
+		type: 'list',
+		props: {
+			items: ['default', 'pass', 'fail', 'warn'],
+			value: 'default'
+		}
+	},
+	{
 		key: 'message',
 		type: 'input',
-		props: { type: 'text', value: null }
+		props: { type: 'textarea', value: 'a message to the end user.' }
 	}
 ]

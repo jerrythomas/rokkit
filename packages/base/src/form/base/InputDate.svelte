@@ -1,4 +1,5 @@
 <script>
+	/** @type {date} */
 	export let value
 </script>
 

@@ -1,20 +1,23 @@
 <script>
+	let className = ''
+
+	export { className as class }
 	export let leftIcon = null
 	export let rightIcon = null
 	export let label = null
-	export let type = 'default'
+	export let type = 'submit'
 </script>
 
-<button class="flex flex-row items-center {type}" on:click>
+<button {type} class="flex flex-row items-center {className}" on:click>
 	{#if leftIcon}
-		<span class="flex-square h-full icon-left">
+		<icon-left>
 			<icon class={leftIcon} />
-		</span>
+		</icon-left>
 	{/if}
 	<p>{label}</p>
 	{#if rightIcon}
-		<span class="flex-square h-full icon-right">
+		<icon-right>
 			<icon class={rightIcon} />
-		</span>
+		</icon-right>
 	{/if}
 </button>

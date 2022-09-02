@@ -1,7 +1,5 @@
-import { default as Input } from './Input.svelte'
 import * as base from './base'
 import * as custom from './custom'
-import * as nested from './nested'
 
 export const wrappedInput = {
 	text: base.InputText,
@@ -9,7 +7,6 @@ export const wrappedInput = {
 	email: base.InputEmail,
 	tel: base.InputTel,
 	color: base.InputColor,
-	range: base.InputRange,
 	date: base.InputDate,
 	time: base.InputTime,
 	datetime: base.InputDateTime,
@@ -19,5 +16,6 @@ export const wrappedInput = {
 	password: base.InputPassword,
 	file: base.InputFile,
 	textarea: base.TextArea,
-	rating: custom.Rating
+	rating: custom.Rating,
+	range: custom.Range
 }

@@ -1,0 +1,16 @@
+button {
+	@apply rounded leading-loose w-full select-none;
+	@apply bg-skin-200 border border-skin-300 outline-primary-400;
+
+	icon-left,
+	icon-right {
+		@apply flex flex-col items-center justify-center h-10 aspect-square;
+
+		icon {
+			@apply text-2xl;
+		}
+	}
+	p {
+		@apply px-2 flex flex-grow;
+	}
+}

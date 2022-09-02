@@ -50,7 +50,7 @@
 			bind:items={filtered}
 			{fields}
 			{using}
-			{activeItem}
+			bind:activeItem
 			on:click={handleClick}
 		/>
 	</scroll>
