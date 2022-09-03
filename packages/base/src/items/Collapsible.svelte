@@ -13,7 +13,8 @@
 </script>
 
 <collapsible
-	class="flex flex-row flex-shrink-0 items-center w-full leading-loose cursor-pointer min-h-8"
+	class="flex flex-row flex-shrink-0 items-center w-full leading-loose cursor-pointer"
+	class:expanded={content.isOpen}
 	on:click={toggle}
 >
 	{#if content[fields.image]}

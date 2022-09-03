@@ -3,6 +3,8 @@
 	import ListItems from './ListItems.svelte'
 	import Collapsible from '../items/Collapsible.svelte'
 
+	let className = ''
+	export { className as class }
 	export let items = []
 	export let fields = {}
 	export let using = {}
@@ -24,18 +26,9 @@
 	}
 </script>
 
-<!-- {#if editable}
-	<ListActions
-		on:delete={deleteSelection}
-		on:clear={clearSelection}
-		on:add={addItem}
-	/>
-{/if} -->
-<accordion
-	class="flex flex-col flex-shrink-0 w-full select-none {$$restProps.class}"
->
+<accordion class="flex flex-col w-full select-none {className}">
 	{#each items as item}
-		<group>
+		<group class="flex flex-col">
 			<svelte:component
 				this={using.collapsible}
 				bind:content={item}

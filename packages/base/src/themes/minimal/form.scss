@@ -14,3 +14,31 @@ button {
 		@apply px-2 flex flex-grow;
 	}
 }
+
+calendar {
+	@apply rounded-md overflow-hidden shadow-lg;
+	month-year {
+		@apply bg-secondary-400 text-white;
+	}
+	cal-body {
+		days-of-week p,
+		days-of-month p {
+			@apply h-8 w-8 text-xs;
+		}
+		days-of-week p.weekend,
+		days-of-month p.weekend,
+		days-of-month p.holiday {
+			@apply text-primary-700;
+		}
+
+		days-of-month {
+			@apply gap-2px;
+			p {
+				@apply hover:bg-secondary-200 hover:rounded-full;
+			}
+			p.active {
+				@apply bg-secondary-500 text-white rounded-full;
+			}
+		}
+	}
+}

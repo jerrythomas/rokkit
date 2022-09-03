@@ -3,8 +3,13 @@
 @import './minimal/list.scss';
 @import './minimal/form.scss';
 
-body {
-	@apply h-screen w-screen flex flex-row font-body;
+html,
+body,
+body > div {
+	@apply h-screen w-screen flex flex-row font-body overflow-clip;
+}
+square {
+	@apply flex flex-col items-center justify-center aspect-square h-full;
 }
 
 overlay {
@@ -27,9 +32,7 @@ fieldset {
 		@apply text-2xl;
 	}
 }
-aside.sidebar {
-	@apply flex flex-col min-w-100 bg-skin-200 h-full p-8 gap-4 overflow-hidden;
-}
+
 .disabled {
 	@apply text-disabled;
 }
@@ -72,21 +75,22 @@ success {
 	@apply bg-pass text-pass border-pass;
 }
 
-
-
 header {
 	@apply px-4 h-14 border-b bg-gray-200 border-gray-300 text-xl font-serif;
 }
-.sidebar {
-	@apply border-r border-gray-300 h-full;
+
+aside.sidebar {
+	@apply h-full flex flex-col min-w-100 bg-skin-200;
+	// @apply flex flex-col min-w-100 bg-skin-200 h-full p-8 gap-4 border-r border-gray-300;
 }
+
 label {
 	@apply leading-loose;
 }
 
-
-
-
+scroll {
+	@apply flex flex-col overflow-y-scroll px-4;
+}
 // content > div > div > .list {
 // 	@apply border gap-1 p-1 border-gray-400;
 // }
@@ -143,5 +147,3 @@ rating {
 checkbox {
 	@apply gap-2;
 }
-
-
