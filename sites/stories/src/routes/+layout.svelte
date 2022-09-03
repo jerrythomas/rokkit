@@ -13,8 +13,8 @@
 </script>
 
 <Sidebar>
-	<div class="flex flex-col justify-center" slot="header">Components</div>
-	<scroll class="flex flex-col flex-shrink-0 overflow-hidden">
+	<div class="flex flex-col justify-center p-4" slot="header">Components</div>
+	<scroll>
 		<Accordion
 			items={menu}
 			{using}

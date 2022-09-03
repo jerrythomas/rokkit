@@ -1,4 +1,4 @@
-export function arrowKeys(node, options) {
+export function arrowKeys(node, options = {}) {
 	const keyup = (event) => {
 		const next = options.horizontal
 			? event.key === 'ArrowRight'
@@ -7,6 +7,10 @@ export function arrowKeys(node, options) {
 			? event.key === 'ArrowLeft'
 			: event.key === 'ArrowUp'
 
+		if (next || prev || event.key === 'Enter') {
+			event.stopPropagation()
+			event.preventDefault()
+		}
 		if (next) {
 			node.dispatchEvent(new CustomEvent('forward', node))
 		}
@@ -18,10 +22,12 @@ export function arrowKeys(node, options) {
 		}
 	}
 
+	node.addEventListener('keyup', keyup, true)
 	document.addEventListener('keyup', keyup, true)
 
 	return {
 		destroy() {
+			node.removeEventListener('keyup', keyup, true)
 			document.removeEventListener('keyup', keyup, true)
 		}
 	}

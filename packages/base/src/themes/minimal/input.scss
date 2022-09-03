@@ -20,7 +20,6 @@ input-field {
 				@apply flex-grow border-0 outline-0;
 			}
 		}
-
 	}
 	message {
 		@apply px-2 py-1 bg-skin-100 rounded;
@@ -86,8 +85,6 @@ thumb.sliding::before {
 	@apply absolute left-0 top-0 right-0 bottom-0 bg-primary-500  opacity-30 rounded-sm;
 	transform: scale(2, 2);
 }
-
-
 
 .error,
 .fail {

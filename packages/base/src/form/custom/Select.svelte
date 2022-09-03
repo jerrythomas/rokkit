@@ -48,11 +48,9 @@
 			class:inactive={!visible}
 			class="flex flex-grow"
 		/>
-		<sk-square
-			class="flex flex-col items-center justify-center aspect-square h-full position-absolute right-0"
-		>
+		<square class="h-full position-absolute right-0">
 			<icon class="i-carbon-chevron-sort" />
-		</sk-square>
+		</square>
 	</span>
 	<slot />
 	{#if visible}

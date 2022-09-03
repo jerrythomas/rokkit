@@ -1,20 +1,25 @@
 accordion.menu {
-	@apply text-md h-full overflow-y-scroll text-skin-800 gap-2;
+	@apply text-md h-full text-skin-800 gap-2;
 
-	& > group {
-		@apply rounded-lg overflow-hidden;
+	group {
+		@apply rounded shadow;
 	}
 	ul {
-		@apply gap-1 bg-skin-200;
-		gap: 1px;
-		padding-top: 1px;
-		padding-bottom: 1px;
+		@apply p-t-1px gap-1px bg-skin-200;
 	}
 	.item,
 	collapsible {
 		@apply leading-12 px-4 bg-skin-50;
 	}
+	collapsible {
+		@apply rounded;
+	}
+	collapsible.expanded {
+		@apply rounded-b-none;
+	}
 	.item {
+		@apply last:rounded-b;
+
 		icon {
 			@apply text-secondary;
 		}
@@ -27,7 +32,8 @@ accordion.menu {
 	}
 }
 
-list, slide {
+list,
+slide {
 	.item {
 		@apply px-3 border-b border-skin-100 py-1 last:border-0;
 	}
@@ -59,4 +65,8 @@ input-select {
 	slide {
 		@apply shadow-lg rounded-b h-33 top-8;
 	}
+}
+
+spin-list {
+	@apply border h-10;
 }

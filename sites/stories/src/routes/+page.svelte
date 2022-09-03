@@ -10,7 +10,8 @@
 		Tabs,
 		Range,
 		RangeSlider,
-		Select
+		Select,
+		SpinList
 	} from '@sparsh-ui/core'
 
 	function add() {
@@ -40,15 +41,18 @@
 		{ text: 'five' },
 		{ text: 'six' }
 	]
+	let years = [2020, 2021, 2022, 2023]
 </script>
 
-<content class="flex flex-col p-4 gap-4">
+<content class="flex flex-col p-4 gap-4 h-full overflow-scroll">
 	<span class="flex gap-2 text-secondary">
 		<icon class="i-sparsh:input-text" />
 		<icon class="i-sparsh:input-date" />
 		<icon class="i-sparsh:input-time" />
 	</span>
-
+	<span class="flex justify-center">
+		<SpinList items={years} />
+	</span>
 	<span class="flex justify-center">
 		<Calendar />
 	</span>

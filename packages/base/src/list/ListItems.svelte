@@ -5,6 +5,8 @@
 
 	const dispatch = createEventDispatcher()
 
+	let className = 'list'
+	export { className as class }
 	export let items = []
 	export let fields = {}
 	export let using = {}
@@ -17,12 +19,11 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
-	$: style = $$props.class || 'list'
 
 	$: filtered = items.filter((item) => !item.isDeleted)
 </script>
 
-<ul class="flex flex-col w-full flex-shrink-0 select-none {style}">
+<ul class="flex flex-col w-full flex-shrink-0 select-none {className}">
 	{#each filtered as item}
 		{@const component = item[fields.component]
 			? using[item[fields.component]] || using.default
