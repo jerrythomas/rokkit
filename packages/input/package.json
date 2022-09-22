@@ -1,7 +1,7 @@
 {
-	"name": "@sparsh-ui/core",
-	"version": "1.0.0",
-	"description": "Svelte list view components",
+	"name": "@jerrythomas/spice-input",
+	"version": "1.0.0-next.0",
+	"description": "Input controls for svelte",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
 	"main": "index.js",
@@ -9,6 +9,7 @@
 	"module": "src/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
+	"prettier": "@jerrythomas/prettier-config",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -25,48 +26,25 @@
 		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@playwright/experimental-ct-svelte": "^1.26.0",
+		"@jerrythomas/eslint-config-svelte": "latest",
+		"@jerrythomas/prettier-config": "latest",
 		"@sveltejs/vite-plugin-svelte": "^1.0.7",
 		"@testing-library/svelte": "^3.2.1",
-		"@types/d3-array": "^3.0.3",
-		"@types/jsdom": "^16.2.15",
-		"@types/ramda": "^0.28.15",
-		"@unocss/core": "^0.44.7",
-		"@unocss/preset-icons": "^0.44.7",
-		"@unocss/preset-uno": "^0.44.7",
-		"@unocss/reset": "^0.44.7",
-		"@unocss/transformer-directives": "^0.44.7",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
 		"eslint": "^7.32.0",
-		"eslint-config-shared": "workspace:1.0.0",
-		"js-yaml": "^4.1.0",
 		"jsdom": "^19.0.0",
-		"playwright": "^1.26.0",
 		"shared-config": "workspace:^1.0.0",
 		"svelte": "^3.50.1",
 		"typescript": "^4.8.3",
-		"unocss": "^0.44.7",
-		"validators": "workspace:^1.0.0",
 		"vite": "^3.1.3",
-		"vitest": "~0.19.1",
-		"windicss": "^3.5.6"
+		"vitest": "~0.19.1"
 	},
 	"dependencies": {
-		"d3-array": "^3.2.0",
-		"d3-collection": "^1.0.7",
-		"d3-scale": "^4.0.2",
-		"date-fns": "^2.29.3",
-		"marked": "^4.1.0",
-		"prismjs": "^1.29.0",
-		"ramda": "^0.28.0",
-		"short-unique-id": "^4.4.4"
+		"@jerrythomas/spice-list": "workspace:1.0.0-next.0"
 	},
 	"exports": {
 		"./package.json": "./package.json",
-		"./themes": "./src/themes/index.js",
-		"./themes/minimal.scss": "./src/themes/minimal.scss",
-		"./themes/material.scss": "./src/themes/material.scss",
 		".": {
 			"import": "./src/index.js"
 		}
