@@ -1,6 +1,0 @@
-export { default as Text } from './Text.svelte'
-export { default as Link } from './Link.svelte'
-export { default as Node } from './Node.svelte'
-export { default as Collapsible } from './Collapsible.svelte'
-export { default as Connector } from './Connector.svelte'
-export { default as Separator } from './Separator.svelte'
