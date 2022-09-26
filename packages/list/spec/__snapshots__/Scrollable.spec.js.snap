@@ -4,7 +4,7 @@ exports[`Scrollable.svelte > Should render 1`] = `
 <body>
   <div>
     <scroll
-      class="flex flex-col h-full overflow-scroll undefined"
+      class="flex flex-col h-full overflow-scroll "
     />
   </div>
 </body>

@@ -1,5 +1,6 @@
 <script>
 	import { defaultFields } from '../constants'
+
 	export let content
 	export let fields = defaultFields
 

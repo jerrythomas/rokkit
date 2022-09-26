@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 
-import DropDown from './DropDown.svelte'
+import DropDown from '../src/DropDown.svelte'
 
 describe('DropDown.svelte', () => {
 	beforeEach(() => cleanup())

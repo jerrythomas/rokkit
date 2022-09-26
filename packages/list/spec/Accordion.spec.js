@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 
-import Accordion from './Accordion.svelte'
+import Accordion from '../src/Accordion.svelte'
 
 describe('Accordion.svelte', () => {
 	beforeEach(() => cleanup())

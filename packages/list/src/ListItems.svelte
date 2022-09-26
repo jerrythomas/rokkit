@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '../constants'
-	import { Text } from '../items'
+	import { defaultFields } from './constants'
+	import { Text } from './items'
 
 	const dispatch = createEventDispatcher()
 

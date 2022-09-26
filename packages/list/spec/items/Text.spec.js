@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 
-import Text from './Text.svelte'
+import Text from '../../src/items/Text.svelte'
 
 describe('Text.svelte', () => {
 	beforeEach(() => cleanup())

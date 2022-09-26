@@ -1,9 +1,7 @@
 <script>
-	import Icon from '../layout/Icon.svelte'
 	import ListItems from './ListItems.svelte'
-	import Text from '../items/Text.svelte'
+	import Text from './items/Text.svelte'
 	import Slider from './Slider.svelte'
-	// import DropDownIcon from './icons/DropDownIcon.svelte'
 
 	export let data
 	export let component = null
@@ -30,7 +28,7 @@
 		<span class="flex flex-grow">
 			<Text {component} item={selected} />
 		</span>
-		<Icon name="selector" />
+		<icon class="selector" />
 		<!-- <DropDownIcon /> -->
 	</div>
 

@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '../../constants'
+	import { defaultFields } from './constants'
 	import TabItem from './TabItem.svelte'
 
 	const dispatch = createEventDispatcher()
