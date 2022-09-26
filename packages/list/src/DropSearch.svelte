@@ -1,5 +1,4 @@
 <script>
-	import Icon from '../layout/Icon.svelte'
 	import List from './ListItems.svelte'
 	import Slider from './Slider.svelte'
 
@@ -41,7 +40,7 @@
 				}}
 			/>
 		</span>
-		<Icon name="selector" />
+		<icon class="selector" />
 	</div>
 
 	{#if opened}

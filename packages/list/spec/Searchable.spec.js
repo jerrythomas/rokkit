@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 
-import Searchable from './Searchable.svelte'
+import Searchable from '../src/Searchable.svelte'
 
 describe('Searchable.svelte', () => {
 	beforeEach(() => cleanup())

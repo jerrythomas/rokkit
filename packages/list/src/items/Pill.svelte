@@ -1,5 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	import { defaultStateIcons } from '../constants'
+
 	const dispatch = createEventDispatcher()
 
 	export let item
@@ -12,5 +14,5 @@
 
 <pill class="flex flex-row items-center">
 	{item[fields.text]}
-	<icon class="remove" on:click={handleClick} />
+	<icon class={defaultStateIcons.item.remove} on:click={handleClick} />
 </pill>

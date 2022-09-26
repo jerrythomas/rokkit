@@ -1,8 +1,8 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '../constants'
-	import { Text } from '../items'
-	import { arrowKeys } from '../actions/keyboard'
+	import { defaultFields } from './constants'
+	import { Text } from './items'
+	import { arrowKeys } from '@jerrythomas/spice-actions'
 	import { getComponent } from './list'
 
 	const dispatch = createEventDispatcher()
@@ -35,8 +35,8 @@
 		type="text"
 		class="flex flex-grow"
 		bind:value
-		use:arrowKeys
 		readonly
+		use:arrowKeys
 		on:forward={moveNext}
 		on:backward={moveBack}
 	/>

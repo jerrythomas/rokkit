@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 
-import Slider from './Slider.svelte'
+import Slider from '../src/Slider.svelte'
 
 describe('Slider.svelte', () => {
 	beforeEach(() => cleanup())

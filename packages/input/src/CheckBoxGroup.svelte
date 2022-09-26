@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, defaultOptions } from '../../constants'
+	import { defaultStateIcons, defaultOptions } from './constants'
 
 	let className = ''
 	export { className as class }

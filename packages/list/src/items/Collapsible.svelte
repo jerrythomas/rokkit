@@ -3,6 +3,7 @@
 	import { defaultFields } from '../constants'
 
 	const dispatch = createEventDispatcher()
+
 	export let content
 	export let fields = defaultFields
 

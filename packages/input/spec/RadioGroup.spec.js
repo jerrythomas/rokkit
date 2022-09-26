@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import RadioGroup from './RadioGroup.svelte'
+import RadioGroup from '../src/RadioGroup.svelte'
 
 describe('RadioGroup.svelte', () => {
 	beforeEach(() => cleanup())

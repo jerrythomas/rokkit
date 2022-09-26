@@ -1,17 +1,21 @@
 <script>
-	import Icon from '../layout/Icon.svelte'
+	// import Icon from '../layout/Icon.svelte'
 	import { createEventDispatcher } from 'svelte'
+	import { defaultStateIcons } from './constants'
+
 	const dispatch = createEventDispatcher()
 
 	export let search
 	export let searchable = true
 	export let editable = false
+
+	const actionIcons = defaultStateIcons.list
 </script>
 
 <toolbar class="flex flex-row w-full items-center">
 	{#if searchable}
 		<search class="flex flex-row flex-grow">
-			<Icon name="search" />
+			<icon class={actionIcons.search} />
 			<input
 				type="search"
 				bind:value={search}
@@ -21,8 +25,8 @@
 		</search>
 	{/if}
 	{#if editable}
-		<Icon name="clear" on:click={() => dispatch('clear')} />
-		<Icon name="delete" on:click={() => dispatch('delete')} />
-		<Icon name="add" on:click={() => dispatch('add')} />
+		<icon class={actionIcons.clear} on:click={() => dispatch('clear')} />
+		<icon class={actionIcons.delete} on:click={() => dispatch('delete')} />
+		<icon class={actionIcons.add} on:click={() => dispatch('add')} />
 	{/if}
 </toolbar>

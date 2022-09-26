@@ -19,16 +19,9 @@ exports[`DropSearch.svelte > Should render 1`] = `
           />
         </span>
          
-        <svg
-          class="icon svelte-10m412s"
-          fill="none"
-          height="1.5em"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          width="1.5em"
-          xmlns="http://www.w3.org/2000/svg"
+        <icon
+          class="selector"
         />
-        
       </div>
        
     </div>

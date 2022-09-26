@@ -1,6 +1,6 @@
 <script>
-	import { Node } from '../items'
-	import { defaultFields } from '../constants'
+	import { Node } from './items'
+	import { defaultFields } from './constants'
 
 	export let items = []
 	export let fields = {}

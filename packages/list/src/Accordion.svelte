@@ -1,7 +1,7 @@
 <script>
-	import { defaultFields } from '../constants'
-	import ListItems from '../ListItems.svelte'
-	import Collapsible from '../items/Collapsible.svelte'
+	import { defaultFields } from './constants'
+	import ListItems from './ListItems.svelte'
+	import Collapsible from './items/Collapsible.svelte'
 
 	let className = ''
 	export { className as class }

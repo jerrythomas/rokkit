@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, defaultOptions } from '../../constants'
+	import { defaultStateIcons, defaultOptions } from './constants'
 
 	let className = ''
 	export { className as class }
@@ -16,7 +16,7 @@
 	$: fields = { ...defaultOptions, ...fields }
 	$: pass = status === 'pass'
 	$: fail = status === 'fail'
-	$: flexDirection = textAfter ? 'flex-row': 'flex-row-reverse'
+	$: flexDirection = textAfter ? 'flex-row' : 'flex-row-reverse'
 </script>
 
 <radio

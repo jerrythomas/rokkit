@@ -4,7 +4,7 @@ exports[`Slider.svelte > Should render 1`] = `
 <body>
   <div>
     <scroll
-      class="flex flex-col absolute h-full w-full h-60 top-12 overflow-scroll undefined"
+      class="flex flex-col absolute w-full top-9 overflow-scroll "
     />
   </div>
 </body>
