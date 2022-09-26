@@ -13,18 +13,18 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.25.0",
+		"@playwright/test": "^1.26.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"eslint": "^8.16.0",
-		"eslint-config-prettier": "^8.3.0",
+		"eslint": "^8.24.0",
+		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier": "^2.6.2",
+		"prettier": "^2.7.1",
 		"prettier-plugin-svelte": "^2.7.0",
-		"svelte": "^3.44.0",
-		"svelte-check": "^2.7.1",
-		"typescript": "^4.7.4",
-		"vite": "^3.0.4"
+		"svelte": "^3.50.1",
+		"svelte-check": "^2.9.0",
+		"typescript": "^4.8.3",
+		"vite": "^3.1.3"
 	},
 	"type": "module",
 	"dependencies": {
@@ -33,15 +33,15 @@
 		"@iconify-json/entypo-social": "^1.1.2",
 		"@iconify-json/fa-brands": "^1.1.2",
 		"@iconify-json/flat-color-icons": "^1.1.2",
-		"@iconify-json/logos": "^1.1.14",
+		"@iconify-json/logos": "^1.1.16",
 		"@jerrythomas/sentry": "workspace:^1.0.0",
 		"@sparsh-ui/core": "workspace:^1.0.0",
-		"@supabase/supabase-js": "^1.35.6",
+		"@supabase/supabase-js": "^1.35.7",
 		"@unocss/core": "^0.44.7",
 		"@unocss/preset-uno": "^0.44.7",
 		"@unocss/reset": "^0.44.7",
 		"@unocss/transformer-directives": "^0.44.7",
-		"pino": "^8.4.2",
+		"pino": "^8.6.0",
 		"unocss": "^0.44.7"
 	}
 }
