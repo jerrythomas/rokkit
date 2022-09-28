@@ -1,5 +1,5 @@
 {
-	"name": "@sparsh-ui/chart",
+	"name": "@svelte-spice/chart",
 	"version": "1.0.0",
 	"description": "Components for making interactive charts.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
@@ -24,16 +24,16 @@
 		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^1.0.7",
+		"@sveltejs/vite-plugin-svelte": "^1.0.8",
 		"@testing-library/svelte": "^3.2.1",
 		"@vitest/ui": "~0.12.10",
-		"eslint": "^8.23.1",
+		"eslint": "^8.24.0",
 		"eslint-config-shared": "workspace:1.0.0",
 		"js-yaml": "^4.1.0",
 		"jsdom": "^19.0.0",
 		"shared-config": "workspace:^1.0.0",
 		"svelte": "^3.50.1",
-		"typescript": "^4.8.3",
+		"typescript": "^4.8.4",
 		"vite": "^3.1.3",
 		"vitest": "~0.19.1"
 	},
