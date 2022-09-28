@@ -1,8 +1,9 @@
 <script>
 	import NestedLayout from './NestedLayout.svelte'
+	import { deriveLayout } from './layout'
 
 	export let schema
-	export let segments = [schema]
+	export let segments = deriveLayout(schema)
 	export let data
 	export let using
 </script>

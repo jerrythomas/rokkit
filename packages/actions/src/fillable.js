@@ -1,3 +1,16 @@
+/**
+ * @typedef FillOptions
+ * @property {Array<string>} options available options to fill
+ * @property {integer} current       index of option to be filled
+ * @property {boolean} check         validate filled values
+ */
+/**
+ * Action for filling a <del>?</del> element in html block.
+ *
+ * @param {*} node
+ * @param {FillOptions} options
+ * @returns
+ */
 export function fillable(node, { options, current, check }) {
 	let data = { options, current, check }
 	let blanks = node.getElementsByTagName('del')
@@ -27,6 +40,12 @@ export function fillable(node, { options, current, check }) {
 	}
 }
 
+/**
+ * Initialize empty fillable element style and add listener for click
+ *
+ * @param {*} blanks
+ * @param {*} click
+ */
 function initialize(blanks, click) {
 	Object.keys(blanks).map((ref) => {
 		blanks[ref].addEventListener('click', click)
@@ -35,6 +54,14 @@ function initialize(blanks, click) {
 		blanks[ref]['data-index'] = ref
 	})
 }
+
+/**
+ * Fill current blank with provided option
+ *
+ * @param {*} blanks
+ * @param {*} options
+ * @param {*} current
+ */
 function fill(blanks, options, current) {
 	if (current > -1 && current < Object.keys(blanks).length) {
 		let index = options.findIndex(({ actualIndex }) => actualIndex == current)
@@ -46,6 +73,12 @@ function fill(blanks, options, current) {
 	}
 }
 
+/**
+ * Clear all fillable elements
+ *
+ * @param {*} event
+ * @param {*} node
+ */
 function clear(event, node) {
 	event.target.innerHTML = '?'
 	event.target.classList.remove('filled')
@@ -62,6 +95,12 @@ function clear(event, node) {
 	)
 }
 
+/**
+ * Validate the filled values
+ *
+ * @param {*} blanks
+ * @param {*} data
+ */
 function validate(blanks, data) {
 	Object.keys(blanks).map((ref) => {
 		let index = data.options.findIndex(({ actualIndex }) => actualIndex == ref)

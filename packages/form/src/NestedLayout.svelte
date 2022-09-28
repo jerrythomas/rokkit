@@ -1,13 +1,12 @@
 <script>
 	import { omit } from 'ramda'
-
-	let className = 'horizontal'
-
-	export { className as class }
+	// let className = 'horizontal'
+	// export { className as class }
 
 	export let value
 	export let using
 	export let properties
+	export let layout = 'horizontal'
 
 	function getProps(properties, using) {
 		let props = omit(['component'], properties)
@@ -17,7 +16,7 @@
 	}
 </script>
 
-<field-layout class={className}>
+<field-layout class={layout}>
 	{#each Object.entries(properties) as [key, properties]}
 		{@const component = using[properties.component]}
 		{@const props = getProps(properties, using)}

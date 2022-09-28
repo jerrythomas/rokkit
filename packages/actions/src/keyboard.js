@@ -1,3 +1,10 @@
+/**
+ * Action to handle arrow key navigation
+ *
+ * @param {*} node
+ * @param {*} options
+ * @returns
+ */
 export function arrowKeys(node, options = {}) {
 	const keyup = (event) => {
 		const next = options.horizontal

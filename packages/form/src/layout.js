@@ -22,6 +22,6 @@ export function validate(schema, data) {
 	return result
 }
 
-// export function updateLayout(layout, errors){
-// 	return errors
-// }
+export function deriveLayout(schema) {
+	return [schema]
+}

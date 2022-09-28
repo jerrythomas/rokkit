@@ -1,3 +1,9 @@
+/**
+ * Handle drag and move events
+ *
+ * @param {*} node
+ * @returns
+ */
 export function pannable(node) {
 	let x
 	let y

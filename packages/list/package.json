@@ -1,5 +1,5 @@
 {
-	"name": "@jerrythomas/spice-list",
+	"name": "@svelte-spice/list",
 	"version": "1.0.0-next.0",
 	"description": "List controls for svelte",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
@@ -28,19 +28,19 @@
 	"devDependencies": {
 		"@jerrythomas/eslint-config-svelte": "latest",
 		"@jerrythomas/prettier-config": "latest",
-		"@sveltejs/vite-plugin-svelte": "^1.0.7",
+		"@sveltejs/vite-plugin-svelte": "^1.0.8",
 		"@testing-library/svelte": "^3.2.1",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
 		"eslint": "^7.32.0",
 		"jsdom": "^19.0.0",
 		"svelte": "^3.50.1",
-		"typescript": "^4.8.3",
+		"typescript": "^4.8.4",
 		"vite": "^3.1.3",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
-		"@jerrythomas/spice-actions": "workspace:*"
+		"@svelte-spice/actions": "workspace:1.0.0-next.0"
 	},
 	"exports": {
 		"./package.json": "./package.json",
