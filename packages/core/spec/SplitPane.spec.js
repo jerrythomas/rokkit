@@ -1,6 +1,6 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import SplitPane from './SplitPane.svelte'
+import SplitPane from '../src/SplitPane.svelte'
 
 describe('SplitPane.svelte', () => {
 	beforeEach(() => cleanup())

@@ -1,6 +1,6 @@
 <script>
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { Connector } from '@sparsh-ui/core'
+	import { Connector } from '@svelte-spice/core'
 
 	let variants = [
 		{ title: 'last', props: { type: 'last' } },

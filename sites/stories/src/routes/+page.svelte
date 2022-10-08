@@ -1,18 +1,18 @@
 <script>
 	// import { v4 as uuid } from '@lukeed/uuid'
 	import {
-		FieldSet,
-		Calendar,
-		Rating,
-		Alerts,
-		alerts,
-		Input,
-		Tabs,
-		Range,
-		RangeSlider,
-		Select,
-		SpinList
-	} from '@sparsh-ui/core'
+		// FieldSet,
+		// Calendar,
+		// Rating,
+		Alerts
+		// Input,
+		// Tabs,
+		// Range,
+		// RangeSlider,
+		// Select,
+		// SpinList
+	} from '@svelte-spice/core'
+	import { alerts } from '@svelte-spice/core/stores'
 
 	function add() {
 		alerts.set([
@@ -50,15 +50,15 @@
 		<icon class="i-sparsh:input-date" />
 		<icon class="i-sparsh:input-time" />
 	</span>
-	<span class="flex justify-center">
+	<!-- <span class="flex justify-center">
 		<SpinList items={years} />
 	</span>
 	<span class="flex justify-center">
 		<Calendar />
 	</span>
-	<Rating />
+	<Rating /> -->
 	<!-- <FieldSet label="group" class="p-4"> -->
-	<Select bind:value={x} {options} searchable />
+	<!-- <Select bind:value={x} {options} searchable /> -->
 	<!-- <Tabs {items} bind:activeItem title="[ data ]">
 		{activeItem?.text}
 		<Range min={10} max={100} tickStep={10} step={1} />

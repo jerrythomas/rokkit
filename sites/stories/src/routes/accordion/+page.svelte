@@ -4,7 +4,7 @@
 	)
 
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { Accordion } from '@sparsh-ui/core'
+	import { Accordion } from '@svelte-spice/core'
 
 	export let variants
 	let props

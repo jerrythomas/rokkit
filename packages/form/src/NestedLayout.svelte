@@ -1,5 +1,6 @@
 <script>
 	import { omit } from 'ramda'
+	import FieldLayout from './FieldLayout.svelte'
 	// let className = 'horizontal'
 	// export { className as class }
 
@@ -16,11 +17,11 @@
 	}
 </script>
 
-<field-layout class={layout}>
+<FieldLayout {layout}>
 	{#each Object.entries(properties) as [key, properties]}
 		{@const component = using[properties.component]}
 		{@const props = getProps(properties, using)}
 
 		<svelte:component this={component} bind:value={value[key]} {...props} />
 	{/each}
-</field-layout>
+</FieldLayout>

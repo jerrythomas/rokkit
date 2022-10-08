@@ -1,5 +1,5 @@
 <script>
-	import { pannable } from '../../actions/pannable'
+	import { pannable } from '@svelte-spice/core'
 	export let min
 	export let max
 	export let cx

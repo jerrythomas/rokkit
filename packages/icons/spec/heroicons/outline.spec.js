@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import { toHyphenCase, toPascalCase } from '@sparsh-ui/core'
+import { toHyphenCase, toPascalCase } from '@svelte-spice/core'
 import * as icons from '../../src/heroicons/outline'
 
 describe('HeroIcons Outline', () => {

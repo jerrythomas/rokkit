@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, defaultOptions } from './constants'
+	import { defaultStateIcons, defaultOptions } from '@svelte-spice/core'
 
 	let className = ''
 	export { className as class }

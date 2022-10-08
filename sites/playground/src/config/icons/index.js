@@ -1,10 +1,10 @@
-import { iconStore } from '@sparsh-ui/icons'
+import { iconStore } from '@svelte-spice/icons'
 import {
 	Check,
 	ChartBar,
 	Sparkles,
 	Beaker
-} from '@sparsh-ui/icons/heroicons/outline'
+} from '@svelte-spice/icons/heroicons/outline'
 const icons = {
 	tick: Check
 }

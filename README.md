@@ -28,8 +28,8 @@ pnpm dev
 
 ## Libraries
 
-- [@sparsh-ui/base](packages/base)
-- [@sparsh-ui/icons](packages/icons)
-- [@sparsh-ui/chart](packages/chart)
-- [@sparsh-ui/list](packages/list)
-- [@sparsh-ui/markdown](packages/markdown)
+- [@svelte-spice/base](packages/base)
+- [@svelte-spice/icons](packages/icons)
+- [@svelte-spice/chart](packages/chart)
+- [@svelte-spice/list](packages/list)
+- [@svelte-spice/markdown](packages/markdown)

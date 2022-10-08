@@ -21,9 +21,9 @@ const config = {
 	extract: {
 		include: [
 			'./**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@sparsh-ui/base/src/**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@sparsh-ui/list/src/**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@sparsh-ui/chart/src/**/*.{html,js,svelte,ts,css}'
+			'./node_modules/@svelte-spice/base/src/**/*.{html,js,svelte,ts,css}',
+			'./node_modules/@svelte-spice/list/src/**/*.{html,js,svelte,ts,css}',
+			'./node_modules/@svelte-spice/chart/src/**/*.{html,js,svelte,ts,css}'
 		]
 	},
 	theme: {

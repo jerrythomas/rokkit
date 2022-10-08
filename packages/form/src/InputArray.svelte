@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import FormFields from './FormFields.svelte'
-	import {Tabs} from '@jerrythomas/spice-list'
+	import { Tabs } from '@svelte-spice/core'
 
 	const dispatch = createEventDispatcher()
 

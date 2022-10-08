@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import Markdown from './Markdown.svelte'
+import Markdown from '../src/Markdown.svelte'
 
 describe('Markdown.svelte', () => {
 	beforeEach(() => cleanup())

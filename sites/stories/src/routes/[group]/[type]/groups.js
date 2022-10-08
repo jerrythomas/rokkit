@@ -1,4 +1,4 @@
-import { Input, Calendar, Range, Select } from '@sparsh-ui/core'
+import { Input, Calendar, Range, Select } from '@svelte-spice/input'
 
 import * as input from './input'
 import * as custom from './custom'

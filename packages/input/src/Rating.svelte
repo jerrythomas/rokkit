@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultStateIcons } from './constants'
+	import { defaultStateIcons } from '@svelte-spice/core'
 	const dispatch = createEventDispatcher()
 
 	export let id = null

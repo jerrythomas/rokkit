@@ -13,7 +13,7 @@
 		// BoxPlot,
 		// ViolinPlot,
 		ScatterPlot
-	} from '@sparsh-ui/chart'
+	} from '@svelte-spice/chart'
 	export let data = []
 
 	let width = 400

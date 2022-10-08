@@ -1,5 +1,5 @@
 <script>
-	import { Input, IconButton } from '@sparsh-ui/core'
+	import { Input, IconButton } from '@svelte-spice/core'
 
 	/** @type {string} */
 	export let name

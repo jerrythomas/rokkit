@@ -1,12 +1,12 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import SplitView from './SplitView.svelte'
+import Splitter from '../src/Splitter.svelte'
 
-describe('SplitView.svelte', () => {
+describe('Splitter.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('should render the navigation SplitView', () => {
-		const { container } = render(SplitView)
+	it('should render the navigation Splitter', () => {
+		const { container } = render(Splitter)
 		expect(container).toBeTruthy()
 	})
 })
