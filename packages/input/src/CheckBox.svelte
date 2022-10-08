@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons } from './constants'
+	import { defaultStateIcons } from './lib/constants'
 
 	let className = ''
 	export { className as class }
@@ -15,7 +15,7 @@
 	$: pass = status === 'pass'
 	$: fail = status === 'fail'
 	$: state = value === null ? 'unknown' : value ? 'checked' : 'unchecked'
-	$: flexDirection = textAfter ? 'flex-row': 'flex-row-reverse'
+	$: flexDirection = textAfter ? 'flex-row' : 'flex-row-reverse'
 </script>
 
 <checkbox

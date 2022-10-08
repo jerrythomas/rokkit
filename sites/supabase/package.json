@@ -35,7 +35,7 @@
 		"@iconify-json/flat-color-icons": "^1.1.2",
 		"@iconify-json/logos": "^1.1.16",
 		"@jerrythomas/sentry": "workspace:^1.0.0",
-		"@sparsh-ui/core": "workspace:^1.0.0",
+		"@svelte-spice/core": "workspace:*",
 		"@supabase/supabase-js": "^1.35.7",
 		"@unocss/core": "^0.44.7",
 		"@unocss/preset-uno": "^0.44.7",

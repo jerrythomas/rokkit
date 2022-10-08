@@ -4,7 +4,7 @@
 	)
 
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { List, Link } from '@sparsh-ui/core'
+	import { List, Link } from '@svelte-spice/core'
 
 	export let variants
 	let props

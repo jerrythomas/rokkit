@@ -1,6 +1,6 @@
 <script>
 	import Variant from '$lib/Variant.svelte'
-	import { FormFields } from '@sparsh-ui/core'
+	import { FormFields } from '@svelte-spice/form'
 
 	export let title
 	export let props

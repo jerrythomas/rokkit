@@ -6,7 +6,7 @@
 @import '@fontsource/montserrat-alternates/500.css';
 @import '@fontsource/montserrat-alternates/700.css';
 @import './palette.css';
-@import '@sparsh-ui/core/themes/minimal.scss';
+@import '@svelte-spice/themes/minimal.scss';
 
 error {
 	@apply bg-error bg-red-100;

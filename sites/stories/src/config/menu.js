@@ -1,4 +1,4 @@
-// import { inputTypes } from '@sparsh-ui/core'
+// import { inputTypes } from '@svelte-spice/core'
 import { inputMenu } from './models'
 // const inputs = Object.entries(inputTypes).map(([k, v]) => ({
 // 	text: String(v.name).replace('Proxy', ''),

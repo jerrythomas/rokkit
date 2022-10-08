@@ -1,7 +1,7 @@
 <script>
-	import Thumb from './Thumb.svelte'
-	import RangeTick from './RangeTick.svelte'
-	import { generateTicks } from './ticks.js'
+	import Thumb from './range/Thumb.svelte'
+	import RangeTick from './range/RangeTick.svelte'
+	import { generateTicks } from './lib/ticks.js'
 	import { scaleLinear } from 'd3-scale'
 
 	let className = ''

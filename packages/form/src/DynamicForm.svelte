@@ -10,6 +10,6 @@
 
 <form on:submit on:reset {...$$restProps}>
 	{#each segments as { properties, layout }}
-		<NestedLayout bind:value={data} {using} {properties} class={layout} />
+		<NestedLayout bind:value={data} {using} {properties} {layout} />
 	{/each}
 </form>

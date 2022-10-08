@@ -74,6 +74,6 @@
 		"unreleased": false
 	},
 	"dependencies": {
-		"@sparsh-ui/core": "workspace:^1.0.0"
+		"@svelte-spice/core": "workspace:*"
 	}
 }

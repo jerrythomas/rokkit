@@ -1,6 +1,6 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import Sidebar from './Sidebar.svelte'
+import Sidebar from '../src/Sidebar.svelte'
 
 describe('Sidebar.svelte', () => {
 	beforeEach(() => cleanup())

@@ -1,4 +1,4 @@
-import { iconStore } from '@sparsh-ui/icons'
+import { iconStore } from '@svelte-spice/icons'
 
 import RadioOn from './RadioOn.svelte'
 import RadioOff from './RadioOff.svelte'

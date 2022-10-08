@@ -1,6 +1,6 @@
 <script>
-	import { Icon, iconStore } from '@sparsh-ui/icons'
-	import { toHyphenCase, sortByParts } from '@sparsh-ui/core'
+	import { Icon, iconStore } from '@svelte-spice/icons'
+	import { toHyphenCase, sortByParts } from '@svelte-spice/core'
 
 	export let icons = {}
 	export let name

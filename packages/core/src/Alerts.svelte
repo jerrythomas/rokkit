@@ -1,8 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition'
 	import { flip } from 'svelte/animate'
-	import { alerts } from '../stores'
-	import { dismissable } from '../actions/dismissable'
+	import { alerts } from './stores'
+	import { dismissable } from './actions'
 
 	function dismissAll() {
 		unreadAlerts.map((alert) => (alert.dismissed = true))

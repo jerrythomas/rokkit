@@ -1,5 +1,5 @@
 <script>
-	import {Slider, ListItems, defaultFields} from '@jerrythomas/spice-list'
+	import { Slider, ListItems, defaultFields } from '@svelte-spice/core'
 
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()

@@ -1,6 +1,6 @@
 <script>
 	import { format, isSameDay, addMonths } from 'date-fns'
-	import { weekdays, getCalendarDays } from './calendar'
+	import { weekdays, getCalendarDays } from './lib/calendar'
 
 	export let value = new Date()
 	export let holidays = []

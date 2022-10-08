@@ -1,4 +1,4 @@
-export * from './constants'
+export * from './lib/constants'
 
 export { default as Input } from './Input.svelte'
 export { default as TextArea } from './TextArea.svelte'

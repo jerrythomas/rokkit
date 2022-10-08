@@ -1,6 +1,6 @@
 <script>
 	import { pick, omit } from 'ramda'
-	import { Input } from '@jerrythomas/spice-input'
+	import { Input } from '@svelte-spice/input'
 
 	let className = ''
 	export { className as class }

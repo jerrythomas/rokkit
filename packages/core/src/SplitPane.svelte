@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { pannable } from '../actions/pannable'
+	import { pannable } from './actions'
 
 	const dispatch = createEventDispatcher()
 

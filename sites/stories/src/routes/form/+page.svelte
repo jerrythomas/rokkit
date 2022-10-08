@@ -1,5 +1,6 @@
 <script>
-	import { Form, FormFields, DataList } from '@sparsh-ui/core'
+	import { Form, DataList } from '@svelte-spice/input'
+	import { FormFields } from '@svelte-spice/form'
 
 	let data = {
 		name: 'hello',

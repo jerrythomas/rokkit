@@ -4,7 +4,7 @@
 
 	import '../app.scss'
 	import { menu } from '../config'
-	import { Accordion, Link, Sidebar } from '@sparsh-ui/core'
+	import { Accordion, Link, Sidebar } from '@svelte-spice/core'
 	import { page } from '$app/stores'
 
 	const fields = { id: 'url' }

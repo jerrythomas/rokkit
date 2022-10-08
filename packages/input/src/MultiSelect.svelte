@@ -1,6 +1,6 @@
 <script>
 	import Select from './Select.svelte'
-	import Pill from '../../list/src/items/Pill.svelte'
+	import { Pill } from '@svelte-spice/core'
 
 	let className = ''
 	export { className as class }

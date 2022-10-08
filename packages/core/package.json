@@ -1,7 +1,7 @@
 {
-	"name": "@svelte-spice/list",
+	"name": "@svelte-spice/core",
 	"version": "1.0.0-next.0",
-	"description": "List controls for svelte",
+	"description": "Core controls for svelte apps",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
 	"main": "index.js",
@@ -28,24 +28,21 @@
 	"devDependencies": {
 		"@jerrythomas/eslint-config-svelte": "latest",
 		"@jerrythomas/prettier-config": "latest",
-		"@sveltejs/vite-plugin-svelte": "^1.0.8",
-		"@testing-library/svelte": "^3.2.1",
+		"@sveltejs/vite-plugin-svelte": "^1.0.9",
+		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
 		"eslint": "^7.32.0",
 		"jsdom": "^19.0.0",
 		"svelte": "^3.50.1",
 		"typescript": "^4.8.4",
-		"vite": "^3.1.3",
+		"vite": "^3.1.6",
 		"vitest": "~0.19.1"
 	},
-	"dependencies": {
-		"@svelte-spice/actions": "workspace:1.0.0-next.0"
-	},
 	"exports": {
+		"./src": "./src",
 		"./package.json": "./package.json",
-		".": {
-			"import": "./src/index.js"
-		}
+		"./stores": "./src/stores/index.js",
+		".": "./src/index.js"
 	}
 }

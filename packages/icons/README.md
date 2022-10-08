@@ -11,8 +11,8 @@ Add icons to your svelte/svelte-kit apps.
 
 ```svelte
 <script>
-import { Icon, iconStore } from '@sparsh-ui/icons'
-import * as icons from '@sparsh-ui/icons/heroicons/outline'
+import { Icon, iconStore } from '@svelte-spice/icons'
+import * as icons from '@svelte-spice/icons/heroicons/outline'
 
 $: $iconStore.set(icons)
 </script>
