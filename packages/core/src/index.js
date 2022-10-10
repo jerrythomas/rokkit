@@ -1,7 +1,5 @@
 export * from './constants'
-export * from './actions'
 export * from './items'
-export * from './stores'
 
 export { default as List } from './List.svelte'
 export { default as Tree } from './Tree.svelte'
@@ -22,3 +20,4 @@ export { default as Sidebar } from './Sidebar.svelte'
 export { default as SplitPane } from './SplitPane.svelte'
 export { default as Splitter } from './Splitter.svelte'
 export { default as SplitView } from './SplitView.svelte'
+export { default as Overlay } from './Overlay.svelte'

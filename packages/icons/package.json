@@ -9,6 +9,7 @@
 	"module": "src/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
+	"prettier": "@jerrythomas/prettier-config",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -33,6 +34,7 @@
 		"@iconify/iconify": "^2.2.1",
 		"@iconify/json": "^2.1.119",
 		"@iconify/tools": "^2.1.0",
+		"@jerrythomas/prettier-config": "^1.0.0",
 		"@sveltejs/vite-plugin-svelte": "^1.0.9",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",

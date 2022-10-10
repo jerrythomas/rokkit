@@ -4,22 +4,20 @@
 
 	export let value = new Date()
 	export let holidays = []
+	export let fixed = true
 
 	function handleChange(event) {
 		value = new Date(event.target.value, value.getMonth(), value.getDate())
 	}
 	function nextMonth() {
-		console.log('nextMonth', value)
 		value = addMonths(value, 1)
-		console.log('nextMonth', value)
 	}
 	function previousMonth() {
 		value = addMonths(value, -1)
 	}
 
 	$: year = value.getFullYear()
-	$: console.log(weekdays)
-	$: days = getCalendarDays(value, holidays)
+	$: days = getCalendarDays(value, holidays, fixed)
 </script>
 
 <calendar class="flex flex-col items-center select-none">
@@ -41,7 +39,7 @@
 		</square>
 	</month-year>
 	<cal-body class="flex flex-col w-full p-1 cursor-pointer">
-		<days-of-week class="grid grid-cols-7 ">
+		<days-of-week class="grid grid-cols-7">
 			{#each weekdays as day, index}
 				<p class:weekend={index % 6 == 0}>
 					{day.slice(0, 1)}

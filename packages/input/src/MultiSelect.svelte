@@ -5,11 +5,11 @@
 	let className = ''
 	export { className as class }
 	export let value = []
-	export let options = []
+	export let items = []
 	export let fields = {}
 	export let using = {}
 
-	let available = options
+	let available = items
 
 	function handleRemove(event) {
 		value = [...value.filter((item) => item == event.detail)]

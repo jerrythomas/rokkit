@@ -2,16 +2,17 @@
 	// import { v4 as uuid } from '@lukeed/uuid'
 	import {
 		// FieldSet,
-		// Calendar,
-		// Rating,
-		Alerts
+		Calendar,
+		Rating
+		// Alerts
 		// Input,
 		// Tabs,
 		// Range,
 		// RangeSlider,
 		// Select,
 		// SpinList
-	} from '@svelte-spice/core'
+	} from '@svelte-spice/input'
+	import { FormFields } from '@svelte-spice/form'
 	import { alerts } from '@svelte-spice/core/stores'
 
 	function add() {
@@ -24,39 +25,30 @@
 			}
 		])
 	}
-	let value = 'haha'
-	let rValue
-	let chkValue
-	let items = [{ text: 'one' }, { text: 'two' }, { text: 'three' }]
-	let activeItem
-	let bounds = [0, 100]
-	let bounds2 = [0, 20]
-	let bounds3 = [0, 30]
-	let x
-	let options = [
-		{ text: 'one' },
-		{ text: 'two' },
-		{ text: 'three' },
-		{ text: 'four' },
-		{ text: 'five' },
-		{ text: 'six' }
+	let data = { a: 'one', b: 'two', c: { d: 'three', e: 'four' } }
+	const fields = [
+		{ key: 'a', type: 'input', props: { type: 'text', label: 'a' } },
+		{ key: 'b', type: 'input', props: { type: 'textarea', label: 'b' } },
+		{
+			key: 'c',
+			type: 'object',
+			props: {
+				label: 'c',
+				mapping: [
+					{ key: 'd', type: 'input', props: { type: 'text', label: 'd' } },
+					{ key: 'e', type: 'input', props: { type: 'textarea', label: 'e' } }
+				]
+			}
+		}
 	]
-	let years = [2020, 2021, 2022, 2023]
 </script>
 
 <content class="flex flex-col p-4 gap-4 h-full overflow-scroll">
-	<span class="flex gap-2 text-secondary">
-		<icon class="i-sparsh:input-text" />
-		<icon class="i-sparsh:input-date" />
-		<icon class="i-sparsh:input-time" />
-	</span>
-	<!-- <span class="flex justify-center">
-		<SpinList items={years} />
-	</span>
 	<span class="flex justify-center">
 		<Calendar />
 	</span>
-	<Rating /> -->
+	<Rating />
+	<FormFields mapping={fields} bind:data />
 	<!-- <FieldSet label="group" class="p-4"> -->
 	<!-- <Select bind:value={x} {options} searchable /> -->
 	<!-- <Tabs {items} bind:activeItem title="[ data ]">

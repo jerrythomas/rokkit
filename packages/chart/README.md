@@ -1,4 +1,4 @@
-# D3 Charts for Svelte
+# Charts for Svelte
 
 The core idea behind the implementation is to use the respective strengths of both D3 and Svelte to build Themable, Composable, Animated, Responsive, Accessible, and Reactive Data Visualization components.
 

@@ -7,7 +7,7 @@
 	let className = ''
 	export { className as class }
 	export let value = null
-	export let options = []
+	export let items = []
 	export let fields = {}
 	export let using = {}
 	export let searchable = false
@@ -28,8 +28,8 @@
 	}
 	$: fields = { ...defaultFields, ...fields }
 	$: filtered = search.trim().length
-		? options.filter((opt) => opt[fields.text].includes(search))
-		: options
+		? items.filter((opt) => opt[fields.text].includes(search))
+		: items
 </script>
 
 <input-select

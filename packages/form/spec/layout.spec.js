@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { validate } from '../src/layout'
+import { validate, propsFromSchema } from '../src/layout'
 // import { personSchema } from './fixtures/person'
 import { peopleSchema } from './fixtures/people'
 import AJV from 'ajv'
 import { clone } from 'ramda'
-
+import { dataTypes } from './fixtures/types'
 describe('layout', () => {
 	const personSchema = {
 		// $id: 'https://example.com/person.schema.json',
@@ -29,6 +29,13 @@ describe('layout', () => {
 			}
 		}
 	}
+
+	it.each(dataTypes)('should convert datatype %s', (type, input) => {
+		const { schema, expected } = input
+		const result = propsFromSchema(schema)
+		expect(result).toEqual(expected)
+	})
+
 	it('should not change schema when there are no errors', () => {
 		const input = {
 			firstName: 'John',
@@ -39,6 +46,7 @@ describe('layout', () => {
 		const result = validate(personSchema, input)
 		expect(result).toEqual(personSchema)
 	})
+
 	it('should update schema with validation errors', () => {
 		const input = {
 			firstName: 'John',
