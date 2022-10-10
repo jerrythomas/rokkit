@@ -10,23 +10,23 @@
  * This example uses Iconify Tools to import and clean up icons.
  * For Iconify Tools documentation visit https://docs.iconify.design/tools/tools2/
  */
- import { promises as fs } from 'fs';
- import { dirname } from 'path';
+import { promises as fs } from 'fs'
+import { dirname } from 'path'
 
- // Installation: npm install --save-dev @iconify/tools @iconify/utils @iconify/json @iconify/iconify
- import {
-	 importDirectory,
-	 cleanupSVG,
-	 parseColors,
-	 isEmptyColor,
-	 runSVGO,
- } from '@iconify/tools';
- import { getIcons, stringToIcon, minifyIconSet } from '@iconify/utils';
+// Installation: npm install --save-dev @iconify/tools @iconify/utils @iconify/json @iconify/iconify
+import {
+	importDirectory,
+	cleanupSVG,
+	parseColors,
+	isEmptyColor,
+	runSVGO
+} from '@iconify/tools'
+import { getIcons, stringToIcon, minifyIconSet } from '@iconify/utils'
 //  import type { IconifyJSON, IconifyMetaData } from '@iconify/types';
 
- /**
-	* Script configuration
-	*/
+/**
+ * Script configuration
+ */
 //  interface BundleScriptCustomSVGConfig {
 // 	 // Path to SVG files
 // 	 dir: string;
@@ -64,34 +64,34 @@
 // 	 json?: (string | BundleScriptCustomJSONConfig)[];
 //  }
 
- let sources //: BundleScriptConfig;
- sources = {
-	 svgFramework: require.resolve(
-		 '@iconify/iconify/dist/iconify.without-api.min'
-	 ),
+let sources //: BundleScriptConfig;
+sources = {
+	svgFramework: require.resolve(
+		'@iconify/iconify/dist/iconify.without-api.min'
+	),
 
-	 svg: [
-		 {
-			 dir: 'auth/monotone',
-			 monotone: true,
-			 prefix: 'auth',
-		 },
-		 {
+	svg: [
+		{
+			dir: 'auth/monotone',
+			monotone: true,
+			prefix: 'auth'
+		},
+		{
 			dir: 'auth/color',
 			monotone: false,
-			prefix: 'auth',
-		 },
-		 {
+			prefix: 'auth'
+		},
+		{
 			dir: 'ui',
 			monotone: false,
-			prefix: 'sparsh',
-		 },
-		 {
+			prefix: 'sparsh'
+		},
+		{
 			dir: 'preview',
 			monotone: false,
-			prefix: 'sparsh-ui',
-		 },
-	 ],
+			prefix: 'sparsh-ui'
+		}
+	]
 
 	//  iconifyIcons: [
 	// 	 'mdi:home',
@@ -119,49 +119,49 @@
 	// 		 ],
 	// 	 },
 	//  ],
- };
+}
 
- // File to save bundle to
- const target = 'assets/iconify-bundle.js';
+// File to save bundle to
+const target = 'assets/iconify-bundle.js'
 
- /**
-	* Do stuff!
-	*/
- (async function () {
-	 let bundle = '';
+/**
+ * Do stuff!
+ */
+;(async function () {
+	let bundle = ''
 
-	 // Create directory for output if missing
-	 const dir = dirname(target);
-	 try {
-		 await fs.mkdir(dir, {
-			 recursive: true,
-		 });
-	 } catch (err) {
-		 //
-	 }
+	// Create directory for output if missing
+	const dir = dirname(target)
+	try {
+		await fs.mkdir(dir, {
+			recursive: true
+		})
+	} catch (err) {
+		//
+	}
 
-	 /**
-		* Bundle SVG framework
-		*/
-	 const isIconifyBundled = !!sources.svgFramework;
-	 const wrapperFunction = isIconifyBundled ? 'Iconify.addCollection' : 'add';
-	 if (sources.svgFramework) {
-		 bundle += await fs.readFile(sources.svgFramework, 'utf8');
-		 console.log('Bundled SVG framework');
+	/**
+	 * Bundle SVG framework
+	 */
+	const isIconifyBundled = !!sources.svgFramework
+	const wrapperFunction = isIconifyBundled ? 'Iconify.addCollection' : 'add'
+	if (sources.svgFramework) {
+		bundle += await fs.readFile(sources.svgFramework, 'utf8')
+		console.log('Bundled SVG framework')
 
-		 // Try to copy .d.ts
-		 const tsSource = sources.svgFramework.replace('.js', '.d.ts');
-		 try {
-			 const tsContent = await fs.readFile(tsSource);
-			 await fs.writeFile(target.replace('.js', '.d.ts'), tsContent);
-		 } catch (err) {
-			 //
-		 }
-	 }
+		// Try to copy .d.ts
+		const tsSource = sources.svgFramework.replace('.js', '.d.ts')
+		try {
+			const tsContent = await fs.readFile(tsSource)
+			await fs.writeFile(target.replace('.js', '.d.ts'), tsContent)
+		} catch (err) {
+			//
+		}
+	}
 
-	 /**
-		* Convert sources.iconifyIcons to sources.json
-		*/
+	/**
+	 * Convert sources.iconifyIcons to sources.json
+	 */
 	//  if (sources.iconifyIcons) {
 	// 	 const sourcesJSON = sources.json ? sources.json : (sources.json = []);
 
@@ -176,9 +176,9 @@
 	// 	 }
 	//  }
 
-	 /**
-		* Bundle JSON files
-		*/
+	/**
+	 * Bundle JSON files
+	 */
 	//  if (sources.json) {
 	// 	 for (let i = 0; i < sources.json.length; i++) {
 	// 		 const item = sources.json[i];
@@ -206,76 +206,74 @@
 	// 	 }
 	//  }
 
-	 /**
-		* Custom SVG
-		*/
-	 if (sources.svg) {
-		 for (let i = 0; i < sources.svg.length; i++) {
-			 const source = sources.svg[i];
+	/**
+	 * Custom SVG
+	 */
+	if (sources.svg) {
+		for (let i = 0; i < sources.svg.length; i++) {
+			const source = sources.svg[i]
 
-			 // Import icons
-			 const iconSet = await importDirectory(source.dir, {
-				 prefix: source.prefix,
-			 });
+			// Import icons
+			const iconSet = await importDirectory(source.dir, {
+				prefix: source.prefix
+			})
 
-			 // Validate, clean up, fix palette and optimise
-			 await iconSet.forEach(async (name, type) => {
-				 if (type !== 'icon') {
-					 return;
-				 }
+			// Validate, clean up, fix palette and optimise
+			await iconSet.forEach(async (name, type) => {
+				if (type !== 'icon') {
+					return
+				}
 
-				 // Get SVG instance for parsing
-				 const svg = iconSet.toSVG(name);
-				 if (!svg) {
-					 // Invalid icon
-					 iconSet.remove(name);
-					 return;
-				 }
+				// Get SVG instance for parsing
+				const svg = iconSet.toSVG(name)
+				if (!svg) {
+					// Invalid icon
+					iconSet.remove(name)
+					return
+				}
 
-				 // Clean up and optimise icons
-				 try {
-					 // Clean up icon code
-					 await cleanupSVG(svg);
+				// Clean up and optimise icons
+				try {
+					// Clean up icon code
+					await cleanupSVG(svg)
 
-					 if (source.monotone) {
-						 // Replace color with currentColor, add if missing
-						 // If icon is not monotone, remove this code
-						 await parseColors(svg, {
-							 defaultColor: 'currentColor',
-							 callback: (attr, colorStr, color) => {
-								 return !color || isEmptyColor(color)
-									 ? colorStr
-									 : 'currentColor';
-							 },
-						 });
-					 }
+					if (source.monotone) {
+						// Replace color with currentColor, add if missing
+						// If icon is not monotone, remove this code
+						await parseColors(svg, {
+							defaultColor: 'currentColor',
+							callback: (attr, colorStr, color) => {
+								return !color || isEmptyColor(color) ? colorStr : 'currentColor'
+							}
+						})
+					}
 
-					 // Optimise
-					 await runSVGO(svg);
-				 } catch (err) {
-					 // Invalid icon
-					 console.error(`Error parsing ${name} from ${source.dir}:`, err);
-					 iconSet.remove(name);
-					 return;
-				 }
+					// Optimise
+					await runSVGO(svg)
+				} catch (err) {
+					// Invalid icon
+					console.error(`Error parsing ${name} from ${source.dir}:`, err)
+					iconSet.remove(name)
+					return
+				}
 
-				 // Update icon from SVG instance
-				 iconSet.fromSVG(name, svg);
-			 });
-			 console.log(`Bundled ${iconSet.count()} icons from ${source.dir}`);
+				// Update icon from SVG instance
+				iconSet.fromSVG(name, svg)
+			})
+			console.log(`Bundled ${iconSet.count()} icons from ${source.dir}`)
 
-			 // Export to JSON
-			 const content = iconSet.export();
-			 bundle += wrapperFunction + '(' + JSON.stringify(content) + ');\n';
-		 }
-	 }
+			// Export to JSON
+			const content = iconSet.export()
+			bundle += wrapperFunction + '(' + JSON.stringify(content) + ');\n'
+		}
+	}
 
-	 /**
-		* Add wrapper function if SVG framework is not in bundle
-		*/
-	 if (!isIconifyBundled) {
-		 // Wrap in custom code that checks for Iconify.addCollection and IconifyPreload
-		 bundle = `(function() {
+	/**
+	 * Add wrapper function if SVG framework is not in bundle
+	 */
+	if (!isIconifyBundled) {
+		// Wrap in custom code that checks for Iconify.addCollection and IconifyPreload
+		bundle = `(function() {
 	function add(data) {
 		try {
 			if (typeof self.Iconify === 'object' && self.Iconify.addCollection) {
@@ -290,53 +288,53 @@
 		}
 	}
 	${bundle}
-	})();\n`;
-	 }
+	})();\n`
+	}
 
-	 // Save to file
-	 await fs.writeFile(target, bundle, 'utf8');
+	// Save to file
+	await fs.writeFile(target, bundle, 'utf8')
 
-	 console.log(`Saved ${target} (${bundle.length} bytes)`);
- })().catch((err) => {
-	 console.error(err);
- });
+	console.log(`Saved ${target} (${bundle.length} bytes)`)
+})().catch((err) => {
+	console.error(err)
+})
 
- /**
-	* Remove metadata from icon set
-	*/
- function removeMetaData(iconSet: IconifyJSON) {
-	 const props: (keyof IconifyMetaData)[] = [
-		 'info',
-		 'chars',
-		 'categories',
-		 'themes',
-		 'prefixes',
-		 'suffixes',
-	 ];
-	 props.forEach((prop) => {
-		 delete iconSet[prop];
-	 });
- }
+/**
+ * Remove metadata from icon set
+ */
+//  function removeMetaData(iconSet: IconifyJSON) {
+// 	 const props: (keyof IconifyMetaData)[] = [
+// 		 'info',
+// 		 'chars',
+// 		 'categories',
+// 		 'themes',
+// 		 'prefixes',
+// 		 'suffixes',
+// 	 ];
+// 	 props.forEach((prop) => {
+// 		 delete iconSet[prop];
+// 	 });
+//  }
 
- /**
-	* Sort icon names by prefix
-	*/
- function organizeIconsList(icons: string[]): Record<string, string[]> {
-	 const sorted: Record<string, string[]> = Object.create(null);
-	 icons.forEach((icon) => {
-		 const item = stringToIcon(icon);
-		 if (!item) {
-			 return;
-		 }
+/**
+ * Sort icon names by prefix
+ */
+//  function organizeIconsList(icons: string[]): Record<string, string[]> {
+// 	 const sorted: Record<string, string[]> = Object.create(null);
+// 	 icons.forEach((icon) => {
+// 		 const item = stringToIcon(icon);
+// 		 if (!item) {
+// 			 return;
+// 		 }
 
-		 const prefix = item.prefix;
-		 const prefixList = sorted[prefix] ? sorted[prefix] : (sorted[prefix] = []);
+// 		 const prefix = item.prefix;
+// 		 const prefixList = sorted[prefix] ? sorted[prefix] : (sorted[prefix] = []);
 
-		 const name = item.name;
-		 if (prefixList.indexOf(name) === -1) {
-			 prefixList.push(name);
-		 }
-	 });
+// 		 const name = item.name;
+// 		 if (prefixList.indexOf(name) === -1) {
+// 			 prefixList.push(name);
+// 		 }
+// 	 });
 
-	 return sorted;
- }
+// 	 return sorted;
+//  }

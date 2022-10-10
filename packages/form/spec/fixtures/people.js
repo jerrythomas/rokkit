@@ -1,3 +1,6 @@
+// People is  alist of person type.
+// The master detail component can be used to list all items and also edit an item individually.
+// This
 export const peopleSchema = {
 	// $schema: 'https://json-schema.org/draft/2020-12/schema',
 	title: 'Person',

@@ -1,7 +1,7 @@
 {
 	"name": "@svelte-spice/core",
 	"version": "1.0.0-next.0",
-	"description": "Core controls for svelte apps",
+	"description": "Core components, actions and stores for svelte apps.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
 	"main": "index.js",
@@ -43,6 +43,7 @@
 		"./src": "./src",
 		"./package.json": "./package.json",
 		"./stores": "./src/stores/index.js",
+		"./actions": "./src/actions/index.js",
 		".": "./src/index.js"
 	}
 }

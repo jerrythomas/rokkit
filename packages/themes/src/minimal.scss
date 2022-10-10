@@ -19,19 +19,9 @@ alert-list {
 	@apply bottom-4 right-4 w-80;
 }
 
-.flex-square {
-	@apply flex flex-col aspect-square items-center justify-center;
-}
-fieldset {
-	@apply px-4 py-2 rounded-md;
-
-	legend {
-		@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
-	}
-	icon {
-		@apply text-2xl;
-	}
-}
+// .flex-square {
+// 	@apply flex flex-col aspect-square items-center justify-center;
+// }
 
 .disabled {
 	@apply text-disabled;

@@ -1,23 +1,19 @@
 <script>
+	import { FieldSet } from '@svelte-spice/input'
 	import FormFields from './FormFields.svelte'
 
-	export let id
+	let className = ''
+	export { className as class }
 	export let value
-	export let fields
+	export let mapping
 	export let label
-
-	$: console.log('object', fields)
+	export let using
 </script>
 
 {#if typeof value === 'object'}
-	<edit-obj {id} class="flex flex-col w-full">
-		{#if label}
-			<label for={id}>{label}</label>
-		{/if}
-		<content {id}>
-			<FormFields bind:data={value} {fields} />
-		</content>
-	</edit-obj>
+	<FieldSet {label} class={className}>
+		<FormFields bind:data={value} {mapping} {using} />
+	</FieldSet>
 {:else}
 	<error>Property `value` should be an object.</error>
 {/if}

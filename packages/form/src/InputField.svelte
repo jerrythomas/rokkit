@@ -5,7 +5,7 @@
 	let className = ''
 	export { className as class }
 	export let name
-	export let label = undefined
+	export let label = null
 	export let icon = null
 	export let value
 	export let type = 'text'

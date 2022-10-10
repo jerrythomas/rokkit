@@ -168,6 +168,7 @@ importers:
       '@svelte-spice/input': workspace:*
       '@sveltejs/vite-plugin-svelte': ^1.0.9
       '@testing-library/svelte': ^3.2.2
+      '@types/ramda': ^0.28.15
       '@vitest/ui': ~0.12.10
       ajv: ^8.11.0
       c8: ^7.12.0
@@ -189,6 +190,7 @@ importers:
       '@jerrythomas/prettier-config': 1.0.0
       '@sveltejs/vite-plugin-svelte': 1.0.9_svelte@3.50.1+vite@3.1.6
       '@testing-library/svelte': 3.2.2_svelte@3.50.1
+      '@types/ramda': 0.28.15
       '@vitest/ui': 0.12.10
       c8: 7.12.0
       eslint: 7.32.0
@@ -204,6 +206,7 @@ importers:
       '@iconify/iconify': ^2.2.1
       '@iconify/json': ^2.1.119
       '@iconify/tools': ^2.1.0
+      '@jerrythomas/prettier-config': ^1.0.0
       '@sveltejs/vite-plugin-svelte': ^1.0.9
       '@testing-library/svelte': ^3.2.2
       '@vitest/ui': ~0.12.10
@@ -218,6 +221,7 @@ importers:
       '@iconify/iconify': 2.2.1
       '@iconify/json': 2.1.119
       '@iconify/tools': 2.1.0
+      '@jerrythomas/prettier-config': 1.0.0
       '@sveltejs/vite-plugin-svelte': 1.0.9_svelte@3.50.1+vite@3.1.6
       '@testing-library/svelte': 3.2.2_svelte@3.50.1
       '@vitest/ui': 0.12.10

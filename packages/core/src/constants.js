@@ -6,11 +6,11 @@ export const defaultOptions = {
 }
 
 export const defaultFields = {
+	id: 'id',
+	url: 'url',
 	text: 'text',
 	data: 'data',
 	icon: 'icon',
-	id: 'id',
-	url: 'url',
 	component: 'component'
 }
 
