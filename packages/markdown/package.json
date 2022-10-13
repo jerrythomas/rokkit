@@ -40,7 +40,9 @@
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
-		"@svelte-spice/core": "workspace:*"
+		"@svelte-spice/core": "workspace:*",
+		"marked": "^4.1.1",
+		"prismjs": "^1.29.0"
 	},
 	"exports": {
 		"./package.json": "./package.json",
