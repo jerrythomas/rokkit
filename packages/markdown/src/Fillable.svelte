@@ -1,6 +1,6 @@
 <script>
 	import { marked } from 'marked'
-	import { fillable } from '../actions/fillable'
+	import { fillable } from '@svelte-spice/core/actions'
 
 	export let text = ''
 	export let options = []
