@@ -1,8 +1,8 @@
 import { defineConfig } from 'unocss'
+import { extractorSvelte } from '@unocss/core'
 import presetUno from '@unocss/preset-uno'
 import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
-import { extractorSvelte } from '@unocss/core'
 // import { iconShortcuts } from '@svelte-spice/core/themes'
 // const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
@@ -57,8 +57,8 @@ export default defineConfig({
 	theme: {
 		fontFamily: {
 			mono: ['Victor-Mono', 'monospace'],
-			serif: ['Roboto', 'ui-serif', 'sans-serif'],
-			body: ['ui-serif', 'sans-serif']
+			serif: ['Roboto', 'ui-sans-serif', 'sans-serif'],
+			body: ['Roboto', 'ui-sans-serif', 'sans-serif']
 		},
 		colors: {
 			primary: {

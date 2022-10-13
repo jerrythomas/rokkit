@@ -1,6 +1,11 @@
 // import { handleAuth } from '@supabase/auth-helpers-sveltekit';
 // import type { GetSession, Handle } from '@sveltejs/kit';
-import { initiateSignIn, initiateSignOut, setAuthCookies, supabase } from '$lib/auth'
+import {
+	initiateSignIn,
+	initiateSignOut,
+	setAuthCookies,
+	supabase
+} from '$lib/auth'
 import { sequence } from '@sveltejs/kit/hooks'
 
 export const getSession = async (event) => {

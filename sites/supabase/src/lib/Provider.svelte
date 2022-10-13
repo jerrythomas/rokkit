@@ -1,5 +1,5 @@
 <script>
-	import { Input, IconButton } from '@svelte-spice/core'
+	import { InputField, IconButton } from '@svelte-spice/form'
 
 	/** @type {string} */
 	export let name
@@ -12,8 +12,9 @@
 <form method="post" action={authUrl} class="flex flex-row w-full auth {name}">
 	<input type="hidden" name="name" value={name} />
 	{#if name === 'magic'}
-		<Input type="email" name="email" placeholder={label} icon="logo-{name}" tabindex={0} />
+		{@const icons = { left: 'logo-magic' }}
+		<InputField type="email" name="email" placeholder={label} {icons} />
 	{:else}
-		<IconButton type="submit" icon={name} {label} tabindex={0} leftIcon="logo-{name}" />
+		<IconButton type="submit" icon={name} {label} leftIcon="logo-{name}" />
 	{/if}
 </form>

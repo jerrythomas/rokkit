@@ -2,6 +2,8 @@
 	"name": "supabase",
 	"version": "0.0.1",
 	"private": true,
+	"type": "module",
+	"prettier": "@jerrythomas/prettier-config",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -13,35 +15,34 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.26.0",
+		"@jerrythomas/eslint-config-svelte": "^1.0.0",
+		"@jerrythomas/prettier-config": "^1.0.0",
+		"@playwright/test": "^1.27.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"eslint": "^8.24.0",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier": "^2.7.1",
-		"prettier-plugin-svelte": "^2.7.0",
-		"svelte": "^3.50.1",
-		"svelte-check": "^2.9.0",
-		"typescript": "^4.8.3",
-		"vite": "^3.1.3"
+		"svelte": "^3.51.0",
+		"svelte-check": "^2.9.2",
+		"typescript": "^4.8.4",
+		"vite": "^3.1.8"
 	},
-	"type": "module",
 	"dependencies": {
-		"@fontsource/montserrat-alternates": "^4.5.10",
+		"@fontsource/montserrat-alternates": "^4.5.11",
 		"@iconify-json/brandico": "^1.1.2",
 		"@iconify-json/entypo-social": "^1.1.2",
 		"@iconify-json/fa-brands": "^1.1.2",
 		"@iconify-json/flat-color-icons": "^1.1.2",
-		"@iconify-json/logos": "^1.1.16",
+		"@iconify-json/logos": "^1.1.17",
 		"@jerrythomas/sentry": "workspace:^1.0.0",
-		"@svelte-spice/core": "workspace:*",
 		"@supabase/supabase-js": "^1.35.7",
+		"@svelte-spice/core": "workspace:*",
+		"@svelte-spice/input": "workspace:*",
+		"@svelte-spice/form": "workspace:*",
+		"@svelte-spice/themes": "workspace:*",
 		"@unocss/core": "^0.44.7",
 		"@unocss/preset-uno": "^0.44.7",
 		"@unocss/reset": "^0.44.7",
 		"@unocss/transformer-directives": "^0.44.7",
-		"pino": "^8.6.0",
+		"pino": "^8.6.1",
 		"unocss": "^0.44.7"
 	}
 }

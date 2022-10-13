@@ -9,14 +9,22 @@ export const config = {
 export const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey)
 
 export const actions = {
-	get: async (/** @type {string} */ entity, /** @type {Record<string, unknown>} */ data) =>
-		await supabase.from(entity).select().match(data),
-	put: async (/** @type {string} */ entity, /** @type {any | Partial<any>} */ data) =>
-		await supabase.from(entity).insert([data]),
-	post: async (/** @type {string} */ entity, /** @type {Partial<any> | Partial<any>[]} */ data) =>
-		await supabase.from(entity).upsert(data),
-	delete: async (/** @type {string} */ entity, /** @type {Record<string, unknown>} */ data) =>
-		await supabase.from(entity).delete().match(data)
+	get: async (
+		/** @type {string} */ entity,
+		/** @type {Record<string, unknown>} */ data
+	) => await supabase.from(entity).select().match(data),
+	put: async (
+		/** @type {string} */ entity,
+		/** @type {any | Partial<any>} */ data
+	) => await supabase.from(entity).insert([data]),
+	post: async (
+		/** @type {string} */ entity,
+		/** @type {Partial<any> | Partial<any>[]} */ data
+	) => await supabase.from(entity).upsert(data),
+	delete: async (
+		/** @type {string} */ entity,
+		/** @type {Record<string, unknown>} */ data
+	) => await supabase.from(entity).delete().match(data)
 }
 
 export async function getRequestBody(request) {

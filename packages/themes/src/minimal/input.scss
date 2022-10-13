@@ -2,7 +2,7 @@ input,
 textarea,
 select,
 fieldset {
-	@apply rounded leading-loose px-2 border border-skin-300 outline-primary-400;
+	@apply rounded leading-loose px-2 border border-skin-300 outline-none;
 }
 
 fieldset {
@@ -18,11 +18,12 @@ fieldset {
 
 input-field {
 	@apply w-full m-0 p-0 gap-1;
+
 	label {
 		@apply leading-loose w-full;
 		field {
 			@apply border rounded border-skin-300 overflow-hidden;
-			@apply focus-within:outline focus-within:outline-primary-400 focus-within:border-primary-400;
+			@apply focus-within:border-primary-400 focus-within:border-2;
 
 			span {
 				@apply border-r border-skin-300 bg-skin-100;
@@ -30,7 +31,7 @@ input-field {
 			input,
 			textarea,
 			select {
-				@apply flex-grow border-0 outline-0;
+				@apply flex-grow border-0 outline-none;
 			}
 		}
 	}
