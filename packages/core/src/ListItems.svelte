@@ -19,7 +19,6 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
-
 	$: filtered = items.filter((item) => !item.isDeleted)
 </script>
 

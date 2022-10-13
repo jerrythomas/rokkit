@@ -5,10 +5,15 @@
 	const dispatch = createEventDispatcher()
 
 	export let content
-	export let fields = defaultFields
+	export let fields = {}
+
+	$: fields = { ...defaultFields, ...fields }
+	$: hasItems = content[fields.data] && content[fields.data].length > 0
 
 	function toggle() {
-		content.isOpen = !content.isOpen
+		if (hasItems) {
+			content.isOpen = !content.isOpen
+		}
 		dispatch('toggle', content)
 	}
 </script>
@@ -28,10 +33,18 @@
 	{#if content[fields.icon]}
 		<icon class={content[fields.icon]} />
 	{/if}
-	<p class="flex flex-grow">{content[fields.text]}</p>
-	{#if content.isOpen}
-		<icon class="accordion-opened" aria-label="expand" />
+	{#if content[fields.url]}
+		<a href={content[fields.url]} class="flex flex-grow">
+			{content[fields.text]}
+		</a>
 	{:else}
-		<icon class="accordion-closed" aria-label="collapse" />
+		<p class="flex flex-grow">{content[fields.text]}</p>
+	{/if}
+	{#if hasItems}
+		{#if content.isOpen}
+			<icon class="accordion-opened" aria-label="expand" />
+		{:else}
+			<icon class="accordion-closed" aria-label="collapse" />
+		{/if}
 	{/if}
 </collapsible>

@@ -25,10 +25,11 @@
 			}
 		])
 	}
-	let data = { a: 'one', b: 'two', c: { d: 'three', e: 'four' } }
+	let data = { a: 'one', b: 'two', x: 10, c: { d: 'three', e: 'four' } }
 	const fields = [
 		{ key: 'a', type: 'input', props: { type: 'text', label: 'a' } },
 		{ key: 'b', type: 'input', props: { type: 'textarea', label: 'b' } },
+		{ key: 'x', type: 'input', props: { type: 'number', label: 'x' } },
 		{
 			key: 'c',
 			type: 'object',

@@ -6,6 +6,7 @@
 	export let rightIcon = null
 	export let label = null
 	export let type = 'submit'
+	// export let tabindex = 0
 </script>
 
 <button {type} class="flex flex-row items-center {className}" on:click>

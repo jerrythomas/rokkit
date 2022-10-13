@@ -12,6 +12,6 @@ export function getComponent(group, type) {
 	if (group === 'input') return Input
 	if (group === 'custom') {
 		if (type === 'calendar') return Calendar
-		if (type === 'Select') return Select
+		if (type === 'select') return Select
 	}
 }

@@ -7,7 +7,10 @@ const allowed = { roles: ['admin', 'user'], entities: ['todo'] }
  * @param {{ role: any; entity: any; }} params
  */
 function isAllowed(params) {
-	return allowed.roles.includes(params.role) && allowed.entities.includes(params.entity)
+	return (
+		allowed.roles.includes(params.role) &&
+		allowed.entities.includes(params.entity)
+	)
 }
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url, params }) {
