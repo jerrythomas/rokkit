@@ -14,10 +14,6 @@ exports[`Collapsible.svelte > Should render without params 1`] = `
         hello
       </p>
        
-      <icon
-        aria-label="collapse"
-        class="accordion-closed"
-      />
     </collapsible>
   </div>
 </body>
