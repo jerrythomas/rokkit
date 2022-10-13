@@ -19,7 +19,6 @@
 		"format": "prettier --write --plugin-search-dir=. .",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
-		"coverage": "vitest run --coverage",
 		"release": "release-it --preRelease=beta",
 		"upgrade": "pnpm upgrade"
 	},

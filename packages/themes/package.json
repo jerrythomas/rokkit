@@ -19,7 +19,6 @@
 		"test:ct": "playwright test -c playwright.config.js",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
-		"coverage": "vitest run --coverage",
 		"release": "release-it --preRelease=beta",
 		"upgrade": "pnpm upgrade"
 	},

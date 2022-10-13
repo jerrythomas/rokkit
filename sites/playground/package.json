@@ -14,7 +14,6 @@
 		"test:ui": "vitest run ui",
 		"test": "vitest",
 		"e2e": "playwright test",
-		"coverage": "vitest run --coverage",
 		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
