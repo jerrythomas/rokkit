@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text } from './items'
-	import { arrowKeys } from './actions'
+	import { navigable } from './actions'
 	import { getComponent } from './list'
 
 	const dispatch = createEventDispatcher()
@@ -30,15 +30,16 @@
 	$: component = getComponent(value, fields)
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <spin-list class="flex flex-row w-full {className}" tabindex={0}>
 	<input
 		type="text"
 		class="flex flex-grow"
 		bind:value
 		readonly
-		use:arrowKeys
-		on:forward={moveNext}
-		on:backward={moveBack}
+		use:navigable
+		on:next={moveNext}
+		on:previous={moveBack}
 	/>
 	<!-- <svelte:component this={component} bind:content={value} {fields} on:change /> -->
 	<square class="h-full position-absolute right-0">

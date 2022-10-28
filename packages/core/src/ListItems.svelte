@@ -1,4 +1,5 @@
 <script>
+	// import { navigable } from './actions'
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text } from './items'
@@ -14,7 +15,7 @@
 
 	function handleClick(item) {
 		activeItem = item
-		dispatch('click', item)
+		dispatch('select', item)
 	}
 
 	$: fields = { ...defaultFields, ...fields }
@@ -27,6 +28,7 @@
 		{@const component = item[fields.component]
 			? using[item[fields.component]] || using.default
 			: using.default}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<li
 			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
 			class:active={activeItem === item}

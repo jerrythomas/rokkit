@@ -14,6 +14,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <node
 	class="flex flex-row h-8 gap-2 leading-loose items-center cursor-pointer select-none"
 	on:click={toggle}

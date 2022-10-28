@@ -43,3 +43,12 @@ export const defaultStateIcons = {
 		on: 'radio-on'
 	}
 }
+
+export const defaultKeyMap = {
+	ArrowRight: 'open',
+	ArrowLeft: 'close',
+	ArrowDown: 'down',
+	ArrowUp: 'up',
+	Enter: 'select',
+	Escape: 'deselect'
+}

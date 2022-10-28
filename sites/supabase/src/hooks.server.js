@@ -1,52 +1,30 @@
-// import { handleAuth } from '@supabase/auth-helpers-sveltekit';
-// import type { GetSession, Handle } from '@sveltejs/kit';
-import {
-	initiateSignIn,
-	initiateSignOut,
-	setAuthCookies,
-	supabase
-} from '$lib/auth'
-import { sequence } from '@sveltejs/kit/hooks'
-
-export const getSession = async (event) => {
-	const { user, accessToken, error } = event.locals
-	return {
-		user,
-		accessToken,
-		error
-	}
+// import '$lib/db'
+const johnDoe = {
+	name: 'John Doe',
+	id: 112244233434343,
+	email: 'john.doe@gmail.com',
+	role: 'authenticated'
 }
-
 /** @type {import('@sveltejs/kit').Handle} */
-async function handleSession({ event, resolve }) {
-	console.log('start: handle session auth', event.url.pathname)
+export async function handle({ event, resolve }) {
+	// event.locals.user = await getUserInformation(event.cookies.get('sessionid'))
+	// event.locals = { session: null }
 
-	if (event.url.pathname.startsWith('/api/auth/login')) {
-		initiateSignIn(event)
-		return new Response('Logging in...')
+	console.log('hooks.server.handle', event.url.pathname)
+	if (event.url.pathname.startsWith('/api/login')) {
+		event.locals.user = johnDoe
+		console.log('Redirect after login')
+		return Response.redirect(`${event.url.origin}/`, 301)
 	}
 
-	if (event.url.pathname.startsWith('/api/auth/logout')) {
-		initiateSignOut(event)
-		return new Response('Logging out...')
+	if (event.url.pathname.startsWith('/api/logout')) {
+		event.locals.user = null
+		console.log('Redirect after logout')
+		return Response.redirect(`${event.url.origin}/auth`, 301)
 	}
-
-	if (event.url.pathname.startsWith('/api/auth/cookie')) {
-		setAuthCookies(event, session)
-		return new Response('Setting session...')
-	}
-
 	const response = await resolve(event)
-	console.log('finish: handle session auth', event.url.pathname)
+	// response.headers.set('x-custom-header', 'potato')
 	return response
-}
 
-/** @type {import('@sveltejs/kit').Handle} */
-async function handleRouting({ event, resolve }) {
-	console.log('start: handle routing based on ACL', event.url.pathname)
-	const result = await resolve(event)
-	console.log('finish: handle routing based on ACL', event.url.pathname)
-	return result
+	// console.log('event data on server', event.locals, event.params)
 }
-
-export const handle = sequence(handleSession, handleRouting)

@@ -9,6 +9,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <tick
 	class="grid grid-cols-2 select-none cursor-pointer"
 	on:click|stopPropagation={handleClick}

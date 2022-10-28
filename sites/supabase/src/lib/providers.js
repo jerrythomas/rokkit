@@ -1,4 +1,5 @@
 const names = [
+	'Microsoft',
 	'Google',
 	'Facebook',
 	'Twitter',
@@ -10,14 +11,14 @@ const names = [
 ]
 
 export const providers = [
-	{ name: 'magic', label: 'email for Magic Link', scopes: [], params: [] },
-	...names.map((name) => ({
-		name: name.toLowerCase(),
-		label: 'Sign in with ' + name,
-		scopes: [],
-		params:
-			name === 'Microsoft'
-				? [{ prompt: 'consent', domain_hint: 'organizations' }]
-				: []
-	}))
+	{ name: 'magic', label: 'email for Magic Link', scopes: [], params: [] }
+	// ...names.map((name) => ({
+	// 	name: name.toLowerCase(),
+	// 	label: 'Sign in with ' + name,
+	// 	scopes: [],
+	// 	params:
+	// 		name === 'Microsoft'
+	// 			? [{ prompt: 'consent', domain_hint: 'organizations' }]
+	// 			: []
+	// }))
 ]
