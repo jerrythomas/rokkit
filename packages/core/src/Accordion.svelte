@@ -42,7 +42,7 @@
 					bind:activeItem
 					{fields}
 					{using}
-					on:click
+					on:select
 				/>
 			{/if}
 		</group>

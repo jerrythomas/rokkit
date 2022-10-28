@@ -25,6 +25,7 @@
 	$: console.log('header', header)
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <toggle
 	class="p-4 rounded-lg bg-accent-200 text-accent-900 items-start shadow flex flex-row justify-top space-x-4 outline-none focus:border focus:border-accent-500"
 	tabindex="0"

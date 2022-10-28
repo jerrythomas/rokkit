@@ -18,6 +18,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <collapsible
 	class="flex flex-row flex-shrink-0 items-center w-full leading-loose cursor-pointer"
 	class:expanded={content.isOpen}

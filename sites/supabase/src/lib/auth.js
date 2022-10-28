@@ -6,7 +6,30 @@ export const config = {
 	supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY
 }
 
+export const schemas = ['public', 'core']
 export const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey)
+
+function createClientForSchema(url, key, schema) {
+	const options = {
+		db: {
+			schema
+		}
+	}
+	return createClient(url, key, options)
+}
+export const clients = schemas.reduce(
+	(prev, schema) => ({
+		...prev,
+		[schema]: createClientForSchema(
+			config.supabaseUrl,
+			config.supabaseAnonKey,
+			schema
+		)
+	}),
+	{}
+)
+
+// console.log(clients)
 
 export const actions = {
 	get: async (
@@ -16,11 +39,11 @@ export const actions = {
 	put: async (
 		/** @type {string} */ entity,
 		/** @type {any | Partial<any>} */ data
-	) => await supabase.from(entity).insert([data]),
+	) => await supabase.from(entity).insert([data]).select(),
 	post: async (
 		/** @type {string} */ entity,
 		/** @type {Partial<any> | Partial<any>[]} */ data
-	) => await supabase.from(entity).upsert(data),
+	) => await supabase.from(entity).upsert(data).select(),
 	delete: async (
 		/** @type {string} */ entity,
 		/** @type {Record<string, unknown>} */ data
@@ -37,6 +60,15 @@ export async function getRequestBody(request) {
 	}
 
 	return body
+}
+
+export async function getRequestData({ request, url }) {
+	const body = await getRequestBody(request)
+	const data = Object.assign(
+		Object.fromEntries(url.searchParams.entries()),
+		body
+	)
+	return data
 }
 
 /**

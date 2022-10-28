@@ -32,6 +32,7 @@
 		: items
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <input-select
 	class="flex flex-col relative {className}"
 	on:focusin={handleFocusIn}

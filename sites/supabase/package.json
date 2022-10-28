@@ -20,10 +20,10 @@
 		"@playwright/test": "^1.27.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"svelte": "^3.51.0",
+		"svelte": "^3.52.0",
 		"svelte-check": "^2.9.2",
 		"typescript": "^4.8.4",
-		"vite": "^3.1.8"
+		"vite": "^3.2.0"
 	},
 	"dependencies": {
 		"@fontsource/montserrat-alternates": "^4.5.11",
@@ -31,18 +31,21 @@
 		"@iconify-json/entypo-social": "^1.1.2",
 		"@iconify-json/fa-brands": "^1.1.2",
 		"@iconify-json/flat-color-icons": "^1.1.2",
-		"@iconify-json/logos": "^1.1.17",
-		"@jerrythomas/sentry": "workspace:^1.0.0",
-		"@supabase/supabase-js": "^1.35.7",
-		"@svelte-spice/core": "workspace:*",
-		"@svelte-spice/input": "workspace:*",
-		"@svelte-spice/form": "workspace:*",
-		"@svelte-spice/themes": "workspace:*",
+		"@iconify-json/logos": "^1.1.18",
+		"@kavach/adapter-supabase": "workspace:1.0.0-next.0",
+		"@supabase/auth-helpers-sveltekit": "^0.8.3",
+		"@supabase/supabase-js": "2.0.0",
+		"@svelte-spice/core": "workspace:1.0.0-next.0",
+		"@svelte-spice/form": "workspace:1.0.0-next.0",
+		"@svelte-spice/input": "workspace:1.0.0-next.0",
+		"@svelte-spice/themes": "workspace:1.0.0-next.0",
 		"@unocss/core": "^0.44.7",
 		"@unocss/preset-uno": "^0.44.7",
 		"@unocss/reset": "^0.44.7",
 		"@unocss/transformer-directives": "^0.44.7",
-		"pino": "^8.6.1",
+		"kavach": "workspace:1.0.0-next.0",
+		"pino": "^8.7.0",
+		"sass": "^1.55.0",
 		"unocss": "^0.44.7"
 	}
 }

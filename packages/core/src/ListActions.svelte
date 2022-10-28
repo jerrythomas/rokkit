@@ -25,8 +25,11 @@
 		</search>
 	{/if}
 	{#if editable}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<icon class={actionIcons.clear} on:click={() => dispatch('clear')} />
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<icon class={actionIcons.delete} on:click={() => dispatch('delete')} />
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<icon class={actionIcons.add} on:click={() => dispatch('add')} />
 	{/if}
 </toolbar>

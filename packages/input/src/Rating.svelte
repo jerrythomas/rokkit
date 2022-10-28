@@ -20,6 +20,7 @@
 	$: stars = [...Array(max).keys()].map((i) => i < value)
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <rating
 	{id}
 	class="flex cursor-pointer select-none"
@@ -41,6 +42,7 @@
 	{/if}
 	{#each stars as selected, index}
 		{@const stateIcon = selected ? stateIcons.filled : stateIcons.empty}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<icon class={stateIcon} on:click={() => handleClick(index)} />
 	{/each}
 </rating>

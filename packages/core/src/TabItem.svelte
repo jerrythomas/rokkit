@@ -9,6 +9,7 @@
 	export let removable = false
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <tab class="flex flex-row items-center" class:active on:click>
 	{#if icon}
 		<icon class={icon} />

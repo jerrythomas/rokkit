@@ -24,6 +24,7 @@
 		on:dismiss={dismissAll}
 	>
 		{#each unreadAlerts as alert (alert.id)}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<alert
 				class={alert.type}
 				on:click|stopPropagation={dismiss(alert)}

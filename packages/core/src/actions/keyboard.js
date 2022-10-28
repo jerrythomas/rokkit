@@ -1,41 +1,39 @@
-/**
- * Action to handle arrow key navigation
- *
- * @param {*} node
- * @param {*} options
- * @returns
- */
-export function arrowKeys(node, options = {}) {
-	const keyup = (event) => {
-		const next = options.horizontal
-			? event.key === 'ArrowRight'
-			: event.key === 'ArrowDown'
-		const prev = options.horizontal
-			? event.key === 'ArrowLeft'
-			: event.key === 'ArrowUp'
+const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter']
 
-		if (next || prev || event.key === 'Enter') {
+export function navigable(node) {
+	const handleKeyDown = (event) => {
+		// 		console.log('action', event.key)
+		if (keys.includes(event.key)) {
 			event.stopPropagation()
 			event.preventDefault()
-		}
-		if (next) {
-			node.dispatchEvent(new CustomEvent('forward', node))
-		}
-		if (prev) {
-			node.dispatchEvent(new CustomEvent('backward', node))
-		}
-		if (event.key === 'Enter') {
-			node.dispatchEvent(new CustomEvent('select', node))
+
+			node.dispatchEvent(
+				new CustomEvent('arrow', { detail: { key: event.key } })
+			)
 		}
 	}
-
-	node.addEventListener('keyup', keyup, true)
-	document.addEventListener('keyup', keyup, true)
-
+	node.addEventListener('keydown', handleKeyDown, true)
 	return {
 		destroy() {
-			node.removeEventListener('keyup', keyup, true)
-			document.removeEventListener('keyup', keyup, true)
+			node.removeEventListener('keydown', handleKeyDown, true)
 		}
 	}
+}
+
+export function navigableItem(node) {
+	const handleClick = (event) => {
+		node.dispatchEvent(new CustomEvent('select'))
+	}
+	node.addEventListener('click', handleClick, true)
+	return {
+		destroy() {
+			node.removeEventListener('click', handleClick, true)
+		}
+	}
+}
+function next(index, size, cycle = true) {
+	return cycle ? (index + 1) % size : index + 1
+}
+function previous(index, size, cycle = true) {
+	return cycle ? (index + size - 1) % size : index - 1
 }

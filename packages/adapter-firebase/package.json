@@ -1,0 +1,56 @@
+{
+	"name": "@kavach/adapter-firebase",
+	"version": "1.0.0-next.0",
+	"description": "Adapter to use firebase with kavach.",
+	"author": "Jerry Thomas <me@jerrythomas.name>",
+	"license": "MIT",
+	"main": "index.js",
+	"svelte": "src/index.js",
+	"module": "src/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jerrythomas/kavach",
+		"directory": "packages/adapter-firebase"
+	},
+	"prettier": "@jerrythomas/prettier-config",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"prepublishOnly": "tsc",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"test:ci": "vitest run",
+		"test:ui": "vitest --ui",
+		"test": "vitest",
+		"coverage": "vitest run --coverage",
+		"release": "release-it --preRelease=beta",
+		"upgrade": "pnpm upgrade"
+	},
+	"devDependencies": {
+		"@jerrythomas/eslint-config-svelte": "latest",
+		"@jerrythomas/prettier-config": "latest",
+		"@sveltejs/vite-plugin-svelte": "^1.0.9",
+		"@testing-library/svelte": "^3.2.2",
+		"@vitest/ui": "~0.12.10",
+		"c8": "^7.12.0",
+		"eslint": "^7.32.0",
+		"jsdom": "^19.0.0",
+		"svelte": "^3.52.0",
+		"typescript": "^4.8.4",
+		"vite": "^3.1.8",
+		"vitest": "~0.19.1"
+	},
+	"dependencies": {
+		"firebase": "^9.12.1",
+		"kavach": "workspace:1.0.0-next.0"
+	},
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": "./src/index.js"
+		}
+	}
+}

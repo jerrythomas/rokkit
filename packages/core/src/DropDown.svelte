@@ -17,6 +17,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div
 	class="flex flex-col outline-none w-full h-12 relative z-1 dropdown"
 	class:opened

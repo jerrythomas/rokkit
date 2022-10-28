@@ -1,9 +1,9 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
+	// import { createEventDispatcher } from 'svelte'
 	import ListActions from './ListActions.svelte'
 	import ListItems from './ListItems.svelte'
 
-	const dispatch = createEventDispatcher()
+	// const dispatch = createEventDispatcher()
 
 	export let items = []
 	export let fields = {}
@@ -14,6 +14,7 @@
 
 	let search
 	let filtered
+
 	function addItem() {
 		items = [...items, {}]
 		activeItem = items[items.length - 1]
@@ -24,9 +25,9 @@
 	function clearSelection() {
 		activeItem = null
 	}
-	function handleClick(event) {
-		dispatch('select', event.detail)
-	}
+	// function handleClick(event) {
+	// 	dispatch('select', event.detail)
+	// }
 
 	$: filtered =
 		searchable && search && search.length
@@ -51,7 +52,7 @@
 			{fields}
 			{using}
 			bind:activeItem
-			on:click={handleClick}
+			on:select
 		/>
 	</scroll>
 </list>

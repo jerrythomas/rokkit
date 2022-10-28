@@ -22,6 +22,7 @@
 
 <calendar class="flex flex-col items-center select-none">
 	<month-year class="flex flex-row w-full h-10 items-center">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<square class="cursor-pointer select-none" on:click={previousMonth}>
 			<icon class="i-carbon-chevron-left" />
 		</square>
@@ -34,6 +35,7 @@
 				on:change={handleChange}
 			/>
 		</span>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<square class="cursor-pointer select-none" on:click={nextMonth}>
 			<icon class="i-carbon-chevron-right" />
 		</square>
@@ -49,6 +51,7 @@
 		<days-of-month class="grid grid-rows-5 grid-cols-7">
 			{#each days as { day, offset, date, weekend }}
 				{@const start = offset > 0 ? offset : 'auto'}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<p
 					class:active={isSameDay(date, value)}
 					class:weekend
