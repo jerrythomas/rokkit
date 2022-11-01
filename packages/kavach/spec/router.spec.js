@@ -20,31 +20,31 @@ describe('Router functions', () => {
 		})
 	})
 
-	it('Should set allowedRoutes', () => {
-		const { options, message, expected, data } = context.roles
-		let router = new Router(options)
+	// it('Should set allowedRoutes', () => {
+	// 	const { options, message, expected, data } = context.roles
+	// 	let router = new Router(options)
 
-		Object.keys(expected).forEach((key) => {
-			expect(router[key]).toEqual(expected[key], message)
-		})
+	// 	Object.keys(expected).forEach((key) => {
+	// 		expect(router[key]).toEqual(expected[key], message)
+	// 	})
 
-		data.forEach(({ roles, routes, message, isAuthenticated }) => {
-			router.authRoles = roles
-			expect(router.allowedRoutes).toEqual(routes, message)
-			expect(router.isAuthenticated).toEqual(isAuthenticated, message)
-		})
-	})
+	// 	data.forEach(({ roles, routes, message, isAuthenticated }) => {
+	// 		router.authRoles = roles
+	// 		expect(router.allowedRoutes).toEqual(routes, message)
+	// 		expect(router.isAuthenticated).toEqual(isAuthenticated, message)
+	// 	})
+	// })
 
-	it('Should fallback on allowed routes', () => {
-		const { options, data } = context.redirect
-		let router = new Router(options)
+	// it('Should fallback on allowed routes', () => {
+	// 	const { options, data } = context.redirect
+	// 	let router = new Router(options)
 
-		data.forEach(({ roles, routes, message }) => {
-			router.authRoles = roles
-			routes.forEach(({ visited, redirect }) => {
-				const fallback = router.redirect(visited)
-				expect(fallback).toEqual(redirect, message)
-			})
-		})
-	})
+	// 	data.forEach(({ roles, routes, message }) => {
+	// 		router.authRoles = roles
+	// 		routes.forEach(({ visited, redirect }) => {
+	// 			const fallback = router.redirect(visited)
+	// 			expect(fallback).toEqual(redirect, message)
+	// 		})
+	// 	})
+	// })
 })

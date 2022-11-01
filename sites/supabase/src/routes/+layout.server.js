@@ -12,6 +12,6 @@ export async function load(event) {
 	// }
 
 	return {
-		session: await kavach.getSession(event)
+		session: kavach.getSession(event)
 	}
 }

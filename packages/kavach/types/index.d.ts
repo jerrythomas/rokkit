@@ -1,3 +1,11 @@
+export interface AuthProvider {
+	mode: 'otp' | 'oauth' | 'password'
+	provider: string
+	label?: string
+	scopes?: string[]
+	params?: string[]
+}
+
 export interface AuthUser {
 	id: string
 	role: string

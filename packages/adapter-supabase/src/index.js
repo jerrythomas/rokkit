@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { pick } from 'ramda'
+import { omit, pick } from 'ramda'
 
 /** @type {import('kavach').GetAdapter}  */
 export function getAdapter(config) {
@@ -18,37 +18,37 @@ export function getAdapter(config) {
 		return pick(['id', 'name', 'email', 'role'], _authSession.user)
 	}
 
-	async function getSession(event, refresh = false) {
-		let { data, error } = await handler.auth.getSession()
-
-		if (refresh) {
-			console.info(
-				'While fetching session on client',
-				error,
-				event.locals,
-				event.data
-			)
-			_authSession = data.session
+	/**
+	 * This is used to set the server side auth session using the client side auth session
+	 *
+	 * @param {*} session the session object from client side auth
+	 * @param {*} margin  minimum time limit for expiry
+	 * @returns
+	 */
+	async function setSession(session, margin = 60) {
+		if (
+			session?.expires_at &&
+			session.expires_at + margin <= Date.now() / 1000
+		) {
+			_authSession = await handler.auth.setSession(session)
 		} else {
-			console.info(
-				'While fetching session on server',
-				error,
-				event.locals,
-				event.data
-			)
-			_authSession = refreshSession(handler, data.session)
+			_authSession = null
 		}
 		return _authSession
 	}
 
-	async function signIn(credentials, options) {
-		const { mode } = credentials
-		const input = {
-			...pick(['email', 'password', 'token', 'provider'], credentials),
-			options: { ...pick(['scopes', 'params']), ...options }
+	function getSession() {
+		return _authSession
+	}
+
+	async function signIn(mode, credentials, options) {
+		console.log('data sent to sign in', credentials, options)
+		options = {
+			...omit(['redirect'], options),
+			emailRedirectTo: options.redirect
 		}
-		console.log('data sent to sign in', credentials)
-		await auth[mode](handler, input)
+		const result = await auth[mode](handler, { ...credentials, options })
+		return result
 	}
 
 	async function verifyOtp(credentials) {
@@ -56,21 +56,29 @@ export function getAdapter(config) {
 		return { data, error }
 	}
 
-	const signOut = handler.auth.signOut
+	const signOut = async () => await handler.auth.signOut()
 	const onAuthChange = (callback) => {
-		handler.auth.onAuthStateChange((event, session) => {
+		const {
+			data: { subscription }
+		} = handler.auth.onAuthStateChange(async (event, session) => {
+			console.log('auth state change', event, session)
 			_authSession = session
-			callback(event, session)
+			await callback(event, session)
 		})
+
+		return () => {
+			subscription.unsubscribe()
+		}
 	}
 
-	return { getUser, getSession, signIn, signOut, verifyOtp, onAuthChange }
-}
-
-async function refreshSession(handler, session, margin = 60) {
-	if (session?.expires_at && session.expires_at + margin <= Date.now() / 1000) {
-		const refreshed = await handler.auth.setSession(session)
-		session = refreshed.data.session
+	return {
+		getUser,
+		signIn,
+		signOut,
+		verifyOtp,
+		onAuthChange,
+		getSession,
+		setSession,
+		handler
 	}
-	return session
 }

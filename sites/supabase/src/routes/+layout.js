@@ -5,8 +5,7 @@ import { kavach } from '$lib/session'
 
 /** @type {import('./$types').LayoutLoad} */
 export async function load(event) {
-	// depends('app:session')
-	console.log('In layout', event.data, event.params)
-	//await getSupabase(event)
-	return { session: await kavach.getSession(event) }
+	console.log('layout.client', event.data, event.params)
+	const params = Object.fromEntries(event.url.searchParams.entries())
+	return { session: kavach.getSession(event), params }
 }

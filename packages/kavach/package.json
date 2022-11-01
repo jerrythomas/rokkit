@@ -32,7 +32,7 @@
 	"devDependencies": {
 		"@jerrythomas/eslint-config-svelte": "latest",
 		"@jerrythomas/prettier-config": "latest",
-		"@sveltejs/vite-plugin-svelte": "^1.0.9",
+		"@sveltejs/vite-plugin-svelte": "^1.1.0",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
@@ -41,7 +41,7 @@
 		"jsdom": "^19.0.0",
 		"svelte": "^3.52.0",
 		"typescript": "^4.8.4",
-		"vite": "^3.1.8",
+		"vite": "^3.2.2",
 		"vitest": "~0.19.1"
 	},
 	"exports": {
@@ -50,5 +50,8 @@
 			"types": "./types/index.d.ts",
 			"import": "./src/index.js"
 		}
+	},
+	"dependencies": {
+		"ramda": "^0.28.0"
 	}
 }
