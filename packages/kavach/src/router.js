@@ -10,11 +10,11 @@ export class Router {
 	constructor(options) {
 		options = options || {}
 		this[__base__] = {
-			home: ROOT,
-			login: '/auth',
-			logout: '/auth/logout',
-			session: '/auth/session',
-			authUrl: '/auth/signin'
+			homePage: ROOT,
+			loginPage: '/auth',
+			loginEndpoint: '/auth/signin',
+			logoutEndpoint: '/auth/logout',
+			sessionEndpoint: '/auth/session'
 		}
 		this[__routes__] = {
 			public: [],
@@ -36,20 +36,20 @@ export class Router {
 		})
 	}
 
-	get home() {
-		return this[__base__].home
+	get homePage() {
+		return this[__base__].homePage
 	}
-	get login() {
-		return this[__base__].login
+	get loginPage() {
+		return this[__base__].loginPage
 	}
-	get logout() {
-		return this[__base__].logout
+	get logoutEndpoint() {
+		return this[__base__].logoutEndpoint
 	}
-	get session() {
-		return this[__base__].session
+	get sessionEndpoint() {
+		return this[__base__].sessionEndpoint
 	}
-	get authUrl() {
-		return this[__base__].authUrl
+	get loginEndpoint() {
+		return this[__base__].loginEndpoint
 	}
 	get routes() {
 		return this[__routes__]
@@ -93,11 +93,15 @@ export class Router {
 
 	add(role, routes) {
 		if (role === 'public') {
-			let publicRoutes = [this.login, this.authUrl, this.session]
+			let publicRoutes = [
+				this.loginPage,
+				this.loginEndpoint,
+				this.sessionEndpoint
+			]
 			publicRoutes = [...new Set([...publicRoutes, ...routes])]
 			this[__routes__][role] = publicRoutes.sort()
 		} else {
-			this[__routes__][role] = [...new Set([...routes, this.home])].sort()
+			this[__routes__][role] = [...new Set([...routes, this.homePage])].sort()
 		}
 		// Remove child routes if parent is already in the list
 		for (let i = 0; i < this[__routes__][role].length; i++) {
@@ -121,13 +125,17 @@ export class Router {
 	redirect(route) {
 		let isAllowed = false
 
-		if (route !== this.logout || this.isAuthenticated) {
+		if (route !== this.logoutEndpoint || this.isAuthenticated) {
 			for (let i = 0; i < this.allowedRoutes.length && !isAllowed; i++) {
 				isAllowed =
 					route === this.allowedRoutes[i] ||
 					route.startsWith(this.allowedRoutes[i] + '/')
 			}
 		}
-		return isAllowed ? route : this[__authenticated__] ? this.home : this.login
+		return isAllowed
+			? route
+			: this[__authenticated__]
+			? this.homePage
+			: this.loginPage
 	}
 }

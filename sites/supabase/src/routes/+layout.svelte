@@ -7,11 +7,10 @@
 
 	/** @type {import('./$types').LayoutData} */
 	export let data
-
 	onMount(() => {
 		kavach.onAuthChange()
 	})
-	$: console.log('data in layout', data)
+	$: console.log('layout.svelte', data)
 </script>
 
 <slot />

@@ -1,30 +1,47 @@
-// import '$lib/db'
-const johnDoe = {
-	name: 'John Doe',
-	id: 112244233434343,
-	email: 'john.doe@gmail.com',
-	role: 'authenticated'
-}
+import { kavach } from '$lib/session'
+import { sequence } from '@sveltejs/kit/hooks'
+
 /** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ event, resolve }) {
-	// event.locals.user = await getUserInformation(event.cookies.get('sessionid'))
-	// event.locals = { session: null }
+export const handle = sequence(...kavach.handlers())
+// // export const handle = sequence(one, two, three)
 
-	console.log('hooks.server.handle', event.url.pathname)
-	if (event.url.pathname.startsWith('/api/login')) {
-		event.locals.user = johnDoe
-		console.log('Redirect after login')
-		return Response.redirect(`${event.url.origin}/`, 301)
-	}
+// async function one({ event, resolve }) {
+// 	console.log('one - enter')
+// 	if (event.url.pathname === '/auth/signin') {
+// 		return resolve(event)
+// 	}
+// 	const result = await resolve(event)
+// 	console.log('one - exit')
+// 	return result
+// }
+// async function two({ event, resolve }) {
+// 	console.log('two - enter')
+// 	if (event.url.pathname === '/auth/signout') {
+// 		return resolve(event)
+// 	}
+// 	const result = await resolve(event)
+// 	console.log('two - exit')
+// 	return result
+// }
 
-	if (event.url.pathname.startsWith('/api/logout')) {
-		event.locals.user = null
-		console.log('Redirect after logout')
-		return Response.redirect(`${event.url.origin}/auth`, 301)
-	}
-	const response = await resolve(event)
-	// response.headers.set('x-custom-header', 'potato')
-	return response
+// async function three({ event, resolve }) {
+// 	console.log('three - enter')
+// 	if (event.url.pathname === '/auth/signup') {
+// 		return resolve(event)
+// 	}
+// 	const result = await resolve(event)
+// 	console.log('three - exit')
+// 	return result
+// }
+// export async function handle({ event, resolve }) {
+// 	// event.locals.user = await getUserInformation(event.cookies.get('sessionid'))
+// 	// event.locals = { session: null }
 
-	// console.log('event data on server', event.locals, event.params)
-}
+// 	console.log('hooks.server.handle', event.url.pathname)
+
+// 	const response = await resolve(event)
+// 	// response.headers.set('x-custom-header', 'potato')
+// 	return response
+
+// 	// console.log('event data on server', event.locals, event.params)
+// }

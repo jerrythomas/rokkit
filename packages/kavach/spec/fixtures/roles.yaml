@@ -9,11 +9,11 @@ options:
       - /inbox
 message: Should handle additional role based routes
 expected:
-  home: /
-  login: /auth
-  logout: /auth/logout
-  authUrl: /auth/signin
-  session: /auth/session
+  homePage: /
+  loginPage: /auth
+  logoutEndpoint: /auth/logout
+  loginEndpoint: /auth/signin
+  sessionEndpoint: /auth/session
   routes:
     public:
       - /about

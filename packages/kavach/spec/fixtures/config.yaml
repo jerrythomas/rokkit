@@ -2,11 +2,11 @@
 - options: ~
   message: Should handle default options
   expected:
-    home: /
-    login: /auth
-    logout: /auth/logout
-    authUrl: /auth/signin
-    session: /auth/session
+    homePage: /
+    loginPage: /auth
+    logoutEndpoint: /auth/logout
+    loginEndpoint: /auth/signin
+    sessionEndpoint: /auth/session
     isAuthenticated: false
     routes:
       public:
@@ -15,15 +15,15 @@
         - /
 
 - options:
-    home: /home
-    login: /signIn
+    homePage: /home
+    loginPage: /signIn
   message: Should handle different home and login path
   expected:
-    home: /home
-    login: /signIn
-    logout: /auth/logout
-    authUrl: /auth/signin
-    session: /auth/session
+    homePage: /home
+    loginPage: /signIn
+    logoutEndpoint: /auth/logout
+    loginEndpoint: /auth/signin
+    sessionEndpoint: /auth/session
     routes:
       public:
         - /auth/session
@@ -33,10 +33,10 @@
         - /home
 
 - options:
-    home: /home
-    login: /signIn
-    logout: /signOut
-    authUrl: /auth/login
+    homePage: /home
+    loginPage: /signIn
+    logoutEndpoint: /signOut
+    loginEndpoint: /auth/login
     routes:
       public:
         - /
@@ -47,11 +47,11 @@
         - /me
   message: Should handle different logout page & signIn endpoint
   expected:
-    home: /home
-    login: /signIn
-    logout: /signOut
-    authUrl: /auth/login
-    session: /auth/session
+    homePage: /home
+    loginPage: /signIn
+    logoutEndpoint: /signOut
+    loginEndpoint: /auth/login
+    sessionEndpoint: /auth/session
     routes:
       public:
         - /
@@ -63,20 +63,20 @@
         - /me
 
 - options:
-    login: /signIn
-    logout: /signOut
-    authUrl: /auth/login
-    session: /auth/cookie
+    loginPage: /signIn
+    logoutEndpoint: /signOut
+    loginEndpoint: /auth/login
+    sessionEndpoint: /auth/cookie
     routes:
       public:
         - /
   message: Should handle different session endpoint
   expected:
-    home: /
-    login: /signIn
-    logout: /signOut
-    authUrl: /auth/login
-    session: /auth/cookie
+    homePage: /
+    loginPage: /signIn
+    logoutEndpoint: /signOut
+    loginEndpoint: /auth/login
+    sessionEndpoint: /auth/cookie
     routes:
       public:
         - /
@@ -87,22 +87,22 @@
         - /
 
 - options:
-    home: /
-    login: /signIn
-    logout: /signOut
-    authUrl: /auth/signin
-    session: /auth/session
+    homePage: /
+    loginPage: /signIn
+    logoutEndpoint: /signOut
+    loginEndpoint: /auth/signin
+    sessionEndpoint: /auth/session
     routes:
       public:
         - /
         - /home
   message: Should handle additional public routes
   expected:
-    home: /
-    login: /signIn
-    logout: /signOut
-    authUrl: /auth/signin
-    session: /auth/session
+    homePage: /
+    loginPage: /signIn
+    logoutEndpoint: /signOut
+    loginEndpoint: /auth/signin
+    sessionEndpoint: /auth/session
     routes:
       public:
         - /

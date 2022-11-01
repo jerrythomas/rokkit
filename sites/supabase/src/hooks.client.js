@@ -1,6 +1,6 @@
 // import '$lib/db'
 import { invalidate } from '$app/navigation'
-const authRoutes = ['/api/auth/login', '/api/auth/logout']
+const authRoutes = ['/auth/login', '/auth/logout']
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
