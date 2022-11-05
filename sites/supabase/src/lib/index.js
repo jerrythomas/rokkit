@@ -7,12 +7,12 @@ export function authorizedUser() {
 	}
 }
 
-import pino from 'pino'
+// import pino from 'pino'
 
 // const stream = createWriteStream({
 // 	url: 'http://localhost:5173/api/logger'
 // })
-export const logger = {
-	web: pino({ level: 'info' }),
-	server: pino({ level: 'info' })
-}
+// export const logger = {
+// 	web: pino({ level: 'info' }),
+// 	server: pino({ level: 'info' })
+// }
