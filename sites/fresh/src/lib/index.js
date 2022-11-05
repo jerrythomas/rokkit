@@ -1,6 +1,6 @@
 import { config } from './config';
-import { getLogWriter } from './supabase';
+import { getLogWriter } from '@kavach/adapter-supabase';
 import { getLogger } from '@kavach/logger';
 
-const writer = getLogWriter(config, 'svelte_logs');
-export const logger = getLogger(writer, 'info');
+const writer = getLogWriter(config, { table: 'svelte_logs' });
+export const logger = getLogger(writer, { level: 'info' });

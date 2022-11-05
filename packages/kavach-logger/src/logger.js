@@ -1,6 +1,6 @@
 import { DEFAULT_LOG_LEVEL, LoggingLevels } from './constants'
 
-const browser = typeof window === 'undefined'
+const browser = typeof window !== 'undefined'
 
 /** @type {Object<string, number>} */
 let sessions = {}
