@@ -5,9 +5,13 @@
 ## Usage
 
 ```bash
-pnpm add kavach @kavach/supabase
+pnpm add kavach @kavach/adapter-supabase
 ```
 
 ```js
-const shield = kavach().use(supabase, config).with(providers).and(routes)
+import { createAdapter } from '@kavach/adapter-supabase'
+import { createKavach } from '@kavach'
+
+const adapter = getAdapter(config)
+const kavach = createKavach(adapter)
 ```

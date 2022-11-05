@@ -1,4 +1,5 @@
 // import { invalidate } from '$app/navigation'
+import { browser } from '$app/environment'
 import { createDeflector } from './deflector'
 import { signInEndpoint, sessionEndpoint } from './endpoints'
 
@@ -20,19 +21,29 @@ export function createKavach(adapter, options = {}) {
 
 	const onAuthChange = async (where) => {
 		console.log('on auth change called', where)
-
-		adapter.onAuthChange(async (event, session) => {
-			console.log(event, session)
-			// invalidate(APP_AUTH_CONTEXT)
-			deflector.setSession(session)
+		if (browser) {
 			const result = await fetch(endpoint.session, {
 				method: 'POST',
 				body: JSON.stringify({
-					session
+					session: {}
 				})
 			})
 			console.log(result)
-		})
+		}
+		// adapter.auth.onAuthStateChange(async (event, session) => {
+		// 	console.log(event, session)
+		// 	// invalidate(APP_AUTH_CONTEXT)
+		// 	deflector.setSession(session)
+		// 	if (browser) {
+		// 		const result = await fetch(endpoint.session, {
+		// 			method: 'POST',
+		// 			body: JSON.stringify({
+		// 				session
+		// 			})
+		// 		})
+		// 	}
+		// 	console.log(result)
+		// })
 	}
 
 	async function handleSignIn({ event, resolve }) {

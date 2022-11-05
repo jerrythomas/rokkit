@@ -5,17 +5,20 @@
 	import { onMount } from 'svelte'
 	import About from '$lib/About.svelte'
 
-	// onMount(async () => {
-	// 	// console.log()
-	// 	kavach.onAuthChange('auth.page.onmount')
-	// 	kavach.adapter.handler.auth.onAuthStateChange((event, session) => {
-	// 		console.log('auth state changed in auth page', session, event)
-	// 	})
-	// })
-	import { browser } from '$app/environment'
+	// $: kavach.onAuthChange()
+	// onMount(() => {})
+
 	import { page } from '$app/stores'
 	/** @type {import('./$types').PageData} */
 	export let data
+
+	import { browser } from '$app/environment'
+
+	if (browser) {
+		console.log('browser')
+	} else {
+		console.log('server')
+	}
 </script>
 
 <content class="p-8 flex flex-col flex-grow gap-4 justify-center items-center">
