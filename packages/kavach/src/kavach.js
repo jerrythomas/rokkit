@@ -2,11 +2,12 @@
 import { browser } from '$app/environment'
 import { createDeflector } from './deflector'
 import { signInEndpoint, sessionEndpoint } from './endpoints'
-
-const APP_AUTH_CONTEXT = 'app:context:auth'
+import { APP_AUTH_CONTEXT, ZERO_LOGGER } from './constants'
 
 export function createKavach(adapter, options = {}) {
 	const deflector = createDeflector(options)
+	const logger = options?.logger ?? ZERO_LOGGER
+
 	const { endpoint, page } = deflector
 
 	const getSession = (event) => {
@@ -20,7 +21,13 @@ export function createKavach(adapter, options = {}) {
 	}
 
 	const onAuthChange = async (where) => {
-		console.log('on auth change called', where)
+		await logger.debug({
+			path: where,
+			module: 'kavach',
+			method: 'onAuthChange',
+			message: 'auth changed'
+		})
+
 		if (browser) {
 			const result = await fetch(endpoint.session, {
 				method: 'POST',
@@ -28,7 +35,13 @@ export function createKavach(adapter, options = {}) {
 					session: {}
 				})
 			})
-			console.log(result)
+			await logger.debug({
+				path: where,
+				module: 'kavach',
+				method: 'onAuthChange',
+				action: `post session to ${endpoint.session}`,
+				result
+			})
 		}
 		// adapter.auth.onAuthStateChange(async (event, session) => {
 		// 	console.log(event, session)
@@ -47,34 +60,59 @@ export function createKavach(adapter, options = {}) {
 	}
 
 	async function handleSignIn({ event, resolve }) {
-		console.log('signIn', event.url.pathname, endpoint.login)
+		await logger.debug({
+			path: event.url.pathname,
+			module: 'kavach',
+			method: 'handleSignIn'
+		})
 		if (event.url.pathname.startsWith(endpoint.login)) {
-			return signInEndpoint(event, adapter, deflector)
+			return signInEndpoint(event, adapter, deflector, logger)
 		}
 		return resolve(event)
 	}
 
 	async function handleSignOut({ event, resolve }) {
-		console.log('signOut', event.url.pathname, endpoint.logout)
+		await logger.debug({
+			path: event.url.pathname,
+			module: 'kavach',
+			method: 'handleSignOut'
+		})
 		if (event.url.pathname.startsWith(endpoint.logout)) {
 			await adapter.signOut()
 			event.locals.session = null
-			console.log('Redirect after logout', event.url.pathname)
+			await logger.debug({
+				path: event.url.pathname,
+				module: 'kavach',
+				method: 'handleSignOut',
+				message: 'Redirect after logout',
+				data: event.url.origin + page.login
+			})
+
 			return Response.redirect(event.url.origin + page.login, 301)
 		}
 		return resolve(event)
 	}
 
 	async function handleSession({ event, resolve }) {
-		console.log('session', event.url.pathname, endpoint.session)
+		await logger.debug({
+			path: event.url.pathname,
+			module: 'kavach',
+			method: 'handleSession'
+		})
 		if (event.url.pathname.startsWith(endpoint.session)) {
-			return await sessionEndpoint(event, adapter)
+			return await sessionEndpoint(event, adapter, logger)
 		}
 		return resolve(event)
 	}
 
 	async function handleUnauthorizedAccess({ event, resolve }) {
 		const pathname = deflector.redirect(event.url.pathname)
+		await logger.debug({
+			path: event.url.pathname,
+			module: 'kavach',
+			method: 'handleUnauthorizedAccess',
+			data: { deflectedTo: pathname }
+		})
 		if (pathname !== event.url.pathname) {
 			return Response.redirect(event.url.origin + pathname, 301)
 		}
