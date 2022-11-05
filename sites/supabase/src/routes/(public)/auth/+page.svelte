@@ -1,24 +1,23 @@
 <script>
 	import { Auth } from '$lib'
 	import { providers } from '$lib/providers.js'
-	import { kavach } from '$lib/session'
+	import { kavach, logger } from '$lib/session'
 	import { onMount } from 'svelte'
 	import About from '$lib/About.svelte'
-
-	// $: kavach.onAuthChange()
-	// onMount(() => {})
-
 	import { page } from '$app/stores'
+
 	/** @type {import('./$types').PageData} */
 	export let data
 
-	import { browser } from '$app/environment'
-
-	if (browser) {
-		console.log('browser')
-	} else {
-		console.log('server')
-	}
+	onMount(async () => {
+		await logger.debug({
+			file: './auth/page.svelte',
+			method: 'onMount',
+			path: $page.url.pathname,
+			data
+		})
+		kavach.onAuthChange()
+	})
 </script>
 
 <content class="p-8 flex flex-col flex-grow gap-4 justify-center items-center">

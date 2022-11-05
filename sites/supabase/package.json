@@ -23,7 +23,7 @@
 		"svelte": "^3.52.0",
 		"svelte-check": "^2.9.2",
 		"typescript": "^4.8.4",
-		"vite": "^3.1.0"
+		"vite": "^3.2.0"
 	},
 	"dependencies": {
 		"@fontsource/montserrat-alternates": "^4.5.11",
@@ -32,6 +32,7 @@
 		"@iconify-json/fa-brands": "^1.1.2",
 		"@iconify-json/flat-color-icons": "^1.1.2",
 		"@iconify-json/logos": "^1.1.18",
+		"@kavach/logger": "workspace:1.0.0-next.0",
 		"@kavach/adapter-supabase": "workspace:1.0.0-next.0",
 		"@supabase/supabase-js": "2.0.0",
 		"@svelte-spice/core": "workspace:1.0.0-next.0",
