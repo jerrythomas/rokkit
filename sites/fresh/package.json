@@ -28,6 +28,7 @@
 	"dependencies": {
 		"@supabase/supabase-js": "2",
 		"date-fns": "^2.29.3",
-		"@kavach/logger": "workspace:*"
+		"@kavach/logger": "workspace:*",
+		"@kavach/adapter-supabase": "workspace:*"
 	}
 }
