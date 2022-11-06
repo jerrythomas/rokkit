@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { omit, pick } from 'ramda'
 
-/** @type {import('kavach').GetAdapter}  */
+/** @type {import('@kavach/core').GetAdapter}  */
 export function getAdapter(config) {
 	const handler = createClient(config.supabaseUrl, config.supabaseAnonKey)
 	const auth = {
