@@ -1,6 +1,6 @@
 // import { invalidate } from '$app/navigation'
 import { browser } from '$app/environment'
-import { createDeflector } from './deflector'
+import { createDeflector } from '@kavach/core'
 import { signInEndpoint, sessionEndpoint } from './endpoints'
 import { APP_AUTH_CONTEXT, ZERO_LOGGER } from './constants'
 

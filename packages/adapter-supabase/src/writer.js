@@ -1,14 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 
 /**
- * @typedef LogData
- * @property {string} level
- * @property {boolean} browser
- * @property {number} sequence
- * @property {string} occurred_at
- * @property {string} session
- * @property {string} [ip_address]
- * @property {*} message
+ * @typedef SupabaseConfig
+ * @property {string} supabaseUrl
+ * @property {string} supabaseAnonKey
  */
 
 /**
@@ -18,16 +13,21 @@ import { createClient } from '@supabase/supabase-js'
  */
 
 /**
+ * Creates a kavach adapter to work with supabase
  *
- * @param {*} config
+ * @param {SupabaseConfig} config
  * @param {SupabaseLogWriterOptions} options
- * @returns
+ * @returns @type {import('@kavach/core').LogWriter}
  */
 export function getLogWriter(config, options) {
 	const client = createClient(config.supabaseUrl, config.supabaseAnonKey)
-	const write = async (/** @type {LogData} */ data) => {
-		await client.from(options.table).insert(data)
+
+	/** @type {import('@kavach/core').LogWriter} */
+	const adapter = {
+		write: async (data) => {
+			await client.from(options.table).insert(data)
+		}
 	}
 
-	return { write }
+	return adapter
 }

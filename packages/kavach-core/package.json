@@ -1,7 +1,7 @@
 {
-	"name": "kavach",
+	"name": "@kavach/core",
 	"version": "1.0.0-next.0",
-	"description": "Drop in security for web apps.",
+	"description": "Core utility functions for Kavach.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
 	"main": "index.js",
@@ -32,17 +32,20 @@
 	"devDependencies": {
 		"@jerrythomas/eslint-config-svelte": "latest",
 		"@jerrythomas/prettier-config": "latest",
+		"@sveltejs/kit": "1.0.0-next.535",
 		"@sveltejs/vite-plugin-svelte": "^1.1.0",
 		"@testing-library/svelte": "^3.2.2",
+		"@vitest/coverage-c8": "^0.24.5",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
 		"eslint": "^7.32.0",
 		"js-yaml": "^4.1.0",
 		"jsdom": "^19.0.0",
+		"ramda": "^0.28.0",
 		"svelte": "^3.52.0",
 		"typescript": "^4.8.4",
 		"vite": "^3.2.2",
-		"vitest": "~0.19.1"
+		"vitest": "0.24.5"
 	},
 	"exports": {
 		"./package.json": "./package.json",
@@ -50,9 +53,5 @@
 			"types": "./types/index.d.ts",
 			"import": "./src/index.js"
 		}
-	},
-	"dependencies": {
-		"ramda": "^0.28.0",
-		"@kavach/core": "workspace:1.0.0-next.0"
 	}
 }
