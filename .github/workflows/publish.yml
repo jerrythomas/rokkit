@@ -1,8 +1,8 @@
-name: release
+name: publish
 on:
   push:
     branches:
-      - main
+      - next
 jobs:
   release:
     name: release
@@ -19,7 +19,7 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile]
       - run: pnpm lint
-      - run: pnpx release
+      - run: pnpm release --preRelease=next
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

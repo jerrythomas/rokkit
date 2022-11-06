@@ -1,5 +1,5 @@
 {
-	"name": "fresh",
+	"name": "lifecycle",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -22,13 +22,14 @@
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"typescript": "^4.7.4",
-		"vite": "^3.1.0"
+		"vite": "^3.1.0",
+		"shared-config": "workspace:^1.0.0"
 	},
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "2",
 		"date-fns": "^2.29.3",
-		"@kavach/logger": "workspace:*",
+		"@kavach/core": "workspace:*",
 		"@kavach/adapter-supabase": "workspace:*"
 	}
 }

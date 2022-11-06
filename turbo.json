@@ -1,6 +1,5 @@
 {
 	"$schema": "https://turborepo.org/schema.json",
-	"baseBranch": "origin/main",
 	"pipeline": {
 		"prepublishOnly": {},
 		"build": {
@@ -28,5 +27,6 @@
 			"dependsOn": ["test"]
 		},
 		"upgrade": {}
-	}
+	},
+	"globalDependencies": ["tsconfig.json", ".prettierignore", ".env.*"]
 }

@@ -1,0 +1,4 @@
+{
+	"extends": "shared-config/svelte-lib.json",
+	"include": ["src/**/*.js", "src/**/*.svelte"]
+}

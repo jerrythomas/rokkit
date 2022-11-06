@@ -12,6 +12,7 @@
 		"format": "turbo run format",
 		"prepare": "husky install",
 		"upgrade": "pnpm upgrade",
+		"release": "turbo run release",
 		"upgrade:all": "turbo run upgrade",
 		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
 	},
