@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/kavach-core" },
+    { "path": "packages/adapter-firebase" },
+    { "path": "packages/adapter-supabase" },
+    { "path": "packages/core" },
+    { "path": "packages/input" },
+    { "path": "packages/form" },
+    { "path": "packages/markdown" },
+    { "path": "packages/chart" },
+    { "path": "packages/themes" },
+    { "path": "packages/kavach" }
+
+  ]
+}

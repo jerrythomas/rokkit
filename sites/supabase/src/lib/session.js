@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/public'
-import { createKavach } from 'kavach'
+import { createKavach } from '@kavach/svelte'
 import { getAdapter, getLogWriter } from '@kavach/adapter-supabase'
-import { getLogger } from '@kavach/logger'
+import { getLogger } from '@kavach/core'
 // or use the static env
 // import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 export const config = {

@@ -32,7 +32,7 @@
 		"@iconify-json/fa-brands": "^1.1.2",
 		"@iconify-json/flat-color-icons": "^1.1.2",
 		"@iconify-json/logos": "^1.1.18",
-		"@kavach/logger": "workspace:1.0.0-next.0",
+		"@kavach/core": "workspace:1.0.0-next.0",
 		"@kavach/adapter-supabase": "workspace:1.0.0-next.0",
 		"@supabase/supabase-js": "2.0.0",
 		"@svelte-spice/core": "workspace:1.0.0-next.0",
@@ -43,7 +43,7 @@
 		"@unocss/preset-uno": "^0.44.7",
 		"@unocss/reset": "^0.44.7",
 		"@unocss/transformer-directives": "^0.44.7",
-		"kavach": "workspace:1.0.0-next.0",
+		"@kavach/svelte": "workspace:1.0.0-next.0",
 		"sass": "^1.55.0",
 		"unocss": "^0.44.7"
 	}
