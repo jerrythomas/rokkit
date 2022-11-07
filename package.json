@@ -12,7 +12,10 @@
 		"format": "turbo run format",
 		"prepare": "husky install",
 		"upgrade": "pnpm upgrade",
-		"release": "turbo run release",
+		"changeset": "changeset",
+		"version-packages": "changeset version",
+		"version:next": "turbo run build && changeset pre enter next && changeset version",
+		"release:next": "changeset publish",
 		"upgrade:all": "turbo run upgrade",
 		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
 	},
@@ -31,6 +34,7 @@
 		"sites/latest"
 	],
 	"devDependencies": {
+		"@changesets/cli": "^2.25.2",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.5.0",
 		"husky": "^7.0.4",
