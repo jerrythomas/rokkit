@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-spice/chart",
-	"version": "1.0.0",
+	"version": "1.0.0-next.0",
 	"description": "Components for making interactive charts.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",

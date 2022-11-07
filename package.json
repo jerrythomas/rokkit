@@ -28,10 +28,10 @@
 		"packages/markdown",
 		"packages/chart",
 		"packages/themes",
-		"packages/kavach-core",
-		"packages/kavach",
-		"packages/adapter-supabase",
-		"packages/adapter-firebase"
+		"kavach/core",
+		"kavach/svelte",
+		"adapters/supabase",
+		"adapters/firebase"
 	],
 	"devDependencies": {
 		"@changesets/cli": "^2.25.2",
