@@ -23,15 +23,15 @@
 	"license": "MIT",
 	"workspaces": [
 		"packages/core",
-		"packages/base",
-		"packages/chart",
-		"packages/icons",
-		"packages/themes",
+		"packages/input",
+		"packages/form",
 		"packages/markdown",
-		"shared/linter",
-		"shared/validators",
-		"sites/playground",
-		"sites/latest"
+		"packages/chart",
+		"packages/themes",
+		"packages/kavach-core",
+		"packages/kavach",
+		"packages/adapter-supabase",
+		"packages/adapter-firebase"
 	],
 	"devDependencies": {
 		"@changesets/cli": "^2.25.2",
