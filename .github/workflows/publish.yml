@@ -1,15 +1,22 @@
-name: publish
+name: Publish
+
 on:
   push:
     branches:
       - next
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   release:
-    name: release
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
       - uses: pnpm/action-setup@v2
@@ -18,8 +25,18 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
-      - run: pnpm lint
-      - run: pnpm release --preRelease=next
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          publish: |
+            pnpm version:next
+            git add .
+            git commit -m "Enter prerelease mode and version packages"
+            pnpm release:next
+            git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
