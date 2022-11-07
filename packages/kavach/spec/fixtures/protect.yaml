@@ -1,8 +1,0 @@
-input:
-  request:
-    headers: {}
-  locals: {}
-output:
-  body: ''
-  init:
-    status: 200

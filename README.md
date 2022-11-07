@@ -6,11 +6,9 @@ A set of composable, data-driven and themeable UI components.
 
 ## Features
 
+- [x] Data-driven
+- [x] Configurable
 - [x] Themable
-- [x] Data driven
-- [x] Actions
-- [x] Utility functions
-- [ ] Responsive
 - [ ] Accessible
 
 ## Usage
@@ -28,8 +26,9 @@ pnpm dev
 
 ## Libraries
 
-- [@svelte-spice/base](packages/base)
-- [@svelte-spice/icons](packages/icons)
+- [@svelte-spice/core](packages/core)
+- [@svelte-spice/input](packages/input)
+- [@svelte-spice/form](packages/form)
 - [@svelte-spice/chart](packages/chart)
-- [@svelte-spice/list](packages/list)
+- [@svelte-spice/themes](packages/themes)
 - [@svelte-spice/markdown](packages/markdown)
