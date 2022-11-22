@@ -50,8 +50,8 @@
 	"dependencies": {
 		"@fontsource/poppins": "^4.5.10",
 		"@lukeed/uuid": "^2.0.0",
-		"@svelte-spice/chart": "workspace:1.0.0-next.0",
-		"@svelte-spice/form": "workspace:1.0.0-next.0",
-		"@svelte-spice/input": "workspace:1.0.0-next.0"
+		"@svelte-spice/chart": "workspace:1.0.0-next.2",
+		"@svelte-spice/form": "workspace:1.0.0-next.2",
+		"@svelte-spice/input": "workspace:1.0.0-next.2"
 	}
 }

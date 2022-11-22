@@ -1,6 +1,5 @@
 export * from './constants'
 export * from './items'
-export * from './utils'
 
 export { default as List } from './List.svelte'
 export { default as Tree } from './Tree.svelte'

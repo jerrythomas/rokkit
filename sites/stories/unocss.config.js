@@ -3,20 +3,8 @@ import presetUno from '@unocss/preset-uno'
 import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
 import { extractorSvelte } from '@unocss/core'
-import { iconShortcuts } from '@svelte-spice/themes'
+import { iconShortcuts, themeColors } from '@svelte-spice/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
-
-function hslFromVariable(name) {
-	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-
-	return shades.reduce(
-		(result, shade) => ({
-			...result,
-			[shade]: `hsl(var(--${name}-${shade}))`
-		}),
-		{ DEFAULT: `hsl(var(--${name}-500))` }
-	)
-}
 
 const inputIcons = [
 	'text',
@@ -30,6 +18,7 @@ const inputIcons = [
 	'color',
 	'password'
 ].map((type) => 'i-sparsh:input-' + type)
+
 export default defineConfig({
 	safelist: [
 		...Object.keys(iconShortcuts),
@@ -66,17 +55,7 @@ export default defineConfig({
 			serif: ['Montserrat Alternates', 'ui-serif', 'sans-serif'],
 			body: ['Montserrat Alternates', 'ui-serif', 'sans-serif']
 		},
-		colors: {
-			primary: hslFromVariable('primary'),
-			secondary: hslFromVariable('secondary'),
-			accent: hslFromVariable('accent'),
-			skin: {
-				...hslFromVariable('accent'),
-				base: 'hsl(var(--skin-50))',
-				contrast: 'hsl(var(--skin-900))',
-				zebra: 'hsl(var(--skin-zebra))'
-			}
-		}
+		colors: themeColors()
 	},
 	presets: [
 		presetUno(),
