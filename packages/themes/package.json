@@ -18,7 +18,9 @@
 		"format": "prettier --write --plugin-search-dir=. .",
 		"test:ct": "playwright test -c playwright.config.js",
 		"test:ui": "vitest --ui",
+		"test:ci": "vitest run",
 		"test": "vitest",
+		"coverage": "vitest run --coverage",
 		"release": "release-it",
 		"upgrade": "pnpm upgrade"
 	},

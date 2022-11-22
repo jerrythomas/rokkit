@@ -1,5 +1,8 @@
 # Svelte Spice
 
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c9d53bca3d48acf48ac0/test_coverage)](https://codeclimate.com/github/jerrythomas/svelte-spice/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c9d53bca3d48acf48ac0/maintainability)](https://codeclimate.com/github/jerrythomas/svelte-spice/maintainability)
+
 ![Svelte Spice](docs/spice.svg)
 
 A set of composable, data-driven and themeable UI components.
