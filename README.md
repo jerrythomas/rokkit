@@ -1,6 +1,6 @@
-# Sparsh UI
+# Svelte Spice
 
-![Sparsh](docs/sparsh.svg)
+![Svelte Spice](docs/spice.svg)
 
 A set of composable, data-driven and themeable UI components.
 
@@ -13,12 +13,12 @@ A set of composable, data-driven and themeable UI components.
 
 ## Usage
 
-Refer to the [playground](sites/playground) for examples of all available UI elements.
+Refer to the [play](sites/play) for examples of all available UI elements.
 
 ## Quickstart
 
 ```bash
-degit jerrythomas/sparsh-ui/sites/playground my-app
+degit jerrythomas/sparsh-ui/sites/play my-app
 cd my-app
 pnpm i
 pnpm dev

@@ -4,18 +4,18 @@
 	export let content
 	export let fields = defaultFields
 
-	$: isString = typeof content == 'string'
-	$: text = isString ? content : content[fields.text]
+	$: isObject = typeof content == 'object'
+	$: text = isObject ? content[fields.text] : content
 </script>
 
-{#if !isString && content[fields.image]}
+{#if isObject && content[fields.image]}
 	<img
 		class="h-8 w-8 rounded-full"
 		alt={content[fields.text]}
 		src={content[fields.image]}
 	/>
 {/if}
-{#if !isString && content[fields.icon]}
+{#if isObject && content[fields.icon]}
 	<icon class={content[fields.icon]} />
 {/if}
 <p class="flex flex-grow">{text}</p>

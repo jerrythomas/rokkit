@@ -11,6 +11,7 @@ export const defaultFields = {
 	text: 'text',
 	data: 'data',
 	icon: 'icon',
+	image: 'image',
 	component: 'component'
 }
 

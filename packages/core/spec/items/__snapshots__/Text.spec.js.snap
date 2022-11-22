@@ -13,3 +13,97 @@ exports[`Text.svelte > Should render 1`] = `
   </div>
 </body>
 `;
+
+exports[`Text.svelte > Should render icon 1`] = `
+<body>
+  <div>
+     
+    <icon
+      class="info"
+    />
+     
+    <p
+      class="flex flex-grow"
+    >
+      hello
+    </p>
+  </div>
+</body>
+`;
+
+exports[`Text.svelte > Should render image 1`] = `
+<body>
+  <div>
+    <img
+      alt="hello"
+      class="h-8 w-8 rounded-full"
+      src="https://example.com/img.png"
+    />
+     
+     
+    <p
+      class="flex flex-grow"
+    >
+      hello
+    </p>
+  </div>
+</body>
+`;
+
+exports[`Text.svelte > Should render image and icon 1`] = `
+<body>
+  <div>
+    <img
+      alt="hello"
+      class="h-8 w-8 rounded-full"
+      src="https://example.com/img.png"
+    />
+     
+    <icon
+      class="info"
+    />
+     
+    <p
+      class="flex flex-grow"
+    >
+      hello
+    </p>
+  </div>
+</body>
+`;
+
+exports[`Text.svelte > Should render object 1`] = `
+<body>
+  <div>
+     
+     
+    <p
+      class="flex flex-grow"
+    >
+      hello
+    </p>
+  </div>
+</body>
+`;
+
+exports[`Text.svelte > Should render using field mapping 1`] = `
+<body>
+  <div>
+    <img
+      alt="hello"
+      class="h-8 w-8 rounded-full"
+      src="https://example.com/img.png"
+    />
+     
+    <icon
+      class="info"
+    />
+     
+    <p
+      class="flex flex-grow"
+    >
+      hello
+    </p>
+  </div>
+</body>
+`;
