@@ -2,14 +2,10 @@
   "mode": "pre",
   "tag": "next",
   "initialVersions": {
-    "@kavach/adapter-firebase": "1.0.0-next.0",
-    "@kavach/adapter-supabase": "1.0.0-next.0",
-    "@svelte-spice/chart": "1.0.0",
+    "@svelte-spice/chart": "1.0.0-next.0",
     "@svelte-spice/core": "1.0.0-next.0",
     "@svelte-spice/form": "1.0.0-next.0",
     "@svelte-spice/input": "1.0.0-next.0",
-    "@kavach/svelte": "1.0.0-next.0",
-    "@kavach/core": "1.0.0-next.0",
     "@svelte-spice/markdown": "1.0.0-next.0",
     "@svelte-spice/themes": "1.0.0-next.0"
   },

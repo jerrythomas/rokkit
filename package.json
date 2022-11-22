@@ -14,7 +14,7 @@
 		"upgrade": "pnpm upgrade",
 		"changeset": "changeset",
 		"version-packages": "changeset version",
-		"version:next": "turbo run build && changeset pre enter next && changeset version",
+		"version:next": "turbo run build && changeset version",
 		"release:next": "changeset publish",
 		"upgrade:all": "turbo run upgrade",
 		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
