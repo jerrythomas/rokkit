@@ -9,7 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Release
+    name: publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -32,11 +32,8 @@ jobs:
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: |
-            pnpm version:next
-            git add .
-            git commit -m "Enter prerelease mode and version packages"
             pnpm release:next
-            git push --follow-tags
+            # git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

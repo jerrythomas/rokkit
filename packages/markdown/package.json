@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-spice/markdown",
-	"version": "1.0.0-next.1",
+	"version": "1.0.0-next.2",
 	"description": "Markdown based components for svelte apps.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -42,7 +42,7 @@
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
-		"@svelte-spice/core": "workspace:1.0.0-next.1",
+		"@svelte-spice/core": "workspace:1.0.0-next.2",
 		"marked": "^4.2.3",
 		"prismjs": "^1.29.0"
 	},
