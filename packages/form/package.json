@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-spice/form",
-	"version": "1.0.0-next.1",
+	"version": "1.0.0-next.2",
 	"description": "Dynamic form components for svelte apps.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -43,8 +43,8 @@
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
-		"@svelte-spice/core": "workspace:1.0.0-next.1",
-		"@svelte-spice/input": "workspace:1.0.0-next.1",
+		"@svelte-spice/core": "workspace:1.0.0-next.2",
+		"@svelte-spice/input": "workspace:1.0.0-next.2",
 		"ajv": "^8.11.2",
 		"ramda": "^0.28.0"
 	},
