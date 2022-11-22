@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`List.svelte > Should render using default field mapping 1`] = `
+exports[`List.svelte > Should render a list of values 1`] = `
 <body>
   <div>
     <list
@@ -12,7 +12,208 @@ exports[`List.svelte > Should render using default field mapping 1`] = `
       >
         <ul
           class="flex flex-col w-full flex-shrink-0 select-none list"
-        />
+        >
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              1
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              2
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              3
+            </p>
+             
+          </li>
+        </ul>
+      </scroll>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using custom component 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full list"
+    >
+       
+      <scroll
+        class="flex flex-col h-full overflow-scroll"
+      >
+        <ul
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+        >
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+            <span>
+              1
+            </span>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              2
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              3
+            </p>
+             
+          </li>
+        </ul>
+      </scroll>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using custom mapping 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full list"
+    >
+       
+      <scroll
+        class="flex flex-col h-full overflow-scroll"
+      >
+        <ul
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+        >
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              1
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              2
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              3
+            </p>
+             
+          </li>
+        </ul>
+      </scroll>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using field mappings 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full list"
+    >
+       
+      <scroll
+        class="flex flex-col h-full overflow-scroll"
+      >
+        <ul
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+        >
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              1
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              2
+            </p>
+             
+          </li>
+          <li
+            class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+          >
+             
+             
+            <p
+              class="flex flex-grow"
+            >
+              3
+            </p>
+             
+          </li>
+        </ul>
       </scroll>
     </list>
   </div>

@@ -12,9 +12,46 @@ describe('Text.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render object', () => {})
-	it('Should render string', () => {})
-	it('Should render icon', () => {})
-	it('Should render image as icon', () => {})
-	it('Should render content using component', () => {})
+	it('Should render object', () => {
+		const { container } = render(Text, { content: { text: 'hello' } })
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+	it('Should render icon', () => {
+		const { container } = render(Text, {
+			content: { text: 'hello', icon: 'info' }
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+	it('Should render image', () => {
+		const { container } = render(Text, {
+			content: { text: 'hello', image: 'https://example.com/img.png' }
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+	it('Should render image and icon', () => {
+		const { container } = render(Text, {
+			content: {
+				text: 'hello',
+				image: 'https://example.com/img.png',
+				icon: 'info'
+			}
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+	it('Should render using field mapping', () => {
+		const { container } = render(Text, {
+			content: {
+				alt: 'hello',
+				profile: 'https://example.com/img.png',
+				ico: 'info'
+			},
+			fields: { text: 'alt', image: 'profile', icon: 'ico' }
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
 })

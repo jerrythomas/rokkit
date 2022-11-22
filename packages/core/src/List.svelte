@@ -1,9 +1,6 @@
 <script>
-	// import { createEventDispatcher } from 'svelte'
 	import ListActions from './ListActions.svelte'
 	import ListItems from './ListItems.svelte'
-
-	// const dispatch = createEventDispatcher()
 
 	export let items = []
 	export let fields = {}
@@ -25,9 +22,6 @@
 	function clearSelection() {
 		activeItem = null
 	}
-	// function handleClick(event) {
-	// 	dispatch('select', event.detail)
-	// }
 
 	$: filtered =
 		searchable && search && search.length
