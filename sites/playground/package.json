@@ -19,11 +19,11 @@
 		"@fontsource/montserrat-alternates": "^4.5.11",
 		"@fontsource/victor-mono": "^4.5.4",
 		"@observablehq/plot": "^0.4.3",
-		"@playwright/test": "^1.27.1",
+		"@playwright/test": "^1.28.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/kit": "next",
-		"@sveltejs/vite-plugin-svelte": "^1.1.0",
+		"@sveltejs/vite-plugin-svelte": "^1.2.0",
 		"@testing-library/svelte": "^3.2.2",
 		"@types/d3-time-format": "^4.0.0",
 		"@vitest/ui": "~0.12.10",
@@ -38,10 +38,10 @@
 		"eslint": "^7.32.0",
 		"eslint-config-shared": "workspace:1.0.0",
 		"ramda": "^0.28.0",
-		"svelte": "^3.52.0",
+		"svelte": "^3.53.1",
 		"svelte-check": "^2.9.2",
 		"typescript": "~4.6.4",
-		"vite": "^3.2.2",
+		"vite": "^3.2.4",
 		"vite-plugin-windicss": "^1.8.8",
 		"vitest": "~0.19.1",
 		"windicss": "^3.5.6"
@@ -50,7 +50,7 @@
 	"dependencies": {
 		"@fontsource/poppins": "^4.5.10",
 		"@lukeed/uuid": "^2.0.0",
-		"@svelte-spice/chart": "workspace:1.0.0",
+		"@svelte-spice/chart": "workspace:1.0.0-next.0",
 		"@svelte-spice/form": "workspace:1.0.0-next.0",
 		"@svelte-spice/input": "workspace:1.0.0-next.0"
 	}
