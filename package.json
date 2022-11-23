@@ -28,8 +28,7 @@
 		"packages/markdown",
 		"packages/chart",
 		"packages/themes",
-		"kavach/core",
-		"kavach/svelte",
+		"packages/layout",
 		"adapters/supabase",
 		"adapters/firebase"
 	],
