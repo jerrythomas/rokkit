@@ -1,14 +1,12 @@
 # Package hierarchy
 
-- actions
-- stores
-- icons
+- core
+  - actions
+  - stores
 - input
-- custom
-- lists
-- nested
-- forms
+- form
 - layout
+- markdown
+- layout
+- chart
 - themes
-
-## Actions

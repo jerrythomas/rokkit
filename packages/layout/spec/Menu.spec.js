@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import Menu from './Menu.svelte'
+import Menu from '../src/Menu.svelte'
 
 describe('Menu.svelte', () => {
 	beforeEach(() => cleanup())

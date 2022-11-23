@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { toIncludeAll } from 'validators'
-import ProgressDots from './ProgressDots.svelte'
+import ProgressDots from '../src/ProgressDots.svelte'
 
 expect.extend({ toIncludeAll })
 

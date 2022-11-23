@@ -1,6 +1,4 @@
 <script>
-	import Icon from './Icon.svelte'
-
 	export let items
 	export let activePage
 </script>
@@ -13,7 +11,7 @@
 			class="first:rounded-t-lg last:rounded-b-lg"
 		>
 			{#if item.icon}
-				<Icon icon={item.icon} title={item.label} />
+				<icon class={item.icon} />
 			{/if}
 			<p>{item.label}</p>
 		</a>
