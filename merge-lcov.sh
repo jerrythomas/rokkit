@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files=`find ./packages  -name lcov.info`
+files=`find ./ -name lcov.info`
 args=""
 for f in $files; do
   prefix=`echo $f | sed -e s/coverage.lcov.info// | sed -e s#^\./##`
