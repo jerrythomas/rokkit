@@ -6,7 +6,7 @@ describe('CheckBox.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render the navigation CheckBox', () => {
-		const { container } = render(CheckBox)
+		const { container } = render(CheckBox, { name: 'test' })
 		expect(container).toBeTruthy()
 	})
 })

@@ -6,7 +6,7 @@ describe('CheckBoxGroup.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render the navigation CheckBoxGroup', () => {
-		const { container } = render(CheckBoxGroup)
+		const { container } = render(CheckBoxGroup, { name: 'CheckBoxGroup' })
 		expect(container).toBeTruthy()
 	})
 })
