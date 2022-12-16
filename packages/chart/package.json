@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-spice/chart",
-	"version": "1.0.0-next.2",
+	"version": "1.0.0-next.3",
 	"description": "Components for making interactive charts.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -16,7 +16,6 @@
 		"prepublishOnly": "tsc",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"release": "release-it",
 		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
@@ -24,23 +23,22 @@
 		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^1.2.0",
+		"@sveltejs/vite-plugin-svelte": "^2.0.2",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
-		"eslint": "^8.28.0",
+		"eslint": "^8.29.0",
 		"eslint-config-shared": "workspace:1.0.0",
 		"js-yaml": "^4.1.0",
 		"jsdom": "^19.0.0",
-		"release-it": "^15.5.0",
 		"shared-config": "workspace:^1.0.0",
-		"svelte": "^3.53.1",
-		"typescript": "^4.9.3",
-		"vite": "^3.2.4",
+		"svelte": "^3.55.0",
+		"typescript": "^4.9.4",
+		"vite": "^4.0.1",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
-		"@svelte-spice/core": "workspace:1.0.0-next.2",
-		"d3-array": "^3.2.0",
+		"@svelte-spice/core": "workspace:1.0.0-next.3",
+		"d3-array": "^3.2.1",
 		"d3-collection": "^1.0.7",
 		"d3-scale": "^4.0.2",
 		"ramda": "^0.28.0"

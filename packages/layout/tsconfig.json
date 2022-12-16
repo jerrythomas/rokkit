@@ -1,6 +1,6 @@
 {
 	"extends": "shared-config/svelte-lib.json",
-	"include": ["src/**/*.js", "src/**/*.svelte", "spec/ProgressDots.spec.js", "spec/Menu.spec.js"],
+	"include": ["src/**/*.js", "src/**/*.svelte"],
 	"compilerOptions": {
 		"outDir": "dist"
 	}
