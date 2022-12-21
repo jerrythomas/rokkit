@@ -22,7 +22,7 @@
 </script>
 
 {#each filtered as item, index}
-	{@const label = item[fields.text] || index + 1}
+	{@const label = item[fields.text]}
 	<TabItem
 		icon={item[fields.icon]}
 		{label}

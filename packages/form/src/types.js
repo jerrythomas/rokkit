@@ -1,4 +1,4 @@
-import InputField from './InputField2.svelte'
+import InputField from './InputField.svelte'
 import InputArray from './InputArray.svelte'
 import InputObject from './InputObject.svelte'
 // import NestedLayout from './NestedLayout.svelte'

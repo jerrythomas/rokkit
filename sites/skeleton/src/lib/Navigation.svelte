@@ -1,0 +1,135 @@
+<script>
+	import { createEventDispatcher } from 'svelte'
+	import { defaultFields } from '@svelte-spice/core'
+	const dispatch = createEventDispatcher()
+
+	let className = ''
+
+	export { className as class }
+	export let items = []
+	export let fields = {}
+	export let value = null
+
+	$: fields = { ...defaultFields, ...fields }
+
+	function handle(item) {
+		value = item
+		dispatch('change', item)
+	}
+</script>
+
+<tab-group class="flex flex-row {className}">
+	{#each items as item}
+		{@const component = item[fields.component]
+			? using[item[fields.component]]
+			: using.default}
+	{/each}
+	<input id="tab-1" type="radio" name="group" />
+	<input id="tab-2" type="radio" name="group" />
+	<input id="tab-3" type="radio" name="group" />
+
+	<div class="buttons">
+		<label class="material-symbols-outlined" for="tab-1"> menu </label>
+		<label class="material-symbols-outlined" for="tab-2"> lock </label>
+		<label class="material-symbols-outlined" for="tab-3"> settings </label>
+		<div class="underline" />
+	</div>
+
+	<tab-content>
+		<slot />
+	</tab-content>
+</tab-group>
+
+<style>
+	input {
+		display: none;
+	}
+
+	h2 {
+		margin: 0 0 10px;
+		font-size: 18px;
+		font-weight: 400;
+	}
+
+	.content {
+		position: relative;
+		overflow: hidden;
+		height: 140px;
+	}
+
+	.content-inner {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		width: calc(var(--tab-width) * 3);
+		transition: 0.3s;
+	}
+
+	.content-inner > div {
+		width: inherit;
+		padding: 20px;
+	}
+
+	label {
+		text-align: center;
+		padding: 20px 0;
+		font-size: 15px;
+		width: var(--button-width);
+		opacity: 0.35;
+		cursor: pointer;
+	}
+
+	p {
+		margin: 0;
+		font-size: 14px;
+		color: #888889;
+	}
+
+	.buttons {
+		position: relative;
+		display: flex;
+		border-bottom: 1px solid #575757;
+	}
+
+	.underline {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: var(--button-width);
+		height: 3px;
+		background: var(--color-primary);
+		transition: 0.2s;
+	}
+
+	.tabs input:nth-child(1):checked ~ .buttons .underline {
+		translate: 0 0;
+	}
+
+	.tabs input:nth-child(2):checked ~ .buttons .underline {
+		translate: var(--button-width) 0;
+	}
+
+	.tabs input:nth-child(3):checked ~ .buttons .underline {
+		translate: calc(var(--button-width) * 2) 0;
+	}
+
+	.tabs input:nth-child(1):checked ~ .buttons label:nth-child(1),
+	.tabs input:nth-child(2):checked ~ .buttons label:nth-child(2),
+	.tabs input:nth-child(3):checked ~ .buttons label:nth-child(3) {
+		opacity: 1;
+	}
+
+	.tabs input:nth-child(1):checked ~ .content > .content-inner {
+		translate: 0 0;
+	}
+
+	.tabs input:nth-child(2):checked ~ .content > .content-inner {
+		translate: calc(0px - var(--tab-width)) 0;
+	}
+
+	.tabs input:nth-child(3):checked ~ .content > .content-inner {
+		translate: calc(0px - var(--tab-width) * 2) 0;
+	}
+</style>

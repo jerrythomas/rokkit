@@ -2,6 +2,8 @@
 	import ListActions from './ListActions.svelte'
 	import ListItems from './ListItems.svelte'
 
+	let className = 'list'
+	export { className as class }
 	export let items = []
 	export let fields = {}
 	export let using = {}
@@ -29,7 +31,7 @@
 			: items
 </script>
 
-<list class="flex flex-col w-full {$$restProps.class || 'list'}">
+<list class="flex flex-col w-full {className}">
 	{#if searchable || editable}
 		<ListActions
 			bind:search

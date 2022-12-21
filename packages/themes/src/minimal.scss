@@ -1,86 +1,17 @@
+@import './shared/base.scss';
+@import './shared/tabs.scss';
+@import './shared/layout.scss';
+@import './shared/input.scss';
+
 @import './minimal/input.scss';
-@import './minimal/tabs.scss';
 @import './minimal/list.scss';
 @import './minimal/form.scss';
 
-html,
-body,
-body > div {
-	@apply h-screen w-screen flex flex-row font-body overflow-clip;
-}
-square {
-	@apply flex flex-col items-center justify-center aspect-square h-full;
-}
-
-overlay {
-	@apply bg-skin-50 bg-opacity-50;
-}
-alert-list {
-	@apply bottom-4 right-4 w-80;
-}
 
 // .flex-square {
 // 	@apply flex flex-col aspect-square items-center justify-center;
 // }
 
-.disabled {
-	@apply text-disabled;
-}
-
-.disabled input,
-.disabled textarea,
-.disabled select {
-	@apply outline-disabled;
-}
-
-input[type='number'] {
-	@apply text-right;
-}
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
-
-alert,
-error,
-info,
-warning,
-success {
-	@apply px-4 py-2 border rounded select-none cursor-pointer;
-}
-alert.error {
-	@apply bg-error text-error border-error;
-}
-alert.info,
-info {
-	@apply bg-info text-info border-info;
-}
-alert.warning,
-warning {
-	@apply bg-warn text-warn border-warn;
-}
-alert.success,
-success {
-	@apply bg-pass text-pass border-pass;
-}
-
-header {
-	@apply px-4 h-14 border-b bg-gray-200 border-gray-300 text-xl font-serif;
-}
-
-aside.sidebar {
-	@apply h-full flex flex-col min-w-100 bg-skin-200;
-	// @apply flex flex-col min-w-100 bg-skin-200 h-full p-8 gap-4 border-r border-gray-300;
-}
-
-label {
-	@apply leading-loose;
-}
-
-scroll {
-	@apply flex flex-col overflow-y-scroll px-4;
-}
 // content > div > div > .list {
 // 	@apply border gap-1 p-1 border-gray-400;
 // }
@@ -122,18 +53,3 @@ scroll {
 // 	}
 // }
 
-icon {
-	@apply text-xl;
-}
-icon.sm {
-	@apply text-sm;
-}
-icon.md {
-	@apply text-base;
-}
-rating {
-	@apply text-secondary-400 gap-2 text-xl;
-}
-checkbox {
-	@apply gap-2;
-}
