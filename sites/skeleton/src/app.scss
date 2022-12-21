@@ -1,0 +1,37 @@
+@import '@fontsource/montserrat-alternates';
+@import '@fontsource/montserrat-alternates/100.css';
+@import '@fontsource/montserrat-alternates/200.css';
+@import '@fontsource/montserrat-alternates/300.css';
+@import '@fontsource/montserrat-alternates/400.css';
+@import '@fontsource/montserrat-alternates/500.css';
+@import '@fontsource/montserrat-alternates/700.css';
+@import './palette.css';
+
+
+body, body > div {
+	@apply flex flex-row h-screen w-screen font-body;
+}
+
+.minimal {
+	@import '@svelte-spice/themes/minimal.scss';
+}
+.material {
+	@import '@svelte-spice/themes/material.scss';
+}
+.spicy {
+	@import '@svelte-spice/themes/spicy.scss';
+}
+
+error {
+	@apply bg-error bg-red-100;
+}
+
+// calendar {
+// 	cal-body {
+// 		days-of-month {
+// 			p.active {
+// 				@apply rounded-lg;
+// 			}
+// 		}
+// 	}
+// }

@@ -42,3 +42,25 @@ calendar {
 		}
 	}
 }
+
+button-group {
+	@apply rounded-sm overflow-clip shadow ;
+	button {
+		@apply border-skin-400 border-none rounded-none;
+		@apply bg-skin-200;
+		@apply uppercase text-sm text-skin-800 leading-8;
+	}
+	button:not(:last-child) {
+		@apply border-r  ;
+	}
+	button.active {
+    @apply bg-secondary text-white;
+	}
+
+	button:first-child {
+		@apply rounded-l-sm;
+	}
+	button:last-child {
+		@apply rounded-r-sm;
+	}
+}

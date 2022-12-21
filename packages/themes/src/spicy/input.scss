@@ -1,0 +1,20 @@
+input-field {
+	@apply text-skin-800 border-b border-skin-600;
+	input, field > input {
+		@apply leading-loose px-2 outline-none box-border bg-transparent;
+	}
+	&:focus-within {
+		@apply border-b-2 border-secondary;
+
+		label {
+			@apply text-secondary;
+		}
+	}
+	field {
+		@apply px-1;
+	}
+  label.required::after{
+		content: '*';
+		@apply state-danger;
+	}
+}

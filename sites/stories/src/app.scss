@@ -6,7 +6,21 @@
 @import '@fontsource/montserrat-alternates/500.css';
 @import '@fontsource/montserrat-alternates/700.css';
 @import './palette.css';
-@import '@svelte-spice/themes/minimal.scss';
+
+
+body > app {
+	@apply flex flex-col h-screen w-screen;
+}
+
+.minimal {
+	@import '@svelte-spice/themes/minimal.scss';
+}
+.material {
+	@import '@svelte-spice/themes/material.scss';
+}
+.spicy {
+	@import '@svelte-spice/themes/spicy.scss';
+}
 
 error {
 	@apply bg-error bg-red-100;

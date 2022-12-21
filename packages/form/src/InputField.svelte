@@ -32,23 +32,23 @@
 	class:pass
 	class:fail
 	class:warn
+	class:empty={!value}
 >
-	<!-- svelte-ignore a11y-label-has-associated-control -->
-	<label class="flex flex-col">
-		{#if label}
-			<p>{label}</p>
-		{/if}
-		{#if icon}
-			<field class="flex flex-row w-full">
-				<span class="flex aspect-square items-center justify-center h-full">
-					<icon class={icon} />
-				</span>
-				<Input bind:value {name} {type} {...props} />
-			</field>
-		{:else}
-			<Input bind:value {name} {type} {...props} />
-		{/if}
+	<label for={name} class:required>
+		{label}
 	</label>
+	{#if icon}
+		<field class="flex flex-row w-full items-center">
+			<span
+				class="flex flex-shrink-0 aspect-square items-center justify-center "
+			>
+				<icon class={icon} />
+			</span>
+			<Input bind:value {name} {type} {...props} />
+		</field>
+	{:else}
+		<Input id={name} bind:value {name} {type} {...props} />
+	{/if}
 	{#if message}
 		<message class={status}>{message}</message>
 	{/if}

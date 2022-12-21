@@ -18,22 +18,25 @@ fieldset {
 
 input-field {
 	@apply w-full m-0 p-0 gap-1;
+  input {
+		@apply border;
+	}
+	field {
+		@apply border rounded overflow-hidden;
+		@apply focus-within:border-primary-400 focus-within:border-2;
 
+		span {
+			@apply border-r border-skin-300 bg-skin-100 px-1;
+		}
+		input,
+		textarea,
+		select {
+			@apply flex-grow border-0 outline-none;
+		}
+	}
 	label {
 		@apply leading-loose w-full;
-		field {
-			@apply border rounded border-skin-300 overflow-hidden;
-			@apply focus-within:border-primary-400 focus-within:border-2;
 
-			span {
-				@apply border-r border-skin-300 bg-skin-100;
-			}
-			input,
-			textarea,
-			select {
-				@apply flex-grow border-0 outline-none;
-			}
-		}
 	}
 	message {
 		@apply px-2 py-1 bg-skin-100 rounded;

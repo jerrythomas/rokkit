@@ -2,6 +2,8 @@
 	import TabItems from './TabItems.svelte'
 	import TabItem from './TabItem.svelte'
 
+	let className
+	export { className as class }
 	export let items = []
 	export let fields = {}
 	export let title = null
@@ -17,7 +19,7 @@
 	$: console.log(activeItem)
 </script>
 
-<tab-view class="flex flex-col w-full flex-grow">
+<tab-view class="flex flex-col w-full flex-grow {className}">
 	<tabs class="flex flex-row flex-shrink-0 w-full select-none cursor-pointer">
 		{#if title}
 			<p>{title}</p>

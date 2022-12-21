@@ -1,31 +1,37 @@
 <script>
 	import 'uno.css'
 	import '@unocss/reset/tailwind.css'
-
 	import '../app.scss'
-	import { menu } from '../config'
-	import { Accordion, Link, Sidebar } from '@svelte-spice/core'
-	import { page } from '$app/stores'
+	import { onMount } from 'svelte'
 
-	const fields = { id: 'url' }
-	const using = { default: Link }
-	$: activeItem = menu.filter((m) => m.url == $page.url.pathname)[0]
+	const themes = ['minimal', 'material', 'spicy']
+	let currentTheme = themes[0]
+	let selectedTheme = themes[0]
+
+	function handleThemeChange(selected) {
+		document.body.classList.remove(currentTheme)
+		currentTheme = selected
+		document.body.classList.add(currentTheme)
+	}
+	onMount(() => {
+		document.body.classList.add(currentTheme)
+	})
+
+	// import { menu } from '../config'
+	// import { Accordion, Link, Sidebar } from '@svelte-spice/core'
+	// import { page } from '$app/stores'
+
+	// const fields = { id: 'url' }
+	// const using = { default: Link }
+	// $: activeItem = menu.filter((m) => m.url == $page.url.pathname)[0]
 </script>
 
-<Sidebar>
-	<div class="flex flex-col justify-center p-4" slot="header">Components</div>
-	<scroll>
-		<Accordion
-			items={menu}
-			{using}
-			{fields}
-			{activeItem}
-			autoClose
-			class="menu"
-		/>
-	</scroll>
-</Sidebar>
+<header class="flex flex-row">
+	{#each themes as theme}
+		<button on:click={() => handleThemeChange(theme)}>{theme}</button>
+	{/each}
+</header>
 
-<main class="flex flex-col w-full bg-grey-300 overflow-scroll">
+<main class="flex flex-col flex-grow bg-primary-50 overflow-scroll">
 	<slot />
 </main>

@@ -41,6 +41,7 @@
 	},
 	"exports": {
 		"./package.json": "./package.json",
+		"./spicy.scss": "./src/spicy.scss",
 		"./minimal.scss": "./src/minimal.scss",
 		"./material.scss": "./src/material.scss",
 		".": {

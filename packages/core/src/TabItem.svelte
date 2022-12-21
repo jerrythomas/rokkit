@@ -12,9 +12,11 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <tab class="flex flex-row items-center" class:active on:click>
 	{#if icon}
-		<icon class={icon} />
+		<icon class={icon} aria-label={icon} />
 	{/if}
-	<p class="flex flex-shrink-0 flex-grow justify-center">{label}</p>
+	{#if label}
+		<p class="flex flex-shrink-0 flex-grow justify-center">{label}</p>
+	{/if}
 	{#if removable}
 		<icon
 			class="remove small"
