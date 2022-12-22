@@ -24,7 +24,7 @@ importers:
 
   packages/chart:
     specifiers:
-      '@svelte-spice/core': workspace:1.0.0-next.3
+      '@svelte-spice/core': workspace:1.0.0-next.4
       '@sveltejs/vite-plugin-svelte': ^2.0.2
       '@testing-library/svelte': ^3.2.2
       '@vitest/ui': ~0.12.10
@@ -95,8 +95,8 @@ importers:
     specifiers:
       '@jerrythomas/eslint-config-svelte': ^1.0.2
       '@jerrythomas/prettier-config': ^1.0.0
-      '@svelte-spice/core': workspace:1.0.0-next.3
-      '@svelte-spice/input': workspace:1.0.0-next.3
+      '@svelte-spice/core': workspace:1.0.0-next.4
+      '@svelte-spice/input': workspace:1.0.0-next.4
       '@sveltejs/vite-plugin-svelte': ^2.0.2
       '@testing-library/svelte': ^3.2.2
       '@types/ramda': ^0.28.20
@@ -225,7 +225,7 @@ importers:
     specifiers:
       '@jerrythomas/eslint-config-svelte': ^1.0.2
       '@jerrythomas/prettier-config': ^1.0.0
-      '@svelte-spice/core': workspace:1.0.0-next.3
+      '@svelte-spice/core': workspace:1.0.0-next.4
       '@sveltejs/vite-plugin-svelte': ^2.0.2
       '@testing-library/svelte': ^3.2.2
       '@vitest/ui': ~0.12.10
@@ -451,8 +451,8 @@ importers:
       '@jerrythomas/eslint-config-svelte': ^1.0.2
       '@jerrythomas/prettier-config': ^1.0.0
       '@playwright/test': ^1.28.1
-      '@svelte-spice/core': workspace:1.0.0-next.3
-      '@svelte-spice/form': workspace:1.0.0-next.3
+      '@svelte-spice/core': workspace:latest
+      '@svelte-spice/form': workspace:latest
       '@svelte-spice/themes': workspace:latest
       '@sveltejs/adapter-vercel': ^1.0.0
       '@sveltejs/kit': ^1.0.0
