@@ -24,7 +24,7 @@
 		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@jerrythomas/eslint-config-svelte": "^1.0.1",
+		"@jerrythomas/eslint-config-svelte": "^1.0.2",
 		"@jerrythomas/prettier-config": "^1.0.0",
 		"@sveltejs/vite-plugin-svelte": "^1.4.0",
 		"@testing-library/svelte": "^3.2.2",
