@@ -1,5 +1,12 @@
 # @svelte-spice/core
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- 5711c2f: Publish via github action
+- d8fa695: Upgraded dependencies.
+
 ## 1.0.0-next.3
 
 ### Patch Changes

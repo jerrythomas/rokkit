@@ -1,5 +1,15 @@
 # @svelte-spice/input
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- 5711c2f: Publish via github action
+- d8fa695: Upgraded dependencies.
+- Updated dependencies [5711c2f]
+- Updated dependencies [d8fa695]
+  - @svelte-spice/core@1.0.0-next.4
+
 ## 1.0.0-next.3
 
 ### Patch Changes
