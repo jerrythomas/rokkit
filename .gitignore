@@ -15,3 +15,5 @@ playwright-report
 discard
 packages/icons
 packages/vector
+.vercel
+.svelte-kit
