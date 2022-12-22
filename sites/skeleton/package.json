@@ -40,8 +40,8 @@
 	"dependencies": {
 		"@fontsource/montserrat-alternates": "^4.5.11",
 		"@fontsource/victor-mono": "^4.5.4",
-		"@svelte-spice/core": "workspace:1.0.0-next.3",
-		"@svelte-spice/form": "workspace:1.0.0-next.3",
+		"@svelte-spice/core": "workspace:latest",
+		"@svelte-spice/form": "workspace:latest",
 		"@svelte-spice/themes": "workspace:latest"
 	}
 }
