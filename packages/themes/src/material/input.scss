@@ -3,7 +3,7 @@ input-field{
 	@apply text-skin-800 leading-loose relative px-2 py-1;
 
 	&.empty label {
-		@apply absolute left-2 -z-1;
+		@apply absolute left-2 -z-1 opacity-0;
 	}
 	input {
 		@apply border-none outline-none bg-transparent;
@@ -20,7 +20,7 @@ input-field{
 
 	label, &:focus-within label
 	{
-    @apply block z-1 -top-3 left-2 bg-skin-50 absolute leading-tight;
+    @apply block z-1 -top-3 left-2 bg-skin-50 absolute leading-tight opacity-100;
 	}
 	field {
 		@apply gap-2;

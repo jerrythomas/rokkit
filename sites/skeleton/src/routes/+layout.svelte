@@ -25,7 +25,7 @@
 </script>
 
 <aside class="sidebar">
-	<Tabs {items} bind:activeItem={currentTab} class="icon-lg">
+	<Tabs {items} bind:activeItem={currentTab} class="lg">
 		{currentTab.content}
 	</Tabs>
 </aside>
@@ -37,9 +37,7 @@
 			value={currentTheme}
 		/>
 	</header>
-	<content
-		class="flex flex-col h-full w-full overflow-y-scroll overflow-x-auto"
-	>
+	<content class="flex flex-col h-full w-full overflow-y-scroll">
 		<slot />
 	</content>
 </main>

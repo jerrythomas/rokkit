@@ -22,10 +22,21 @@ body, body > div {
 	@import '@svelte-spice/themes/spicy.scss';
 }
 
+.purple {
+	@apply bg-purple-50 text-purple-300 border-purple-400 text-opacity-30 bg-opacity-30;
+}
 error {
 	@apply bg-error bg-red-100;
 }
 
+tab-view.lg {
+	tabs {
+		@apply h-14;
+	}
+	content {
+		@apply border-r border-skin-400;
+	}
+}
 // calendar {
 // 	cal-body {
 // 		days-of-month {

@@ -1,11 +1,13 @@
 <script>
+	let className = ''
+	export { className as class }
 	export let unit = '.5rem'
 	export let group = 4
 	export let thickness = 0.5
 </script>
 
 <graph-paper
-	class="bg-skin-50 text-primary-300 p-8 border border-primary-400"
+	class="p-8 border bg-op-20 text-op-30 bg-skin-50 text-skin-300 border-skin-400 {className}"
 	style:--unit={unit}
 	style:--size="calc( {group} * {unit})"
 	style:--thin="{thickness}px"

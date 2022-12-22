@@ -30,7 +30,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          # This expects you to have a script called release:next which does a build for your packages and calls changeset publish
           publish: pnpm release:next
             # git push --follow-tags
         env:
