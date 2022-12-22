@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"clean": "rm -rf sites/skeleton/.vercel",
 		"prepublishOnly": "turbo run prepublishOnly",
 		"build": "turbo run build",
 		"test": "turbo run test:ci",
@@ -11,7 +12,7 @@
 		"lint": "turbo run lint",
 		"format": "turbo run format",
 		"prepare": "husky install",
-		"upgrade": "pnpm upgrade",
+		"upgrade": "pnpm clean && pnpm upgrade",
 		"changeset": "changeset",
 		"version-packages": "changeset version",
 		"version:next": "turbo run build && changeset pre enter next && changeset",
