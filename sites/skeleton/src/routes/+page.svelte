@@ -8,7 +8,7 @@
 </script>
 
 <section class="flex flex-col flex-grow items-center justify-center">
-	<GraphPaper>
+	<GraphPaper class="purple">
 		<!-- <input-field
 			class="border border-skin-800 flex flex-col relative leading-loose text-skin-900"
 		>

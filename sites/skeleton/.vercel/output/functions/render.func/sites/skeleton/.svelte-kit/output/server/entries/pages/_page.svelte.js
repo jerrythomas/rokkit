@@ -302,9 +302,12 @@ const css = {
   map: null
 };
 const GraphPaper = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { class: className = "" } = $$props;
   let { unit = ".5rem" } = $$props;
   let { group = 4 } = $$props;
   let { thickness = 0.5 } = $$props;
+  if ($$props.class === void 0 && $$bindings.class && className !== void 0)
+    $$bindings.class(className);
   if ($$props.unit === void 0 && $$bindings.unit && unit !== void 0)
     $$bindings.unit(unit);
   if ($$props.group === void 0 && $$bindings.group && group !== void 0)
@@ -312,7 +315,7 @@ const GraphPaper = create_ssr_component(($$result, $$props, $$bindings, slots) =
   if ($$props.thickness === void 0 && $$bindings.thickness && thickness !== void 0)
     $$bindings.thickness(thickness);
   $$result.css.add(css);
-  return `<graph-paper class="${"bg-skin-50 text-primary-300 p-8 border border-primary-400 svelte-16yaj5q"}"${add_styles({
+  return `<graph-paper class="${"p-8 border bg-op-20 text-op-30 bg-skin-50 text-skin-300 border-skin-400 " + escape(className, true) + " svelte-16yaj5q"}"${add_styles({
     "--unit": unit,
     "--size": `calc( ${group} * ${unit})`,
     "--thin": `${thickness}px`,
@@ -321,7 +324,7 @@ const GraphPaper = create_ssr_component(($$result, $$props, $$bindings, slots) =
 </graph-paper>`;
 });
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<section class="${"flex flex-col flex-grow items-center justify-center"}">${validate_component(GraphPaper, "GraphPaper").$$render($$result, {}, {}, {
+  return `<section class="${"flex flex-col flex-grow items-center justify-center"}">${validate_component(GraphPaper, "GraphPaper").$$render($$result, { class: "purple" }, {}, {
     default: () => {
       return `
 

@@ -155,7 +155,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       $$result,
       {
         items,
-        class: "icon-lg",
+        class: "lg",
         activeItem: currentTab
       },
       {
@@ -171,7 +171,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       }
     )}</aside>
 <main class="${"flex flex-col flex-grow"}"><header class="${"flex flex-row items-center"}">${validate_component(ButtonGroup, "ButtonGroup").$$render($$result, { items: themes, value: currentTheme }, {}, {})}</header>
-	<content class="${"flex flex-col h-full w-full overflow-y-scroll overflow-x-auto"}">${slots.default ? slots.default({}) : ``}</content></main>`;
+	<content class="${"flex flex-col h-full w-full overflow-y-scroll"}">${slots.default ? slots.default({}) : ``}</content></main>`;
   } while (!$$settled);
   return $$rendered;
 });

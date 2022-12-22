@@ -17,16 +17,16 @@ fieldset {
 }
 
 input-field {
-	@apply w-full m-0 p-0 gap-1;
+	@apply w-full m-0 p-0;
   input {
 		@apply border;
 	}
 	field {
-		@apply border rounded overflow-hidden;
+		@apply box-border border h-10 rounded overflow-hidden;
 		@apply focus-within:border-primary-400 focus-within:border-2;
 
 		span {
-			@apply border-r border-skin-300 bg-skin-100 px-1;
+			@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
 		}
 		input,
 		textarea,
