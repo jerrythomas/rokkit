@@ -3,7 +3,7 @@ button-group {
 
 	button {
 		@apply border-none rounded-none;
-		@apply bg-skin-300;
+		@apply bg-skin-200;
 		@apply uppercase text-sm text-skin-800 leading-8;
 	}
 	button:not(:last-child) {

@@ -1,12 +1,19 @@
 icon {
 	@apply text-2xl;
 }
+icon.sm {
+	@apply text-base;
+}
+icon.md {
+	@apply text-lg;
+}
+
 scroll {
 	@apply flex flex-col overflow-y-scroll px-4;
 }
 
 .sidebar {
-	@apply w-80 h-full flex flex-col border-skin-400;
+	@apply w-92 h-full flex flex-col border-skin-400;
 }
 
 square {

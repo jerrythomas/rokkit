@@ -4,16 +4,12 @@
 	import '../app.scss'
 	import { onMount } from 'svelte'
 	import { ButtonGroup } from '@svelte-spice/form'
-	import { Tabs } from '@svelte-spice/core'
+	import Sidebar from './sidebar.svelte'
 
 	const themes = ['minimal', 'material', 'spicy']
-	const items = [
-		{ icon: 'menu', content: 'menu' },
-		{ icon: 'themes', content: 'themes' },
-		{ icon: 'properties', content: 'properties' }
-	]
 	let currentTheme = themes[2]
-	let currentTab = items[0]
+	// let currentTab = items[0]
+
 	function handleThemeChange(event) {
 		document.body.classList.remove(currentTheme)
 		currentTheme = event.detail
@@ -24,18 +20,15 @@
 	})
 </script>
 
-<aside class="sidebar">
-	<Tabs {items} bind:activeItem={currentTab} class="lg">
-		{currentTab.content}
-	</Tabs>
-</aside>
+<Sidebar />
 <main class="flex flex-col flex-grow">
-	<header class="flex flex-row items-center">
+	<header class="flex flex-row items-center justify-between">
 		<ButtonGroup
 			on:change={handleThemeChange}
 			items={themes}
 			value={currentTheme}
 		/>
+		<img src="/favicon-32x32.png" alt="Svelte-spice" />
 	</header>
 	<content class="flex flex-col h-full w-full overflow-y-scroll">
 		<slot />

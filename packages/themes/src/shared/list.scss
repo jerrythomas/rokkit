@@ -1,0 +1,33 @@
+accordion {
+	@apply  h-full text-skin-800 gap-2;
+
+	group {
+		@apply rounded shadow;
+	}
+	ul {
+		@apply p-t-1px gap-1px bg-skin-200;
+	}
+	.item,
+	collapsible {
+		@apply leading-10 px-4 bg-skin-50;
+	}
+	collapsible {
+		@apply rounded;
+	}
+	collapsible.expanded {
+		@apply rounded-b-none;
+	}
+	.item {
+		@apply last:rounded-b;
+
+		icon {
+			@apply text-secondary;
+		}
+	}
+	collapsible {
+		@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
+	}
+	.item.active {
+		@apply border-l-4 border-secondary;
+	}
+}

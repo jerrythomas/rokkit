@@ -5,11 +5,15 @@
 	export let type = 'text'
 </script>
 
-<svelte:component
-	this={wrappedInput[type]}
-	bind:value
-	{...$$restProps}
-	on:change
-	on:focus
-	on:blur
-/>
+{#if type in wrappedInput}
+	<svelte:component
+		this={wrappedInput[type]}
+		bind:value
+		{...$$restProps}
+		on:change
+		on:focus
+		on:blur
+	/>
+{:else}
+	<error>Type "{type}" is not supported by Input</error>
+{/if}

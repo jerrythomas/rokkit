@@ -15,8 +15,6 @@
 		items = [...items, {}]
 		activeItem = items[items.length - 1]
 	}
-
-	$: console.log(activeItem)
 </script>
 
 <tab-view class="flex flex-col w-full flex-grow {className}">

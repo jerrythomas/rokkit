@@ -6,6 +6,9 @@ import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts, themeColors } from '@svelte-spice/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 
+const safelistIcons = ['menu', 'themes', 'properties', 'list'].map(
+	(name) => 'i-spice:' + name
+)
 const inputIcons = [
 	'text',
 	'number',
@@ -17,7 +20,7 @@ const inputIcons = [
 	'date',
 	'color',
 	'password'
-].map((type) => 'i-sparsh:input-' + type)
+].map((type) => 'i-spice:input-' + type)
 
 export default defineConfig({
 	safelist: [
@@ -26,7 +29,8 @@ export default defineConfig({
 		'i-carbon:tree-view-alt',
 		'i-carbon:list-dropdown',
 		'i-carbon-chevron-sort',
-		...inputIcons
+		...inputIcons,
+		...safelistIcons
 	],
 	shortcuts: {
 		...iconShortcuts,
@@ -47,9 +51,6 @@ export default defineConfig({
 		'border-disabled': 'border-skin-700',
 		'item-selected': 'border-l-3 border-secondary',
 		'state-danger': 'text-red',
-		menu: 'i-carbon-menu',
-		themes: 'i-spice-themes',
-		properties: 'i-spice-properties',
 		'item-hover':
 			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast'
 	},
