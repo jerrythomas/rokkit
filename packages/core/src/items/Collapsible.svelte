@@ -43,9 +43,9 @@
 	{/if}
 	{#if hasItems}
 		{#if content.isOpen}
-			<icon class="accordion-opened" aria-label="expand" />
+			<icon class="sm accordion-opened" aria-label="expand" />
 		{:else}
-			<icon class="accordion-closed" aria-label="collapse" />
+			<icon class="sm accordion-closed" aria-label="collapse" />
 		{/if}
 	{/if}
 </collapsible>

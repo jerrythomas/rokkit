@@ -2,11 +2,10 @@ tab-view {
 	tabs {
 		@apply box-border space-evenly;
 		@apply bg-skin-200 border-b border-skin-400 text-skin-900;
-		// @apply bg-gradient-to-r from-primary-500 to-secondary-600 border-b border-skin-300 text-white;
 
 		tab {
-			@apply py-2 px-4 flex-shrink-0 leading-loose border-b-3 border-transparent justify-center;
-			@apply box-border;
+			@apply py-2 px-4 flex-shrink-0 justify-center;
+			@apply box-border border-b-3 border-transparent;
 		}
 		tab.active {
 			@apply border-secondary text-secondary;
@@ -21,3 +20,4 @@ tab-view {
 		}
 	}
 }
+

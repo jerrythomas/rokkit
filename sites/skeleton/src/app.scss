@@ -30,12 +30,14 @@ error {
 }
 
 tab-view.lg {
+	@apply border-r border-skin-300;
+
 	tabs {
 		@apply h-14;
 	}
-	content {
-		@apply border-r border-skin-400;
-	}
+	// content {
+	// 	@apply border-r border-skin-400;
+	// }
 }
 // calendar {
 // 	cal-body {

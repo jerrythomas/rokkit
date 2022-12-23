@@ -1,30 +1,25 @@
 tab-view {
 	tabs {
-		@apply px-4 gap-2 leading-loose;
+		@apply box-border px-4 gap-2;
 
 		& > p {
 			@apply pr-4;
 		}
 		tab {
-			@apply px-4 flex rounded-t-md relative;
+			@apply px-4 h-14 flex rounded-t-md relative;
 
-			&.active {
-				@apply z-2;
-			}
-			&::before {
-				content: '';
-				@apply absolute -left-3px top-0 bottom-0 -right-3px -z-1;
-				@apply bg-skin-200 border border-b-0 border-skin-500 rounded-t-md;
-				transform: scale(1.2, 1.5) perspective(1em) rotateX(10deg);
-				transform-origin: bottom;
-			}
-			&.active::before {
-				@apply border-primary-500 bg-primary-200 -bottom-1px;
-			}
-			// &.active::after {
+			// &.active {
+			// 	@apply z-2;
+			// }
+			// &::before {
 			// 	content: '';
-			// 	@apply absolute left-0 -bottom-1px right-0 z-2 h-2px bg-primary-200 border-primary-500 border-l border-r;
-			// 	transform: scale(1.2, 1);
+			// 	@apply absolute -left-3px top-0 bottom-0 -right-3px -z-1;
+			// 	@apply bg-skin-200 border border-b-0 border-skin-500 rounded-t-md;
+			// 	transform: scale(1.2, 1.5) perspective(1em) rotateX(10deg);
+			// 	transform-origin: bottom;
+			// }
+			// &.active::before {
+			// 	@apply border-primary-500 bg-primary-200 -bottom-1px;
 			// }
 
 			p {
@@ -37,24 +32,4 @@ tab-view {
 		@apply border border-skin-300 rounded px-4 py-3;
 	}
 }
-// tabs {
-// 	@apply gap-1 items-center;
 
-// 	tab {
-// 		@apply px-2 leading-loose flex bg-skin-100 border border-b-0 border-secondary-200 rounded-t-md;
-
-// 		p {
-// 			@apply flex-grow px-2 text-center;
-// 		}
-// 	}
-
-// }
-
-// tab-edit {
-// 	tabs {
-// 		@apply border-b  border-secondary-200;
-// 	}
-// 	content {
-// 		@apply p-4 pt-1 border border-skin-200;
-// 	}
-// }
