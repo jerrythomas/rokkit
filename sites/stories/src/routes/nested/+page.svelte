@@ -4,7 +4,7 @@
 	)
 
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { NestedList, Node, Text, Collapsible } from '@svelte-spice/core'
+	import { NestedList, Node, Text, Collapsible } from '@rokkit/core'
 
 	export let variants
 	let props

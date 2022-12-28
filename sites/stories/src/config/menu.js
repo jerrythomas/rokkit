@@ -1,4 +1,4 @@
-// import { inputTypes } from '@svelte-spice/core'
+// import { inputTypes } from '@rokkit/core'
 import { inputMenu } from './models'
 // const inputs = Object.entries(inputTypes).map(([k, v]) => ({
 // 	text: String(v.name).replace('Proxy', ''),

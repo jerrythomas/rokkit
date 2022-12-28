@@ -41,8 +41,8 @@
 	"dependencies": {
 		"@fontsource/montserrat-alternates": "^4.5.11",
 		"@fontsource/victor-mono": "^4.5.4",
-		"@svelte-spice/core": "workspace:latest",
-		"@svelte-spice/form": "workspace:latest",
-		"@svelte-spice/themes": "workspace:latest"
+		"@rokkit/core": "workspace:latest",
+		"@rokkit/form": "workspace:latest",
+		"@rokkit/themes": "workspace:latest"
 	}
 }

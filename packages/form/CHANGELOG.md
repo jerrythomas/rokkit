@@ -1,4 +1,13 @@
-# @svelte-spice/form
+# @rokkit/form
+
+## 1.0.0-next.5
+
+### Patch Changes
+
+- Switched namespace for packages.
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.5
+  - @rokkit/input@1.0.0-next.5
 
 ## 1.0.0-next.4
 
@@ -8,8 +17,8 @@
 - d8fa695: Upgraded dependencies.
 - Updated dependencies [5711c2f]
 - Updated dependencies [d8fa695]
-  - @svelte-spice/core@1.0.0-next.4
-  - @svelte-spice/input@1.0.0-next.4
+  - @rokkit/core@1.0.0-next.4
+  - @rokkit/input@1.0.0-next.4
 
 ## 1.0.0-next.3
 
@@ -23,8 +32,8 @@
 - Updated dependencies
 - Updated dependencies [c309f5a]
 - Updated dependencies [962714a]
-  - @svelte-spice/core@1.0.0-next.3
-  - @svelte-spice/input@1.0.0-next.3
+  - @rokkit/core@1.0.0-next.3
+  - @rokkit/input@1.0.0-next.3
 
 ## 1.0.0-next.2
 
@@ -32,8 +41,8 @@
 
 - fbe040d: Bumping the next version
 - Updated dependencies [fbe040d]
-  - @svelte-spice/core@1.0.0-next.2
-  - @svelte-spice/input@1.0.0-next.2
+  - @rokkit/core@1.0.0-next.2
+  - @rokkit/input@1.0.0-next.2
 
 ## 1.0.0-next.1
 
@@ -41,5 +50,5 @@
 
 - Next release
 - Updated dependencies
-  - @svelte-spice/core@1.0.0-next.1
-  - @svelte-spice/input@1.0.0-next.1
+  - @rokkit/core@1.0.0-next.1
+  - @rokkit/input@1.0.0-next.1

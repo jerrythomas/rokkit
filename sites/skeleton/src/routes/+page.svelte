@@ -1,6 +1,6 @@
 <script>
 	import GraphPaper from '$lib/GraphPaper.svelte'
-	import { InputField } from '@svelte-spice/form'
+	import { InputField } from '@rokkit/form'
 
 	let items = [{ text: 'Minimal' }, { text: 'Material' }, { text: 'Spicy' }]
 	let value

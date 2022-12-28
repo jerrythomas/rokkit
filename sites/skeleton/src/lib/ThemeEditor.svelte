@@ -1,5 +1,5 @@
 <script>
-	import { ButtonGroup } from '@svelte-spice/form'
+	import { ButtonGroup } from '@rokkit/form'
 
 	export let themes = ['minimal', 'material', 'spicy']
 	export let currentTheme = themes[2]

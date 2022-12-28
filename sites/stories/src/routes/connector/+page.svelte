@@ -1,6 +1,6 @@
 <script>
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { Connector } from '@svelte-spice/core'
+	import { Connector } from '@rokkit/core'
 
 	let variants = [
 		{ title: 'last', props: { type: 'last' } },

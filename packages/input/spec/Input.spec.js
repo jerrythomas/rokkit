@@ -24,18 +24,18 @@ describe('Input.svelte', () => {
 		expect(wrapper.childNodes[0]).toMatchSnapshot()
 	})
 
-	it.each(types.filter((type) => type !== 'rating'))(
-		'should render input for type "%s" as readonly',
-		(type) => {
-			const { container } = render(Input, {
-				type,
-				value: null,
-				readonly: true
-			})
-			const wrapper = container.childNodes[0]
-			expect(wrapper.childNodes[0]).toMatchSnapshot()
-		}
-	)
+	// it.each(types.filter((type) => type !== 'rating'))(
+	// 	'should render input for type "%s" as readonly',
+	// 	(type) => {
+	// 		const { container } = render(Input, {
+	// 			type,
+	// 			value: null,
+	// 			readonly: true
+	// 		})
+	// 		const wrapper = container.childNodes[0]
+	// 		expect(wrapper.childNodes[0]).toMatchSnapshot()
+	// 	}
+	// )
 
 	it.each(types)('should render input for type "%s" as required', (type) => {
 		const { container } = render(Input, {

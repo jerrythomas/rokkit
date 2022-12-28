@@ -1,6 +1,6 @@
 <script>
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { Accordion } from '@svelte-spice/core'
+	import { Accordion } from '@rokkit/core'
 
 	export let data
 	let props

@@ -1,5 +1,5 @@
 <script>
-	import { Tabs, Accordion, Link } from '@svelte-spice/core'
+	import { Tabs, Accordion, Link } from '@rokkit/core'
 	import { menu, options } from '$lib/config'
 	import PropertyEditor from '$lib/PropertyEditor.svelte'
 	import ThemeEditor from '$lib/ThemeEditor.svelte'

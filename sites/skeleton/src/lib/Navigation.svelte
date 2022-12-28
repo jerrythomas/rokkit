@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '@svelte-spice/core'
+	import { defaultFields } from '@rokkit/core'
 	const dispatch = createEventDispatcher()
 
 	let className = ''

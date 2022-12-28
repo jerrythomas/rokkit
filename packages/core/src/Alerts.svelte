@@ -14,7 +14,7 @@
 		alerts.set([...$alerts])
 	}
 
-	$: unreadAlerts = $alerts.filter((x) => !x.dismissed)
+	$: unreadAlerts = $alerts.filter((x) => x.dismissed)
 </script>
 
 {#if unreadAlerts.length > 0}

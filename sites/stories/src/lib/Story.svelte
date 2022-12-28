@@ -1,6 +1,6 @@
 <script>
 	import Variant from '$lib/Variant.svelte'
-	import { FormFields } from '@svelte-spice/form'
+	import { FormFields } from '@rokkit/form'
 
 	export let title
 	export let props

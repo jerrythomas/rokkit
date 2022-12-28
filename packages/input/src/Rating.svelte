@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultStateIcons } from '@svelte-spice/core'
+	import { defaultStateIcons } from '@rokkit/core'
 	const dispatch = createEventDispatcher()
 
 	export let id = null

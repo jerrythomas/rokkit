@@ -1,4 +1,10 @@
-# @svelte-spice/themes
+# @rokkit/themes
+
+## 1.0.0-next.5
+
+### Patch Changes
+
+- Switched namespace for packages.
 
 ## 1.0.0-next.4
 

@@ -3,7 +3,7 @@
 	import '@unocss/reset/tailwind.css'
 	import '../app.scss'
 	import { onMount } from 'svelte'
-	import { ButtonGroup } from '@svelte-spice/form'
+	import { ButtonGroup } from '@rokkit/form'
 	import Sidebar from './sidebar.svelte'
 
 	const themes = ['minimal', 'material', 'spicy']
@@ -28,7 +28,7 @@
 			items={themes}
 			value={currentTheme}
 		/>
-		<img src="/favicon-32x32.png" alt="Svelte-spice" />
+		<img src="/favicon-32x32.png" alt="rokkit" />
 	</header>
 	<content class="flex flex-col h-full w-full overflow-y-scroll">
 		<slot />

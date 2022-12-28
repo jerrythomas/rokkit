@@ -1,5 +1,5 @@
 <script>
-	import { FieldSet } from '@svelte-spice/input'
+	import { FieldSet } from '@rokkit/input'
 	import FormFields from './FormFields.svelte'
 
 	let className = ''

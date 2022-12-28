@@ -1,11 +1,11 @@
 ---
-'@svelte-spice/chart': patch
-'@svelte-spice/core': patch
-'@svelte-spice/form': patch
-'@svelte-spice/input': patch
-'@svelte-spice/layout': patch
-'@svelte-spice/markdown': patch
-'@svelte-spice/themes': patch
+'@rokkit/chart': patch
+'@rokkit/core': patch
+'@rokkit/form': patch
+'@rokkit/input': patch
+'@rokkit/layout': patch
+'@rokkit/markdown': patch
+'@rokkit/themes': patch
 ---
 
 Added missing package in workspaces

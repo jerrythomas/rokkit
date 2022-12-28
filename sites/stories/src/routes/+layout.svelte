@@ -18,7 +18,7 @@
 	})
 
 	// import { menu } from '../config'
-	// import { Accordion, Link, Sidebar } from '@svelte-spice/core'
+	// import { Accordion, Link, Sidebar } from '@rokkit/core'
 	// import { page } from '$app/stores'
 
 	// const fields = { id: 'url' }

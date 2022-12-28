@@ -1,6 +1,6 @@
 <script>
-	import { Form, DataList } from '@svelte-spice/input'
-	import { FormFields } from '@svelte-spice/form'
+	import { Form, DataList } from '@rokkit/input'
+	import { FormFields } from '@rokkit/form'
 
 	let data = {
 		name: 'hello',

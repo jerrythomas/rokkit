@@ -1,4 +1,4 @@
-import { Input, Calendar, Range, Select } from '@svelte-spice/input'
+import { Input, Calendar, Range, Select } from '@rokkit/input'
 
 import * as input from './input'
 import * as custom from './custom'

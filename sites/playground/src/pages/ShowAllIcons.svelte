@@ -1,6 +1,6 @@
 <script>
-	import { Icon, iconStore } from '@svelte-spice/icons'
-	import { toHyphenCase, sortByParts } from '@svelte-spice/core'
+	import { Icon, iconStore } from '@rokkit/icons'
+	import { toHyphenCase, sortByParts } from '@rokkit/core'
 
 	export let icons = {}
 	export let name

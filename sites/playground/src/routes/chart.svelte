@@ -13,7 +13,7 @@
 		// BoxPlot,
 		// ViolinPlot,
 		ScatterPlot
-	} from '@svelte-spice/chart'
+	} from '@rokkit/chart'
 	export let data = []
 
 	let width = 400
