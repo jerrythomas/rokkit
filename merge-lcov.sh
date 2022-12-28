@@ -1,6 +1,7 @@
 #!/bin/bash
 
-files=`find ./ -name lcov.info`
+rm -f lcov.info
+files=`find ./ -name lcov.info | grep -v node_modules`
 args=""
 for f in $files; do
   prefix=`echo $f | sed -e s/coverage.lcov.info// | sed -e s#^\./##`
