@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/layout",
-	"version": "1.0.0-next.5",
+	"version": "1.0.0-next.7",
 	"description": "Layout and navigation controls for svelte",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",

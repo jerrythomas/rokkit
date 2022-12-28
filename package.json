@@ -1,6 +1,6 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.5",
+	"version": "1.0.0-next.7",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -13,6 +13,9 @@
 		"format": "turbo run format",
 		"prepare": "husky install",
 		"upgrade": "pnpm clean && pnpm upgrade",
+		"bump": "bumpp --no-commit --no-push packages/*/package.json package.json sites/*/package.json",
+		"bump:next": "pnpm build && bumpp --preid=next --no-commit --no-push packages/*/package.json package.json sites/*/package.json ",
+		"release": "changeset publish",
 		"version:next": "pnpm build && changeset pre enter next && changeset",
 		"release:next": "changeset version && changeset publish && changeset pre exit",
 		"upgrade:all": "turbo run upgrade",
@@ -33,6 +36,7 @@
 	],
 	"devDependencies": {
 		"@changesets/cli": "^2.25.2",
+		"bumpp": "^8.2.1",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.5.0",
 		"husky": "^7.0.4",
