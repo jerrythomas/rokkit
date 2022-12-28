@@ -33,7 +33,7 @@
 		"eslint": "^7.32.0",
 		"jsdom": "^19.0.0",
 		"release-it": "^15.5.1",
-		"shared-config": "workspace:^1.0.0",
+		"shared-config": "workspace:*",
 		"svelte": "^3.55.0",
 		"typescript": "^4.9.4",
 		"vite": "^3.2.5",

@@ -24,7 +24,7 @@ importers:
 
   packages/chart:
     specifiers:
-      '@rokkit/core': workspace:1.0.0-next.4
+      '@rokkit/core': workspace:*
       '@sveltejs/vite-plugin-svelte': ^2.0.2
       '@testing-library/svelte': ^3.2.2
       '@vitest/ui': ~0.12.10
@@ -32,11 +32,11 @@ importers:
       d3-collection: ^1.0.7
       d3-scale: ^4.0.2
       eslint: ^8.30.0
-      eslint-config-shared: workspace:1.0.0
+      eslint-config-shared: workspace:*
       js-yaml: ^4.1.0
       jsdom: ^19.0.0
       ramda: ^0.28.0
-      shared-config: workspace:^1.0.0
+      shared-config: workspace:*
       svelte: ^3.55.0
       typescript: ^4.9.4
       vite: ^4.0.3
@@ -95,8 +95,8 @@ importers:
     specifiers:
       '@jerrythomas/eslint-config-svelte': ^1.0.2
       '@jerrythomas/prettier-config': ^1.0.0
-      '@rokkit/core': workspace:1.0.0-next.4
-      '@rokkit/input': workspace:1.0.0-next.4
+      '@rokkit/core': workspace:*
+      '@rokkit/input': workspace:*
       '@sveltejs/vite-plugin-svelte': ^2.0.2
       '@testing-library/svelte': ^3.2.2
       '@types/ramda': ^0.28.20
@@ -106,7 +106,7 @@ importers:
       eslint: ^7.32.0
       jsdom: ^19.0.0
       ramda: ^0.28.0
-      shared-config: workspace:^1.0.0
+      shared-config: workspace:*
       svelte: ^3.55.0
       typescript: ^4.9.4
       vite: ^4.0.3
@@ -225,7 +225,7 @@ importers:
     specifiers:
       '@jerrythomas/eslint-config-svelte': ^1.0.2
       '@jerrythomas/prettier-config': ^1.0.0
-      '@rokkit/core': workspace:1.0.0-next.4
+      '@rokkit/core': workspace:*
       '@sveltejs/vite-plugin-svelte': ^2.0.2
       '@testing-library/svelte': ^3.2.2
       '@vitest/ui': ~0.12.10
@@ -234,7 +234,7 @@ importers:
       jsdom: ^19.0.0
       marked: ^4.2.4
       prismjs: ^1.29.0
-      shared-config: workspace:^1.0.0
+      shared-config: workspace:*
       svelte: ^3.55.0
       typescript: ^4.9.4
       vite: ^4.0.3
@@ -269,7 +269,7 @@ importers:
       eslint: ^7.32.0
       jsdom: ^19.0.0
       release-it: ^15.5.1
-      shared-config: workspace:^1.0.0
+      shared-config: workspace:*
       svelte: ^3.55.0
       typescript: ^4.9.4
       vite: ^3.2.5
