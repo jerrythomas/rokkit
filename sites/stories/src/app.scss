@@ -13,13 +13,13 @@ body > app {
 }
 
 .minimal {
-	@import '@svelte-spice/themes/minimal.scss';
+	@import '@rokkit/themes/minimal.scss';
 }
 .material {
-	@import '@svelte-spice/themes/material.scss';
+	@import '@rokkit/themes/material.scss';
 }
 .spicy {
-	@import '@svelte-spice/themes/spicy.scss';
+	@import '@rokkit/themes/spicy.scss';
 }
 
 error {

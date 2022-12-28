@@ -12,9 +12,9 @@
 		// RangeSlider,
 		// Select,
 		// SpinList
-	} from '@svelte-spice/input'
-	import { FormFields } from '@svelte-spice/form'
-	import { alerts } from '@svelte-spice/core/stores'
+	} from '@rokkit/input'
+	import { FormFields } from '@rokkit/form'
+	import { alerts } from '@rokkit/core/stores'
 
 	function add() {
 		alerts.set([

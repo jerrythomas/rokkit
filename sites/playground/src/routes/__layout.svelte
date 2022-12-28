@@ -3,7 +3,7 @@
 	import '../palette.css'
 	import '../app.css'
 	import { menu } from '$config'
-	import { Sidebar } from '@svelte-spice/base'
+	import { Sidebar } from '@rokkit/base'
 	import { page } from '$app/stores'
 
 	// import { browser } from '$app/env'

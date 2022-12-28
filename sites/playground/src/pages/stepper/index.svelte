@@ -1,5 +1,5 @@
 <script>
-	import { Stepper, Range, ProgressDots } from '@svelte-spice/base'
+	import { Stepper, Range, ProgressDots } from '@rokkit/base'
 	import ControlPanel from './ControlPanel.svelte'
 
 	export let data = []

@@ -1,5 +1,5 @@
 <script>
-	import { pannable } from '@svelte-spice/core/actions'
+	import { pannable } from '@rokkit/core/actions'
 	export let min
 	export let max
 	export let cx

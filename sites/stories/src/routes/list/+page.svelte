@@ -4,7 +4,7 @@
 	)
 
 	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { List, Link } from '@svelte-spice/core'
+	import { List, Link } from '@rokkit/core'
 
 	export let variants
 	let props

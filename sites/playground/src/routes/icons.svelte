@@ -1,6 +1,6 @@
 <script>
-	import * as outline from '@svelte-spice/icons/heroicons/outline'
-	import * as filled from '@svelte-spice/icons/heroicons/filled'
+	import * as outline from '@rokkit/icons/heroicons/outline'
+	import * as filled from '@rokkit/icons/heroicons/filled'
 
 	import ShowAllIcons from '../pages/ShowAllIcons.svelte'
 

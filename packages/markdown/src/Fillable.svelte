@@ -1,6 +1,6 @@
 <script>
 	import { marked } from 'marked'
-	import { fillable } from '@svelte-spice/core/actions'
+	import { fillable } from '@rokkit/core/actions'
 
 	export let text = ''
 	export let options = []

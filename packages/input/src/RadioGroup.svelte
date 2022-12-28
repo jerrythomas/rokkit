@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, defaultOptions } from '@svelte-spice/core'
+	import { defaultStateIcons, defaultOptions } from '@rokkit/core'
 
 	let className = ''
 	export { className as class }

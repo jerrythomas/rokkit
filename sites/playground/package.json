@@ -50,8 +50,8 @@
 	"dependencies": {
 		"@fontsource/poppins": "^4.5.10",
 		"@lukeed/uuid": "^2.0.0",
-		"@svelte-spice/chart": "workspace:*",
-		"@svelte-spice/form": "workspace:*",
-		"@svelte-spice/input": "workspace:*"
+		"@rokkit/chart": "workspace:*",
+		"@rokkit/form": "workspace:*",
+		"@rokkit/input": "workspace:*"
 	}
 }

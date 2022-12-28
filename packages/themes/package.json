@@ -1,7 +1,7 @@
 {
-	"name": "@svelte-spice/themes",
-	"version": "1.0.0-next.4",
-	"description": "Themes for use with svelte-spice components.",
+	"name": "@rokkit/themes",
+	"version": "1.0.0-next.5",
+	"description": "Themes for use with rokkit components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
 	"svelte": "src/index.js",

@@ -21,9 +21,9 @@ const config = {
 	extract: {
 		include: [
 			'./**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@svelte-spice/base/src/**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@svelte-spice/list/src/**/*.{html,js,svelte,ts,css}',
-			'./node_modules/@svelte-spice/chart/src/**/*.{html,js,svelte,ts,css}'
+			'./node_modules/@rokkit/base/src/**/*.{html,js,svelte,ts,css}',
+			'./node_modules/@rokkit/list/src/**/*.{html,js,svelte,ts,css}',
+			'./node_modules/@rokkit/chart/src/**/*.{html,js,svelte,ts,css}'
 		]
 	},
 	theme: {

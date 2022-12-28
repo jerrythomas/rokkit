@@ -1,10 +1,10 @@
-import { iconStore } from '@svelte-spice/icons'
+import { iconStore } from '@rokkit/icons'
 import {
 	Check,
 	ChartBar,
 	Sparkles,
 	Beaker
-} from '@svelte-spice/icons/heroicons/outline'
+} from '@rokkit/icons/heroicons/outline'
 const icons = {
 	tick: Check
 }

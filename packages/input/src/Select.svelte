@@ -1,5 +1,5 @@
 <script>
-	import { Slider, ListItems, defaultFields } from '@svelte-spice/core'
+	import { Slider, ListItems, defaultFields } from '@rokkit/core'
 
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()

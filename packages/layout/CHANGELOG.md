@@ -1,4 +1,12 @@
-# @svelte-spice/layout
+# @rokkit/layout
+
+## 1.0.0-next.5
+
+### Patch Changes
+
+- Switched namespace for packages.
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.5
 
 ## 1.0.0-next.4
 
@@ -8,7 +16,7 @@
 - d8fa695: Upgraded dependencies.
 - Updated dependencies [5711c2f]
 - Updated dependencies [d8fa695]
-  - @svelte-spice/core@1.0.0-next.4
+  - @rokkit/core@1.0.0-next.4
 
 ## 1.0.0-next.3
 
@@ -21,4 +29,4 @@
 - Updated dependencies
 - Updated dependencies [c309f5a]
 - Updated dependencies [962714a]
-  - @svelte-spice/core@1.0.0-next.3
+  - @rokkit/core@1.0.0-next.3

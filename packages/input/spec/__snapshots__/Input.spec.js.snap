@@ -6,13 +6,6 @@ exports[`Input.svelte > should render input for type "color" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "color" as readonly 1`] = `
-<input
-  readonly="true"
-  type="color"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "color" as required 1`] = `
 <input
   readonly="true"
@@ -22,13 +15,6 @@ exports[`Input.svelte > should render input for type "color" as required 1`] = `
 
 exports[`Input.svelte > should render input for type "date" 1`] = `
 <input
-  type="date"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "date" as readonly 1`] = `
-<input
-  readonly="true"
   type="date"
 />
 `;
@@ -46,13 +32,6 @@ exports[`Input.svelte > should render input for type "datetime" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "datetime" as readonly 1`] = `
-<input
-  readonly="true"
-  type="datetime-local"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "datetime" as required 1`] = `
 <input
   readonly="true"
@@ -62,13 +41,6 @@ exports[`Input.svelte > should render input for type "datetime" as required 1`] 
 
 exports[`Input.svelte > should render input for type "email" 1`] = `
 <input
-  type="email"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "email" as readonly 1`] = `
-<input
-  readonly="true"
   type="email"
 />
 `;
@@ -86,13 +58,6 @@ exports[`Input.svelte > should render input for type "file" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "file" as readonly 1`] = `
-<input
-  readonly="true"
-  type="file"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "file" as required 1`] = `
 <input
   readonly="true"
@@ -106,13 +71,6 @@ exports[`Input.svelte > should render input for type "month" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "month" as readonly 1`] = `
-<input
-  readonly="true"
-  type="month"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "month" as required 1`] = `
 <input
   readonly="true"
@@ -122,13 +80,6 @@ exports[`Input.svelte > should render input for type "month" as required 1`] = `
 
 exports[`Input.svelte > should render input for type "number" 1`] = `
 <input
-  type="number"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "number" as readonly 1`] = `
-<input
-  readonly="true"
   type="number"
 />
 `;
@@ -154,13 +105,6 @@ exports[`Input.svelte > should render input for type "password" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "password" as readonly 1`] = `
-<input
-  readonly="true"
-  type="password"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "password" as required 1`] = `
 <input
   readonly="true"
@@ -168,17 +112,16 @@ exports[`Input.svelte > should render input for type "password" as required 1`] 
 />
 `;
 
-exports[`Input.svelte > should render input for type "rating" with custom props 1`] = ``;
+exports[`Input.svelte > should render input for type "rating" with custom props 1`] = `
+<error>
+  Type "
+  rating
+  " is not supported by Input
+</error>
+`;
 
 exports[`Input.svelte > should render input for type "tel" 1`] = `
 <input
-  type="url"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "tel" as readonly 1`] = `
-<input
-  readonly="true"
   type="url"
 />
 `;
@@ -192,13 +135,6 @@ exports[`Input.svelte > should render input for type "tel" as required 1`] = `
 
 exports[`Input.svelte > should render input for type "text" 1`] = `
 <input
-  type="text"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "text" as readonly 1`] = `
-<input
-  readonly="true"
   type="text"
 />
 `;
@@ -224,13 +160,6 @@ exports[`Input.svelte > should render input for type "textarea" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "textarea" as readonly 1`] = `
-<textarea
-  readonly="true"
-  type="week"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "textarea" as required 1`] = `
 <textarea
   readonly="true"
@@ -240,13 +169,6 @@ exports[`Input.svelte > should render input for type "textarea" as required 1`] 
 
 exports[`Input.svelte > should render input for type "time" 1`] = `
 <input
-  type="time"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "time" as readonly 1`] = `
-<input
-  readonly="true"
   type="time"
 />
 `;
@@ -264,13 +186,6 @@ exports[`Input.svelte > should render input for type "url" 1`] = `
 />
 `;
 
-exports[`Input.svelte > should render input for type "url" as readonly 1`] = `
-<input
-  readonly="true"
-  type="url"
-/>
-`;
-
 exports[`Input.svelte > should render input for type "url" as required 1`] = `
 <input
   readonly="true"
@@ -280,13 +195,6 @@ exports[`Input.svelte > should render input for type "url" as required 1`] = `
 
 exports[`Input.svelte > should render input for type "week" 1`] = `
 <input
-  type="week"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "week" as readonly 1`] = `
-<input
-  readonly="true"
   type="week"
 />
 `;

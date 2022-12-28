@@ -3,7 +3,7 @@ import presetUno from '@unocss/preset-uno'
 import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
 import { extractorSvelte } from '@unocss/core'
-import { iconShortcuts, themeColors } from '@svelte-spice/themes'
+import { iconShortcuts, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 
 const inputIcons = [
