@@ -1,12 +1,11 @@
 <script>
-	import { inputTypes } from './types'
 	let className = ''
 
 	export { className as class }
 	export let value
 	export let items = []
 	// export let mapping
-	export let using = inputTypes
+	export let using
 </script>
 
 <segment class={className}>

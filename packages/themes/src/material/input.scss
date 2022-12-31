@@ -1,4 +1,4 @@
-input-field{
+input-field {
 	@apply box-border border border-skin-800 rounded;
 	@apply text-skin-800 leading-loose relative px-2 py-1;
 
@@ -10,17 +10,17 @@ input-field{
 	}
 
 	&:focus-within {
-	  @apply border-2 border-secondary;
-  }
+		@apply border-2 border-secondary;
+	}
 
 	label.required::after {
 		content: '*';
 		@apply state-danger;
 	}
 
-	label, &:focus-within label
-	{
-    @apply block z-1 -top-3 left-2 bg-skin-50 absolute leading-tight opacity-100;
+	label,
+	&:focus-within label {
+		@apply block z-1 -top-3 left-2 bg-skin-50 absolute leading-tight opacity-100;
 	}
 	field {
 		@apply gap-2;

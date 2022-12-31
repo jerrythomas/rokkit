@@ -1,6 +1,6 @@
 <script>
 	import { Form, DataList } from '@rokkit/input'
-	import { FormFields } from '@rokkit/form'
+	import { FieldLayout } from '@rokkit/form'
 
 	let data = {
 		name: 'hello',
@@ -50,6 +50,6 @@
 			id="input-types"
 			values={['text', 'json', 'number', 'checkbox', 'Link']}
 		/>
-		<FormFields bind:data {fields} />
+		<FieldLayout bind:data {fields} />
 	</Form>
 </content>

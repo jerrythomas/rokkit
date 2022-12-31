@@ -6,7 +6,7 @@
 	export let icon = null
 	export let label
 	export let active = false
-	export let removable = false
+	export let allowClose = false
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -17,7 +17,7 @@
 	{#if label}
 		<p class="flex flex-shrink-0 flex-grow justify-center">{label}</p>
 	{/if}
-	{#if removable}
+	{#if allowClose}
 		<icon
 			class="remove small"
 			aria-label="remove"

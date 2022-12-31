@@ -31,6 +31,3 @@
 		</button>
 	{/each}
 </button-group>
-
-<style>
-</style>

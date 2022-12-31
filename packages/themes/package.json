@@ -32,7 +32,6 @@
 		"c8": "^7.12.0",
 		"eslint": "^7.32.0",
 		"jsdom": "^19.0.0",
-		"release-it": "^15.5.1",
 		"shared-config": "workspace:*",
 		"svelte": "^3.55.0",
 		"typescript": "^4.9.4",
@@ -41,6 +40,7 @@
 	},
 	"exports": {
 		"./package.json": "./package.json",
+		"./modern.scss": "./src/modern.scss",
 		"./spicy.scss": "./src/spicy.scss",
 		"./minimal.scss": "./src/minimal.scss",
 		"./material.scss": "./src/material.scss",

@@ -9,7 +9,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 input-field {
 	@apply text-skin-800 border-skin-600;
-	input {
-		@apply border-none outline-none;
-	}
+}
+
+input-field input {
+	@apply border-none outline-none;
 }

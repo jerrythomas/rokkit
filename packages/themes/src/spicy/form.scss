@@ -1,25 +1,21 @@
 button-group {
-	@apply rounded-full shadow-md ;
-
-	button {
-		@apply border-none rounded-none;
-		@apply bg-skin-200;
-		@apply uppercase text-sm text-skin-800 leading-8;
-	}
-	button:not(:last-child) {
-		@apply border-r-2 border-r-groove;
-	}
-
-	button.active {
-    @apply bg-gradient-to-r from-primary to-secondary text-white;
-	}
-	button:first-child {
-		@apply rounded-l-full p-l-4;
-	}
-	button:last-child {
-		@apply rounded-r-full p-r-4;
-	}
+	@apply rounded-full shadow-md;
+}
+button-group button {
+	@apply border-none rounded-none;
+	@apply bg-skin-200;
+	@apply uppercase text-sm text-skin-800 leading-8;
+}
+button-group button:not(:last-child) {
+	@apply border-r-2 border-r-groove;
 }
 
-
-
+button-group button.active {
+	@apply bg-gradient-to-r from-primary to-secondary text-white;
+}
+button-group button:first-child {
+	@apply rounded-l-full p-l-4;
+}
+button-group button:last-child {
+	@apply rounded-r-full p-r-4;
+}

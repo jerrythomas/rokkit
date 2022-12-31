@@ -41,7 +41,7 @@
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
-		"marked": "^4.2.4",
+		"marked": "^4.2.5",
 		"prismjs": "^1.29.0"
 	},
 	"exports": {

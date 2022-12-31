@@ -6,16 +6,19 @@
 	import { ButtonGroup } from '@rokkit/form'
 	import Sidebar from './sidebar.svelte'
 
-	const themes = ['minimal', 'material', 'spicy']
+	const themes = ['minimal', 'material', 'spicy', 'modern']
 	let currentTheme = themes[2]
 	// let currentTab = items[0]
 
 	function handleThemeChange(event) {
+		console.log('changed', currentTheme, event.detail)
 		document.body.classList.remove(currentTheme)
 		currentTheme = event.detail
+
 		document.body.classList.add(currentTheme)
 	}
 	onMount(() => {
+		console.log('mounted', currentTheme)
 		document.body.classList.add(currentTheme)
 	})
 </script>

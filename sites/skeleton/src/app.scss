@@ -7,11 +7,14 @@
 @import '@fontsource/montserrat-alternates/700.css';
 @import './palette.css';
 
-
-body, body > div {
+body,
+body > div {
 	@apply flex flex-row h-screen w-screen font-body;
 }
 
+.modern {
+	@import '@rokkit/themes/modern.scss';
+}
 .minimal {
 	@import '@rokkit/themes/minimal.scss';
 }
@@ -31,20 +34,24 @@ error {
 
 tab-view.lg {
 	@apply border-r border-skin-300;
-
-	tabs {
-		@apply h-14;
-	}
-	// content {
-	// 	@apply border-r border-skin-400;
-	// }
 }
-// calendar {
-// 	cal-body {
-// 		days-of-month {
-// 			p.active {
-// 				@apply rounded-lg;
-// 			}
-// 		}
-// 	}
-// }
+tab-view.lg tabs {
+	@apply h-14;
+}
+tab-view.lg content {
+	@apply border-r border-skin-400;
+}
+
+calendar {
+	cal-body {
+		days-of-month {
+			p.active {
+				@apply rounded-lg;
+			}
+		}
+	}
+}
+
+.card {
+	@apply flex flex-col rounded-lg shadow w-full p-4 border border-red;
+}

@@ -26,7 +26,7 @@
 		"@sveltejs/vite-plugin-svelte": "^2.0.2",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
-		"eslint": "^8.30.0",
+		"eslint": "^8.31.0",
 		"eslint-config-shared": "workspace:*",
 		"js-yaml": "^4.1.0",
 		"jsdom": "^19.0.0",

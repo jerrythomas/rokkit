@@ -1,6 +1,6 @@
 <script>
 	import Variant from '$lib/Variant.svelte'
-	import { FormFields } from '@rokkit/form'
+	import { FieldLayout } from '@rokkit/form'
 
 	export let title
 	export let props
@@ -22,7 +22,7 @@
 		</board>
 	</content>
 	<props class="flex flex-col p-4 min-w-80 bg-skin-100">
-		<FormFields bind:data={props} {fields} />
+		<FieldLayout bind:data={props} {fields} />
 	</props>
 </story>
 

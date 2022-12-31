@@ -8,6 +8,7 @@ export const defaultOptions = {
 export const defaultFields = {
 	id: 'id',
 	url: 'url',
+	// key: 'key',
 	text: 'text',
 	data: 'data',
 	icon: 'icon',
