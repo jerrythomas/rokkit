@@ -9,9 +9,9 @@ button-group {
 		@apply uppercase text-sm text-skin-800;
 	}
 	button:not(:last-child) {
-		@apply border-r ;
+		@apply border-r;
 	}
 	button.active {
-    @apply bg-primary text-white;
+		@apply bg-primary text-white;
 	}
 }

@@ -7,93 +7,85 @@ fieldset {
 
 fieldset {
 	@apply p-4 pt-2 gap-2 rounded-md;
-
-	legend {
-		@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
-	}
-	icon {
-		@apply text-2xl;
-	}
+}
+fieldset legend {
+	@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
+}
+fieldset icon {
+	@apply text-2xl;
 }
 
 input-field {
 	@apply w-full m-0 p-0;
-  input {
-		@apply border;
-	}
-	field {
-		@apply box-border border h-10 rounded overflow-hidden;
-		@apply focus-within:border-primary-400 focus-within:border-2;
-
-		span {
-			@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
-		}
-		input,
-		textarea,
-		select {
-			@apply flex-grow border-0 outline-none;
-		}
-	}
-	label {
-		@apply leading-loose w-full;
-
-	}
-	message {
-		@apply px-2 py-1 bg-skin-100 rounded;
-	}
 }
-// input-field.fail {
-// 	@apply bg-error rounded px-2;
-// }
+input-field input {
+	@apply border;
+}
+input-field field {
+	@apply box-border border h-10 rounded overflow-hidden;
+	@apply focus-within:border-primary-400 focus-within:border-2;
+}
+input-field span {
+	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
+}
+input-field input,
+input-field textarea,
+input-field select {
+	@apply flex-grow border-0 outline-none;
+}
 
-input-range {
-	range-track {
-		@apply h-2 mt-2 relative;
+input-field label {
+	@apply leading-loose w-full;
+}
+input-field message {
+	@apply px-2 py-1 bg-skin-100 rounded;
+}
 
-		span {
-			@apply bg-skin-200 border box-border border-skin-300 rounded-full;
-		}
-		selected {
-			@apply border -top-0px -bottom-0px border-primary-500 bg-primary-400 rounded-full;
-		}
-		thumb {
-			@apply rounded-sm;
-		}
-	}
-	range-ticks {
-		font-size: 6px;
-		@apply bg-primary-100;
-	}
+input-field.fail {
+	@apply bg-error rounded px-2;
+}
 
-	&.bookend {
-		range-track {
-			span {
-				&::before,
-				&::after {
-					content: '';
-					@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
-				}
-				&::before {
-					@apply -left-1px;
-				}
-				&::after {
-					@apply -right-2px;
-				}
-			}
-		}
-	}
+input-range range-track {
+	@apply h-2 mt-2 relative;
+}
+input-range range-track span {
+	@apply bg-skin-200 border box-border border-skin-300 rounded-full;
+}
+input-range range-track selected {
+	@apply border -top-0px -bottom-0px border-primary-500 bg-primary-400 rounded-full;
+}
+input-range range-track thumb {
+	@apply rounded-sm;
+}
+
+input-range range-ticks {
+	font-size: 6px;
+	@apply bg-primary-100;
+}
+
+.bookend range-track span::before,
+.bookend range-track span::after {
+	content: '';
+	@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+}
+.bookend range-track span::before {
+	@apply -left-1px;
+}
+.bookend range-track span::after {
+	@apply -right-2px;
 }
 
 tick {
 	@apply h-6;
-	span {
-		@apply border-skin-500 h-full;
-	}
-	p {
-		@apply items-top;
-		font-size: 8px;
-	}
 }
+tick span {
+	@apply border-skin-500 h-full;
+}
+tick p {
+	@apply items-top;
+	font-size: 8px;
+}
+
 thumb {
 	@apply bg-primary-300  shadow-xl border border-primary-400;
 }
@@ -103,7 +95,7 @@ thumb.sliding::before {
 	transform: scale(2, 2);
 }
 
-.error,
+/* .error,
 .fail {
 	input,
 	textarea,
@@ -143,4 +135,4 @@ thumb.sliding::before {
 	message {
 		@apply text-pass bg-pass rounded-md;
 	}
-}
+} */

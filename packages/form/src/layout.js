@@ -40,7 +40,7 @@ export function validate(schema, data) {
 }
 
 export function deriveLayout(schema) {
-	return [schema]
+	return Array.isArray(schema) ? schema : [schema]
 }
 
 export function propsFromSchema(props) {

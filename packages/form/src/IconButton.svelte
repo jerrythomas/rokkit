@@ -11,7 +11,7 @@
 
 <button {type} class="flex flex-row items-center {className}" on:click>
 	{#if leftIcon}
-		<icon-left>
+		<icon-left class="flex flex-row">
 			<icon class={leftIcon} />
 		</icon-left>
 	{/if}

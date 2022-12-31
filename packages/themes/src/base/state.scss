@@ -1,0 +1,12 @@
+alert.error {
+	@apply bg-error text-error border-error;
+}
+alert.info {
+	@apply bg-info text-info border-info;
+}
+alert.warning {
+	@apply bg-warn text-warn border-warn;
+}
+alert.success {
+	@apply bg-pass text-pass border-pass;
+}
