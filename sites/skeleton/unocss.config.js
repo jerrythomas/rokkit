@@ -2,6 +2,8 @@ import { defineConfig } from 'unocss'
 import presetUno from '@unocss/preset-uno'
 import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
+import presetTypography from '@unocss/preset-typography'
+
 import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
@@ -57,13 +59,14 @@ export default defineConfig({
 	theme: {
 		fontFamily: {
 			mono: ['Victor-Mono', 'monospace'],
-			serif: ['Montserrat Alternates', 'ui-serif', 'sans-serif'],
-			body: ['Montserrat Alternates', 'ui-serif', 'sans-serif']
+			serif: ['Poppins', 'ui-serif', 'sans-serif'],
+			body: ['Poppins', 'ui-serif', 'sans-serif']
 		},
 		colors: themeColors()
 	},
 	presets: [
 		presetUno(),
+		presetTypography(),
 		presetIcons({
 			collections: {
 				spice: FileSystemIconLoader('./static/icons', (svg) =>

@@ -40,6 +40,7 @@
 	},
 	"exports": {
 		"./package.json": "./package.json",
+		"./prism.css": "./src/prism.css",
 		"./modern.scss": "./src/modern.scss",
 		"./spicy.scss": "./src/spicy.scss",
 		"./minimal.scss": "./src/minimal.scss",

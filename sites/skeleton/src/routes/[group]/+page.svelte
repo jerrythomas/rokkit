@@ -1,5 +1,8 @@
 <script>
 	export let data
+	import ListDemo from './content/list.svx'
 </script>
 
-{JSON.stringify(data)}
+<article class="prose">
+	<ListDemo />
+</article>

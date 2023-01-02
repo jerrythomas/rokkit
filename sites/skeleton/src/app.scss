@@ -1,11 +1,13 @@
-@import '@fontsource/montserrat-alternates';
-@import '@fontsource/montserrat-alternates/100.css';
-@import '@fontsource/montserrat-alternates/200.css';
-@import '@fontsource/montserrat-alternates/300.css';
-@import '@fontsource/montserrat-alternates/400.css';
-@import '@fontsource/montserrat-alternates/500.css';
-@import '@fontsource/montserrat-alternates/700.css';
+@import '@fontsource/victor-mono';
+@import '@fontsource/poppins';
+// @import '@fontsource/lato/100.css';
+// @import '@fontsource/lato/200.css';
+// @import '@fontsource/lato/300.css';
+// @import '@fontsource/lato/400.css';
+// @import '@fontsource/lato/500.css';
+// @import '@fontsource/lato/700.css';
 @import './palette.css';
+@import '@rokkit/themes/prism.css';
 
 body,
 body > div {
@@ -38,9 +40,9 @@ tab-view.lg {
 tab-view.lg tabs {
 	@apply h-14;
 }
-tab-view.lg content {
-	@apply border-r border-skin-400;
-}
+// tab-view.lg content {
+// 	@apply border-r border-skin-400;
+// }
 
 calendar {
 	cal-body {
@@ -50,6 +52,17 @@ calendar {
 			}
 		}
 	}
+}
+
+.prose {
+	@apply max-w-full px-8 py-4;
+}
+.prose pre {
+	@apply border border-skin-300 bg-skin-100;
+}
+
+wrapper {
+	@apply not-prose mb-4 flex flex-col;
 }
 
 .card {

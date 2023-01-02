@@ -9,11 +9,11 @@ icon.md {
 }
 
 scroll {
-	@apply flex flex-col overflow-y-scroll px-4;
+	@apply flex flex-col overflow-y-scroll;
 }
 
 .sidebar {
-	@apply w-92 h-full flex flex-col border-skin-400;
+	@apply w-160 h-full flex flex-col border-skin-400;
 }
 
 square {
