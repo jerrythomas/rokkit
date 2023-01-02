@@ -10,7 +10,7 @@
 
 {#if isObject && content[fields.image]}
 	<img
-		class="h-8 w-8 rounded-full"
+		class="h-8 w-8 rounded-full object-cover"
 		alt={content[fields.text]}
 		src={content[fields.image]}
 	/>

@@ -29,7 +29,7 @@
 <accordion class="flex flex-col w-full select-none {className}">
 	{#each items as item}
 		{@const hasItems = item[fields.data] && item[fields.data].length > 0}
-		<group class="flex flex-col">
+		<group class="flex flex-col" class:expanded={item.isOpen}>
 			<svelte:component
 				this={using.collapsible}
 				bind:content={item}

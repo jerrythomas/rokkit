@@ -46,6 +46,7 @@
 	},
 	"exports": {
 		"./package.json": "./package.json",
+		"./prism.css": "./src/prism.css",
 		".": {
 			"import": "./src/index.js"
 		}

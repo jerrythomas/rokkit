@@ -1,0 +1,157 @@
+# List Component
+
+The List component is a flexible and customizable component that allows you to display a list of items in your Svelte app.
+
+<script>
+import { List } from '@rokkit/core'
+import Preview from '$lib/Preview.svelte'
+import PersonCard from './PersonCard.svelte'
+
+let using = { default: PersonCard}
+const mapping = { text: 'name', image: 'profile'}
+const people = [
+  { name: 'John', age: 30, gender: 'Male', profile: 'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=944&q=80' },
+  { name: 'Jane', age: 25, gender: 'Female', profile: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80' }
+]
+</script>
+
+## Features
+
+- Accepts an array of item objects as input
+- Allows you to map text, icon, etc. for display as list items
+- Allows you to use custom components for list items
+- Allows you to make each list item editable
+- Allows you to use a separate component for each list item
+
+## Usage
+
+### Array if strings
+
+Here is an example of how you can use the List component to display a list of strings.
+
+```svelte
+<List items={['Item 1', 'Item 2', 'Item 3']} class="zebra" />
+```
+
+<Preview>
+  <List items={['Item 1', 'Item 2', 'Item 3']} class="zebra"/>
+</Preview>
+
+### Array of objects
+
+List can also accept an array of objects as input. List expects `text` attribute on each item. Additionally `image` or `icon` attributes can be provided for each item.
+
+```svelte
+<List items={[{ text: 'Item 1' }, { text: 'Item 2', icon: 'icon.png' }]} />
+```
+<Preview>
+  <List items={[{ text: 'Item 1' }, { text: 'Item 2', icon: 'i-spice:menu' }]} />
+</Preview>
+
+### Mapping attributes
+
+List is flexible and can adapt to your data structure. You do not need to modify your attributes to fit the structure that List expects.
+Instead you can provide a `mapping` to inform the List component the attributes you want to use.
+
+Let's assume that you have a list of people as shown below.
+
+```js
+const people = [
+  { name: 'John', age: 30, gender: 'Male', profile: 'john.jpg' },
+  { name: 'Jane', age: 25, gender: 'Female', profile: 'jane.jpg' }
+]
+```
+Here is an example for using the `List` component without changing the structure or attribute names of this list.
+
+```svelte
+<script>
+  import { List } from '@rokkit/core'
+
+  const mapping = { text: 'name', image: 'profile'}
+  const people = [
+    { name: 'John', age: 30, gender: 'Male', profile: 'john.jpg' },
+    { name: 'Jane', age: 25, gender: 'Female', profile: 'jane.jpg' }
+  ]
+</script>
+
+<List items={people} {mapping}>
+```
+This will render the list as shown below:
+
+<Preview>
+  <List items={people} fields={mapping} />
+</Preview>
+
+## Custom Component
+
+Here is an example of how you can use the List component to display a list of people, using a custom component for the person items.
+
+```svelte
+<!-- PersonCard.svelte -->
+<script>
+	export let content
+</script>
+
+<div class="flex flex-row gap-5 items-center">
+	<img
+		src={content.profile}
+		alt="of {content.name}"
+		class="h-8 aspect-square rounded-full object-cover"
+	/>
+	<div>
+		{content.name}, {content.age} years old, {content.gender}
+	</div>
+</div>
+```
+
+```svelte
+<!-- app.svelte -->
+<script>
+  import { List } from '@rokkit/core'
+  import PersonCard from './PersonCard.svelte'
+
+  const using = { default: PersonCard}
+  const people = [
+    { name: 'John', age: 30, gender: 'Male', profile: 'john.jpg' },
+    { name: 'Jane', age: 25, gender: 'Female', profile: 'jane.jpg' }
+  ]
+
+</script>
+
+<List items={people} {using}>
+```
+
+This will render the list as shown below.
+
+<Preview>
+  <List items={people} {using}  />
+</Preview>
+
+## Hybrid List items
+
+Here is an example of how you can use the List component to display a list of people, using multiple components based on the data (in this case, the gender of the person):
+
+```svelte
+<!-- app.svelte -->
+<script>
+  import { List } from '@rokkit/core'
+  import PersonCard from './components/PersonCard.svelte'
+  import MaleCard from './components/MaleCard.svelte'
+  import FemaleCard from './components/FemaleCard.svelte'
+
+  const using = { default: PersonCard, Male: MaleCard, Female: FemaleCard}
+  const mapping = { component: 'gender'}
+  const people = [
+    { name: 'John', age: 30, gender: 'Male', profile: 'john.jpg' },
+    { name: 'Jane', age: 25, gender: 'Female', profile: 'jane.jpg' }
+  ]
+
+</script>
+
+<List items={people} {using}  />
+```
+
+This will render the list as shown below.
+<Preview>
+  <List items={people} {using} fields={mapping} />
+</Preview>
