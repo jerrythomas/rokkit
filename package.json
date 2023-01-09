@@ -1,6 +1,6 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.7",
+	"version": "1.0.0-next.8",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 		"prepare": "husky install",
 		"upgrade": "pnpm clean && pnpm upgrade",
 		"bump": "bumpp --no-commit --no-push packages/*/package.json package.json sites/*/package.json",
-		"bump:next": "pnpm build && bumpp --preid=next --no-commit --no-push packages/*/package.json package.json sites/*/package.json ",
+		"bump:next": "bumpp --preid=next --no-commit --no-push packages/*/package.json package.json sites/*/package.json ",
 		"release": "changeset publish",
 		"version:next": "pnpm build && changeset pre enter next && changeset",
 		"release:next": "changeset version && changeset publish && changeset pre exit",
@@ -31,19 +31,18 @@
 		"packages/chart",
 		"packages/themes",
 		"packages/layout",
-		"adapters/supabase",
-		"adapters/firebase"
+		"packages/utils"
 	],
 	"devDependencies": {
-		"@changesets/cli": "^2.25.2",
+		"@changesets/cli": "^2.26.0",
 		"bumpp": "^8.2.1",
 		"eslint": "^7.32.0",
-		"eslint-config-prettier": "^8.5.0",
+		"eslint-config-prettier": "^8.6.0",
 		"husky": "^7.0.4",
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.7.1",
-		"turbo": "^1.5.5"
+		"prettier": "^2.8.2",
+		"turbo": "^1.6.3"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",

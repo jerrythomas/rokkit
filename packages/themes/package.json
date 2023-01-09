@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/themes",
-	"version": "1.0.0-next.7",
+	"version": "1.0.0-next.8",
 	"description": "Themes for use with rokkit components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -27,7 +27,6 @@
 		"@jerrythomas/eslint-config-svelte": "^1.0.2",
 		"@jerrythomas/prettier-config": "^1.0.0",
 		"@sveltejs/vite-plugin-svelte": "^1.4.0",
-		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
 		"eslint": "^7.32.0",
@@ -39,12 +38,12 @@
 		"vitest": "~0.19.1"
 	},
 	"exports": {
-		"./package.json": "./package.json",
-		"./prism.css": "./src/prism.css",
 		"./modern.scss": "./src/modern.scss",
 		"./spicy.scss": "./src/spicy.scss",
-		"./minimal.scss": "./src/minimal.scss",
 		"./material.scss": "./src/material.scss",
+		"./minimal.scss": "./src/minimal.scss",
+		"./prism.css": "./src/prism.css",
+		"./package.json": "./src/package.json",
 		".": {
 			"import": "./src/index.js"
 		}

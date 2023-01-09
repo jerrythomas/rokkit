@@ -68,3 +68,14 @@ wrapper {
 .card {
 	@apply flex flex-col rounded-lg shadow w-full p-4 border border-red;
 }
+
+.searchable scroll {
+	@apply px-4 flex-grow;
+}
+.sidebar {
+	@apply bg-skin-100;
+}
+
+.searchable accordion group {
+	@apply border border-skin-200;
+}

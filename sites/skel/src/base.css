@@ -1,0 +1,15 @@
+@import './styles/input.css';
+
+@layer base {
+	body {
+		@apply font-body w-screen h-screen flex flex-row;
+	}
+
+	aside {
+		@apply w-1/3 items-center justify-center flex flex-shrink-0 h-full bg-red-100;
+	}
+
+	main {
+		@apply flex flex-col flex-grow items-center justify-center;
+	}
+}

@@ -22,10 +22,10 @@ list .item {
 	@apply last:rounded-b first:rounded-t;
 }
 
-accordion .expanded collapsible{
+accordion .expanded collapsible {
 	@apply rounded-b-none border-b border-skin-200;
 }
-accordion .expanded .item{
+accordion .expanded .item {
 	@apply first:rounded-t-0;
 }
 

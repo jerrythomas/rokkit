@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit'
 
-/** @type {import('./$types').PageLoad} */
+/** @type {import('../[group]/$types').PageLoad} */
 export function load({ params }) {
 	return { params }
 	// if (params.slug === 'hello-world') {

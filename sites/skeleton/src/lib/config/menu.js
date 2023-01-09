@@ -1,7 +1,8 @@
 export function generateMenu(groups) {
 	return Object.keys(groups).map((group) => ({
 		text: group,
-		data: getItems(group, groups[group])
+		data: getItems(group, groups[group]),
+		isOpen: true
 	}))
 }
 

@@ -29,6 +29,7 @@
 <accordion class="flex flex-col w-full select-none {className}">
 	{#each items as item}
 		{@const hasItems = item[fields.data] && item[fields.data].length > 0}
+		{@const itemFields = fields.fields ?? fields}
 		<group class="flex flex-col" class:expanded={item.isOpen}>
 			<svelte:component
 				this={using.collapsible}
@@ -40,7 +41,7 @@
 				<ListItems
 					bind:items={item[fields.data]}
 					bind:activeItem
-					{fields}
+					fields={itemFields}
 					{using}
 					on:select
 				/>

@@ -11,14 +11,12 @@
 	// let currentTab = items[0]
 
 	function handleThemeChange(event) {
-		console.log('changed', currentTheme, event.detail)
 		document.body.classList.remove(currentTheme)
 		currentTheme = event.detail
 
 		document.body.classList.add(currentTheme)
 	}
 	onMount(() => {
-		console.log('mounted', currentTheme)
 		document.body.classList.add(currentTheme)
 	})
 </script>

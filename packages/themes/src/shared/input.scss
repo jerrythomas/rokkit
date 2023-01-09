@@ -14,3 +14,7 @@ input-field {
 input-field input {
 	@apply border-none outline-none;
 }
+
+.searchable input {
+	@apply border border-skin-200;
+}
