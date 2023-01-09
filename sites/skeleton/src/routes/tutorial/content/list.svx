@@ -1,4 +1,8 @@
-# List Component
+---
+title: List Component
+---
+
+## List Component
 
 The List component is a flexible and customizable component that allows you to display a list of items in your Svelte app.
 
@@ -25,7 +29,7 @@ const people = [
 
 ## Usage
 
-### Array if strings
+### Array of strings
 
 Here is an example of how you can use the List component to display a list of strings.
 

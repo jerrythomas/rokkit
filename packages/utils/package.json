@@ -1,0 +1,59 @@
+{
+	"name": "@rokkit/utils",
+	"version": "1.0.0-next.8",
+	"description": "Assorted utility funtions and classes to simplify development.",
+	"author": "Jerry Thomas <me@jerrythomas.name>",
+	"license": "MIT",
+	"svelte": "src/index.js",
+	"module": "src/index.js",
+	"main": "src/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"prettier": "@jerrythomas/prettier-config",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"prepublishOnly": "tsc",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"test:ct": "playwright test -c playwright.config.js",
+		"test:ui": "vitest --ui",
+		"test:ci": "vitest run",
+		"test": "vitest",
+		"coverage": "vitest run --coverage",
+		"upgrade": "pnpm upgrade"
+	},
+	"devDependencies": {
+		"@jerrythomas/prettier-config": "^1.0.0",
+		"@sveltejs/vite-plugin-svelte": "^1.4.0",
+		"@testing-library/svelte": "^3.2.2",
+		"@types/d3-array": "^3.0.4",
+		"@types/d3-collection": "^1.0.10",
+		"@types/ramda": "^0.28.20",
+		"@vitest/ui": "~0.12.10",
+		"c8": "^7.12.0",
+		"eslint-config-shared": "workspace:*",
+		"js-yaml": "^4.1.0",
+		"jsdom": "^19.0.0",
+		"shared-config": "workspace:*",
+		"svelte": "^3.55.0",
+		"typescript": "^4.9.4",
+		"validators": "workspace:*",
+		"vite": "^3.2.5",
+		"vitest": "~0.19.1"
+	},
+	"exports": {
+		"./src": "./src",
+		"./package.json": "./package.json",
+		".": {
+			"import": "./src/index.js"
+		}
+	},
+	"dependencies": {
+		"@lukeed/uuid": "^2.0.0",
+		"d3-array": "^3.2.1",
+		"d3-collection": "^1.0.7",
+		"ramda": "^0.28.0"
+	}
+}

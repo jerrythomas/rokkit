@@ -5,7 +5,17 @@
 
 ![Rokkit](rokkit.svg)
 
+In the world of UI development, there are two main approaches to building components: composition-based and data-driven.
+
+Composition-based components are built by combining smaller, simpler components to form a more complex UI element. This allows developers to reuse code and create modular, flexible designs that are easy to maintain and update. One of the key benefits of this approach is that it allows for a high level of customization and control over the final component.
+
+Data-driven components, on the other hand, are built by binding UI elements to data sources. This allows the component to automatically update and respond to changes in the data, making it easier to build dynamic and reactive interfaces. One of the key benefits of this approach is that it allows developers to focus on the data and logic of their application, rather than the implementation of UI elements.
+
+Ultimately, which approach is best will depend on the needs and goals of your project. Both composition-based and data-driven components have their strengths and limitations, and the right choice for your project will depend on your specific requirements and goals.
+
 Rokkit is a data-driven, configurable, and themeable UI library built for use with Svelte. With Rokkit, you can easily add professional-looking controls to your Svelte projects. Rokkit controls are designed to be easily themeable, so you can match the look and feel of your project with minimal effort.
+
+If you are interested in a composition-based component library checkout [skeleton](https://www.skeleton.dev/)
 
 > Rokkit is currently under development and not feature complete yet. Use it at your own risk.
 

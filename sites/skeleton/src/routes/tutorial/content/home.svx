@@ -1,0 +1,9 @@
+Rokkit is a powerful UI component library for the Svelte framework, designed to help developers create beautiful and intuitive interfaces with ease. With a focus on data-driven development, Rokkit allows you to easily build and customize your user interface using a simple and intuitive configuration system.
+
+One of the key features of Rokkit is its extensibility. The library includes a wide range of pre-built components that can be easily integrated into your project, and you can also create your own custom components using the provided tools and APIs. This makes it easy to build a unique and customized interface that fits the needs of your project.
+
+In addition to its extensibility, Rokkit also offers a number of themeable options. This allows you to easily customize the appearance of your interface to match your brand or personal style. Whether you want a sleek and modern look, or a more traditional and classic feel, Rokkit has you covered.
+
+Overall, Rokkit is a powerful and flexible UI library that is perfect for anyone looking to build beautiful and intuitive interfaces for their Svelte projects.
+
+ a new open-source UI component library that tightly integrates both Svelte and UnoCSS. It provides a broad set of Svelte components that can easily be adjusted using utility classes.

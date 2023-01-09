@@ -1,0 +1,44 @@
+---
+lookup:
+  1: Second
+  2: First
+
+items:
+  - &alpha
+    id: 1
+    name: Alpha
+    lookup_id: 1
+  - &beta
+    id: 2
+    name: Beta
+    lookup_id: 1
+  - &charlie
+    id: 3
+    name: Charlie
+    lookup_id: 1
+  - &delta
+    id: 4
+    name: Delta
+    lookup_id: 2
+  - &echo
+    id: 5
+    name: Echo
+    lookup_id: 2
+  - &foxtrot
+    id: 6
+    name: Foxtrot
+    lookup_id: 2
+  - &foxtrot2
+    id: 7
+    name: Foxtrot
+    lookup_id: 2
+
+result:
+  data:
+    - *delta
+    - *echo
+    - *foxtrot
+    - *foxtrot2
+    - *alpha
+    - *beta
+    - *charlie
