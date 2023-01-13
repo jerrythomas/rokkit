@@ -1,5 +1,11 @@
 # @rokkit/themes
 
+## 1.0.0-next.9
+
+### Patch Changes
+
+- Updated dropdown and theme
+
 ## 1.0.0-next.5
 
 ### Patch Changes

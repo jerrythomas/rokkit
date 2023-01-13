@@ -1,46 +1,46 @@
 export function parseFilters(string) {
 	const results = []
-
-	// Create a regular expression to extract the named groups
 	const regex =
-		/((?<name>[\w|_]+)\s*(?<operator>:|>|<|>=|<=|=<|=>|=|!=|~|~\*|!~|!~\*)\s*)?(?<value>"[^"]+"|[\w\d]+)/gm
+		/(?<group>((?<column>[\w_]+)\s?(?<operator>:|>|<|>=|<=|=<|=>|=|!=|~|~\*|!~|!~\*)\s?)(?<value>"[^"]+"|[^\s=:<>!~*]+))/gm
 
 	// Split the string into an array of tokens
 	const tokens = string.matchAll(regex)
-
+	let search = string
 	// Iterate over the tokens
 	for (const token of tokens) {
-		// Initialize an empty object for the current token
-		const obj = {}
-
 		// Extract the named groups from the token
-		const { name, operator, value } = token.groups
+		let { group, column, operator, value } = token.groups
+		search = search.replace(group, '').trim()
 
-		if (name) {
-			obj.column = name
-		}
-		obj.operator = (operator ?? '~*')
+		operator = operator
 			.replace(':', '~*')
 			.replace('=>', '>=')
 			.replace('=<', '<=')
 
 		if (value) {
-			const quoteMatch = value.match(/^"([^"]+)"$/)
-			obj.value = quoteMatch
-				? quoteMatch[1]
-				: !isNaN(parseInt(value))
-				? parseInt(value)
-				: value
+			value = !isNaN(parseInt(value)) ? parseInt(value) : removeQuotes(value)
 
-			if (obj.operator.includes('~')) {
-				obj.value = obj.operator.includes('*')
-					? new RegExp(obj.value, 'i')
-					: new RegExp(obj.value)
+			if (operator.includes('~')) {
+				value = operator.includes('*')
+					? new RegExp(value, 'i')
+					: new RegExp(value)
 			}
 		}
-
-		results.push(obj)
+		if (column && value) results.push({ column, operator, value })
+	}
+	if (search.length > 0) {
+		// const quoteMatch = search.match(/^"([^"]+)"$/)
+		// search = quoteMatch ? quoteMatch[1] : search
+		results.push({
+			operator: '~*',
+			value: new RegExp(removeQuotes(search), 'i')
+		})
 	}
 
 	return results
+}
+
+function removeQuotes(str) {
+	const quoteMatch = str.match(/^"([^"]+)"$/)
+	return quoteMatch ? quoteMatch[1] : str
 }

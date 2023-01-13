@@ -1,5 +1,14 @@
 # @rokkit/form
 
+## 1.0.0-next.9
+
+### Patch Changes
+
+- Updated dropdown and theme
+- Updated dependencies
+  - @rokkit/input@1.0.0-next.9
+  - @rokkit/core@1.0.0-next.9
+
 ## 1.0.0-next.5
 
 ### Patch Changes
