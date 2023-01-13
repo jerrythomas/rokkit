@@ -10,7 +10,7 @@ describe('utils', () => {
 	it.each(['primary', 'secondary', 'other'])(
 		'should generate theme palette using a name',
 		(name) => {
-			const result = shadesOf(name)
+			const result = shadesOf(name, 'hsl')
 			expect(result).toEqual({
 				50: `hsl(var(--${name}-50))`,
 				100: `hsl(var(--${name}-100))`,
@@ -29,7 +29,7 @@ describe('utils', () => {
 	it.each(['info', 'error', 'warn', 'pass'])(
 		'should generate shades for states using names',
 		(name) => {
-			const result = stateColors(name)
+			const result = stateColors(name, 'hsl')
 			expect(result).toEqual({
 				DEFAULT: `hsl(var(--${name}-500))`,
 				light: `hsl(var(--${name}-100))`,
@@ -38,21 +38,21 @@ describe('utils', () => {
 		}
 	)
 	it('should generate theme color palette', () => {
-		const result = themeColors()
+		const result = themeColors('hsl')
 		const palette = {
-			accent: shadesOf('accent'),
-			primary: shadesOf('primary'),
-			secondary: shadesOf('secondary'),
+			accent: shadesOf('accent', 'hsl'),
+			primary: shadesOf('primary', 'hsl'),
+			secondary: shadesOf('secondary', 'hsl'),
 			skin: {
-				...shadesOf('skin'),
+				...shadesOf('skin', 'hsl'),
 				base: 'hsl(var(--skin-100))',
 				contrast: 'hsl(var(--skin-800))',
 				zebra: 'hsl(var(--skin-zebra))'
 			},
-			info: stateColors('info'),
-			error: stateColors('error'),
-			warn: stateColors('warn'),
-			pass: stateColors('pass')
+			info: stateColors('info', 'hsl'),
+			error: stateColors('error', 'hsl'),
+			warn: stateColors('warn', 'hsl'),
+			pass: stateColors('pass', 'hsl')
 		}
 
 		expect(result).toEqual(palette)

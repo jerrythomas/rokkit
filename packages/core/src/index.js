@@ -1,6 +1,7 @@
 export * from './constants'
 export * from './items'
 
+export { default as Icon } from './Icon.svelte'
 export { default as List } from './List.svelte'
 export { default as Tree } from './Tree.svelte'
 export { default as Accordion } from './Accordion.svelte'

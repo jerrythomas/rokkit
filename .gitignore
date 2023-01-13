@@ -8,7 +8,7 @@ coverage
 *.code-workspace
 .turbo
 .eslintcache
-lcov.info
+lcov.info*
 .idea
 build
 playwright-report

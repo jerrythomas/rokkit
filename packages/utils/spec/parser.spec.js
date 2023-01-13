@@ -58,8 +58,8 @@ describe('parse', () => {
 
 	it('should handle multiple tokens', () => {
 		expect(parseFilters('abc age=10')).toEqual([
-			{ operator: '~*', value: new RegExp('abc', 'i') },
-			{ operator: '=', value: 10, column: 'age' }
+			{ operator: '=', value: 10, column: 'age' },
+			{ operator: '~*', value: new RegExp('abc', 'i') }
 		])
 		expect(parseFilters('age>=10 gender!=m abc')).toEqual([
 			{ operator: '>=', value: 10, column: 'age' },
@@ -87,13 +87,15 @@ describe('parse', () => {
 			{ operator: '=', value: 3, column: 'age' }
 		])
 		expect(parseFilters('"rock and" avatar = "rocky balboa"')).toEqual([
-			{ operator: '~*', value: /rock and/i },
-			{ operator: '=', value: 'rocky balboa', column: 'avatar' }
+			{ operator: '=', value: 'rocky balboa', column: 'avatar' },
+			{ operator: '~*', value: /rock and/i }
 		])
 	})
 
 	it('should allow symbols when quoted', () => {
-		expect(parseFilters('name=?')).toEqual([{ operator: '~*', value: /name/i }])
+		expect(parseFilters('name=?')).toEqual([
+			{ column: 'name', operator: '=', value: '?' }
+		])
 		expect(parseFilters('name="?"')).toEqual([
 			{ operator: '=', value: '?', column: 'name' }
 		])
@@ -102,7 +104,7 @@ describe('parse', () => {
 		])
 		expect(parseFilters('name="rokk"it"')).toEqual([
 			{ operator: '=', value: 'rokk', column: 'name' },
-			{ operator: '~*', value: /it/i }
+			{ operator: '~*', value: /it"/i }
 		])
 	})
 })
