@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/themes",
-	"version": "1.0.0-next.9",
+	"version": "1.0.0-next.0",
 	"description": "Themes for use with rokkit components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -43,6 +43,7 @@
 		"./material.scss": "./src/material.scss",
 		"./minimal.scss": "./src/minimal.scss",
 		"./prism.css": "./src/prism.css",
+		"./palette.css": "./src/palette.css",
 		"./package.json": "./src/package.json",
 		".": {
 			"import": "./src/index.js"

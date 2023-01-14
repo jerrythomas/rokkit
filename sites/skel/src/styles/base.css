@@ -1,0 +1,7 @@
+@import './input.css';
+@import './core.css';
+
+body,
+body > div {
+	@apply font-body w-screen h-screen flex flex-col;
+}

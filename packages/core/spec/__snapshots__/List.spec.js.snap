@@ -10,10 +10,10 @@ exports[`List.svelte > Should render a list of values 1`] = `
       <scroll
         class="flex flex-col h-full overflow-scroll"
       >
-        <ul
+        <items
           class="flex flex-col w-full flex-shrink-0 select-none list"
         >
-          <li
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -24,8 +24,8 @@ exports[`List.svelte > Should render a list of values 1`] = `
               1
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -36,8 +36,8 @@ exports[`List.svelte > Should render a list of values 1`] = `
               2
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -48,8 +48,8 @@ exports[`List.svelte > Should render a list of values 1`] = `
               3
             </p>
              
-          </li>
-        </ul>
+          </item>
+        </items>
       </scroll>
     </list>
   </div>
@@ -66,18 +66,18 @@ exports[`List.svelte > Should render items using custom component 1`] = `
       <scroll
         class="flex flex-col h-full overflow-scroll"
       >
-        <ul
+        <items
           class="flex flex-col w-full flex-shrink-0 select-none list"
         >
-          <li
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
             <span>
               1
             </span>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -88,8 +88,8 @@ exports[`List.svelte > Should render items using custom component 1`] = `
               2
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -100,8 +100,8 @@ exports[`List.svelte > Should render items using custom component 1`] = `
               3
             </p>
              
-          </li>
-        </ul>
+          </item>
+        </items>
       </scroll>
     </list>
   </div>
@@ -118,10 +118,10 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
       <scroll
         class="flex flex-col h-full overflow-scroll"
       >
-        <ul
+        <items
           class="flex flex-col w-full flex-shrink-0 select-none list"
         >
-          <li
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -132,8 +132,8 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
               1
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -144,8 +144,8 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
               2
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -156,8 +156,8 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
               3
             </p>
              
-          </li>
-        </ul>
+          </item>
+        </items>
       </scroll>
     </list>
   </div>
@@ -174,10 +174,10 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
       <scroll
         class="flex flex-col h-full overflow-scroll"
       >
-        <ul
+        <items
           class="flex flex-col w-full flex-shrink-0 select-none list"
         >
-          <li
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -188,8 +188,8 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
               1
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -200,8 +200,8 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
               2
             </p>
              
-          </li>
-          <li
+          </item>
+          <item
             class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
           >
              
@@ -212,8 +212,8 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
               3
             </p>
              
-          </li>
-        </ul>
+          </item>
+        </items>
       </scroll>
     </list>
   </div>

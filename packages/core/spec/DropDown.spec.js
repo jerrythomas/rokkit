@@ -42,15 +42,17 @@ describe('DropDown.svelte', () => {
 		expect(button.parentNode.classList.contains('open')).toBe(false)
 	})
 	it('should dispatch a change event when an item is selected', async () => {
-		const mockOnChange = vi.fn()
+		const mockOnChange = vi.fn().mockImplementation((event) => {
+			expect(event.detail).toEqual({ value: 'foo' })
+		})
 		const { container, component } = render(DropDown, {
 			props: {
 				items: [{ value: 'foo' }],
 				fields: {}
 			}
 		})
-		component.$on('change', mockOnChange)
 
+		component.$on('change', mockOnChange)
 		const button = container.querySelector('.dropdown > button')
 		await fireEvent.click(button)
 		expect(button.parentNode.classList.contains('open')).toBe(true)
@@ -59,6 +61,5 @@ describe('DropDown.svelte', () => {
 		)
 		await fireEvent.click(listItem)
 		expect(mockOnChange).toHaveBeenCalled()
-		// todo: check the data passed in the event
 	})
 })

@@ -1,9 +1,14 @@
 <script>
 	import 'uno.css';
 	import '../app.css';
-	let theme = 'rokkit';
+
+	import Background from './Background.svelte';
+	import Header from './Header.svelte';
+	import { themable } from '@rokkit/core/actions';
 </script>
 
-<svelte:body data-theme={theme} />
-<aside>some sidebar content</aside>
-<main><slot /></main>
+<main use:themable class="flex flex-col w-full h-full relative">
+	<Background />
+	<Header />
+	<slot />
+</main>

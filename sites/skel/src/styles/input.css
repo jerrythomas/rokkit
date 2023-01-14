@@ -1,22 +1,20 @@
-@layer components {
-	input[type='number'] {
-		@apply text-right;
-	}
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
+.rokkit input[type='number'] {
+	@apply text-right;
+}
+.rokkit input[type='number']::-webkit-inner-spin-button,
+.rokkit input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
-	input-field {
-		@apply text-skin-800 border-skin-600;
-	}
+.rokkit input-field {
+	@apply text-skin-800 border-skin-600;
+}
 
-	input-field input {
-		@apply border-none outline-none;
-	}
+.rokkit input-field input {
+	@apply border-none outline-none;
+}
 
-	.searchable input {
-		@apply border border-skin-200;
-	}
+.rokkit .searchable input {
+	@apply border border-skin-200;
 }

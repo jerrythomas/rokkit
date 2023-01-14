@@ -1,12 +1,16 @@
 <script>
+	import { defaultFields } from './constants.js'
 	import List from './ListItems.svelte'
 	import Slider from './Slider.svelte'
+	import { Text } from './items'
 
 	export let data
-	export let component = null
-	export let selected = null
-	export let key = 'id'
-	export let selectedKey
+	export let value = null
+	export let fields = defaultFields
+	export let using = { default: Text }
+
+	$: using = { default: Text, ...using }
+	$: fields = { ...defaultFields, ...fields }
 
 	let opened = false
 	let search
@@ -15,8 +19,8 @@
 	// on search change filter list
 	function handleSelect(event) {
 		console.log('selected', event)
-		selected = event.detail
-		search = event.detail.name
+		value = event.detail
+		search = event.detail[fields.text]
 	}
 </script>
 
@@ -48,9 +52,9 @@
 		<Slider>
 			<List
 				bind:items={data}
-				{key}
-				{component}
-				bind:selected={selectedKey}
+				bind:value
+				{fields}
+				{using}
 				on:select={handleSelect}
 				on:change
 			/>

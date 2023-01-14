@@ -4,7 +4,7 @@ exports[`DropDown.svelte > should toggle open state when button is clicked 1`] =
 <body>
   <div>
     <div
-      class="flex w-full relative cursor-pointer dropdown"
+      class="flex w-full relative cursor-pointer select-none dropdown"
       tabindex="0"
     >
       <button

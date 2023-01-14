@@ -58,7 +58,7 @@
 				items={filtered}
 				{fields}
 				{using}
-				bind:activeItem={value}
+				bind:value
 				on:click={handleSelect}
 			/>
 		</Slider>

@@ -1,14 +1,16 @@
-import { defineConfig } from 'unocss';
-import presetUno from '@unocss/preset-uno';
-import presetIcons from '@unocss/preset-icons';
-import transformer from '@unocss/transformer-directives';
-import presetTypography from '@unocss/preset-typography';
+import { defineConfig } from 'unocss'
+import presetUno from '@unocss/preset-uno'
+import presetIcons from '@unocss/preset-icons'
+import transformer from '@unocss/transformer-directives'
+import presetTypography from '@unocss/preset-typography'
 
-import { extractorSvelte } from '@unocss/core';
-import { iconShortcuts, themeColors } from '@rokkit/themes';
-import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders';
+import { extractorSvelte } from '@unocss/core'
+import { iconShortcuts, themeColors } from '@rokkit/themes'
+import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 
-const safelistIcons = ['menu', 'themes', 'properties', 'list'].map((name) => 'i-spice:' + name);
+const safelistIcons = ['menu', 'themes', 'properties', 'list'].map(
+	(name) => 'i-spice:' + name
+)
 const inputIcons = [
 	'text',
 	'number',
@@ -20,11 +22,11 @@ const inputIcons = [
 	'date',
 	'color',
 	'password'
-].map((type) => 'i-spice:input-' + type);
+].map((type) => 'i-spice:input-' + type)
 
 export default defineConfig({
 	safelist: [
-		// ...Object.keys(iconShortcuts),
+		...Object.keys(iconShortcuts),
 		'i-carbon-tree-view',
 		'i-carbon:tree-view-alt',
 		'i-carbon:list-dropdown',
@@ -34,6 +36,7 @@ export default defineConfig({
 	],
 	shortcuts: {
 		// ...iconShortcuts,
+		'dropdown-opened': 'i-spice:accordion-opened',
 		'bg-error': 'bg-red-100',
 		'text-error': 'text-red-800',
 		'border-error': 'border-red-700',
@@ -60,17 +63,19 @@ export default defineConfig({
 			serif: ['Poppins', 'ui-serif', 'sans-serif'],
 			body: ['Poppins', 'ui-serif', 'sans-serif']
 		},
-		colors: themeColors()
+		colors: themeColors('hsl')
 	},
 	presets: [
 		presetUno(),
 		presetTypography(),
 		presetIcons({
 			collections: {
-				spice: FileSystemIconLoader('./static/icons', (svg) => svg.replace(/black/, 'currentColor'))
+				spice: FileSystemIconLoader('./static/icons', (svg) =>
+					svg.replace(/black/, 'currentColor')
+				)
 			}
 		})
 	],
 	extractors: [extractorSvelte],
 	transformers: [transformer()]
-});
+})

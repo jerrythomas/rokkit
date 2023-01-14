@@ -13,7 +13,8 @@ export const defaultFields = {
 	data: 'data',
 	icon: 'icon',
 	image: 'image',
-	component: 'component'
+	component: 'component',
+	isOpen: '_open'
 }
 
 export const defaultStateIcons = {

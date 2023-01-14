@@ -8,10 +8,10 @@
 	export let items = []
 	export let fields = {}
 	export let allowClose = false
-	export let activeItem = items[0]
+	export let value = items[0]
 
 	function activate(item) {
-		activeItem = item
+		value = item
 		dispatch('switch', item)
 	}
 	function closeTab(index) {
@@ -27,7 +27,7 @@
 		icon={item[fields.icon]}
 		{label}
 		{allowClose}
-		active={activeItem == item}
+		active={value == item}
 		on:click={() => activate(item)}
 		on:close={() => closeTab(index)}
 	/>
