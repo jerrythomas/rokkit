@@ -1,6 +1,6 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.9",
+	"version": "1.0.0-next-0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -13,8 +13,8 @@
 		"format": "turbo run format",
 		"prepare": "husky install",
 		"upgrade": "pnpm clean && pnpm upgrade",
-		"bump": "bumpp --no-commit --no-push packages/*/package.json package.json sites/*/package.json",
-		"bump:next": "bumpp --preid=next --no-commit --no-push packages/*/package.json package.json sites/*/package.json ",
+		"bump": "bumpp --no-commit --no-push package.json sites/*/package.json",
+		"bump:next": "bumpp --no-commit --no-push --preid=next package.json sites/*/package.json ",
 		"release": "changeset publish",
 		"version:next": "pnpm build && changeset pre enter next && changeset",
 		"release:next": "changeset version && changeset publish && changeset pre exit",

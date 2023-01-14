@@ -1,5 +1,21 @@
 # @rokkit/layout
 
+## 1.0.0-next.0
+
+### Patch Changes
+
+- Release version 1.0.0-next-10
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.0
+
+## 1.0.0
+
+### Patch Changes
+
+- 2accbf9: Updated dropdown and theme
+- Updated dependencies [2accbf9]
+  - @rokkit/core@1.0.0
+
 ## 1.0.0-next.9
 
 ### Patch Changes

@@ -4,36 +4,37 @@
 	const dispatch = createEventDispatcher()
 
 	export let label = 'Use Setting'
-	export let isChecked = false
+	export let value = false
 	export let tabindex = 0
 
 	function toggle() {
-		isChecked = !isChecked
-		dispatch('change', { isChecked })
+		value = !value
+		dispatch('change', { value })
 	}
 </script>
 
-<button role="switch"
-        class="w-16 h-8 rounded-full relative transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2"
-        {tabindex}
-        aria-checked={isChecked}
-        on:click={toggle}>
-	<span class="sr-only">{label}</span>
-	<mark aria-hidden="true" />
+<button
+	role="switch"
+	class="w-16 h-8 flex flex-shrink-0 rounded-full relative"
+	{tabindex}
+	aria-checked={value}
+	class:checked={value}
+	on:click={toggle}
+>
+	<span class="hidden">{label}</span>
+	<mark
+		aria-hidden="true"
+		class="h-6 w-6 rounded-full absolute top-1"
+		class:is-on={value}
+		class:is-off={!value}
+	/>
 </button>
 
-<style lang="postcss">
-	.sr-only {
-		@apply hidden;
+<style>
+	.is-on {
+		@apply right-1;
 	}
-	button mark {
-		@apply pointer-events-none transition ease-in-out duration-200;
-		@apply h-6 w-6 rounded-full absolute top-0.5;
-	}
-	button[aria-checked='false'] mark {
-		@apply left-0.5;
-	}
-	button[aria-checked='true'] mark {
-		@apply right-0.5;
+	.is-off {
+		@apply left-1;
 	}
 </style>

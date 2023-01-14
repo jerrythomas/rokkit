@@ -7,7 +7,7 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
-	export let activeItem = null
+	export let value = null
 	export let searchable = false
 	export let editable = false
 
@@ -16,13 +16,13 @@
 
 	function addItem() {
 		items = [...items, {}]
-		activeItem = items[items.length - 1]
+		value = items[items.length - 1]
 	}
 	function deleteSelection() {
-		if (activeItem) activeItem.isDeleted = true
+		if (value) value.isDeleted = true
 	}
 	function clearSelection() {
-		activeItem = null
+		value = null
 	}
 
 	$: filtered =
@@ -43,12 +43,6 @@
 		/>
 	{/if}
 	<scroll class="flex flex-col h-full overflow-scroll">
-		<ListItems
-			bind:items={filtered}
-			{fields}
-			{using}
-			bind:activeItem
-			on:select
-		/>
+		<ListItems bind:items={filtered} {fields} {using} bind:value on:select />
 	</scroll>
 </list>

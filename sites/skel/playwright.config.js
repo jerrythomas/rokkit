@@ -5,6 +5,6 @@ const config = {
 		port: 4173
 	},
 	testDir: 'tests'
-};
+}
 
-export default config;
+export default config

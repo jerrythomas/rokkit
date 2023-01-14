@@ -1,5 +1,7 @@
 @import '@unocss/reset/tailwind.css';
-@import './base.css';
+@import '@fontsource/victor-mono';
+@import '@fontsource/poppins';
 
-/* @layer utilities {}
-@layer components {} */
+@import '@rokkit/themes/palette.css';
+@import '@rokkit/themes/prism.css';
+@import './styles/base.css';

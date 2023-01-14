@@ -1,0 +1,31 @@
+.rokkit alert-list {
+	@apply top-4 right-4 w-80;
+}
+.rokkit button[role='switch'] {
+	@apply box-border bg-skin-base transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2;
+}
+.rokkit button[role='switch'] mark {
+	@apply bg-primary;
+}
+
+.rokkit .dropdown {
+	@apply box-border rounded outline-secondary-500 bg-skin-100;
+}
+
+.rokkit .dropdown button {
+	@apply pl-4 gap-4 leading-loose rounded rounded border border-skin-300 hover:bg-skin-400 hover:border-primary-900 text-skin-900;
+}
+
+.rokkit .dropdown button square-icon {
+	@apply border-l border-skin-300;
+}
+.rokkit .dropdown > .menu {
+	@apply mt-1 bg-skin-base text-skin-900 shadow;
+}
+
+.rokkit .dropdown .menu .item {
+	@apply px-4 hover:bg-secondary-300;
+}
+.rokkit .dark .dropdown .menu .item {
+	@apply hover:bg-secondary-700;
+}

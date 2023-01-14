@@ -1,6 +1,6 @@
 {
 	"name": "stories",
-	"version": "1.0.0-next.8",
+	"version": "1.0.0-next-10",
 	"scripts": {
 		"prebuild": "[[ $CI = true ]] && npx pnpm install -r --store=node_modules/.pnpm-store || echo skiping pnpm install",
 		"dev": "vite dev",

@@ -11,10 +11,11 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
-	export let activeItem = null
+	export let value = null
 
 	function handleClick(item) {
-		activeItem = item
+		value = item
+		console.log(value)
 		dispatch('select', item)
 	}
 
@@ -23,15 +24,15 @@
 	$: filtered = items.filter((item) => !item.isDeleted)
 </script>
 
-<ul class="flex flex-col w-full flex-shrink-0 select-none {className}">
+<items class="flex flex-col w-full flex-shrink-0 select-none {className}">
 	{#each filtered as item}
 		{@const component = item[fields.component]
 			? using[item[fields.component]] || using.default
 			: using.default}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<li
+		<item
 			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
-			class:active={activeItem === item}
+			class:active={value === item}
 			on:click={() => handleClick(item)}
 		>
 			<svelte:component
@@ -40,6 +41,6 @@
 				{fields}
 				on:change
 			/>
-		</li>
+		</item>
 	{/each}
-</ul>
+</items>

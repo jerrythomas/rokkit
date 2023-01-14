@@ -1,3 +1,4 @@
-page content goes here
+<script>
+</script>
 
-<input type="text" />
+<section class="flex relative h-1/2" />

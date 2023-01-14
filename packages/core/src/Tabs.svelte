@@ -9,11 +9,11 @@
 	export let title = null
 	export let allowAdd = false
 	export let allowClose = false
-	export let activeItem = items[0]
+	export let value = items[0]
 
 	function addTab() {
 		items = [...items, {}]
-		activeItem = items[items.length - 1]
+		value = items[items.length - 1]
 	}
 </script>
 
@@ -22,7 +22,7 @@
 		{#if title}
 			<p>{title}</p>
 		{/if}
-		<TabItems {items} {fields} {allowClose} bind:activeItem on:close />
+		<TabItems {items} {fields} {allowClose} bind:value on:close />
 		{#if allowAdd}
 			<TabItem label="+" on:click={addTab} />
 		{/if}

@@ -30,7 +30,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div
-	class="flex w-full relative cursor-pointer dropdown {className}"
+	class="flex w-full relative cursor-pointer select-none dropdown {className}"
 	class:open
 	tabindex="0"
 	use:dismissable
@@ -51,13 +51,7 @@
 			class="flex flex-col absolute z-10 h-fit w-full menu"
 			style:top="{offsetTop}px"
 		>
-			<ListItems
-				{items}
-				{fields}
-				{using}
-				bind:activeItem={value}
-				on:select={handleSelect}
-			/>
+			<ListItems {items} {fields} {using} bind:value on:select={handleSelect} />
 		</div>
 	{/if}
 </div>

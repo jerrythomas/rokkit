@@ -1,7 +1,7 @@
 <script>
+	import { Text, Summary } from './items'
 	import { defaultFields } from './constants'
 	import ListItems from './ListItems.svelte'
-	import Collapsible from './items/Collapsible.svelte'
 
 	let className = ''
 	export { className as class }
@@ -9,17 +9,21 @@
 	export let fields = {}
 	export let using = {}
 	export let autoClose = false
+	export let value = null
 
-	let activeItem = null
 	let activeGroup = null
 
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { collapsible: Collapsible, ...using }
+	$: using = { default: Text, ...using }
 
 	function handleToggle(event) {
 		if (autoClose) {
-			if (activeGroup && activeGroup !== event.detail && activeGroup.isOpen) {
-				activeGroup.isOpen = false
+			if (
+				activeGroup &&
+				activeGroup !== event.detail &&
+				activeGroup[fields.isOpen]
+			) {
+				activeGroup[fields.isOpen] = false
 			}
 			activeGroup = event.detail
 		}
@@ -30,22 +34,17 @@
 	{#each items as item}
 		{@const hasItems = item[fields.data] && item[fields.data].length > 0}
 		{@const itemFields = fields.fields ?? fields}
-		<group class="flex flex-col" class:expanded={item.isOpen}>
-			<svelte:component
-				this={using.collapsible}
-				bind:content={item}
-				{fields}
-				on:toggle={handleToggle}
-			/>
-			{#if hasItems && item.isOpen}
+		<details class="flex flex-col" class:expanded={item[fields.isOpen]}>
+			<Summary {fields} {using} bind:content={item} on:toggle={handleToggle} />
+			{#if hasItems && item[fields.isOpen]}
 				<ListItems
 					bind:items={item[fields.data]}
-					bind:activeItem
+					bind:value
 					fields={itemFields}
 					{using}
 					on:select
 				/>
 			{/if}
-		</group>
+		</details>
 	{/each}
 </accordion>

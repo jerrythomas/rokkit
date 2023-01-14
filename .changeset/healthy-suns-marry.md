@@ -9,4 +9,4 @@
 '@rokkit/form': patch
 ---
 
-Updated dropdown and theme
+Release version 1.0.0-next-10
