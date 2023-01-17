@@ -45,6 +45,12 @@
 		"d3-scale": "^4.0.2",
 		"date-fns": "^2.29.3"
 	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.svelte",
+		"!src/fixtures",
+		"!src/**/*.spec.js"
+	],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {

@@ -1,0 +1,20 @@
+input[type='number'] {
+	@apply text-right;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input-field {
+	@apply text-skin-800 border-skin-600;
+}
+
+input-field input {
+	@apply border-none outline-none;
+}
+
+.searchable input {
+	@apply border border-skin-200;
+}

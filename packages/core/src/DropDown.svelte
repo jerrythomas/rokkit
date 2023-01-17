@@ -2,7 +2,7 @@
 	import Icon from './Icon.svelte'
 	import Text from './items/Text.svelte'
 	import ListItems from './ListItems.svelte'
-	import { defaultFields } from './constants.js'
+	import { defaultFields, defaultStateIcons } from './constants.js'
 	import { dismissable } from './actions'
 	import { createEventDispatcher } from 'svelte'
 
@@ -21,7 +21,7 @@
 
 	let offsetTop = 0
 	let open = false
-
+	let icons = defaultStateIcons.selector
 	function handleSelect(event) {
 		open = false
 		dispatch('change', event.detail)
@@ -44,7 +44,11 @@
 		tabindex="-1"
 	>
 		<svelte:component this={using.default} content={value ?? placeholder} />
-		<Icon name="dropdown-opened" />
+		{#if open}
+			<Icon name={icons.opened} />
+		{:else}
+			<Icon name={icons.closed} />
+		{/if}
 	</button>
 	{#if open}
 		<div

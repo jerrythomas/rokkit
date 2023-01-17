@@ -1,0 +1,12 @@
+@import './base/base.css';
+@import './base/input.css';
+@import './base/layout.css';
+@import './base/list.css';
+@import './base/tabs.css';
+@import './dropdown.css';
+
+body,
+body > div {
+	@apply font-body w-screen h-screen flex flex-col;
+}
+

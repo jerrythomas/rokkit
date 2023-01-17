@@ -42,5 +42,17 @@
 		"d3-collection": "^1.0.7",
 		"d3-scale": "^4.0.2",
 		"ramda": "^0.28.0"
+	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.svelte",
+		"!src/fixtures",
+		"!src/mocks",
+		"!src/**/*.spec.js"
+	],
+	"exports": {
+		"./src": "./src",
+		"./package.json": "./package.json",
+		".": "./src/index.js"
 	}
 }

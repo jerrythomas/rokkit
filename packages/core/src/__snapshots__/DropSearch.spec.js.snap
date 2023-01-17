@@ -1,0 +1,30 @@
+// Vitest Snapshot v1
+
+exports[`DropSearch.svelte > Should render 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col outline-none w-full h-12 relative dropdown"
+      tabindex="0"
+    >
+      <div
+        class="flex flex-shrink-0 h-12 items-center pl-4 selected-item"
+      >
+        <span
+          class="flex flex-grow"
+        >
+          <input
+            class="p-0 border-none bg-transparent w-full"
+            type="text"
+          />
+        </span>
+         
+        <icon
+          class="selector-closed"
+        />
+      </div>
+       
+    </div>
+  </div>
+</body>
+`;

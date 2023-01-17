@@ -1,0 +1,48 @@
+// Vitest Snapshot v1
+
+exports[`DropDown.svelte > should toggle open state when button is clicked 1`] = `
+<body>
+  <div>
+    <div
+      class="flex w-full relative cursor-pointer select-none dropdown"
+      tabindex="0"
+    >
+      <button
+        class="flex w-full"
+        tabindex="-1"
+      >
+         
+         
+        <p
+          class="flex flex-grow"
+        >
+          Select a value
+        </p>
+         
+        <square-icon
+          class="flex flex-col flex-shrink-0 h-full items-center justify-center"
+          style="width: 0px;"
+        >
+          <icon
+            aria-hidden="true"
+            class="selector-closed"
+          />
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </square-icon>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </button>
+       
+    </div>
+  </div>
+</body>
+`;

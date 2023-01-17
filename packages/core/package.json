@@ -39,6 +39,12 @@
 		"vite": "^4.0.4",
 		"vitest": "~0.19.1"
 	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.svelte",
+		"!src/mocks",
+		"!src/**/*.spec.js"
+	],
 	"exports": {
 		"./src": "./src",
 		"./package.json": "./package.json",
