@@ -45,7 +45,11 @@
 				}}
 			/>
 		</span>
-		<icon class="selector" />
+		{#if opened}
+			<icon class="selector-opened" />
+		{:else}
+			<icon class="selector-closed" />
+		{/if}
 	</div>
 
 	{#if opened}

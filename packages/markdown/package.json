@@ -44,6 +44,12 @@
 		"marked": "^4.2.5",
 		"prismjs": "^1.29.0"
 	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.svelte",
+		"!src/fixtures",
+		"!src/**/*.spec.js"
+	],
 	"exports": {
 		"./package.json": "./package.json",
 		"./prism.css": "./src/prism.css",

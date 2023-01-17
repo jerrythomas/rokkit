@@ -15,7 +15,6 @@
 
 	function handleClick(item) {
 		value = item
-		console.log(value)
 		dispatch('select', item)
 	}
 
@@ -32,7 +31,7 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<item
 			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
-			class:active={value === item}
+			class:selected={value === item}
 			on:click={() => handleClick(item)}
 		>
 			<svelte:component

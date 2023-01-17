@@ -55,9 +55,9 @@ export function themeColors(modifier = 'none') {
 	return colors
 }
 
-export function stateIconsFromNames(icons) {
-	return Object.entries(icons)
-		.map(([k, v]) => [...k.split('-'), v])
+export function stateIconsFromNames(names) {
+	return names
+		.map((k) => [...k.split('-'), k])
 		.reduce(
 			(acc, [element, state, icon]) => ({
 				...acc,
@@ -66,3 +66,12 @@ export function stateIconsFromNames(icons) {
 			{}
 		)
 }
+
+// export function iconShortcutAlises(names, collection) {
+// 	return names.reduce(
+// 		(acc, name) => ({ ...acc, [name]: collection + ':' + name }),
+// 		{}
+// 	)
+// }
+
+// import { iconShortcutAlises, defaultIconList } from '@rokkit/core'

@@ -24,28 +24,11 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <summary
-	class="flex flex-row flex-shrink-0 items-center w-full leading-loose cursor-pointer"
+	class="flex flex-row flex-shrink-0 items-center w-full cursor-pointer"
 	class:expanded={content[fields.isOpen]}
 	on:click={toggle}
 >
-	<svelte:component this={component} bind:content />
-	<!-- {#if content[fields.image]}
-		<img
-			class="h-8 w-8 rounded-full"
-			alt={content[fields.text]}
-			src={content[fields.image]}
-		/>
-	{/if}
-	{#if content[fields.icon]}
-		<icon class={content[fields.icon]} />
-	{/if}
-	{#if content[fields.url]}
-		<a href={content[fields.url]} class="flex flex-grow">
-			{content[fields.text]}
-		</a>
-	{:else}
-		<p class="flex flex-grow">{content[fields.text]}</p>
-	{/if} -->
+	<svelte:component this={component} bind:content {fields} />
 	{#if hasItems}
 		{#if content[fields.isOpen]}
 			<icon class="sm accordion-opened" aria-label="expand" />

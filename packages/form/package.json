@@ -46,6 +46,12 @@
 		"ajv": "^8.12.0",
 		"ramda": "^0.28.0"
 	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.svelte",
+		"!src/fixtures",
+		"!src/**/*.spec.js"
+	],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {

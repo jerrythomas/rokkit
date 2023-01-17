@@ -1,0 +1,68 @@
+icon {
+	@apply text-2xl;
+}
+icon.sm {
+	@apply text-base;
+}
+icon.md {
+	@apply text-lg;
+}
+
+scroll {
+	@apply flex flex-col overflow-y-scroll;
+}
+
+.sidebar {
+	@apply w-160 h-full flex flex-col border-skin-400;
+}
+
+square {
+	@apply flex flex-col items-center justify-center aspect-square h-full;
+}
+
+overlay {
+	@apply bg-skin-50 bg-opacity-50;
+}
+alert-list {
+	@apply top-4 right-4 w-80;
+}
+
+alert,
+error,
+info,
+warning,
+success {
+	@apply px-4 py-2 border rounded select-none cursor-pointer;
+}
+alert.error {
+	@apply bg-error text-error border-error;
+}
+alert.info,
+info {
+	@apply bg-info text-info border-info;
+}
+alert.warning,
+warning {
+	@apply bg-warn text-warn border-warn;
+}
+alert.success,
+success {
+	@apply bg-pass text-pass border-pass;
+}
+
+rating {
+	@apply text-secondary-400 gap-2 text-xl;
+}
+checkbox {
+	@apply gap-2;
+}
+
+.disabled {
+	@apply text-disabled;
+}
+
+.disabled input,
+.disabled textarea,
+.disabled select {
+	@apply outline-disabled;
+}

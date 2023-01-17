@@ -43,6 +43,12 @@
 		"vite": "^3.2.5",
 		"vitest": "~0.19.1"
 	},
+	"files": [
+		"src/**/*.js",
+		"src/**/*.svelte",
+		"!src/fixtures",
+		"!src/**/*.spec.js"
+	],
 	"exports": {
 		"./src": "./src",
 		"./package.json": "./package.json",

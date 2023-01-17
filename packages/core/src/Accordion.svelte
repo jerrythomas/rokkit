@@ -34,6 +34,7 @@
 	{#each items as item}
 		{@const hasItems = item[fields.data] && item[fields.data].length > 0}
 		{@const itemFields = fields.fields ?? fields}
+
 		<details class="flex flex-col" class:expanded={item[fields.isOpen]}>
 			<Summary {fields} {using} bind:content={item} on:toggle={handleToggle} />
 			{#if hasItems && item[fields.isOpen]}

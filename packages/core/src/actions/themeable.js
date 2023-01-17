@@ -6,15 +6,17 @@ import { theme } from '../stores'
  * @param {HTMLElement} node
  */
 export function themable(node) {
-	let previous = { name: 'none', mode: 'light' }
+	let previous = {}
 
 	theme.subscribe((data) => {
-		Object.values(previous)
-			.filter((theme) => typeof theme === 'string')
-			.map((theme) => node.classList.remove(theme.toLowerCase()))
-		Object.values(data)
-			.filter((theme) => typeof theme === 'string')
-			.map((theme) => node.classList.add(theme.toLowerCase()))
+		if (data.name !== previous.name) {
+			node.classList.remove(previous.name)
+			node.classList.add(data.name)
+		}
+		if (data.mode !== previous.mode) {
+			node.classList.remove(previous.mode)
+			node.classList.add(data.mode)
+		}
 
 		previous = data
 	})
