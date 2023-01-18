@@ -8,12 +8,13 @@ export const defaultOptions = {
 export const defaultFields = {
 	id: 'id',
 	url: 'url',
-	// key: 'key',
 	text: 'text',
 	data: 'data',
 	icon: 'icon',
 	image: 'image',
 	component: 'component',
+	summary: 'summary',
+	notes: 'notes',
 	isOpen: '_open'
 }
 
@@ -47,7 +48,11 @@ export const defaultIconList = [
 	'radio-off',
 	'radio-on',
 	'mode-dark',
-	'mode-light'
+	'mode-light',
+	'navigate-left',
+	'navigate-right',
+	'navigate-up',
+	'navigate-down'
 ]
 
 export function stateIconsFromNames(icons) {

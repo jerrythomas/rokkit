@@ -1,0 +1,34 @@
+### Mapping attributes
+
+List is flexible and can adapt to your data structure. You do not need to modify your attributes to fit the structure that List expects.
+Instead you can provide a `mapping` to inform the List component the attributes you want to use.
+
+Let's assume that you have a list of people as shown below.
+
+<script>
+  import { List } from '@rokkit/core'
+  import Preview from '$lib/Preview.svelte'
+
+  const fields = { text: 'name', image: 'profile'}
+  let items = [
+    { name: 'John', profile: 'https://shorturl.at/pOTY4' },
+    { name: 'Jane', profile: 'https://shorturl.at/bfqIO' }
+  ]
+</script>
+
+<Preview>
+  <List {items} {fields} />
+</Preview>
+
+```svelte
+<script>
+  import { List } from '@rokkit/core'
+  const fields = { text: 'name', image: 'profile'}
+  let items = [
+    { name: 'John', profile: 'https://shorturl.at/pOTY4' },
+    { name: 'Jane', profile: 'https://shorturl.at/bfqIO' }
+  ]
+</script>
+
+<List {items} {fields} />
+```

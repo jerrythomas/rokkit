@@ -4,13 +4,24 @@
 	import { theme } from '@rokkit/core/stores'
 
 	export let menu = []
-	let darkMode = true
-	let items = [{ text: 'Rokkit' }, { text: 'Modern' }, { text: 'Material' }]
-	let value = items[0]
-	$: theme.set({
-		name: value.text.toLowerCase(),
-		mode: darkMode ? 'dark' : 'light'
-	})
+	let darkMode = $theme.mode == 'dark'
+	let items = [
+		{ text: 'Rokkit' } /*, { text: 'Modern' }, { text: 'Material' }*/
+	]
+	let value = getCurrenTheme()
+
+	function getCurrenTheme() {
+		const matched = items.filter(
+			(item) => item.text.toLowerCase() === $theme.name
+		)
+		return matched.length > 0 ? matched[0] : items[0]
+	}
+	$: if (value) {
+		theme.set({
+			name: value.text.toLowerCase(),
+			mode: darkMode ? 'dark' : 'light'
+		})
+	}
 </script>
 
 <header
@@ -28,7 +39,7 @@
 		{/each}
 	</nav>
 	<settings class="flex items-center gap-5">
-		<DropDown {items} bind:value />
+		<!-- <DropDown {items} bind:value /> -->
 		<Switch bind:value={darkMode} />
 	</settings>
 </header>

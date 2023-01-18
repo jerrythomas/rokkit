@@ -1,0 +1,29 @@
+### Array of objects
+
+List can also accept an array of objects as input. List expects `text` attribute on each item. Additionally `image` or `icon` attributes can be provided for each item.
+
+<script>
+  import { List } from '@rokkit/core'
+  import Preview from '$lib/Preview.svelte'
+
+  let items = [
+    { text: 'John', image: 'https://shorturl.at/pOTY4' },
+    { text: 'Jane', image: 'https://shorturl.at/bfqIO' }
+  ]
+</script>
+
+<Preview>
+  <List {items} />
+</Preview>
+
+```svelte
+<script>
+  import { List } from '@rokkit/core'
+
+  let items = [
+    { text: 'John', image: 'https://shorturl.at/pOTY4' },
+    { text: 'Jane', image: 'https://shorturl.at/bfqIO' }
+  ]
+</script>
+<List {items} />
+```

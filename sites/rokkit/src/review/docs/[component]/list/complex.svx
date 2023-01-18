@@ -1,0 +1,40 @@
+## Hybrid List items
+
+Here is an example of how you can use the List component to display a list of people, using multiple components based on the data (in this case, the gender of the person):
+
+<script>
+import { List } from '@rokkit/core'
+import Preview from '$lib/Preview.svelte'
+import PersonCard from './PersonCard.svelte'
+
+let using = { default: PersonCard}
+const mapping = { text: 'name', image: 'profile'}
+const people = [
+  { name: 'John', age: 30, gender: 'Male', profile: 'https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=944&q=80' },
+  { name: 'Jane', age: 25, gender: 'Female', profile: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80' }
+]
+</script>
+```svelte
+<!-- app.svelte -->
+<script>
+  import { List } from '@rokkit/core'
+  import PersonCard from './components/PersonCard.svelte'
+  import MaleCard from './components/MaleCard.svelte'
+  import FemaleCard from './components/FemaleCard.svelte'
+
+  const using = { default: PersonCard, Male: MaleCard, Female: FemaleCard}
+  const mapping = { component: 'gender'}
+  const people = [
+    { name: 'John', age: 30, gender: 'Male', profile: 'john.jpg' },
+    { name: 'Jane', age: 25, gender: 'Female', profile: 'jane.jpg' }
+  ]
+
+</script>
+
+<List items={people} {using}  />
+```
+
+This will render the list as shown below.
+<Preview>
+  <List items={people} {using} fields={mapping} />
+</Preview>

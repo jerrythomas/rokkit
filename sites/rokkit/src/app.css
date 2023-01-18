@@ -1,7 +1,36 @@
 @import '@unocss/reset/tailwind.css';
 @import '@fontsource/victor-mono';
+@import '@fontsource/victor-mono/latin.css';
 @import '@fontsource/poppins';
+@import '@fontsource/poppins/300.css';
 
 @import '@rokkit/themes/palette.css';
 @import '@rokkit/themes/prism.css';
 @import './styles/rokkit.css';
+
+tab-view content {
+	@apply bg-skin-50 px-8;
+}
+
+pg {
+	@apply rounded-full h-3 w-3 bg-skin-300 mx-1;
+}
+
+pg.selected {
+	@apply bg-secondary h-4 w-4;
+}
+
+
+nav-pages {
+	@apply w-full leading-loose;
+}
+nav-pages span {
+	@apply h-12;
+}
+
+page wrapper {
+	@apply min-w-1/3 fit-content;
+}
+.nav-footer {
+	@apply absolute bottom-6 left-0 right-0;
+}

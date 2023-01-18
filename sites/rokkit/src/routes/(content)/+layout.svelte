@@ -5,14 +5,7 @@
 
 	export let data
 
-	let prefix = $page.url.pathname.split('/')[1]
-	const menu = list(
-		data.components.map((m) => ({
-			...m,
-			url: '/' + prefix + '/' + m.name.toLowerCase(),
-			component: 'link'
-		}))
-	).groupBy('category')
+	const menu = list(data.menu).groupBy('category')
 
 	const filtered = menu.filtered
 	const fields = { text: 'name' }
@@ -20,11 +13,14 @@
 	// $: items = getMenuItems(data.params.slug)
 </script>
 
-<section class="flex w-full h-full overflow-hidden">
+<section
+	class="flex flex-col w-full h-full items-center justify-center overflow-hidden"
+>
 	<!-- {JSON.stringify($filtered)} -->
-	<aside class="flex flex-col w-80 px-4 h-full overflow-y-scroll">
+	<!-- <aside class="flex flex-col w-80 px-4 h-full overflow-y-scroll">
 		<Accordion items={$filtered} {fields} {using} />
-	</aside>
-	<content><slot /></content>
+	</aside> -->
+	<!-- <content class="flex flex-col flex-grow px-4"><slot /></content> -->
+	<slot />
 </section>
 <!-- <Sidebar {items} /> -->

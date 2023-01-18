@@ -1,3 +1,4 @@
+pre,
 code,
 code[class*='language-'],
 pre[class*='language-'] {
@@ -7,20 +8,12 @@ pre[class*='language-'] {
 	word-spacing: normal;
 	tab-size: 4;
 	hyphens: none;
-	font-family: 'Victor Mono', monospace;
+	/* font-family: 'Victor Mono', monospace; */
 	font-size: medium;
 	font-variant-ligatures: common-ligatures;
 	line-height: 1.4;
 	direction: ltr;
 	cursor: text;
-}
-
-pre[class*='language-'] {
-	overflow: auto;
-	margin: 1em 0;
-	padding: 1.2em;
-	border-radius: 3px;
-	font-size: 85%;
 }
 
 p code,
@@ -41,16 +34,27 @@ table code:after {
 	content: '\00a0';
 }
 
-code,
-:not(pre) > code[class*='language-'],
 pre[class*='language-'] {
-	background: var(--code-bg);
+	overflow: auto;
+	margin: 1em 0;
+	padding: 1.2em;
+	border-radius: 3px;
+	font-size: 85%;
 }
 
+pre,
+pre[class*='language-'],
+:not(pre) > code,
 :not(pre) > code[class*='language-'] {
-	padding: 0.1em;
-	border-radius: 0.3em;
+	background-color: var(--code-bg);
+	/* border-radius: 0.3em;
+	padding: 1.2em; */
 }
+
+/* :not(pre) > code[class*='language-'] {
+	padding: 0.1em;
+
+} */
 
 .token.comment,
 .token.prolog,

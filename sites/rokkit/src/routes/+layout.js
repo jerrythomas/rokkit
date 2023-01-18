@@ -2,8 +2,8 @@
 export function load() {
 	return {
 		sections: [
-			{ slug: 'docs', title: 'Docs' },
-			{ slug: 'labs', title: 'Labs' }
+			{ slug: 'list', title: 'Docs' }
+			// { slug: 'labs', title: 'Labs' }
 		]
 	}
 }
