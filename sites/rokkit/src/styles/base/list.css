@@ -7,36 +7,44 @@ accordion details {
 accordion details.expanded summary {
 	@apply sticky top-0 z-1;
 }
+/* accordion details.expanded items {
+	margin-top: calc(-1 * --hdr-height);
+	padding-top: calc(--hdr-height);
+} */
 
 accordion items,
 list items {
-	@apply p-t-1px gap-1px bg-skin-100;
+	@apply gap-1px bg-skin-300;
 }
 accordion item,
 list item,
 accordion summary {
-	@apply leading-10 px-4 bg-skin-50;
+	@apply leading-10 px-4 bg-skin-200 text-skin-900;
 }
 accordion summary {
-	@apply rounded text-skin-900 pr-2 bg-skin-100;
+	@apply rounded pr-2 bg-skin-100;
 }
 
 accordion item,
 list item {
-	@apply last:rounded-b first:rounded-t hover:bg-skin-200;
+	@apply last:rounded-b first:rounded-t hover:bg-skin-50;
 }
 
 
 accordion .expanded summary {
 	@apply rounded-b-none border-b border-skin-200;
 }
-accordion .expanded .item {
+accordion .expanded item {
 	@apply first:rounded-t-0;
 }
 
-accordion .item icon,
-list .item icon {
+accordion item icon,
+list item icon {
 	@apply text-secondary;
+}
+.dark accordion item icon,
+.dark list item icon {
+	@apply text-secondary-300;
 }
 /* accordion summary {
  	@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
@@ -57,5 +65,5 @@ list {
 }
 
 .zebra .item {
-	@apply even:bg-skin-zebra;
+	@apply even:bg-skin-zebra hover:bg-skin-50;
 }

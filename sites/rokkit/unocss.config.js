@@ -36,7 +36,7 @@ export default defineConfig({
 	},
 	theme: {
 		fontFamily: {
-			mono: ['Victor-Mono', 'monospace'],
+			mono: ['Victor Mono', 'monospace'],
 			serif: ['Poppins', 'ui-serif', 'sans-serif'],
 			body: ['Poppins', 'ui-serif', 'sans-serif']
 		},
@@ -44,7 +44,12 @@ export default defineConfig({
 	},
 	presets: [
 		presetUno(),
-		presetTypography(),
+		presetTypography({
+			cssExtend: {
+				'font-mono': 'Victor Mono'
+				// 'font-size': '14px'
+			}
+		}),
 		presetIcons({
 			collections: {
 				spice: FileSystemIconLoader('./static/icons', (svg) =>

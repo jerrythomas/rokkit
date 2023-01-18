@@ -46,6 +46,8 @@
 		"@rokkit/layout": "workspace:*",
 		"@rokkit/markdown": "workspace:*",
 		"@rokkit/themes": "workspace:*",
-		"@rokkit/utils": "workspace:*"
+		"@rokkit/utils": "workspace:*",
+		"prism-svelte": "^0.5.0",
+		"prismjs": "^1.29.0"
 	}
 }

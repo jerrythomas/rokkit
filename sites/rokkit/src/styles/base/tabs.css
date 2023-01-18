@@ -1,15 +1,23 @@
+tab-view {
+	@apply rounded-md;
+}
+tab-view content {
+	@apply rounded-b-md;
+}
 tab-view tabs {
-	@apply box-border space-evenly;
-	@apply bg-skin-200 border-b border-skin-400 text-skin-900;
+	@apply box-border space-evenly rounded-t-md;
+	@apply bg-skin-200 text-skin-900;
 }
 tab-view tabs tab {
 	@apply py-2 px-4 flex-shrink-0 justify-center;
 	@apply box-border border-b-3 border-transparent;
 }
 tab-view tabs tab.active {
-	@apply border-secondary text-secondary;
+	@apply border-secondary-600 text-secondary-600;
 }
-
+.dark tab-view tabs tab.active {
+	@apply border-secondary-200 text-secondary-200;
+}
 .stretch tabs tab {
 	@apply flex-grow;
 }

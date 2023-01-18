@@ -1,0 +1,32 @@
+## Custom Component
+
+Here is an example of how you can use the List component to display a list of people, using a custom component for the person items.
+
+<script>
+  import { List } from '@rokkit/core'
+  import Preview from '$lib/Preview.svelte'
+  import PersonCard from './PersonCard.svelte'
+
+  const using = { default: PersonCard}
+  let items = [
+    { name: 'John', age: 30, gender: 'Male', profile: 'https://shorturl.at/pOTY4' },
+    { name: 'Jane', age: 25, gender: 'Female', profile: 'https://shorturl.at/bfqIO' }
+  ]
+</script>
+
+<Preview>
+  <List {items} {using} />
+</Preview>
+
+```svelte
+<script>
+  import { List } from '@rokkit/core'
+  const using = { default: PersonCard}
+  let items = [
+    { name: 'John', age: 30, gender: 'Male', profile: 'https://shorturl.at/pOTY4' },
+    { name: 'Jane', age: 25, gender: 'Female', profile: 'https://shorturl.at/bfqIO' }
+  ]
+</script>
+
+<List {items} {using} />
+```

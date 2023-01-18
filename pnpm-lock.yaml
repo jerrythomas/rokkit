@@ -235,6 +235,7 @@ importers:
       eslint: ^7.32.0
       jsdom: ^19.0.0
       marked: ^4.2.5
+      prism-svelte: ^0.5.0
       prismjs: ^1.29.0
       shared-config: workspace:*
       svelte: ^3.55.0
@@ -244,6 +245,7 @@ importers:
     dependencies:
       '@rokkit/core': link:../core
       marked: 4.2.5
+      prism-svelte: 0.5.0
       prismjs: 1.29.0
     devDependencies:
       '@jerrythomas/eslint-config-svelte': 1.0.2_svelte@3.55.0
@@ -488,6 +490,73 @@ importers:
       vite-plugin-windicss: 1.8.10_vite@4.0.3
       vitest: 0.19.1_syw6g73wa2jf434xldohk7zseq
       windicss: 3.5.6
+
+  sites/rokkit:
+    specifiers:
+      '@fontsource/poppins': ^4.5.10
+      '@fontsource/victor-mono': ^4.5.4
+      '@iconify/utils': ^2.0.9
+      '@jerrythomas/prettier-config': latest
+      '@playwright/test': ^1.28.1
+      '@rokkit/chart': workspace:*
+      '@rokkit/core': workspace:*
+      '@rokkit/form': workspace:*
+      '@rokkit/input': workspace:*
+      '@rokkit/layout': workspace:*
+      '@rokkit/markdown': workspace:*
+      '@rokkit/themes': workspace:*
+      '@rokkit/utils': workspace:*
+      '@sveltejs/adapter-auto': ^1.0.0
+      '@sveltejs/kit': ^1.0.0
+      '@unocss/core': ^0.44.7
+      '@unocss/preset-icons': ^0.44.7
+      '@unocss/preset-typography': ^0.48.0
+      '@unocss/preset-uno': ^0.44.7
+      '@unocss/reset': ^0.44.7
+      '@unocss/transformer-directives': ^0.44.7
+      eslint-config-shared: workspace:*
+      mdsvex: ^0.10.6
+      prism-svelte: ^0.5.0
+      prismjs: ^1.29.0
+      svelte: ^3.54.0
+      svelte-check: ^2.9.2
+      typescript: ^4.9.3
+      unocss: ^0.44.7
+      vite: ^4.0.0
+      vitest: ^0.25.3
+    dependencies:
+      '@fontsource/poppins': 4.5.10
+      '@fontsource/victor-mono': 4.5.4
+      '@rokkit/chart': link:../../packages/chart
+      '@rokkit/core': link:../../packages/core
+      '@rokkit/form': link:../../packages/form
+      '@rokkit/input': link:../../packages/input
+      '@rokkit/layout': link:../../packages/layout
+      '@rokkit/markdown': link:../../packages/markdown
+      '@rokkit/themes': link:../../packages/themes
+      '@rokkit/utils': link:../../packages/utils
+      prism-svelte: 0.5.0
+      prismjs: 1.29.0
+    devDependencies:
+      '@iconify/utils': 2.0.11
+      '@jerrythomas/prettier-config': 1.0.0
+      '@playwright/test': 1.29.1
+      '@sveltejs/adapter-auto': 1.0.0_@sveltejs+kit@1.0.1
+      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.4
+      '@unocss/core': 0.44.7
+      '@unocss/preset-icons': 0.44.7
+      '@unocss/preset-typography': 0.48.0
+      '@unocss/preset-uno': 0.44.7
+      '@unocss/reset': 0.44.7
+      '@unocss/transformer-directives': 0.44.7
+      eslint-config-shared: link:../../shared/linter
+      mdsvex: 0.10.6_svelte@3.55.0
+      svelte: 3.55.0
+      svelte-check: 2.10.3_svelte@3.55.0
+      typescript: 4.9.4
+      unocss: 0.44.7_vite@4.0.4
+      vite: 4.0.4
+      vitest: 0.25.8
 
   sites/skel:
     specifiers:
@@ -1676,7 +1745,6 @@ packages:
       local-pkg: 0.4.2
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@iconify/utils/2.0.9:
     resolution: {integrity: sha512-ropNqaeamoxZvXxvaTJXrI0MrqdWdDVIs/mW7/sEQbNi0aXYUGL2iuLs1da3QR163gyG63kiyTsqw2oQYamw3Q==}
@@ -1946,7 +2014,7 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.3
+      '@sveltejs/kit': 1.0.1_svelte@3.55.0+vite@4.0.4
       import-meta-resolve: 2.2.0
     dev: true
 
@@ -2083,6 +2151,34 @@ packages:
       tiny-glob: 0.2.9
       undici: 5.14.0
       vite: 4.0.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@sveltejs/kit/1.0.1_svelte@3.55.0+vite@4.0.4:
+    resolution: {integrity: sha512-C41aCaDjA7xoUdsrc/lSdU1059UdLPIRE1vEIRRynzpMujNgp82bTMHkDosb6vykH6LrLf3tT2w2/5NYQhKYGQ==}
+    engines: {node: ^16.14 || >=18}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      svelte: ^3.54.0
+      vite: ^4.0.0
+    dependencies:
+      '@sveltejs/vite-plugin-svelte': 2.0.2_svelte@3.55.0+vite@4.0.4
+      '@types/cookie': 0.5.1
+      cookie: 0.5.0
+      devalue: 4.2.0
+      esm-env: 1.0.0
+      kleur: 4.1.5
+      magic-string: 0.27.0
+      mime: 3.0.0
+      sade: 1.8.1
+      set-cookie-parser: 2.5.1
+      sirv: 2.0.2
+      svelte: 3.55.0
+      tiny-glob: 0.2.9
+      undici: 5.14.0
+      vite: 4.0.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2470,6 +2566,22 @@ packages:
       '@unocss/transformer-directives': 0.44.7
       magic-string: 0.26.7
       vite: 4.0.3
+    dev: true
+
+  /@unocss/vite/0.44.7_vite@4.0.4:
+    resolution: {integrity: sha512-RjOB+Yv2bg/p5NOzwXDYap0fl7m+1VmIfej8Afceisy0mDL1NniGISiA0pQjOhUewPdSaBDpRXxlpoDGnYaPjw==}
+    peerDependencies:
+      vite: ^2.9.0 || ^3.0.0-0
+    dependencies:
+      '@ampproject/remapping': 2.2.0
+      '@rollup/pluginutils': 4.2.1
+      '@unocss/config': 0.44.7
+      '@unocss/core': 0.44.7
+      '@unocss/inspector': 0.44.7
+      '@unocss/scope': 0.44.7
+      '@unocss/transformer-directives': 0.44.7
+      magic-string: 0.26.7
+      vite: 4.0.4
     dev: true
 
   /@vercel/nft/0.22.6:
@@ -6167,6 +6279,10 @@ packages:
     resolution: {integrity: sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==}
     dev: true
 
+  /prism-svelte/0.5.0:
+    resolution: {integrity: sha512-db91Bf3pRGKDPz1lAqLFSJXeW13mulUJxhycysFpfXV5MIK7RgWWK2E5aPAa71s8TCzQUXxF5JOV42/iOs6QkA==}
+    dev: false
+
   /prismjs/1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
@@ -7459,6 +7575,35 @@ packages:
       - vite
     dev: true
 
+  /unocss/0.44.7_vite@4.0.4:
+    resolution: {integrity: sha512-4XQZAZ7F5gFi30Dn4e7PdxYc2BVTBtrkXA5QzHgmBy/RqNoM5kEuQwsooEVEMl6Cp3Q+vHuQCueVffOBHUl9rQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@unocss/webpack': 0.44.7
+    peerDependenciesMeta:
+      '@unocss/webpack':
+        optional: true
+    dependencies:
+      '@unocss/cli': 0.44.7
+      '@unocss/core': 0.44.7
+      '@unocss/preset-attributify': 0.44.7
+      '@unocss/preset-icons': 0.44.7
+      '@unocss/preset-mini': 0.44.7
+      '@unocss/preset-tagify': 0.44.7
+      '@unocss/preset-typography': 0.44.7
+      '@unocss/preset-uno': 0.44.7
+      '@unocss/preset-web-fonts': 0.44.7
+      '@unocss/preset-wind': 0.44.7
+      '@unocss/reset': 0.44.7
+      '@unocss/transformer-compile-class': 0.44.7
+      '@unocss/transformer-directives': 0.44.7
+      '@unocss/transformer-variant-group': 0.44.7
+      '@unocss/vite': 0.44.7_vite@4.0.4
+    transitivePeerDependencies:
+      - supports-color
+      - vite
+    dev: true
+
   /uri-js/4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
@@ -7768,40 +7913,6 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/4.0.3_@types+node@18.11.18:
-    resolution: {integrity: sha512-HvuNv1RdE7deIfQb8mPk51UKjqptO/4RXZ5yXSAvurd5xOckwS/gg8h9Tky3uSbnjYTgUm0hVCet1cyhKd73ZA==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 18.11.18
-      esbuild: 0.16.12
-      postcss: 8.4.20
-      resolve: 1.22.1
-      rollup: 3.9.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
   /vite/4.0.4:
     resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -7827,6 +7938,40 @@ packages:
       terser:
         optional: true
     dependencies:
+      esbuild: 0.16.16
+      postcss: 8.4.21
+      resolve: 1.22.1
+      rollup: 3.9.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite/4.0.4_@types+node@18.11.18:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 18.11.18
       esbuild: 0.16.16
       postcss: 8.4.21
       resolve: 1.22.1
@@ -8089,7 +8234,7 @@ packages:
       tinybench: 2.3.1
       tinypool: 0.3.0
       tinyspy: 1.0.2
-      vite: 4.0.3_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
     transitivePeerDependencies:
       - less
       - sass

@@ -1,3 +1,9 @@
+if (typeof window === 'undefined') {
+	global.localStorage = {
+		getItem: () => {},
+		setItem: () => {}
+	}
+}
 export function persistable(key, store) {
 	let value
 	try {
@@ -23,16 +29,21 @@ export function persistable(key, store) {
 		})
 	}
 
-	window.addEventListener('storage', (event) => {
-		if (event.key === key) {
-			try {
-				const newValue = JSON.parse(event.newValue)
-				set(newValue)
-			} catch (e) {
-				console.error('Unable to parse value from local storage for key: ', key)
+	if (typeof window !== 'undefined') {
+		window.addEventListener('storage', (event) => {
+			if (event.key === key) {
+				try {
+					const newValue = JSON.parse(event.newValue)
+					set(newValue)
+				} catch (e) {
+					console.error(
+						'Unable to parse value from local storage for key: ',
+						key
+					)
+				}
 			}
-		}
-	})
+		})
+	}
 
 	return {
 		subscribe: store.subscribe,

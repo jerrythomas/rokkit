@@ -17,7 +17,7 @@ scroll {
 }
 
 square {
-	@apply flex flex-col items-center justify-center aspect-square h-full;
+	@apply flex flex-col items-center justify-center h-full min-h-full aspect-square ;
 }
 
 overlay {
@@ -65,4 +65,16 @@ checkbox {
 .disabled textarea,
 .disabled select {
 	@apply outline-disabled;
+}
+
+pre,
+pre[class*='language-'],
+:not(pre) > code,
+:not(pre) > code[class*='language-'] {
+	@apply rounded-md p-4 font-mono;
+	background-color: var(--code-fill);
+}
+
+.prose {
+	@apply max-w-full px-8 py-4;
 }

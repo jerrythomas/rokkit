@@ -58,7 +58,7 @@ export default defineConfig({
 	},
 	theme: {
 		fontFamily: {
-			mono: ['Victor-Mono', 'monospace'],
+			mono: ['Victor Mono', 'monospace'],
 			serif: ['Poppins', 'ui-serif', 'sans-serif'],
 			body: ['Poppins', 'ui-serif', 'sans-serif']
 		},

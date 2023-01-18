@@ -1,0 +1,19 @@
+## Array of strings
+
+<script>
+  import Preview from '$lib/Preview.svelte'
+  import { List } from '@rokkit/core'
+</script>
+
+<Preview>
+  <List items={['Item 1', 'Item 2', 'Item 3']} class="zebra"/>
+</Preview>
+
+```svelte
+<script>
+  import { List } from '@rokkit/core'
+</script>
+
+<List items={['Item 1', 'Item 2', 'Item 3']} class="zebra" />
+```
+

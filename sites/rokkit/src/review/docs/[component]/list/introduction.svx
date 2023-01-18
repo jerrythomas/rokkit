@@ -1,0 +1,22 @@
+## List Component
+
+The List component is a flexible and customizable component that allows you to display a list of items in your Svelte app.
+
+## Features
+
+- Accepts an array of item objects as input
+- Allows you to map text, icon, etc. for display as list items
+- Allows you to use custom components for list items
+- Allows you to make each list item editable
+- Allows you to use a separate component for each list item
+
+
+
+
+
+
+
+
+
+
+
