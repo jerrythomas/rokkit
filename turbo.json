@@ -25,8 +25,7 @@
 		},
 		"release": {
 			"dependsOn": ["test"]
-		},
-		"upgrade": {}
+		}
 	},
 	"globalDependencies": ["tsconfig.json", ".prettierignore", ".env.*"]
 }
