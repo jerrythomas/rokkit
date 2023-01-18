@@ -18,7 +18,7 @@
 		"release": "changeset publish",
 		"version:next": "pnpm build && changeset pre enter next && changeset",
 		"release:next": "changeset version && changeset publish && changeset pre exit",
-		"upgrade:all": "turbo run upgrade",
+		"upgrade:all": "./upgrade.sh && pnpm upgrade",
 		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
 	},
 	"author": "Jerry Thomas<me@jerrythomas.name",
@@ -41,8 +41,8 @@
 		"husky": "^7.0.4",
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.8.2",
-		"turbo": "^1.6.3"
+		"prettier": "^2.8.3",
+		"turbo": "^1.7.0"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",

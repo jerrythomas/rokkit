@@ -20,7 +20,7 @@ exports[`DropDown.svelte > should toggle open state when button is clicked 1`] =
         </p>
          
         <square-icon
-          class="flex flex-col flex-shrink-0 h-full items-center justify-center"
+          class="flex flex-col flex-shrink-0 h-full items-center justify-center "
           style="width: 0px;"
         >
           <icon
