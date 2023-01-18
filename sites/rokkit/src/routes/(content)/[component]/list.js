@@ -18,7 +18,8 @@ export const pages = [
 	},
 	{
 		title: 'Object Array',
-		summary: '',
+		summary:
+			'List can also be created using an array of objects. This allows you to add images and icons also.',
 		component,
 		refs,
 		props: {
@@ -30,7 +31,8 @@ export const pages = [
 	},
 	{
 		title: 'With Mapping',
-		summary: '',
+		summary:
+			'When your data does not match the structure that list expects, you can provide a mapping for the fields to be used.',
 		component,
 		refs,
 		props: {
@@ -43,7 +45,8 @@ export const pages = [
 	},
 	{
 		title: 'Custom Component',
-		summary: '',
+		summary:
+			'For maximum flexibility, List can also use custom components. Custom components will get data via the property named `content`.',
 		component,
 		refs: [...refs, { source: './PersonCard.svelte', items: 'PersonCard' }],
 		props: {
