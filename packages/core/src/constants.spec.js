@@ -41,6 +41,12 @@ describe('Utility functions', () => {
 			mode: {
 				dark: 'mode-dark',
 				light: 'mode-light'
+			},
+			navigate: {
+				down: 'navigate-down',
+				left: 'navigate-left',
+				right: 'navigate-right',
+				up: 'navigate-up'
 			}
 		})
 	})

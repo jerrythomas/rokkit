@@ -20,7 +20,6 @@ pg.selected {
 	@apply bg-secondary h-4 w-4;
 }
 
-
 nav-pages {
 	@apply w-full leading-loose;
 }

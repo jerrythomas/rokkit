@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit'
 import { components } from '$lib'
-
+import { pages } from './list'
 const allowed = ['list', 'docs']
 
 /** @type {import('./$types').PageLoad} */
@@ -10,8 +10,8 @@ export async function load({ params }) {
 	)
 
 	if (current.length === 1 && allowed.includes(params.component)) {
-		const file = current[0].name.toLowerCase()
-		const pages = (await import(/* @vite-ignore */ `./${file}`)).pages
+		// const file = current[0].name.toLowerCase()
+		// const pages = (await import(/* @vite-ignore */ `./${file}`)).pages
 		return {
 			pages
 		}

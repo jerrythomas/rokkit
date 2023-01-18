@@ -30,7 +30,6 @@ list item {
 	@apply last:rounded-b first:rounded-t hover:bg-skin-50;
 }
 
-
 accordion .expanded summary {
 	@apply rounded-b-none border-b border-skin-200;
 }
@@ -58,7 +57,6 @@ accordion item.selected icon,
 list item.selected icon {
 	@apply text-white;
 }
-
 
 list {
 	@apply border border-skin-200 rounded shadow;
