@@ -13,9 +13,7 @@
 	// $: items = getMenuItems(data.params.slug)
 </script>
 
-<section
-	class="flex flex-col w-full h-full items-center justify-center overflow-hidden"
->
+<section class="flex flex-col w-full h-full items-center pt-8 overflow-hidden">
 	<!-- {JSON.stringify($filtered)} -->
 	<!-- <aside class="flex flex-col w-80 px-4 h-full overflow-y-scroll">
 		<Accordion items={$filtered} {fields} {using} />

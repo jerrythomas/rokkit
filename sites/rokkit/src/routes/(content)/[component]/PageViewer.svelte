@@ -16,7 +16,7 @@
 
 <page class="flex flex-col relative {className}">
 	<h1 class="text-xl font-bold">{page[fields.text]}</h1>
-	<p class="my-2">{page[fields.summary]}</p>
+	<p class="my-3 font-light">{page[fields.summary]}</p>
 	<content class="flex flex-row w-full h-full overflow-hidden">
 		<section
 			class="flex flex-col flex-grow items-center justify-center overflow-scroll"

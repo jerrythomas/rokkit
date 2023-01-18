@@ -27,10 +27,10 @@
 <header
 	class="flex flex-row w-full px-10 py-6 items-center justify-between text-white"
 >
-	<div class="flex items-center gap-3">
+	<a href="/" class="flex items-center gap-3">
 		<img src="/rokkit.svg" alt="Rokkit Logo" class="w-12 h-12" />
 		<p class="text-xl">Rokkit</p>
-	</div>
+	</a>
 	<nav class="flex gap-2 rounded-full bg-skin-base text-skin-900 px-4">
 		{#each menu as item}
 			<a href="/{item.slug}" class="hover:text-secondary-300 leading-loose"
