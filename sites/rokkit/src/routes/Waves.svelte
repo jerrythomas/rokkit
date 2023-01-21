@@ -1,9 +1,15 @@
 <script>
 	export let parallax = false
+	export let count = 5
+
+	$: curves = Array.from({ length: count }).map((_, i) => ({
+		x: i * 30 * Math.random(),
+		y: parallax ? 48 : 100 * Math.random() + '%'
+	}))
 </script>
 
 <svg
-	class="absolute bottom-0 left-0 right-0 w-full h-1/5  text-skin-50"
+	class="absolute left-0 bottom-0 right-0 text-secondary-50 -z-1"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 24 150 28"
@@ -17,30 +23,14 @@
 		/>
 	</defs>
 	<g class:parallax>
-		<use
-			xlink:href="#gentle-wave"
-			x={parallax ? 48 : 10}
-			y="0"
-			class="fill-current opacity-30"
-		/>
-		<use
-			xlink:href="#gentle-wave"
-			x={parallax ? 48 : 20}
-			y="3"
-			class="fill-current opacity-30"
-		/>
-		<use
-			xlink:href="#gentle-wave"
-			x={parallax ? 48 : 30}
-			y="5"
-			class="fill-current opacity-30"
-		/>
-		<use
-			xlink:href="#gentle-wave"
-			x={parallax ? 48 : 40}
-			y="7"
-			class="fill-current"
-		/>
+		{#each curves as curve}
+			<use
+				xlink:href="#gentle-wave"
+				x={curve.x}
+				y={curve.y}
+				class="fill-current opacity-10"
+			/>
+		{/each}
 	</g>
 </svg>
 

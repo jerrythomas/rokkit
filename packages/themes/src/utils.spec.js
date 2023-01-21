@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import {
-	shadesOf,
-	stateColors,
-	themeColors,
-	stateIconsFromNames
-} from './utils'
-import { iconShortcuts } from './constants'
+import { shadesOf, stateColors, themeColors, iconShortcuts } from './utils'
+// import {  } from './constants'
 
 describe('utils', () => {
 	it.each(['primary', 'secondary', 'other'])(
@@ -59,12 +54,12 @@ describe('utils', () => {
 		expect(result).toEqual(palette)
 	})
 
-	it('should generate icon set from icons', () => {
-		const result = stateIconsFromNames(['list-opened', 'list-closed'])
-		expect(result).toEqual({
-			list: { opened: 'list-opened', closed: 'list-closed' }
-		})
-	})
+	// it('should generate icon set from icons', () => {
+	// 	const result = stateIconsFromNames(['list-opened', 'list-closed'])
+	// 	expect(result).toEqual({
+	// 		list: { opened: 'list-opened', closed: 'list-closed' }
+	// 	})
+	// })
 
 	it('should generate shortcuts', () => {
 		expect(iconShortcuts(['rating-filled', 'rating-empty'], 'x')).toEqual({

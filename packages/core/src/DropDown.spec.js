@@ -56,8 +56,8 @@ describe('DropDown.svelte', () => {
 		expect(button.parentNode.classList.contains('open')).toBe(true)
 
 		container
-			.querySelector('.dropdown items')
-			.childNodes.forEach(async (item, index) => {
+			.querySelectorAll('.dropdown list item')
+			.forEach(async (item, index) => {
 				selected = items[index]
 				await fireEvent.click(item)
 				expect(component.$$.ctx[component.$$.props.value]).toEqual(selected)

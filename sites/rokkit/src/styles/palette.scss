@@ -1,0 +1,48 @@
+@import './mixins.scss';
+
+$theme-colors: (
+	primary: #fb923c,
+	secondary: #ef5da8,
+	accent: #eb479c,
+	skin: #262730
+);
+
+$lightness: (95%, 90%, 85%, 80%, 70%, 60%, 50%, 40%, 30%, 20%);
+
+@layer base {
+	:root {
+		--primary-hue: 25;
+		--primary-saturation: 95%;
+		--secondary-hue: 329;
+		--secondary-saturation: 80%;
+		--accent-hue: 329;
+		--accent-saturation: 80%;
+		--skin-hue: 233;
+		--skin-saturation: 11.9%;
+
+		--tab-size: 2;
+	}
+
+	.light {
+		@include set-theme-colors($theme-colors, 'light', $lightness);
+		@include light-mode-syntax-colors();
+	}
+	.dark {
+		@include set-theme-colors($theme-colors, 'dark', $lightness);
+		@include dark-mode-syntax-colors();
+	}
+
+	@media (prefers-color-scheme: light) {
+		body:not(.dark) {
+			@include set-theme-colors($theme-colors, 'light', $lightness);
+			@include light-mode-syntax-colors();
+		}
+	}
+
+	@media (prefers-color-scheme: dark) {
+		body:not(.light) {
+			@include set-theme-colors($theme-colors, 'dark', $lightness);
+			@include dark-mode-syntax-colors();
+		}
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"name": "@rokkit/icons",
+	"version": "1.0.0-next.0",
+	"description": "A minimal icon set for use in applications.",
+	"author": "Jerry Thomas <me@jerrythomas.name>",
+	"license": "MIT",
+	"bin": "src/index.js",
+	"main": "src/index.js",
+	"module": "src/index.js",
+	"type": "module",
+	"scripts": {
+		"build": "node src/index.js"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"@mdi/svg": "^7.1.96"
+	},
+	"devDependencies": {
+		"@iconify/tools": "2.2.1",
+		"@iconify/types": "^2.0.0",
+		"iconify": "^1.4.0"
+	},
+	"files": [
+		"src/**/*.js",
+		"!src/**/*.spec.js"
+	],
+	"exports": {
+		"./lib": "./lib",
+		"./package.json": "./package.json",
+		"./states.json": "./lib/states.json",
+		"./components.json": "./lib/components.json",
+		"./auth.json": "./lib/auth.json",
+		".": "./lib/states.json"
+	}
+}

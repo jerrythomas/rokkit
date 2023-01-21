@@ -1,10 +1,11 @@
 <script>
+	import { createEventDispatcher } from 'svelte'
+	import { dismissable } from './actions'
+	import { defaultFields, defaultStateIcons } from './constants.js'
+
 	import Icon from './Icon.svelte'
 	import Text from './items/Text.svelte'
-	import ListItems from './ListItems.svelte'
-	import { defaultFields, defaultStateIcons } from './constants.js'
-	import { dismissable } from './actions'
-	import { createEventDispatcher } from 'svelte'
+	import List from './List.svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -55,7 +56,7 @@
 			class="flex flex-col absolute z-10 h-fit w-full menu"
 			style:top="{offsetTop}px"
 		>
-			<ListItems {items} {fields} {using} bind:value on:select={handleSelect} />
+			<List {items} {fields} {using} bind:value on:select={handleSelect} />
 		</div>
 	{/if}
 </div>

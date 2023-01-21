@@ -55,23 +55,34 @@ export function themeColors(modifier = 'none') {
 	return colors
 }
 
-export function stateIconsFromNames(names) {
-	return names
-		.map((k) => [...k.split('-'), k])
-		.reduce(
-			(acc, [element, state, icon]) => ({
-				...acc,
-				[element]: { ...acc[element], [state]: icon }
-			}),
-			{}
-		)
-}
-
-// export function iconShortcutAlises(names, collection) {
-// 	return names.reduce(
-// 		(acc, name) => ({ ...acc, [name]: collection + ':' + name }),
-// 		{}
-// 	)
+// export function stateIconsFromNames(names) {
+// 	return names
+// 		.map((k) => [...k.split('-'), k])
+// 		.reduce(
+// 			(acc, [element, state, icon]) => ({
+// 				...acc,
+// 				[element]: { ...acc[element], [state]: icon }
+// 			}),
+// 			{}
+// 		)
 // }
 
-// import { iconShortcutAlises, defaultIconList } from '@rokkit/core'
+export function iconShortcuts(icons, collection, variant = '') {
+	const prefix = collection ? collection + ':' : ''
+	const suffix = variant ? '-' + variant : ''
+
+	const shortcuts = icons.reduce(
+		(acc, name) => ({
+			...acc,
+			[name]:
+				prefix +
+				(name.startsWith('selector')
+					? 'chevron-sort'
+					: name.replace('rating', 'star').replace('navigate', 'chevron')) +
+				suffix
+		}),
+		{}
+	)
+
+	return shortcuts
+}

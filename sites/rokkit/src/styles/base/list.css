@@ -1,67 +1,66 @@
 accordion {
-	@apply h-full text-skin-800 gap-2;
+	@apply flex-grow gap-1 overflow-y-scroll;
 }
 accordion details {
 	@apply rounded shadow relative;
 }
-accordion details.expanded summary {
-	@apply sticky top-0 z-1;
-}
-/* accordion details.expanded items {
-	margin-top: calc(-1 * --hdr-height);
-	padding-top: calc(--hdr-height);
-} */
 
-accordion items,
-list items {
-	@apply gap-1px bg-skin-300;
+list {
+	@apply gap-1px bg-skin-200;
 }
-accordion item,
+
 list item,
 accordion summary {
-	@apply leading-10 px-4 bg-skin-200 text-skin-900;
+	@apply leading-10 px-4 bg-skin-100 text-skin-900;
 }
 accordion summary {
-	@apply rounded pr-2 bg-skin-100;
+	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300 border-b border-skin-300;
 }
 
-accordion item,
-list item {
-	@apply last:rounded-b first:rounded-t hover:bg-skin-50;
-}
-
-accordion .expanded summary {
-	@apply rounded-b-none border-b border-skin-200;
-}
-accordion .expanded item {
-	@apply first:rounded-t-0;
-}
-
-accordion item icon,
 list item icon {
 	@apply text-secondary;
 }
-.dark accordion item icon,
-.dark list item icon {
-	@apply text-secondary-300;
+
+:not(accordion > details) > list {
+	@apply rounded shadow border border-skin-400 overflow-y-scroll;
 }
-/* accordion summary {
- 	@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
- } */
-accordion item.selected,
-list item.selected {
-	/* @apply border-l-4 border-secondary; */
-	@apply bg-gradient-to-r from-primary-600 to-secondary text-white;
-}
-accordion item.selected icon,
-list item.selected icon {
-	@apply text-white;
+:not(accordion > details) > list item {
+	@apply last:rounded-b first:rounded-t;
 }
 
-list {
-	@apply border border-skin-200 rounded shadow;
+accordion list item {
+	@apply last:rounded-b;
+}
+accordion list {
+	@apply rounded-b;
 }
 
-.zebra .item {
+accordion .is-expanded summary {
+	@apply rounded-b-none  sticky top-0 z-1;
+}
+
+accordion .is-expanded list {
+	@apply -mt-10 pt-10 rounded-t;
+}
+
+.zebra item {
 	@apply even:bg-skin-zebra hover:bg-skin-50;
+}
+
+item.is-selected {
+	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
+}
+item.is-selected icon {
+	@apply text-primary-50;
+}
+
+item.is-hovering,
+item:hover {
+	@apply bg-skin-50 text-skin-700;
+}
+
+item.is-hovering icon,
+item:hover icon {
+	@apply text-secondary-800;
 }

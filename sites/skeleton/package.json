@@ -39,8 +39,8 @@
 	"dependencies": {
 		"@fontsource/poppins": "^4.5.10",
 		"@fontsource/victor-mono": "^4.5.4",
-		"@rokkit/core": "workspace:1.0.0-next.0",
-		"@rokkit/form": "workspace:1.0.0-next.0",
-		"@rokkit/themes": "workspace:1.0.0-next.0"
+		"@rokkit/core": "workspace:*",
+		"@rokkit/form": "workspace:*",
+		"@rokkit/themes": "workspace:*"
 	}
 }

@@ -1,5 +1,5 @@
 <section
-	class="flex flex-col h-full w-full items-center justify-center text-skin-900 "
+	class="flex flex-col h-full w-full items-center justify-center text-skin-900"
 >
 	<card
 		class="rounded-xl px-10 py-6 text-lg bg-skin-50 bg-opacity-40 shadow max-w-180 mb-40"

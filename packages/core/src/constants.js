@@ -1,3 +1,61 @@
+export const defaultIcons = [
+	'accordion-opened',
+	'accordion-closed',
+	'action-remove',
+	'action-add',
+	'action-clear',
+	'action-search',
+	'action-close',
+	'action-close-filled',
+	'node-opened',
+	'node-closed',
+	'selector-opened',
+	'selector-closed',
+	'checkbox-checked',
+	'checkbox-unchecked',
+	'checkbox-unknown',
+	'rating-filled',
+	'rating-empty',
+	'radio-off',
+	'radio-on',
+	'mode-dark',
+	'mode-light',
+	'navigate-left',
+	'navigate-right',
+	'navigate-up',
+	'navigate-down'
+]
+
+// export const defaultIcons = [
+// 	'accordion-opened',
+// 	'accordion-closed',
+// 	'action-remove',
+// 	'action-add',
+// 	'action-clear',
+// 	'action-search',
+// 	'action-close',
+// 	'node-opened',
+// 	'node-closed',
+// 	'checkbox-checked',
+// 	'checkbox-unchecked',
+// 	'checkbox-unknown',
+// 	'rating-filled',
+// 	'rating-empty',
+// 	'rating-half',
+// 	'radio-off',
+// 	'radio-on',
+// 	'folder-closed',
+// 	'folder-opened',
+// 	'navigate-up',
+// 	'navigate-down',
+// 	'navigate-left',
+// 	'navigate-right',
+// 	'selector-closed',
+// 	'selector-opened',
+// 	'mode-dark',
+// 	'mode-light'
+// ]
+
 export const defaultOptions = {
 	id: 'id',
 	label: 'label',
@@ -27,34 +85,6 @@ export const defaultKeyMap = {
 	Escape: 'deselect'
 }
 
-export const defaultIconList = [
-	'accordion-opened',
-	'accordion-closed',
-	'action-remove',
-	'action-add',
-	'action-clear',
-	'action-search',
-	'action-close',
-	'action-close-filled',
-	'node-opened',
-	'node-closed',
-	'selector-opened',
-	'selector-closed',
-	'checkbox-checked',
-	'checkbox-unchecked',
-	'checkbox-unknown',
-	'rating-filled',
-	'rating-empty',
-	'radio-off',
-	'radio-on',
-	'mode-dark',
-	'mode-light',
-	'navigate-left',
-	'navigate-right',
-	'navigate-up',
-	'navigate-down'
-]
-
 export function stateIconsFromNames(icons) {
 	return icons
 		.map((k) => [...k.split('-')])
@@ -67,7 +97,7 @@ export function stateIconsFromNames(icons) {
 		)
 }
 
-export const defaultStateIcons = stateIconsFromNames(defaultIconList)
+export const defaultStateIcons = stateIconsFromNames(defaultIcons)
 // export const defaultStateIcons = {
 // 	accordion: {
 // 		opened: 'accordion-opened',

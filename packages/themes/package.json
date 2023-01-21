@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/themes",
-	"version": "1.0.0-next.0",
+	"version": "1.0.0-next.1",
 	"description": "Themes for use with rokkit components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -26,6 +26,7 @@
 	"devDependencies": {
 		"@jerrythomas/eslint-config-svelte": "^1.0.2",
 		"@jerrythomas/prettier-config": "^1.0.0",
+		"@rokkit/core": "workspace:*",
 		"@sveltejs/vite-plugin-svelte": "^1.4.0",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",

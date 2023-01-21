@@ -1,0 +1,12 @@
+/*
+.is-collapsed {}
+.is-expanded {}
+.is-opened {}
+*/
+
+.is-focused {
+	@apply outline-secondary;
+}
+.is-disabled {
+	@apply text-skin-200;
+}
