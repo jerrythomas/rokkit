@@ -1,5 +1,5 @@
 <script>
-	import { Slider, ListItems, defaultFields } from '@rokkit/core'
+	import { Slider, List, defaultFields } from '@rokkit/core'
 
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
@@ -54,7 +54,7 @@
 	<slot />
 	{#if visible}
 		<Slider>
-			<ListItems
+			<List
 				items={filtered}
 				{fields}
 				{using}

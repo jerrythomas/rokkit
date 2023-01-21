@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { defaultIconList, stateIconsFromNames } from './constants'
+import { defaultIcons, stateIconsFromNames } from './constants'
 
 describe('Utility functions', () => {
 	it('should convert names to nested state icons object', () => {
-		const stateIcons = stateIconsFromNames(defaultIconList)
+		const stateIcons = stateIconsFromNames(defaultIcons)
 		// console.log(JSON.stringify(stateIcons, null, 2))
 		expect(stateIcons).toEqual({
 			accordion: {

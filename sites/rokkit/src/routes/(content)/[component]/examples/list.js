@@ -1,12 +1,13 @@
 import { List } from '@rokkit/core'
 import PersonCard from './PersonCard.svelte'
-import { snippet } from './snippet'
+import { snippet } from '$lib/snippet'
 
 const name = 'List'
 const component = List
 const refs = [{ source: '@rokkit/core', items: ['List'] }]
 
-export const pages = [
+/** @type {Array<import('$lib/types').Sample>} */
+export default [
 	{
 		title: 'String Array',
 		summary: 'A list can be created with an array of strings.',

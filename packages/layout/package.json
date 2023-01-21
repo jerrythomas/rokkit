@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/layout",
-	"version": "1.0.0-next.0",
+	"version": "1.0.0-next.1",
 	"description": "Layout and navigation controls for svelte",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -42,6 +42,7 @@
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
+		"@rokkit/markdown": "workspace:*",
 		"d3-scale": "^4.0.2",
 		"date-fns": "^2.29.3"
 	},

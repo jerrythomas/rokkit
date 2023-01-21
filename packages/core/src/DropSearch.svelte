@@ -1,6 +1,6 @@
 <script>
 	import { defaultFields } from './constants.js'
-	import List from './ListItems.svelte'
+	import List from './List.svelte'
 	import Slider from './Slider.svelte'
 	import { Text } from './items'
 

@@ -75,7 +75,7 @@ export class List {
 		return this.sort().refresh()
 	}
 
-	groupBy(key, lookup) {
+	groupBy(key, lookup = null) {
 		this.groupKey = key
 
 		if (lookup) this.lookup = lookup
@@ -160,6 +160,9 @@ export class List {
 		this.filtered.set(data)
 		return this
 	}
+	current() {
+		return getSubscribedData(this.filtered)
+	}
 }
 
 /**
@@ -169,4 +172,13 @@ export class List {
  */
 export function list(data) {
 	return new List(data)
+}
+
+function getSubscribedData(store) {
+	let result
+	let unsubscribe = store.subscribe((data) => {
+		result = data
+	})
+	unsubscribe()
+	return result
 }

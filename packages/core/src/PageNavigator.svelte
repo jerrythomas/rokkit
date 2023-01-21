@@ -1,33 +1,40 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { Icon, defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { defaultFields, defaultStateIcons } from './constants'
+	import Icon from './Icon.svelte'
+
 	const dispatch = createEventDispatcher()
 
 	let className = ''
 	export { className as class }
 
 	export let items = []
-	export let value = null
+	export let value = items[0]
 	export let fields = {}
 	export let numbers = false
 
 	const navigate = defaultStateIcons.navigate
-	let currentIndex = value ? items.findIndex((item) => item == value) : -1
 
-	function handleClick(index) {
-		if (index >= 0 && index < items.length) {
-			value = items[index]
-			currentIndex = index
-			dispatch('select', value)
+	let previous
+	let next
+
+	function updateOnChange(value, items) {
+		let index = items.findIndex((x) => x == value)
+		if (index == -1) {
+			value = items[0]
+		} else {
+			previous = index > 0 ? items[index - 1] : null
+			next = index < items.length - 1 ? items[index + 1] : null
 		}
+	}
+	function handleClick(item) {
+		value = item
+		dispatch('select', value)
 	}
 
 	$: fields = { ...defaultFields, ...fields }
-	$: previous = currentIndex > 0 ? items[currentIndex - 1][fields.text] : null
-	$: next =
-		currentIndex < items.length - 1
-			? items[currentIndex + 1][fields.text]
-			: null
+	$: updateOnChange(value, items)
+	// $: value = items.findIndex((x) => x == value) ? value : items[0]
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -35,13 +42,13 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
 		class="flex items-center cursor-pointer"
-		on:click={() => handleClick(currentIndex - 1)}
-		tabIndex={currentIndex > 0 ? 0 : -1}
+		on:click={() => handleClick(previous)}
+		tabIndex={previous ? 0 : -1}
 	>
-		{#if currentIndex > 0}
+		{#if previous}
 			<Icon name={navigate.left} />
-			{#if previous}
-				<p>{previous}</p>
+			{#if previous[fields.text]}
+				<p>{previous[fields.text]}</p>
 			{/if}
 		{/if}
 	</span>
@@ -52,8 +59,8 @@
 				<pg
 					class:numbers
 					class:dot={!numbers}
-					class:selected={value == item}
-					on:click={() => handleClick(index)}
+					class:is-selected={value == item}
+					on:click={() => handleClick(item)}
 					tabindex="0"
 					class="cursor-pointer"
 				>
@@ -67,12 +74,12 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
 		class="flex items-center cursor-pointer"
-		on:click={() => handleClick(currentIndex + 1)}
-		tabIndex={currentIndex < items.length - 1 ? 0 : -1}
+		on:click={() => handleClick(next)}
+		tabIndex={next ? 0 : -1}
 	>
-		{#if currentIndex < items.length - 1}
-			{#if next}
-				<p class="w-full text-right">{next}</p>
+		{#if next}
+			{#if next[fields.text]}
+				<p class="w-full text-right">{next[fields.text]}</p>
 			{/if}
 			<Icon name={navigate.right} />
 		{/if}

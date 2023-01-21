@@ -9,11 +9,11 @@ export function themable(node) {
 	let previous = {}
 
 	theme.subscribe((data) => {
-		if (data.name !== previous.name) {
+		if (data.name && data.name !== previous.name) {
 			node.classList.remove(previous.name)
 			node.classList.add(data.name)
 		}
-		if (data.mode !== previous.mode) {
+		if (data.mode && data.mode !== previous.mode) {
 			node.classList.remove(previous.mode)
 			node.classList.add(data.mode)
 		}

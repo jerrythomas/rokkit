@@ -1,31 +1,12 @@
 <script>
-	import { DropDown } from '@rokkit/core'
-	import { Switch } from '@rokkit/input'
-	import { theme } from '@rokkit/core/stores'
+	import Waves from './Waves.svelte'
+	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	export let menu = []
-	let darkMode = $theme.mode == 'dark'
-	let items = [
-		{ text: 'Rokkit' } /*, { text: 'Modern' }, { text: 'Material' }*/
-	]
-	let value = getCurrenTheme()
-
-	function getCurrenTheme() {
-		const matched = items.filter(
-			(item) => item.text.toLowerCase() === $theme.name
-		)
-		return matched.length > 0 ? matched[0] : items[0]
-	}
-	$: if (value) {
-		theme.set({
-			name: value.text.toLowerCase(),
-			mode: darkMode ? 'dark' : 'light'
-		})
-	}
 </script>
 
 <header
-	class="flex flex-row w-full px-10 py-6 items-center justify-between text-white"
+	class="flex flex-row w-full p-6 items-center justify-between text-white relative"
 >
 	<a href="/" class="flex items-center gap-3">
 		<img src="/rokkit.svg" alt="Rokkit Logo" class="w-12 h-12" />
@@ -38,8 +19,13 @@
 			>
 		{/each}
 	</nav>
-	<settings class="flex items-center gap-5">
-		<!-- <DropDown {items} bind:value /> -->
-		<Switch bind:value={darkMode} />
+	<settings class="flex items-center gap-5 px-2">
+		<!-- <DropDown {items} bind:value />
+		<Switch bind:value={darkMode} /> -->
+		<ThemeSwitcher />
+		<a href="https://github.com/jerrythomas/rokkit" class="text-skin-900 flex">
+			<icon class="i-spice:github" />
+		</a>
 	</settings>
+	<!-- <Waves /> -->
 </header>

@@ -3,14 +3,21 @@ import presetUno from '@unocss/preset-uno'
 import presetIcons from '@unocss/preset-icons'
 import transformer from '@unocss/transformer-directives'
 import presetTypography from '@unocss/preset-typography'
-
 import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import { components } from './src/lib'
 
+// console.log(iconShortcuts(defaultIcons, 'i-spice'))
 export default defineConfig({
-	safelist: [...defaultIcons, ...components.map(({ icon }) => icon)],
+	safelist: [
+		...defaultIcons,
+		...components.map(({ icon }) => icon),
+		'i-spice:github',
+		'i-states:accordion-closed',
+		'i-spice:accordion-closed',
+		'i-spice-states:accordion-closed'
+	],
 	shortcuts: {
 		...iconShortcuts(defaultIcons, 'i-spice'),
 		'dropdown-opened': 'accordion-opened',
@@ -52,6 +59,7 @@ export default defineConfig({
 		}),
 		presetIcons({
 			collections: {
+				// cx :
 				spice: FileSystemIconLoader('./static/icons', (svg) =>
 					svg.replace(/black/, 'currentColor')
 				),
