@@ -8,9 +8,9 @@ The List component is a flexible and customizable component that allows you to d
 - Allows you to make each list item editable
 - Allows you to use a separate component for each list item
 
+## String Array
 
-
-
+A list can be created with an array of strings.
 
 
 

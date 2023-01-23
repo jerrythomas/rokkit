@@ -5,10 +5,10 @@ article.prose h2 {
 	margin-block-start: 1rem;
 }
 preview {
-  @apply flex flex-col p-8 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
+	@apply flex flex-col p-8 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
 	@apply h-100;
 }
-.cyan-blue preview  {
+.cyan-blue preview {
 	@apply from-cyan to-sky;
 }
 

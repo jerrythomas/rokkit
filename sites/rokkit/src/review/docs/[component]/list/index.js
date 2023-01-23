@@ -5,7 +5,7 @@ import MappedAttributeExample from './mapped-attribute.svx'
 import CustomComponentExample from './custom-component.svx'
 import ComplexExample from './complex.svx'
 
-console.log(typeof Introduction)
+// console.log(typeof Introduction)
 
 /**
  * @type {import('../types.js').TutorialPages}
