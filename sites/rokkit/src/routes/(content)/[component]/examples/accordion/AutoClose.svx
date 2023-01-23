@@ -1,0 +1,3 @@
+## AutoClose
+
+Keep only one item open.

@@ -2,42 +2,42 @@ import { Accordion } from '@rokkit/core'
 // import PersonCard from './PersonCard.svelte'
 import { snippet } from '$lib/snippet'
 import { nestedItems, withMapping } from './data'
+import NestedArray from './NestedArray.svx'
+import WithMapping from './WithMapping.svx'
+import States from './States.svx'
+import AutoClose from './AutoClose.svx'
 
-const wrapperClass = 'h-full overflow-hidden'
+const wrapperClass = 'overflow-hidden'
 const name = 'Accordion'
 const component = Accordion
 const refs = [{ source: '@rokkit/core', items: ['Accordion'] }]
 
 /** @type {Array<import('$lib/types').Sample>} */
-export default [
+const examples = [
 	{
-		title: 'Nested Object Array',
-		summary: 'Accordion data needs to be a nested object array.',
+		article: NestedArray,
 		component,
 		refs,
-		class: wrapperClass,
+		wrapperClass,
 		props: {
 			items: nestedItems
 		}
 	},
 	{
-		title: 'With Mapping ',
-		summary:
-			'When your data does not match the structure that list expects, you can provide a mapping for the fields to be used.',
+		article: WithMapping,
 		component,
 		refs,
-		class: wrapperClass,
+		wrapperClass,
 		props: {
 			fields: { text: 'name', image: 'photo' },
 			items: withMapping
 		}
 	},
 	{
-		title: 'Open/Close States',
-		summary: 'You can control which items in the accordion are open/closed.',
+		article: States,
 		component,
 		refs,
-		class: wrapperClass,
+		wrapperClass,
 		props: {
 			// using: { default: PersonCard },
 			items: [
@@ -72,11 +72,10 @@ export default [
 		}
 	},
 	{
-		title: 'AutoClose',
-		summary: 'Keep only one item open.',
+		article: AutoClose,
 		component,
 		refs,
-		class: wrapperClass,
+		wrapperClass,
 		props: {
 			autoClose: true,
 			class: 'gap-1',
@@ -100,4 +99,13 @@ export default [
 			]
 		}
 	}
-].map((page) => ({ ...page, code: snippet(name, page) }))
+].map((page) => ({
+	...page,
+	code: page.component ? snippet(name, page) : null
+}))
+
+export default {
+	name,
+	skin: 'purple-indigo',
+	examples
+}

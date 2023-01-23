@@ -1,0 +1,4 @@
+## With Mapping
+
+When your data does not match the structure that teh `accordion` expects,
+you can provide a mapping for the fields to be used instead.
