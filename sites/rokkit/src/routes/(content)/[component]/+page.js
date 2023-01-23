@@ -5,7 +5,7 @@ import { data } from './examples'
 export async function load({ params }) {
 	if (Object.keys(data).includes(params.component)) {
 		return {
-			examples: data[params.component]
+			page: data[params.component]
 		}
 	}
 

@@ -1,5 +1,5 @@
 {
-	"name": "skel",
+	"name": "rokkit",
 	"version": "1.0.0-next-10",
 	"private": true,
 	"prettier": "@jerrythomas/prettier-config",

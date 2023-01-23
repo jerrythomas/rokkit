@@ -1,0 +1,5 @@
+## Mapping attributes
+
+List is flexible and can adapt to your data structure. You do not need to modify your
+attributes to fit the structure that List expects. Instead you can provide a `fields`
+to inform the List component the attributes you want to use.

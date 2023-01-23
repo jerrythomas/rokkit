@@ -7,14 +7,15 @@
 @import '@rokkit/themes/palette.css';
 @import '@rokkit/themes/prism.css';
 @import './styles/rokkit.css';
+@import './styles/skins.css';
 
 body,
 body > div {
 	@apply font-body w-screen h-screen flex flex-col overflow-hidden;
 }
 body {
-	@apply bg-gradient-to-tr from-primary-500 to-secondary-500;
-	/* @apply bg-primary-50; */
+	/* @apply bg-gradient-to-tr from-primary-500 to-secondary-500; */
+	@apply bg-gradient-to-r from-skin-500 via-skin-200 to-skin-500 text-skin-900;
 }
 
 body > div {

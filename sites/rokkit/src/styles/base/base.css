@@ -71,8 +71,20 @@ pre,
 pre[class*='language-'],
 :not(pre) > code,
 :not(pre) > code[class*='language-'] {
-	@apply rounded-md p-4 font-mono;
+	@apply font-mono;
 	background-color: var(--code-fill);
+}
+pre,
+pre[class*='language-'],
+:not(pre) > code[class*='language-']{
+	@apply rounded-md p-4 ;
+}
+
+:not(pre) > code,
+.prose p > code {
+	@apply px-2 rounded-sm;
+	background-color: var(--code-fill);
+	/* color:  */
 }
 
 .prose {

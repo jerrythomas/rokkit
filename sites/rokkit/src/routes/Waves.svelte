@@ -2,14 +2,21 @@
 	export let parallax = false
 	export let count = 5
 
-	$: curves = Array.from({ length: count }).map((_, i) => ({
-		x: i * 30 * Math.random(),
-		y: parallax ? 48 : 100 * Math.random() + '%'
+	$: curves = [
+		{ x: 0.8, y: 0.1 },
+		{ x: 0.5, y: 0.3 },
+		{ x: 0.1, y: 0.1 },
+		{ x: 0.4, y: 0.4 },
+		{ x: 0.3, y: 0.4 }
+		// { x: 0.5, y: 0.5 }
+	].map(({ x, y }, i) => ({
+		x: i * 20 * x,
+		y: parallax ? 48 : 100 * y + '%'
 	}))
 </script>
 
 <svg
-	class="absolute left-0 bottom-0 right-0 text-secondary-50 -z-1"
+	class="absolute left-0 bottom-0 right-0 h-200 text-skin-900 -z-1"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	viewBox="0 24 150 28"
