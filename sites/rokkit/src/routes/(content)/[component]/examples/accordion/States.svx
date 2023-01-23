@@ -1,0 +1,3 @@
+## Open/Close States
+
+You can control which items in the accordion are open/closed.

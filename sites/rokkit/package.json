@@ -1,6 +1,6 @@
 {
-	"name": "skel",
-	"version": "1.0.0-next-10",
+	"name": "rokkit",
+	"version": "1.0.0-next-1",
 	"private": true,
 	"prettier": "@jerrythomas/prettier-config",
 	"scripts": {

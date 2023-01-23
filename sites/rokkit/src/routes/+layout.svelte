@@ -11,7 +11,7 @@
 
 <svelte:body use:themable />
 <Header menu={data.sections} />
-<main class="flex flex-col w-full h-full relative">
+<main class="flex flex-col w-full flex-grow overflow-hidden relative">
 	<slot />
 </main>
 <Waves />
