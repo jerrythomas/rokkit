@@ -1,0 +1,3 @@
+## Nested Object Array
+
+Accordion data needs to be a nested object array.

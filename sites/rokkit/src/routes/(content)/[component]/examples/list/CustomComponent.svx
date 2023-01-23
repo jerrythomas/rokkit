@@ -1,0 +1,5 @@
+## Custom Component
+
+Here is an example of how you can use the List component to display a list of people,
+using a custom component for the person items.
+

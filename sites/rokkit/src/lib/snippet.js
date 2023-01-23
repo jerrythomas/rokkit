@@ -17,7 +17,7 @@
  * @returns
  */
 export function snippet(name, page) {
-	const { refs, props, declarations = {} } = page
+	const { refs = [], props = {}, declarations = {} } = page
 	const vars = Object.entries(props)
 		.map(([k, v]) =>
 			k in declarations
