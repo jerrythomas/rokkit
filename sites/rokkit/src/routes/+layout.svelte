@@ -10,7 +10,7 @@
 </script>
 
 <svelte:body use:themable />
-<Header menu={data.sections} />
+<Header menu={data.sections} version={data.version} />
 <main class="flex flex-col w-full flex-grow overflow-hidden relative">
 	<slot />
 </main>

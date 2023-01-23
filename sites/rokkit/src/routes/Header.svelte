@@ -3,6 +3,7 @@
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	export let menu = []
+	export let version
 </script>
 
 <header
@@ -22,6 +23,7 @@
 	<settings class="flex items-center gap-5 px-2">
 		<!-- <DropDown {items} bind:value />
 		<Switch bind:value={darkMode} /> -->
+		<span>{version}</span>
 		<ThemeSwitcher />
 		<a href="https://github.com/jerrythomas/rokkit" class="text-skin-900 flex">
 			<icon class="i-spice:github" />

@@ -5,6 +5,7 @@ import WindiCSS from 'vite-plugin-windicss'
 /** @type {import('vite').UserConfig} */
 const config = {
 	plugins: [sveltekit(), WindiCSS()],
+
 	resolve: {
 		alias: {
 			$config: path.resolve('./src/config')
