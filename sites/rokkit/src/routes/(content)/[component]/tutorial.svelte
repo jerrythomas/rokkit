@@ -1,33 +1,60 @@
 <script>
+	import { PageNavigator } from '@rokkit/core'
 	import { CodeSnippet } from '@rokkit/markdown'
 	import { snippet } from '$lib/snippet'
+
 	/** @type {string} */
 	export let skin
 	/** @type {string} */
 	export let name
 	/** @type {Array<import('$lib/types').TutorialSlide>} */
 	export let slides
+
+	/** @type {import('$lib/types').TutorialSlide} */
+	let slide = slides[0]
+
+	function handlePathChanges(slides) {
+		const matched = slides.find((x) => x === slide)
+		if (!matched) {
+			slide = slides[0]
+		}
+	}
+	$: handlePathChanges(slides)
+	$: code = slide ? snippet(name, slide.props, slide.snippet) : null
 </script>
 
-<page
-	class="flex flex-col gap-5 px-6 pb-12 mx-auto w-full md:max-w-screen-lg {skin}"
->
-	<h1 class="text-3xl">{name}</h1>
+{#if slide}
+	<page
+		class="grid grid-cols-5 w-full h-full border-t border-t-skin-200 {skin}"
+	>
+		<aside
+			class="flex flex-col h-full col-span-2 border-r border-r-skin-200 overflow-auto"
+		>
+			<notes class="prose h-full overflow-scroll">
+				<svelte:component this={slide.notes} />
+				{#if code}
+					<pre class="not-prose"><CodeSnippet {code} language="svelte" /></pre>
+				{/if}
+			</notes>
+			<span class="flex flex-grow" />
+			<PageNavigator
+				items={slides}
+				bind:value={slide}
+				class="bg-skin-300 bg-opacity-50"
+			/>
+		</aside>
 
-	{#each slides as slide}
-		{@const code = snippet(name, slide.props, slide.snippet)}
-		<notes class="prose">
-			<svelte:component this={slide.notes} />
-		</notes>
-		{#if slide.component}
-			<preview class="overflow-auto">
+		<section class="flex flex-col col-span-3 ">
+			<h1
+				class="flex h-14 w-full leading-loose items-center text-3xl px-6 bg-skin-300 bg-opacity-50"
+			>
+				{name}
+			</h1>
+			<preview class="overflow-auto m-12">
 				<wrapper class="h-full w-100 self-center overflow-auto">
 					<svelte:component this={slide.component} {...slide.props} />
 				</wrapper>
 			</preview>
-		{/if}
-		{#if code}
-			<CodeSnippet {code} language="svelte" />
-		{/if}
-	{/each}
-</page>
+		</section>
+	</page>
+{/if}

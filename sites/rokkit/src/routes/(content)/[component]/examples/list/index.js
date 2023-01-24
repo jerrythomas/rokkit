@@ -1,12 +1,10 @@
 import { List } from '@rokkit/core'
 import PersonCard from '../PersonCard.svelte'
 
-// import StringArray from './StringArray.svx'
 import ObjectArray from './ObjectArray.svx'
 import CustomComponent from './CustomComponent.svx'
 import Introduction from './Introduction.svx'
 import MappedAttributes from './MappedAttribute.svx'
-// import Complex from './Complex.svx'
 
 const component = List
 const refs = [{ source: '@rokkit/core', items: ['List'] }]
@@ -15,7 +13,7 @@ const exclusions = []
 /** @type {import('$lib/types').Tutorial} */
 export default {
 	name: 'List',
-	skin: 'yellow-orange',
+	skin: 'cyan-sky',
 	slides: [
 		{
 			notes: Introduction,

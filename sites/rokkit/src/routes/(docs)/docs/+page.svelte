@@ -1,4 +1,4 @@
-<content class="flex gap-10 wrap p-10">
+<content class="flex gap-10 wrap p-10 text-skin-800 text-lg">
 	<a href="/list">
 		<h1>List</h1>
 		<img src="/preview/list.svg" alt="List Preview" />
@@ -8,9 +8,3 @@
 		<img src="/preview/accordion.svg" alt="Accordion Preview" />
 	</a>
 </content>
-
-<style>
-	a {
-		@apply text-primary-50 text-lg;
-	}
-</style>

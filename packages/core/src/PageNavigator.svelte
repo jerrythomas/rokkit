@@ -28,8 +28,10 @@
 		}
 	}
 	function handleClick(item) {
-		value = item
-		dispatch('select', value)
+		if (item) {
+			value = item
+			dispatch('select', value)
+		}
 	}
 
 	$: fields = { ...defaultFields, ...fields }
@@ -47,9 +49,11 @@
 	>
 		{#if previous}
 			<Icon name={navigate.left} />
-			{#if previous[fields.text]}
-				<p>{previous[fields.text]}</p>
-			{/if}
+			<p>
+				{#if previous[fields.text]}
+					{previous[fields.text]}
+				{/if}
+			</p>
 		{/if}
 	</span>
 	<span class="flex items-center justify-center">
@@ -73,14 +77,16 @@
 	</span>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
-		class="flex items-center cursor-pointer"
+		class="flex items-center cursor-pointer "
 		on:click={() => handleClick(next)}
 		tabIndex={next ? 0 : -1}
 	>
 		{#if next}
-			{#if next[fields.text]}
-				<p class="w-full text-right">{next[fields.text]}</p>
-			{/if}
+			<p class="w-full text-right">
+				{#if next[fields.text]}
+					{next[fields.text]}
+				{/if}
+			</p>
 			<Icon name={navigate.right} />
 		{/if}
 	</span>
