@@ -90,7 +90,9 @@ pre[class*='language-'],
 .prose {
 	@apply max-w-full px-8 py-4;
 }
-
+.prose-sm {
+	@apply px-4 py-2;
+}
 theme-mode {
 	@apply rounded-full bg-skin-100 text-skin-900 p-1 outline-secondary;
 }

@@ -4,9 +4,17 @@
 notes.prose h2 {
 	margin-block-start: 0;
 }
+.prose-sm {
+	@apply p-4;
+}
+.prose :where(:not(pre) > code):not(:where(.not-prose,.not-prose *))::before,
+.prose :where(:not(pre) > code):not(:where(.not-prose,.not-prose *))::after {
+	content: "";
+}
+
 preview {
-	@apply flex flex-col p-8 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
-	@apply h-100;
+	@apply flex flex-col p-2 md:p-8 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
+	@apply md:h-100;
 }
 .cyan-blue preview {
 	@apply from-cyan to-sky;
