@@ -25,12 +25,12 @@
 
 {#if slide}
 	<page
-		class="grid grid-cols-5 w-full h-full border-t border-t-skin-200 {skin}"
+		class="flex flex-col-reverse overflow-auto md:grid md:grid-cols-4 w-full h-full border-t border-t-skin-200 {skin}"
 	>
 		<aside
-			class="flex flex-col h-full col-span-2 border-r border-r-skin-200 overflow-auto"
+			class="flex flex-col md:col-span-2 border-r border-r-skin-200 overflow-auto"
 		>
-			<notes class="prose h-full overflow-scroll">
+			<notes class="prose prose-sm w-full overflow-scroll">
 				<svelte:component this={slide.notes} />
 				{#if code}
 					<pre class="not-prose"><CodeSnippet {code} language="svelte" /></pre>
@@ -44,14 +44,14 @@
 			/>
 		</aside>
 
-		<section class="flex flex-col col-span-3 ">
+		<section class="flex flex-col md:col-span-2 ">
 			<h1
-				class="flex h-14 w-full leading-loose items-center text-3xl px-6 bg-skin-300 bg-opacity-50"
+				class="flex w-full leading-loose items-center text-xl md:text-3xl px-6 bg-skin-300 bg-opacity-50"
 			>
 				{name}
 			</h1>
-			<preview class="overflow-auto m-12">
-				<wrapper class="h-full w-100 self-center overflow-auto">
+			<preview class="overflow-auto m-3 lg:m-12">
+				<wrapper class="h-60 w-full md:w-100 self-center overflow-auto">
 					<svelte:component this={slide.component} {...slide.props} />
 				</wrapper>
 			</preview>

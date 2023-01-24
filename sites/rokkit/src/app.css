@@ -15,7 +15,7 @@ body > div {
 }
 body {
 	/* @apply bg-gradient-to-tr from-primary-500 to-secondary-500; */
-	@apply bg-gradient-to-r from-skin-400 via-skin-200 to-skin-400 text-skin-900;
+	@apply bg-gradient-to-br from-skin-400 via-skin-200 to-skin-600 text-skin-900;
 }
 
 body > div {
