@@ -14,7 +14,7 @@ const refs = [{ source: '@rokkit/core', items: ['Accordion'] }]
 /** @type {import('$lib/types').Tutorial} */
 export default {
 	name: 'Accordion',
-	skin: 'violet-indigo',
+	skin: 'purple-indigo',
 	slides: [
 		{
 			notes: NestedArray,
