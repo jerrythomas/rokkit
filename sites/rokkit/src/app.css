@@ -21,3 +21,7 @@ body {
 body > div {
 	@apply relative;
 }
+
+notes > *:first-child{
+	@apply mt-0;
+}

@@ -1,5 +1,5 @@
 <content
-	class="flex flex-col md:flex-row gap-10 wrap p-10 text-skin-800 text-lg"
+	class="flex w-full gap-3 p-4 text-lg overflow-auto flex-col md:flex-row md:p-8 md:gap-8"
 >
 	<a href="/list">
 		<h1>List</h1>
@@ -10,3 +10,9 @@
 		<img src="/preview/accordion.svg" alt="Accordion Preview" />
 	</a>
 </content>
+
+<style>
+	a {
+		@apply flex flex-col items-center gap-1;
+	}
+</style>

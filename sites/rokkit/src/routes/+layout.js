@@ -5,7 +5,7 @@ export function load() {
 	return {
 		version: __APP_VERSION__,
 		sections: [
-			{ slug: 'docs', title: 'Docs' }
+			{ slug: 'docs', title: 'Guide' }
 			// { slug: 'labs', title: 'Labs' }
 		]
 	}
