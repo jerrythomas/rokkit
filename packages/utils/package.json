@@ -30,7 +30,7 @@
 		"@testing-library/svelte": "^3.2.2",
 		"@types/d3-array": "^3.0.4",
 		"@types/d3-collection": "^1.0.10",
-		"@types/ramda": "^0.28.21",
+		"@types/ramda": "^0.28.22",
 		"@vitest/ui": "~0.12.10",
 		"c8": "^7.12.0",
 		"eslint-config-shared": "workspace:*",
@@ -51,14 +51,16 @@
 	],
 	"exports": {
 		"./src": "./src",
+		"./string": "./src/string.js",
 		"./package.json": "./package.json",
 		".": {
+			"types": "./dist/index.d.ts",
 			"import": "./src/index.js"
 		}
 	},
 	"dependencies": {
 		"@lukeed/uuid": "^2.0.0",
-		"d3-array": "^3.2.1",
+		"d3-array": "^3.2.2",
 		"d3-collection": "^1.0.7",
 		"ramda": "^0.28.0"
 	}

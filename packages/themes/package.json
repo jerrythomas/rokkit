@@ -45,10 +45,10 @@
 		"!src/**/*.spec.js"
 	],
 	"exports": {
-		"./modern.scss": "./src/modern.scss",
-		"./spicy.scss": "./src/spicy.scss",
-		"./material.scss": "./src/material.scss",
-		"./minimal.scss": "./src/minimal.scss",
+		"./modern.css": "./src/modern.css",
+		"./material.css": "./src/material.css",
+		"./minimal.css": "./src/minimal.css",
+		"./rokkit.css": "./src/rokkit.css",
 		"./prism.css": "./src/prism.css",
 		"./palette.css": "./src/palette.css",
 		"./package.json": "./src/package.json",

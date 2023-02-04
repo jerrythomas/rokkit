@@ -1,0 +1,37 @@
+button {
+	@apply rounded leading-loose w-full select-none;
+	@apply bg-skin-300 border border-skin-300 outline-primary-400;
+}
+button icon-left,
+button icon-right {
+	@apply flex flex-col items-center justify-center h-10 aspect-square;
+}
+button icon {
+	@apply text-2xl;
+}
+
+button p {
+	@apply px-2 flex flex-grow;
+}
+
+button-group {
+	@apply rounded-sm overflow-clip shadow;
+}
+button-group button {
+	@apply border-skin-400 border-none rounded-none;
+	@apply bg-skin-200;
+	@apply uppercase text-sm text-skin-800 leading-8;
+}
+button-group button:not(:last-child) {
+	@apply border-r;
+}
+button-group button.active {
+	@apply bg-secondary text-white;
+}
+
+button-group button:first-child {
+	@apply rounded-l-sm;
+}
+button-group button:last-child {
+	@apply rounded-r-sm;
+}

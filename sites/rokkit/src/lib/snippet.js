@@ -1,5 +1,3 @@
-// import { format } from 'prettier'
-// import * as pluginSvelte from 'prettier-plugin-svelte'
 /**
  * @param {string} name
  * @param {Object<string, any>} props
@@ -13,15 +11,20 @@ export function snippet(name, props, page = { refs: [] }) {
 	const usage = `<${name} ${Object.keys(props)
 		.map((k) => (k == 'class' ? `class="${props[k]}"` : `{${k}}`))
 		.join(' ')} />`
-	const code = `<script>\n${imports}\n\n${vars}\n</script>\n\n${usage}\n`
+	let code = `<script>\n${imports}\n\n${vars}\n</script>\n\n${usage}\n`
+
+	// try {
+	// 	code = format(code, {
+	// 		semi: false,
+	// 		tabWidth: 2,
+	// 		useTabs: false,
+	// 		parser: 'svelte',
+	// 		plugins: [pluginSvelte]
+	// 	})
+	// } catch (e) {
+	// 	console.error(e)
+	// }
 	return code
-	// return format(code, {
-	// 	semi: false,
-	// 	tabWidth: 2,
-	// 	useTabs: false,
-	// 	parser: 'svelte',
-	// 	plugins: [pluginSvelte]
-	// })
 }
 
 /**

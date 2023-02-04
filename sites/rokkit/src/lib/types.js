@@ -16,8 +16,6 @@
  */
 
 /**
-<<<<<<< HEAD
-=======
  * @typedef Snippet
  * @property {Array<Reference>} refs
  * @property {Object<string, string>} [defs]
@@ -26,10 +24,10 @@
 
 /**
  * @typedef TutorialSlide
- * @property {any} notes
+ * @property {any} guide
  * @property {any} component
- * @property {Object<string, any>} props
- * @property {Snippet} [snippet]
+ * @property {string} [title]
+ * @property {Object<string, any>} [metadata]
  */
 
 /**
@@ -39,7 +37,6 @@
  * @property {Array<TutorialSlide>} slides
  */
 /**
->>>>>>> develop
  * @typedef Navigation
  * @property {string} title
  * @property {string} url

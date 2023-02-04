@@ -1,26 +1,30 @@
 <script>
+	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	export let menu = []
 </script>
 
 <header
-	class="grid grid-cols-3 min-h-14 w-full items-center justify-between relative shadow-lg"
+	class="flex min-h-14 w-full bg-skin-100 items-center justify-between relative shadow-lg"
 >
-	<a href="/" class="flex items-center gap-3 px-3">
-		<img src="/rokkit.svg" alt="Rokkit Logo" class="w-10 h-10" />
-		<p class="text-lg">Rokkit</p>
+	<a href="/" class="flex items-center pl-2 md:pl-4">
+		{#if $media.small}
+			<img src="/rokkit-icon.svg" alt="Rokkit Logo" class="h-10" />
+		{:else}
+			<img src="/rokkit-light.svg" alt="Rokkit Logo" class="h-10" />
+		{/if}
 	</a>
-	<span class="flex justify-around items-center">
-		<nav class="flex gap-2  rounded-full bg-skin-base text-skin-900 px-4">
+	<settings class="flex items-center justify-end gap-3 pr-4">
+		<nav class="flex gap-3 text-skin-900 uppercase pr-3">
 			{#each menu as item}
-				<a href="/{item.slug}" class="hover:text-secondary-300 leading-loose"
+				<a
+					href="/{item.slug}"
+					class="border-b-2 active:border-secondary-700 hover:text-secondary-700 leading-loose"
 					>{item.title}</a
 				>
 			{/each}
 		</nav>
-	</span>
-	<settings class="flex items-center justify-end gap-3 pr-4">
 		<ThemeSwitcher />
 		<a href="https://github.com/jerrythomas/rokkit" class="text-skin-900 flex">
 			<icon class="i-spice:github" />

@@ -6,13 +6,13 @@ import presetTypography from '@unocss/preset-typography'
 import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
-import { components } from './src/lib'
+// import { components } from './src/lib'
 
 // console.log(iconShortcuts(defaultIcons, 'i-spice'))
 export default defineConfig({
 	safelist: [
 		...defaultIcons,
-		...components.map(({ icon }) => icon),
+		// ...components.map(({ icon }) => icon),
 		'i-spice:github',
 		'i-states:accordion-closed',
 		'i-spice:accordion-closed',
@@ -51,15 +51,13 @@ export default defineConfig({
 	},
 	presets: [
 		presetUno(),
-		presetTypography({
-			cssExtend: {
-				'font-mono': 'Victor Mono'
-				// 'font-size': '14px'
-			}
-		}),
+		presetTypography(), //{
+		// cssExtend: {
+		// 	'font-mono': 'Victor Mono'
+		// }
+		// }),
 		presetIcons({
 			collections: {
-				// cx :
 				spice: FileSystemIconLoader('./static/icons', (svg) =>
 					svg.replace(/black/, 'currentColor')
 				),

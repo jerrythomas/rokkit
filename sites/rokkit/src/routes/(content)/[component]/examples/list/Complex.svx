@@ -1,5 +1,0 @@
-## Hybrid List items
-
-Here is an example of how you can use the List component to display a list of people,
-using multiple components based on the data (in this case, the gender of the person).
-

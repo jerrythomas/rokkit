@@ -1,0 +1,54 @@
+accordion {
+	@apply text-md h-full text-skin-800 gap-2;
+}
+accordion group {
+	@apply rounded shadow;
+}
+accordion ul {
+	@apply p-t-1px gap-1px bg-skin-200;
+}
+accordion .item,
+accordion collapsible {
+	@apply leading-12 px-4 bg-skin-50;
+}
+accordion collapsible {
+	@apply rounded;
+}
+accordion collapsible.expanded {
+	@apply rounded-b-none;
+}
+accordion .item {
+	@apply last:rounded-b;
+}
+accordion .item icon {
+	@apply text-secondary;
+}
+
+accordion collapsible {
+	@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
+}
+accordion .item.active {
+	@apply item-selected;
+}
+
+list .item {
+	@apply px-3 border-b border-skin-100 py-1 last:border-0;
+}
+list .item:hover {
+	@apply item-hover;
+}
+list .item.active {
+	@apply bg-skin-100 text-secondary-900;
+}
+
+label list {
+	@apply border border-skin-300  rounded-md bg-skin-base overflow-hidden;
+}
+
+input-select slide {
+	@apply shadow-lg rounded-b h-33 top-8;
+}
+
+spin-list {
+	@apply border h-10;
+}

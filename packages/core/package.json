@@ -51,6 +51,9 @@
 		"./stores": "./src/stores/index.js",
 		"./actions": "./src/actions/index.js",
 		"./constants": "./src/constants.js",
-		".": "./src/index.js"
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./src/index.js"
+		}
 	}
 }

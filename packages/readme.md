@@ -3,10 +3,11 @@
 - core
   - actions
   - stores
+  - components
 - input
 - form
-- layout
+- icons
 - markdown
-- layout
+- utils
 - chart
 - themes

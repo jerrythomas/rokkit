@@ -1,0 +1,10 @@
+---
+title: Array of objects
+---
+
+# {title}
+
+List can also accept an array of objects as input. List expects `text` attribute on each item.
+Additionally `image` or `icon` attributes can be provided for each item.
+
+
