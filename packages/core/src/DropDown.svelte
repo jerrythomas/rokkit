@@ -44,7 +44,11 @@
 		bind:clientHeight={offsetTop}
 		tabindex="-1"
 	>
-		<svelte:component this={using.default} content={value ?? placeholder} />
+		<svelte:component
+			this={using.default}
+			content={value ?? placeholder}
+			{fields}
+		/>
 		{#if open}
 			<Icon name={icons.opened} />
 		{:else}

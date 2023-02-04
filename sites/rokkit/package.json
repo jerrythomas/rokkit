@@ -15,23 +15,26 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@iconify/utils": "^2.0.12",
+		"@iconify/utils": "^2.1.0",
 		"@jerrythomas/prettier-config": "^1.0.0",
-		"@playwright/test": "^1.29.2",
-		"@sveltejs/adapter-auto": "^1.0.1",
-		"@sveltejs/kit": "^1.1.3",
+		"@playwright/test": "^1.30.0",
+		"@sveltejs/adapter-auto": "^1.0.2",
+		"@sveltejs/kit": "^1.3.9",
+		"@sveltejs/vite-plugin-svelte": "^2.0.2",
+		"@testing-library/svelte": "^3.2.2",
 		"@unocss/core": "^0.44.7",
 		"@unocss/preset-icons": "^0.44.7",
-		"@unocss/preset-typography": "^0.48.4",
+		"@unocss/preset-typography": "^0.49.2",
 		"@unocss/preset-uno": "^0.44.7",
 		"@unocss/reset": "^0.44.7",
 		"@unocss/transformer-directives": "^0.44.7",
 		"eslint-config-shared": "workspace:*",
 		"mdsvex": "^0.10.6",
+		"remark-code-import": "workspace:*",
 		"svelte": "^3.55.1",
 		"svelte-check": "^2.10.3",
-		"typescript": "^4.9.4",
-		"unocss": "^0.44.7",
+		"typescript": "^4.9.5",
+		"unocss": "^0.49.2",
 		"vite": "^4.0.4",
 		"vitest": "^0.25.8"
 	},
@@ -46,10 +49,12 @@
 		"@rokkit/input": "workspace:*",
 		"@rokkit/layout": "workspace:*",
 		"@rokkit/markdown": "workspace:*",
+		"@rokkit/stories": "workspace:*",
 		"@rokkit/themes": "workspace:*",
 		"@rokkit/utils": "workspace:*",
 		"prism-svelte": "^0.5.0",
 		"prismjs": "^1.29.0",
-		"ramda": "^0.28.0"
+		"ramda": "^0.28.0",
+		"svelte-media": "^0.1.5"
 	}
 }

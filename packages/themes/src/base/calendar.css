@@ -1,0 +1,25 @@
+calendar {
+	@apply rounded-md overflow-hidden shadow-lg;
+}
+calendar month-year {
+	@apply bg-secondary-400 text-white;
+}
+calendar cal-body days-of-week p,
+calendar cal-body days-of-month p {
+	@apply h-8 w-8 text-xs;
+}
+calendar cal-body days-of-week p.weekend,
+calendar cal-body days-of-month p.weekend,
+calendar cal-body days-of-month p.holiday {
+	@apply text-primary-700;
+}
+
+calendar cal-body days-of-month {
+	@apply gap-2px;
+}
+days-of-month p {
+	@apply hover:bg-secondary-200 hover:rounded-full;
+}
+days-of-month p.active {
+	@apply bg-secondary-500 text-white rounded-full;
+}

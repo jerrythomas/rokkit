@@ -1,0 +1,13 @@
+---
+title: Introduction
+---
+
+# {title}
+
+Nested List is like an accordion, however it supports multiple levels of nesting. This can be used to create
+a navigable folder structure. As with [List](/list) and [Accordion](/accordion), the default item component
+can be customized.
+
+## Basic Usage
+
+

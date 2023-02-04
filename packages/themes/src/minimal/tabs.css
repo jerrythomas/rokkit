@@ -1,0 +1,17 @@
+tab-view tabs {
+	@apply box-border px-4 gap-2;
+}
+tab-view tabs > p {
+	@apply pr-4;
+}
+tab-view tabs tab {
+	@apply px-4 h-14 flex rounded-t-md relative;
+}
+
+tab-view tabs p {
+	@apply flex-grow text-center;
+}
+
+tab-view content {
+	@apply border border-skin-300 rounded px-4 py-3;
+}

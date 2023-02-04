@@ -6,7 +6,7 @@
 
 @import '@rokkit/themes/palette.css';
 @import '@rokkit/themes/prism.css';
-@import './styles/rokkit.css';
+@import '@rokkit/themes/rokkit.css';
 @import './styles/skins.css';
 
 body,
@@ -14,14 +14,16 @@ body > div {
 	@apply font-body w-screen h-screen flex flex-col overflow-hidden;
 }
 body {
-	/* @apply bg-gradient-to-tr from-primary-500 to-secondary-500; */
-	@apply bg-gradient-to-br from-skin-400 via-skin-200 to-skin-600 text-skin-900;
+	@apply bg-skin-50 text-skin-800;
 }
 
 body > div {
 	@apply relative;
 }
 
-notes > *:first-child{
+notes > *:first-child {
 	@apply mt-0;
+}
+notes.prose :where(h1) {
+	@apply text-3xl;
 }

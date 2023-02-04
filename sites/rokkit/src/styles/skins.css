@@ -1,15 +1,13 @@
-/* notes.prose {
-	@apply p-0;
-} */
+notes.prose {
+	@apply px-4 md:px-8;
+}
 notes.prose h2 {
 	margin-block-start: 0;
 }
-.prose-sm {
-	@apply p-4;
-}
-.prose :where(:not(pre) > code):not(:where(.not-prose,.not-prose *))::before,
-.prose :where(:not(pre) > code):not(:where(.not-prose,.not-prose *))::after {
-	content: "";
+
+.prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *))::before,
+.prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *))::after {
+	content: '';
 }
 
 preview {

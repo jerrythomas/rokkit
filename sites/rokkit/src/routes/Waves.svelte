@@ -1,6 +1,6 @@
 <script>
 	export let parallax = false
-	export let count = 5
+	// export let count = 5
 
 	$: curves = [
 		{ x: 0.8, y: 0.1 },

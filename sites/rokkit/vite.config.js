@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import { sveltekit } from '@sveltejs/kit/vite'
 import unocss from 'unocss/vite'
+
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
 
 /** @type {import('vite').UserConfig} */

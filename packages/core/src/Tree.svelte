@@ -1,11 +1,11 @@
 <script>
 	import NestedList from './NestedList.svelte'
-	import { Node } from './items'
+	import { Text } from './items'
 	import { defaultFields } from './constants'
 
 	export let items = []
 	export let fields = {}
-	export let using = { default: Node }
+	export let using = { default: Text }
 	export let root = 'root'
 	export let rtl = false
 

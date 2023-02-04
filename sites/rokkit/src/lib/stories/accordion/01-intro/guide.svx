@@ -1,0 +1,26 @@
+---
+title: Introduction
+---
+
+# {title}
+
+An acordion consists of multiple sections, each section contains a heading and content.
+Users can click on the headings to expand or collapse a section revealing the content within.
+
+Some of the notable features of this component are:
+
+- It provides a set of sane defaults and you can get started with a nested object array
+- Attributes like text, icon/image or url can be mapped to attributes in the data
+- Default item components like Text & Link are available, however custom components can also be used
+- It is also possible to configure a different component to be used for different items based on an
+attribute in the data.
+
+## Basic Usage
+
+```svelte
+<script>
+  import { Accordion } from '@rokkit/core'
+	import { data } from './data.js'
+</script>
+<Accordion {items} />
+```

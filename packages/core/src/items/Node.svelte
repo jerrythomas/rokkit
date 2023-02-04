@@ -1,22 +1,32 @@
 <script>
 	import Connector from './Connector.svelte'
 	import { defaultFields, defaultStateIcons } from '../constants'
+	import { createEventDispatcher } from 'svelte'
 
+	const dispatch = createEventDispatcher()
 	export let content
 	export let fields = defaultFields
 	export let types = []
-	export let hasChildren = false
 	export let stateIcons = defaultStateIcons.node
 	export let linesVisible = true
+	export let selected = false
+	export let using = {}
+
+	$: hasChildren = fields.data in content
+	$: component = content[fields.component]
+		? using[content[fields.component]] || using.default
+		: using.default
 
 	function toggle() {
-		content.isOpen = !content.isOpen
+		if (hasChildren) content.isOpen = !content.isOpen
+		dispatch('select', content)
 	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <node
 	class="flex flex-row h-8 gap-2 leading-loose items-center cursor-pointer select-none"
+	class:is-selected={selected}
 	on:click={toggle}
 >
 	{#each types.slice(1) as type}
@@ -32,7 +42,9 @@
 			{/if}
 		</span>
 	{/if}
-	{#if content[fields.image]}
+	<!-- Replace this with component -->
+	<svelte:component this={component} bind:content />
+	<!-- {#if content[fields.image]}
 		<img
 			class="h-8 w-8 rounded-full"
 			alt={content[fields.text]}
@@ -41,7 +53,7 @@
 	{/if}
 	{#if content[fields.icon]}
 		<icon class={content[fields.icon]} title={content[fields.text]} />
-	{/if}
+	{/if} -->
 
-	<p class="flex flex-grow">{content[fields.text]}</p>
+	<!-- <p class="flex flex-grow">{content[fields.text]}</p> -->
 </node>

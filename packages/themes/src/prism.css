@@ -19,7 +19,7 @@ pre[class*='language-'] {
 	overflow: auto;
 	/* margin: 1em 0; */
 	padding: 1.2em;
-	border-radius: 3px;
+	/* border-radius: 3px; */
 	/* font-size: 85%; */
 }
 
@@ -27,7 +27,7 @@ p code,
 li code,
 table code {
 	margin: 0;
-	border-radius: 3px;
+	/* border-radius: 3px; */
 	padding: 0.2em 0;
 	/* font-size: 85%; */
 }

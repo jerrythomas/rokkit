@@ -8,6 +8,4 @@
 	$: parsed = prism.highlight(code, prism.languages[language], language)
 </script>
 
-<code class="language-{language} font-mono">
-	{@html parsed}
-</code>
+<pre class="language-{language}"><code>{@html parsed}</code></pre>

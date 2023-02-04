@@ -23,6 +23,7 @@
 	// 	: namedShapes.circle(size)
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <path
 	{d}
 	{fill}

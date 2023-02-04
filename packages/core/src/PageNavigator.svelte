@@ -82,7 +82,7 @@
 		tabIndex={next ? 0 : -1}
 	>
 		{#if next}
-			<p class="w-full text-right">
+			<p class="text-right">
 				{#if next[fields.text]}
 					{next[fields.text]}
 				{/if}

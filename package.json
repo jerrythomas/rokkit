@@ -43,7 +43,7 @@
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
 		"prettier": "^2.8.3",
-		"turbo": "^1.7.0"
+		"turbo": "^1.7.2"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",

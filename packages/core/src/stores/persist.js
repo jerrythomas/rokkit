@@ -1,6 +1,6 @@
 if (typeof window === 'undefined') {
 	global.localStorage = {
-		getItem: () => {},
+		getItem: () => '',
 		setItem: () => {}
 	}
 }
