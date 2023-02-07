@@ -5,7 +5,6 @@
 	import { setContext } from 'svelte'
 	setContext('media', media)
 
-	import Waves from './Waves.svelte'
 	import Header from './Header.svelte'
 	import { themable } from '@rokkit/core/actions'
 
@@ -14,7 +13,7 @@
 
 <svelte:body use:themable />
 <Header menu={data.sections} version={data.version} />
-<main class="flex flex-col w-full h-full overflow-hidden relative">
+<main class="flex flex-col w-full flex-grow overflow-hidden relative">
 	<slot />
 </main>
 <!-- <Waves /> -->
