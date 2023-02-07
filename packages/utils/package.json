@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/utils",
-	"version": "1.0.0-next.1",
+	"version": "1.0.0-next.4",
 	"description": "Assorted utility funtions and classes to simplify development.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -38,7 +38,7 @@
 		"jsdom": "^19.0.0",
 		"shared-config": "workspace:*",
 		"svelte": "^3.55.1",
-		"typescript": "^4.9.4",
+		"typescript": "^4.9.5",
 		"validators": "workspace:*",
 		"vite": "^3.2.5",
 		"vitest": "~0.19.1"

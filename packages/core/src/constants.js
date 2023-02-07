@@ -73,6 +73,7 @@ export const defaultFields = {
 	component: 'component',
 	summary: 'summary',
 	notes: 'notes',
+	props: 'props',
 	isOpen: '_open'
 }
 

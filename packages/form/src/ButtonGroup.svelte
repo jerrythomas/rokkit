@@ -21,11 +21,11 @@
 
 <button-group class="flex flex-row {className}">
 	{#each items as item}
-		{@const text = typeof item === 'string' ? item : item[defaultFields.text]}
+		{@const text = typeof item === 'string' ? item : item[fields.text]}
 		<button
 			on:click={() => handle(item)}
 			class:active={value == item}
-			class="flex px-2 select-none cursor-pointer"
+			class="flex select-none cursor-pointer"
 		>
 			{text}
 		</button>

@@ -1,9 +1,13 @@
 {
 	"name": "validators",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Custom matchers for vitest.",
 	"main": "index.js",
-	"keywords": [],
+	"keywords": [
+		"vitest",
+		"matchers",
+		"validators"
+	],
 	"author": "",
 	"license": "MIT",
 	"type": "module"

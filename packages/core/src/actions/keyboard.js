@@ -1,6 +1,6 @@
 const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter']
 
-export function navigable(node) {
+export function navigable(node, { cycle = false } = {}) {
 	const handleKeyDown = (event) => {
 		// 		console.log('action', event.key)
 		if (keys.includes(event.key)) {

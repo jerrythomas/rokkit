@@ -24,3 +24,4 @@ export { default as SplitView } from './SplitView.svelte'
 export { default as Overlay } from './Overlay.svelte'
 
 export { default as PageNavigator } from './PageNavigator.svelte'
+export { default as ResponsiveGrid } from './ResponsiveGrid.svelte'
