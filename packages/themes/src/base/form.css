@@ -3,7 +3,7 @@ button-group {
 }
 
 button-group button {
-	@apply flex box-border px-2 uppercase;
+	@apply flex box-border px-2 uppercase text-skin-800;
 }
 
 button-group button.active {

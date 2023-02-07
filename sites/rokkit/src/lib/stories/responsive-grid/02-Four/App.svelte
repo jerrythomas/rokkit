@@ -35,12 +35,18 @@
 		}
 	]
 	let size = 'sm'
+	let page = items[0]
 </script>
 
 <ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />
-<ResponsiveGrid {items} small={size == 'sm'} class="four-col {size}" />
+<ResponsiveGrid
+	{items}
+	small={size == 'sm'}
+	class="four-col {size}"
+	bind:value={page}
+/>
 {#if size == 'sm'}
-	<ButtonGroup {items} fields={{ text: 'name' }} />
+	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
 {/if}
 
 <style>
@@ -48,8 +54,8 @@
 		@apply grid w-full h-full;
 	}
 	:global(.four-col.md) {
-		@apply grid-cols-4;
-		@apply grid-rows-4;
+		@apply grid-cols-2;
+		@apply grid-rows-2;
 		grid-template-areas:
 			'c-1 c-2'
 			'c-3 c-4';
@@ -68,6 +74,6 @@
 		grid-area: c-4;
 	}
 	:global(.four-col.lg) {
-		@apply grid-cols-4;
+		@apply grid-rows-4 grid-cols-1;
 	}
 </style>

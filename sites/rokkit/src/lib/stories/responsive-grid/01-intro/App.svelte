@@ -27,10 +27,28 @@
 		}
 	]
 	let size = 'sm'
+	let page = items[0]
 </script>
 
 <ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />
-<ResponsiveGrid {items} small={size == 'sm'} class="three-col {size}" />
+<ResponsiveGrid
+	{items}
+	small={size == 'sm'}
+	class="demo-col {size}"
+	bind:value={page}
+/>
 {#if size == 'sm'}
-	<ButtonGroup {items} fields={{ text: 'name' }} />
+	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
 {/if}
+
+<style>
+	:global(.demo-col) {
+		@apply w-full h-full grid;
+	}
+	:global(.demo-col.md) {
+		@apply grid-rows-3 grid-cols-1;
+	}
+	:global(.demo-col.lg) {
+		@apply grid-rows-2 grid-cols-2;
+	}
+</style>

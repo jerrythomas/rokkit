@@ -67,7 +67,7 @@ item:hover icon {
 }
 
 nested-list {
-	@apply bg-skin-200;
+	@apply bg-skin-200 text-skin-800;
 }
 nested-list node {
 	@apply pl-2;
