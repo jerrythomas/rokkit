@@ -40,8 +40,8 @@
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <container
 	use:swipeable={{ enabled: small }}
-	on:swipeLeft={handlePrevious}
-	on:swipeRight={handleNext}
+	on:swipeLeft={handleNext}
+	on:swipeRight={handlePrevious}
 	use:navigable={{ enabled: small }}
 	on:previous={handlePrevious}
 	on:next={handleNext}
@@ -62,19 +62,11 @@
 				}}
 				in:fly={{ x: direction * width, duration, easing }}
 			>
-				<svelte:component
-					this={item.component}
-					bind:content={item.content}
-					{...props}
-				/>
+				<svelte:component this={item.component} {...props} />
 			</segment>
 		{:else if !small}
 			<segment class={segmentClass}>
-				<svelte:component
-					this={item.component}
-					bind:content={item.content}
-					{...props}
-				/>
+				<svelte:component this={item.component} {...props} />
 			</segment>
 		{/if}
 	{/each}
