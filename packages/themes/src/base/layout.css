@@ -1,0 +1,24 @@
+.three-col {
+	@apply grid w-full h-full overflow-hidden;
+}
+.three-col.md {
+	@apply grid-cols-2 grid-rows-2;
+	/* grid-template-columns: 1fr 1fr; */
+	/* grid-template-rows: 1fr 1fr; */
+	grid-template-areas:
+		'c-1 c-2'
+		'c-1 c-3';
+}
+.three-col.md > .col-1 {
+	grid-area: c-1;
+}
+.three-col.md > .col-2 {
+	grid-area: c-2;
+}
+.three-col.md > .col-3 {
+	grid-area: c-3;
+}
+.three-col.lg {
+	@apply grid-cols-3 grid-rows-1;
+	/* grid-template-columns: 1fr 1fr 1fr; */
+}

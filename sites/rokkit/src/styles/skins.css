@@ -10,12 +10,12 @@ notes.prose h2 {
 	content: '';
 }
 
-preview {
-	@apply flex flex-col p-2 md:p-8 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
-	@apply md:h-100;
+graph-paper {
+	@apply p-8 bg-skin-50 text-skin-300 overflow-auto;
 }
-.cyan-blue preview {
-	@apply from-cyan to-sky;
+preview {
+	@apply flex flex-col w-full h-full p-2 md:p-6 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
+	/* @apply md:h-100; */
 }
 
 .yellow-orange preview {

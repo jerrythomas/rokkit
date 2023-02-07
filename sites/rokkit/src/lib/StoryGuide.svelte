@@ -2,6 +2,9 @@
 	import { Tabs, PageNavigator, DropDown } from '@rokkit/core'
 	import MultiFileViewer from './MultiFileViewer.svelte'
 	import { getContext } from 'svelte'
+	import { ResponsiveGrid } from '@rokkit/core'
+	import Notes from '../routes/(guide)/guide/[component]/Notes.svelte'
+	import Preview from '../routes/(guide)/guide/[component]/Preview.svelte'
 
 	const media = getContext('media')
 
@@ -12,33 +15,54 @@
 	/** @type {Array<import('./types').StoryPage>} */
 	export let pages
 	/** @type {import('$lib/types').StoryPage} */
-	let slide = pages[0]
-	let active = 'notes'
+	// let slide = pages[0]
+	let items = [
+		{
+			name: 'Notes',
+			component: Notes,
+			props: { pages },
+			content: pages[0]
+		},
+		{
+			name: 'Preview',
+			component: Preview
+		},
+		{
+			name: 'Code',
+			component: MultiFileViewer
+		}
+	]
 	let currentFile
 	/**
 	 *
 	 * @param {Array<import('$lib/types').StoryPage>} pages
 	 */
 	function handlePathChanges(pages) {
-		const matched = pages.find((x) => x === slide)
+		const matched = pages.find((x) => x === items[0].content)
 		if (!matched) {
-			slide = pages[0]
+			items[0].content = pages[0]
 		}
+		items[0].props = { pages }
+		// items[0].content = slide
 	}
-	function handleSlideChanges(slide) {
-		const matched = slide.files.find((x) => x === currentFile)
-		if (!matched) {
-			currentFile = slide.files[0]
-		}
-	}
-	$: handlePathChanges(pages)
-	$: handleSlideChanges(slide)
+	// function handleSlideChanges(slide) {
+	// 	const matched = slide.files.find((x) => x === currentFile)
+	// 	if (!matched) {
+	// 		currentFile = slide.files[0]
+	// 	}
+	// }
+
+	// $: handlePathChanges(pages)
+	// $: handleSlideChanges(slide)
 	$: skin = metadata?.skin ?? ''
-	$: navigator = $media.small || slide.files.length > 4 ? DropDown : Tabs
+	$: navigator =
+		$media.small || items[0].content.files.length > 4 ? DropDown : Tabs
+	$: size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
 </script>
 
-{#if slide}
-	<page
+<!-- {#if items[0].content} -->
+<ResponsiveGrid {items} small={$media.small} class="three-col {size}" />
+<!-- <page
 		class="grid w-full h-full {skin}"
 		class:small={$media.small}
 		class:medium={$media.medium}
@@ -107,10 +131,10 @@
 				>
 			</footer>
 		{/if}
-	</page>
-{/if}
+	</page> -->
+<!-- {/if} -->
 
-<style>
+<!-- <style>
 	button {
 		@apply rounded-md px-3 py-2 leading-loose uppercase;
 	}
@@ -157,4 +181,4 @@
 	:not(.small) content {
 		grid-area: c;
 	}
-</style>
+</style> -->

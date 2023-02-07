@@ -37,14 +37,14 @@
 		"ramda": "^0.28.0",
 		"shared-config": "workspace:*",
 		"svelte": "^3.55.1",
-		"typescript": "^4.9.4",
-		"vite": "^4.0.4",
+		"typescript": "^4.9.5",
+		"vite": "^4.1.1",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
+		"@rokkit/utils": "workspace:*",
 		"glob": "^8.1.0",
-		"mdsvex": "^0.10.6",
-		"@rokkit/utils": "workspace:*"
+		"mdsvex": "^0.10.6"
 	},
 	"files": [
 		"!fixtures",

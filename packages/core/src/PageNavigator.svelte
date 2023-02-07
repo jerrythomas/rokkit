@@ -20,13 +20,13 @@
 
 	function updateOnChange(value, items) {
 		let index = items.findIndex((x) => x == value)
-		if (index == -1) {
-			value = items[0]
-		} else {
-			previous = index > 0 ? items[index - 1] : null
-			next = index < items.length - 1 ? items[index + 1] : null
-		}
+		if (index == -1) value = items[0]
+		// } else {
+		previous = index > 0 ? items[index - 1] : null
+		next = index < items.length - 1 ? items[index + 1] : null
+		// }
 	}
+
 	function handleClick(item) {
 		if (item) {
 			value = item
@@ -36,6 +36,7 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: updateOnChange(value, items)
+
 	// $: value = items.findIndex((x) => x == value) ? value : items[0]
 </script>
 
@@ -77,7 +78,7 @@
 	</span>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
-		class="flex items-center cursor-pointer "
+		class="flex items-center cursor-pointer justify-end"
 		on:click={() => handleClick(next)}
 		tabIndex={next ? 0 : -1}
 	>

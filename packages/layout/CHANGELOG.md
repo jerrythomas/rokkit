@@ -1,5 +1,43 @@
 # @rokkit/layout
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- Release v1.0.0-nextRe
+- Updated dependencies
+  - @rokkit/markdown@1.0.0-next.4
+  - @rokkit/core@1.0.0-next.4
+
+## 1.0.0-next.3
+
+### Patch Changes
+
+- Releasing version 1.0.0-next.2
+- Updated dependencies
+  - @rokkit/markdown@1.0.0-next.3
+  - @rokkit/core@1.0.0-next.3
+
+## 1.0.0-next.2
+
+### Patch Changes
+
+- Cleaned up themes. Removed unused code.
+- Updated dependencies
+  - @rokkit/markdown@1.0.0-next.2
+  - @rokkit/core@1.0.0-next.2
+
+## 1.0.0
+
+### Patch Changes
+
+- 1e8a2f5: Release version 1.0.0-next-10
+- 240adad: Improvements in accordion and list with examples.
+- Updated dependencies [1e8a2f5]
+- Updated dependencies [240adad]
+  - @rokkit/markdown@1.0.0
+  - @rokkit/core@1.0.0
+
 ## 1.0.0-next.1
 
 ### Patch Changes

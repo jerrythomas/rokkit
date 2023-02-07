@@ -1,0 +1,11 @@
+button-group {
+	@apply flex w-full items-center justify-center m-auto h-14 gap-1 text-lg bg-skin-100;
+}
+
+button-group button {
+	@apply flex box-border px-2 uppercase;
+}
+
+button-group button.active {
+	@apply text-secondary-500;
+}

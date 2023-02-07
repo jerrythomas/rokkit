@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/input",
-	"version": "1.0.0-next.1",
+	"version": "1.0.0-next.4",
 	"description": "Input controls for svelte",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -35,8 +35,8 @@
 		"jsdom": "^19.0.0",
 		"shared-config": "workspace:*",
 		"svelte": "^3.55.1",
-		"typescript": "^4.9.4",
-		"vite": "^4.0.4",
+		"typescript": "^4.9.5",
+		"vite": "^4.1.1",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {

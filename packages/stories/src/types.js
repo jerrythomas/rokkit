@@ -19,8 +19,8 @@
 /**
  * @typedef StoryPage
  * @property {Array<SampleWithCode>} files
- * @property {SvelteComponent} preview
- * @property {SvelteComponent} notes
+ * @property {*} preview
+ * @property {*} notes
  * @property {Object<string, any>} metadata
  */
 
