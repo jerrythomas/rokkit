@@ -10,21 +10,22 @@
 @import './styles/skins.css';
 @import './styles/layout.css';
 
-
-html, body {
-	/* Safari 100vh bug */
-	@apply font-body w-screen h-screen flex flex-col overflow-hidden;
-	height: -webkit-fill-available;
-}
+body,
 body > div {
-  @apply flex flex-col h-full w-full overflow-hidden;
+	@apply flex flex-col w-screen h-screen overflow-hidden;
 }
 body {
-	@apply bg-skin-50 text-skin-800;
+	@apply font-body bg-skin-50 text-skin-800;
 }
-
 body > div {
 	@apply relative;
+}
+
+/* handle the bottom searchbar on safari */
+@media (max-height: 928px) and (max-width: 428px) {
+	body > div {
+		padding-bottom: 32px;
+	}
 }
 
 notes > *:first-child {

@@ -38,7 +38,7 @@
 		}
 	]
 	let size = 'md'
-	let page = items[1]
+	let page = items[0]
 
 	$: story.set({ ...data.story, current: data.story.pages[0] })
 	$: size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
