@@ -10,9 +10,14 @@
 @import './styles/skins.css';
 @import './styles/layout.css';
 
-body,
-body > div {
+
+html, body {
+	/* Safari 100vh bug */
 	@apply font-body w-screen h-screen flex flex-col overflow-hidden;
+	height: -webkit-fill-available;
+}
+body > div {
+  @apply flex flex-col h-full w-full overflow-hidden;
 }
 body {
 	@apply bg-skin-50 text-skin-800;
