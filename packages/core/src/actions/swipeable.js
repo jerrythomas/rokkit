@@ -9,13 +9,13 @@ export function swipeable(
 	let startY
 
 	function touchStart(event) {
-		const touch = event.touches[0]
+		const touch = event.touches ? event.touches[0] : event
 		startX = touch.clientX
 		startY = touch.clientY
 	}
 
 	function touchEnd(event) {
-		const touch = event.changedTouches[0]
+		const touch = event.changedTouches ? event.changedTouches[0] : event
 		const distX = touch.clientX - startX
 		const distY = touch.clientY - startY
 
@@ -42,11 +42,15 @@ export function swipeable(
 
 	node.addEventListener('touchstart', touchStart)
 	node.addEventListener('touchend', touchEnd)
+	node.addEventListener('mousedown', touchStart)
+	node.addEventListener('mouseup', touchEnd)
 
 	return {
 		destroy() {
 			node.removeEventListener('touchstart', touchStart)
 			node.removeEventListener('touchend', touchEnd)
+			node.removeEventListener('mousedown', touchStart)
+			node.removeEventListener('mouseup', touchEnd)
 		}
 	}
 }

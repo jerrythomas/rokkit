@@ -1,3 +1,8 @@
+body {
+	@apply flex flex-col w-screen overflow-hidden;
+	height: min(100vh, var(--viewport-height));
+}
+
 code,
 kbd,
 samp,

@@ -1,16 +1,33 @@
+export const PARSE_ERROR_MESSAGE =
+	'Unable to parse value from local storage for key: '
+
 if (typeof window === 'undefined') {
 	global.localStorage = {
-		getItem: () => '',
+		getItem: () => '{}',
 		setItem: () => {}
 	}
 }
 export function persistable(key, store) {
 	let value
+	const storageEventListener = (event) => {
+		if (event.key === key) {
+			event.stopPropagation()
+			event.preventDefault()
+			try {
+				const newValue = JSON.parse(event.newValue)
+				set(newValue)
+			} catch (e) {
+				console.error(PARSE_ERROR_MESSAGE, key)
+			}
+		}
+	}
+
 	try {
 		value = JSON.parse(localStorage.getItem(key))
+		// console.log(value)
 		store.set(value)
 	} catch {
-		console.error('Unable to parse value from local storage for key: ', key)
+		console.error(PARSE_ERROR_MESSAGE, key)
 	}
 
 	const set = (newValue) => {
@@ -30,24 +47,17 @@ export function persistable(key, store) {
 	}
 
 	if (typeof window !== 'undefined') {
-		window.addEventListener('storage', (event) => {
-			if (event.key === key) {
-				try {
-					const newValue = JSON.parse(event.newValue)
-					set(newValue)
-				} catch (e) {
-					console.error(
-						'Unable to parse value from local storage for key: ',
-						key
-					)
-				}
-			}
-		})
+		window.addEventListener('storage', storageEventListener)
 	}
 
 	return {
 		subscribe: store.subscribe,
 		set,
-		update
+		update,
+		destroy() {
+			if (typeof window !== 'undefined') {
+				window.removeEventListener('storage', storageEventListener)
+			}
+		}
 	}
 }

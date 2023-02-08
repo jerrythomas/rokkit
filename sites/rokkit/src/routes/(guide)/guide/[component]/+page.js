@@ -3,7 +3,7 @@ import { storyFiles } from '$lib'
 import { error } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ params, url }) {
+export async function load({ params }) {
 	const stories = await extractStories(storyFiles.modules, storyFiles.samples)
 
 	if (Object.keys(stories).includes(params.component)) {
