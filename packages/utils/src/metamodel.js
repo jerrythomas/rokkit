@@ -29,14 +29,6 @@ export function fileSorter(a, b) {
 		return a.name < b.name ? -1 : 1
 	}
 }
-// export function sortByPageAndFilename(a, b) {
-// 	if (a.folder === b.folder) {
-// 		if (a.page === b.page) {
-// 			const typeOrder = types.indexOf(a.type) - types.indexOf(b.type)
-// 			return typeOrder === 0 ? a.name.localeCompare(b.name) : typeOrder
-// 		} else return (a.page ?? 99) - (b.page ?? 99)
-// 	} else return a.name.localeCompare(b.folder)
-// }
 
 export function getAttributes(file) {
 	const parts = file.split('/')
@@ -104,7 +96,6 @@ export function transform(input) {
 		if (!curr.page) {
 			acc[curr.folder] = { ...acc[curr.folder], metadata: curr.metadata }
 		} else {
-			// console.log(curr.folder, pages.length, curr.page)
 			if (pages.length < curr.page) {
 				pages.push({
 					files: [],
