@@ -1,112 +1,91 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { swipeable } from './swipeable'
-import { toUseHandlersFor } from 'validators'
+import { toUseHandlersFor, toOnlyTrigger } from 'validators'
 
-expect.extend({ toUseHandlersFor })
+expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
 describe('swipable', () => {
+	const events = ['touchstart', 'touchend', 'mousedown', 'mouseup']
 	let node
-	let swipeLeft, swipeRight, swipeUp, swipeDown
+	let handlers = {}
 
 	beforeEach(() => {
 		node = document.createElement('div')
-		swipeLeft = vi.fn()
-		swipeRight = vi.fn()
-		swipeUp = vi.fn()
-		swipeDown = vi.fn()
+		handlers = {
+			swipeLeft: vi.fn(),
+			swipeRight: vi.fn(),
+			swipeUp: vi.fn(),
+			swipeDown: vi.fn()
+		}
+
 		global.Touch = vi.fn().mockImplementation((input) => input)
-		node.addEventListener('swipeLeft', swipeLeft)
-		node.addEventListener('swipeRight', swipeRight)
-		node.addEventListener('swipeUp', swipeUp)
-		node.addEventListener('swipeDown', swipeDown)
+		Object.entries(handlers).map(([event, handler]) =>
+			node.addEventListener(event, handler)
+		)
 	})
 
 	afterEach(() => {
-		node.removeEventListener('swipeLeft', swipeLeft)
-		node.removeEventListener('swipeRight', swipeRight)
-		node.removeEventListener('swipeUp', swipeUp)
-		node.removeEventListener('swipeDown', swipeDown)
+		Object.entries(handlers).map(([event, handler]) =>
+			node.removeEventListener(event, handler)
+		)
 	})
 
 	it('should cleanup events on destroy', () => {
-		const events = ['touchstart', 'touchend']
 		expect(swipeable).toUseHandlersFor({}, events)
 		expect(swipeable).toUseHandlersFor(
 			{ horizontal: false, vertical: true },
 			events
 		)
-		expect(swipeable).not.toUseHandlersFor({ enabled: false }, 'touchstart')
-		expect(swipeable).not.toUseHandlersFor({ enabled: false }, 'touchend')
 	})
-	it('should setup and cleanup touch events on node', () => {
-		let listeners = {}
-		let node = {
-			addEventListener: vi
-				.fn()
-				.mockImplementation(
-					(name) => (listeners[name] = (listeners[name] ?? 0) + 1)
-				),
-			removeEventListener: vi
-				.fn()
-				.mockImplementation((name) => --listeners[name])
-		}
-		const handle = swipeable(node)
-		expect(listeners['touchstart']).toEqual(1)
-		expect(listeners['touchend']).toEqual(1)
-		handle.destroy()
-		expect(listeners['touchstart']).toEqual(0)
-		expect(listeners['touchend']).toEqual(0)
+	it.each(events)('should not register %s when disabled', (event) => {
+		expect(swipeable).not.toUseHandlersFor({ enabled: false }, event)
 	})
+
 	it('should dispatch swipeRight event', () => {
 		const handle = swipeable(node)
 
-		simulateSwipe(node, { x: 100, y: 10 })
+		simulateTouchSwipe(node, { x: 100, y: 10 })
+		expect(handlers).toOnlyTrigger('swipeRight')
+		simulateMouseSwipe(node, { x: 100, y: 10 })
+		expect(handlers).toOnlyTrigger('swipeRight')
 
-		expect(swipeLeft).not.toHaveBeenCalled()
-		expect(swipeRight).toHaveBeenCalled()
-		expect(swipeDown).not.toHaveBeenCalled()
-		expect(swipeUp).not.toHaveBeenCalled()
 		handle.destroy()
 	})
 	it('should dispatch swipeLeft event', () => {
 		const handle = swipeable(node)
 
-		simulateSwipe(node, { x: -100, y: 10 })
+		simulateTouchSwipe(node, { x: -100, y: 10 })
+		expect(handlers).toOnlyTrigger('swipeLeft')
+		simulateMouseSwipe(node, { x: -100, y: 10 })
+		expect(handlers).toOnlyTrigger('swipeLeft')
 
-		expect(swipeLeft).toHaveBeenCalled()
-		expect(swipeRight).not.toHaveBeenCalled()
-		expect(swipeDown).not.toHaveBeenCalled()
-		expect(swipeUp).not.toHaveBeenCalled()
 		handle.destroy()
 	})
 
 	it('should dispatch swipeUp event', () => {
 		const handle = swipeable(node, { vertical: true, threshold: 100 })
 
-		simulateSwipe(node, { x: 10, y: -100 })
+		simulateTouchSwipe(node, { x: 10, y: -100 })
+		expect(handlers).toOnlyTrigger('swipeUp')
+		simulateMouseSwipe(node, { x: 10, y: -100 })
+		expect(handlers).toOnlyTrigger('swipeUp')
 
-		expect(swipeLeft).not.toHaveBeenCalled()
-		expect(swipeRight).not.toHaveBeenCalled()
-		expect(swipeDown).not.toHaveBeenCalled()
-		expect(swipeUp).toHaveBeenCalled()
 		handle.destroy()
 	})
 
 	it('should dispatch swipeDown event', () => {
 		const handle = swipeable(node, { vertical: true })
 
-		simulateSwipe(node, { x: 10, y: 100 })
-
-		expect(swipeLeft).not.toHaveBeenCalled()
-		expect(swipeRight).not.toHaveBeenCalled()
-		expect(swipeDown).toHaveBeenCalled()
-		expect(swipeUp).not.toHaveBeenCalled()
+		simulateTouchSwipe(node, { x: 10, y: 100 })
+		expect(handlers).toOnlyTrigger('swipeDown')
+		simulateMouseSwipe(node, { x: 10, y: 100 })
+		expect(handlers).toOnlyTrigger('swipeDown')
 
 		handle.destroy()
 	})
 })
 
-function simulateSwipe(node, distance) {
+function simulateTouchSwipe(node, distance) {
 	const touchStart = new Touch({
 		identifier: 0,
 		target: node,
@@ -127,4 +106,11 @@ function simulateSwipe(node, distance) {
 		changedTouches: [touchEnd]
 	})
 	node.dispatchEvent(touchEndEvent)
+}
+
+function simulateMouseSwipe(node, distance) {
+	node.dispatchEvent(new MouseEvent('mouseup', { clientX: 0, clientY: 0 }))
+	node.dispatchEvent(
+		new MouseEvent('mousedown', { clientX: distance.x, clientY: distance.y })
+	)
 }

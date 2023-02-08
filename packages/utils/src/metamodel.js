@@ -125,14 +125,13 @@ export function transform(input) {
 	return result
 }
 
-export async function extractStories(modules, sources, options) {
+export async function extractStories(modules, sources, options = {}) {
 	let combined = [
 		...(await fetchImports(modules))
 			.map((x) => ({ ...getAttributes(x.file), ...x }))
 			.map((x) => extractModuleFromImports(x, options)),
 		...(await fetchImports(sources))
 			.map((x) => ({ ...getAttributes(x.file), ...x }))
-			// .filter((x) => x.page)
 			.map((x) => extractCodeFromImports(x))
 	].filter((x) => !x.error)
 

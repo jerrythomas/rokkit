@@ -16,6 +16,12 @@ accordion summary {
 accordion summary {
 	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300 border-b border-skin-300;
 }
+/* accordion summary {
+  list-style-type: none;
+} */
+accordion summary::-webkit-details-marker {
+  display: none;
+}
 
 list item icon {
 	@apply text-secondary;

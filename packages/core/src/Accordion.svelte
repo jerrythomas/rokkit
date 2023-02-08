@@ -14,20 +14,7 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
-	// $: openGroupForSeleceted(items)
 
-	// function openGroupForSeleceted(items) {
-	// 	if (value) {
-	// 		let matched = items.find(
-	// 			(x) => x[fields.data].findIndex((y) => y == value) > -1
-	// 		)
-	// 		if (matched) {
-	// 			toggle(matched)
-	// 			matched[fields.isOpen] = true
-	// 			// if (typeof window !== 'undefined') alert(matched)
-	// 		}
-	// 	}
-	// }
 	function toggle(item) {
 		if (autoClose) {
 			// this event is triggered before the state changes
