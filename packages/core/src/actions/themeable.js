@@ -7,9 +7,7 @@ import { theme } from '../stores'
  */
 export function themable(node) {
 	let previous = {}
-	node.style.visibility = 'hidden'
-	node.style.setProperty('--viewport-height', window.innerHeight + 'px')
-	node.style.visibility = 'visible'
+
 	theme.subscribe((data) => {
 		if (data.name && data.name !== previous.name) {
 			node.classList.remove(previous.name)
