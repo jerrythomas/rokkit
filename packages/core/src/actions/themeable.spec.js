@@ -19,16 +19,6 @@ describe('themable', () => {
 		vi.resetAllMocks()
 	})
 
-	it('should set safe-area-height variable on node', () => {
-		let node = document.createElement('body')
-		theme.set({ name: 'test', mode: 'light' })
-		expect(node.style.getPropertyValue('--viewport-height')).toEqual('')
-		themable(node)
-		expect(node.style.getPropertyValue('--viewport-height')).toEqual(
-			window.innerHeight.toString() + 'px'
-		)
-		// expect(node.classList.add).toHaveBeenCalledWith('test')
-	})
 	it('should add the new theme name class to the node', () => {
 		theme.set({ name: 'test', mode: 'light' })
 		themable(node)

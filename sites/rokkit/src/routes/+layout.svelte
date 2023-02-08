@@ -2,13 +2,17 @@
 	import 'uno.css'
 	import '../app.css'
 	import { media } from '$lib'
-	import { setContext } from 'svelte'
+	import { onMount, setContext } from 'svelte'
+	import { adjustHeight } from '@rokkit/utils'
+
 	setContext('media', media)
 
 	import Header from './Header.svelte'
 	import { themable } from '@rokkit/core/actions'
 
 	export let data
+
+	onMount(() => adjustHeight())
 </script>
 
 <svelte:body use:themable />
