@@ -10,7 +10,7 @@
 >
 	<a href="/" class="flex items-center pl-2 md:pl-4">
 		{#if $media.small}
-			<img src="/rokkit-icon.svg" alt="Rokkit Logo" class="h-10" />
+			<img src="/rokkit-icon.svg" alt="Rokkit Logo" class="h-12" />
 		{:else}
 			<img src="/rokkit-light.svg" alt="Rokkit Logo" class="h-10" />
 		{/if}
