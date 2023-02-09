@@ -1,23 +1,18 @@
 ---
-title: Introduction
+title: List
 ---
 
 # {title}
 
-Lists are useful for organizing and displaying information in a clear and easy-to-read format.
-Lists are commonly used to display a list of items, usually homogeneous. A List component,
-therefore is a versatile component that can be used in a variety of ways. This component is a
-building block for many other components like [Accordion](/accordion), Dropdown and Select components.
+Lists are useful for displaying information and selection. This component is a building block for
+many other components like [Accordion](/accordion), Dropdown and Select components.
 
 Some of the notable features of this component are:
 
-- It provides a set of sane defaults and you can get started with a simple string array
+- Get started with a simple string array
 - Attributes like text, icon/image or url can be mapped to attributes in the data
 - Default item components like Text & Link are available, however custom components can also be used
 - It is also possible to configure a different component to be used for different items based on an
 attribute in the data.
 
-## Basic Usage
-
-Get started by providing a simple array of strings as input to the component.
-
+A simple example is shown here.

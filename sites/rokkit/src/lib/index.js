@@ -1,4 +1,5 @@
 import watchMedia from 'svelte-media'
+import { createStories } from '@rokkit/utils'
 
 const mediaqueries = {
 	small: '(max-width: 767px)',
@@ -18,6 +19,7 @@ const modules = import.meta.glob(
 const samples = import.meta.glob('./stories/**/*.{svelte,js}', { as: 'raw' })
 
 export const storyFiles = { modules, samples }
+export const guide = createStories(modules, samples)
 export const media = watchMedia(mediaqueries)
 
 // import { toHyphenCase, list } from '@rokkit/utils'

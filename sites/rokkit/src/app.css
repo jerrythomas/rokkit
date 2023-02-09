@@ -4,6 +4,7 @@
 @import '@fontsource/poppins';
 @import '@fontsource/poppins/300.css';
 
+@import '@rokkit/themes/markdown.css';
 @import '@rokkit/themes/palette.css';
 @import '@rokkit/themes/prism.css';
 @import '@rokkit/themes/rokkit.css';

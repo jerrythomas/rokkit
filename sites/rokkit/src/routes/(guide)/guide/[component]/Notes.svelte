@@ -11,7 +11,7 @@
 	class="flex flex-col w-full h-full pb-12 border-r border-r-skin-200 relative overflow-hidden"
 >
 	{#if $story.current}
-		<notes class="prose w-full overflow-auto">
+		<notes class="markdown-body px-4 py-2 w-full overflow-auto">
 			<svelte:component this={$story.current.notes} />
 		</notes>
 		<PageNavigator

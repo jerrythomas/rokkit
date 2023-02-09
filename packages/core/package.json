@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/core",
-	"version": "1.0.0-next.4",
+	"version": "1.0.0-next.10",
 	"description": "Core components, actions and stores for svelte apps.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",

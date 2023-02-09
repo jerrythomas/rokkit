@@ -5,7 +5,7 @@
 	const story = getContext('story')
 </script>
 
-<content class="flex flex-col overflow-hidden">
+<content class="flex flex-col w-full h-full overflow-hidden">
 	<MultiFileViewer
 		items={$story.current.files}
 		fields={{ text: 'file' }}
