@@ -1,3 +1,9 @@
+/* container {
+	@apply overflow-hidden;
+} */
+container > segment {
+	@apply overflow-hidden;
+}
 .three-col {
 	@apply grid w-full h-full overflow-hidden;
 }

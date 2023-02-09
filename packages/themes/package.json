@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/themes",
-	"version": "1.0.0-next.4",
+	"version": "1.0.0-next.10",
 	"description": "Themes for use with rokkit components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -51,6 +51,7 @@
 		"./rokkit.css": "./src/rokkit.css",
 		"./prism.css": "./src/prism.css",
 		"./palette.css": "./src/palette.css",
+		"./markdown.css": "./src/markdown.css",
 		"./package.json": "./src/package.json",
 		".": {
 			"import": "./src/index.js"

@@ -79,12 +79,15 @@ sample pre {
 	@apply rounded-none;
 }
 
+multi-file {
+	@apply overflow-auto;
+}
 multi-file pre[class*='language-'] {
-	@apply flex flex-grow rounded-none font-mono;
+	@apply flex flex-grow rounded-none font-mono overflow-scroll;
 }
-multi-file pre[class*='language-'] code {
+/* multi-file pre[class*='language-'] code {
 	white-space: pre-wrap;
-}
+} */
 multi-file tab-view tabs {
 	@apply rounded-none;
 }

@@ -1,6 +1,9 @@
 <script>
 	import { List } from '@rokkit/core'
-	import { items } from './data.js'
+
+	let items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
+	let value
 </script>
 
-<List {items} />
+<List {items} bind:value />
+<p>Selected Value: <b>{value}</b></p>

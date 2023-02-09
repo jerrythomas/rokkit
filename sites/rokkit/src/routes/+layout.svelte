@@ -3,7 +3,7 @@
 	import '../app.css'
 	import { media } from '$lib'
 	import { onMount, setContext } from 'svelte'
-	import { adjustHeight } from '@rokkit/utils'
+	import { adjustViewport } from '@rokkit/utils'
 
 	setContext('media', media)
 
@@ -12,7 +12,7 @@
 
 	export let data
 
-	onMount(() => adjustHeight())
+	onMount(() => adjustViewport())
 </script>
 
 <svelte:body use:themable />

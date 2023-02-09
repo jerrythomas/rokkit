@@ -1,17 +1,147 @@
 import { describe, expect, it } from 'vitest'
-
+import { get } from 'svelte/store'
 import {
 	getAttributes,
 	fetchImports,
 	extractModuleFromImports,
 	extractCodeFromImports,
 	transform,
-	sortByPageAndFilename,
 	extractStories,
-	fileSorter
+	fileSorter,
+	extractCategories,
+	createStories
 } from './metamodel'
 
 describe('metamodel', () => {
+	const modules = {
+		'./stories/foo/metadata.js': () =>
+			Promise.resolve({
+				default: { name: 'Foo', category: 'Group', description: 'Group > Foo' }
+			}),
+		'./stories/foo/01/App.svelte': () =>
+			Promise.resolve({ default: 'The Foo Component' }),
+		'./stories/foo/01/guide.svx': () =>
+			Promise.resolve({
+				default: 'Notes for Foo Component',
+				metadata: { title: 'Page 01' }
+			}),
+		'./stories/foo/02/App.svelte': () =>
+			Promise.resolve({ default: 'The Foo Component/02' }),
+		'./stories/foo/02/guide.svx': () =>
+			Promise.resolve({
+				default: 'Notes for Foo Component/02',
+				metadata: { title: 'Page 02' }
+			}),
+		'./stories/bar/metadata.js': () =>
+			Promise.resolve({
+				default: { name: 'Bar', category: 'Group', description: 'Group > Bar' }
+			}),
+		'./stories/bar/01/App.svelte': () =>
+			Promise.resolve({ default: 'The Bar Component' }),
+		'./stories/bar/01/guide.svx': () =>
+			Promise.resolve({
+				default: 'Notes for Bar Component',
+				metadata: { title: 'Page 01' }
+			}),
+		'./stories/bar/02/App.svelte': () =>
+			Promise.resolve({ default: 'The Bar Component/02' }),
+		'./stories/bar/02/guide.svx': () =>
+			Promise.resolve({
+				default: 'Notes for Bar Component/02',
+				metadata: { title: 'Page 02' }
+			})
+	}
+
+	const sources = {
+		'./stories/foo/01/App.svelte': () =>
+			Promise.resolve('Code for Foo Component/01'),
+		'./stories/foo/02/App.svelte': () =>
+			Promise.resolve('Code for Foo Component/02'),
+		'./stories/foo/01/data.js': () =>
+			Promise.resolve('Code for Foo/data.js Page/01'),
+		'./stories/bar/01/App.svelte': () =>
+			Promise.resolve('Code for Bar Component/01'),
+		'./stories/bar/02/App.svelte': () =>
+			Promise.resolve('Code for Bar Component/02'),
+		'./stories/bar/01/data.js': () =>
+			Promise.resolve('Code for Bar/data.js Page/01')
+	}
+	const stories = {
+		bar: {
+			name: 'Bar',
+			metadata: { name: 'Bar', category: 'Group', description: 'Group > Bar' },
+			pages: [
+				{
+					title: 'Page 01',
+					files: [
+						{
+							file: 'App.svelte',
+							language: 'svelte',
+							code: 'Code for Bar Component/01'
+						},
+						{
+							file: 'data.js',
+							language: 'js',
+							code: 'Code for Bar/data.js Page/01'
+						}
+					],
+					preview: 'The Bar Component',
+					notes: 'Notes for Bar Component'
+				},
+				{
+					title: 'Page 02',
+					files: [
+						{
+							file: 'App.svelte',
+							language: 'svelte',
+							code: 'Code for Bar Component/02'
+						}
+					],
+					preview: 'The Bar Component/02',
+					notes: 'Notes for Bar Component/02'
+				}
+			]
+		},
+		foo: {
+			name: 'Foo',
+			metadata: { name: 'Foo', category: 'Group', description: 'Group > Foo' },
+			pages: [
+				{
+					title: 'Page 01',
+					files: [
+						{
+							file: 'App.svelte',
+							language: 'svelte',
+							code: 'Code for Foo Component/01'
+						},
+						{
+							file: 'data.js',
+							language: 'js',
+							code: 'Code for Foo/data.js Page/01'
+						}
+					],
+					preview: 'The Foo Component',
+					notes: 'Notes for Foo Component'
+				},
+				{
+					title: 'Page 02',
+					files: [
+						{
+							file: 'App.svelte',
+							language: 'svelte',
+							code: 'Code for Foo Component/02'
+						}
+					],
+					preview: 'The Foo Component/02',
+					notes: 'Notes for Foo Component/02'
+				}
+			]
+		}
+	}
+	const categories = [
+		{ name: 'Bar', category: 'Group', description: 'Group > Bar', path: 'bar' },
+		{ name: 'Foo', category: 'Group', description: 'Group > Foo', path: 'foo' }
+	]
 	it('should sort by folder, page, type and name', () => {
 		const input = [
 			{ folder: 'folder1', name: 'index.js', type: 'js', page: 1 },
@@ -30,32 +160,7 @@ describe('metamodel', () => {
 			{ folder: 'folder2', name: 'file.svelte', type: 'svelte', page: null }
 		])
 	})
-	// it('Should provide the right sort order', () => {
-	// 	expect(
-	// 		sortByPageAndFilename(
-	// 			{ folder: 'list', page: 1, type: 'js', name: 'data.js' },
-	// 			{ folder: 'list', page: 1, type: 'svelte', name: 'App.svelte' }
-	// 		)
-	// 	).toEqual(1)
-	// 	expect(
-	// 		sortByPageAndFilename(
-	// 			{ folder: 'list', page: 1, type: 'svelte', name: 'App.svelte' },
-	// 			{ folder: 'list', page: 1, type: 'svelte', name: 'Person.svelte' }
-	// 		)
-	// 	).toEqual(-1)
-	// 	expect(
-	// 		sortByPageAndFilename(
-	// 			{ folder: 'list', page: 1, type: 'svelte', name: 'Person.svelte' },
-	// 			{ folder: 'list', page: 1, type: 'svelte', name: 'App.svelte' }
-	// 		)
-	// 	).toEqual(1)
-	// 	expect(
-	// 		sortByPageAndFilename(
-	// 			{ folder: 'list', page: 1, type: 'svelte', name: 'App.svelte' },
-	// 			{ folder: 'list', page: 1, type: 'js', name: 'data.js' }
-	// 		)
-	// 	).toEqual(-1)
-	// })
+
 	it('should extract file metadata', () => {
 		let file = './stories/list/metadata.js'
 		expect(getAttributes(file)).toEqual({
@@ -330,129 +435,88 @@ describe('metamodel', () => {
 	})
 
 	it('should generate stories object using modules and sources as input', async () => {
+		const result = await extractStories(modules, sources)
+		expect(result).toEqual(stories)
+	})
+
+	it('should generate a list of categorized components', async () => {
 		const modules = {
 			'./stories/foo/metadata.js': () =>
-				Promise.resolve({ default: { name: 'Foo', skin: 'yellow-orange' } }),
-			'./stories/foo/01/App.svelte': () =>
-				Promise.resolve({ default: 'The Foo Component' }),
-			'./stories/foo/01/guide.svx': () =>
 				Promise.resolve({
-					default: 'Notes for Foo Component',
-					metadata: { title: 'Page 01' }
-				}),
-			'./stories/foo/02/App.svelte': () =>
-				Promise.resolve({ default: 'The Foo Component/02' }),
-			'./stories/foo/02/guide.svx': () =>
-				Promise.resolve({
-					default: 'Notes for Foo Component/02',
-					metadata: { title: 'Page 02' }
+					default: {
+						category: 'Group',
+						description: 'Group > Foo'
+					}
 				}),
 			'./stories/bar/metadata.js': () =>
-				Promise.resolve({ default: { name: 'Bar', skin: 'cyan-green' } }),
-			'./stories/bar/01/App.svelte': () =>
-				Promise.resolve({ default: 'The Bar Component' }),
-			'./stories/bar/01/guide.svx': () =>
 				Promise.resolve({
-					default: 'Notes for Bar Component',
-					metadata: { title: 'Page 01' }
+					default: {
+						name: 'Bar',
+						category: 'Group',
+						description: 'Group > Bar'
+					}
 				}),
-			'./stories/bar/02/App.svelte': () =>
-				Promise.resolve({ default: 'The Bar Component/02' }),
-			'./stories/bar/02/guide.svx': () =>
+			'./stories/band-jazz/metadata.js': () =>
 				Promise.resolve({
-					default: 'Notes for Bar Component/02',
-					metadata: { title: 'Page 02' }
+					default: {
+						category: 'Band',
+						description: 'Band > Jazz'
+					}
+				}),
+			'./stories/band-fizz/metadata.js': () =>
+				Promise.resolve({
+					default: {
+						name: 'Fizz',
+						category: 'Band',
+						description: 'Band > Fizz'
+					}
 				})
 		}
 
-		const sources = {
-			'./stories/foo/01/App.svelte': () =>
-				Promise.resolve('Code for Foo Component/01'),
-			'./stories/foo/02/App.svelte': () =>
-				Promise.resolve('Code for Foo Component/02'),
-			'./stories/foo/01/data.js': () =>
-				Promise.resolve('Code for Foo/data.js Page/01'),
-			'./stories/bar/01/App.svelte': () =>
-				Promise.resolve('Code for Bar Component/01'),
-			'./stories/bar/02/App.svelte': () =>
-				Promise.resolve('Code for Bar Component/02'),
-			'./stories/bar/01/data.js': () =>
-				Promise.resolve('Code for Bar/data.js Page/01')
-		}
-
-		const result = await extractStories(modules, sources)
-
-		expect(result).toEqual({
-			bar: {
-				name: 'Bar',
-				metadata: { name: 'Bar', skin: 'cyan-green' },
-				pages: [
-					{
-						title: 'Page 01',
-						files: [
-							{
-								file: 'App.svelte',
-								language: 'svelte',
-								code: 'Code for Bar Component/01'
-							},
-							{
-								file: 'data.js',
-								language: 'js',
-								code: 'Code for Bar/data.js Page/01'
-							}
-						],
-						preview: 'The Bar Component',
-						notes: 'Notes for Bar Component'
-					},
-					{
-						title: 'Page 02',
-						files: [
-							{
-								file: 'App.svelte',
-								language: 'svelte',
-								code: 'Code for Bar Component/02'
-							}
-						],
-						preview: 'The Bar Component/02',
-						notes: 'Notes for Bar Component/02'
-					}
-				]
+		const stories = await extractStories(modules, {})
+		const result = extractCategories(stories)
+		expect(result).toEqual([
+			{
+				category: 'Band',
+				name: 'Fizz',
+				description: 'Band > Fizz',
+				path: 'band-fizz'
 			},
-			foo: {
+			{
+				category: 'Band',
+				name: 'BandJazz',
+				description: 'Band > Jazz',
+				path: 'band-jazz'
+			},
+			{
+				name: 'Bar',
+				category: 'Group',
+				description: 'Group > Bar',
+				path: 'bar'
+			},
+			{
 				name: 'Foo',
-				metadata: { name: 'Foo', skin: 'yellow-orange' },
-				pages: [
-					{
-						title: 'Page 01',
-						files: [
-							{
-								file: 'App.svelte',
-								language: 'svelte',
-								code: 'Code for Foo Component/01'
-							},
-							{
-								file: 'data.js',
-								language: 'js',
-								code: 'Code for Foo/data.js Page/01'
-							}
-						],
-						preview: 'The Foo Component',
-						notes: 'Notes for Foo Component'
-					},
-					{
-						title: 'Page 02',
-						files: [
-							{
-								file: 'App.svelte',
-								language: 'svelte',
-								code: 'Code for Foo Component/02'
-							}
-						],
-						preview: 'The Foo Component/02',
-						notes: 'Notes for Foo Component/02'
-					}
-				]
+				category: 'Group',
+				description: 'Group > Foo',
+				path: 'foo'
 			}
-		})
+		])
+	})
+
+	it('should generate stories & categories using modules and sources as input', async () => {
+		const result = createStories(modules, sources)
+
+		expect(result.ready()).toBeFalsy()
+		if (!result.ready()) {
+			expect(result.stories()).toEqual({})
+			expect(result.categories()).toEqual([])
+			expect(result.story('foo')).toEqual(null)
+		}
+		await result.fetch()
+		expect(result.ready()).toBeTruthy()
+		expect(result.stories()).toEqual(stories)
+		expect(result.categories()).toEqual(categories)
+		expect(result.story('foo')).toEqual(stories.foo)
+		expect(result.story('bar')).toEqual(stories.bar)
 	})
 })

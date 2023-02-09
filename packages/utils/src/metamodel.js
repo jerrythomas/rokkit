@@ -1,5 +1,6 @@
 import { toPascalCase } from './string'
-import { omit } from 'ramda'
+import { omit, pick } from 'ramda'
+import { writable } from 'svelte/store'
 
 /** @type {import('./types').StoryOptions} */
 const defaultOptions = {
@@ -136,4 +137,34 @@ export async function extractStories(modules, sources, options = {}) {
 	].filter((x) => !x.error)
 
 	return transform(combined)
+}
+
+export function extractCategories(stories) {
+	return Object.entries(stories).map(([path, story]) => ({
+		...pick(['name'], story),
+		...story.metadata,
+		path
+	}))
+}
+
+export function createStories(modules, sources, options = {}) {
+	let stories = {}
+	let categories = []
+	let ready = false
+
+	const fetch = async () => {
+		console.info('Fetching ...')
+		stories = await extractStories(modules, sources, options)
+		categories = extractCategories(stories)
+		ready = true
+		console.info('Fetching Completed...')
+	}
+
+	return {
+		fetch,
+		ready: () => ready,
+		story: (name) => (name in stories ? stories[name] : null),
+		stories: () => stories,
+		categories: () => categories
+	}
 }

@@ -13,7 +13,9 @@
 	style:--thin="{thickness}px"
 	style:--thick="{2 * thickness}px"
 >
-	<slot />
+	<content>
+		<slot />
+	</content>
 </graph-paper>
 
 <style>

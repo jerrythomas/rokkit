@@ -74,7 +74,8 @@ export const defaultFields = {
 	summary: 'summary',
 	notes: 'notes',
 	props: 'props',
-	isOpen: '_open'
+	isOpen: '_open',
+	target: 'target'
 }
 
 export const defaultKeyMap = {

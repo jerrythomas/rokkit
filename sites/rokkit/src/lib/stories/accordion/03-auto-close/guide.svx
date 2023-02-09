@@ -1,9 +1,0 @@
----
-title: Auto Close
----
-
-# {title}
-
-Keep only one item open.
-
-
