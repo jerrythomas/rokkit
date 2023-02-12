@@ -19,6 +19,7 @@ export function navigable(
 		: {}
 	const actions = {
 		Enter: select,
+		' ': select,
 		...movement,
 		...change
 	}

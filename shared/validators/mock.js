@@ -40,3 +40,15 @@ export function consoleMockRestore() {
 	console.error = original.error
 	console.debug = original.debug
 }
+
+export function getCustomEventMock() {
+	return vi.fn().mockImplementation((eventType, eventInit) => {
+		class CustomEvent extends Event {
+			constructor(type, init) {
+				super(type, init)
+				this.detail = init
+			}
+		}
+		return new CustomEvent(eventType, eventInit)
+	})
+}

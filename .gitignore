@@ -17,3 +17,4 @@ packages/vector
 .vercel
 .svelte-kit
 favicon_io
+vitest*timestamp*

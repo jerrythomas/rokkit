@@ -14,12 +14,14 @@
 		<notes class="markdown-body px-4 py-2 w-full overflow-auto">
 			<svelte:component this={$story.current.notes} />
 		</notes>
-		<PageNavigator
-			items={$story.pages}
-			fields={{ text: 'title' }}
-			bind:value={$story.current}
-			class="min-h-12 bg-skin-400 absolute bottom-0"
-		/>
+		{#if $story.pages.length > 1}
+			<PageNavigator
+				items={$story.pages}
+				fields={{ text: 'title' }}
+				bind:value={$story.current}
+				class="min-h-12 bg-skin-400 absolute bottom-0"
+			/>
+		{/if}
 	{:else}
 		<span>No Content</span>
 	{/if}

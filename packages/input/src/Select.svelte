@@ -3,11 +3,13 @@
 		Slider,
 		Icon,
 		List,
+		Text,
 		defaultFields,
 		defaultStateIcons
 	} from '@rokkit/core'
-	import { dismissable } from '@rokkit/core/actions'
+	import { dismissable, navigable } from '@rokkit/core/actions'
 	import { createEventDispatcher } from 'svelte'
+
 	const dispatch = createEventDispatcher()
 
 	let className = ''
@@ -15,35 +17,38 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
-	export let value = null
+	export let value
 	export let placeholder = ''
-	export let searchable = false
 
-	let search = value ? value[fields.text] : ''
-	let visible = false
+	let activeIndex
+	let open = false
 	let offsetTop
 	let icons = defaultStateIcons.selector
 
-	// function handleFocusIn() {
-	// 	visible = true
-	// }
-	// function handleFocusOut() {
-	// 	visible = false
-	// }
 	function handleSelect() {
-		if (value != null) search = value[fields.text]
-		visible = false
+		open = false
 		dispatch('select', value)
 	}
-	$: fields = { ...defaultFields, ...fields }
-	$: filtered = search.trim().length
-		? items.filter((opt) => opt[fields.text].includes(search))
-		: items
-</script>
+	function handleNext() {
+		if (!open) open = true
+		if (activeIndex < items.length - 1) activeIndex = activeIndex + 1
+	}
+	function handlePrevious() {
+		if (!open) open = true
+		if (activeIndex > 0) activeIndex = activeIndex - 1
+	}
+	function handleKeySelect() {
+		if (open) {
+			if (activeIndex > -1) {
+				value = items[activeIndex]
+				handleSelect()
+			}
+		}
+	}
 
-<!-- on:focusin={handleFocusIn}
-on:focusout={handleFocusOut}
-tabindex="0" -->
+	$: fields = { ...defaultFields, ...fields }
+	$: using = { default: Text, ...using }
+</script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <input-select
@@ -51,8 +56,12 @@ tabindex="0" -->
 	class:open
 	tabindex="0"
 	use:dismissable
+	use:navigable={{ horizontal: false, vertical: true }}
 	on:blur={() => (open = false)}
 	on:dismiss={() => (open = false)}
+	on:previous={handlePrevious}
+	on:next={handleNext}
+	on:select={handleKeySelect}
 >
 	<slot />
 	<button
@@ -75,36 +84,14 @@ tabindex="0" -->
 	{#if open}
 		<Slider top={offsetTop}>
 			<List
-				items={filtered}
+				{items}
 				{fields}
 				{using}
 				bind:value
 				on:select={handleSelect}
+				tabindex="-1"
+				bind:activeIndex
 			/>
 		</Slider>
 	{/if}
-	<!-- <span class="flex flex-row w-full items-center relative">
-		<input
-			type="text"
-			bind:value={search}
-			class:searchable
-			class:inactive={!visible}
-			class="flex flex-grow"
-		/>
-		<square class="h-full position-absolute right-0">
-			<icon class="i-carbon-chevron-sort" />
-		</square>
-	</span> -->
-	<!-- <slot /> -->
-	<!-- {#if visible}
-		<Slider>
-		<List
-			items={filtered}
-			{fields}
-			{using}
-			bind:value
-			on:click={handleSelect}
-		/>
-		</Slider>
-	{/if} -->
 </input-select>

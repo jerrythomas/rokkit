@@ -41,7 +41,10 @@
 		"d3-array": "^3.2.2",
 		"d3-collection": "^1.0.7",
 		"d3-scale": "^4.0.2",
-		"ramda": "^0.28.0"
+		"d3-shape": "^3.2.0",
+		"date-fns": "^2.29.3",
+		"ramda": "^0.28.0",
+		"yootils": "^0.3.1"
 	},
 	"files": [
 		"src/**/*.js",

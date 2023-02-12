@@ -4,27 +4,28 @@
 	import { toInitCapCase } from '@rokkit/utils'
 	import { DropDown } from '@rokkit/core'
 
-	export let themes = [{ title: 'Rokkit', name: 'rokkit' }]
+	// export let themes = [{ title: 'Rokkit', name: 'rokkit' }]
 	// export let pallettes
 
 	const modeIcons = defaultStateIcons.mode
 
-	let currentTheme
+	// let currentTheme
 
-	$: themes = fromInput(themes)
+	// $: current = { theme: 'rokkit', mode: 'dark' }
+	// $: themes = fromInput(themes)
 	$: current = $theme
 
-	function fromInput(themes) {
-		if (Array.isArray(themes)) {
-			return themes.map((x) =>
-				typeof x == 'string'
-					? { title: toInitCapCase(x), name: x.toLowerCase() }
-					: x
-			)
-		} else {
-			return [{ title: 'Rokkit', name: 'rokkit' }]
-		}
-	}
+	// function fromInput(themes) {
+	// 	if (Array.isArray(themes)) {
+	// 		return themes.map((x) =>
+	// 			typeof x == 'string'
+	// 				? { title: toInitCapCase(x), name: x.toLowerCase() }
+	// 				: x
+	// 		)
+	// 	} else {
+	// 		return [{ title: 'Rokkit', name: 'rokkit' }]
+	// 	}
+	// }
 	function toggleMode() {
 		const mode = current.mode === 'dark' ? 'light' : 'dark'
 		theme.set({ ...current, mode })

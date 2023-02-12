@@ -11,7 +11,9 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: items =
-		items.length == 1 ? items : [{ [fields.text]: root, [fields.data]: items }]
+		items.length == 1
+			? items
+			: [{ [fields.text]: root, [fields.children]: items }]
 </script>
 
 <NestedList {items} {fields} {using} {rtl} />

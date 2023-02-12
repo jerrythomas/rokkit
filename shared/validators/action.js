@@ -64,22 +64,30 @@ export function toOnlyTrigger(handler, events) {
 		events = [events]
 	}
 
-	const pass = Object.keys(handler).every((key) =>
-		events.includes(key)
-			? handler[key].mock.calls.length == 1
-			: handler[key].mock.calls.length == 0
-	)
+	const valid = events.every((event) => Object.keys(handler).includes(event))
+
+	const pass =
+		valid &&
+		Object.keys(handler).every((key) =>
+			events.includes(key)
+				? handler[key].mock.calls.length == 1
+				: handler[key].mock.calls.length == 0
+		)
+
 	const names = events.join(', ')
+	const keys = Object.keys(handler).join(', ')
 	if (pass) {
 		return {
 			message: () =>
-				`Expected other handlers besides ${names} to be called, but none were`,
+				`Expected other handlers besides [${names}] to be called, but none were`,
 			pass: true
 		}
 	} else {
 		return {
 			message: () =>
-				`Expected only ${names} to be called once and the other handlers to not be called`,
+				!valid
+					? `Expected events from [${keys}] but got unexpected events [${names}]`
+					: `Expected only [${names}] to be called once and the other handlers to not be called`,
 			pass: false
 		}
 	}

@@ -1,7 +1,12 @@
-import { parseFilters } from './parser'
+import { parseFilters, getRegex } from './parser'
 import { describe, it, expect } from 'vitest'
 
 describe('parse', () => {
+	it('should match the expected regex', () => {
+		const expected =
+			/(?<group>((?<column>[\w]+)\s?(?<operator>:|>|<|>=|<=|=<|=>|=|!=|~|~\*|!~|!~\*)\s?)(?<value>("[^"]+"|[^\s=:<>!~*]+)))/gm
+		expect(getRegex()).toEqual(expected)
+	})
 	it('should handle a simple string', () => {
 		expect(parseFilters('abc')).toEqual([
 			{ operator: '~*', value: new RegExp('abc', 'i') }
@@ -45,11 +50,11 @@ describe('parse', () => {
 		expect(parseFilters('age=>1')).toEqual([
 			{ operator: '>=', value: 1, column: 'age' }
 		])
-		expect(parseFilters('age<10')).toEqual([
-			{ operator: '<', value: 10, column: 'age' }
+		expect(parseFilters('_age<10')).toEqual([
+			{ operator: '<', value: 10, column: '_age' }
 		])
-		expect(parseFilters('age<=10')).toEqual([
-			{ operator: '<=', value: 10, column: 'age' }
+		expect(parseFilters('age_a<=10')).toEqual([
+			{ operator: '<=', value: 10, column: 'age_a' }
 		])
 		expect(parseFilters('age=<10')).toEqual([
 			{ operator: '<=', value: 10, column: 'age' }

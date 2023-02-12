@@ -1,7 +1,17 @@
+export function getRegex() {
+	let column = '[\\w]+'
+	let operator = ':|>|<|>=|<=|=<|=>|=|!=|~|~\\*|!~|!~\\*'
+	let value = '("[^"]+"|[^\\s=:<>!~*]+)'
+
+	let pattern = `(?<group>((?<column>${column})\\s?(?<operator>${operator})\\s?)(?<value>${value}))`
+
+	return new RegExp(pattern, 'gm')
+}
 export function parseFilters(string) {
 	const results = []
-	const regex =
-		/(?<group>((?<column>[\w_]+)\s?(?<operator>:|>|<|>=|<=|=<|=>|=|!=|~|~\*|!~|!~\*)\s?)(?<value>"[^"]+"|[^\s=:<>!~*]+))/gm
+	const regex = getRegex()
+	// const regex =
+	// /(?<group>((?<column>[\w_]+)\s?(?<operator>:|>|<|>=|<=|=<|=>|=|!=|~|~\*|!~|!~\*)\s?)(?<value>"[^"]+"|[^\s=:<>!~*]+))/gm
 
 	// Split the string into an array of tokens
 	const tokens = string.matchAll(regex)
