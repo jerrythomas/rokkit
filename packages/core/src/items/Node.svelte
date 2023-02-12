@@ -12,7 +12,7 @@
 	export let selected = false
 	export let using = {}
 
-	$: hasChildren = fields.data in content
+	$: hasChildren = fields.children in content
 	$: component = content[fields.component]
 		? using[content[fields.component]] || using.default
 		: using.default

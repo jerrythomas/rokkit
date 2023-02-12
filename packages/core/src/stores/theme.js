@@ -14,7 +14,7 @@ const THEME_STORE_KEY = 'app-theme'
  * @returns {import('svelte/store').Writable<Theme>}
  */
 export function ThemeStore() {
-	const store = writable({ name: '', mode: 'dark' })
+	const store = writable({ name: 'rokkit', mode: 'dark' })
 
 	const set = (value) => {
 		const { name, mode } = value ?? {}

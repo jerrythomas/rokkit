@@ -2,6 +2,7 @@
 	import { defaultFields } from './constants'
 	import { Text, Summary } from './items'
 	import List from './List.svelte'
+	import { navigable } from './actions'
 
 	let className = ''
 	export { className as class }
@@ -33,9 +34,11 @@
 	}
 </script>
 
-<accordion class="flex flex-col w-full select-none {className}">
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<accordion class="flex flex-col w-full select-none {className}" tabindex="0">
 	{#each items as item}
-		{@const hasItems = item[fields.data] && item[fields.data].length > 0}
+		{@const hasItems =
+			item[fields.children] && item[fields.children].length > 0}
 		{@const itemFields = { ...fields, ...(fields.fields ?? fields) }}
 
 		<details
@@ -52,11 +55,12 @@
 
 			{#if hasItems && item[fields.isOpen]}
 				<List
-					bind:items={item[fields.data]}
+					bind:items={item[fields.children]}
 					bind:value
 					fields={itemFields}
 					{using}
 					on:select
+					tabindex="-1"
 				/>
 			{/if}
 		</details>

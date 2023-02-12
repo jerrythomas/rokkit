@@ -11,9 +11,13 @@
 		<img src="/rokkit-light.svg" alt="Rokkit Logo" class="h-12" />
 		<article class="flex flex-col gap-4 overflow-y-scroll">
 			<p>
-				Rokkit is a modern, lightweight UI library for building Svelte user
-				interfaces. It includes reusable and data-driven components, making it a
-				versatile and adaptable choice for all projects.
+				Get ready to blast off into the world of modern UI design with Rokkit!
+				This cutting-edge, lightweight library is the ultimate tool for building
+				stunning Svelte user interfaces that are both data-driven and fully
+				customizable. With an impressive set of composable components and an
+				array of incredible utility functions, stores, actions and themes,
+				building amazing applications has never been easier. So, buckle up and
+				get ready to create some truly incredible user experiences with Rokkit!
 			</p>
 			<p>
 				It includes UI components, utility functions, stores and actions. These

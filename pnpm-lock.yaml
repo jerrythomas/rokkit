@@ -33,6 +33,8 @@ importers:
       d3-array: ^3.2.2
       d3-collection: ^1.0.7
       d3-scale: ^4.0.2
+      d3-shape: ^3.2.0
+      date-fns: ^2.29.3
       eslint: ^8.33.0
       eslint-config-shared: workspace:*
       js-yaml: ^4.1.0
@@ -43,12 +45,16 @@ importers:
       typescript: ^4.9.5
       vite: ^4.1.1
       vitest: ~0.19.1
+      yootils: ^0.3.1
     dependencies:
       '@rokkit/core': link:../core
       d3-array: 3.2.2
       d3-collection: 1.0.7
       d3-scale: 4.0.2
+      d3-shape: 3.2.0
+      date-fns: 2.29.3
       ramda: 0.28.0
+      yootils: 0.3.1
     devDependencies:
       '@sveltejs/vite-plugin-svelte': 2.0.2_svelte@3.55.1+vite@4.1.1
       '@testing-library/svelte': 3.2.2_svelte@3.55.1
@@ -3231,6 +3237,11 @@ packages:
       d3-color: 3.1.0
     dev: false
 
+  /d3-path/3.1.0:
+    resolution: {integrity: sha512-p3KP5HCf/bvjBSSKuXid6Zqijx7wIfNW+J/maPs+iwR35at5JCbLUT0LzF1cnjbCHWhqzQTIN2Jpe8pRebIEFQ==}
+    engines: {node: '>=12'}
+    dev: false
+
   /d3-scale/4.0.2:
     resolution: {integrity: sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==}
     engines: {node: '>=12'}
@@ -3240,6 +3251,13 @@ packages:
       d3-interpolate: 3.0.1
       d3-time: 3.1.0
       d3-time-format: 4.1.0
+    dev: false
+
+  /d3-shape/3.2.0:
+    resolution: {integrity: sha512-SaLBuwGm3MOViRq2ABk3eLoxwZELpH6zhl3FbAoJ7Vm1gofKx6El1Ib5z23NUEhF9AsGl7y+dzLe5Cw2AArGTA==}
+    engines: {node: '>=12'}
+    dependencies:
+      d3-path: 3.1.0
     dev: false
 
   /d3-time-format/4.1.0:
@@ -8996,6 +9014,10 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  /yootils/0.3.1:
+    resolution: {integrity: sha512-A7AMeJfGefk317I/3tBoUYRcDcNavKEkpiPN/nQsBz/viI2GvT7BtrqdPD6rGqBFN8Ax7v4obf+Cl32JF9DDVw==}
+    dev: false
 
   /zwitch/2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}

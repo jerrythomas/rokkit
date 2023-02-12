@@ -2,7 +2,8 @@ export {
 	stdMock,
 	stdMockRestore,
 	consoleMock,
-	consoleMockRestore
+	consoleMockRestore,
+	getCustomEventMock
 } from './mock'
 export * from './array'
 export * from './action'

@@ -14,10 +14,9 @@
 		"prepare": "husky install",
 		"upgrade": "pnpm clean && pnpm upgrade",
 		"bump": "bumpp --no-commit --no-push package.json sites/*/package.json",
-		"bump:next": "bumpp --no-commit --no-push --preid=next package.json sites/*/package.json ",
+		"bump:next": "bumpp --no-commit --no-push --preid=next package.json sites/*/package.json",
 		"release": "changeset publish",
-		"version:next": "pnpm build && changeset pre enter next && changeset",
-		"release:next": "changeset version && changeset publish && changeset pre exit",
+		"release:next": "pnpm build && changeset pre enter next && changeset && changeset version && changeset publish && changeset pre exit && pnpm bump:next",
 		"upgrade:all": "./upgrade.sh && pnpm upgrade",
 		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
 	},

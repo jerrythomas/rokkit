@@ -27,7 +27,7 @@
 <nested-list class="flex flex-col w-full" class:rtl>
 	{#each items as content, index}
 		{@const type = nodeTypes[index] === 'middle' ? 'line' : 'empty'}
-		{@const hasChildren = fields.data in content}
+		{@const hasChildren = fields.children in content}
 		{@const connectors = types.slice(0, -1)}
 
 		<Node
@@ -42,7 +42,7 @@
 		/>
 		{#if hasChildren && content.isOpen}
 			<svelte:self
-				items={content[fields.data]}
+				items={content[fields.children]}
 				bind:value
 				{fields}
 				{using}

@@ -1,6 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
 	import { Tabs, DropDown } from '@rokkit/core'
+	import { Select } from '@rokkit/input'
 	import { CodeSnippet } from '@rokkit/markdown'
 
 	const media = getContext('media')
@@ -11,7 +12,7 @@
 	export let fields
 	export let value = null
 
-	let navigator = media && $media.small ? DropDown : Tabs
+	let navigator = media && $media.small ? Select : Tabs
 </script>
 
 <multi-file class="flex flex-col w-full h-full {className}">

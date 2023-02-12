@@ -8,7 +8,7 @@
 	export let fields = {}
 
 	$: fields = { ...defaultFields, ...fields }
-	$: hasItems = content[fields.data] && content[fields.data].length > 0
+	$: hasItems = content[fields.children] && content[fields.children].length > 0
 
 	function toggle() {
 		if (hasItems) {

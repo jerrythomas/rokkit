@@ -8,7 +8,7 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
-	$: hasItems = content[fields.data] && content[fields.data].length > 0
+	$: hasItems = content[fields.children] && content[fields.children].length > 0
 	$: component = using[content[fields.component] ?? 'default']
 </script>
 

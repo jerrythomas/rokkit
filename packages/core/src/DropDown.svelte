@@ -15,7 +15,9 @@
 	export let fields = defaultFields
 	export let using = { default: Text }
 	export let value = null
-	export let placeholder = 'Select a value'
+	export let title
+	export let icon
+	export let small = false
 
 	$: using = { default: Text, ...using }
 	$: fields = { ...defaultFields, ...fields }
@@ -23,6 +25,7 @@
 	let offsetTop = 0
 	let open = false
 	let icons = defaultStateIcons.selector
+
 	function handleSelect(event) {
 		open = false
 		dispatch('change', event.detail)
@@ -30,29 +33,32 @@
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<div
+<drop-down
 	class="flex w-full relative cursor-pointer select-none dropdown {className}"
 	class:open
 	tabindex="0"
+	aria-haspopup="true"
+	aria-controls="menu"
 	use:dismissable
 	on:blur={() => (open = false)}
 	on:dismiss={() => (open = false)}
 >
 	<button
 		on:click|stopPropagation={() => (open = !open)}
-		class="flex w-full"
+		class="flex"
 		bind:clientHeight={offsetTop}
 		tabindex="-1"
 	>
-		<svelte:component
-			this={using.default}
-			content={value ?? placeholder}
-			{fields}
-		/>
+		{#if icon}
+			<Icon name={icon} />
+		{/if}
+		{#if !small && title}
+			<p>{title}</p>
+		{/if}
 		{#if open}
-			<Icon name={icons.opened} />
+			<icon class={icons.opened} />
 		{:else}
-			<Icon name={icons.closed} />
+			<icon class={icons.closed} />
 		{/if}
 	</button>
 	{#if open}
@@ -60,7 +66,14 @@
 			class="flex flex-col absolute z-10 h-fit w-full menu"
 			style:top="{offsetTop}px"
 		>
-			<List {items} {fields} {using} bind:value on:select={handleSelect} />
+			<List
+				{items}
+				{fields}
+				{using}
+				bind:value
+				on:select={handleSelect}
+				tabindex="-1"
+			/>
 		</div>
 	{/if}
-</div>
+</drop-down>

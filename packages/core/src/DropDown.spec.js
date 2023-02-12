@@ -8,13 +8,22 @@ describe('DropDown.svelte', () => {
 	})
 	afterAll(() => vi.resetAllMocks())
 
-	it('should render the placeholder text by default', async () => {
+	it('should render empty text', async () => {
 		const { container } = render(DropDown, {
 			props: { items: [], fields: {} }
 		})
 		const button = container.querySelector('.dropdown > button')
-		expect(button.textContent.trim()).toBe('Select a value')
+		expect(button.textContent.trim()).toBe('')
 	})
+
+	it('should render title', async () => {
+		const { container } = render(DropDown, {
+			props: { items: [], fields: {}, title: 'Select a value' }
+		})
+		const button = container.querySelector('.dropdown > button')
+		expect(button.querySelector('p').textContent.trim()).toBe('Select a value')
+	})
+
 	it('should toggle open state when button is clicked', async () => {
 		const { container } = render(DropDown, {
 			props: { items: [], fields: {} }
@@ -22,6 +31,7 @@ describe('DropDown.svelte', () => {
 
 		expect(container).toMatchSnapshot()
 		const button = container.querySelector('.dropdown > button')
+
 		await fireEvent.click(button)
 		expect(button.parentNode.classList.contains('open')).toBe(true)
 		await fireEvent.click(button)
@@ -42,6 +52,7 @@ describe('DropDown.svelte', () => {
 		const items = [{ text: 'foo' }, { text: 'bar' }]
 
 		const mockOnChange = vi.fn().mockImplementation((event) => {
+			// console.log(event.detail, selected)
 			expect(event.detail).toEqual(selected)
 		})
 		const { container, component } = render(DropDown, {
@@ -58,9 +69,11 @@ describe('DropDown.svelte', () => {
 		container
 			.querySelectorAll('.dropdown list item')
 			.forEach(async (item, index) => {
-				selected = items[index]
+				selected = { item: items[index], indices: [index] }
 				await fireEvent.click(item)
-				expect(component.$$.ctx[component.$$.props.value]).toEqual(selected)
+				expect(component.$$.ctx[component.$$.props.value]).toEqual(
+					selected.item
+				)
 				expect(mockOnChange).toHaveBeenCalled()
 			})
 	})

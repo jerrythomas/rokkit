@@ -8,24 +8,45 @@
 	@apply bg-primary;
 }
 
-.rokkit .dropdown {
-	@apply box-border rounded outline-secondary-500 bg-skin-100;
+.rokkit input-select > button {
+	@apply w-full h-12 pl-4 gap-4 items-center bg-skin-100;
+	@apply rounded border border-skin-300 text-skin-800;
+	@apply hover:bg-skin-300 hover:border-skin-500 ;
+}
+.rokkit input-select square-icon {
+	@apply border-l border-skin-300;
+}
+.rokkit input-select:hover square-icon {
+	@apply border-skin-500;
+}
+.rokkit input-select scroll {
+	@apply mt-1 shadow-lg;
+}
+.rokkit item {
+	@apply min-h-12;
+}
+/* .rokkit .dropdown {
+	@apply flex w-full box-border rounded outline-secondary-500 bg-red-500;
 }
 
 .rokkit .dropdown button {
-	@apply pl-4 gap-4 leading-loose rounded rounded border border-skin-300 hover:bg-skin-400 hover:border-primary-900 text-skin-900;
+	@apply pl-4 gap-4 h-14 bg-red leading-loose rounded border border-red-300 hover:bg-skin-400 hover:border-primary-900 text-skin-900;
 }
 
-.rokkit .dropdown button square-icon {
+.rokkit .dropdown button square-icon,
+.rokkit input-select square-icon {
 	@apply border-l border-skin-300;
 }
-.rokkit .dropdown > .menu {
+.rokkit .dropdown > .menu,
+.rokkit input-select > list {
 	@apply mt-1 bg-skin-base text-skin-900 shadow;
 }
 
-.rokkit .dropdown .menu .item {
+.rokkit .dropdown .menu .item,
+.rokkit input-select list item {
 	@apply px-4 hover:bg-secondary-300;
 }
-.rokkit .dark .dropdown .menu .item {
+.rokkit .dark .dropdown .menu .item,
+.rokkit .rark input-select list item {
 	@apply hover:bg-secondary-700;
-}
+} */
