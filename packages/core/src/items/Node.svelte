@@ -11,22 +11,32 @@
 	export let linesVisible = true
 	export let selected = false
 	export let using = {}
+	export let rtl = false
+	export let path = []
 
 	$: hasChildren = fields.children in content
+	$: state =
+		hasChildren && content[fields.isOpen]
+			? { icon: stateIcons.opened, label: 'collapse' }
+			: { icon: stateIcons.closed, label: 'expand' }
 	$: component = content[fields.component]
 		? using[content[fields.component]] || using.default
 		: using.default
 
 	function toggle() {
-		if (hasChildren) content.isOpen = !content.isOpen
+		if (hasChildren) content[fields.isOpen] = !content[fields.isOpen]
 		dispatch('select', content)
 	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <node
+	id={'id-' + path.join('-')}
 	class="flex flex-row h-8 gap-2 leading-loose items-center cursor-pointer select-none"
 	class:is-selected={selected}
+	aria-selected={selected}
+	role="option"
+	data-path={path.join(',')}
 	on:click={toggle}
 >
 	{#each types.slice(1) as type}
@@ -35,25 +45,9 @@
 
 	{#if hasChildren}
 		<span class="flex flex-col w-4 h-full items-center justify-center">
-			{#if content.isOpen}
-				<icon class={stateIcons.opened} aria-label="collapse" />
-			{:else}
-				<icon class={stateIcons.closed} aria-label="expand" />
-			{/if}
+			<icon class={state.icon} aria-label={state.label} tabindex="-1" />
 		</span>
 	{/if}
-	<!-- Replace this with component -->
-	<svelte:component this={component} bind:content />
-	<!-- {#if content[fields.image]}
-		<img
-			class="h-8 w-8 rounded-full"
-			alt={content[fields.text]}
-			src={content[fields.image]}
-		/>
-	{/if}
-	{#if content[fields.icon]}
-		<icon class={content[fields.icon]} title={content[fields.text]} />
-	{/if} -->
 
-	<!-- <p class="flex flex-grow">{content[fields.text]}</p> -->
+	<svelte:component this={component} bind:content />
 </node>

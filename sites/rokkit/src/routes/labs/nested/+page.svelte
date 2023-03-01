@@ -1,20 +1,34 @@
 <script>
-	throw new Error(
-		'@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)'
-	)
+	import { NestedList } from '@rokkit/core'
 
-	import StoryWrapper from '$lib/StoryWrapper.svelte'
-	import { NestedList, Node, Text, Collapsible } from '@rokkit/core'
-
-	export let variants
+	export let data
 	let props
-	let using = { default: Node, collapsible: Collapsible }
+	// let using = { default: Node, collapsible: Collapsible }
+	let items = [
+		{ text: 'Alpha', data: [{ text: 'One' }] },
+		{
+			text: 'Beta',
+			data: [
+				{ text: 'One' },
+				{ text: 'Two', data: [{ text: 'One' }, { text: 'Two' }] }
+			]
+		},
+		{ text: 'Delta' }
+	]
+	let linesVisible = false
+	let value
 </script>
 
-<StoryWrapper component={'NestedList'} {variants} bind:props>
+<!-- <StoryWrapper component={'NestedList'} variants={data.variants} bind:props>
 	<div class="flex w-60 border px-4 py-2 border-gray-400" slot="component">
 		{#if props}
 			<NestedList {...props} {using} />
 		{/if}
 	</div>
-</StoryWrapper>
+</StoryWrapper> -->
+
+<NestedList {items} {linesVisible} bind:value />
+
+<pre>
+	{JSON.stringify(value, null, 2)}
+</pre>

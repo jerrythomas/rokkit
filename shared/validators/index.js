@@ -3,11 +3,13 @@ export {
 	stdMockRestore,
 	consoleMock,
 	consoleMockRestore,
-	getCustomEventMock
+	getCustomEventMock,
+	createNestedElement
 } from './mock'
 export * from './array'
 export * from './action'
 export * from './dataset'
+export * from './event'
 
 export function getSubscribedData(store) {
 	let result

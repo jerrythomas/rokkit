@@ -1,10 +1,25 @@
 <script>
+	import Rocket from './Rocket.svelte'
 	export let data
 </script>
 
 <section
 	class="flex flex-col h-full w-full text-lg font-light py-4 overflow-auto"
 >
+	<Rocket />
+	<segment class="grid grid-cols-2">
+		<span class="prose">
+			<h1>Build Beyond Limits</h1>
+			<h2>Empowering Your UI with Rokkit</h2>
+			<p>
+				Building amazing, interactive applications has never been simpler thanks
+				to an extensive collection of composable components and a variety of
+				utility functions, stores, actions, and themes. So, buckle up and get
+				ready to create some truly incredible user experiences with Rokkit!
+			</p>
+		</span>
+		<span />
+	</segment>
 	<card
 		class="flex flex-col gap-4 p-8 bg-skin-100 rounded-xl shadow-xl mx-4 md:mx-auto md:min-w-140 md:w-2/3 overflow-auto"
 	>

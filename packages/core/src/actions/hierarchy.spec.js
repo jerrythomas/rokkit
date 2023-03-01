@@ -6,7 +6,8 @@ import {
 	navigateToLastVisibleChild,
 	moveNext,
 	movePrevious,
-	pathFromIndices
+	pathFromIndices,
+	findItem
 } from './hierarchy'
 
 describe('Hierarchy', () => {
@@ -56,6 +57,7 @@ describe('Hierarchy', () => {
 			expect(hasChildren({ children: [] }, fields)).toBe(true)
 		})
 	})
+
 	describe('isExpanded', () => {
 		it('returns true if the item is expanded', () => {
 			const item = {
@@ -100,7 +102,30 @@ describe('Hierarchy', () => {
 			expect(isNested([], fields)).toBe(false)
 		})
 	})
-
+	describe('findItem', () => {
+		const items = [
+			{
+				id: 1,
+				isOpen: true,
+				children: [
+					{
+						id: 11,
+						isOpen: true,
+						children: [{ id: 111, isOpen: false, children: [] }]
+					}
+				]
+			},
+			{ id: 2, isOpen: false, children: [] }
+		]
+		it('find item in items using indices', () => {
+			let result = findItem(items, [0, 0], fields)
+			expect(result).toEqual(items[0].children[0])
+			result = findItem(items, [0, 0, 0], fields)
+			expect(result).toEqual(items[0].children[0].children[0])
+			result = findItem(items, [1], fields)
+			expect(result).toEqual(items[1])
+		})
+	})
 	describe('navigateToLastVisibleChild', () => {
 		it('should navigate to last visible child node', () => {
 			const items = [
