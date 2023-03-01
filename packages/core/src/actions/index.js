@@ -1,6 +1,7 @@
 export { fillable } from './fillable'
 export { pannable } from './pannable'
 export { navigable } from './navigable'
+export { navigator } from './navigator'
 export { dismissable } from './dismissable'
 export { themable } from './themeable'
 export { swipeable } from './swipeable'

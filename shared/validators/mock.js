@@ -52,3 +52,21 @@ export function getCustomEventMock() {
 		return new CustomEvent(eventType, eventInit)
 	})
 }
+
+export function createNestedElement(item) {
+	const element = document.createElement(item.name)
+	if (item.dataPath) {
+		element.setAttribute('data-path', item.dataPath)
+	}
+	if (item.id) {
+		element.setAttribute('id', item.id)
+	}
+	element.scrollIntoView = vi.fn()
+
+	if (item.children && Array.isArray(item.children)) {
+		for (const child of item.children) {
+			element.appendChild(createNestedElement(child))
+		}
+	}
+	return element
+}

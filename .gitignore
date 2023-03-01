@@ -18,3 +18,5 @@ packages/vector
 .svelte-kit
 favicon_io
 vitest*timestamp*
+codeql-agent-results
+*.zip

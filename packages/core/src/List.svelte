@@ -1,8 +1,9 @@
 <script>
-	import { navigable } from './actions'
+	import { navigator } from './actions'
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text } from './items'
+	import { updateCursor } from './list'
 
 	const dispatch = createEventDispatcher()
 
@@ -12,28 +13,32 @@
 	export let fields = {}
 	export let using = {}
 	export let value = null
-	export let navigate = true
 	export let tabindex = 0
 	export let activeIndex
-	export let parentIndices = []
-
+	export let hierarchy = []
+	let active
+	let cursor = []
 	function handleClick(item, index) {
+		cursor = [index]
 		value = item
-		dispatch('select', { item, indices: [...parentIndices, index] })
+		dispatch('select', { item, indices: [...hierarchy, index] })
 	}
 
-	function movePrevious() {
-		if (activeIndex > 0) activeIndex = activeIndex - 1
-	}
-	function moveNext() {
-		if (activeIndex < items.length - 1) activeIndex = activeIndex + 1
-		alert(activeIndex)
-	}
-	function handleSelect() {
-		if (activeIndex > -1) handleClick(items[activeIndex])
+	function handleMove(event) {
+		active = event.node
+		cursor = event.indices
 	}
 
-	$: activeIndex = items.findIndex((x) => x == value)
+	function handleSelect(event) {
+		value = event.node
+		active = event.node
+		cursor = event.indices
+		dispatch('select', { item: value, indices: [...hierarchy, ...cursor] })
+	}
+
+	$: updateCursor(cursor, value, items)
+	// $: activeIndex = items.findIndex((x) => x == value)
+	$: active = value
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
 	$: filtered = items.filter((item) => !item[fields.isDeleted])
@@ -42,9 +47,13 @@
 <list
 	class="flex flex-col w-full flex-shrink-0 select-none {className}"
 	role="listbox"
-	use:navigable={{ horizontal: false, vertical: true, enabled: navigate }}
-	on:previous={movePrevious}
-	on:next={moveNext}
+	use:navigator={{
+		items,
+		fields,
+		enabled: hierarchy.length > 0,
+		indices: cursor
+	}}
+	on:move={handleMove}
 	on:select={handleSelect}
 	{tabindex}
 >

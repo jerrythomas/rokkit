@@ -144,7 +144,7 @@ export function pathFromIndices(indices, items, fields) {
 		} else {
 			fragment = {
 				index,
-				items: fragment.items[fragment.index].children,
+				items: fragment.items[fragment.index][fragment.fields.children],
 				fields: fragment.fields.fields ?? fragment.fields
 			}
 		}
@@ -153,7 +153,37 @@ export function pathFromIndices(indices, items, fields) {
 	return path
 }
 
+export function indicesFromPath(path) {
+	return path.map(({ index }) => index)
+}
 export function getCurrentNode(path) {
 	if (path.length === 0) return null
-	return path[path.length - 1].items[path[path.length - 1].index]
+	const lastIndex = path.length - 1
+	return path[lastIndex].items[path[lastIndex].index]
 }
+
+export function findItem(items, indices, fields) {
+	let item = items[indices[0]]
+	let levelFields = fields
+	for (let level = 1; level < indices.length; level++) {
+		item = item[levelFields.children][indices[level]]
+		levelFields = levelFields.fields ?? levelFields
+	}
+	return item
+}
+
+// export function getNodeFromIndices(indices, items, fields) {
+// 	let fragment
+// 	indices.map((index, level) => {
+// 		if (level === 0) {
+// 			fragment = { index, items, fields }
+// 		} else {
+// 			fragment = {
+// 				index,
+// 				items: fragment.items[fragment.index][fragment.fields.children],
+// 				fields: fragment.fields.fields ?? fragment.fields
+// 			}
+// 		}
+// 	})
+// 	return indices.length === 0 ? null : fragment.items[fragment.index]
+// }
