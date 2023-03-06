@@ -14,6 +14,6 @@ export function brewer() {
 		color: () => new ColorBrewer(),
 		theme: () => new ThemeBrewer(),
 		shape: () => new ShapeBrewer(),
-		chart: (data, x, y) => new ChartBrewer(data, x, y),
+		chart: (data, x, y) => new ChartBrewer(data, x, y)
 	}
 }

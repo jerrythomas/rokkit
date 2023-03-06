@@ -1,9 +1,11 @@
 <script>
+	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text, Summary } from './items'
 	import List from './List.svelte'
-	import { navigable } from './actions'
+	import { navigator } from './actions/navigator'
 
+	const dispatch = createEventDispatcher()
 	let className = ''
 	export { className as class }
 	export let items = []
@@ -11,48 +13,57 @@
 	export let using = {}
 	export let autoClose = false
 	export let value = null
-	// let activeGroup = null
+	let cursor = []
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
 
-	function toggle(item) {
-		if (autoClose) {
-			// this event is triggered before the state changes
-			if (!item[fields.isOpen]) {
+	function handle(event) {
+		console.log(event.type, event.detail)
+		value = event.detail.node
+		cursor = event.detail.path
+		if (['collapse', 'expand'].includes(event.type)) {
+			if (autoClose) {
 				items.map((x) => {
-					if (x !== item && x[fields.isOpen]) {
+					if (x !== value && x[fields.isOpen]) {
 						x[fields.isOpen] = false
 					}
 				})
 			}
-			// if (activeGroup && activeGroup !== item && activeGroup[fields.isOpen]) {
-			// 	activeGroup[fields.isOpen] = false
-			// }
+			items = items
 		}
-		// activeGroup = item
+		dispatch(event.type, event.detail)
 	}
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<accordion class="flex flex-col w-full select-none {className}" tabindex="0">
-	{#each items as item}
+<accordion
+	class="flex flex-col w-full select-none {className}"
+	tabindex="0"
+	use:navigator={{
+		items,
+		fields,
+		enabled: true,
+		indices: cursor
+	}}
+	on:select={handle}
+	on:move={handle}
+	on:expand={handle}
+	on:collapse={handle}
+>
+	{#each items as item, index}
 		{@const hasItems =
 			item[fields.children] && item[fields.children].length > 0}
 		{@const itemFields = { ...fields, ...(fields.fields ?? fields) }}
 
-		<details
+		<div
+			id={'id-' + index}
 			class="flex flex-col"
 			class:is-expanded={item[fields.isOpen]}
-			bind:open={item[fields.isOpen]}
+			class:is-selected={item === value}
+			data-path={index}
 		>
-			<Summary
-				{fields}
-				{using}
-				bind:content={item}
-				on:click={() => toggle(item)}
-			/>
-
+			<Summary {fields} {using} bind:content={item} />
 			{#if hasItems && item[fields.isOpen]}
 				<List
 					bind:items={item[fields.children]}
@@ -60,9 +71,10 @@
 					fields={itemFields}
 					{using}
 					on:select
+					hierarchy={[index]}
 					tabindex="-1"
 				/>
 			{/if}
-		</details>
+		</div>
 	{/each}
 </accordion>

@@ -12,11 +12,9 @@
 	$: component = using[content[fields.component] ?? 'default']
 </script>
 
-<!-- class:expanded={content[fields.isOpen]} -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <summary
 	class="flex flex-row flex-shrink-0 items-center w-full cursor-pointer"
-	on:click
+	tabindex="-1"
 >
 	<svelte:component this={component} bind:content {fields} />
 	{#if hasItems}

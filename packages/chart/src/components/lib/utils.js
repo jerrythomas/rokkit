@@ -73,7 +73,7 @@ export function swatch(count, size, pad = 0, columns, rows) {
 	const data = [...Array(count).keys()].map((index) => ({
 		cx: (size + pad) / 2 + (index % columns) * (size + pad),
 		cy: (size + pad) / 2 + Math.floor(index / columns) * (size + pad),
-		r: size / 2,
+		r: size / 2
 	}))
 
 	return { width, height, data }
@@ -122,7 +122,7 @@ export function getScales(data, x, y, width, height) {
 
 	return {
 		scaleX: getScale(xValues, [0, width]),
-		scaleY: getScale(yValues, [height, 0], 0.1),
+		scaleY: getScale(yValues, [height, 0], 0.1)
 	}
 }
 

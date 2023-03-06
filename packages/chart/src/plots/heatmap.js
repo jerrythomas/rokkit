@@ -7,7 +7,7 @@ import {
 	previousSunday,
 	differenceInDays,
 	differenceInWeeks,
-	endOfWeek,
+	endOfWeek
 } from 'date-fns'
 import { nest } from 'd3-collection'
 import { group } from 'd3-array'
@@ -35,7 +35,7 @@ export function heatmap(data, numberOfMonths) {
 	const months = {}
 	const grid = generateGrid(firstDay, today).map((d) => ({
 		...d,
-		value: d.date in data ? data[d.date] : 0,
+		value: d.date in data ? data[d.date] : 0
 	}))
 
 	grid.map((d) => {
@@ -49,7 +49,7 @@ export function heatmap(data, numberOfMonths) {
 		grid,
 		months,
 		weekdays,
-		numberOfWeeks: differenceInWeeks(today, firstDay) + 1,
+		numberOfWeeks: differenceInWeeks(today, firstDay) + 1
 	}
 }
 
@@ -64,7 +64,7 @@ function generateGrid(firstDay, lastDay) {
 	const grid = [...Array(days).keys()].map((day) => ({
 		x: Math.floor(day / 7),
 		y: day % 7,
-		date: format(addDays(firstDay, day), DATE_FORMAT),
+		date: format(addDays(firstDay, day), DATE_FORMAT)
 	}))
 	return grid
 }

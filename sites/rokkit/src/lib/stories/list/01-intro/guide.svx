@@ -5,7 +5,7 @@ title: List
 # {title}
 
 Lists are useful for displaying information and selection. This component is a building block for
-many other components like [Accordion](/accordion), Dropdown and Select components.
+many other components like [Accordion](/guide/accordion), Dropdown and Select components.
 
 Some of the notable features of this component are:
 

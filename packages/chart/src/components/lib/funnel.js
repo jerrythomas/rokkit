@@ -12,7 +12,7 @@ const aggregate = {
 	mean: (values) => mean(values),
 	median: (values) => median(values),
 	q1: (values) => quantile(values, 0.25),
-	q3: (values) => quantile(values, 0.75),
+	q3: (values) => quantile(values, 0.75)
 }
 
 export function summarize(data, by, attr, stat = 'count') {
@@ -109,14 +109,14 @@ export function mirror(input, aes) {
 					...row,
 					y: input.uniques.y.indexOf(row[aes.y]),
 					x1: stat[index] - midpoint,
-					x0: stat[index] - midpoint - row[aes.stat],
+					x0: stat[index] - midpoint - row[aes.stat]
 				}
 			} else {
 				return {
 					...row,
 					x: input.uniques.x.indexOf(row[aes.x]),
 					y1: stat[index] - midpoint,
-					y0: stat[index] - midpoint - row[aes.stat],
+					y0: stat[index] - midpoint - row[aes.stat]
 				}
 			}
 		})
@@ -135,14 +135,14 @@ export function getScales(input, width, height) {
 			x: scaleLinear()
 				.domain([-input.domain * 1.4, input.domain * 1.4])
 				.range([0, width]),
-			y: scaleLinear().domain([0, input.uniques.y.length]).range([0, height]),
+			y: scaleLinear().domain([0, input.uniques.y.length]).range([0, height])
 		}
 	} else {
 		scale = {
 			x: scaleLinear().domain([0, input.uniques.x.length]).range([0, width]),
 			y: scaleLinear()
 				.domain([-input.domain, input.domain * 1.4])
-				.range([height - 20, 0]),
+				.range([height - 20, 0])
 		}
 	}
 	return scale

@@ -21,10 +21,10 @@ export class ChartBrewer {
 			left: 10,
 			top: 10,
 			right: 10,
-			bottom: 10,
+			bottom: 10
 		}
 		this.params = {
-			ticks: {},
+			ticks: {}
 		}
 		this.labels = []
 		this.width = 800
@@ -37,7 +37,7 @@ export class ChartBrewer {
 		this.scaleValues = {
 			x: [...new Set(this.data.map((item) => item[this.x]))],
 			y: [...new Set(this.data.map((item) => item[this.y]))],
-			fill: [...new Set(this.data.map((item) => item[this.fill]))],
+			fill: [...new Set(this.data.map((item) => item[this.fill]))]
 		}
 
 		let xOffset =
@@ -48,7 +48,7 @@ export class ChartBrewer {
 			left: this.padding + (yAxisOrientation === 'left' ? xOffset : 0),
 			right: this.padding + (yAxisOrientation === 'left' ? 0 : xOffset),
 			top: this.padding + (xAxisOrientation === 'bottom' ? 0 : yOffset),
-			bottom: this.padding + (xAxisOrientation === 'bottom' ? yOffset : 0),
+			bottom: this.padding + (xAxisOrientation === 'bottom' ? yOffset : 0)
 		}
 	}
 
@@ -166,7 +166,7 @@ export class ChartBrewer {
 
 		let areas = sumstat.map((d) => ({
 			curve: result(d.value),
-			x: this.axis.x.scale(d.key),
+			x: this.axis.x.scale(d.key)
 		}))
 		return areas
 	}

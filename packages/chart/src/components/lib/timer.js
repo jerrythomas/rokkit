@@ -35,7 +35,7 @@ const timer = {
 	},
 	reset() {
 		timer.set(0)
-	},
+	}
 }
 
 export { timer, elapsed }

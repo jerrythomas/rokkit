@@ -23,10 +23,10 @@
 		? using[content[fields.component]] || using.default
 		: using.default
 
-	function toggle() {
-		if (hasChildren) content[fields.isOpen] = !content[fields.isOpen]
-		dispatch('select', content)
-	}
+	// function toggle() {
+	// 	if (hasChildren) content[fields.isOpen] = !content[fields.isOpen]
+	// 	dispatch('select', content)
+	// }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -37,7 +37,6 @@
 	aria-selected={selected}
 	role="option"
 	data-path={path.join(',')}
-	on:click={toggle}
 >
 	{#each types.slice(1) as type}
 		<Connector type={linesVisible ? type : 'empty'} />

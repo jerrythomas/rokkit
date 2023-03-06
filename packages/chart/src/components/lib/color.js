@@ -11,7 +11,7 @@ export const colors = [
 	'#FF6E2F',
 	'#FEB8B9',
 	'#af7aa1',
-	'#7EFFF5',
+	'#7EFFF5'
 ]
 export const palette = {
 	indigo: {
@@ -24,7 +24,7 @@ export const palette = {
 		600: '#4f46e5',
 		700: '#4338ca',
 		800: '#3730a3',
-		900: '#312e81',
+		900: '#312e81'
 	},
 	blue: {
 		50: '#eff6ff',
@@ -36,7 +36,7 @@ export const palette = {
 		600: '#2563eb',
 		700: '#1d4ed8',
 		800: '#1e40af',
-		900: '#1e3a8a',
+		900: '#1e3a8a'
 	},
 	sky: {
 		50: '#f0f9ff',
@@ -48,7 +48,7 @@ export const palette = {
 		600: '#0284c7',
 		700: '#0369a1',
 		800: '#075985',
-		900: '#0c4a6e',
+		900: '#0c4a6e'
 	},
 	cyan: {
 		50: '#ecfeff',
@@ -60,7 +60,7 @@ export const palette = {
 		600: '#0891b2',
 		700: '#0e7490',
 		800: '#155e75',
-		900: '#164e63',
+		900: '#164e63'
 	},
 	teal: {
 		50: '#f0fdfa',
@@ -72,7 +72,7 @@ export const palette = {
 		600: '#0d9488',
 		700: '#0f766e',
 		800: '#115e59',
-		900: '#134e4a',
+		900: '#134e4a'
 	},
 	emerald: {
 		50: '#ecfdf5',
@@ -84,7 +84,7 @@ export const palette = {
 		600: '#059669',
 		700: '#047857',
 		800: '#065f46',
-		900: '#064e3b',
+		900: '#064e3b'
 	},
 	green: {
 		50: '#f0fdf4',
@@ -96,7 +96,7 @@ export const palette = {
 		600: '#16a34a',
 		700: '#15803d',
 		800: '#166534',
-		900: '#14532d',
+		900: '#14532d'
 	},
 	lime: {
 		50: '#f7fee7',
@@ -108,7 +108,7 @@ export const palette = {
 		600: '#65a30d',
 		700: '#4d7c0f',
 		800: '#3f6212',
-		900: '#365314',
+		900: '#365314'
 	},
 	yellow: {
 		50: '#fefce8',
@@ -120,7 +120,7 @@ export const palette = {
 		600: '#ca8a04',
 		700: '#a16207',
 		800: '#854d0e',
-		900: '#713f12',
+		900: '#713f12'
 	},
 	amber: {
 		50: '#fffbeb',
@@ -132,7 +132,7 @@ export const palette = {
 		600: '#d97706',
 		700: '#b45309',
 		800: '#92400e',
-		900: '#78350f',
+		900: '#78350f'
 	},
 	orange: {
 		50: '#fff7ed',
@@ -144,7 +144,7 @@ export const palette = {
 		600: '#ea580c',
 		700: '#c2410c',
 		800: '#9a3412',
-		900: '#7c2d12',
+		900: '#7c2d12'
 	},
 	red: {
 		50: '#fef2f2',
@@ -156,7 +156,7 @@ export const palette = {
 		600: '#dc2626',
 		700: '#b91c1c',
 		800: '#991b1b',
-		900: '#7f1d1d',
+		900: '#7f1d1d'
 	},
 	rose: {
 		50: '#fff1f2',
@@ -168,7 +168,7 @@ export const palette = {
 		600: '#e11d48',
 		700: '#be123c',
 		800: '#9f1239',
-		900: '#881337',
+		900: '#881337'
 	},
 	pink: {
 		50: '#fdf2f8',
@@ -180,7 +180,7 @@ export const palette = {
 		600: '#db2777',
 		700: '#be185d',
 		800: '#9d174d',
-		900: '#831843',
+		900: '#831843'
 	},
 	fuchsia: {
 		50: '#fdf4ff',
@@ -192,7 +192,7 @@ export const palette = {
 		600: '#c026d3',
 		700: '#a21caf',
 		800: '#86198f',
-		900: '#701a75',
+		900: '#701a75'
 	},
 	purple: {
 		50: '#faf5ff',
@@ -204,7 +204,7 @@ export const palette = {
 		600: '#9333ea',
 		700: '#7e22ce',
 		800: '#6b21a8',
-		900: '#581c87',
+		900: '#581c87'
 	},
 	violet: {
 		50: '#f5f3ff',
@@ -216,7 +216,7 @@ export const palette = {
 		600: '#7c3aed',
 		700: '#6d28d9',
 		800: '#5b21b6',
-		900: '#4c1d95',
+		900: '#4c1d95'
 	},
 	warmGray: {
 		50: '#fafaf9',
@@ -228,7 +228,7 @@ export const palette = {
 		600: '#57534e',
 		700: '#44403c',
 		800: '#292524',
-		900: '#1c1917',
+		900: '#1c1917'
 	},
 	trueGray: {
 		50: '#fafafa',
@@ -240,7 +240,7 @@ export const palette = {
 		600: '#525252',
 		700: '#404040',
 		800: '#262626',
-		900: '#171717',
+		900: '#171717'
 	},
 	gray: {
 		50: '#fafafa',
@@ -252,7 +252,7 @@ export const palette = {
 		600: '#52525b',
 		700: '#3f3f46',
 		800: '#27272a',
-		900: '#18181b',
+		900: '#18181b'
 	},
 	blueGray: {
 		50: '#f8fafc',
@@ -264,8 +264,8 @@ export const palette = {
 		600: '#475569',
 		700: '#334155',
 		800: '#1e293b',
-		900: '#0f172a',
-	},
+		900: '#0f172a'
+	}
 }
 
 export class ColorBrewer {
@@ -311,7 +311,7 @@ export class ColorBrewer {
 		return {
 			fill: this.grayscale[this.fill],
 			stroke: this.grayscale[this.stroke],
-			contrast: this.grayscale[this.contrast],
+			contrast: this.grayscale[this.contrast]
 		}
 	}
 
@@ -319,7 +319,7 @@ export class ColorBrewer {
 		const palette = this.colors.map((color) => ({
 			fill: this.palette[color][this.fill],
 			stroke: this.palette[color][this.stroke],
-			contrast: this.palette[color][this.contrast],
+			contrast: this.palette[color][this.contrast]
 		}))
 
 		return palette

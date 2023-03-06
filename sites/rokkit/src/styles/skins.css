@@ -2,7 +2,7 @@ graph-paper {
 	@apply p-8 bg-skin-50 text-skin-300 overflow-auto;
 }
 /* graph-paper > p { */
-	/* @apply bg-transparent; */
+/* @apply bg-transparent; */
 /* } */
 graph-paper > content {
 	@apply text-opacity-100 text-skin-800 flex flex-col gap-5;
@@ -12,7 +12,7 @@ graph-paper > content > p > b {
 }
 
 graph-paper > content > pre {
-  @apply overflow-scroll;
+	@apply overflow-scroll;
 }
 preview {
 	@apply flex flex-col w-full h-full p-2 md:p-6 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;

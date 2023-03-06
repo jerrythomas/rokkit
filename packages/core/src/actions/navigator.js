@@ -60,13 +60,22 @@ export function navigator(node, options) {
 			)
 	}
 	const collapse = () => {
-		if (currentNode && hasChildren(currentNode, path[path.length - 1].fields)) {
-			currentNode[path[path.length - 1].fields.isOpen] = false
-			node.dispatchEvent(
-				new CustomEvent('collapse', {
-					detail: { path: indicesFromPath(path), node: currentNode }
-				})
-			)
+		if (currentNode) {
+			const collapse =
+				hasChildren(currentNode, path[path.length - 1].fields) &&
+				currentNode[path[path.length - 1].fields.isOpen]
+			if (collapse) {
+				currentNode[path[path.length - 1].fields.isOpen] = false
+				node.dispatchEvent(
+					new CustomEvent('collapse', {
+						detail: { path: indicesFromPath(path), node: currentNode }
+					})
+				)
+			} else if (path.length > 0) {
+				path = path.slice(0, -1)
+				currentNode = getCurrentNode(path)
+				select()
+			}
 		}
 	}
 	const expand = () => {
@@ -113,6 +122,18 @@ export function navigator(node, options) {
 		if (indices.length > 0) {
 			path = pathFromIndices(indices, items, fields)
 			currentNode = getCurrentNode(path)
+			if (hasChildren(currentNode, path[path.length - 1].fields)) {
+				currentNode[path[path.length - 1].fields.isOpen] =
+					!currentNode[path[path.length - 1].fields.isOpen]
+				const event = currentNode[path[path.length - 1].fields.isOpen]
+					? 'expand'
+					: 'collapse'
+				node.dispatchEvent(
+					new CustomEvent(event, {
+						detail: { path: indices, node: currentNode }
+					})
+				)
+			}
 			node.dispatchEvent(
 				new CustomEvent('select', {
 					detail: { path: indices, node: currentNode }
@@ -147,10 +168,9 @@ export function moveTo(node, path, currentNode, idPrefix) {
 }
 
 export function findParentWithDataPath(element) {
-	// console.log(element, element.attributes)
 	if (element.hasAttribute('data-path')) return element
-
 	let parent = element.parentNode
+
 	while (parent && !parent.hasAttribute('data-path')) {
 		parent = parent.parentNode
 	}

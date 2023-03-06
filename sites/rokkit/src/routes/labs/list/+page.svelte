@@ -1,17 +1,17 @@
 <script>
-	import StoryWrapper from '$lib/StoryWrapper.svelte'
+	// import StoryWrapper from '$lib/StoryWrapper.svelte'
 	import { List, Link } from '@rokkit/core'
-	import { variants } from './data'
+	// import { variants } from './data'
 
 	let props
+	let value
+	let items = [{ text: 'One' }, { text: 'Two' }, { text: 'Three' }]
 
-	$: variants[2].props.using = { Link }
+	// $: variants[2].props.using = { Link }
 </script>
 
-<StoryWrapper component={'List'} {variants} bind:props>
-	<div class="flex w-60" slot="component">
-		{#if props}
-			<List {...props} />
-		{/if}
-	</div>
-</StoryWrapper>
+<List {items} bind:value />
+
+<pre>
+	{JSON.stringify(value, null, 2)}
+</pre>

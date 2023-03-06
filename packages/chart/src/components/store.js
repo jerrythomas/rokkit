@@ -4,7 +4,7 @@ function createChart() {
 	const { subscribe, set } = writable({
 		data: [],
 		x: '',
-		y: '',
+		y: ''
 	})
 	return { subscribe, set }
 }

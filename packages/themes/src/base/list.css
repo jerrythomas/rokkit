@@ -1,7 +1,7 @@
 accordion {
 	@apply flex-grow gap-1 overflow-y-scroll;
 }
-accordion details {
+accordion > div {
 	@apply rounded shadow relative;
 }
 
@@ -10,27 +10,25 @@ list {
 }
 
 list item,
-accordion summary {
+accordion > div > summary {
 	@apply leading-10 px-4 bg-skin-100 text-skin-900;
 }
-accordion summary {
+accordion > div > summary {
 	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300 border-b border-skin-300;
 }
-/* accordion summary {
-  list-style-type: none;
-} */
-accordion summary::-webkit-details-marker {
-  display: none;
+
+accordion > div > summary::-webkit-details-marker {
+	display: none;
 }
 
 list item icon {
 	@apply text-secondary;
 }
 
-:not(accordion > details) > list {
+:not(accordion > div) > list {
 	@apply rounded shadow border border-skin-400 overflow-y-scroll;
 }
-:not(accordion > details) > list item {
+:not(accordion > div) > list item {
 	@apply last:rounded-b first:rounded-t;
 }
 
@@ -40,7 +38,9 @@ accordion list item {
 accordion list {
 	@apply rounded-b;
 }
-
+accordion .is-selected summary {
+	@apply border-t-2 border-t-secondary-500;
+}
 accordion .is-expanded summary {
 	@apply rounded-b-none  sticky top-0 z-1;
 }

@@ -12,6 +12,7 @@ exports[`List.svelte > Should render a list of values 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="0"
         role="option"
       >
          
@@ -26,6 +27,7 @@ exports[`List.svelte > Should render a list of values 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="1"
         role="option"
       >
          
@@ -40,6 +42,7 @@ exports[`List.svelte > Should render a list of values 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="2"
         role="option"
       >
          
@@ -68,6 +71,7 @@ exports[`List.svelte > Should render items using custom component 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="0"
         role="option"
       >
         <span>
@@ -78,6 +82,7 @@ exports[`List.svelte > Should render items using custom component 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="1"
         role="option"
       >
          
@@ -92,6 +97,7 @@ exports[`List.svelte > Should render items using custom component 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="2"
         role="option"
       >
          
@@ -120,6 +126,7 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="0"
         role="option"
       >
          
@@ -134,6 +141,7 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="1"
         role="option"
       >
          
@@ -148,6 +156,7 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="2"
         role="option"
       >
          
@@ -176,6 +185,7 @@ exports[`List.svelte > Should render items using default item when data is inval
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="0"
         role="option"
       >
          
@@ -190,6 +200,7 @@ exports[`List.svelte > Should render items using default item when data is inval
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="1"
         role="option"
       >
          
@@ -204,6 +215,7 @@ exports[`List.svelte > Should render items using default item when data is inval
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="2"
         role="option"
       >
          
@@ -232,6 +244,7 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="0"
         role="option"
       >
          
@@ -246,6 +259,7 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="1"
         role="option"
       >
          
@@ -260,6 +274,7 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="2"
         role="option"
       >
          
@@ -288,6 +303,7 @@ exports[`List.svelte > Should render with alternate class 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="0"
         role="option"
       >
          
@@ -302,6 +318,7 @@ exports[`List.svelte > Should render with alternate class 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="1"
         role="option"
       >
          
@@ -316,6 +333,7 @@ exports[`List.svelte > Should render with alternate class 1`] = `
       <item
         aria-selected="false"
         class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+        data-path="2"
         role="option"
       >
          
