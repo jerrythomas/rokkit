@@ -24,7 +24,7 @@ function slidingWindowForNumbers(values, size, step, offset = 0, fmt = 0) {
 	const result = range.map((key) => ({
 		key: smallest + key * step,
 		lowerBound: smallest + key * step + offset,
-		upperBound: smallest + key * step + offset + size,
+		upperBound: smallest + key * step + offset + size
 	}))
 	return result
 }
@@ -47,7 +47,7 @@ function slidingWindowForDates(
 		blocks.push({
 			key: current,
 			lowerBound,
-			upperBound: add(lowerBound, size),
+			upperBound: add(lowerBound, size)
 		})
 		current = add(current, step)
 	}

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { fireEvent } from '@testing-library/svelte'
+// import { fireEvent } from '@testing-library/svelte'
 import {
 	toUseHandlersFor,
 	toOnlyTrigger,
@@ -34,17 +34,19 @@ describe('navigator', () => {
 				{
 					name: 'node',
 					id: 'id-0',
+					dataPath: '0',
 					children: [
-						{ name: 'node', id: 'id-0-0' },
-						{ name: 'node', id: 'id-0-1' }
+						{ name: 'node', id: 'id-0-0', dataPath: '0,0' },
+						{ name: 'node', id: 'id-0-1', dataPath: '0,1' }
 					]
 				},
 				{
 					name: 'node',
 					id: 'id-1',
+					dataPath: '1',
 					children: [
-						{ name: 'node', id: 'id-1-0' },
-						{ name: 'node', id: 'id-1-1' }
+						{ name: 'node', id: 'id-1-0', dataPath: '1,0' },
+						{ name: 'node', id: 'id-1-1', dataPath: '1,1' }
 					]
 				}
 			]
@@ -110,6 +112,7 @@ describe('navigator', () => {
 		expect(result).toEqual(null)
 	})
 
+	// todo: add click toggle test
 	it('Should dispatch select when an item is clicked.', () => {
 		let items = ['A', 'B']
 		options = { items, fields }
@@ -319,7 +322,9 @@ describe('navigator', () => {
 			expect(handlers.collapse).not.toHaveBeenCalled()
 		})
 
+		//todo: test move to parent instead of collapse
 		it('Should dispatch collapse event on ArrowLeft', () => {
+			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -330,6 +335,23 @@ describe('navigator', () => {
 
 			expect(handlers.collapse).toHaveBeenCalledTimes(1)
 			expect(handlers.collapse).toHaveBeenCalledWithDetail({
+				path: [0],
+				node: items[0]
+			})
+		})
+
+		it('Should select parent on ArrowLeft', () => {
+			navigatorInstance = navigator(node, {
+				items,
+				fields,
+				indices: [0, 0]
+			})
+			const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' })
+			node.dispatchEvent(event)
+
+			expect(handlers.collapse).not.toHaveBeenCalled()
+			expect(handlers.select).toHaveBeenCalled()
+			expect(handlers.select).toHaveBeenCalledWithDetail({
 				path: [0],
 				node: items[0]
 			})
@@ -349,7 +371,36 @@ describe('navigator', () => {
 				node: items[0]
 			})
 		})
+
+		it('Should dispatch collapse/expand when parent is clicked.', () => {
+			navigatorInstance = navigator(hierarchy, {
+				items,
+				fields,
+				indices: [1]
+			})
+
+			expect(items[0][fields.isOpen]).toBeTruthy()
+			hierarchy.children[0].dispatchEvent(
+				new MouseEvent('click', { bubbles: true })
+			)
+			expect(items[0][fields.isOpen]).toBeFalsy()
+			expect(nestedHandlers.collapse).toHaveBeenCalled()
+			expect(nestedHandlers.collapse).toHaveBeenCalledWithDetail({
+				path: [0],
+				node: items[0]
+			})
+			hierarchy.children[0].dispatchEvent(
+				new MouseEvent('click', { bubbles: true })
+			)
+			expect(items[0][fields.isOpen]).toBeTruthy()
+			expect(nestedHandlers.expand).toHaveBeenCalled()
+			expect(nestedHandlers.expand).toHaveBeenCalledWithDetail({
+				path: [0],
+				node: items[0]
+			})
+		})
 	})
+
 	describe('Horizontal List', () => {
 		let items = ['A', 'B']
 
@@ -525,6 +576,7 @@ describe('navigator', () => {
 		})
 
 		it('Should dispatch collapse event on ArrowUp', () => {
+			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -541,6 +593,24 @@ describe('navigator', () => {
 			})
 		})
 
+		it('Should select parent on ArrowUp', () => {
+			navigatorInstance = navigator(node, {
+				items,
+				fields,
+				vertical: false,
+				indices: [0, 0]
+			})
+			const event = new KeyboardEvent('keydown', { key: 'ArrowUp' })
+			node.dispatchEvent(event)
+
+			expect(handlers.collapse).not.toHaveBeenCalled()
+			expect(handlers.select).toHaveBeenCalled()
+			expect(handlers.select).toHaveBeenCalledWithDetail({
+				path: [0],
+				node: items[0]
+			})
+		})
+
 		it('Should dispatch expand event on ArrowDown', () => {
 			navigatorInstance = navigator(node, {
 				items,
@@ -552,6 +622,34 @@ describe('navigator', () => {
 			node.dispatchEvent(event)
 			expect(handlers.expand).toHaveBeenCalledTimes(1)
 			expect(handlers.expand).toHaveBeenCalledWithDetail({
+				path: [0],
+				node: items[0]
+			})
+		})
+		it('Should dispatch collapse/expand when parent is clicked.', () => {
+			navigatorInstance = navigator(hierarchy, {
+				items,
+				fields,
+				indices: [1],
+				vertical: false
+			})
+
+			expect(items[0][fields.isOpen]).toBeTruthy()
+			hierarchy.children[0].dispatchEvent(
+				new MouseEvent('click', { bubbles: true })
+			)
+			expect(items[0][fields.isOpen]).toBeFalsy()
+			expect(nestedHandlers.collapse).toHaveBeenCalled()
+			expect(nestedHandlers.collapse).toHaveBeenCalledWithDetail({
+				path: [0],
+				node: items[0]
+			})
+			hierarchy.children[0].dispatchEvent(
+				new MouseEvent('click', { bubbles: true })
+			)
+			expect(items[0][fields.isOpen]).toBeTruthy()
+			expect(nestedHandlers.expand).toHaveBeenCalled()
+			expect(nestedHandlers.expand).toHaveBeenCalledWithDetail({
 				path: [0],
 				node: items[0]
 			})

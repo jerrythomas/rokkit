@@ -11,7 +11,7 @@
 .rokkit input-select > button {
 	@apply w-full h-12 pl-4 gap-4 items-center bg-skin-100;
 	@apply rounded border border-skin-300 text-skin-800;
-	@apply hover:bg-skin-300 hover:border-skin-500 ;
+	@apply hover:bg-skin-300 hover:border-skin-500;
 }
 .rokkit input-select square-icon {
 	@apply border-l border-skin-300;

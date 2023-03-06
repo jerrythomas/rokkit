@@ -19,5 +19,5 @@ export const builtIn = {
 	palette,
 	patterns,
 	shapes,
-	symbols,
+	symbols
 }

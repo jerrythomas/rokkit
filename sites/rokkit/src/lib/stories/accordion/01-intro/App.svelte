@@ -23,4 +23,5 @@
 
 <Accordion {items} bind:value />
 
-<p>Selected Value : <b>{value}</b></p>
+<p>Selected Value :</p>
+<pre>{JSON.stringify(value, null, 2)}</pre>
