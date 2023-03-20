@@ -6,5 +6,4 @@
 @import './base/form.css';
 @import './base/layout.css';
 @import './rokkit/input.css';
-
-@import './base/dropdown.css';
+@import './rokkit/dropdown.css';

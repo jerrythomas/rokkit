@@ -4,7 +4,7 @@
 
 	const fields = {
 		text: 'category',
-		data: 'values',
+		children: 'values',
 		fields: {
 			text: 'name',
 			image: 'photo'

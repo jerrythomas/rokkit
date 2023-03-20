@@ -37,18 +37,21 @@
 	<label for={name} class:required>
 		{label}
 	</label>
-	{#if icon}
-		<field class="flex flex-row w-full items-center">
+
+	<!-- <Input bind:value {name} {type} {...props} /> -->
+	<!-- </field> -->
+	<!-- {:else} -->
+	<field class="flex flex-row w-full items-center">
+		{#if icon}
 			<span
 				class="flex flex-shrink-0 aspect-square items-center justify-center "
 			>
 				<icon class={icon} />
 			</span>
-			<Input bind:value {name} {type} {...props} />
-		</field>
-	{:else}
+		{/if}
 		<Input id={name} bind:value {name} {type} {...props} />
-	{/if}
+	</field>
+	<!-- {/if} -->
 	{#if message}
 		<message class={status}>{message}</message>
 	{/if}

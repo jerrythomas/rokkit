@@ -1,7 +1,8 @@
 import { equals } from '@vitest/expect'
-export function toHaveBeenCalledWithDetail(spy, data) {
+
+export function toHaveBeenDispatchedWith(spy, data) {
 	const detail = spy.mock.lastCall[0].detail
-	const pass = equals(detail.detail, data)
+	const pass = equals(detail, data)
 
 	if (pass) {
 		return {

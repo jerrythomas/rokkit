@@ -1,27 +1,27 @@
-input-field {
+.material input-field {
 	@apply box-border border border-skin-800 rounded;
 	@apply text-skin-800 leading-loose relative px-2 py-1;
 }
-input-field.empty label {
+.material input-field.empty label {
 	@apply absolute left-2 -z-1 opacity-0;
 }
-input-field input {
+.material input-field input {
 	@apply border-none outline-none bg-transparent;
 }
 
-input-field:focus-within {
+.material input-field:focus-within {
 	@apply border-2 border-secondary;
 }
 
-input-field label.required::after {
+.material input-field label.required::after {
 	content: '*';
 	@apply state-danger;
 }
 
-input-field label,
-input-field:focus-within label {
+.material input-field label,
+.material input-field:focus-within label {
 	@apply block z-1 -top-3 left-2 bg-skin-50 absolute leading-tight opacity-100;
 }
-input-field field {
+.material input-field field {
 	@apply gap-2;
 }

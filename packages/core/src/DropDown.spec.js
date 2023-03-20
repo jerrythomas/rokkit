@@ -1,6 +1,9 @@
 import { describe, expect, it, beforeEach, vi, afterAll } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import DropDown from '../src/DropDown.svelte'
+import { toHaveBeenDispatchedWith } from 'validators'
+
+expect.extend({ toHaveBeenDispatchedWith })
 
 describe('DropDown.svelte', () => {
 	beforeEach(() => {
@@ -51,10 +54,7 @@ describe('DropDown.svelte', () => {
 		let selected = null
 		const items = [{ text: 'foo' }, { text: 'bar' }]
 
-		const mockOnChange = vi.fn().mockImplementation((event) => {
-			// console.log(event.detail, selected)
-			expect(event.detail).toEqual(selected)
-		})
+		const mockOnChange = vi.fn()
 		const { container, component } = render(DropDown, {
 			props: {
 				items
@@ -75,6 +75,7 @@ describe('DropDown.svelte', () => {
 					selected.item
 				)
 				expect(mockOnChange).toHaveBeenCalled()
+				expect(mockOnChange).toHaveBeenDispatchedWith(selected)
 			})
 	})
 })

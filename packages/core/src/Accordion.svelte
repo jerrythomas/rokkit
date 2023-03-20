@@ -19,7 +19,7 @@
 	$: using = { default: Text, ...using }
 
 	function handle(event) {
-		console.log(event.type, event.detail)
+		// console.log(event.type, event.detail)
 		value = event.detail.node
 		cursor = event.detail.path
 		if (['collapse', 'expand'].includes(event.type)) {
