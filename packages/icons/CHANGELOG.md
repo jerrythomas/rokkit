@@ -1,5 +1,11 @@
 # @rokkit/icons
 
+## 1.0.0-next.11
+
+### Patch Changes
+
+- Release v1.0.0-next.11
+
 ## 1.0.0-next.6
 
 ### Patch Changes
