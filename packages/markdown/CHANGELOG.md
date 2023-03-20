@@ -1,5 +1,13 @@
 # @rokkit/markdown
 
+## 1.0.0-next.11
+
+### Patch Changes
+
+- Release v1.0.0-next.11
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.11
+
 ## 1.0.0-next.6
 
 ### Patch Changes
