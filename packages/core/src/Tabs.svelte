@@ -2,7 +2,7 @@
 	import TabItems from './TabItems.svelte'
 	import TabItem from './TabItem.svelte'
 
-	let className
+	let className = ''
 	export { className as class }
 	export let items = []
 	export let fields = {}

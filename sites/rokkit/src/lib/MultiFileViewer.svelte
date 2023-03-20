@@ -15,7 +15,7 @@
 	let navigator = media && $media.small ? Select : Tabs
 </script>
 
-<multi-file class="flex flex-col w-full h-full {className}">
+<multi-file class="flex flex-col {className}">
 	<nav class="w-full items-center">
 		<svelte:component this={navigator} {items} {fields} bind:value />
 	</nav>

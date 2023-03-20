@@ -7,7 +7,7 @@
 </script>
 
 <graph-paper
-	class="flex flex-col h-full bg-op-20 text-op-40 {className}"
+	class="flex flex-col bg-op-20 text-op-40 {className}"
 	style:--unit={unit}
 	style:--size="calc( {group} * {unit})"
 	style:--thin="{thickness}px"

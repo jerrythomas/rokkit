@@ -9,12 +9,12 @@ list {
 	@apply gap-1px bg-skin-200;
 }
 
-list item,
-accordion > div > summary {
-	@apply leading-10 px-4 bg-skin-100 text-skin-900;
+list > item,
+accordion div summary {
+	@apply leading-10 px-4 bg-skin-100 text-skin-900 min-h-12;
 }
 accordion > div > summary {
-	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300 border-b border-skin-300;
+	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300;
 }
 
 accordion > div > summary::-webkit-details-marker {
@@ -38,11 +38,13 @@ accordion list item {
 accordion list {
 	@apply rounded-b;
 }
-accordion .is-selected summary {
-	@apply border-t-2 border-t-secondary-500;
+
+accordion .is-expanded summary{
+	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
 }
-accordion .is-expanded summary {
-	@apply rounded-b-none  sticky top-0 z-1;
+
+accordion .is-selected summary {
+	@apply border-b-secondary-500;
 }
 
 accordion .is-expanded list {

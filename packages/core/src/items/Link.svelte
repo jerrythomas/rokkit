@@ -4,7 +4,8 @@
 
 	export let content
 	export let fields = defaultFields
-	$: target = fields.target ? content[fields.target] ?? '_self' : '_self'
+
+	$: target = fields.target ? content[fields.target] : ''
 </script>
 
 <a

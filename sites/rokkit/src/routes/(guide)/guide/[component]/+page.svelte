@@ -3,37 +3,40 @@
 	import { writable } from 'svelte/store'
 	import { ResponsiveGrid } from '@rokkit/core'
 	import { ButtonGroup } from '@rokkit/form'
+	import GraphPaper from '$lib/GraphPaper.svelte'
+	import MultiFileViewer from '$lib/MultiFileViewer.svelte'
 
 	import Code from './Code.svelte'
-	import Preview from './Preview.svelte'
 	import Notes from './Notes.svelte'
+	import Preview from './Preview.svelte'
 
 	const story = writable({})
 	const media = getContext('media')
 
 	setContext('story', story)
 	export let data
+	let mode = 'single'
 
 	let items = [
 		{
 			component: Notes,
 			name: 'Notes',
 			props: {
-				class: 'bg-pink-500 items-center justify-center'
+				class: 'items-center justify-center'
 			}
 		},
 		{
 			component: Preview,
 			name: 'Preview',
 			props: {
-				class: 'bg-sky-500 items-center justify-center'
+				class: 'items-center justify-center'
 			}
 		},
 		{
 			component: Code,
 			name: 'Code',
 			props: {
-				class: 'bg-teal-500 items-center justify-center'
+				class: 'items-center justify-center'
 			}
 		}
 	]
@@ -44,12 +47,31 @@
 	$: size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
 </script>
 
-<ResponsiveGrid
-	{items}
-	small={size == 'sm'}
-	class="three-col {size}"
-	bind:value={page}
-/>
-{#if size == 'sm'}
-	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
+{#if mode == 'single'}
+	<section class="flex flex-col w-full h-full gap-5 py-4 overflow-scroll">
+		{#each data.story.pages as { notes, preview, files }}
+			<notes class="markdown-body px-8 py-2 w-full">
+				<svelte:component this={notes} />
+			</notes>
+			<GraphPaper class="{data.story.skin} min-h-100 mx-8">
+				<svelte:component this={preview} />
+			</GraphPaper>
+			<MultiFileViewer
+				items={files}
+				fields={{ text: 'file' }}
+				class="min-h-100 file-viewer mx-8 h-content"
+				value={files[0]}
+			/>
+		{/each}
+	</section>
+{:else}
+	<ResponsiveGrid
+		{items}
+		small={size == 'sm'}
+		class="three-col {size}"
+		bind:value={page}
+	/>
+	{#if size == 'sm'}
+		<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
+	{/if}
 {/if}

@@ -2,9 +2,9 @@ import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import Custom from './mocks/Custom.svelte'
 import List from './List.svelte'
-import { toHaveBeenCalledWithDetail } from 'validators'
+import { toHaveBeenDispatchedWith } from 'validators'
 
-expect.extend({ toHaveBeenCalledWithDetail })
+expect.extend({ toHaveBeenDispatchedWith })
 
 describe('List.svelte', () => {
 	beforeEach(() => {
@@ -62,10 +62,7 @@ describe('List.svelte', () => {
 		let selected
 
 		const items = [{ name: 'item 1' }, { name: 'item 2' }]
-		const onSelect = vi.fn().mockImplementation((event) => {
-			console.log('list test', event, event.detail)
-			expect(event.detail).toEqual(selected)
-		})
+		const onSelect = vi.fn()
 		const { container, component } = render(List, {
 			props: {
 				items,
@@ -80,27 +77,8 @@ describe('List.svelte', () => {
 			await fireEvent.click(item)
 			expect(component.$$.ctx[component.$$.props.value]).toEqual(selected.item)
 			expect(onSelect).toHaveBeenCalled()
+			expect(onSelect).toHaveBeenDispatchedWith(selected)
 		})
-		// let nodes = container.querySelectorAll('list item')
-		// console.log(nodes.length)
-		// console.log(nodes[0].dataset['path'])
-
-		// await fireEvent.click(nodes[0])
-		// // nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
-		// selected = { item: items[0], indices: [0] }
-		// expect(onSelect).toHaveBeenCalled()
-		// expect(onSelect).toHaveBeenCalledWithDetail({
-		// 	item: items[0],
-		// 	indices: [0]
-		// })
-		// .forEach(async (item, index) => {
-		// 	await fireEvent.click(item)
-		// 	selected = { item: items[index], indices: [index] }
-		// 	expect(onSelect).toHaveBeenCalled()
-		// 	expect(onSelect.mock.calls[index][0].detail).toEqual(selected)
-		// 	// below assertion fails because the props value ges updated.
-		// 	// expect(component.$$.ctx[component.$$.props.value]).toEqual(selected.item)
-		// })
 	})
 	it('Should pass change event', () => {})
 	it('Should add an item', () => {})

@@ -48,7 +48,7 @@
 			: using.default}
 		{@const path = [...hierarchy, index].join(',')}
 		<item
-			class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+			class="flex flex-shrink-0 flex-grow-0 items-center cursor-pointer w-full gap-2 select-none item"
 			role="option"
 			aria-selected={value === item}
 			class:is-selected={value === item}

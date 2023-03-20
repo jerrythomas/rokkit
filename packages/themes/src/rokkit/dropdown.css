@@ -22,9 +22,9 @@
 .rokkit input-select scroll {
 	@apply mt-1 shadow-lg;
 }
-.rokkit item {
+/* .rokkit item {
 	@apply min-h-12;
-}
+} */
 /* .rokkit .dropdown {
 	@apply flex w-full box-border rounded outline-secondary-500 bg-red-500;
 }

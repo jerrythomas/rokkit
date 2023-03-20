@@ -1,95 +1,95 @@
-input,
-textarea,
-select,
-fieldset {
+.minimal input,
+.minimal textarea,
+.minimal select,
+.minimal fieldset {
 	@apply rounded leading-loose px-2 border border-skin-300 outline-none;
 }
 
-fieldset {
+.minimal fieldset {
 	@apply p-4 pt-2 gap-2 rounded-md;
 }
-fieldset legend {
+.minimal fieldset legend {
 	@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
 }
-fieldset icon {
+.minimal fieldset icon {
 	@apply text-2xl;
 }
 
-input-field {
+.minimal input-field {
 	@apply w-full m-0 p-0;
 }
-input-field input {
+.minimal input-field input {
 	@apply border;
 }
-input-field field {
+.minimal input-field field {
 	@apply box-border border h-10 rounded overflow-hidden;
 	@apply focus-within:border-primary-400 focus-within:border-2;
 }
-input-field span {
+.minimal input-field span {
 	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
 }
-input-field input,
-input-field textarea,
-input-field select {
+.minimal input-field input,
+.minimal input-field textarea,
+.minimal input-field select {
 	@apply flex-grow border-0 outline-none;
 }
 
-input-field label {
+.minimal input-field label {
 	@apply leading-loose w-full;
 }
-input-field message {
+.minimal input-field message {
 	@apply px-2 py-1 bg-skin-100 rounded;
 }
 
-input-field.fail {
+.minimal input-field.fail {
 	@apply bg-error rounded px-2;
 }
 
-input-range range-track {
+.minimal input-range range-track {
 	@apply h-2 mt-2 relative;
 }
-input-range range-track span {
+.minimal input-range range-track span {
 	@apply bg-skin-200 border box-border border-skin-300 rounded-full;
 }
-input-range range-track selected {
+.minimal input-range range-track selected {
 	@apply border -top-0px -bottom-0px border-primary-500 bg-primary-400 rounded-full;
 }
-input-range range-track thumb {
+.minimal input-range range-track thumb {
 	@apply rounded-sm;
 }
 
-input-range range-ticks {
+.minimal input-range range-ticks {
 	font-size: 6px;
 	@apply bg-primary-100;
 }
 
-.bookend range-track span::before,
-.bookend range-track span::after {
+.minimal .bookend range-track span::before,
+.minimal .bookend range-track span::after {
 	content: '';
 	@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 }
-.bookend range-track span::before {
+.minimal .bookend range-track span::before {
 	@apply -left-1px;
 }
-.bookend range-track span::after {
+.minimal .bookend range-track span::after {
 	@apply -right-2px;
 }
 
-tick {
+.minimal tick {
 	@apply h-6;
 }
-tick span {
+.minimal tick span {
 	@apply border-skin-500 h-full;
 }
-tick p {
+.minimal tick p {
 	@apply items-top;
 	font-size: 8px;
 }
 
-thumb {
+.minimal thumb {
 	@apply bg-primary-300  shadow-xl border border-primary-400;
 }
-thumb.sliding::before {
+.minimal thumb.sliding::before {
 	content: '';
 	@apply absolute left-0 top-0 right-0 bottom-0 bg-primary-500  opacity-30 rounded-sm;
 	transform: scale(2, 2);

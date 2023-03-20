@@ -10,7 +10,7 @@
 	export let fields = defaultFields
 	export let using = {}
 	export let types = []
-	export let value
+	export let value = null
 	export let linesVisible = true
 	export let rtl = false
 	export let hierarchy = []

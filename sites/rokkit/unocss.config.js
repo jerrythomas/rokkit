@@ -14,9 +14,11 @@ export default defineConfig({
 		...defaultIcons,
 		// ...components.map(({ icon }) => icon),
 		'i-spice:github',
+		'i-spice:menu',
 		'i-states:accordion-closed',
 		'i-spice:accordion-closed',
-		'i-spice-states:accordion-closed'
+		'i-spice-states:accordion-closed',
+		'-translate-x-full'
 	],
 	shortcuts: {
 		...iconShortcuts(defaultIcons, 'i-spice'),
@@ -51,11 +53,7 @@ export default defineConfig({
 	},
 	presets: [
 		presetUno(),
-		presetTypography(), //{
-		// cssExtend: {
-		// 	'font-mono': 'Victor Mono'
-		// }
-		// }),
+		presetTypography(),
 		presetIcons({
 			collections: {
 				spice: FileSystemIconLoader('./static/icons', (svg) =>

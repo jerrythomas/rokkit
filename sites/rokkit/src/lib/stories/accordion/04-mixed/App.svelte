@@ -6,7 +6,7 @@
 
 	let fields = {
 		text: 'category',
-		data: 'values',
+		children: 'values',
 		fields: { component: 'type', text: 'name', image: 'photo' }
 	}
 	let using = { odd: Odd, even: Even }
