@@ -2,9 +2,9 @@
 	import { Node, Text } from './items'
 	import { defaultFields } from './constants'
 	import { createEventDispatcher } from 'svelte'
-	import { navigator } from './actions/navigator'
+	// import { navigator } from './actions/navigator'
 
-	const dispatch = createEventDispatcher()
+	// const dispatch = createEventDispatcher()
 
 	export let items = []
 	export let fields = defaultFields
@@ -15,29 +15,17 @@
 	export let rtl = false
 	export let hierarchy = []
 
-	let indices = []
+	// let indices = []
 
-	function handle(event) {
-		value = event.detail.node
-		indices = event.detail.path
-		if (['collapse', 'expand'].includes(event.type)) {
-			items = items
-		}
-		dispatch(event.type, value)
-	}
-	// function handleExpand(event) {
+	// function handle(event) {
 	// 	value = event.detail.node
 	// 	indices = event.detail.path
-	// 	items = items // tell svelte data has changed
-	// 	dispatch('expand', value)
+	// 	if (['collapse', 'expand'].includes(event.type)) {
+	// 		items = items
+	// 	}
+	// 	dispatch(event.type, value)
 	// }
-	// function handleCollapse(event) {
-	// 	// console.log(event)
-	// 	value = event.detail.node
-	// 	indices = event.detail.path
-	// 	items = items // tell svelte data has changed
-	// 	dispatch('collapse', value)
-	// }
+
 	$: using = { default: Text, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: nodeTypes = items.map((_, index) =>
@@ -49,13 +37,15 @@
 	class="flex flex-col w-full"
 	role="listbox"
 	class:rtl
-	tabindex={hierarchy.length == 0 ? 0 : -1}
+	tabindex="-1"
+>
+	<!-- tabindex={hierarchy.length == 0 ? 0 : -1}
 	use:navigator={{ items, fields, indices, enabled: hierarchy.length == 0 }}
 	on:select={handle}
 	on:move={handle}
 	on:expand={handle}
 	on:collapse={handle}
->
+> -->
 	{#each items as content, index}
 		{@const type = nodeTypes[index] === 'middle' ? 'line' : 'empty'}
 		{@const hasChildren = fields.children in content}

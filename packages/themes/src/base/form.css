@@ -9,3 +9,12 @@ button-group button {
 button-group button.active {
 	@apply text-secondary-500;
 }
+
+button, .button {
+	@apply flex min-h-12 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
+}
+
+button.is-primary,
+.button.is-primary {
+	@apply bg-gradient-to-r from-primary to-secondary text-skin-200;
+}
