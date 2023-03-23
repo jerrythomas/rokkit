@@ -7,19 +7,18 @@
 	let value
 	let using = { default: Link }
 	let items = menu
+
 	function setValueFromPath(url) {
-		if (!value) {
-			let i = 0
-			while (!value && i < items.length) {
-				const matchIndex = items[i].data.findIndex(
-					(item) => item.url === url.pathname
-				)
-				if (matchIndex > -1) {
-					value = items[i].data[matchIndex]
-					items[i]._open = true
-				}
-				i += 1
+		let i = 0
+		while (i < items.length) {
+			const matchIndex = items[i].data.findIndex(
+				(item) => item.url === url.pathname
+			)
+			if (matchIndex > -1) {
+				value = items[i].data[matchIndex]
+				items[i]._open = true
 			}
+			i += 1
 		}
 	}
 
