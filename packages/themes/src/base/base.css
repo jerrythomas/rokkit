@@ -3,6 +3,10 @@ body {
 	height: min(100vh, var(--viewport-height));
 }
 
+a {
+	@apply text-primary hover:text-secondary visited:text-secondary-600;
+}
+
 code,
 kbd,
 samp,
