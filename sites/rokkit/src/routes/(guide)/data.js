@@ -13,11 +13,6 @@ export let menu = [
 				icon: 'i-component:accordion'
 			},
 			{
-				text: 'Nested List',
-				url: '/guide/nested-list',
-				icon: 'i-component:nested-list'
-			},
-			{
 				text: 'Tree',
 				url: '/guide/tree',
 				icon: 'i-component:tree'
@@ -33,9 +28,9 @@ export let menu = [
 				icon: 'i-component:select'
 			},
 			{
-				text: 'Text Input',
-				url: '/guide/input-text',
-				icon: 'i-component:input-text'
+				text: 'InputField',
+				url: '/guide/input-field',
+				icon: 'i-component:input-field'
 			}
 		]
 	}

@@ -119,7 +119,7 @@ export function navigator(node, options) {
 					.filter((item) => item !== '')
 					.map((item) => +item)
 
-		if (indices.length > 0) {
+		if (indices.length > 0 && event.target.tagName != 'DETAIL') {
 			path = pathFromIndices(indices, items, fields)
 			currentNode = getCurrentNode(path)
 			if (hasChildren(currentNode, path[path.length - 1].fields)) {
@@ -158,7 +158,7 @@ export function moveTo(node, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
 
 	let current = node.querySelector('#' + idPrefix + indices.join('-'))
-	if (current) current.scrollIntoView({ behavior: 'auto' })
+	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
 	node.dispatchEvent(
 		new CustomEvent('move', {

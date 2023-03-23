@@ -1,0 +1,16 @@
+@import '../base/list.css';
+
+.rokkit node {
+	@apply min-h-10;
+}
+.rokkit tree{
+	@apply rounded;
+}
+.rokkit nested-list,
+.rokkit nested-list:focus-within {
+	@apply outline-none rounded;
+}
+.rokkit tree:focus-within {
+	@apply outline-none bg-gradient-to-r from-primary to-secondary px-2px py-2.5px box-border;
+}
+
