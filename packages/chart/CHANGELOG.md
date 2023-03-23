@@ -1,5 +1,13 @@
 # @rokkit/chart
 
+## 1.0.0-next.12
+
+### Patch Changes
+
+- release v1.0.0-next.12
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.12
+
 ## 1.0.0-next.11
 
 ### Patch Changes
