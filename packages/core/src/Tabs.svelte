@@ -1,31 +1,49 @@
 <script>
-	import TabItems from './TabItems.svelte'
-	import TabItem from './TabItem.svelte'
+	import { defaultFields } from './constants'
+	import { Text } from './items'
+	import { navigator } from './actions'
+	import { createEventDispatcher } from 'svelte'
+
+	const dispatch = createEventDispatcher()
 
 	let className = ''
 	export { className as class }
 	export let items = []
 	export let fields = {}
-	export let title = null
-	export let allowAdd = false
-	export let allowClose = false
-	export let value = items[0]
+	export let using = {}
+	export let value = null
+	let cursor = []
 
-	function addTab() {
-		items = [...items, {}]
-		value = items[items.length - 1]
+	function handleNav(event) {
+		value = event.detail.node
+		cursor = event.detail.path
+
+		dispatch('select', { item: value, indices: cursor })
 	}
+	$: fields = { ...defaultFields, ...fields }
+	$: using = { default: Text, ...using }
 </script>
 
-<tab-view class="flex flex-col w-full flex-grow {className}">
-	<tabs class="flex flex-row flex-shrink-0 w-full select-none cursor-pointer">
-		{#if title}
-			<p>{title}</p>
-		{/if}
-		<TabItems {items} {fields} {allowClose} bind:value on:close />
-		{#if allowAdd}
-			<TabItem label="+" on:click={addTab} />
-		{/if}
-	</tabs>
-	<content class="flex flex-col flex-grow"><slot /></content>
-</tab-view>
+<tabs
+	class="flex w-full {className}"
+	tabindex="0"
+	role="listbox"
+	use:navigator={{
+		items,
+		fields,
+		vertical: false,
+		indices: cursor
+	}}
+	on:move={handleNav}
+	on:select={handleNav}
+>
+	{#each items as item, index}
+		{@const component = item[fields.component]
+			? using[item[fields.component]] || using.default
+			: using.default}
+
+		<item class="flex" class:is-selected={item === value} data-path={index}>
+			<svelte:component this={component} content={item} {fields} />
+		</item>
+	{/each}
+</tabs>

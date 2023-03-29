@@ -133,7 +133,7 @@
 }
 
 .markdown-body a {
-	color: #0366d6;
+	@apply text-primary hover:text-secondary visited:text-secondary-600;
 	text-decoration: none;
 }
 

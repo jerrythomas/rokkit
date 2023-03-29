@@ -16,6 +16,16 @@ export let menu = [
 				text: 'Tree',
 				url: '/guide/tree',
 				icon: 'i-component:tree'
+			},
+			{
+				text: 'Tabs',
+				url: '/guide/tabs',
+				icon: 'i-component:tabs'
+			},
+			{
+				text: 'NavContent',
+				url: '/labs/nav-content',
+				icon: 'i-component:tabs'
 			}
 		]
 	},

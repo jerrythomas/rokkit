@@ -4,12 +4,23 @@ tab-view {
 tab-view content {
 	@apply rounded-b-md;
 }
+tabs {
+	@apply border-b-2 border-skin-300 rounded-t px-1 gap-1;
+}
+tabs:focus-within {
+	@apply outline-none border-secondary;
+}
+tabs item {
+	@apply py-2 px-4 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-100 gap-3;
+}
 tab-view tabs {
 	@apply box-border space-evenly rounded-t-md;
 	@apply bg-skin-300 text-skin-900;
 }
+
+
 tab-view tabs tab {
-	@apply py-2 px-4 flex-shrink-0 justify-center;
+	@apply py-2 px-4 flex-shrink-0 justify-center cursor-pointer;
 	@apply box-border border-b-3 border-transparent;
 }
 tab-view tabs tab.active {

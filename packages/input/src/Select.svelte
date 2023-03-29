@@ -30,17 +30,23 @@
 		dispatch('select', value)
 	}
 	function handleNext() {
-		if (!open) open = true
-		if (activeIndex < items.length - 1) activeIndex = activeIndex + 1
+		if (!open) {
+			open = true
+		} else if (activeIndex < items.length - 1) {
+			value = items[activeIndex + 1]
+		}
 	}
 	function handlePrevious() {
-		if (!open) open = true
-		if (activeIndex > 0) activeIndex = activeIndex - 1
+		if (!open) {
+			open = true
+		} else if (activeIndex > 0) {
+			value = items[activeIndex - 1]
+		}
 	}
 	function handleKeySelect() {
 		if (open) {
-			if (activeIndex > -1) {
-				value = items[activeIndex]
+			if (value) {
+				// value = items[activeIndex]
 				handleSelect()
 			}
 		}
@@ -48,6 +54,7 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Text, ...using }
+	$: activeIndex = items.findIndex((item) => item === value)
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -90,7 +97,6 @@
 				bind:value
 				on:select={handleSelect}
 				tabindex="-1"
-				bind:activeIndex
 			/>
 		</Slider>
 	{/if}

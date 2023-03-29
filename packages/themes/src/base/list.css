@@ -44,7 +44,8 @@ accordion .is-expanded summary{
 }
 
 accordion .is-selected summary {
-	@apply border-b-secondary-500;
+	@apply border-b-secondary-500 border-b text-secondary-600;
+	@apply hover:text-primary-600;
 }
 
 accordion .is-expanded list {

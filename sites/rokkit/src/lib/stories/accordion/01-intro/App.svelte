@@ -1,23 +1,7 @@
 <script>
 	import { Accordion } from '@rokkit/core'
-	let items = [
-		{
-			text: 'Fruits',
-			data: ['Apple', 'Orange', 'Bananna', 'Avocado']
-		},
-		{
-			text: 'Vegetables',
-			data: ['Carrot', 'Tomato', 'Lettuce']
-		},
-		{
-			text: 'Nuts',
-			data: ['Almonds', 'Walnuts', 'Pistachios']
-		},
-		{
-			text: 'Spices',
-			data: ['Cinnamon', 'Cloves', 'Turmeric']
-		}
-	]
+	import { items } from './data'
+
 	let value
 </script>
 
