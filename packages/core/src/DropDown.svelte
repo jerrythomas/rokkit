@@ -6,6 +6,7 @@
 	import Icon from './Icon.svelte'
 	import Text from './items/Text.svelte'
 	import List from './List.svelte'
+	import Slider from './Slider.svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -62,10 +63,11 @@
 		{/if}
 	</button>
 	{#if open}
-		<div
+		<!-- <div
 			class="flex flex-col absolute z-10 h-fit w-full menu"
 			style:top="{offsetTop}px"
-		>
+		> -->
+		<Slider top={offsetTop}>
 			<List
 				{items}
 				{fields}
@@ -74,6 +76,7 @@
 				on:select={handleSelect}
 				tabindex="-1"
 			/>
-		</div>
+		</Slider>
+		<!-- </div> -->
 	{/if}
 </drop-down>

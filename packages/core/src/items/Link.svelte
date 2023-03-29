@@ -12,6 +12,7 @@
 	class="flex flex-row flex-grow gap-2 items-center content"
 	href={content[fields.url]}
 	{target}
+	tabindex="-1"
 >
 	<Text {content} {fields} />
 </a>

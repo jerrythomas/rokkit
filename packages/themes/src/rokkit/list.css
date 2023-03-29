@@ -6,6 +6,7 @@
 .rokkit tree{
 	@apply rounded;
 }
+
 .rokkit nested-list,
 .rokkit nested-list:focus-within {
 	@apply outline-none rounded;
@@ -14,3 +15,18 @@
 	@apply outline-none bg-gradient-to-r from-primary to-secondary px-2px py-2.5px box-border;
 }
 
+.rokkit accordion,
+.rokkit list {
+	@apply rounded;
+}
+
+.rokkit accordion:focus-within list,
+.rokkit drop-down:focus-within list,
+.rokkit input-select:focus-within list{
+	@apply outline-none ;
+}
+
+.rokkit accordion summary > a,
+.rokkit list item > a {
+	@apply outline-none;
+}

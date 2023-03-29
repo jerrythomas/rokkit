@@ -6,8 +6,18 @@
 
 	let value
 	let using = { default: Link }
-	let items = menu
+	let items
 
+	function filterMenu(menu, prefix) {
+		let result = menu
+			.map((x) => ({
+				...x,
+				data: x.data.filter((y) => y.url.startsWith('/' + prefix))
+			}))
+			.filter((x) => x.data.length > 0)
+		console.log('prefix', prefix, result)
+		return result
+	}
 	function setValueFromPath(url) {
 		let i = 0
 		while (i < items.length) {
@@ -21,7 +31,8 @@
 			i += 1
 		}
 	}
-
+	$: prefix = $page.url.pathname.split('/')[1]
+	$: items = filterMenu(menu, prefix)
 	$: setValueFromPath($page.url)
 </script>
 

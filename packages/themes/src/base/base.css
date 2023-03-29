@@ -1,3 +1,6 @@
+* {
+	@apply focus:outline focus:outline-secondary focus:outline-2;
+}
 body {
 	@apply flex flex-col w-screen overflow-hidden;
 	height: min(100vh, var(--viewport-height));
@@ -5,6 +8,7 @@ body {
 
 a {
 	@apply text-primary hover:text-secondary visited:text-secondary-600;
+	@apply focus:outline-1;
 }
 
 code,
@@ -110,5 +114,5 @@ pre[class*='language-'],
 	@apply px-4 py-2;
 }
 theme-mode {
-	@apply rounded-full bg-skin-100 text-skin-900 p-1 outline-secondary;
+	@apply rounded-full bg-skin-100 text-skin-900 p-1;
 }
