@@ -1,6 +1,6 @@
 .minimal button {
 	@apply rounded leading-loose w-full select-none;
-	@apply bg-skin-300 border border-skin-300 outline-primary-400;
+	@apply bg-skin-300 border border-skin-300;
 }
 .minimal button icon-left,
 .minimal button icon-right {
@@ -34,4 +34,11 @@
 }
 .minimal button-group button:last-child {
 	@apply rounded-r-sm;
+}
+.minimal drop-down > button,
+.minimal input-select > button  {
+	@apply px-2;
+}
+.minimal drop-down:focus-within > button {
+	@apply focus:outline-none bg-secondary-400 text-skin-800 px-2;
 }

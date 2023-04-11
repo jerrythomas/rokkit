@@ -135,6 +135,13 @@ export function movePrevious(path) {
 	return path
 }
 
+/**
+ *
+ * @param {Array<integer>} indices
+ * @param {Array<*>} items
+ * @param {import('../constants').FieldMapping} fields
+ * @returns
+ */
 export function pathFromIndices(indices, items, fields) {
 	let path = []
 	let fragment
@@ -171,19 +178,3 @@ export function findItem(items, indices, fields) {
 	}
 	return item
 }
-
-// export function getNodeFromIndices(indices, items, fields) {
-// 	let fragment
-// 	indices.map((index, level) => {
-// 		if (level === 0) {
-// 			fragment = { index, items, fields }
-// 		} else {
-// 			fragment = {
-// 				index,
-// 				items: fragment.items[fragment.index][fragment.fields.children],
-// 				fields: fragment.fields.fields ?? fragment.fields
-// 			}
-// 		}
-// 	})
-// 	return indices.length === 0 ? null : fragment.items[fragment.index]
-// }

@@ -11,7 +11,7 @@ button-group button.active {
 }
 
 button, .button {
-	@apply flex min-h-12 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
+	@apply flex min-h-10 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
 }
 
 button.is-primary,

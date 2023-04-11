@@ -44,7 +44,7 @@
 	<field class="flex flex-row w-full items-center">
 		{#if icon}
 			<span
-				class="flex flex-shrink-0 aspect-square items-center justify-center "
+				class="flex flex-shrink-0 aspect-square items-center justify-center"
 			>
 				<icon class={icon} />
 			</span>

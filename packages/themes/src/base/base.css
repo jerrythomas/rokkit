@@ -1,6 +1,11 @@
 * {
-	@apply focus:outline focus:outline-secondary focus:outline-2;
+	@apply focus:outline focus:outline-secondary focus:outline-2 focus:outline-offset-2;
 }
+
+*[tabindex="-1"] {
+	@apply outline-none focus:outline-none;
+}
+
 body {
 	@apply flex flex-col w-screen overflow-hidden;
 	height: min(100vh, var(--viewport-height));
@@ -8,7 +13,7 @@ body {
 
 a {
 	@apply text-primary hover:text-secondary visited:text-secondary-600;
-	@apply focus:outline-1;
+	/* @apply focus:outline-none; */
 }
 
 code,

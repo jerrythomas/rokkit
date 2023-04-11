@@ -13,7 +13,9 @@
 	>
 		{name}
 	</h1>
-	<GraphPaper class={skin}>
+	<div class="p-8 bg-skin-muted">
+		<!-- <GraphPaper class={skin}> -->
 		<svelte:component this={$story.current.preview} />
-	</GraphPaper>
+		<!-- </GraphPaper> -->
+	</div>
 </section>

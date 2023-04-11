@@ -4,5 +4,5 @@
 	let value
 </script>
 
-<InputField bind:value placeholder="value" label="Enter a value" />
+<InputField bind:value label="Enter a value" />
 <p>Selected Value: <b>{value}</b></p>

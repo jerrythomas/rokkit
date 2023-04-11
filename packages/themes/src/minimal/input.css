@@ -19,11 +19,11 @@
 	@apply w-full m-0 p-0;
 }
 .minimal input-field input {
-	@apply border;
+	@apply bg-transparent;
 }
 .minimal input-field field {
-	@apply box-border border h-10 rounded overflow-hidden;
-	@apply focus-within:border-primary-400 focus-within:border-2;
+	@apply box-border border-b h-10 overflow-hidden;
+	@apply focus-within:border-b-secondary-400 focus-within:border-b-2;
 }
 .minimal input-field span {
 	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
@@ -31,7 +31,7 @@
 .minimal input-field input,
 .minimal input-field textarea,
 .minimal input-field select {
-	@apply flex-grow border-0 outline-none;
+	@apply flex-grow border-0 focus:outline-none;
 }
 
 .minimal input-field label {
