@@ -1,0 +1,27 @@
+@import '../base/list.css';
+
+.material accordion,
+.material list {
+	@apply rounded;
+}
+.material item.is-hovering {
+	@apply bg-primary-500;
+}
+
+.material item.is-selected,
+.material node.is-selected {
+	@apply border-l-4 border-l-primary-500;
+}
+
+.material tabs item.is-selected{
+  @apply border-0 border-t-3 border-t-secondary-500;
+}
+
+.material accordion .is-expanded summary{
+	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
+}
+
+.material accordion .is-selected summary {
+	@apply border-b-primary-500 border-b text-primary-600;
+	@apply hover:text-primary-600;
+}

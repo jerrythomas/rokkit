@@ -1,7 +1,7 @@
 @import './base/base.css';
 @import './base/list.css';
 @import './base/tabs.css';
-@import './base/dropdown.css';
+/* @import './base/dropdown.css'; */
 @import './base/states.css';
 @import './base/calendar.css';
 
@@ -9,6 +9,7 @@
 @import './minimal/list.css';
 @import './minimal/form.css';
 @import './minimal/tabs.css';
+@import './base/outline.css';
 /* .flex-square {
  	@apply flex flex-col aspect-square items-center justify-center;
  }

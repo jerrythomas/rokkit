@@ -15,7 +15,7 @@
 				data: x.data.filter((y) => y.url.startsWith('/' + prefix))
 			}))
 			.filter((x) => x.data.length > 0)
-		console.log('prefix', prefix, result)
+		// console.log('prefix', prefix, result)
 		return result
 	}
 	function setValueFromPath(url) {

@@ -7,6 +7,8 @@
 @import '@rokkit/themes/markdown.css';
 @import '@rokkit/themes/palette.css';
 @import '@rokkit/themes/prism.css';
+@import '@rokkit/themes/minimal.css';
+@import '@rokkit/themes/material.css';
 @import '@rokkit/themes/rokkit.css';
 @import './styles/skins.css';
 @import './styles/layout.css';

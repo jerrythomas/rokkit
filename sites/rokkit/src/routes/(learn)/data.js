@@ -23,6 +23,11 @@ export let menu = [
 				icon: 'i-component:tabs'
 			},
 			{
+				text: 'DropDown',
+				url: '/labs/drop-down',
+				icon: 'i-component:select'
+			},
+			{
 				text: 'NavContent',
 				url: '/labs/nav-content',
 				icon: 'i-component:tabs'

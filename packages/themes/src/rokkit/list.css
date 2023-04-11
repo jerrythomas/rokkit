@@ -23,10 +23,41 @@
 .rokkit accordion:focus-within list,
 .rokkit drop-down:focus-within list,
 .rokkit input-select:focus-within list{
-	@apply outline-none ;
+	@apply outline-none focus:outline-none;
 }
 
-.rokkit accordion summary > a,
-.rokkit list item > a {
-	@apply outline-none;
+
+
+/* .rokkit item.is-active {
+	@apply border-l-4 border-l-secondary-500;
+} */
+.rokkit item.is-hovering,
+.rokkit item:hover {
+	@apply bg-skin-50 text-skin-700;
+}
+
+.rokkit item.is-hovering icon,
+.rokkit item:hover icon {
+	@apply text-secondary-800;
+}
+.rokkit item.is-selected > a {
+	@apply text-skin-50;
+}
+
+.rokkit item.is-selected,
+.rokkit node.is-selected {
+	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
+}
+.rokkit item.is-selected icon {
+	@apply text-primary-50;
+}
+
+.rokkit accordion .is-expanded summary{
+	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
+}
+
+.rokkit accordion .is-selected summary {
+	@apply border-b-secondary-500 border-b text-secondary-600;
+	@apply hover:text-primary-600;
 }

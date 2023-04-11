@@ -11,7 +11,7 @@ list {
 
 list > item,
 accordion div summary {
-	@apply leading-10 px-4 bg-skin-100 text-skin-800 min-h-12;
+	@apply leading-10 px-4 bg-skin-100 text-skin-800 min-h-10;
 }
 accordion > div > summary {
 	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300;
@@ -39,15 +39,6 @@ accordion list {
 	@apply rounded-b;
 }
 
-accordion .is-expanded summary{
-	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
-}
-
-accordion .is-selected summary {
-	@apply border-b-secondary-500 border-b text-secondary-600;
-	@apply hover:text-primary-600;
-}
-
 accordion .is-expanded list {
 	@apply -mt-10 pt-10 rounded-t;
 }
@@ -55,34 +46,8 @@ accordion .is-expanded list {
 .zebra item {
 	@apply even:bg-skin-zebra hover:bg-skin-50;
 }
-item.is-active {
-	@apply border-l-4 border-l-secondary-500;
-}
-item.is-selected,
-node.is-selected {
-	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
-	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
-}
-item.is-selected icon {
-	@apply text-primary-50;
-}
-summary > a,
-item > a {
-	@apply text-skin-800 visited:text-skin-800 underline-none;
-}
-item.is-selected > a {
-	@apply text-skin-50;
-}
 
-item.is-hovering,
-item:hover {
-	@apply bg-skin-50 text-skin-700;
-}
 
-item.is-hovering icon,
-item:hover icon {
-	@apply text-secondary-800;
-}
 
 nested-list {
 	@apply bg-skin-200 text-skin-800;
@@ -91,3 +56,7 @@ nested-list node {
 	@apply pl-2;
 }
 
+/* .rokkit accordion summary > a,
+.rokkit list item > a {
+	@apply outline-none;
+} */

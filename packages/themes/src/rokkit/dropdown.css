@@ -10,7 +10,7 @@
 
 .rokkit input-select > button,
 .rokkit drop-down > button {
-	@apply w-full h-12 pl-4 pr-0 gap-4 items-center bg-skin-100 normal-case outline-none;
+	@apply w-full h-10 pl-4 pr-0 gap-4 items-center bg-skin-100 normal-case outline-none;
 	@apply rounded border border-skin-300 text-skin-800;
 	@apply hover:bg-skin-300 hover:border-skin-500;
 }
@@ -26,11 +26,11 @@
 	@apply mt-1 shadow-lg;
 }
 
-.rokkit input-select,
+/* .rokkit input-select,
 .rokkit drop-down {
 	@apply rounded focus:outline focus:outline-secondary focus:outline-2;
-}
-.rokkit input-select:focus-within,
+} */
+/* .rokkit input-select:focus-within,
 .rokkit drop-down:focus-within {
 	@apply outline outline-secondary outline-2;
-}
+} */
