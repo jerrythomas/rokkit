@@ -1,5 +1,11 @@
 # @rokkit/utils
 
+## 1.0.0-next.14
+
+### Patch Changes
+
+- Chore: release v1.0.0-next.14
+
 ## 1.0.0-next.13
 
 ### Patch Changes
