@@ -19,12 +19,6 @@ body {
 body > app {
 	@apply flex flex-col min-h-full min-w-full h-full w-full relative overflow-hidden;
 }
-/* handle the bottom searchbar on safari */
-/* @media (max-height: 928px) and (max-width: 428px) {
-	body > div {
-		padding-bottom: 32px;
-	}
-} */
 
 notes > *:first-child {
 	@apply mt-0;
