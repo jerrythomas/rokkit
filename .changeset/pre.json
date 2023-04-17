@@ -2,18 +2,19 @@
   "mode": "exit",
   "tag": "next",
   "initialVersions": {
-    "@rokkit/chart": "1.0.0-next.14",
-    "@rokkit/core": "1.0.0-next.14",
-    "@rokkit/form": "1.0.0-next.14",
-    "@rokkit/icons": "1.0.0-next.14",
-    "@rokkit/input": "1.0.0-next.14",
-    "@rokkit/layout": "1.0.0-next.14",
-    "@rokkit/markdown": "1.0.0-next.14",
-    "@rokkit/themes": "1.0.0-next.14",
-    "@rokkit/utils": "1.0.0-next.14"
+    "@rokkit/chart": "1.0.0-next.15",
+    "@rokkit/core": "1.0.0-next.15",
+    "@rokkit/form": "1.0.0-next.15",
+    "@rokkit/icons": "1.0.0-next.15",
+    "@rokkit/input": "1.0.0-next.15",
+    "@rokkit/layout": "1.0.0-next.15",
+    "@rokkit/markdown": "1.0.0-next.15",
+    "@rokkit/themes": "1.0.0-next.15",
+    "@rokkit/utils": "1.0.0-next.15"
   },
   "changesets": [
     "brave-toes-stare",
+    "empty-toes-whisper",
     "fast-wombats-clean",
     "green-cars-accept",
     "lemon-pears-drum",
