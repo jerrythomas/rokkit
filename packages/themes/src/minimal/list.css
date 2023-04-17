@@ -53,6 +53,10 @@
 	@apply text-secondary-600;
 	/* @apply hover:text-secondary-500; */
 }
+
+.minimal node {
+	@apply gap-2 h-7;
+}
 .minimal node.is-selected p,
 .minimal node.is-selected icon {
 	@apply text-secondary-600;
