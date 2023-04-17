@@ -6,13 +6,13 @@ import presetTypography from '@unocss/preset-typography'
 import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
-// import { components } from './src/lib'
 
-// console.log(iconShortcuts(defaultIcons, 'i-spice'))
+const components = ['list', 'accordion', 'select', 'tree', 'tabs', 'input-text']
+
 export default defineConfig({
 	safelist: [
 		...defaultIcons,
-		// ...components.map(({ icon }) => icon),
+		...components.map(({ icon }) => `i-component:${icon}`),
 		'i-spice:github',
 		'i-spice:menu',
 		'i-states:accordion-closed',

@@ -1,5 +1,3 @@
-@import '../base/list.css';
-
 .material accordion,
 .material list {
 	@apply rounded;

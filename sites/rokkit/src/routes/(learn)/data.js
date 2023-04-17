@@ -43,9 +43,14 @@ export let menu = [
 				icon: 'i-component:select'
 			},
 			{
+				text: 'MultiSelect',
+				url: '/guide/multi-select',
+				icon: 'i-component:select'
+			},
+			{
 				text: 'InputField',
 				url: '/guide/input-field',
-				icon: 'i-component:input-field'
+				icon: 'i-component:input-text'
 			}
 		]
 	}

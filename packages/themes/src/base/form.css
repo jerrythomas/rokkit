@@ -1,3 +1,5 @@
+@import 'animation.css';
+
 button-group {
 	@apply flex w-full items-center justify-center m-auto h-14 gap-1 text-lg bg-skin-100;
 }
@@ -12,6 +14,7 @@ button-group button.active {
 
 button, .button {
 	@apply flex min-h-10 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
+	animation: button-pop var(--animation-btn,.25s) ease-out;
 }
 
 button.is-primary,

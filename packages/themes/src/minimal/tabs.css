@@ -1,17 +1,29 @@
-tab-view tabs {
-	@apply box-border px-4 gap-2;
+.minimal tabs:focus {
+	@apply outline-none;
 }
-tab-view tabs > p {
+.minimal tabs {
+	@apply box-border px-2 gap-2 border-b-2 border-b-skin-200 cursor-pointer select-none;
+}
+.minimal  tabs > p {
 	@apply pr-4;
 }
-tab-view tabs tab {
-	@apply px-4 h-14 flex rounded-t-md relative;
+.minimal tabs item {
+	@apply flex rounded-t-md relative gap-2 items-center;
+}
+.minimal tabs item >img {
+	@apply w-5 h-5;
 }
 
-tab-view tabs p {
-	@apply flex-grow text-center;
+.minimal tabs item.is-selected{
+  @apply -mb-2px border-b-2 border-b-secondary-600;
 }
 
-tab-view content {
-	@apply border border-skin-300 rounded px-4 py-3;
+.minimal tabs item {
+	@apply leading-8 text-base px-2;
+}
+.minimal .small tabs item {
+	@apply text-sm leading-8 px-2;
+}
+.minimal .small tabs item >img {
+	@apply w-5 h-5;
 }

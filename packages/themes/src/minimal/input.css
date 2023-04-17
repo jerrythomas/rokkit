@@ -22,8 +22,8 @@
 	@apply bg-transparent;
 }
 .minimal input-field field {
-	@apply box-border border-b h-10 overflow-hidden;
-	@apply focus-within:border-b-secondary-400 focus-within:border-b-2;
+	@apply box-border border-b-2 border-skin-300 h-8 overflow-hidden;
+	@apply focus-within:border-b-secondary-600 ;
 }
 .minimal input-field span {
 	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
@@ -35,7 +35,7 @@
 }
 
 .minimal input-field label {
-	@apply leading-loose w-full;
+	@apply leading-6 w-full uppercase text-sm text-skin-600;
 }
 .minimal input-field message {
 	@apply px-2 py-1 bg-skin-100 rounded;

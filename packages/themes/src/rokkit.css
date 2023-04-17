@@ -1,6 +1,6 @@
-@import './base/base.css';
+@import './rokkit/base.css';
 
-@import './base/tabs.css';
+
 @import './base/states.css';
 @import './base/calendar.css';
 @import './base/form.css';
@@ -8,5 +8,5 @@
 @import './rokkit/input.css';
 @import './rokkit/dropdown.css';
 @import './rokkit/list.css';
-
+@import './rokkit/tabs.css';
 @import './base/outline.css';
