@@ -12,7 +12,7 @@ const components = ['list', 'accordion', 'select', 'tree', 'tabs', 'input-text']
 export default defineConfig({
 	safelist: [
 		...defaultIcons,
-		...components.map(({ icon }) => `i-component:${icon}`),
+		...components.map((icon) => `i-component:${icon}`),
 		'i-spice:github',
 		'i-spice:menu',
 		'i-states:accordion-closed',

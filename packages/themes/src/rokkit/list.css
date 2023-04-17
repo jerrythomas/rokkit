@@ -56,12 +56,9 @@
 	@apply bg-skin-200 text-skin-800;
 }
 .rokkit nested-list node {
-	@apply pl-2;
+	@apply pl-2 gap-2 h-8;
 }
 
-.rokkit node {
-	@apply min-h-10;
-}
 .rokkit tree{
 	@apply rounded;
 }
