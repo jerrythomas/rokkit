@@ -6,8 +6,8 @@
 
 	export let themes = [
 		{ title: 'Rokkit', name: 'rokkit' },
-		{ title: 'Material', name: 'material' },
-		{ title: 'Minimal', name: 'minimal' }
+		{ title: 'Minimal', name: 'minimal' },
+		{ title: 'Material', name: 'material' }
 	]
 	// export let pallettes
 
