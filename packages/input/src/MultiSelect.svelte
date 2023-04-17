@@ -1,6 +1,7 @@
 <script>
 	import Select from './Select.svelte'
-	import { Pill } from '@rokkit/core'
+	import { Pill, Text } from '@rokkit/core'
+	import { defaultFields } from '@rokkit/core'
 
 	let className = ''
 	export { className as class }
@@ -8,30 +9,42 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
+	export let placeholder = ''
 
-	let available = items
+	$: available = items.filter((item) => !value.includes(item))
 
 	function handleRemove(event) {
-		value = [...value.filter((item) => item == event.detail)]
-		available = [...available, event.detail]
+		value = [...value.filter((item) => item != event.detail)]
 	}
 	function handleSelect(event) {
 		value = [...value, event.detail]
-		available = [...available.filter((item) => item == event.detail)]
 	}
+	$: using = { default: Text, ...using }
+	$: fields = { ...defaultFields, ...fields }
 </script>
 
 <Select
-	options={available}
+	items={available}
 	{fields}
 	{using}
 	searchable
 	on:select={handleSelect}
 	class={className}
+	{placeholder}
 >
-	<items class="flex flex-wrap">
-		{#each value as item}
-			<Pill {item} {fields} remove on:remove={handleRemove} />
-		{/each}
-	</items>
+	{#if value.length > 0}
+		<items class="flex flex-wrap">
+			{#each value as item}
+				<Pill
+					value={item}
+					{fields}
+					{using}
+					removable
+					on:remove={handleRemove}
+				/>
+			{/each}
+		</items>
+	{:else}
+		<svelte:component this={using.default} content={placeholder} />
+	{/if}
 </Select>

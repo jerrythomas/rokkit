@@ -7,8 +7,10 @@
 .rokkit button[role='switch'] mark {
 	@apply bg-primary;
 }
-
-.rokkit input-select > button,
+.rokkit input-select:focus-within {
+	@apply outline-none;
+}
+.rokkit input-select > selected-item,
 .rokkit drop-down > button {
 	@apply w-full h-10 pl-4 pr-0 gap-4 items-center bg-skin-100 normal-case outline-none;
 	@apply rounded border border-skin-300 text-skin-800;
@@ -25,7 +27,22 @@
 .rokkit input-select scroll {
 	@apply mt-1 shadow-lg;
 }
+.rokkit input-select > selected-item > items {
+	@apply flex-grow flex-wrap gap-2;
+}
+.rokkit pill {
+	@apply gap-2 rounded-full bg-skin-400 px-2;
+}
+.rokkit pill > item {
+	@apply gap-2 leading-6;
+}
+.rokkit pill > item > img {
+	@apply w-4 h-4;
+}
 
+.rokkit pill > icon {
+	@apply text-sm;
+}
 /* .rokkit input-select,
 .rokkit drop-down {
 	@apply rounded focus:outline focus:outline-secondary focus:outline-2;

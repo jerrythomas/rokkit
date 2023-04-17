@@ -32,7 +32,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <node
 	id={'id-' + path.join('-')}
-	class="flex flex-row h-8 gap-2 leading-loose items-center cursor-pointer select-none"
+	class="flex flex-row min-h-5 items-center cursor-pointer select-none"
 	class:is-selected={selected}
 	aria-selected={selected}
 	role="option"

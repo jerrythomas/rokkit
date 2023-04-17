@@ -1,5 +1,5 @@
 .minimal button {
-	@apply rounded leading-loose w-full select-none;
+	@apply rounded leading-loose select-none;
 	@apply bg-skin-300 border border-skin-300;
 }
 .minimal button icon-left,
@@ -35,10 +35,37 @@
 .minimal button-group button:last-child {
 	@apply rounded-r-sm;
 }
-.minimal drop-down > button,
-.minimal input-select > button  {
-	@apply px-2;
+
+.minimal input-select {
+	@apply focus:outline-none;
 }
-.minimal drop-down:focus-within > button {
-	@apply focus:outline-none bg-secondary-400 text-skin-800 px-2;
+.minimal input-select > selected-item {
+	@apply leading-8 gap-4 items-center pl-2 min-h-8;
+	@apply border-b-2 border-b-skin-200;
+	@apply focus:border-b-secondary-600;
+}
+.minimal input-select:focus > selected-item {
+	@apply border-b-secondary-600 text-secondary-600;
+}
+.minimal input-select:focus square-icon {
+	@apply text-secondary-600;
+}
+.minimal input-select > selected-item > items {
+	@apply flex-grow flex-wrap gap-2;
+}
+.minimal pill {
+	@apply gap-2 rounded-full border border-skin-400 px-2;
+}
+.minimal pill > item {
+	@apply gap-2 leading-6;
+}
+.minimal pill > item > img {
+	@apply w-4 h-4;
+}
+
+.minimal pill > icon {
+	@apply text-sm;
+}
+.minimal input-select scroll {
+	@apply mt-1 shadow-lg;
 }

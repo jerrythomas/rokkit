@@ -1,19 +1,33 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultStateIcons } from '../constants'
-
+	import { defaultFields, defaultStateIcons } from '../constants'
+	import Text from './Text.svelte'
 	const dispatch = createEventDispatcher()
 
-	export let item
-	export let fields
+	export let value
+	export let fields = defaultFields
+	export let using = { default: Text }
+	export let removable = false
 
 	function handleClick() {
-		dispatch('remove', item)
+		dispatch('remove', value)
 	}
+	$: component =
+		typeof value == 'object'
+			? using[value[fields.component] ?? 'default']
+			: using.default
+	$: console.log(value, component)
 </script>
 
 <pill class="flex flex-row items-center">
-	{item[fields.text]}
+	<item class="flex flex-row items-center">
+		<svelte:component this={component} content={value} {fields} />
+	</item>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<icon class={defaultStateIcons.item.remove} on:click={handleClick} />
+	{#if removable}
+		<icon
+			class="{defaultStateIcons.action.remove} cursor-pointer"
+			on:click={handleClick}
+		/>
+	{/if}
 </pill>

@@ -1,77 +1,82 @@
-@import '../base/list.css';
-/* .minimal accordion {
-	@apply text-md h-full text-skin-800 gap-2;
+.minimal accordion {
+	@apply flex-grow overflow-y-scroll focus-within:outline-none;
 }
-.minimal accordion group {
-	@apply rounded shadow;
+.minimal accordion > div,
+.minimal accordion > details {
+	@apply relative;
 }
-.minimal accordion ul {
-	@apply p-t-1px gap-1px bg-skin-200;
+.minimal list,
+.minimal accordion summary {
+	@apply border-l-2px border-l-skin-300 ;
 }
-.minimal accordion .item,
-.minimal accordion collapsible {
-	@apply leading-12 px-4 bg-skin-50;
+.minimal :not(accordion > div) list:focus-within {
+	@apply outline-1 outline-offset-3 outline-dashed;
 }
-.minimal accordion collapsible {
-	@apply rounded;
-}
-.minimal accordion collapsible.expanded {
-	@apply rounded-b-none;
-}
-.minimal accordion .item {
-	@apply last:rounded-b;
-}
-.minimal accordion .item icon {
-	@apply text-secondary;
+.minimal list > item,
+.minimal accordion summary {
+	@apply px-2 text-skin-700 bg-skin-50 items-center leading-8;
 }
 
-.minimal accordion collapsible {
-	@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
-}
-.minimal accordion .item.active {
-	@apply item-selected;
+
+.minimal item > a {
+	@apply px-0 gap-2 ;
 }
 
-.minimal list .item {
-	@apply px-3 border-b border-skin-100 py-1 last:border-0;
+.minimal list item:hover {
+	@apply -m-l-2px border-l-2px border-l-skin-200;
 }
-.minimal list .item:hover {
-	@apply item-hover;
+.minimal accordion summary:hover {
+	@apply border-l-skin-200;
 }
-.minimal list .item.active {
-	@apply bg-skin-100 text-secondary-900;
+.minimal list item.is-selected {
+	@apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600;
 }
-
-.minimal label list {
-	@apply border border-skin-300  rounded-md bg-skin-base overflow-hidden;
-}
-
-.minimal input-select slide {
-	@apply shadow-lg rounded-b h-33 top-8;
-}
-
-.minimal spin-list {
-	@apply border h-10;
-} */
-
-.minimal accordion,
-.minimal list {
-	@apply rounded;
-}
-.minimal item.is-selected,
-.minimal node.is-selected {
-	@apply border-l-4 border-l-secondary-500;
-}
-
-.minimal tabs item.is-selected{
-  @apply border-0 border-t-3 border-t-secondary-500;
+.minimal accordion .is-selected summary {
+	@apply border-l-2px border-l-secondary-600;
 }
 
 .minimal accordion .is-expanded summary{
-	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
+	@apply sticky top-0 z-1;
+}
+.minimal accordion item > a {
+	@apply px-0;
+}
+.minimal item > img,
+.minimal item > a > img {
+	@apply w-6 h-6;
 }
 
-.minimal accordion .is-selected summary {
-	@apply border-b-secondary-500 border-b text-secondary-600;
+.minimal accordion .is-selected summary,
+.minimal accordion .is-selected summary > a,
+.minimal accordion item.is-selected,
+.minimal accordion item.is-selected > a {
+	@apply text-secondary-600;
+	/* @apply hover:text-secondary-500; */
+}
+.minimal node.is-selected p,
+.minimal node.is-selected icon {
+	@apply text-secondary-600;
 	@apply hover:text-secondary-600;
+}
+
+.minimal .small list > item,
+.minimal .small accordion summary{
+	@apply text-sm;
+}
+
+.minimal .small node {
+	@apply text-sm gap-1 h-5;
+}
+.minimal .small node > span > icon {
+	@apply text-sm;
+}
+.minimal .small item > img,
+.minimal .small item > a > img {
+	@apply w-4 h-4;
+}
+.minimal .small item > a > icon {
+	@apply text-sm leading-6;
+}
+.minimal accordion.indented list > item {
+	@apply px-4;
 }

@@ -17,7 +17,7 @@
 	export let items = []
 	export let fields = {}
 	export let using = {}
-	export let value
+	export let value = null
 	export let placeholder = ''
 
 	let activeIndex
@@ -70,24 +70,25 @@
 	on:next={handleNext}
 	on:select={handleKeySelect}
 >
-	<slot />
-	<button
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<selected-item
 		on:click|stopPropagation={() => (open = !open)}
 		class="flex w-full"
 		bind:clientHeight={offsetTop}
-		tabindex="-1"
 	>
-		<svelte:component
-			this={using.default}
-			content={value ?? placeholder}
-			{fields}
-		/>
+		<slot>
+			<svelte:component
+				this={using.default}
+				content={value ?? placeholder}
+				{fields}
+			/>
+		</slot>
 		{#if open}
 			<Icon name={icons.opened} />
 		{:else}
 			<Icon name={icons.closed} />
 		{/if}
-	</button>
+	</selected-item>
 	{#if open}
 		<Slider top={offsetTop}>
 			<List

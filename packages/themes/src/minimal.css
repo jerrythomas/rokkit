@@ -1,7 +1,4 @@
 @import './base/base.css';
-@import './base/list.css';
-@import './base/tabs.css';
-/* @import './base/dropdown.css'; */
 @import './base/states.css';
 @import './base/calendar.css';
 
@@ -10,42 +7,3 @@
 @import './minimal/form.css';
 @import './minimal/tabs.css';
 @import './base/outline.css';
-/* .flex-square {
- 	@apply flex flex-col aspect-square items-center justify-center;
- }
- content > div > div > .list {
- 	@apply border gap-1 p-1 border-gray-400;
- }
- content > div > div > .list .item {
- 	@apply border border-gray-400 px-2;
- }
- accordion {
- 	collapsible {
- 		@apply px-4 py-2 border-b bg-skin-200 border-skin-300;
- 	}
- 	.list {
- 		.item {
- 			@apply px-4 py-2;
- 		}
- 	}
- }
- .list-edit:focus-within{
- 	@apply border-primary-100 ;
- }
- .list-edit {
- 	@apply border border-skin-200;
- 	.data {
-     @apply p-4 gap-2;
- 	}
- 	.selector {
- 		@apply border-r border-skin-200;
- 		.list {
- 			.item {
- 				@apply px-4 border-b border-skin-100;
- 			}
- 			.item:nth-child(even){
- 				@apply bg-skin-zebra;
- 			}
- 		}
- 	}
- } */

@@ -1,4 +1,63 @@
-@import '../base/list.css';
+.rokkit accordion {
+	@apply flex-grow gap-1 overflow-y-scroll;
+}
+.rokkit accordion > div {
+	@apply rounded shadow relative;
+}
+
+.rokkit list {
+	@apply gap-1px bg-skin-200;
+}
+
+.rokkit list > item,
+.rokkit accordion div summary {
+	@apply leading-10 px-4 bg-skin-100 text-skin-800 min-h-10;
+}
+.rokkit accordion > div > summary {
+	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300;
+}
+
+.rokkit accordion > div > summary::-webkit-details-marker {
+	display: none;
+}
+
+.rokkit list item icon {
+	@apply text-secondary;
+}
+
+.rokkit :not(accordion > div) > list {
+	@apply rounded shadow border border-skin-400 overflow-y-scroll;
+}
+.rokkit :not(accordion > div) > list item {
+	@apply last:rounded-b first:rounded-t;
+}
+
+.rokkit accordion list item {
+	@apply last:rounded-b gap-2;
+}
+.rokkit accordion list item > a {
+  @apply gap-2;
+}
+.rokkit accordion list {
+	@apply rounded-b;
+}
+
+.rokkit accordion .is-expanded list {
+	@apply -mt-10 pt-10 rounded-t;
+}
+
+.rokkit .zebra item {
+	@apply even:bg-skin-zebra hover:bg-skin-50;
+}
+
+
+
+.rokkit nested-list {
+	@apply bg-skin-200 text-skin-800;
+}
+.rokkit nested-list node {
+	@apply pl-2;
+}
 
 .rokkit node {
 	@apply min-h-10;
