@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 import { nest } from 'd3-collection'
 import { v4 as uuid } from '@lukeed/uuid'
 import { ascending } from 'd3-array'
@@ -161,7 +161,7 @@ export class List {
 		return this
 	}
 	current() {
-		return getSubscribedData(this.filtered)
+		return get(this.filtered)
 	}
 }
 
@@ -174,11 +174,11 @@ export function list(data) {
 	return new List(data)
 }
 
-function getSubscribedData(store) {
-	let result
-	let unsubscribe = store.subscribe((data) => {
-		result = data
-	})
-	unsubscribe()
-	return result
-}
+// function getSubscribedData(store) {
+// 	let result
+// 	let unsubscribe = store.subscribe((data) => {
+// 		result = data
+// 	})
+// 	unsubscribe()
+// 	return result
+// }

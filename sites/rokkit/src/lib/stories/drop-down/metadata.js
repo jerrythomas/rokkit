@@ -1,6 +1,7 @@
 export default {
-	category: 'Input',
-	name: 'Select',
+	category: 'Selection',
+	name: 'DropDown',
+	icon: 'drop-down',
 	description:
-		'Input component that allows users to choose one value from a list of options.'
+		'Component that allows users to choose one value from a list of options.'
 }

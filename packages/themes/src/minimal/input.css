@@ -23,7 +23,7 @@
 }
 .minimal input-field field {
 	@apply box-border border-b-2 border-skin-300 h-8 overflow-hidden;
-	@apply focus-within:border-b-secondary-600 ;
+	@apply focus-within:border-b-secondary-600;
 }
 .minimal input-field span {
 	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
@@ -46,16 +46,16 @@
 }
 
 .minimal input-range range-track {
-	@apply h-2 mt-2 relative;
+	@apply h-1 mt-3 relative;
 }
 .minimal input-range range-track span {
-	@apply bg-skin-200 border box-border border-skin-300 rounded-full;
+	@apply bg-skin-200 box-border border-skin-300 rounded-full;
 }
 .minimal input-range range-track selected {
-	@apply border -top-0px -bottom-0px border-primary-500 bg-primary-400 rounded-full;
+	@apply border -top-0px -bottom-0px border-secondary-500 bg-secondary-600 rounded-full;
 }
 .minimal input-range range-track thumb {
-	@apply rounded-sm;
+	@apply rounded-full;
 }
 
 .minimal input-range range-ticks {
@@ -87,14 +87,17 @@
 }
 
 .minimal thumb {
-	@apply bg-primary-300  shadow-xl border border-primary-400;
+	@apply -top-1.5 bg-secondary-500 shadow-xl border border-secondary-500;
 }
 .minimal thumb.sliding::before {
 	content: '';
-	@apply absolute left-0 top-0 right-0 bottom-0 bg-primary-500  opacity-30 rounded-sm;
+	@apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-400 opacity-30 rounded-full;
 	transform: scale(2, 2);
 }
 
+.minimal rating {
+	@apply text-secondary-600 gap-1 text-xl focus:outline-none;
+}
 /* .error,
 .fail {
 	input,

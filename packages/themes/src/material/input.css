@@ -27,7 +27,7 @@
 }
 
 .material input-select {
-	@apply rounded
+	@apply rounded;
 }
 .material input-select > selected-item {
 	@apply h-10 pl-4 pr-0 items-center bg-skin-100 normal-case;
