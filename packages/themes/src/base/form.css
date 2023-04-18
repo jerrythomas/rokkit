@@ -12,12 +12,17 @@ button-group button.active {
 	@apply text-secondary-500;
 }
 
-button, .button {
+button,
+.button {
 	@apply flex min-h-10 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
-	animation: button-pop var(--animation-btn,.25s) ease-out;
+	animation: button-pop var(--animation-btn, 0.25s) ease-out;
 }
 
 button.is-primary,
 .button.is-primary {
 	@apply bg-gradient-to-r from-primary to-secondary text-skin-200;
+}
+
+input-select {
+	@apply cursor-pointer select-none;
 }

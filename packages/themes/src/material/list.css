@@ -11,11 +11,11 @@
 	@apply border-l-4 border-l-primary-500;
 }
 
-.material tabs item.is-selected{
-  @apply border-0 border-t-3 border-t-secondary-500;
+.material tabs item.is-selected {
+	@apply border-0 border-t-3 border-t-secondary-500;
 }
 
-.material accordion .is-expanded summary{
+.material accordion .is-expanded summary {
 	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
 }
 

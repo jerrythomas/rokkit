@@ -15,7 +15,7 @@
 
 <button
 	role="switch"
-	class="w-16 h-8 flex flex-shrink-0 rounded-full relative"
+	class="flex rounded-full relative"
 	{tabindex}
 	aria-checked={value}
 	class:checked={value}
@@ -24,7 +24,7 @@
 	<span class="hidden">{label}</span>
 	<mark
 		aria-hidden="true"
-		class="h-6 w-6 rounded-full absolute top-1"
+		class="rounded-full absolute"
 		class:is-on={value}
 		class:is-off={!value}
 	/>

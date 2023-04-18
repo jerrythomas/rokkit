@@ -1,11 +1,11 @@
 @keyfroames button-pop {
 	0% {
-    transform: scale(var(--btn-focus-scale,.95));
+		transform: scale(var(--btn-focus-scale, 0.95));
 	}
 	40% {
-	  transform: scale(1.02);
+		transform: scale(1.02);
 	}
 	100% {
-	  transform: scale(1);
+		transform: scale(1);
 	}
 }
