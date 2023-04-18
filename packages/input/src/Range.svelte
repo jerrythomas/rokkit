@@ -1,12 +1,12 @@
 <script>
 	import RangeMinMax from './RangeMinMax.svelte'
 
-	export let min
-	export let max
+	export let min = 0
+	export let max = 100
 	export let value = min
-	export let step
-	export let tickStep
-	export let labelSkip
+	export let step = 0
+	export let tickStep = max - min
+	export let labelSkip = 0
 
 	let bounds = [min, value]
 

@@ -51,6 +51,21 @@ export let menu = [
 				text: 'InputField',
 				url: '/guide/input-field',
 				icon: 'i-component:input-text'
+			},
+			{
+				text: 'Rating',
+				url: '/guide/rating',
+				icon: 'i-component:rating'
+			},
+			{
+				text: 'Range',
+				url: '/guide/range',
+				icon: 'i-component:range'
+			},
+			{
+				text: 'Switch',
+				url: '/guide/switch',
+				icon: 'i-component:switch-button'
 			}
 		]
 	}

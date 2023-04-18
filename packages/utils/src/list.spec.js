@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { compare, quickSearch, list } from './list'
 import * as context from './fixtures/list-data'
-import { getSubscribedData } from 'validators'
 
 describe('List Data', () => {
 	it('Should create a list', () => {
@@ -14,7 +13,7 @@ describe('List Data', () => {
 		expect(l.groupKey).toBeFalsy()
 		expect(l.filterKey).toBeFalsy()
 		expect(l.filterUsing).toBeFalsy()
-		expect(getSubscribedData(l.filtered)).toBe(context.data)
+		expect(l.current()).toBe(context.data)
 	})
 
 	it('Should create a sorted list', () => {
@@ -28,7 +27,7 @@ describe('List Data', () => {
 		expect(l.groupKey).toBeFalsy()
 		expect(l.filterKey).toBeFalsy()
 		expect(l.filterUsing).toBeFalsy()
-		expect(getSubscribedData(l.filtered)).toEqual(context.sorted)
+		expect(l.current()).toEqual(context.sorted)
 	})
 
 	it('Should create a grouped list', () => {
@@ -42,7 +41,7 @@ describe('List Data', () => {
 		expect(l.groupKey).toBe('lookup_id')
 		expect(l.filterKey).toBeFalsy()
 		expect(l.filterUsing).toBeFalsy()
-		expect(getSubscribedData(l.filtered)).toEqual(context.grouped)
+		expect(l.current()).toEqual(context.grouped)
 	})
 	it('Should create a sorted and grouped list', () => {
 		let l = list([...context.data])
@@ -57,7 +56,7 @@ describe('List Data', () => {
 		expect(l.groupKey).toBe('lookup_id')
 		expect(l.filterKey).toBeFalsy()
 		expect(l.filterUsing).toBeFalsy()
-		expect(getSubscribedData(l.filtered)).toEqual(context.sortedAndGrouped)
+		expect(l.current()).toEqual(context.sortedAndGrouped)
 	})
 
 	it('Should create a searchable list', () => {
@@ -71,10 +70,10 @@ describe('List Data', () => {
 		expect(l.groupKey).toBeFalsy()
 		expect(l.filterKey).toBe('name')
 		expect(l.filterUsing).toBe(quickSearch)
-		expect(getSubscribedData(l.filtered)).toEqual(context.data)
+		expect(l.current()).toEqual(context.data)
 
 		l.search('Alpha')
-		expect(getSubscribedData(l.filtered)).toEqual(context.searchResult)
+		expect(l.current()).toEqual(context.searchResult)
 	})
 
 	it('Should create a searchable sorted list', () => {
@@ -90,10 +89,10 @@ describe('List Data', () => {
 		expect(l.groupKey).toBeFalsy()
 		expect(l.filterKey).toBe('name')
 		expect(l.filterUsing).toBe(quickSearch)
-		expect(getSubscribedData(l.filtered)).toEqual(context.sorted)
+		expect(l.current()).toEqual(context.sorted)
 
 		l.search('Alpha')
-		expect(getSubscribedData(l.filtered)).toEqual(context.searchResult)
+		expect(l.current()).toEqual(context.searchResult)
 	})
 
 	it('Should create a searchable grouped list', () => {
@@ -109,10 +108,10 @@ describe('List Data', () => {
 		expect(l.groupKey).toBe('lookup_id')
 		expect(l.filterKey).toBe('name')
 		expect(l.filterUsing).toBe(quickSearch)
-		expect(getSubscribedData(l.filtered)).toEqual(context.grouped)
+		expect(l.current()).toEqual(context.grouped)
 
 		l.search('Alpha')
-		expect(getSubscribedData(l.filtered)).toEqual(context.groupSearchResult)
+		expect(l.current()).toEqual(context.groupSearchResult)
 	})
 
 	it('Should create a searchable sorted & grouped list', () => {
@@ -129,10 +128,10 @@ describe('List Data', () => {
 		expect(l.groupKey, 'lookup_id')
 		expect(l.filterKey, 'name')
 		expect(l.filter, quickSearch)
-		expect(getSubscribedData(l.filtered)).toEqual(context.sortedAndGrouped)
+		expect(l.current()).toEqual(context.sortedAndGrouped)
 
 		l.search('Alpha')
-		expect(getSubscribedData(l.filtered)).toEqual(context.groupSearchResult)
+		expect(l.current()).toEqual(context.groupSearchResult)
 	})
 
 	it('Should add an item to list', () => {
@@ -142,7 +141,7 @@ describe('List Data', () => {
 		data.additions.map(({ item, result }) => {
 			l.add(item)
 			expect(l.data).toEqual(result.data.unsorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.data.unsorted,
 				'Should update store after add'
 			)
@@ -156,7 +155,7 @@ describe('List Data', () => {
 		data.additions.map(({ item, result }) => {
 			l.add(item)
 			expect(l.data).toEqual(result.data.sorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.data.sorted,
 				'Should update store after add'
 			)
@@ -170,7 +169,7 @@ describe('List Data', () => {
 		data.additions.map(({ item, result }) => {
 			l.add(item)
 			expect(l.data).toEqual(result.data.unsorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.grouped.unsorted,
 				'Should update store after add'
 			)
@@ -186,7 +185,7 @@ describe('List Data', () => {
 		data.additions.map(({ item, result }) => {
 			l.add(item)
 			expect(l.data).toEqual(result.data.sorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.grouped.sorted,
 				'Should update store after add'
 			)
@@ -200,7 +199,7 @@ describe('List Data', () => {
 		data.removals.map(({ item, result }) => {
 			l.remove(item)
 			expect(l.data).toEqual(result.data.unsorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.data.unsorted,
 				'Should update store after remove'
 			)
@@ -214,7 +213,7 @@ describe('List Data', () => {
 		data.removals.map(({ item, result }) => {
 			l.remove(item)
 			expect(l.data).toEqual(result.data.sorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.data.sorted,
 				'Should update store after remove'
 			)
@@ -228,7 +227,7 @@ describe('List Data', () => {
 		data.removals.map(({ item, result }) => {
 			l.remove(item)
 			expect(l.data).toEqual(result.data.unsorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.grouped.unsorted,
 				'Should update store after remove'
 			)
@@ -244,7 +243,7 @@ describe('List Data', () => {
 		data.removals.map(({ item, result }) => {
 			l.remove(item)
 			expect(l.data).toEqual(result.data.sorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.grouped.sorted,
 				'Should update store after remove'
 			)
@@ -259,7 +258,7 @@ describe('List Data', () => {
 			l.modify(item)
 
 			expect(l.data).toEqual(result.data.unsorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.data.unsorted,
 				'Should update store after modify'
 			)
@@ -273,7 +272,7 @@ describe('List Data', () => {
 		data.modifications.map(({ item, result }) => {
 			l.modify(item)
 			expect(l.data).toEqual(result.data.sorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.data.sorted,
 				'Should update store after modify'
 			)
@@ -287,7 +286,7 @@ describe('List Data', () => {
 		data.modifications.map(({ item, result }) => {
 			l.modify(item)
 			expect(l.data).toEqual(result.data.unsorted)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.grouped.unsorted,
 				'Should update store after modify'
 			)
@@ -303,7 +302,7 @@ describe('List Data', () => {
 		data.modifications.map(({ item, result }) => {
 			l.modify(item)
 			expect(l.data).toEqual(result.grouped.data)
-			expect(getSubscribedData(l.filtered)).toEqual(
+			expect(l.current()).toEqual(
 				result.grouped.sorted,
 				'Should update store after modify'
 			)

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { get } from 'svelte/store'
+
 import {
 	getAttributes,
 	fetchImports,
@@ -9,7 +9,8 @@ import {
 	extractStories,
 	fileSorter,
 	extractCategories,
-	createStories
+	createStories,
+	extractNestedItems
 } from './metamodel'
 
 describe('metamodel', () => {
@@ -20,14 +21,14 @@ describe('metamodel', () => {
 			}),
 		'./stories/foo/01/App.svelte': () =>
 			Promise.resolve({ default: 'The Foo Component' }),
-		'./stories/foo/01/guide.svx': () =>
+		'./stories/foo/01/README.md': () =>
 			Promise.resolve({
 				default: 'Notes for Foo Component',
 				metadata: { title: 'Page 01' }
 			}),
 		'./stories/foo/02/App.svelte': () =>
 			Promise.resolve({ default: 'The Foo Component/02' }),
-		'./stories/foo/02/guide.svx': () =>
+		'./stories/foo/02/README.md': () =>
 			Promise.resolve({
 				default: 'Notes for Foo Component/02',
 				metadata: { title: 'Page 02' }
@@ -38,14 +39,14 @@ describe('metamodel', () => {
 			}),
 		'./stories/bar/01/App.svelte': () =>
 			Promise.resolve({ default: 'The Bar Component' }),
-		'./stories/bar/01/guide.svx': () =>
+		'./stories/bar/01/README.md': () =>
 			Promise.resolve({
 				default: 'Notes for Bar Component',
 				metadata: { title: 'Page 01' }
 			}),
 		'./stories/bar/02/App.svelte': () =>
 			Promise.resolve({ default: 'The Bar Component/02' }),
-		'./stories/bar/02/guide.svx': () =>
+		'./stories/bar/02/README.md': () =>
 			Promise.resolve({
 				default: 'Notes for Bar Component/02',
 				metadata: { title: 'Page 02' }
@@ -147,8 +148,9 @@ describe('metamodel', () => {
 			{ folder: 'folder1', name: 'index.js', type: 'js', page: 1 },
 			{ folder: 'folder1', name: 'App.svelte', type: 'svelte', page: 1 },
 			{ folder: 'folder1', name: 'file.js', type: 'js', page: 2 },
-			{ folder: 'folder2', name: 'file.svelte', type: 'svelte', page: null },
-			{ folder: 'folder2', name: 'index.js', type: 'js', page: 2 },
+			{ folder: 'folder2', name: 'file.js', type: 'js', page: 2 },
+			{ folder: 'folder2', name: 'file.svelte', type: 'svelte', page: 2 },
+			// { folder: 'folder2', name: 'index.js', type: 'js', page: 2 },
 			{ folder: 'folder2', name: 'App.svelte', type: 'svelte', page: 2 }
 		]
 		expect(input.sort(fileSorter)).toEqual([
@@ -156,8 +158,9 @@ describe('metamodel', () => {
 			{ folder: 'folder1', name: 'index.js', type: 'js', page: 1 },
 			{ folder: 'folder1', name: 'file.js', type: 'js', page: 2 },
 			{ folder: 'folder2', name: 'App.svelte', type: 'svelte', page: 2 },
-			{ folder: 'folder2', name: 'index.js', type: 'js', page: 2 },
-			{ folder: 'folder2', name: 'file.svelte', type: 'svelte', page: null }
+			// { folder: 'folder2', name: 'index.js', type: 'js', page: 2 },
+			{ folder: 'folder2', name: 'file.svelte', type: 'svelte', page: 2 },
+			{ folder: 'folder2', name: 'file.js', type: 'js', page: 2 }
 		])
 	})
 
@@ -260,20 +263,20 @@ describe('metamodel', () => {
 	it('should extract notes from imports', () => {
 		let result = extractModuleFromImports({
 			content: { default: 'foo' },
-			name: 'guide.svx'
+			name: 'README.md'
 		})
 		expect(result).toEqual({
-			name: 'guide.svx',
+			name: 'README.md',
 			notes: 'foo',
 			metadata: {}
 		})
 
 		result = extractModuleFromImports({
 			content: { default: 'foo', metadata: { title: 'foo-bar' } },
-			name: 'guide.svx'
+			name: 'README.md'
 		})
 		expect(result).toEqual({
-			name: 'guide.svx',
+			name: 'README.md',
 			notes: 'foo',
 			metadata: { title: 'foo-bar' }
 		})
@@ -335,9 +338,9 @@ describe('metamodel', () => {
 			{
 				folder: 'list',
 				page: 1,
-				name: 'guide.svx',
+				name: 'README.md',
 				type: 'svx',
-				notes: 'notes for list/guide.svx',
+				notes: 'notes for list/README.md',
 				metadata: { title: 'page 01' }
 			},
 			{
@@ -363,9 +366,9 @@ describe('metamodel', () => {
 			{
 				folder: 'list',
 				page: 2,
-				name: 'guide.svx',
+				name: 'README.md',
 				type: 'svx',
-				notes: 'notes for list/02/guide.svx',
+				notes: 'notes for list/02/README.md',
 				metadata: { title: 'page 02' }
 			},
 			{
@@ -396,7 +399,7 @@ describe('metamodel', () => {
 							{ file: 'data.js', language: 'js', code: 'code for list/data.js' }
 						],
 						preview: 'preview for list',
-						notes: 'notes for list/guide.svx',
+						notes: 'notes for list/README.md',
 						title: 'page 01'
 					},
 					{
@@ -408,7 +411,7 @@ describe('metamodel', () => {
 							}
 						],
 						preview: 'preview for list/02',
-						notes: 'notes for list/02/guide.svx',
+						notes: 'notes for list/02/README.md',
 						title: 'page 02'
 					}
 				]
@@ -518,5 +521,48 @@ describe('metamodel', () => {
 		expect(result.categories()).toEqual(categories)
 		expect(result.story('foo')).toEqual(stories.foo)
 		expect(result.story('bar')).toEqual(stories.bar)
+	})
+
+	it('should generate nested menu data from metadata', () => {
+		const data = {
+			tree: {
+				name: 'Tree',
+				metadata: {
+					category: 'Selection',
+					name: 'Tree',
+					icon: 'tree',
+					description: 'A tree of items that can be expanded and collapsed.'
+				}
+			},
+			tabs: {
+				name: 'Tabs',
+				metadata: {
+					category: 'Selection',
+					description: 'A set of tabs that can be navigated.'
+				}
+			},
+			input: {
+				name: 'Input',
+				metadata: {
+					category: 'Form',
+					description: 'A form input field.'
+				}
+			}
+		}
+		const result = extractNestedItems(data)
+
+		expect(result).toEqual([
+			{
+				category: 'Selection',
+				items: [
+					data.tree.metadata,
+					{ icon: 'tabs', name: 'Tabs', ...data.tabs.metadata }
+				]
+			},
+			{
+				category: 'Form',
+				items: [{ icon: 'input', name: 'Input', ...data.input.metadata }]
+			}
+		])
 	})
 })

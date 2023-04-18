@@ -4,7 +4,7 @@ import { omit } from 'ramda'
 
 /** @type {import('./types').StoryOptions} */
 const defaultOptions = {
-	notes: 'guide.svx',
+	notes: 'README.md',
 	preview: 'App.svelte',
 	metadata: 'metadata.js'
 }

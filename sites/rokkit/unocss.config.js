@@ -7,7 +7,17 @@ import { extractorSvelte } from '@unocss/core'
 import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 
-const components = ['list', 'accordion', 'select', 'tree', 'tabs', 'input-text']
+const components = [
+	'list',
+	'accordion',
+	'select',
+	'tree',
+	'tabs',
+	'input-text',
+	'rating',
+	'switch-button',
+	'range'
+]
 
 export default defineConfig({
 	safelist: [
@@ -18,6 +28,8 @@ export default defineConfig({
 		'i-states:accordion-closed',
 		'i-spice:accordion-closed',
 		'i-spice-states:accordion-closed',
+		'i-spice:heart-filled',
+		'i-spice:heart-outlined',
 		'-translate-x-full'
 	],
 	shortcuts: {

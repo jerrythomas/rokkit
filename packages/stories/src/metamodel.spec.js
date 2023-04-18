@@ -136,20 +136,20 @@ describe('metamodel', () => {
 	it('should extract notes from imports', () => {
 		let result = extractModuleFromImports({
 			content: { default: 'foo' },
-			name: 'guide.svx'
+			name: 'README.md'
 		})
 		expect(result).toEqual({
-			name: 'guide.svx',
+			name: 'README.md',
 			notes: 'foo',
 			metadata: {}
 		})
 
 		result = extractModuleFromImports({
 			content: { default: 'foo', metadata: { title: 'foo-bar' } },
-			name: 'guide.svx'
+			name: 'README.md'
 		})
 		expect(result).toEqual({
-			name: 'guide.svx',
+			name: 'README.md',
 			notes: 'foo',
 			metadata: { title: 'foo-bar' }
 		})
@@ -211,9 +211,9 @@ describe('metamodel', () => {
 			{
 				folder: 'list',
 				page: 1,
-				name: 'guide.svx',
+				name: 'README.md',
 				type: 'svx',
-				notes: 'notes for list/guide.svx',
+				notes: 'notes for list/README.md',
 				metadata: { title: 'page 01' }
 			},
 			{
@@ -239,9 +239,9 @@ describe('metamodel', () => {
 			{
 				folder: 'list',
 				page: 2,
-				name: 'guide.svx',
+				name: 'README.md',
 				type: 'svx',
-				notes: 'notes for list/02/guide.svx',
+				notes: 'notes for list/02/README.md',
 				metadata: { title: 'page 02' }
 			},
 			{
@@ -272,7 +272,7 @@ describe('metamodel', () => {
 							{ file: 'data.js', language: 'js', code: 'code for list/data.js' }
 						],
 						preview: 'preview for list',
-						notes: 'notes for list/guide.svx',
+						notes: 'notes for list/README.md',
 						title: 'page 01'
 					},
 					{
@@ -284,7 +284,7 @@ describe('metamodel', () => {
 							}
 						],
 						preview: 'preview for list/02',
-						notes: 'notes for list/02/guide.svx',
+						notes: 'notes for list/02/README.md',
 						title: 'page 02'
 					}
 				]
@@ -316,14 +316,14 @@ describe('metamodel', () => {
 				Promise.resolve({ default: { name: 'Foo', skin: 'yellow-orange' } }),
 			'./stories/foo/01/App.svelte': () =>
 				Promise.resolve({ default: 'The Foo Component' }),
-			'./stories/foo/01/guide.svx': () =>
+			'./stories/foo/01/README.md': () =>
 				Promise.resolve({
 					default: 'Notes for Foo Component',
 					metadata: { title: 'Page 01' }
 				}),
 			'./stories/foo/02/App.svelte': () =>
 				Promise.resolve({ default: 'The Foo Component/02' }),
-			'./stories/foo/02/guide.svx': () =>
+			'./stories/foo/02/README.md': () =>
 				Promise.resolve({
 					default: 'Notes for Foo Component/02',
 					metadata: { title: 'Page 02' }
@@ -332,14 +332,14 @@ describe('metamodel', () => {
 				Promise.resolve({ default: { name: 'Bar', skin: 'cyan-green' } }),
 			'./stories/bar/01/App.svelte': () =>
 				Promise.resolve({ default: 'The Bar Component' }),
-			'./stories/bar/01/guide.svx': () =>
+			'./stories/bar/01/README.md': () =>
 				Promise.resolve({
 					default: 'Notes for Bar Component',
 					metadata: { title: 'Page 01' }
 				}),
 			'./stories/bar/02/App.svelte': () =>
 				Promise.resolve({ default: 'The Bar Component/02' }),
-			'./stories/bar/02/guide.svx': () =>
+			'./stories/bar/02/README.md': () =>
 				Promise.resolve({
 					default: 'Notes for Bar Component/02',
 					metadata: { title: 'Page 02' }

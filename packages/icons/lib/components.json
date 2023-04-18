@@ -1,6 +1,6 @@
 {
   "prefix": "components",
-  "lastModified": 1681721966,
+  "lastModified": 1681817385,
   "icons": {
     "accordion": {
       "body": "<g fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M3 16.5a1 1 0 00-1 1v3a1 1 0 001 1h18a1 1 0 001-1v-3a1 1 0 00-1-1H3Zm16.133 2.492L18 17.909l.668-.699 1.832 1.75-1.75 1.832-.7-.667 1.083-1.133Z\" clip-rule=\"evenodd\"/><path fill-opacity=\".5\" d=\"M2 7.5h20V15a1 1 0 01-1 1H3a1 1 0 01-1-1V7.5Z\"/><path fill-rule=\"evenodd\" d=\"M3 2.5a1 1 0 00-1 1v4h20v-4a1 1 0 00-1-1H3Zm15.8 2.383 1.084-1.133.698.668-1.75 1.832L17 4.5l.668-.7L18.8 4.884Z\" clip-rule=\"evenodd\"/></g>"
@@ -64,6 +64,9 @@
     },
     "radio-group": {
       "body": "<g fill=\"none\"><path stroke=\"currentColor\" stroke-linecap=\"round\" d=\"M10.5 5.5h11m-11 3h11m-11 7h11m-11 3h11\"/><path fill=\"currentColor\" d=\"M5 4.375a2.625 2.625 0 100 5.25 2.625 2.625 0 000-5.25ZM2 7a3 3 0 116 0 3 3 0 01-6 0Zm3 11.875a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75ZM5 14a3 3 0 100 6 3 3 0 000-6Zm-2.625 3a2.625 2.625 0 115.25 0 2.625 2.625 0 01-5.25 0Z\"/></g>"
+    },
+    "range": {
+      "body": "<g fill=\"currentColor\"><rect width=\"18\" height=\"2\" x=\"3\" y=\"11\" rx=\"1\"/><path d=\"m6.992 10-1.72-3.007 3.464.014L6.992 10ZM17 14l1.732 3h-3.464L17 14Z\"/></g>"
     },
     "rating": {
       "body": "<path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"m5.154 9-.975 1.976L2 11.29l1.577 1.538L3.204 15l1.95-1.024L7.104 15l-.373-2.17 1.578-1.537-2.18-.317L5.154 9Zm7 0-.975 1.976L9 11.29l1.577 1.538L10.204 15l1.95-1.024L14.104 15l-.373-2.17 1.578-1.537-2.18-.317L12.154 9Zm6.025 1.976L19.154 9l.975 1.976 2.18.317-1.578 1.536.373 2.171-1.95-1.024L17.204 15l.373-2.17L16 11.29l2.18-.314Z\" clip-rule=\"evenodd\"/>"

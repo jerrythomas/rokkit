@@ -7,7 +7,7 @@
 }
 .minimal list,
 .minimal accordion summary {
-	@apply border-l-2px border-l-skin-300 ;
+	@apply border-l-2px border-l-skin-300;
 }
 .minimal :not(accordion > div) list:focus-within {
 	@apply outline-1 outline-offset-3 outline-dashed;
@@ -17,9 +17,8 @@
 	@apply px-2 text-skin-700 bg-skin-50 items-center leading-8;
 }
 
-
 .minimal item > a {
-	@apply px-0 gap-2 ;
+	@apply px-0 gap-2;
 }
 
 .minimal list item:hover {
@@ -35,7 +34,7 @@
 	@apply border-l-2px border-l-secondary-600;
 }
 
-.minimal accordion .is-expanded summary{
+.minimal accordion .is-expanded summary {
 	@apply sticky top-0 z-1;
 }
 .minimal accordion item > a {
@@ -64,7 +63,7 @@
 }
 
 .minimal .small list > item,
-.minimal .small accordion summary{
+.minimal .small accordion summary {
 	@apply text-sm;
 }
 
