@@ -55,7 +55,6 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
 }
 
-
 .rokkit input-field label {
 	@apply leading-loose w-full;
 }
@@ -74,7 +73,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply bg-skin-200 border box-border border-skin-300 rounded-full;
 }
 .rokkit input-range range-track selected {
-	@apply border -top-0px -bottom-0px border-primary-500 bg-primary-400 rounded-full;
+	@apply border -top-0px -bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
 }
 .rokkit input-range range-track thumb {
 	@apply rounded-sm;
@@ -109,10 +108,24 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .rokkit thumb {
-	@apply bg-primary-300  shadow-xl border border-primary-400;
+	@apply bg-gradient-to-r from-primary to-secondary border-secondary shadow-xl border;
 }
 .rokkit thumb.sliding::before {
 	content: '';
-	@apply absolute left-0 top-0 right-0 bottom-0 bg-primary-500  opacity-30 rounded-sm;
+	@apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-500  opacity-30 rounded-sm;
 	transform: scale(2, 2);
+}
+
+.rokkit button[role='switch'] {
+	@apply rounded-full p-0 min-h-6 h-8 w-16;
+	@apply bg-skin-200 border border-skin-200;
+}
+
+.rokkit button[role='switch'] > mark {
+	@apply rounded-full w-6 h-6 top-0.75;
+	@apply bg-gradient-to-r from-primary to-secondary;
+}
+
+.rokkit rating {
+	@apply text-secondary-500 gap-1 text-xl focus:outline-none;
 }

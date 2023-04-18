@@ -4,18 +4,18 @@
 .minimal tabs {
 	@apply box-border px-2 gap-2 border-b-2 border-b-skin-200 cursor-pointer select-none;
 }
-.minimal  tabs > p {
+.minimal tabs > p {
 	@apply pr-4;
 }
 .minimal tabs item {
 	@apply flex rounded-t-md relative gap-2 items-center;
 }
-.minimal tabs item >img {
+.minimal tabs item > img {
 	@apply w-5 h-5;
 }
 
-.minimal tabs item.is-selected{
-  @apply -mb-2px border-b-2 border-b-secondary-600;
+.minimal tabs item.is-selected {
+	@apply -mb-2px border-b-2 border-b-secondary-600;
 }
 
 .minimal tabs item {
@@ -24,6 +24,6 @@
 .minimal .small tabs item {
 	@apply text-sm leading-8 px-2;
 }
-.minimal .small tabs item >img {
+.minimal .small tabs item > img {
 	@apply w-5 h-5;
 }

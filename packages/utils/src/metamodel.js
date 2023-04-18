@@ -1,15 +1,22 @@
 import { toPascalCase } from './string'
 import { omit, pick } from 'ramda'
-import { writable } from 'svelte/store'
 
 /** @type {import('./types').StoryOptions} */
 const defaultOptions = {
-	notes: 'guide.svx',
+	notes: 'README.md',
 	preview: 'App.svelte',
 	metadata: 'metadata.js'
 }
 
 export function fileSorter(a, b) {
+	const rank = (x) =>
+		a.name === 'App.svelte'
+			? 1
+			: x.type === 'svelte'
+			? 2
+			: x.type === 'js'
+			? 3
+			: 4
 	if (a.folder !== b.folder) {
 		return a.folder < b.folder ? -1 : 1
 	} else if (!a.page) {
@@ -18,14 +25,8 @@ export function fileSorter(a, b) {
 		return -1
 	} else if (a.page !== b.page) {
 		return a.page - b.page
-	} else if (a.name === 'App.svelte') {
-		return -1
-	} else if (b.name === 'App.svelte') {
-		return 1
-	} else if (a.type === 'svelte' && b.type === 'js') {
-		return -1
-	} else if (a.type === 'js' && b.type === 'svelte') {
-		return 1
+	} else if (rank(a) != rank(b)) {
+		return rank(a) - rank(b)
 	} else {
 		return a.name < b.name ? -1 : 1
 	}
@@ -145,6 +146,20 @@ export function extractCategories(stories) {
 		...story.metadata,
 		path
 	}))
+}
+
+export function extractNestedItems(stories) {
+	let data = Object.entries(stories)
+		.map(([k, v]) => ({ icon: k, name: v.name, ...v.metadata }))
+		.reduce(
+			(acc, item) => ({
+				...acc,
+				[item.category]:
+					item.category in acc ? [...acc[item.category], item] : [item]
+			}),
+			{}
+		)
+	return Object.entries(data).map(([category, items]) => ({ category, items }))
 }
 
 export function createStories(modules, sources, options = {}) {

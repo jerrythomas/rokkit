@@ -2,8 +2,10 @@ import { defaultFields } from '@rokkit/core'
 import { items } from './01-intro/data'
 
 export default {
-	skin: 'cyan-sky',
-	category: 'Collection',
+	category: 'Selection',
+	name: 'Accordion',
+	description: 'A collection of items that can be expanded and collapsed.',
+	icon: 'accordion',
 	props: [
 		{
 			name: 'items',

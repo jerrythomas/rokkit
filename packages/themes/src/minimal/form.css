@@ -69,3 +69,12 @@
 .minimal input-select scroll {
 	@apply mt-1 shadow-lg;
 }
+
+.minimal button[role='switch'] {
+	@apply rounded-full p-0 min-h-6 h-8 w-16;
+	@apply bg-skin-200 border border-skin-200;
+}
+
+.minimal button[role='switch'] > mark {
+	@apply rounded-full w-6 h-6 bg-secondary top-0.75;
+}

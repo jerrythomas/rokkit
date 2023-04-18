@@ -36,7 +36,7 @@
 	@apply last:rounded-b gap-2;
 }
 .rokkit accordion list item > a {
-  @apply gap-2;
+	@apply gap-2;
 }
 .rokkit accordion list {
 	@apply rounded-b;
@@ -50,8 +50,6 @@
 	@apply even:bg-skin-zebra hover:bg-skin-50;
 }
 
-
-
 .rokkit nested-list {
 	@apply bg-skin-200 text-skin-800;
 }
@@ -59,7 +57,7 @@
 	@apply pl-2 gap-2 h-8;
 }
 
-.rokkit tree{
+.rokkit tree {
 	@apply rounded;
 }
 
@@ -78,11 +76,9 @@
 
 .rokkit accordion:focus-within list,
 .rokkit drop-down:focus-within list,
-.rokkit input-select:focus-within list{
+.rokkit input-select:focus-within list {
 	@apply outline-none focus:outline-none;
 }
-
-
 
 /* .rokkit item.is-active {
 	@apply border-l-4 border-l-secondary-500;
@@ -109,7 +105,7 @@
 	@apply text-primary-50;
 }
 
-.rokkit accordion .is-expanded summary{
+.rokkit accordion .is-expanded summary {
 	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
 }
 

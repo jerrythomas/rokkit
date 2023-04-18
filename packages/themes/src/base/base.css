@@ -2,7 +2,7 @@
 	@apply focus:outline focus:outline-secondary focus:outline-2 focus:outline-offset-2;
 }
 
-*[tabindex="-1"] {
+*[tabindex='-1'] {
 	@apply outline-none focus:outline-none;
 }
 
@@ -75,9 +75,6 @@ success {
 	@apply bg-pass text-pass border-pass;
 }
 
-rating {
-	@apply text-secondary-400 gap-2 text-xl;
-}
 checkbox {
 	@apply gap-2;
 }
