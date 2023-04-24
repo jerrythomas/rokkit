@@ -41,7 +41,7 @@ describe('utils', () => {
 			secondary: shadesOf('secondary', 'hsl'),
 			skin: {
 				...shadesOf('skin', 'hsl'),
-				base: 'hsl(var(--skin-100))',
+				base: 'hsl(var(--skin-base))',
 				contrast: 'hsl(var(--skin-800))',
 				zebra: 'hsl(var(--skin-zebra))'
 			},

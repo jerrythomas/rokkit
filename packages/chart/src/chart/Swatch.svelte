@@ -17,7 +17,7 @@
 	export let rows
 	export let limit
 	export let start = 0
-	export let autoscale = false
+	// export let autoscale = false
 	export let interactive = false
 	export let activeIndex = -1
 

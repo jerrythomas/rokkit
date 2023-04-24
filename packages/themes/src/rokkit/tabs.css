@@ -5,17 +5,17 @@
 	@apply rounded-b-md;
 }
 .rokkit tabs {
-	@apply border-b-2 border-skin-300 rounded-t px-1 gap-1;
+	@apply border-b-2 border-skin-muted rounded-t px-1 gap-1;
 }
 .rokkit tabs:focus-within {
 	@apply outline-none border-secondary;
 }
 .rokkit tabs item {
-	@apply py-2 px-4 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-100 gap-3;
+	@apply py-2 px-4 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
 }
 .rokkit tab-view tabs {
 	@apply box-border space-evenly rounded-t-md;
-	@apply bg-skin-300 text-skin-900;
+	@apply bg-skin-muted text-skin-900;
 }
 
 .rokkit tab-view tabs tab {
@@ -33,7 +33,7 @@
 }
 
 .rokkit pg {
-	@apply rounded-full h-3 w-3 bg-skin-300 mx-1;
+	@apply rounded-full h-3 w-3 bg-skin-muted mx-1;
 }
 
 .rokkit pg.is-selected {
@@ -57,21 +57,21 @@
 }
 
 .rokkit tab-view content {
-	@apply bg-skin-50 px-8;
+	@apply bg-skin-inset px-8;
 }
 
 .rokkit sample {
 	@apply gap-1px text-skin-900;
 }
 /* sample > * {
-	@apply bg-skin-50 bg-opacity-90;
+	@apply bg-skin-inset bg-opacity-90;
 } */
 
 .rokkit sample h1 {
 	@apply px-8 leading-12 rounded-t-xl text-lg bg-skin-50;
 }
 .rokkit sample nav-pages {
-	@apply bg-skin-50 rounded-b-xl;
+	@apply bg-skin-inset rounded-b-xl;
 }
 .rokkit sample content {
 	@apply gap-1px;
@@ -80,7 +80,7 @@
 	@apply min-w-1/3;
 }
 .rokkit sample section > p {
-	@apply bg-skin-100 px-4 py-2 text-justify leading-loose rounded font-light w-full text-justify;
+	@apply bg-skin-base px-4 py-2 text-justify leading-loose rounded font-light w-full text-justify;
 }
 .rokkit sample section {
 	@apply bg-skin-50;

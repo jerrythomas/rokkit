@@ -1,0 +1,6 @@
+{
+	"category": "Selection",
+	"name": "Accordion",
+	"description": "A collection of items that can be expanded and collapsed.",
+	"icon": "accordion"
+}

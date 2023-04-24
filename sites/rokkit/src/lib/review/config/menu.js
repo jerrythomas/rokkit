@@ -13,13 +13,13 @@ function getItems(group, components) {
 				return Object.keys(data.types).map((key) => ({
 					text: `<${component} type="${key}" />`,
 					url: `/${group}/${component}/${key}`,
-					icon: `i-spice:${component.toLowerCase()}-${key}`
+					icon: `i-rokkit:${component.toLowerCase()}-${key}`
 				}))
 			} else {
 				return {
 					text: `<${component} />`,
 					url: `/${group}/${component}`,
-					icon: `i-spice:${component.toLowerCase()}`
+					icon: `i-rokkit:${component.toLowerCase()}`
 				}
 			}
 		})

@@ -16,7 +16,7 @@
 }
 
 .material accordion .is-expanded summary {
-	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
+	@apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
 }
 
 .material accordion .is-selected summary {

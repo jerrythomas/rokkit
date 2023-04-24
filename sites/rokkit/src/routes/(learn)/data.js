@@ -66,6 +66,11 @@ export let menu = [
 				text: 'Switch',
 				url: '/guide/switch',
 				icon: 'i-component:switch-button'
+			},
+			{
+				text: 'FieldLayout',
+				url: '/labs/field-layout',
+				icon: 'i-component:split-view'
 			}
 		]
 	}

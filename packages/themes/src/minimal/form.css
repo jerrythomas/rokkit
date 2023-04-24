@@ -1,6 +1,6 @@
 .minimal button {
 	@apply rounded leading-loose select-none;
-	@apply bg-skin-300 border border-skin-300;
+	@apply bg-skin-muted border border-skin-muted;
 }
 .minimal button icon-left,
 .minimal button icon-right {
@@ -19,7 +19,7 @@
 }
 .minimal button-group button {
 	@apply border-skin-400 border-none rounded-none;
-	@apply bg-skin-200;
+	@apply bg-skin-subtle;
 	@apply uppercase text-sm text-skin-800 leading-8;
 }
 .minimal button-group button:not(:last-child) {
@@ -41,7 +41,7 @@
 }
 .minimal input-select > selected-item {
 	@apply leading-8 gap-4 items-center pl-2 min-h-8;
-	@apply border-b-2 border-b-skin-200;
+	@apply border-b-2 border-b-skin-subtle;
 	@apply focus:border-b-secondary-600;
 }
 .minimal input-select:focus > selected-item {
@@ -72,7 +72,7 @@
 
 .minimal button[role='switch'] {
 	@apply rounded-full p-0 min-h-6 h-8 w-16;
-	@apply bg-skin-200 border border-skin-200;
+	@apply bg-skin-subtle border border-skin-subtle;
 }
 
 .minimal button[role='switch'] > mark {

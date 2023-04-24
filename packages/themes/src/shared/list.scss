@@ -6,7 +6,7 @@ accordion group {
 }
 accordion ul,
 list ul {
-	@apply p-t-1px gap-1px bg-skin-100;
+	@apply p-t-1px gap-1px bg-skin-base;
 }
 accordion .item,
 list .item,
@@ -14,7 +14,7 @@ accordion collapsible {
 	@apply leading-10 px-4 bg-skin-50;
 }
 accordion collapsible {
-	@apply rounded text-skin-900 pr-2 bg-skin-100;
+	@apply rounded text-skin-900 pr-2 bg-skin-base;
 }
 
 accordion .item,
@@ -23,7 +23,7 @@ list .item {
 }
 
 accordion .expanded collapsible {
-	@apply rounded-b-none border-b border-skin-200;
+	@apply rounded-b-none border-b border-skin-subtle;
 }
 accordion .expanded .item {
 	@apply first:rounded-t-0;
@@ -34,7 +34,7 @@ list .item icon {
 	@apply text-secondary;
 }
 // accordion collapsible {
-// 	@apply text-skin-900 pr-2 border-skin-300 last:border-b-0 bg-skin-100;
+// 	@apply text-skin-900 pr-2 border-skin-muted last:border-b-0 bg-skin-base;
 // }
 accordion .item.active,
 list .item.active {
@@ -42,7 +42,7 @@ list .item.active {
 }
 
 list {
-	@apply border border-skin-200 rounded shadow;
+	@apply border border-skin-subtle rounded shadow;
 }
 
 .zebra .item {

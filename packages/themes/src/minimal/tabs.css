@@ -2,7 +2,7 @@
 	@apply outline-none;
 }
 .minimal tabs {
-	@apply box-border px-2 gap-2 border-b-2 border-b-skin-200 cursor-pointer select-none;
+	@apply box-border px-2 gap-2 border-b-2 border-b-skin-subtle cursor-pointer select-none;
 }
 .minimal tabs > p {
 	@apply pr-4;

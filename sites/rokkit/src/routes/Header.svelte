@@ -12,12 +12,12 @@
 </script>
 
 <header
-	class="flex min-h-14 w-full bg-skin-100 items-center justify-between relative shadow-lg"
+	class="flex min-h-14 w-full bg-skin-inset items-center justify-between relative shadow-md"
 >
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="flex items-center md:px-2">
 		<div on:click={toggle} class="flex p-4 justify-center cursor-pointer">
-			<icon class="i-spice:menu" />
+			<icon class="i-rokkit:menu" />
 		</div>
 		<a href="/" class="flex items-center">
 			{#if $media.small}
@@ -43,7 +43,7 @@
 
 		<ThemeSwitcher />
 		<a href="https://github.com/jerrythomas/rokkit" class="text-skin-900 flex">
-			<icon class="i-spice:github" />
+			<icon class="i-rokkit:github" />
 		</a>
 	</settings>
 </header>
