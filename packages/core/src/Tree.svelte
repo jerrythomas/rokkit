@@ -6,12 +6,12 @@
 	import { navigator } from './actions/navigator'
 
 	const dispatch = createEventDispatcher()
-
+	let className = 'list'
+	export { className as class }
 	export let items = []
 	export let fields = {}
 	export let using = { default: Text }
 	export let root = null
-	export let rtl = false
 	export let value
 
 	let indices = []
@@ -40,6 +40,7 @@
 	on:expand={handle}
 	on:collapse={handle}
 	tabindex="0"
+	class={className}
 >
-	<NestedList {items} {fields} {using} {rtl} {value} />
+	<NestedList {items} {fields} {using} {value} {...$$restProps} />
 </tree>

@@ -20,7 +20,7 @@
 
 .material input-field label,
 .material input-field:focus-within label {
-	@apply block z-1 -top-3 left-2 bg-skin-50 absolute leading-tight opacity-100;
+	@apply block z-1 -top-3 left-2 bg-skin-inset absolute leading-tight opacity-100;
 }
 .material input-field field {
 	@apply gap-2;
@@ -30,9 +30,9 @@
 	@apply rounded;
 }
 .material input-select > selected-item {
-	@apply h-10 pl-4 pr-0 items-center bg-skin-100 normal-case;
-	@apply rounded border border-skin-300 text-skin-800;
-	@apply hover:bg-skin-300 hover:border-secondary-600;
+	@apply h-10 pl-4 pr-0 items-center bg-skin-base normal-case;
+	@apply rounded border border-skin-muted text-skin-800;
+	@apply hover:bg-skin-muted hover:border-secondary-600;
 }
 
 .material input-select:hover square-icon {

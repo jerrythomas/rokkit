@@ -8,14 +8,14 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .searchable input {
-	@apply border border-skin-200;
+	@apply border border-skin-subtle;
 }
 
 .rokkit input,
 .rokkit textarea,
 .rokkit select,
 .rokkit fieldset {
-	@apply rounded leading-loose px-2 border border-skin-300 outline-none bg-skin-200 text-skin-800;
+	@apply rounded leading-loose px-2 border border-skin-muted outline-none bg-skin-subtle text-skin-800;
 }
 
 .rokkit input-field field {
@@ -26,7 +26,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply p-4 pt-2 gap-2 rounded-md;
 }
 .rokkit fieldset legend {
-	@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
+	@apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
 }
 .rokkit fieldset icon {
 	@apply text-2xl;
@@ -45,21 +45,21 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .rokkit input-field field {
-	@apply box-border border border-skin-300 rounded overflow-hidden;
+	@apply box-border border border-skin-muted rounded overflow-hidden;
 	/* @apply focus-within:border-primary-400 focus-within:border-2; */
 }
 .rokkit input-field field:focus-within {
 	@apply border-0 bg-gradient-to-r from-primary to-secondary px-2px py-2px;
 }
 .rokkit input-field span {
-	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
+	@apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
 }
 
 .rokkit input-field label {
 	@apply leading-loose w-full;
 }
 .rokkit input-field message {
-	@apply px-2 py-1 bg-skin-100 rounded;
+	@apply px-2 py-1 bg-skin-base rounded;
 }
 
 .rokkit input-field.fail {
@@ -70,7 +70,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply h-2 mt-2 relative;
 }
 .rokkit input-range range-track span {
-	@apply bg-skin-200 border box-border border-skin-300 rounded-full;
+	@apply bg-skin-subtle border box-border border-skin-muted rounded-full;
 }
 .rokkit input-range range-track selected {
 	@apply border -top-0px -bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
@@ -118,7 +118,7 @@ input[type='number']::-webkit-outer-spin-button {
 
 .rokkit button[role='switch'] {
 	@apply rounded-full p-0 min-h-6 h-8 w-16;
-	@apply bg-skin-200 border border-skin-200;
+	@apply bg-skin-subtle border border-skin-subtle;
 }
 
 .rokkit button[role='switch'] > mark {

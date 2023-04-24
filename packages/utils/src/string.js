@@ -30,6 +30,7 @@ export function toPascalCase(text) {
  */
 export function toHyphenCase(text) {
 	return text
+		.replace(/\s+/, '-')
 		.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
 		.replace(/^-/, '')
 }

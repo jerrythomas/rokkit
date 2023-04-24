@@ -1,7 +1,7 @@
 @import 'animation.css';
 
 button-group {
-	@apply flex w-full items-center justify-center m-auto h-14 gap-1 text-lg bg-skin-100;
+	@apply flex w-full items-center justify-center m-auto h-14 gap-1 text-lg bg-skin-base;
 }
 
 button-group button {
@@ -14,13 +14,13 @@ button-group button.active {
 
 button,
 .button {
-	@apply flex min-h-10 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
+	@apply flex min-h-10 items-center rounded-full px-6 uppercase bg-skin-muted text-skin-700 cursor-pointer;
 	animation: button-pop var(--animation-btn, 0.25s) ease-out;
 }
 
 button.is-primary,
 .button.is-primary {
-	@apply bg-gradient-to-r from-primary to-secondary text-skin-200;
+	@apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
 }
 
 input-select {

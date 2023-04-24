@@ -15,5 +15,5 @@ alert.success {
 	@apply outline-secondary;
 }
 .is-disabled {
-	@apply text-skin-200;
+	@apply text-skin-subtle;
 }

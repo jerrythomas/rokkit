@@ -1,6 +1,6 @@
 <script>
 	import Headline from './Headline.svelte'
-	export let data
+	// export let data
 </script>
 
 <section

@@ -1,0 +1,19 @@
+{
+   "version": "0.2.0",
+   "configurations": [
+    {
+        "name": "Attach to Chrome",
+        "port": 5173,
+        "request": "attach",
+        "type": "chrome",
+        "webRoot": "${workspaceFolder}/sites/rokkit"
+    },
+   {
+       "type": "chrome",
+       "request": "launch",
+       "name": "Launch Chrome against dev server",
+       "url": "http://localhost:5173",
+       "webRoot": "${workspaceFolder}/sites/rokkit"
+   }
+   ]
+}

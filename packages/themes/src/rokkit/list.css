@@ -6,15 +6,15 @@
 }
 
 .rokkit list {
-	@apply gap-1px bg-skin-200;
+	@apply gap-1px bg-skin-subtle;
 }
 
 .rokkit list > item,
 .rokkit accordion div summary {
-	@apply leading-10 px-4 bg-skin-100 text-skin-800 min-h-10;
+	@apply leading-10 px-4 bg-skin-base text-skin-800 min-h-10;
 }
 .rokkit accordion > div > summary {
-	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300;
+	@apply rounded pr-2 bg-gradient from-skin-subtle to-skin-muted;
 }
 
 .rokkit accordion > div > summary::-webkit-details-marker {
@@ -51,7 +51,7 @@
 }
 
 .rokkit nested-list {
-	@apply bg-skin-200 text-skin-800;
+	@apply bg-skin-subtle text-skin-800;
 }
 .rokkit nested-list node {
 	@apply pl-2 gap-2 h-8;
@@ -85,7 +85,7 @@
 } */
 .rokkit item.is-hovering,
 .rokkit item:hover {
-	@apply bg-skin-50 text-skin-700;
+	@apply bg-skin-inset text-skin-700;
 }
 
 .rokkit item.is-hovering icon,
@@ -106,10 +106,18 @@
 }
 
 .rokkit accordion .is-expanded summary {
-	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
+	@apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
 }
 
 .rokkit accordion .is-selected summary {
 	@apply border-b-secondary-500 border-b text-secondary-600;
 	@apply hover:text-primary-600;
 }
+
+.rokkit .folder-tree {
+	@apply bg-skin-inset h-full;
+}
+.rokkit .folder-tree nested-list {
+	@apply bg-skin-inset h-full;
+}
+

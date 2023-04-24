@@ -18,7 +18,19 @@ export function shadesOf(name, modifier = 'none') {
 			...result,
 			[shade]: fn(`var(--${name}-${shade})`)
 		}),
-		{ DEFAULT: fn(`var(--${name}-500)`) }
+		{
+			DEFAULT: fn(`var(--${name}-500)`),
+			inset: fn(`var(--${name}-50)`),
+			sunken: fn(`var(--${name}-50)`),
+			recessed: fn(`var(--${name}-50)`),
+			base: fn(`var(--${name}-100)`),
+			subtle: fn(`var(--${name}-200)`),
+			muted: fn(`var(--${name}-300)`),
+			raised: fn(`var(--${name}-400)`),
+			elevated: fn(`var(--${name}-500)`),
+			floating: fn(`var(--${name}-600)`),
+			contrast: fn(`var(--${name}-700)`)
+		}
 	)
 }
 
@@ -44,11 +56,10 @@ export function themeColors(modifier = 'none') {
 		(acc, variant) => ({ ...acc, [variant]: shadesOf(variant, modifier) }),
 		colors
 	)
-
+	// console.log('colors', colors)
 	colors.skin = {
 		...colors.skin,
 		contrast: fn(`var(--skin-800)`),
-		base: fn(`var(--skin-100)`),
 		zebra: fn(`var(--skin-zebra)`)
 	}
 
