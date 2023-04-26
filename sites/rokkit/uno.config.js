@@ -55,6 +55,8 @@ export default defineConfig({
 		'border-disabled': 'border-skin-700',
 		'item-selected': 'border-l-3 border-secondary',
 		'state-danger': 'text-red',
+		svelte: 'i-file:svelte',
+		js: 'i-file:js',
 		'item-hover':
 			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast'
 	},

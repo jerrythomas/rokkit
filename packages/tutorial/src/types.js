@@ -42,4 +42,13 @@
  * @property {string} metadata - filename containing component metadata
  */
 
+/**
+ * @typedef {Object} TutorialOptions
+ * @property {string} rootFolder - The root folder containing tutorial files.
+ * @property {string} [metadataFilename='meta.json'] - The optional filename for metadata, defaults to 'meta.json'.
+ * @property {string} [readmeFilename='README.md'] - The optional filename for the readme, defaults to 'README.md'.
+ * @property {string} [partialFolder='pre'] - The folder containing partial solutions.
+ * @property {string} [solutionFolder='src'] - The folder containing correct solutions.
+ * @property {string} [tutorialMetadata='src/lib/tutorials.json'] - The filename to write the hierarchical data.
+ */
 export {}

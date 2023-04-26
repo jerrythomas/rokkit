@@ -10,6 +10,8 @@ export { default as Searchable } from './Searchable.svelte'
 export { default as Scrollable } from './Scrollable.svelte'
 export { default as NestedList } from './NestedList.svelte'
 export { default as Tabs } from './Tabs.svelte'
+export { default as BreadCrumbs } from './BreadCrumbs.svelte'
+export { default as NestedPaginator } from './NestedPaginator.svelte'
 
 export { default as Alerts } from './Alerts.svelte'
 export { default as Slider } from './Slider.svelte'

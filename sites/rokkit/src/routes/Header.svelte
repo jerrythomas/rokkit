@@ -12,7 +12,7 @@
 </script>
 
 <header
-	class="flex min-h-14 w-full bg-skin-inset items-center justify-between relative shadow-md"
+	class="flex min-h-14 w-full bg-skin-subtle items-center justify-between relative shadow-md"
 >
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="flex items-center md:px-2">

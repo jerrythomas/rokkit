@@ -94,3 +94,14 @@
 .minimal .folder-tree {
 	@apply h-full bg-skin-inset min-w-40;
 }
+
+.minimal node > span > i {
+	@apply border-skin-muted;
+}
+
+.minimal crumbs {
+	@apply flex-grow gap-1 text-sm;
+}
+.minimal crumbs crumb.is-selected {
+	@apply text-secondary;
+}

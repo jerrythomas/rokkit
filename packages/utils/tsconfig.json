@@ -1,6 +1,6 @@
 {
 	"extends": "shared-config/svelte-lib.json",
-	"include": ["src/**/*.js", "src/**/*.svelte", "../tutorial/src/tutorial.js"],
+	"include": ["src/**/*.js", "src/**/*.svelte", "../tutorial/src/tutorial.js", "../core/src/lib/nested.js"],
 	"exclude": ["src/**/*.spec.js"],
 	"compilerOptions": {
 		"outDir": "dist"

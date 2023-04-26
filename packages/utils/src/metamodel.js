@@ -85,7 +85,7 @@ export function extractModuleFromImports(story, options) {
 	let level = story.page ? 'page' : story.element ? 'element' : 'section'
 
 	if (story.name === options.metadata) {
-		story[level] = { ...story[level], ...(story.content.default ?? {}) }
+		story[level] = { ...story[level], ...story.content.default /*?? {}*/ }
 	} else if (story.name === options.preview) {
 		story[level]['preview'] = story.content.default
 	} else if (story.name === options.notes) {

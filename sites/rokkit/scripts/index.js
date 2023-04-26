@@ -1,13 +1,6 @@
-import fs from 'fs'
-import { assimilateTutorials } from '@rokkit/tutorial'
+import { collectTutorials } from '@rokkit/tutorial'
 
-async function generate() {
-	console.log('Processing stories...')
-	const tutorials = assimilateTutorials(
-		'stories',
-		/(meta\.js|meta\.json|README\.md)$/
-	)
-	await tutorials.generate()
-}
-
-generate()
+collectTutorials({
+	rootFolder: 'src/stories',
+	tutorialMetadata: 'src/lib/tutorials.json'
+})

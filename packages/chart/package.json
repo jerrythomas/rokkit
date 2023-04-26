@@ -23,17 +23,17 @@
 		"upgrade": "pnpm upgrade"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^2.0.4",
+		"@sveltejs/vite-plugin-svelte": "^2.1.1",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
-		"eslint": "^8.38.0",
+		"eslint": "^8.39.0",
 		"eslint-config-shared": "workspace:*",
 		"js-yaml": "^4.1.0",
 		"jsdom": "^19.0.0",
 		"shared-config": "workspace:*",
 		"svelte": "^3.58.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.3.0",
+		"vite": "^4.3.2",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {

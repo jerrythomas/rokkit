@@ -3,6 +3,7 @@ const modifiers = {
 	rgb: (value) => `rgb(${value})`,
 	none: (value) => value
 }
+
 /**
  * Generate shades for a color using css varuable
  *
@@ -11,7 +12,7 @@ const modifiers = {
  */
 export function shadesOf(name, modifier = 'none') {
 	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-	const fn = modifier in modifiers ? modifiers[modifier] : modifier.none
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
 	return shades.reduce(
 		(result, shade) => ({
@@ -35,7 +36,7 @@ export function shadesOf(name, modifier = 'none') {
 }
 
 export function stateColors(name, modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifier.none
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 	return {
 		DEFAULT: fn(`var(--${name}-500)`),
 		light: fn(`var(--${name}-100)`),
@@ -44,7 +45,7 @@ export function stateColors(name, modifier = 'none') {
 }
 
 export function themeColors(modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifier.none
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
 	let states = ['info', 'error', 'warn', 'pass']
 	let variants = ['skin', 'primary', 'secondary', 'accent']
@@ -78,22 +79,17 @@ export function themeColors(modifier = 'none') {
 // 		)
 // }
 
-export function iconShortcuts(icons, collection, variant = '') {
-	const prefix = collection ? collection + ':' : ''
-	const suffix = variant ? '-' + variant : ''
-
-	const shortcuts = icons.reduce(
-		(acc, name) => ({
-			...acc,
-			[name]:
-				prefix +
-				(name.startsWith('selector')
-					? 'chevron-sort'
-					: name.replace('rating', 'star').replace('navigate', 'chevron')) +
-				suffix
-		}),
-		{}
-	)
+export function iconShortcuts(icons, collection, variants) {
+	const suffix = variants ? `-${variants}` : ''
+	const shortcuts = !collection
+		? {}
+		: icons.reduce(
+				(acc, name) => ({
+					...acc,
+					[name]: [collection, name].join(':') + suffix
+				}),
+				{}
+		  )
 
 	return shortcuts
 }
