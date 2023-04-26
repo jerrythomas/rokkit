@@ -12,7 +12,7 @@
 	export let fields = {}
 	export let using = { default: Text }
 	export let root = null
-	export let value
+	export let value = null
 
 	let indices = []
 
@@ -27,9 +27,15 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: items =
-		items.length == 1 || root == null
+		items[0][fields.text] == root || root == null
 			? items
-			: [{ [fields.text]: root, [fields.children]: items }]
+			: [
+					{
+						[fields.text]: root,
+						[fields.isOpen]: true,
+						[fields.children]: items
+					}
+			  ]
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

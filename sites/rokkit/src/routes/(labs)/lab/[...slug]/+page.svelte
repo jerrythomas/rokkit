@@ -1,64 +1,70 @@
 <script>
 	import { onMount } from 'svelte'
 	import { Tree } from '@rokkit/core'
-	import { page } from '$app/stores'
+	import { CodeSnippet } from '@rokkit/markdown'
+	import Notes from './Notes.svelte'
+	import Code from './Code.svelte'
 	let component
 	let preview
-	async function loadComponent(path) {
-		const content = `/src/lib/stories/${path}/README.md`
-		const module = await import(/* @vite-ignore */ content)
-		component = module.default
-		preview = (
-			await import(/* @vite-ignore */ `/src/lib/stories/${path}/App.svelte`)
-		).default
-	}
+	let ready = false
+	let currentFile
+	let files = []
 
-	let data = [
-		{
-			name: 'src',
-			type: 'folder',
-			_open: true,
-			data: [
-				{ name: 'App.svelte', type: 'i-file:svelte' },
-				{ name: 'data.js', type: 'i-file:js' }
-			]
+	async function loadComponent(tutorial) {
+		ready = false
+		if (!tutorial) {
+			console.error(`No tutorial found for ${path}`)
 		}
-	]
-	let fields = { text: 'name', icon: 'type' }
-	let icons = {
-		opened: 'i-rokkit:folder-opened',
-		closed: 'i-rokkit:folder-closed'
-	}
 
-	onMount(() => {
-		loadComponent($page.params.slug)
-	})
+		try {
+			component = (await import(/* @vite-ignore */ tutorial.readme)).default
+			preview = (await import(/* @vite-ignore */ tutorial.after.preview))
+				.default
+			files = tutorial.after.files
+
+			ready = true
+		} catch (error) {
+			console.error(error)
+		}
+	}
+	export let data
+
+	// let code
+	// let language
+
+	// $: if (currentFile && currentFile.content) {
+	// 	code = currentFile.content
+	// 	language = currentFile.type
+	// }
+
+	$: loadComponent(data.tutorial)
 </script>
 
-{#if component}
-	<split-view class="flex w-full h-full overflow-auto">
-		<notes
-			class="markdown-body font-thin p-8 w-full h-full overflow-auto max-w-150 border-r border-r-skin-subtle"
-			slot="a"
-		>
-			<svelte:component this={component} />
-		</notes>
-		<section class="grid grid-rows-2">
+{#if ready}
+	<split-view class="flex w-full h-full">
+		<Notes readmeFile={data.tutorial.readme} crumbs={data.tutorial.crumbs} />
+		<section class="grid grid-rows-2 w-full h-full">
 			<div class="flex flex-col p-8 gap-4">
 				<svelte:component this={preview} />
 			</div>
-			<app-source class="flex">
+			<Code {files} />
+			<!-- <app-source class="flex w-full">
 				<aside class="flex flex-col bg-skin-inset w-60 h-full">
 					<Tree
-						items={data}
+						items={files}
 						{fields}
 						linesVisible={true}
 						{icons}
+						root="src"
+						bind:value={currentFile}
 						class="folder-tree"
 					/>
 				</aside>
-				<div class="flex">{JSON.stringify($page.params)}</div>
-			</app-source>
+				{#if code}
+					<CodeSnippet {code} {language} />
+				{/if}
+				 <div class="flex">{currentFile.content}</div>
+			</app-source> -->
 		</section>
 	</split-view>
 {:else}

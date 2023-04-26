@@ -78,7 +78,7 @@ export const defaultOptions = {
  * @property {string} [props='props']
  * @property {string} [isOpen='_open']       - Attribute to identify if the current item is open
  * @property {string} [isDeleted='_deleted'] - Attribute to identify if the current item is deleted
- * @property {FieldMapping} [fields]         - Field mapping to be used on children in the next level
+ * @property {FieldMapping} [fields?]        - Field mapping to be used on children in the next level
  */
 export const defaultFields = {
 	id: 'id',

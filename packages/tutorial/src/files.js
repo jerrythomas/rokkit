@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-// import frontmatter from 'frontmatter'
 
 /**
  * Recursively get files in a folder that match the given pattern.
@@ -40,14 +39,19 @@ export function folderHierarchy(files) {
 	const result = files.reduce((acc, file) => {
 		const parts = file.path.split(path.sep)
 		let current = acc
-		for (const part of parts) {
+		parts.forEach((part, index) => {
 			let child = current.find((item) => item.name === part)
-			if (!child) {
-				child = { name: part, type: 'folder', children: [] }
+			if (!child && part != '') {
+				child = {
+					name: part,
+					path: parts.slice(0, index).join(path.sep),
+					type: 'folder',
+					children: []
+				}
 				current.push(child)
 			}
-			current = child.children
-		}
+			if (part != '') current = child.children
+		})
 		current.push(file)
 		return acc
 	}, [])

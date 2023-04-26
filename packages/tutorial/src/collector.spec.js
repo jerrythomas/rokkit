@@ -1,5 +1,8 @@
 import {
 	getSequenceAndKey,
+	readFolderContent,
+	getFolder,
+	getMetadata,
 	enrich,
 	transform,
 	collectTutorials
@@ -61,7 +64,110 @@ describe('collector', () => {
 			expect(getSequenceAndKey(input)).toBeNull()
 		})
 	})
+	describe('readFolderContent', () => {
+		it('should return the correct file objects with content', async () => {
+			const result = await readFolderContent('fixtures/test-folder')
 
+			expect(result).toEqual([
+				{
+					path: '',
+					name: 'App.svelte',
+					type: 'svelte',
+					content: '<h1>hello</h1>\n'
+				},
+				{
+					path: '',
+					name: 'file1.txt',
+					type: 'txt',
+					content: 'File 1 Content'
+				},
+				{
+					path: '',
+					name: 'file2.txt',
+					type: 'txt',
+					content: 'File 2 Content'
+				}
+			])
+		})
+	})
+	describe('getMetadata', () => {
+		it('should return error for invalid type', async () => {
+			const result = await getMetadata('fixtures', {
+				path: 'test-folder',
+				name: 'meta.bson',
+				type: 'bson'
+			})
+			expect(result).toEqual({ error: 'Unknown file type [bson]' })
+		})
+		it('should return empty object when meta.json does not exist', async () => {
+			const result = await getMetadata('fixtures', {
+				path: 'empty-folder',
+				name: 'meta.json',
+				type: 'json'
+			})
+			expect(result).toEqual({
+				error:
+					"ENOENT: no such file or directory, open 'fixtures/empty-folder/meta.json'"
+			})
+		})
+		it('should return error message in case of import errors', async () => {
+			const result = await getMetadata('fixtures', {
+				path: 'error',
+				name: 'meta.js',
+				type: 'js'
+			})
+
+			expect(result.error.split('\n')[0]).toEqual(
+				'Parse failure: Unexpected token (2:4)'
+			)
+		})
+	})
+	describe('getFolder', () => {
+		it('should return null when folder is empty', async () => {
+			const result = await getFolder('fixtures', 'empty-folder')
+			expect(result).toBeNull()
+		})
+		it('should provide result when App.svelte does not exist', async () => {
+			const result = await getFolder('fixtures', 'without-app')
+			expect(result).toEqual({
+				preview: null,
+				files: [
+					{
+						path: '',
+						name: 'file1.txt',
+						type: 'txt',
+						content: 'File 1 Content'
+					}
+				]
+			})
+		})
+		it('should return the correct folder object', async () => {
+			const result = await getFolder('fixtures', 'test-folder')
+			expect(result).toEqual({
+				preview: 'fixtures/test-folder/App.svelte',
+				files: [
+					{
+						path: '',
+						name: 'App.svelte',
+						type: 'svelte',
+						content: '<h1>hello</h1>\n'
+					},
+					{
+						path: '',
+						name: 'file1.txt',
+						type: 'txt',
+						content: 'File 1 Content'
+					},
+					{
+						path: '',
+						name: 'file2.txt',
+						type: 'txt',
+						content: 'File 2 Content'
+					}
+				]
+			})
+		})
+	})
 	describe('enrich', () => {
 		it('should read and add metadata for each item in the data array', async () => {
 			const rootFolder = 'fixtures/tutorials'
@@ -110,10 +216,6 @@ describe('collector', () => {
 		it('should collect tutorials and write them to the specified file', async () => {
 			const options = {
 				rootFolder: 'fixtures/tutorials',
-				metadataFilename: 'meta.json',
-				readmeFilename: 'README.md',
-				partialFolder: 'partials',
-				solutionFolder: 'solutions',
 				tutorialMetadata: 'fixtures/tutorials.json'
 			}
 
@@ -136,7 +238,9 @@ describe('collector', () => {
 							path: '02-bar/03-baz',
 							route: 'bar/baz',
 							sequence: 3,
-							title: 'Baz'
+							title: 'Baz',
+							before: null,
+							after: null
 						}
 					},
 					key: 'bar',

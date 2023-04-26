@@ -173,12 +173,3 @@ export class List {
 export function list(data) {
 	return new List(data)
 }
-
-// function getSubscribedData(store) {
-// 	let result
-// 	let unsubscribe = store.subscribe((data) => {
-// 		result = data
-// 	})
-// 	unsubscribe()
-// 	return result
-// }

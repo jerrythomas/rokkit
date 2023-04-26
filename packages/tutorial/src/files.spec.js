@@ -43,6 +43,31 @@ describe('getFiles', () => {
 })
 
 describe('folderHierarchy', () => {
+	it('should convert an array of files without folders as an array', () => {
+		let files = [
+			{ path: '', name: 'x.md', content: '...' },
+			{ path: '', name: 'a.js', content: '...' }
+		]
+		expect(folderHierarchy(files)).toEqual([
+			{ path: '', name: 'x.md', content: '...' },
+			{ path: '', name: 'a.js', content: '...' }
+		])
+	})
+	it('should convert an array of files without folders as an array', () => {
+		let files = [
+			{ path: 'a', name: 'x.md', content: '...' },
+			{ path: '', name: 'a.js', content: '...' }
+		]
+		expect(folderHierarchy(files)).toEqual([
+			{
+				path: '',
+				name: 'a',
+				type: 'folder',
+				children: [{ path: 'a', name: 'x.md', content: '...' }]
+			},
+			{ path: '', name: 'a.js', content: '...' }
+		])
+	})
 	it('should convert an array of files with path into a nested array', () => {
 		let files = [
 			{ path: 'a/b/c', name: 'x.md', content: '...' },
@@ -52,21 +77,36 @@ describe('folderHierarchy', () => {
 		expect(folderHierarchy(files)).toEqual([
 			{
 				name: 'a',
+				path: '',
 				type: 'folder',
 				children: [
 					{
 						name: 'b',
+						path: 'a',
 						type: 'folder',
 						children: [
 							{
 								name: 'c',
+								path: 'a/b',
 								type: 'folder',
 								children: [
-									{ name: 'x.md', path: 'a/b/c', content: '...' },
-									{ name: 'a.js', path: 'a/b/c', content: '...' }
+									{
+										path: 'a/b/c',
+										name: 'x.md',
+										content: '...'
+									},
+									{
+										path: 'a/b/c',
+										name: 'a.js',
+										content: '...'
+									}
 								]
 							},
-							{ path: 'a/b', name: 'x.json', content: '...' }
+							{
+								path: 'a/b',
+								name: 'x.json',
+								content: '...'
+							}
 						]
 					}
 				]

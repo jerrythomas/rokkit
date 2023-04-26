@@ -9,7 +9,7 @@ import {
 	deriveSortableColumns,
 	deriveDataTypes,
 	inferDataType
-} from '../src/infer'
+} from './infer'
 
 describe('utils', () => {
 	const aggCols = [['score'], ['score', 'time'], ['score', 'time', 'name']]

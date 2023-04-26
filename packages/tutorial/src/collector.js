@@ -2,20 +2,12 @@ import fs from 'fs'
 import path from 'path'
 import frontmatter from 'frontmatter'
 import { omit } from 'ramda'
-import { getFiles } from './files'
-
-/**
- * @typedef {Object} TutorialOptions
- * @property {string} rootFolder - The root folder containing tutorial files.
- * @property {string} [metadataFilename='meta.json'] - The optional filename for metadata, defaults to 'meta.json'.
- * @property {string} [readmeFilename='README.md'] - The optional filename for the readme, defaults to 'README.md'.
- * @property {string} partialFolder - The folder containing partial solutions.
- * @property {string} solutionFolder - The folder containing correct solutions.
- * @property {string} tutorialMetadata - The filename to write the hierarchical data.
- */
+// import { getFiles } from './files.js'
+// import path from 'path'
+import { getFiles, folderHierarchy } from './files.js'
 
 const extractors = {
-	js: async (filePath) => (await import(filePath)).default,
+	js: async (filePath) => (await import(/* @vite-ignore */ filePath)).default,
 	json: async (filePath) =>
 		JSON.parse(await fs.promises.readFile(filePath, 'utf-8')),
 	md: async (filePath) => {
@@ -79,6 +71,8 @@ function addPart(data, item, index) {
  */
 export async function getMetadata(rootFolder, item) {
 	const filePath = path.join(rootFolder, item.path, item.name)
+
+	// console.log(filePath)
 	let metadata = {}
 	if (item.type in extractors) {
 		try {
@@ -86,10 +80,46 @@ export async function getMetadata(rootFolder, item) {
 		} catch (error) {
 			metadata = { error: error.message }
 		}
+	} else {
+		metadata = { error: `Unknown file type [${item.type}]` }
 	}
 	return metadata
 }
 
+/**
+ * Read content of all files in the given folder.
+ * @param {string} folder - The folder to read files from.
+ * @returns {Promise<Object>} - A promise that resolves to an object containing file content keyed by file paths.
+ */
+export async function readFolderContent(folder) {
+	const files = await getFiles(folder)
+	for (const file of files) {
+		const filePath = path.join(folder, file.path, file.name)
+		file.content = await fs.promises.readFile(filePath, 'utf-8')
+	}
+
+	// console.log('hierarchy', JSON.stringify(folderHierarchy(files), null, 2))
+	return files
+}
+
+export async function getFolder(baseFolder, folder) {
+	const folderPath = path.join(baseFolder, folder)
+	if (!fs.existsSync(folderPath)) return null
+
+	const files = await readFolderContent(folderPath)
+	// .map((file) => ({
+	// 	...file,
+	// 	path: path.join(folder, file.path)
+	// }))
+
+	if (files.length === 0) return null
+
+	const preview = path.join(folderPath, 'App.svelte')
+	return {
+		preview: !fs.existsSync(preview) ? null : preview,
+		files: folderHierarchy(files)
+	}
+}
 /**
  * Read and add metadata for each item in the data array.
  * @param {string} rootFolder - The root folder containing the items.
@@ -128,21 +158,38 @@ export function transform(data) {
 	return result
 }
 
+/**
+ *
+ * @param {import('./types').TutorialOptions} options
+ * @returns
+ */
 export async function collectTutorials(options) {
 	const config = {
 		rootFolder: options.rootFolder,
 		metadataFilename: options.metadataFilename || 'meta.json',
 		readmeFilename: options.readmeFilename || 'README.md',
-		partialFolder: options.partialFolder,
-		solutionFolder: options.solutionFolder,
-		tutorialMetadata: options.tutorialMetadata || 'tutorials.json'
+		partialFolder: options.partialFolder || 'pre',
+		solutionFolder: options.solutionFolder || 'src',
+		tutorialMetadata: options.tutorialMetadata
 	}
 	const pattern = new RegExp(
-		`(${options.metadataFilename}|${options.readmeFilename})$`
+		`(${config.metadataFilename}|${config.readmeFilename})$`
 	)
 
 	let tutorials = await getFiles(config.rootFolder, pattern)
 	tutorials = await enrich(config.rootFolder, tutorials)
+	tutorials = await Promise.all(
+		tutorials.map(async (item) => {
+			const tutorialFolder = path.join(config.rootFolder, item.path)
+			if (item.name === 'README.md') {
+				// item.readme = path.join(tutorialFolder, item.name)
+				item.before = await getFolder(tutorialFolder, config.partialFolder)
+				item.after = await getFolder(tutorialFolder, config.solutionFolder)
+			}
+
+			return item
+		})
+	)
 	tutorials = transform(tutorials)
 
 	const data = JSON.stringify(tutorials, null, 2)

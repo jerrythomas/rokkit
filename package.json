@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"clean": "rm -rf sites/skeleton/.vercel",
+		"clean": "rm -rf sites/rokkit/.vercel",
 		"prepublishOnly": "turbo run prepublishOnly",
 		"build": "pnpm clean && turbo run build",
 		"test": "turbo run test:ci",
@@ -41,7 +41,7 @@
 		"husky": "^7.0.4",
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.8.7",
+		"prettier": "^2.8.8",
 		"turbo": "^1.9.3"
 	},
 	"lint-staged": {
