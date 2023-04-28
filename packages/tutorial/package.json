@@ -43,6 +43,7 @@
 	},
 	"dependencies": {
 		"@rokkit/utils": "workspace:*",
+		"frontmatter": "^0.0.3",
 		"glob": "^8.1.0",
 		"mdsvex": "^0.10.6"
 	},
