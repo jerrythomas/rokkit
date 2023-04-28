@@ -12,13 +12,13 @@
 }
 .rokkit input-select > selected-item,
 .rokkit drop-down > button {
-	@apply w-full h-10 pl-4 pr-0 gap-4 items-center bg-skin-100 normal-case outline-none;
-	@apply rounded border border-skin-300 text-skin-800;
-	@apply hover:bg-skin-300 hover:border-skin-500;
+	@apply w-full h-10 pl-4 pr-0 gap-4 items-center bg-skin-base normal-case outline-none;
+	@apply rounded border border-skin-muted text-skin-800;
+	@apply hover:bg-skin-muted hover:border-skin-500;
 }
 .rokkit input-select square-icon,
 .rokkit drop-down square-icon {
-	@apply border-l border-skin-300;
+	@apply border-l border-skin-muted;
 }
 .rokkit input-select:hover square-icon,
 .rokkit drop-down:hover square-icon {

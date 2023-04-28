@@ -1,44 +1,38 @@
 <script>
-	import Sidebar from './Sidebar.svelte'
-	import { Accordion, Link } from '@rokkit/core'
+	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { menu } from './data'
+	import { Tree, findValueFromPath } from '@rokkit/core'
+	import Sidebar from './Sidebar.svelte'
 
-	let value
-	let using = { default: Link }
-	let items
-
-	function filterMenu(menu, prefix) {
-		let result = menu
-			.map((x) => ({
-				...x,
-				data: x.data.filter((y) => y.url.startsWith('/' + prefix))
-			}))
-			.filter((x) => x.data.length > 0)
-		// console.log('prefix', prefix, result)
-		return result
+	const fields = {
+		text: 'title',
+		children: 'children',
+		isOpen: 'isOpen',
+		key: 'key'
 	}
-	function setValueFromPath(url) {
-		let i = 0
-		while (i < items.length) {
-			const matchIndex = items[i].data.findIndex(
-				(item) => item.url === url.pathname
-			)
-			if (matchIndex > -1) {
-				value = items[i].data[matchIndex]
-				items[i]._open = true
-			}
-			i += 1
+	const icons = { opened: 'accordion-opened', closed: 'accordion-closed' }
+
+	export let data
+	/** @type {any} */
+	let value
+
+	function handleSelect(event) {
+		if (!event.detail.children && event.detail.route) {
+			goto('/tutorial/' + event.detail.route)
 		}
 	}
-	$: prefix = $page.url.pathname.split('/')[1]
-	$: items = filterMenu(menu, prefix)
-	$: setValueFromPath($page.url)
+	$: value = value ?? findValueFromPath($page.params.slug, data.menu, fields)
 </script>
 
 <main class="flex w-full h-full flex-grow overflow-hidden relative">
 	<Sidebar>
-		<Accordion {items} bind:value {using} />
+		<Tree
+			items={data.menu}
+			{fields}
+			{icons}
+			bind:value
+			on:select={handleSelect}
+		/>
 	</Sidebar>
 	<content class="flex flex-col w-full">
 		<slot />

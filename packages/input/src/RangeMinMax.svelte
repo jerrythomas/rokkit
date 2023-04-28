@@ -26,7 +26,7 @@
 			scale = scaleLinear().domain(limits).range([min, max])
 			lower = scale.invert(Math.max(value[0], min))
 			upper = scale.invert(value[1])
-			console.log('l-u initial', lower, upper, min, max, limits)
+			// console.log('l-u initial', lower, upper, min, max, limits)
 		}
 	}
 	function handleClick(event) {

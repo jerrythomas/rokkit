@@ -1,22 +1,18 @@
 <script>
 	import { theme } from '@rokkit/core/stores'
 	import { defaultStateIcons } from '@rokkit/core'
-	import { toInitCapCase } from '@rokkit/utils'
 	import { Select } from '@rokkit/input'
+
+	const modeIcons = defaultStateIcons.mode
 
 	export let themes = [
 		{ title: 'Rokkit', name: 'rokkit' },
 		{ title: 'Minimal', name: 'minimal' },
 		{ title: 'Material', name: 'material' }
 	]
-	// export let pallettes
-
-	const modeIcons = defaultStateIcons.mode
 
 	let currentTheme
 
-	// $: current = { theme: 'rokkit', mode: 'dark' }
-	// $: themes = fromInput(themes)
 	$: current = $theme
 	$: currentTheme = themes.find((theme) => theme.name === current.name)
 
@@ -30,11 +26,8 @@
 		}
 	}
 	function handleThemeChange(event) {
-		console.log('Theme changed', event.detail)
 		theme.set({ ...current, name: event.detail.name })
 	}
-
-	$: console.log('current', current)
 </script>
 
 <Select

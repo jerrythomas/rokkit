@@ -1,20 +1,30 @@
 <script>
-	import { getContext } from 'svelte'
-	import { colorBrewer } from '../lib/colors'
+  import { clamp } from 'yootils'
+  import Symbol from '../chart/Symbol.svelte'
+  import { getContext } from 'svelte'
 
-	let chart = getContext('chart')
+  const chart = getContext('chart')
 
-	export let size = $chart.height / 128
+  export let size = 8
+  export let fill = '#c0c0c0'
+  export let stroke = '#3c3c3c'
+  export let jitterWidth = 50
+  export let offset
 
-	$: colors = colorBrewer($chart.data.map((d) => d.fill))
-	$: points = $chart.data.map((d) => ({
-		cx: $chart.scale.x(d.x),
-		cy: $chart.scale.y(d.y),
-		fill: colors[d.fill]
-	}))
-	// support shapes and sizes for scatter
+  $: jitterWidth = clamp(jitterWidth, 0, 100 / 2)
+  $: offset = clamp(offset | (jitterWidth / 2), 0, 100)
 </script>
 
-{#each points as { cx, cy, fill }}
-	<circle {cx} {cy} r={size} {fill} fill-opacity="0.5" />
-{/each}
+{#if $chart.data}
+  {#each $chart.data as d}
+    <Symbol
+      x={$chart.axis.x.scale(d[$chart.x]) -
+        offset +
+        Math.random() * jitterWidth}
+      y={$chart.axis.y.scale(d[$chart.y])}
+      {fill}
+      {stroke}
+      {size}
+    />
+  {/each}
+{/if}

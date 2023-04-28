@@ -14,6 +14,7 @@
 	export let rtl = false
 	export let path = []
 
+	$: stateIcons = { ...defaultStateIcons.node, ...(stateIcons ?? {}) }
 	$: hasChildren = fields.children in content
 	$: state =
 		hasChildren && content[fields.isOpen]
@@ -34,6 +35,7 @@
 	id={'id-' + path.join('-')}
 	class="flex flex-row min-h-5 items-center cursor-pointer select-none"
 	class:is-selected={selected}
+	class:flex-row-reverse={rtl}
 	aria-selected={selected}
 	role="option"
 	data-path={path.join(',')}
@@ -48,5 +50,5 @@
 		</span>
 	{/if}
 
-	<svelte:component this={component} bind:content />
+	<svelte:component this={component} bind:content {fields} />
 </node>

@@ -46,7 +46,7 @@ square {
 }
 
 overlay {
-	@apply bg-skin-50 bg-opacity-50;
+	@apply bg-skin-inset bg-opacity-50;
 }
 alert-list {
 	@apply top-4 right-4 w-80;
@@ -116,5 +116,5 @@ pre[class*='language-'],
 	@apply px-4 py-2;
 }
 theme-mode {
-	@apply rounded-full bg-skin-100 text-skin-900 p-1;
+	@apply rounded-full bg-skin-base text-skin-900 p-1;
 }
