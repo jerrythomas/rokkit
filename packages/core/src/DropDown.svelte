@@ -35,7 +35,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <drop-down
-	class="flex w-full relative cursor-pointer select-none dropdown {className}"
+	class="flex relative cursor-pointer select-none dropdown {className}"
 	class:open
 	tabindex="0"
 	aria-haspopup="true"

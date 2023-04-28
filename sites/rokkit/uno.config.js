@@ -24,6 +24,13 @@ export default defineConfig({
 	safelist: [
 		...defaultIcons,
 		...components.map((icon) => `i-component:${icon}`),
+		'text-skin-base',
+		'text-skin-subtle',
+		'text-skin-muted',
+		'bg-skin-base',
+		'bg-skin-subtle',
+		'bg-skin-muted',
+		'bg-skin-inset',
 		'i-rokkit:github',
 		'i-rokkit:menu',
 		'i-rokkit:accordion-closed',

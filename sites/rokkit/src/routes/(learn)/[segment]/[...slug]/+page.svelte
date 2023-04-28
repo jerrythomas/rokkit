@@ -39,14 +39,14 @@
 		}
 
 		try {
-			component = (await import(/* @vite-ignore */ tutorial.readme)).default
-			preview = (await import(/* @vite-ignore */ tutorial.after.preview))
-				.default
+			// component = (await import(/* @vite-ignore */ tutorial.readme)).default
+			// preview = (await import(/* @vite-ignore */ tutorial.after.preview))
+			// .default
 			// files = tutorial.after.files
 			story.set({
-				preview,
-				files: tutorial.after.files,
-				readme: component,
+				preview: tutorial.src.preview,
+				files: tutorial.src.files,
+				readme: tutorial.readme,
 				crumbs: tutorial.crumbs
 			})
 			ready = true

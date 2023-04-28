@@ -54,13 +54,16 @@
 }
 
 .minimal node {
-	@apply gap-1 h-7 px-2;
+	@apply h-7 px-2;
+}
+.minimal node > fragment {
+	@apply px-1 gap-1;
 }
 .minimal node > span {
 	@apply w-3;
 }
-.minimal node > span > icon,
-.minimal node > icon {
+.minimal node > span > icon{
+/* .minimal node > icon { */
 	@apply text-sm;
 }
 .minimal node.is-selected p,
