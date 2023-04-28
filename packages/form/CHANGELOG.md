@@ -1,5 +1,14 @@
 # @rokkit/form
 
+## 1.0.0-next.18
+
+### Patch Changes
+
+- chore: release v1.0.0-next.18
+- Updated dependencies
+  - @rokkit/input@1.0.0-next.18
+  - @rokkit/core@1.0.0-next.18
+
 ## 1.0.0-next.17
 
 ### Patch Changes
