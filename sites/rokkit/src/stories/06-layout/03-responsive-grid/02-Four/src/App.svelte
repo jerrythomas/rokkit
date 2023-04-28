@@ -49,7 +49,7 @@
 	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
 {/if}
 
-<style>
+<!-- <style>
 	:global(.four-col) {
 		@apply grid w-full h-full;
 	}
@@ -76,4 +76,4 @@
 	:global(.four-col.lg) {
 		@apply grid-rows-4 grid-cols-1;
 	}
-</style>
+</style> -->

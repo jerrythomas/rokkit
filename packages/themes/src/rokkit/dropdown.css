@@ -12,9 +12,12 @@
 }
 .rokkit input-select > selected-item,
 .rokkit drop-down > button {
-	@apply w-full h-10 pl-4 pr-0 gap-4 items-center bg-skin-base normal-case outline-none;
+	@apply h-10 pl-4 pr-0 gap-4 items-center bg-skin-base normal-case outline-none;
 	@apply rounded border border-skin-muted text-skin-800;
 	@apply hover:bg-skin-muted hover:border-skin-500;
+}
+.rokkit drop-down > button {
+	@apply h-10 pl-4 pr-2
 }
 .rokkit input-select square-icon,
 .rokkit drop-down square-icon {

@@ -32,11 +32,15 @@
 }
 
 .material node {
-	@apply gap-1 h-7 px-2;
+	@apply h-7 px-2;
+}
+.material node > fragment {
+	@apply px-1 gap-1 bg-transparent;
 }
 .material node > span {
-	@apply w-3;
+	@apply w-3 ;
 }
+
 .material node > span > icon {
 	@apply text-sm;
 }
@@ -54,7 +58,7 @@
 }
 
 .material node > span > i {
-	@apply border-skin-muted;
+	@apply border-transparent;
 }
 
 .material crumbs {

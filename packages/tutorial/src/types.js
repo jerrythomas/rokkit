@@ -47,8 +47,37 @@
  * @property {string} rootFolder - The root folder containing tutorial files.
  * @property {string} [metadataFilename='meta.json'] - The optional filename for metadata, defaults to 'meta.json'.
  * @property {string} [readmeFilename='README.md'] - The optional filename for the readme, defaults to 'README.md'.
- * @property {string} [partialFolder='pre'] - The folder containing partial solutions.
- * @property {string} [solutionFolder='src'] - The folder containing correct solutions.
+ * @property {string} [previewFilename='App.svelte'] - The optional filename for the preview, defaults to 'App.svelte'.
+ * @property {string} [partialFolder='pre'] - The folder containing partial example.
+ * @property {string} [solutionFolder='src'] - The folder containing correct example.
  * @property {string} [tutorialMetadata='src/lib/tutorials.json'] - The filename to write the hierarchical data.
+ */
+
+/**
+ * @typedef {Object} FileMetadata
+ * @property {string} name - The name of the file.
+ * @property {string} path - The path to the file.
+ * @property {string} type - The type of file.
+ * @property {string} [content] - The content of the file.
+ * @property {Array<FileMetadata>} [children] - Contains files in sub folder if the type is 'folder'.
+ */
+
+/**
+ * @typedef {Object} SourceContent
+ * @property {any} preview - Svelte component for previewing the example.
+ * @property {Array<FileMetadata>} files - Metadata including source for the example.
+ */
+
+/**
+ * @typedef {Object} TutorialMetadata
+ * @property {string} title - The title of the tutorial.
+ * @property {number} sequence - The sequence of the tutorial.
+ * @property {string} key - Key used for identifying the tutorial.
+ * @property {string} route - The route to the tutorial.
+ * @property {any} readme - The readme content as a svelte component.
+ * @property {any} preview - The app preview as a svelte component.
+ * @property {SourceContent} [pre] - Contains preview and source files for partial example
+ * @property {SourceContent} [src] - Contains preview and source files for completed example.
+ * @property {Array<TutorialMetadata>} [children] - Contains metadata for sub tutorials.
  */
 export {}

@@ -60,7 +60,10 @@
 	@apply text-skin-800;
 }
 .rokkit nested-list node {
-	@apply px-2 gap-2 h-8;
+	@apply px-2 h-8;
+}
+.rokkit node fragment {
+	@apply px-1 gap-2;
 }
 
 .rokkit tree {

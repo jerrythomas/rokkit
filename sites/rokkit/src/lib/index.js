@@ -1,6 +1,6 @@
 import watchMedia from 'svelte-media'
-import { createStories } from '@rokkit/utils'
-import { getTutorials } from '@rokkit/tutorial'
+// import { createStories } from '@rokkit/utils'
+import { assimilateTutorials } from '@rokkit/tutorial'
 import tutorials from '$lib/tutorials.json'
 
 export { tutorials }
@@ -18,14 +18,23 @@ const mediaqueries = {
 }
 
 const modules = import.meta.glob(
-	'./stories/**/{App.svelte,meta.json,README.md}'
+	'../stories/**/{App.svelte,meta.json,README.md}'
 )
-const samples = import.meta.glob('./stories/**/*.{svelte,js}', { as: 'raw' })
-
-export const storyFiles = { modules, samples }
-export const guide = createStories(modules, samples)
-export const media = watchMedia(mediaqueries)
-export const content = getTutorials({
-	rootFolder: 'stories',
-	tutorialMetadata: 'src/lib/tutorials.json'
+const samples = import.meta.glob('../stories/**/{src,pre}/*.{svelte,js}', {
+	as: 'raw'
 })
+const config = {
+	root: '../stories/',
+	previewFilename: 'App.svelte',
+	readmeFilename: 'README.md',
+	metadataFilename: 'meta.json',
+	partialFolder: 'pre',
+	solutionFolder: 'src'
+}
+// export const storyFiles = { modules, samples }
+export const guide = assimilateTutorials(modules, samples, config)
+export const media = watchMedia(mediaqueries)
+// export const content = getTutorials({
+// 	rootFolder: 'stories',
+// 	tutorialMetadata: 'src/lib/tutorials.json'
+// })

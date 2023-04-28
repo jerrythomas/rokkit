@@ -6,7 +6,7 @@ import path from 'path'
  * @param {string} folderPath - The folder to search in.
  * @param {RegExp} pattern - The pattern to match the file names.
  * @param {string} [dir=''] - The current directory, used for recursion.
- * @returns {Promise<Array>} - An array of matched files.
+ * @returns {Promise<Array<import('./types.js').FileMetadata>>} - An array of matched files.
  */
 export async function getFiles(folderPath, pattern = null, dir = '') {
 	const entries = await fs.promises.readdir(path.join(folderPath, dir), {
@@ -32,19 +32,22 @@ export async function getFiles(folderPath, pattern = null, dir = '') {
 	return Array.prototype.concat(...files).filter(Boolean)
 }
 
-// convert array of files into nested array of files based on path
-// ex { path: 'a/b/c', content: '...' } => [ {name: a, type: folder, children: [{ name: b, type:folder, children: [{ name: c, content: '...' }]}] }]
-
+/**
+ * Converts a flat array of file metadata into a nested array of file metadata.
+ *
+ * @param {Array<import('./types.js').FileMetadata>} files - Flat Array of file metadata
+ * @returns {Array<import('./types.js').FileMetadata>} - Nested Array of file metadata
+ */
 export function folderHierarchy(files) {
 	const result = files.reduce((acc, file) => {
-		const parts = file.path.split(path.sep)
+		const parts = file.path.split('/')
 		let current = acc
 		parts.forEach((part, index) => {
 			let child = current.find((item) => item.name === part)
 			if (!child && part != '') {
 				child = {
 					name: part,
-					path: parts.slice(0, index).join(path.sep),
+					path: parts.slice(0, index).join('/'),
 					type: 'folder',
 					children: []
 				}
@@ -57,3 +60,25 @@ export function folderHierarchy(files) {
 	}, [])
 	return result
 }
+
+// export function filesToNestedArray(files) {
+// 	let data = []
+
+// 	files.forEach((item) => {
+// 		let current = data
+// 		let parts = item.path.split('/')
+// 		parts.forEach((part, index) => {
+// 			let element = current.find((element) => element.name == part)
+// 			if (!element) {
+// 				element = { name: part, type: 'folder' }
+// 				current.push(element)
+// 			}
+// 			current = element
+// 			if (index == parts.length - 1) {
+// 				if (!current.files) current.files = []
+// 				current.files.push(item)
+// 			}
+// 		})
+// 	})
+// 	return data
+// }

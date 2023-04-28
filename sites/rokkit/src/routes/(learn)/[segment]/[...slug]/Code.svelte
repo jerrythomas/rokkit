@@ -1,5 +1,5 @@
 <script>
-	import { Tree, BreadCrumbs } from '@rokkit/core'
+	import { Tree } from '@rokkit/core'
 	import { CodeSnippet } from '@rokkit/markdown'
 	import { getContext } from 'svelte'
 
@@ -24,11 +24,12 @@
 	$: codeVisible = $media.large || active === 'code'
 	$: filesVisible = $media.large || active !== 'code'
 	$: hasFiles = $story.files && $story.files.length > 0
-	$: if (hasFiles) currentFile = $story.files[0]
+	$: if (hasFiles) currentFile = $story.files[0].children[0]
 	$: if (currentFile && currentFile.content) {
 		code = currentFile.content
 		language = currentFile.type
 	}
+	// $: console.log($story.files)
 </script>
 
 {#if hasFiles}
@@ -37,7 +38,7 @@
 		class="flex px-4 bg-skin-subtle border-t border-t-skin-inset text-sm w-full h-8 cursor-pointer items-center lg:hidden"
 		on:click={() => (active = active == 'code' ? 'files' : 'code')}
 	>
-		{'src/' + currentFile.path + currentFile.name}
+		{[currentFile.path, currentFile.name].join('/')}
 	</nav>
 	<section class="flex flex-row w-full h-full overflow-auto relative">
 		<aside
@@ -47,9 +48,7 @@
 			<Tree
 				items={$story.files}
 				{fields}
-				linesVisible={true}
 				{icons}
-				root="src"
 				value={currentFile}
 				on:select={handleSelect}
 				class="folder-tree"

@@ -13,6 +13,9 @@ const config = {
 	],
 	kit: {
 		adapter: adapter()
+		// prerender: {
+		// 	entries: ['/tutorial/welcome/introduction']
+		// }
 	}
 }
 

@@ -5,7 +5,7 @@ import { toHyphenCase } from './string'
 const defaultOptions = {
 	notes: 'README.md',
 	preview: 'App.svelte',
-	metadata: 'meta.js'
+	metadata: 'meta.json'
 }
 
 export function getSequenceAndTitle(text) {
