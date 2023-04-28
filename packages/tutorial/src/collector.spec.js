@@ -1,3 +1,7 @@
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import fs from 'fs/promises'
+import { getFiles } from '../src/files'
+
 import {
 	getSequenceAndKey,
 	readFolderContent,
@@ -5,11 +9,9 @@ import {
 	getMetadata,
 	enrich,
 	transform,
+	removeInvalidEntries,
 	collectTutorials
 } from '../src/collector'
-import { getFiles } from '../src/files'
-import fs from 'fs/promises'
-import { describe, it, expect } from 'vitest'
 
 describe('collector', () => {
 	const enriched = [
@@ -212,24 +214,120 @@ describe('collector', () => {
 		})
 	})
 
+	describe('removeLeafNodesWithoutReadme', () => {
+		it('should remove leaf nodes without a README.md', () => {
+			let data = {
+				introduction: {
+					path: '01-introduction'
+				},
+				bar: {
+					children: {
+						baz: {
+							name: 'README.md',
+							path: '02-bar/03-baz',
+							title: 'Baz'
+						}
+					},
+					path: '02-bar',
+					title: 'Bar'
+				}
+			}
+			let result = removeInvalidEntries(data, {
+				readmeFilename: 'README.md'
+			})
+			expect(result.errors).toEqual([
+				{
+					key: 'introduction',
+					path: '01-introduction',
+					error: 'Each level should have a title or a name property.'
+				},
+				{
+					key: 'introduction',
+					path: '01-introduction',
+					error: 'Innermost level should have a readme'
+				}
+			])
+			expect(result.data).toEqual({
+				bar: {
+					children: {
+						baz: {
+							name: 'README.md',
+							path: '02-bar/03-baz',
+							title: 'Baz'
+						}
+					},
+					path: '02-bar',
+					title: 'Bar'
+				}
+			})
+		})
+		it('should remove nested nodes without a README at leaf nodes', () => {
+			let data = {
+				introduction: {
+					path: '01-introduction',
+					title: 'Introduction'
+				},
+				bar: {
+					children: {
+						baz: {
+							path: '02-bar/03-baz',
+							title: 'Baz'
+						}
+					},
+					path: '02-bar',
+					title: 'Bar'
+				}
+			}
+			let result = removeInvalidEntries(data, {
+				readmeFilename: 'README.md'
+			})
+			expect(result.errors).toEqual([
+				{
+					key: 'baz',
+					path: '02-bar/03-baz',
+					error: 'Innermost level should have a readme'
+				},
+				{
+					key: 'introduction',
+					path: '01-introduction',
+					error: 'Innermost level should have a readme'
+				},
+				{
+					key: 'bar',
+					path: '02-bar',
+					error: 'Empty folder'
+				}
+			])
+			expect(result.data).toEqual({})
+		})
+	})
 	describe('collectTutorials', () => {
+		afterEach(() => {
+			vi.resetAllMocks()
+		})
+
 		it('should collect tutorials and write them to the specified file', async () => {
 			const options = {
 				rootFolder: 'fixtures/tutorials',
 				tutorialMetadata: 'fixtures/tutorials.json'
 			}
 
+			console.info = vi.fn()
+			console.table = vi.fn()
+
 			await collectTutorials(options)
+			expect(console.info).toHaveBeenCalledWith('Invalid entries found:')
+			expect(console.table).toHaveBeenCalledWith([
+				{
+					key: 'introduction',
+					path: '01-introduction',
+					error: 'Innermost level should have a readme'
+				}
+			])
 
 			const writtenData = await fs.readFile(options.tutorialMetadata, 'utf-8')
 			const writtenTutorials = JSON.parse(writtenData)
 			const expectedTutorials = {
-				introduction: {
-					sequence: 1,
-					key: 'introduction',
-					title: 'Introduction',
-					path: '01-introduction'
-				},
 				bar: {
 					children: {
 						baz: {

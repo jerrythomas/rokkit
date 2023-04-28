@@ -1,455 +1,455 @@
 {
-  "overview": {
-    "sequence": 1,
-    "key": "overview",
-    "children": {
-      "introduction": {
-        "sequence": 1,
-        "key": "introduction",
-        "title": "Welcome to Rokkit",
-        "path": "01-overview/01-introduction",
-        "file": "README.md"
-      },
-      "getting-started": {
-        "sequence": 2,
-        "key": "getting-started",
-        "title": "Getting Started",
-        "path": "01-overview/02-getting-started",
-        "file": "README.md"
-      }
-    },
-    "title": "Overview",
-    "path": "01-overview"
-  },
-  "data-driven": {
-    "sequence": 2,
-    "key": "data-driven",
-    "children": {
-      "list": {
-        "sequence": 1,
-        "key": "list",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "List",
-            "path": "02-data-driven/01-list/01-intro",
-            "file": "README.md"
-          },
-          "object": {
-            "sequence": 2,
-            "key": "object",
-            "title": "Objects",
-            "path": "02-data-driven/01-list/02-object",
-            "file": "README.md"
-          },
-          "fields": {
-            "sequence": 3,
-            "key": "fields",
-            "title": "Fields",
-            "path": "02-data-driven/01-list/03-fields",
-            "file": "README.md"
-          },
-          "using": {
-            "sequence": 4,
-            "key": "using",
-            "title": "Using",
-            "path": "02-data-driven/01-list/04-using",
-            "file": "README.md"
-          },
-          "mixed": {
-            "sequence": 5,
-            "key": "mixed",
-            "title": "Mixed",
-            "path": "02-data-driven/01-list/05-mixed",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "List",
-        "icon": "list",
-        "description": "A collection of items that can be navigated as a list.",
-        "path": "02-data-driven/01-list"
-      },
-      "accordion": {
-        "sequence": 2,
-        "key": "accordion",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "Accordion",
-            "path": "02-data-driven/02-accordion/01-intro",
-            "file": "README.md"
-          },
-          "fields": {
-            "sequence": 2,
-            "key": "fields",
-            "title": "Fields",
-            "path": "02-data-driven/02-accordion/02-fields",
-            "file": "README.md"
-          },
-          "using": {
-            "sequence": 3,
-            "key": "using",
-            "title": "Using",
-            "path": "02-data-driven/02-accordion/03-using",
-            "file": "README.md"
-          },
-          "mixed": {
-            "sequence": 4,
-            "key": "mixed",
-            "title": "Mixed Content",
-            "path": "02-data-driven/02-accordion/04-mixed",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "Accordion",
-        "description": "A collection of items that can be expanded and collapsed.",
-        "icon": "accordion",
-        "path": "02-data-driven/02-accordion"
-      },
-      "tabs": {
-        "sequence": 3,
-        "key": "tabs",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "Tabs",
-            "path": "02-data-driven/03-tabs/01-intro",
-            "file": "README.md"
-          },
-          "object": {
-            "sequence": 2,
-            "key": "object",
-            "title": "Objects",
-            "path": "02-data-driven/03-tabs/02-object",
-            "file": "README.md"
-          },
-          "fields": {
-            "sequence": 3,
-            "key": "fields",
-            "title": "Fields",
-            "path": "02-data-driven/03-tabs/03-fields",
-            "file": "README.md"
-          },
-          "using": {
-            "sequence": 4,
-            "key": "using",
-            "title": "Using",
-            "path": "02-data-driven/03-tabs/04-using",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "Tabs",
-        "icon": "tabs",
-        "description": "A set of tabs that can be navigated.",
-        "path": "02-data-driven/03-tabs"
-      },
-      "select": {
-        "sequence": 4,
-        "key": "select",
-        "children": {
-          "properties": {
-            "sequence": 1,
-            "key": "properties",
-            "title": "Select",
-            "path": "02-data-driven/04-select/01-properties",
-            "file": "README.md"
-          },
-          "fields": {
-            "sequence": 2,
-            "key": "fields",
-            "title": "Fields",
-            "path": "02-data-driven/04-select/02-fields",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "Select",
-        "icon": "select",
-        "description": "Input component that allows users to choose one value from a list of options.",
-        "path": "02-data-driven/04-select"
-      },
-      "drop-down": {
-        "sequence": 5,
-        "key": "drop-down",
-        "children": {
-          "properties": {
-            "sequence": 1,
-            "key": "properties",
-            "title": "Select",
-            "path": "02-data-driven/05-drop-down/01-properties",
-            "file": "README.md"
-          },
-          "fields": {
-            "sequence": 2,
-            "key": "fields",
-            "title": "Fields",
-            "path": "02-data-driven/05-drop-down/02-fields",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "DropDown",
-        "icon": "drop-down",
-        "description": "Component that allows users to choose one value from a list of options.",
-        "path": "02-data-driven/05-drop-down"
-      },
-      "multi-select": {
-        "sequence": 6,
-        "key": "multi-select",
-        "children": {
-          "properties": {
-            "sequence": 1,
-            "key": "properties",
-            "title": "MultiSelect",
-            "path": "02-data-driven/06-multi-select/01-properties",
-            "file": "README.md"
-          },
-          "fields": {
-            "sequence": 2,
-            "key": "fields",
-            "title": "Fields",
-            "path": "02-data-driven/06-multi-select/02-fields",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "MultiSelect",
-        "icon": "input-select",
-        "description": "Input component that allows users to choose one or more value from a list of options.",
-        "path": "02-data-driven/06-multi-select"
-      },
-      "tree": {
-        "sequence": 7,
-        "key": "tree",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "NestedList",
-            "path": "02-data-driven/07-tree/01-intro",
-            "file": "README.md"
-          },
-          "root": {
-            "sequence": 2,
-            "key": "root",
-            "title": "Introduction",
-            "path": "02-data-driven/07-tree/02-root",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "Tree",
-        "icon": "tree",
-        "description": "A tree of items that can be expanded and collapsed.",
-        "path": "02-data-driven/07-tree"
-      }
-    },
-    "title": "Data Driven Components",
-    "path": "02-data-driven"
-  },
-  "input": {
-    "sequence": 3,
-    "key": "input",
-    "children": {
-      "switch": {
-        "sequence": 1,
-        "key": "switch",
-        "children": {
-          "properties": {
-            "sequence": 1,
-            "key": "properties",
-            "title": "Switch",
-            "path": "03-input/01-switch/01-properties",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "Switch",
-        "icon": "switch",
-        "description": "A switch that can be toggled on or off.",
-        "path": "03-input/01-switch"
-      },
-      "rating": {
-        "sequence": 2,
-        "key": "rating",
-        "children": {
-          "properties": {
-            "sequence": 1,
-            "key": "properties",
-            "title": "Rating",
-            "path": "03-input/02-rating/01-properties",
-            "file": "README.md"
-          },
-          "icons": {
-            "sequence": 2,
-            "key": "icons",
-            "title": "InputField",
-            "path": "03-input/02-rating/02-icons",
-            "file": "README.md"
-          }
-        },
-        "category": "Selection",
-        "name": "Rating",
-        "icon": "rating",
-        "description": "An input component that allows selection of a rating value using icons.",
-        "path": "03-input/02-rating"
-      },
-      "range": {
-        "sequence": 3,
-        "key": "range",
-        "children": {
-          "properties": {
-            "sequence": 1,
-            "key": "properties",
-            "title": "Range",
-            "path": "03-input/03-range/01-properties",
-            "file": "README.md"
-          },
-          "ticks": {
-            "sequence": 2,
-            "key": "ticks",
-            "title": "Steps",
-            "path": "03-input/03-range/02-ticks",
-            "file": "README.md"
-          },
-          "labels": {
-            "sequence": 3,
-            "key": "labels",
-            "title": "Labels",
-            "path": "03-input/03-range/03-labels",
-            "file": "README.md"
-          }
-        },
-        "category": "Input",
-        "name": "Range",
-        "icon": "range",
-        "description": "A range input that allows users to select a value from a range.",
-        "path": "03-input/03-range"
-      }
-    }
-  },
-  "layout": {
-    "sequence": 6,
-    "key": "layout",
-    "children": {
-      "field-layout": {
-        "sequence": 1,
-        "key": "field-layout",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "FieldLayout",
-            "path": "06-layout/01-field-layout/01-intro",
-            "file": "README.md"
-          }
-        },
-        "category": "Layout",
-        "name": "FieldLayout",
-        "description": "A layout component for fields in a form.",
-        "icon": "split-view",
-        "path": "06-layout/01-field-layout"
-      },
-      "nav-content": {
-        "sequence": 2,
-        "key": "nav-content",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "Content Navigator",
-            "path": "06-layout/02-nav-content/01-intro",
-            "file": "README.md"
-          }
-        },
-        "category": "Navigation",
-        "name": "NavContent",
-        "icon": "nav-content",
-        "labs": true,
-        "description": "A set of content that can be navigated.",
-        "path": "06-layout/02-nav-content"
-      },
-      "responsive-grid": {
-        "sequence": 3,
-        "key": "responsive-grid",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "Responsive Grid",
-            "path": "06-layout/03-responsive-grid/01-intro",
-            "file": "README.md"
-          },
-          "Four": {
-            "sequence": 2,
-            "key": "Four",
-            "title": "Introduction",
-            "path": "06-layout/03-responsive-grid/02-Four",
-            "file": "README.md"
-          }
-        },
-        "category": "Layout",
-        "name": "ResponsiveGrid",
-        "icon": "responsive-grid",
-        "labs": true,
-        "description": "A grid of items that can be navigated as a list.",
-        "path": "06-layout/03-responsive-grid"
-      },
-      "stepper": {
-        "sequence": 4,
-        "key": "stepper",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "Stepper",
-            "path": "06-layout/04-stepper/01-intro",
-            "file": "README.md"
-          }
-        },
-        "category": "Navigation",
-        "name": "Stepper",
-        "icon": "stepper",
-        "description": "A set of steps that can be navigated.",
-        "path": "06-layout/04-stepper"
-      }
-    }
-  },
-  "chart-elements": {
-    "sequence": 10,
-    "key": "chart-elements",
-    "children": {
-      "patterns": {
-        "sequence": 2,
-        "key": "patterns",
-        "children": {
-          "intro": {
-            "sequence": 1,
-            "key": "intro",
-            "title": "Patterns",
-            "path": "10-chart-elements/02-patterns/01-intro",
-            "file": "README.md"
-          },
-          "colors": {
-            "sequence": 2,
-            "key": "colors",
-            "title": "Colors",
-            "path": "10-chart-elements/02-patterns/02-colors",
-            "file": "README.md"
-          }
-        },
-        "category": "Chart",
-        "name": "Pattern",
-        "labs": true,
-        "description": "Various fill patterns for use with chart elements.",
-        "path": "10-chart-elements/02-patterns"
-      }
-    }
-  }
+	"overview": {
+		"sequence": 1,
+		"key": "overview",
+		"children": {
+			"introduction": {
+				"sequence": 1,
+				"key": "introduction",
+				"title": "Welcome to Rokkit",
+				"path": "01-overview/01-introduction",
+				"file": "README.md"
+			},
+			"getting-started": {
+				"sequence": 2,
+				"key": "getting-started",
+				"title": "Getting Started",
+				"path": "01-overview/02-getting-started",
+				"file": "README.md"
+			}
+		},
+		"title": "Overview",
+		"path": "01-overview"
+	},
+	"data-driven": {
+		"sequence": 2,
+		"key": "data-driven",
+		"children": {
+			"list": {
+				"sequence": 1,
+				"key": "list",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "List",
+						"path": "02-data-driven/01-list/01-intro",
+						"file": "README.md"
+					},
+					"object": {
+						"sequence": 2,
+						"key": "object",
+						"title": "Objects",
+						"path": "02-data-driven/01-list/02-object",
+						"file": "README.md"
+					},
+					"fields": {
+						"sequence": 3,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/01-list/03-fields",
+						"file": "README.md"
+					},
+					"using": {
+						"sequence": 4,
+						"key": "using",
+						"title": "Using",
+						"path": "02-data-driven/01-list/04-using",
+						"file": "README.md"
+					},
+					"mixed": {
+						"sequence": 5,
+						"key": "mixed",
+						"title": "Mixed",
+						"path": "02-data-driven/01-list/05-mixed",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "List",
+				"icon": "list",
+				"description": "A collection of items that can be navigated as a list.",
+				"path": "02-data-driven/01-list"
+			},
+			"accordion": {
+				"sequence": 2,
+				"key": "accordion",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Accordion",
+						"path": "02-data-driven/02-accordion/01-intro",
+						"file": "README.md"
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/02-accordion/02-fields",
+						"file": "README.md"
+					},
+					"using": {
+						"sequence": 3,
+						"key": "using",
+						"title": "Using",
+						"path": "02-data-driven/02-accordion/03-using",
+						"file": "README.md"
+					},
+					"mixed": {
+						"sequence": 4,
+						"key": "mixed",
+						"title": "Mixed Content",
+						"path": "02-data-driven/02-accordion/04-mixed",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "Accordion",
+				"description": "A collection of items that can be expanded and collapsed.",
+				"icon": "accordion",
+				"path": "02-data-driven/02-accordion"
+			},
+			"tabs": {
+				"sequence": 3,
+				"key": "tabs",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Tabs",
+						"path": "02-data-driven/03-tabs/01-intro",
+						"file": "README.md"
+					},
+					"object": {
+						"sequence": 2,
+						"key": "object",
+						"title": "Objects",
+						"path": "02-data-driven/03-tabs/02-object",
+						"file": "README.md"
+					},
+					"fields": {
+						"sequence": 3,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/03-tabs/03-fields",
+						"file": "README.md"
+					},
+					"using": {
+						"sequence": 4,
+						"key": "using",
+						"title": "Using",
+						"path": "02-data-driven/03-tabs/04-using",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "Tabs",
+				"icon": "tabs",
+				"description": "A set of tabs that can be navigated.",
+				"path": "02-data-driven/03-tabs"
+			},
+			"select": {
+				"sequence": 4,
+				"key": "select",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Select",
+						"path": "02-data-driven/04-select/01-properties",
+						"file": "README.md"
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/04-select/02-fields",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "Select",
+				"icon": "select",
+				"description": "Input component that allows users to choose one value from a list of options.",
+				"path": "02-data-driven/04-select"
+			},
+			"drop-down": {
+				"sequence": 5,
+				"key": "drop-down",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Select",
+						"path": "02-data-driven/05-drop-down/01-properties",
+						"file": "README.md"
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/05-drop-down/02-fields",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "DropDown",
+				"icon": "drop-down",
+				"description": "Component that allows users to choose one value from a list of options.",
+				"path": "02-data-driven/05-drop-down"
+			},
+			"multi-select": {
+				"sequence": 6,
+				"key": "multi-select",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "MultiSelect",
+						"path": "02-data-driven/06-multi-select/01-properties",
+						"file": "README.md"
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/06-multi-select/02-fields",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "MultiSelect",
+				"icon": "input-select",
+				"description": "Input component that allows users to choose one or more value from a list of options.",
+				"path": "02-data-driven/06-multi-select"
+			},
+			"tree": {
+				"sequence": 7,
+				"key": "tree",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "NestedList",
+						"path": "02-data-driven/07-tree/01-intro",
+						"file": "README.md"
+					},
+					"root": {
+						"sequence": 2,
+						"key": "root",
+						"title": "Introduction",
+						"path": "02-data-driven/07-tree/02-root",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "Tree",
+				"icon": "tree",
+				"description": "A tree of items that can be expanded and collapsed.",
+				"path": "02-data-driven/07-tree"
+			}
+		},
+		"title": "Data Driven Components",
+		"path": "02-data-driven"
+	},
+	"input": {
+		"sequence": 3,
+		"key": "input",
+		"children": {
+			"switch": {
+				"sequence": 1,
+				"key": "switch",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Switch",
+						"path": "03-input/01-switch/01-properties",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "Switch",
+				"icon": "switch",
+				"description": "A switch that can be toggled on or off.",
+				"path": "03-input/01-switch"
+			},
+			"rating": {
+				"sequence": 2,
+				"key": "rating",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Rating",
+						"path": "03-input/02-rating/01-properties",
+						"file": "README.md"
+					},
+					"icons": {
+						"sequence": 2,
+						"key": "icons",
+						"title": "InputField",
+						"path": "03-input/02-rating/02-icons",
+						"file": "README.md"
+					}
+				},
+				"category": "Selection",
+				"name": "Rating",
+				"icon": "rating",
+				"description": "An input component that allows selection of a rating value using icons.",
+				"path": "03-input/02-rating"
+			},
+			"range": {
+				"sequence": 3,
+				"key": "range",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Range",
+						"path": "03-input/03-range/01-properties",
+						"file": "README.md"
+					},
+					"ticks": {
+						"sequence": 2,
+						"key": "ticks",
+						"title": "Steps",
+						"path": "03-input/03-range/02-ticks",
+						"file": "README.md"
+					},
+					"labels": {
+						"sequence": 3,
+						"key": "labels",
+						"title": "Labels",
+						"path": "03-input/03-range/03-labels",
+						"file": "README.md"
+					}
+				},
+				"category": "Input",
+				"name": "Range",
+				"icon": "range",
+				"description": "A range input that allows users to select a value from a range.",
+				"path": "03-input/03-range"
+			}
+		}
+	},
+	"layout": {
+		"sequence": 6,
+		"key": "layout",
+		"children": {
+			"field-layout": {
+				"sequence": 1,
+				"key": "field-layout",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "FieldLayout",
+						"path": "06-layout/01-field-layout/01-intro",
+						"file": "README.md"
+					}
+				},
+				"category": "Layout",
+				"name": "FieldLayout",
+				"description": "A layout component for fields in a form.",
+				"icon": "split-view",
+				"path": "06-layout/01-field-layout"
+			},
+			"nav-content": {
+				"sequence": 2,
+				"key": "nav-content",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Content Navigator",
+						"path": "06-layout/02-nav-content/01-intro",
+						"file": "README.md"
+					}
+				},
+				"category": "Navigation",
+				"name": "NavContent",
+				"icon": "nav-content",
+				"labs": true,
+				"description": "A set of content that can be navigated.",
+				"path": "06-layout/02-nav-content"
+			},
+			"responsive-grid": {
+				"sequence": 3,
+				"key": "responsive-grid",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Responsive Grid",
+						"path": "06-layout/03-responsive-grid/01-intro",
+						"file": "README.md"
+					},
+					"Four": {
+						"sequence": 2,
+						"key": "Four",
+						"title": "Introduction",
+						"path": "06-layout/03-responsive-grid/02-Four",
+						"file": "README.md"
+					}
+				},
+				"category": "Layout",
+				"name": "ResponsiveGrid",
+				"icon": "responsive-grid",
+				"labs": true,
+				"description": "A grid of items that can be navigated as a list.",
+				"path": "06-layout/03-responsive-grid"
+			},
+			"stepper": {
+				"sequence": 4,
+				"key": "stepper",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Stepper",
+						"path": "06-layout/04-stepper/01-intro",
+						"file": "README.md"
+					}
+				},
+				"category": "Navigation",
+				"name": "Stepper",
+				"icon": "stepper",
+				"description": "A set of steps that can be navigated.",
+				"path": "06-layout/04-stepper"
+			}
+		}
+	},
+	"chart-elements": {
+		"sequence": 10,
+		"key": "chart-elements",
+		"children": {
+			"patterns": {
+				"sequence": 2,
+				"key": "patterns",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Patterns",
+						"path": "10-chart-elements/02-patterns/01-intro",
+						"file": "README.md"
+					},
+					"colors": {
+						"sequence": 2,
+						"key": "colors",
+						"title": "Colors",
+						"path": "10-chart-elements/02-patterns/02-colors",
+						"file": "README.md"
+					}
+				},
+				"category": "Chart",
+				"name": "Pattern",
+				"labs": true,
+				"description": "Various fill patterns for use with chart elements.",
+				"path": "10-chart-elements/02-patterns"
+			}
+		}
+	}
 }

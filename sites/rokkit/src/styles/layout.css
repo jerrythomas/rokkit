@@ -1,7 +1,0 @@
-.three-col.md {
-	grid-template-columns: 25rem auto;
-}
-
-.three-col.lg {
-	grid-template-columns: 25rem 30rem auto;
-}

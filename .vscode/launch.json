@@ -11,6 +11,15 @@
         "type": "node"
     },
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Attach to Vitest",
+      "skipFiles": [ "<node_internals>/**" ],
+      "runtimeExecutable": "/Users/Jerry/.nvm/versions/node/v16.15.0/bin/node",
+      "program": "${workspaceFolder}/packages/tutorial/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${relativeFile}"],
+    },
+    {
         "name": "Attach to Chrome",
         "port": 5173,
         "request": "attach",

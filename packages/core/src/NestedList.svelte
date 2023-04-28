@@ -67,6 +67,7 @@
 				bind:value
 				{fields}
 				{using}
+				{icons}
 				types={[...connectors, type, nodeTypes[index]]}
 				{linesVisible}
 				hierarchy={path}

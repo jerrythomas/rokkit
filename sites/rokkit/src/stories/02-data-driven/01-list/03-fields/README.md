@@ -2,9 +2,9 @@
 title: Fields
 ---
 
-# {title}
+## {title}
 
-List is flexible and can adapt to your data structure. Instead of altering your attributes
+The List component is flexible and can adapt to your data structure. Instead of altering your attributes
 to conform to the List's structure, you can use the `fields` property to specify which attributes
 should be used by the List component.
 

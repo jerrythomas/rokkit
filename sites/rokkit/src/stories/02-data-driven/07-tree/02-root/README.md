@@ -1,11 +1,8 @@
 ---
-title: Introduction
+title: Root
 ---
 
-# {title}
-
-A tree is an extension of a [NestedList](/nestedlist) with a single root node. If items array has more than one item,
-a default root item will be added.
+A tree is an extension of a [NestedList](/nestedlist) with a single root node. If items array has more than one item, a default root item will be added.
 
 ## Basic Usage
 

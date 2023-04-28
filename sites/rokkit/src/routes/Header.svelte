@@ -1,8 +1,9 @@
 <script>
 	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
+	import { Icon } from '@rokkit/core'
 	import { getContext } from 'svelte'
-	let site = getContext('site')
+	const site = getContext('site')
 
 	function toggle() {
 		$site.sidebar = !$site.sidebar
@@ -14,11 +15,12 @@
 <header
 	class="flex min-h-14 w-full bg-skin-subtle items-center justify-between relative shadow-md"
 >
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="flex items-center md:px-2">
-		<div on:click={toggle} class="flex p-4 justify-center cursor-pointer">
-			<icon class="i-rokkit:menu" />
-		</div>
+	<div class="flex items-center px-4 gap-2">
+		<Icon
+			name="i-rokkit:menu"
+			class="border-r border-r-skin-subtle cursor-pointer"
+			on:click={toggle}
+		/>
 		<a href="/" class="flex items-center">
 			{#if $media.small}
 				<img src="/rokkit-icon.svg" alt="Rokkit Logo" class="h-12" />

@@ -1,5 +1,5 @@
 ---
-title: Welcome to Rokkit
+title: Introduction
 ---
 
 Welcome to the Rokkit tutorial! This will teach you everything you need to know to simplify your workflow of building data-driven web applications.

@@ -2,7 +2,7 @@
 title: Fields
 ---
 
-# {title}
+## {title}
 
 The Select component is flexible and can adapt to your data structure. Instead of altering your attributes
 to conform to the expected structure, you can use the `fields` property to specify which attributes
@@ -17,7 +17,7 @@ A snippet of one of the items is below
 }
 ```
 
-In this we want to show `name` and the `photo` attributes as the text and image respectively.
+In this example, we want to show `name` and the `photo` attributes as the text and image respectively.
 To do this we can configure fields as below
 
 ```js

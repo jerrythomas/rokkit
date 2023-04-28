@@ -1,19 +1,18 @@
 ---
-title: Mixed
+title: Advanced
 ---
 
-# {title}
+## {title}
 
 Sometimes, we may want to use different views for different items. This can be achieved by setting
 both fields and using properties.
 
 Let's say that we want to show a larger image with some descriptive text for some of the items,
-and for some of them we want the image to be on the left and for some we wnat it on the right.
-This simple variation can be done using css, but in this case we are going to create two custom
+and for some of them, we want the image to be on the left and for some we want it on the right.
+This simple variation can be done using `css`, but in this case, we are going to create two custom
 components, Odd & Even.
 
-We will be using the following configuration to tell list to use the 'type' attribute to identify
-the component to be used.
+We will be using the following configuration to tell the `list` to use the `type` attribute to identify the component to be used.
 
 ```js
 let fields = { component: 'type' }

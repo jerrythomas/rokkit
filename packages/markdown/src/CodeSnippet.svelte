@@ -1,11 +1,12 @@
 <script>
 	import * as prism from 'prismjs'
-	// import 'prism-svelte'
 
+	let className
+	export { className as class }
 	export let code
 	export let language
 
 	$: parsed = prism.highlight(code, prism.languages[language], language)
 </script>
 
-<pre class="language-{language} w-full"><code>{@html parsed}</code></pre>
+<pre class="language-{language} {className}"><code>{@html parsed}</code></pre>

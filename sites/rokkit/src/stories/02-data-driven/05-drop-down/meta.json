@@ -1,6 +1,5 @@
 {
 	"category": "Selection",
 	"title": "DropDown",
-	"icon": "drop-down",
 	"description": "Component that allows users to choose one value from a list of options."
 }
