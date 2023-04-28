@@ -1,9 +1,7 @@
 ---
-title: InputField
+title: Custom Icons
 ---
 
-# {title}
+## {title}
 
-InputField wraps input, label and instructions/validation messages together.
-
-A simple example is shown here.
+The rating component can use custom icons. As you can see here we have swapped the stars for hearts.

@@ -6,13 +6,13 @@ describe('flattenNestedList', () => {
 		const items = [
 			{
 				id: 1,
-				children: [
+				data: [
 					{
 						id: 2,
-						children: [
+						data: [
 							{
 								id: 3,
-								children: []
+								data: []
 							}
 						]
 					}

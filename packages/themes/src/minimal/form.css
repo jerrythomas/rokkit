@@ -1,5 +1,5 @@
 .minimal button {
-	@apply rounded leading-loose select-none;
+	@apply rounded leading-loose select-none px-2;
 	@apply bg-skin-muted border border-skin-muted;
 }
 .minimal button icon-left,
@@ -15,12 +15,12 @@
 }
 
 .minimal button-group {
-	@apply rounded-sm overflow-clip shadow;
+	@apply flex justify-center rounded-sm gap-1px;
 }
 .minimal button-group button {
 	@apply border-skin-400 border-none rounded-none;
-	@apply bg-skin-subtle;
-	@apply uppercase text-sm text-skin-800 leading-8;
+	@apply bg-skin-subtle shadow focus:outline-none;
+	@apply uppercase text-sm text-skin-800 leading-8 px-2;
 }
 .minimal button-group button:not(:last-child) {
 	@apply border-r;
@@ -40,8 +40,8 @@
 	@apply focus:outline-none;
 }
 .minimal input-select > selected-item {
-	@apply leading-8 gap-4 items-center pl-2 min-h-8;
-	@apply border-b-2 border-b-skin-subtle;
+	@apply leading-8 gap-4 items-center pl-2 min-h-8 cursor-pointer select-none;
+	@apply border-b-2 border-b-skin-muted;
 	@apply focus:border-b-secondary-600;
 }
 .minimal input-select:focus > selected-item {

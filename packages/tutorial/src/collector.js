@@ -2,8 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import frontmatter from 'frontmatter'
 import { omit } from 'ramda'
-// import { getFiles } from './files.js'
-// import path from 'path'
+
 import { getFiles, folderHierarchy } from './files.js'
 
 const extractors = {
@@ -72,7 +71,6 @@ function addPart(data, item, index) {
 export async function getMetadata(rootFolder, item) {
 	const filePath = path.join(rootFolder, item.path, item.name)
 
-	// console.log(filePath)
 	let metadata = {}
 	if (item.type in extractors) {
 		try {
@@ -98,7 +96,6 @@ export async function readFolderContent(folder) {
 		file.content = await fs.promises.readFile(filePath, 'utf-8')
 	}
 
-	// console.log('hierarchy', JSON.stringify(folderHierarchy(files), null, 2))
 	return files
 }
 
@@ -107,10 +104,6 @@ export async function getFolder(baseFolder, folder) {
 	if (!fs.existsSync(folderPath)) return null
 
 	const files = await readFolderContent(folderPath)
-	// .map((file) => ({
-	// 	...file,
-	// 	path: path.join(folder, file.path)
-	// }))
 
 	if (files.length === 0) return null
 
@@ -158,6 +151,43 @@ export function transform(data) {
 	return result
 }
 
+export function removeInvalidEntries(data, options) {
+	let errors = []
+	let invalid = []
+
+	for (const key in data) {
+		if (!data[key].title && !data[key].name) {
+			invalid.push({
+				key,
+				path: data[key].path,
+				error: 'Each level should have a title or a name property.'
+			})
+		}
+		if (data[key].children) {
+			let result = removeInvalidEntries(data[key].children, options)
+			data[key].children = result.data
+			if (Object.keys(data[key].children).length === 0) {
+				invalid.push({ key, path: data[key].path, error: 'Empty folder' })
+			}
+			errors = [...errors, ...result.errors]
+		} else if (data[key].name !== options.readmeFilename) {
+			invalid.push({
+				key,
+				path: data[key].path,
+				error: 'Innermost level should have a readme'
+			})
+		}
+	}
+
+	return {
+		data: omit(
+			invalid.map(({ key }) => key),
+			data
+		),
+		errors: [...errors, ...invalid]
+	}
+}
+
 /**
  *
  * @param {import('./types').TutorialOptions} options
@@ -182,7 +212,6 @@ export async function collectTutorials(options) {
 		tutorials.map(async (item) => {
 			const tutorialFolder = path.join(config.rootFolder, item.path)
 			if (item.name === 'README.md') {
-				// item.readme = path.join(tutorialFolder, item.name)
 				item.before = await getFolder(tutorialFolder, config.partialFolder)
 				item.after = await getFolder(tutorialFolder, config.solutionFolder)
 			}
@@ -191,7 +220,13 @@ export async function collectTutorials(options) {
 		})
 	)
 	tutorials = transform(tutorials)
+	let result = removeInvalidEntries(tutorials, config)
 
-	const data = JSON.stringify(tutorials, null, 2)
+	if (result.errors.length > 0) {
+		console.info('Invalid entries found:')
+		console.table(result.errors)
+	}
+
+	const data = JSON.stringify(result.data, null, 2)
 	return fs.promises.writeFile(config.tutorialMetadata, data, 'utf-8')
 }

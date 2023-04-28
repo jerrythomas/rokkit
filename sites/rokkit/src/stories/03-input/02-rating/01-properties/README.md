@@ -1,8 +1,6 @@
 ---
-title: Rating
+title: Introduction
 ---
-
-# {title}
 
 An input to provide rating values. Recommended for use when values are less than 10. For larger values, use the range slider component.
 

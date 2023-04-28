@@ -2,14 +2,14 @@
 title: Mixed Content
 ---
 
-# {title}
+## {title}
 
 We generally have homogeneous content, but what if we wanted to show content in a different way based
 on an attribute in the data?
 
 Let's say that we want to show a larger image with some descriptive text for some of the items,
-and for some of them we want the image to be on the left and for some we wnat it on the right.
-This simple variation can be done using css, but in this case we are going to create two custom
+and for some of them, we want the image to be on the left and for some we want it on the right.
+This simple variation can be done using CSS, but in this case, we are going to create two custom
 components, Odd & Even.
 
 We will be using the following configuration to tell accordion to use the 'type' attribute to identify

@@ -1,11 +1,8 @@
 ---
-title: MultiSelect
+title: Introduction
 ---
 
-# {title}
-
-Input component that allows users to choose multiple values from a list of options. This component has properties
-and behaviour similar to the list component.
+Input component that allows users to choose multiple values from a list of options. This component has properties and behaviour similar to the list component.
 
 ## Properties
 

@@ -1,5 +1,6 @@
 export * from './constants'
 export * from './items'
+export * from './lib'
 
 export { default as Icon } from './Icon.svelte'
 // export { default as List } from './List-Discard.svelte'

@@ -1,8 +1,6 @@
 ---
-title: Select
+title: Introduction
 ---
-
-# {title}
 
 Input component that allows users to choose one value from a list of options. This component has properties
 and behaviour similar to the list component.

@@ -1,10 +1,11 @@
 import { omit } from 'ramda'
+import { defaultFields } from '../constants'
+// const defaultFields = {
+// 	children: 'children',
+// 	level: 'level',
+// 	parent: 'parent'
+// }
 
-const defaultFields = {
-	children: 'children',
-	level: 'level',
-	parent: 'parent'
-}
 export function flattenNestedList(items, fields = defaultFields, level = 0) {
 	fields = { ...defaultFields, ...fields }
 	let data = []
@@ -21,4 +22,29 @@ export function flattenNestedList(items, fields = defaultFields, level = 0) {
 		]
 	})
 	return data
+}
+
+/**
+ * Converts a path slug to a value in the menu
+ *
+ * @param {string} slug
+ * @returns {any}
+ */
+export function findValueFromPath(slug, data, fields) {
+	fields = { ...defaultFields, ...fields }
+	const keys = slug.split('/')
+	let items = data
+	let value = null
+	keys.map((key, index) => {
+		const match = items.find((item) => item[fields.key] === key)
+		if (match) {
+			if (index < keys.length - 1) {
+				match[fields.isOpen] = true
+				items = match[fields.children]
+			} else {
+				value = match
+			}
+		}
+	})
+	return value
 }

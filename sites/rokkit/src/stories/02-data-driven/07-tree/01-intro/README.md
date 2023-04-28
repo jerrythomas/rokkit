@@ -1,12 +1,8 @@
 ---
-title: NestedList
+title: Introduction
 ---
 
-# {title}
-
-A nested list consists of multiple sections, each section contains a heading and content.
-Content can be nested further multiple levels. Users can click on the headings to expand
-or collapse a section revealing the content within. This can be used for
+A nested list consists of multiple sections, each section contains a heading and content. Content can be nested further. Users can click on the headings to expand or collapse a section revealing the content within. This can be used for
 
 Some of the notable features of this component are:
 

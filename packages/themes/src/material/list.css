@@ -1,6 +1,13 @@
 .material accordion,
 .material list {
-	@apply rounded;
+	@apply rounded  gap-1px;
+}
+.material item {
+	@apply flex bg-skin-subtle items-center gap-2 px-2 h-8;
+}
+.material item > img,
+.material item > a > img {
+	@apply w-4 h-4 rounded;
 }
 .material item.is-hovering {
 	@apply bg-primary-500;
@@ -8,7 +15,7 @@
 
 .material item.is-selected,
 .material node.is-selected {
-	@apply border-l-4 border-l-primary-500;
+	@apply bg-primary text-primary-50;
 }
 
 .material tabs item.is-selected {
@@ -22,4 +29,37 @@
 .material accordion .is-selected summary {
 	@apply border-b-primary-500 border-b text-primary-600;
 	@apply hover:text-primary-600;
+}
+
+.material node {
+	@apply gap-1 h-7 px-2;
+}
+.material node > span {
+	@apply w-3;
+}
+.material node > span > icon {
+	@apply text-sm;
+}
+
+.material nested-list:focus-within {
+	@apply outline-none;
+}
+/* .material node.is-selected p,
+.material node.is-selected icon {
+	@apply bg-primary text-primary-800;
+	@apply hover:bg-secondary;
+} */
+.material .folder-tree {
+	@apply h-full bg-skin-inset min-w-40;
+}
+
+.material node > span > i {
+	@apply border-skin-muted;
+}
+
+.material crumbs {
+	@apply flex-grow gap-1 text-sm;
+}
+.material crumbs crumb.is-selected {
+	@apply text-secondary;
 }

@@ -1,26 +1,26 @@
 {
-  "intro": {
-    "sequence": 1,
-    "key": "intro",
-    "route": "intro",
-    "title": "Introduction",
-    "path": "01-intro"
-  },
-  "bar": {
-    "sequence": 2,
-    "key": "bar",
-    "route": "bar",
-    "children": {
-      "baz": {
-        "sequence": 3,
-        "key": "baz",
-        "route": "bar/baz",
-        "title": "Baz",
-        "path": "02-bar/03-baz",
-        "file": "README.md"
-      }
-    },
-    "title": "Bar",
-    "path": "02-bar"
-  }
+	"intro": {
+		"sequence": 1,
+		"key": "intro",
+		"route": "intro",
+		"title": "Introduction",
+		"path": "01-intro"
+	},
+	"bar": {
+		"sequence": 2,
+		"key": "bar",
+		"route": "bar",
+		"children": {
+			"baz": {
+				"sequence": 3,
+				"key": "baz",
+				"route": "bar/baz",
+				"title": "Baz",
+				"path": "02-bar/03-baz",
+				"file": "README.md"
+			}
+		},
+		"title": "Bar",
+		"path": "02-bar"
+	}
 }

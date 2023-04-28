@@ -77,6 +77,8 @@ export const defaultOptions = {
  * @property {string} [notes='notes']
  * @property {string} [props='props']
  * @property {string} [isOpen='_open']       - Attribute to identify if the current item is open
+ * @property {string} [level='level']        - Attribute to identify level of current item
+ * @property {string} [parent='parent']      - Attribute to identify if the current item is a parent
  * @property {string} [isDeleted='_deleted'] - Attribute to identify if the current item is deleted
  * @property {FieldMapping} [fields?]        - Field mapping to be used on children in the next level
  */
@@ -93,7 +95,9 @@ export const defaultFields = {
 	props: 'props',
 	target: 'target',
 	isOpen: '_open',
-	isDeleted: '_deleted'
+	isDeleted: '_deleted',
+	level: 'level',
+	parent: 'parent'
 }
 
 export const defaultKeyMap = {

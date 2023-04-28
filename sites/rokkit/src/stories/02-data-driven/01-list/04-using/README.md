@@ -2,17 +2,17 @@
 title: Using
 ---
 
-# {title}
+## {title}
 
 Here is an example where the data is not how list expects. In the sample data below, we want to
 display the `name` and `photo`.
 
 ```json
 {
-	"name": "Fruits",
-	"photo": "/examples/fruits.jpg",
-	"artist": "https://www.pexels.com/@hellojanedoan/",
-	"target": "_blank'
+  "name": "Fruits",
+  "photo": "/examples/fruits.jpg",
+  "artist": "https://www.pexels.com/@hellojanedoan/",
+  "target": "_blank'
 }
 ```
 

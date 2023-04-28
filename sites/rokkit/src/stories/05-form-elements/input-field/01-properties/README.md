@@ -1,8 +1,6 @@
 ---
-title: InputField
+title: Introduction
 ---
-
-# {title}
 
 InputField wraps input, label and instructions/validation messages together.
 

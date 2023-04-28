@@ -2,7 +2,7 @@
 title: Fields
 ---
 
-# {title}
+## {title}
 
 The Select component is flexible and can adapt to your data structure. Instead of altering your attributes
 to conform to the expected structure, you can use the `fields` property to specify which attributes

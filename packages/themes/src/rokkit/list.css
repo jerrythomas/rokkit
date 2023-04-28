@@ -57,7 +57,7 @@
 }
 
 .rokkit nested-list {
-	@apply bg-skin-subtle text-skin-800;
+	@apply text-skin-800;
 }
 .rokkit nested-list node {
 	@apply px-2 gap-2 h-8;
@@ -103,12 +103,13 @@
 	@apply text-skin-50;
 }
 
-.rokkit node.is-selected {
+.rokkit .folder-tree node.is-selected {
 	@apply bg-gradient-to-r from-skin-subtle to-skin-subtle text-skin-800;
 }
 
 .rokkit item.is-selected,
-.rokkit tree:focus-within node.is-selected,
+.rokkit tree node.is-selected,
+.rokkit tree.folder-tree:focus-within node.is-selected,
 .rokkit nested-list:focus-within node.is-selected {
 	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
@@ -135,4 +136,14 @@
 
 .rokkit node > span > i {
 	@apply border-skin-muted;
+}
+.rokkit node > span > icon {
+	@apply text-sm;
+}
+
+.rokkit crumbs {
+	@apply flex-grow gap-1 text-sm;
+}
+.rokkit crumbs crumb.is-selected {
+	@apply text-secondary;
 }
