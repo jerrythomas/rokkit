@@ -1,52 +1,74 @@
-import { toPascalCase } from './string'
 import { omit, pick } from 'ramda'
+import { toHyphenCase } from './string'
 
 /** @type {import('./types').StoryOptions} */
 const defaultOptions = {
 	notes: 'README.md',
 	preview: 'App.svelte',
-	metadata: 'metadata.js'
+	metadata: 'meta.js'
 }
 
-export function fileSorter(a, b) {
-	const rank = (x) =>
-		a.name === 'App.svelte'
-			? 1
-			: x.type === 'svelte'
-			? 2
-			: x.type === 'js'
-			? 3
-			: 4
-	if (a.folder !== b.folder) {
-		return a.folder < b.folder ? -1 : 1
-	} else if (!a.page) {
-		return 1
-	} else if (!b.page) {
-		return -1
-	} else if (a.page !== b.page) {
-		return a.page - b.page
-	} else if (rank(a) != rank(b)) {
-		return rank(a) - rank(b)
-	} else {
-		return a.name < b.name ? -1 : 1
-	}
-}
-
-export function getAttributes(file) {
-	const parts = file.split('/')
-	const name = parts[parts.length - 1]
-	const type = name.split('.').pop()
-	let folder = parts[parts.length - 2]
-	let page
-	let result = /(?<page>\d+).*$/.exec(folder)
+export function getSequenceAndTitle(text) {
+	const result = /(?<number>\d+)(\s*-\s*)(?<title>.*)$/.exec(text)
 	if (result && result.groups) {
-		page = parseInt(result.groups.page)
-		folder = parts[parts.length - 3]
-	} else {
-		file
+		return {
+			sequence: parseInt(result.groups.number),
+			title: result.groups.title
+		}
+	}
+	return null
+}
+
+export function getAttributes(file, options = defaultOptions) {
+	let page = null
+	let element = null
+	let section = null
+
+	const parts = file.split('/')
+	const name = parts.pop()
+	const type = name.split('.').pop()
+
+	if (parts.length > 0) page = getSequenceAndTitle(parts.pop())
+	if (parts.length > 0) element = getSequenceAndTitle(parts.pop())
+	if (parts.length > 0) section = getSequenceAndTitle(parts.pop())
+
+	if (section == null) {
+		section = element
+		element = null
+	}
+	if (name == options.metadata) {
+		if (section == null) {
+			section = page
+		} else {
+			element = page
+		}
+		page = null
 	}
 
-	return { page, folder, file, name, type }
+	return section == null ? null : { section, element, page, file, name, type }
+}
+
+function addPage(dest, item) {
+	if (item.page) {
+		let page = dest.pages[item.page.slug] ?? {
+			...item.page,
+			files: []
+		}
+		page.files.push(pick(['name', 'type', 'file', 'code'], item))
+		dest.pages[item.page.slug] = page
+	}
+
+	return dest
+}
+function addElement(dest, item, options = defaultOptions) {
+	if (!item.element) return dest
+	let element = dest.elements[item.element.slug] ?? {
+		...item.element,
+		pages: {}
+	}
+
+	dest.elements[item.element.slug] = addPage(element, item, options)
+	return dest
 }
 
 export async function fetchImports(modules) {
@@ -60,14 +82,18 @@ export async function fetchImports(modules) {
 
 export function extractModuleFromImports(story, options) {
 	options = { ...defaultOptions, ...options }
+	let level = story.page ? 'page' : story.element ? 'element' : 'section'
 
-	if (!story.page && story.name === options.metadata) {
-		story['metadata'] = story.content.default ?? {}
+	if (story.name === options.metadata) {
+		story[level] = { ...story[level], ...story.content.default /*?? {}*/ }
 	} else if (story.name === options.preview) {
-		story['preview'] = story.content.default
+		story[level]['preview'] = story.content.default
 	} else if (story.name === options.notes) {
-		story['notes'] = story.content.default
-		story['metadata'] = story.content.metadata ?? {}
+		story[level] = {
+			...story[level],
+			...(story.content.metadata ?? {}),
+			notes: story.content.default
+		}
 	} else {
 		story['error'] = 'Invalid file for import as module'
 	}
@@ -75,7 +101,6 @@ export function extractModuleFromImports(story, options) {
 }
 
 export function extractCodeFromImports(story) {
-	// console.log(story)
 	if (story.page) {
 		story['code'] = story.content
 	} else {
@@ -84,93 +109,82 @@ export function extractCodeFromImports(story) {
 	return omit(['content'], story)
 }
 
-/**
- *
- * @param {Array<import('./types').StoryFile>} input
- * @returns {import('./types').Stories}
- */
-export function transform(input) {
-	const result = input.sort(fileSorter).reduce((acc, curr) => {
-		let pages = acc[curr.folder] ? acc[curr.folder].pages : []
-		if (!acc[curr.folder]) {
-			acc[curr.folder] = { name: toPascalCase(curr.folder) }
-		}
-		if (!curr.page) {
-			acc[curr.folder] = { ...acc[curr.folder], metadata: curr.metadata }
-		} else {
-			if (pages.length < curr.page) {
-				pages.push({
-					files: [],
-					preview: null,
-					notes: null
-				})
-			}
-			if (curr.preview) {
-				pages[curr.page - 1].preview = curr.preview
-			}
-			if (curr.notes) {
-				pages[curr.page - 1].notes = curr.notes
-				pages[curr.page - 1] = { ...curr.metadata, ...pages[curr.page - 1] }
-			}
-			if (curr.code) {
-				pages[curr.page - 1].files.push({
-					file: curr.name,
-					language: curr.type,
-					code: curr.code
-				})
-			}
-		}
-		acc[curr.folder].pages = pages
-
-		return acc
-	}, {})
-	return result
-}
-
-export async function extractStories(modules, sources, options = {}) {
+export async function extractStories(
+	modules,
+	sources,
+	options = defaultOptions
+) {
 	let combined = [
 		...(await fetchImports(modules))
-			.map((x) => ({ ...getAttributes(x.file), ...x }))
+			.map((x) => ({
+				...getAttributes(x.file, options),
+				...x
+			}))
 			.map((x) => extractModuleFromImports(x, options)),
 		...(await fetchImports(sources))
-			.map((x) => ({ ...getAttributes(x.file), ...x }))
+			.map((x) => ({ ...getAttributes(x.file, options), ...x }))
 			.map((x) => extractCodeFromImports(x))
-	].filter((x) => !x.error)
+	]
+		.filter((x) => !x.error)
+		.map((x) => ({
+			...x,
+			section: { ...x.section, slug: toHyphenCase(x.section.title) },
+			element: x.element
+				? { ...x.element, slug: toHyphenCase(x.element.title) }
+				: null,
+			page: x.page ? { ...x.page, slug: toHyphenCase(x.page.title) } : null
+		}))
+	return convertToSections(combined, options)
+}
+export function convertToSections(data, options = defaultOptions) {
+	let sections = {}
+	data.map((item) => {
+		let section = sections[item.section.slug] ?? {
+			...item.section,
+			elements: {},
+			pages: {}
+		}
 
-	return transform(combined)
+		section = addElement(section, item, options)
+		section = addPage(section, item, options)
+
+		sections[item.section.slug] = section
+	})
+
+	return sections
 }
 
-export function extractCategories(stories) {
-	return Object.entries(stories).map(([path, story]) => ({
-		...pick(['name'], story),
-		...story.metadata,
-		path
-	}))
-}
-
-export function extractNestedItems(stories) {
-	let data = Object.entries(stories)
-		.map(([k, v]) => ({ icon: k, name: v.name, ...v.metadata }))
-		.reduce(
-			(acc, item) => ({
-				...acc,
-				[item.category]:
-					item.category in acc ? [...acc[item.category], item] : [item]
-			}),
-			{}
-		)
-	return Object.entries(data).map(([category, items]) => ({ category, items }))
+export function toSortedHierarchy(data) {
+	const sections = Object.values(data)
+		.map((section) => ({
+			...section,
+			elements: Object.values(section.elements)
+				.map((element) => ({
+					...element,
+					pages: Object.values(element.pages).sort(
+						(a, b) => a.sequence - b.sequence
+					)
+				}))
+				.sort((a, b) => a.sequence - b.sequence),
+			pages: Object.values(section.pages).sort(
+				(a, b) => a.sequence - b.sequence
+			)
+		}))
+		.sort((a, b) => a.sequence - b.sequence)
+	return sections
 }
 
 export function createStories(modules, sources, options = {}) {
 	let stories = {}
-	let categories = []
+	let sections = []
 	let ready = false
+
+	options = { ...defaultOptions, ...options }
 
 	const fetch = async () => {
 		console.info('Fetching ...')
 		stories = await extractStories(modules, sources, options)
-		categories = extractCategories(stories)
+		sections = toSortedHierarchy(stories)
 		ready = true
 		console.info('Fetching Completed...')
 	}
@@ -180,6 +194,6 @@ export function createStories(modules, sources, options = {}) {
 		ready: () => ready,
 		story: (name) => (name in stories ? stories[name] : null),
 		stories: () => stories,
-		categories: () => categories
+		sections: () => sections
 	}
 }

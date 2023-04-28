@@ -1,28 +1,34 @@
 @import 'animation.css';
 
-button-group {
-	@apply flex w-full items-center justify-center m-auto h-14 gap-1 text-lg bg-skin-100;
-}
-
-button-group button {
-	@apply flex box-border px-2 uppercase text-skin-800;
-}
-
-button-group button.active {
-	@apply text-secondary-500;
-}
-
-button,
-.button {
-	@apply flex min-h-10 items-center rounded-full px-6 uppercase bg-skin-300 text-skin-700 cursor-pointer;
+.rokkit button,
+.rokkit .button {
+	@apply flex min-h-9 items-center rounded-full px-6 uppercase bg-skin-muted text-skin-700 cursor-pointer;
 	animation: button-pop var(--animation-btn, 0.25s) ease-out;
 }
 
-button.is-primary,
-.button.is-primary {
-	@apply bg-gradient-to-r from-primary to-secondary text-skin-200;
+.rokkit button.is-primary,
+.rokkit .button.is-primary {
+	@apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
 }
 
-input-select {
+.rokkit button-group {
+	@apply flex items-center justify-center m-auto py-1 gap-1px;
+}
+
+.rokkit button-group button {
+	@apply flex px-2 pt-0.5 uppercase rounded-none focus:outline-none;
+}
+.rokkit button-group button:first-child {
+	@apply rounded-l-full pl-3;
+}
+.rokkit button-group button:last-child {
+	@apply rounded-r-full pr-3;
+}
+
+.rokkit button-group button.active {
+	@apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+}
+
+.rokkit input-select {
 	@apply cursor-pointer select-none;
 }

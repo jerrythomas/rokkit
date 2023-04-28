@@ -1,11 +1,9 @@
 <script>
 	import { Node, Text } from './items'
 	import { defaultFields } from './constants'
-	import { createEventDispatcher } from 'svelte'
-	// import { navigator } from './actions/navigator'
 
-	// const dispatch = createEventDispatcher()
-
+	let className = 'list'
+	export { className as class }
 	export let items = []
 	export let fields = defaultFields
 	export let using = {}
@@ -14,7 +12,7 @@
 	export let linesVisible = true
 	export let rtl = false
 	export let hierarchy = []
-
+	export let icons
 	// let indices = []
 
 	// function handle(event) {
@@ -34,7 +32,7 @@
 </script>
 
 <nested-list
-	class="flex flex-col w-full"
+	class="flex flex-col w-full {className}"
 	role="listbox"
 	class:rtl
 	tabindex="-1"
@@ -60,6 +58,7 @@
 			{linesVisible}
 			{rtl}
 			{path}
+			stateIcons={icons}
 			selected={value === content}
 		/>
 		{#if hasChildren && content[fields.isOpen]}
@@ -68,6 +67,7 @@
 				bind:value
 				{fields}
 				{using}
+				{icons}
 				types={[...connectors, type, nodeTypes[index]]}
 				{linesVisible}
 				hierarchy={path}

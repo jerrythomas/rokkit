@@ -21,7 +21,10 @@
 	</div>
 
 	<!-- <a href="/guide/list" class="button is-primary cursor-pointer">Get Started</a> -->
-	<Button on:click={() => goto('/guide/list')} type="primary">
+	<Button
+		on:click={() => goto('/tutorial/welcome/introduction')}
+		type="primary"
+	>
 		Get Started
 	</Button>
 </hero>

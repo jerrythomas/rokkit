@@ -1,6 +1,8 @@
 @import '@unocss/reset/tailwind.css';
 @import '@fontsource/victor-mono';
 @import '@fontsource/victor-mono/latin.css';
+@import '@fontsource/overpass';
+@import '@fontsource/overpass/300.css';
 @import '@fontsource/poppins';
 @import '@fontsource/poppins/300.css';
 
@@ -11,18 +13,11 @@
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/rokkit.css';
 @import './styles/skins.css';
-@import './styles/layout.css';
+/* @import './styles/layout.css'; */
 
 body {
-	@apply font-body bg-skin-50 text-skin-800;
+	@apply font-body bg-skin-base text-skin-800;
 }
 body > app {
 	@apply flex flex-col min-h-full min-w-full h-full w-full relative overflow-hidden;
-}
-
-notes > *:first-child {
-	@apply mt-0;
-}
-notes.prose :where(h1) {
-	@apply text-3xl;
 }

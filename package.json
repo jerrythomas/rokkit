@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"clean": "rm -rf sites/skeleton/.vercel",
+		"clean": "rm -rf sites/rokkit/.vercel",
 		"prepublishOnly": "turbo run prepublishOnly",
 		"build": "pnpm clean && turbo run build",
 		"test": "turbo run test:ci",
@@ -34,15 +34,15 @@
 		"packages/utils"
 	],
 	"devDependencies": {
-		"@changesets/cli": "^2.26.0",
+		"@changesets/cli": "^2.26.1",
 		"bumpp": "^8.2.1",
 		"eslint": "^7.32.0",
-		"eslint-config-prettier": "^8.6.0",
+		"eslint-config-prettier": "^8.8.0",
 		"husky": "^7.0.4",
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.8.3",
-		"turbo": "^1.8.3"
+		"prettier": "^2.8.8",
+		"turbo": "^1.9.3"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",

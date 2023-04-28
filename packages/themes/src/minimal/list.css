@@ -7,14 +7,14 @@
 }
 .minimal list,
 .minimal accordion summary {
-	@apply border-l-2px border-l-skin-300;
+	@apply border-l-2px border-l-skin-muted;
 }
 .minimal :not(accordion > div) list:focus-within {
 	@apply outline-1 outline-offset-3 outline-dashed;
 }
 .minimal list > item,
 .minimal accordion summary {
-	@apply px-2 text-skin-700 bg-skin-50 items-center leading-8;
+	@apply px-2 text-skin-700 bg-skin-base items-center leading-8;
 }
 
 .minimal item > a {
@@ -22,10 +22,10 @@
 }
 
 .minimal list item:hover {
-	@apply -m-l-2px border-l-2px border-l-skin-200;
+	@apply -m-l-2px border-l-2px border-l-skin-subtle;
 }
 .minimal accordion summary:hover {
-	@apply border-l-skin-200;
+	@apply border-l-skin-subtle;
 }
 .minimal list item.is-selected {
 	@apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600;
@@ -54,7 +54,14 @@
 }
 
 .minimal node {
-	@apply gap-2 h-7;
+	@apply gap-1 h-7 px-2;
+}
+.minimal node > span {
+	@apply w-3;
+}
+.minimal node > span > icon,
+.minimal node > icon {
+	@apply text-sm;
 }
 .minimal node.is-selected p,
 .minimal node.is-selected icon {
@@ -82,4 +89,19 @@
 }
 .minimal accordion.indented list > item {
 	@apply px-4;
+}
+
+.minimal .folder-tree {
+	@apply h-full bg-skin-inset min-w-40;
+}
+
+.minimal node > span > i {
+	@apply border-skin-muted;
+}
+
+.minimal crumbs {
+	@apply flex-grow gap-1 text-sm;
+}
+.minimal crumbs crumb.is-selected {
+	@apply text-secondary;
 }

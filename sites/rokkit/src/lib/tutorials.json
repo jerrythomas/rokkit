@@ -1,0 +1,1068 @@
+{
+	"welcome": {
+		"sequence": 1,
+		"key": "welcome",
+		"children": {
+			"introduction": {
+				"sequence": 1,
+				"key": "introduction",
+				"title": "Introduction",
+				"path": "01-welcome/01-introduction",
+				"name": "README.md",
+				"route": "welcome/introduction",
+				"before": null,
+				"after": {
+					"preview": "src/stories/01-welcome/01-introduction/src/App.svelte",
+					"files": [
+						{
+							"path": "",
+							"name": "App.svelte",
+							"type": "svelte",
+							"content": "<script>\n\timport { List } from '@rokkit/core'\n\n\tlet items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']\n\tlet value\n</script>\n\n<List {items} bind:value />\n<p>Selected Value: <b>{value}</b></p>\n"
+						}
+					]
+				}
+			},
+			"getting-started": {
+				"sequence": 2,
+				"key": "getting-started",
+				"title": "Getting Started",
+				"path": "01-welcome/02-getting-started",
+				"name": "README.md",
+				"route": "welcome/getting-started",
+				"before": null,
+				"after": {
+					"preview": "src/stories/01-welcome/02-getting-started/src/App.svelte",
+					"files": [
+						{
+							"path": "",
+							"name": "App.svelte",
+							"type": "svelte",
+							"content": "<script>\n\timport { List } from '@rokkit/core'\n\n\tlet items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']\n\tlet value\n</script>\n\n<List {items} bind:value />\n<p>Selected Value: <b>{value}</b></p>\n"
+						}
+					]
+				}
+			}
+		},
+		"title": "Welcome to Rokkit",
+		"path": "01-welcome"
+	},
+	"data-driven": {
+		"sequence": 2,
+		"key": "data-driven",
+		"children": {
+			"list": {
+				"sequence": 1,
+				"key": "list",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Introduction",
+						"path": "02-data-driven/01-list/01-intro",
+						"name": "README.md",
+						"route": "data-driven/list/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/01-list/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { List } from '@rokkit/core'\n\n\tlet items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']\n\tlet value\n</script>\n\n<List {items} bind:value />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					},
+					"object": {
+						"sequence": 2,
+						"key": "object",
+						"title": "Object Array",
+						"path": "02-data-driven/01-list/02-object",
+						"name": "README.md",
+						"route": "data-driven/list/object",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/01-list/02-object/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { List } from '@rokkit/core'\n\tlet value\n\tlet items = [\n\t\t{\n\t\t\ttext: 'Fruits',\n\t\t\timage: '/examples/fruits.jpg'\n\t\t},\n\t\t{\n\t\t\ttext: 'Vegetables',\n\t\t\timage: '/examples/vegetables.jpg'\n\t\t},\n\t\t{\n\t\t\ttext: 'Nuts',\n\t\t\timage: '/examples/nuts.jpg'\n\t\t},\n\t\t{\n\t\t\ttext: 'Spices',\n\t\t\timage: '/examples/spices.jpg'\n\t\t}\n\t]\n</script>\n\n<List {items} bind:value />\n\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								}
+							]
+						}
+					},
+					"fields": {
+						"sequence": 3,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/01-list/03-fields",
+						"name": "README.md",
+						"route": "data-driven/list/fields",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/01-list/03-fields/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { List } from '@rokkit/core'\n\timport { items } from './data.js'\n\n\tlet fields = { text: 'name', image: 'photo' }\n\tlet value\n</script>\n\n<List {items} {fields} bind:value />\n\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/'\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"using": {
+						"sequence": 4,
+						"key": "using",
+						"title": "Using",
+						"path": "02-data-driven/01-list/04-using",
+						"name": "README.md",
+						"route": "data-driven/list/using",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/01-list/04-using/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { List, Link } from '@rokkit/core'\n\timport { items } from './data.js'\n\n\tlet using = { default: Link }\n\tlet fields = { text: 'name', image: 'photo', url: 'artist' }\n\tlet value\n</script>\n\n<List {items} {using} {fields} bind:value />\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/',\n\t\ttarget: '_blank'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/',\n\t\ttarget: '_blank'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/',\n\t\ttarget: '_blank'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/',\n\t\ttarget: '_blank'\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"mixed": {
+						"sequence": 5,
+						"key": "mixed",
+						"title": "Advanced",
+						"path": "02-data-driven/01-list/05-mixed",
+						"name": "README.md",
+						"route": "data-driven/list/mixed",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/01-list/05-mixed/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { List } from '@rokkit/core'\n\timport { items } from './data.js'\n\timport Odd from './Odd.svelte'\n\timport Even from './Even.svelte'\n\n\tlet fields = { text: 'name', image: 'photo', component: 'type' }\n\tlet using = { odd: Odd, even: Even }\n</script>\n\n<List {items} {using} {fields} />\n"
+								},
+								{
+									"path": "",
+									"name": "Even.svelte",
+									"type": "svelte",
+									"content": "<script>\n\texport let content\n</script>\n\n<div class=\"flex w-full h-32 gap-4 py-4 font-extralight\">\n\t<img src={content.photo} class=\"rounded cover w-32\" alt={content.name} />\n\t<p class=\"leading-tight text-sm\">{content.description}</p>\n</div>\n"
+								},
+								{
+									"path": "",
+									"name": "Odd.svelte",
+									"type": "svelte",
+									"content": "<script>\n\texport let content\n</script>\n\n<div class=\"flex w-full h-32 gap-4 py-3 text-sm font-extralight\">\n\t<p class=\"leading-tight italic font-mono\">\n\t\t{content.description}\n\t</p>\n\t<img src={content.photo} class=\"rounded cover w-32\" alt={content.name} />\n</div>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/',\n\t\tdescription:\n\t\t\t'Fruits are sweet, juicy, and fleshy foods typically eaten raw as a snack or used as ingredients in various dishes and desserts.',\n\t\ttype: 'odd'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/',\n\t\tdescription:\n\t\t\t'Vegetables are plant-based foods typically eaten cooked or raw and enjoyed as side dishes or main courses.',\n\t\ttype: 'even'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/',\n\t\tdescription:\n\t\t\t'Nuts are dry fruits that grow on trees and bushes and have a hard shell surrounding the edible kernel. They are often enjoyed as snacks or used as ingredients in various dishes and desserts.'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/',\n\t\tdescription:\n\t\t\t'Spices are aromatic plants or plant parts used to add flavor and aroma to food. They can be used fresh, dried, or powdered to enhance the taste of dishes and beverages.'\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "List",
+				"description": "A collection of items that can be navigated as a list.",
+				"path": "02-data-driven/01-list"
+			},
+			"accordion": {
+				"sequence": 2,
+				"key": "accordion",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Introduction",
+						"path": "02-data-driven/02-accordion/01-intro",
+						"name": "README.md",
+						"route": "data-driven/accordion/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/02-accordion/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Accordion } from '@rokkit/core'\n\timport { items } from './data'\n\n\tlet value\n</script>\n\n<Accordion {items} bind:value />\n\n<p>Selected Value :</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\ttext: 'Fruits',\n\t\tdata: ['Apple', 'Orange', 'Bananna', 'Avocado']\n\t},\n\t{\n\t\ttext: 'Vegetables',\n\t\tdata: ['Carrot', 'Tomato', 'Lettuce']\n\t},\n\t{\n\t\ttext: 'Nuts',\n\t\tdata: ['Almonds', 'Walnuts', 'Pistachios']\n\t},\n\t{\n\t\ttext: 'Spices',\n\t\tdata: ['Cinnamon', 'Cloves', 'Turmeric']\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/02-accordion/02-fields",
+						"name": "README.md",
+						"route": "data-driven/accordion/fields",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/02-accordion/02-fields/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Accordion } from '@rokkit/core'\n\timport { items } from './data.js'\n\n\tconst fields = {\n\t\ttext: 'category',\n\t\tchildren: 'values',\n\t\tfields: {\n\t\t\ttext: 'name',\n\t\t\timage: 'photo'\n\t\t}\n\t}\n\tlet value\n</script>\n\n<Accordion {items} {fields} autoClose bind:value />\n\n<p>Selected item</p>\n<pre>JSON.stringify(value, null, 2)</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tcategory: 'Fruits',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Apple',\n\t\t\t\tphoto: '/examples/apple.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@suzyhazelwood/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Banana',\n\t\t\t\tphoto: '/examples/bananas.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@shvets-production/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Orange',\n\t\t\t\tphoto: '/examples/orange.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@pixabay/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Avocado',\n\t\t\t\tphoto: '/examples/avocado.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@foodie-factor-162291/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Vegetables',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Carrot',\n\t\t\t\tphoto: '/examples/carrot.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@mali/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Tomato',\n\t\t\t\tphoto: '/examples/tomato.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@pixabay/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Lettuce',\n\t\t\t\tphoto: '/examples/lettuce.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@greta-hoffman/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Nuts',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Almonds',\n\t\t\t\tphoto: '/examples/almonds.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@karolina-grabowska/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Walnuts',\n\t\t\t\tphoto: '/examples/walnuts.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@pixabay/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Pistachios',\n\t\t\t\tphoto: '/examples/pistachios.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@sarah-chai/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Spices',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Cinnamon',\n\t\t\t\tphoto: '/examples/cinnamon.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@ngo-tr-ng-an-837314/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Cloves',\n\t\t\t\tphoto: '/examples/cloves.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@isabella-mendes-107313/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Turmeric',\n\t\t\t\tphoto: '/examples/turmeric.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@karolina-grabowska/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"using": {
+						"sequence": 3,
+						"key": "using",
+						"title": "Using",
+						"path": "02-data-driven/02-accordion/03-using",
+						"name": "README.md",
+						"route": "data-driven/accordion/using",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/02-accordion/03-using/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Accordion, Link } from '@rokkit/core'\n\timport { items } from './data.js'\n\n\tconst fields = {\n\t\ttext: 'category',\n\t\tchildren: 'values',\n\t\tisOpen: 'isOpen',\n\t\tfields: {\n\t\t\ttext: 'name',\n\t\t\timage: 'photo',\n\t\t\turl: 'source'\n\t\t}\n\t}\n\tconst using = { default: Link }\n</script>\n\n<Accordion {items} {fields} {using} />\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tcategory: 'Fruits',\n\t\tisOpen: true,\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Apple',\n\t\t\t\tphoto: '/examples/apple.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@suzyhazelwood/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Banana',\n\t\t\t\tphoto: '/examples/bananas.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@shvets-production/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Orange',\n\t\t\t\tphoto: '/examples/orange.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@pixabay/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Avocado',\n\t\t\t\tphoto: '/examples/avocado.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@foodie-factor-162291/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Vegetables',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Carrot',\n\t\t\t\tphoto: '/examples/carrot.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@mali/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Tomato',\n\t\t\t\tphoto: '/examples/tomato.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@pixabay/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Lettuce',\n\t\t\t\tphoto: '/examples/lettuce.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@greta-hoffman/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Nuts',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Almonds',\n\t\t\t\tphoto: '/examples/almonds.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@karolina-grabowska/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Walnuts',\n\t\t\t\tphoto: '/examples/walnuts.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@pixabay/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Pistachios',\n\t\t\t\tphoto: '/examples/pistachios.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@sarah-chai/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Spices',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Cinnamon',\n\t\t\t\tphoto: '/examples/cinnamon.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@ngo-tr-ng-an-837314/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Cloves',\n\t\t\t\tphoto: '/examples/cloves.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@isabella-mendes-107313/',\n\t\t\t\ttarget: '_blank'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Turmeric',\n\t\t\t\tphoto: '/examples/turmeric.jpg',\n\t\t\t\tsource: 'https://www.pexels.com/@karolina-grabowska/',\n\t\t\t\ttarget: '_blank'\n\t\t\t}\n\t\t]\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"mixed": {
+						"sequence": 4,
+						"key": "mixed",
+						"title": "Mixed Content",
+						"path": "02-data-driven/02-accordion/04-mixed",
+						"name": "README.md",
+						"route": "data-driven/accordion/mixed",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/02-accordion/04-mixed/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Accordion } from '@rokkit/core'\n\timport { items } from './data.js'\n\timport Odd from './Odd.svelte'\n\timport Even from './Even.svelte'\n\n\tlet fields = {\n\t\ttext: 'category',\n\t\tchildren: 'values',\n\t\tfields: { component: 'type', text: 'name', image: 'photo' }\n\t}\n\tlet using = { odd: Odd, even: Even }\n</script>\n\n<Accordion {items} {fields} {using} />\n"
+								},
+								{
+									"path": "",
+									"name": "Even.svelte",
+									"type": "svelte",
+									"content": "<script>\n\texport let content\n</script>\n\n<div class=\"flex w-full h-32 gap-4 py-4 font-extralight\">\n\t<img src={content.photo} class=\"rounded cover w-32\" alt={content.name} />\n\t<p class=\"leading-tight text-sm\">{content.description}</p>\n</div>\n"
+								},
+								{
+									"path": "",
+									"name": "Odd.svelte",
+									"type": "svelte",
+									"content": "<script>\n\texport let content\n</script>\n\n<div class=\"flex w-full h-32 gap-4 py-3 text-sm font-extralight\">\n\t<p class=\"leading-tight italic font-mono\">\n\t\t{content.description}\n\t</p>\n\t<img src={content.photo} class=\"rounded cover w-32\" alt={content.name} />\n</div>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tcategory: 'Fruits',\n\t\t_open: true,\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Apple',\n\t\t\t\tphoto: '/examples/apple.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Apples are a popular fruit that come in a variety of colors, including red, green, and yellow. They are sweet and crisp, making them a great snack.',\n\t\t\t\ttype: 'odd'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Banana',\n\t\t\t\tphoto: '/examples/bananas.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Bananas are a sweet and creamy fruit that are a staple in many diets. They are rich in vitamins and minerals, making them a healthy snack option.'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Orange',\n\t\t\t\tphoto: '/examples/orange.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Oranges are a juicy citrus fruit that are high in vitamin C. They are a popular snack on their own and are also used in a variety of recipes.',\n\t\t\t\ttype: 'even'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Avocado',\n\t\t\t\tphoto: '/examples/avocado.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Avocados are a creamy and flavorful fruit that is often used in dips and spreads. They are high in healthy fats and vitamins, making them a nutritious addition to any meal.'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Vegetables',\n\t\t_open: true,\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Carrot',\n\t\t\t\tphoto: '/examples/carrot.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Carrots are a sweet and crunchy vegetable that come in a variety of colors, including orange and purple. They are rich in vitamins and minerals, making them a healthy addition to any meal.',\n\t\t\t\ttype: 'odd'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Tomato',\n\t\t\t\tphoto: '/examples/tomato.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Tomatoes are a juicy and flavorful vegetable that can be used in a variety of recipes, from salads to sauces. They are a good source of vitamins and antioxidants.',\n\t\t\t\ttype: 'even'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Lettuce',\n\t\t\t\tphoto: '/examples/lettuce.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Lettuce is a leafy green vegetable that is a staple in many salads. It comes in a variety of types, including iceberg, romaine, and butterhead, each with a slightly different flavor and texture.'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Nuts',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Almonds',\n\t\t\t\tphoto: '/examples/almonds.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Almonds are a crunchy and nutty-flavored nut that is a great snack on its own or used in a variety of recipes. They are high in healthy fats and protein, making them a filling snack.'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Walnuts',\n\t\t\t\tphoto: '/examples/walnuts.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Walnuts are a rich and buttery nut that is often used in baking and cooking. They are high in antioxidants and healthy fats, making them a nutritious snack option.'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Pistachios',\n\t\t\t\tphoto: '/examples/pistachios.jpg',\n\t\t\t\tdescription:\n\t\t\t\t\t'Pistachios are a sweet and crunchy nut that are often eaten as a snack. They are high in fiber and protein, making them a filling and nutritious option.'\n\t\t\t}\n\t\t]\n\t},\n\t{\n\t\tcategory: 'Spices',\n\t\tvalues: [\n\t\t\t{\n\t\t\t\tname: 'Cinnamon',\n\t\t\t\tphoto: '/examples/cinnamon.jpg'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Cloves',\n\t\t\t\tphoto: '/examples/cloves.jpg'\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: 'Turmeric',\n\t\t\t\tphoto: '/examples/turmeric.jpg'\n\t\t\t}\n\t\t]\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "Accordion",
+				"description": "A collection of items that can be expanded and collapsed.",
+				"path": "02-data-driven/02-accordion"
+			},
+			"tabs": {
+				"sequence": 3,
+				"key": "tabs",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Introduction",
+						"path": "02-data-driven/03-tabs/01-intro",
+						"name": "README.md",
+						"route": "data-driven/tabs/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/03-tabs/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Tabs } from '@rokkit/core'\n\n\tlet items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']\n\tlet value\n</script>\n\n<Tabs {items} bind:value />\n<pre>\n\t{JSON.stringify(value)}\n</pre>\n"
+								}
+							]
+						}
+					},
+					"object": {
+						"sequence": 2,
+						"key": "object",
+						"title": "Objects",
+						"path": "02-data-driven/03-tabs/02-object",
+						"name": "README.md",
+						"route": "data-driven/tabs/object",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/03-tabs/02-object/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Tabs } from '@rokkit/core'\n\tlet value\n\tlet items = [\n\t\t{\n\t\t\ttext: 'Fruits',\n\t\t\timage: '/examples/fruits.jpg'\n\t\t},\n\t\t{\n\t\t\ttext: 'Vegetables',\n\t\t\timage: '/examples/vegetables.jpg'\n\t\t},\n\t\t{\n\t\t\ttext: 'Nuts',\n\t\t\timage: '/examples/nuts.jpg'\n\t\t},\n\t\t{\n\t\t\ttext: 'Spices',\n\t\t\timage: '/examples/spices.jpg'\n\t\t}\n\t]\n</script>\n\n<Tabs {items} bind:value />\n\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								}
+							]
+						}
+					},
+					"fields": {
+						"sequence": 3,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/03-tabs/03-fields",
+						"name": "README.md",
+						"route": "data-driven/tabs/fields",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/03-tabs/03-fields/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Tabs } from '@rokkit/core'\n\timport { items } from './data.js'\n\n\tlet fields = { text: 'name', image: 'photo' }\n\tlet value\n</script>\n\n<Tabs {items} {fields} bind:value />\n\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/'\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"using": {
+						"sequence": 4,
+						"key": "using",
+						"title": "Using",
+						"path": "02-data-driven/03-tabs/04-using",
+						"name": "README.md",
+						"route": "data-driven/tabs/using",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/03-tabs/04-using/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Tabs } from '@rokkit/core'\n\timport { items } from './data.js'\n\timport Custom from './Custom.svelte'\n\n\tlet using = { default: Custom }\n\tlet fields = { text: 'name', image: 'photo', url: 'artist' }\n\tlet value\n</script>\n\n<Tabs {items} {using} {fields} bind:value />\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "Custom.svelte",
+									"type": "svelte",
+									"content": "<script>\n\texport let content\n\texport let fields\n</script>\n\n<p>{content[fields.text]}</p>\n<img\n\tsrc={content[fields.image]}\n\talt={content[fields.text]}\n\tclass=\"rounded-sm h-8 w-8\"\n/>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/',\n\t\ttarget: '_blank'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/',\n\t\ttarget: '_blank'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/',\n\t\ttarget: '_blank'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/',\n\t\ttarget: '_blank'\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "Tabs",
+				"description": "A set of tabs that can be navigated.",
+				"path": "02-data-driven/03-tabs"
+			},
+			"select": {
+				"sequence": 4,
+				"key": "select",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Select",
+						"path": "02-data-driven/04-select/01-properties",
+						"name": "README.md",
+						"route": "data-driven/select/properties",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/04-select/01-properties/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Select } from '@rokkit/input'\n\n\tlet items = ['Alpha ', 'Beta', 'Gamma']\n\tlet value\n</script>\n\n<Select {items} bind:value placeholder=\"Select a value\" />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/04-select/02-fields",
+						"name": "README.md",
+						"route": "data-driven/select/fields",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/04-select/02-fields/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Select } from '@rokkit/input'\n\timport { items } from './data.js'\n\n\tlet fields = { text: 'name', image: 'photo' }\n\tlet value\n</script>\n\n<Select {items} {fields} bind:value />\n\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/'\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "Select",
+				"description": "Input component that allows users to choose one value from a list of options.",
+				"path": "02-data-driven/04-select"
+			},
+			"drop-down": {
+				"sequence": 5,
+				"key": "drop-down",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Introduction",
+						"path": "02-data-driven/05-drop-down/01-properties",
+						"name": "README.md",
+						"route": "data-driven/drop-down/properties",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/05-drop-down/01-properties/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { DropDown } from '@rokkit/core'\n\n\tlet items = ['Alpha ', 'Beta', 'Gamma']\n\tlet value\n</script>\n\n<DropDown {items} bind:value title=\"Select a value\" />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/05-drop-down/02-fields",
+						"name": "README.md",
+						"route": "data-driven/drop-down/fields",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/05-drop-down/02-fields/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { DropDown } from '@rokkit/core'\n\timport { items } from './data.js'\n\n\tlet fields = { text: 'name', image: 'photo' }\n\tlet value\n</script>\n\n<DropDown {items} {fields} bind:value title=\"Dropdown\" />\n\n<p>Selected Value</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/'\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "DropDown",
+				"description": "Component that allows users to choose one value from a list of options.",
+				"path": "02-data-driven/05-drop-down"
+			},
+			"multi-select": {
+				"sequence": 6,
+				"key": "multi-select",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Introduction",
+						"path": "02-data-driven/06-multi-select/01-properties",
+						"name": "README.md",
+						"route": "data-driven/multi-select/properties",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/06-multi-select/01-properties/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { MultiSelect } from '@rokkit/input'\n\n\tlet items = ['Alpha ', 'Beta', 'Gamma']\n\tlet value\n</script>\n\n<MultiSelect {items} bind:value placeholder=\"Select multiple values\" />\n<p>Selected Value: <b>{JSON.stringify(value)}</b></p>\n"
+								}
+							]
+						}
+					},
+					"fields": {
+						"sequence": 2,
+						"key": "fields",
+						"title": "Fields",
+						"path": "02-data-driven/06-multi-select/02-fields",
+						"name": "README.md",
+						"route": "data-driven/multi-select/fields",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/06-multi-select/02-fields/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { MultiSelect } from '@rokkit/input'\n\timport { items } from './data.js'\n\n\tlet fields = { text: 'name', image: 'photo' }\n\tlet value\n</script>\n\n<MultiSelect {items} {fields} bind:value />\n\n<p>Selected Values</p>\n<pre>{JSON.stringify(value, null, 2)}</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\tname: 'Fruits',\n\t\tphoto: '/examples/fruits.jpg',\n\t\tartist: 'https://www.pexels.com/@hellojanedoan/'\n\t},\n\t{\n\t\tname: 'Vegetables',\n\t\tphoto: '/examples/vegetables.jpg',\n\t\tartist: 'https://www.pexels.com/@jill-wellington-1638660/'\n\t},\n\t{\n\t\tname: 'Nuts',\n\t\tphoto: '/examples/nuts.jpg',\n\t\tartist: 'https://www.pexels.com/@martabranco/'\n\t},\n\t{\n\t\tname: 'Spices',\n\t\tphoto: '/examples/spices.jpg',\n\t\tartist: 'https://www.pexels.com/@mareefe/'\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "MultiSelect",
+				"description": "Input component that allows users to choose one or more value from a list of options.",
+				"path": "02-data-driven/06-multi-select"
+			},
+			"tree": {
+				"sequence": 7,
+				"key": "tree",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Introduction",
+						"path": "02-data-driven/07-tree/01-intro",
+						"name": "README.md",
+						"route": "data-driven/tree/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/07-tree/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Tree } from '@rokkit/core'\n\timport { items } from './data.js'\n</script>\n\n<Tree {items} />\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\ttext: 'john',\n\t\tdata: [\n\t\t\t{\n\t\t\t\ttext: 'home',\n\t\t\t\tdata: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]\n\t\t\t},\n\t\t\t{ text: 'library' }\n\t\t]\n\t},\n\t{\n\t\ttext: 'rachel',\n\t\tdata: [\n\t\t\t{\n\t\t\t\ttext: 'home',\n\t\t\t\tdata: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]\n\t\t\t},\n\t\t\t{ text: 'library' }\n\t\t]\n\t},\n\t{\n\t\ttext: 'niel',\n\t\tdata: [\n\t\t\t{\n\t\t\t\ttext: 'home',\n\t\t\t\tdata: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]\n\t\t\t},\n\t\t\t{ text: 'library' }\n\t\t]\n\t}\n]\n"
+								}
+							]
+						}
+					},
+					"root": {
+						"sequence": 2,
+						"key": "root",
+						"title": "Root",
+						"path": "02-data-driven/07-tree/02-root",
+						"name": "README.md",
+						"route": "data-driven/tree/root",
+						"before": null,
+						"after": {
+							"preview": "src/stories/02-data-driven/07-tree/02-root/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Tree } from '@rokkit/core'\n\timport { items } from './data.js'\n</script>\n\n<Tree {items} root=\"root\" />\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let items = [\n\t{\n\t\ttext: 'john',\n\t\tdata: [\n\t\t\t{\n\t\t\t\ttext: 'home',\n\t\t\t\tdata: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]\n\t\t\t},\n\t\t\t{ text: 'library' }\n\t\t]\n\t},\n\t{\n\t\ttext: 'rachel',\n\t\tdata: [\n\t\t\t{\n\t\t\t\ttext: 'home',\n\t\t\t\tdata: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]\n\t\t\t},\n\t\t\t{ text: 'library' }\n\t\t]\n\t},\n\t{\n\t\ttext: 'niel',\n\t\tdata: [\n\t\t\t{\n\t\t\t\ttext: 'home',\n\t\t\t\tdata: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]\n\t\t\t},\n\t\t\t{ text: 'library' }\n\t\t]\n\t}\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"title": "Tree",
+				"description": "A tree of items that can be expanded and collapsed.",
+				"path": "02-data-driven/07-tree"
+			}
+		},
+		"title": "Data Driven Components",
+		"path": "02-data-driven"
+	},
+	"input": {
+		"sequence": 3,
+		"key": "input",
+		"children": {
+			"switch": {
+				"sequence": 1,
+				"key": "switch",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Switch",
+						"path": "03-input/01-switch/01-properties",
+						"name": "README.md",
+						"route": "input/switch/properties",
+						"before": null,
+						"after": {
+							"preview": "src/stories/03-input/01-switch/01-properties/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Switch } from '@rokkit/input'\n\n\tlet value\n</script>\n\n<Switch bind:value />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"name": "Switch",
+				"description": "A switch that can be toggled on or off.",
+				"path": "03-input/01-switch",
+				"route": "input/switch"
+			},
+			"rating": {
+				"sequence": 2,
+				"key": "rating",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Introduction",
+						"path": "03-input/02-rating/01-properties",
+						"name": "README.md",
+						"route": "input/rating/properties",
+						"before": null,
+						"after": {
+							"preview": "src/stories/03-input/02-rating/01-properties/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Rating } from '@rokkit/input'\n\n\tlet value\n</script>\n\n<Rating bind:value />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					},
+					"icons": {
+						"sequence": 2,
+						"key": "icons",
+						"title": "Custom Icons",
+						"path": "03-input/02-rating/02-icons",
+						"name": "README.md",
+						"route": "input/rating/icons",
+						"before": null,
+						"after": {
+							"preview": "src/stories/03-input/02-rating/02-icons/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Rating } from '@rokkit/input'\n\n\tlet value\n\tconst stateIcons = {\n\t\tfilled: 'i-rokkit:heart-filled',\n\t\tempty: 'i-rokkit:heart-outlined'\n\t}\n</script>\n\n<Rating bind:value {stateIcons} />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Selection",
+				"name": "Rating",
+				"description": "An input component that allows selection of a rating value using icons.",
+				"path": "03-input/02-rating",
+				"route": "input/rating"
+			},
+			"range": {
+				"sequence": 3,
+				"key": "range",
+				"children": {
+					"properties": {
+						"sequence": 1,
+						"key": "properties",
+						"title": "Introduction",
+						"path": "03-input/03-range/01-properties",
+						"name": "README.md",
+						"route": "input/range/properties",
+						"before": null,
+						"after": {
+							"preview": "src/stories/03-input/03-range/01-properties/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Range } from '@rokkit/input'\n\n\tlet value\n</script>\n\n<Range bind:value />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					},
+					"ticks": {
+						"sequence": 2,
+						"key": "ticks",
+						"title": "Steps",
+						"path": "03-input/03-range/02-ticks",
+						"name": "README.md",
+						"route": "input/range/ticks",
+						"before": null,
+						"after": {
+							"preview": "src/stories/03-input/03-range/02-ticks/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Range } from '@rokkit/input'\n\n\tlet value\n</script>\n\n<Range bind:value tickStep={5} step={5} />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					},
+					"labels": {
+						"sequence": 3,
+						"key": "labels",
+						"title": "Labels",
+						"path": "03-input/03-range/03-labels",
+						"name": "README.md",
+						"route": "input/range/labels",
+						"before": null,
+						"after": {
+							"preview": "src/stories/03-input/03-range/03-labels/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { Range } from '@rokkit/input'\n\n\tlet value\n</script>\n\n<Range bind:value tickStep={10} step={5} labelSkip={1} />\n<p>Selected Value: <b>{value}</b></p>\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Input",
+				"name": "Range",
+				"description": "A range input that allows users to select a value from a range.",
+				"path": "03-input/03-range",
+				"route": "input/range"
+			}
+		},
+		"title": "Input Components",
+		"path": "03-input"
+	},
+	"layout": {
+		"sequence": 6,
+		"key": "layout",
+		"children": {
+			"field-layout": {
+				"sequence": 1,
+				"key": "field-layout",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "FieldLayout",
+						"path": "06-layout/01-field-layout/01-intro",
+						"name": "README.md",
+						"route": "layout/field-layout/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/06-layout/01-field-layout/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { FieldLayout } from '@rokkit/form'\n\timport { fields } from './layout.js'\n\n\tlet data = {\n\t\tname: 'hello',\n\t\tage: 20,\n\t\tdata: [\n\t\t\t{ name: 'Panda', url: '/1', component: 'Link' },\n\t\t\t{ name: 'Monkey' },\n\t\t\t{ name: 'Viper', icon: 'sun', component: 'Link' }\n\t\t],\n\t\tmale: false\n\t}\n</script>\n\n<FieldLayout bind:value={data} items={fields} />\n"
+								},
+								{
+									"path": "",
+									"name": "layout.js",
+									"type": "js",
+									"content": "export let fields = [\n\t{ key: 'age', component: 'input', props: { type: 'number', label: 'Age' } },\n\t{\n\t\tkey: 'male',\n\t\tcomponent: 'checkbox',\n\t\ttype: 'checkbox',\n\t\tprops: { label: 'Male?' }\n\t}\n\t// {\n\t// \tkey: 'data',\n\t// \ttype: 'array',\n\t// \tprops: {\n\t// \t\tfields: [\n\t// \t\t\t{ key: 'name', type: 'text' },\n\t// \t\t\t{ key: 'url', type: 'text' },\n\t// \t\t\t{ key: 'icon', type: 'text' },\n\t// \t\t\t{\n\t// \t\t\t\tkey: 'component',\n\t// \t\t\t\ttype: 'text',\n\t// \t\t\t\tprops: { list: 'input-types', autocomplete: 'on' }\n\t// \t\t\t}\n\t// \t\t],\n\t// \t\tcloseable: true,\n\t// \t\tadd: true\n\t// \t}\n\t// }\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Layout",
+				"name": "FieldLayout",
+				"description": "A layout component for fields in a form.",
+				"path": "06-layout/01-field-layout",
+				"route": "layout/field-layout"
+			},
+			"nav-content": {
+				"sequence": 2,
+				"key": "nav-content",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Content Navigator",
+						"path": "06-layout/02-nav-content/01-intro",
+						"name": "README.md",
+						"route": "layout/nav-content/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/06-layout/02-nav-content/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport ContentNavigator from './ContentNavigator.svelte'\n\timport { Tabs } from '@rokkit/core'\n\n\tlet items = ['one', 'two', 'three', 'four']\n\n\tlet value\n</script>\n\n<ContentNavigator vertical>\n\t<Tabs {items} bind:value slot=\"nav\" />\n\t<pre slot=\"content\" class=\"flex-grow\">\n\t\t{JSON.stringify(value)}\n\t</pre>\n</ContentNavigator>\n"
+								},
+								{
+									"path": "",
+									"name": "ContentNavigator.svelte",
+									"type": "svelte",
+									"content": "<script>\n\tlet className = ''\n\texport { className as class }\n\texport let vertical = false\n</script>\n\n<nav-content class=\"flex w-full h-full {className}\" class:flex-col={vertical}>\n\t<slot name=\"nav\" />\n\t<slot name=\"content\" />\n</nav-content>\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Navigation",
+				"name": "NavContent",
+				"labs": true,
+				"description": "A set of content that can be navigated.",
+				"path": "06-layout/02-nav-content",
+				"route": "layout/nav-content"
+			},
+			"responsive-grid": {
+				"sequence": 3,
+				"key": "responsive-grid",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Responsive Grid",
+						"path": "06-layout/03-responsive-grid/01-intro",
+						"name": "README.md",
+						"route": "layout/responsive-grid/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/06-layout/03-responsive-grid/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { ResponsiveGrid } from '@rokkit/core'\n\timport { ButtonGroup } from '@rokkit/form'\n\timport PlaceHolder from './PlaceHolder.svelte'\n\n\tlet items = [\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 1',\n\t\t\tprops: {\n\t\t\t\tcontent: 'AAA',\n\t\t\t\tclass: 'bg-pink-500 items-center justify-center'\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 2',\n\t\t\tprops: { content: 'BBB', class: 'bg-sky-500 items-center justify-center' }\n\t\t},\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 3',\n\t\t\tprops: {\n\t\t\t\tcontent: 'CCC',\n\t\t\t\tclass: 'bg-teal-500 items-center justify-center'\n\t\t\t}\n\t\t}\n\t]\n\tlet size = 'sm'\n\tlet page = items[0]\n</script>\n\n<ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />\n<ResponsiveGrid\n\t{items}\n\tsmall={size == 'sm'}\n\tclass=\"demo-col {size}\"\n\tbind:value={page}\n/>\n{#if size == 'sm'}\n\t<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />\n{/if}\n\n<style>\n\t:global(.demo-col) {\n\t\t@apply w-full h-full grid;\n\t}\n\t:global(.demo-col.md) {\n\t\t@apply grid-rows-3 grid-cols-1;\n\t}\n\t:global(.demo-col.lg) {\n\t\t@apply grid-rows-2 grid-cols-2;\n\t}\n</style>\n"
+								},
+								{
+									"path": "",
+									"name": "PlaceHolder.svelte",
+									"type": "svelte",
+									"content": "<script>\n\tlet className\n\texport let content\n\texport { className as class }\n</script>\n\n<div\n\tclass=\"w-full h-full flex items-center justify-center text-white {className}\"\n>\n\t{content}\n</div>\n"
+								}
+							]
+						}
+					},
+					"Four": {
+						"sequence": 2,
+						"key": "Four",
+						"title": "Introduction",
+						"path": "06-layout/03-responsive-grid/02-Four",
+						"name": "README.md",
+						"route": "layout/responsive-grid/Four",
+						"before": null,
+						"after": {
+							"preview": "src/stories/06-layout/03-responsive-grid/02-Four/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { ResponsiveGrid } from '@rokkit/core'\n\timport { ButtonGroup } from '@rokkit/form'\n\timport PlaceHolder from './PlaceHolder.svelte'\n\n\tlet items = [\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 1',\n\t\t\tprops: {\n\t\t\t\tcontent: 'AAA',\n\t\t\t\tclass: 'bg-pink-500 items-center justify-center'\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 2',\n\t\t\tprops: { content: 'BBB', class: 'bg-sky-500 items-center justify-center' }\n\t\t},\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 3',\n\t\t\tprops: {\n\t\t\t\tcontent: 'CCC',\n\t\t\t\tclass: 'bg-teal-500 items-center justify-center'\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\tcomponent: PlaceHolder,\n\t\t\tname: 'Page 4',\n\t\t\tprops: {\n\t\t\t\tcontent: 'Page 4',\n\t\t\t\tclass: 'bg-yellow-500 items-center justify-center'\n\t\t\t}\n\t\t}\n\t]\n\tlet size = 'sm'\n\tlet page = items[0]\n</script>\n\n<ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />\n<ResponsiveGrid\n\t{items}\n\tsmall={size == 'sm'}\n\tclass=\"four-col {size}\"\n\tbind:value={page}\n/>\n{#if size == 'sm'}\n\t<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />\n{/if}\n\n<style>\n\t:global(.four-col) {\n\t\t@apply grid w-full h-full;\n\t}\n\t:global(.four-col.md) {\n\t\t@apply grid-cols-2;\n\t\t@apply grid-rows-2;\n\t\tgrid-template-areas:\n\t\t\t'c-1 c-2'\n\t\t\t'c-3 c-4';\n\t}\n\n\t:global(.four-col.md > .col-1) {\n\t\tgrid-area: c-1;\n\t}\n\t:global(.four-col.md > .col-2) {\n\t\tgrid-area: c-2;\n\t}\n\t:global(.four-col.md > .col-3) {\n\t\tgrid-area: c-3;\n\t}\n\t:global(.four-col.md > .col-4) {\n\t\tgrid-area: c-4;\n\t}\n\t:global(.four-col.lg) {\n\t\t@apply grid-rows-4 grid-cols-1;\n\t}\n</style>\n"
+								},
+								{
+									"path": "",
+									"name": "PlaceHolder.svelte",
+									"type": "svelte",
+									"content": "<script>\n\tlet className\n\texport let content\n\texport { className as class }\n</script>\n\n<div\n\tclass=\"w-full h-full flex items-center justify-center text-white {className}\"\n>\n\t{content}\n</div>\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Layout",
+				"name": "ResponsiveGrid",
+				"labs": true,
+				"description": "A grid of items that can be navigated as a list.",
+				"path": "06-layout/03-responsive-grid",
+				"route": "layout/responsive-grid"
+			},
+			"stepper": {
+				"sequence": 4,
+				"key": "stepper",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Stepper",
+						"path": "06-layout/04-stepper/01-intro",
+						"name": "README.md",
+						"route": "layout/stepper/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/06-layout/04-stepper/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\t// import { Stepper } from '@rokkit/layout'\n\timport { data } from './data'\n\n\tlet value\n</script>\n\n<!-- <Stepper {data} bind:value /> -->\n\nCurrent Stage\n<pre>\n\t{JSON.stringify(value, null, 2)}\n</pre>\n"
+								},
+								{
+									"path": "",
+									"name": "data.js",
+									"type": "js",
+									"content": "export let data = [\n\t{\n\t\ttext: '01',\n\t\tlabel: 'Account Holder Detail',\n\t\tsteps: { count: 4, value: 4, current: -1 },\n\t\tcompleted: true,\n\t\tactive: false\n\t},\n\t{\n\t\ttext: '02',\n\t\tlabel: 'Vehicle Detail',\n\t\tsteps: { count: 4, value: 2, current: 3 },\n\t\tactive: true\n\t},\n\t{\n\t\ttext: '03',\n\t\tlabel: 'Vehicle Usage',\n\t\tsteps: { count: 4, value: -1, current: -1 }\n\t},\n\t{\n\t\ttext: '04',\n\t\tlabel: 'Additional Drivers',\n\t\tsteps: { count: 4, value: -1, current: -1 }\n\t},\n\t{ text: '05', label: 'Summary' }\n]\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Navigation",
+				"name": "Stepper",
+				"description": "A set of steps that can be navigated.",
+				"path": "06-layout/04-stepper",
+				"route": "layout/stepper"
+			}
+		},
+		"title": "Layout Components",
+		"labs": true,
+		"path": "06-layout"
+	},
+	"chart-elements": {
+		"sequence": 10,
+		"key": "chart-elements",
+		"children": {
+			"patterns": {
+				"sequence": 2,
+				"key": "patterns",
+				"children": {
+					"intro": {
+						"sequence": 1,
+						"key": "intro",
+						"title": "Patterns",
+						"path": "10-chart-elements/02-patterns/01-intro",
+						"name": "README.md",
+						"route": "chart-elements/patterns/intro",
+						"before": null,
+						"after": {
+							"preview": "src/stories/10-chart-elements/02-patterns/01-intro/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { brewer, Swatch } from '@rokkit/chart'\n\tlet variations = brewer().pattern().brew()\n</script>\n\n<Swatch items={variations} type=\"circle\" size={60} columns={4} autoscale />\n"
+								}
+							]
+						}
+					},
+					"colors": {
+						"sequence": 2,
+						"key": "colors",
+						"title": "Colors",
+						"path": "10-chart-elements/02-patterns/02-colors",
+						"name": "README.md",
+						"route": "chart-elements/patterns/colors",
+						"before": null,
+						"after": {
+							"preview": "src/stories/10-chart-elements/02-patterns/02-colors/src/App.svelte",
+							"files": [
+								{
+									"path": "",
+									"name": "App.svelte",
+									"type": "svelte",
+									"content": "<script>\n\timport { brewer, Swatch } from '@rokkit/chart'\n\timport { Select } from '@rokkit/input'\n\n\tlet index = 0\n\tlet shades = brewer().color().brew()\n\n\t$: variations = brewer()\n\t\t.pattern()\n\t\t.filter(index)\n\t\t.colors(shades)\n\t\t.variants(8)\n\t\t.brew()\n</script>\n\n<Swatch items={variations} type=\"circle\" size={60} columns={4} autoscale />\n"
+								}
+							]
+						}
+					}
+				},
+				"category": "Chart",
+				"name": "Pattern",
+				"labs": true,
+				"description": "Various fill patterns for use with chart elements.",
+				"path": "10-chart-elements/02-patterns",
+				"route": "chart-elements/patterns"
+			}
+		},
+		"title": "Chart Elements",
+		"path": "10-chart-elements"
+	}
+}

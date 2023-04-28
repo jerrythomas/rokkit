@@ -7,7 +7,7 @@
 	import Axis from './Axis.svelte'
 	import BoxPlot from '../plots/BoxPlot.svelte'
 	import ViolinPlot from '../plots/ViolinPlot.svelte'
-	import ScatterPlot from '../plots/ScatterPlot.svelte'
+	import ScatterPlot from '../plots/old_ScatterPlot.svelte'
 
 	let chart = writable({})
 	let axis
@@ -31,8 +31,8 @@
 			height: 350,
 			values: {
 				x: uniques(data, x),
-				y: uniques(data, y),
-			},
+				y: uniques(data, y)
+			}
 		}
 	}
 
@@ -42,7 +42,7 @@
 			...x,
 			data: data.filter(
 				(y) => y.Petal_Length >= x.lowerBound && y.Petal_Length < x.upperBound
-			),
+			)
 		}))
 
 		return groups
