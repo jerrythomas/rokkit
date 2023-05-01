@@ -6,15 +6,15 @@
 }
 
 .rokkit list {
-	@apply gap-1px bg-skin-200;
+	@apply gap-1px bg-skin-subtle;
 }
 
 .rokkit list > item,
 .rokkit accordion div summary {
-	@apply leading-10 px-4 bg-skin-100 text-skin-800 min-h-10;
+	@apply leading-10 px-4 bg-skin-base text-skin-800 min-h-10;
 }
 .rokkit accordion > div > summary {
-	@apply rounded pr-2 bg-gradient from-skin-200 to-skin-300;
+	@apply rounded pr-2 bg-gradient from-skin-subtle to-skin-muted;
 }
 
 .rokkit accordion > div > summary::-webkit-details-marker {
@@ -24,7 +24,13 @@
 .rokkit list item icon {
 	@apply text-secondary;
 }
-
+.rokkit item > img,
+.rokkit item > a > img {
+	@apply w-6 h-6;
+}
+.rokkit item > a {
+	@apply gap-2;
+}
 .rokkit :not(accordion > div) > list {
 	@apply rounded shadow border border-skin-400 overflow-y-scroll;
 }
@@ -51,10 +57,13 @@
 }
 
 .rokkit nested-list {
-	@apply bg-skin-200 text-skin-800;
+	@apply text-skin-800;
 }
 .rokkit nested-list node {
-	@apply pl-2 gap-2 h-8;
+	@apply px-2 h-8;
+}
+.rokkit node fragment {
+	@apply px-1 gap-2;
 }
 
 .rokkit tree {
@@ -62,12 +71,13 @@
 }
 
 .rokkit nested-list,
-.rokkit nested-list:focus-within {
+.rokkit nested-list:focus-within,
+.rokkit tree:focus-within {
 	@apply outline-none rounded;
 }
-.rokkit tree:focus-within {
+/* .rokkit tree:focus-within {
 	@apply outline-none bg-gradient-to-r from-primary to-secondary px-2px py-2.5px box-border;
-}
+} */
 
 .rokkit accordion,
 .rokkit list {
@@ -85,7 +95,7 @@
 } */
 .rokkit item.is-hovering,
 .rokkit item:hover {
-	@apply bg-skin-50 text-skin-700;
+	@apply bg-skin-inset text-skin-700;
 }
 
 .rokkit item.is-hovering icon,
@@ -96,8 +106,14 @@
 	@apply text-skin-50;
 }
 
+.rokkit .folder-tree node.is-selected {
+	@apply bg-gradient-to-r from-skin-subtle to-skin-subtle text-skin-800;
+}
+
 .rokkit item.is-selected,
-.rokkit node.is-selected {
+.rokkit tree node.is-selected,
+.rokkit tree.folder-tree:focus-within node.is-selected,
+.rokkit nested-list:focus-within node.is-selected {
 	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
 }
@@ -106,10 +122,31 @@
 }
 
 .rokkit accordion .is-expanded summary {
-	@apply border-b border-skin-300 rounded-b-none sticky top-0 z-1;
+	@apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
 }
 
 .rokkit accordion .is-selected summary {
 	@apply border-b-secondary-500 border-b text-secondary-600;
 	@apply hover:text-primary-600;
+}
+
+.rokkit .folder-tree {
+	@apply bg-skin-inset h-full;
+}
+.rokkit .folder-tree nested-list {
+	@apply bg-skin-inset h-full;
+}
+
+.rokkit node > span > i {
+	@apply border-skin-muted;
+}
+.rokkit node > span > icon {
+	@apply text-sm;
+}
+
+.rokkit crumbs {
+	@apply flex-grow gap-1 text-sm;
+}
+.rokkit crumbs crumb.is-selected {
+	@apply text-secondary;
 }

@@ -3,6 +3,7 @@ const modifiers = {
 	rgb: (value) => `rgb(${value})`,
 	none: (value) => value
 }
+
 /**
  * Generate shades for a color using css varuable
  *
@@ -11,19 +12,31 @@ const modifiers = {
  */
 export function shadesOf(name, modifier = 'none') {
 	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-	const fn = modifier in modifiers ? modifiers[modifier] : modifier.none
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
 	return shades.reduce(
 		(result, shade) => ({
 			...result,
 			[shade]: fn(`var(--${name}-${shade})`)
 		}),
-		{ DEFAULT: fn(`var(--${name}-500)`) }
+		{
+			DEFAULT: fn(`var(--${name}-500)`),
+			inset: fn(`var(--${name}-50)`),
+			sunken: fn(`var(--${name}-50)`),
+			recessed: fn(`var(--${name}-50)`),
+			base: fn(`var(--${name}-100)`),
+			subtle: fn(`var(--${name}-200)`),
+			muted: fn(`var(--${name}-300)`),
+			raised: fn(`var(--${name}-400)`),
+			elevated: fn(`var(--${name}-500)`),
+			floating: fn(`var(--${name}-600)`),
+			contrast: fn(`var(--${name}-700)`)
+		}
 	)
 }
 
 export function stateColors(name, modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifier.none
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 	return {
 		DEFAULT: fn(`var(--${name}-500)`),
 		light: fn(`var(--${name}-100)`),
@@ -32,7 +45,7 @@ export function stateColors(name, modifier = 'none') {
 }
 
 export function themeColors(modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifier.none
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
 	let states = ['info', 'error', 'warn', 'pass']
 	let variants = ['skin', 'primary', 'secondary', 'accent']
@@ -44,11 +57,10 @@ export function themeColors(modifier = 'none') {
 		(acc, variant) => ({ ...acc, [variant]: shadesOf(variant, modifier) }),
 		colors
 	)
-
+	// console.log('colors', colors)
 	colors.skin = {
 		...colors.skin,
 		contrast: fn(`var(--skin-800)`),
-		base: fn(`var(--skin-100)`),
 		zebra: fn(`var(--skin-zebra)`)
 	}
 
@@ -67,22 +79,17 @@ export function themeColors(modifier = 'none') {
 // 		)
 // }
 
-export function iconShortcuts(icons, collection, variant = '') {
-	const prefix = collection ? collection + ':' : ''
-	const suffix = variant ? '-' + variant : ''
-
-	const shortcuts = icons.reduce(
-		(acc, name) => ({
-			...acc,
-			[name]:
-				prefix +
-				(name.startsWith('selector')
-					? 'chevron-sort'
-					: name.replace('rating', 'star').replace('navigate', 'chevron')) +
-				suffix
-		}),
-		{}
-	)
+export function iconShortcuts(icons, collection, variants) {
+	const suffix = variants ? `-${variants}` : ''
+	const shortcuts = !collection
+		? {}
+		: icons.reduce(
+				(acc, name) => ({
+					...acc,
+					[name]: [collection, name].join(':') + suffix
+				}),
+				{}
+		  )
 
 	return shortcuts
 }

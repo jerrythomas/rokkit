@@ -2,14 +2,14 @@
 .minimal textarea,
 .minimal select,
 .minimal fieldset {
-	@apply rounded leading-loose px-2 border border-skin-300 outline-none;
+	@apply rounded leading-loose px-2 border border-skin-muted outline-none;
 }
 
 .minimal fieldset {
 	@apply p-4 pt-2 gap-2 rounded-md;
 }
 .minimal fieldset legend {
-	@apply px-2 border-l border-r rounded-md leading-tight border-skin-300 hover:text-primary select-none;
+	@apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
 }
 .minimal fieldset icon {
 	@apply text-2xl;
@@ -22,11 +22,11 @@
 	@apply bg-transparent;
 }
 .minimal input-field field {
-	@apply box-border border-b-2 border-skin-300 h-8 overflow-hidden;
+	@apply box-border border-b-2 border-skin-muted h-8 overflow-hidden;
 	@apply focus-within:border-b-secondary-600;
 }
 .minimal input-field span {
-	@apply border-r border-skin-300 bg-skin-100 px-1 h-full aspect-square;
+	@apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
 }
 .minimal input-field input,
 .minimal input-field textarea,
@@ -38,7 +38,7 @@
 	@apply leading-6 w-full uppercase text-sm text-skin-600;
 }
 .minimal input-field message {
-	@apply px-2 py-1 bg-skin-100 rounded;
+	@apply px-2 py-1 bg-skin-base rounded;
 }
 
 .minimal input-field.fail {
@@ -49,7 +49,7 @@
 	@apply h-1 mt-3 relative;
 }
 .minimal input-range range-track span {
-	@apply bg-skin-200 box-border border-skin-300 rounded-full;
+	@apply bg-skin-subtle box-border border-skin-muted rounded-full;
 }
 .minimal input-range range-track selected {
 	@apply border -top-0px -bottom-0px border-secondary-500 bg-secondary-600 rounded-full;

@@ -1,20 +1,19 @@
 <script>
 	import { Node, Text } from './items'
 	import { defaultFields } from './constants'
-	import { createEventDispatcher } from 'svelte'
-	// import { navigator } from './actions/navigator'
+	import { getLineTypes } from './lib/connector'
 
-	// const dispatch = createEventDispatcher()
-
+	let className = 'list'
+	export { className as class }
 	export let items = []
 	export let fields = defaultFields
 	export let using = {}
 	export let types = []
 	export let value = null
-	export let linesVisible = true
+	// export let linesVisible = true
 	export let rtl = false
 	export let hierarchy = []
-
+	export let icons
 	// let indices = []
 
 	// function handle(event) {
@@ -34,7 +33,7 @@
 </script>
 
 <nested-list
-	class="flex flex-col w-full"
+	class="flex flex-col w-full {className}"
 	role="listbox"
 	class:rtl
 	tabindex="-1"
@@ -47,29 +46,32 @@
 	on:collapse={handle}
 > -->
 	{#each items as content, index}
-		{@const type = nodeTypes[index] === 'middle' ? 'line' : 'empty'}
+		<!-- {@const type = nodeTypes[index] === 'middle' ? 'line' : 'empty'} -->
 		{@const hasChildren = fields.children in content}
-		{@const connectors = types.slice(0, -1)}
+		<!-- {@const connectors =   types.slice(0, -1)} -->
 		{@const path = [...hierarchy, index]}
+		{@const connectors = getLineTypes(hasChildren, types, nodeTypes[index])}
 
+		<!-- types={[...connectors, nodeTypes[index]]} -->
 		<Node
 			bind:content
 			{fields}
 			{using}
-			types={[...connectors, nodeTypes[index]]}
-			{linesVisible}
+			types={connectors}
 			{rtl}
 			{path}
+			stateIcons={icons}
 			selected={value === content}
 		/>
+		<!-- types={[...connectors, type, nodeTypes[index]]} -->
 		{#if hasChildren && content[fields.isOpen]}
 			<svelte:self
 				items={content[fields.children]}
 				bind:value
 				{fields}
 				{using}
-				types={[...connectors, type, nodeTypes[index]]}
-				{linesVisible}
+				{icons}
+				types={connectors}
 				hierarchy={path}
 			/>
 		{/if}

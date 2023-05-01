@@ -9,9 +9,9 @@ export { default as SwatchGrid } from './chart/SwatchGrid.svelte'
 export { default as Axis } from './chart/Axis.svelte'
 export { default as Grid } from './chart/Grid.svelte'
 
-export { default as BoxPlot } from './plots/BoxPlot.svelte'
+export { default as BoxPlot } from '../plots/BoxPlot.svelte'
 export { default as ViolinPlot } from '../plots/ViolinPlot.svelte'
-export { default as ScatterPlot } from './plots/ScatterPlot.svelte'
+export { default as ScatterPlot } from '../plots/ScatterPlot.svelte'
 export { default as FunnelPlot } from '../plots/FunnelPlot.svelte'
 
 export { default as Chart } from './chart/Chart.svelte'

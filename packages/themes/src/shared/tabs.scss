@@ -1,6 +1,6 @@
 tab-view tabs {
 	@apply box-border space-evenly;
-	@apply bg-skin-200 border-b border-skin-400 text-skin-900;
+	@apply bg-skin-subtle border-b border-skin-400 text-skin-900;
 }
 tab-view tabs tab {
 	@apply py-2 px-4 flex-shrink-0 justify-center;

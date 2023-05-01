@@ -1,5 +1,21 @@
 # @rokkit/input
 
+## 1.0.0-next.19
+
+### Patch Changes
+
+- Release v1.0.0-next.19
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.19
+
+## 1.0.0-next.18
+
+### Patch Changes
+
+- chore: release v1.0.0-next.18
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.18
+
 ## 1.0.0-next.17
 
 ### Patch Changes
