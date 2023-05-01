@@ -6,7 +6,7 @@ exports[`DropDown.svelte > should toggle open state when button is clicked 1`] =
     <drop-down
       aria-controls="menu"
       aria-haspopup="true"
-      class="flex w-full relative cursor-pointer select-none dropdown"
+      class="flex relative cursor-pointer select-none dropdown"
       tabindex="0"
     >
       <button

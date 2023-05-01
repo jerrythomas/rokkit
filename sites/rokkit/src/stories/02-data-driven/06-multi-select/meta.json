@@ -1,0 +1,5 @@
+{
+	"category": "Selection",
+	"title": "MultiSelect",
+	"description": "Input component that allows users to choose one or more value from a list of options."
+}

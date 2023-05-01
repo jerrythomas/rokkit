@@ -1,29 +1,32 @@
 {
-  "mode": "exit",
-  "tag": "next",
-  "initialVersions": {
-    "@rokkit/chart": "1.0.0-next.16",
-    "@rokkit/core": "1.0.0-next.16",
-    "@rokkit/form": "1.0.0-next.16",
-    "@rokkit/icons": "1.0.0-next.16",
-    "@rokkit/input": "1.0.0-next.16",
-    "@rokkit/layout": "1.0.0-next.16",
-    "@rokkit/markdown": "1.0.0-next.16",
-    "@rokkit/themes": "1.0.0-next.16",
-    "@rokkit/utils": "1.0.0-next.16"
-  },
-  "changesets": [
-    "brave-toes-stare",
-    "empty-toes-whisper",
-    "fast-wombats-clean",
-    "green-cars-accept",
-    "lemon-pears-drum",
-    "orange-knives-impress",
-    "proud-dots-greet",
-    "red-spoons-roll",
-    "slimy-rings-kiss",
-    "smart-radios-fly",
-    "tidy-books-flow",
-    "two-turkeys-nail"
-  ]
+	"mode": "exit",
+	"tag": "next",
+	"initialVersions": {
+		"@rokkit/chart": "1.0.0-next.19",
+		"@rokkit/core": "1.0.0-next.19",
+		"@rokkit/form": "1.0.0-next.19",
+		"@rokkit/icons": "1.0.0-next.19",
+		"@rokkit/input": "1.0.0-next.19",
+		"@rokkit/layout": "1.0.0-next.19",
+		"@rokkit/markdown": "1.0.0-next.19",
+		"@rokkit/themes": "1.0.0-next.19",
+		"@rokkit/utils": "1.0.0-next.19",
+		"@rokkit/tutorial": "1.0.0-next.19"
+	},
+	"changesets": [
+		"brave-toes-stare",
+		"empty-toes-whisper",
+		"fast-wombats-clean",
+		"green-cars-accept",
+		"lemon-pears-drum",
+		"orange-knives-impress",
+		"proud-dots-greet",
+		"red-spoons-roll",
+		"silly-colts-hang",
+		"slimy-rings-kiss",
+		"smart-radios-fly",
+		"tidy-books-flow",
+		"two-turkeys-nail",
+		"wet-pens-taste"
+	]
 }

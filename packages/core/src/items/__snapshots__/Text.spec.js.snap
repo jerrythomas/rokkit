@@ -36,7 +36,7 @@ exports[`Text.svelte > Should render image 1`] = `
   <div>
     <img
       alt="hello"
-      class="h-8 w-8 rounded-full object-cover"
+      class="h-4 w-4 object-cover"
       src="https://example.com/img.png"
     />
      
@@ -55,7 +55,7 @@ exports[`Text.svelte > Should render image and icon 1`] = `
   <div>
     <img
       alt="hello"
-      class="h-8 w-8 rounded-full object-cover"
+      class="h-4 w-4 object-cover"
       src="https://example.com/img.png"
     />
      
@@ -91,7 +91,7 @@ exports[`Text.svelte > Should render using field mapping 1`] = `
   <div>
     <img
       alt="hello"
-      class="h-8 w-8 rounded-full object-cover"
+      class="h-4 w-4 object-cover"
       src="https://example.com/img.png"
     />
      

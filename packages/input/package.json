@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/input",
-	"version": "1.0.0-next.17",
+	"version": "1.0.0-next.19",
 	"description": "Input controls for svelte",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -27,16 +27,16 @@
 	"devDependencies": {
 		"@jerrythomas/eslint-config-svelte": "^1.0.2",
 		"@jerrythomas/prettier-config": "^1.0.0",
-		"@sveltejs/vite-plugin-svelte": "^2.0.2",
+		"@sveltejs/vite-plugin-svelte": "^2.1.1",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.12.10",
-		"c8": "^7.12.0",
+		"c8": "^7.13.0",
 		"eslint": "^7.32.0",
 		"jsdom": "^19.0.0",
 		"shared-config": "workspace:*",
-		"svelte": "^3.55.1",
+		"svelte": "^3.58.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.1.1",
+		"vite": "^4.3.3",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
