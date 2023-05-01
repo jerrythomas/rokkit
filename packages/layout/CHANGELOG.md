@@ -1,5 +1,14 @@
 # @rokkit/layout
 
+## 1.0.0-next.19
+
+### Patch Changes
+
+- Release v1.0.0-next.19
+- Updated dependencies
+  - @rokkit/markdown@1.0.0-next.19
+  - @rokkit/core@1.0.0-next.19
+
 ## 1.0.0-next.18
 
 ### Patch Changes
