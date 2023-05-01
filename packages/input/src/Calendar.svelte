@@ -20,7 +20,7 @@
 	$: days = getCalendarDays(value, holidays, fixed)
 </script>
 
-<calendar class="flex flex-col items-center select-none">
+<calendar class="flex flex-col mx-auto items-center select-none">
 	<month-year class="flex flex-row w-full h-10 items-center">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<square class="cursor-pointer select-none" on:click={previousMonth}>

@@ -43,13 +43,10 @@
 	$: console.log('form', data)
 </script>
 
-<content class="flex flex-col w-full p-4">
-	<p>First auto Form</p>
-	<Form>
-		<DataList
-			id="input-types"
-			values={['text', 'json', 'number', 'checkbox', 'Link']}
-		/>
-		<FieldLayout bind:data {fields} />
-	</Form>
-</content>
+<Form>
+	<DataList
+		id="input-types"
+		values={['text', 'json', 'number', 'checkbox', 'Link']}
+	/>
+	<FieldLayout bind:data {fields} />
+</Form>
