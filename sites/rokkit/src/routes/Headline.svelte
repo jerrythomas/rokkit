@@ -1,5 +1,4 @@
 <script>
-	import RocketLaunch from './RocketLaunch.svelte'
 	import Rokkit from './Rokkit.svelte'
 	import { Button } from '@rokkit/form'
 	import { goto } from '$app/navigation'

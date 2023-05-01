@@ -3,8 +3,7 @@
 	import { writable } from 'svelte/store'
 	import { ResponsiveGrid } from '@rokkit/core'
 	import { ButtonGroup } from '@rokkit/form'
-	// import { Tree } from '@rokkit/core'
-	// import { CodeSnippet } from '@rokkit/markdown'
+
 	import Notes from './Notes.svelte'
 	import Code from './Code.svelte'
 	import Preview from './Preview.svelte'
@@ -39,10 +38,6 @@
 		}
 
 		try {
-			// component = (await import(/* @vite-ignore */ tutorial.readme)).default
-			// preview = (await import(/* @vite-ignore */ tutorial.after.preview))
-			// .default
-			// files = tutorial.after.files
 			story.set({
 				preview: tutorial.src.preview,
 				files: tutorial.src.files,

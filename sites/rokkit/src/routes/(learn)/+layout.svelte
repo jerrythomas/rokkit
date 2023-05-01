@@ -18,7 +18,7 @@
 
 	function handleSelect(event) {
 		if (!event.detail.children && event.detail.route) {
-			goto('/tutorial/' + event.detail.route)
+			goto('/' + $page.params.segment + '/' + event.detail.route)
 		}
 	}
 	$: value = value ?? findValueFromPath($page.params.slug, data.menu, fields)
