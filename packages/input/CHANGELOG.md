@@ -1,5 +1,13 @@
 # @rokkit/input
 
+## 1.0.0-next.20
+
+### Patch Changes
+
+- Release v1.0.0-next.20
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.20
+
 ## 1.0.0-next.19
 
 ### Patch Changes

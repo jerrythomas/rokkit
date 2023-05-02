@@ -1,6 +1,6 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.19",
+	"version": "1.0.0-next.20",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -31,7 +31,8 @@
 		"packages/chart",
 		"packages/themes",
 		"packages/layout",
-		"packages/utils"
+		"packages/utils",
+		"packages/tutorial"
 	],
 	"devDependencies": {
 		"@changesets/cli": "^2.26.1",
