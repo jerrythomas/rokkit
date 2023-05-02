@@ -93,26 +93,27 @@
 /* .rokkit item.is-active {
 	@apply border-l-4 border-l-secondary-500;
 } */
-.rokkit item.is-hovering,
-.rokkit item:hover {
-	@apply bg-skin-inset text-skin-700;
+.rokkit list item.is-hovering,
+.rokkit list item:hover,
+.rokkit node:hover {
+	@apply bg-skin-inset;
 }
 
-.rokkit item.is-hovering icon,
-.rokkit item:hover icon {
+/* .rokkit list item.is-hovering icon,
+.rokkit list item:hover icon {
 	@apply text-secondary-800;
-}
-.rokkit item.is-selected > a {
+} */
+.rokkit list item.is-selected > a {
 	@apply text-skin-50;
 }
 
-.rokkit .folder-tree node.is-selected {
+.rokkit node.is-selected {
 	@apply bg-gradient-to-r from-skin-subtle to-skin-subtle text-skin-800;
 }
 
-.rokkit item.is-selected,
-.rokkit tree node.is-selected,
-.rokkit tree.folder-tree:focus-within node.is-selected,
+.rokkit list item.is-selected,
+.rokkit tree:focus-within node.is-selected,
+/* .rokkit tree.folder-tree:focus-within node.is-selected, */
 .rokkit nested-list:focus-within node.is-selected {
 	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;

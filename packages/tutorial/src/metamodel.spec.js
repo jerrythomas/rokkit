@@ -104,6 +104,10 @@ describe('metamodel', () => {
 					}
 				},
 				{
+					name: 'data.js',
+					content: 'Source for data.js'
+				},
+				{
 					name: 'README.md',
 					content: {
 						default: 'Content for What is a component',
@@ -130,6 +134,10 @@ describe('metamodel', () => {
 				{
 					name: 'App.svelte',
 					preview: 'Preview for Overview'
+				},
+				{
+					name: 'data.js',
+					content: 'Source for data.js'
 				},
 				{
 					name: 'README.md',
