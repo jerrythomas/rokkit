@@ -16,7 +16,6 @@
 		typeof value == 'object'
 			? using[value[fields.component] ?? 'default']
 			: using.default
-	$: console.log(value, component)
 </script>
 
 <pill class="flex flex-row items-center">

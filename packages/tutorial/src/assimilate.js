@@ -52,6 +52,7 @@ export function assimilateTutorials(modules, sources, options) {
 		files = addPathMetadata(files)
 		// console.log('files', files)
 		files = addModuleMetadata(files, options)
+		// console.log('files', files)
 
 		tutorials = {}
 		files.map((item) => {

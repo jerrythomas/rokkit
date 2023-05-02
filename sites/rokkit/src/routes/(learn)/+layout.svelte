@@ -1,8 +1,11 @@
 <script>
+	import { getContext } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Tree, findValueFromPath } from '@rokkit/core'
 	import Sidebar from './Sidebar.svelte'
+	const media = getContext('media')
+	const site = getContext('site')
 
 	const fields = {
 		text: 'title',
@@ -19,6 +22,7 @@
 	function handleSelect(event) {
 		if (!event.detail.children && event.detail.route) {
 			goto('/' + $page.params.segment + '/' + event.detail.route)
+			if (!$media.large) site.set({ ...$site, sidebar: false })
 		}
 	}
 	$: value = value ?? findValueFromPath($page.params.slug, data.menu, fields)

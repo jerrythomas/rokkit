@@ -49,7 +49,9 @@ describe('assimilate', () => {
 
 		sources = {
 			'./stories/01-intro/01-foo/src/App.svelte': () =>
-				Promise.resolve('<h1>Foo Component</h1>')
+				Promise.resolve('<h1>Foo Component</h1>'),
+			'./stories/01-intro/01-foo/src/data.js': () =>
+				Promise.resolve('{ "foo": "bar" }')
 			// './stories/foo/02/App.svelte': () =>
 			// 	Promise.resolve('Code for Foo Component/02'),
 			// './stories/foo/01/data.js': () =>
@@ -115,6 +117,12 @@ describe('assimilate', () => {
 											name: 'App.svelte',
 											path: 'src',
 											type: 'svelte'
+										},
+										{
+											content: '{ "foo": "bar" }',
+											name: 'data.js',
+											path: 'src',
+											type: 'js'
 										}
 									]
 								}
@@ -149,6 +157,12 @@ describe('assimilate', () => {
 								name: 'App.svelte',
 								path: 'src',
 								type: 'svelte'
+							},
+							{
+								content: '{ "foo": "bar" }',
+								name: 'data.js',
+								path: 'src',
+								type: 'js'
 							}
 						]
 					}
@@ -156,7 +170,6 @@ describe('assimilate', () => {
 				preview: 'The Foo Component'
 			}
 		})
-		// expect(tutorial.name).toBe('Tutorial')
 	})
 	it('should get all route entries', async () => {
 		const tutorials = assimilateTutorials(modules, sources, options)
@@ -191,6 +204,12 @@ describe('assimilate', () => {
 											name: 'App.svelte',
 											path: 'src',
 											type: 'svelte'
+										},
+										{
+											content: '{ "foo": "bar" }',
+											name: 'data.js',
+											path: 'src',
+											type: 'js'
 										}
 									]
 								}
@@ -230,6 +249,12 @@ describe('assimilate', () => {
 											name: 'App.svelte',
 											path: 'src',
 											type: 'svelte'
+										},
+										{
+											content: '{ "foo": "bar" }',
+											name: 'data.js',
+											path: 'src',
+											type: 'js'
 										}
 									]
 								}

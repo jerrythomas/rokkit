@@ -2,7 +2,7 @@ import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 // import { getComponentProp } from 'validators'
 // import { defaultFields } from '../constants'
-import Collapsible from '../../src/items/Collapsible.svelte'
+import Collapsible from './Collapsible.svelte'
 
 describe('Collapsible.svelte', () => {
 	beforeEach(() => {
