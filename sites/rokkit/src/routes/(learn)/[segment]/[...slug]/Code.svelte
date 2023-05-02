@@ -34,34 +34,36 @@
 
 {#if hasFiles}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<nav
-		class="flex px-4 bg-skin-subtle border-t border-t-skin-inset text-sm w-full h-8 cursor-pointer items-center lg:hidden"
-		on:click={() => (active = active == 'code' ? 'files' : 'code')}
-	>
-		{[currentFile.path, currentFile.name].join('/')}
-	</nav>
-	<section class="flex flex-row w-full h-full overflow-auto relative">
-		<aside
-			class="flex flex-col bg-skin-inset min-w-full lg:min-w-40 h-full"
-			class:-translate-x-full={!filesVisible}
+	<source-files class="flex flex-col h-full">
+		<nav
+			class="flex px-4 bg-skin-subtle border-t border-t-skin-inset text-sm w-full h-8 cursor-pointer items-center lg:hidden"
+			on:click={() => (active = active == 'code' ? 'files' : 'code')}
 		>
-			<Tree
-				items={$story.files}
-				{fields}
-				{icons}
-				value={currentFile}
-				on:select={handleSelect}
-				class="folder-tree"
-			/>
-		</aside>
-		{#if code}
-			<CodeSnippet
-				{code}
-				{language}
-				class={filesVisible
-					? 'w-full h-full'
-					: 'w-full h-full absolute left-0 w-full'}
-			/>
-		{/if}
-	</section>
+			{[currentFile.path, currentFile.name].join('/')}
+		</nav>
+		<section class="flex flex-row w-full h-full overflow-auto relative">
+			<aside
+				class="flex flex-col bg-skin-inset min-w-full lg:min-w-40 h-full"
+				class:-translate-x-full={!filesVisible}
+			>
+				<Tree
+					items={$story.files}
+					{fields}
+					{icons}
+					value={currentFile}
+					on:select={handleSelect}
+					class="folder-tree"
+				/>
+			</aside>
+			{#if code}
+				<CodeSnippet
+					{code}
+					{language}
+					class={filesVisible
+						? 'w-full h-full'
+						: 'w-full h-full absolute left-0 w-full'}
+				/>
+			{/if}
+		</section>
+	</source-files>
 {/if}

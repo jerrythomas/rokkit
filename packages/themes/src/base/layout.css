@@ -9,7 +9,9 @@ container > segment {
 }
 
 .three-col.md {
-	@apply grid-cols-2 grid-rows-2;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	/* @apply grid-cols-2 grid-rows-2; */
 	grid-template-areas:
 		'c-1 c-2'
 		'c-1 c-3';
@@ -27,7 +29,9 @@ container > segment {
 	grid-area: c-3;
 }
 .three-col.lg {
-	@apply grid-cols-5;
+	/* @apply grid-cols-5; */
+	grid-template-columns: repeat(5, 1fr);
+	grid-template-rows: repeat(2, 1fr);
 	grid-template-areas:
 		'c-1 c-1 c-2 c-2 c-2'
 		'c-1 c-1 c-3 c-3 c-3';

@@ -28,7 +28,7 @@
 	$: using = { default: Text, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: nodeTypes = items.map((_, index) =>
-		index === items.length - 1 ? 'last' : 'middle'
+		index === items.length - 1 ? 'last' : 'child'
 	)
 </script>
 

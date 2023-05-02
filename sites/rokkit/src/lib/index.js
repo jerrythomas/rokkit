@@ -20,7 +20,7 @@ const mediaqueries = {
 const modules = import.meta.glob(
 	'../stories/**/{App.svelte,meta.json,README.md}'
 )
-const samples = import.meta.glob('../stories/**/{src,pre}/*.{svelte,js,css}', {
+const samples = import.meta.glob('../stories/**/src/*', {
 	as: 'raw'
 })
 const config = {
