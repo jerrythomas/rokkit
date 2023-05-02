@@ -31,7 +31,8 @@
 		"packages/chart",
 		"packages/themes",
 		"packages/layout",
-		"packages/utils"
+		"packages/utils",
+		"packages/tutorial"
 	],
 	"devDependencies": {
 		"@changesets/cli": "^2.26.1",
