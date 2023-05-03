@@ -1,19 +1,17 @@
 <script>
-	let className = 'flex w-full h-auto'
+	let className = 'flex flex-grow w-full mx-0 h-auto'
 	export { className as class }
 	export let layers
 	export let seconds = 10
 </script>
 
 <svg
-	width="320"
-	height="72"
 	viewBox="0 0 320 72"
 	style:--seconds="{seconds}s"
 	class={className}
 	preserveAspectRatio="xMidYMid meet"
 >
-	{#each layers as layer, index}
+	{#each layers as layer}
 		{@const shade = layer.shade}
 		<g class="fill-current {shade}">
 			{#each layer.items as item, index}

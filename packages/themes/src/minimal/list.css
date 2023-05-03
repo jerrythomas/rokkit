@@ -62,8 +62,8 @@
 .minimal node > span {
 	@apply w-3;
 }
-.minimal node > span > icon{
-/* .minimal node > icon { */
+.minimal node > span > icon {
+	/* .minimal node > icon { */
 	@apply text-sm;
 }
 .minimal node.is-selected p,

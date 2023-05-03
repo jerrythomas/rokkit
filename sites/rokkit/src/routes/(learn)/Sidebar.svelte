@@ -19,7 +19,7 @@
 
 <aside
 	bind:this={sidebar}
-	class="flex flex-col flex-shrink-0 w-80 bg-skin-base py-4 absolute inset-y-0 left-0 -translate-x-full transform transition duration-200 ease-in-out z-10 border-r border-skin-subtle overflow-auto"
+	class="flex flex-col flex-shrink-0 w-80 bg-skin-base py-4 absolute inset-y-0 left-0 -translate-x-full transform transition duration-200 ease-in-out z-5 border-r border-skin-subtle overflow-auto"
 	class:lg:relative={$site.sidebar}
 >
 	<slot />
