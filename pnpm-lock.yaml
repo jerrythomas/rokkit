@@ -892,12 +892,12 @@ importers:
 
   sites/rokkit:
     dependencies:
+      '@fontsource/open-sans':
+        specifier: ^4.5.14
+        version: 4.5.14
       '@fontsource/overpass':
         specifier: ^4.5.11
         version: 4.5.11
-      '@fontsource/poppins':
-        specifier: ^4.5.10
-        version: 4.5.10
       '@fontsource/victor-mono':
         specifier: ^4.5.4
         version: 4.5.4
@@ -2192,12 +2192,12 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@fontsource/overpass@4.5.11:
-    resolution: {integrity: sha512-x6A3fpFQdaqZ7O6LKyoeKzfzxjZhnJw1I7Yf4D8xKO8GM4N+0P8Ch6jIVD/DAgDmlc3/us5ZZEuaxwHJGiAkMA==}
+  /@fontsource/open-sans@4.5.14:
+    resolution: {integrity: sha512-mBXIIETBlW8q/ocuUN0hyGow2iuf75hQEHQt8R/RJ/HcphVbLg8KB7pHYGbFGDqs75W+SWvTC7JkVeAjT65BuQ==}
     dev: false
 
-  /@fontsource/poppins@4.5.10:
-    resolution: {integrity: sha512-oYZVHsnlwV3VWM1SE/m6SUxVh0QLk5+2wB+lBiXcI7N/0KVQWmV9YykaPqfJHBLvmdya+MAOnv+BQHeLU1vOOw==}
+  /@fontsource/overpass@4.5.11:
+    resolution: {integrity: sha512-x6A3fpFQdaqZ7O6LKyoeKzfzxjZhnJw1I7Yf4D8xKO8GM4N+0P8Ch6jIVD/DAgDmlc3/us5ZZEuaxwHJGiAkMA==}
     dev: false
 
   /@fontsource/roboto-mono@4.5.10:
@@ -2290,7 +2290,7 @@ packages:
       '@antfu/install-pkg': 0.1.1
       '@antfu/utils': 0.7.2
       '@iconify/types': 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       kolorist: 1.8.0
       local-pkg: 0.4.3
     transitivePeerDependencies:
@@ -2930,7 +2930,7 @@ packages:
       svelte: ^3.54.0
       vite: ^4.0.0
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.0
@@ -4529,6 +4529,18 @@ packages:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
     dev: false
+
+  /debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: true
 
   /debug@4.3.4(supports-color@8.1.1):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -10359,7 +10371,7 @@ packages:
       acorn: 8.8.2
       acorn-walk: 8.2.0
       chai: 4.3.7
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       local-pkg: 0.4.3
       source-map: 0.6.1
       strip-literal: 1.0.1

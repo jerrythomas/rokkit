@@ -14,14 +14,14 @@
 		opened: 'i-rokkit:folder-opened',
 		closed: 'i-rokkit:folder-closed'
 	}
-	// let size = 'small'
+
 	let active = 'code'
 
 	function handleSelect({ detail }) {
 		currentFile = detail
 		if (!$media.large) active = 'code'
 	}
-	$: codeVisible = $media.large || active === 'code'
+
 	$: filesVisible = $media.large || active !== 'code'
 	$: hasFiles = $story.files && $story.files.length > 0
 	$: if (hasFiles) currentFile = $story.files[0].children[0]
@@ -29,7 +29,6 @@
 		code = currentFile.content
 		language = currentFile.type
 	}
-	// $: console.log($story.files)
 </script>
 
 {#if hasFiles}

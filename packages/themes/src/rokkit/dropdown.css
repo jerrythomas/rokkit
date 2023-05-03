@@ -17,7 +17,7 @@
 	@apply hover:bg-skin-muted hover:border-skin-500;
 }
 .rokkit drop-down > button {
-	@apply h-10 pl-4 pr-2
+	@apply h-10 pl-4 pr-2;
 }
 .rokkit input-select square-icon,
 .rokkit drop-down square-icon {

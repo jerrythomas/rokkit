@@ -5,6 +5,8 @@
 	import { getContext } from 'svelte'
 	const site = getContext('site')
 
+	let className = ''
+	export { className as class }
 	function toggle() {
 		$site.sidebar = !$site.sidebar
 	}
@@ -13,7 +15,7 @@
 </script>
 
 <header
-	class="flex min-h-14 w-full bg-skin-subtle items-center justify-between relative shadow-md"
+	class="flex min-h-14 w-full bg-skin-base items-center justify-between relative {className}"
 >
 	<div class="flex items-center px-4 gap-2">
 		<Icon
