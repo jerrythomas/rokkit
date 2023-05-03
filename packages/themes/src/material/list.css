@@ -38,7 +38,7 @@
 	@apply px-1 gap-1 bg-transparent;
 }
 .material node > span {
-	@apply w-3 ;
+	@apply w-3;
 }
 
 .material node > span > icon {

@@ -70,7 +70,8 @@ export default defineConfig({
 	theme: {
 		fontFamily: {
 			mono: ['Victor Mono', 'monospace'],
-			serif: ['Poppins', 'ui-serif', 'sans-serif'],
+			heading: ['Open Sans', 'sans-serif'],
+			serif: ['Open Sans', 'ui-serif', 'sans-serif'],
 			body: [
 				'Overpass',
 				'-apple-system',
