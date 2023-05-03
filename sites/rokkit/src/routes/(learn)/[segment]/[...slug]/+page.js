@@ -1,7 +1,8 @@
 import { guide } from '$lib'
 /** @type {import('./$types').PageLoad} */
 export async function load({ params }) {
-	let tutorial = await guide.find(params.slug)
+	let tutorial = await guide.find(params.slug, params.segment == 'labs')
+	console.log('tutorial', tutorial.previous, tutorial.next)
 	if (!tutorial) return { status: 404 }
 
 	tutorial.src.files[0]._open = true
