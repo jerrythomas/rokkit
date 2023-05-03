@@ -1,5 +1,5 @@
 .minimal button {
-	@apply rounded leading-loose select-none px-2;
+	@apply rounded leading-loose select-none px-4;
 	@apply bg-skin-muted border border-skin-muted;
 }
 .minimal button icon-left,
@@ -10,6 +10,9 @@
 	@apply text-2xl;
 }
 
+.minimal .is-primary {
+	@apply bg-secondary text-white;
+}
 .minimal button p {
 	@apply px-2 flex flex-grow;
 }
