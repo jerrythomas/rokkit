@@ -25,7 +25,8 @@
 			if (!$media.large) site.set({ ...$site, sidebar: false })
 		}
 	}
-	$: value = value ?? findValueFromPath($page.params.slug, data.menu, fields)
+	$: if (!value || value.route != $page.params.slug)
+		value = findValueFromPath($page.params.slug, data.menu, fields)
 </script>
 
 <main class="flex w-full h-full flex-grow overflow-hidden relative">
