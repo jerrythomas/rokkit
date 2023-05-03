@@ -42,7 +42,9 @@
 				preview: tutorial.src.preview,
 				files: tutorial.src.files,
 				readme: tutorial.readme,
-				crumbs: tutorial.crumbs
+				crumbs: tutorial.crumbs,
+				previous: tutorial.previous,
+				next: tutorial.next
 			})
 			ready = true
 		} catch (error) {

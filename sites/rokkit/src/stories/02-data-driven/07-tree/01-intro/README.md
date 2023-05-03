@@ -12,6 +12,8 @@ Some of the notable features of this component are:
 - It is also possible to configure a different component to be used for different items based on an
   attribute in the data.
 
+> Todo: Item selected by passing value should scroll into view
+
 ## Properties
 
 - _items_ : Supply the data for the accordion

@@ -145,6 +145,10 @@ describe('assimilate', () => {
 			readme: 'Notes for Foo Component',
 			route: 'intro/foo',
 			crumbs: ['Intro', 'Page 01'],
+			level: 1,
+			next: null,
+			parent: false,
+			previous: null,
 			src: {
 				files: [
 					{
