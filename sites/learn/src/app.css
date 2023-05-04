@@ -24,3 +24,7 @@ body {
 body > app {
 	@apply flex flex-col min-h-full min-w-full h-full w-full relative overflow-hidden;
 }
+
+input.embedded {
+	@apply w-full h-full bg-transparent border-none focus:outline-none border-box
+}

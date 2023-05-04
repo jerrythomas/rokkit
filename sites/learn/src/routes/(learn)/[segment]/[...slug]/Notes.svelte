@@ -17,7 +17,7 @@
 <aside class="flex flex-col w-full h-full border-r border-r-skin-subtle">
 	{#if $story}
 		<nav
-			class="flex min-h-12 gap-1 text-sm items-center border-b border-b-skin-subtle"
+			class="flex min-h-10 gap-1 text-sm items-center border-b border-b-skin-subtle"
 		>
 			{#if !$site.sidebar}
 				<Icon
