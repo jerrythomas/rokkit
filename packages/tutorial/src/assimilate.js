@@ -1,4 +1,4 @@
-import { findTutorial, toSortedHierarchy } from './tutorial'
+import { toSortedHierarchy } from './tutorial'
 import { flattenNestedList } from '@rokkit/core'
 import {
 	fetchImports,
@@ -32,12 +32,37 @@ function filterMenuItems(data, labs = false) {
 		.filter((item) => item !== null)
 }
 
+export function findTutorial(flat, route) {
+	let index = flat.findIndex((item) => item.route == route)
+
+	if (index == -1) return null
+	let prevIndex = index - 1
+	let nextIndex = index + 1
+	while (prevIndex >= 0 && !flat[prevIndex].route) prevIndex--
+	while (nextIndex <= flat.length - 1 && !flat[nextIndex].route) nextIndex++
+	let result = {
+		...flat[index],
+		previous: prevIndex >= 0 ? flat[prevIndex].route : null,
+		next: nextIndex < flat.length ? flat[nextIndex].route : null
+	}
+	let crumbs = [flat[index].title]
+	let level = flat[index].level
+
+	while (index >= 0 && level > 0) {
+		while (index >= 0 && flat[index].level >= level) index--
+		if (index >= 0) {
+			crumbs = [flat[index].title, ...crumbs]
+			level = flat[index].level
+		}
+	}
+
+	return { ...result, crumbs }
+}
+
 export function assimilateTutorials(modules, sources, options) {
 	let loaded = false
 	let tutorials
 	let routes
-	let hierarchy
-	// let flat
 
 	options = { ...defaultOptions, ...(options ?? {}) }
 	const assimilate = async () => {
@@ -53,18 +78,15 @@ export function assimilateTutorials(modules, sources, options) {
 		}))
 
 		files = addPathMetadata(files)
-		// console.log('files', files)
 		files = addModuleMetadata(files, options)
-		// console.log('files', files)
 
 		tutorials = {}
 		files.map((item) => {
 			tutorials = turorialsToNestedObject(tutorials, item)
 		})
-		// console.log('tutorials', JSON.stringify(tutorials, null, 2))
 		routes = generateRouteEntries(tutorials)
 		tutorials = convertFilesToFolderHierarchy(tutorials, options)
-		hierarchy = toSortedHierarchy(tutorials)
+		tutorials = toSortedHierarchy(tutorials)
 
 		loaded = true
 		console.info('Assimilation complete.')
@@ -72,37 +94,12 @@ export function assimilateTutorials(modules, sources, options) {
 
 	const find = async (route, labs = false) => {
 		if (!loaded) await assimilate()
-		let flat = flattenNestedList(filterMenuItems(hierarchy, labs), {
-			children: 'children'
-		})
-		let index = flat.findIndex((item) => item.route == route)
-
-		if (index == -1) return null
-		let prevIndex = index - 1
-		let nextIndex = index + 1
-		while (prevIndex >= 0 && !flat[prevIndex].route) prevIndex--
-		while (nextIndex <= flat.length - 1 && !flat[nextIndex].route) nextIndex++
-		let result = {
-			...flat[index],
-			previous: prevIndex >= 0 ? flat[prevIndex].route : null,
-			next: nextIndex < flat.length ? flat[nextIndex].route : null
-		}
-		let crumbs = [flat[index].title]
-		let level = flat[index].level
-
-		while (index >= 0 && level > 0) {
-			while (index >= 0 && flat[index].level >= level) index--
-			if (index >= 0) {
-				crumbs = [flat[index].title, ...crumbs]
-				level = flat[index].level
-			}
-		}
-
-		return { ...result, crumbs }
+		let flat = flattenNestedList(filterMenuItems(tutorials, labs))
+		return findTutorial(flat, route)
 	}
 	const menu = async (labs = false) => {
 		if (!loaded) await assimilate()
-		return filterMenuItems(hierarchy, labs)
+		return filterMenuItems(tutorials, labs)
 	}
 	const entries = async () => {
 		if (!loaded) await assimilate()

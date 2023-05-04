@@ -16,6 +16,10 @@
 	/>
 {/if}
 {#if isObject && content[fields.icon]}
-	<icon class={content[fields.icon]} />
+	{@const iconName =
+		typeof content[fields.icon] == 'object'
+			? content[fields.icon][content[fields.state]]
+			: content[fields.icon]}
+	<icon class={iconName} />
 {/if}
 <p class="flex flex-grow">{text}</p>

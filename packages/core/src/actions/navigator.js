@@ -30,22 +30,9 @@ export function navigator(node, options) {
 	if (!enabled) return { destroy: () => {} }
 
 	const update = (options) => {
-		let changedNode
 		items = options.items
 		path = pathFromIndices(options.indices ?? [], items, fields)
-		changedNode = getCurrentNode(path)
-		if (changedNode !== currentNode) {
-			currentNode = changedNode
-			// if (currentNode) {
-			// 	let current = node.querySelector(
-			// 		'#' + idPrefix + options.indices.join('-')
-			// 	)
-			// 	if (current)
-			// 		current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-			// }
-		}
-		// if (currentNode) moveTo(node, path, currentNode, idPrefix)
-		// current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+		currentNode = getCurrentNode(path)
 	}
 
 	const next = () => {

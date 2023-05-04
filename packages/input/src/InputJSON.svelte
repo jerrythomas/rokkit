@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte'
+	// import { onMount } from 'svelte'
 
 	export let id
 	export let value
@@ -16,7 +16,9 @@
 			if (parsed && typeof parsed === 'object') {
 				value = parsed
 			}
-		} catch (err) {}
+		} catch (err) {
+			console.error(err)
+		}
 	}
 
 	$: text = JSON.stringify(value, null, 2)

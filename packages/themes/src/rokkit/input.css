@@ -11,7 +11,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply border border-skin-subtle;
 }
 
-.rokkit input,
+/* .rokkit input, */
 .rokkit textarea,
 .rokkit select,
 .rokkit fieldset {

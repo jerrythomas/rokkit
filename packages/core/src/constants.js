@@ -26,36 +26,6 @@ export const defaultIcons = [
 	'navigate-down'
 ]
 
-// export const defaultIcons = [
-// 	'accordion-opened',
-// 	'accordion-closed',
-// 	'action-remove',
-// 	'action-add',
-// 	'action-clear',
-// 	'action-search',
-// 	'action-close',
-// 	'node-opened',
-// 	'node-closed',
-// 	'checkbox-checked',
-// 	'checkbox-unchecked',
-// 	'checkbox-unknown',
-// 	'rating-filled',
-// 	'rating-empty',
-// 	'rating-half',
-// 	'radio-off',
-// 	'radio-on',
-// 	'folder-closed',
-// 	'folder-opened',
-// 	'navigate-up',
-// 	'navigate-down',
-// 	'navigate-left',
-// 	'navigate-right',
-// 	'selector-closed',
-// 	'selector-opened',
-// 	'mode-dark',
-// 	'mode-light'
-// ]
-
 export const defaultOptions = {
 	id: 'id',
 	label: 'label',
@@ -86,7 +56,7 @@ export const defaultFields = {
 	id: 'id',
 	url: 'url',
 	text: 'text',
-	children: 'data',
+	children: 'children',
 	icon: 'icon',
 	image: 'image',
 	component: 'component',
@@ -94,6 +64,7 @@ export const defaultFields = {
 	notes: 'notes',
 	props: 'props',
 	target: 'target',
+	state: 'state',
 	isOpen: '_open',
 	isDeleted: '_deleted',
 	level: 'level',
