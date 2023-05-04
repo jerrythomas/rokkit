@@ -37,14 +37,14 @@
 		"svelte": "^3.58.0",
 		"typescript": "^4.9.5",
 		"validators": "workspace:*",
-		"vite": "^4.3.3",
+		"vite": "^4.3.4",
 		"vitest": "~0.19.1"
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
 		"@rokkit/markdown": "workspace:*",
 		"d3-scale": "^4.0.2",
-		"date-fns": "^2.29.3"
+		"date-fns": "^2.30.0"
 	},
 	"files": [
 		"src/**/*.js",

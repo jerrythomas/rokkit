@@ -87,19 +87,13 @@ describe('assimilate', () => {
 		expect(console.info).toHaveBeenCalledTimes(2)
 		expect(console.info).toHaveBeenCalledWith('Assimilating tutorials...')
 		expect(console.info).toHaveBeenCalledWith('Assimilation complete.')
-		expect(tutorials.content()).toEqual({
-			experiment: {
-				key: 'experiment',
-				labs: true,
-				sequence: 2,
-				title: 'Experimental'
-			},
-			intro: {
+		expect(tutorials.content()).toEqual([
+			{
 				key: 'intro',
 				sequence: 1,
 				title: 'Intro',
-				children: {
-					foo: {
+				children: [
+					{
 						key: 'foo',
 						sequence: 1,
 						title: 'Page 01',
@@ -130,9 +124,15 @@ describe('assimilate', () => {
 							preview: 'The Foo Component'
 						}
 					}
-				}
+				]
+			},
+			{
+				key: 'experiment',
+				labs: true,
+				sequence: 2,
+				title: 'Experimental'
 			}
-		})
+		])
 	})
 
 	it('should find a tutorial', async () => {

@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { validate, propsFromSchema } from './layout'
 // import { personSchema } from './fixtures/person'
-import { peopleSchema } from './fixtures/people'
-import AJV from 'ajv'
+// import { peopleSchema } from './fixtures/people'
+// import AJV from 'ajv'
 import { clone } from 'ramda'
 import { dataTypes } from './fixtures/types'
 describe('layout', () => {

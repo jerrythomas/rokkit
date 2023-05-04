@@ -2,8 +2,11 @@
 .material list {
 	@apply rounded  gap-1px;
 }
+.material list > item{
+	@apply bg-skin-subtle;
+}
 .material item {
-	@apply flex bg-skin-subtle items-center gap-2 px-2 h-8;
+	@apply flex items-center gap-2 px-2 h-8;
 }
 .material item > img,
 .material item > a > img {

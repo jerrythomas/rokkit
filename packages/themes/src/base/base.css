@@ -1,6 +1,6 @@
-* {
+/* * {
 	@apply focus:outline focus:outline-secondary focus:outline-2 focus:outline-offset-2;
-}
+} */
 
 *[tabindex='-1'] {
 	@apply outline-none focus:outline-none;
@@ -13,7 +13,6 @@ body {
 
 a {
 	@apply text-primary hover:text-secondary visited:text-secondary-600;
-	/* @apply focus:outline-none; */
 }
 
 code,
@@ -37,9 +36,9 @@ scroll {
 	@apply flex flex-col overflow-y-scroll;
 }
 
-.sidebar {
+/* .sidebar {
 	@apply w-160 h-full flex flex-col border-skin-400;
-}
+} */
 
 square {
 	@apply flex flex-col items-center justify-center h-full min-h-full aspect-square;

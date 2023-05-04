@@ -1,9 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-// import { fireEvent } from '@testing-library/svelte'
+
 import {
 	toUseHandlersFor,
 	toOnlyTrigger,
-	getCustomEventMock,
 	toHaveBeenDispatchedWith,
 	createNestedElement
 } from 'validators'

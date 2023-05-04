@@ -75,9 +75,6 @@
 .rokkit tree:focus-within {
 	@apply outline-none rounded;
 }
-/* .rokkit tree:focus-within {
-	@apply outline-none bg-gradient-to-r from-primary to-secondary px-2px py-2.5px box-border;
-} */
 
 .rokkit accordion,
 .rokkit list {
@@ -90,19 +87,12 @@
 	@apply outline-none focus:outline-none;
 }
 
-/* .rokkit item.is-active {
-	@apply border-l-4 border-l-secondary-500;
-} */
 .rokkit list item.is-hovering,
 .rokkit list item:hover,
 .rokkit node:hover {
 	@apply bg-skin-inset;
 }
 
-/* .rokkit list item.is-hovering icon,
-.rokkit list item:hover icon {
-	@apply text-secondary-800;
-} */
 .rokkit list item.is-selected > a {
 	@apply text-skin-50;
 }
@@ -113,7 +103,6 @@
 
 .rokkit list item.is-selected,
 .rokkit tree:focus-within node.is-selected,
-/* .rokkit tree.folder-tree:focus-within node.is-selected, */
 .rokkit nested-list:focus-within node.is-selected {
 	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
@@ -137,13 +126,16 @@
 .rokkit .folder-tree nested-list {
 	@apply bg-skin-inset h-full;
 }
-
+.rokkit node > item {
+	@apply px-1;
+}
 .rokkit node > span > i {
 	@apply border-skin-muted;
 }
 .rokkit node > span > icon {
 	@apply text-sm;
 }
+
 
 .rokkit crumbs {
 	@apply flex-grow gap-1 text-sm;
