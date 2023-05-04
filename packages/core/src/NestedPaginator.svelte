@@ -1,5 +1,6 @@
 <script>
 	import BreadCrumbs from './BreadCrumbs.svelte'
+	import { defaultFields } from './constants'
 	import { Text } from './items'
 	import { flattenNestedList } from './lib/nested'
 	import { createEventDispatcher } from 'svelte'

@@ -37,7 +37,7 @@
 		"svelte": "^3.58.0",
 		"typescript": "^4.9.5",
 		"validators": "workspace:latest",
-		"vite": "^4.3.3",
+		"vite": "^4.3.4",
 		"vitest": "~0.19.1"
 	},
 	"files": [

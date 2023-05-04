@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import {
 	toUseHandlersFor,
 	toOnlyTrigger,
-	getCustomEventMock,
 	toHaveBeenDispatchedWith,
 	createNestedElement
 } from 'validators'

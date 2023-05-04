@@ -48,5 +48,5 @@
 	tabindex="0"
 	class={className}
 >
-	<NestedList {items} {fields} {using} {value} {...$$restProps} />
+	<NestedList {items} {fields} {using} bind:value {...$$restProps} />
 </tree>

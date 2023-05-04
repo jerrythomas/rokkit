@@ -1,6 +1,6 @@
 <script>
 	import { Node, Text } from './items'
-	import { defaultFields } from './constants'
+	import { defaultFields, defaultStateIcons } from './constants'
 	import { getLineTypes } from './lib/connector'
 
 	let className = 'list'
@@ -10,26 +10,16 @@
 	export let using = {}
 	export let types = []
 	export let value = null
-	// export let linesVisible = true
 	export let rtl = false
 	export let hierarchy = []
 	export let icons
-	// let indices = []
-
-	// function handle(event) {
-	// 	value = event.detail.node
-	// 	indices = event.detail.path
-	// 	if (['collapse', 'expand'].includes(event.type)) {
-	// 		items = items
-	// 	}
-	// 	dispatch(event.type, value)
-	// }
 
 	$: using = { default: Text, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: nodeTypes = items.map((_, index) =>
 		index === items.length - 1 ? 'last' : 'child'
 	)
+	$: icons = { ...defaultStateIcons.node, ...icons }
 </script>
 
 <nested-list
