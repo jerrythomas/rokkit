@@ -1,3 +1,6 @@
+.material input {
+	@apply border-box focus:outline-none;
+}
 .material input-field {
 	@apply box-border border border-skin-800 rounded;
 	@apply text-skin-800 leading-loose relative px-2 py-1;
@@ -6,7 +9,7 @@
 	@apply absolute left-2 -z-1 opacity-0;
 }
 .material input-field input {
-	@apply border-none outline-none bg-transparent;
+	@apply border-none focus:outline-none bg-transparent;
 }
 
 .material input-field:focus-within {

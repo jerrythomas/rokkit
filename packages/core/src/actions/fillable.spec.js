@@ -1,4 +1,4 @@
-import { vi, it, expect, describe, beforeEach, afterEach } from 'vitest'
+import { vi, it, expect, describe, beforeEach } from 'vitest'
 import { fillable } from './fillable'
 
 describe('fillable', () => {

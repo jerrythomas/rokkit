@@ -3,7 +3,7 @@ import { theme } from '../stores/theme'
 import { themable } from './themeable'
 
 describe('themable', () => {
-	let node, action
+	let node
 	beforeEach(() => {
 		node = {
 			style: {

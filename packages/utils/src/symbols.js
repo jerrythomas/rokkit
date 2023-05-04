@@ -1,7 +1,0 @@
-export const __data__ = Symbol('data')
-export const __opts__ = Symbol('opts')
-export const __cols__ = Symbol('cols')
-export const __pkey__ = Symbol('pkey')
-export const __keys__ = Symbol('keys')
-export const __subdf__ = Symbol('group-key')
-export const __defaults__ = Symbol('defaults')

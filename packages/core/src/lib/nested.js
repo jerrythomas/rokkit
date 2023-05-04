@@ -1,10 +1,5 @@
 import { omit } from 'ramda'
 import { defaultFields } from '../constants'
-// const defaultFields = {
-// 	children: 'children',
-// 	level: 'level',
-// 	parent: 'parent'
-// }
 
 export function flattenNestedList(items, fields = defaultFields, level = 0) {
 	fields = { ...defaultFields, ...fields }

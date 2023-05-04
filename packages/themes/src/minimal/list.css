@@ -1,3 +1,6 @@
+.minimal item {
+	@apply flex items-center gap-1;
+}
 .minimal accordion {
 	@apply flex-grow overflow-y-scroll focus-within:outline-none;
 }
@@ -56,7 +59,7 @@
 .minimal node {
 	@apply h-7 px-2;
 }
-.minimal node > fragment {
+.minimal node > item {
 	@apply px-1 gap-1;
 }
 .minimal node > span {
