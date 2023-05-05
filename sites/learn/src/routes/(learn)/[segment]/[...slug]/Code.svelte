@@ -25,7 +25,6 @@
 		code = currentFile.content
 		language = currentFile.type
 	}
-	$: console.log($story.files)
 </script>
 
 {#if hasFiles}
