@@ -68,27 +68,23 @@
 	@apply flex-grow gap-1 text-sm;
 }
 
-.material toggle item.is-selected {
+.material toggle-switch item.is-selected {
 	@apply bg-primary;
 }
 .material crumbs crumb.is-selected {
 	@apply text-secondary;
 }
 
-.material toggle {
+.material toggle-switch {
 	@apply min-w-16 min-h-8 rounded-full mx-auto;
 	@apply bg-skin-subtle border border-skin-muted;
 	@apply leading-loose p-2px;
 }
-.material toggle item {
+.material toggle-switch item {
 	@apply items-center justify-center px-3 gap-1;
 	@apply min-w-8 min-h-8 rounded-full cursor-pointer;
 }
 
-.material toggle item.is-selected {
-	@apply bg-gradient-to-r from-skin-800 to-skin-800 text-skin-muted;
-}
-
-.material toggle.compact > item {
+.material toggle-switch.compact > item {
 	@apply px-0 gap-0;
 }

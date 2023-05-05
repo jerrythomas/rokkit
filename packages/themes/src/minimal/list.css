@@ -112,23 +112,21 @@
 	@apply text-secondary;
 }
 
-.rokkit toggle {
-	@apply min-w-16 min-h-8 rounded-full mx-auto;
+.minimal toggle-switch {
+	@apply min-w-16 min-h-8 rounded mx-auto;
 	@apply bg-skin-subtle border border-skin-muted;
 	@apply leading-loose p-2px;
 }
-.rokkit toggle item {
+.minimal toggle-switch item {
 	@apply items-center justify-center px-3 gap-1;
-	@apply min-w-8 min-h-8 rounded-full cursor-pointer;
+	@apply min-w-8 min-h-8 rounded cursor-pointer;
 }
-
-.rokkit toggle item.is-selected {
-	@apply bg-gradient-to-r from-skin-800 to-skin-800 text-skin-muted;
+.minimal toggle-switch.compact {
+	@apply rounded-full;
 }
-
-.rokkit toggle.compact > item {
-	@apply px-0 gap-0;
+.minimal toggle-switch.compact > item {
+	@apply px-0 gap-0 rounded-full;
 }
-.minimal toggle item.is-selected {
+.minimal toggle-switch item.is-selected {
 	@apply bg-secondary text-skin-800;
 }

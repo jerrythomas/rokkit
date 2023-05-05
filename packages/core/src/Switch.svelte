@@ -29,7 +29,11 @@
 	<error>Items should be an array with at least two items.</error>
 {:else}
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<toggle class="flex items-center {className}" class:compact tabindex="0">
+	<toggle-switch
+		class="flex items-center {className}"
+		class:compact
+		tabindex="0"
+	>
 		{#each items as item, index (item)}
 			{@const component = useComponent ? getComponent(item, fields) : null}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -46,5 +50,5 @@
 				{/if}
 			</item>
 		{/each}
-	</toggle>
+	</toggle-switch>
 {/if}
