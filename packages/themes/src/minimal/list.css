@@ -111,3 +111,24 @@
 .minimal crumbs crumb.is-selected {
 	@apply text-secondary;
 }
+
+.rokkit toggle {
+	@apply min-w-16 min-h-8 rounded-full mx-auto;
+	@apply bg-skin-subtle border border-skin-muted;
+	@apply leading-loose p-2px;
+}
+.rokkit toggle item {
+	@apply items-center justify-center px-3 gap-1;
+	@apply min-w-8 min-h-8 rounded-full cursor-pointer;
+}
+
+.rokkit toggle item.is-selected {
+	@apply bg-gradient-to-r from-skin-800 to-skin-800 text-skin-muted;
+}
+
+.rokkit toggle.compact > item {
+	@apply px-0 gap-0;
+}
+.minimal toggle item.is-selected {
+	@apply bg-secondary text-skin-800;
+}

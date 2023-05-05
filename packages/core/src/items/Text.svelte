@@ -8,18 +8,21 @@
 	$: text = isObject ? content[fields.text] : content
 </script>
 
-{#if isObject && content[fields.image]}
-	<img
-		class="h-4 w-4 object-cover"
-		alt={content[fields.text]}
-		src={content[fields.image]}
-	/>
+{#if isObject}
+	{#if content[fields.icon]}
+		{@const iconName =
+			typeof content[fields.icon] == 'object'
+				? content[fields.icon][content[fields.state]]
+				: content[fields.icon]}
+		<icon class={iconName} />
+	{:else if content[fields.image]}
+		<img
+			class="h-4 w-4 object-cover"
+			alt={content[fields.text]}
+			src={content[fields.image]}
+		/>
+	{/if}
 {/if}
-{#if isObject && content[fields.icon]}
-	{@const iconName =
-		typeof content[fields.icon] == 'object'
-			? content[fields.icon][content[fields.state]]
-			: content[fields.icon]}
-	<icon class={iconName} />
+{#if text}
+	<p class="flex w-full">{text}</p>
 {/if}
-<p class="flex flex-grow">{text}</p>
