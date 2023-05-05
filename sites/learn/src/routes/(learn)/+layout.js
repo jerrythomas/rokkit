@@ -5,7 +5,7 @@ import { guide } from '$lib'
 export async function load({ params }) {
 	if (!['tutorial', 'labs'].includes(params.segment)) {
 		throw error(404, {
-			message: 'Not found'
+			message: 'Page not found'
 		})
 	}
 
