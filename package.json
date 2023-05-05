@@ -1,6 +1,6 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.20",
+	"version": "1.0.0-next.21",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -42,11 +42,13 @@
 		"husky": "^7.0.4",
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.8.8",
-		"turbo": "^1.9.3"
+		"prettier": "^2.8.8"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",
 		"*.{js,svelte,md,json}": "prettier --write"
+	},
+	"dependencies": {
+		"turbo": "^1.9.3"
 	}
 }
