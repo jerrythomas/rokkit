@@ -1,5 +1,14 @@
 # @rokkit/layout
 
+## 1.0.0-next.22
+
+### Patch Changes
+
+- Fixed theme issues with switch
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.22
+  - @rokkit/markdown@1.0.0-next.22
+
 ## 1.0.0-next.21
 
 ### Patch Changes

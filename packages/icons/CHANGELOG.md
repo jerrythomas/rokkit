@@ -1,5 +1,11 @@
 # @rokkit/icons
 
+## 1.0.0-next.22
+
+### Patch Changes
+
+- Fixed theme issues with switch
+
 ## 1.0.0-next.21
 
 ### Patch Changes
