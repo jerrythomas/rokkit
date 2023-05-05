@@ -3,7 +3,7 @@ export * from './items'
 export * from './lib'
 
 export { default as Icon } from './Icon.svelte'
-// export { default as List } from './List-Discard.svelte'
+export { default as Switch } from './Switch.svelte'
 export { default as Tree } from './Tree.svelte'
 export { default as Accordion } from './Accordion.svelte'
 export { default as List } from './List.svelte'

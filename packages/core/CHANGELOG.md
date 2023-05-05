@@ -1,5 +1,11 @@
 # @rokkit/core
 
+## 1.0.0-next.21
+
+### Patch Changes
+
+- release v1.0.0-next.20
+
 ## 1.0.0-next.20
 
 ### Patch Changes
