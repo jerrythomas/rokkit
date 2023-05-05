@@ -1,5 +1,13 @@
 # @rokkit/tutorial
 
+## 1.0.0-next.21
+
+### Patch Changes
+
+- Fixed theme issues with switch
+- Updated dependencies
+  - @rokkit/utils@1.0.0-next.22
+
 ## 1.0.0-next.20
 
 ### Patch Changes
