@@ -27,17 +27,12 @@
 		}
 	]
 	let page = items[0]
-	// let component
-	// let preview
 	let ready = false
 
 	async function loadComponent(tutorial) {
 		ready = false
-		// if (!tutorial) {
-		// 	console.error(`No tutorial found for ${path}`)
-		// }
 
-		// try {
+		if (tutorial) console.log(tutorial.src.files)
 		story.set({
 			preview: tutorial.src.preview,
 			files: tutorial.src.files,
@@ -47,9 +42,6 @@
 			next: tutorial.next
 		})
 		ready = true
-		// } catch (error) {
-		// 	console.error(error)
-		// }
 	}
 	let size = 'md'
 	export let data

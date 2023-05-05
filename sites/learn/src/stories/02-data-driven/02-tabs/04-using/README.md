@@ -1,5 +1,5 @@
 ---
-title: Using
+title: Custom Components
 ---
 
 ## {title}

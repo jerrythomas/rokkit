@@ -5,7 +5,7 @@
 	$: type = ['last', 'child', 'sibling'].includes(type) ? type : 'empty'
 </script>
 
-<span class="grid grid-rows-2 grid-cols-2 h-full w-4 line-{type}">
+<span class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-{type}">
 	{#if type === 'last'}
 		{#if rtl}
 			<i class="border-b border-r" />

@@ -4,9 +4,7 @@ title: Introduction
 
 ## {title}
 
-Tabs are similar to lists. They are primarily used for switching between different views.
-It is laid out horizontally, so it is recommended to use a smaller number of tabs.
-Using a large number will result in scrollable tabs which may not be user-friendly.
+Tabs are similar to Switch. They are primarily used for switching between different views. It is laid out horizontally, so it is recommended to use a smaller number of tabs. Using a large number will result in scrollable tabs which may not be user-friendly.
 
 Some of the notable features of this component are:
 

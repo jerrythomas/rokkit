@@ -39,7 +39,7 @@
 		</nav>
 		<section class="flex flex-row w-full h-full overflow-auto relative">
 			<aside
-				class="flex flex-col min-w-full bg-skin-inset lg:min-w-40 h-full"
+				class="flex flex-col min-w-full bg-skin-inset lg:min-w-50 h-full"
 				class:-translate-x-full={!filesVisible}
 			>
 				<Tree

@@ -26,5 +26,5 @@ body > app {
 }
 
 input.embedded {
-	@apply w-full h-full bg-transparent border-none focus:outline-none border-box
+	@apply w-full h-full bg-transparent border-none focus:outline-none border-box;
 }

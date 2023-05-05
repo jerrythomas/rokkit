@@ -5,5 +5,8 @@
 }
 
 .rokkit item {
-	@apply flex items-center gap-1;
+	@apply flex flex-shrink items-center gap-1;
+}
+.rokkit item > p {
+	@apply flex-shrink text-ellipsis;
 }
