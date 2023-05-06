@@ -32,6 +32,24 @@ exports[`Text.svelte > Should render icon 1`] = `
 </body>
 `;
 
+exports[`Text.svelte > Should render icon based on state 1`] = `
+<body>
+  <div>
+    <icon
+      class="info"
+    />
+    
+     
+    <p
+      class="flex w-full"
+    >
+      hello
+    </p>
+    
+  </div>
+</body>
+`;
+
 exports[`Text.svelte > Should render image 1`] = `
 <body>
   <div>

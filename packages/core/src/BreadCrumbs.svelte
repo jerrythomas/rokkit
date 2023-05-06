@@ -27,7 +27,7 @@
 				</span>
 			{/if}
 			<crumb class:is-selected={index == items.length - 1}>
-				<svelte:component this={component} content={item} {fields} />
+				<svelte:component this={component} value={item} {fields} />
 			</crumb>
 		{/if}
 	{/each}
