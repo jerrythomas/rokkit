@@ -12,6 +12,9 @@
 	export let fields = {}
 	export let using = {}
 	export let value = null
+	export let below = false
+	export let align = 'left'
+
 	let cursor = []
 
 	function handleNav(event) {
@@ -26,6 +29,9 @@
 
 <tabs
 	class="flex w-full {className}"
+	class:is-below={below}
+	class:justify-center={align == 'center'}
+	class:justify-end={align == 'right'}
 	tabindex="0"
 	role="listbox"
 	use:navigator={{
@@ -42,7 +48,13 @@
 			? using[item[fields.component]] || using.default
 			: using.default}
 
-		<item class="flex" class:is-selected={item === value} data-path={index}>
+		<item
+			class="flex"
+			role="option"
+			aria-selected={item === value}
+			class:is-selected={item === value}
+			data-path={index}
+		>
 			<svelte:component this={component} content={item} {fields} />
 		</item>
 	{/each}

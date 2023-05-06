@@ -1,19 +1,35 @@
-.rokkit tab-view {
-	@apply rounded-md;
-}
-.rokkit tab-view content {
-	@apply rounded-b-md;
-}
 .rokkit tabs {
-	@apply border-b-2 border-skin-muted rounded-t px-1 gap-1;
+	@apply border-b-2 border-skin-muted px-1 gap-1;
 }
+.rokkit tabs.is-below {
+	@apply border-b-0 border-t-2;
+}
+
 .rokkit tabs:focus-within {
 	@apply outline-none border-secondary;
 }
 .rokkit tabs item {
-	@apply py-2 px-4 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
+	@apply leading-loose px-4 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
 }
-.rokkit tab-view tabs {
+.rokkit tabs.is-below item {
+	@apply rounded-b rounded-t-none;
+}
+.rokkit tabs.is-centered {
+	@apply justify-center;
+}
+
+
+
+.rokkit tabs item[aria-selected="true"]{
+	@apply bg-skin-muted;
+}
+.rokkit tabs:focus-within item[aria-selected="true"]{
+	@apply bg-gradient-to-b from-primary-500 to-secondary text-skin-50;
+}
+.rokkit tabs.is-below:focus-within item[aria-selected="true"]{
+	@apply bg-gradient-to-t;
+}
+/* .rokkit tab-view tabs {
 	@apply box-border space-evenly rounded-t-md;
 	@apply bg-skin-muted text-skin-900;
 }
@@ -21,16 +37,13 @@
 .rokkit tab-view tabs tab {
 	@apply py-2 px-4 flex-shrink-0 justify-center cursor-pointer;
 	@apply box-border border-b-3 border-transparent;
-}
+} */
 /* .rokkit tab-view tabs tab.active {
 	@apply border-secondary-600 text-secondary-600;
 } */
 /* .dark tab-view tabs tab.active {
 	@apply border-secondary-200 text-secondary-200;
 } */
-.rokkit .stretch tabs tab {
-	@apply flex-grow;
-}
 
 .rokkit pg {
 	@apply rounded-full h-3 w-3 bg-skin-muted mx-1;
@@ -56,9 +69,9 @@
 	@apply absolute bottom-6 left-0 right-0;
 }
 
-.rokkit tab-view content {
+/* .rokkit tab-view content {
 	@apply bg-skin-inset px-8;
-}
+} */
 
 .rokkit sample {
 	@apply gap-1px text-skin-900;
