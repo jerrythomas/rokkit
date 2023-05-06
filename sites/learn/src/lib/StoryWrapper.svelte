@@ -6,10 +6,9 @@
 	let active = 0
 	$: summary = variants[active].summary
 	$: props = variants[active].props
-	// $: console.log(variants, summary);
 </script>
 
-<section class="flex flex-col w-full flex-grow ">
+<section class="flex flex-col w-full flex-grow">
 	<h1
 		class="flex flex-row bg-gray-200 text-xl px-4 h-14 border-b border-gray-300 justify-between items-center"
 	>
@@ -22,7 +21,7 @@
 	</h1>
 	<content class="flex flex-row flex-grow">
 		<div
-			class="flex flex-grow flex-col items-center p-4 bg-gray-100 border-gray-300 border-r "
+			class="flex flex-grow flex-col items-center p-4 bg-gray-100 border-gray-300 border-r"
 		>
 			<slot name="component" />
 			<article class="flex w-100 p-4">

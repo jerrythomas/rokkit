@@ -45,7 +45,7 @@
 	$: names.map((name, i) => (languageColors[name] = colors[i % colors.length]))
 	$: keyframes = toNested(data, 'date', 'name')
 	$: currentData = keyframes[currentKeyframe].value
-	$: console.log(names)
+	// $: console.log(names)
 </script>
 
 <section class="flex flex-col h-full">
