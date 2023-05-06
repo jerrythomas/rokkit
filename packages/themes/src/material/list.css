@@ -5,8 +5,8 @@
 .material list > item {
 	@apply bg-skin-subtle;
 }
-.material item {
-	@apply flex items-center gap-2 px-2 h-8;
+.material  item {
+	@apply flex items-center gap-2 px-2;
 }
 .material item > img,
 .material item > a > img {
@@ -16,13 +16,18 @@
 	@apply bg-primary-500;
 }
 
-.material item.is-selected,
+.material list item.is-selected,
 .material node.is-selected {
 	@apply bg-primary text-primary-50;
 }
-
+.material tabs item {
+	@apply cursor-pointer;
+}
 .material tabs item.is-selected {
-	@apply border-0 border-t-3 border-t-secondary-500;
+	@apply border-b-3 border-primary;
+}
+.material tabs.is-below item.is-selected {
+	@apply border-b-0 border-t-3 ;
 }
 
 .material accordion .is-expanded summary {
@@ -68,21 +73,21 @@
 	@apply flex-grow gap-1 text-sm;
 }
 
-.material toggle-switch item.is-selected {
-	@apply bg-primary;
+.material toggle-switch item[aria-selected="true"] {
+	@apply bg-primary text-skin-50;
 }
 .material crumbs crumb.is-selected {
 	@apply text-secondary;
 }
 
 .material toggle-switch {
-	@apply min-w-16 min-h-8 rounded-full mx-auto;
+	@apply min-w-12 min-h-6 rounded-full mx-auto;
 	@apply bg-skin-subtle border border-skin-muted;
-	@apply leading-loose p-2px;
+	@apply leading-tight p-2px;
 }
 .material toggle-switch item {
 	@apply items-center justify-center px-3 gap-1;
-	@apply min-w-8 min-h-8 rounded-full cursor-pointer;
+	@apply min-w-6 min-h-6 rounded-full cursor-pointer;
 }
 
 .material toggle-switch.compact > item {

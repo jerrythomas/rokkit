@@ -113,13 +113,13 @@
 }
 
 .minimal toggle-switch {
-	@apply min-w-16 min-h-8 rounded mx-auto;
+	@apply min-w-12 min-h-6 rounded mx-auto;
 	@apply bg-skin-subtle border border-skin-muted;
 	@apply leading-loose p-2px;
 }
 .minimal toggle-switch item {
 	@apply items-center justify-center px-3 gap-1;
-	@apply min-w-8 min-h-8 rounded cursor-pointer;
+	@apply min-w-6 min-h-6 rounded cursor-pointer;
 }
 .minimal toggle-switch.compact {
 	@apply rounded-full;
@@ -127,6 +127,6 @@
 .minimal toggle-switch.compact > item {
 	@apply px-0 gap-0 rounded-full;
 }
-.minimal toggle-switch item.is-selected {
+.minimal toggle-switch item[aria-selected="true"] {
 	@apply bg-secondary text-skin-800;
 }

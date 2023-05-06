@@ -2,7 +2,7 @@
 title: Introduction
 ---
 
-The Switch component provides a flexible and customizable way to create Switch switches with multiple items. With different props and customization options, you can create a wide variety of Switch switches to suit your application's needs.
+The Switch component provides a flexible and customizable way to create switches with multiple items. With different props and customization options, you can create a wide variety of switches to suit your application's needs.
 
 It is laid out horizontally, so it works better with a smaller number of items.
 
@@ -10,7 +10,7 @@ Let's start with a basic example.
 
 ```svelte
 <script>
-	import { Switch } from '@rokkit/core'
+  import { Switch } from '@rokkit/core'
 </script>
 
 <Switch />
