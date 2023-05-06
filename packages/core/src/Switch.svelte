@@ -1,23 +1,26 @@
 <script>
+	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text } from './items'
+	import { navigator } from './actions'
+	import { getComponent } from './lib'
+
+	const dispatch = createEventDispatcher()
 
 	let className = ''
 	export { className as class }
 	export let items = [false, true]
 	export let fields = defaultFields
-	export let using = { default: Text }
+	export let using = {}
 	export let compact = true
 	export let value
+	let cursor = []
 
-	const getComponent = (item, fields) => {
-		return fields.component
-			? item[fields.component] ?? using.default
-			: using.default
-	}
+	function handleNav(event) {
+		value = event.detail.node
+		cursor = event.detail.path
 
-	const onItemClick = (item) => {
-		value = item
+		dispatch('change', { item: value, indices: cursor })
 	}
 
 	$: useComponent = !items.every((item) => [false, true].includes(item))
@@ -28,19 +31,31 @@
 {#if !Array.isArray(items) || items.length < 2}
 	<error>Items should be an array with at least two items.</error>
 {:else}
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<toggle-switch
 		class="flex items-center {className}"
+		class:is-off={items.length == 2 && value === items[0]}
+		class:is-on={items.length == 2 && value === items[1]}
 		class:compact
 		tabindex="0"
+		role="listbox"
+		use:navigator={{
+			items,
+			fields,
+			vertical: false,
+			indices: cursor
+		}}
+		on:move={handleNav}
+		on:select={handleNav}
 	>
 		{#each items as item, index (item)}
-			{@const component = useComponent ? getComponent(item, fields) : null}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			{@const component = useComponent
+				? getComponent(item, fields, using)
+				: null}
 			<item
 				class="flex relative"
-				class:is-selected={item === value}
-				on:click={() => onItemClick(item)}
+				role="option"
+				aria-selected={item === value}
+				data-path={index}
 			>
 				{#if item == value}
 					<indicator class="absolute top-0 left-0 right-0 bottom-0" />
