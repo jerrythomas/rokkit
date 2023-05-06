@@ -1,25 +1,25 @@
 <script>
 	import { defaultFields } from '../constants'
 
-	export let content
+	export let value
 	export let fields = defaultFields
 
-	$: isObject = typeof content == 'object'
-	$: text = isObject ? content[fields.text] : content
+	$: isObject = typeof value == 'object'
+	$: text = isObject ? value[fields.text] : value
 </script>
 
 {#if isObject}
-	{#if content[fields.icon]}
+	{#if value[fields.icon]}
 		{@const iconName =
-			typeof content[fields.icon] == 'object'
-				? content[fields.icon][content[fields.state]]
-				: content[fields.icon]}
+			typeof value[fields.icon] == 'object'
+				? value[fields.icon][value[fields.state]]
+				: value[fields.icon]}
 		<icon class={iconName} />
-	{:else if content[fields.image]}
+	{:else if value[fields.image]}
 		<img
 			class="h-4 w-4 object-cover"
-			alt={content[fields.text]}
-			src={content[fields.image]}
+			alt={value[fields.text]}
+			src={value[fields.image]}
 		/>
 	{/if}
 {/if}

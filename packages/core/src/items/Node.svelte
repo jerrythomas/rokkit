@@ -2,7 +2,7 @@
 	import Connector from './Connector.svelte'
 	import { defaultFields, defaultStateIcons } from '../constants'
 
-	export let content
+	export let value
 	export let fields = defaultFields
 	export let types = []
 	export let stateIcons = defaultStateIcons.node
@@ -13,13 +13,13 @@
 	export let path = []
 
 	$: stateIcons = { ...defaultStateIcons.node, ...(stateIcons ?? {}) }
-	$: hasChildren = fields.children in content
+	$: hasChildren = fields.children in value
 	$: state =
-		hasChildren && content[fields.isOpen]
+		hasChildren && value[fields.isOpen]
 			? { icon: stateIcons.opened, label: 'collapse' }
 			: { icon: stateIcons.closed, label: 'expand' }
-	$: component = content[fields.component]
-		? using[content[fields.component]] || using.default
+	$: component = value[fields.component]
+		? using[value[fields.component]] || using.default
 		: using.default
 </script>
 
@@ -43,6 +43,6 @@
 		{/if}
 	{/each}
 	<item>
-		<svelte:component this={component} bind:content {fields} />
+		<svelte:component this={component} bind:value {fields} />
 	</item>
 </node>

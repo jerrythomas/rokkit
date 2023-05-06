@@ -11,7 +11,7 @@ describe('Collapsible.svelte', () => {
 
 	it('Should render without params', () => {
 		const res = render(Collapsible, {
-			content: { text: 'hello' }
+			value: { text: 'hello' }
 		})
 		expect(res.container).toBeTruthy()
 		expect(res.container).toMatchSnapshot()

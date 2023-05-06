@@ -55,7 +55,7 @@
 			class:is-selected={item === value}
 			data-path={index}
 		>
-			<svelte:component this={component} content={item} {fields} />
+			<svelte:component this={component} value={item} {fields} />
 		</item>
 	{/each}
 </tabs>
