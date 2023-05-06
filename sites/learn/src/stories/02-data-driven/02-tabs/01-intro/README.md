@@ -4,7 +4,11 @@ title: Introduction
 
 ## {title}
 
-Tabs are similar to Switch. They are primarily used for switching between different views. It is laid out horizontally, so it is recommended to use a smaller number of tabs. Using a large number will result in scrollable tabs which may not be user-friendly.
+The Tabs component is a highly extensible and versatile UI element that simplifies navigation within your application. Like the Toggle component, Tabs shares similar features such as the ability to define custom items, map fields, and provide custom components through the using property.
+
+This allows for seamless integration and customization to match your application's theme and requirements. With the Tabs component, you can effortlessly create interactive and dynamic navigation experiences, while maintaining the flexibility to extend the component's functionality as needed. Harness the power and extensibility of the Tabs component to elevate your application's user interface and improve overall usability.
+
+The Tabs component is designed with a horizontal layout, making it more suitable for a limited number of tabs. Including an excessive number of tabs may lead to a scrollable interface, which could negatively impact user-friendliness. Therefore, it's advisable to keep the number of tabs to a minimum for an optimal user experience.
 
 Some of the notable features of this component are:
 
