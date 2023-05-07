@@ -1,5 +1,6 @@
 <script>
 	import { defaultFields } from '../constants'
+	import Icon from '../Icon.svelte'
 
 	export let value
 	export let fields = defaultFields
@@ -14,7 +15,7 @@
 			typeof value[fields.icon] == 'object'
 				? value[fields.icon][value[fields.state]]
 				: value[fields.icon]}
-		<icon class={iconName} />
+		<Icon name={iconName} />
 	{:else if value[fields.image]}
 		<img
 			class="h-4 w-4 object-cover"

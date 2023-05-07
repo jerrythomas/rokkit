@@ -8,10 +8,16 @@
 .rokkit tabs:focus-within {
 	@apply outline-none border-secondary;
 }
-.rokkit tabs item {
-	@apply leading-loose px-4 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
+/* .rokkit tabs tab > icon {
+	@apply w-6 h-6 flex-shrink-0;
 }
-.rokkit tabs.is-below item {
+.rokkit tabs tab > icon:last-child {
+	@apply w-4 h-4 flex-shrink-0;
+} */
+.rokkit tabs tab {
+	@apply leading-loose px-3 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
+}
+.rokkit tabs.is-below tab {
 	@apply rounded-b rounded-t-none;
 }
 .rokkit tabs.is-centered {
@@ -20,13 +26,13 @@
 
 
 
-.rokkit tabs item[aria-selected="true"]{
+.rokkit tabs tab[aria-selected="true"]{
 	@apply bg-skin-muted;
 }
-.rokkit tabs:focus-within item[aria-selected="true"]{
+.rokkit tabs:focus-within tab[aria-selected="true"]{
 	@apply bg-gradient-to-b from-primary-500 to-secondary text-skin-50;
 }
-.rokkit tabs.is-below:focus-within item[aria-selected="true"]{
+.rokkit tabs.is-below:focus-within tab[aria-selected="true"]{
 	@apply bg-gradient-to-t;
 }
 /* .rokkit tab-view tabs {

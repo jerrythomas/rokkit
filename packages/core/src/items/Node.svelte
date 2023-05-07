@@ -1,7 +1,7 @@
 <script>
 	import Connector from './Connector.svelte'
 	import { defaultFields, defaultStateIcons } from '../constants'
-
+	import Icon from '../Icon.svelte'
 	export let value
 	export let fields = defaultFields
 	export let types = []
@@ -35,9 +35,7 @@
 >
 	{#each types as type}
 		{#if type === 'icon'}
-			<span class="flex flex-col w-4 h-full items-center justify-center">
-				<icon class={state.icon} aria-label={state.label} tabindex="-1" />
-			</span>
+			<Icon name={state.icon} label={state.label} class="w-4 small" />
 		{:else}
 			<Connector {type} />
 		{/if}

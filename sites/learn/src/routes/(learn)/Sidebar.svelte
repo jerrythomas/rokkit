@@ -24,11 +24,12 @@
 	class:lg:relative={$site.sidebar}
 >
 	<nav
-		class="flex min-h-10 items-center w-full gap-2 border-b border-b-skin-subtle"
+		class="flex h-10 items-center w-full gap-2 border-b border-b-skin-subtle"
 	>
 		<Icon
 			name="i-rokkit:action-cross"
-			class="cursor-pointer text-skin-elevated border-r border-r-skin-subtle"
+			role="button"
+			class="border-r border-r-skin-subtle"
 			on:click={() => ($site.sidebar = false)}
 		/>
 		<input

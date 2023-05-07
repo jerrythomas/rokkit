@@ -23,13 +23,32 @@ pre {
 }
 
 icon {
-	@apply text-2xl;
+	@apply min-h-6 h-content;
 }
-icon.sm {
-	@apply text-base;
+icon[role='button'] {
+	@apply w-10 h-10 cursor-pointer aspect-square select-none focus:outline;
 }
-icon.md {
+icon > i {
+	@apply text-2xl leading-6 aspect-square text-current;
+}
+icon.large > i{
+	@apply text-3xl;
+}
+icon.medium > i{
 	@apply text-lg;
+}
+icon.small > i {
+	@apply text-sm;
+}
+
+icon.large[role='button'] {
+	@apply w-12 h-12;
+}
+icon.medium[role='button'] {
+	@apply w-8 h-8;
+}
+icon.small[role='button'] {
+	@apply w-6 h-6;
 }
 
 scroll {

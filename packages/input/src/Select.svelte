@@ -86,9 +86,9 @@
 			</item>
 		</slot>
 		{#if open}
-			<Icon name={icons.opened} />
+			<Icon name={icons.opened} label="opened" role="button" tabindex="-1" />
 		{:else}
-			<Icon name={icons.closed} />
+			<Icon name={icons.closed} label="closed" role="button" tabindex="-1" />
 		{/if}
 	</selected-item>
 	{#if open}
