@@ -1,5 +1,5 @@
 <script>
-	import { Node, Text } from './items'
+	import { Node, Item } from './items'
 	import { defaultFields, defaultStateIcons } from './constants'
 	import { getLineTypes } from './lib/connector'
 
@@ -14,7 +14,7 @@
 	export let hierarchy = []
 	export let icons
 
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: nodeTypes = items.map((_, index) =>
 		index === items.length - 1 ? 'last' : 'child'

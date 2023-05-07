@@ -1,13 +1,13 @@
 <script>
 	import { defaultFields } from '../constants'
-	import Text from './Text.svelte'
+	import Item from './Item.svelte'
 
 	export let value
 	export let fields = {}
 	export let using = {}
 
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: hasItems = value[fields.children] && value[fields.children].length > 0
 	$: component = using[value[fields.component] ?? 'default']
 </script>

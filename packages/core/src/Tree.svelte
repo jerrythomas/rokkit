@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import NestedList from './NestedList.svelte'
-	import { Text } from './items'
+	import { Item } from './items'
 	import { defaultFields } from './constants'
 	import { navigator } from './actions/navigator'
 
@@ -10,7 +10,7 @@
 	export { className as class }
 	export let items = []
 	export let fields = {}
-	export let using = { default: Text }
+	export let using = { default: Item }
 	export let root = null
 	export let value = null
 

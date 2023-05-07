@@ -2,8 +2,7 @@
 	import { navigator } from './actions'
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
-	import { Text } from './items'
-	import { props } from 'ramda'
+	import { Item } from './items'
 
 	const dispatch = createEventDispatcher()
 
@@ -25,7 +24,7 @@
 	}
 
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: filtered = items.filter((item) => !item[fields.isDeleted])
 </script>
 

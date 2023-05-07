@@ -1,12 +1,12 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons } from '../constants'
-	import Text from './Text.svelte'
+	import Item from './Item.svelte'
 	const dispatch = createEventDispatcher()
 
 	export let value
 	export let fields = defaultFields
-	export let using = { default: Text }
+	export let using = { default: Item }
 	export let removable = false
 
 	function handleClick() {

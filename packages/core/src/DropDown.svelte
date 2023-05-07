@@ -4,7 +4,7 @@
 	import { defaultFields, defaultStateIcons } from './constants.js'
 
 	import Icon from './Icon.svelte'
-	import Text from './items/Text.svelte'
+	import Item from './items/Item.svelte'
 	import List from './List.svelte'
 	import Slider from './Slider.svelte'
 
@@ -14,13 +14,13 @@
 	export { className as class }
 	export let items = []
 	export let fields = defaultFields
-	export let using = { default: Text }
+	export let using = { default: Item }
 	export let value = null
 	export let title = null
 	export let icon = null
 	export let small = false
 
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 
 	let offsetTop = 0
