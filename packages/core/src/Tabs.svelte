@@ -1,5 +1,4 @@
 <script>
-	import { TableIndex } from './../../../shared/config/dist/tableIndex.d.ts'
 	import { defaultFields, defaultStateIcons } from './constants'
 	import { Text } from './items'
 	import { navigator } from './actions'
