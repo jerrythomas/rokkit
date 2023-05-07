@@ -2,14 +2,14 @@
 	import { defaultFields } from './constants.js'
 	import List from './List.svelte'
 	import Slider from './Slider.svelte'
-	import { Text } from './items'
+	import { Item } from './items'
 
 	export let data
 	export let value = null
 	export let fields = defaultFields
-	export let using = { default: Text }
+	export let using = { default: Item }
 
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 
 	let opened = false

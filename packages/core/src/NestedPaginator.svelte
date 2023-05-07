@@ -1,7 +1,7 @@
 <script>
 	import BreadCrumbs from './BreadCrumbs.svelte'
 	import { defaultFields } from './constants'
-	import { Text } from './items'
+	import { Item } from './items'
 	import { flattenNestedList } from './lib/nested'
 	import { createEventDispatcher } from 'svelte'
 
@@ -50,7 +50,7 @@
 
 	$: flatList = flattenNestedList(items, fields)
 	$: fields = { ...defaultFields, ...(fields ?? {}) }
-	$: using = { default: Text, ...(using ?? {}) }
+	$: using = { default: Item, ...(using ?? {}) }
 </script>
 
 <pages>

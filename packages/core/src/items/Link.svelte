@@ -1,5 +1,5 @@
 <script>
-	import Text from './Text.svelte'
+	import Item from './Item.svelte'
 	import { defaultFields } from '../constants'
 
 	export let value
@@ -14,5 +14,5 @@
 	{target}
 	tabindex="-1"
 >
-	<Text {value} {fields} />
+	<Item {value} {fields} />
 </a>

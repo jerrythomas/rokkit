@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
-	import { Text } from './items'
+	import { Item } from './items'
 	import { navigable } from './actions'
 	import { getComponent } from './list'
 
@@ -24,7 +24,7 @@
 		dispatch('select', items[index])
 	}
 
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: value = index >= 0 ? items[index] : null
 	$: component = getComponent(value, fields)
