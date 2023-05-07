@@ -45,6 +45,8 @@
 			{/each}
 		</items>
 	{:else}
-		<svelte:component this={using.default} content={placeholder} />
+		<item class="flex w-full">
+			<svelte:component this={using.default} value={placeholder} />
+		</item>
 	{/if}
 </Select>

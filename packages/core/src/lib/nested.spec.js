@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { flattenNestedList } from './nested'
+import { flattenNestedList, findValueFromPath } from './nested'
+import { defaultFields } from '../constants'
 
 describe('flattenNestedList', () => {
 	it('should flatten nested items', () => {
@@ -92,5 +93,62 @@ describe('flattenNestedList', () => {
 				isParent: false
 			}
 		])
+	})
+})
+
+describe('findValueFromPath', () => {
+	it('should find and return the correct value from the provided path', () => {
+		const slug = 'category/subcategory/item'
+		const data = [
+			{
+				key: 'category',
+				isOpen: false,
+				children: [
+					{
+						key: 'subcategory',
+						isOpen: false,
+						children: [
+							{
+								key: 'item',
+								value: 'Item Value'
+							}
+						]
+					}
+				]
+			}
+		]
+
+		const expectedResult = {
+			key: 'item',
+			value: 'Item Value'
+		}
+
+		const result = findValueFromPath(slug, data, { key: 'key' })
+		expect(result).toEqual(expectedResult)
+	})
+
+	it('should return null if the path does not exist in the data', () => {
+		const slug = 'nonexistent/path'
+		const data = [
+			{
+				key: 'category',
+				isOpen: false,
+				children: [
+					{
+						key: 'subcategory',
+						isOpen: false,
+						children: [
+							{
+								key: 'item',
+								value: 'Item Value'
+							}
+						]
+					}
+				]
+			}
+		]
+
+		const result = findValueFromPath(slug, data, defaultFields)
+		expect(result).toBeNull()
 	})
 })

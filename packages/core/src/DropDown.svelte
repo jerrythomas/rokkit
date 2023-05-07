@@ -16,8 +16,8 @@
 	export let fields = defaultFields
 	export let using = { default: Text }
 	export let value = null
-	export let title
-	export let icon
+	export let title = null
+	export let icon = null
 	export let small = false
 
 	$: using = { default: Text, ...using }
@@ -46,7 +46,7 @@
 >
 	<button
 		on:click|stopPropagation={() => (open = !open)}
-		class="flex"
+		class="flex items-center"
 		bind:clientHeight={offsetTop}
 		tabindex="-1"
 	>
@@ -54,7 +54,7 @@
 			<Icon name={icon} />
 		{/if}
 		{#if !small && title}
-			<p>{title}</p>
+			<p class="flex w-full">{title}</p>
 		{/if}
 		{#if open}
 			<icon class={icons.opened} />

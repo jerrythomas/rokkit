@@ -2,7 +2,7 @@
 	import { theme } from '@rokkit/core/stores'
 	import { defaultStateIcons } from '@rokkit/core'
 	import { Select } from '@rokkit/input'
-
+	import { Icon } from '@rokkit/core'
 	const modeIcons = defaultStateIcons.mode
 
 	export let themes = [
@@ -20,11 +20,11 @@
 		const mode = current.mode === 'dark' ? 'light' : 'dark'
 		theme.set({ ...current, mode })
 	}
-	function handleKeyDown(event) {
-		if (['Enter', ' '].includes(event.key)) {
-			toggleMode()
-		}
-	}
+	// function handleKeyDown(event) {
+	// 	if (['Enter', ' '].includes(event.key)) {
+	// 		toggleMode()
+	// 	}
+	// }
 	function handleThemeChange(event) {
 		theme.set({ ...current, name: event.detail.name })
 	}
@@ -39,10 +39,7 @@
 <theme-mode
 	role="switch"
 	aria-checked={current.mode === 'dark'}
-	class="flex select-none cursor-pointer"
-	tabindex="0"
-	on:click={toggleMode}
-	on:keydown={handleKeyDown}
+	class="flex p-0"
 >
-	<icon class={modeIcons[current.mode]} />
+	<Icon name={modeIcons[current.mode]} role="button" on:click={toggleMode} />
 </theme-mode>
