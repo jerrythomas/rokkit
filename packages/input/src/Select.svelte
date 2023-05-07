@@ -73,20 +73,22 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<selected-item
 		on:click|stopPropagation={() => (open = !open)}
-		class="flex w-full"
+		class="flex w-full items-center"
 		bind:clientHeight={offsetTop}
 	>
 		<slot>
-			<svelte:component
-				this={using.default}
-				content={value ?? placeholder}
-				{fields}
-			/>
+			<item class="flex w-full">
+				<svelte:component
+					this={using.default}
+					value={value ?? placeholder}
+					{fields}
+				/>
+			</item>
 		</slot>
 		{#if open}
-			<Icon name={icons.opened} />
+			<Icon name={icons.opened} label="opened" role="button" tabindex="-1" />
 		{:else}
-			<Icon name={icons.closed} />
+			<Icon name={icons.closed} label="closed" role="button" tabindex="-1" />
 		{/if}
 	</selected-item>
 	{#if open}

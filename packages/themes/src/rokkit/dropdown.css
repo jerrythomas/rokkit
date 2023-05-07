@@ -19,12 +19,12 @@
 .rokkit drop-down > button {
 	@apply h-10 pl-4 pr-2;
 }
-.rokkit input-select square-icon,
-.rokkit drop-down square-icon {
-	@apply border-l border-skin-muted;
+.rokkit input-select > icon,
+.rokkit drop-down > icon {
+	@apply border-l border-skin-muted h-10 w-10;
 }
-.rokkit input-select:hover square-icon,
-.rokkit drop-down:hover square-icon {
+.rokkit input-select:hover > icon,
+.rokkit drop-down:hover > icon {
 	@apply border-skin-500;
 }
 .rokkit input-select scroll {
@@ -43,9 +43,9 @@
 	@apply w-4 h-4;
 }
 
-.rokkit pill > icon {
+/* .rokkit pill > icon {
 	@apply text-sm;
-}
+} */
 /* .rokkit input-select,
 .rokkit drop-down {
 	@apply rounded focus:outline focus:outline-secondary focus:outline-2;

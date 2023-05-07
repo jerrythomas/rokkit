@@ -4,7 +4,7 @@
 	const dispatch = createEventDispatcher()
 
 	export let id = null
-	export let name
+	export let name = null
 	export let value = 0
 	export let max = 5
 	export let disabled = false

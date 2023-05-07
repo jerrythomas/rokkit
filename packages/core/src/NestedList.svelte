@@ -28,35 +28,25 @@
 	class:rtl
 	tabindex="-1"
 >
-	<!-- tabindex={hierarchy.length == 0 ? 0 : -1}
-	use:navigator={{ items, fields, indices, enabled: hierarchy.length == 0 }}
-	on:select={handle}
-	on:move={handle}
-	on:expand={handle}
-	on:collapse={handle}
-> -->
-	{#each items as content, index}
-		<!-- {@const type = nodeTypes[index] === 'middle' ? 'line' : 'empty'} -->
-		{@const hasChildren = fields.children in content}
-		<!-- {@const connectors =   types.slice(0, -1)} -->
+	{#each items as item, index}
+		{@const hasChildren = fields.children in item}
 		{@const path = [...hierarchy, index]}
 		{@const connectors = getLineTypes(hasChildren, types, nodeTypes[index])}
 
-		<!-- types={[...connectors, nodeTypes[index]]} -->
 		<Node
-			bind:content
+			bind:value={item}
 			{fields}
 			{using}
 			types={connectors}
 			{rtl}
 			{path}
 			stateIcons={icons}
-			selected={value === content}
+			selected={value === item}
 		/>
 		<!-- types={[...connectors, type, nodeTypes[index]]} -->
-		{#if hasChildren && content[fields.isOpen]}
+		{#if hasChildren && item[fields.isOpen]}
 			<svelte:self
-				items={content[fields.children]}
+				items={item[fields.children]}
 				bind:value
 				{fields}
 				{using}

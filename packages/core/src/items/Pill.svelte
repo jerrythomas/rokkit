@@ -20,7 +20,7 @@
 
 <pill class="flex flex-row items-center">
 	<item class="flex flex-row items-center">
-		<svelte:component this={component} content={value} {fields} />
+		<svelte:component this={component} {value} {fields} />
 	</item>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	{#if removable}

@@ -21,9 +21,7 @@
 	display: none;
 }
 
-.rokkit list item icon {
-	@apply text-secondary;
-}
+
 .rokkit item > img,
 .rokkit item > a > img {
 	@apply w-6 h-6;
@@ -105,10 +103,6 @@
 	@apply bg-gradient-to-r from-skin-subtle to-skin-subtle text-skin-800;
 }
 
-.rokkit item.is-selected icon {
-	@apply text-primary-50;
-}
-
 .rokkit accordion .is-expanded summary {
 	@apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
 }
@@ -133,8 +127,8 @@
 .rokkit node > span > i {
 	@apply border-skin-muted;
 }
-.rokkit node > span > icon {
-	@apply text-sm;
+.rokkit node > icon {
+	@apply text-skin-muted;
 }
 
 .rokkit crumbs {
@@ -152,6 +146,9 @@
 .rokkit toggle-switch item {
 	@apply items-center justify-center px-3 gap-1 py-0 leading-tight;
 	@apply min-w-6 min-h-6 rounded-full cursor-pointer;
+}
+.rokkit toggle-switch item > icon > i {
+	@apply text-lg;
 }
 
 .rokkit toggle-switch item[aria-selected="true"] {
