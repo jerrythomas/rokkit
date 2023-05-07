@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation'
+	import { Icon } from '@rokkit/core'
 	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 	// import { Icon } from '@rokkit/core'
@@ -46,8 +48,14 @@
 		</nav>
 
 		<ThemeSwitcher />
-		<a href="https://github.com/jerrythomas/rokkit" class="text-skin-900 flex">
+		<Icon
+			name="i-rokkit:github"
+			label="Rokkit on Github"
+			role="button"
+			on:click={() => goto('https://github.com/jerrythomas/rokkit')}
+		/>
+		<!-- <a href="https://github.com/jerrythomas/rokkit" class="text-skin-900 flex">
 			<icon class="i-rokkit:github" />
-		</a>
+		</a> -->
 	</settings>
 </header>

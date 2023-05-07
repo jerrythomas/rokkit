@@ -28,9 +28,9 @@ input[type='number']::-webkit-outer-spin-button {
 .rokkit fieldset legend {
 	@apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
 }
-.rokkit fieldset icon {
+/* .rokkit fieldset icon {
 	@apply text-2xl;
-}
+} */
 
 .rokkit input-field {
 	@apply w-full m-0 p-0;

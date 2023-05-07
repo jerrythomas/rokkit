@@ -7,33 +7,33 @@ describe('Text.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('Should render', () => {
-		const { container } = render(Text, { content: 'hello' })
+		const { container } = render(Text, { value: 'hello' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('Should render object', () => {
-		const { container } = render(Text, { content: { text: 'hello' } })
+		const { container } = render(Text, { value: { text: 'hello' } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('Should render icon', () => {
 		const { container } = render(Text, {
-			content: { text: 'hello', icon: 'info' }
+			value: { text: 'hello', icon: 'info' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('Should render image', () => {
 		const { container } = render(Text, {
-			content: { text: 'hello', image: 'https://example.com/img.png' }
+			value: { text: 'hello', image: 'https://example.com/img.png' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('Should render image and icon', () => {
 		const { container } = render(Text, {
-			content: {
+			value: {
 				text: 'hello',
 				image: 'https://example.com/img.png',
 				icon: 'info'
@@ -42,9 +42,20 @@ describe('Text.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
+	it('Should render icon based on state', () => {
+		const { container } = render(Text, {
+			value: {
+				text: 'hello',
+				icon: { on: 'info', off: 'info-off' },
+				state: 'on'
+			}
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
 	it('Should render using field mapping', () => {
 		const { container } = render(Text, {
-			content: {
+			value: {
 				alt: 'hello',
 				profile: 'https://example.com/img.png',
 				ico: 'info'

@@ -10,7 +10,7 @@ exports[`DropDown.svelte > should toggle open state when button is clicked 1`] =
       tabindex="0"
     >
       <button
-        class="flex"
+        class="flex items-center"
         tabindex="-1"
       >
          

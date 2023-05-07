@@ -41,7 +41,7 @@
 		on:next={moveNext}
 		on:previous={moveBack}
 	/>
-	<!-- <svelte:component this={component} bind:content={value} {fields} on:change /> -->
+	<!-- <svelte:component this={component} bind:value={value} {fields} on:change /> -->
 	<square class="h-full position-absolute right-0">
 		<icon class="i-carbon-chevron-sort" />
 	</square>

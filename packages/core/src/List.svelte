@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
 	import { Text } from './items'
+	import { props } from 'ramda'
 
 	const dispatch = createEventDispatcher()
 
@@ -47,6 +48,7 @@
 			? using[item[fields.component]] || using.default
 			: using.default}
 		{@const path = [...hierarchy, index].join(',')}
+		{@const props = item[fields.props] || { fields }}
 		<item
 			class="flex flex-shrink-0 flex-grow-0 items-center cursor-pointer w-full gap-2 select-none item"
 			role="option"
@@ -56,8 +58,8 @@
 		>
 			<svelte:component
 				this={component}
-				bind:content={item}
-				{fields}
+				bind:value={item}
+				{...props}
 				on:change
 			/>
 		</item>

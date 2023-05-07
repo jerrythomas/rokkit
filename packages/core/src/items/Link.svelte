@@ -2,17 +2,17 @@
 	import Text from './Text.svelte'
 	import { defaultFields } from '../constants'
 
-	export let content
+	export let value
 	export let fields = defaultFields
 
-	$: target = fields.target ? content[fields.target] : ''
+	$: target = fields.target ? value[fields.target] : ''
 </script>
 
 <a
 	class="flex flex-row flex-grow items-center"
-	href={content[fields.url]}
+	href={value[fields.url]}
 	{target}
 	tabindex="-1"
 >
-	<Text {content} {fields} />
+	<Text {value} {fields} />
 </a>

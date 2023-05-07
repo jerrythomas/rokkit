@@ -61,7 +61,7 @@
 					<indicator class="absolute top-0 left-0 right-0 bottom-0" />
 				{/if}
 				{#if component}
-					<svelte:component this={component} content={item} {fields} />
+					<svelte:component this={component} value={item} {fields} />
 				{/if}
 			</item>
 		{/each}
