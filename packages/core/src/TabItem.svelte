@@ -3,25 +3,28 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let icon = null
-	export let label
-	export let active = false
-	export let allowClose = false
+	export let fields = {}
+	export let using = {}
+	export let value = null
+	export let index = 0
+	export let icons
+	export let selected = false
+	export let removable = false
+
+	$: component = value[fields.component]
+		? using[value[fields.component]] || using.default
+		: using.default
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<tab class="flex flex-row items-center" class:active on:click>
-	{#if icon}
-		<icon class={icon} aria-label={icon} />
-	{/if}
-	{#if label}
-		<p class="flex flex-shrink-0 flex-grow justify-center">{label}</p>
-	{/if}
-	{#if allowClose}
-		<icon
-			class="remove small"
-			aria-label="remove"
-			on:click={() => dispatch('remove')}
-		/>
+<tab
+	class="flex flex-row items-center"
+	role="option"
+	aria-selected={selected}
+	data-path={index}
+>
+	<svelte:component this={component} {value} {fields} />
+	{#if removable}
+		<icon class={icons.close} on:click={() => dispatch('remove')} />
 	{/if}
 </tab>
