@@ -1,6 +1,6 @@
 <script>
 	import { defaultFields } from './constants'
-	import { Text } from './items'
+	import { Item } from './items'
 
 	export let items = []
 	export let separator = '/'
@@ -8,7 +8,7 @@
 	export let using
 
 	$: fields = { ...defaultFields, ...(fields ?? {}) }
-	$: using = { default: Text, ...(using ?? {}) }
+	$: using = { default: Item, ...(using ?? {}) }
 </script>
 
 <crumbs class="flex">

@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
-	import { Text } from './items'
+	import { Item } from './items'
 	import { navigator } from './actions'
 	import { getComponent } from './lib'
 
@@ -25,7 +25,7 @@
 
 	$: useComponent = !items.every((item) => [false, true].includes(item))
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 </script>
 
 {#if !Array.isArray(items) || items.length < 2}

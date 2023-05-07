@@ -1,6 +1,6 @@
 <script>
 	import { defaultFields, defaultStateIcons } from './constants'
-	import { Text } from './items'
+	import { Item } from './items'
 	import { navigator } from './actions'
 	import { createEventDispatcher } from 'svelte'
 	import TabItem from './TabItem.svelte'
@@ -38,7 +38,7 @@
 	$: icons = { ...defaultStateIcons.action, ...icons }
 	$: filtered = items.filter((item) => !item[fields.isDeleted])
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 </script>
 
 <tabs
