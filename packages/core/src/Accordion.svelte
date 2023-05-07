@@ -63,7 +63,7 @@
 			class:is-selected={item === value}
 			data-path={index}
 		>
-			<Summary {fields} {using} bind:content={item} />
+			<Summary {fields} {using} bind:value={item} />
 			{#if hasItems && item[fields.isOpen]}
 				<List
 					bind:items={item[fields.children]}

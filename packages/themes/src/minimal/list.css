@@ -13,7 +13,7 @@
 	@apply border-l-2px border-l-skin-muted;
 }
 .minimal :not(accordion > div) list:focus-within {
-	@apply outline-1 outline-offset-3 outline-dashed;
+	@apply outline outline-offset-3 outline-secondary-700;
 }
 .minimal list > item,
 .minimal accordion summary {
@@ -31,10 +31,10 @@
 	@apply border-l-skin-subtle;
 }
 .minimal list item.is-selected {
-	@apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600;
+	@apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-skin-subtle;
 }
 .minimal accordion .is-selected summary {
-	@apply border-l-2px border-l-secondary-600;
+	@apply border-l-2px border-l-secondary-600 bg-skin-subtle;
 }
 
 .minimal accordion .is-expanded summary {
