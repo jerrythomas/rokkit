@@ -1,5 +1,11 @@
 # @rokkit/utils
 
+## 1.0.0-next.23
+
+### Patch Changes
+
+- Updated version with revamped Icon component.
+
 ## 1.0.0-next.22
 
 ### Patch Changes
