@@ -3,7 +3,7 @@
 		Slider,
 		Icon,
 		List,
-		Text,
+		Item,
 		defaultFields,
 		defaultStateIcons
 	} from '@rokkit/core'
@@ -53,7 +53,7 @@
 	}
 
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: activeIndex = items.findIndex((item) => item === value)
 </script>
 

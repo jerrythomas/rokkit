@@ -1,6 +1,6 @@
 <script>
 	import Select from './Select.svelte'
-	import { Pill, Text } from '@rokkit/core'
+	import { Pill, Item } from '@rokkit/core'
 	import { defaultFields } from '@rokkit/core'
 
 	let className = ''
@@ -19,7 +19,7 @@
 	function handleSelect(event) {
 		value = [...value, event.detail]
 	}
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 </script>
 

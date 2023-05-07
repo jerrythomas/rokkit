@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from './constants'
-	import { Text, Summary } from './items'
+	import { Item, Summary } from './items'
 	import List from './List.svelte'
 	import { navigator } from './actions/navigator'
 
@@ -16,7 +16,7 @@
 	let cursor = []
 
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Text, ...using }
+	$: using = { default: Item, ...using }
 
 	function handle(event) {
 		// console.log(event.type, event.detail)

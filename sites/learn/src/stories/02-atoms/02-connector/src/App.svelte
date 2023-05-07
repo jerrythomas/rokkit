@@ -3,8 +3,8 @@
 
 	let variants = [
 		{ title: 'last', props: { type: 'last' } },
-		{ title: 'middle', props: { type: 'middle' } },
-		{ title: 'line', props: { type: 'line' } },
+		{ title: 'child', props: { type: 'child' } },
+		{ title: 'sibling', props: { type: 'sibling' } },
 		{ title: 'empty', props: { type: 'empty' } }
 	]
 </script>
