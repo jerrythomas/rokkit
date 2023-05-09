@@ -11,7 +11,7 @@ export default defineConfig({
 			reporter: ['text', 'lcov'],
 			all: false,
 			include: ['src'],
-			exclude: ['src/**/*.spec.js']
+			exclude: ['src/**/*.spec.js', 'src/mocks/**/*']
 		}
 	}
 })

@@ -1,4 +1,3 @@
-// const defaultOptions = { horizontal: true, vertical: false, threshold: 100 }
 export function swipeable(
 	node,
 	{ horizontal = true, vertical = false, threshold = 100, enabled = true } = {}

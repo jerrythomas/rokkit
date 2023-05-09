@@ -1,6 +1,6 @@
 <script>
 	import Select from './Select.svelte'
-	import { Pill, Item } from '@rokkit/core'
+	import { ItemWrapper, Item } from '@rokkit/core'
 	import { defaultFields } from '@rokkit/core'
 
 	let className = ''
@@ -35,12 +35,13 @@
 	{#if value.length > 0}
 		<items class="flex flex-wrap">
 			{#each value as item}
-				<Pill
+				<ItemWrapper
 					value={item}
 					{fields}
 					{using}
 					removable
 					on:remove={handleRemove}
+					class="pill"
 				/>
 			{/each}
 		</items>

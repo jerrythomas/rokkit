@@ -1,9 +1,9 @@
 <script>
 	import { defaultFields, defaultStateIcons } from './constants'
-	import { Item } from './items'
+	import Icon from './Icon.svelte'
+	import { ItemWrapper } from './items'
 	import { navigator } from './actions'
 	import { createEventDispatcher } from 'svelte'
-	import TabItem from './TabItem.svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -38,7 +38,6 @@
 	$: icons = { ...defaultStateIcons.action, ...icons }
 	$: filtered = items.filter((item) => !item[fields.isDeleted])
 	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
 </script>
 
 <tabs
@@ -58,7 +57,7 @@
 	on:select={handleNav}
 >
 	{#each filtered as item, index}
-		<TabItem
+		<ItemWrapper
 			value={item}
 			{index}
 			{fields}
@@ -66,33 +65,17 @@
 			removable={editable}
 			selected={item === value}
 			{icons}
+			class="tab"
+			on:remove={handleRemove}
 		/>
-		<!-- {@const component = item[fields.component]
-			? using[item[fields.component]] || using.default
-			: using.default}
-
-		<item
-			class="flex"
-			role="option"
-			aria-selected={item === value}
-			class:is-selected={item === value}
-			data-path={index}
-		>
-			<svelte:component this={component} value={item} {fields} />
-			{#if editable}
-				<icon class={icons.close} on:click={() => handleRemove(item)} />
-			{/if}
-		</item> -->
 	{/each}
 	{#if editable}
-		<add-tab
-			class="flex items-center"
+		<Icon
+			name="add"
 			role="button"
+			label="Add Tab"
+			size="small"
 			on:click={() => dispatch('add')}
-			on:keydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
-			tabindex="0"
-		>
-			<icon class={icons.add} />
-		</add-tab>
+		/>
 	{/if}
 </tabs>

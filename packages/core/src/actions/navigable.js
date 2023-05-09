@@ -2,7 +2,6 @@ export function navigable(
 	node,
 	{ horizontal = true, nested = false, enabled = true } = {}
 ) {
-	// console.log(node, enabled)
 	if (!enabled) return { destroy() {} }
 	const previous = () => node.dispatchEvent(new CustomEvent('previous'))
 	const next = () => node.dispatchEvent(new CustomEvent('next'))

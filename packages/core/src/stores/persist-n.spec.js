@@ -16,5 +16,6 @@ describe('persistable', () => {
 		expect(JSON.parse(localStorage.getItem())).toEqual({})
 		store.set(value)
 		expect(get(store)).toEqual(value)
+		store.destroy()
 	})
 })

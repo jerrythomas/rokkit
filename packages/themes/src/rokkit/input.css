@@ -73,7 +73,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply bg-skin-subtle border box-border border-skin-muted rounded-full;
 }
 .rokkit input-range range-track selected {
-	@apply border -top-0px -bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
+	@apply border top-0px bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
 }
 .rokkit input-range range-track thumb {
 	@apply rounded-sm;
@@ -127,5 +127,9 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .rokkit rating {
-	@apply text-secondary-500 gap-1 text-xl focus:outline-none;
+	@apply text-secondary-500 text-xl focus:outline-none;
 }
+.rokkit rating > icon {
+	@apply w-8 ;
+}
+

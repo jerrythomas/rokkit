@@ -49,8 +49,14 @@ describe('swipable', () => {
 		simulateMouseSwipe(node, { x: 100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeRight')
 
+		simulateTouchSwipe(node, { x: 90, y: 10 })
+		expect(handlers.swipeRight).toHaveBeenCalledTimes(1)
+		simulateMouseSwipe(node, { x: 90, y: 10 })
+		expect(handlers.swipeRight).toHaveBeenCalledTimes(1)
+
 		handle.destroy()
 	})
+
 	it('should dispatch swipeLeft event', () => {
 		const handle = swipeable(node)
 
@@ -58,6 +64,16 @@ describe('swipable', () => {
 		expect(handlers).toOnlyTrigger('swipeLeft')
 		simulateMouseSwipe(node, { x: -100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeLeft')
+
+		handle.destroy()
+	})
+	it('should not dispatch swipeLeft event', () => {
+		const handle = swipeable(node)
+
+		simulateTouchSwipe(node, { x: -90, y: 10 })
+		expect(handlers.swipeLeft).not.toHaveBeenCalled()
+		simulateMouseSwipe(node, { x: -90, y: 10 })
+		expect(handlers.swipeLeft).not.toHaveBeenCalled()
 
 		handle.destroy()
 	})
@@ -69,17 +85,23 @@ describe('swipable', () => {
 		expect(handlers).toOnlyTrigger('swipeUp')
 		simulateMouseSwipe(node, { x: 10, y: -100 })
 		expect(handlers).toOnlyTrigger('swipeUp')
+		simulateMouseSwipe(node, { x: 10, y: -90 })
+		expect(handlers.swipeUp).toHaveBeenCalledTimes(1)
 
 		handle.destroy()
 	})
 
 	it('should dispatch swipeDown event', () => {
-		const handle = swipeable(node, { vertical: true })
+		const handle = swipeable(node, { vertical: true, horizontal: false })
 
 		simulateTouchSwipe(node, { x: 10, y: 100 })
 		expect(handlers).toOnlyTrigger('swipeDown')
+		expect(handlers.swipeDown).toHaveBeenCalledTimes(1)
 		simulateMouseSwipe(node, { x: 10, y: 100 })
 		expect(handlers).toOnlyTrigger('swipeDown')
+		expect(handlers.swipeDown).toHaveBeenCalledTimes(1)
+		simulateMouseSwipe(node, { x: 10, y: 90 })
+		expect(handlers.swipeDown).toHaveBeenCalledTimes(1)
 
 		handle.destroy()
 	})
