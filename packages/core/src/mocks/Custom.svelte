@@ -1,7 +1,6 @@
 <script>
-	import { defaultFields } from '../../src/constants'
 	export let value
-	export let fields = defaultFields
+	export let fields
 </script>
 
 <span>{value[fields.text]}</span>

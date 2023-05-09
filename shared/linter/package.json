@@ -1,6 +1,6 @@
 {
 	"name": "eslint-config-shared",
-	"version": "1.0.0",
+	"version": "1.0.0-next.23",
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
@@ -8,16 +8,16 @@
 		"upgrade": "pnpm upgrade"
 	},
 	"dependencies": {
-		"eslint": "^8.32.0",
-		"eslint-config-prettier": "^8.6.0",
+		"eslint": "^8.40.0",
+		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-svelte3": "^4.0.0",
-		"prettier": "^2.8.3",
-		"prettier-plugin-svelte": "^2.9.0"
+		"prettier": "^2.8.8",
+		"prettier-plugin-svelte": "^2.10.0"
 	},
 	"publishConfig": {
 		"access": "public"
 	},
 	"devDependencies": {
-		"svelte": "^3.55.1"
+		"svelte": "^3.59.1"
 	}
 }

@@ -11,4 +11,10 @@ describe('Scrollable.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
+
+	it('Should render with custom class', () => {
+		const { container } = render(Scrollable, { class: 'custom-class' })
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
 })

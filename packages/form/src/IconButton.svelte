@@ -1,4 +1,5 @@
 <script>
+	import { Icon } from '@rokkit/core'
 	let className = ''
 
 	export { className as class }
@@ -6,19 +7,14 @@
 	export let rightIcon = null
 	export let label = null
 	export let type = 'submit'
-	// export let tabindex = 0
 </script>
 
 <button {type} class="flex flex-row items-center {className}" on:click>
 	{#if leftIcon}
-		<icon-left class="flex flex-row">
-			<icon class={leftIcon} />
-		</icon-left>
+		<Icon name={leftIcon} />
 	{/if}
 	<p>{label}</p>
 	{#if rightIcon}
-		<icon-right>
-			<icon class={rightIcon} />
-		</icon-right>
+		<Icon name={rightIcon} />
 	{/if}
 </button>

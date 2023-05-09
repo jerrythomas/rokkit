@@ -45,6 +45,7 @@ export default defineConfig({
 	],
 	shortcuts: {
 		...iconShortcuts(defaultIcons, 'i-rokkit'),
+		'action-remove': 'i-rokkit:action-cross',
 		'dropdown-opened': 'accordion-opened',
 		'bg-error': 'bg-red-100',
 		'text-error': 'text-red-800',

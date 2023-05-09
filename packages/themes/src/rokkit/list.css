@@ -60,7 +60,7 @@
 .rokkit nested-list node {
 	@apply px-2 h-8;
 }
-.rokkit node fragment {
+.rokkit node item {
 	@apply px-1 gap-2;
 }
 
