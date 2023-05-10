@@ -1,5 +1,14 @@
 # @rokkit/form
 
+## 1.0.0-next.24
+
+### Patch Changes
+
+- release v1.0.0-next.24
+- Updated dependencies
+  - @rokkit/input@1.0.0-next.24
+  - @rokkit/core@1.0.0-next.24
+
 ## 1.0.0-next.23
 
 ### Patch Changes

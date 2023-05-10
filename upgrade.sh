@@ -1,5 +1,5 @@
 #!/bin/zsh
-workspaces=("packages" "sites")
+workspaces=("packages" "sites" "shared")
 paths=()
 for folder in "${workspaces[@]}"; do
     subfolders=($folder/*/)
@@ -13,7 +13,7 @@ do
   if [ -d "$i" ]
 	then
 	   cd $i
-		 pnpm upgrade
+		 pnpm upgrade --latest
 		 pnpm test:ci
 		 cd ../..
 	fi

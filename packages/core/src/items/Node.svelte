@@ -1,7 +1,8 @@
 <script>
-	import Connector from './Connector.svelte'
 	import { defaultFields, defaultStateIcons } from '../constants'
 	import Icon from '../Icon.svelte'
+	import Connector from './Connector.svelte'
+
 	export let value
 	export let fields = defaultFields
 	export let types = []

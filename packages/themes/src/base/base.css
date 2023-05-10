@@ -23,7 +23,7 @@ pre {
 }
 
 icon {
-	@apply min-h-6 h-content;
+	@apply min-h-4 h-content;
 }
 icon[role='button'] {
 	@apply w-10 h-10 cursor-pointer aspect-square select-none focus:outline;
@@ -31,14 +31,15 @@ icon[role='button'] {
 icon > i {
 	@apply text-2xl leading-6 aspect-square text-current;
 }
-icon.large > i{
+icon.large > i {
 	@apply text-3xl;
 }
 icon.medium > i{
-	@apply text-lg;
+	@apply text-lg leading-5;
 }
 icon.small > i {
-	@apply text-sm;
+	@apply leading-4;
+	font-size: 1rem;
 }
 
 icon.large[role='button'] {

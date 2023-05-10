@@ -1,5 +1,5 @@
 <script>
-	import NestedLayout from './NestedLayout.svelte'
+	import FieldLayout from './FieldLayout.svelte'
 	import { deriveLayout } from './layout'
 
 	export let schema
@@ -10,6 +10,6 @@
 
 <form on:submit on:reset {...$$restProps}>
 	{#each segments as { properties, layout }}
-		<NestedLayout bind:value={data} {using} {properties} {layout} />
+		<FieldLayout bind:value={data} {using} {properties} {layout} />
 	{/each}
 </form>

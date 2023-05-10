@@ -12,7 +12,7 @@
 .material item > a > img {
 	@apply w-4 h-4 rounded;
 }
-.material tab.is-hovering {
+.material .tab.is-hovering {
 	@apply bg-primary-500;
 }
 
@@ -20,13 +20,13 @@
 .material node.is-selected {
 	@apply bg-primary text-primary-50;
 }
-.material tabs tab {
+.material tabs .tab {
 	@apply cursor-pointer;
 }
-.material tabs tab[aria-selected="true"] {
+.material tabs .tab[aria-selected="true"] {
 	@apply border-b-3 border-primary;
 }
-.material tabs.is-below tab[aria-selected="true"] {
+.material tabs.is-below .tab[aria-selected="true"] {
 	@apply border-b-0 border-t-3 ;
 }
 
@@ -42,7 +42,7 @@
 .material node {
 	@apply h-7 px-2;
 }
-.material node > fragment {
+.material node > item {
 	@apply px-1 gap-1 bg-transparent;
 }
 .material node > span {
@@ -94,9 +94,9 @@
 	@apply px-0 gap-0;
 }
 
-.minimal tabs tab > icon {
+.minimal tabs .tab icon[role='img'] {
 	@apply w-6 h-6;
 }
-.minimal tabs tab > icon:last-child {
+.minimal tabs .tab icon[role='button'] {
 	@apply w-4 h-4;
 }

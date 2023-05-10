@@ -33,13 +33,19 @@
 .rokkit input-select > selected-item > items {
 	@apply flex-grow flex-wrap gap-2;
 }
-.rokkit pill {
-	@apply gap-2 rounded-full bg-skin-400 px-2;
+.rokkit .pill {
+	@apply rounded-full bg-skin-inset border-skin-subtle border px-2 py-1 flex-grow-0;
 }
-.rokkit pill > item {
-	@apply gap-2 leading-6;
+.rokkit .pill > icon[role='button'] {
+	@apply rounded-full w-5 h-5;
+	@apply hover:bg-skin-muted hover:text-current ;
+	@apply focus:rounded-full focus:m-0;
 }
-.rokkit pill > item > img {
+
+.rokkit .pill > item {
+	@apply gap-2 leading-6 px-2;
+}
+.rokkit .pill > item > img {
 	@apply w-4 h-4;
 }
 

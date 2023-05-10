@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultStateIcons } from '@rokkit/core'
+	import { defaultStateIcons, Icon } from '@rokkit/core'
 	const dispatch = createEventDispatcher()
 
 	export let id = null
@@ -42,7 +42,12 @@
 	{/if}
 	{#each stars as selected, index}
 		{@const stateIcon = selected ? stateIcons.filled : stateIcons.empty}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<icon class={stateIcon} on:click={() => handleClick(index)} />
+		<Icon
+			name={stateIcon}
+			label="rating {index}"
+			role="button"
+			{disabled}
+			on:click={() => handleClick(index)}
+		/>
 	{/each}
 </rating>
