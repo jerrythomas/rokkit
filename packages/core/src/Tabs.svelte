@@ -11,7 +11,7 @@
 	export { className as class }
 	export let items = []
 	export let fields = {}
-	export let using = {}
+	export let using
 	export let value = null
 	export let below = false
 	export let align = 'left'
@@ -35,6 +35,7 @@
 
 		dispatch('select', { item: value, indices: cursor })
 	}
+	// $: using = {default: Item, ...using}
 	$: icons = { ...defaultStateIcons.action, ...icons }
 	$: filtered = items.filter((item) => !item[fields.isDeleted])
 	$: fields = { ...defaultFields, ...fields }
