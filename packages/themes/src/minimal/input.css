@@ -96,7 +96,17 @@
 }
 
 .minimal rating {
-	@apply text-secondary-600 gap-1 text-xl focus:outline-none;
+	@apply text-secondary-600 text-xl focus:outline-none;
+}
+.minimal rating > icon {
+	@apply w-8 ;
+}
+.minimal rating:focus-within icon[aria-checked='true'] {
+	@apply text-primary-600;
+}
+
+.minimal rating icon.hovering > i {
+	@apply text-secondary-600;
 }
 /* .error,
 .fail {

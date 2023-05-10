@@ -137,3 +137,52 @@ pre[class*='language-'],
 theme-mode {
 	@apply rounded-full bg-skin-base text-skin-900 p-1;
 }
+
+
+ input-range range-track {
+	@apply h-1 mt-3 relative;
+}
+ input-range range-track span {
+	@apply bg-skin-subtle border-skin-muted rounded-full;
+}
+ input-range range-track selected {
+	@apply top-0px bottom-0px;
+}
+input-range range-track thumb {
+	@apply rounded-full;
+}
+
+input-range range-ticks {
+	font-size: 6px;
+}
+input-range thumb {
+	@apply -top-1.5 bg-secondary shadow-xl border border-secondary;
+}
+input-range thumb.sliding::before {
+	content: '';
+	@apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-400 opacity-30 rounded-full;
+	transform: scale(2, 2);
+}
+
+ .bookend range-track span::before,
+ .bookend range-track span::after {
+	content: '';
+	@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+}
+ .bookend range-track span::before {
+	@apply -left-1px;
+}
+ .bookend range-track span::after {
+	@apply -right-2px;
+}
+
+input-range tick {
+	@apply h-6;
+}
+input-range tick span {
+	@apply border-skin-500 h-full;
+}
+input-range tick p {
+	@apply items-top;
+	font-size: 8px;
+}
