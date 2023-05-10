@@ -1,10 +1,10 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.23",
+	"version": "1.0.0-next.24",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"clean": "rm -rf sites/rokkit/.vercel",
+		"clean": "rm -rf sites/rokkit/.vercel && find . -name 'vitest*timestamp*' | xargs rm",
 		"prepublishOnly": "turbo run prepublishOnly",
 		"build": "pnpm clean && turbo run build",
 		"test": "turbo run test:ci",
@@ -14,7 +14,7 @@
 		"prepare": "husky install",
 		"upgrade": "pnpm clean && pnpm upgrade",
 		"bump": "bumpp --no-commit --no-push package.json sites/*/package.json",
-		"bump:next": "bumpp --no-commit --no-push --preid=next package.json sites/*/package.json",
+		"bump:next": "bumpp --no-commit --no-push --preid=next package.json sites/*/package.json shared/*/package.json",
 		"release": "changeset publish",
 		"release:next": "pnpm build && changeset pre enter next && changeset && changeset version && changeset publish && changeset pre exit && pnpm bump:next",
 		"upgrade:all": "./upgrade.sh && pnpm upgrade",

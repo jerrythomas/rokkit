@@ -30,6 +30,14 @@ describe('dismissable', () => {
 
 		expect(dismissSpy).toHaveBeenCalled()
 	})
+	it('does not dispatch "dismiss" event when other key is pressed', () => {
+		action = dismissable(node)
+
+		const keyupEvent = new KeyboardEvent('keyup', { keyCode: 64 })
+		document.dispatchEvent(keyupEvent)
+
+		expect(dismissSpy).not.toHaveBeenCalled()
+	})
 
 	it('does not dispatch "dismiss" event when clicking inside the node', () => {
 		action = dismissable(node)

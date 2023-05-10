@@ -1,7 +1,7 @@
 <script>
 	let className = ''
 	export { className as class }
-	export let name = ''
+	export let name
 	export let size = 'base'
 	export let role = 'img'
 	export let label = name
