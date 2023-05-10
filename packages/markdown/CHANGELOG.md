@@ -1,5 +1,13 @@
 # @rokkit/markdown
 
+## 1.0.0-next.26
+
+### Patch Changes
+
+- Added support for touch events to range components
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.26
+
 ## 1.0.0-next.25
 
 ### Patch Changes
