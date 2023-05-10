@@ -8,3 +8,10 @@ export function createEvent(x, y) {
 		preventDefault: vi.fn()
 	}
 }
+export function createTouchEvent(clientX, clientY) {
+	return {
+		touches: [{ clientX, clientY }],
+		preventDefault: vi.fn(),
+		stopPropagation: vi.fn()
+	}
+}
