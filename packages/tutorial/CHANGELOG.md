@@ -1,5 +1,13 @@
 # @rokkit/tutorial
 
+## 1.0.0-next.25
+
+### Patch Changes
+
+- Fix: tabs
+- Updated dependencies
+  - @rokkit/utils@1.0.0-next.25
+
 ## 1.0.0-next.24
 
 ### Patch Changes
