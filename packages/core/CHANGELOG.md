@@ -1,5 +1,11 @@
 # @rokkit/core
 
+## 1.0.0-next.25
+
+### Patch Changes
+
+- Fix: tabs
+
 ## 1.0.0-next.24
 
 ### Patch Changes

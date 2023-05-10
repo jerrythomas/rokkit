@@ -1,5 +1,14 @@
 # @rokkit/form
 
+## 1.0.0-next.25
+
+### Patch Changes
+
+- Fix: tabs
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.25
+  - @rokkit/input@1.0.0-next.25
+
 ## 1.0.0-next.24
 
 ### Patch Changes
