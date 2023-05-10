@@ -1,5 +1,11 @@
 # @rokkit/core
 
+## 1.0.0-next.27
+
+### Patch Changes
+
+- Updates to rating and range
+
 ## 1.0.0-next.26
 
 ### Patch Changes
