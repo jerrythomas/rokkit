@@ -1,5 +1,13 @@
 # @rokkit/tutorial
 
+## 1.0.0-next.26
+
+### Patch Changes
+
+- Added support for touch events to range components
+- Updated dependencies
+  - @rokkit/utils@1.0.0-next.26
+
 ## 1.0.0-next.25
 
 ### Patch Changes
