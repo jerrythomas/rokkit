@@ -7,7 +7,6 @@ Range input can be used to select a value between two values. The value can be c
 > Todo
 >
 > - Support keyboard input
-> - Support Touch Drag
 
 ## Properties
 
