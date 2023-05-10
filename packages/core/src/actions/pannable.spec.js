@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { pannable } from './pannable'
-import { createEvent } from '../mocks'
+import { createEvent, createTouchEvent } from '../mocks'
 
 describe('pannable', () => {
 	let handlers = {}
@@ -112,6 +112,92 @@ describe('pannable', () => {
 		expect(window.removeEventListener).toHaveBeenCalledWith(
 			'mouseup',
 			mouseUpHandler
+		)
+		action.destroy()
+	})
+	it('should create a pannable node with touch event listeners', () => {
+		const action = pannable(node)
+		expect(node.addEventListener).toHaveBeenCalledWith(
+			'touchstart',
+			handlers.node['touchstart'],
+			{ passive: false }
+		)
+		action.destroy()
+		expect(node.removeEventListener).toBeCalledWith(
+			'touchstart',
+			handlers.node['touchstart']
+		)
+	})
+
+	it('should emit the panstart event on touchstart', () => {
+		const action = pannable(node)
+		let event = createTouchEvent(10, 10)
+
+		handlers.node['touchstart'](event)
+		expect(event.stopPropagation).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(node.dispatchEvent).toHaveBeenCalledWith({
+			name: 'panstart',
+			params: { detail: { x: 10, y: 10 } }
+		})
+		expect(window.addEventListener).toHaveBeenCalledWith(
+			'touchmove',
+			handlers.window['touchmove'],
+			{ passive: false }
+		)
+		expect(window.addEventListener).toHaveBeenCalledWith(
+			'touchend',
+			handlers.window['touchend']
+		)
+		action.destroy()
+	})
+
+	it('should emit the panmove event on touchmove', () => {
+		const action = pannable(node)
+		let event = createTouchEvent(10, 10)
+		handlers.node['touchstart'](event)
+		expect(node.dispatchEvent).toHaveBeenCalledWith({
+			name: 'panstart',
+			params: { detail: { x: 10, y: 10 } }
+		})
+		event = createTouchEvent(15, 15)
+
+		handlers.window['touchmove'](event)
+		expect(event.stopPropagation).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(node.dispatchEvent).toHaveBeenCalledWith({
+			name: 'panmove',
+			params: { detail: { dx: 5, dy: 5, x: 15, y: 15 } }
+		})
+
+		action.destroy()
+	})
+
+	it('should emit the panend event on touchend', () => {
+		const action = pannable(node)
+		let event = createTouchEvent(10, 10)
+		handlers.node['touchstart'](event)
+		expect(node.dispatchEvent).toHaveBeenCalledWith({
+			name: 'panstart',
+			params: { detail: { x: 10, y: 10 } }
+		})
+		event = createTouchEvent(15, 15)
+		handlers.window['touchend'](event)
+		expect(event.stopPropagation).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(node.dispatchEvent).toHaveBeenCalledWith({
+			name: 'panend',
+			params: { detail: { x: 15, y: 15 } }
+		})
+		let touchMoveHandler = handlers.window['touchmove']
+		let touchEndHandler = handlers.window['touchend']
+		expect(window.removeEventListener).toHaveBeenCalledWith(
+			'touchmove',
+			touchMoveHandler
+		)
+		expect(window.removeEventListener).toHaveBeenCalledWith(
+			'touchend',
+			touchEndHandler
 		)
 		action.destroy()
 	})
