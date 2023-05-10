@@ -1,5 +1,13 @@
 # @rokkit/tutorial
 
+## 1.0.0-next.27
+
+### Patch Changes
+
+- Updates to rating and range
+- Updated dependencies
+  - @rokkit/utils@1.0.0-next.27
+
 ## 1.0.0-next.26
 
 ### Patch Changes
