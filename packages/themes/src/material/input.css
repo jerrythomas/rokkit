@@ -44,3 +44,27 @@
 .material input-select scroll {
 	@apply mt-2 shadow-lg;
 }
+
+.material input-range range-track selected {
+	@apply border-0 bg-primary;
+}
+.material input-range range-track thumb {
+	@apply -top-1.5 bg-primary-600;
+}
+.material input-range thumb.sliding::before{
+	@apply bg-primary-400;
+}
+
+.material rating {
+	@apply text-skin-600 text-xl focus:outline-none;
+}
+.material rating > icon {
+	@apply w-8 ;
+}
+.material rating:focus-within icon[aria-checked='true'] {
+	@apply text-secondary;
+}
+
+.material rating icon.hovering > i {
+	@apply text-primary;
+}

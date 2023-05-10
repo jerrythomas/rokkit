@@ -1,7 +1,7 @@
 <script>
 	import { defaultFields, defaultStateIcons } from './constants'
 	import Icon from './Icon.svelte'
-	import { ItemWrapper } from './items'
+	import { ItemWrapper, Item } from './items'
 	import { navigator } from './actions'
 	import { createEventDispatcher } from 'svelte'
 
@@ -35,7 +35,7 @@
 
 		dispatch('select', { item: value, indices: cursor })
 	}
-	// $: using = {default: Item, ...using}
+	$: using = { default: Item, ...using }
 	$: icons = { ...defaultStateIcons.action, ...icons }
 	$: filtered = items.filter((item) => !item[fields.isDeleted])
 	$: fields = { ...defaultFields, ...fields }
