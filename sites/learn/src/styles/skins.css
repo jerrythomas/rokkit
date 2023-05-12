@@ -1,9 +1,7 @@
 graph-paper {
 	@apply p-8 bg-skin-50 text-skin-300 overflow-auto;
 }
-/* graph-paper > p { */
-/* @apply bg-transparent; */
-/* } */
+
 graph-paper > content {
 	@apply text-opacity-100 text-skin-800 flex flex-col gap-5;
 }

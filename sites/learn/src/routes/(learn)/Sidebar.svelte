@@ -9,18 +9,20 @@
 	let search
 
 	function toggle(site) {
+		sidebar.classList.add('duration-200')
 		if (site.sidebar) {
 			sidebar.classList.remove('-translate-x-full')
 		} else {
 			sidebar.classList.add('-translate-x-full')
 		}
+		sidebar.classList.remove('duration-200')
 	}
 	$: if (sidebar) toggle($site)
 </script>
 
 <aside
 	bind:this={sidebar}
-	class="flex flex-col gap-4 bg-skin-base h-full flex-shrink-0 w-full md:w-1/2 lg:w-80 bg-skin-base absolute top-0 left-0 -translate-x-full transform transition duration-200 ease-in-out z-5 border-r border-skin-subtle overflow-auto"
+	class="flex flex-col gap-4 absolute top-0 left-0 flex-shrink-0 w-full md:w-1/2 lg:w-80 -translate-x-full"
 	class:lg:relative={$site.sidebar}
 >
 	<nav
@@ -41,3 +43,11 @@
 	</nav>
 	<slot />
 </aside>
+
+<style>
+	aside {
+		@apply h-full z-5 overflow-auto;
+		@apply bg-skin-base border-r border-skin-subtle;
+		@apply transform ease-in-out;
+	}
+</style>

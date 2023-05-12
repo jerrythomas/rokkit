@@ -4,8 +4,8 @@
 	export let min = 0
 	export let max = 100
 	export let value = min
-	export let step = 0
-	export let tickStep = max - min
+	export let step = 1
+	export let ticks = 10
 	export let labelSkip = 0
 
 	let bounds = [min, value]
@@ -18,7 +18,7 @@
 	{min}
 	{max}
 	{step}
-	{tickStep}
+	{ticks}
 	{labelSkip}
 	single
 />
