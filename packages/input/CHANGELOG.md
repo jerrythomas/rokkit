@@ -1,5 +1,13 @@
 # @rokkit/input
 
+## 1.0.0-next.28
+
+### Patch Changes
+
+- Updated rating and range components
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.28
+
 ## 1.0.0-next.27
 
 ### Patch Changes
