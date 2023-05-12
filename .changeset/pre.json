@@ -2,21 +2,22 @@
   "mode": "exit",
   "tag": "next",
   "initialVersions": {
-    "@rokkit/chart": "1.0.0-next.26",
-    "@rokkit/core": "1.0.0-next.26",
-    "@rokkit/form": "1.0.0-next.26",
-    "@rokkit/icons": "1.0.0-next.26",
-    "@rokkit/input": "1.0.0-next.26",
-    "@rokkit/layout": "1.0.0-next.26",
-    "@rokkit/markdown": "1.0.0-next.26",
-    "@rokkit/themes": "1.0.0-next.26",
-    "@rokkit/tutorial": "1.0.0-next.26",
-    "@rokkit/utils": "1.0.0-next.26"
+    "@rokkit/chart": "1.0.0-next.27",
+    "@rokkit/core": "1.0.0-next.27",
+    "@rokkit/form": "1.0.0-next.27",
+    "@rokkit/icons": "1.0.0-next.27",
+    "@rokkit/input": "1.0.0-next.27",
+    "@rokkit/layout": "1.0.0-next.27",
+    "@rokkit/markdown": "1.0.0-next.27",
+    "@rokkit/themes": "1.0.0-next.27",
+    "@rokkit/tutorial": "1.0.0-next.27",
+    "@rokkit/utils": "1.0.0-next.27"
   },
   "changesets": [
     "cold-hairs-grow",
     "hungry-beers-invite",
     "nine-shoes-appear",
+    "proud-pianos-develop",
     "quiet-cups-suffer",
     "warm-badgers-teach",
     "warm-olives-juggle"
