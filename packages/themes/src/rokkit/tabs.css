@@ -24,15 +24,13 @@
 	@apply justify-center;
 }
 
-
-
-.rokkit tabs .tab[aria-selected="true"]{
+.rokkit tabs .tab[aria-selected='true'] {
 	@apply bg-skin-muted;
 }
-.rokkit tabs:focus-within .tab[aria-selected="true"]{
+.rokkit tabs:focus-within .tab[aria-selected='true'] {
 	@apply bg-gradient-to-b from-primary-500 to-secondary text-skin-50;
 }
-.rokkit tabs.is-below:focus-within .tab[aria-selected="true"]{
+.rokkit tabs.is-below:focus-within .tab[aria-selected='true'] {
 	@apply bg-gradient-to-t;
 }
 /* .rokkit tab-view tabs {

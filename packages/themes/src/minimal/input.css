@@ -99,7 +99,7 @@
 	@apply text-secondary-600 text-xl focus:outline-none;
 }
 .minimal rating > icon {
-	@apply w-8 ;
+	@apply w-8;
 }
 .minimal rating:focus-within icon[aria-checked='true'] {
 	@apply text-primary-600;

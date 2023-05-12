@@ -38,7 +38,7 @@
 }
 .rokkit .pill > icon[role='button'] {
 	@apply rounded-full w-5 h-5;
-	@apply hover:bg-skin-muted hover:text-current ;
+	@apply hover:bg-skin-muted hover:text-current;
 	@apply focus:rounded-full focus:m-0;
 }
 

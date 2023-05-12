@@ -34,7 +34,7 @@ icon > i {
 icon.large > i {
 	@apply text-3xl;
 }
-icon.medium > i{
+icon.medium > i {
 	@apply text-lg leading-5;
 }
 icon.small > i {
@@ -112,14 +112,13 @@ theme-mode {
 	@apply rounded-full bg-skin-base text-skin-900 p-1;
 }
 
-
- input-range range-track {
+input-range range-track {
 	@apply h-1 mt-3 relative;
 }
- input-range range-track span {
+input-range range-track span {
 	@apply bg-skin-subtle border-skin-muted rounded-full;
 }
- input-range range-track selected {
+input-range range-track selected {
 	@apply top-0px bottom-0px;
 }
 input-range range-track thumb {
@@ -138,15 +137,15 @@ input-range thumb.sliding::before {
 	transform: scale(2, 2);
 }
 
- .bookend range-track span::before,
- .bookend range-track span::after {
+.bookend range-track span::before,
+.bookend range-track span::after {
 	content: '';
 	@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 }
- .bookend range-track span::before {
+.bookend range-track span::before {
 	@apply -left-1px;
 }
- .bookend range-track span::after {
+.bookend range-track span::after {
 	@apply -right-2px;
 }
 

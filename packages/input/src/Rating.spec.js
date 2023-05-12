@@ -3,7 +3,9 @@ import { fireEvent, render } from '@testing-library/svelte'
 import { toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
 import Rating from './Rating.svelte'
+
 expect.extend({ toHaveBeenDispatchedWith })
+
 describe('Rating component', () => {
 	it('renders the correct number of stars', async () => {
 		const { container } = render(Rating, { max: 5 })

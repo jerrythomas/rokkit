@@ -127,6 +127,6 @@
 .minimal toggle-switch.compact > item {
 	@apply px-0 gap-0 rounded-full;
 }
-.minimal toggle-switch item[aria-selected="true"] {
+.minimal toggle-switch item[aria-selected='true'] {
 	@apply bg-secondary text-skin-800;
 }

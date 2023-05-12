@@ -130,7 +130,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply text-skin-600 text-xl h-10 justify-center rounded focus:outline focus:outline-secondary;
 }
 .rokkit rating > icon {
-	@apply w-8 ;
+	@apply w-8;
 }
 .rokkit rating:focus-within icon[aria-checked='true'] {
 	@apply text-primary;

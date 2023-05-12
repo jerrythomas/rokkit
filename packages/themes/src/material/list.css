@@ -5,7 +5,7 @@
 .material list > item {
 	@apply bg-skin-subtle;
 }
-.material  item {
+.material item {
 	@apply flex items-center gap-2 px-2;
 }
 .material item > img,
@@ -23,11 +23,11 @@
 .material tabs .tab {
 	@apply cursor-pointer;
 }
-.material tabs .tab[aria-selected="true"] {
+.material tabs .tab[aria-selected='true'] {
 	@apply border-b-3 border-primary;
 }
-.material tabs.is-below .tab[aria-selected="true"] {
-	@apply border-b-0 border-t-3 ;
+.material tabs.is-below .tab[aria-selected='true'] {
+	@apply border-b-0 border-t-3;
 }
 
 .material accordion .is-expanded summary {
@@ -73,7 +73,7 @@
 	@apply flex-grow gap-1 text-sm;
 }
 
-.material toggle-switch item[aria-selected="true"] {
+.material toggle-switch item[aria-selected='true'] {
 	@apply bg-primary text-skin-50;
 }
 .material crumbs crumb.is-selected {

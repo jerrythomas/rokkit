@@ -8,10 +8,10 @@
 	@apply leading-8 text-base px-2;
 }
 .minimal tabs .tab icon[role='img'] {
-	@apply w-6 h-6 ;
+	@apply w-6 h-6;
 }
 .minimal tabs .tab icon[role='button'] {
-	@apply w-4 h-4 ;
+	@apply w-4 h-4;
 }
 .minimal tabs.is-below {
 	@apply border-b-none border-t-2;
@@ -26,16 +26,15 @@
 	@apply w-5 h-5;
 }
 
-.minimal tabs .tab[aria-selected="true"] {
+.minimal tabs .tab[aria-selected='true'] {
 	@apply -mb-2px border-b-2 border-secondary-600;
 }
 .minimal tabs.is-below .tab {
 	@apply pt-2px;
 }
-.minimal tabs.is-below .tab[aria-selected="true"] {
+.minimal tabs.is-below .tab[aria-selected='true'] {
 	@apply mb-0 -mt-2px border-b-none border-t-2 border-b-secondary-600;
 }
-
 
 .minimal .small tabs .tab {
 	@apply text-sm leading-8 px-2;

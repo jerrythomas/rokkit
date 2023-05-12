@@ -15,7 +15,6 @@ pre[class*='language-'] {
 	direction: ltr;
 	cursor: text;
 	@apply font-mono text-sm;
-
 }
 
 pre[class*='language-'] {
