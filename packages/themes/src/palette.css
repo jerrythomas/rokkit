@@ -48,7 +48,6 @@
 		--skin-900: var(--skin-hue), var(--skin-saturation), 20%;
 		--skin-zebra: var(--skin-hue), var(--skin-saturation), 98%;
 
-
 		/* light theme syntax colors */
 		--tab-size: 2;
 		--code-bg: #f3f4f6;

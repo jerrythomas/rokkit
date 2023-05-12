@@ -21,7 +21,6 @@
 	display: none;
 }
 
-
 .rokkit item > img,
 .rokkit item > a > img {
 	@apply w-6 h-6;
@@ -141,7 +140,7 @@
 .rokkit toggle-switch {
 	@apply min-w-12 min-h-6 rounded-full mx-auto;
 	@apply bg-skin-subtle border border-skin-muted;
-	@apply leading-loose p-2px focus:outline focus:outline-secondary-500 ;
+	@apply leading-loose p-2px focus:outline focus:outline-secondary-500;
 }
 .rokkit toggle-switch item {
 	@apply items-center justify-center px-3 gap-1 py-0 leading-tight;
@@ -151,7 +150,7 @@
 	@apply text-lg;
 }
 
-.rokkit toggle-switch item[aria-selected="true"] {
+.rokkit toggle-switch item[aria-selected='true'] {
 	@apply bg-gradient-to-r from-skin-800 to-skin-800 text-skin-muted;
 }
 
@@ -159,7 +158,7 @@
 	@apply px-0 gap-0;
 }
 
-.rokkit toggle-switch:focus-within item[aria-selected="true"],
+.rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit
 	list:focus-within
 	item.is-selected
@@ -170,5 +169,3 @@
 	@apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 	@apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
 }
-
-

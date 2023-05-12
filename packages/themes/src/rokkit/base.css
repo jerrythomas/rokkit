@@ -11,8 +11,7 @@
 	@apply flex-shrink text-ellipsis;
 }
 
-
-.rokkit icon:not([role='button']){
+.rokkit icon:not([role='button']) {
 	@apply focus:outline-none;
 }
 .rokkit icon[role='button'] {
