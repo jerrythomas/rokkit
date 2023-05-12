@@ -76,7 +76,7 @@ input[type='number']::-webkit-outer-spin-button {
 	@apply border top-0px bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
 }
 .rokkit input-range range-track thumb {
-	@apply rounded-sm;
+	@apply rounded-sm focus:outline-none;
 }
 
 .rokkit input-range range-ticks {

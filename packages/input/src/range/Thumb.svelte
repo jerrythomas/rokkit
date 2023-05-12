@@ -33,15 +33,30 @@
 			cx = scale.invert(value)
 		}
 	}
+	function handleKeyDown(event) {
+		const index = steps.findIndex((step) => step == value)
+		if (event.key == 'ArrowLeft' && index > 0) {
+			value = steps[index - 1]
+			cx = scale.invert(value)
+		} else if (event.key == 'ArrowRight' && index < steps.length - 1) {
+			value = steps[index + 1]
+			cx = scale.invert(value)
+		}
+	}
 	let sliding = false
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <thumb
 	class="h-4 w-4 -top-1 box-border absolute cursor-pointer"
 	style:left="{cx}px"
 	class:sliding
+	tabindex="0"
+	on:focus={() => (sliding = true)}
+	on:blur={() => (sliding = false)}
 	use:pannable
 	on:panmove={handlePanMove}
 	on:panstart={() => (sliding = true)}
 	on:panend={handlePanEnd}
+	on:keydown={handleKeyDown}
 />

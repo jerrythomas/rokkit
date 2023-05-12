@@ -29,7 +29,7 @@
 
 {#if hasFiles}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<source-files class="flex flex-col h-full border-t-2px border-t-skin-inset">
+	<source-files class="flex flex-col h-full border-t border-t-skin-subtle">
 		<nav
 			class="flex h-8 px-4 text-sm w-full bg-skin-subtle border-t border-t-skin-inset cursor-pointer items-center lg:hidden"
 			on:click={() => (active = active == 'code' ? 'files' : 'code')}
@@ -38,7 +38,7 @@
 		</nav>
 		<section class="flex flex-row w-full h-full overflow-auto relative">
 			<aside
-				class="flex flex-col min-w-full bg-skin-inset lg:min-w-50 h-full"
+				class="flex flex-col min-w-full bg-skin-inset lg:min-w-50 h-full border-r border-skin-subtle"
 				class:-translate-x-full={!filesVisible}
 			>
 				<Tree

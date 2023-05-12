@@ -48,6 +48,7 @@
 		--skin-900: var(--skin-hue), var(--skin-saturation), 20%;
 		--skin-zebra: var(--skin-hue), var(--skin-saturation), 98%;
 
+
 		/* light theme syntax colors */
 		--tab-size: 2;
 		--code-bg: #f3f4f6;
@@ -107,9 +108,8 @@
 		--accent-800: var(--accent-hue), var(--accent-saturation), 90%;
 		--accent-900: var(--accent-hue), var(--accent-saturation), 95%;
 
-		--skin-50: var(--skin-hue), var(--skin-saturation), 15%;
-		--skin-zebra: var(--skin-hue), var(--skin-saturation), 15%;
-		--skin-100: var(--skin-hue), var(--skin-saturation), 22%;
+		--skin-50: var(--skin-hue), var(--skin-saturation), 20%;
+		--skin-100: var(--skin-hue), var(--skin-saturation), 25%;
 		--skin-200: var(--skin-hue), var(--skin-saturation), 30%;
 		--skin-300: var(--skin-hue), var(--skin-saturation), 40%;
 		--skin-400: var(--skin-hue), var(--skin-saturation), 50%;
@@ -118,6 +118,7 @@
 		--skin-700: var(--skin-hue), var(--skin-saturation), 80%;
 		--skin-800: var(--skin-hue), var(--skin-saturation), 90%;
 		--skin-900: var(--skin-hue), var(--skin-saturation), 100%;
+		--skin-zebra: var(--skin-hue), var(--skin-saturation), 22%;
 
 		/* one dark theme syntax colors */
 		--code-bg: #282c34;
@@ -184,9 +185,9 @@
 			--accent-900: var(--accent-hue), var(--accent-saturation), 20%;
 
 			--skin-50: var(--skin-hue), var(--skin-saturation), 100%;
-			--skin-base: var(--skin-hue), var(--skin-saturation), 95%;
-			--skin-subtle: var(--skin-hue), var(--skin-saturation), 90%;
-			--skin-muted: var(--skin-hue), var(--skin-saturation), 80%;
+			--skin-100: var(--skin-hue), var(--skin-saturation), 95%;
+			--skin-200: var(--skin-hue), var(--skin-saturation), 90%;
+			--skin-300: var(--skin-hue), var(--skin-saturation), 80%;
 			--skin-400: var(--skin-hue), var(--skin-saturation), 70%;
 			--skin-500: var(--skin-hue), var(--skin-saturation), 60%;
 			--skin-600: var(--skin-hue), var(--skin-saturation), 50%;
@@ -257,9 +258,9 @@
 			--accent-900: var(--accent-hue), var(--accent-saturation), 95%;
 
 			--skin-50: var(--skin-hue), var(--skin-saturation), 20%;
-			--skin-base: var(--skin-hue), var(--skin-saturation), 25%;
-			--skin-subtle: var(--skin-hue), var(--skin-saturation), 30%;
-			--skin-muted: var(--skin-hue), var(--skin-saturation), 40%;
+			--skin-100: var(--skin-hue), var(--skin-saturation), 25%;
+			--skin-200: var(--skin-hue), var(--skin-saturation), 30%;
+			--skin-300: var(--skin-hue), var(--skin-saturation), 40%;
 			--skin-400: var(--skin-hue), var(--skin-saturation), 50%;
 			--skin-500: var(--skin-hue), var(--skin-saturation), 60%;
 			--skin-600: var(--skin-hue), var(--skin-saturation), 70%;

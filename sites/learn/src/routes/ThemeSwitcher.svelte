@@ -19,12 +19,12 @@
 	function toggleMode() {
 		const mode = current.mode === 'dark' ? 'light' : 'dark'
 		theme.set({ ...current, mode })
+		if (!document.startViewTransition)
+			document.startViewTransition = (fn) => fn()
+
+		document.startViewTransition(() => theme.set({ ...current, mode }))
 	}
-	// function handleKeyDown(event) {
-	// 	if (['Enter', ' '].includes(event.key)) {
-	// 		toggleMode()
-	// 	}
-	// }
+
 	function handleThemeChange(event) {
 		theme.set({ ...current, name: event.detail.name })
 	}

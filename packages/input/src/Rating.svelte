@@ -74,7 +74,7 @@
 		{@const stateIcon = selected ? stateIcons.filled : stateIcons.empty}
 		<Icon
 			name={stateIcon}
-			label="rating {index}"
+			label="{index} out of {max}"
 			role="checkbox"
 			{disabled}
 			checked={index < value}

@@ -4,10 +4,6 @@ title: Introduction
 
 Range input can be used to select a value between two values. The value can be changed by using the mouse.
 
-> Todo
->
-> - Support keyboard input
-
 ## Properties
 
 - _value_ : Current selected value of the range
