@@ -10,8 +10,8 @@
 	export let max = 100
 	export let value = [min, min]
 	export let single = false
-	export let step = 0
-	export let tickStep = max - min
+	export let step = 1
+	export let ticks = 10
 	export let labelSkip = 0
 
 	let limits = [0, 0]
@@ -44,6 +44,7 @@
 		}
 	}
 
+	$: tickStep = Math.max(1, Math.round((max - min) / ticks))
 	$: tickItems = generateTicks(min, max, tickStep, labelSkip + 1)
 
 	$: steps =
@@ -53,7 +54,6 @@
 			  )
 			: []
 	$: updateScale(width, min, max)
-	// $: console.log(min, max, lower, upper)
 </script>
 
 {#if !Array.isArray(value)}
