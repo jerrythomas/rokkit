@@ -1,5 +1,11 @@
 # @rokkit/icons
 
+## 1.0.0-next.29
+
+### Patch Changes
+
+- chore:release 1.0.0-next.29
+
 ## 1.0.0-next.28
 
 ### Patch Changes

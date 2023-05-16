@@ -1,5 +1,13 @@
 # @rokkit/markdown
 
+## 1.0.0-next.29
+
+### Patch Changes
+
+- chore:release 1.0.0-next.29
+- Updated dependencies
+  - @rokkit/core@1.0.0-next.29
+
 ## 1.0.0-next.28
 
 ### Patch Changes
