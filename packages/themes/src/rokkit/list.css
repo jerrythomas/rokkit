@@ -107,8 +107,14 @@
 }
 
 .rokkit accordion .is-selected summary {
-	@apply border-b-secondary-500 border-b text-secondary-600;
-	@apply hover:text-primary-600;
+	@apply bg-skin-subtle;
+}
+.rokkit accordion:focus-within .is-selected summary {
+	@apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+}
+
+.rokkit accordion > div {
+	@apply border border-skin-muted;
 }
 
 .rokkit .folder-tree {
@@ -161,8 +167,8 @@
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit
 	list:focus-within
-	item.is-selected
-	.rokkit
+	item.is-selected,
+.rokkit
 	tree:focus-within
 	node.is-selected,
 .rokkit nested-list:focus-within node.is-selected {

@@ -15,7 +15,10 @@
 	@apply focus:outline-none;
 }
 .rokkit icon[role='button'] {
-	@apply text-skin-500 focus:rounded hover:text-secondary focus:outline-secondary focus:m-1px;
+	@apply text-skin-500 focus:rounded hover:text-secondary ;
+}
+.rokkit icon[role='button']:focus {
+	@apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 }
 .rokkit icon.disabled[role='button'] {
 	@apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
