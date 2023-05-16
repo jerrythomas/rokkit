@@ -19,10 +19,10 @@
 .rokkit drop-down > button {
 	@apply h-10 pl-4 pr-2;
 }
-.rokkit input-select > icon,
+/* .rokkit input-select > icon,
 .rokkit drop-down > icon {
 	@apply border-l border-skin-muted h-10 w-10;
-}
+} */
 .rokkit input-select:hover > icon,
 .rokkit drop-down:hover > icon {
 	@apply border-skin-500;
@@ -32,6 +32,12 @@
 }
 .rokkit input-select > selected-item > items {
 	@apply flex-grow flex-wrap gap-2;
+}
+.rokkit input-select:focus-within > selected-item  {
+	@apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50 border-none;
+}
+.rokkit input-select:focus-within > selected-item > icon {
+	@apply text-skin-50;
 }
 .rokkit .pill {
 	@apply rounded-full bg-skin-inset border-skin-subtle border px-2 py-1 flex-grow-0;

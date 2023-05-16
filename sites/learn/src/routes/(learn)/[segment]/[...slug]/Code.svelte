@@ -52,9 +52,7 @@
 				<CodeSnippet
 					{code}
 					{language}
-					class={filesVisible
-						? 'w-full h-full'
-						: 'w-full h-full absolute left-0 w-full'}
+					class="w-full h-full {filesVisible ? '' : 'absolute left-0'}"
 				/>
 			{/if}
 		</section>
