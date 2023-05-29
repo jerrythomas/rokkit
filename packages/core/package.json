@@ -9,37 +9,35 @@
 	"module": "src/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
-	"prettier": "@jerrythomas/prettier-config",
 	"publishConfig": {
 		"access": "public"
 	},
 	"scripts": {
 		"prepublishOnly": "tsc",
-		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --write --plugin-search-dir=. .",
+		"lint": "eslint --fix .",
 		"test:ct": "playwright test -c playwright.config.js",
 		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
-		"upgrade": "pnpm upgrade"
+		"upgrade": "pnpm upgrade",
+		"publish:lib": "tsc && pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@jerrythomas/eslint-config-svelte": "^1.0.2",
-		"@jerrythomas/prettier-config": "^1.0.0",
-		"@sveltejs/vite-plugin-svelte": "^2.2.0",
+		"@sveltejs/vite-plugin-svelte": "^2.4.1",
 		"@testing-library/svelte": "^3.2.2",
-		"@vitest/coverage-c8": "^0.31.0",
-		"@vitest/coverage-istanbul": "^0.31.0",
-		"@vitest/ui": "~0.31.0",
-		"eslint": "^8.40.0",
-		"jsdom": "^22.0.0",
+		"@vitest/coverage-c8": "^0.31.1",
+		"@vitest/coverage-istanbul": "^0.31.1",
+		"@vitest/ui": "~0.31.1",
+		"eslint": "^8.41.0",
+		"eslint-config-shared": "workspace:*",
+		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",
 		"svelte": "^3.59.1",
 		"typescript": "^5.0.4",
 		"validators": "workspace:latest",
-		"vite": "^4.3.5",
-		"vitest": "~0.31.0"
+		"vite": "^4.3.9",
+		"vitest": "~0.31.1"
 	},
 	"files": [
 		"src/**/*.js",

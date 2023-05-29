@@ -11,7 +11,7 @@
 	let plot = 'Box'
 	let aes
 	$: onPlotTypeChange(plot)
-	$: update(aes)
+
 	function onPlotTypeChange(plot) {
 		let currentPlot = plots.filter((x) => x.name === plot)[0]
 		aes = ['X Axis', 'Y Axis', ...currentPlot.options].map((label) => ({
@@ -20,17 +20,13 @@
 			fields
 		}))
 	}
-	// Exclude X Axis
-	function update(aes) {
-		// console.log('Aesthetics updated', aes)
-	}
 </script>
 
 <control
-	class="flex flex-col border-l border-gray-700 p-8 bg-primary-100 gap-4 w-96"
+	class="w-96 flex flex-col gap-4 border-gray-700 border-l bg-primary-100 p-8"
 >
 	<section class="flex flex-col gap-2">
-		<p class="leading-loose border-b border-accent-600">Plot Type</p>
+		<p class="border-accent-600 border-b leading-loose">Plot Type</p>
 		<div class="flex flex-col">
 			{#each plots as { name }}
 				<label class="p-0">
@@ -42,7 +38,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2">
-		<p class="leading-loose border-b border-accent-600">Fields</p>
+		<p class="border-accent-600 border-b leading-loose">Fields</p>
 		{#each aes as attr}
 			<label class="flex flex-col gap-2">
 				{attr.label}

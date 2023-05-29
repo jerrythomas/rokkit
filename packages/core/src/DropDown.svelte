@@ -54,7 +54,7 @@
 			<Icon name={icon} />
 		{/if}
 		{#if !small && title}
-			<p class="flex w-full">{title}</p>
+			<p class="w-full flex">{title}</p>
 		{/if}
 		{#if open}
 			<icon class={icons.opened} />
@@ -64,7 +64,7 @@
 	</button>
 	{#if open}
 		<!-- <div
-			class="flex flex-col absolute z-10 h-fit w-full menu"
+			class="absolute z-10 menu h-fit w-full flex flex-col"
 			style:top="{offsetTop}px"
 		> -->
 		<Slider top={offsetTop}>

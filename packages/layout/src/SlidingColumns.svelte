@@ -34,7 +34,7 @@
 	on:previous={handlePrevious}
 	on:next={handleNext}
 	tabindex={0}
-	class="grid w-full h-full relative overflow-hidden"
+	class="relative grid h-full w-full overflow-hidden"
 	bind:clientWidth={width}
 >
 	{#each columns as column, index}

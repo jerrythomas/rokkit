@@ -1,21 +1,22 @@
 <script>
-	import Icon from './Icon.svelte'
+	import { Icon } from '@rokkit/core'
 
 	export let text
 	export let completed
 	export let active
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="w-16 h-16 circle stage select-none cursor-pointer"
+	class="circle stage h-16 w-16 cursor-pointer select-none"
 	class:completed
 	class:active
 	on:click
 >
 	{#if completed}
-		<Icon name="tick" size="80%" on:click />
+		<Icon name="tick" on:click />
 	{:else}
-		<p class="w-full h-full border-2 circle">
+		<p class="circle h-full w-full border-2">
 			{text}
 		</p>
 	{/if}

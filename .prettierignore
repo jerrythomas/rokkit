@@ -1,6 +1,12 @@
-.svelte-kit/**
+**/.svelte-kit/**
 static/**
 build/**
 node_modules/**
 coverage
-fixtures/error
+**/fixtures/error/**
+dist/**
+package.json
+tsconfig.json
+.eslintrc
+
+#*.md

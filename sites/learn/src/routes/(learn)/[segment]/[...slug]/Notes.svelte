@@ -14,10 +14,10 @@
 	}
 </script>
 
-<aside class="flex flex-col w-full h-full border-r border-r-skin-subtle">
+<aside class="h-full w-full flex flex-col border-r border-r-skin-subtle">
 	{#if $story}
 		<nav
-			class="flex box-border h-10 gap-1 text-sm items-center border-b border-b-skin-subtle"
+			class="box-border h-10 flex items-center gap-1 border-b border-b-skin-subtle text-sm"
 		>
 			{#if !$site.sidebar}
 				<Icon
@@ -42,7 +42,7 @@
 			/>
 		</nav>
 
-		<notes class="markdown-body font-thin p-8 w-full h-full overflow-auto">
+		<notes class="markdown-body h-full w-full overflow-auto p-8 font-thin">
 			<svelte:component this={$story.readme} />
 		</notes>
 	{/if}

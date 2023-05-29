@@ -10,15 +10,16 @@
 		"test": "turbo run test:ci",
 		"coverage": "turbo run coverage",
 		"lint": "turbo run lint",
-		"format": "turbo run format",
+		"format": "prettier --write \"**/*.{js,json,md,yml,yaml,svelte}\"",
 		"prepare": "husky install",
 		"upgrade": "pnpm clean && pnpm upgrade",
-		"bump": "bumpp --no-commit --no-push package.json sites/*/package.json",
-		"bump:next": "bumpp --no-commit --no-push --preid=next package.json sites/*/package.json shared/*/package.json",
-		"release": "changeset publish",
-		"release:next": "pnpm build && changeset pre enter next && changeset && changeset version && changeset publish && changeset pre exit && pnpm bump:next",
-		"upgrade:all": "./upgrade.sh && pnpm upgrade",
-		"coverage:lcov": "pnpm coverage && ./merge-lcov.sh"
+		"check-git": "if [ -n \"$(git status --porcelain)\" ]; then echo 'You have uncommitted changes or untracked files.' && exit 1; fi",
+		"bump:next": "bumpp --no-tag --preid=next && turbo run release",
+		"release": "pnpm check-git && bumpp && turbo run release",
+		"release:next": "pnpm check-git && npm bump:next && turbo run release",
+		"release:cs": "pnpm build && changeset pre enter next && changeset && changeset version && changeset publish && changeset pre exit && pnpm bump:next",
+		"upgrade:all": "./scripts/upgrade.sh && pnpm upgrade",
+		"coverage:lcov": "pnpm coverage && ./scripts/merge-lcov.sh"
 	},
 	"author": "Jerry Thomas<me@jerrythomas.name",
 	"license": "MIT",
@@ -42,13 +43,15 @@
 		"husky": "^7.0.4",
 		"lcov-result-merger": "^3.3.0",
 		"lint-staged": "^11.2.6",
-		"prettier": "^2.8.8"
+		"madge": "^6.0.0",
+		"prettier": "^2.8.8",
+		"prettier-plugin-svelte": "^2.10.1"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",
 		"*.{js,svelte,md,json}": "prettier --write"
 	},
 	"dependencies": {
-		"turbo": "^1.9.3"
+		"turbo": "^1.9.9"
 	}
 }

@@ -1,6 +1,5 @@
 <script>
 	import { brewer, Swatch } from '@rokkit/chart'
-	import { Select } from '@rokkit/input'
 
 	let index = 0
 	let shades = brewer().color().brew()

@@ -26,14 +26,14 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div
-	class="flex flex-col outline-none w-full h-12 relative dropdown"
+	class="dropdown relative h-12 w-full flex flex-col outline-none"
 	tabindex={0}
 >
-	<div class="flex flex-shrink-0 h-12 items-center pl-4 selected-item">
+	<div class="selected-item h-12 flex flex-shrink-0 items-center pl-4">
 		<span class="flex flex-grow">
 			<input
 				type="text"
-				class="p-0 border-none bg-transparent w-full"
+				class="w-full border-none bg-transparent p-0"
 				bind:value={search}
 				bind:this={searchBox}
 				on:focus={() => {

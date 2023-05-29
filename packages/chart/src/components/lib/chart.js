@@ -1,5 +1,5 @@
 import { nest } from 'd3-collection'
-import { max, quantile, ascending } from 'd3-array'
+import { max, quantile, ascending, bin } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 import { area, curveCatmullRom } from 'd3-shape'
 import { getScale } from './utils'

@@ -8,27 +8,27 @@
 	$: props = variants[active].props
 </script>
 
-<section class="flex flex-col w-full flex-grow">
+<section class="w-full flex flex-grow flex-col">
 	<h1
-		class="flex flex-row bg-gray-200 text-xl px-4 h-14 border-b border-gray-300 justify-between items-center"
+		class="h-14 flex flex-row items-center justify-between border-b border-gray-300 bg-gray-200 px-4 text-xl"
 	>
 		<b>{component}</b>
-		<select bind:value={active} class="px-4 py-1 rounded border border-primary">
+		<select bind:value={active} class="border border-primary rounded px-4 py-1">
 			{#each variants as { title }, i}
 				<option value={i}>{title}</option>
 			{/each}
 		</select>
 	</h1>
-	<content class="flex flex-row flex-grow">
+	<content class="flex flex-grow flex-row">
 		<div
-			class="flex flex-grow flex-col items-center p-4 bg-gray-100 border-gray-300 border-r"
+			class="flex flex-grow flex-col items-center border-gray-300 border-r bg-gray-100 p-4"
 		>
 			<slot name="component" />
-			<article class="flex w-100 p-4">
+			<article class="w-100 flex p-4">
 				{summary}
 			</article>
 		</div>
-		<aside class="flex flex-row w-100 bg-blue-100">
+		<aside class="w-100 flex flex-row bg-blue-100">
 			<slot name="control" />
 		</aside>
 	</content>

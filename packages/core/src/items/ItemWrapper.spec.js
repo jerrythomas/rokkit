@@ -12,6 +12,7 @@ describe('ItemWrapper.svelte', () => {
 	it('Should render', () => {
 		const { container } = render(ItemWrapper, { value: 'hello' })
 		expect(container).toBeTruthy()
+		console.log(container)
 		expect(container).toMatchSnapshot()
 	})
 

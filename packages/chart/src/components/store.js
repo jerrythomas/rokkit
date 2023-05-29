@@ -1,13 +1,13 @@
-import { writable } from 'svelte/store'
-
-function createChart() {
-	const { subscribe, set } = writable({
-		data: [],
-		x: '',
-		y: ''
-	})
-	return { subscribe, set }
-}
+// import { writable } from 'svelte/store'
+import { tweened, cubicOut } from 'svelte/motion'
+// function createChart() {
+// 	const { subscribe, set } = writable({
+// 		data: [],
+// 		x: '',
+// 		y: ''
+// 	})
+// 	return { subscribe, set }
+// }
 
 export function animatedChart(input, key, valueFields = [], previous = []) {
 	const previousKeys = new Set(previous.map((item) => item[key]))

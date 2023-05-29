@@ -14,7 +14,7 @@
 			variations = brewer()
 				.pattern()
 				.filter(
-					event.detail.colors.items.map((i) => event.detail.patterns.index)
+					event.detail.colors.items.map(() => event.detail.patterns.index)
 				)
 				.colors(event.detail.colors.items)
 				.brew()
@@ -29,7 +29,7 @@
 	}
 </script>
 
-<div class="flex flex-row h-full">
+<div class="h-full flex flex-row">
 	<content class="flex-grow px-8">
 		<h1>Patterns</h1>
 		<Swatch items={variations} type="circle" size={60} columns={7} autoscale />

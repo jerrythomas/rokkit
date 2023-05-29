@@ -1,5 +1,5 @@
 {
-	"category": "Selection",
-	"title": "DropDown",
-	"description": "Component that allows users to choose one value from a list of options."
+  "category": "Selection",
+  "title": "DropDown",
+  "description": "Component that allows users to choose one value from a list of options."
 }

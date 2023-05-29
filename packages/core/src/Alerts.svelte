@@ -19,7 +19,7 @@
 
 {#if unreadAlerts.length > 0}
 	<alert-list
-		class="flex flex-col gap-2 absolute z-10"
+		class="absolute z-10 flex flex-col gap-2"
 		use:dismissable
 		on:dismiss={dismissAll}
 	>

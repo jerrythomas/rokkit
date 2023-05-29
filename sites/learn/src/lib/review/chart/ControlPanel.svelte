@@ -53,7 +53,7 @@
 	}
 </script>
 
-<control class="flex flex-col border-l border-gray-700 p-8 bg-primary-100">
+<control class="flex flex-col border-gray-700 border-l bg-primary-100 p-8">
 	<div class="flex flex-col gap-2">
 		<p>Show All Variations for</p>
 		{#each modes as label}

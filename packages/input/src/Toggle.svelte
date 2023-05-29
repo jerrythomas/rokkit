@@ -27,7 +27,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <toggle
-	class="p-4 rounded-lg bg-accent-200 text-accent-900 items-start shadow flex flex-row justify-top space-x-4 outline-none focus:border focus:border-accent-500"
+	class="justify-top flex flex-row items-start space-x-4 rounded-lg bg-accent-200 p-4 text-accent-900 shadow outline-none focus:border focus:border-accent-500"
 	tabindex="0"
 	on:click={toggle}
 	on:keypress={handleKeypress}
@@ -40,6 +40,6 @@
 		{#if header}
 			<h1 class="font-bold">{header}</h1>
 		{/if}
-		<p class=" text-sm">{label}</p>
+		<p class="text-sm">{label}</p>
 	</span>
 </toggle>

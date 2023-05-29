@@ -6,12 +6,13 @@ To render text with a state-based icon, pass an object that includes the text, i
 
 ```svelte
 <script>
-  let value ={
+  let value = {
     text: 'Folder',
     icon: { open: 'i-rokkit:folder-opened', close: 'i-rokkit:folder-closed' },
     state: 'open'
   }
 </script>
+
 <Item {value} />
 ```
 

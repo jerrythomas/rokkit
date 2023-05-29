@@ -29,7 +29,7 @@
 >
 	{#each items as item}
 		{@const state = item[fields.checked] ? 'checked' : 'unchecked'}
-		<label class="flex flex-row items-center leading-loose gap-1">
+		<label class="flex flex-row items-center gap-1 leading-loose">
 			<input
 				hidden
 				{name}

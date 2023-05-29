@@ -5,14 +5,29 @@ semi: false
 singleQuote: true
 trailingComma: none
 overrides:
-  - files: '*.svelte'
-    options:
-      svelteSortOrder: options-scripts-markup-styles
   - files:
       - '*.md'
+    options:
+      useTabs: false
+      parser: markdown
+  - files:
       - '*.yml'
       - '*.yaml'
+    options:
+      useTabs: false
+      parser: yaml
+  - files:
       - '*.sql'
       - '*.ddl'
     options:
       useTabs: false
+  - files:
+      - '*.json'
+    options:
+      useTabs: false
+      parser: json
+  - files: '*.svelte'
+    options:
+      parser: svelte
+plugins:
+  - prettier-plugin-svelte

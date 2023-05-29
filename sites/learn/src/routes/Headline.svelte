@@ -1,28 +1,28 @@
 <script>
 	import { Button } from '@rokkit/form'
 	import { goto } from '$app/navigation'
-	import { getContext } from 'svelte'
+	// import { getContext } from 'svelte'
 	import Background from './Background.svelte'
 
-	const media = getContext('media')
+	// const media = getContext('media')
 </script>
 
-<hero class="flex flex-col w-full relative">
+<hero class="relative w-full flex flex-col">
 	<Background />
 	<!-- {/if} -->
 
 	<div
-		class="flex flex-col w-full p-12 md:w-1/2 md:p-10 lg:py-22 xl:p-25 2xl:p-40 gap-14 items-center z-1"
+		class="z-1 w-full flex flex-col items-center gap-14 p-12 md:w-1/2 md:p-10 lg:py-22 xl:p-25 2xl:p-40"
 	>
-		<span class="flex flex-col w-content items-right pt-10">
+		<span class="items-right w-content flex flex-col pt-10">
 			<h1 class="font-serif text-4xl lg:text-5xl">Build Beyond Limits</h1>
-			<h2 class="w-full text-right text-lg font-thin">
+			<h2 class="w-full font-thin text-lg text-right">
 				Empowering your UI with Rokkit
 			</h2>
 		</span>
 
 		<div
-			class="flex flex-col gap-6 xl:gap-8 text-justify text-xl xl:text-2xl font-thin"
+			class="flex flex-col gap-6 font-thin text-justify text-xl xl:gap-8 xl:text-2xl"
 		>
 			<p>
 				Buckle up and get ready to create some truly incredible user experiences

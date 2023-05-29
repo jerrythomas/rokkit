@@ -15,7 +15,7 @@
 	$: x = x - size / 2
 	$: y = y - size / 2
 
-	$: d = $swatchStore[shapes][name](size)
+	$: d = $swatchStore['shapes'][name](size)
 	// typeof shape === 'function'
 	// 	? shape(size)
 	// 	: (shape || name) in namedShapes

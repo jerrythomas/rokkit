@@ -73,11 +73,11 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<selected-item
 		on:click|stopPropagation={() => (open = !open)}
-		class="flex w-full items-center"
+		class="w-full flex items-center"
 		bind:clientHeight={offsetTop}
 	>
 		<slot>
-			<item class="flex w-full">
+			<item class="w-full flex">
 				<svelte:component
 					this={using.default}
 					value={value ?? placeholder}

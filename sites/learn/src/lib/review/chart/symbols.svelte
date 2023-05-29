@@ -18,22 +18,14 @@
 		{ fill: '#FEF2F2', stroke: '#DC2626' },
 		{ fill: '#FFFBEB', stroke: '#D97706' }
 	]
-	const dark = [
-		{ fill: '#023047', stroke: '#D7F1FE' },
-		{ fill: '#2563EB', stroke: '#EFF6FF' },
-		{ fill: '#DB2777', stroke: '#FDF2F8' },
-		{ fill: '#059669', stroke: '#ECFDF5' },
-		{ fill: '#7C3AED', stroke: '#F5F3FF' },
-		{ fill: '#DC2626', stroke: '#FEF2F2' },
-		{ fill: '#D97706', stroke: '#FFFBEB' }
-	]
+
 	function changeHandler(event) {
 		console.log('change occurred', event.detail)
 	}
 	$: height = Math.ceil(shapes.length / columns) * (size + gap) + 4 * gap
 </script>
 
-<div class="flex flex-row h-full">
+<div class="h-full flex flex-row">
 	<content class="flex-grow px-8">
 		<h1>Symbols</h1>
 		<svg viewBox="0 0 {width} {height}">

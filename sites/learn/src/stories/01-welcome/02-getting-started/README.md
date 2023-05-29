@@ -44,6 +44,7 @@ In your root `+layout.svelte`
   import '../app.css'
   import { themable } from '@rokkit/core/actions'
 </script>
+
 <svelte:body use:themable />
 ```
 
@@ -53,13 +54,11 @@ In your `+page.svelte`
 
 ```svelte
 <script>
-  <script>
   import { List } from '@rokkit/core'
 
   let items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
   let value
 </script>
 
-<List {items} bind:value />
-<p>Selected Value: <b>{value}</b></p>
+<List {items} bind:value /><p>Selected Value: <b>{value}</b></p>
 ```

@@ -2,7 +2,7 @@
 	import { summarize, heatmap } from './heatmap'
 	import { interpolateHsl } from 'd3-interpolate'
 	import { scaleLinear } from 'd3-scale'
-	import ContinuousLegend from '../elements/ContinuousLegend.svelte'
+	// import ContinuousLegend from '../elements/ContinuousLegend.svelte'
 	import DiscreteLegend from '../elements/DiscreteLegend.svelte'
 	import ColorRamp from '../elements/ColorRamp.svelte'
 
@@ -13,7 +13,7 @@
 	export let dateField = 'date'
 	export let valueField = null
 	export let months = 12
-	export let colors = [transparent, '#FB8C00']
+	export let colors = ['transparent', '#FB8C00']
 	export let padding = 8
 	export let space = 2
 	export let size = 10

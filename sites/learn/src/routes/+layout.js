@@ -4,6 +4,7 @@ import { guide } from '$lib'
 export function load() {
 	guide.assimilate()
 	return {
+		// eslint-disable-next-line no-undef
 		version: __APP_VERSION__
 	}
 }

@@ -1,6 +1,6 @@
 <script>
 	// import { SwatchButton, brewer, SwatchGrid } from '@rokkit/chart'
-	import { Timer, toNested, Chart, Axis, BarPlot, colors } from '@rokkit/chart'
+	import { Timer, toNested, Chart, BarPlot, colors } from '@rokkit/chart'
 	import data from './stackoverflow.json'
 
 	// export let columns = 5
@@ -25,19 +25,19 @@
 		background: 'bg-gray-50'
 	}
 
-	let params = {
-		width: 600,
-		height: 400,
-		margin: {
-			left: 50,
-			top: 20,
-			right: 30,
-			bottom: 30
-		},
-		ticks: {
-			y: { count: 5 }
-		}
-	}
+	// let params = {
+	// 	width: 600,
+	// 	height: 400,
+	// 	margin: {
+	// 		left: 50,
+	// 		top: 20,
+	// 		right: 30,
+	// 		bottom: 30
+	// 	},
+	// 	ticks: {
+	// 		y: { count: 5 }
+	// 	}
+	// }
 	let languageColors = {}
 	// let patterns = brewer().pattern().brew()
 	// $: console.log(patterns)
@@ -48,14 +48,14 @@
 	// $: console.log(names)
 </script>
 
-<section class="flex flex-col h-full">
+<section class="h-full flex flex-col">
 	<Timer
-		class="absolute top-4 right-8"
+		class="absolute right-8 top-4"
 		keyframeCount={keyframes.length}
 		bind:currentKeyframe
 		isEnabled={false}
 	/>
-	<content class="flex flex-col flex-wrap w-full px-8">
+	<content class="w-full flex flex-col flex-wrap px-8">
 		<h1>Experiment</h1>
 
 		<div>

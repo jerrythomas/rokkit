@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
 	/**
 	 * @type {import('@sveltejs/kit').Load}
 	 */
@@ -19,7 +19,7 @@
 			error: new Error(`Could not load ${url}`)
 		}
 	}
-</script>
+</script> -->
 
 <script>
 	import { FunnelPlot, Chart } from '@rokkit/chart'

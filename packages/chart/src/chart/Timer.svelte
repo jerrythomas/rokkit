@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="flex flex-row gap-2 timer">
+<div class="timer flex flex-row gap-2">
 	<button on:click|preventDefault={() => (isEnabled = true)}>play</button>
 	<button on:click|preventDefault={() => (isEnabled = false)}>pause</button>
 	<button on:click|preventDefault={onReset}>reset</button>

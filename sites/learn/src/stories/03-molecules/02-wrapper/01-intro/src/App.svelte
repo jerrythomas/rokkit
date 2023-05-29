@@ -7,7 +7,7 @@
 	}
 </script>
 
-<span class="flex flex-col gap-2 items-start">
+<span class="flex flex-col items-start gap-2">
 	<ItemWrapper value="Sample Content" />
 	<ItemWrapper value="Removable" removable={true} on:remove={handleRemove} />
 	<ItemWrapper

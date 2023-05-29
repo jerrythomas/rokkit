@@ -9,7 +9,7 @@
 </script>
 
 <a
-	class="flex flex-row flex-grow items-center"
+	class="flex flex-grow flex-row items-center"
 	href={value[fields.url]}
 	{target}
 	tabindex="-1"

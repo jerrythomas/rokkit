@@ -4,7 +4,7 @@
 </script>
 
 <svg
-	class="w-full absolute left-0 top-0 z-0"
+	class="absolute left-0 top-0 z-0 w-full"
 	viewBox="0 0 3072 2028"
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"

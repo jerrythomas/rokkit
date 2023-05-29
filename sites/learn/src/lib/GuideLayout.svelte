@@ -3,7 +3,7 @@
 </script>
 
 <page
-	class="grid w-full h-full"
+	class="grid h-full w-full"
 	class:mini={true}
 	class:medium={false}
 	class:large={false}

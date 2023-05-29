@@ -2,9 +2,9 @@
 	export let value
 </script>
 
-<div class="flex w-full h-32 gap-4 py-3 text-sm font-extralight">
-	<p class="leading-tight italic font-mono">
+<div class="h-32 w-full flex gap-4 py-3 font-extralight text-sm">
+	<p class="font-mono leading-tight italic">
 		{value.description}
 	</p>
-	<img src={value.photo} class="rounded cover w-32" alt={value.name} />
+	<img src={value.photo} class="cover w-32 rounded" alt={value.name} />
 </div>

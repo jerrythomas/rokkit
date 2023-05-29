@@ -27,7 +27,7 @@ to use these components.
   import Odd from './Odd.svelte'
   import Even from './Even.svelte'
 
-  let using = {	odd: Odd,	even: Even }
+  let using = { odd: Odd, even: Even }
 </script>
 ```
 

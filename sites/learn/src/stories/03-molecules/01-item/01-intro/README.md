@@ -28,8 +28,13 @@ To render text along with an image, provide an object containing the text and im
 
 ```svelte
 <script>
-  let value = { text: 'John Doe', image: 'https://unsplash.com/photos/mjRwhvqEC0U/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjgzMzU3Nzcy&force=true&w=200' }
+  let value = {
+    text: 'John Doe',
+    image:
+      'https://unsplash.com/photos/mjRwhvqEC0U/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjgzMzU3Nzcy&force=true&w=200'
+  }
 </script>
+
 <Item {value} />
 ```
 

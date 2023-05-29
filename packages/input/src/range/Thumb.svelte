@@ -48,7 +48,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <thumb
-	class="h-4 w-4 -top-1 box-border absolute cursor-pointer"
+	class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
 	style:left="{cx}px"
 	class:sliding
 	tabindex="0"

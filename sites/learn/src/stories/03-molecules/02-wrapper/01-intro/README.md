@@ -25,11 +25,17 @@ Enabling the removable option
 Rendering a ItemWrapper with an icon:
 
 ```svelte
-<ItemWrapper value={{ text: 'Removable with icon', icon: 'i-rokkit:heart-filled' }} removable={true} />
+<ItemWrapper
+  value={{ text: 'Removable with icon', icon: 'i-rokkit:heart-filled' }}
+  removable={true}
+/>
 ```
 
 ## Field Mapping
 
 ```svelte
-<ItemWrapper value={{ title: 'Content with mapping'}} fields={{text: 'title'}}  />
+<ItemWrapper
+  value={{ title: 'Content with mapping' }}
+  fields={{ text: 'title' }}
+/>
 ```

@@ -49,7 +49,7 @@
 		{@const path = [...hierarchy, index].join(',')}
 		{@const props = item[fields.props] || { fields }}
 		<item
-			class="flex flex-shrink-0 flex-grow-0 items-center cursor-pointer w-full gap-2 select-none item"
+			class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
 			role="option"
 			aria-selected={value === item}
 			class:is-selected={value === item}
