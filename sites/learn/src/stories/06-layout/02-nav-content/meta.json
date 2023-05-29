@@ -1,6 +1,6 @@
 {
-	"category": "Navigation",
-	"name": "NavContent",
-	"labs": true,
-	"description": "A set of content that can be navigated."
+  "category": "Navigation",
+  "name": "NavContent",
+  "labs": true,
+  "description": "A set of content that can be navigated."
 }

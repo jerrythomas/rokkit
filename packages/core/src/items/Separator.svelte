@@ -1,1 +1,1 @@
-<span class="my-4 flex flex-grow separator" />
+<span class="separator my-4 flex flex-grow" />

@@ -25,5 +25,5 @@
 	{/if}
 {/if}
 {#if text}
-	<p class="flex w-full">{text}</p>
+	<p class="w-full flex">{text}</p>
 {/if}

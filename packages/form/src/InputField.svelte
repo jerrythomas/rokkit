@@ -41,10 +41,10 @@
 	<!-- <Input bind:value {name} {type} {...props} /> -->
 	<!-- </field> -->
 	<!-- {:else} -->
-	<field class="flex flex-row w-full items-center">
+	<field class="w-full flex flex-row items-center">
 		{#if icon}
 			<span
-				class="flex flex-shrink-0 aspect-square items-center justify-center"
+				class="aspect-square flex flex-shrink-0 items-center justify-center"
 			>
 				<icon class={icon} />
 			</span>

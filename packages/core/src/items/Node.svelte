@@ -27,7 +27,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <node
 	id={'id-' + path.join('-')}
-	class="flex flex-row min-h-5 items-center cursor-pointer select-none"
+	class="min-h-5 flex flex-row cursor-pointer select-none items-center"
 	class:is-selected={selected}
 	class:flex-row-reverse={rtl}
 	aria-selected={selected}
@@ -36,7 +36,7 @@
 >
 	{#each types as type}
 		{#if type === 'icon'}
-			<Icon name={state.icon} label={state.label} class="w-4 small" />
+			<Icon name={state.icon} label={state.label} class="small w-4" />
 		{:else}
 			<Connector {type} />
 		{/if}

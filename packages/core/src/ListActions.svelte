@@ -12,9 +12,9 @@
 	const actionIcons = defaultStateIcons.action
 </script>
 
-<toolbar class="flex flex-row w-full items-center">
+<toolbar class="w-full flex flex-row items-center">
 	{#if searchable}
-		<search class="flex flex-row flex-grow">
+		<search class="flex flex-grow flex-row">
 			<icon class={actionIcons.search} />
 			<input
 				type="search"

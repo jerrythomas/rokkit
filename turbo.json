@@ -1,31 +1,31 @@
 {
-	"$schema": "https://turborepo.org/schema.json",
-	"pipeline": {
-		"prepublishOnly": {},
-		"build": {
-			"dependsOn": ["test:ci", "prepublishOnly"],
-			"outputs": [".svelte-kit/**", "dist/**"]
-		},
-		"test:ci": {
-			"outputs": [],
-			"dependsOn": []
-		},
-		"coverage": {
-			"outputs": ["coverage/**"]
-		},
-		"lint": {
-			"outputs": [],
-			"dependsOn": ["format"]
-		},
-		"format": {
-			"outputs": []
-		},
-		"dev": {
-			"cache": false
-		},
-		"release": {
-			"dependsOn": ["test"]
-		}
-	},
-	"globalDependencies": ["tsconfig.json", ".prettierignore", ".env.*"]
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "prepublishOnly": {},
+    "build": {
+      "dependsOn": ["test:ci", "prepublishOnly"],
+      "outputs": [".svelte-kit/**", "dist/**"]
+    },
+    "test:ci": {
+      "outputs": [],
+      "dependsOn": []
+    },
+    "coverage": {
+      "outputs": ["coverage/**"]
+    },
+    "lint": {
+      "outputs": [],
+      "dependsOn": []
+    },
+    "format": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    },
+    "release": {
+      "dependsOn": ["test:ci"]
+    }
+  },
+  "globalDependencies": ["tsconfig.json", ".prettierignore", ".env.*"]
 }

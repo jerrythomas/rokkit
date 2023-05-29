@@ -2,9 +2,9 @@ name: code-climate
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   analyze:
@@ -16,28 +16,26 @@ jobs:
         pnpm-version: [7.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install lcov
-      run: sudo apt-get install -y lcov
-    - name: Intall pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: ${{ matrix.pnpm-version }}
-    - name: Install dependencies
-      run: pnpm i
-    - name: Run tests
-      run: pnpm test
-    - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v3.0.0
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
-      with:
-        coverageCommand: pnpm coverage:lcov
-        debug: true
-        coverageLocations: lcov.info:lcov
-
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install lcov
+        run: sudo apt-get install -y lcov
+      - name: Intall pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ matrix.pnpm-version }}
+      - name: Install dependencies
+        run: pnpm i
+      - name: Run tests
+        run: pnpm test
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
+        with:
+          coverageCommand: pnpm coverage:lcov
+          debug: true
+          coverageLocations: lcov.info:lcov

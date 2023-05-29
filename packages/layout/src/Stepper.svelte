@@ -21,12 +21,12 @@
 </script>
 
 <div
-	class="p-8 flex flex-col w-full gap-3 border rounded shadow items-center stepper"
+	class="stepper w-full flex flex-col items-center gap-3 border rounded p-8 shadow"
 	style:--count={data.length}
 >
 	<row>
 		{#each data as { text, completed, active, steps }, stage}
-			<div class="flex flex-col justify-center items-center first:col-start-2">
+			<div class="flex flex-col items-center justify-center first:col-start-2">
 				<Stage
 					{text}
 					{completed}
@@ -35,7 +35,7 @@
 				/>
 			</div>
 			{#if steps}
-				<div class="flex flex-col justify-center items-center col-span-2">
+				<div class="col-span-2 flex flex-col items-center justify-center">
 					<Steps
 						count={steps.count}
 						bind:value={steps.value}
@@ -50,7 +50,7 @@
 		{#each data as { label }, stage}
 			{#if label}
 				<p
-					class="w-full flex justify-center text-center col-span-3 font-medium text-skin-800 leading-loose"
+					class="col-span-3 w-full flex justify-center font-medium leading-loose text-center text-skin-800"
 					class:pending={stage > currentStage}
 				>
 					{label}

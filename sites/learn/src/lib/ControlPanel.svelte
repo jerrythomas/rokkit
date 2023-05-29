@@ -11,7 +11,7 @@
 </script>
 
 <aside
-	class="flex flex-col p-6 gap-6 h-full bg-skin-100 flex-shrink-0 flex-grow-0 w-80"
+	class="h-full w-80 flex flex-shrink-0 flex-grow-0 flex-col gap-6 bg-skin-100 p-6"
 >
 	<label for="stages">
 		Number of Stages

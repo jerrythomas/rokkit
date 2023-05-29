@@ -42,7 +42,7 @@
 		on:previous={moveBack}
 	/>
 	<!-- <svelte:component this={component} bind:value={value} {fields} on:change /> -->
-	<square class="h-full position-absolute right-0">
+	<square class="right-0 h-full position-absolute">
 		<icon class="i-carbon-chevron-sort" />
 	</square>
 </spin-list>

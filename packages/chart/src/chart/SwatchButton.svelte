@@ -12,7 +12,7 @@
 </script>
 
 <button
-	class="bg-gray-100 rounded shadow-md w-10 h-10 p-1 flex items-center justify-center hover:bg-primary-300"
+	class="h-10 w-10 flex items-center justify-center rounded bg-gray-100 p-1 shadow-md hover:bg-primary-300"
 	class:isCurrent
 	on:click
 	on:mouseover

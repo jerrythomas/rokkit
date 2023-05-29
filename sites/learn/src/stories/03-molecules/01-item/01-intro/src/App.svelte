@@ -1,11 +1,6 @@
 <script>
 	import { Item } from '@rokkit/core'
 
-	let folder = {
-		text: 'Folder',
-		icon: { open: 'i-rokkit:folder-opened', close: 'i-rokkit:folder-closed' },
-		state: 'open'
-	}
 	let avatar = {
 		text: 'John Doe',
 		image:

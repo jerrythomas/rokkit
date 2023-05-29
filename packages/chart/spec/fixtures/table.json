@@ -1,79 +1,79 @@
 [
-	{
-		"date": "2020-01-01",
-		"team": "x",
-		"group": "Alpha",
-		"score": 1,
-		"pct": 10
-	},
-	{
-		"date": "2020-01-01",
-		"team": "y",
-		"group": "Alpha",
-		"score": 10,
-		"pct": 20
-	},
-	{
-		"date": "2020-01-01",
-		"team": "x",
-		"group": "Beta",
-		"score": 2,
-		"pct": 10
-	},
-	{
-		"date": "2020-01-01",
-		"team": "y",
-		"group": "Beta",
-		"score": 20,
-		"pct": 20
-	},
-	{
-		"date": "2020-01-01",
-		"team": "z",
-		"group": "Beta",
-		"score": 20,
-		"pct": 30
-	},
-	{
-		"date": "2020-02-01",
-		"team": "x",
-		"group": "Alpha",
-		"score": 3,
-		"pct": 20
-	},
-	{
-		"date": "2020-02-01",
-		"team": "y",
-		"group": "Alpha",
-		"score": 30,
-		"pct": 30
-	},
-	{
-		"date": "2020-02-01",
-		"team": "z",
-		"group": "Alpha",
-		"score": 25,
-		"pct": 40
-	},
-	{
-		"date": "2020-02-01",
-		"team": "x",
-		"group": "Beta",
-		"score": 4,
-		"pct": 30
-	},
-	{
-		"date": "2020-02-01",
-		"team": "y",
-		"group": "Beta",
-		"score": 40,
-		"pct": 40
-	},
-	{
-		"date": "2020-02-01",
-		"team": "z",
-		"group": "Beta",
-		"score": 30,
-		"pct": 50
-	}
+  {
+    "date": "2020-01-01",
+    "team": "x",
+    "group": "Alpha",
+    "score": 1,
+    "pct": 10
+  },
+  {
+    "date": "2020-01-01",
+    "team": "y",
+    "group": "Alpha",
+    "score": 10,
+    "pct": 20
+  },
+  {
+    "date": "2020-01-01",
+    "team": "x",
+    "group": "Beta",
+    "score": 2,
+    "pct": 10
+  },
+  {
+    "date": "2020-01-01",
+    "team": "y",
+    "group": "Beta",
+    "score": 20,
+    "pct": 20
+  },
+  {
+    "date": "2020-01-01",
+    "team": "z",
+    "group": "Beta",
+    "score": 20,
+    "pct": 30
+  },
+  {
+    "date": "2020-02-01",
+    "team": "x",
+    "group": "Alpha",
+    "score": 3,
+    "pct": 20
+  },
+  {
+    "date": "2020-02-01",
+    "team": "y",
+    "group": "Alpha",
+    "score": 30,
+    "pct": 30
+  },
+  {
+    "date": "2020-02-01",
+    "team": "z",
+    "group": "Alpha",
+    "score": 25,
+    "pct": 40
+  },
+  {
+    "date": "2020-02-01",
+    "team": "x",
+    "group": "Beta",
+    "score": 4,
+    "pct": 30
+  },
+  {
+    "date": "2020-02-01",
+    "team": "y",
+    "group": "Beta",
+    "score": 40,
+    "pct": 40
+  },
+  {
+    "date": "2020-02-01",
+    "team": "z",
+    "group": "Beta",
+    "score": 30,
+    "pct": 50
+  }
 ]

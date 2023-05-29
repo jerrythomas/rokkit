@@ -4,7 +4,7 @@
 	export let steps
 </script>
 
-<div class="flex flex-col gap-2 w-full border">
+<div class="w-full flex flex-col gap-2 border">
 	{#if label}
 		<input type="text" bind:value={label} />
 	{/if}

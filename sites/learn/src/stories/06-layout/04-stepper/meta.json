@@ -1,5 +1,5 @@
 {
-	"category": "Navigation",
-	"name": "Stepper",
-	"description": "A set of steps that can be navigated."
+  "category": "Navigation",
+  "name": "Stepper",
+  "description": "A set of steps that can be navigated."
 }

@@ -40,7 +40,7 @@ To use Rokkit in your Svelte project, simply import the desired control and use 
 
 ```svelte
 <script>
-  import { List } from '@rokkit/core';
+  import { List } from '@rokkit/core'
 </script>
 
 <List items={['a', 'b', 'c']} />
@@ -52,9 +52,9 @@ One of the key features of Rokkit is its data-driven controls. These controls au
 
 ```svelte
 <script>
-  import { List } from '@rokkit/core';
+  import { List } from '@rokkit/core'
 
-  let items = ['a', 'b', 'c'];
+  let items = ['a', 'b', 'c']
   let value
 </script>
 
@@ -80,9 +80,10 @@ If you want to provide users the option of switching between dark theme and ligh
     { title: 'Rokkit', name: 'rokkit' },
     { title: 'Modern', name: 'modern' }
   ]
- </script>
+</script>
+
 <svelte:body use:themable />
-<ThemeSwitcher {themes}/>
+<ThemeSwitcher {themes} />
 ```
 
 ## Documentation

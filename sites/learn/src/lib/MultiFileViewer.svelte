@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { Tabs, DropDown } from '@rokkit/core'
+	import { Tabs } from '@rokkit/core'
 	import { Select } from '@rokkit/input'
 	import { CodeSnippet } from '@rokkit/markdown'
 

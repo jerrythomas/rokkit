@@ -12,6 +12,6 @@
 	"license": "MIT",
 	"type": "module",
 	"dependencies": {
-		"@vitest/expect": "^0.31.0"
+		"@vitest/expect": "^0.31.1"
 	}
 }

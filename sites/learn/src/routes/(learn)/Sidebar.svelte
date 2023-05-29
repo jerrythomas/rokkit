@@ -22,11 +22,11 @@
 
 <aside
 	bind:this={sidebar}
-	class="flex flex-col gap-4 absolute top-0 left-0 flex-shrink-0 w-full md:w-1/2 lg:w-80 -translate-x-full"
+	class="-translate-x-full absolute left-0 top-0 w-full flex flex-shrink-0 flex-col gap-4 md:w-1/2 lg:w-80"
 	class:lg:relative={$site.sidebar}
 >
 	<nav
-		class="flex h-10 items-center w-full gap-2 border-b border-b-skin-subtle"
+		class="h-10 w-full flex items-center gap-2 border-b border-b-skin-subtle"
 	>
 		<Icon
 			name="i-rokkit:action-cross"

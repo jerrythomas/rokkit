@@ -26,7 +26,7 @@
 		height,
 		data,
 		theme,
-		aes,
+		aes
 	})
 </script>
 

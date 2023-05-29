@@ -13,7 +13,7 @@
 	style:--thin="{thickness}px"
 	style:--thick="{2 * thickness}px"
 >
-	<content class="flex flex-col min-h-full">
+	<content class="min-h-full flex flex-col">
 		<slot />
 	</content>
 </graph-paper>

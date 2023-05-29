@@ -46,7 +46,7 @@
 			{/each}
 		</items>
 	{:else}
-		<item class="flex w-full">
+		<item class="w-full flex">
 			<svelte:component this={using.default} value={placeholder} />
 		</item>
 	{/if}

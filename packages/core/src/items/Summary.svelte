@@ -13,15 +13,15 @@
 </script>
 
 <summary
-	class="flex flex-row flex-shrink-0 items-center w-full cursor-pointer"
+	class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
 	tabindex="-1"
 >
 	<svelte:component this={component} bind:value {fields} />
 	{#if hasItems}
 		{#if value[fields.isOpen]}
-			<icon class="sm accordion-opened" aria-label="expand" />
+			<icon class="accordion-opened sm" aria-label="expand" />
 		{:else}
-			<icon class="sm accordion-closed" aria-label="collapse" />
+			<icon class="accordion-closed sm" aria-label="collapse" />
 		{/if}
 	{/if}
 </summary>

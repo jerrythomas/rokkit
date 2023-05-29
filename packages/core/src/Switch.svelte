@@ -52,13 +52,13 @@
 				? getComponent(item, fields, using)
 				: null}
 			<item
-				class="flex relative"
+				class="relative flex"
 				role="option"
 				aria-selected={item === value}
 				data-path={index}
 			>
 				{#if item == value}
-					<indicator class="absolute top-0 left-0 right-0 bottom-0" />
+					<indicator class="absolute bottom-0 left-0 right-0 top-0" />
 				{/if}
 				{#if component}
 					<svelte:component this={component} value={item} {fields} />

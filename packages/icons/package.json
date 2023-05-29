@@ -9,7 +9,8 @@
 	"module": "src/index.js",
 	"type": "module",
 	"scripts": {
-		"build": "node src/index.js"
+		"build": "node src/index.js",
+		"publish:lib": "pnpm publish --access public"
 	},
 	"publishConfig": {
 		"access": "public"
@@ -18,7 +19,7 @@
 		"@mdi/svg": "^7.2.96"
 	},
 	"devDependencies": {
-		"@iconify/tools": "2.2.6",
+		"@iconify/tools": "3.0.1",
 		"@iconify/types": "^2.0.0",
 		"iconify": "^1.4.0"
 	},

@@ -1,4 +1,4 @@
-<aside class="flex flex-col sidebar">
+<aside class="sidebar flex flex-col">
 	<slot name="header" />
 	<slot />
 	<slot name="footer" />

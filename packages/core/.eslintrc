@@ -1,4 +1,0 @@
-{
-	"extends": "@jerrythomas/eslint-config-svelte",
-	"root": true
-}

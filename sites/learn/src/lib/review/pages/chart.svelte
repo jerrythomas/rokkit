@@ -22,8 +22,8 @@
 	$: bars = data.filter((d) => isEqual(d.year, new Date('2015-01-01')))
 </script>
 
-<main class="flex flex-col gap-8 flex-wrap">
-	<card class="flex flex-col aspect-square p-2 rounded-lg shadow-lg">
+<main class="flex flex-col flex-wrap gap-8">
+	<card class="aspect-square flex flex-col rounded-lg p-2 shadow-lg">
 		<Chart
 			{width}
 			{height}
@@ -48,7 +48,7 @@
 			<BarPlot />
 		</Chart>
 	</card>
-	<card class="flex flex-col aspect-square p-2 rounded-lg shadow-lg">
+	<card class="aspect-square flex flex-col rounded-lg p-2 shadow-lg">
 		<Chart
 			{width}
 			{height}
@@ -70,7 +70,7 @@
 			</Axis>
 		</Chart>
 	</card>
-	<card class="flex flex-col p-2 rounded-lg shadow-lg">
+	<card class="flex flex-col rounded-lg p-2 shadow-lg">
 		<Chart
 			{data}
 			x="year"
@@ -92,7 +92,7 @@
 			<ScatterPlot />
 		</Chart>
 	</card>
-	<card class="flex flex-col p-2 rounded-lg shadow-lg">
+	<card class="flex flex-col rounded-lg p-2 shadow-lg">
 		<Chart
 			{data}
 			x="year"
@@ -115,7 +115,7 @@
 			<ScatterPlot />
 		</Chart>
 	</card>
-	<!-- <card class="flex flex-col w-64 h-64 aspect-square p-4 rounded-lg shadow-lg">
+	<!-- <card class="aspect-square h-64 w-64 flex flex-col rounded-lg p-4 shadow-lg">
 		<Chart {width} {height} {data} x="year" y="age" color="name" marginLeft={10} marginBottom={8}>
 			<Axis name="x">
 				<AxisTicks side="bottom"><AxisLabels /></AxisTicks>
@@ -126,7 +126,7 @@
 			<LinePlot />
 		</Chart>
 	</card>
-	<card class="flex flex-col w-64 h-64 aspect-square p-4 rounded-lg shadow-lg">
+	<card class="aspect-square h-64 w-64 flex flex-col rounded-lg p-4 shadow-lg">
 		<Chart {width} {height} {data} x="year" y="age" color="name" marginLeft={10} marginBottom={8}>
 			<Axis name="x">
 				<AxisTicks side="bottom"><AxisLabels /></AxisTicks>
@@ -137,7 +137,7 @@
 			<BoxPlot />
 		</Chart>
 	</card>
-	<card class="flex flex-col w-64 h-64 aspect-square p-4 rounded-lg shadow-lg">
+	<card class="aspect-square h-64 w-64 flex flex-col rounded-lg p-4 shadow-lg">
 		<Chart {width} {height} {data} x="year" y="age" color="name" marginLeft={10} marginBottom={8}>
 			<Axis name="x">
 				<AxisTicks side="bottom"><AxisLabels /></AxisTicks>

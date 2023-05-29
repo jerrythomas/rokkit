@@ -1,5 +1,5 @@
 {
-	"category": "Selection",
-	"title": "Rating",
-	"description": "An input component that allows selection of a rating value using icons."
+  "category": "Selection",
+  "title": "Rating",
+  "description": "An input component that allows selection of a rating value using icons."
 }

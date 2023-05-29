@@ -6,33 +6,33 @@
 	<h1>Work in Progress</h1>
 	<p>This page is a work in progress.</p>
 </span>
-<div class="flex flex-col items-center h-full w-full">
+<div class="h-full w-full flex flex-col items-center">
 	<span class="flex items-center">
 		<x
-			class="flex aspect-square w-4 h-4 rounded-full text-sm text-red border items-center justify-center"
+			class="aspect-square h-4 w-4 flex items-center justify-center border rounded-full text-red text-sm"
 		>
-			<i class="i-rokkit:heart-filled text-red" />
+			<i class="text-red i-rokkit:heart-filled" />
 		</x>
 		<x
-			class="flex aspect-square w-5 h-5 rounded-full text-base text-red border items-center justify-center"
+			class="aspect-square h-5 w-5 flex items-center justify-center border rounded-full text-base text-red"
 		>
-			<i class="i-rokkit:heart-filled text-red" />
+			<i class="text-red i-rokkit:heart-filled" />
 		</x>
 		<x
-			class="flex aspect-square w-6 h-6 rounded-full text-lg text-red border items-center justify-center"
+			class="aspect-square h-6 w-6 flex items-center justify-center border rounded-full text-lg text-red"
 		>
-			<i class="i-rokkit:heart-filled text-red" />
+			<i class="text-red i-rokkit:heart-filled" />
 		</x>
 		<x
-			class="flex aspect-square w-10 h-10 rounded-full text-2xl text-red border items-center justify-center"
+			class="aspect-square h-10 w-10 flex items-center justify-center border rounded-full text-2xl text-red"
 		>
-			<i class="i-rokkit:heart-filled text-red" />
+			<i class="text-red i-rokkit:heart-filled" />
 		</x>
 		<Icon
 			name="i-rokkit:heart-filled"
 			size="small"
 			role="button"
-			class="rounded-full border"
+			class="border rounded-full"
 		/>
 	</span>
 </div>

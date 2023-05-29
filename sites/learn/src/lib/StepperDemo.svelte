@@ -20,7 +20,7 @@
 		: data.slice(0, stages).map((d) => ({ progress: d.progress }))
 </script>
 
-<section class="flex flex-col flex-grow p-8">
+<section class="flex flex-grow flex-col p-8">
 	<ProgressDots count={5} value={-1} current={-1} />
 	<Stepper
 		data={filtered}
@@ -34,7 +34,7 @@
 	</div>
 
 	{#if clickData}
-		<div class="flex flex-col p-4 gap-4">
+		<div class="flex flex-col gap-4 p-4">
 			{#if clickData.step}
 				<p>You clicked on a stage</p>
 			{:else}

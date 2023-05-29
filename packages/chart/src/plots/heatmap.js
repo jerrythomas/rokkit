@@ -10,7 +10,7 @@ import {
 	endOfWeek
 } from 'date-fns'
 import { nest } from 'd3-collection'
-import { group } from 'd3-array'
+// import { group } from 'd3-array'
 
 const DATE_FORMAT = 'yyyy-MM-dd'
 const weekdays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']

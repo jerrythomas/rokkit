@@ -20,8 +20,8 @@
 	$: days = getCalendarDays(value, holidays, fixed)
 </script>
 
-<calendar class="flex flex-col mx-auto items-center select-none">
-	<month-year class="flex flex-row w-full h-10 items-center">
+<calendar class="mx-auto flex flex-col select-none items-center">
+	<month-year class="h-10 w-full flex flex-row items-center">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<square class="cursor-pointer select-none" on:click={previousMonth}>
 			<icon class="i-carbon-chevron-left" />
@@ -31,7 +31,7 @@
 			<input
 				type="number"
 				value={year}
-				class="flex flex-grow-0 w-14 border-none bg-transparent"
+				class="w-14 flex flex-grow-0 border-none bg-transparent"
 				on:change={handleChange}
 			/>
 		</span>
@@ -40,7 +40,7 @@
 			<icon class="i-carbon-chevron-right" />
 		</square>
 	</month-year>
-	<cal-body class="flex flex-col w-full p-1 cursor-pointer">
+	<cal-body class="w-full flex flex-col cursor-pointer p-1">
 		<days-of-week class="grid grid-cols-7">
 			{#each weekdays as day, index}
 				<p class:weekend={index % 6 == 0}>
@@ -48,7 +48,7 @@
 				</p>
 			{/each}
 		</days-of-week>
-		<days-of-month class="grid grid-rows-5 grid-cols-7">
+		<days-of-month class="grid grid-cols-7 grid-rows-5">
 			{#each days as { day, offset, date, weekend }}
 				{@const start = offset > 0 ? offset : 'auto'}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -9,19 +9,19 @@
 	export let variants = [{}]
 </script>
 
-<story class="h-full grid">
+<story class="grid h-full">
 	<header class="flex flex-col justify-center">{title}</header>
 	<h1 class="flex flex-col items-center justify-center bg-skin-300">
 		Properties
 	</h1>
-	<content class="flex flex-row flex-grow p-4 items-center justify-around">
-		<board class="flex flex-row flex-wrap p-4 gap-4">
+	<content class="flex flex-grow flex-row items-center justify-around p-4">
+		<board class="flex flex-row flex-wrap gap-4 p-4">
 			{#each variants as variant}
 				<Variant {component} {variant} {props} />
 			{/each}
 		</board>
 	</content>
-	<props class="flex flex-col p-4 min-w-80 bg-skin-100">
+	<props class="min-w-80 flex flex-col bg-skin-100 p-4">
 		<FieldLayout bind:data={props} {fields} />
 	</props>
 </story>

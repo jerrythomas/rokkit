@@ -4,7 +4,7 @@
 	export let options
 </script>
 
-<aside class="flex gap-4 justify-center mb-6 bg-skin-subtle py-2">
+<aside class="mb-6 flex justify-center gap-4 bg-skin-subtle py-2">
 	{#each options as opt}
 		<div class="flex items-center gap-2 px-2">
 			<p>{opt.label}</p>

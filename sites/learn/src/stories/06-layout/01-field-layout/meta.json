@@ -1,5 +1,5 @@
 {
-	"category": "Layout",
-	"name": "FieldLayout",
-	"description": "A layout component for fields in a form."
+  "category": "Layout",
+  "name": "FieldLayout",
+  "description": "A layout component for fields in a form."
 }

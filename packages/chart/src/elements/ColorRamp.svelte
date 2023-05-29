@@ -20,7 +20,7 @@
 
 	$: colors = ticks.map(({ value }) => ({
 		color: scale(value),
-		offset: `${scalePercent(value)}%`,
+		offset: `${scalePercent(value)}%`
 	}))
 	$: id = uniqueId('legend-')
 </script>

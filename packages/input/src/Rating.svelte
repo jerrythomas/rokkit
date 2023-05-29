@@ -22,7 +22,7 @@
 			hoverIndex = index
 		}
 	}
-	function handleLeave(index) {
+	function handleLeave() {
 		if (!disabled) {
 			hovering = false
 			hoverIndex = -1

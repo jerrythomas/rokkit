@@ -46,10 +46,10 @@
 	}
 </script>
 
-<div class="flex flex-row h-full">
+<div class="h-full flex flex-row">
 	<content class="flex-grow px-8">
 		<h1>Plots</h1>
-		<div class="flex flex-col items-center p-4 natural-light">
+		<div class="natural-light flex flex-col items-center p-4">
 			<Chart {theme} {params} {fields} {data}>
 				<Grid />
 				<Axis orient="bottom" />

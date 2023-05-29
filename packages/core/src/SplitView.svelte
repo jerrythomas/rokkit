@@ -23,11 +23,11 @@
 	}
 </script>
 
-<div class="relative flex w-full h-full" style:--direction={direction}>
-	<section style:--sizeA={sizeA} class="flex flex-grow flex-shrink select-none">
+<div class="relative h-full w-full flex" style:--direction={direction}>
+	<section style:--sizeA={sizeA} class="flex flex-shrink flex-grow select-none">
 		<slot name="a" />
 	</section>
-	<section style:--sizeB={sizeB} class="flex flex-grow flex-shrink select-none">
+	<section style:--sizeB={sizeB} class="flex flex-shrink flex-grow select-none">
 		<slot name="b" />
 	</section>
 	<Splitter {vertical} {min} {max} {pos} on:change={onSplitterChange} />

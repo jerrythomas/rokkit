@@ -8,8 +8,8 @@
 	export let navigator = Tabs
 </script>
 
-<section class="flex flex-col w-full h-full">
-	<nav class="w-full h-12 items-center">
+<section class="h-full w-full flex flex-col">
+	<nav class="h-12 w-full items-center">
 		<svelte:component this={navigator} {items} {fields} bind:value />
 	</nav>
 	{#if value}

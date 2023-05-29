@@ -17,6 +17,7 @@ Here's an example of how to use field mappings:
     icon: 'symbol'
   }
 </script>
+
 <Item {value} {fields} />
 ```
 

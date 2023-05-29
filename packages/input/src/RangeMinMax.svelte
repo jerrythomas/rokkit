@@ -61,7 +61,7 @@
 {:else}
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<range-track class="relative grid">
-			<span class="col-start-2 relative box-border" bind:clientWidth={width} />
+			<span class="relative col-start-2 box-border" bind:clientWidth={width} />
 			<selected
 				class="absolute col-start-2"
 				style:left="{lower}px"

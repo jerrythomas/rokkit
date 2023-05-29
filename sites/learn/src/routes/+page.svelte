@@ -3,7 +3,7 @@
 </script>
 
 <section
-	class="flex flex-col h-full w-full font-light bg-skin-subtle overflow-auto"
+	class="h-full w-full flex flex-col overflow-auto bg-skin-subtle font-light"
 >
 	<Headline />
 </section>

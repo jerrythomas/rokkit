@@ -1,24 +1,24 @@
 [
-	{
-		"date": "2020-01-01",
-		"_df": [
-			{ "team": "x", "group": "Alpha", "score": 1, "pct": 10 },
-			{ "team": "y", "group": "Alpha", "score": 10, "pct": 20 },
-			{ "team": "x", "group": "Beta", "score": 2, "pct": 10 },
-			{ "team": "y", "group": "Beta", "score": 20, "pct": 20 },
-			{ "team": "z", "group": "Beta", "score": 20, "pct": 30 },
-			{ "team": "z", "group": "Alpha", "score": 0, "pct": 0 }
-		]
-	},
-	{
-		"date": "2020-02-01",
-		"_df": [
-			{ "team": "x", "group": "Alpha", "score": 3, "pct": 20 },
-			{ "team": "y", "group": "Alpha", "score": 30, "pct": 30 },
-			{ "team": "z", "group": "Alpha", "score": 25, "pct": 40 },
-			{ "team": "x", "group": "Beta", "score": 4, "pct": 30 },
-			{ "team": "y", "group": "Beta", "score": 40, "pct": 40 },
-			{ "team": "z", "group": "Beta", "score": 30, "pct": 50 }
-		]
-	}
+  {
+    "date": "2020-01-01",
+    "_df": [
+      { "team": "x", "group": "Alpha", "score": 1, "pct": 10 },
+      { "team": "y", "group": "Alpha", "score": 10, "pct": 20 },
+      { "team": "x", "group": "Beta", "score": 2, "pct": 10 },
+      { "team": "y", "group": "Beta", "score": 20, "pct": 20 },
+      { "team": "z", "group": "Beta", "score": 20, "pct": 30 },
+      { "team": "z", "group": "Alpha", "score": 0, "pct": 0 }
+    ]
+  },
+  {
+    "date": "2020-02-01",
+    "_df": [
+      { "team": "x", "group": "Alpha", "score": 3, "pct": 20 },
+      { "team": "y", "group": "Alpha", "score": 30, "pct": 30 },
+      { "team": "z", "group": "Alpha", "score": 25, "pct": 40 },
+      { "team": "x", "group": "Beta", "score": 4, "pct": 30 },
+      { "team": "y", "group": "Beta", "score": 40, "pct": 40 },
+      { "team": "z", "group": "Beta", "score": 30, "pct": 50 }
+    ]
+  }
 ]

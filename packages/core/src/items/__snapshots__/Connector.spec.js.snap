@@ -7,7 +7,7 @@ exports[`Connector.svelte > When rtl is true property > Should render when type 
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child"
     >
       <i
-        class="border-r grid grid-rows-2 row-span-2"
+        class="grid row-span-2 grid-rows-2 border-r"
       >
         <i
           class="border-b"
@@ -51,7 +51,7 @@ exports[`Connector.svelte > When rtl is true property > Should render when type 
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-sibling"
     >
       <i
-        class="border-r row-span-2"
+        class="row-span-2 border-r"
       />
     </span>
   </div>
@@ -65,7 +65,7 @@ exports[`Connector.svelte > given a type > when type is "child" > then it should
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child"
     >
       <i
-        class="border-r col-span-1 row-span-2"
+        class="col-span-1 row-span-2 border-r"
       />
        
       <i
@@ -113,7 +113,7 @@ exports[`Connector.svelte > given a type > when type is "sibling" > then it shou
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-sibling"
     >
       <i
-        class="border-r row-span-2"
+        class="row-span-2 border-r"
       />
     </span>
   </div>

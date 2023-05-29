@@ -44,7 +44,7 @@
 <nav-pages class="grid grid-cols-3 select-none {className}" tabindex="0">
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
-		class="flex items-center cursor-pointer"
+		class="flex cursor-pointer items-center"
 		on:click={() => handleClick(previous)}
 		tabIndex={previous ? 0 : -1}
 	>
@@ -78,7 +78,7 @@
 	</span>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
-		class="flex items-center cursor-pointer justify-end"
+		class="flex cursor-pointer items-center justify-end"
 		on:click={() => handleClick(next)}
 		tabIndex={next ? 0 : -1}
 	>

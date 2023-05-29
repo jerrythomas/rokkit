@@ -87,7 +87,7 @@
 	// Old data set needs exit animation, new data set needs entry animation
 </script>
 
-<svg viewBox="0 0 {phased.width} {phased.height}" class="flex chart">
+<svg viewBox="0 0 {phased.width} {phased.height}" class="chart flex">
 	<Grid />
 	<Axis orient="bottom" />
 	<Axis orient="left" />

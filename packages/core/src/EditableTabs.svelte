@@ -18,7 +18,7 @@
 </script>
 
 <tab-view class="flex flex-col w-full flex-grow {className}">
-	<tabs class="flex flex-row flex-shrink-0 w-full select-none cursor-pointer">
+	<tabs class="w-full flex flex-shrink-0 flex-row cursor-pointer select-none">
 		{#if title}
 			<p>{title}</p>
 		{/if}
@@ -27,5 +27,5 @@
 			<TabItem label="+" on:click={addTab} />
 		{/if}
 	</tabs>
-	<content class="flex flex-col flex-grow"><slot /></content>
+	<content class="flex flex-grow flex-col"><slot /></content>
 </tab-view>

@@ -31,11 +31,11 @@
 <svelte:head>
 	<title>Learn to use Rokkit</title>
 </svelte:head>
-<main class="flex w-full h-full flex-grow overflow-hidden relative">
+<main class="relative h-full w-full flex flex-grow overflow-hidden">
 	<Sidebar>
 		<Tree items={data.menu} {fields} bind:value on:select={handleSelect} />
 	</Sidebar>
-	<content class="flex flex-col w-full">
+	<content class="w-full flex flex-col">
 		<slot />
 	</content>
 </main>

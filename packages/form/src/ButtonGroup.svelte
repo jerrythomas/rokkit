@@ -25,7 +25,7 @@
 		<button
 			on:click={() => handle(item)}
 			class:active={value == item}
-			class="flex select-none cursor-pointer"
+			class="flex cursor-pointer select-none"
 		>
 			{text}
 		</button>

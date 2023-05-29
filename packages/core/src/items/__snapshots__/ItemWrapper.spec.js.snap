@@ -13,7 +13,7 @@ exports[`ItemWrapper.svelte > Should render 1`] = `
       >
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           hello
         </p>
@@ -60,7 +60,7 @@ exports[`ItemWrapper.svelte > Should render object 1`] = `
         
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           Test
         </p>
@@ -106,7 +106,7 @@ exports[`ItemWrapper.svelte > Should render removable with custom class 1`] = `
       >
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           Test
         </p>
@@ -143,7 +143,7 @@ exports[`ItemWrapper.svelte > Should render removable with custom icon 1`] = `
         
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           Test
         </p>
@@ -191,7 +191,7 @@ exports[`ItemWrapper.svelte > Should render using field mapping 1`] = `
         
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           hello
         </p>
@@ -216,7 +216,7 @@ exports[`ItemWrapper.svelte > Should render with custom class 1`] = `
       >
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           Test
         </p>
@@ -241,7 +241,7 @@ exports[`ItemWrapper.svelte > Should render with removable prop 1`] = `
       >
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           Test
         </p>
@@ -277,7 +277,7 @@ exports[`ItemWrapper.svelte > Should render with selected prop 1`] = `
       >
          
         <p
-          class="flex w-full"
+          class="w-full flex"
         >
           Test
         </p>
