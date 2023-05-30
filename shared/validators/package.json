@@ -1,17 +1,18 @@
 {
-	"name": "validators",
-	"version": "1.0.0-next.29",
-	"description": "Custom matchers for vitest.",
-	"main": "index.js",
-	"keywords": [
-		"vitest",
-		"matchers",
-		"validators"
-	],
-	"author": "",
-	"license": "MIT",
-	"type": "module",
-	"dependencies": {
-		"@vitest/expect": "^0.31.1"
-	}
+  "name": "validators",
+  "version": "1.0.0-next.29",
+  "description": "Custom matchers for vitest.",
+  "main": "index.js",
+  "keywords": ["vitest", "matchers", "validators"],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@vitest/expect": "^0.31.1"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "latest": "pnpm upgrade --latest"
+  }
 }

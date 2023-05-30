@@ -1,8 +1,11 @@
-**/.svelte-kit/**
+.svelte-kit/**
 static/**
 build/**
 node_modules/**
-coverage
+coverage/**
+fixtures/error/**
+dist/**
+**/.svelte-kit/**
 **/fixtures/error/**
 **/dist/**
 package.json

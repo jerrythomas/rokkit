@@ -14,20 +14,19 @@
 	},
 	"scripts": {
 		"prepublishOnly": "tsc",
+		"format": "prettier --write .",
 		"lint": "eslint --fix .",
 		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
-		"upgrade": "pnpm upgrade",
-		"publish:lib": "tsc && pnpm publish --access public"
+		"latest": "pnpm upgrade --latest && pnpm test:ci",
+		"release": "tsc && pnpm publish --access public"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.4.1",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.31.1",
-		"eslint": "^8.41.0",
-		"eslint-config-shared": "workspace:*",
 		"js-yaml": "^4.1.0",
 		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",

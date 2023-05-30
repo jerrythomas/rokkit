@@ -5,7 +5,8 @@ export default defineConfig({
 		'package.json',
 		'pnpm-lock.yaml',
 		'packages/*/package.json',
-		'shared/*/package.json'
+		'shared/*/package.json',
+		'sites/*/package.json'
 	],
 	recursive: true
 })

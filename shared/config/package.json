@@ -1,30 +1,31 @@
 {
-	"name": "shared-config",
-	"version": "1.0.0-next.29",
-	"main": "index.js",
-	"type": "module",
-	"license": "MIT",
-	"scripts": {
-		"format": "prettier --write --plugin-search-dir=. .",
-		"upgrade": "pnpm upgrade"
-	},
-	"exports": {
-		"./package.json": "./package.json",
-		"./svelte-lib.json": "./svelte-lib.json",
-		"./jsconfig.json": "./jsconfig.json",
-		"./vitest.config.js": "./vitest.config.js"
-	},
-	"dependencies": {
-		"@sveltejs/vite-plugin-svelte": "^2.4.1",
-		"@tsconfig/svelte": "^4.0.1",
-		"eslint": "^8.41.0",
-		"eslint-config-shared": "workspace:*",
-		"svelte": "^3.59.1",
-		"typescript": "^5.0.4",
-		"vite": "^4.3.9",
-		"vitest": "^0.31.1"
-	},
-	"publishConfig": {
-		"access": "public"
-	}
+  "name": "shared-config",
+  "version": "1.0.0-next.29",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "latest": "pnpm upgrade --latest"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./svelte-lib.json": "./svelte-lib.json",
+    "./jsconfig.json": "./jsconfig.json",
+    "./vitest.config.js": "./vitest.config.js"
+  },
+  "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.1",
+    "@tsconfig/svelte": "^4.0.1",
+    "eslint": "^8.41.0",
+    "eslint-config-shared": "workspace:*",
+    "svelte": "^3.59.1",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vitest": "^0.31.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

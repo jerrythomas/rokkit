@@ -14,14 +14,15 @@
 	},
 	"scripts": {
 		"prepublishOnly": "tsc",
+		"format": "prettier --write .",
 		"lint": "eslint --fix .",
 		"test:ct": "playwright test -c playwright.config.js",
 		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
-		"upgrade": "pnpm upgrade",
-		"publish:lib": "tsc && pnpm publish --access public"
+		"latest": "pnpm upgrade --latest && pnpm test:ci",
+		"release": "tsc && pnpm publish --access public"
 	},
 	"devDependencies": {
 		"@rokkit/core": "workspace:*",
@@ -29,8 +30,6 @@
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.31.1",
 		"c8": "^7.14.0",
-		"eslint": "^8.41.0",
-		"eslint-config-shared": "workspace:*",
 		"jsdom": "^22.1.0",
 		"ramda": "^0.29.0",
 		"shared-config": "workspace:*",
