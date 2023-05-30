@@ -14,22 +14,21 @@
 	},
 	"scripts": {
 		"prepublishOnly": "tsc",
+		"format": "prettier --write .",
 		"lint": "eslint --fix .",
 		"test:ct": "playwright test -c playwright.config.js",
 		"test:ci": "vitest run",
 		"test:ui": "vitest --ui",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
-		"upgrade": "pnpm upgrade",
-		"publish:lib": "tsc && pnpm publish --access public"
+		"latest": "pnpm upgrade --latest && pnpm test:ci",
+		"release": "tsc && pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@jerrythomas/eslint-config-svelte": "^1.0.3",
 		"@sveltejs/vite-plugin-svelte": "^2.4.1",
 		"@testing-library/svelte": "^3.2.2",
 		"@vitest/ui": "~0.31.1",
 		"c8": "^7.14.0",
-		"eslint": "^8.41.0",
 		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",
 		"svelte": "^3.59.1",

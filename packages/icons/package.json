@@ -9,8 +9,11 @@
 	"module": "src/index.js",
 	"type": "module",
 	"scripts": {
-		"build": "node src/index.js",
-		"publish:lib": "pnpm publish --access public"
+		"format": "prettier --write .",
+		"lint": "eslint --fix .",
+		"build": "node src/index.js && pnpm format",
+		"latest": "pnpm upgrade --latest",
+		"release": "pnpm publish --access public"
 	},
 	"publishConfig": {
 		"access": "public"
