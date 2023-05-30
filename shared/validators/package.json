@@ -1,6 +1,6 @@
 {
   "name": "validators",
-  "version": "1.0.0-next.31",
+  "version": "1.0.0-next.32",
   "description": "Custom matchers for vitest.",
   "main": "index.js",
   "keywords": [
