@@ -1,22 +1,22 @@
 .material button,
 .material .button {
-	@apply py-2 px-4 rounded bg-skin-subtle uppercase;
+  @apply py-2 px-4 rounded bg-skin-subtle uppercase;
 }
 .material button-group {
-	@apply flex justify-center rounded-sm shadow;
+  @apply flex justify-center rounded-sm shadow;
 }
 .material .is-primary {
-	@apply bg-primary text-white;
+  @apply bg-primary text-white;
 }
 
 .material button-group > button {
-	@apply border-skin-400 border-none rounded-none;
-	@apply bg-skin-subtle focus:outline-none;
-	@apply uppercase text-sm text-skin-800;
+  @apply border-skin-400 border-none rounded-none;
+  @apply bg-skin-subtle focus:outline-none;
+  @apply uppercase text-sm text-skin-800;
 }
 .material button-group > button:not(:last-child) {
-	@apply border-r;
+  @apply border-r;
 }
 .material button-group > button.active {
-	@apply bg-primary text-white;
+  @apply bg-primary text-white;
 }

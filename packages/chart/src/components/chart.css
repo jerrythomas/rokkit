@@ -1,16 +1,16 @@
 .natural-light .chart {
-	@apply rounded-lg shadow-lg border;
+  @apply rounded-lg shadow-lg border;
 }
 .natural-light .axis {
-	@apply stroke-current;
-	stroke-width: 0.2;
+  @apply stroke-current;
+  stroke-width: 0.2;
 }
 .natural-light .tick {
-	@apply stroke-current;
-	stroke-width: 0.2;
+  @apply stroke-current;
+  stroke-width: 0.2;
 }
 .natural-light .grid {
-	@apply stroke-current;
-	stroke-width: 0.2;
-	stroke-dasharray: 1, 3;
+  @apply stroke-current;
+  stroke-width: 0.2;
+  stroke-dasharray: 1, 3;
 }

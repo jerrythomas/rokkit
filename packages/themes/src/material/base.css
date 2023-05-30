@@ -1,12 +1,12 @@
 @import '../base/base.css';
 
 .material icon[role='button'] {
-	@apply text-skin-muted focus:rounded hover:text-primary focus:outline-primary focus:m-1px;
+  @apply text-skin-muted focus:rounded hover:text-primary focus:outline-primary focus:m-1px;
 }
 .material icon.disabled[role='button'] {
-	@apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
+  @apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
 }
 
 .material * {
-	@apply focus:outline-primary-400;
+  @apply focus:outline-primary-400;
 }

@@ -136,8 +136,8 @@ export function get_exercise(slug) {
 				if (!a[key]) continue
 				if (b[key].type !== 'file') continue
 
-				const a_ = /** @type {import('$lib/types').FileStub} */ (a[key])
-				const b_ = /** @type {import('$lib/types').FileStub} */ (b[key])
+				const a_ = /** @type {import('$lib/types').FileStub} */ a[key]
+				const b_ = /** @type {import('$lib/types').FileStub} */ b[key]
 
 				if (a_.contents === b_.contents) {
 					throw new Error(`duplicate file: ${exercise_slug} ${key}`)

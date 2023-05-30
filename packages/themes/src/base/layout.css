@@ -2,40 +2,40 @@
 	@apply overflow-hidden;
 } */
 container > segment {
-	@apply overflow-hidden;
+  @apply overflow-hidden;
 }
 .three-col {
-	@apply grid w-full h-full overflow-hidden;
+  @apply grid w-full h-full overflow-hidden;
 }
 
 .three-col.md {
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(2, 1fr);
-	/* @apply grid-cols-2 grid-rows-2; */
-	grid-template-areas:
-		'c-1 c-2'
-		'c-1 c-3';
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  /* @apply grid-cols-2 grid-rows-2; */
+  grid-template-areas:
+    'c-1 c-2'
+    'c-1 c-3';
 }
 .three-col.md > .col-1,
 .three-col.lg > .col-1 {
-	grid-area: c-1;
+  grid-area: c-1;
 }
 .three-col.md > .col-2,
 .three-col.lg > .col-2 {
-	grid-area: c-2;
+  grid-area: c-2;
 }
 .three-col.md > .col-3,
 .three-col.lg > .col-3 {
-	grid-area: c-3;
+  grid-area: c-3;
 }
 .three-col.lg {
-	/* @apply grid-cols-5; */
-	grid-template-columns: repeat(5, 1fr);
-	grid-template-rows: repeat(2, 1fr);
-	grid-template-areas:
-		'c-1 c-1 c-2 c-2 c-2'
-		'c-1 c-1 c-3 c-3 c-3';
+  /* @apply grid-cols-5; */
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-areas:
+    'c-1 c-1 c-2 c-2 c-2'
+    'c-1 c-1 c-3 c-3 c-3';
 }
 .three-col.sm {
-	@apply grid-cols-1 grid-rows-1;
+  @apply grid-cols-1 grid-rows-1;
 }

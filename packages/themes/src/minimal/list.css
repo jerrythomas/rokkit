@@ -1,132 +1,132 @@
 .minimal item {
-	@apply flex items-center gap-1;
+  @apply flex items-center gap-1;
 }
 .minimal accordion {
-	@apply flex-grow overflow-y-scroll focus-within:outline-none;
+  @apply flex-grow overflow-y-scroll focus-within:outline-none;
 }
 .minimal accordion > div,
 .minimal accordion > details {
-	@apply relative;
+  @apply relative;
 }
 .minimal list,
 .minimal accordion summary {
-	@apply border-l-2px border-l-skin-muted;
+  @apply border-l-2px border-l-skin-muted;
 }
 .minimal :not(accordion > div) list:focus-within {
-	@apply outline outline-offset-3 outline-secondary-700;
+  @apply outline outline-offset-3 outline-secondary-700;
 }
 .minimal list > item,
 .minimal accordion summary {
-	@apply px-2 text-skin-700 bg-skin-base items-center leading-8;
+  @apply px-2 text-skin-700 bg-skin-base items-center leading-8;
 }
 
 .minimal item > a {
-	@apply px-0 gap-2;
+  @apply px-0 gap-2;
 }
 
 .minimal list item:hover {
-	@apply -m-l-2px border-l-2px border-l-skin-subtle;
+  @apply -m-l-2px border-l-2px border-l-skin-subtle;
 }
 .minimal accordion summary:hover {
-	@apply border-l-skin-subtle;
+  @apply border-l-skin-subtle;
 }
 .minimal list item.is-selected {
-	@apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-skin-subtle;
+  @apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-skin-subtle;
 }
 .minimal accordion .is-selected summary {
-	@apply border-l-2px border-l-secondary-600 bg-skin-subtle;
+  @apply border-l-2px border-l-secondary-600 bg-skin-subtle;
 }
 
 .minimal accordion .is-expanded summary {
-	@apply sticky top-0 z-1;
+  @apply sticky top-0 z-1;
 }
 .minimal accordion item > a {
-	@apply px-0;
+  @apply px-0;
 }
 .minimal item > img,
 .minimal item > a > img {
-	@apply w-6 h-6;
+  @apply w-6 h-6;
 }
 
 .minimal accordion .is-selected summary,
 .minimal accordion .is-selected summary > a,
 .minimal accordion item.is-selected,
 .minimal accordion item.is-selected > a {
-	@apply text-secondary-600;
-	/* @apply hover:text-secondary-500; */
+  @apply text-secondary-600;
+  /* @apply hover:text-secondary-500; */
 }
 
 .minimal node {
-	@apply h-7 px-2;
+  @apply h-7 px-2;
 }
 .minimal node > item {
-	@apply px-1 gap-1;
+  @apply px-1 gap-1;
 }
 .minimal node > span {
-	@apply w-3;
+  @apply w-3;
 }
 .minimal node > span > icon {
-	/* .minimal node > icon { */
-	@apply text-sm;
+  /* .minimal node > icon { */
+  @apply text-sm;
 }
 .minimal node.is-selected p,
 .minimal node.is-selected icon {
-	@apply text-secondary-600;
-	@apply hover:text-secondary-600;
+  @apply text-secondary-600;
+  @apply hover:text-secondary-600;
 }
 
 .minimal .small list > item,
 .minimal .small accordion summary {
-	@apply text-sm;
+  @apply text-sm;
 }
 
 .minimal .small node {
-	@apply text-sm gap-1 h-5;
+  @apply text-sm gap-1 h-5;
 }
 .minimal .small node > span > icon {
-	@apply text-sm;
+  @apply text-sm;
 }
 .minimal .small item > img,
 .minimal .small item > a > img {
-	@apply w-4 h-4;
+  @apply w-4 h-4;
 }
 .minimal .small item > a > icon {
-	@apply text-sm leading-6;
+  @apply text-sm leading-6;
 }
 .minimal accordion.indented list > item {
-	@apply px-4;
+  @apply px-4;
 }
 
 .minimal .folder-tree {
-	@apply h-full bg-skin-inset min-w-40;
+  @apply h-full bg-skin-inset min-w-40;
 }
 
 .minimal node > span > i {
-	@apply border-skin-muted;
+  @apply border-skin-muted;
 }
 
 .minimal crumbs {
-	@apply flex-grow gap-1 text-sm;
+  @apply flex-grow gap-1 text-sm;
 }
 .minimal crumbs crumb.is-selected {
-	@apply text-secondary;
+  @apply text-secondary;
 }
 
 .minimal toggle-switch {
-	@apply min-w-12 min-h-6 rounded mx-auto;
-	@apply bg-skin-subtle border border-skin-muted;
-	@apply leading-loose p-2px;
+  @apply min-w-12 min-h-6 rounded mx-auto;
+  @apply bg-skin-subtle border border-skin-muted;
+  @apply leading-loose p-2px;
 }
 .minimal toggle-switch item {
-	@apply items-center justify-center px-3 gap-1;
-	@apply min-w-6 min-h-6 rounded cursor-pointer;
+  @apply items-center justify-center px-3 gap-1;
+  @apply min-w-6 min-h-6 rounded cursor-pointer;
 }
 .minimal toggle-switch.compact {
-	@apply rounded-full;
+  @apply rounded-full;
 }
 .minimal toggle-switch.compact > item {
-	@apply px-0 gap-0 rounded-full;
+  @apply px-0 gap-0 rounded-full;
 }
 .minimal toggle-switch item[aria-selected='true'] {
-	@apply bg-secondary text-skin-800;
+  @apply bg-secondary text-skin-800;
 }

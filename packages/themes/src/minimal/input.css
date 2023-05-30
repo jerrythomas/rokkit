@@ -2,111 +2,111 @@
 .minimal textarea,
 .minimal select,
 .minimal fieldset {
-	@apply rounded leading-loose px-2 border border-skin-muted outline-none;
+  @apply rounded leading-loose px-2 border border-skin-muted outline-none;
 }
 
 .minimal fieldset {
-	@apply p-4 pt-2 gap-2 rounded-md;
+  @apply p-4 pt-2 gap-2 rounded-md;
 }
 .minimal fieldset legend {
-	@apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
+  @apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
 }
 .minimal fieldset icon {
-	@apply text-2xl;
+  @apply text-2xl;
 }
 
 .minimal input-field {
-	@apply w-full m-0 p-0;
+  @apply w-full m-0 p-0;
 }
 .minimal input-field input {
-	@apply bg-transparent;
+  @apply bg-transparent;
 }
 .minimal input-field field {
-	@apply box-border border-b-2 border-skin-muted h-8 overflow-hidden;
-	@apply focus-within:border-b-secondary-600;
+  @apply box-border border-b-2 border-skin-muted h-8 overflow-hidden;
+  @apply focus-within:border-b-secondary-600;
 }
 .minimal input-field span {
-	@apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
+  @apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
 }
 .minimal input-field input,
 .minimal input-field textarea,
 .minimal input-field select {
-	@apply flex-grow border-0 focus:outline-none;
+  @apply flex-grow border-0 focus:outline-none;
 }
 
 .minimal input-field label {
-	@apply leading-6 w-full uppercase text-sm text-skin-600;
+  @apply leading-6 w-full uppercase text-sm text-skin-600;
 }
 .minimal input-field message {
-	@apply px-2 py-1 bg-skin-base rounded;
+  @apply px-2 py-1 bg-skin-base rounded;
 }
 
 .minimal input-field.fail {
-	@apply bg-error rounded px-2;
+  @apply bg-error rounded px-2;
 }
 
 .minimal input-range range-track {
-	@apply h-1 mt-3 relative;
+  @apply h-1 mt-3 relative;
 }
 .minimal input-range range-track span {
-	@apply bg-skin-subtle box-border border-skin-muted rounded-full;
+  @apply bg-skin-subtle box-border border-skin-muted rounded-full;
 }
 .minimal input-range range-track selected {
-	@apply border -top-0px -bottom-0px border-secondary-500 bg-secondary-600 rounded-full;
+  @apply border -top-0px -bottom-0px border-secondary-500 bg-secondary-600 rounded-full;
 }
 .minimal input-range range-track thumb {
-	@apply rounded-full;
+  @apply rounded-full;
 }
 
 .minimal input-range range-ticks {
-	font-size: 6px;
-	@apply bg-primary-100;
+  font-size: 6px;
+  @apply bg-primary-100;
 }
 
 .minimal .bookend range-track span::before,
 .minimal .bookend range-track span::after {
-	content: '';
-	@apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+  content: '';
+  @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 }
 .minimal .bookend range-track span::before {
-	@apply -left-1px;
+  @apply -left-1px;
 }
 .minimal .bookend range-track span::after {
-	@apply -right-2px;
+  @apply -right-2px;
 }
 
 .minimal tick {
-	@apply h-6;
+  @apply h-6;
 }
 .minimal tick span {
-	@apply border-skin-500 h-full;
+  @apply border-skin-500 h-full;
 }
 .minimal tick p {
-	@apply items-top;
-	font-size: 8px;
+  @apply items-top;
+  font-size: 8px;
 }
 
 .minimal thumb {
-	@apply -top-1.5 bg-secondary-500 shadow-xl border border-secondary-500;
+  @apply -top-1.5 bg-secondary-500 shadow-xl border border-secondary-500;
 }
 .minimal thumb.sliding::before {
-	content: '';
-	@apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-400 opacity-30 rounded-full;
-	transform: scale(2, 2);
+  content: '';
+  @apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-400 opacity-30 rounded-full;
+  transform: scale(2, 2);
 }
 
 .minimal rating {
-	@apply text-secondary-600 text-xl focus:outline-none;
+  @apply text-secondary-600 text-xl focus:outline-none;
 }
 .minimal rating > icon {
-	@apply w-8;
+  @apply w-8;
 }
 .minimal rating:focus-within icon[aria-checked='true'] {
-	@apply text-primary-600;
+  @apply text-primary-600;
 }
 
 .minimal rating icon.hovering > i {
-	@apply text-secondary-600;
+  @apply text-secondary-600;
 }
 /* .error,
 .fail {

@@ -88,7 +88,7 @@ const default_renderer = {
 				})
 				.join('')}</code></pre></div>`
 		} else {
-			const lang = /** @type {keyof languages} */ (language)
+			const lang = /** @type {keyof languages} */ language
 			const plang = languages[lang]
 			const highlighted = plang
 				? PrismJS.highlight(source, PrismJS.languages[plang], language)

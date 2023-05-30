@@ -4,9 +4,8 @@ build/**
 node_modules/**
 coverage
 **/fixtures/error/**
-dist/**
+**/dist/**
 package.json
 tsconfig.json
 .eslintrc
-
-#*.md
+*.webmanifest

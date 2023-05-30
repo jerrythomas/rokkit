@@ -1,50 +1,50 @@
 accordion {
-	@apply h-full text-skin-800 gap-2;
+  @apply h-full text-skin-800 gap-2;
 }
 accordion group {
-	@apply rounded shadow;
+  @apply rounded shadow;
 }
 accordion ul,
 list ul {
-	@apply p-t-1px gap-1px bg-skin-base;
+  @apply p-t-1px gap-1px bg-skin-base;
 }
 accordion .item,
 list .item,
 accordion collapsible {
-	@apply leading-10 px-4 bg-skin-50;
+  @apply leading-10 px-4 bg-skin-50;
 }
 accordion collapsible {
-	@apply rounded text-skin-900 pr-2 bg-skin-base;
+  @apply rounded text-skin-900 pr-2 bg-skin-base;
 }
 
 accordion .item,
 list .item {
-	@apply last:rounded-b first:rounded-t;
+  @apply last:rounded-b first:rounded-t;
 }
 
 accordion .expanded collapsible {
-	@apply rounded-b-none border-b border-skin-subtle;
+  @apply rounded-b-none border-b border-skin-subtle;
 }
 accordion .expanded .item {
-	@apply first:rounded-t-0;
+  @apply first:rounded-t-0;
 }
 
 accordion .item icon,
 list .item icon {
-	@apply text-secondary;
+  @apply text-secondary;
 }
 // accordion collapsible {
 // 	@apply text-skin-900 pr-2 border-skin-muted last:border-b-0 bg-skin-base;
 // }
 accordion .item.active,
 list .item.active {
-	@apply border-l-4 border-secondary;
+  @apply border-l-4 border-secondary;
 }
 
 list {
-	@apply border border-skin-subtle rounded shadow;
+  @apply border border-skin-subtle rounded shadow;
 }
 
 .zebra .item {
-	@apply even:bg-skin-zebra;
+  @apply even:bg-skin-zebra;
 }

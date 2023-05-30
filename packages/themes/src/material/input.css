@@ -1,70 +1,70 @@
 .material input {
-	@apply border-box focus:outline-none;
+  @apply border-box focus:outline-none;
 }
 .material input-field {
-	@apply box-border border border-skin-800 rounded;
-	@apply text-skin-800 leading-loose relative px-2 py-1;
+  @apply box-border border border-skin-800 rounded;
+  @apply text-skin-800 leading-loose relative px-2 py-1;
 }
 .material input-field.empty label {
-	@apply absolute left-2 -z-1 opacity-0;
+  @apply absolute left-2 -z-1 opacity-0;
 }
 .material input-field input {
-	@apply border-none focus:outline-none bg-transparent;
+  @apply border-none focus:outline-none bg-transparent;
 }
 
 .material input-field:focus-within {
-	@apply border-2 border-secondary;
+  @apply border-2 border-secondary;
 }
 
 .material input-field label.required::after {
-	content: '*';
-	@apply state-danger;
+  content: '*';
+  @apply state-danger;
 }
 
 .material input-field label,
 .material input-field:focus-within label {
-	@apply block z-1 -top-3 left-2 bg-skin-inset absolute leading-tight opacity-100;
+  @apply block z-1 -top-3 left-2 bg-skin-inset absolute leading-tight opacity-100;
 }
 .material input-field field {
-	@apply gap-2;
+  @apply gap-2;
 }
 
 .material input-select {
-	@apply rounded cursor-pointer select-none;
+  @apply rounded cursor-pointer select-none;
 }
 .material input-select > selected-item {
-	@apply h-10 pl-4 pr-0 items-center bg-skin-base normal-case;
-	@apply rounded border border-skin-muted text-skin-800;
-	@apply hover:bg-skin-muted hover:border-secondary-600;
+  @apply h-10 pl-4 pr-0 items-center bg-skin-base normal-case;
+  @apply rounded border border-skin-muted text-skin-800;
+  @apply hover:bg-skin-muted hover:border-secondary-600;
 }
 
 .material input-select:hover square-icon {
-	@apply border-skin-500;
+  @apply border-skin-500;
 }
 .material input-select scroll {
-	@apply mt-2 shadow-lg;
+  @apply mt-2 shadow-lg;
 }
 
 .material input-range range-track selected {
-	@apply border-0 bg-primary;
+  @apply border-0 bg-primary;
 }
 .material input-range range-track thumb {
-	@apply -top-1.5 bg-primary-600;
+  @apply -top-1.5 bg-primary-600;
 }
 .material input-range thumb.sliding::before {
-	@apply bg-primary-400;
+  @apply bg-primary-400;
 }
 
 .material rating {
-	@apply text-skin-600 text-xl focus:outline-none;
+  @apply text-skin-600 text-xl focus:outline-none;
 }
 .material rating > icon {
-	@apply w-8;
+  @apply w-8;
 }
 .material rating:focus-within icon[aria-checked='true'] {
-	@apply text-secondary;
+  @apply text-secondary;
 }
 
 .material rating icon.hovering > i {
-	@apply text-primary;
+  @apply text-primary;
 }
