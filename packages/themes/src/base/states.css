@@ -1,19 +1,19 @@
 alert.error {
-	@apply bg-error text-error border-error;
+  @apply bg-error text-error border-error;
 }
 alert.info {
-	@apply bg-info text-info border-info;
+  @apply bg-info text-info border-info;
 }
 alert.warning {
-	@apply bg-warn text-warn border-warn;
+  @apply bg-warn text-warn border-warn;
 }
 alert.success {
-	@apply bg-pass text-pass border-pass;
+  @apply bg-pass text-pass border-pass;
 }
 
 .is-focused {
-	@apply outline-secondary;
+  @apply outline-secondary;
 }
 .is-disabled {
-	@apply text-skin-subtle;
+  @apply text-skin-subtle;
 }

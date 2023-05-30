@@ -1,83 +1,83 @@
 .minimal button {
-	@apply rounded leading-loose select-none px-4;
-	@apply bg-skin-muted border border-skin-muted;
+  @apply rounded leading-loose select-none px-4;
+  @apply bg-skin-muted border border-skin-muted;
 }
 .minimal button icon-left,
 .minimal button icon-right {
-	@apply flex flex-col items-center justify-center h-10 aspect-square;
+  @apply flex flex-col items-center justify-center h-10 aspect-square;
 }
 .minimal button icon {
-	@apply text-2xl;
+  @apply text-2xl;
 }
 
 .minimal .is-primary {
-	@apply bg-secondary text-white;
+  @apply bg-secondary text-white;
 }
 .minimal button p {
-	@apply px-2 flex flex-grow;
+  @apply px-2 flex flex-grow;
 }
 
 .minimal button-group {
-	@apply flex justify-center rounded-sm gap-1px;
+  @apply flex justify-center rounded-sm gap-1px;
 }
 .minimal button-group button {
-	@apply border-skin-400 border-none rounded-none;
-	@apply bg-skin-subtle shadow focus:outline-none;
-	@apply uppercase text-sm text-skin-800 leading-8 px-2;
+  @apply border-skin-400 border-none rounded-none;
+  @apply bg-skin-subtle shadow focus:outline-none;
+  @apply uppercase text-sm text-skin-800 leading-8 px-2;
 }
 .minimal button-group button:not(:last-child) {
-	@apply border-r;
+  @apply border-r;
 }
 .minimal button-group button.active {
-	@apply bg-secondary text-white;
+  @apply bg-secondary text-white;
 }
 
 .minimal button-group button:first-child {
-	@apply rounded-l-sm;
+  @apply rounded-l-sm;
 }
 .minimal button-group button:last-child {
-	@apply rounded-r-sm;
+  @apply rounded-r-sm;
 }
 
 .minimal input-select {
-	@apply focus:outline-none;
+  @apply focus:outline-none;
 }
 .minimal input-select > selected-item {
-	@apply leading-8 gap-4 items-center pl-2 min-h-8 cursor-pointer select-none;
-	@apply border-b-2 border-b-skin-muted;
-	@apply focus:border-b-secondary-600;
+  @apply leading-8 gap-4 items-center pl-2 min-h-8 cursor-pointer select-none;
+  @apply border-b-2 border-b-skin-muted;
+  @apply focus:border-b-secondary-600;
 }
 .minimal input-select:focus > selected-item {
-	@apply border-b-secondary-600 text-secondary-600;
+  @apply border-b-secondary-600 text-secondary-600;
 }
 .minimal input-select:focus square-icon {
-	@apply text-secondary-600;
+  @apply text-secondary-600;
 }
 .minimal input-select > selected-item > items {
-	@apply flex-grow flex-wrap gap-2;
+  @apply flex-grow flex-wrap gap-2;
 }
 .minimal pill {
-	@apply gap-2 rounded-full border border-skin-400 px-2;
+  @apply gap-2 rounded-full border border-skin-400 px-2;
 }
 .minimal pill > item {
-	@apply gap-2 leading-6;
+  @apply gap-2 leading-6;
 }
 .minimal pill > item > img {
-	@apply w-4 h-4;
+  @apply w-4 h-4;
 }
 
 .minimal pill > icon {
-	@apply text-sm;
+  @apply text-sm;
 }
 .minimal input-select scroll {
-	@apply mt-1 shadow-lg;
+  @apply mt-1 shadow-lg;
 }
 
 .minimal button[role='switch'] {
-	@apply rounded-full p-0 min-h-6 h-8 w-16;
-	@apply bg-skin-subtle border border-skin-subtle;
+  @apply rounded-full p-0 min-h-6 h-8 w-16;
+  @apply bg-skin-subtle border border-skin-subtle;
 }
 
 .minimal button[role='switch'] > mark {
-	@apply rounded-full w-6 h-6 bg-secondary top-0.75;
+  @apply rounded-full w-6 h-6 bg-secondary top-0.75;
 }

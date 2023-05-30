@@ -1,45 +1,45 @@
 graph-paper {
-	@apply p-8 bg-skin-50 text-skin-300 overflow-auto;
+  @apply p-8 bg-skin-50 text-skin-300 overflow-auto;
 }
 
 graph-paper > content {
-	@apply text-opacity-100 text-skin-800 flex flex-col gap-5;
+  @apply text-opacity-100 text-skin-800 flex flex-col gap-5;
 }
 graph-paper > content > p > b {
-	@apply italic text-primary;
+  @apply italic text-primary;
 }
 
 graph-paper > content > pre {
-	@apply overflow-scroll;
+  @apply overflow-scroll;
 }
 preview {
-	@apply flex flex-col w-full h-full p-2 md:p-6 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
-	/* @apply md:h-100; */
+  @apply flex flex-col w-full h-full p-2 md:p-6 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
+  /* @apply md:h-100; */
 }
 
 .yellow-orange preview {
-	@apply from-yellow to-orange;
+  @apply from-yellow to-orange;
 }
 
 .green-teal preview {
-	@apply from-green to-teal;
+  @apply from-green to-teal;
 }
 .emerald-teal preview {
-	@apply from-emerald to-teal;
+  @apply from-emerald to-teal;
 }
 .purple-indigo preview {
-	@apply from-purple to-indigo;
+  @apply from-purple to-indigo;
 }
 
 .sky-indigo preview {
-	@apply from-sky to-indigo;
+  @apply from-sky to-indigo;
 }
 .sky-blue preview {
-	@apply from-sky to-blue;
+  @apply from-sky to-blue;
 }
 .orange-pink preview {
-	@apply from-orange to-pink;
+  @apply from-orange to-pink;
 }
 .pink-red preview {
-	@apply from-pink to-red;
+  @apply from-pink to-red;
 }

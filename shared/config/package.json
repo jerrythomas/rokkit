@@ -10,7 +10,6 @@
 	},
 	"exports": {
 		"./package.json": "./package.json",
-		"./windi.config.js": "./windi.config.js",
 		"./svelte-lib.json": "./svelte-lib.json",
 		"./jsconfig.json": "./jsconfig.json",
 		"./vitest.config.js": "./vitest.config.js"
@@ -23,8 +22,7 @@
 		"svelte": "^3.59.1",
 		"typescript": "^5.0.4",
 		"vite": "^4.3.9",
-		"vitest": "^0.31.1",
-		"windicss": "^3.5.6"
+		"vitest": "^0.31.1"
 	},
 	"publishConfig": {
 		"access": "public"

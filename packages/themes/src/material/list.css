@@ -1,60 +1,60 @@
 .material accordion,
 .material list {
-	@apply rounded  gap-1px;
+  @apply rounded  gap-1px;
 }
 .material list > item {
-	@apply bg-skin-subtle;
+  @apply bg-skin-subtle;
 }
 .material item {
-	@apply flex items-center gap-2 px-2;
+  @apply flex items-center gap-2 px-2;
 }
 .material item > img,
 .material item > a > img {
-	@apply w-4 h-4 rounded;
+  @apply w-4 h-4 rounded;
 }
 .material .tab.is-hovering {
-	@apply bg-primary-500;
+  @apply bg-primary-500;
 }
 
 .material list item.is-selected,
 .material node.is-selected {
-	@apply bg-primary text-primary-50;
+  @apply bg-primary text-primary-50;
 }
 .material tabs .tab {
-	@apply cursor-pointer;
+  @apply cursor-pointer;
 }
 .material tabs .tab[aria-selected='true'] {
-	@apply border-b-3 border-primary;
+  @apply border-b-3 border-primary;
 }
 .material tabs.is-below .tab[aria-selected='true'] {
-	@apply border-b-0 border-t-3;
+  @apply border-b-0 border-t-3;
 }
 
 .material accordion .is-expanded summary {
-	@apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
+  @apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
 }
 
 .material accordion .is-selected summary {
-	@apply border-b-primary-500 border-b text-primary-600;
-	@apply hover:text-primary-600;
+  @apply border-b-primary-500 border-b text-primary-600;
+  @apply hover:text-primary-600;
 }
 
 .material node {
-	@apply h-7 px-2;
+  @apply h-7 px-2;
 }
 .material node > item {
-	@apply px-1 gap-1 bg-transparent;
+  @apply px-1 gap-1 bg-transparent;
 }
 .material node > span {
-	@apply w-3;
+  @apply w-3;
 }
 
 .material node > span > icon {
-	@apply text-sm;
+  @apply text-sm;
 }
 
 .material nested-list:focus-within {
-	@apply outline-none;
+  @apply outline-none;
 }
 /* .material node.is-selected p,
 .material node.is-selected icon {
@@ -62,41 +62,41 @@
 	@apply hover:bg-secondary;
 } */
 .material .folder-tree {
-	@apply h-full bg-skin-inset min-w-40;
+  @apply h-full bg-skin-inset min-w-40;
 }
 
 .material node > span > i {
-	@apply border-transparent;
+  @apply border-transparent;
 }
 
 .material crumbs {
-	@apply flex-grow gap-1 text-sm;
+  @apply flex-grow gap-1 text-sm;
 }
 
 .material toggle-switch item[aria-selected='true'] {
-	@apply bg-primary text-skin-50;
+  @apply bg-primary text-skin-50;
 }
 .material crumbs crumb.is-selected {
-	@apply text-secondary;
+  @apply text-secondary;
 }
 
 .material toggle-switch {
-	@apply min-w-12 min-h-6 rounded-full mx-auto;
-	@apply bg-skin-subtle border border-skin-muted;
-	@apply leading-tight p-2px;
+  @apply min-w-12 min-h-6 rounded-full mx-auto;
+  @apply bg-skin-subtle border border-skin-muted;
+  @apply leading-tight p-2px;
 }
 .material toggle-switch item {
-	@apply items-center justify-center px-3 gap-1;
-	@apply min-w-6 min-h-6 rounded-full cursor-pointer;
+  @apply items-center justify-center px-3 gap-1;
+  @apply min-w-6 min-h-6 rounded-full cursor-pointer;
 }
 
 .material toggle-switch.compact > item {
-	@apply px-0 gap-0;
+  @apply px-0 gap-0;
 }
 
 .minimal tabs .tab icon[role='img'] {
-	@apply w-6 h-6;
+  @apply w-6 h-6;
 }
 .minimal tabs .tab icon[role='button'] {
-	@apply w-4 h-4;
+  @apply w-4 h-4;
 }

@@ -5,6 +5,18 @@ semi: false
 singleQuote: true
 trailingComma: none
 overrides:
+  - files: '*.html'
+    options:
+      useTabs: false
+      parser: html
+  - files: '*.css'
+    options:
+      useTabs: false
+      parser: css
+  - files: '*.scss'
+    options:
+      useTabs: false
+      parser: scss
   - files:
       - '*.md'
     options:
@@ -29,5 +41,8 @@ overrides:
   - files: '*.svelte'
     options:
       parser: svelte
+  - files: '*.ts'
+    options:
+      parser: typescript
 plugins:
   - prettier-plugin-svelte

@@ -5,21 +5,21 @@
 } */
 
 .rokkit item {
-	@apply flex flex-shrink items-center gap-1;
+  @apply flex flex-shrink items-center gap-1;
 }
 .rokkit item > p {
-	@apply flex-shrink text-ellipsis;
+  @apply flex-shrink text-ellipsis;
 }
 
 .rokkit icon:not([role='button']) {
-	@apply focus:outline-none;
+  @apply focus:outline-none;
 }
 .rokkit icon[role='button'] {
-	@apply text-skin-500 focus:rounded hover:text-secondary ;
+  @apply text-skin-500 focus:rounded hover:text-secondary;
 }
 .rokkit icon[role='button']:focus {
-	@apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 }
 .rokkit icon.disabled[role='button'] {
-	@apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
+  @apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
 }
