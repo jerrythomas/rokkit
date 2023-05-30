@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags: # Don't create changelogs for prereleases
-      - '^v\d+\.\d+\.d+$'
+    tags:
+      - '^v\d+\.\d+\.d+'
 
 jobs:
   release:
