@@ -12,7 +12,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@vitest/expect": "^0.31.1"
+    "@vitest/expect": "^0.32.2"
   },
   "scripts": {
     "format": "prettier --write .",
