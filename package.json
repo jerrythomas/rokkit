@@ -36,13 +36,13 @@
 	],
 	"devDependencies": {
 		"@changesets/cli": "^2.26.1",
-		"bumpp": "^9.1.0",
-		"eslint": "^8.41.0",
+		"bumpp": "^9.1.1",
+		"eslint": "^8.43.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-config-shared": "workspace:*",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.2",
-		"madge": "^6.0.0",
+		"madge": "^6.1.0",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1"
 	},
@@ -51,6 +51,6 @@
 		"*.{js,svelte,md,json}": "prettier --write"
 	},
 	"dependencies": {
-		"turbo": "^1.9.9"
+		"turbo": "^1.10.4"
 	}
 }

@@ -146,7 +146,10 @@
 .rokkit toggle-switch {
   @apply min-w-12 min-h-6 rounded-full mx-auto;
   @apply bg-skin-subtle border border-skin-muted;
-  @apply leading-loose p-2px focus:outline focus:outline-secondary-500;
+  @apply leading-loose p-2px ;
+}
+.rokkit toggle-switch:focus-within {
+  @apply outline outline-secondary-500;
 }
 .rokkit toggle-switch item {
   @apply items-center justify-center px-3 gap-1 py-0 leading-tight;

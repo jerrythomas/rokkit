@@ -18,12 +18,12 @@
   "dependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.1",
     "@tsconfig/svelte": "^4.0.1",
-    "eslint": "^8.41.0",
+    "eslint": "^8.43.0",
     "eslint-config-shared": "workspace:*",
-    "svelte": "^3.59.1",
-    "typescript": "^5.0.4",
+    "svelte": "^3.59.2",
+    "typescript": "^5.1.3",
     "vite": "^4.3.9",
-    "vitest": "^0.31.1"
+    "vitest": "^0.32.2"
   },
   "publishConfig": {
     "access": "public"
