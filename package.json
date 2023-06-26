@@ -16,7 +16,6 @@
 		"check-git": "if [ -n \"$(git status --porcelain)\" ]; then echo 'You have uncommitted changes or untracked files.' && exit 1; fi",
 		"release": "pnpm check-git && bumpp && turbo run release",
 		"release:next": "pnpm check-git && bumpp --preid=next && turbo run release",
-		"release:cs": "pnpm build && changeset pre enter next && changeset && changeset version && changeset publish && changeset pre exit && pnpm bump:next",
 		"upgrade:all": "./scripts/upgrade.sh && pnpm upgrade",
 		"coverage:lcov": "pnpm coverage && ./scripts/merge-lcov.sh"
 	},
@@ -35,7 +34,6 @@
 		"packages/tutorial"
 	],
 	"devDependencies": {
-		"@changesets/cli": "^2.26.1",
 		"bumpp": "^9.1.1",
 		"eslint": "^8.43.0",
 		"eslint-config-prettier": "^8.8.0",
@@ -51,6 +49,6 @@
 		"*.{js,svelte,md,json}": "prettier --write"
 	},
 	"dependencies": {
-		"turbo": "^1.10.4"
+		"turbo": "^1.10.6"
 	}
 }

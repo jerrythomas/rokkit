@@ -6,6 +6,6 @@
 	// $: console.log(data)
 </script>
 
-{#each data as { x, curve }, i}
+{#each data as { x, curve }}
 	<path d={curve} transform="translate({x},0)" fill="gray" stroke="none" />
 {/each}

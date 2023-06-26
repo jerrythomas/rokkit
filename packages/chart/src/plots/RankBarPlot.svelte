@@ -29,7 +29,7 @@
 
 <svg viewBox="0 0 {width} {height}">
 	{#if Array.isArray(data)}
-		{#each data as item, i}
+		{#each data as item}
 			{#if item.rank < limit}
 				<Bar {...item} fill={colors[item.name]} {scales} />
 			{/if}

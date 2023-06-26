@@ -1,6 +1,7 @@
-import watchMedia from 'svelte-media'
+// import watchMedia from 'svelte-media'
 // import { createStories } from '@rokkit/utils'
 import { assimilateTutorials } from '@rokkit/tutorial'
+import { watchMedia } from '@rokkit/core/stores'
 import tutorials from '$lib/tutorials.json'
 
 export { tutorials }

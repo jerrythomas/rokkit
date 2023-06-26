@@ -30,6 +30,9 @@
 			data-active={step == current}
 			data-completed={step <= value}
 			data-clickable={(step <= value || step <= inprogress) && enabled}
+			role="option"
+			aria-selected={step == current}
+			tabindex="0"
 		/>
 	{/each}
 </span>

@@ -17,9 +17,9 @@ calendar cal-body days-of-month p.holiday {
 calendar cal-body days-of-month {
   @apply gap-2px;
 }
-days-of-month p {
+day-of-month {
   @apply hover:bg-secondary-200 hover:rounded-full;
 }
-days-of-month p.active {
+day-of-month.active {
   @apply bg-secondary-500 text-white rounded-full;
 }

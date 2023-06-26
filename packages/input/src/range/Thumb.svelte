@@ -59,4 +59,8 @@
 	on:panstart={() => (sliding = true)}
 	on:panend={handlePanEnd}
 	on:keydown={handleKeyDown}
+	role="slider"
+	aria-valuenow={value}
+	aria-valuemin={min}
+	aria-valuemax={max}
 />

@@ -8,6 +8,8 @@ dist/**
 **/.svelte-kit/**
 **/fixtures/error/**
 **/dist/**
+**/coverage/**
+**/node_modules/**
 package.json
 tsconfig.json
 .eslintrc

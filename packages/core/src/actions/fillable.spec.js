@@ -55,12 +55,22 @@ describe('fillable', () => {
 
 	it('should clear the filled fillable element on click', () => {
 		let del = document.createElement('del')
+
+		del.innerHTML = '?'
 		node.appendChild(del)
-		fillableAction = fillable(node, { options, current, check })
+		fillableAction = fillable(node, { options, current: -1, check })
+
+		del.dispatchEvent(new MouseEvent('click'))
+		expect(del.innerHTML).toBe('?')
+		expect(del.classList.contains('empty')).toBe(true)
+		expect(del.classList.contains('filled')).toBe(false)
 
 		fillableAction.update({ options, current })
-		del.dispatchEvent(new MouseEvent('click'))
+		expect(del.innerHTML).toBe('Option 1')
+		expect(del.classList.contains('empty')).toBe(false)
+		expect(del.classList.contains('filled')).toBe(true)
 
+		del.dispatchEvent(new MouseEvent('click'))
 		expect(del.innerHTML).toBe('?')
 		expect(del.classList.contains('empty')).toBe(true)
 		expect(del.classList.contains('filled')).toBe(false)
@@ -71,10 +81,14 @@ describe('fillable', () => {
 		node.appendChild(del)
 		options = [{ actualIndex: 0, value: 'Option 1', expectedIndex: 0 }]
 		check = true
-		fillableAction = fillable(node, { options, current, check })
+		fillableAction = fillable(node, { options, current: -1, check })
 
+		fillableAction.update({ options, current: -1 })
+		fillableAction.update({ options, current: 1 })
 		fillableAction.update({ options, current })
-
+		expect(del.innerHTML).toBe('Option 1')
+		expect(del.classList.contains('empty')).toBe(false)
+		expect(del.classList.contains('filled')).toBe(true)
 		expect(del.classList.contains('pass')).toBe(true)
 	})
 	it('should validate the filled values', () => {

@@ -34,4 +34,7 @@
 	on:mouseover
 	on:mouseleave
 	on:focus
+	role="option"
+	aria-selected={false}
+	tabindex="0"
 />

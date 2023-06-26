@@ -20,12 +20,13 @@
 	}
 
 	// $: icon = checked ? 'RadioOn' : 'RadioOff'
-	$: text = header == '' ? label : `${header}. ${label}`
+	// $: text = header == '' ? label : `${header}. ${label}`
 
-	$: console.log('header', header)
+	// $: console.log('header', header)
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <toggle
 	class="justify-top flex flex-row items-start space-x-4 rounded-lg bg-accent-200 p-4 text-accent-900 shadow outline-none focus:border focus:border-accent-500"
 	tabindex="0"

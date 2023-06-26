@@ -23,7 +23,13 @@
 <calendar class="mx-auto flex flex-col select-none items-center">
 	<month-year class="h-10 w-full flex flex-row items-center">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<square class="cursor-pointer select-none" on:click={previousMonth}>
+		<square
+			class="cursor-pointer select-none"
+			on:click={previousMonth}
+			role="option"
+			aria-selected={false}
+			tabindex="0"
+		>
 			<icon class="i-carbon-chevron-left" />
 		</square>
 		<span class="flex flex-grow items-center justify-center gap-1px">
@@ -36,7 +42,13 @@
 			/>
 		</span>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<square class="cursor-pointer select-none" on:click={nextMonth}>
+		<square
+			class="cursor-pointer select-none"
+			on:click={nextMonth}
+			role="option"
+			aria-selected={false}
+			tabindex="0"
+		>
 			<icon class="i-carbon-chevron-right" />
 		</square>
 	</month-year>
@@ -52,14 +64,17 @@
 			{#each days as { day, offset, date, weekend }}
 				{@const start = offset > 0 ? offset : 'auto'}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<p
+				<day-of-month
 					class:active={isSameDay(date, value)}
 					class:weekend
 					style:grid-column-start={start}
 					on:click={() => (value = date)}
+					role="option"
+					aria-selected={isSameDay(date, value)}
+					tabindex="0"
 				>
 					{day}
-				</p>
+				</day-of-month>
 			{/each}
 		</days-of-month>
 	</cal-body>

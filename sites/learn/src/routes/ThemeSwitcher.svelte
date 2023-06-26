@@ -19,13 +19,13 @@
 	function toggleMode() {
 		const mode = current.mode === 'dark' ? 'light' : 'dark'
 		theme.set({ ...current, mode })
-		if (!document.startViewTransition)
-			document.startViewTransition = (fn) => fn()
-
-		document.startViewTransition(() => theme.set({ ...current, mode }))
+		// if (!document.startViewTransition)
+		// 	document.startViewTransition = (fn) => fn()
+		// document.startViewTransition(() => theme.set({ ...current, mode }))
 	}
 
 	function handleThemeChange(event) {
+		console.log('select', event.detail)
 		theme.set({ ...current, name: event.detail.name })
 	}
 </script>
