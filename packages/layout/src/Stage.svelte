@@ -12,6 +12,9 @@
 	class:completed
 	class:active
 	on:click
+	role="option"
+	aria-selected={active}
+	tabindex="0"
 >
 	{#if completed}
 		<Icon name="tick" on:click />

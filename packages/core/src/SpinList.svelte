@@ -3,7 +3,7 @@
 	import { defaultFields } from './constants'
 	import { Item } from './items'
 	import { navigable } from './actions'
-	import { getComponent } from './list'
+	// import { getComponent } from './list'
 
 	const dispatch = createEventDispatcher()
 
@@ -27,7 +27,7 @@
 	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: value = index >= 0 ? items[index] : null
-	$: component = getComponent(value, fields)
+	// $: component = getComponent(value, fields)
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

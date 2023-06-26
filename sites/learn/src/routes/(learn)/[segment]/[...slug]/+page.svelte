@@ -27,10 +27,10 @@
 		}
 	]
 	let page = items[0]
-	let ready = false
+	// let ready = false
 
 	async function loadComponent(tutorial) {
-		ready = false
+		// ready = false
 
 		story.set({
 			preview: tutorial.src.preview,
@@ -40,7 +40,7 @@
 			previous: tutorial.previous,
 			next: tutorial.next
 		})
-		ready = true
+		// ready = true
 	}
 	let size = 'md'
 	export let data

@@ -73,7 +73,7 @@
 			<title>A swatch with label {label}</title>
 		{/if}
 
-		{#each data as { cx, cy, r, type }, i}
+		{#each data as { cx, cy, type }, i}
 			<Symbol
 				x={cx}
 				y={cy}
