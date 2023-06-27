@@ -1,0 +1,9 @@
+.demo-col {
+	@apply w-full h-full grid;
+}
+.demo-col.md {
+	@apply grid-rows-3 grid-cols-1;
+}
+.demo-col.lg {
+	@apply grid-rows-2 grid-cols-2;
+}

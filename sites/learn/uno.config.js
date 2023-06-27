@@ -41,6 +41,7 @@ export default defineConfig({
 		'svelte',
 		'js',
 		'folder',
+		'css',
 		'-translate-x-full'
 	],
 	shortcuts: {
@@ -67,6 +68,7 @@ export default defineConfig({
 		svelte: 'i-file:svelte',
 		js: 'i-file:js',
 		folder: 'i-file:folder',
+		css: 'i-file:css',
 		'item-hover':
 			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast'
 	},

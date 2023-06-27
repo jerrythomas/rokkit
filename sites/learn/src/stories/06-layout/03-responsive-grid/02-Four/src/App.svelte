@@ -2,6 +2,7 @@
 	import { ResponsiveGrid } from '@rokkit/core'
 	import { ButtonGroup } from '@rokkit/form'
 	import PlaceHolder from './PlaceHolder.svelte'
+	import './style.css'
 
 	let items = [
 		{
@@ -48,32 +49,3 @@
 {#if size == 'sm'}
 	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
 {/if}
-
-<style>
-	:global(.four-col) {
-		@apply grid w-full h-full;
-	}
-	:global(.four-col.md) {
-		@apply grid-cols-2;
-		@apply grid-rows-2;
-		grid-template-areas:
-			'c-1 c-2'
-			'c-3 c-4';
-	}
-
-	:global(.four-col.md > .col-1) {
-		grid-area: c-1;
-	}
-	:global(.four-col.md > .col-2) {
-		grid-area: c-2;
-	}
-	:global(.four-col.md > .col-3) {
-		grid-area: c-3;
-	}
-	:global(.four-col.md > .col-4) {
-		grid-area: c-4;
-	}
-	:global(.four-col.lg) {
-		@apply grid-rows-4 grid-cols-1;
-	}
-</style>
