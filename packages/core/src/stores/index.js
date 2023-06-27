@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-// export * from './alerts'
+export * from './media'
 export { theme } from './theme'
 export const alerts = writable([])
 export { media as watchMedia } from './media'

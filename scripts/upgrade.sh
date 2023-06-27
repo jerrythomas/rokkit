@@ -14,7 +14,8 @@ do
 	then
 	   cd $i
 		 pnpm upgrade --latest
-		 pnpm test:ci
+		#  npx svelte-migrate@latest svelte-4
+		 pnpm run --if-present test:ci
 		 cd ../..
 	fi
 done

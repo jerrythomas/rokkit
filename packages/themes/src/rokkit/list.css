@@ -169,8 +169,8 @@
 
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit list:focus-within item.is-selected,
-.rokkit tree:focus-within node.is-selected,
-.rokkit nested-list:focus-within node.is-selected {
+.rokkit tree:focus-within node[aria-selected='true'],
+.rokkit nested-list:focus-within node[aria-selected='true'] {
   @apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
   @apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
 }
