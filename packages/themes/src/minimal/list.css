@@ -69,7 +69,9 @@
   /* .minimal node > icon { */
   @apply text-sm;
 }
-.minimal node.is-selected p,
+.minimal node[aria-selected='true'] > item > p {
+  @apply text-secondary-600;
+}
 .minimal node.is-selected icon {
   @apply text-secondary-600;
   @apply hover:text-secondary-600;
