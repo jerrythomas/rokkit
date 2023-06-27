@@ -26,8 +26,9 @@
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.4.2",
-		"@testing-library/svelte": "^4.0.0",
-		"@vitest/coverage-v8": "^0.32.2",
+		"@testing-library/svelte": "^4.0.1",
+		"@vitest/coverage-c8": "^0.32.2",
+		"@vitest/coverage-istanbul": "^0.32.2",
 		"@vitest/ui": "~0.32.2",
 		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",

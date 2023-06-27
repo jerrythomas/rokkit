@@ -1,7 +1,5 @@
-// import watchMedia from 'svelte-media'
-// import { createStories } from '@rokkit/utils'
-import { assimilateTutorials } from '@rokkit/tutorial'
 import { watchMedia } from '@rokkit/core/stores'
+import { assimilateTutorials } from '@rokkit/tutorial'
 import tutorials from '$lib/tutorials.json'
 
 export { tutorials }
@@ -32,10 +30,5 @@ const config = {
 	partialFolder: 'pre',
 	solutionFolder: 'src'
 }
-// export const storyFiles = { modules, samples }
-export const guide = assimilateTutorials(modules, samples, config)
 export const media = watchMedia(mediaqueries)
-// export const content = getTutorials({
-// 	rootFolder: 'stories',
-// 	tutorialMetadata: 'src/lib/tutorials.json'
-// })
+export const guide = assimilateTutorials(modules, samples, config)
