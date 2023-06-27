@@ -75,6 +75,9 @@
 		on:click|stopPropagation={() => (open = !open)}
 		class="w-full flex items-center"
 		bind:clientHeight={offsetTop}
+		role="option"
+		tabindex="-1"
+		aria-selected={value !== null && !open}
 	>
 		<slot>
 			<item class="w-full flex">

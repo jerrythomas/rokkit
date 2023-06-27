@@ -1,15 +1,10 @@
+/**
+ * Taken from https://github.com/cibernox/svelte-media and converted to esm with jsdoc.
+ */
 import { writable } from 'svelte/store'
 
-// type Media<Query extends Record<string, string> = Record<string, string>> = {
-//   [K in keyof Query]?: boolean | string;
-// } & {
-//   classNames: string;
-// };
-
-// type MediaQueryLists = Record<string, MediaQueryList>;
-
 /**
- * @typedef Media
+ * @typedef Breakpoints
  * @type {Object.<{string|bookean}, string>}
  */
 /**
@@ -40,13 +35,32 @@ function calculateMedia(mqls) {
 	return media
 }
 
-export function media(mediaqueries) {
+/**
+ * @param {Breakpoints} breakpoints
+ * @returns {import('svelte/store').Writable<Media>}
+ * @example
+ * ```js
+ * import { watchMedia } from 'svelte-media'
+ *
+ * let breakpoints = {
+ *  small: '(max-width: 849px)',
+ *  large: '(min-width: 850px)',
+ *  short: '(max-height: 399px)',
+ *  wide: '(min-width: 960px)',
+ *  widest: '(min-width: 1260px)',
+ *  landscape: '(orientation: landscape) and (max-height: 499px)',
+ *  tiny: '(orientation: portrait) and (max-height: 599px)'
+ * }
+ * let store = watchMedia(breakpoints)
+ * ```
+ */
+export function watchMedia(breakpoints) {
 	return writable({ classNames: '' }, (set) => {
 		if (typeof window === 'undefined') return
 		let mqls = {}
 		let updateMedia = () => set(calculateMedia(mqls))
-		for (let key in mediaqueries) {
-			let foo = window.matchMedia(mediaqueries[key])
+		for (let key in breakpoints) {
+			let foo = window.matchMedia(breakpoints[key])
 			mqls[key] = foo
 			mqls[key].addListener(updateMedia)
 		}

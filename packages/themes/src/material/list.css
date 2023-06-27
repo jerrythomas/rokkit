@@ -16,10 +16,7 @@
   @apply bg-primary-500;
 }
 
-.material list item.is-selected,
-.material node.is-selected {
-  @apply bg-primary text-primary-50;
-}
+
 .material tabs .tab {
   @apply cursor-pointer;
 }
@@ -30,14 +27,6 @@
   @apply border-b-0 border-t-3;
 }
 
-.material accordion .is-expanded summary {
-  @apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
-}
-
-.material accordion .is-selected summary {
-  @apply border-b-primary-500 border-b text-primary-600;
-  @apply hover:text-primary-600;
-}
 
 .material node {
   @apply h-7 px-2;
@@ -56,6 +45,10 @@
 .material nested-list:focus-within {
   @apply outline-none;
 }
+
+/* .material node[aria-selected='true'] item {
+  @apply bg-primary text-primary-800;
+} */
 /* .material node.is-selected p,
 .material node.is-selected icon {
 	@apply bg-primary text-primary-800;
@@ -69,6 +62,18 @@
   @apply border-transparent;
 }
 
+.material accordion .is-expanded summary {
+  @apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
+}
+
+.material accordion .is-selected summary {
+  @apply border-b-primary-500 border-b text-primary-600;
+  @apply hover:text-primary-600;
+}
+.material list item.is-selected,
+.material node[aria-selected='true'] {
+  @apply bg-primary text-primary-800;
+}
 .material crumbs {
   @apply flex-grow gap-1 text-sm;
 }
