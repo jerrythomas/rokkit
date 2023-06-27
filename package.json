@@ -16,7 +16,8 @@
 		"check-git": "if [ -n \"$(git status --porcelain)\" ]; then echo 'You have uncommitted changes or untracked files.' && exit 1; fi",
 		"release": "pnpm check-git && bumpp && turbo run release",
 		"release:next": "pnpm check-git && bumpp --preid=next && turbo run release",
-		"upgrade:all": "./scripts/upgrade.sh && pnpm upgrade",
+		"release:cs": "pnpm build && changeset pre enter next && changeset && changeset version && changeset publish && changeset pre exit && pnpm bump:next",
+		"upgrade:all": "./scripts/upgrade.sh && pnpm upgrade --latest",
 		"coverage:lcov": "pnpm coverage && ./scripts/merge-lcov.sh"
 	},
 	"author": "Jerry Thomas<me@jerrythomas.name",
