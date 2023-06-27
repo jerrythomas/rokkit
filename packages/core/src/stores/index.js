@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store'
 export * from './media'
 export { theme } from './theme'
+export { persistable } from './persist'
+
 export const alerts = writable([])
-export { media as watchMedia } from './media'
 // export const theme = writable({ name: 'rokkit', mode: 'dark' })
