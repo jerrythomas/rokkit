@@ -1,7 +1,7 @@
 // export { aes } from './lib/aes'
 // export { timelapse } from './lib/timelapse'
 // export { axisTicks } from './lib/axis'
-export { timer, elapsed } from './lib/timer'
+// export { timer, elapsed } from './lib/timer'
 // export { default as Chart } from './chart/Chart.svelte'
 // export { default as Axis } from './chart/Axis.svelte'
 export { default as Swatch } from './chart/Swatch.svelte'

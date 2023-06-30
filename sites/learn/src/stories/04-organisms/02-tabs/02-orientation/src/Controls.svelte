@@ -1,5 +1,5 @@
 <script>
-	import { Switch } from '@rokkit/core'
+	import { Switch } from '@rokkit/organisms'
 
 	export let options
 </script>

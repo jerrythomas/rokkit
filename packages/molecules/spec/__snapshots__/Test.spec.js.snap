@@ -1,0 +1,45 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Test.svelte > Should render 1`] = `
+<body>
+  <div>
+    
+  </div>
+</body>
+`;
+
+exports[`Test.svelte > Should render empty content 1`] = `
+<body>
+  <div>
+    
+  </div>
+</body>
+`;
+
+exports[`Test.svelte > Should render object 1`] = `
+<body>
+  <div>
+    <p
+      class="w-full flex"
+    >
+      hello
+    </p>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`Test.svelte > Should render using field mapping 1`] = `
+<body>
+  <div>
+    <p
+      class="w-full flex"
+    >
+      hello
+    </p>
+    
+    
+  </div>
+</body>
+`;

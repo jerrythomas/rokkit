@@ -1,5 +1,5 @@
 <script>
-	import { Accordion } from '@rokkit/core'
+	import { Accordion } from '@rokkit/organisms'
 	import { items } from './data.js'
 
 	const fields = {

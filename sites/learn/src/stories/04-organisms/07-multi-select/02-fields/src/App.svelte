@@ -1,5 +1,5 @@
 <script>
-	import { MultiSelect } from '@rokkit/input'
+	import { MultiSelect } from '@rokkit/organisms'
 	import { items } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }

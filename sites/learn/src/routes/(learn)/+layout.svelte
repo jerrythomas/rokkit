@@ -2,7 +2,8 @@
 	import { getContext } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { Tree, findValueFromPath } from '@rokkit/core'
+	import { Tree } from '@rokkit/organisms'
+	import { findValueFromPath } from 'rokkit/utils'
 	import Sidebar from './Sidebar.svelte'
 	const media = getContext('media')
 	const site = getContext('site')

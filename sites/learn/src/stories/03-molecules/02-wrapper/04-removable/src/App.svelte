@@ -1,5 +1,5 @@
 <script>
-	import { ItemWrapper } from '@rokkit/core'
+	import { ItemWrapper } from '@rokkit/molecules'
 
 	let items = [
 		{ text: 'Sample Removable 1' },

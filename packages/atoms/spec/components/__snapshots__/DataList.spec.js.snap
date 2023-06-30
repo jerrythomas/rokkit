@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DataList.svelte > should render 1`] = `
+<body>
+  <div>
+    <datalist
+      id="items"
+    >
+      <option
+        value="alpha"
+      />
+    </datalist>
+  </div>
+</body>
+`;

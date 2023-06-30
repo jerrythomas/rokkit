@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { elapsed, timer } from '../lib/timer.js'
+	import { elapsed, timer } from 'rokkit/stores'
 
 	const dispatch = createEventDispatcher()
 

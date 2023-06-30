@@ -1,5 +1,5 @@
 <script>
-	import { Select } from '@rokkit/input'
+	import { Select } from '@rokkit/organisms'
 	import { items } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }

@@ -1,5 +1,5 @@
 <script>
-	import { Tabs } from '@rokkit/core'
+	import { Tabs } from '@rokkit/organisms'
 	import { items } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }

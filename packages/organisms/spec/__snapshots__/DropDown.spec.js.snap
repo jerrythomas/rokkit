@@ -1,0 +1,32 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DropDown.svelte > should toggle open state when button is clicked 1`] = `
+<body>
+  <div>
+    <drop-down
+      aria-controls="menu"
+      aria-haspopup="true"
+      class="flex relative cursor-pointer select-none dropdown "
+      tabindex="0"
+    >
+      <button
+        class="flex items-center"
+        tabindex="-1"
+      >
+         
+         
+        <icon
+          class="selector-closed"
+        />
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </button>
+       
+    </drop-down>
+  </div>
+</body>
+`;

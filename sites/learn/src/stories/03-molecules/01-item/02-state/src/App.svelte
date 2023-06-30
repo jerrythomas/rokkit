@@ -1,5 +1,5 @@
 <script>
-	import { Item } from '@rokkit/core'
+	import { Item } from '@rokkit/molecules'
 
 	let icon = { open: 'i-rokkit:folder-opened', close: 'i-rokkit:folder-closed' }
 </script>

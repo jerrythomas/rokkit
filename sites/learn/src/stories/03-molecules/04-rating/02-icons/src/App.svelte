@@ -1,5 +1,5 @@
 <script>
-	import { Rating } from '@rokkit/input'
+	import { Rating } from '@rokkit/molecules'
 
 	let value
 	const stateIcons = {

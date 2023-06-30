@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from './constants'
+	import { defaultFields } from 'rokkit/utils'
 	import TabItem from './TabItem.svelte'
 
 	const dispatch = createEventDispatcher()

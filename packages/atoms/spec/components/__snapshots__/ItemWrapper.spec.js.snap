@@ -1,0 +1,297 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ItemWrapper.svelte > Should render 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render custom component 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        <span>
+          undefined
+        </span>
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render object 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          Test
+        </p>
+        
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render object configured component 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        <span>
+          Test
+        </span>
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render removable with custom class 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center pill"
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+      </item>
+       
+      <icon
+        aria-label="Remove"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="action-remove"
+        />
+      </icon>
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render removable with custom icon 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          Test
+        </p>
+        
+        
+      </item>
+       
+      <icon
+        aria-label="Remove"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="close"
+        />
+      </icon>
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render removable with default icon when null 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          Test
+        </p>
+        
+        
+      </item>
+       
+      <icon
+        aria-label="Remove"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="action-remove"
+        />
+      </icon>
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render using field mapping 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        <icon
+          aria-label="info"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="info"
+          />
+        </icon>
+         
+        <p
+          class="w-full flex"
+        >
+          hello
+        </p>
+        
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render with custom class 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center pill"
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render with removable prop 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+      </item>
+       
+      <icon
+        aria-label="Remove"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="action-remove"
+        />
+      </icon>
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should render with selected prop 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="true"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;

@@ -1,5 +1,5 @@
 <script>
-	import { Tabs } from '@rokkit/core'
+	import { Tabs } from '@rokkit/organisms'
 	let value
 	let items = [
 		{

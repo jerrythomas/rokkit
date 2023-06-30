@@ -1,8 +1,7 @@
 <script>
-	import BreadCrumbs from './BreadCrumbs.svelte'
-	import { defaultFields } from './constants'
-	import { Item } from './items'
-	import { flattenNestedList } from './lib/nested'
+	import { defaultFields, flattenNestedList } from 'rokkit/utils'
+	import { Item, BreadCrumbs } from '@rokkit/molecules'
+	// import { flattenNestedList } from './lib/nested'
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()

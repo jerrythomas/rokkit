@@ -1,5 +1,5 @@
 <script>
-	import { List } from '@rokkit/core'
+	import { List } from '@rokkit/organisms'
 	import { items } from './data.js'
 	import Odd from './Odd.svelte'
 	import Even from './Even.svelte'

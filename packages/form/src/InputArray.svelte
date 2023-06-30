@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import FormFields from './FormFields.svelte'
-	import { Tabs } from '@rokkit/core'
+	import { Tabs } from '@rokkit/organisms'
 
 	const dispatch = createEventDispatcher()
 

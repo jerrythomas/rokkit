@@ -4,7 +4,9 @@ title: Getting Started
 
 Rokkit consists of the following libraries.
 
-- [@rokkit/core](https://www.npmjs.com/package/@rokkit/core)
+- [rokkit](https://www.npmjs.com/package/@rokkit/atoms)
+- [@rokkit/molecules](https://www.npmjs.com/package/@rokkit/molecules)
+- [@rokkit/organisms](https://www.npmjs.com/package/@rokkit/organisms)
 - [@rokkit/icons](https://www.npmjs.com/package/@rokkit/icons)
 - [@rokkit/input](https://www.npmjs.com/package/@rokkit/input)
 - [@rokkit/form](https://www.npmjs.com/package/@rokkit/form)
@@ -22,7 +24,7 @@ Add [UnoCSS](https://github.com/unocss/unocss) to your svelte-kit project using 
 ### Add the libraries
 
 ```bash
-pnpm i --save-dev @rokkit/core @rokkit/themes
+pnpm i --save-dev rokkit @rokkit/organisms @rokkit/themes
 ```
 
 ### Add the following styles to your `app.css`
@@ -42,7 +44,7 @@ In your root `+layout.svelte`
 <script>
   import 'uno.css'
   import '../app.css'
-  import { themable } from '@rokkit/core/actions'
+  import { themable } from 'rokkit/actions'
 </script>
 
 <svelte:body use:themable />
@@ -54,7 +56,7 @@ In your `+page.svelte`
 
 ```svelte
 <script>
-  import { List } from '@rokkit/core'
+  import { List } from '@rokkit/organisms'
 
   let items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
   let value

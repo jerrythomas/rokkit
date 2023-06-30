@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Accordion.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <accordion
+      class="flex flex-col w-full select-none "
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
