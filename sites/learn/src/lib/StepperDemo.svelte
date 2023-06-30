@@ -1,5 +1,5 @@
 <script>
-	import { Stepper, Range, ProgressDots } from '@rokkit/base'
+	import { Stepper, Range, ProgressDots } from '@rokkit/core'
 	import ControlPanel from './ControlPanel.svelte'
 
 	export let data = []

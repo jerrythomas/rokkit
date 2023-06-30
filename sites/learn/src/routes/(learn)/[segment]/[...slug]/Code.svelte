@@ -1,5 +1,5 @@
 <script>
-	import { Tree } from '@rokkit/core'
+	import { Tree } from '@rokkit/organisms'
 	import { CodeSnippet } from '@rokkit/markdown'
 	import { getContext } from 'svelte'
 

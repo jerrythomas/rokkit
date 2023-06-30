@@ -1,5 +1,5 @@
 <script>
-	import { Tree } from '@rokkit/core'
+	import { Tree } from '@rokkit/organisms'
 	import { items } from './data.js'
 </script>
 

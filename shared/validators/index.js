@@ -10,6 +10,7 @@ export * from './array'
 export * from './action'
 export * from './dataset'
 export * from './event'
+export * from './helpers'
 
 export function getSubscribedData(store) {
 	let result

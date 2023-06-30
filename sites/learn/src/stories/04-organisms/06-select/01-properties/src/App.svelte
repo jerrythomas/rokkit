@@ -1,5 +1,5 @@
 <script>
-	import { Select } from '@rokkit/input'
+	import { Select } from '@rokkit/organisms'
 
 	let items = ['Alpha ', 'Beta', 'Gamma']
 	let value

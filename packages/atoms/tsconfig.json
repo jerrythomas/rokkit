@@ -1,0 +1,8 @@
+{
+	"extends": "shared-config/svelte-lib.json",
+	"include": ["src/**/*.js", "src/**/*.svelte", "spec/actions/dismissable.spec.js", "spec/stores/media.spec.js", "spec/constants.spec.js", "spec/components/Item.spec.js", "spec/components/ItemWrapper.spec.js", "spec/lib/connector.spec.js", "spec/lib/nested.spec.js", "spec/components/Input.spec.js"],
+	"exclude": ["src/**/*.spec.js"],
+	"compilerOptions": {
+		"outDir": "dist"
+	}
+}

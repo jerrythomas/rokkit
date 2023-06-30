@@ -1,8 +1,8 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from './constants'
-	import { Item } from './items'
-	import { navigable } from './actions'
+	import { defaultFields } from 'rokkit/utils'
+	import { Item } from '@rokkit/molecules'
+	import { navigable } from 'rokkit/actions'
 	// import { getComponent } from './list'
 
 	const dispatch = createEventDispatcher()

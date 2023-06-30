@@ -1,0 +1,365 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`List.svelte > Should render a list of values 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="0"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="0"
+        role="option"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          1
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="1"
+        role="option"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          2
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="2"
+        role="option"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          3
+        </p>
+        
+         
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using custom component 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="0"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="0"
+        role="option"
+      >
+        <span>
+          1
+        </span>
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          2
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          3
+        </p>
+        
+         
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using custom mapping 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="0"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          1
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          2
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          3
+        </p>
+        
+         
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using default item when data is invalid 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="0"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          1
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          2
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          3
+        </p>
+        
+         
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render items using field mappings 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="0"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          1
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          2
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          3
+        </p>
+        
+         
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`List.svelte > Should render with alternate class 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none myClass"
+      role="listbox"
+      tabindex="0"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          1
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          2
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item w-full flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          3
+        </p>
+        
+         
+      </item>
+    </list>
+  </div>
+</body>
+`;

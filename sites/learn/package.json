@@ -1,5 +1,5 @@
 {
-	"name": "rokkit",
+	"name": "@rokkit/learn",
 	"version": "1.0.0-next.33",
 	"private": true,
 	"scripts": {
@@ -50,11 +50,14 @@
 		"@rokkit/input": "workspace:*",
 		"@rokkit/layout": "workspace:*",
 		"@rokkit/markdown": "workspace:*",
+		"@rokkit/molecules": "workspace:1.0.0-next.33",
+		"@rokkit/organisms": "workspace:1.0.0-next.33",
 		"@rokkit/themes": "workspace:*",
 		"@rokkit/tutorial": "workspace:*",
 		"@rokkit/utils": "workspace:*",
 		"prism-svelte": "^0.5.0",
 		"prismjs": "^1.29.0",
-		"ramda": "^0.29.0"
+		"ramda": "^0.29.0",
+		"rokkit": "workspace:1.0.0-next.33"
 	}
 }

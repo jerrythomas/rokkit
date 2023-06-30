@@ -1,5 +1,5 @@
 <script>
-	import { List } from '@rokkit/core'
+	import { List } from '@rokkit/organisms'
 
 	let items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
 	let value

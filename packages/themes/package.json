@@ -53,5 +53,8 @@
 		".": {
 			"import": "./src/index.js"
 		}
+	},
+	"dependencies": {
+		"rokkit": "workspace:1.0.0-next.33"
 	}
 }

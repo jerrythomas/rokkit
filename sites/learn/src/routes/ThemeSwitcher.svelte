@@ -1,8 +1,8 @@
 <script>
-	import { theme } from '@rokkit/core/stores'
-	import { defaultStateIcons } from '@rokkit/core'
-	import { Select } from '@rokkit/input'
-	import { Icon } from '@rokkit/core'
+	import { theme } from 'rokkit/stores'
+	import { defaultStateIcons } from 'rokkit/utils'
+	import { Select } from '@rokkit/organisms'
+	import { Icon } from 'rokkit/atoms'
 	const modeIcons = defaultStateIcons.mode
 
 	export let themes = [

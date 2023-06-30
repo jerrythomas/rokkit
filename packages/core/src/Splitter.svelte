@@ -2,7 +2,7 @@
 	// ensure that parent has position: relative.
 	// on reaching limit remove mouse events.
 	import { createEventDispatcher } from 'svelte'
-	import { pannable } from './actions'
+	import { pannable } from 'rokkit/actions'
 
 	const dispatch = createEventDispatcher()
 

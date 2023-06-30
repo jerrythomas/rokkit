@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { pannable } from './actions'
+	import { pannable } from 'rokkit/actions'
 
 	const dispatch = createEventDispatcher()
 

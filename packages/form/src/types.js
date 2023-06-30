@@ -3,7 +3,7 @@ import InputField from './InputField.svelte'
 // import InputObject from './InputObject.svelte'
 // import IconButton from './IconButton.svelte'
 // import NestedLayout from './NestedLayout.svelte'
-import { CheckBox } from '@rokkit/input'
+import { CheckBox } from '@rokkit/molecules'
 export const inputTypes = {
 	input: InputField,
 	// json: custom.InputJSON,
