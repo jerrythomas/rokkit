@@ -11,7 +11,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@vitest/expect": "^0.32.3"
+    "@vitest/expect": "^0.32.4"
   },
   "exports": {
     "./package.json": "./package.json",
