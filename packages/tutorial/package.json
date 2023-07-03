@@ -27,23 +27,23 @@
 	"devDependencies": {
 		"@rokkit/core": "workspace:*",
 		"@sveltejs/vite-plugin-svelte": "^2.4.2",
-		"@testing-library/svelte": "^4.0.1",
-		"@vitest/ui": "~0.32.2",
+		"@testing-library/svelte": "^4.0.3",
+		"@vitest/ui": "~0.32.3",
 		"c8": "^8.0.0",
 		"jsdom": "^22.1.0",
 		"ramda": "^0.29.0",
 		"shared-config": "workspace:*",
-		"svelte": "^4.0.0",
-		"typescript": "^5.1.3",
+		"svelte": "^4.0.1",
+		"typescript": "^5.1.6",
 		"vite": "^4.3.9",
-		"vitest": "~0.32.2"
+		"vitest": "~0.32.3"
 	},
 	"dependencies": {
 		"@rokkit/molecules": "workspace:1.0.0-next.33",
 		"@rokkit/organisms": "workspace:1.0.0-next.33",
 		"@rokkit/utils": "workspace:*",
 		"frontmatter": "^0.0.3",
-		"glob": "^10.3.0",
+		"glob": "^10.3.1",
 		"mdsvex": "^0.11.0",
 		"rokkit": "workspace:1.0.0-next.33"
 	},
