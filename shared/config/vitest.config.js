@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 
-export const config = {
+export default defineConfig({
 	plugins: [svelte({ hot: !process.env.VITEST })],
 	test: {
 		globals: true,
@@ -13,4 +13,4 @@ export const config = {
 			exclude: ['spec']
 		}
 	}
-}
+})
