@@ -1,6 +1,6 @@
 <script>
-	import { defaultFields, defaultStateIcons, getComponent } from 'rokkit/utils'
-	import { Icon, Connector } from 'rokkit/atoms'
+	import { defaultFields, defaultStateIcons, getComponent } from '@rokkit/core'
+	import { Icon, Connector } from '@rokkit/atoms'
 
 	export let value
 	export let fields = defaultFields

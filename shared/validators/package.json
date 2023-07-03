@@ -2,7 +2,6 @@
   "name": "validators",
   "version": "1.0.0-next.34",
   "description": "Custom matchers for vitest.",
-  "main": "index.js",
   "keywords": [
     "vitest",
     "matchers",
@@ -14,6 +13,14 @@
   "dependencies": {
     "@vitest/expect": "^0.32.3"
   },
+  "exports": {
+		"./package.json": "./package.json",
+    "./mocks": "./mocks/index.js",
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./index.js"
+		}
+	},
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --fix .",

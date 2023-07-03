@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, defaultOptions } from 'rokkit/utils'
+	import { defaultStateIcons, defaultOptions } from '@rokkit/core'
 
 	let className = ''
 	export { className as class }

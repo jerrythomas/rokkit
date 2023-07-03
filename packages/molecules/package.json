@@ -53,8 +53,11 @@
 		}
 	},
 	"dependencies": {
+		"@rokkit/actions": "workspace:*",
+		"@rokkit/atoms": "workspace:*",
+		"@rokkit/core": "workspace:*",
+		"@rokkit/stores": "workspace:*",
 		"d3-scale": "^4.0.2",
-		"date-fns": "^2.30.0",
-		"rokkit": "workspace:latest"
+		"date-fns": "^2.30.0"
 	}
 }

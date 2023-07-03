@@ -1,7 +1,7 @@
 <script>
-	import { defaultFields, defaultStateIcons } from 'rokkit/utils'
-	import { Slider, Icon } from 'rokkit/atoms'
-	import { dismissable, navigable } from 'rokkit/actions'
+	import { defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { Slider, Icon } from '@rokkit/atoms'
+	import { dismissable, navigable } from '@rokkit/actions'
 	import { createEventDispatcher } from 'svelte'
 	import List from './List.svelte'
 	import { Item } from '@rokkit/molecules'

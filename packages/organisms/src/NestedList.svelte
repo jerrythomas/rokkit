@@ -1,5 +1,5 @@
 <script>
-	import { defaultFields, defaultStateIcons, getLineTypes } from 'rokkit/utils'
+	import { defaultFields, defaultStateIcons, getLineTypes } from '@rokkit/core'
 	import { Node, Item } from '@rokkit/molecules'
 
 	let className = 'list'

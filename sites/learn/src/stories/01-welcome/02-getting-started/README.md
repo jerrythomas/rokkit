@@ -44,7 +44,7 @@ In your root `+layout.svelte`
 <script>
   import 'uno.css'
   import '../app.css'
-  import { themable } from 'rokkit/actions'
+  import { themable } from '@rokkit/actions'
 </script>
 
 <svelte:body use:themable />

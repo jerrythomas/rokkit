@@ -1,4 +1,4 @@
-import { watchMedia } from 'rokkit/stores'
+import { watchMedia } from '@rokkit/stores'
 import { assimilateTutorials } from '@rokkit/tutorial'
 import tutorials from '$lib/tutorials.json'
 

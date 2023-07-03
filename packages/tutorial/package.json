@@ -39,13 +39,13 @@
 		"vitest": "~0.32.3"
 	},
 	"dependencies": {
-		"@rokkit/molecules": "workspace:1.0.0-next.33",
-		"@rokkit/organisms": "workspace:1.0.0-next.33",
+		"@rokkit/molecules": "workspace:latest",
+		"@rokkit/organisms": "workspace:latest",
 		"@rokkit/utils": "workspace:*",
 		"frontmatter": "^0.0.3",
 		"glob": "^10.3.1",
 		"mdsvex": "^0.11.0",
-		"rokkit": "workspace:1.0.0-next.33"
+		"rokkit": "workspace:latest"
 	},
 	"files": [
 		"!fixtures",

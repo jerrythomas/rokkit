@@ -1,6 +1,6 @@
 <script>
 	import { format, isSameDay, addMonths } from 'date-fns'
-	import { weekdays, getCalendarDays } from 'rokkit/utils'
+	import { weekdays, getCalendarDays } from '@rokkit/core'
 
 	export let value = new Date()
 	export let holidays = []

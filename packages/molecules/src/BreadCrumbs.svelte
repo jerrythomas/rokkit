@@ -1,5 +1,5 @@
 <script>
-	import { defaultFields } from 'rokkit/utils'
+	import { defaultFields } from '@rokkit/core'
 	import Item from './Item.svelte'
 
 	export let items = []

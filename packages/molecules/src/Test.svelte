@@ -1,5 +1,5 @@
 <script>
-	import { defaultFields } from 'rokkit/utils'
+	import { defaultFields } from '@rokkit/core'
 
 	export let value
 	export let fields = defaultFields

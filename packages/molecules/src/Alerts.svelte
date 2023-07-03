@@ -1,9 +1,9 @@
 <script>
 	import { fade } from 'svelte/transition'
 	import { cubicIn, cubicOut } from 'svelte/easing'
-	import { alerts } from 'rokkit/stores'
-	import { dismissable } from 'rokkit/actions'
-	import { defaultFields, getComponent } from 'rokkit/utils'
+	import { alerts } from '@rokkit/stores'
+	import { dismissable } from '@rokkit/actions'
+	import { defaultFields, getComponent } from '@rokkit/core'
 	import Item from './Item.svelte'
 
 	export let fields = defaultFields

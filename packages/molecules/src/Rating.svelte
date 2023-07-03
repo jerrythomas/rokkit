@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultStateIcons } from 'rokkit/utils'
-	import { Icon } from 'rokkit/atoms'
+	import { defaultStateIcons } from '@rokkit/core'
+	import { Icon } from '@rokkit/atoms'
 	const dispatch = createEventDispatcher()
 
 	export let id = null

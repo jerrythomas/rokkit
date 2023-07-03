@@ -1,9 +1,9 @@
 <script>
 	import { goto } from '$app/navigation'
-	import { Icon } from 'rokkit/atoms'
+	import { Icon } from '@rokkit/atoms'
 	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
-	// import { Icon } from 'rokkit/atoms'
+	// import { Icon } from '@rokkit/atoms'
 	// import { getContext } from 'svelte'
 	// const site = getContext('site')
 
