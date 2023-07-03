@@ -1,8 +1,8 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields, defaultStateIcons } from 'rokkit/utils'
-	import { navigator } from 'rokkit/actions'
-	import { Icon } from 'rokkit/atoms'
+	import { defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { navigator } from '@rokkit/actions'
+	import { Icon } from '@rokkit/atoms'
 	import { ItemWrapper, Item } from '@rokkit/molecules'
 
 	const dispatch = createEventDispatcher()

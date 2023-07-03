@@ -1,7 +1,7 @@
 <script>
 	import Select from './Select.svelte'
 	import { ItemWrapper, Item } from '@rokkit/molecules'
-	import { defaultFields } from 'rokkit/utils'
+	import { defaultFields } from '@rokkit/core'
 
 	let className = ''
 	export { className as class }

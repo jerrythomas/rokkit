@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Tree } from '@rokkit/organisms'
-	import { findValueFromPath } from 'rokkit/utils'
+	import { findValueFromPath } from '@rokkit/core'
 	import Sidebar from './Sidebar.svelte'
 	const media = getContext('media')
 	const site = getContext('site')

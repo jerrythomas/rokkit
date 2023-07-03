@@ -1,5 +1,5 @@
 <script>
-	import { ResponsiveGrid } from '@rokkit/core'
+	import { ResponsiveGrid } from '@rokkit/input'
 	import { ButtonGroup } from '@rokkit/form'
 	import PlaceHolder from './PlaceHolder.svelte'
 	import './style.css'

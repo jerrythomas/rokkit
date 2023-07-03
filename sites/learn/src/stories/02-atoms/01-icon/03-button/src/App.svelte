@@ -1,5 +1,5 @@
 <script>
-	import { Icon } from 'rokkit/atoms'
+	import { Icon } from '@rokkit/atoms'
 
 	let count = 0
 	function handleClick() {

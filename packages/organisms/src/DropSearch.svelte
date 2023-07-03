@@ -1,7 +1,7 @@
 <script>
-	import { defaultFields } from 'rokkit/utils'
+	import { defaultFields } from '@rokkit/core'
 	import List from './List.svelte'
-	import { Slider } from 'rokkit/atoms'
+	import { Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 
 	export let data

@@ -47,8 +47,6 @@
 	"exports": {
 		"./src": "./src",
 		"./package.json": "./package.json",
-		"./stores": "./src/stores/index.js",
-		"./actions": "./src/actions/index.js",
 		"./constants": "./src/constants.js",
 		".": {
 			"types": "./dist/index.d.ts",
@@ -56,8 +54,6 @@
 		}
 	},
 	"dependencies": {
-		"@rokkit/molecules": "workspace:1.0.0-next.33",
-		"ramda": "^0.29.0",
-		"rokkit": "workspace:1.0.0-next.33"
+		"ramda": "^0.29.0"
 	}
 }

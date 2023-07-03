@@ -1,5 +1,5 @@
 import { items } from './02-fields/data.js'
-import { defaultFields } from 'rokkit/utils'
+import { defaultFields } from '@rokkit/core'
 export const props = [
 	{
 		name: 'items',

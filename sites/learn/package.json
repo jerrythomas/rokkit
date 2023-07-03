@@ -43,6 +43,8 @@
 		"@fontsource/open-sans": "^5.0.3",
 		"@fontsource/overpass": "^5.0.3",
 		"@fontsource/victor-mono": "^5.0.3",
+		"@rokkit/actions": "workspace:*",
+		"@rokkit/atoms": "workspace:*",
 		"@rokkit/chart": "workspace:*",
 		"@rokkit/core": "workspace:*",
 		"@rokkit/form": "workspace:*",
@@ -50,14 +52,14 @@
 		"@rokkit/input": "workspace:*",
 		"@rokkit/layout": "workspace:*",
 		"@rokkit/markdown": "workspace:*",
-		"@rokkit/molecules": "workspace:1.0.0-next.33",
-		"@rokkit/organisms": "workspace:1.0.0-next.33",
+		"@rokkit/molecules": "workspace:*",
+		"@rokkit/organisms": "workspace:*",
+		"@rokkit/stores": "workspace:*",
 		"@rokkit/themes": "workspace:*",
 		"@rokkit/tutorial": "workspace:*",
 		"@rokkit/utils": "workspace:*",
 		"prism-svelte": "^0.5.0",
 		"prismjs": "^1.29.0",
-		"ramda": "^0.29.0",
-		"rokkit": "workspace:1.0.0-next.33"
+		"ramda": "^0.29.0"
 	}
 }

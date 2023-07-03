@@ -1,9 +1,9 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { dismissable } from 'rokkit/actions'
-	import { defaultFields, defaultStateIcons } from 'rokkit/utils'
+	import { dismissable } from '@rokkit/actions'
+	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 
-	import { Icon, Slider } from 'rokkit/atoms'
+	import { Icon, Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 	import List from './List.svelte'
 	// import Slider from './Slider.svelte'

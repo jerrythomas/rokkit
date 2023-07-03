@@ -1,7 +1,7 @@
 <script>
 	import CodeSnippet from './CodeSnippet.svelte'
-	import { defaultFields } from 'rokkit/utils'
-	import { PageNavigator } from '@rokkit/core'
+	import { defaultFields } from '@rokkit/core'
+	import { PageNavigator } from '@rokkit/input'
 
 	let className = ''
 	export { className as class }

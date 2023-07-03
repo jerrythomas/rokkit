@@ -1,5 +1,5 @@
 import { toSortedHierarchy } from './tutorial'
-import { flattenNestedList } from 'rokkit/utils'
+import { flattenNestedList } from '@rokkit/core'
 import {
 	fetchImports,
 	addPathMetadata,

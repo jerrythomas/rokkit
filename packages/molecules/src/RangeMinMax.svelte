@@ -1,6 +1,6 @@
 <script>
-	import { Thumb, RangeTick } from 'rokkit/atoms'
-	import { generateTicks } from 'rokkit/utils'
+	import { Thumb, RangeTick } from '@rokkit/atoms'
+	import { generateTicks } from '@rokkit/core'
 	import { scaleLinear } from 'd3-scale'
 
 	let className = ''

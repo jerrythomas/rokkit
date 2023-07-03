@@ -1,5 +1,5 @@
 {
-	"name": "rokkit",
+	"name": "@rokkit/atoms",
 	"version": "1.0.0-next.34",
 	"description": "Atomic components are small, reusable building blocks that can be combined to create complex UI elements",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
@@ -27,8 +27,6 @@
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.4.2",
 		"@testing-library/svelte": "^4.0.3",
-		"@vitest/coverage-c8": "^0.32.3",
-		"@vitest/coverage-istanbul": "^0.32.3",
 		"@vitest/coverage-v8": "^0.32.3",
 		"@vitest/ui": "~0.32.3",
 		"jsdom": "^22.1.0",
@@ -48,17 +46,13 @@
 	"exports": {
 		"./src": "./src",
 		"./package.json": "./package.json",
-		"./stores": "./src/stores/index.js",
-		"./atoms": "./src/components/index.js",
-		"./actions": "./src/actions/index.js",
-		"./utils": "./src/lib/index.js",
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./src/index.js"
 		}
 	},
 	"dependencies": {
-		"date-fns": "^2.30.0",
-		"ramda": "^0.29.0"
+		"@rokkit/actions": "workspace:latest",
+		"@rokkit/core": "workspace:latest"
 	}
 }

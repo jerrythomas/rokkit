@@ -1,5 +1,5 @@
 <script>
-	import { Icon } from 'rokkit/atoms'
+	import { Icon } from '@rokkit/atoms'
 	let className = ''
 
 	export { className as class }

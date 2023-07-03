@@ -1,5 +1,5 @@
 <script>
-	import { Icon } from 'rokkit/atoms'
+	import { Icon } from '@rokkit/atoms'
 
 	export let text
 	export let completed

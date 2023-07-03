@@ -53,7 +53,9 @@
 		}
 	},
 	"dependencies": {
-		"@rokkit/molecules": "workspace:latest",
-		"rokkit": "workspace:latest"
+		"@rokkit/actions": "workspace:*",
+		"@rokkit/atoms": "workspace:*",
+		"@rokkit/core": "workspace:*",
+		"@rokkit/molecules": "workspace:*"
 	}
 }

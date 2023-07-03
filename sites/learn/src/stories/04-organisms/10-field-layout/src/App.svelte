@@ -1,5 +1,5 @@
 <script>
-	import { DataList } from 'rokkit/atoms'
+	import { DataList } from '@rokkit/atoms'
 	import { Form } from '@rokkit/input'
 	import { FieldLayout } from '@rokkit/form'
 
