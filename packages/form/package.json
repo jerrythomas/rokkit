@@ -38,11 +38,11 @@
 		"vitest": "~0.32.3"
 	},
 	"dependencies": {
-		"@rokkit/atoms": "workspace:1.0.0-next.34",
+		"@rokkit/atoms": "workspace:*",
 		"@rokkit/core": "workspace:*",
 		"@rokkit/input": "workspace:*",
-		"@rokkit/molecules": "workspace:latest",
-		"@rokkit/organisms": "workspace:latest",
+		"@rokkit/molecules": "workspace:*",
+		"@rokkit/organisms": "workspace:*",
 		"ajv": "^8.12.0",
 		"ramda": "^0.29.0"
 	},
