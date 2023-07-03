@@ -113,7 +113,7 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
       yootils:
         specifier: ^0.3.1
@@ -153,13 +153,13 @@ importers:
   packages/core:
     dependencies:
       '@rokkit/molecules':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../molecules
       ramda:
         specifier: ^0.29.0
         version: 0.29.0
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
@@ -208,10 +208,10 @@ importers:
         specifier: workspace:*
         version: link:../input
       '@rokkit/molecules':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../molecules
       '@rokkit/organisms':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../organisms
       ajv:
         specifier: ^8.12.0
@@ -220,7 +220,7 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
@@ -334,7 +334,7 @@ importers:
         specifier: ^2.30.0
         version: 2.30.0
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
@@ -392,7 +392,7 @@ importers:
         specifier: ^1.29.0
         version: 1.29.0
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
@@ -527,7 +527,7 @@ importers:
   packages/themes:
     dependencies:
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
     devDependencies:
       '@rokkit/core':
@@ -564,10 +564,10 @@ importers:
   packages/tutorial:
     dependencies:
       '@rokkit/molecules':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../molecules
       '@rokkit/organisms':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../organisms
       '@rokkit/utils':
         specifier: workspace:*
@@ -582,7 +582,7 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0(svelte@4.0.1)
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../atoms
     devDependencies:
       '@rokkit/core':
@@ -777,10 +777,10 @@ importers:
         specifier: workspace:*
         version: link:../../packages/markdown
       '@rokkit/molecules':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../../packages/molecules
       '@rokkit/organisms':
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../../packages/organisms
       '@rokkit/themes':
         specifier: workspace:*
@@ -801,7 +801,7 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0
       rokkit:
-        specifier: workspace:1.0.0-next.33
+        specifier: workspace:1.0.0-next.34
         version: link:../../packages/atoms
     devDependencies:
       '@iconify-json/file-icons':
