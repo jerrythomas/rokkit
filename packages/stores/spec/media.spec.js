@@ -60,17 +60,12 @@ describe('media', () => {
 	})
 
 	describe('mediaChangeWatcher', () => {
-		// let originalMatchMedia
 		beforeEach(() => {
-			// listeners = []
-			// originalMatchMedia = window.matchMedia
 			window.matchMedia = matchMediaMock
-			// window.matchMedia = { addListener, removeListener }
 		})
 
 		afterEach(() => {
 			vi.clearAllMocks()
-			// window.matchMedia = originalMatchMedia
 		})
 
 		it('should subscribe to media queries and update on changes', () => {
@@ -87,8 +82,6 @@ describe('media', () => {
 				window.matchMedia.mock.results[1].value,
 				window.matchMedia.mock.results[2].value
 			]
-			// const mediaQueryList2 = window.matchMedia.mock.results[1].value
-			// const mediaQueryList3 = window.matchMedia.mock.results[2].value
 
 			expect(get(media)).toEqual({
 				classNames: 'media-medium',
@@ -123,6 +116,22 @@ describe('media', () => {
 			expect(window.matchMedia).not.toHaveBeenCalled()
 
 			unsubscribe()
+		})
+
+		it('should work in non-browser environments', () => {
+			window = undefined
+
+			const breakpoints = {
+				small: '(max-width: 767px)',
+				medium: '(min-width: 768px) and (max-width: 1023px)',
+				large: '(min-width: 1024px)'
+			}
+
+			const media = watchMedia(breakpoints)
+
+			expect(get(media)).toEqual({
+				classNames: ''
+			})
 		})
 	})
 })

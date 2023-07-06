@@ -6,8 +6,9 @@ describe('stores', () => {
 		expect(Object.keys(stores)).toEqual([
 			'watchMedia',
 			'theme',
+			'alerts',
 			'persistable',
-			'alerts'
+			'verifiable'
 		])
 	})
 })

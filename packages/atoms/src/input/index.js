@@ -14,7 +14,7 @@ import { default as InputWeek } from './InputWeek.svelte'
 import { default as TextArea } from './TextArea.svelte'
 import { default as InputRange } from './InputRange.svelte'
 
-export const wrappedInput = {
+export const inputTypes = {
 	tel: InputTel,
 	url: InputUrl,
 	text: InputText,

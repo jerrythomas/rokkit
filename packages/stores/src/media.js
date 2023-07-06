@@ -39,10 +39,11 @@ export function calculate(queries) {
  */
 export function watchMedia(breakpoints) {
 	const { set, subscribe } = writable({ classNames: '' })
+	if (typeof window === 'undefined') return { subscribe }
 
 	let queries = {}
 	const updateMedia = () => set(calculate(queries))
-	if (typeof window === 'undefined') return { subscribe }
+
 	for (let key in breakpoints) {
 		queries[key] = window.matchMedia(breakpoints[key])
 		queries[key].addListener(updateMedia)

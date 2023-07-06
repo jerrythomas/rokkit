@@ -1,4 +1,6 @@
+export * from './types'
 export { watchMedia } from './media'
 export { theme } from './theme'
-export { persistable } from './persist'
 export { alerts } from './notifications'
+export { persistable } from './persist'
+export { verifiable } from './validator'
