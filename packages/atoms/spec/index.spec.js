@@ -11,7 +11,8 @@ describe('components', () => {
 			'DataList',
 			'RangeTick',
 			'Thumb',
-			'Slider'
+			'Slider',
+			'inputTypes'
 		])
 	})
 })

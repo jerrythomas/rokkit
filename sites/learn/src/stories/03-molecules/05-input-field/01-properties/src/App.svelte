@@ -1,5 +1,5 @@
 <script>
-	import { InputField } from '@rokkit/form'
+	import { InputField } from '@rokkit/molecules'
 
 	let value
 </script>

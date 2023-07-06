@@ -47,6 +47,13 @@ describe('Utility functions', () => {
 				left: 'navigate-left',
 				right: 'navigate-right',
 				up: 'navigate-up'
+			},
+			state: {
+				error: 'state-error',
+				warning: 'state-warning',
+				success: 'state-success',
+				info: 'state-info',
+				unknown: 'state-unknown'
 			}
 		})
 	})

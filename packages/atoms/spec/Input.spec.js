@@ -1,10 +1,10 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import Input from '../src/Input.svelte'
-import { wrappedInput } from '../src/input'
+import { inputTypes } from '../src/input'
 
 describe('Input.svelte', () => {
-	const types = Object.keys(wrappedInput)
+	const types = Object.keys(inputTypes)
 	const withProps = [
 		['text', { minlength: 3, maxlength: 10, value: 'foo' }],
 		['number', { min: 3, max: 10, value: 4 }],

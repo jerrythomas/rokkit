@@ -1,5 +1,3 @@
-export * from './lib/constants'
-
 export { default as FieldSet } from './FieldSet.svelte'
 export { default as Form } from './Form.svelte'
 export { default as Searchable } from './Searchable.svelte'

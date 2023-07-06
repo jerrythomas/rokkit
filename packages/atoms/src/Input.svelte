@@ -1,13 +1,13 @@
 <script>
-	import { wrappedInput } from './input'
+	import { inputTypes } from './input'
 
 	export let value
 	export let type = 'text'
 </script>
 
-{#if type in wrappedInput}
+{#if type in inputTypes}
 	<svelte:component
-		this={wrappedInput[type]}
+		this={inputTypes[type]}
 		bind:value
 		{...$$restProps}
 		on:change

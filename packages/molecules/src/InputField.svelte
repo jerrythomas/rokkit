@@ -1,6 +1,6 @@
 <script>
 	import { pick, omit } from 'ramda'
-	import { Input } from '@rokkit/atoms'
+	import { Input, Icon } from '@rokkit/atoms'
 
 	let className = ''
 	export { className as class }
@@ -38,20 +38,17 @@
 		{label}
 	</label>
 
-	<!-- <Input bind:value {name} {type} {...props} /> -->
-	<!-- </field> -->
-	<!-- {:else} -->
 	<field class="w-full flex flex-row items-center">
 		{#if icon}
-			<span
+			<Icon name={icon} />
+			<!-- <span
 				class="aspect-square flex flex-shrink-0 items-center justify-center"
 			>
 				<icon class={icon} />
-			</span>
+			</span> -->
 		{/if}
 		<Input id={name} bind:value {name} {type} {...props} />
 	</field>
-	<!-- {/if} -->
 	{#if message}
 		<message class={status}>{message}</message>
 	{/if}
