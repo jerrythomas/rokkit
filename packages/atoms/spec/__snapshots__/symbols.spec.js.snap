@@ -1,0 +1,322 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`components > should render Circle 1`] = `
+<body>
+  <div>
+    <circle
+      cx="0"
+      cy="0"
+      fill="currentColor"
+      r="5"
+      role="button"
+      stroke="currentColor"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render Shape 1`] = `
+<body>
+  <div>
+    <path
+      d="M1 5A4 4 0 0 0 9 5A4 4 0 0 0 1 5"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render Square 1`] = `
+<body>
+  <div>
+    <rect
+      fill="currentColor"
+      height="10"
+      role="button"
+      rx="0.5"
+      ry="0.5"
+      stroke="currentColor"
+      tabindex="0"
+      width="10"
+      x="-5"
+      y="-5"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render Symbol 1`] = `
+<body>
+  <div>
+    <path
+      d="M1 5A4 4 0 0 0 9 5A4 4 0 0 0 1 5"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render Triangle 1`] = `
+<body>
+  <div>
+    <polygon
+      fill="currentColor"
+      points="0, -5, 4.330127018922193, 2.5, -4.330127018922193, 2.5"
+      role="button"
+      stroke="currentColor"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape circle 1`] = `
+<body>
+  <div>
+    <path
+      d="M1 5A4 4 0 0 0 9 5A4 4 0 0 0 1 5"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape clubs 1`] = `
+<body>
+  <div>
+    <path
+      d="M4 9.5 L6 9.5L5.5 7.5A1.7000000000000002 1.7000000000000002 0 0 0 7.4 3A1.7000000000000002 1.7000000000000002 0 0 0 2.6 3A1.7000000000000002 1.7000000000000002 0 0 0 4.5 7.5 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape crossboats 1`] = `
+<body>
+  <div>
+    <path
+      d="M0 5A6 4 0 0 0 10 5A6 4 0 0 0 0 5M5 0A4 6 0 0 0 5 10A4 6 0 0 0 5 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape curvedrhombus 1`] = `
+<body>
+  <div>
+    <path
+      d="M1 1A6 6 0 0 0 9 1A6 6 0 0 0 9 9A6 6 0 0 0 1 9A6 6 0 0 0 1 1"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape diamond 1`] = `
+<body>
+  <div>
+    <path
+      d="M5 0A6 6 0 0 0 10 5A6 6 0 0 0 5 10A6 6 0 0 0 0 5A6 6 0 0 0 5 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape fourflags 1`] = `
+<body>
+  <div>
+    <path
+      d="M5 3A2 1 0 0 0 5 1L5 9M5 7A2 1 0 0 0 5 9M3 5A1 2 0 0 0 1 5L9 5M7 5A1 2 0 0 0 9 5"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape heart 1`] = `
+<body>
+  <div>
+    <path
+      d="M9 5A0.8 0.8 0 0 0 5 2A0.8 0.8 0 0 0 1 5L5 9L9 5"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape hexagon 1`] = `
+<body>
+  <div>
+    <path
+      d="M5 0L9.33 2.5L9.33 7.5L5 10L0.67 7.5L0.67 2.5Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape rhombus 1`] = `
+<body>
+  <div>
+    <path
+      d="M5 0L10 5L5 10L0 5Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape shurikan 1`] = `
+<body>
+  <div>
+    <path
+      d="M3 1L5 0L7 1A 0.5 0.5 0 0 0 9 3.5L10 5L9 7A 0.5 0.5 0 0 0 7 9L5 10L3 9A0.5 0.5 0 0 0 1 7L0 5L1 3A0.5 0.5 0 0 0 3 1M4 5A1 1 0 0 0 6 5A1 1 0 0 0 4 5"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape spade 1`] = `
+<body>
+  <div>
+    <path
+      d="M4 9.5 L6 9.5L5.5 8A1.7000000000000002 2 0 0 0 8 5L5 1.5L2 5A1.7000000000000002 2 0 0 0 4.5 8 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape square 1`] = `
+<body>
+  <div>
+    <path
+      d="M2 1A1 1 0 0 0 1 2V8A1 1 0 0 0 2 9H8A1 1 0 0 0 9 8V2A1 1 0 0 0 8 1Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape star 1`] = `
+<body>
+  <div>
+    <path
+      d="M5 0.5L6.06 3.5999999999999996L10 3.5999999999999996L6.8500000000000005 5.8999999999999995L8.100000000000001 9.5L5 7.25L1.9 9.5L3.15 5.8999999999999995L0 3.5999999999999996L3.9400000000000004 3.5999999999999996Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;
+
+exports[`components > should render the named shape triangle 1`] = `
+<body>
+  <div>
+    <path
+      d="M5 0.866L0 9.234L10 9.234Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="0.5"
+      tabindex="0"
+      transform="translate(-5,-5)"
+    />
+  </div>
+</body>
+`;

@@ -139,15 +139,15 @@ describe('validator', () => {
 			{ text: 'At least 1 upper case letter', pattern: /[A-Z]+/ },
 			{ text: 'At least 1 lower case letter', pattern: /[a-z]+/ },
 			{ text: 'At least 1 number', pattern: /[0-9]+/ },
-			{ text: 'At least 1 symbol [!@#$]', pattern: /[!@#\$]+/ },
+			{ text: 'At least 1 symbol [!@#$]', pattern: /[!@#$]+/ },
 			{ text: 'At least 8 characters long', pattern: /.{8,}/ }
 		]
 		const initialValidations = [
-			{ text: 'At least 1 upper case letter', valid: false },
-			{ text: 'At least 1 lower case letter', valid: true },
-			{ text: 'At least 1 number', valid: false },
-			{ text: 'At least 1 symbol [!@#$]', valid: false },
-			{ text: 'At least 8 characters long', valid: false }
+			{ text: 'At least 1 upper case letter', valid: false, status: 'failed' },
+			{ text: 'At least 1 lower case letter', valid: true, status: 'passed' },
+			{ text: 'At least 1 number', valid: false, status: 'failed' },
+			{ text: 'At least 1 symbol [!@#$]', valid: false, status: 'failed' },
+			{ text: 'At least 8 characters long', valid: false, status: 'failed' }
 		]
 
 		it('should create a validation store with initial value and rules', () => {
@@ -161,7 +161,7 @@ describe('validator', () => {
 			let currentValue = get(store)
 
 			expect(currentValue.value).toBe(value)
-			expect(currentValue.status).toBe('error')
+			expect(currentValue.status).toBe('failed')
 			expect(currentValue.isValid).toBe(false)
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.validations).toEqual(initialValidations)
@@ -173,7 +173,7 @@ describe('validator', () => {
 
 			let currentValue = get(store)
 			expect(currentValue.value).toBe(value)
-			expect(currentValue.status).toBe('error')
+			expect(currentValue.status).toBe('failed')
 			expect(currentValue.isValid).toBe(false)
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.validations).toEqual(initialValidations)
@@ -182,30 +182,38 @@ describe('validator', () => {
 			currentValue = get(store)
 
 			expect(currentValue.value).toBe('newExample')
-			expect(currentValue.status).toBe('error')
+			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.isValid).toBe(false)
 			expect(currentValue.validations).toEqual([
-				{ text: 'At least 1 upper case letter', valid: true },
-				{ text: 'At least 1 lower case letter', valid: true },
-				{ text: 'At least 1 number', valid: false },
-				{ text: 'At least 1 symbol [!@#$]', valid: false },
-				{ text: 'At least 8 characters long', valid: true }
+				{
+					text: 'At least 1 upper case letter',
+					valid: true,
+					status: 'passed'
+				},
+				{
+					text: 'At least 1 lower case letter',
+					valid: true,
+					status: 'passed'
+				},
+				{ text: 'At least 1 number', valid: false, status: 'failed' },
+				{ text: 'At least 1 symbol [!@#$]', valid: false, status: 'failed' },
+				{ text: 'At least 8 characters long', valid: true, status: 'passed' }
 			])
 
 			store.update('Example1!')
 			currentValue = get(store)
 
 			expect(currentValue.value).toBe('Example1!')
-			expect(currentValue.status).toBe('success')
+			expect(currentValue.status).toBe('passed')
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.isValid).toBe(true)
 			expect(currentValue.validations).toEqual([
-				{ text: 'At least 1 upper case letter', valid: true },
-				{ text: 'At least 1 lower case letter', valid: true },
-				{ text: 'At least 1 number', valid: true },
-				{ text: 'At least 1 symbol [!@#$]', valid: true },
-				{ text: 'At least 8 characters long', valid: true }
+				{ text: 'At least 1 upper case letter', valid: true, status: 'passed' },
+				{ text: 'At least 1 lower case letter', valid: true, status: 'passed' },
+				{ text: 'At least 1 number', valid: true, status: 'passed' },
+				{ text: 'At least 1 symbol [!@#$]', valid: true, status: 'passed' },
+				{ text: 'At least 8 characters long', valid: true, status: 'passed' }
 			])
 		})
 
@@ -221,11 +229,15 @@ describe('validator', () => {
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.isValid).toBe(false)
 			expect(currentValue.validations).toEqual([
-				{ text: 'At least 1 upper case letter', valid: true },
-				{ text: 'At least 1 lower case letter', valid: false, optional: true },
-				{ text: 'At least 1 number', valid: true },
-				{ text: 'At least 1 symbol [!@#$]', valid: true },
-				{ text: 'At least 8 characters long', valid: true }
+				{ text: 'At least 1 upper case letter', valid: true, status: 'passed' },
+				{
+					text: 'At least 1 lower case letter',
+					valid: false,
+					status: 'warning'
+				},
+				{ text: 'At least 1 number', valid: true, status: 'passed' },
+				{ text: 'At least 1 symbol [!@#$]', valid: true, status: 'passed' },
+				{ text: 'At least 8 characters long', valid: true, status: 'passed' }
 			])
 		})
 
@@ -236,28 +248,28 @@ describe('validator', () => {
 				{ text: 'Should be <= 10', max: 10 }
 			])
 			let currentValue = get(store)
-			expect(currentValue.status).toBe('error')
+			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be numeric', valid: true },
-				{ text: 'Should be >= 5', valid: false },
-				{ text: 'Should be <= 10', valid: true }
+				{ text: 'Should be numeric', valid: true, status: 'passed' },
+				{ text: 'Should be >= 5', valid: false, status: 'failed' },
+				{ text: 'Should be <= 10', valid: true, status: 'passed' }
 			])
 
 			store.update(7)
 			currentValue = get(store)
-			expect(currentValue.status).toBe('success')
+			expect(currentValue.status).toBe('passed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be numeric', valid: true },
-				{ text: 'Should be >= 5', valid: true },
-				{ text: 'Should be <= 10', valid: true }
+				{ text: 'Should be numeric', valid: true, status: 'passed' },
+				{ text: 'Should be >= 5', valid: true, status: 'passed' },
+				{ text: 'Should be <= 10', valid: true, status: 'passed' }
 			])
 			store.update(11)
 			currentValue = get(store)
-			expect(currentValue.status).toBe('error')
+			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be numeric', valid: true },
-				{ text: 'Should be >= 5', valid: true },
-				{ text: 'Should be <= 10', valid: false }
+				{ text: 'Should be numeric', valid: true, status: 'passed' },
+				{ text: 'Should be >= 5', valid: true, status: 'passed' },
+				{ text: 'Should be <= 10', valid: false, status: 'failed' }
 			])
 		})
 
@@ -269,17 +281,30 @@ describe('validator', () => {
 				}
 			])
 			let currentValue = get(store)
-			expect(currentValue.status).toBe('success')
+			expect(currentValue.status).toBe('passed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be "example"', valid: true }
+				{ text: 'Should be "example"', valid: true, status: 'passed' }
 			])
 
 			store.update('not example')
 			currentValue = get(store)
-			expect(currentValue.status).toBe('error')
+			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be "example"', valid: false }
+				{ text: 'Should be "example"', valid: false, status: 'failed' }
 			])
+		})
+		it('should work with empty ruleset', () => {
+			const store = verifiable('example')
+			let currentValue = get(store)
+			expect(currentValue.value).toBe('example')
+			expect(currentValue.status).toBe('passed')
+			expect(currentValue.validations).toEqual([])
+
+			store.update('not example')
+			currentValue = get(store)
+			expect(currentValue.value).toBe('not example')
+			expect(currentValue.status).toBe('passed')
+			expect(currentValue.validations).toEqual([])
 		})
 		it('should throw error for invalid rule', () => {
 			expect(() => {

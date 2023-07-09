@@ -7,11 +7,10 @@ export function getRegex() {
 
 	return new RegExp(pattern, 'gm')
 }
+
 export function parseFilters(string) {
 	const results = []
 	const regex = getRegex()
-	// const regex =
-	// /(?<group>((?<column>[\w_]+)\s?(?<operator>:|>|<|>=|<=|=<|=>|=|!=|~|~\*|!~|!~\*)\s?)(?<value>"[^"]+"|[^\s=:<>!~*]+))/gm
 
 	// Split the string into an array of tokens
 	const tokens = string.matchAll(regex)
@@ -39,8 +38,6 @@ export function parseFilters(string) {
 		if (column && value) results.push({ column, operator, value })
 	}
 	if (search.length > 0) {
-		// const quoteMatch = search.match(/^"([^"]+)"$/)
-		// search = quoteMatch ? quoteMatch[1] : search
 		results.push({
 			operator: '~*',
 			value: new RegExp(removeQuotes(search), 'i')

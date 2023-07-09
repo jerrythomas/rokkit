@@ -54,6 +54,12 @@ describe('Utility functions', () => {
 				success: 'state-success',
 				info: 'state-info',
 				unknown: 'state-unknown'
+			},
+			validity: {
+				failed: 'validity-failed',
+				warning: 'validity-warning',
+				passed: 'validity-passed',
+				unknown: 'validity-unknown'
 			}
 		})
 	})

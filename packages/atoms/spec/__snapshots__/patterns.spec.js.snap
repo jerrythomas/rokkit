@@ -1,0 +1,227 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`components > should render Brick 1`] = `
+<body>
+  <div>
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="0"
+      x2="5"
+      y1="2.5"
+      y2="2.5"
+    />
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="5"
+      x2="10"
+      y1="7.5"
+      y2="7.5"
+    />
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="0"
+      x2="0"
+      y1="0"
+      y2="10"
+    />
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="10"
+      x2="10"
+      y1="0"
+      y2="10"
+    />
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="5"
+      x2="5"
+      y1="0"
+      y2="10"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`components > should render Circles 1`] = `
+<body>
+  <div>
+    <circle
+      cx="0"
+      cy="0"
+      fill="currentColor"
+      r="5"
+    />
+    <circle
+      cx="10"
+      cy="10"
+      fill="currentColor"
+      r="5"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`components > should render CrossHatch 1`] = `
+<body>
+  <div>
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="0"
+      x2="10"
+      y1="0"
+      y2="10"
+    />
+    <line
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="0"
+      x2="10"
+      y1="10"
+      y2="0"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`components > should render Dots 1`] = `
+<body>
+  <div>
+    <circle
+      cx="2"
+      cy="2"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="4"
+      cy="4"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="6"
+      cy="6"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="8"
+      cy="8"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="8"
+      cy="2"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="6"
+      cy="4"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="4"
+      cy="6"
+      fill="currentColor"
+      r="0.8"
+    />
+    <circle
+      cx="2"
+      cy="8"
+      fill="currentColor"
+      r="0.8"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`components > should render Tile 1`] = `
+<body>
+  <div>
+    <line
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="0"
+      x2="5"
+      y1="2.5"
+      y2="2.5"
+    />
+    <line
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="5"
+      x2="10"
+      y1="7.5"
+      y2="7.5"
+    />
+    <line
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="0"
+      x2="0"
+      y1="0"
+      y2="10"
+    />
+    <line
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="10"
+      x2="10"
+      y1="0"
+      y2="10"
+    />
+    <line
+      stroke-linecap="round"
+      stroke-width="0.5"
+      x1="5"
+      x2="5"
+      y1="0"
+      y2="10"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`components > should render Triangles 1`] = `
+<body>
+  <div>
+    <polygon
+      fill="currentColor"
+      points="0, 5, 5, 10, 0, 10"
+      stroke="currentColor"
+    />
+    <polygon
+      fill="currentColor"
+      points="5, 0, 0, 0, 0, 5"
+      stroke="currentColor"
+    />
+    <polygon
+      fill="currentColor"
+      points="10, 0, 5, 5, 10, 10"
+      stroke="currentColor"
+    />
+    
+  </div>
+</body>
+`;
