@@ -167,20 +167,6 @@ exports[`Item.svelte > Should render using field mapping 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render value 1`] = `
-<body>
-  <div>
-     
-    <p
-      class="w-full flex"
-    >
-      text
-    </p>
-    
-  </div>
-</body>
-`;
-
 exports[`Item.svelte > Should render with value 1`] = `
 <body>
   <div>
@@ -196,21 +182,6 @@ exports[`Item.svelte > Should render with value 1`] = `
 `;
 
 exports[`Item.svelte > Should update when value changes 1`] = `
-<body>
-  <div>
-    
-     
-    <p
-      class="w-full flex"
-    >
-      hello
-    </p>
-    
-  </div>
-</body>
-`;
-
-exports[`Item.svelte > Should update when value changes 2`] = `
 <body>
   <div>
     

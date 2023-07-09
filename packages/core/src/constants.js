@@ -50,7 +50,11 @@ export const defaultIcons = [
 	'state-warning',
 	'state-success',
 	'state-info',
-	'state-unknown'
+	'state-unknown',
+	'validity-failed',
+	'validity-warning',
+	'validity-passed',
+	'validity-unknown'
 ]
 
 export const defaultOptions = {

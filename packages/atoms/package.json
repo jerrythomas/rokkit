@@ -40,12 +40,14 @@
 	"files": [
 		"src/**/*.js",
 		"src/**/*.svelte",
-		"!src/mocks",
-		"!src/**/*.spec.js"
+		"!spec"
 	],
 	"exports": {
 		"./src": "./src",
 		"./package.json": "./package.json",
+		"./patterns": "./patterns/index.js",
+		"./symbols": "./symbols/index.js",
+		"./elements": "./elements/index.js",
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./src/index.js"

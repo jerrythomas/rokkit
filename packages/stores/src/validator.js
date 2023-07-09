@@ -19,6 +19,7 @@ export function getPatternValidator(pattern) {
 
 /**
  * Get a validator function that takes a min and max value and returns a validation function
+ *
  * @param {number} min
  * @param {number} max
  * @returns {import('./types').ValidationFunction}
@@ -34,6 +35,7 @@ export function getRangeValidator(min, max) {
 
 /**
  * Get a validator function that takes a type and returns a validation function
+ *
  * @param {string} type
  * @returns {import('./types').ValidationFunction}
  * @throws {Error} - If the type is invalid
@@ -48,36 +50,16 @@ export function getTypeValidator(type) {
 		return (input) =>
 			input !== null && typeof input === 'object' && !Array.isArray(input)
 }
-/**
- * Evaluate the validation rules for the given value.
- * @param {*} value - The value to evaluate.
- * @param {Array<import('./types').ValidationRule>} rules - An array of validation rules.
- * @returns {import('./types').ValidationResult} - The result of the evaluation.
- */
-function evaluateRules(value, rules) {
-	let status = 'success'
-	let validations = []
-
-	rules.map((rule) => {
-		let valid = rule.validator(value)
-		let props = rule.optional ? { optional: rule.optional } : {}
-		if (status !== 'error' && !valid) {
-			status = rule.optional ? 'warning' : 'error'
-		}
-		validations.push({ text: rule.text, valid, ...props })
-	})
-
-	return { value, status, validations, isValid: status === 'success' }
-}
 
 /**
  * Get a validator function for the given rule.
+ *
  * @param {import('./types').ValidationRule} rule - The rule to get the validator for.
  * @returns {import('./types').ValidationFunction} - The validator function.
  * @throws {Error} - If the rule is invalid.
  */
 function getValidator(rule) {
-	if (rule.validator) return rule.validator
+	if (typeof rule.validator === 'function') return rule.validator
 	if (rule.pattern) return getPatternValidator(rule.pattern)
 	if (rule.min || rule.max) return getRangeValidator(rule.min, rule.max)
 	if (rule.type) return getTypeValidator(rule.type)
@@ -86,25 +68,51 @@ function getValidator(rule) {
 }
 
 /**
+ * Evaluate the validation rules for the given value.
+ *
+ * @param {*} value - The value to evaluate.
+ * @param {Array<import('./types').ValidationRule>} rules - An array of validation rules.
+ * @returns {import('./types').ValidationResult} - The result of the evaluation.
+ */
+function evaluateRules(value, rules) {
+	let status = 'passed'
+	let validations = []
+
+	rules.map((rule) => {
+		const valid = rule.validator(value)
+		const result = {
+			text: rule.text,
+			valid,
+			status: valid ? 'passed' : rule.optional ? 'warning' : 'failed'
+		}
+
+		if (status !== 'failed' && !valid) status = result.status
+		validations.push(result)
+	})
+
+	return { value, status, validations, isValid: status === 'passed' }
+}
+
+/**
  * Create a custom Svelte store with validation rules.
  * @param {*} value - The initial value for the store.
  * @param {ValidationRule[]} rules - An array of validation rules.
- * @returns {Writable<import('./types').ValidationResult>} - The custom Svelte store.
+ * @returns {import('svelte').Writable<import('./types').ValidationResult>} - The custom Svelte store.
  */
 export function verifiable(input, rules) {
 	const result = writable({ value: input })
 
-	rules = rules.map((rule) => ({
+	rules = (rules ?? []).map((rule) => ({
 		...rule,
 		validator: getValidator(rule)
 	}))
 
-	result.set(evaluateRules(input, rules))
+	const evaluate = (input) => result.set(evaluateRules(input, rules))
+
+	evaluate(input)
 
 	return {
 		...omit(['set'], result),
-		update: (value) => {
-			result.set(evaluateRules(value, rules))
-		}
+		update: evaluate
 	}
 }

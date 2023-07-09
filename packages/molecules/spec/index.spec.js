@@ -17,7 +17,8 @@ describe('components', () => {
 			'RangeMinMax',
 			'Rating',
 			'Summary',
-			'InputField'
+			'InputField',
+			'ValidationReport'
 		])
 	})
 })
