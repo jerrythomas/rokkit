@@ -6,6 +6,7 @@ describe('components', () => {
 		expect(Object.keys(components)).toEqual([
 			'Alerts',
 			'BreadCrumbs',
+			'Button',
 			'Calendar',
 			'CheckBox',
 			'CheckBoxGroup',

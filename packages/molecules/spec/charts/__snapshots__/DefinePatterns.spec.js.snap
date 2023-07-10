@@ -1,0 +1,130 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DefinePatterns.svelte > should be empty when patterns are not provided. 1`] = `
+<body>
+  <div>
+    
+  </div>
+</body>
+`;
+
+exports[`DefinePatterns.svelte > should render error when pattern names are not unique 1`] = `
+<body>
+  <div>
+    <error>
+      Patterns should be an array and should have unique names for each pattern
+    </error>
+    
+  </div>
+</body>
+`;
+
+exports[`DefinePatterns.svelte > should render the patterns using fills and colors when provided 1`] = `
+<body>
+  <div>
+    <defs>
+      <pattern
+        height="10"
+        id="circles"
+        patternUnits="userSpaceOnUse"
+        width="10"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          fill="red"
+          r="5"
+          stroke="blue"
+        />
+        <circle
+          cx="10"
+          cy="10"
+          fill="red"
+          r="5"
+          stroke="blue"
+        />
+        
+      </pattern>
+      <pattern
+        height="10"
+        id="triangles"
+        patternUnits="userSpaceOnUse"
+        width="10"
+      >
+        <polygon
+          fill="green"
+          points="0, 5, 5, 10, 0, 10"
+          stroke="yellow"
+        />
+        <polygon
+          fill="green"
+          points="5, 0, 0, 0, 0, 5"
+          stroke="yellow"
+        />
+        <polygon
+          fill="green"
+          points="10, 0, 5, 5, 10, 10"
+          stroke="yellow"
+        />
+        
+      </pattern>
+    </defs>
+    
+  </div>
+</body>
+`;
+
+exports[`DefinePatterns.svelte > should render the patterns when provided 1`] = `
+<body>
+  <div>
+    <defs>
+      <pattern
+        height="10"
+        id="circles"
+        patternUnits="userSpaceOnUse"
+        width="10"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          fill="currentColor"
+          r="5"
+          stroke="currentColor"
+        />
+        <circle
+          cx="10"
+          cy="10"
+          fill="currentColor"
+          r="5"
+          stroke="currentColor"
+        />
+        
+      </pattern>
+      <pattern
+        height="10"
+        id="triangles"
+        patternUnits="userSpaceOnUse"
+        width="10"
+      >
+        <polygon
+          fill="currentColor"
+          points="0, 5, 5, 10, 0, 10"
+          stroke="currentColor"
+        />
+        <polygon
+          fill="currentColor"
+          points="5, 0, 0, 0, 0, 5"
+          stroke="currentColor"
+        />
+        <polygon
+          fill="currentColor"
+          points="10, 0, 5, 5, 10, 10"
+          stroke="currentColor"
+        />
+        
+      </pattern>
+    </defs>
+    
+  </div>
+</body>
+`;

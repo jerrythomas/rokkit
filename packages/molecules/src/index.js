@@ -1,5 +1,7 @@
+export * from './types'
 export { default as Alerts } from './Alerts.svelte'
 export { default as BreadCrumbs } from './BreadCrumbs.svelte'
+export { default as Button } from './Button.svelte'
 export { default as Calendar } from './Calendar.svelte'
 export { default as CheckBox } from './CheckBox.svelte'
 export { default as CheckBoxGroup } from './CheckBoxGroup.svelte'

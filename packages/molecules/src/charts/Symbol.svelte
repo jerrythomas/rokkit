@@ -4,8 +4,8 @@
 	export let x = 0
 	export let y = 0
 	export let r = 10
-	export let fill
-	export let stroke
+	export let fill = 'currentColor'
+	export let stroke = 'currentColor'
 	export let shape = 'circle'
 	export let using = { default: Shape }
 

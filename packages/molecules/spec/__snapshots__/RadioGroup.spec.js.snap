@@ -1,0 +1,99 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RadioGroup.svelte > should render default 1`] = `
+<body>
+  <div>
+    <radio
+      class="flex flex-col cursor-pointer select-none "
+    >
+      <label
+        class="flex flex-row items-center gap-2"
+      >
+        <input
+          hidden=""
+          name="radio"
+          type="radio"
+          value="b"
+        />
+         
+        <icon
+          class="radio-off"
+        />
+         
+        <p>
+          b
+        </p>
+         
+      </label>
+      <label
+        class="flex flex-row items-center gap-2"
+      >
+        <input
+          hidden=""
+          name="radio"
+          type="radio"
+          value="a"
+        />
+         
+        <icon
+          class="radio-on"
+        />
+         
+        <p>
+          a
+        </p>
+         
+      </label>
+    </radio>
+  </div>
+</body>
+`;
+
+exports[`RadioGroup.svelte > should render with alternative class 1`] = `
+<body>
+  <div>
+    <radio
+      class="flex flex-col cursor-pointer select-none "
+    >
+      <label
+        class="flex flex-row-reverse items-center gap-2"
+      >
+        <input
+          hidden=""
+          name="radio"
+          type="radio"
+          value="b"
+        />
+         
+        <icon
+          class="radio-off"
+        />
+         
+        <p>
+          b
+        </p>
+         
+      </label>
+      <label
+        class="flex flex-row-reverse items-center gap-2"
+      >
+        <input
+          hidden=""
+          name="radio"
+          type="radio"
+          value="a"
+        />
+         
+        <icon
+          class="radio-on"
+        />
+         
+        <p>
+          a
+        </p>
+         
+      </label>
+    </radio>
+  </div>
+</body>
+`;
