@@ -99,19 +99,19 @@ describe('Item.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should update when value changes', async () => {
-		const { container, component } = render(Item, {
-			value: {
-				text: 'hello'
-			}
-		})
-		expect(container).toBeTruthy()
-		const text = container.querySelector('p')
-		expect(container).toMatchSnapshot()
-		expect(text.textContent).toBe('hello')
+	// it('Should update when value changes', async () => {
+	// 	const { container, component } = render(Item, {
+	// 		value: {
+	// 			text: 'hello'
+	// 		}
+	// 	})
+	// 	expect(container).toBeTruthy()
+	// 	const text = container.querySelector('p')
+	// 	expect(container).toMatchSnapshot()
+	// 	expect(text.textContent).toBe('hello')
 
-		component.$set({ value: { text: 'world' } })
-		await tick()
-		expect(text.textContent).toBe('world')
-	})
+	// 	component.$set({ value: { text: 'world' } })
+	// 	await tick()
+	// 	expect(text.textContent).toBe('world')
+	// })
 })

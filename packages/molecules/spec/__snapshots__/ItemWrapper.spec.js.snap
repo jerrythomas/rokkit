@@ -1,5 +1,30 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`ItemWrapper.svelte > Should handle value change 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+         
+        <p
+          class="w-full flex"
+        >
+          hello
+        </p>
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
 exports[`ItemWrapper.svelte > Should render 1`] = `
 <body>
   <div>
@@ -203,6 +228,43 @@ exports[`ItemWrapper.svelte > Should render removable with default icon when nul
 </body>
 `;
 
+exports[`ItemWrapper.svelte > Should render removable with default icon when null 2`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          Test
+        </p>
+        
+      </item>
+       
+      <icon
+        aria-label="Remove"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="close"
+        />
+      </icon>
+    </wrap-item>
+  </div>
+</body>
+`;
+
 exports[`ItemWrapper.svelte > Should render using field mapping 1`] = `
 <body>
   <div>
@@ -317,6 +379,32 @@ exports[`ItemWrapper.svelte > Should render with selected prop 1`] = `
           class="w-full flex"
         >
           Test
+        </p>
+        
+      </item>
+       
+    </wrap-item>
+  </div>
+</body>
+`;
+
+exports[`ItemWrapper.svelte > Should update when value changes 1`] = `
+<body>
+  <div>
+    <wrap-item
+      aria-selected="false"
+      class="flex flex-row items-center "
+      role="option"
+    >
+      <item
+        class="flex flex-row items-center"
+      >
+        
+         
+        <p
+          class="w-full flex"
+        >
+          hello
         </p>
         
       </item>

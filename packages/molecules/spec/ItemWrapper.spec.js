@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { toHaveBeenDispatchedWith } from 'validators'
-
+import { tick } from 'svelte'
 import ItemWrapper from '../src/ItemWrapper.svelte'
 import Custom from './mocks/Custom.svelte'
 
@@ -14,6 +14,41 @@ describe('ItemWrapper.svelte', () => {
 		const { container } = render(ItemWrapper, { value: 'hello' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
+	})
+
+	it('Should handle value change', async () => {
+		const { container, component } = render(ItemWrapper, { value: 'hello' })
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		// handle value change
+		component.$set({ value: 'hello' })
+		await tick()
+		let text = container.querySelector('p')
+		expect(text).toBeTruthy()
+		expect(text.textContent).toBe('hello')
+	})
+
+	// it('Should handle change for removable property', async () => {
+	// 	const { container, component } = render(ItemWrapper, { value: 'hello' })
+	// 	expect(container).toMatchSnapshot()
+
+	// 	component.$set({ removable: true })
+	// 	await tick()
+	// 	expect(container).toMatchSnapshot()
+	// })
+
+	it('Should handle class change', async () => {
+		const { container, component } = render(ItemWrapper, { value: 'hello' })
+		let wrapper = container.querySelector('wrap-item')
+		expect(wrapper).toBeTruthy()
+		expect(Array.from(wrapper.classList)).not.toContain('item')
+
+		component.$set({ class: 'item' })
+		await tick()
+		wrapper = container.querySelector('wrap-item')
+		expect(wrapper).toBeTruthy()
+		expect(Array.from(wrapper.classList)).toContain('item')
 	})
 
 	it('Should render using field mapping', () => {
@@ -78,6 +113,7 @@ describe('ItemWrapper.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
+
 	it('Should render object', () => {
 		const { container } = render(ItemWrapper, { value: { text: 'Test' } })
 
@@ -96,14 +132,18 @@ describe('ItemWrapper.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render removable with default icon when null', () => {
-		const { container } = render(ItemWrapper, {
+	it('Should render removable with default icon when null', async () => {
+		const { container, component } = render(ItemWrapper, {
 			value: { text: 'Test' },
 			icons: null,
 			removable: true
 		})
 
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		component.$set({ icons: { remove: 'close' } })
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
@@ -115,5 +155,21 @@ describe('ItemWrapper.svelte', () => {
 
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
+	})
+
+	it('Should update when value changes', async () => {
+		const { container, component } = render(ItemWrapper, {
+			value: {
+				text: 'hello'
+			}
+		})
+		expect(container).toBeTruthy()
+		const text = container.querySelector('p')
+		expect(container).toMatchSnapshot()
+		expect(text.textContent).toBe('hello')
+
+		component.$set({ value: { text: 'world', icon: 'world' } })
+		await tick()
+		expect(text.textContent).toBe('world')
 	})
 })

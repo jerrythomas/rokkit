@@ -180,18 +180,3 @@ exports[`Item.svelte > Should render with value 1`] = `
   </div>
 </body>
 `;
-
-exports[`Item.svelte > Should update when value changes 1`] = `
-<body>
-  <div>
-    
-     
-    <p
-      class="w-full flex"
-    >
-      hello
-    </p>
-    
-  </div>
-</body>
-`;
