@@ -3,14 +3,18 @@
 	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { Item } from '@rokkit/molecules'
+	import { addRootNode } from './lib'
 	import NestedList from './NestedList.svelte'
 
 	const dispatch = createEventDispatcher()
-	let className = 'list'
+	let className = ''
 	export { className as class }
+	/** @type {Array<Object>} */
 	export let items = []
+	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = {}
 	export let using = { default: Item }
+	/** @type {string} */
 	export let root = null
 	export let value = null
 
@@ -26,16 +30,7 @@
 	}
 
 	$: fields = { ...defaultFields, ...fields }
-	$: items =
-		items[0][fields.text] == root || root == null
-			? items
-			: [
-					{
-						[fields.text]: root,
-						[fields.isOpen]: true,
-						[fields.children]: items
-					}
-			  ]
+	$: items = addRootNode(items, root, fields)
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

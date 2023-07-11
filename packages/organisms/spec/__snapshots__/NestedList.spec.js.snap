@@ -1,0 +1,599 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NestedList.svelte > Should render empty nested list 1`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    />
+  </div>
+</body>
+`;
+
+exports[`NestedList.svelte > Should render nested items 1`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    >
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0"
+        id="id-0"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="1"
+        id="id-1"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            b
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="2"
+        id="id-2"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            c
+          </p>
+          
+        </item>
+      </node>
+       
+      
+    </nested-list>
+  </div>
+</body>
+`;
+
+exports[`NestedList.svelte > Should render open items 1`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    >
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0"
+        id="id-0"
+        role="option"
+      >
+        <icon
+          aria-label="collapse"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-opened"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      <nested-list
+        class="flex flex-col w-full list"
+        role="listbox"
+        tabindex="-1"
+      >
+        <node
+          aria-selected="false"
+          class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+          data-path="0,0"
+          id="id-0-0"
+          role="option"
+        >
+          <span
+            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+          >
+            <i
+              class="border-r"
+            />
+             
+            <i
+              class="border-b"
+            />
+            
+          </span>
+          
+          <span
+            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+          />
+          
+           
+          <item>
+            
+             
+            <p
+              class="w-full flex"
+            >
+              aa
+            </p>
+            
+          </item>
+        </node>
+         
+        
+      </nested-list>
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="1"
+        id="id-1"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            b
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="2"
+        id="id-2"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            c
+          </p>
+          
+        </item>
+      </node>
+       
+      
+    </nested-list>
+  </div>
+</body>
+`;
+
+exports[`NestedList.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    >
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0"
+        id="id-0"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="1"
+        id="id-1"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            b
+          </p>
+          
+        </item>
+      </node>
+       
+      
+    </nested-list>
+  </div>
+</body>
+`;
+
+exports[`NestedList.svelte > Should render using field mappings 1`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    >
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0"
+        id="id-0"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="1"
+        id="id-1"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      
+    </nested-list>
+  </div>
+</body>
+`;
+
+exports[`NestedList.svelte > Should support custom icons 1`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    >
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0"
+        id="id-0"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="1"
+        id="id-1"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            b
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="2"
+        id="id-2"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            c
+          </p>
+          
+        </item>
+      </node>
+       
+      
+    </nested-list>
+  </div>
+</body>
+`;
+
+exports[`NestedList.svelte > Should support custom icons 2`] = `
+<body>
+  <div>
+    <nested-list
+      class="flex flex-col w-full list"
+      role="listbox"
+      tabindex="-1"
+    >
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0"
+        id="id-0"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="1"
+        id="id-1"
+        role="option"
+      >
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        />
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            b
+          </p>
+          
+        </item>
+      </node>
+       
+      
+      <node
+        aria-selected="false"
+        class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="2"
+        id="id-2"
+        role="option"
+      >
+        <icon
+          aria-label="expand"
+          class="flex flex-shrink-0 items-center justify-center small w-4"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-closed"
+          />
+        </icon>
+        
+         
+        <item>
+          
+           
+          <p
+            class="w-full flex"
+          >
+            c
+          </p>
+          
+        </item>
+      </node>
+       
+      
+    </nested-list>
+  </div>
+</body>
+`;

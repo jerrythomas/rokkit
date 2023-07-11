@@ -11,6 +11,7 @@
 	let className = ''
 	export { className as class }
 	export let items = []
+	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = {}
 	export let using = {}
 	export let value = null

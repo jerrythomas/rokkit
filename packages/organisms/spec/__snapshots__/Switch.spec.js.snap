@@ -1,0 +1,408 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Switch.svelte > Should render default 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should render text array 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          b
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+        
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+        
+         
+        <p
+          class="w-full flex"
+        >
+          b
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should render using field mappings 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+        
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+        
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should render with value 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center is-on compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+      </item>
+      <item
+        aria-selected="true"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+        <indicator
+          class="absolute bottom-0 left-0 right-0 top-0"
+        />
+         
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should support custom icons 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          b
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should support custom icons 2`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          b
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should support editable attribute 1`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          b
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > Should support editable attribute 2`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center compact"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="0"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative flex"
+        data-path="1"
+        role="option"
+      >
+         
+         
+        <p
+          class="w-full flex"
+        >
+          b
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;

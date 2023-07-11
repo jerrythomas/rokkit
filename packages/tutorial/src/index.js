@@ -1,4 +1,4 @@
-// export * from './files.js'
+export * from './types'
+export { assimilateTutorials } from './assimilate.js'
 // export { collectTutorials } from './collector.js'
 // export { getTutorials, findTutorial, toSortedHierarchy } from './tutorial.js'
-export { assimilateTutorials } from './assimilate.js'

@@ -373,6 +373,9 @@ importers:
 
   packages/layout:
     dependencies:
+      '@rokkit/actions':
+        specifier: workspace:*
+        version: link:../actions
       '@rokkit/atoms':
         specifier: workspace:*
         version: link:../atoms
@@ -382,6 +385,9 @@ importers:
       '@rokkit/markdown':
         specifier: workspace:*
         version: link:../markdown
+      '@rokkit/organisms':
+        specifier: workspace:*
+        version: link:../organisms
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2

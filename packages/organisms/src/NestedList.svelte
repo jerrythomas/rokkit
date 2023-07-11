@@ -5,6 +5,7 @@
 	let className = 'list'
 	export { className as class }
 	export let items = []
+	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields
 	export let using = {}
 	export let types = []
@@ -13,12 +14,12 @@
 	export let hierarchy = []
 	export let icons
 
+	$: icons = { ...defaultStateIcons.node, ...icons }
 	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
 	$: nodeTypes = items.map((_, index) =>
 		index === items.length - 1 ? 'last' : 'child'
 	)
-	$: icons = { ...defaultStateIcons.node, ...icons }
 </script>
 
 <nested-list

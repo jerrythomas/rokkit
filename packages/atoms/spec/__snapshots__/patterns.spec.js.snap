@@ -61,12 +61,14 @@ exports[`components > should render Circles 1`] = `
       cy="0"
       fill="currentColor"
       r="5"
+      stroke="currentColor"
     />
     <circle
       cx="10"
       cy="10"
       fill="currentColor"
       r="5"
+      stroke="currentColor"
     />
     
   </div>

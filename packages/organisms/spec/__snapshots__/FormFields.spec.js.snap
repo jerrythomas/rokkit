@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FormFields.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <fields
+      class="flex flex-col gap-2 "
+    />
+  </div>
+</body>
+`;

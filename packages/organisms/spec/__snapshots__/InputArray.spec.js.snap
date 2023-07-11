@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputArray.svelte > Should render using default field mapping 1`] = `
+<body>
+  <div>
+    <section
+      class="flex "
+    >
+      <list
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="0"
+      >
+         
+      </list>
+      
+       
+      <wrap-items>
+        <fields
+          class="flex flex-col gap-2 "
+        />
+      </wrap-items>
+    </section>
+  </div>
+</body>
+`;
