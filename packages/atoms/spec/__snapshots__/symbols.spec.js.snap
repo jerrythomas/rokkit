@@ -52,23 +52,6 @@ exports[`components > should render Square 1`] = `
 </body>
 `;
 
-exports[`components > should render Symbol 1`] = `
-<body>
-  <div>
-    <path
-      d="M1 5A4 4 0 0 0 9 5A4 4 0 0 0 1 5"
-      fill="none"
-      fill-rule="evenodd"
-      role="button"
-      stroke="currentColor"
-      stroke-width="0.5"
-      tabindex="0"
-      transform="translate(-5,-5)"
-    />
-  </div>
-</body>
-`;
-
 exports[`components > should render Triangle 1`] = `
 <body>
   <div>

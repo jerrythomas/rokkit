@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { describe, it, expect, beforeAll } from 'vitest'
-import { getTutorials, toSortedHierarchy } from './tutorial'
-import { collectTutorials } from './collector'
+import { getTutorials, toSortedHierarchy } from '../src/tutorial'
+import { collectTutorials } from '../src/collector'
 
 describe('getTutorials', () => {
 	const options = {

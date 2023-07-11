@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getFiles, folderHierarchy } from './files'
+import { getFiles, folderHierarchy } from '../src/files'
 import files from '../fixtures/files.json'
 
 describe('getFiles', () => {

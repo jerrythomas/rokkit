@@ -6,7 +6,7 @@ import {
 	generateRouteEntries,
 	turorialsToNestedObject,
 	convertFilesToFolderHierarchy
-} from './metamodel.js'
+} from '../src/metamodel.js'
 
 describe('metamodel', () => {
 	describe('fetchImports', () => {
