@@ -1,16 +1,17 @@
 <script>
-	import { inputTypes } from './types'
+	import { componentTypes } from './types'
 	let className = ''
 
 	export { className as class }
 	export let value
 	export let items = []
-	// export let mapping
-	export let using = inputTypes
+	export let schema = {}
+	export let layout = {elements:[]}
+	export let using = componentTypes
 </script>
 
-<segment class={className}>
-	{#each items as field}
+<segment class="{layout.type} {className}">
+	{#each layout.elements as field}
 		{@const component = using[field.component]}
 		{@const hasKey = 'key' in field}
 

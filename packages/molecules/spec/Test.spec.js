@@ -6,25 +6,25 @@ import Item from '../src/Test.svelte'
 describe('Test.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render', () => {
+	it('should render', () => {
 		const { container } = render(Item, { value: 'hello' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render empty content', () => {
+	it('should render empty content', () => {
 		const { container } = render(Item, { value: null })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render object', () => {
+	it('should render object', () => {
 		const { container } = render(Item, { value: { text: 'hello' } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render using field mapping', () => {
+	it('should render using field mapping', () => {
 		const { container } = render(Item, {
 			value: {
 				alt: 'hello',

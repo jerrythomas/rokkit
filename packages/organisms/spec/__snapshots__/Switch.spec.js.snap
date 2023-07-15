@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Switch.svelte > Should render default 1`] = `
+exports[`Switch.svelte > should render default 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -32,7 +32,7 @@ exports[`Switch.svelte > Should render default 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should render text array 1`] = `
+exports[`Switch.svelte > should render text array 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -80,7 +80,7 @@ exports[`Switch.svelte > Should render text array 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should render using default field mapping 1`] = `
+exports[`Switch.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -130,7 +130,7 @@ exports[`Switch.svelte > Should render using default field mapping 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should render using field mappings 1`] = `
+exports[`Switch.svelte > should render using field mappings 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -180,7 +180,7 @@ exports[`Switch.svelte > Should render using field mappings 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should render with value 1`] = `
+exports[`Switch.svelte > should render with value 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -215,7 +215,7 @@ exports[`Switch.svelte > Should render with value 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should support custom icons 1`] = `
+exports[`Switch.svelte > should support custom icons 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -263,7 +263,7 @@ exports[`Switch.svelte > Should support custom icons 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should support custom icons 2`] = `
+exports[`Switch.svelte > should support custom icons 2`] = `
 <body>
   <div>
     <toggle-switch
@@ -311,7 +311,7 @@ exports[`Switch.svelte > Should support custom icons 2`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should support editable attribute 1`] = `
+exports[`Switch.svelte > should support editable attribute 1`] = `
 <body>
   <div>
     <toggle-switch
@@ -359,7 +359,7 @@ exports[`Switch.svelte > Should support editable attribute 1`] = `
 </body>
 `;
 
-exports[`Switch.svelte > Should support editable attribute 2`] = `
+exports[`Switch.svelte > should support editable attribute 2`] = `
 <body>
   <div>
     <toggle-switch

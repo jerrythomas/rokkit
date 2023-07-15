@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Searchable.svelte > Should render 1`] = `
+exports[`Searchable.svelte > should render 1`] = `
 <body>
   <div>
     <div

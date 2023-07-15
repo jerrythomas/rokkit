@@ -1,4 +1,4 @@
 import { describe, it } from 'vitest'
 describe('Chart', () => {
-	it('Should initialize a chart object', () => {})
+	it('should initialize a chart object', () => {})
 })

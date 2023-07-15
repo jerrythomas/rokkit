@@ -5,7 +5,7 @@ import Fillable from './Fillable.svelte'
 describe('Fillable.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render svg with default properties and title', () => {
+	it('should render svg with default properties and title', () => {
 		const { container } = render(Fillable)
 		expect(container).toBeTruthy()
 	})

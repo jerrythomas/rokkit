@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`InputArray.svelte > Should render using default field mapping 1`] = `
+exports[`InputArray.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
     <section
@@ -16,8 +16,8 @@ exports[`InputArray.svelte > Should render using default field mapping 1`] = `
       
        
       <wrap-items>
-        <fields
-          class="flex flex-col gap-2 "
+        <field-group
+          class="flex flex-col gap-2"
         />
       </wrap-items>
     </section>

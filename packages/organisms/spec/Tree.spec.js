@@ -11,31 +11,31 @@ describe('Tree.svelte', () => {
 
 	beforeEach(() => cleanup())
 
-	it('Should render empty tree', () => {
+	it('should render empty tree', () => {
 		const { container } = render(Tree)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render single node tree', () => {
+	it('should render single node tree', () => {
 		const { container } = render(Tree, { items: [{ text: 'a' }] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render nested tree', () => {
+	it('should render nested tree', () => {
 		const { container } = render(Tree, {
 			items: [{ text: 'a', children: [{ text: 'b' }, { text: 'c' }] }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should add root node when input has more than one item', () => {
+	it('should add root node when input has more than one item', () => {
 		const { container } = render(Tree, {
 			items: [{ text: 'a' }, { text: 'a' }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should add custom root node', () => {
+	it('should add custom root node', () => {
 		const { container } = render(Tree, {
 			items: [{ text: 'a' }, { text: 'a' }],
 			root: 'root'
@@ -43,7 +43,7 @@ describe('Tree.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using custom field mappings', () => {
+	it('should render using custom field mappings', () => {
 		const { container } = render(Tree, {
 			items: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
@@ -51,8 +51,8 @@ describe('Tree.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using custom component', () => {})
-	it('Should expand and collapse', () => {})
-	it('Should autoclose others', () => {})
-	it('Should pass select and change events', () => {})
+	it('should render items using custom component', () => {})
+	it('should expand and collapse', () => {})
+	it('should autoclose others', () => {})
+	it('should pass select and change events', () => {})
 })

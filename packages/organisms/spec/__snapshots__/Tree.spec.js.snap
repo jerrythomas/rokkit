@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Tree.svelte > Should add custom root node 1`] = `
+exports[`Tree.svelte > should add custom root node 1`] = `
 <body>
   <div>
     <tree
@@ -133,7 +133,7 @@ exports[`Tree.svelte > Should add custom root node 1`] = `
 </body>
 `;
 
-exports[`Tree.svelte > Should add root node when input has more than one item 1`] = `
+exports[`Tree.svelte > should add root node when input has more than one item 1`] = `
 <body>
   <div>
     <tree
@@ -261,7 +261,7 @@ exports[`Tree.svelte > Should add root node when input has more than one item 1`
 </body>
 `;
 
-exports[`Tree.svelte > Should render empty tree 1`] = `
+exports[`Tree.svelte > should render empty tree 1`] = `
 <body>
   <div>
     <tree
@@ -278,7 +278,7 @@ exports[`Tree.svelte > Should render empty tree 1`] = `
 </body>
 `;
 
-exports[`Tree.svelte > Should render nested tree 1`] = `
+exports[`Tree.svelte > should render nested tree 1`] = `
 <body>
   <div>
     <tree
@@ -329,7 +329,7 @@ exports[`Tree.svelte > Should render nested tree 1`] = `
 </body>
 `;
 
-exports[`Tree.svelte > Should render single node tree 1`] = `
+exports[`Tree.svelte > should render single node tree 1`] = `
 <body>
   <div>
     <tree
@@ -372,7 +372,7 @@ exports[`Tree.svelte > Should render single node tree 1`] = `
 </body>
 `;
 
-exports[`Tree.svelte > Should render using custom field mappings 1`] = `
+exports[`Tree.svelte > should render using custom field mappings 1`] = `
 <body>
   <div>
     <tree

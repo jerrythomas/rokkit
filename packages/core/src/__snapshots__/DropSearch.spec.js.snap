@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`DropSearch.svelte > Should render 1`] = `
+exports[`DropSearch.svelte > should render 1`] = `
 <body>
   <div>
     <div
@@ -18,12 +18,12 @@ exports[`DropSearch.svelte > Should render 1`] = `
             type="text"
           />
         </span>
-         
+
         <icon
           class="selector-closed"
         />
       </div>
-       
+
     </div>
   </div>
 </body>

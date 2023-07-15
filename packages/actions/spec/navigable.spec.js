@@ -36,21 +36,21 @@ describe('Navigable Action', () => {
 	})
 
 	describe('Horizontal Navigation', () => {
-		it('Should trigger "select" event on Enter key', () => {
+		it('should trigger "select" event on Enter key', () => {
 			const action = navigable(node, { horizontal: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 			expect(handler).toOnlyTrigger('select')
 			action.destroy()
 		})
 
-		it('Should trigger "previous" event on left arrow key', () => {
+		it('should trigger "previous" event on left arrow key', () => {
 			const action = navigable(node, { horizontal: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 			expect(handler).toOnlyTrigger('previous')
 			action.destroy()
 		})
 
-		it('Should trigger "next" event on right arrow key', () => {
+		it('should trigger "next" event on right arrow key', () => {
 			const action = navigable(node, { horizontal: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 			expect(handler).toOnlyTrigger('next')
@@ -58,7 +58,7 @@ describe('Navigable Action', () => {
 			action.destroy()
 		})
 
-		it('Should not trigger any event on up or down arrow key', () => {
+		it('should not trigger any event on up or down arrow key', () => {
 			const action = navigable(node, { horizontal: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 			expect(handler.select).not.toHaveBeenCalled()
@@ -78,13 +78,13 @@ describe('Navigable Action', () => {
 	})
 
 	describe('Nested Horizontal Navigation', () => {
-		it('Should trigger "expand" event on down arrow key', () => {
+		it('should trigger "expand" event on down arrow key', () => {
 			const action = navigable(node, { horizontal: true, nested: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 			expect(handler).toOnlyTrigger('expand')
 			action.destroy()
 		})
-		it('Should trigger "collapse" event on down arrow key', () => {
+		it('should trigger "collapse" event on down arrow key', () => {
 			const action = navigable(node, { horizontal: true, nested: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 			expect(handler).toOnlyTrigger('collapse')
@@ -92,21 +92,21 @@ describe('Navigable Action', () => {
 		})
 	})
 	describe('Vertical Navigation', () => {
-		it('Should trigger "previous" event on ArrowUp key', () => {
+		it('should trigger "previous" event on ArrowUp key', () => {
 			const action = navigable(node, { horizontal: false })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 			expect(handler).toOnlyTrigger('previous')
 			action.destroy()
 		})
 
-		it('Should trigger "next" event on ArrowDown key', () => {
+		it('should trigger "next" event on ArrowDown key', () => {
 			const action = navigable(node, { horizontal: false })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 			expect(handler).toOnlyTrigger('next')
 			action.destroy()
 		})
 
-		it('Should not trigger any event on left or right arrow keys', () => {
+		it('should not trigger any event on left or right arrow keys', () => {
 			const action = navigable(node, { horizontal: false })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 			expect(handler.select).not.toHaveBeenCalled()
@@ -126,13 +126,13 @@ describe('Navigable Action', () => {
 	})
 
 	describe('Nested Vertical Navigation', () => {
-		it('Should trigger "expand" event on right arrow key', () => {
+		it('should trigger "expand" event on right arrow key', () => {
 			const action = navigable(node, { horizontal: false, nested: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 			expect(handler).toOnlyTrigger('expand')
 			action.destroy()
 		})
-		it('Should trigger "collapse" event on left arrow key', () => {
+		it('should trigger "collapse" event on left arrow key', () => {
 			const action = navigable(node, { horizontal: false, nested: true })
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 			expect(handler).toOnlyTrigger('collapse')

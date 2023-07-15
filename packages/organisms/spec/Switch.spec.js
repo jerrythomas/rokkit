@@ -6,22 +6,22 @@ import Switch from '../src/Switch.svelte'
 describe('Switch.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render default', () => {
+	it('should render default', () => {
 		const { container } = render(Switch)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render with value', () => {
+	it('should render with value', () => {
 		const { container } = render(Switch, { value: true })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render text array', () => {
+	it('should render text array', () => {
 		const { container } = render(Switch, { items: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should support editable attribute', () => {
+	it('should support editable attribute', () => {
 		const { container, component } = render(Switch, { items: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -29,14 +29,14 @@ describe('Switch.svelte', () => {
 		component.$set({ editable: true })
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using default field mapping', () => {
+	it('should render using default field mapping', () => {
 		const { container } = render(Switch, {
 			items: [{ text: 'a' }, { text: 'b' }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using field mappings', () => {
+	it('should render using field mappings', () => {
 		const { container } = render(Switch, {
 			items: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
@@ -44,7 +44,7 @@ describe('Switch.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should support custom class', async () => {
+	it('should support custom class', async () => {
 		const { container, component } = render(Switch, {
 			items: ['a', 'b'],
 			class: 'custom'
@@ -57,7 +57,7 @@ describe('Switch.svelte', () => {
 		wrapper = container.querySelector('toggle-switch')
 		expect(Array.from(wrapper.classList)).toContain('other')
 	})
-	it('Should support custom icons', async () => {
+	it('should support custom icons', async () => {
 		const { container, component } = render(Switch, {
 			items: ['a', 'b']
 		})
@@ -67,10 +67,10 @@ describe('Switch.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using custom component', () => {})
-	it('Should handle item value changes', () => {})
-	it('Should pass select and change events', () => {})
-	it('Should render items using custom component', () => {})
-	it('Should expand and collapse', () => {})
-	it('Should pass select and change events', () => {})
+	it('should render items using custom component', () => {})
+	it('should handle item value changes', () => {})
+	it('should pass select and change events', () => {})
+	it('should render items using custom component', () => {})
+	it('should expand and collapse', () => {})
+	it('should pass select and change events', () => {})
 })

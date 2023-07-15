@@ -243,54 +243,54 @@ describe('validator', () => {
 
 		it('should handle lower/upper bound', () => {
 			const store = verifiable(0, [
-				{ text: 'Should be numeric', type: 'number' },
-				{ text: 'Should be >= 5', min: 5 },
-				{ text: 'Should be <= 10', max: 10 }
+				{ text: 'should be numeric', type: 'number' },
+				{ text: 'should be >= 5', min: 5 },
+				{ text: 'should be <= 10', max: 10 }
 			])
 			let currentValue = get(store)
 			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be numeric', valid: true, status: 'passed' },
-				{ text: 'Should be >= 5', valid: false, status: 'failed' },
-				{ text: 'Should be <= 10', valid: true, status: 'passed' }
+				{ text: 'should be numeric', valid: true, status: 'passed' },
+				{ text: 'should be >= 5', valid: false, status: 'failed' },
+				{ text: 'should be <= 10', valid: true, status: 'passed' }
 			])
 
 			store.update(7)
 			currentValue = get(store)
 			expect(currentValue.status).toBe('passed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be numeric', valid: true, status: 'passed' },
-				{ text: 'Should be >= 5', valid: true, status: 'passed' },
-				{ text: 'Should be <= 10', valid: true, status: 'passed' }
+				{ text: 'should be numeric', valid: true, status: 'passed' },
+				{ text: 'should be >= 5', valid: true, status: 'passed' },
+				{ text: 'should be <= 10', valid: true, status: 'passed' }
 			])
 			store.update(11)
 			currentValue = get(store)
 			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be numeric', valid: true, status: 'passed' },
-				{ text: 'Should be >= 5', valid: true, status: 'passed' },
-				{ text: 'Should be <= 10', valid: false, status: 'failed' }
+				{ text: 'should be numeric', valid: true, status: 'passed' },
+				{ text: 'should be >= 5', valid: true, status: 'passed' },
+				{ text: 'should be <= 10', valid: false, status: 'failed' }
 			])
 		})
 
 		it('should handle custom validation', () => {
 			const store = verifiable('example', [
 				{
-					text: 'Should be "example"',
+					text: 'should be "example"',
 					validator: (value) => value === 'example'
 				}
 			])
 			let currentValue = get(store)
 			expect(currentValue.status).toBe('passed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be "example"', valid: true, status: 'passed' }
+				{ text: 'should be "example"', valid: true, status: 'passed' }
 			])
 
 			store.update('not example')
 			currentValue = get(store)
 			expect(currentValue.status).toBe('failed')
 			expect(currentValue.validations).toEqual([
-				{ text: 'Should be "example"', valid: false, status: 'failed' }
+				{ text: 'should be "example"', valid: false, status: 'failed' }
 			])
 		})
 		it('should work with empty ruleset', () => {

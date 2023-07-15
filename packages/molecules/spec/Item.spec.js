@@ -6,7 +6,7 @@ import Item from '../src/Item.svelte'
 describe('Item.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render default', async () => {
+	it('should render default', async () => {
 		const { container, component } = render(Item)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -22,39 +22,39 @@ describe('Item.svelte', () => {
 		expect(text.textContent).toBe('hello')
 	})
 
-	it('Should render null', () => {
+	it('should render null', () => {
 		const { container } = render(Item, { value: null })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render with value', () => {
+	it('should render with value', () => {
 		const { container } = render(Item, { value: 'text' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render object', () => {
+	it('should render object', () => {
 		const { container } = render(Item, { value: { text: 'hello' } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render icon', () => {
+	it('should render icon', () => {
 		const { container } = render(Item, {
 			value: { text: 'hello', icon: 'info' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render image', () => {
+	it('should render image', () => {
 		const { container } = render(Item, {
 			value: { text: 'hello', image: 'https://example.com/img.png' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render image and icon', () => {
+	it('should render image and icon', () => {
 		const { container } = render(Item, {
 			value: {
 				text: 'hello',
@@ -65,7 +65,7 @@ describe('Item.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render icon based on state', () => {
+	it('should render icon based on state', () => {
 		const { container } = render(Item, {
 			value: {
 				text: 'hello',
@@ -76,7 +76,7 @@ describe('Item.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using field mapping', () => {
+	it('should render using field mapping', () => {
 		const { container } = render(Item, {
 			value: {
 				alt: 'hello',
@@ -89,7 +89,7 @@ describe('Item.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render empty when field mapping is invalid', () => {
+	it('should render empty when field mapping is invalid', () => {
 		const { container } = render(Item, {
 			value: {
 				alt: 'hello'
@@ -99,7 +99,7 @@ describe('Item.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	// it('Should update when value changes', async () => {
+	// it('should update when value changes', async () => {
 	// 	const { container, component } = render(Item, {
 	// 		value: {
 	// 			text: 'hello'
