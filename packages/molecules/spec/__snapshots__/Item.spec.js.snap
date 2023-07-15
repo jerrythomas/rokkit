@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Item.svelte > Should render default 1`] = `
+exports[`Item.svelte > should render default 1`] = `
 <body>
   <div>
      
@@ -9,7 +9,7 @@ exports[`Item.svelte > Should render default 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render empty when field mapping is invalid 1`] = `
+exports[`Item.svelte > should render empty when field mapping is invalid 1`] = `
 <body>
   <div>
     
@@ -19,33 +19,7 @@ exports[`Item.svelte > Should render empty when field mapping is invalid 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render icon 1`] = `
-<body>
-  <div>
-    <icon
-      aria-label="info"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="info"
-      />
-    </icon>
-    
-     
-    <p
-      class="w-full flex"
-    >
-      hello
-    </p>
-    
-  </div>
-</body>
-`;
-
-exports[`Item.svelte > Should render icon based on state 1`] = `
+exports[`Item.svelte > should render icon 1`] = `
 <body>
   <div>
     <icon
@@ -71,7 +45,33 @@ exports[`Item.svelte > Should render icon based on state 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render image 1`] = `
+exports[`Item.svelte > should render icon based on state 1`] = `
+<body>
+  <div>
+    <icon
+      aria-label="info"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="info"
+      />
+    </icon>
+    
+     
+    <p
+      class="w-full flex"
+    >
+      hello
+    </p>
+    
+  </div>
+</body>
+`;
+
+exports[`Item.svelte > should render image 1`] = `
 <body>
   <div>
     <img
@@ -91,7 +91,7 @@ exports[`Item.svelte > Should render image 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render image and icon 1`] = `
+exports[`Item.svelte > should render image and icon 1`] = `
 <body>
   <div>
     <icon
@@ -117,7 +117,7 @@ exports[`Item.svelte > Should render image and icon 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render null 1`] = `
+exports[`Item.svelte > should render null 1`] = `
 <body>
   <div>
      
@@ -126,7 +126,7 @@ exports[`Item.svelte > Should render null 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render object 1`] = `
+exports[`Item.svelte > should render object 1`] = `
 <body>
   <div>
     
@@ -141,7 +141,7 @@ exports[`Item.svelte > Should render object 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render using field mapping 1`] = `
+exports[`Item.svelte > should render using field mapping 1`] = `
 <body>
   <div>
     <icon
@@ -167,7 +167,7 @@ exports[`Item.svelte > Should render using field mapping 1`] = `
 </body>
 `;
 
-exports[`Item.svelte > Should render with value 1`] = `
+exports[`Item.svelte > should render with value 1`] = `
 <body>
   <div>
      

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`List.svelte > Should render a list of values 1`] = `
+exports[`List.svelte > should render a list of values 1`] = `
 <body>
   <div>
     <list
@@ -59,7 +59,7 @@ exports[`List.svelte > Should render a list of values 1`] = `
 </body>
 `;
 
-exports[`List.svelte > Should render items using custom component 1`] = `
+exports[`List.svelte > should render items using custom component 1`] = `
 <body>
   <div>
     <list
@@ -116,7 +116,7 @@ exports[`List.svelte > Should render items using custom component 1`] = `
 </body>
 `;
 
-exports[`List.svelte > Should render items using custom mapping 1`] = `
+exports[`List.svelte > should render items using custom mapping 1`] = `
 <body>
   <div>
     <list
@@ -178,7 +178,7 @@ exports[`List.svelte > Should render items using custom mapping 1`] = `
 </body>
 `;
 
-exports[`List.svelte > Should render items using default item when data is invalid 1`] = `
+exports[`List.svelte > should render items using default item when data is invalid 1`] = `
 <body>
   <div>
     <list
@@ -240,7 +240,7 @@ exports[`List.svelte > Should render items using default item when data is inval
 </body>
 `;
 
-exports[`List.svelte > Should render items using field mappings 1`] = `
+exports[`List.svelte > should render items using field mappings 1`] = `
 <body>
   <div>
     <list
@@ -302,7 +302,7 @@ exports[`List.svelte > Should render items using field mappings 1`] = `
 </body>
 `;
 
-exports[`List.svelte > Should render with alternate class 1`] = `
+exports[`List.svelte > should render with alternate class 1`] = `
 <body>
   <div>
     <list

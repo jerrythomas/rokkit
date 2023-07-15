@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Tabs.svelte > Should render text array 1`] = `
+exports[`Tabs.svelte > should render text array 1`] = `
 <body>
   <div>
     <tabs
@@ -52,7 +52,7 @@ exports[`Tabs.svelte > Should render text array 1`] = `
 </body>
 `;
 
-exports[`Tabs.svelte > Should render using default field mapping 1`] = `
+exports[`Tabs.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
     <tabs
@@ -106,7 +106,7 @@ exports[`Tabs.svelte > Should render using default field mapping 1`] = `
 </body>
 `;
 
-exports[`Tabs.svelte > Should render using field mappings 1`] = `
+exports[`Tabs.svelte > should render using field mappings 1`] = `
 <body>
   <div>
     <tabs
@@ -160,59 +160,7 @@ exports[`Tabs.svelte > Should render using field mappings 1`] = `
 </body>
 `;
 
-exports[`Tabs.svelte > Should support custom icons 1`] = `
-<body>
-  <div>
-    <tabs
-      class="flex w-full "
-      role="listbox"
-      tabindex="0"
-    >
-      <wrap-item
-        aria-selected="false"
-        class="flex flex-row items-center tab"
-        data-path="0"
-        role="option"
-      >
-        <item
-          class="flex flex-row items-center"
-        >
-           
-          <p
-            class="w-full flex"
-          >
-            a
-          </p>
-          
-        </item>
-         
-      </wrap-item>
-      <wrap-item
-        aria-selected="false"
-        class="flex flex-row items-center tab"
-        data-path="1"
-        role="option"
-      >
-        <item
-          class="flex flex-row items-center"
-        >
-           
-          <p
-            class="w-full flex"
-          >
-            b
-          </p>
-          
-        </item>
-         
-      </wrap-item>
-       
-    </tabs>
-  </div>
-</body>
-`;
-
-exports[`Tabs.svelte > Should support custom icons 2`] = `
+exports[`Tabs.svelte > should support custom icons 1`] = `
 <body>
   <div>
     <tabs
@@ -264,7 +212,7 @@ exports[`Tabs.svelte > Should support custom icons 2`] = `
 </body>
 `;
 
-exports[`Tabs.svelte > Should support editable attribute 1`] = `
+exports[`Tabs.svelte > should support custom icons 2`] = `
 <body>
   <div>
     <tabs
@@ -316,7 +264,59 @@ exports[`Tabs.svelte > Should support editable attribute 1`] = `
 </body>
 `;
 
-exports[`Tabs.svelte > Should support editable attribute 2`] = `
+exports[`Tabs.svelte > should support editable attribute 1`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p
+            class="w-full flex"
+          >
+            a
+          </p>
+          
+        </item>
+         
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p
+            class="w-full flex"
+          >
+            b
+          </p>
+          
+        </item>
+         
+      </wrap-item>
+       
+    </tabs>
+  </div>
+</body>
+`;
+
+exports[`Tabs.svelte > should support editable attribute 2`] = `
 <body>
   <div>
     <tabs

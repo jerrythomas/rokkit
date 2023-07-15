@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Scrollable.svelte > Should render 1`] = `
+exports[`Scrollable.svelte > should render 1`] = `
 <body>
   <div>
     <scroll
@@ -10,7 +10,7 @@ exports[`Scrollable.svelte > Should render 1`] = `
 </body>
 `;
 
-exports[`Scrollable.svelte > Should render with custom class 1`] = `
+exports[`Scrollable.svelte > should render with custom class 1`] = `
 <body>
   <div>
     <scroll

@@ -1,41 +1,43 @@
 <script>
-	import { inputTypes } from './types'
+	import { componentTypes } from './types'
 
-	let className = ''
+	let className = 'flex flex-col gap-2'
 	export { className as class }
 	export let value
 	export let schema = []
-	export let using
+	export let using = {}
 	export let path = []
 
-	$: using = { ...inputTypes, ...using }
+	$: using = { ...componentTypes, ...using }
 </script>
 
-<fields class="flex flex-col gap-2 {className}">
-	{#each schema as { key, type, props }}
-		{@const component = using[type]}
+<field-group class={className}>
+	{#each schema as item}
+		{@const component = using[item.component]}
+		{@const props = item.props || {}}
 
-		{#if type === 'group'}
+		{#if item.group}
 			<svelte:self
-				bind:value={value[key]}
+				bind:value={value[item.key]}
 				{...props}
 				{using}
-				path={key ? [...path, key] : path}
+				path={item.key ? [...path, item.key] : path}
 				on:change
 			/>
 		{:else if component}
+			{@const name = [...path, item.key].join('.')}
 			<svelte:component
 				this={component}
-				name={[...path, key].join('.')}
-				bind:value={value[key]}
+				{name}
+				bind:value={value[item.key]}
 				{...props}
 				on:change
 			/>
 		{:else}
 			<error>
-				Unknown field type '{type}'. Add custom mapping with the 'using'
-				property.
+				Unknown component '{item.component}'. Add custom mapping with the
+				'using' property.
 			</error>
 		{/if}
 	{/each}
-</fields>
+</field-group>

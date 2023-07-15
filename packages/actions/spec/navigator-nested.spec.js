@@ -91,7 +91,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 		})
 
-		it('Should dispatch move event on ArrowUp', () => {
+		it('should dispatch move event on ArrowUp', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -109,7 +109,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 		})
 
-		it('Should trigger scrollIntoView on move', () => {
+		it('should trigger scrollIntoView on move', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -126,7 +126,7 @@ describe('navigator', () => {
 			expect(node.children[0].scrollIntoView).toHaveBeenCalled()
 		})
 
-		it('Should dispatch select event on Enter key', () => {
+		it('should dispatch select event on Enter key', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -142,7 +142,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should not dispatch collapse/expand event with empty selection', () => {
+		it('should not dispatch collapse/expand event with empty selection', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields
@@ -154,7 +154,7 @@ describe('navigator', () => {
 		})
 
 		//todo: test move to parent instead of collapse
-		it('Should dispatch collapse event on ArrowLeft', () => {
+		it('should dispatch collapse event on ArrowLeft', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -171,7 +171,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should select parent on ArrowLeft', () => {
+		it('should select parent on ArrowLeft', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -188,7 +188,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should dispatch expand event on ArrowRight', () => {
+		it('should dispatch expand event on ArrowRight', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -203,7 +203,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should dispatch collapse/expand when parent is clicked.', () => {
+		it('should dispatch collapse/expand when parent is clicked.', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -230,7 +230,7 @@ describe('navigator', () => {
 	})
 
 	describe('Horizontal Nested List', () => {
-		it('Should dispatch move event on ArrowRight', () => {
+		it('should dispatch move event on ArrowRight', () => {
 			options = { items, fields, vertical: false }
 			navigatorInstance = navigator(node, options)
 
@@ -259,7 +259,7 @@ describe('navigator', () => {
 			// expect(handlers.move).toHaveBeenDispatchedWith({ node: 'A' })
 		})
 
-		it('Should dispatch move event on ArrowLeft', () => {
+		it('should dispatch move event on ArrowLeft', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -278,7 +278,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 		})
 
-		it('Should dispatch select event on Enter key', () => {
+		it('should dispatch select event on Enter key', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -295,7 +295,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should not dispatch collapse/expand event with empty selection', () => {
+		it('should not dispatch collapse/expand event with empty selection', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields
@@ -306,7 +306,7 @@ describe('navigator', () => {
 			expect(handlers.collapse).not.toHaveBeenCalled()
 		})
 
-		it('Should dispatch collapse event on ArrowUp', () => {
+		it('should dispatch collapse event on ArrowUp', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -324,7 +324,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should select parent on ArrowUp', () => {
+		it('should select parent on ArrowUp', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -342,7 +342,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should dispatch expand event on ArrowDown', () => {
+		it('should dispatch expand event on ArrowDown', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -357,7 +357,7 @@ describe('navigator', () => {
 				node: items[0]
 			})
 		})
-		it('Should dispatch collapse/expand when parent is clicked.', () => {
+		it('should dispatch collapse/expand when parent is clicked.', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,

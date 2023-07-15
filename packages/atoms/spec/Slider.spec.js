@@ -6,7 +6,7 @@ import Slider from '../src/Slider.svelte'
 describe('Slider.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render', () => {
+	it('should render', () => {
 		const { container } = render(Slider)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

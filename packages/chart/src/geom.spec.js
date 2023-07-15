@@ -17,22 +17,22 @@ describe('Geometry', () => {
 		['deviation', deviation(values)]
 	]
 
-	it.each(aggItems)('Should return the aggregator for [%s]', (item, result) => {
+	it.each(aggItems)('should return the aggregator for [%s]', (item, result) => {
 		const agg = rollup(item)
 		expect(agg(values)).toEqual(result)
 	})
 
-	it('Should use a custom aggregator', () => {
+	it('should use a custom aggregator', () => {
 		const agg = rollup((values) => values.reduce((a, b) => a + b))
 		expect(agg(values)).toEqual(values.reduce((a, b) => a + b))
 	})
 
-	it('Should throw exceptions for invalid input', () => {
+	it('should throw exceptions for invalid input', () => {
 		expect(() => rollup()).toThrow(/stat must be a string or function/)
 		expect(() => rollup('invalid')).toThrow(/Unknown stat: invalid/)
 	})
 
-	it('Should aggregate data', () => {
+	it('should aggregate data', () => {
 		const data = [
 			{ pct: 0.8, score: 10, gender: 'm', country: 'Japan' },
 			{ pct: 0.7, score: 10, gender: 'f', country: 'Japan' },

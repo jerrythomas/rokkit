@@ -42,18 +42,18 @@ describe('navigator', () => {
 		vi.resetAllMocks()
 	})
 
-	it('Should use handlers and cleanup on destroy', () => {
+	it('should use handlers and cleanup on destroy', () => {
 		expect(navigator).toUseHandlersFor({ items: [] }, ['keydown', 'click'])
 		expect(navigator).toUseHandlersFor({ items: [], vertical: false }, [
 			'keydown',
 			'click'
 		])
 	})
-	it('Should not use handlers when disabled', () => {
+	it('should not use handlers when disabled', () => {
 		expect(navigator).not.toUseHandlersFor({ enabled: false }, 'keydown')
 		expect(navigator).not.toUseHandlersFor({ enabled: false }, 'click')
 	})
-	it('Should find the parent with data path', () => {
+	it('should find the parent with data path', () => {
 		let tree = {
 			name: 'div',
 			children: [
@@ -87,7 +87,7 @@ describe('navigator', () => {
 		expect(result).toEqual(null)
 	})
 
-	it('Should dispatch select when an item is clicked.', () => {
+	it('should dispatch select when an item is clicked.', () => {
 		options = { items, fields }
 		navigatorInstance = navigator(node, options)
 		items.map((_, index) => {
@@ -115,7 +115,7 @@ describe('navigator', () => {
 	})
 
 	describe('Vertical List', () => {
-		it('Should dispatch move event on ArrowDown', () => {
+		it('should dispatch move event on ArrowDown', () => {
 			options = { items, fields }
 			navigatorInstance = navigator(node, options)
 
@@ -139,7 +139,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 		})
 
-		it('Should dispatch move event on ArrowUp', () => {
+		it('should dispatch move event on ArrowUp', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -157,7 +157,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 		})
 
-		it('Should dispatch select event on Enter Key', () => {
+		it('should dispatch select event on Enter Key', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -173,7 +173,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should not dispatch any event on ArrowLeft', () => {
+		it('should not dispatch any event on ArrowLeft', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -186,7 +186,7 @@ describe('navigator', () => {
 			expect(handlers.collapse).not.toHaveBeenCalled()
 		})
 
-		it('Should not dispatch any event on ArrowRight', () => {
+		it('should not dispatch any event on ArrowRight', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -201,7 +201,7 @@ describe('navigator', () => {
 	})
 
 	describe('Horizontal List', () => {
-		it('Should dispatch move event on ArrowRight', () => {
+		it('should dispatch move event on ArrowRight', () => {
 			options = { items, fields, vertical: false }
 			navigatorInstance = navigator(node, options)
 
@@ -225,7 +225,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 		})
 
-		it('Should dispatch move event on ArrowLeft', () => {
+		it('should dispatch move event on ArrowLeft', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -244,7 +244,7 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 		})
 
-		it('Should dispatch select event on Enter Key', () => {
+		it('should dispatch select event on Enter Key', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -261,7 +261,7 @@ describe('navigator', () => {
 			})
 		})
 
-		it('Should not dispatch any event on ArrowUp', () => {
+		it('should not dispatch any event on ArrowUp', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -276,7 +276,7 @@ describe('navigator', () => {
 			expect(handlers.collapse).not.toHaveBeenCalled()
 		})
 
-		it('Should not dispatch any event on ArrowDown', () => {
+		it('should not dispatch any event on ArrowDown', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,

@@ -6,13 +6,13 @@ import Scrollable from './Scrollable.svelte'
 describe('Scrollable.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render', () => {
+	it('should render', () => {
 		const { container } = render(Scrollable)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render with custom class', () => {
+	it('should render with custom class', () => {
 		const { container } = render(Scrollable, { class: 'custom-class' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

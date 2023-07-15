@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Connector.svelte > When rtl is true property > Should render when type is "child" 1`] = `
+exports[`Connector.svelte > When rtl is true property > should render when type is "child" 1`] = `
 <body>
   <div>
     <span
@@ -19,7 +19,7 @@ exports[`Connector.svelte > When rtl is true property > Should render when type 
 </body>
 `;
 
-exports[`Connector.svelte > When rtl is true property > Should render when type is "empty" 1`] = `
+exports[`Connector.svelte > When rtl is true property > should render when type is "empty" 1`] = `
 <body>
   <div>
     <span
@@ -29,7 +29,7 @@ exports[`Connector.svelte > When rtl is true property > Should render when type 
 </body>
 `;
 
-exports[`Connector.svelte > When rtl is true property > Should render when type is "last" 1`] = `
+exports[`Connector.svelte > When rtl is true property > should render when type is "last" 1`] = `
 <body>
   <div>
     <span
@@ -44,7 +44,7 @@ exports[`Connector.svelte > When rtl is true property > Should render when type 
 </body>
 `;
 
-exports[`Connector.svelte > When rtl is true property > Should render when type is "sibling" 1`] = `
+exports[`Connector.svelte > When rtl is true property > should render when type is "sibling" 1`] = `
 <body>
   <div>
     <span

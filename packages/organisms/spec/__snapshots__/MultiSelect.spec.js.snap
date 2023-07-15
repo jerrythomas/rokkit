@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MultiSelect.svelte > Should render using default field mapping 1`] = `
+exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
     <input-select

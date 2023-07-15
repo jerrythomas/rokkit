@@ -6,12 +6,12 @@ import Tabs from '../src/Tabs.svelte'
 describe('Tabs.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('Should render text array', () => {
+	it('should render text array', () => {
 		const { container } = render(Tabs, { items: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should support editable attribute', () => {
+	it('should support editable attribute', () => {
 		const { container, component } = render(Tabs, { items: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -19,14 +19,14 @@ describe('Tabs.svelte', () => {
 		component.$set({ editable: true })
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using default field mapping', () => {
+	it('should render using default field mapping', () => {
 		const { container } = render(Tabs, {
 			items: [{ text: 'a' }, { text: 'b' }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using field mappings', () => {
+	it('should render using field mappings', () => {
 		const { container } = render(Tabs, {
 			items: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
@@ -34,7 +34,7 @@ describe('Tabs.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should support custom class', async () => {
+	it('should support custom class', async () => {
 		const { container, component } = render(Tabs, {
 			items: ['a', 'b'],
 			class: 'custom'
@@ -46,7 +46,7 @@ describe('Tabs.svelte', () => {
 		wrapper = container.querySelector('tabs')
 		expect(Array.from(wrapper.classList)).toContain('other')
 	})
-	it('Should support custom icons', async () => {
+	it('should support custom icons', async () => {
 		const { container, component } = render(Tabs, {
 			items: ['a', 'b']
 		})
@@ -56,8 +56,8 @@ describe('Tabs.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using custom component', () => {})
-	it('Should handle item value changes', () => {})
-	it('Should pass select and change events', () => {})
-	it('Should remove tabs when remove icon is clicked', () => {})
+	it('should render items using custom component', () => {})
+	it('should handle item value changes', () => {})
+	it('should pass select and change events', () => {})
+	it('should remove tabs when remove icon is clicked', () => {})
 })

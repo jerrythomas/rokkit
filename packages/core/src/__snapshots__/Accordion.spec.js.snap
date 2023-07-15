@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Accordion.svelte > Should render using default field mapping 1`] = `
+exports[`Accordion.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
     <accordion

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`NestedList.svelte > Should render empty nested list 1`] = `
+exports[`NestedList.svelte > should render empty nested list 1`] = `
 <body>
   <div>
     <nested-list
@@ -12,7 +12,7 @@ exports[`NestedList.svelte > Should render empty nested list 1`] = `
 </body>
 `;
 
-exports[`NestedList.svelte > Should render nested items 1`] = `
+exports[`NestedList.svelte > should render nested items 1`] = `
 <body>
   <div>
     <nested-list
@@ -116,7 +116,7 @@ exports[`NestedList.svelte > Should render nested items 1`] = `
 </body>
 `;
 
-exports[`NestedList.svelte > Should render open items 1`] = `
+exports[`NestedList.svelte > should render open items 1`] = `
 <body>
   <div>
     <nested-list
@@ -264,7 +264,7 @@ exports[`NestedList.svelte > Should render open items 1`] = `
 </body>
 `;
 
-exports[`NestedList.svelte > Should render using default field mapping 1`] = `
+exports[`NestedList.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
     <nested-list
@@ -327,7 +327,7 @@ exports[`NestedList.svelte > Should render using default field mapping 1`] = `
 </body>
 `;
 
-exports[`NestedList.svelte > Should render using field mappings 1`] = `
+exports[`NestedList.svelte > should render using field mappings 1`] = `
 <body>
   <div>
     <nested-list
@@ -390,7 +390,7 @@ exports[`NestedList.svelte > Should render using field mappings 1`] = `
 </body>
 `;
 
-exports[`NestedList.svelte > Should support custom icons 1`] = `
+exports[`NestedList.svelte > should support custom icons 1`] = `
 <body>
   <div>
     <nested-list
@@ -494,7 +494,7 @@ exports[`NestedList.svelte > Should support custom icons 1`] = `
 </body>
 `;
 
-exports[`NestedList.svelte > Should support custom icons 2`] = `
+exports[`NestedList.svelte > should support custom icons 2`] = `
 <body>
   <div>
     <nested-list

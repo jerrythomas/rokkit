@@ -11,24 +11,24 @@ describe('NestedList.svelte', () => {
 	]
 	beforeEach(() => cleanup())
 
-	it('Should render empty nested list', () => {
+	it('should render empty nested list', () => {
 		const { container } = render(NestedList)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using default field mapping', () => {
+	it('should render using default field mapping', () => {
 		const { container } = render(NestedList, {
 			items: [{ text: 'a' }, { text: 'b' }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render nested items', () => {
+	it('should render nested items', () => {
 		const { container } = render(NestedList, { items })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render open items', () => {
+	it('should render open items', () => {
 		const { container } = render(NestedList, {
 			items: [
 				{ text: 'a', _open: true, children: [{ text: 'aa' }] },
@@ -39,7 +39,7 @@ describe('NestedList.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render using field mappings', () => {
+	it('should render using field mappings', () => {
 		const { container } = render(NestedList, {
 			items: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
@@ -47,7 +47,7 @@ describe('NestedList.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should support custom class', async () => {
+	it('should support custom class', async () => {
 		const { container, component } = render(NestedList, {
 			items,
 			class: 'custom'
@@ -59,7 +59,7 @@ describe('NestedList.svelte', () => {
 		wrapper = container.querySelector('nested-list')
 		expect(Array.from(wrapper.classList)).toContain('other')
 	})
-	it('Should support custom icons', async () => {
+	it('should support custom icons', async () => {
 		const { container, component } = render(NestedList, {
 			items
 		})
@@ -70,8 +70,8 @@ describe('NestedList.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render items using custom component', () => {})
-	it('Should expand and collapse', () => {})
-	it('Should autoclose others', () => {})
-	it('Should pass select and change events', () => {})
+	it('should render items using custom component', () => {})
+	it('should expand and collapse', () => {})
+	it('should autoclose others', () => {})
+	it('should pass select and change events', () => {})
 })
