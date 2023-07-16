@@ -23,7 +23,6 @@ Components have been separated into the following packages. Refer to the package
 - [@rokkit/form](packages/form)
 - [@rokkit/chart](packages/chart)
 - [@rokkit/themes](packages/themes)
-- [@rokkit/markdown](packages/markdown)
 - [@rokkit/layout](packages/layout)
 
 ## Installation

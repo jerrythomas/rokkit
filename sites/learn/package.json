@@ -51,7 +51,6 @@
 		"@rokkit/icons": "workspace:*",
 		"@rokkit/input": "workspace:*",
 		"@rokkit/layout": "workspace:*",
-		"@rokkit/markdown": "workspace:*",
 		"@rokkit/molecules": "workspace:*",
 		"@rokkit/organisms": "workspace:*",
 		"@rokkit/stores": "workspace:*",

@@ -65,6 +65,19 @@ exports[`Input.svelte > should render input for type "file" as required 1`] = `
 />
 `;
 
+exports[`Input.svelte > should render input for type "integer" 1`] = `
+<input
+  type="number"
+/>
+`;
+
+exports[`Input.svelte > should render input for type "integer" as required 1`] = `
+<input
+  readonly="true"
+  type="number"
+/>
+`;
+
 exports[`Input.svelte > should render input for type "month" 1`] = `
 <input
   type="month"
@@ -131,6 +144,19 @@ exports[`Input.svelte > should render input for type "rating" with custom props 
   rating
   " is not supported by Input
 </error>
+`;
+
+exports[`Input.svelte > should render input for type "string" 1`] = `
+<input
+  type="text"
+/>
+`;
+
+exports[`Input.svelte > should render input for type "string" as required 1`] = `
+<input
+  readonly="true"
+  type="text"
+/>
 `;
 
 exports[`Input.svelte > should render input for type "tel" 1`] = `

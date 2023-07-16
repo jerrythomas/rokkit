@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { validate, propsFromSchema } from './layout'
+import { validate, propsFromSchema } from '../../src/lib/layout'
 // import { personSchema } from './fixtures/person'
 // import { peopleSchema } from './fixtures/people'
 // import AJV from 'ajv'
 import { clone } from 'ramda'
-import { dataTypes } from './fixtures/types'
+import { dataTypes } from '../fixtures/types'
 describe('layout', () => {
 	const personSchema = {
 		// $id: 'https://example.com/person.schema.json',

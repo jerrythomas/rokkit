@@ -132,6 +132,28 @@ describe('validator', () => {
 			expect(validator('#xxxxxx')).toBe(false)
 			expect(validator('123456')).toBe(false)
 		})
+		it('should return a validator for "string" type', () => {
+			const validator = getTypeValidator('string')
+			expect(validator).toBeInstanceOf(Function)
+			expect(validator('hello')).toBe(true)
+			expect(validator('')).toBe(true)
+			expect(validator(null)).toBe(false)
+			expect(validator(undefined)).toBe(false)
+			expect(validator([])).toBe(false)
+			expect(validator({})).toBe(false)
+			expect(validator(2)).toBe(false)
+		})
+		it('should return a validator for "boolean" type', () => {
+			const validator = getTypeValidator('boolean')
+			expect(validator).toBeInstanceOf(Function)
+			expect(validator(true)).toBe(true)
+			expect(validator(false)).toBe(true)
+			expect(validator(null)).toBe(false)
+			expect(validator(undefined)).toBe(false)
+			expect(validator([])).toBe(false)
+			expect(validator({})).toBe(false)
+			expect(validator(2)).toBe(false)
+		})
 	})
 
 	describe('verifiable', () => {

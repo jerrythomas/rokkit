@@ -16,9 +16,3 @@
 <article class="prose">
 	{@html preview}
 </article>
-
-<!-- <style>
-	@import url('./prism.css');
-
-
-</style> -->

@@ -4,41 +4,44 @@
 
 	export { className as class }
 	export let value
-	export let items = []
 	export let schema = {}
-	export let layout = {elements:[]}
+	export let path = []
 	export let using = componentTypes
+
+	$: group = schema.label || schema.group
 </script>
 
-<segment class="{layout.type} {className}">
-	{#each layout.elements as field}
-		{@const component = using[field.component]}
-		{@const hasKey = 'key' in field}
-
-		{#if field.items}
-			{#if hasKey}
-				<svelte:self
-					bind:value={value[field.key]}
-					items={field.items}
-					{using}
-					class={field.class}
-				/>
-			{:else}
-				<svelte:self
-					bind:value
-					items={field.items}
-					{using}
-					class={field.class}
-				/>
-			{/if}
-		{:else if 'key' in field}
+<field-layout class="{schema.type ?? 'vertical'} {className}" class:group>
+	{#if schema.label}
+		<legend>{schema.label}</legend>
+	{/if}
+	{#if Array.isArray(schema.elements)}
+	{#each schema.elements as item}
+		{@const component = using[item.component]}
+		{@const props = item.props || {}}
+		{#if item.group}
+			<svelte:self
+				bind:value={value[item.key]}
+				{...props}
+				{using}
+				path={item.key ? [...path, item.key] : path}
+				on:change
+			/>
+		{:else if component}
+			{@const name = [...path, item.key].join('.')}
 			<svelte:component
 				this={component}
-				bind:value={value[field.key]}
-				{...field.props}
+				{name}
+				bind:value={value[item.key]}
+				{...props}
+				on:change
 			/>
 		{:else}
-			<svelte:component this={component} {...field.props} />
+			<error>
+				Unknown component '{item.component}'. Add custom mapping with the
+				'using' property.
+			</error>
 		{/if}
 	{/each}
-</segment>
+	{/if}
+</field-layout>

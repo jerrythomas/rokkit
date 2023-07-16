@@ -1,6 +1,6 @@
 <script>
 	import { Tabs } from '@rokkit/organisms'
-	import { CodeSnippet } from '@rokkit/markdown'
+	import { CodeSnippet } from '@rokkit/atoms'
 
 	export let items
 	export let fields

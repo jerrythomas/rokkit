@@ -70,13 +70,3 @@ export const dataTypes = {
 		default: 'inputObject'
 	}
 }
-export function deriveRulesFromSchema(entity) {
-	const rules = []
-	for (const [key, value] of Object.entries(entity)) {
-		rules.push({
-			text: 'Required',
-			value,
-			key
-		})
-	}
-}
