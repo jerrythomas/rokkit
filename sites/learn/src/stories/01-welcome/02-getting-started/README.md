@@ -12,7 +12,6 @@ Rokkit consists of the following libraries.
 - [@rokkit/form](https://www.npmjs.com/package/@rokkit/form)
 - [@rokkit/chart](https://www.npmjs.com/package/@rokkit/chart)
 - [@rokkit/themes](https://www.npmjs.com/package/@rokkit/themes)
-- [@rokkit/markdown](https://www.npmjs.com/package/@rokkit/markdown)
 - [@rokkit/layout](https://www.npmjs.com/package/@rokkit/layout)
 
 > You'll need to have basic familiarity with Svelte/Svelte-Kit to use Rokkit.

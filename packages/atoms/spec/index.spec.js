@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import * as components from '../src'
+import * as components from '../src/index'
 
 describe('components', () => {
 	it('should contain all exported components', () => {
@@ -12,6 +12,9 @@ describe('components', () => {
 			'RangeTick',
 			'Thumb',
 			'Slider',
+			'Fillable',
+			'Markdown',
+			'CodeSnippet',
 			'inputTypes'
 		])
 	})

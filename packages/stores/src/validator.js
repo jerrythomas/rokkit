@@ -49,6 +49,7 @@ export function getTypeValidator(type) {
 	if (type === 'object')
 		return (input) =>
 			input !== null && typeof input === 'object' && !Array.isArray(input)
+	return (input) => typeof input === type
 }
 
 /**
