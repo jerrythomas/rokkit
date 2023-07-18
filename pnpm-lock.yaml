@@ -42,6 +42,9 @@ importers:
 
   packages/actions:
     dependencies:
+      '@rokkit/core':
+        specifier: workspace:1.0.0-next.35
+        version: link:../core
       '@rokkit/stores':
         specifier: workspace:latest
         version: link:../stores
@@ -128,70 +131,6 @@ importers:
       validators:
         specifier: workspace:latest
         version: link:../../shared/validators
-      vite:
-        specifier: ^4.4.2
-        version: 4.4.2(@types/node@20.4.1)
-      vitest:
-        specifier: ~0.33.0
-        version: 0.33.0(@vitest/ui@0.33.0)(jsdom@22.1.0)
-
-  packages/atoms/src:
-    dependencies:
-      '@rokkit/actions':
-        specifier: workspace:*
-        version: link:../../actions
-      '@rokkit/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@rokkit/input':
-        specifier: workspace:*
-        version: link:../../input
-      marked:
-        specifier: ^5.1.1
-        version: 5.1.1
-      marked-gfm-heading-id:
-        specifier: ^3.0.4
-        version: 3.0.4(marked@5.1.1)
-      marked-mangle:
-        specifier: ^1.1.0
-        version: 1.1.0(marked@5.1.1)
-      prism-svelte:
-        specifier: ^0.5.0
-        version: 0.5.0
-      prismjs:
-        specifier: ^1.29.0
-        version: 1.29.0
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.4.2
-        version: 2.4.2(svelte@4.0.5)(vite@4.4.2)
-      '@testing-library/svelte':
-        specifier: ^4.0.3
-        version: 4.0.3(svelte@4.0.5)
-      '@types/prismjs':
-        specifier: ^1.26.0
-        version: 1.26.0
-      '@vitest/coverage-v8':
-        specifier: ^0.33.0
-        version: 0.33.0(vitest@0.33.0)
-      '@vitest/ui':
-        specifier: ~0.33.0
-        version: 0.33.0(vitest@0.33.0)
-      c8:
-        specifier: ^8.0.0
-        version: 8.0.0
-      jsdom:
-        specifier: ^22.1.0
-        version: 22.1.0
-      shared-config:
-        specifier: workspace:*
-        version: link:../../../shared/config
-      svelte:
-        specifier: ^4.0.5
-        version: 4.0.5
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
       vite:
         specifier: ^4.4.2
         version: 4.4.2(@types/node@20.4.1)
@@ -312,67 +251,6 @@ importers:
         specifier: ~0.33.0
         version: 0.33.0(@vitest/ui@0.33.0)(jsdom@22.1.0)
 
-  packages/form:
-    dependencies:
-      '@rokkit/atoms':
-        specifier: workspace:*
-        version: link:../atoms
-      '@rokkit/core':
-        specifier: workspace:*
-        version: link:../core
-      '@rokkit/input':
-        specifier: workspace:*
-        version: link:../input
-      '@rokkit/molecules':
-        specifier: workspace:*
-        version: link:../molecules
-      '@rokkit/organisms':
-        specifier: workspace:*
-        version: link:../organisms
-      ajv:
-        specifier: ^8.12.0
-        version: 8.12.0
-      ramda:
-        specifier: ^0.29.0
-        version: 0.29.0
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.4.2
-        version: 2.4.2(svelte@4.0.5)(vite@4.4.2)
-      '@testing-library/svelte':
-        specifier: ^4.0.3
-        version: 4.0.3(svelte@4.0.5)
-      '@types/ramda':
-        specifier: ^0.29.3
-        version: 0.29.3
-      '@vitest/coverage-v8':
-        specifier: ^0.33.0
-        version: 0.33.0(vitest@0.33.0)
-      '@vitest/ui':
-        specifier: ~0.33.0
-        version: 0.33.0(vitest@0.33.0)
-      c8:
-        specifier: ^8.0.0
-        version: 8.0.0
-      jsdom:
-        specifier: ^22.1.0
-        version: 22.1.0
-      shared-config:
-        specifier: workspace:*
-        version: link:../../shared/config
-      svelte:
-        specifier: ^4.0.5
-        version: 4.0.5
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
-      vite:
-        specifier: ^4.4.2
-        version: 4.4.2(@types/node@20.4.1)
-      vitest:
-        specifier: ~0.33.0
-        version: 0.33.0(@vitest/ui@0.33.0)(jsdom@22.1.0)
-
   packages/icons:
     dependencies:
       '@mdi/svg':
@@ -388,64 +266,6 @@ importers:
       iconify:
         specifier: ^1.4.0
         version: 1.4.0
-
-  packages/input:
-    dependencies:
-      '@rokkit/actions':
-        specifier: workspace:*
-        version: link:../actions
-      '@rokkit/atoms':
-        specifier: workspace:*
-        version: link:../atoms
-      '@rokkit/core':
-        specifier: workspace:*
-        version: link:../core
-      '@rokkit/molecules':
-        specifier: workspace:*
-        version: link:../molecules
-      d3-scale:
-        specifier: ^4.0.2
-        version: 4.0.2
-      date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.4.2
-        version: 2.4.2(svelte@4.0.5)(vite@4.4.2)
-      '@testing-library/svelte':
-        specifier: ^4.0.3
-        version: 4.0.3(svelte@4.0.5)
-      '@vitest/coverage-v8':
-        specifier: ^0.33.0
-        version: 0.33.0(vitest@0.33.0)
-      '@vitest/ui':
-        specifier: ~0.33.0
-        version: 0.33.0(vitest@0.33.0)
-      c8:
-        specifier: ^8.0.0
-        version: 8.0.0
-      jsdom:
-        specifier: ^22.1.0
-        version: 22.1.0
-      shared-config:
-        specifier: workspace:*
-        version: link:../../shared/config
-      svelte:
-        specifier: ^4.0.5
-        version: 4.0.5
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
-      validators:
-        specifier: workspace:*
-        version: link:../../shared/validators
-      vite:
-        specifier: ^4.4.2
-        version: 4.4.2(@types/node@20.4.1)
-      vitest:
-        specifier: ~0.33.0
-        version: 0.33.0(@vitest/ui@0.33.0)(jsdom@22.1.0)
 
   packages/layout:
     dependencies:
@@ -580,6 +400,9 @@ importers:
       '@rokkit/molecules':
         specifier: workspace:*
         version: link:../molecules
+      ramda:
+        specifier: ^0.29.0
+        version: 0.29.0
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^2.4.2
@@ -614,6 +437,67 @@ importers:
       validators:
         specifier: workspace:latest
         version: link:../../shared/validators
+      vite:
+        specifier: ^4.4.2
+        version: 4.4.2(@types/node@20.4.1)
+      vitest:
+        specifier: ~0.33.0
+        version: 0.33.0(@vitest/ui@0.33.0)(jsdom@22.1.0)
+
+  packages/other:
+    dependencies:
+      '@rokkit/actions':
+        specifier: workspace:1.0.0-next.35
+        version: link:../actions
+      '@rokkit/atoms':
+        specifier: workspace:*
+        version: link:../atoms
+      '@rokkit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@rokkit/molecules':
+        specifier: workspace:*
+        version: link:../molecules
+      '@rokkit/organisms':
+        specifier: workspace:*
+        version: link:../organisms
+      ajv:
+        specifier: ^8.12.0
+        version: 8.12.0
+      ramda:
+        specifier: ^0.29.0
+        version: 0.29.0
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^2.4.2
+        version: 2.4.2(svelte@4.0.5)(vite@4.4.2)
+      '@testing-library/svelte':
+        specifier: ^4.0.3
+        version: 4.0.3(svelte@4.0.5)
+      '@types/ramda':
+        specifier: ^0.29.3
+        version: 0.29.3
+      '@vitest/coverage-v8':
+        specifier: ^0.33.0
+        version: 0.33.0(vitest@0.33.0)
+      '@vitest/ui':
+        specifier: ~0.33.0
+        version: 0.33.0(vitest@0.33.0)
+      c8:
+        specifier: ^8.0.0
+        version: 8.0.0
+      jsdom:
+        specifier: ^22.1.0
+        version: 22.1.0
+      shared-config:
+        specifier: workspace:*
+        version: link:../../shared/config
+      svelte:
+        specifier: ^4.0.5
+        version: 4.0.5
+      typescript:
+        specifier: ^5.1.6
+        version: 5.1.6
       vite:
         specifier: ^4.4.2
         version: 4.4.2(@types/node@20.4.1)
@@ -913,21 +797,12 @@ importers:
       '@rokkit/atoms':
         specifier: workspace:*
         version: link:../../packages/atoms
-      '@rokkit/chart':
-        specifier: workspace:*
-        version: link:../../packages/chart
       '@rokkit/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@rokkit/form':
-        specifier: workspace:*
-        version: link:../../packages/form
       '@rokkit/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@rokkit/input':
-        specifier: workspace:*
-        version: link:../../packages/input
       '@rokkit/layout':
         specifier: workspace:*
         version: link:../../packages/layout
@@ -1837,10 +1712,6 @@ packages:
 
   /@types/node@20.4.1:
     resolution: {integrity: sha512-JIzsAvJeA/5iY6Y/OxZbv1lUcc8dNSE77lb2gnBH+/PJ3lFR1Ccvgwl5JWnHAkNHcRsT0TbpVOsiMKZ1F/yyJg==}
-
-  /@types/prismjs@1.26.0:
-    resolution: {integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==}
-    dev: true
 
   /@types/pug@2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}

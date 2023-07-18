@@ -14,6 +14,7 @@ describe('utilities', () => {
 			'findValueFromPath',
 			'getComponent',
 			'getIcon',
+			'getId',
 			'getLineTypes',
 			'generateTicks',
 			'weekdays',

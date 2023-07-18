@@ -4,15 +4,16 @@ title: Getting Started
 
 Rokkit consists of the following libraries.
 
-- [rokkit](https://www.npmjs.com/package/@rokkit/atoms)
+- [@rokkit/core](https://www.npmjs.com/package/@rokkit/core)
+- [@rokkit/icons](https://www.npmjs.com/package/@rokkit/icons)
+- [@rokkit/actions](https://www.npmjs.com/package/@rokkit/actions)
+- [@rokkit/stores](https://www.npmjs.com/package/@rokkit/stores)
+- [@rokkit/utils](https://www.npmjs.com/package/@rokkit/utils)
+- [@rokkit/atoms](https://www.npmjs.com/package/@rokkit/atoms)
 - [@rokkit/molecules](https://www.npmjs.com/package/@rokkit/molecules)
 - [@rokkit/organisms](https://www.npmjs.com/package/@rokkit/organisms)
-- [@rokkit/icons](https://www.npmjs.com/package/@rokkit/icons)
-- [@rokkit/input](https://www.npmjs.com/package/@rokkit/input)
-- [@rokkit/form](https://www.npmjs.com/package/@rokkit/form)
-- [@rokkit/chart](https://www.npmjs.com/package/@rokkit/chart)
-- [@rokkit/themes](https://www.npmjs.com/package/@rokkit/themes)
 - [@rokkit/layout](https://www.npmjs.com/package/@rokkit/layout)
+- [@rokkit/themes](https://www.npmjs.com/package/@rokkit/themes)
 
 > You'll need to have basic familiarity with Svelte/Svelte-Kit to use Rokkit.
 

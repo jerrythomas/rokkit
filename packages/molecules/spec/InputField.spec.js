@@ -30,7 +30,10 @@ describe('InputField.svelte', () => {
 	})
 
 	it('should render with value', () => {
-		const { container } = render(InputField, { value: 'text' })
+		const { container } = render(InputField, {
+			value: 'John',
+			name: 'FirstName'
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
@@ -42,7 +45,7 @@ describe('InputField.svelte', () => {
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		// handle label change
+		// handle change
 		component.$set({ label: 'other' })
 		await tick()
 		expect(container).toMatchSnapshot()
@@ -80,7 +83,7 @@ describe('InputField.svelte', () => {
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		// handle disabled state change
+
 		component.$set({ disabled: false })
 		await tick()
 		expect(container).toMatchSnapshot()
@@ -94,7 +97,6 @@ describe('InputField.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		// handle class change
 		component.$set({ class: 'other' })
 		await tick()
 		let wrapper = container.querySelector('input-field')
@@ -110,7 +112,6 @@ describe('InputField.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		// handle icon change
 		component.$set({ icon: 'other' })
 		await tick()
 		let icon = container.querySelector('i')

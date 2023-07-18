@@ -5,7 +5,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import List from './List.svelte'
 	import { Item } from '@rokkit/molecules'
-
+  import { findItemOnValueChange } from './lib/mode'
 	const dispatch = createEventDispatcher()
 
 	let className = ''
@@ -15,43 +15,59 @@
 	export let fields = {}
 	export let using = {}
 	export let value = null
+  export let useSelectedItemValue = true
+	let selectedValue = null
 	export let placeholder = ''
 
 	let activeIndex
+	let selectedId = null
 	let open = false
 	let offsetTop
 	let icons = defaultStateIcons.selector
 
 	function handleSelect() {
 		open = false
-		dispatch('select', value)
+		dispatch('select', selectedValue)
 	}
 	function handleNext() {
 		if (!open) {
 			open = true
 		} else if (activeIndex < items.length - 1) {
-			value = items[activeIndex + 1]
+			selectedValue = items[activeIndex + 1]
 		}
 	}
 	function handlePrevious() {
 		if (!open) {
 			open = true
 		} else if (activeIndex > 0) {
-			value = items[activeIndex - 1]
+			selectedValue = items[activeIndex - 1]
 		}
 	}
 	function handleKeySelect() {
 		if (open) {
-			if (value) {
-				// value = items[activeIndex]
+			if (selectedValue) {
 				handleSelect()
 			}
 		}
 	}
 
+	function handleChange(selectedValue) {
+		if (!useSelectedItemValue && typeof selectedValue === 'object' && selectedValue !== null) {
+			activeIndex = items.findIndex((item) =>  item[fields.id] ?? items[fields.text] === selectedValue )
+			selectedId = selectedValue[fields.id] ?? selectedValue[fields.text]
+			value =  selectedId
+		} else {
+			activeIndex = items.findIndex((item) => item === selectedValue)
+			value = selectedValue
+		}
+
+	}
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
-	$: activeIndex = items.findIndex((item) => item === value)
+	$: handleChange(selectedValue)
+	$: if (!value && !useSelectedItemValue && value !== selectedId ) {
+		  selectedValue = findItemOnValueChange(value, items, fields, useSelectedItemValue)
+		}
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -74,13 +90,13 @@
 		bind:clientHeight={offsetTop}
 		role="option"
 		tabindex="-1"
-		aria-selected={value !== null && !open}
+		aria-selected={selectedValue !== null && !open}
 	>
 		<slot>
 			<item class="w-full flex">
 				<svelte:component
 					this={using.default}
-					value={value ?? placeholder}
+					value={selectedValue ?? placeholder}
 					{fields}
 				/>
 			</item>
@@ -97,7 +113,7 @@
 				{items}
 				{fields}
 				{using}
-				bind:value
+				bind:value={selectedValue}
 				on:select={handleSelect}
 				tabindex="-1"
 			/>

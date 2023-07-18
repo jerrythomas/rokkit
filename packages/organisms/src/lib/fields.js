@@ -1,13 +1,4 @@
-export function deriveRulesFromSchema(entity) {
-	const rules = []
-	for (const [key, value] of Object.entries(entity)) {
-		rules.push({
-			text: 'Required',
-			value,
-			key
-		})
-	}
-}
+import { omit } from 'ramda'
 
 /**
  * Derives a schema from a given value.
@@ -37,8 +28,13 @@ export function deriveSchemaFromValue(data) {
 	return schema
 }
 
+/**
+ * Derives a layout from a given value.
+ * @param {any} value
+ * @param {string} scope
+ * @returns {import('../types').DataLayout}
+ */
 export function deriveLayoutFromValue(value, scope = '#') {
-	// let layout = { type: 'vertical' }
 	let elements = []
 	if (typeof value === 'object' && value !== null) {
 		for (const [label, val] of Object.entries(value)) {
@@ -59,4 +55,81 @@ export function deriveLayoutFromValue(value, scope = '#') {
 		}
 	}
 	return { type: 'vertical', elements }
+}
+
+/**
+ * Get combined schema and layout
+ * @param {*} data
+ * @param {import('../types').DataSchema} schema
+ * @param {import('../types').LayoutSchema} layout
+ * @returns {import('../types').LayoutSchema}
+ */
+export function getSchemaWithLayout(schema, layout) {
+	// if (!schema) schema = deriveSchemaFromValue(data)
+	// if (!layout) layout = deriveLayoutFromValue(data)
+
+	let combined = omit(['elements'], layout)
+	combined.elements = combineElementsWithSchema(layout.elements, schema)
+
+	return combined
+}
+
+/**
+ * Combine elements from layout with schema
+ *
+ * @param {*} elements
+ * @param {*} schema
+ * @returns
+ */
+export function combineElementsWithSchema(elements, schema) {
+	let combined = []
+	elements.forEach((element) => {
+		const { scope } = element
+		let attribute = findAttributeByPath(scope, schema)
+
+		if (Array.isArray(element.elements)) {
+			const temp = combineElementsWithSchema(element.elements, schema)
+			attribute = {
+				...omit(['component', 'props'], attribute),
+				...omit(['scope', 'elements'], element),
+				elements: temp
+			}
+		} else {
+			attribute.component = element.component ?? 'input'
+			attribute.props = {
+				...omit(['scope', 'props', 'component', 'key'], element),
+				...attribute.props,
+				...element.props
+			}
+		}
+
+		combined.push(attribute)
+	})
+
+	return combined
+}
+
+/**
+ * Find an attribute in a schema by path
+ * @param {string} scope
+ * @param {import('../types').DataSchema} schema
+ * @returns {import('../types').LayoutSchema}
+ * @throws {Error} Invalid path
+ */
+export function findAttributeByPath(scope, schema) {
+	const pathArray = scope.split('/').slice(1)
+	let schemaPointer = schema
+	let currentKey = ''
+
+	pathArray.forEach((key) => {
+		schemaPointer = schemaPointer.properties[key]
+		currentKey = key
+	})
+
+	if (!schemaPointer) throw new Error('Invalid scope: ' + scope)
+
+	return {
+		key: currentKey,
+		props: { ...schemaPointer }
+	}
 }
