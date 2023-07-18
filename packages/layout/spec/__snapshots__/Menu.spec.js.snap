@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Menu.svelte > should render the navigation menu 1`] = `
+<body>
+  <div>
+    <nav
+      class="menu svelte-h1o4a7"
+    >
+      <a
+        class="first:rounded-t-lg last:rounded-b-lg svelte-h1o4a7 isCurrent"
+      >
+         
+        <p
+          class="svelte-h1o4a7"
+        >
+          undefined
+        </p>
+         
+      </a>
+      <a
+        class="first:rounded-t-lg last:rounded-b-lg svelte-h1o4a7 isCurrent"
+      >
+         
+        <p
+          class="svelte-h1o4a7"
+        >
+          undefined
+        </p>
+         
+      </a>
+    </nav>
+  </div>
+</body>
+`;
+
+exports[`Menu.svelte > should render with icon 1`] = `
+<body>
+  <div>
+    <nav
+      class="menu svelte-h1o4a7"
+    >
+      <a
+        class="first:rounded-t-lg last:rounded-b-lg svelte-h1o4a7 isCurrent"
+      >
+        <icon
+          class="alpha svelte-h1o4a7"
+        />
+         
+        <p
+          class="svelte-h1o4a7"
+        >
+          undefined
+        </p>
+         
+      </a>
+      <a
+        class="first:rounded-t-lg last:rounded-b-lg svelte-h1o4a7 isCurrent"
+      >
+        <icon
+          class="beta svelte-h1o4a7"
+        />
+         
+        <p
+          class="svelte-h1o4a7"
+        >
+          undefined
+        </p>
+         
+      </a>
+    </nav>
+  </div>
+</body>
+`;

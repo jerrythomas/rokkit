@@ -134,7 +134,6 @@ export class ChartBrewer {
 			.rollup((d) => histogramBins(d.map((g) => +g[this.y])))
 			.entries(this.data)
 
-		// console.log(sumstat)
 		// What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
 		var maxNum = 0
 		for (let i in sumstat) {
@@ -145,11 +144,6 @@ export class ChartBrewer {
 				maxNum = longest
 			}
 		}
-		// console.log(
-		//   maxNum,
-		//   this.axis.x.scale.bandwidth(),
-		//   this.axis.x.scale('setosa')
-		// )
 
 		// The maximum width of a violin must be x.bandwidth = the width dedicated to a group
 		var xNum = scaleLinear()

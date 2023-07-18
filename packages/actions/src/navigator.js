@@ -1,3 +1,4 @@
+import { getId } from '@rokkit/core'
 import {
 	moveNext,
 	movePrevious,
@@ -7,6 +8,7 @@ import {
 	indicesFromPath,
 	getCurrentNode
 } from './hierarchy'
+
 /**
  * @typedef NavigatorOptions
  * @property {Array<*>}     items           - An array containing the data set to navigate
@@ -40,7 +42,8 @@ export function navigator(node, options) {
 		path = moveNext(path, items, fields)
 		currentNode = getCurrentNode(path)
 
-		if (previousNode !== currentNode) moveTo(node, path, currentNode, idPrefix)
+		if (previousNode !== currentNode)
+			moveTo(node, path, currentNode, idPrefix, fields)
 	}
 	const previous = () => {
 		const previousNode = currentNode
@@ -48,14 +51,18 @@ export function navigator(node, options) {
 		if (path.length > 0) {
 			currentNode = getCurrentNode(path)
 			if (previousNode !== currentNode)
-				moveTo(node, path, currentNode, idPrefix)
+				moveTo(node, path, currentNode, idPrefix, fields)
 		}
 	}
 	const select = () => {
 		if (currentNode)
 			node.dispatchEvent(
 				new CustomEvent('select', {
-					detail: { path: indicesFromPath(path), node: currentNode }
+					detail: {
+						path: indicesFromPath(path),
+						node: currentNode,
+						id: getId(currentNode, fields)
+					}
 				})
 			)
 	}
@@ -68,7 +75,11 @@ export function navigator(node, options) {
 				currentNode[path[path.length - 1].fields.isOpen] = false
 				node.dispatchEvent(
 					new CustomEvent('collapse', {
-						detail: { path: indicesFromPath(path), node: currentNode }
+						detail: {
+							path: indicesFromPath(path),
+							node: currentNode,
+							id: getId(currentNode, fields)
+						}
 					})
 				)
 			} else if (path.length > 0) {
@@ -83,7 +94,11 @@ export function navigator(node, options) {
 			currentNode[path[path.length - 1].fields.isOpen] = true
 			node.dispatchEvent(
 				new CustomEvent('expand', {
-					detail: { path: indicesFromPath(path), node: currentNode }
+					detail: {
+						path: indicesFromPath(path),
+						node: currentNode,
+						id: getId(currentNode, fields)
+					}
 				})
 			)
 		}
@@ -130,13 +145,21 @@ export function navigator(node, options) {
 					: 'collapse'
 				node.dispatchEvent(
 					new CustomEvent(event, {
-						detail: { path: indices, node: currentNode }
+						detail: {
+							path: indices,
+							node: currentNode,
+							id: getId(currentNode, fields)
+						}
 					})
 				)
 			}
 			node.dispatchEvent(
 				new CustomEvent('select', {
-					detail: { path: indices, node: currentNode }
+					detail: {
+						path: indices,
+						node: currentNode,
+						id: getId(currentNode, fields)
+					}
 				})
 			)
 		}
@@ -154,15 +177,20 @@ export function navigator(node, options) {
 	}
 }
 
-export function moveTo(node, path, currentNode, idPrefix) {
+export function moveTo(node, path, currentNode, idPrefix, fields) {
 	const indices = indicesFromPath(path)
 
 	let current = node.querySelector('#' + idPrefix + indices.join('-'))
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
+	const id = getId(currentNode, fields)
 	node.dispatchEvent(
 		new CustomEvent('move', {
-			detail: { path: indices, node: currentNode }
+			detail: {
+				path: indices,
+				node: currentNode,
+				id
+			}
 		})
 	)
 }

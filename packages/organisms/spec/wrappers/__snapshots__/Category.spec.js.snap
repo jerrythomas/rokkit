@@ -1,0 +1,140 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Category.svelte > should render using default props 1`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render using specified class 1`] = `
+<body>
+  <div>
+    <section
+      class="custom-class"
+    >
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render using specified class 2`] = `
+<body>
+  <div>
+    <section
+      class="custom-class-2"
+    >
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render using specified type 1`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+       
+      <field-layout
+        class="horizontal"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render using specified type 2`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+       
+      <field-layout
+        class="section"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render with alternative navigator 1`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+      <error>
+        Items should be an array with at least two items.
+      </error>
+      
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render with alternative navigator 2`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render with extra props 1`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;
+
+exports[`Category.svelte > should render with extra props 2`] = `
+<body>
+  <div>
+    <section
+      class=""
+    >
+       
+      <field-layout
+        class="vertical"
+      />
+    </section>
+  </div>
+</body>
+`;

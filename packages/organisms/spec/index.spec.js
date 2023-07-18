@@ -7,7 +7,7 @@ describe('components', () => {
 			'Accordion',
 			'DropDown',
 			'DropSearch',
-			'FormFields',
+			'Form',
 			'List',
 			'MultiSelect',
 			'NestedList',

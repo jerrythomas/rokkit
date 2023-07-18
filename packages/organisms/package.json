@@ -27,17 +27,17 @@
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.4.2",
 		"@testing-library/svelte": "^4.0.3",
-		"@vitest/coverage-c8": "^0.32.4",
-		"@vitest/coverage-istanbul": "^0.32.4",
-		"@vitest/coverage-v8": "^0.32.4",
-		"@vitest/ui": "~0.32.4",
+		"@vitest/coverage-c8": "^0.33.0",
+		"@vitest/coverage-istanbul": "^0.33.0",
+		"@vitest/coverage-v8": "^0.33.0",
+		"@vitest/ui": "~0.33.0",
 		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",
-		"svelte": "^4.0.2",
+		"svelte": "^4.0.5",
 		"typescript": "^5.1.6",
 		"validators": "workspace:latest",
-		"vite": "^4.3.9",
-		"vitest": "~0.32.4"
+		"vite": "^4.4.4",
+		"vitest": "~0.33.0"
 	},
 	"files": [
 		"src/**/*.js",
@@ -57,6 +57,7 @@
 		"@rokkit/actions": "workspace:*",
 		"@rokkit/atoms": "workspace:*",
 		"@rokkit/core": "workspace:*",
-		"@rokkit/molecules": "workspace:*"
+		"@rokkit/molecules": "workspace:*",
+		"ramda": "^0.29.0"
 	}
 }

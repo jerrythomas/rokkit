@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Wrapper.svelte > should render using default props 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    />
+  </div>
+</body>
+`;
+
+exports[`Wrapper.svelte > should render using specified class 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical custom-class"
+    />
+  </div>
+</body>
+`;
+
+exports[`Wrapper.svelte > should render using specified class 2`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical custom-class-2"
+    />
+  </div>
+</body>
+`;
+
+exports[`Wrapper.svelte > should render using specified type 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="horizontal "
+    />
+  </div>
+</body>
+`;
+
+exports[`Wrapper.svelte > should render using specified type 2`] = `
+<body>
+  <div>
+    <field-layout
+      class="section "
+    />
+  </div>
+</body>
+`;

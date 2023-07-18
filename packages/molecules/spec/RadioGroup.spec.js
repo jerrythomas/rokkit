@@ -5,7 +5,7 @@ import RadioGroup from '../src/RadioGroup.svelte'
 describe('RadioGroup.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('should render the navigation RadioGroup', () => {
+	it('should render default', () => {
 		const { container } = render(RadioGroup, {
 			name: 'radio',
 			value: 'a',
@@ -15,5 +15,20 @@ describe('RadioGroup.svelte', () => {
 			]
 		})
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+
+	it('should render with alternative class', () => {
+		const { container } = render(RadioGroup, {
+			name: 'radio',
+			value: 'a',
+			items: [
+				{ value: 'b', label: 'b' },
+				{ value: 'a', label: 'a' }
+			],
+			textAfter: false
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
 	})
 })

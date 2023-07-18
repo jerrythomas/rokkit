@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getComponent, getIcon } from '../src/mapping.js'
+import { getComponent, getIcon, getId } from '../src/mapping.js'
 
 describe('mapping', () => {
 	describe('getComponent', () => {
@@ -35,6 +35,7 @@ describe('mapping', () => {
 			expect(result).toEqual('custom')
 		})
 	})
+
 	describe('getIcon', () => {
 		it('should return null if icon is not defined', () => {
 			const result = getIcon(null)
@@ -52,6 +53,27 @@ describe('mapping', () => {
 				state: 'warn'
 			})
 			expect(result).toEqual('warn')
+		})
+	})
+
+	describe('getId', () => {
+		const fields = { id: 'id', text: 'text' }
+		it('should return value if node is not an object', () => {
+			const result = getId('A', fields)
+			expect(result).toEqual('A')
+		})
+		it('should return value if node is null', () => {
+			const result = getId(null, fields)
+			expect(result).toEqual(null)
+		})
+
+		it('should return id if available', () => {
+			const result = getId({ id: 'X', name: 'Alpha' }, fields)
+			expect(result).toEqual('X')
+		})
+		it('should return text if id is not available', () => {
+			const result = getId({ text: 'Alpha' }, fields)
+			expect(result).toEqual('Alpha')
 		})
 	})
 })

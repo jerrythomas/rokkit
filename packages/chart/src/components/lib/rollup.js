@@ -18,7 +18,7 @@ function slidingWindowForNumbers(values, size, step, offset = 0, fmt = 0) {
 	if (smallest + count * step + offset == largest) {
 		count += 1
 	}
-	// console.log('count:', count)
+
 	const range = [...Array(count).keys()]
 
 	const result = range.map((key) => ({

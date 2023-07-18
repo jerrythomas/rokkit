@@ -4,8 +4,9 @@
 	import { Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 
-	export let data
+	export let items
 	export let value = null
+	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields
 	export let using = { default: Item }
 
@@ -18,7 +19,6 @@
 
 	// on search change filter list
 	function handleSelect(event) {
-		console.log('selected', event)
 		value = event.detail
 		search = event.detail[fields.text]
 	}
@@ -55,7 +55,7 @@
 	{#if opened}
 		<Slider>
 			<List
-				bind:items={data}
+				bind:items
 				bind:value
 				{fields}
 				{using}

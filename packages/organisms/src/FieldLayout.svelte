@@ -1,43 +1,52 @@
 <script>
-	import { inputTypes } from './types'
-	let className = ''
+	import { componentTypes } from './types'
+	import { omit } from 'ramda'
+	import Wrapper from './wrappers/Wrapper.svelte'
 
-	export { className as class }
-	export let value
-	export let items = []
-	// export let mapping
-	export let using = inputTypes
+	export let value = {}
+	export let schema = {}
+	export let path = []
+	export let using = {}
+
+	$: using = {...componentTypes, ...using}
+	$: wrapper = using[schema.wrapper] ?? Wrapper
+	$: wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
 </script>
 
-<segment class={className}>
-	{#each items as field}
-		{@const component = using[field.component]}
-		{@const hasKey = 'key' in field}
+{#if !Array.isArray(schema.elements)}
+	<error>
+		Invalid schema. Expected schema to include an 'elements' array.
+	</error>
+{:else}
+	<svelte:component this={wrapper} {...wrapperProps} {using} >
+		{#each schema.elements as item}
+			{@const component = using[item.component]}
+			{@const elementPath = item.key? [...path, item.key]: path}
+			{@const props = {  ...item.props, path: elementPath}}
+			{@const nested = Array.isArray(item.elements) && item.elements.length > 0}
 
-		{#if field.items}
-			{#if hasKey}
-				<svelte:self
-					bind:value={value[field.key]}
-					items={field.items}
-					{using}
-					class={field.class}
+			{#if nested }
+			  {#if item.key}
+				  <svelte:self {...props} {using} schema={item} bind:value={value[item.key]} on:change />
+				{:else}
+				  <svelte:self {...props} {using} schema={item} bind:value={value}  on:change />
+				{/if}
+			{:else if component}
+				{@const name = elementPath.join('.')}
+				<svelte:component
+					this={component}
+					{name}
+					bind:value={value[item.key]}
+					{...item.props}
+					on:change
 				/>
 			{:else}
-				<svelte:self
-					bind:value
-					items={field.items}
-					{using}
-					class={field.class}
-				/>
+				<error>
+					Unknown component "{item.component}" for path "{elementPath.join('/')}".
+					Add custom mapping with the "using" property.
+				</error>
 			{/if}
-		{:else if 'key' in field}
-			<svelte:component
-				this={component}
-				bind:value={value[field.key]}
-				{...field.props}
-			/>
-		{:else}
-			<svelte:component this={component} {...field.props} />
-		{/if}
-	{/each}
-</segment>
+		{/each}
+		</svelte:component>
+{/if}
+

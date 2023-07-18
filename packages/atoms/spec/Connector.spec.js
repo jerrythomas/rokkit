@@ -73,7 +73,7 @@ describe('Connector.svelte', () => {
 	})
 
 	describe('When rtl is true property', () => {
-		it('Should render when type is "last"', () => {
+		it('should render when type is "last"', () => {
 			const { container } = render(Connector, { type: 'last', rtl: true })
 
 			const span = container.querySelectorAll('span')
@@ -84,7 +84,7 @@ describe('Connector.svelte', () => {
 			expect(container).toMatchSnapshot()
 		})
 
-		it('Should render when type is "child"', () => {
+		it('should render when type is "child"', () => {
 			const { container } = render(Connector, { type: 'child', rtl: true })
 
 			const span = container.querySelectorAll('span')
@@ -94,7 +94,7 @@ describe('Connector.svelte', () => {
 			)
 			expect(container).toMatchSnapshot()
 		})
-		it('Should render when type is "sibling"', () => {
+		it('should render when type is "sibling"', () => {
 			const { container } = render(Connector, { type: 'sibling', rtl: true })
 
 			const span = container.querySelectorAll('span')
@@ -104,7 +104,7 @@ describe('Connector.svelte', () => {
 			)
 			expect(container).toMatchSnapshot()
 		})
-		it('Should render when type is "empty"', () => {
+		it('should render when type is "empty"', () => {
 			const { container } = render(Connector, { type: 'empty', rtl: true })
 
 			const span = container.querySelectorAll('span')

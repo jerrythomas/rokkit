@@ -32,7 +32,6 @@
 		}
 	}))
 
-	// $: console.log(data)
 </script>
 
 {#each data as { x1, y1, x2, y2, color, label }}

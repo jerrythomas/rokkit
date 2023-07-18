@@ -131,11 +131,9 @@
 // export function funnel(input, aes) {
 // 	let data = convertToPhases(input, aes)
 // 	data = mirror(data, aes)
-// 	// console.log(data)
 
 // 	if ('fill' in aes) {
 // 		let stats = flatten(data.stats.map((phase) => phase.value))
-// 		// console.log(stats)
 // 		data.stats = nest()
 // 			.key((d) => d[aes.fill])
 // 			.rollup((rows) => [...rows, { ...rows[rows.length - 1], x: rows.length }])

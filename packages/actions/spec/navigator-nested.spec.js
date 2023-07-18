@@ -15,7 +15,12 @@ expect.extend({
 
 describe('navigator', () => {
 	const events = ['move', 'select', 'collapse', 'expand']
-	const fields = { children: 'children', isOpen: 'isOpen' }
+	const fields = {
+		id: 'name',
+		text: 'name',
+		children: 'children',
+		isOpen: 'isOpen'
+	}
 
 	let handlers = {}
 	let node
@@ -68,7 +73,7 @@ describe('navigator', () => {
 
 	describe('Vertical Nested List', () => {
 		it('dispatches move event on next', () => {
-			options = { items, fields: [] }
+			options = { items, fields }
 			navigatorInstance = navigator(node, options)
 
 			const event = new KeyboardEvent('keydown', { key: 'ArrowDown' })
@@ -77,21 +82,23 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: items[1]
+				node: items[1],
+				id: items[1].name
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 		})
 
-		it('Should dispatch move event on ArrowUp', () => {
+		it('should dispatch move event on ArrowUp', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -103,13 +110,14 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 		})
 
-		it('Should trigger scrollIntoView on move', () => {
+		it('should trigger scrollIntoView on move', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -121,12 +129,13 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalled()
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			expect(node.children[0].scrollIntoView).toHaveBeenCalled()
 		})
 
-		it('Should dispatch select event on Enter key', () => {
+		it('should dispatch select event on Enter key', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -138,11 +147,12 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0, 0],
-				node: items[0].children[0]
+				node: items[0].children[0],
+				id: items[0].children[0]
 			})
 		})
 
-		it('Should not dispatch collapse/expand event with empty selection', () => {
+		it('should not dispatch collapse/expand event with empty selection', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields
@@ -154,7 +164,7 @@ describe('navigator', () => {
 		})
 
 		//todo: test move to parent instead of collapse
-		it('Should dispatch collapse event on ArrowLeft', () => {
+		it('should dispatch collapse event on ArrowLeft', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -167,11 +177,12 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalledTimes(1)
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
-		it('Should select parent on ArrowLeft', () => {
+		it('should select parent on ArrowLeft', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -184,11 +195,12 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalled()
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
-		it('Should dispatch expand event on ArrowRight', () => {
+		it('should dispatch expand event on ArrowRight', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -199,11 +211,12 @@ describe('navigator', () => {
 			expect(handlers.expand).toHaveBeenCalledTimes(1)
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
-		it('Should dispatch collapse/expand when parent is clicked.', () => {
+		it('should dispatch collapse/expand when parent is clicked.', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -217,20 +230,22 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalled()
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 			expect(items[0][fields.isOpen]).toBeTruthy()
 			expect(handlers.expand).toHaveBeenCalled()
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 	})
 
 	describe('Horizontal Nested List', () => {
-		it('Should dispatch move event on ArrowRight', () => {
+		it('should dispatch move event on ArrowRight', () => {
 			options = { items, fields, vertical: false }
 			navigatorInstance = navigator(node, options)
 
@@ -240,18 +255,21 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: items[1]
+				node: items[1],
+				id: items[1].name
 			})
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: items[1]
+				node: items[1],
+				id: items[1].name
 			})
 
 			node.dispatchEvent(event)
@@ -259,7 +277,7 @@ describe('navigator', () => {
 			// expect(handlers.move).toHaveBeenDispatchedWith({ node: 'A' })
 		})
 
-		it('Should dispatch move event on ArrowLeft', () => {
+		it('should dispatch move event on ArrowLeft', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -272,13 +290,14 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 		})
 
-		it('Should dispatch select event on Enter key', () => {
+		it('should dispatch select event on Enter key', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -291,11 +310,12 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0, 0],
-				node: items[0].children[0]
+				node: items[0].children[0],
+				id: items[0].children[0]
 			})
 		})
 
-		it('Should not dispatch collapse/expand event with empty selection', () => {
+		it('should not dispatch collapse/expand event with empty selection', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields
@@ -306,7 +326,7 @@ describe('navigator', () => {
 			expect(handlers.collapse).not.toHaveBeenCalled()
 		})
 
-		it('Should dispatch collapse event on ArrowUp', () => {
+		it('should dispatch collapse event on ArrowUp', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -320,11 +340,12 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalledTimes(1)
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
-		it('Should select parent on ArrowUp', () => {
+		it('should select parent on ArrowUp', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -338,11 +359,12 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalled()
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
-		it('Should dispatch expand event on ArrowDown', () => {
+		it('should dispatch expand event on ArrowDown', () => {
 			navigatorInstance = navigator(node, {
 				items,
 				fields,
@@ -354,10 +376,11 @@ describe('navigator', () => {
 			expect(handlers.expand).toHaveBeenCalledTimes(1)
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
-		it('Should dispatch collapse/expand when parent is clicked.', () => {
+		it('should dispatch collapse/expand when parent is clicked.', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {
 				items,
@@ -372,14 +395,16 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalled()
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 			expect(items[0][fields.isOpen]).toBeTruthy()
 			expect(handlers.expand).toHaveBeenCalled()
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 	})

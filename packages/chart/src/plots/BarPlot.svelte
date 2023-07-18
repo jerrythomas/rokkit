@@ -32,7 +32,7 @@
 		}
 	}))
 
-	// $: console.log(data)
+
 </script>
 
 {#each data as { x, y, width, height, fill, label }}

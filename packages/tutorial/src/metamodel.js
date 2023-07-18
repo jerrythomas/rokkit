@@ -110,7 +110,6 @@ export function turorialsToNestedObject(data, item, index = 0) {
 			} else if (item.preview) {
 				data[key][root].preview = item.preview
 			}
-			// console.log('item', root, item.content, item.name, data[key][root])
 		} else {
 			const route = item.parts
 				.slice(0, index + 1)
@@ -123,7 +122,6 @@ export function turorialsToNestedObject(data, item, index = 0) {
 			}
 		}
 	}
-	// console.log('item', item.name, data[key])
 	return data
 }
 
