@@ -19,7 +19,6 @@
 
 	// on search change filter list
 	function handleSelect(event) {
-		console.log('selected', event)
 		value = event.detail
 		search = event.detail[fields.text]
 	}

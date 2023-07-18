@@ -183,11 +183,9 @@ export function funnel(input, aes, width, height) {
 	data = mirror(data, aes)
 	const curve =
 		aes.curve === 'basis' ? curveBasis : data.vertical ? curveBumpY : curveBumpX
-	//  console.log(data)
 
 	if ('fill' in aes) {
 		let stats = flatten(data.stats.map((phase) => phase.value))
-		// console.log(stats)
 
 		data.stats = nest()
 			.key((d) => d[aes.fill])

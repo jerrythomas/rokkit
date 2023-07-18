@@ -24,7 +24,6 @@ export function persistable(key, store) {
 
 	try {
 		value = JSON.parse(localStorage.getItem(key))
-		// console.log(value)
 		store.set(value)
 	} catch {
 		console.error(PARSE_ERROR_MESSAGE, key)

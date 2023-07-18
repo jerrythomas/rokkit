@@ -1,11 +1,12 @@
 <script>
-	import { defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { defaultFields, defaultStateIcons, getId } from '@rokkit/core'
 	import { Slider, Icon } from '@rokkit/atoms'
 	import { dismissable, navigable } from '@rokkit/actions'
 	import { createEventDispatcher } from 'svelte'
 	import List from './List.svelte'
 	import { Item } from '@rokkit/molecules'
   import { findItemOnValueChange } from './lib/mode'
+
 	const dispatch = createEventDispatcher()
 
 	let className = ''
@@ -15,58 +16,54 @@
 	export let fields = {}
 	export let using = {}
 	export let value = null
-  export let useSelectedItemValue = true
-	let selectedValue = null
+  export let useItemAsValue = false
+	let selected = {value: value, id: getId(value, fields)}
 	export let placeholder = ''
 
 	let activeIndex
-	let selectedId = null
 	let open = false
 	let offsetTop
 	let icons = defaultStateIcons.selector
 
 	function handleSelect() {
 		open = false
-		dispatch('select', selectedValue)
+		selected.id = getId(selected.value, fields)
+		value = (useItemAsValue) ? selected.value: selected.id
+		dispatch('select', selected)
 	}
 	function handleNext() {
 		if (!open) {
 			open = true
 		} else if (activeIndex < items.length - 1) {
-			selectedValue = items[activeIndex + 1]
+			selected = {
+				value : items[activeIndex + 1],
+				id: getId(items[activeIndex + 1], fields)
+			}
+			value = (useItemAsValue)?  selected.value: selected.id
 		}
 	}
 	function handlePrevious() {
 		if (!open) {
 			open = true
 		} else if (activeIndex > 0) {
-			selectedValue = items[activeIndex - 1]
+			selected = {value: items[activeIndex - 1], id: getId(items[activeIndex - 1], fields)}
+			value = (useItemAsValue)?  selected.value: selected.id
 		}
 	}
 	function handleKeySelect() {
 		if (open) {
-			if (selectedValue) {
+			if (selected.value) {
 				handleSelect()
 			}
 		}
 	}
 
-	function handleChange(selectedValue) {
-		if (!useSelectedItemValue && typeof selectedValue === 'object' && selectedValue !== null) {
-			activeIndex = items.findIndex((item) =>  item[fields.id] ?? items[fields.text] === selectedValue )
-			selectedId = selectedValue[fields.id] ?? selectedValue[fields.text]
-			value =  selectedId
-		} else {
-			activeIndex = items.findIndex((item) => item === selectedValue)
-			value = selectedValue
-		}
-
-	}
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
-	$: handleChange(selectedValue)
-	$: if (!value && !useSelectedItemValue && value !== selectedId ) {
-		  selectedValue = findItemOnValueChange(value, items, fields, useSelectedItemValue)
+	$: activeIndex = items.findIndex((item) => item === selected.value)
+	$: if (!value && !useItemAsValue && value !== selected.id ) {
+		  selected.value = findItemOnValueChange(value, items, fields, useItemAsValue)
+			selected.id = getId(selected.value, fields)
 		}
 </script>
 
@@ -90,13 +87,13 @@
 		bind:clientHeight={offsetTop}
 		role="option"
 		tabindex="-1"
-		aria-selected={selectedValue !== null && !open}
+		aria-selected={selected.value !== null && !open}
 	>
 		<slot>
 			<item class="w-full flex">
 				<svelte:component
 					this={using.default}
-					value={selectedValue ?? placeholder}
+					value={selected.value ?? placeholder}
 					{fields}
 				/>
 			</item>
@@ -113,7 +110,7 @@
 				{items}
 				{fields}
 				{using}
-				bind:value={selectedValue}
+				bind:value={selected.value}
 				on:select={handleSelect}
 				tabindex="-1"
 			/>

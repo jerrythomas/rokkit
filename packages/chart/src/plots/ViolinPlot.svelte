@@ -3,7 +3,6 @@
 
 	let chart = getContext('chart')
 	$: data = $chart.violin()
-	// $: console.log(data)
 </script>
 
 {#each data as { x, curve }}

@@ -2,7 +2,7 @@
 	import { Form } from '@rokkit/organisms'
 	import { schema } from './schema.js'
 
-	let value = { name: null, gender: null, age: null, bio: null }
+	let value = { name: '', gender: '', age: 10, bio: '' }
 </script>
 
 <Form bind:value  />

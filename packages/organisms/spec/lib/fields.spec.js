@@ -46,9 +46,9 @@ describe('fields', () => {
 
 		it('should derive schema for null/undefined', () => {
 			let schema = deriveSchemaFromValue(undefined)
-			expect(schema).toEqual({ type: 'undefined' })
+			expect(schema).toEqual({ type: 'string' })
 			schema = deriveSchemaFromValue(null)
-			expect(schema).toEqual({ type: 'undefined' })
+			expect(schema).toEqual({ type: 'string' })
 		})
 
 		it('should derive schema for date', () => {

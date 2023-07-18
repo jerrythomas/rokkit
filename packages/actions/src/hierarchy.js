@@ -60,7 +60,7 @@ export function isNested(items, fields) {
  */
 export function navigateToLastVisibleChild(path) {
 	let current = path[path.length - 1]
-	// console.log(current)
+
 	while (isExpanded(current.items[current.index], current.fields)) {
 		const items = current.items[current.index][current.fields.children]
 		const level = {
