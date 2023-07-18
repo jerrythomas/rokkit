@@ -350,6 +350,9 @@ exports[`InputField.svelte > should render with value 1`] = `
       >
          
         <input
+          aria-label="FirstName"
+          id="FirstName"
+          name="FirstName"
           type="text"
         />
         

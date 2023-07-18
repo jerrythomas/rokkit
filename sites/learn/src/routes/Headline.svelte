@@ -1,5 +1,5 @@
 <script>
-	import { Button } from '@rokkit/form'
+	import { Button } from '@rokkit/molecules'
 	import { goto } from '$app/navigation'
 	// import { getContext } from 'svelte'
 	import Background from './Background.svelte'

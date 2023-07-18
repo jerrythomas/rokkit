@@ -1,5 +1,6 @@
 <script>
 	export let value
+	export let name
 </script>
 
-<p>{value}</p>
+<p>{name}:{value}</p>

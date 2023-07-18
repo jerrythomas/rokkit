@@ -1,6 +1,6 @@
 <script>
 	import List from './List.svelte'
-	import FormFields from './FormFields.svelte'
+	import FieldLayout from './FieldLayout.svelte'
 
 	let className = ''
 	export { className as class }
@@ -8,7 +8,7 @@
 	export let value = []
 	export let schema = []
 	export let using = {}
-	export let actions = {}
+	// export let actions = {}
 	export let navigator = List
 	let item
 
@@ -32,6 +32,6 @@
 
 	<wrap-items>
 		<!-- Array actions add, remove -->
-		<FormFields bind:value={item} {schema} {using} path={location} />
+		<FieldLayout bind:value={item} {schema} {using} path={location} />
 	</wrap-items>
 </section>

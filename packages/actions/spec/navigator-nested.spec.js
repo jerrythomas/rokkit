@@ -15,7 +15,12 @@ expect.extend({
 
 describe('navigator', () => {
 	const events = ['move', 'select', 'collapse', 'expand']
-	const fields = { children: 'children', isOpen: 'isOpen' }
+	const fields = {
+		id: 'name',
+		text: 'name',
+		children: 'children',
+		isOpen: 'isOpen'
+	}
 
 	let handlers = {}
 	let node
@@ -68,7 +73,7 @@ describe('navigator', () => {
 
 	describe('Vertical Nested List', () => {
 		it('dispatches move event on next', () => {
-			options = { items, fields: [] }
+			options = { items, fields }
 			navigatorInstance = navigator(node, options)
 
 			const event = new KeyboardEvent('keydown', { key: 'ArrowDown' })
@@ -77,14 +82,16 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: items[1]
+				node: items[1],
+				id: items[1].name
 			})
 
 			node.dispatchEvent(event)
@@ -103,7 +110,8 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(1)
@@ -121,7 +129,8 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalled()
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			expect(node.children[0].scrollIntoView).toHaveBeenCalled()
 		})
@@ -138,7 +147,8 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0, 0],
-				node: items[0].children[0]
+				node: items[0].children[0],
+				id: items[0].children[0]
 			})
 		})
 
@@ -167,7 +177,8 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalledTimes(1)
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
@@ -184,7 +195,8 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalled()
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
@@ -199,7 +211,8 @@ describe('navigator', () => {
 			expect(handlers.expand).toHaveBeenCalledTimes(1)
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
@@ -217,14 +230,16 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalled()
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 			expect(items[0][fields.isOpen]).toBeTruthy()
 			expect(handlers.expand).toHaveBeenCalled()
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 	})
@@ -240,18 +255,21 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: items[1]
+				node: items[1],
+				id: items[1].name
 			})
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: items[1]
+				node: items[1],
+				id: items[1].name
 			})
 
 			node.dispatchEvent(event)
@@ -272,7 +290,8 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(1)
@@ -291,7 +310,8 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0, 0],
-				node: items[0].children[0]
+				node: items[0].children[0],
+				id: items[0].children[0]
 			})
 		})
 
@@ -320,7 +340,8 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalledTimes(1)
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
@@ -338,7 +359,8 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalled()
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 
@@ -354,7 +376,8 @@ describe('navigator', () => {
 			expect(handlers.expand).toHaveBeenCalledTimes(1)
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 		it('should dispatch collapse/expand when parent is clicked.', () => {
@@ -372,14 +395,16 @@ describe('navigator', () => {
 			expect(handlers.collapse).toHaveBeenCalled()
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 			node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 			expect(items[0][fields.isOpen]).toBeTruthy()
 			expect(handlers.expand).toHaveBeenCalled()
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				path: [0],
-				node: items[0]
+				node: items[0],
+				id: items[0].name
 			})
 		})
 	})

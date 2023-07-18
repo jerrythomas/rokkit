@@ -1,0 +1,132 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Section.svelte > should render using default props 1`] = `
+<body>
+  <div>
+    <details
+      class=""
+      open=""
+    >
+      <summary>
+        Section
+      </summary>
+       
+      <field-layout
+        class="vertical"
+      />
+    </details>
+  </div>
+</body>
+`;
+
+exports[`Section.svelte > should render using props 1`] = `
+<body>
+  <div>
+    <details
+      class=""
+    >
+      <summary>
+        Section Title
+      </summary>
+       
+      <field-layout
+        class="vertical"
+      />
+    </details>
+  </div>
+</body>
+`;
+
+exports[`Section.svelte > should render using props 2`] = `
+<body>
+  <div>
+    <details
+      class=""
+    >
+      <summary>
+        custom
+      </summary>
+       
+      <field-layout
+        class="vertical"
+      />
+    </details>
+  </div>
+</body>
+`;
+
+exports[`Section.svelte > should render using specified class 1`] = `
+<body>
+  <div>
+    <details
+      class="custom-class"
+      open=""
+    >
+      <summary>
+        Section
+      </summary>
+       
+      <field-layout
+        class="vertical"
+      />
+    </details>
+  </div>
+</body>
+`;
+
+exports[`Section.svelte > should render using specified class 2`] = `
+<body>
+  <div>
+    <details
+      class="custom-class-2"
+      open=""
+    >
+      <summary>
+        Section
+      </summary>
+       
+      <field-layout
+        class="vertical"
+      />
+    </details>
+  </div>
+</body>
+`;
+
+exports[`Section.svelte > should render using specified type 1`] = `
+<body>
+  <div>
+    <details
+      class=""
+      open=""
+    >
+      <summary>
+        Section
+      </summary>
+       
+      <field-layout
+        class="horizontal"
+      />
+    </details>
+  </div>
+</body>
+`;
+
+exports[`Section.svelte > should render using specified type 2`] = `
+<body>
+  <div>
+    <details
+      class=""
+      open=""
+    >
+      <summary>
+        Section
+      </summary>
+       
+      <field-layout
+        class="section"
+      />
+    </details>
+  </div>
+</body>
+`;

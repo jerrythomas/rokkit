@@ -7,6 +7,7 @@ describe('components', () => {
 			'Alerts',
 			'BreadCrumbs',
 			'Button',
+			'ButtonGroup',
 			'Calendar',
 			'CheckBox',
 			'CheckBoxGroup',
@@ -19,7 +20,8 @@ describe('components', () => {
 			'Rating',
 			'Summary',
 			'InputField',
-			'ValidationReport'
+			'ValidationReport',
+			'ResponsiveGrid'
 		])
 	})
 })

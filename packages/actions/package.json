@@ -52,6 +52,7 @@
 		}
 	},
 	"dependencies": {
+		"@rokkit/core": "workspace:latest",
 		"@rokkit/stores": "workspace:latest"
 	}
 }

@@ -16,9 +16,10 @@ exports[`InputArray.svelte > should render using default field mapping 1`] = `
       
        
       <wrap-items>
-        <field-group
-          class="flex flex-col gap-2"
-        />
+        <error>
+          Invalid schema. Expected schema to include an 'elements' array.
+        </error>
+        
       </wrap-items>
     </section>
   </div>

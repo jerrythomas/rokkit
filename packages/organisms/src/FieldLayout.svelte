@@ -1,47 +1,52 @@
 <script>
 	import { componentTypes } from './types'
-	let className = ''
+	import { omit } from 'ramda'
+	import Wrapper from './wrappers/Wrapper.svelte'
 
-	export { className as class }
-	export let value
+	export let value = {}
 	export let schema = {}
 	export let path = []
-	export let using = componentTypes
+	export let using = {}
 
-	$: group = schema.label || schema.group
+	$: using = {...componentTypes, ...using}
+	$: wrapper = using[schema.wrapper] ?? Wrapper
+	$: wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
 </script>
 
-<field-layout class="{schema.type ?? 'vertical'} {className}" class:group>
-	{#if schema.label}
-		<legend>{schema.label}</legend>
-	{/if}
-	{#if Array.isArray(schema.elements)}
-	{#each schema.elements as item}
-		{@const component = using[item.component]}
-		{@const props = item.props || {}}
-		{#if item.group}
-			<svelte:self
-				bind:value={value[item.key]}
-				{...props}
-				{using}
-				path={item.key ? [...path, item.key] : path}
-				on:change
-			/>
-		{:else if component}
-			{@const name = [...path, item.key].join('.')}
-			<svelte:component
-				this={component}
-				{name}
-				bind:value={value[item.key]}
-				{...props}
-				on:change
-			/>
-		{:else}
-			<error>
-				Unknown component '{item.component}'. Add custom mapping with the
-				'using' property.
-			</error>
-		{/if}
-	{/each}
-	{/if}
-</field-layout>
+{#if !Array.isArray(schema.elements)}
+	<error>
+		Invalid schema. Expected schema to include an 'elements' array.
+	</error>
+{:else}
+	<svelte:component this={wrapper} {...wrapperProps} {using} >
+		{#each schema.elements as item}
+			{@const component = using[item.component]}
+			{@const elementPath = item.key? [...path, item.key]: path}
+			{@const props = {  ...item.props, path: elementPath}}
+			{@const nested = Array.isArray(item.elements) && item.elements.length > 0}
+
+			{#if nested }
+			  {#if item.key}
+				  <svelte:self {...props} {using} schema={item} bind:value={value[item.key]} on:change />
+				{:else}
+				  <svelte:self {...props} {using} schema={item} bind:value={value}  on:change />
+				{/if}
+			{:else if component}
+				{@const name = elementPath.join('.')}
+				<svelte:component
+					this={component}
+					{name}
+					bind:value={value[item.key]}
+					{...item.props}
+					on:change
+				/>
+			{:else}
+				<error>
+					Unknown component "{item.component}" for path "{elementPath.join('/')}".
+					Add custom mapping with the "using" property.
+				</error>
+			{/if}
+		{/each}
+		</svelte:component>
+{/if}
+

@@ -16,13 +16,19 @@ expect.extend({
 
 describe('navigator', () => {
 	const events = ['move', 'select', 'collapse', 'expand']
-	const fields = { children: 'children', isOpen: 'isOpen' }
+	const fields = {
+		id: 'id',
+		text: 'name',
+		children: 'children',
+		isOpen: 'isOpen'
+	}
 
 	let handlers = {}
 	let node
 	let options
 	let navigatorInstance
 	let items
+
 	beforeEach(() => {
 		items = ['A', 'B']
 		// global.CustomEvent = getCustomEventMock()
@@ -103,14 +109,16 @@ describe('navigator', () => {
 		expect(handlers.select).toHaveBeenCalled()
 		expect(handlers.select).toHaveBeenDispatchedWith({
 			path: [0],
-			node: 'A'
+			node: 'A',
+			id: 'A'
 		})
 
 		node.children[1].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 		expect(handlers.select).toHaveBeenCalled()
 		expect(handlers.select).toHaveBeenDispatchedWith({
 			path: [1],
-			node: 'B'
+			node: 'B',
+			id: 'B'
 		})
 	})
 
@@ -125,14 +133,16 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: 'A'
+				node: 'A',
+				id: 'A'
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: 'B'
+				node: 'B',
+				id: 'B'
 			})
 
 			node.dispatchEvent(event)
@@ -151,7 +161,8 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: 'A'
+				node: 'A',
+				id: 'A'
 			})
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(1)
@@ -169,7 +180,8 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0],
-				node: 'A'
+				node: 'A',
+				id: 'A'
 			})
 		})
 
@@ -211,14 +223,16 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: 'A'
+				node: 'A',
+				id: 'A'
 			})
 
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(2)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [1],
-				node: 'B'
+				node: 'B',
+				id: 'B'
 			})
 
 			node.dispatchEvent(event)
@@ -238,7 +252,8 @@ describe('navigator', () => {
 			expect(handlers.move).toHaveBeenCalledTimes(1)
 			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
-				node: 'A'
+				node: 'A',
+				id: 'A'
 			})
 			node.dispatchEvent(event)
 			expect(handlers.move).toHaveBeenCalledTimes(1)
@@ -257,7 +272,8 @@ describe('navigator', () => {
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				path: [0],
-				node: 'A'
+				node: 'A',
+				id: 'A'
 			})
 		})
 
