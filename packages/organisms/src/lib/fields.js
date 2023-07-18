@@ -9,7 +9,9 @@ import { omit } from 'ramda'
 export function deriveSchemaFromValue(data) {
 	const schema = {}
 
-	if (Array.isArray(data)) {
+	if (data === null || data === undefined) {
+		schema['type'] = 'string'
+	} else if (Array.isArray(data)) {
 		schema['type'] = 'array'
 		schema['items'] = deriveSchemaFromValue(data.length > 0 ? data[0] : {})
 	} else if (data instanceof Date) {
@@ -22,7 +24,7 @@ export function deriveSchemaFromValue(data) {
 			schema['properties'][key] = deriveSchemaFromValue(value)
 		}
 	} else {
-		schema['type'] = data ? typeof data : 'undefined'
+		schema['type'] = typeof data
 	}
 
 	return schema

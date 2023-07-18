@@ -52,7 +52,6 @@
 		let chart = base(data, x, y)
 		let temp = brewer().chart(data, x, y).use(theme).computeAxis()
 		axis = temp.axis
-		console.log(temp)
 		chart.data = sliceBy(chart.data, time, 3, 1)
 		stages = chart.data.length - 1
 		return chart
@@ -74,7 +73,7 @@
 
 	$: phased = timed(data, x, y, time)
 	$: $chart = switchChart(current)
-	// $: console.log(current, phased, chart)
+
 
 	// setup chart attributes that do not change over time
 	// get scales for x & y

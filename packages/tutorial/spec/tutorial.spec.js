@@ -26,7 +26,6 @@ describe('getTutorials', () => {
 		expect(content.tutorials()).toEqual(tutorials)
 		expect(content.hierarchy()).toEqual(toSortedHierarchy(tutorials))
 
-		// console.log(JSON.stringify(content.hierarchy)
 		let tutorial = await content.get('xyz')
 		expect(tutorial).toBeNull()
 

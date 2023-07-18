@@ -34,7 +34,7 @@
 	items={themes}
 	value={currentTheme}
 	fields={{ text: 'title', id: 'name' }}
-	useSelectedItemValue
+	useItemAsValue
 	on:select={handleThemeChange}
 />
 <theme-mode

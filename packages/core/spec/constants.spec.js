@@ -4,7 +4,7 @@ import { defaultIcons, stateIconsFromNames } from '../src/constants'
 describe('Utility functions', () => {
 	it('should convert names to nested state icons object', () => {
 		const stateIcons = stateIconsFromNames(defaultIcons)
-		// console.log(JSON.stringify(stateIcons, null, 2))
+
 		expect(stateIcons).toEqual({
 			accordion: {
 				opened: 'accordion-opened',

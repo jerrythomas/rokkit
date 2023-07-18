@@ -28,7 +28,7 @@
 	}
 	let previous
 	function handleClick(row, column) {
-		console.log(row, column, grid)
+
 		if (previous) {
 			grid[previous.row][previous.column].isCurrent = false
 		}
@@ -36,7 +36,6 @@
 		previous = { row, column }
 	}
 	$: grid = toGrid(columns, rows, items)
-	$: console.log(grid)
 </script>
 
 <row class="flex flex-col gap-2">

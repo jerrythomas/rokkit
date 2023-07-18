@@ -57,7 +57,6 @@ export function themeColors(modifier = 'none') {
 		(acc, variant) => ({ ...acc, [variant]: shadesOf(variant, modifier) }),
 		colors
 	)
-	// console.log('colors', colors)
 	colors.skin = {
 		...colors.skin,
 		contrast: fn(`var(--skin-800)`),

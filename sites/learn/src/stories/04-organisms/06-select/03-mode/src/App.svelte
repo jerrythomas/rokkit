@@ -6,7 +6,7 @@
 	let value
 </script>
 
-<Select {items} {fields} bind:value useSelectedItemValue />
+<Select {items} {fields} bind:value useItemAsValue />
 
 <p>Selected Value</p>
 <pre>{JSON.stringify(value, null, 2)}</pre>
