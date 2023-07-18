@@ -28,15 +28,15 @@ describe('Utility Functions', () => {
 		['SaveAs', 'save-as']
 	]
 
-	it.each(hyphenVariations)('Should convert %s to %s', (input, expected) => {
+	it.each(hyphenVariations)('should convert %s to %s', (input, expected) => {
 		expect(toPascalCase(input)).toEqual(expected)
 	})
 
-	it.each(pascalCased)('Should convert %s to %s', (input, expected) => {
+	it.each(pascalCased)('should convert %s to %s', (input, expected) => {
 		expect(toHyphenCase(input)).toEqual(expected)
 	})
 
-	it('Should generate ordered list of names', () => {
+	it('should generate ordered list of names', () => {
 		const values = [
 			'arrows-expand',
 			'arrow-up',

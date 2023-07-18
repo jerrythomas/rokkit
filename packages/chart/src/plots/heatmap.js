@@ -25,7 +25,7 @@ export function summarize(data, dateField = 'date', valueField) {
 				: d.length
 		)
 		.entries(data)
-	// console.log(Object.fromEntries(nested))
+
 	return nested.reduce((obj, item) => ((obj[item.key] = item.value), obj), {})
 }
 
@@ -40,7 +40,7 @@ export function heatmap(data, numberOfMonths) {
 
 	grid.map((d) => {
 		const month = format(endOfWeek(new Date(d.date)), 'MMM')
-		// console.log(month)
+
 		if (!(month in months)) {
 			months[month] = d.x
 		}

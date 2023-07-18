@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Test.svelte > Should render 1`] = `
+exports[`Test.svelte > should render 1`] = `
 <body>
   <div>
     
@@ -8,7 +8,7 @@ exports[`Test.svelte > Should render 1`] = `
 </body>
 `;
 
-exports[`Test.svelte > Should render empty content 1`] = `
+exports[`Test.svelte > should render empty content 1`] = `
 <body>
   <div>
     
@@ -16,7 +16,7 @@ exports[`Test.svelte > Should render empty content 1`] = `
 </body>
 `;
 
-exports[`Test.svelte > Should render object 1`] = `
+exports[`Test.svelte > should render object 1`] = `
 <body>
   <div>
     <p
@@ -30,7 +30,7 @@ exports[`Test.svelte > Should render object 1`] = `
 </body>
 `;
 
-exports[`Test.svelte > Should render using field mapping 1`] = `
+exports[`Test.svelte > should render using field mapping 1`] = `
 <body>
   <div>
     <p

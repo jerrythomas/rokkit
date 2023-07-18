@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Slider.svelte > Should render 1`] = `
+exports[`Slider.svelte > should render 1`] = `
 <body>
   <div>
     <scroll

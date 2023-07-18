@@ -22,5 +22,3 @@
  * Component map to be used to render the item.
  * @typedef {Object<string, import('svelte').SvelteComponent>} ComponentMap
  */
-
-export default {}

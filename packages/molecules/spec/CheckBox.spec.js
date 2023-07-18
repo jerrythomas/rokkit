@@ -30,7 +30,6 @@ describe('CheckBox.svelte', () => {
 		expect(container).toMatchSnapshot()
 
 		const checkbox = getByRole('checkbox')
-		console.log()
 		expect(Array.from(checkbox.classList)).toContain('custom-class')
 
 		// handle class change
@@ -78,5 +77,37 @@ describe('CheckBox.svelte', () => {
 
 		expect(Array.from(checkbox.classList)).toContain('flex-row-reverse')
 		expect(Array.from(checkbox.classList)).not.toContain('flex-row')
+	})
+
+	it('should handle click events', async () => {
+		const { container } = render(CheckBox, { name: 'test', value: null })
+		const checkbox = container.querySelector('checkbox')
+		expect(checkbox.getAttribute('aria-checked')).toBe('unknown')
+
+		await fireEvent.click(checkbox)
+		await tick()
+		expect(checkbox.getAttribute('aria-checked')).toBe('checked')
+
+		await fireEvent.click(checkbox)
+		await tick()
+		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
+	})
+
+	it('should handle cliks without changing value when disabled', async () => {
+		const { container, component } = render(CheckBox, {
+			name: 'test',
+			disabled: true
+		})
+		const checkbox = container.querySelector('checkbox')
+		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
+
+		await fireEvent.click(checkbox)
+		await tick()
+		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
+
+		component.$set({ disabled: false })
+		await fireEvent.click(checkbox)
+		await tick()
+		expect(checkbox.getAttribute('aria-checked')).toBe('checked')
 	})
 })

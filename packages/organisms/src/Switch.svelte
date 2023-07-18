@@ -9,6 +9,7 @@
 	let className = ''
 	export { className as class }
 	export let items = [false, true]
+	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields
 	export let using = {}
 	export let compact = true

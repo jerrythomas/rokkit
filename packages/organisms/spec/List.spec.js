@@ -11,19 +11,19 @@ describe('List.svelte', () => {
 		cleanup()
 	})
 
-	it('Should render a list of values', () => {
+	it('should render a list of values', () => {
 		const { container } = render(List, { items: [1, 2, 3] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using field mappings', () => {
+	it('should render items using field mappings', () => {
 		const { container } = render(List, {
 			items: [{ text: 1 }, { text: 2 }, { text: 3 }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using custom mapping', () => {
+	it('should render items using custom mapping', () => {
 		const { container } = render(List, {
 			items: [{ num: 1 }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' }
@@ -31,7 +31,7 @@ describe('List.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using default item when data is invalid', () => {
+	it('should render items using default item when data is invalid', () => {
 		const { container } = render(List, {
 			items: [{ num: 1 }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num', component: 'num' }
@@ -40,7 +40,7 @@ describe('List.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('Should render with alternate class', () => {
+	it('should render with alternate class', () => {
 		const { container } = render(List, {
 			items: [{ num: 1 }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
@@ -49,7 +49,7 @@ describe('List.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should render items using custom component', () => {
+	it('should render items using custom component', () => {
 		const { container } = render(List, {
 			items: [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
@@ -58,7 +58,7 @@ describe('List.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('Should emit select event', async () => {
+	it('should emit select event', async () => {
 		let selected
 
 		const items = [{ name: 'item 1' }, { name: 'item 2' }]
@@ -80,9 +80,9 @@ describe('List.svelte', () => {
 			expect(onSelect).toHaveBeenDispatchedWith(selected)
 		})
 	})
-	it('Should pass change event', () => {})
-	it('Should add an item', () => {})
-	it('Should remove selected item', () => {})
-	it('Should clear selection', () => {})
-	it('Should filter list by search string', () => {})
+	it('should pass change event', () => {})
+	it('should add an item', () => {})
+	it('should remove selected item', () => {})
+	it('should clear selection', () => {})
+	it('should filter list by search string', () => {})
 })

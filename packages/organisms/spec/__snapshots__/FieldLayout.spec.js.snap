@@ -1,0 +1,774 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FieldLayout.svelte > should render error when custom component is not available 1`] = `
+<error>
+  Unknown component "
+  custom
+  " for path "
+  rating
+  ".
+					Add custom mapping with the "using" property.
+				
+</error>
+`;
+
+exports[`FieldLayout.svelte > should render error when elements is missing 1`] = `
+<error>
+  Invalid schema. Expected schema to include an 'elements' array.
+</error>
+`;
+
+exports[`FieldLayout.svelte > should render error when elements is not an array 1`] = `
+<error>
+  Invalid schema. Expected schema to include an 'elements' array.
+</error>
+`;
+
+exports[`FieldLayout.svelte > should render groups 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <field-layout
+        class="horizontal "
+      >
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.first"
+          >
+            First Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="First Name"
+              id="name.first"
+              name="name.first"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.last"
+          >
+            Last Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="Last Name"
+              id="name.last"
+              name="name.last"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        
+      </field-layout>
+      
+      
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render groups 2`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <field-layout
+        class="horizontal "
+      >
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.first"
+          >
+            First Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="First Name"
+              id="name.first"
+              name="name.first"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.last"
+          >
+            Last Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="Last Name"
+              id="name.last"
+              name="name.last"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        
+      </field-layout>
+      
+      
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <field-layout
+        class="horizontal"
+      >
+        <h1>
+          A Group
+        </h1>
+         
+        <h2>
+          ["input","boolean","range","rating","radio","enum","select","multi-select","array","switch","list","tabs","tree","mock"]
+        </h2>
+         
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.first"
+          >
+            First Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="First Name"
+              id="name.first"
+              name="name.first"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.last"
+          >
+            Last Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="Last Name"
+              id="name.last"
+              name="name.last"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        
+      </field-layout>
+      
+      
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <field-layout
+        class="horizontal"
+      >
+        <h1>
+          null
+        </h1>
+         
+        <h2>
+          ["input","boolean","range","rating","radio","enum","select","multi-select","array","switch","list","tabs","tree","mock"]
+        </h2>
+         
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.first"
+          >
+            First Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="First Name"
+              id="name.first"
+              name="name.first"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="name.last"
+          >
+            Last Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="Last Name"
+              id="name.last"
+              name="name.last"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        
+      </field-layout>
+      
+      
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render groups without key 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <field-layout
+        class="horizontal "
+      >
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="first"
+          >
+            First Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="First Name"
+              id="first"
+              name="first"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="last"
+          >
+            Last Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="Last Name"
+              id="last"
+              name="last"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        
+      </field-layout>
+      
+      
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render groups without key 2`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <field-layout
+        class="horizontal "
+      >
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="first"
+          >
+            First Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="First Name"
+              id="first"
+              name="first"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        <input-field
+          class="flex flex-col input-text "
+        >
+          <label
+            for="last"
+          >
+            Last Name
+          </label>
+           
+          <field
+            class="w-full flex flex-row items-center"
+          >
+             
+            <input
+              aria-label="Last Name"
+              id="last"
+              name="last"
+              type="text"
+            />
+            
+            
+          </field>
+           
+        </input-field>
+        
+        
+        
+      </field-layout>
+      
+      
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render items using custom component 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <input-field
+        class="flex flex-col input-text "
+      >
+        <label
+          for="name"
+        >
+          Name
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Name"
+            id="name"
+            name="name"
+            type="text"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      <p>
+        title
+        :
+        Mr.
+      </p>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render set of inputs 1`] = `
+<body>
+  <div>
+    <field-layout
+      class="vertical "
+    >
+      <input-field
+        class="flex flex-col input-text "
+      >
+        <label
+          for="name"
+        >
+          Name
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Name"
+            id="name"
+            name="name"
+            type="text"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="age"
+        >
+          Age
+        </label>
+         
+        <field
+          class="w-full flex flex-row items-center"
+        >
+           
+          <input
+            aria-label="Age"
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          
+        </field>
+         
+      </input-field>
+      
+      
+      
+    </field-layout>
+    
+    
+  </div>
+</body>
+`;

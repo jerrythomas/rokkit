@@ -7,11 +7,11 @@
 	export let current = -1
 
 	$: inprogress = current === value + 1 ? current : inprogress
-	$: enabled = count > 0 && (value >= 0 || inprogress > 0)
+	// $: enabled = count > 0
 
 	function handleClick(e) {
 		const step = parseInt(e.target.dataset.step)
-		if (enabled && (value >= step || inprogress >= step)) {
+		if (e.target.dataset.clickable === 'true') {
 			current = step
 			dispatch('change', { count, value, current })
 		}
@@ -29,7 +29,7 @@
 			data-step={step}
 			data-active={step == current}
 			data-completed={step <= value}
-			data-clickable={(step <= value || step <= inprogress) && enabled}
+			data-clickable={step <= value || step <= inprogress}
 			role="option"
 			aria-selected={step == current}
 			tabindex="0"

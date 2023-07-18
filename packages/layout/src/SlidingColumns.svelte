@@ -1,5 +1,5 @@
 <script>
-	import { swipeable, navigable } from '@rokkit/core/actions'
+	import { swipeable, navigable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
 

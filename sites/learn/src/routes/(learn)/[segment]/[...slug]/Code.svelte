@@ -1,6 +1,6 @@
 <script>
 	import { Tree } from '@rokkit/organisms'
-	import { CodeSnippet } from '@rokkit/markdown'
+	import { CodeSnippet } from '@rokkit/atoms'
 	import { getContext } from 'svelte'
 
 	const story = getContext('tutorial')
@@ -30,6 +30,7 @@
 {#if hasFiles}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<source-files class="h-full flex flex-col border-t border-t-skin-subtle">
+		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<nav
 			class="h-8 w-full flex cursor-pointer items-center border-t border-t-skin-inset bg-skin-subtle px-4 text-sm lg:hidden"
 			on:click={() => (active = active == 'code' ? 'files' : 'code')}

@@ -18,7 +18,7 @@ export function animatedChart(input, key, valueFields = [], previous = []) {
 	const toRemove = new Set(
 		[...previousKeys].filter((key) => !currentKeys.has(key))
 	)
-	console.log(toAdd, toRemove)
+
 	let data = input
 		.filter((item) => toAdd.has(item[key]))
 		.map((item) => {
@@ -46,7 +46,7 @@ export function animatedChart(input, key, valueFields = [], previous = []) {
 			return el
 		})
 	data = [...prev, ...data]
-	console.log(data)
+
 	return tweened(data, { duration: 500, easing: cubicOut })
 }
 // function createAxis() {

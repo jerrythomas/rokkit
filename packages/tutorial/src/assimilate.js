@@ -17,7 +17,8 @@ const defaultOptions = {
 	partialFolder: 'pre',
 	solutionFolder: 'src'
 }
-function filterMenuItems(data, labs = false) {
+
+export function filterMenuItems(data, labs = false) {
 	return data
 		.map((item) => {
 			if (!labs && item.labs) return null

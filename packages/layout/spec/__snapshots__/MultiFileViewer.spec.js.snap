@@ -1,0 +1,143 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MultiFileViewer.svelte > should render 1`] = `
+<body>
+  <div>
+    <section
+      class="h-full w-full flex flex-col"
+    >
+      <nav
+        class="h-12 w-full items-center"
+      >
+        <tabs
+          class="flex w-full "
+          role="listbox"
+          tabindex="0"
+        >
+          <wrap-item
+            aria-selected="true"
+            class="flex flex-row items-center tab"
+            data-path="0"
+            role="option"
+          >
+            <item
+              class="flex flex-row items-center"
+            >
+              <icon
+                aria-label="svelte"
+                class="flex flex-shrink-0 items-center justify-center "
+                role="img"
+                tabindex="-1"
+              >
+                <i
+                  aria-hidden="true"
+                  class="svelte"
+                />
+              </icon>
+              
+               
+              <p
+                class="w-full flex"
+              >
+                App.svelte
+              </p>
+              
+            </item>
+             
+          </wrap-item>
+          <wrap-item
+            aria-selected="false"
+            class="flex flex-row items-center tab"
+            data-path="1"
+            role="option"
+          >
+            <item
+              class="flex flex-row items-center"
+            >
+              <icon
+                aria-label="js"
+                class="flex flex-shrink-0 items-center justify-center "
+                role="img"
+                tabindex="-1"
+              >
+                <i
+                  aria-hidden="true"
+                  class="js"
+                />
+              </icon>
+              
+               
+              <p
+                class="w-full flex"
+              >
+                main.js
+              </p>
+              
+            </item>
+             
+          </wrap-item>
+           
+        </tabs>
+      </nav>
+       
+      <pre
+        class="language-svelte undefined"
+      >
+        <code>
+          <span
+            class="token tag"
+          >
+            <span
+              class="token tag"
+            >
+              <span
+                class="token punctuation"
+              >
+                &lt;
+              </span>
+              script
+            </span>
+            <span
+              class="token punctuation"
+            >
+              &gt;
+            </span>
+          </span>
+          <span
+            class="token script"
+          >
+            <span
+              class="token language-javascript"
+            >
+              <span
+                class="token operator"
+              >
+                ...
+              </span>
+            </span>
+          </span>
+          <span
+            class="token tag"
+          >
+            <span
+              class="token tag"
+            >
+              <span
+                class="token punctuation"
+              >
+                &lt;/
+              </span>
+              script
+            </span>
+            <span
+              class="token punctuation"
+            >
+              &gt;
+            </span>
+          </span>
+        </code>
+      </pre>
+    </section>
+  </div>
+</body>
+`;

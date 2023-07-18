@@ -249,7 +249,6 @@ describe('Hierarchy', () => {
 
 		it('should navigate to the last visible child of the previous sibling if the current item is not the first item and its previous sibling is expanded', () => {
 			const path = movePrevious([{ index: 1, items, fields }])
-			// path.map((f) => console.log(f))
 
 			expect(path.length).toEqual(3)
 			expect(path[0]).toEqual({ index: 0, items, fields })

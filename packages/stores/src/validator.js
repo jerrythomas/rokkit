@@ -49,6 +49,7 @@ export function getTypeValidator(type) {
 	if (type === 'object')
 		return (input) =>
 			input !== null && typeof input === 'object' && !Array.isArray(input)
+	return (input) => typeof input === type
 }
 
 /**
@@ -96,7 +97,7 @@ function evaluateRules(value, rules) {
 /**
  * Create a custom Svelte store with validation rules.
  * @param {*} value - The initial value for the store.
- * @param {ValidationRule[]} rules - An array of validation rules.
+ * @param {Array<import('./types').ValidationRule>} rules - An array of validation rules.
  * @returns {import('svelte').Writable<import('./types').ValidationResult>} - The custom Svelte store.
  */
 export function verifiable(input, rules) {

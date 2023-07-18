@@ -20,4 +20,4 @@ This library @rokkit/organisms is a collection of such data-driven components. T
 
 ## Dynamic Forms
 
-You can also create dynamic forms by providing a schema and validation rules.
+You can also create dynamic forms by providing value and optional schema and layout structure.

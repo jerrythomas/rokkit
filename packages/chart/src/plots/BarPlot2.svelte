@@ -12,11 +12,9 @@
 	export let h = 10
 
 	function size(value) {
-		// console.log($chart.axis.x.scale, value)
 		return $chart.axis.x.scale(value)
 	}
 	function top(value) {
-		// console.log('Y', value)
 		return $chart.axis.y.scale(value)
 	}
 

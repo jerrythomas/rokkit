@@ -13,7 +13,7 @@
 
 	$: aes = { ...$chart.aes, ...compact({ x, y, fill, stat, curve }) }
 	$: data = funnel($chart.data, aes, $chart.width, $chart.height)
-	// $: console.log(data)
+
 </script>
 
 {#each data.stats as stat, i}
