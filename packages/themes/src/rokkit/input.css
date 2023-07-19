@@ -19,45 +19,44 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .rokkit input-field field {
-  @apply min-h-11;
+  @apply p-2px;
 }
 
-.rokkit fieldset {
+/* .rokkit fieldset {
   @apply p-4 pt-2 gap-2 rounded-md;
 }
 .rokkit fieldset legend {
   @apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
-}
+} */
 /* .rokkit fieldset icon {
 	@apply text-2xl;
 } */
 
-.rokkit input-field {
-  @apply w-full m-0 p-0;
-}
-.rokkit input-field input {
-  @apply border;
-}
+
+/* .rokkit input-field {
+  @apply w-full m-0 py-1;
+} */
+
 .rokkit input-field input,
 .rokkit input-field textarea,
 .rokkit input-field select {
-  @apply flex-grow border-0 outline-none h-full;
+  @apply border-0 rounded-sm;
+  /* @apply bg-skin-subtle text-skin-800; */
 }
-
+.rokkit input-field label {
+  @apply text-secondary-600;
+}
 .rokkit input-field field {
   @apply box-border border border-skin-muted rounded overflow-hidden;
   /* @apply focus-within:border-primary-400 focus-within:border-2; */
 }
 .rokkit input-field field:focus-within {
-  @apply border-0 bg-gradient-to-r from-primary to-secondary px-2px py-2px;
+  @apply border-0 bg-gradient-to-r from-primary to-secondary;
 }
 .rokkit input-field span {
   @apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
 }
 
-.rokkit input-field label {
-  @apply leading-loose w-full;
-}
 .rokkit input-field message {
   @apply px-2 py-1 bg-skin-base rounded;
 }

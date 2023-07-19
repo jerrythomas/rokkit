@@ -19,11 +19,14 @@ export const componentTypes = {
 	range: Range,
 	rating: Rating,
 	radio: RadioGroup,
-	enum: Select,
-	select: Select,
-	'multi-select': MultiSelect,
-	array: InputArray,
-	switch: Switch,
+	select: InputField,
+	editors: {
+		enum: Select,
+		select: Select,
+		'multi-select': MultiSelect,
+		array: InputArray,
+		switch: Switch
+	},
 	list: List,
 	tabs: Tabs,
 	tree: Tree

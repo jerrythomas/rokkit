@@ -1,3 +1,7 @@
+.material field-layout.vertical {
+  @apply gap-5;
+}
+
 .material button,
 .material .button {
   @apply py-2 px-4 rounded bg-skin-subtle uppercase;

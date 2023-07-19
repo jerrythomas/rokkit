@@ -51,6 +51,7 @@ exports[`FieldLayout.svelte > should render groups 1`] = `
               id="name.first"
               name="name.first"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -77,6 +78,7 @@ exports[`FieldLayout.svelte > should render groups 1`] = `
               id="name.last"
               name="name.last"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -111,6 +113,7 @@ exports[`FieldLayout.svelte > should render groups 1`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           
@@ -154,6 +157,7 @@ exports[`FieldLayout.svelte > should render groups 2`] = `
               id="name.first"
               name="name.first"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -180,6 +184,7 @@ exports[`FieldLayout.svelte > should render groups 2`] = `
               id="name.last"
               name="name.last"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -214,6 +219,7 @@ exports[`FieldLayout.svelte > should render groups 2`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           
@@ -244,7 +250,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
         </h1>
          
         <h2>
-          ["input","boolean","range","rating","radio","enum","select","multi-select","array","switch","list","tabs","tree","mock"]
+          ["input","boolean","range","rating","radio","select","editors","list","tabs","tree","mock"]
         </h2>
          
         <input-field
@@ -265,6 +271,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
               id="name.first"
               name="name.first"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -291,6 +298,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
               id="name.last"
               name="name.last"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -325,6 +333,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           
@@ -355,7 +364,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
         </h1>
          
         <h2>
-          ["input","boolean","range","rating","radio","enum","select","multi-select","array","switch","list","tabs","tree","mock"]
+          ["input","boolean","range","rating","radio","select","editors","list","tabs","tree","mock"]
         </h2>
          
         <input-field
@@ -376,6 +385,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
               id="name.first"
               name="name.first"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -402,6 +412,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
               id="name.last"
               name="name.last"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -436,6 +447,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           
@@ -479,6 +491,7 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
               id="first"
               name="first"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -505,6 +518,7 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
               id="last"
               name="last"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -539,6 +553,7 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           
@@ -582,6 +597,7 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
               id="first"
               name="first"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -608,6 +624,7 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
               id="last"
               name="last"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -642,6 +659,7 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           
@@ -682,6 +700,7 @@ exports[`FieldLayout.svelte > should render items using custom component 1`] = `
             id="name"
             name="name"
             type="text"
+            using="[object Object]"
           />
           
           
@@ -690,6 +709,12 @@ exports[`FieldLayout.svelte > should render items using custom component 1`] = `
       </input-field>
       
       
+      <h1>
+        undefined
+        :
+        undefined
+      </h1>
+       
       <p>
         title
         :
@@ -729,6 +754,7 @@ exports[`FieldLayout.svelte > should render set of inputs 1`] = `
             id="name"
             name="name"
             type="text"
+            using="[object Object]"
           />
           
           
@@ -757,6 +783,7 @@ exports[`FieldLayout.svelte > should render set of inputs 1`] = `
             min="0"
             name="age"
             type="number"
+            using="[object Object]"
           />
           
           

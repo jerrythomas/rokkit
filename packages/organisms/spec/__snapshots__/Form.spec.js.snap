@@ -25,6 +25,7 @@ exports[`Form.svelte > should render a form 1`] = `
               id="name"
               name="name"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -51,6 +52,7 @@ exports[`Form.svelte > should render a form 1`] = `
               id="age"
               name="age"
               type="number"
+              using="[object Object]"
             />
             
             
@@ -80,6 +82,7 @@ exports[`Form.svelte > should render a form 1`] = `
                 id="address.street"
                 name="address.street"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -106,6 +109,7 @@ exports[`Form.svelte > should render a form 1`] = `
                 id="address.city"
                 name="address.city"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -132,6 +136,7 @@ exports[`Form.svelte > should render a form 1`] = `
                 id="address.state"
                 name="address.state"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -158,6 +163,7 @@ exports[`Form.svelte > should render a form 1`] = `
                 id="address.zip"
                 name="address.zip"
                 type="number"
+                using="[object Object]"
               />
               
               
@@ -176,6 +182,12 @@ exports[`Form.svelte > should render a form 1`] = `
       </field-layout>
       
       
+       
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </body>
@@ -188,6 +200,12 @@ exports[`Form.svelte > should render a form with layout 1`] = `
       <field-layout
         class="vertical "
       >
+        <h1>
+          string
+          :
+          Name
+        </h1>
+         
         <p>
           name
           :
@@ -213,6 +231,7 @@ exports[`Form.svelte > should render a form with layout 1`] = `
               id="age"
               name="age"
               type="number"
+              using="[object Object]"
             />
             
             
@@ -242,6 +261,7 @@ exports[`Form.svelte > should render a form with layout 1`] = `
                 id="address.street"
                 name="address.street"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -268,6 +288,7 @@ exports[`Form.svelte > should render a form with layout 1`] = `
                 id="address.city"
                 name="address.city"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -294,6 +315,7 @@ exports[`Form.svelte > should render a form with layout 1`] = `
                 id="address.state"
                 name="address.state"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -320,6 +342,7 @@ exports[`Form.svelte > should render a form with layout 1`] = `
                 id="address.zip"
                 name="address.zip"
                 type="number"
+                using="[object Object]"
               />
               
               
@@ -338,6 +361,12 @@ exports[`Form.svelte > should render a form with layout 1`] = `
       </field-layout>
       
       
+       
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </body>
@@ -350,6 +379,12 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
       <field-layout
         class="vertical "
       >
+        <h1>
+          string
+          :
+          Name
+        </h1>
+         
         <p>
           name
           :
@@ -377,6 +412,7 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
               min="0"
               name="age"
               type="number"
+              using="[object Object]"
             />
             
             
@@ -406,6 +442,7 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
                 id="address.street"
                 name="address.street"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -432,6 +469,7 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
                 id="address.city"
                 name="address.city"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -458,6 +496,7 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
                 id="address.state"
                 name="address.state"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -486,6 +525,7 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
                 min="0"
                 name="address.zip"
                 type="number"
+                using="[object Object]"
               />
               
               
@@ -504,6 +544,12 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
       </field-layout>
       
       
+       
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </body>
@@ -534,6 +580,7 @@ exports[`Form.svelte > should render a form with schema 1`] = `
               id="name"
               name="name"
               type="text"
+              using="[object Object]"
             />
             
             
@@ -562,6 +609,7 @@ exports[`Form.svelte > should render a form with schema 1`] = `
               min="0"
               name="age"
               type="number"
+              using="[object Object]"
             />
             
             
@@ -591,6 +639,7 @@ exports[`Form.svelte > should render a form with schema 1`] = `
                 id="address.street"
                 name="address.street"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -617,6 +666,7 @@ exports[`Form.svelte > should render a form with schema 1`] = `
                 id="address.city"
                 name="address.city"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -643,6 +693,7 @@ exports[`Form.svelte > should render a form with schema 1`] = `
                 id="address.state"
                 name="address.state"
                 type="text"
+                using="[object Object]"
               />
               
               
@@ -671,6 +722,7 @@ exports[`Form.svelte > should render a form with schema 1`] = `
                 min="0"
                 name="address.zip"
                 type="number"
+                using="[object Object]"
               />
               
               
@@ -689,6 +741,12 @@ exports[`Form.svelte > should render a form with schema 1`] = `
       </field-layout>
       
       
+       
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </body>

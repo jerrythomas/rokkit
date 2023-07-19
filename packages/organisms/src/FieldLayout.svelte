@@ -38,6 +38,7 @@
 					{name}
 					bind:value={value[item.key]}
 					{...item.props}
+					{using}
 					on:change
 				/>
 			{:else}

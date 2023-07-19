@@ -1,34 +1,34 @@
 @import 'animation.css';
 
-.rokkit button,
-.rokkit .button {
-  @apply flex min-h-9 items-center rounded-full px-6 uppercase bg-skin-muted text-skin-700 cursor-pointer;
-  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+form button[type="submit"] {
+  @apply mt-4;
 }
 
-.rokkit button.is-primary,
-.rokkit .button.is-primary {
-  @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+field-layout.vertical {
+  @apply flex flex-col gap-2;
 }
 
-.rokkit button-group {
-  @apply flex items-center justify-center m-auto py-1 gap-1px;
+field-layout.horizontal {
+  @apply flex flex-row gap-4;
 }
 
-.rokkit button-group button {
-  @apply flex px-2 pt-0.5 uppercase rounded-none focus:outline-none;
-}
-.rokkit button-group button:first-child {
-  @apply rounded-l-full pl-3;
-}
-.rokkit button-group button:last-child {
-  @apply rounded-r-full pr-3;
+input-field {
+  @apply w-full m-0 py-1;
 }
 
-.rokkit button-group button.active {
-  @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+input-field input,
+input-field textarea,
+input-field select {
+  @apply flex-grow outline-none min-h-10 px-3;
+  @apply bg-skin-subtle text-skin-800;
 }
 
-.rokkit input-select {
-  @apply cursor-pointer select-none;
+input-field label {
+  @apply uppercase text-sm;
+  @apply leading-loose;
+}
+
+input-field label.required::after {
+  content: ' *';
+  @apply state-danger;
 }
