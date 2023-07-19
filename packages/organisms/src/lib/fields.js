@@ -87,7 +87,7 @@ export function combineElementsWithSchema(elements, schema) {
 	let combined = []
 	elements.forEach((element) => {
 		const { scope } = element
-		let attribute = findAttributeByPath(scope, schema)
+		let attribute = findAttributeByPath(scope ?? '', schema)
 
 		if (Array.isArray(element.elements)) {
 			const temp = combineElementsWithSchema(element.elements, schema)

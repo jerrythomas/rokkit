@@ -1,4 +1,5 @@
 /* .minimal input, */
+
 .minimal textarea,
 .minimal select,
 .minimal fieldset {
@@ -16,14 +17,17 @@
 }
 
 .minimal input-field {
-  @apply w-full m-0 p-0;
+  @apply w-full m-0 py-1;
 }
 .minimal input-field input {
   @apply bg-transparent;
 }
 .minimal input-field field {
-  @apply box-border border-b-2 border-skin-muted h-8 overflow-hidden;
+  @apply box-border border-b-1 border-skin-muted h-8 overflow-hidden;
   @apply focus-within:border-b-secondary-600;
+}
+.minimal input-field:focus-within label{
+  @apply text-secondary-600;
 }
 .minimal input-field span {
   @apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
@@ -31,11 +35,11 @@
 .minimal input-field input,
 .minimal input-field textarea,
 .minimal input-field select {
-  @apply flex-grow border-0 focus:outline-none;
+  @apply flex-grow border-0 focus:outline-none min-h-10;
 }
 
 .minimal input-field label {
-  @apply leading-6 w-full uppercase text-sm text-skin-600;
+  @apply leading-6 w-full uppercase text-sm text-skin-500;
 }
 .minimal input-field message {
   @apply px-2 py-1 bg-skin-base rounded;

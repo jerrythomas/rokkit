@@ -14,4 +14,5 @@ import { deriveSchemaFromValue, deriveLayoutFromValue, getSchemaWithLayout } fro
 </script>
 <form on:submit>
   <FieldLayout schema={schemaWithLayout} bind:value={value} {using} />
+	<button type="submit">Submit</button>
 </form>
