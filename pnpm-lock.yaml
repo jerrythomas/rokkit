@@ -450,7 +450,7 @@ importers:
   packages/other:
     dependencies:
       '@rokkit/actions':
-        specifier: workspace:1.0.0-next.36
+        specifier: workspace:*
         version: link:../actions
       '@rokkit/atoms':
         specifier: workspace:*
