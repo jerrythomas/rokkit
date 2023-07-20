@@ -14,7 +14,8 @@ describe('components', () => {
 			'Select',
 			'Switch',
 			'Tabs',
-			'Tree'
+			'Tree',
+			'InputField'
 		])
 	})
 })

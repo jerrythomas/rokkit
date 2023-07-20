@@ -1,10 +1,4 @@
-import {
-	InputField,
-	CheckBox,
-	RadioGroup,
-	Rating,
-	Range
-} from '@rokkit/molecules'
+import { CheckBox, RadioGroup, Rating, Range } from '@rokkit/molecules'
 import Select from './Select.svelte'
 import MultiSelect from './MultiSelect.svelte'
 import Switch from './Switch.svelte'
@@ -12,21 +6,18 @@ import List from './List.svelte'
 import Tabs from './Tabs.svelte'
 import Tree from './Tree.svelte'
 import InputArray from './InputArray.svelte'
-
+import InputField from './InputField.svelte'
 export const componentTypes = {
 	input: InputField,
 	boolean: CheckBox,
 	range: Range,
 	rating: Rating,
 	radio: RadioGroup,
-	select: InputField,
-	editors: {
-		enum: Select,
-		select: Select,
-		'multi-select': MultiSelect,
-		array: InputArray,
-		switch: Switch
-	},
+	enum: Select,
+	select: Select,
+	'multi-select': MultiSelect,
+	array: InputArray,
+	switch: Switch,
 	list: List,
 	tabs: Tabs,
 	tree: Tree

@@ -15,7 +15,7 @@
 	</error>
 {:else if patterns.length > 0}
 	<defs>
-		{#each patterns as { name, component, fill, stroke }, index}
+		{#each patterns as { name, component, fill, stroke }}
 			<pattern id={name} {patternUnits} width={size} height={size}>
 				<svelte:component this={component} {size} {fill} {stroke} />
 			</pattern>

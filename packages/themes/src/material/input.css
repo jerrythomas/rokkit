@@ -5,11 +5,11 @@
   @apply box-border border border-skin-muted rounded;
   @apply text-skin-800 leading-loose relative pb-0;
 }
-.material input-field label {
-  @apply text-xs px-1;
-}
+/* .material input-field label {
+  @apply text-xs px-1 mt-0 w-content;
+} */
 .material input-field.empty label {
-  @apply absolute left-2 -z-1 opacity-0;
+  @apply absolute top-0 my-3.5 align-middle;
 }
 .material input-field input {
   @apply border-none focus:outline-none bg-transparent;
@@ -19,15 +19,12 @@
   @apply border-primary;
 }
 
-/* .material input-field label.required::after {
-  content: '*';
-  @apply state-danger;
-} */
-
 .material input-field label,
 .material input-field:focus-within label {
-  @apply block z-1 -top-2 left-2 bg-skin-base absolute leading-tight opacity-100;
+  @apply bg-skin-base absolute block z-1;
+  @apply -top-2 left-3 my-0 leading-tight opacity-100;
 }
+
 .material input-field field {
   @apply gap-2;
 }

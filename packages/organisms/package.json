@@ -47,6 +47,7 @@
 	],
 	"exports": {
 		"./src": "./src",
+		"./wrappers": "./src/wrappers/index.js",
 		"./package.json": "./package.json",
 		".": {
 			"types": "./dist/index.d.ts",

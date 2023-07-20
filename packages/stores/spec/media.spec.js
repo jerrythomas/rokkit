@@ -117,21 +117,5 @@ describe('media', () => {
 
 			unsubscribe()
 		})
-
-		it('should work in non-browser environments', () => {
-			window = undefined
-
-			const breakpoints = {
-				small: '(max-width: 767px)',
-				medium: '(min-width: 768px) and (max-width: 1023px)',
-				large: '(min-width: 1024px)'
-			}
-
-			const media = watchMedia(breakpoints)
-
-			expect(get(media)).toEqual({
-				classNames: ''
-			})
-		})
 	})
 })

@@ -1,6 +1,6 @@
 @import 'animation.css';
 
-form button[type="submit"] {
+form button[type='submit'] {
   @apply mt-4;
 }
 
@@ -19,16 +19,44 @@ input-field {
 input-field input,
 input-field textarea,
 input-field select {
-  @apply flex-grow outline-none min-h-10 px-3;
+  @apply flex-grow outline-none min-h-10 leading-loose px-3;
   @apply bg-skin-subtle text-skin-800;
 }
 
 input-field label {
-  @apply uppercase text-sm;
+  @apply uppercase text-xs;
   @apply leading-loose;
 }
 
 input-field label.required::after {
   content: ' *';
   @apply state-danger;
+}
+
+progress-bar {
+  @apply bg-skin-muted border border-skin-subtle;
+}
+progress-bar value-bar {
+  @apply bg-skin-primary;
+}
+
+.indeterminate value-bar {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  /* width: 50%; */
+
+  /* Move the bar infinitely */
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: pendulum;
+}
+
+@keyframes pendulum {
+  from {
+    left: -50%;
+  }
+  to {
+    left: 100%;
+  }
 }

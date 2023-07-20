@@ -15,13 +15,13 @@ To add validation properties and datatypes to each attribute of the form, we can
       email: { type: 'email', required: true },
       age: { type: 'number', min: 18, max: 99 }
     }
-  };
+  }
 
   let value = {
     name: 'John Doe',
     email: 'john.doe@example.com',
     age: 30
-  };
+  }
 </script>
 
 <Form bind:value {schema} />

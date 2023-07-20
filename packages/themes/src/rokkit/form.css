@@ -30,3 +30,7 @@
 .rokkit input-select {
   @apply cursor-pointer select-none;
 }
+
+.rokkit progress-bar value-bar {
+  @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+}

@@ -76,9 +76,9 @@ export default defineConfig({
 		fontFamily: {
 			mono: ['Victor Mono', 'monospace'],
 			heading: ['Open Sans', 'sans-serif'],
-			serif: ['Open Sans', 'ui-serif', 'sans-serif'],
+			sans: ['Overpass', 'ui-serif', 'sans-serif'],
 			body: [
-				'Overpass',
+				'Open Sans',
 				'-apple-system',
 				'system-ui',
 				'Segoe-UI',

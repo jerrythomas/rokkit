@@ -4,10 +4,10 @@ import { cleanup, render } from '@testing-library/svelte'
 import Tree from '../src/Tree.svelte'
 
 describe('Tree.svelte', () => {
-	const items = [
-		{ text: 'a', children: [] },
-		{ text: 'b', children: [] }
-	]
+	// const items = [
+	// 	{ text: 'a', children: [] },
+	// 	{ text: 'b', children: [] }
+	// ]
 
 	beforeEach(() => cleanup())
 
