@@ -15,6 +15,7 @@ describe('components', () => {
 			'Fillable',
 			'Markdown',
 			'CodeSnippet',
+			'ProgressBar',
 			'inputTypes'
 		])
 	})

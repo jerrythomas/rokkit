@@ -18,8 +18,8 @@ To get started, you can simply provide an object as the initial value for the fo
     email: 'john.doe@example.com',
     age: 30
   }
-
 </script>
+
 <Form bind:value />
 ```
 

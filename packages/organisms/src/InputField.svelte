@@ -1,6 +1,6 @@
 <script>
 	import { pick, omit } from 'ramda'
-	import { Input, Icon, inputTypes } from '@rokkit/atoms'
+	import { Input, Icon } from '@rokkit/atoms'
 
 	let className = ''
 	export { className as class }
@@ -22,7 +22,9 @@
 	$: props = {
 		required,
 		readOnly: disabled,
-		...omit(['id'], $$restProps)
+		...omit(['id'], $$restProps),
+		name,
+		'aria-label': description ?? label ?? name
 	}
 </script>
 
@@ -35,16 +37,16 @@
 	class:warn
 	class:empty={!value}
 >
-  {#if label}
-	<label for={name} class:required>
-		{label}
-	</label>
+	{#if label}
+		<label for={name} class:required>
+			{label}
+		</label>
 	{/if}
 	<field class="w-full flex flex-row items-center">
 		{#if icon}
 			<Icon name={icon} />
 		{/if}
-		<Input id={name} bind:value {name} {type} {...props} aria-label={description ?? label ?? name}/>
+		<Input id={name} bind:value {type} {...props} />
 	</field>
 	{#if message}
 		<message class={status}>{message}</message>

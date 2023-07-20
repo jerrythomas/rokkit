@@ -19,7 +19,6 @@ describe('components', () => {
 			'RangeMinMax',
 			'Rating',
 			'Summary',
-			'InputField',
 			'ValidationReport',
 			'ResponsiveGrid'
 		])

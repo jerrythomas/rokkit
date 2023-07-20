@@ -26,7 +26,7 @@
   @apply box-border border-b-1 border-skin-muted h-8 overflow-hidden;
   @apply focus-within:border-b-secondary-600;
 }
-.minimal input-field:focus-within label{
+.minimal input-field:focus-within label {
   @apply text-secondary-600;
 }
 .minimal input-field span {

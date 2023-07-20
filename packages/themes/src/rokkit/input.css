@@ -11,15 +11,15 @@ input[type='number']::-webkit-outer-spin-button {
   @apply border border-skin-subtle;
 }
 
-/* .rokkit input, */
+.rokkit input,
 .rokkit textarea,
 .rokkit select,
 .rokkit fieldset {
-  @apply rounded leading-loose px-2 border border-skin-muted outline-none bg-skin-subtle text-skin-800;
+  @apply rounded;
 }
 
 .rokkit input-field field {
-  @apply p-2px;
+  @apply p-2px box-border border border-skin-muted rounded;
 }
 
 /* .rokkit fieldset {
@@ -31,7 +31,6 @@ input[type='number']::-webkit-outer-spin-button {
 /* .rokkit fieldset icon {
 	@apply text-2xl;
 } */
-
 
 /* .rokkit input-field {
   @apply w-full m-0 py-1;
@@ -46,12 +45,8 @@ input[type='number']::-webkit-outer-spin-button {
 .rokkit input-field label {
   @apply text-secondary-600;
 }
-.rokkit input-field field {
-  @apply box-border border border-skin-muted rounded overflow-hidden;
-  /* @apply focus-within:border-primary-400 focus-within:border-2; */
-}
 .rokkit input-field field:focus-within {
-  @apply border-0 bg-gradient-to-r from-primary to-secondary;
+  @apply border-skin-base bg-gradient-to-r from-primary to-secondary;
 }
 .rokkit input-field span {
   @apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
@@ -102,7 +97,7 @@ input[type='number']::-webkit-outer-spin-button {
   @apply border-skin-500 h-full;
 }
 .rokkit tick p {
-  @apply items-top;
+  @apply items-top text-skin-500;
   font-size: 8px;
 }
 
