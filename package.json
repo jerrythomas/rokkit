@@ -39,6 +39,7 @@
 		"eslint": "^8.45.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-config-shared": "workspace:*",
+		"front-matter": "^4.0.2",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.3",
 		"madge": "^6.1.0",

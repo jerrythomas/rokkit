@@ -1,3 +1,5 @@
+export const prerender = 'auto'
+
 import { error } from '@sveltejs/kit'
 import { guide } from '$lib'
 
