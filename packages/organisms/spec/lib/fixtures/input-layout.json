@@ -24,7 +24,7 @@
       "type": "vertical",
       "scope": "#/address",
       "key": "address",
-      "label": "address",
+      "title": "Address",
       "elements": [
         {
           "scope": "#/address/street",

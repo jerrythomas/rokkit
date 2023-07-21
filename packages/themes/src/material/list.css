@@ -6,7 +6,7 @@
   @apply bg-skin-subtle;
 }
 .material item {
-  @apply flex items-center gap-2 px-2;
+  @apply flex leading-10 items-center gap-2 px-3;
 }
 .material item > img,
 .material item > a > img {
@@ -44,18 +44,6 @@
   @apply outline-none;
 }
 
-/* .material node[aria-selected='true'] item {
-  @apply bg-primary text-primary-800;
-} */
-/* .material node.is-selected p,
-.material node.is-selected icon {
-	@apply bg-primary text-primary-800;
-	@apply hover:bg-secondary;
-} */
-.material .folder-tree {
-  @apply h-full bg-skin-inset min-w-40;
-}
-
 .material node > span > i {
   @apply border-transparent;
 }
@@ -68,9 +56,12 @@
   @apply border-b-primary-500 border-b text-primary-600;
   @apply hover:text-primary-600;
 }
-.material list item.is-selected,
-.material node[aria-selected='true'] {
+/* .material list item[aria-selected='true'] {
   @apply bg-primary text-primary-800;
+} */
+.material node[aria-selected='true'],
+.material list item[aria-selected='true'] {
+  @apply bg-primary-500 text-skin-base;
 }
 .material crumbs {
   @apply flex-grow gap-1 text-sm;
@@ -86,10 +77,10 @@
 .material toggle-switch {
   @apply min-w-12 min-h-6 rounded-full mx-auto;
   @apply bg-skin-subtle border border-skin-muted;
-  @apply leading-tight p-2px;
+  @apply p-2px;
 }
 .material toggle-switch item {
-  @apply items-center justify-center px-3 gap-1;
+  @apply items-center justify-center px-3 gap-1 leading-tight;
   @apply min-w-6 min-h-6 rounded-full cursor-pointer;
 }
 

@@ -11,12 +11,12 @@ input[type='number']::-webkit-outer-spin-button {
   @apply border border-skin-subtle;
 }
 
-.rokkit input,
+/* .rokkit input,
 .rokkit textarea,
 .rokkit select,
 .rokkit fieldset {
   @apply rounded;
-}
+} */
 
 .rokkit input-field field {
   @apply p-2px box-border border border-skin-muted rounded;

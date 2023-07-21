@@ -1,6 +1,6 @@
 <script>
 	import { Switch } from '@rokkit/organisms'
-	let items = [
+	let options = [
 		{ icon: 'i-rokkit:mode-dark', mode: 'dark' },
 		{ icon: 'i-rokkit:mode-light', mode: 'light' }
 	]
@@ -10,6 +10,6 @@
 	let value
 </script>
 
-<Switch {items} {fields} compact={false} bind:value />
+<Switch {options} {fields} bind:value />
 <p>Selected Value</p>
 <pre>{JSON.stringify(value, null, 2)}</pre>

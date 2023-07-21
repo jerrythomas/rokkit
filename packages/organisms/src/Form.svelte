@@ -2,9 +2,9 @@
 	import DataEditor from './DataEditor.svelte'
 
 	export let value
-	export let schema
-	export let layout
-	export let using
+	export let schema = null
+	export let layout = null
+	export let using = {}
 </script>
 
 <form on:submit>

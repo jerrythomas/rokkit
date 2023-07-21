@@ -34,3 +34,16 @@
 .rokkit progress-bar value-bar {
   @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
 }
+
+.rokkit field toggle-switch {
+  @apply rounded-sm min-h-10 items-center justify-center px-3;
+}
+.rokkit field toggle-switch item {
+  @apply leading-loose;
+}
+.rokkit field toggle-switch item p {
+  @apply justify-center;
+}
+.rokkit field toggle-switch:focus-within {
+  @apply outline-none;
+}

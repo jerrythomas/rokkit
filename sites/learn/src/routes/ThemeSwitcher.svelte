@@ -26,7 +26,7 @@
 
 	function handleThemeChange(event) {
 		console.log('select', event.detail)
-		theme.set({ ...current, name: event.detail.value.name })
+		theme.set({ ...current, name: event.detail.name })
 	}
 </script>
 

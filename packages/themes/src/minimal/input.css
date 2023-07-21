@@ -19,11 +19,9 @@
 .minimal input-field {
   @apply w-full m-0 py-1;
 }
-.minimal input-field input {
-  @apply bg-transparent;
-}
+
 .minimal input-field field {
-  @apply box-border border-b-1 border-skin-muted h-8 overflow-hidden;
+  @apply box-border border-b-1 border-skin-muted min-h-9 overflow-hidden;
   @apply focus-within:border-b-secondary-600;
 }
 .minimal input-field:focus-within label {
@@ -34,8 +32,9 @@
 }
 .minimal input-field input,
 .minimal input-field textarea,
-.minimal input-field select {
-  @apply flex-grow border-0 focus:outline-none min-h-10;
+.minimal input-field select,
+.minimal input-field > field > :not(icon) {
+  @apply flex-grow border-0 focus:outline-none bg-transparent;
 }
 
 .minimal input-field label {

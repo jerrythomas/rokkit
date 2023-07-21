@@ -1,4 +1,4 @@
-export let items = [
+export let options = [
 	{
 		name: 'Fruits',
 		photo: '/examples/fruits.jpg',

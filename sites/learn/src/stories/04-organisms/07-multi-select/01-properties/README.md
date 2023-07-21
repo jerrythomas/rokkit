@@ -6,7 +6,7 @@ Input component that allows users to choose multiple values from a list of optio
 
 ## Properties
 
-- _items_ : Supply the data for the list
+- _options_ : Supply the data for the list
 - _fields_ : Adapt to your data by customising the fields
 - _using_ : An object containing components to be used for displaying data. Uses the Text component by default.
 - _value_ : Current set of selected value of the list

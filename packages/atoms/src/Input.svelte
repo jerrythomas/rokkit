@@ -1,13 +1,19 @@
 <script>
+	import { getContext } from 'svelte'
 	import { inputTypes } from './input'
+
+	const registry = getContext('registry')
 
 	export let value
 	export let type = 'text'
+	export let using = {}
+
+	$: using = { ...inputTypes, ...using, ...$registry }
 </script>
 
-{#if type in inputTypes}
+{#if type in using}
 	<svelte:component
-		this={inputTypes[type]}
+		this={using[type]}
 		bind:value
 		{...$$restProps}
 		on:change

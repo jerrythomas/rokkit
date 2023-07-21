@@ -8,14 +8,8 @@
 .rokkit tabs:focus-within {
   @apply outline-none border-secondary;
 }
-/* .rokkit tabs tab > icon {
-	@apply w-6 h-6 flex-shrink-0;
-}
-.rokkit tabs tab > icon:last-child {
-	@apply w-4 h-4 flex-shrink-0;
-} */
 .rokkit tabs .tab {
-  @apply leading-loose px-3 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
+  @apply leading-9 px-3 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
 }
 .rokkit tabs.is-below .tab {
   @apply rounded-b rounded-t-none;
@@ -73,16 +67,9 @@
   @apply absolute bottom-6 left-0 right-0;
 }
 
-/* .rokkit tab-view content {
-	@apply bg-skin-inset px-8;
-} */
-
 .rokkit sample {
   @apply gap-1px text-skin-900;
 }
-/* sample > * {
-	@apply bg-skin-inset bg-opacity-90;
-} */
 
 .rokkit sample h1 {
   @apply px-8 leading-12 rounded-t-xl text-lg bg-skin-50;
@@ -112,9 +99,7 @@
 .rokkit multi-file pre[class*='language-'] {
   @apply flex flex-grow rounded-none font-mono overflow-scroll;
 }
-/* multi-file pre[class*='language-'] code {
-	white-space: pre-wrap;
-} */
+
 .rokkit multi-file tab-view tabs {
   @apply rounded-none;
 }

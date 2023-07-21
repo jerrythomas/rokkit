@@ -1,7 +1,7 @@
 <script>
 	import { Tabs } from '@rokkit/organisms'
 	let value
-	let items = [
+	let options = [
 		{
 			text: 'Fruits',
 			image: '/examples/fruits.jpg'
@@ -21,7 +21,7 @@
 	]
 </script>
 
-<Tabs {items} bind:value />
+<Tabs {options} bind:value />
 
 <p>Selected Value</p>
 <pre>{JSON.stringify(value, null, 2)}</pre>

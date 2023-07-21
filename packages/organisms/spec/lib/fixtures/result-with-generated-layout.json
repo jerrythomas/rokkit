@@ -22,7 +22,7 @@
     {
       "type": "vertical",
       "key": "address",
-      "label": "address",
+      "title": "address",
       "elements": [
         {
           "key": "street",

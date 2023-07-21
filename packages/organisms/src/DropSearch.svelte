@@ -4,7 +4,7 @@
 	import { Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 
-	export let items
+	export let options
 	export let value = null
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields
@@ -55,7 +55,7 @@
 	{#if opened}
 		<Slider>
 			<List
-				bind:items
+				bind:items={options}
 				bind:value
 				{fields}
 				{using}

@@ -1,15 +1,16 @@
 <script>
-	import { componentTypes } from './types'
+	import { getContext } from 'svelte'
 	import { omit } from 'ramda'
 	import Wrapper from './wrappers/Wrapper.svelte'
+	import InputField from './InputField.svelte'
+
+	const registry = getContext('registry')
 
 	export let value = {}
 	export let schema = {}
 	export let path = []
-	export let using = {}
 
-	$: using = { ...componentTypes, ...using }
-	$: wrapper = using[schema.wrapper] ?? Wrapper
+	$: wrapper = $registry[schema.wrapper] ?? Wrapper
 	$: wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
 </script>
 
@@ -18,9 +19,8 @@
 		Invalid schema. Expected schema to include an 'elements' array.
 	</error>
 {:else}
-	<svelte:component this={wrapper} {...wrapperProps} {using}>
+	<svelte:component this={wrapper} {...wrapperProps}>
 		{#each schema.elements as item}
-			{@const component = using[item.component]}
 			{@const elementPath = item.key ? [...path, item.key] : path}
 			{@const props = { ...item.props, path: elementPath }}
 			{@const nested = Array.isArray(item.elements) && item.elements.length > 0}
@@ -29,29 +29,21 @@
 				{#if item.key}
 					<svelte:self
 						{...props}
-						{using}
 						schema={item}
 						bind:value={value[item.key]}
 						on:change
 					/>
 				{:else}
-					<svelte:self {...props} {using} schema={item} bind:value on:change />
+					<svelte:self {...props} schema={item} bind:value on:change />
 				{/if}
-			{:else if component}
+			{:else}
 				{@const name = elementPath.join('.')}
-				<svelte:component
-					this={component}
+				<InputField
 					{name}
 					bind:value={value[item.key]}
 					{...item.props}
 					on:change
 				/>
-			{:else}
-				<error>
-					Unknown component "{item.component}" for path "{elementPath.join(
-						'/'
-					)}". Add custom mapping with the "using" property.
-				</error>
 			{/if}
 		{/each}
 	</svelte:component>

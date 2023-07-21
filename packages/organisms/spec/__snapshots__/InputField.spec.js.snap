@@ -8,11 +8,11 @@ exports[`InputField.svelte > should render default 1`] = `
     >
        
       <field
+        aria-label="name"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="name"
           id="name"
           name="name"
           type="text"
@@ -34,10 +34,13 @@ exports[`InputField.svelte > should render null 1`] = `
     >
        
       <field
+        aria-label="name"
         class="w-full flex flex-row items-center"
       >
          
         <input
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -55,16 +58,20 @@ exports[`InputField.svelte > should render when disabled 1`] = `
     <input-field
       class="flex flex-col input-text disabled"
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="text"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="text"
+          id="name"
+          name="name"
           readonly=""
           type="text"
         />
@@ -83,16 +90,20 @@ exports[`InputField.svelte > should render when disabled 2`] = `
     <input-field
       class="flex flex-col input-text"
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="text"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="text"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -112,10 +123,13 @@ exports[`InputField.svelte > should render with custom class an type 1`] = `
     >
        
       <field
+        aria-label="name"
         class="w-full flex flex-row items-center"
       >
          
         <input
+          id="name"
+          name="name"
           type="number"
         />
         
@@ -133,16 +147,20 @@ exports[`InputField.svelte > should render with description 1`] = `
     <input-field
       class="flex flex-col input-text "
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="description"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="description"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -162,6 +180,7 @@ exports[`InputField.svelte > should render with icon 1`] = `
     >
        
       <field
+        aria-label="name"
         class="w-full flex flex-row items-center"
       >
         <icon
@@ -177,6 +196,8 @@ exports[`InputField.svelte > should render with icon 1`] = `
         </icon>
          
         <input
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -194,16 +215,20 @@ exports[`InputField.svelte > should render with label and value 1`] = `
     <input-field
       class="flex flex-col input-text "
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="text"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="text"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -221,16 +246,20 @@ exports[`InputField.svelte > should render with label and value 2`] = `
     <input-field
       class="flex flex-col input-text "
     >
-      <label>
+      <label
+        for="name"
+      >
         other
       </label>
        
       <field
+        aria-label="other"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="other"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -248,16 +277,20 @@ exports[`InputField.svelte > should render with label, value and status=fail 1`]
     <input-field
       class="flex flex-col input-text fail"
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="text"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="text"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -280,16 +313,20 @@ exports[`InputField.svelte > should render with label, value and status=pass 1`]
     <input-field
       class="flex flex-col input-text pass"
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="text"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="text"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -312,16 +349,20 @@ exports[`InputField.svelte > should render with label, value and status=warn 1`]
     <input-field
       class="flex flex-col input-text warn"
     >
-      <label>
+      <label
+        for="name"
+      >
         text
       </label>
        
       <field
+        aria-label="text"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="text"
+          id="name"
+          name="name"
           type="text"
         />
         
@@ -346,11 +387,11 @@ exports[`InputField.svelte > should render with value 1`] = `
     >
        
       <field
+        aria-label="FirstName"
         class="w-full flex flex-row items-center"
       >
          
         <input
-          aria-label="FirstName"
           id="FirstName"
           name="FirstName"
           type="text"

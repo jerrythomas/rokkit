@@ -5,13 +5,12 @@
   @apply box-border border border-skin-muted rounded;
   @apply text-skin-800 leading-loose relative pb-0;
 }
-/* .material input-field label {
-  @apply text-xs px-1 mt-0 w-content;
-} */
 .material input-field.empty label {
   @apply absolute top-0 my-3.5 align-middle;
 }
-.material input-field input {
+
+.material input-field input,
+.material input-field > field > :not(icon) {
   @apply border-none focus:outline-none bg-transparent;
 }
 
@@ -22,11 +21,7 @@
 .material input-field label,
 .material input-field:focus-within label {
   @apply bg-skin-base absolute block z-1;
-  @apply -top-2 left-3 my-0 leading-tight opacity-100;
-}
-
-.material input-field field {
-  @apply gap-2;
+  @apply -top-2 left-3 my-0 px-1 leading-tight opacity-100;
 }
 
 .material input-select {
