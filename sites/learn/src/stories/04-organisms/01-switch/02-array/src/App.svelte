@@ -1,9 +1,9 @@
 <script>
 	import { Switch } from '@rokkit/organisms'
 
-	let items = ['one', 'two', 'three']
+	let options = ['one', 'two', 'three']
 	let value
 </script>
 
-<Switch {items} compact={false} bind:value />
+<Switch {options} bind:value />
 <p>Selected Value: <b>{value}</b></p>

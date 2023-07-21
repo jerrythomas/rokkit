@@ -22,6 +22,7 @@ exports[`InputArray.svelte > should render using default field mapping 1`] = `
         
       </wrap-items>
     </section>
+    
   </div>
 </body>
 `;

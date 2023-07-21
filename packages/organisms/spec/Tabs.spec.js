@@ -7,12 +7,12 @@ describe('Tabs.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render text array', () => {
-		const { container } = render(Tabs, { items: ['a', 'b'] })
+		const { container } = render(Tabs, { options: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should support editable attribute', () => {
-		const { container, component } = render(Tabs, { items: ['a', 'b'] })
+		const { container, component } = render(Tabs, { options: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -21,14 +21,14 @@ describe('Tabs.svelte', () => {
 	})
 	it('should render using default field mapping', () => {
 		const { container } = render(Tabs, {
-			items: [{ text: 'a' }, { text: 'b' }]
+			options: [{ text: 'a' }, { text: 'b' }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render using field mappings', () => {
 		const { container } = render(Tabs, {
-			items: [{ name: 'a' }, { name: 'a' }],
+			options: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
 		})
 		expect(container).toBeTruthy()
@@ -36,7 +36,7 @@ describe('Tabs.svelte', () => {
 	})
 	it('should support custom class', async () => {
 		const { container, component } = render(Tabs, {
-			items: ['a', 'b'],
+			options: ['a', 'b'],
 			class: 'custom'
 		})
 		let wrapper = container.querySelector('tabs')
@@ -48,7 +48,7 @@ describe('Tabs.svelte', () => {
 	})
 	it('should support custom icons', async () => {
 		const { container, component } = render(Tabs, {
-			items: ['a', 'b']
+			options: ['a', 'b']
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

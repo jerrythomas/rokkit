@@ -24,3 +24,7 @@
 .material button-group > button.active {
   @apply bg-primary text-white;
 }
+
+.material field > toggle-switch {
+  @apply mx-2 mt-1 mb-2;
+}

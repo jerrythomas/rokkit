@@ -6,13 +6,13 @@
 	let className = ''
 	export { className as class }
 	export let value = []
-	export let items = []
+	export let options = []
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = {}
 	export let using = {}
 	export let placeholder = ''
 
-	$: available = items.filter((item) => !value.includes(item))
+	$: available = options.filter((item) => !value.includes(item))
 
 	function handleRemove(event) {
 		value = [...value.filter((item) => item != event.detail)]
@@ -25,10 +25,9 @@
 </script>
 
 <Select
-	items={available}
+	options={available}
 	{fields}
 	{using}
-	searchable
 	on:select={handleSelect}
 	class={className}
 	{placeholder}

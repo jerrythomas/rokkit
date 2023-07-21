@@ -19,7 +19,7 @@
     },
     {
       "scope": "#/address",
-      "label": "address",
+      "title": "address",
       "type": "vertical",
       "elements": [
         {

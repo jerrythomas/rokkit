@@ -49,7 +49,8 @@ export function deriveLayoutFromValue(value, scope = '#') {
 				!(val instanceof Date)
 			) {
 				element = {
-					...element,
+					title: element.label,
+					...omit(['label'], element),
 					...deriveLayoutFromValue(val, `${scope}/${label}`)
 				}
 			}
@@ -87,7 +88,7 @@ export function combineElementsWithSchema(elements, schema) {
 	let combined = []
 	elements.forEach((element) => {
 		const { scope } = element
-		let attribute = findAttributeByPath(scope ?? '', schema)
+		let attribute = findAttributeByPath(scope, schema)
 
 		if (Array.isArray(element.elements)) {
 			const temp = combineElementsWithSchema(element.elements, schema)
@@ -119,6 +120,8 @@ export function combineElementsWithSchema(elements, schema) {
  * @throws {Error} Invalid path
  */
 export function findAttributeByPath(scope, schema) {
+	if (!scope) return { props: { ...schema } }
+
 	const pathArray = scope.split('/').slice(1)
 	let schemaPointer = schema
 	let currentKey = ''

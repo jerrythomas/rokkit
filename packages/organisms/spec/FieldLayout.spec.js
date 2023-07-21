@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
+import Register from './mocks/Register.svelte'
 import CustomField from './mocks/CustomField.svelte'
 import CustomWrapper from './mocks/CustomWrapper.svelte'
 
@@ -38,7 +39,7 @@ describe('FieldLayout.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render error when elements is missing', () => {
-		const { container } = render(FieldLayout)
+		const { container } = render(Register, { render: FieldLayout })
 		expect(container).toBeTruthy()
 		const error = container.querySelector('error')
 		expect(error).toBeTruthy()
@@ -46,18 +47,9 @@ describe('FieldLayout.svelte', () => {
 	})
 
 	it('should render error when elements is not an array', () => {
-		const { container } = render(FieldLayout, {
-			schema: { elements: 'not an array' }
-		})
-		expect(container).toBeTruthy()
-		const error = container.querySelector('error')
-		expect(error).toBeTruthy()
-		expect(error).toMatchSnapshot()
-	})
-
-	it('should render error when custom component is not available', () => {
-		const { container } = render(FieldLayout, {
-			schema: { elements: [{ key: 'rating', component: 'custom' }] }
+		const { container } = render(Register, {
+			render: FieldLayout,
+			properties: { schema: { elements: 'not an array' } }
 		})
 		expect(container).toBeTruthy()
 		const error = container.querySelector('error')
@@ -68,7 +60,10 @@ describe('FieldLayout.svelte', () => {
 	it('should render set of inputs', () => {
 		const schema = { elements: [inputNameSchema, inputAgeSchema] }
 		let value = { name: 'John', age: 30 }
-		const { container } = render(FieldLayout, { value, schema })
+		const { container } = render(Register, {
+			render: FieldLayout,
+			properties: { value, schema }
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
@@ -85,7 +80,10 @@ describe('FieldLayout.svelte', () => {
 			]
 		}
 		let value = { name: { first: 'John', last: 'Smith' }, age: 30 }
-		const { container, component } = render(FieldLayout, { value, schema })
+		const { container, component } = render(Register, {
+			render: FieldLayout,
+			properties: { value, schema }
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -107,7 +105,10 @@ describe('FieldLayout.svelte', () => {
 			]
 		}
 		let value = { first: 'John', last: 'Smith', age: 30 }
-		const { container, component } = render(FieldLayout, { value, schema })
+		const { container, component } = render(Register, {
+			render: FieldLayout,
+			properties: { value, schema }
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -130,10 +131,10 @@ describe('FieldLayout.svelte', () => {
 			]
 		}
 		let value = { name: { first: 'John', last: 'Smith' }, age: 30 }
-		const { container, component } = render(FieldLayout, {
-			value,
-			schema,
-			using: { mock: CustomWrapper }
+		const { container, component } = render(Register, {
+			render: FieldLayout,
+			components: { mock: CustomWrapper },
+			properties: { value, schema }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -146,10 +147,10 @@ describe('FieldLayout.svelte', () => {
 	it('should render items using custom component', () => {
 		const schema = { elements: [inputNameSchema, customFieldSchema] }
 		let value = { name: 'John', title: 'Mr.' }
-		const { container } = render(FieldLayout, {
-			value,
-			schema,
-			using: { custom: CustomField }
+		const { container } = render(Register, {
+			render: FieldLayout,
+			components: { custom: CustomField },
+			properties: { value, schema }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

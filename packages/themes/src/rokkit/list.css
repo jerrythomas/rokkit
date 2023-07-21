@@ -152,7 +152,7 @@
   @apply outline outline-secondary-500;
 }
 .rokkit toggle-switch item {
-  @apply items-center justify-center px-3 gap-1 py-0 leading-tight;
+  @apply items-center justify-center px-3 gap-1 py-0 leading-loose;
   @apply min-w-6 min-h-6 rounded-full cursor-pointer;
 }
 .rokkit toggle-switch item > icon > i {

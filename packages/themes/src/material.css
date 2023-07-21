@@ -3,9 +3,7 @@
 /* @import './base/dropdown.css'; */
 @import './base/states.css';
 @import './base/calendar.css';
-
 @import './material/input.css';
-@import './material/form.css';
 @import './material/list.css';
-
+@import './material/form.css';
 @import './base/outline.css';

@@ -7,7 +7,6 @@
 	export let path = []
 	export let value = []
 	export let schema = []
-	export let using = {}
 	// export let actions = {}
 	export let navigator = List
 	let item
@@ -32,6 +31,6 @@
 
 	<wrap-items>
 		<!-- Array actions add, remove -->
-		<FieldLayout bind:value={item} {schema} {using} path={location} />
+		<FieldLayout bind:value={item} {schema} path={location} />
 	</wrap-items>
 </section>

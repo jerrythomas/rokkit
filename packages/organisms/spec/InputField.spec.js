@@ -24,7 +24,7 @@ describe('InputField.svelte', () => {
 	})
 
 	it('should render null', () => {
-		const { container } = render(InputField, { value: null })
+		const { container } = render(InputField, { value: null, name: 'name' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
@@ -41,7 +41,8 @@ describe('InputField.svelte', () => {
 	it('should render with label and value', async () => {
 		const { container, component } = render(InputField, {
 			label: 'text',
-			value: 'text'
+			value: 'text',
+			name: 'name'
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -58,7 +59,8 @@ describe('InputField.svelte', () => {
 				label: 'text',
 				value: 'text',
 				status,
-				message: 'error'
+				message: 'error',
+				name: 'name'
 			})
 			expect(container).toBeTruthy()
 			expect(container).toMatchSnapshot()
@@ -69,6 +71,7 @@ describe('InputField.svelte', () => {
 		const { container } = render(InputField, {
 			label: 'text',
 			value: 'text',
+			name: 'name',
 			description: 'description'
 		})
 		expect(container).toBeTruthy()
@@ -79,6 +82,7 @@ describe('InputField.svelte', () => {
 		const { container, component } = render(InputField, {
 			label: 'text',
 			value: 'text',
+			name: 'name',
 			disabled: true
 		})
 		expect(container).toBeTruthy()
@@ -91,6 +95,7 @@ describe('InputField.svelte', () => {
 
 	it('should render with custom class an type', async () => {
 		const { container, component } = render(InputField, {
+			name: 'name',
 			type: 'number',
 			class: 'custom'
 		})
@@ -107,6 +112,7 @@ describe('InputField.svelte', () => {
 
 	it('should render with icon', async () => {
 		const { container, component } = render(InputField, {
+			name: 'name',
 			icon: 'icon'
 		})
 		expect(container).toBeTruthy()

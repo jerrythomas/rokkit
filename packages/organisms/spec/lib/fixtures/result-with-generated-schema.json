@@ -20,7 +20,7 @@
     {
       "type": "vertical",
       "key": "address",
-      "label": "address",
+      "title": "Address",
       "elements": [
         {
           "key": "street",

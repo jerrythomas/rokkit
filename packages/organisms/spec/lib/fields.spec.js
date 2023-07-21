@@ -267,6 +267,20 @@ describe('fields', () => {
 				findAttributeByPath('#/invalid', schema)
 			}).toThrowError('Invalid scope: #/invalid')
 		})
+
+		it('should return props if scope is missing', () => {
+			const schema = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+					age: { type: 'number', min: 0, max: 100 }
+				}
+			}
+			let attribute = findAttributeByPath(null, schema)
+			expect(attribute).toEqual({
+				props: schema
+			})
+		})
 	})
 
 	describe('combineElementsWithSchema', () => {
@@ -403,6 +417,50 @@ describe('fields', () => {
 						label: 'zip',
 						type: 'number'
 					}
+				}
+			])
+		})
+		it('should combine elements with schema when scope is missing', () => {
+			const elements = [
+				{
+					type: 'horizontal',
+					elements: [
+						{
+							scope: '#/first_name'
+						},
+						{
+							scope: '#/last_name'
+						}
+					]
+				}
+			]
+			const schema = {
+				type: 'object',
+				properties: {
+					first_name: { type: 'string' },
+					last_name: { type: 'string' }
+				}
+			}
+			const combined = combineElementsWithSchema(elements, schema)
+			expect(combined).toEqual([
+				{
+					elements: [
+						{
+							component: 'input',
+							key: 'first_name',
+							props: {
+								type: 'string'
+							}
+						},
+						{
+							component: 'input',
+							key: 'last_name',
+							props: {
+								type: 'string'
+							}
+						}
+					],
+					type: 'horizontal'
 				}
 			])
 		})

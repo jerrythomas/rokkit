@@ -7,7 +7,7 @@ describe('Switch.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render default', () => {
-		const { container } = render(Switch)
+		const { container } = render(Switch, { value: false })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
@@ -17,12 +17,15 @@ describe('Switch.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 	it('should render text array', () => {
-		const { container } = render(Switch, { items: ['a', 'b'] })
+		const { container } = render(Switch, { value: null, options: ['a', 'b'] })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should support editable attribute', () => {
-		const { container, component } = render(Switch, { items: ['a', 'b'] })
+		const { container, component } = render(Switch, {
+			value: null,
+			options: ['a', 'b']
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -31,14 +34,16 @@ describe('Switch.svelte', () => {
 	})
 	it('should render using default field mapping', () => {
 		const { container } = render(Switch, {
-			items: [{ text: 'a' }, { text: 'b' }]
+			value: null,
+			options: [{ text: 'a' }, { text: 'b' }]
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render using field mappings', () => {
 		const { container } = render(Switch, {
-			items: [{ name: 'a' }, { name: 'a' }],
+			value: null,
+			options: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
 		})
 		expect(container).toBeTruthy()
@@ -46,7 +51,8 @@ describe('Switch.svelte', () => {
 	})
 	it('should support custom class', async () => {
 		const { container, component } = render(Switch, {
-			items: ['a', 'b'],
+			value: null,
+			options: ['a', 'b'],
 			class: 'custom'
 		})
 		let wrapper = container.querySelector('toggle-switch')
@@ -59,7 +65,8 @@ describe('Switch.svelte', () => {
 	})
 	it('should support custom icons', async () => {
 		const { container, component } = render(Switch, {
-			items: ['a', 'b']
+			value: 'a',
+			options: ['a', 'b']
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

@@ -9,7 +9,7 @@
 
 	let className = ''
 	export { className as class }
-	export let items = []
+	export let options = []
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = {}
 	export let using
@@ -25,7 +25,7 @@
 		if (typeof item === Object) {
 			item[fields.isDeleted] = true
 		} else {
-			items = items.filter((i) => i !== item)
+			options = options.filter((i) => i !== item)
 		}
 
 		dispatch('remove', { item })
@@ -38,7 +38,7 @@
 	}
 	$: using = { default: Item, ...using }
 	$: icons = { ...defaultStateIcons.action, ...icons }
-	$: filtered = items.filter((item) => !item[fields.isDeleted])
+	$: filtered = options.filter((item) => !item[fields.isDeleted])
 	$: fields = { ...defaultFields, ...fields }
 </script>
 
@@ -50,7 +50,7 @@
 	tabindex="0"
 	role="listbox"
 	use:navigator={{
-		items,
+		items: options,
 		fields,
 		vertical: false,
 		indices: cursor

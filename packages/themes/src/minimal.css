@@ -4,6 +4,6 @@
 
 @import './minimal/input.css';
 @import './minimal/list.css';
-@import './minimal/form.css';
 @import './minimal/tabs.css';
+@import './minimal/form.css';
 @import './base/outline.css';

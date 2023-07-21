@@ -10,7 +10,7 @@
 
 <section class="h-full w-full flex flex-col">
 	<nav class="h-12 w-full items-center">
-		<svelte:component this={navigator} {items} {fields} bind:value />
+		<svelte:component this={navigator} options={items} {fields} bind:value />
 	</nav>
 	{#if value}
 		{@const language = value.file.split('.')[1]}
