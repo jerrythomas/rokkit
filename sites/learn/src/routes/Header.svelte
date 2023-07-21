@@ -1,30 +1,27 @@
 <script>
-	import { goto } from '$app/navigation'
-	import { Icon } from '@rokkit/atoms'
+	import { goto, afterNavigate, beforeNavigate } from '$app/navigation'
+	import { Icon, ProgressBar } from '@rokkit/atoms'
 	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
-	// import { Icon } from '@rokkit/atoms'
-	// import { getContext } from 'svelte'
-	// const site = getContext('site')
 
 	let className = ''
 	export { className as class }
-	// function toggle() {
-	// 	$site.sidebar = !$site.sidebar
-	// }
+
 	export let version
 	export let menu = []
+
+	let loading = false
+	beforeNavigate(() => (loading = true))
+	afterNavigate(() => (loading = false))
 </script>
 
 <header
 	class="flex min-h-14 w-full bg-skin-base items-center justify-between relative {className}"
 >
+	{#if loading}
+		<ProgressBar class="absolute top-0 z-5" />
+	{/if}
 	<div class="flex items-center gap-2 px-4">
-		<!-- <Icon
-			name="i-rokkit:menu"
-			class="cursor-pointer border-r border-r-skin-subtle"
-			on:click={toggle}
-		/> -->
 		<a href="/" class="flex items-center">
 			{#if $media.small}
 				<img src="/rokkit-icon.svg" alt="Rokkit Logo" class="h-12" />
@@ -54,8 +51,5 @@
 			role="button"
 			on:click={() => goto('https://github.com/jerrythomas/rokkit')}
 		/>
-		<!-- <a href="https://github.com/jerrythomas/rokkit" class="flex text-skin-900">
-			<icon class="i-rokkit:github" />
-		</a> -->
 	</settings>
 </header>

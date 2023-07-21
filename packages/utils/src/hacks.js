@@ -15,5 +15,3 @@ export function adjustViewport(browser = false, small = false) {
 		document.body.style.visibility = 'visible'
 	}
 }
-
-// Change the viewport height on mobile browsers to account for the address bar

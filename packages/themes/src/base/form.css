@@ -37,7 +37,7 @@ progress-bar {
   @apply bg-skin-muted border border-skin-subtle;
 }
 progress-bar value-bar {
-  @apply bg-skin-primary;
+  @apply bg-primary;
 }
 
 .indeterminate value-bar {

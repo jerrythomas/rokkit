@@ -30,4 +30,16 @@ describe('ProgressBar.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
+
+	it('should render progress bar with class', async () => {
+		const { container, component } = render(ProgressBar, {
+			class: 'my-class'
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		component.$set({ class: 'my-class-1' })
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
 })
