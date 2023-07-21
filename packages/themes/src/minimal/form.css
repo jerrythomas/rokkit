@@ -81,3 +81,7 @@
 .minimal button[role='switch'] > mark {
   @apply rounded-full w-6 h-6 bg-secondary top-0.75;
 }
+
+.minimal progress-bar value-bar {
+  @apply bg-secondary;
+}
