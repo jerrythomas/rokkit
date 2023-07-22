@@ -4,7 +4,7 @@ exports[`CodeSnippet.svelte > should render CodeSnippet text 1`] = `
 <body>
   <div>
     <pre
-      class="language-html undefined"
+      class="language-html "
     >
       <code>
         <span

@@ -4,7 +4,7 @@ exports[`ProgressBar.svelte > should render indeterminate progress 1`] = `
 <body>
   <div>
     <progress-bar
-      class="flex w-full undefined indeterminate"
+      class="flex w-full indeterminate"
       style="height: 1.5mm;"
     >
       <value-bar
@@ -49,7 +49,7 @@ exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
 <body>
   <div>
     <progress-bar
-      class="flex w-full undefined"
+      class="flex w-full "
       style="height: 1.5mm;"
     >
       <value-bar
@@ -64,7 +64,7 @@ exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
 <body>
   <div>
     <progress-bar
-      class="flex w-full undefined"
+      class="flex w-full "
       style="height: 1.5mm;"
     >
       <value-bar
@@ -79,7 +79,7 @@ exports[`ProgressBar.svelte > should render progress with custom height, indicat
 <body>
   <div>
     <progress-bar
-      class="flex w-full undefined indeterminate"
+      class="flex w-full indeterminate"
       style="height: 3px;"
     >
       <value-bar

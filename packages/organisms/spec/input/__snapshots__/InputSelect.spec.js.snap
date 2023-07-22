@@ -19,9 +19,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>
@@ -63,9 +61,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           >
             
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               a
             </p>
             
@@ -79,9 +75,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           >
             
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               b
             </p>
             
@@ -95,9 +89,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           >
             
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               c
             </p>
             
@@ -129,9 +121,7 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>
@@ -179,9 +169,7 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>
@@ -229,9 +217,7 @@ exports[`InputSelect.svelte > should render items using default item when data i
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>
@@ -279,9 +265,7 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>
@@ -329,9 +313,7 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>
@@ -379,9 +361,7 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
         role="option"
         tabindex="-1"
       >
-        <item
-          class="w-full flex"
-        >
+        <item>
            
           
         </item>

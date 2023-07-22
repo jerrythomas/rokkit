@@ -45,7 +45,6 @@ progress-bar value-bar {
   position: absolute;
   bottom: 0;
   top: 0;
-  /* width: 50%; */
 
   /* Move the bar infinitely */
   animation-duration: 2s;

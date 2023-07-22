@@ -34,3 +34,7 @@ export function getId(node, fields = defaultFields) {
 		? node[fields.id] ?? node[fields.text]
 		: node
 }
+
+export function getText(node, fields = defaultFields) {
+	return typeof node === 'object' && node !== null ? node[fields.text] : node
+}

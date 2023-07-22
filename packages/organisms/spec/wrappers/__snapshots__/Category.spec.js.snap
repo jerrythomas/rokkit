@@ -21,9 +21,7 @@ exports[`Category.svelte > should render using default props 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -40,9 +38,7 @@ exports[`Category.svelte > should render using default props 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -59,9 +55,7 @@ exports[`Category.svelte > should render using default props 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             
@@ -101,9 +95,7 @@ exports[`Category.svelte > should render using specified class 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -120,9 +112,7 @@ exports[`Category.svelte > should render using specified class 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -139,9 +129,7 @@ exports[`Category.svelte > should render using specified class 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             
@@ -181,9 +169,7 @@ exports[`Category.svelte > should render using specified class 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -200,9 +186,7 @@ exports[`Category.svelte > should render using specified class 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -219,9 +203,7 @@ exports[`Category.svelte > should render using specified class 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             
@@ -261,9 +243,7 @@ exports[`Category.svelte > should render using specified type 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -280,9 +260,7 @@ exports[`Category.svelte > should render using specified type 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -299,9 +277,7 @@ exports[`Category.svelte > should render using specified type 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             
@@ -341,9 +317,7 @@ exports[`Category.svelte > should render using specified type 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -360,9 +334,7 @@ exports[`Category.svelte > should render using specified type 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -379,9 +351,7 @@ exports[`Category.svelte > should render using specified type 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             
@@ -419,9 +389,7 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         >
            
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             one
           </p>
           
@@ -436,9 +404,7 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         >
            
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             two
           </p>
           
@@ -453,9 +419,7 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         >
            
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             three
           </p>
           
@@ -493,9 +457,7 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
         >
            
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             one
           </p>
           
@@ -510,9 +472,7 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
         >
            
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             two
           </p>
           
@@ -527,9 +487,7 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
         >
            
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             three
           </p>
           
@@ -569,9 +527,7 @@ exports[`Category.svelte > should render with extra props 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -588,9 +544,7 @@ exports[`Category.svelte > should render with extra props 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -607,9 +561,7 @@ exports[`Category.svelte > should render with extra props 1`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             
@@ -649,9 +601,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               one
             </p>
             
@@ -668,9 +618,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               two
             </p>
             
@@ -687,9 +635,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
             class="flex flex-row items-center"
           >
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               three
             </p>
             

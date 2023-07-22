@@ -12,9 +12,7 @@ exports[`ItemWrapper.svelte > should handle value change 1`] = `
         class="flex flex-row items-center"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           hello
         </p>
         
@@ -37,9 +35,7 @@ exports[`ItemWrapper.svelte > should render 1`] = `
         class="flex flex-row items-center"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           hello
         </p>
         
@@ -84,9 +80,7 @@ exports[`ItemWrapper.svelte > should render object 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -130,9 +124,7 @@ exports[`ItemWrapper.svelte > should render removable with custom class 1`] = `
         class="flex flex-row items-center"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -167,9 +159,7 @@ exports[`ItemWrapper.svelte > should render removable with custom icon 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -204,9 +194,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -241,9 +229,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -289,9 +275,7 @@ exports[`ItemWrapper.svelte > should render using field mapping 1`] = `
         </icon>
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           hello
         </p>
         
@@ -314,9 +298,7 @@ exports[`ItemWrapper.svelte > should render with custom class 1`] = `
         class="flex flex-row items-center"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -339,9 +321,7 @@ exports[`ItemWrapper.svelte > should render with removable prop 1`] = `
         class="flex flex-row items-center"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -375,9 +355,7 @@ exports[`ItemWrapper.svelte > should render with selected prop 1`] = `
         class="flex flex-row items-center"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           Test
         </p>
         
@@ -401,9 +379,7 @@ exports[`ItemWrapper.svelte > should update when value changes 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           hello
         </p>
         

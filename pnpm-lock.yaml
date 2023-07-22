@@ -115,6 +115,9 @@ importers:
       '@testing-library/svelte':
         specifier: ^4.0.3
         version: 4.0.3(svelte@4.0.5)
+      '@types/prismjs':
+        specifier: ^1.26.0
+        version: 1.26.0
       '@vitest/coverage-v8':
         specifier: ^0.33.0
         version: 0.33.0(vitest@0.33.0)
@@ -2027,6 +2030,13 @@ packages:
       {
         integrity: sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==
       }
+
+  /@types/prismjs@1.26.0:
+    resolution:
+      {
+        integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==
+      }
+    dev: true
 
   /@types/pug@2.0.6:
     resolution:

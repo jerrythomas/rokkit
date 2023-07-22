@@ -4,20 +4,20 @@ import * as components from '../src'
 describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
+			'rokkitInputTypes',
+			'RadioGroup',
+			'CheckBox',
+			'Range',
+			'RangeMinMax',
+			'Rating',
 			'Alerts',
 			'BreadCrumbs',
 			'Button',
 			'ButtonGroup',
 			'Calendar',
-			'CheckBox',
-			'CheckBoxGroup',
 			'Item',
 			'ItemWrapper',
 			'Node',
-			'RadioGroup',
-			'Range',
-			'RangeMinMax',
-			'Rating',
 			'Summary',
 			'ValidationReport',
 			'ResponsiveGrid'

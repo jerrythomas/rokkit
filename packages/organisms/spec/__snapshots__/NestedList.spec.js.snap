@@ -43,9 +43,7 @@ exports[`NestedList.svelte > should render nested items 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -68,9 +66,7 @@ exports[`NestedList.svelte > should render nested items 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             b
           </p>
           
@@ -101,9 +97,7 @@ exports[`NestedList.svelte > should render nested items 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             c
           </p>
           
@@ -147,9 +141,7 @@ exports[`NestedList.svelte > should render open items 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -189,9 +181,7 @@ exports[`NestedList.svelte > should render open items 1`] = `
           <item>
             
              
-            <p
-              class="w-full flex"
-            >
+            <p>
               aa
             </p>
             
@@ -216,9 +206,7 @@ exports[`NestedList.svelte > should render open items 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             b
           </p>
           
@@ -249,9 +237,7 @@ exports[`NestedList.svelte > should render open items 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             c
           </p>
           
@@ -287,9 +273,7 @@ exports[`NestedList.svelte > should render using default field mapping 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -312,9 +296,7 @@ exports[`NestedList.svelte > should render using default field mapping 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             b
           </p>
           
@@ -350,9 +332,7 @@ exports[`NestedList.svelte > should render using field mappings 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -375,9 +355,7 @@ exports[`NestedList.svelte > should render using field mappings 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -421,9 +399,7 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -446,9 +422,7 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             b
           </p>
           
@@ -479,9 +453,7 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             c
           </p>
           
@@ -525,9 +497,7 @@ exports[`NestedList.svelte > should support custom icons 2`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             a
           </p>
           
@@ -550,9 +520,7 @@ exports[`NestedList.svelte > should support custom icons 2`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             b
           </p>
           
@@ -583,9 +551,7 @@ exports[`NestedList.svelte > should support custom icons 2`] = `
         <item>
           
            
-          <p
-            class="w-full flex"
-          >
+          <p>
             c
           </p>
           

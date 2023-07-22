@@ -21,13 +21,13 @@
 	}
 	function handleEnter(index) {
 		if (!disabled) {
-			hovering = true
+			// hovering = true
 			hoverIndex = index
 		}
 	}
 	function handleLeave() {
 		if (!disabled) {
-			hovering = false
+			// hovering = false
 			hoverIndex = -1
 		}
 	}
@@ -47,7 +47,7 @@
 		}
 	}
 
-	let hovering = false
+	// let hovering = false
 	let hoverIndex = -1
 	$: stars = [...Array(max).keys()].map((i) => i < value)
 </script>
@@ -83,7 +83,7 @@
 			role="option"
 			{disabled}
 			checked={index < value}
-			class={hovering && index <= hoverIndex ? 'hovering' : ''}
+			class={index <= hoverIndex ? 'hovering' : ''}
 			on:mouseenter={() => handleEnter(index)}
 			on:mouseleave={handleLeave}
 			on:click={() => handleClick(index)}

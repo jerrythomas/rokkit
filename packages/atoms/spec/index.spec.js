@@ -16,7 +16,7 @@ describe('components', () => {
 			'Markdown',
 			'CodeSnippet',
 			'ProgressBar',
-			'inputTypes'
+			'nativeInputTypes'
 		])
 	})
 })
