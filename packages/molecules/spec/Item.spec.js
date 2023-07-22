@@ -7,7 +7,7 @@ describe('Item.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render default', async () => {
-		const { container, component } = render(Item)
+		const { container, component } = render(Item, { value: null })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 

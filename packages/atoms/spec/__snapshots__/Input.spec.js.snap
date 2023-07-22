@@ -146,6 +146,14 @@ exports[`Input.svelte > should render input for type "rating" with custom props 
 </error>
 `;
 
+exports[`Input.svelte > should render input for type "select" 1`] = `<select />`;
+
+exports[`Input.svelte > should render input for type "select" as required 1`] = `
+<select
+  readonly="true"
+/>
+`;
+
 exports[`Input.svelte > should render input for type "string" 1`] = `
 <input
   type="text"

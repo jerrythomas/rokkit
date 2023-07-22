@@ -4,6 +4,7 @@
 export const defaultFields = {
 	id: 'id',
 	url: 'url',
+	value: 'value',
 	text: 'text',
 	children: 'children',
 	icon: 'icon',

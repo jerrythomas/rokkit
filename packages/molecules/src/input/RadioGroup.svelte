@@ -2,7 +2,7 @@
 	import {
 		defaultFields,
 		defaultStateIcons,
-		getId,
+		getValue,
 		getText
 	} from '@rokkit/core'
 
@@ -28,7 +28,7 @@
 	class:disbled={readOnly}
 >
 	{#each options as item}
-		{@const itemValue = getId(item, fields)}
+		{@const itemValue = getValue(item, fields)}
 		{@const label = getText(item, fields)}
 		{@const state = itemValue === value ? 'on' : 'off'}
 

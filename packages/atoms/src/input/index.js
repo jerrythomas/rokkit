@@ -13,6 +13,7 @@ import { default as InputUrl } from './InputUrl.svelte'
 import { default as InputWeek } from './InputWeek.svelte'
 import { default as TextArea } from './TextArea.svelte'
 import { default as InputRange } from './InputRange.svelte'
+import { default as InputSelect } from './InputSelect.svelte'
 
 export const nativeInputTypes = {
 	tel: InputTel,
@@ -31,5 +32,6 @@ export const nativeInputTypes = {
 	datetime: InputDateTime,
 	password: InputPassword,
 	range: InputRange,
+	select: InputSelect,
 	textarea: TextArea
 }
