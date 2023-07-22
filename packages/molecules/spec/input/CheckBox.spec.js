@@ -1,14 +1,27 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
-import CheckBox from '../src/CheckBox.svelte'
+import CheckBox from '../../src/input/CheckBox.svelte'
 
 describe('CheckBox.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('should render the navigation CheckBox', () => {
+	it('should render checkbox ', () => {
 		const { container } = render(CheckBox, { name: 'test' })
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+
+	it('should render native checkbox ', async () => {
+		const { container, component } = render(CheckBox, {
+			name: 'test',
+			native: true
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		component.$set({ native: false })
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
@@ -38,45 +51,12 @@ describe('CheckBox.svelte', () => {
 		expect(Array.from(checkbox.classList)).toContain('new-class')
 	})
 
-	it('should render label when provided', () => {
-		const { getByText } = render(CheckBox, {
-			name: 'test',
-			label: 'Checkbox Label'
-		})
-		const label = getByText('Checkbox Label')
-
-		expect(label).toBeTruthy()
-	})
-
 	it('should render checkbox with disabled state', () => {
-		const { getByRole } = render(CheckBox, { name: 'test', disabled: true })
+		const { getByRole } = render(CheckBox, { name: 'test', readOnly: true })
 		const checkbox = getByRole('checkbox')
 
 		expect(Array.from(checkbox.classList)).toContain('disabled')
 		expect(checkbox.getAttribute('aria-disabled')).toBe('true')
-	})
-
-	it('should render checkbox with custom status class', () => {
-		const { getByRole } = render(CheckBox, { name: 'test', status: 'pass' })
-		const checkbox = getByRole('checkbox')
-
-		expect(Array.from(checkbox.classList)).toContain('pass')
-	})
-
-	it('should render checkbox with text after the icon', () => {
-		const { getByRole } = render(CheckBox, { name: 'test', textAfter: true })
-		const checkbox = getByRole('checkbox')
-
-		expect(Array.from(checkbox.classList)).toContain('flex-row')
-		expect(Array.from(checkbox.classList)).not.toContain('flex-row-reverse')
-	})
-
-	it('should render checkbox with text before the icon', () => {
-		const { getByRole } = render(CheckBox, { name: 'test', textAfter: false })
-		const checkbox = getByRole('checkbox')
-
-		expect(Array.from(checkbox.classList)).toContain('flex-row-reverse')
-		expect(Array.from(checkbox.classList)).not.toContain('flex-row')
 	})
 
 	it('should handle click events', async () => {
@@ -93,10 +73,10 @@ describe('CheckBox.svelte', () => {
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
 	})
 
-	it('should handle cliks without changing value when disabled', async () => {
+	it('should handle clicks without changing value when disabled', async () => {
 		const { container, component } = render(CheckBox, {
 			name: 'test',
-			disabled: true
+			readOnly: true
 		})
 		const checkbox = container.querySelector('checkbox')
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
@@ -105,7 +85,7 @@ describe('CheckBox.svelte', () => {
 		await tick()
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
 
-		component.$set({ disabled: false })
+		component.$set({ readOnly: false })
 		await fireEvent.click(checkbox)
 		await tick()
 		expect(checkbox.getAttribute('aria-checked')).toBe('checked')

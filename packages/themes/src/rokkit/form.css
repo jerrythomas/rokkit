@@ -35,7 +35,23 @@
   @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
 }
 
-.rokkit field toggle-switch {
+.rokkit .input-switch {
+  @apply flex flex-row items-center;
+}
+.rokkit .input-switch label {
+  @apply flex-grow flex-shrink-0;
+}
+.rokkit .input-switch field {
+  @apply border-none rounded-full;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+.rokkit field toggle-switch:focus-within {
+  @apply outline-none;
+}
+
+/* .rokkit field toggle-switch {
   @apply rounded-sm min-h-10 items-center justify-center px-3;
 }
 .rokkit field toggle-switch item {
@@ -44,6 +60,4 @@
 .rokkit field toggle-switch item p {
   @apply justify-center;
 }
-.rokkit field toggle-switch:focus-within {
-  @apply outline-none;
-}
+ */

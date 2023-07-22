@@ -1,7 +1,7 @@
 <script>
 	export let size = 10
 	export let thickness = 0.5
-	export let stroke
+	export let stroke = 'currentColor'
 
 	const lines = [
 		{ x1: 0, y1: 0.25 * size, x2: 0.5 * size, y2: 0.25 * size },

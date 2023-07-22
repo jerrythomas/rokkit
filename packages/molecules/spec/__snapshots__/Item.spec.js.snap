@@ -35,9 +35,7 @@ exports[`Item.svelte > should render icon 1`] = `
     </icon>
     
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       hello
     </p>
     
@@ -61,9 +59,7 @@ exports[`Item.svelte > should render icon based on state 1`] = `
     </icon>
     
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       hello
     </p>
     
@@ -76,14 +72,12 @@ exports[`Item.svelte > should render image 1`] = `
   <div>
     <img
       alt="hello"
-      class="h-4 w-4 object-cover"
+      class="min-h-4 min-w-4 object-cover"
       src="https://example.com/img.png"
     />
     
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       hello
     </p>
     
@@ -107,9 +101,7 @@ exports[`Item.svelte > should render image and icon 1`] = `
     </icon>
     
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       hello
     </p>
     
@@ -131,9 +123,7 @@ exports[`Item.svelte > should render object 1`] = `
   <div>
     
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       hello
     </p>
     
@@ -157,9 +147,7 @@ exports[`Item.svelte > should render using field mapping 1`] = `
     </icon>
     
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       hello
     </p>
     
@@ -171,9 +159,7 @@ exports[`Item.svelte > should render with value 1`] = `
 <body>
   <div>
      
-    <p
-      class="w-full flex"
-    >
+    <p>
       text
     </p>
     

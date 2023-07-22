@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getComponent, getIcon, getId } from '../src/mapping.js'
+import { getComponent, getIcon, getId, getText } from '../src/mapping.js'
 
 describe('mapping', () => {
 	describe('getComponent', () => {
@@ -73,6 +73,25 @@ describe('mapping', () => {
 		})
 		it('should return text if id is not available', () => {
 			const result = getId({ text: 'Alpha' }, fields)
+			expect(result).toEqual('Alpha')
+		})
+	})
+
+	describe('getText', () => {
+		it('should return value if node is not an object', () => {
+			const result = getText('A')
+			expect(result).toEqual('A')
+		})
+		it('should return value if node is null', () => {
+			const result = getText(null)
+			expect(result).toEqual(null)
+		})
+		it('should return text for default mapping', () => {
+			const result = getText({ text: 'Alpha' })
+			expect(result).toEqual('Alpha')
+		})
+		it('should return text for custom fields', () => {
+			const result = getText({ name: 'Alpha' }, { text: 'name' })
 			expect(result).toEqual('Alpha')
 		})
 	})

@@ -16,9 +16,7 @@ exports[`List.svelte > should render a list of values 1`] = `
         role="option"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           1
         </p>
         
@@ -31,9 +29,7 @@ exports[`List.svelte > should render a list of values 1`] = `
         role="option"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           2
         </p>
         
@@ -46,9 +42,7 @@ exports[`List.svelte > should render a list of values 1`] = `
         role="option"
       >
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           3
         </p>
         
@@ -87,9 +81,7 @@ exports[`List.svelte > should render items using custom component 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           2
         </p>
         
@@ -103,9 +95,7 @@ exports[`List.svelte > should render items using custom component 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           3
         </p>
         
@@ -133,9 +123,7 @@ exports[`List.svelte > should render items using custom mapping 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           1
         </p>
         
@@ -149,9 +137,7 @@ exports[`List.svelte > should render items using custom mapping 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           2
         </p>
         
@@ -165,9 +151,7 @@ exports[`List.svelte > should render items using custom mapping 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           3
         </p>
         
@@ -195,9 +179,7 @@ exports[`List.svelte > should render items using default item when data is inval
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           1
         </p>
         
@@ -211,9 +193,7 @@ exports[`List.svelte > should render items using default item when data is inval
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           2
         </p>
         
@@ -227,9 +207,7 @@ exports[`List.svelte > should render items using default item when data is inval
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           3
         </p>
         
@@ -257,9 +235,7 @@ exports[`List.svelte > should render items using field mappings 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           1
         </p>
         
@@ -273,9 +249,7 @@ exports[`List.svelte > should render items using field mappings 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           2
         </p>
         
@@ -289,9 +263,7 @@ exports[`List.svelte > should render items using field mappings 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           3
         </p>
         
@@ -319,9 +291,7 @@ exports[`List.svelte > should render with alternate class 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           1
         </p>
         
@@ -335,9 +305,7 @@ exports[`List.svelte > should render with alternate class 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           2
         </p>
         
@@ -351,9 +319,7 @@ exports[`List.svelte > should render with alternate class 1`] = `
       >
         
          
-        <p
-          class="w-full flex"
-        >
+        <p>
           3
         </p>
         

@@ -15,6 +15,7 @@ describe('utilities', () => {
 			'getComponent',
 			'getIcon',
 			'getId',
+			'getText',
 			'getLineTypes',
 			'generateTicks',
 			'weekdays',

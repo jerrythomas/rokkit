@@ -161,6 +161,7 @@ exports[`components > should render Tile 1`] = `
 <body>
   <div>
     <line
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-width="0.5"
       x1="0"
@@ -169,6 +170,7 @@ exports[`components > should render Tile 1`] = `
       y2="2.5"
     />
     <line
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-width="0.5"
       x1="5"
@@ -177,6 +179,7 @@ exports[`components > should render Tile 1`] = `
       y2="7.5"
     />
     <line
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-width="0.5"
       x1="0"
@@ -185,6 +188,7 @@ exports[`components > should render Tile 1`] = `
       y2="10"
     />
     <line
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-width="0.5"
       x1="10"
@@ -193,6 +197,7 @@ exports[`components > should render Tile 1`] = `
       y2="10"
     />
     <line
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-width="0.5"
       x1="5"

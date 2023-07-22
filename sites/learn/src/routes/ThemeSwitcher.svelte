@@ -31,7 +31,7 @@
 </script>
 
 <Select
-	items={themes}
+	options={themes}
 	value={currentTheme}
 	fields={{ text: 'title', id: 'name' }}
 	useItemAsValue

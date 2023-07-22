@@ -78,7 +78,7 @@
 		aria-selected={value !== null && !open}
 	>
 		<slot>
-			<item class="w-full flex">
+			<item>
 				<svelte:component
 					this={using.default}
 					value={value ?? placeholder}

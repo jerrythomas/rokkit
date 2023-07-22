@@ -6,24 +6,19 @@
 	export let id = null
 	export let name
 	export let value = false
-	export let label = null
-	export let disabled = false
-	export let status = 'default'
-	export let textAfter = true
+	export let native = false
+	export let readOnly = false
 	export let stateIcons = defaultStateIcons.checkbox
 	export let tabindex = 0
 
-	$: pass = status === 'pass'
-	$: fail = status === 'fail'
 	$: state = value === null ? 'unknown' : value ? 'checked' : 'unchecked'
-	$: flexDirection = textAfter ? 'flex-row' : 'flex-row-reverse'
 
 	function handleClick() {
-		if (disabled) return
+		if (readOnly) return
 		value = !value
 	}
 	function handleKeydown(event) {
-		if (disabled) return
+		if (readOnly) return
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault()
 			value = !value
@@ -33,22 +28,24 @@
 
 <checkbox
 	{id}
-	class="flex {flexDirection} items-center leading-loose cursor-pointer select-none checkbox {className}"
-	class:disabled
-	class:pass
-	class:fail
+	class="flex items-center leading-loose cursor-pointer select-none checkbox {className}"
+	class:disabled={readOnly}
 	role="checkbox"
 	aria-checked={state}
-	aria-disabled={disabled}
+	aria-disabled={readOnly}
 	on:click={handleClick}
 	on:keydown={handleKeydown}
 	{tabindex}
 >
-	<label class="flex flex-row items-center gap-1 leading-loose">
-		<input hidden {name} type="checkbox" bind:checked={value} on:change />
+	<input
+		hidden={!native}
+		type="checkbox"
+		{name}
+		{readOnly}
+		bind:checked={value}
+		on:change
+	/>
+	{#if !native}
 		<icon class={stateIcons[state]} />
-		{#if label}
-			<p>{label}</p>
-		{/if}
-	</label>
+	{/if}
 </checkbox>

@@ -1,7 +1,7 @@
 <script>
 	import * as prism from 'prismjs'
 
-	let className
+	let className = ''
 	export { className as class }
 	export let code
 	export let language
