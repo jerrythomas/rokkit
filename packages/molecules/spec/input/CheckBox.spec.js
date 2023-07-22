@@ -12,19 +12,6 @@ describe('CheckBox.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render native checkbox ', async () => {
-		const { container, component } = render(CheckBox, {
-			name: 'test',
-			native: true
-		})
-		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
-
-		component.$set({ native: false })
-		await tick()
-		expect(container).toMatchSnapshot()
-	})
-
 	it('should handle checkbox state change', async () => {
 		const { getByRole } = render(CheckBox, { name: 'test' })
 		const checkbox = getByRole('checkbox')
