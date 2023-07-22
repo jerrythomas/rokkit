@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { getId } from '@rokkit/core'
+	import { getValue } from '@rokkit/core'
 	import Switch from '../Switch.svelte'
 
 	const dispatch = createEventDispatcher()
@@ -12,12 +12,12 @@
 	let selected
 
 	function handle(event) {
-		value = getId(event.detail.item, fields)
+		value = getValue(event.detail.item, fields)
 		dispatch('change', event.detail)
 	}
 
-	$: if (value !== getId(selected, fields)) {
-		selected = options.find((option) => getId(option, fields) === value)
+	$: if (value !== getValue(selected, fields)) {
+		selected = options.find((option) => getValue(option, fields) === value)
 	}
 </script>
 

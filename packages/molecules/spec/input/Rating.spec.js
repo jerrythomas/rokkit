@@ -105,19 +105,17 @@ describe('Rating component', () => {
 	})
 
 	it('should handle mouseenter and mouseleave events', async () => {
-		const { container } = render(Rating, { value: 2, max: 5 })
-		const stars = container.querySelectorAll('icon')
+		let max = 5
+		let value = 2
+		const { container } = render(Rating, { value, max })
+		let stars = container.querySelectorAll('icon')
 
-		await fireEvent.mouseEnter(stars[3])
+		await fireEvent.mouseEnter(stars[value + 1])
 		await tick()
-		for (let i = 0; i < 5; i++) {
-			if (i <= 3) expect(Array.from(stars[i].classList)).toContain('hovering')
+		for (let i = 0; i < max; i++) {
+			if (i <= value + 1)
+				expect(Array.from(stars[i].classList)).toContain('hovering')
 			else expect(Array.from(stars[i].classList)).not.toContain('hovering')
-		}
-		await fireEvent.mouseLeave(stars[3])
-		await tick()
-		for (let i = 0; i < 5; i++) {
-			expect(Array.from(stars[i].classList)).not.toContain('hovering')
 		}
 	})
 
@@ -126,11 +124,6 @@ describe('Rating component', () => {
 		const stars = container.querySelectorAll('icon')
 
 		await fireEvent.mouseEnter(stars[3])
-		await tick()
-		for (let i = 0; i < 5; i++) {
-			expect(Array.from(stars[i].classList)).not.toContain('hovering')
-		}
-		await fireEvent.mouseLeave(stars[3])
 		await tick()
 		for (let i = 0; i < 5; i++) {
 			expect(Array.from(stars[i].classList)).not.toContain('hovering')

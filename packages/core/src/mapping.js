@@ -29,9 +29,9 @@ export function getIcon(value, fields = defaultFields) {
 		: value[fields.icon]
 }
 
-export function getId(node, fields = defaultFields) {
+export function getValue(node, fields = defaultFields) {
 	return typeof node === 'object' && node !== null
-		? node[fields.id] ?? node[fields.text]
+		? node[fields.value] ?? node[fields.text]
 		: node
 }
 

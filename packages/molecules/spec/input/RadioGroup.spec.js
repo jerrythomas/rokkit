@@ -20,9 +20,9 @@ describe('RadioGroup.svelte', () => {
 			name: 'radio',
 			value: 'alpha',
 			options: [
-				{ id: 'alpha', text: 'Alpha' },
-				{ id: 'beta', text: 'Beta' },
-				{ id: 'charlie', text: 'Charlie' }
+				{ value: 'alpha', text: 'Alpha' },
+				{ value: 'beta', text: 'Beta' },
+				{ value: 'charlie', text: 'Charlie' }
 			],
 			textAfter: false
 		})
@@ -34,11 +34,11 @@ describe('RadioGroup.svelte', () => {
 			name: 'radio',
 			value: 'alpha',
 			options: [
-				{ value: 'alpha', label: 'Alpha' },
-				{ value: 'beta', label: 'Beta' },
-				{ value: 'charlie', label: 'Charlie' }
+				{ key: 'alpha', label: 'Alpha' },
+				{ key: 'beta', label: 'Beta' },
+				{ key: 'charlie', label: 'Charlie' }
 			],
-			fields: { id: 'value', text: 'label' },
+			fields: { value: 'key', text: 'label' },
 			textAfter: false
 		})
 		expect(container).toBeTruthy()

@@ -1,4 +1,4 @@
-import { getId } from '@rokkit/core'
+// import { getId } from '@rokkit/core'
 import {
 	moveNext,
 	movePrevious,
@@ -42,8 +42,7 @@ export function navigator(node, options) {
 		path = moveNext(path, items, fields)
 		currentNode = getCurrentNode(path)
 
-		if (previousNode !== currentNode)
-			moveTo(node, path, currentNode, idPrefix, fields)
+		if (previousNode !== currentNode) moveTo(node, path, currentNode, idPrefix)
 	}
 	const previous = () => {
 		const previousNode = currentNode
@@ -51,7 +50,7 @@ export function navigator(node, options) {
 		if (path.length > 0) {
 			currentNode = getCurrentNode(path)
 			if (previousNode !== currentNode)
-				moveTo(node, path, currentNode, idPrefix, fields)
+				moveTo(node, path, currentNode, idPrefix)
 		}
 	}
 	const select = () => {
@@ -60,8 +59,8 @@ export function navigator(node, options) {
 				new CustomEvent('select', {
 					detail: {
 						path: indicesFromPath(path),
-						node: currentNode,
-						id: getId(currentNode, fields)
+						node: currentNode
+						// id: getId(currentNode, fields)
 					}
 				})
 			)
@@ -77,8 +76,8 @@ export function navigator(node, options) {
 					new CustomEvent('collapse', {
 						detail: {
 							path: indicesFromPath(path),
-							node: currentNode,
-							id: getId(currentNode, fields)
+							node: currentNode
+							// id: getId(currentNode, fields)
 						}
 					})
 				)
@@ -96,8 +95,8 @@ export function navigator(node, options) {
 				new CustomEvent('expand', {
 					detail: {
 						path: indicesFromPath(path),
-						node: currentNode,
-						id: getId(currentNode, fields)
+						node: currentNode
+						// id: getId(currentNode, fields)
 					}
 				})
 			)
@@ -147,8 +146,8 @@ export function navigator(node, options) {
 					new CustomEvent(event, {
 						detail: {
 							path: indices,
-							node: currentNode,
-							id: getId(currentNode, fields)
+							node: currentNode
+							// id: getId(currentNode, fields)
 						}
 					})
 				)
@@ -157,8 +156,8 @@ export function navigator(node, options) {
 				new CustomEvent('select', {
 					detail: {
 						path: indices,
-						node: currentNode,
-						id: getId(currentNode, fields)
+						node: currentNode
+						// id: getId(currentNode, fields)
 					}
 				})
 			)
@@ -177,19 +176,19 @@ export function navigator(node, options) {
 	}
 }
 
-export function moveTo(node, path, currentNode, idPrefix, fields) {
+export function moveTo(node, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
 
 	let current = node.querySelector('#' + idPrefix + indices.join('-'))
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
-	const id = getId(currentNode, fields)
+	// const id = getId(currentNode, fields)
 	node.dispatchEvent(
 		new CustomEvent('move', {
 			detail: {
 				path: indices,
-				node: currentNode,
-				id
+				node: currentNode
+				// id
 			}
 		})
 	)
