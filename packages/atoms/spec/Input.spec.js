@@ -8,7 +8,29 @@ describe('Input.svelte', () => {
 	const withProps = [
 		['text', { minlength: 3, maxlength: 10, value: 'foo' }],
 		['number', { min: 3, max: 10, value: 4 }],
-		['rating', { max: 3, value: 2, name: 'rating' }]
+		['checkbox', { value: true }],
+		[
+			'radio',
+			{ options: ['foo', 'bar', 'baz'], value: 'foo', textAfter: false }
+		],
+		[
+			'radio',
+			{
+				options: [{ text: 'foo' }, { text: 'bar' }, { text: 'baz' }],
+				value: 'foo'
+			}
+		],
+		[
+			'radio',
+			{
+				options: [
+					{ value: 1, text: 'foo' },
+					{ value: 2, text: 'bar' },
+					{ value: 3, text: 'baz' }
+				],
+				value: 'foo'
+			}
+		]
 	]
 	beforeEach(() => cleanup())
 
@@ -24,18 +46,15 @@ describe('Input.svelte', () => {
 		expect(wrapper.childNodes[0]).toMatchSnapshot()
 	})
 
-	// it.each(types.filter((type) => type !== 'rating'))(
-	// 	'should render input for type "%s" as readonly',
-	// 	(type) => {
-	// 		const { container } = render(Input, {
-	// 			type,
-	// 			value: null,
-	// 			readonly: true
-	// 		})
-	// 		const wrapper = container.childNodes[0]
-	// 		expect(wrapper.childNodes[0]).toMatchSnapshot()
-	// 	}
-	// )
+	it.each(types)('should render input for type "%s" as readonly', (type) => {
+		const { container } = render(Input, {
+			type,
+			value: null,
+			readonly: true
+		})
+		const wrapper = container.childNodes[0]
+		expect(wrapper.childNodes[0]).toMatchSnapshot()
+	})
 
 	it.each(types)('should render input for type "%s" as required', (type) => {
 		const { container } = render(Input, {

@@ -1,19 +1,21 @@
-import { default as InputColor } from './InputColor.svelte'
-import { default as InputDate } from './InputDate.svelte'
-import { default as InputDateTime } from './InputDateTime.svelte'
-import { default as InputEmail } from './InputEmail.svelte'
-import { default as InputFile } from './InputFile.svelte'
-import { default as InputMonth } from './InputMonth.svelte'
-import { default as InputNumber } from './InputNumber.svelte'
-import { default as InputPassword } from './InputPassword.svelte'
-import { default as InputTel } from './InputTel.svelte'
-import { default as InputText } from './InputText.svelte'
-import { default as InputTime } from './InputTime.svelte'
-import { default as InputUrl } from './InputUrl.svelte'
-import { default as InputWeek } from './InputWeek.svelte'
-import { default as TextArea } from './TextArea.svelte'
-import { default as InputRange } from './InputRange.svelte'
-import { default as InputSelect } from './InputSelect.svelte'
+import InputColor from './InputColor.svelte'
+import InputDate from './InputDate.svelte'
+import InputDateTime from './InputDateTime.svelte'
+import InputEmail from './InputEmail.svelte'
+import InputFile from './InputFile.svelte'
+import InputMonth from './InputMonth.svelte'
+import InputNumber from './InputNumber.svelte'
+import InputPassword from './InputPassword.svelte'
+import InputTel from './InputTel.svelte'
+import InputText from './InputText.svelte'
+import InputTime from './InputTime.svelte'
+import InputUrl from './InputUrl.svelte'
+import InputWeek from './InputWeek.svelte'
+import TextArea from './TextArea.svelte'
+import InputRange from './InputRange.svelte'
+import InputSelect from './InputSelect.svelte'
+import InputCheckbox from './InputCheckbox.svelte'
+import InputRadio from './InputRadio.svelte'
 
 export const nativeInputTypes = {
 	tel: InputTel,
@@ -31,7 +33,9 @@ export const nativeInputTypes = {
 	integer: InputNumber,
 	datetime: InputDateTime,
 	password: InputPassword,
+	textarea: TextArea,
 	range: InputRange,
 	select: InputSelect,
-	textarea: TextArea
+	checkbox: InputCheckbox,
+	radio: InputRadio
 }

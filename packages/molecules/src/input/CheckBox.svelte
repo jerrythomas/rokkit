@@ -6,7 +6,6 @@
 	export let id = null
 	export let name
 	export let value = false
-	export let native = false
 	export let readOnly = false
 	export let stateIcons = defaultStateIcons.checkbox
 	export let tabindex = 0
@@ -38,14 +37,13 @@
 	{tabindex}
 >
 	<input
-		hidden={!native}
+		hidden
 		type="checkbox"
 		{name}
 		{readOnly}
 		bind:checked={value}
 		on:change
 	/>
-	{#if !native}
-		<icon class={stateIcons[state]} />
-	{/if}
+
+	<icon class={stateIcons[state]} />
 </checkbox>
