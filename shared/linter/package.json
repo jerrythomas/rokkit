@@ -12,14 +12,14 @@
 		"@alexanderniebuhr/prettier-plugin-unocss": "^0.0.4",
 		"eslint": "^8.45.0",
 		"eslint-config-prettier": "^8.8.0",
-		"prettier": "2.8.8",
-		"prettier-plugin-svelte": "^2.10.1"
+		"prettier": "3.0.0",
+		"prettier-plugin-svelte": "^3.0.0"
 	},
 	"publishConfig": {
 		"access": "public"
 	},
 	"devDependencies": {
-		"eslint-plugin-svelte": "^2.32.2",
-		"svelte": "^4.0.5"
+		"eslint-plugin-svelte": "^2.32.4",
+		"svelte": "^4.1.1"
 	}
 }

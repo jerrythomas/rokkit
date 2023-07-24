@@ -43,14 +43,14 @@
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.3",
 		"madge": "^6.1.0",
-		"prettier": "2.8.8",
-		"prettier-plugin-svelte": "^2.10.1"
+		"prettier": "3.0.0",
+		"prettier-plugin-svelte": "^3.0.0"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",
 		"*.{js,svelte,md,json}": "prettier --write"
 	},
 	"dependencies": {
-		"turbo": "^1.10.8"
+		"turbo": "^1.10.9"
 	}
 }

@@ -6,7 +6,7 @@
 	import { writable } from 'svelte/store'
 	import { browser } from '$app/environment'
 	import { media } from '$lib'
-	import { adjustViewport } from '@rokkit/utils'
+	import { adjustViewport } from '@rokkit/core'
 	import { themable } from '@rokkit/actions'
 	import Header from './Header.svelte'
 	import { page } from '$app/stores'
