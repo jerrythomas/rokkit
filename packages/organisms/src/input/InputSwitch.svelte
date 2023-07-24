@@ -7,7 +7,7 @@
 	export let name
 	export let value
 	export let options
-	export let fields
+	export let fields = {}
 
 	let selected
 

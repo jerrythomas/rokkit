@@ -1,4 +1,4 @@
-// import { getId } from '@rokkit/core'
+// import { tick } from 'svelte'
 import {
 	moveNext,
 	movePrevious,
@@ -32,9 +32,12 @@ export function navigator(node, options) {
 	if (!enabled) return { destroy: () => {} }
 
 	const update = (options) => {
+		const previousNode = currentNode
 		items = options.items
 		path = pathFromIndices(options.indices ?? [], items, fields)
 		currentNode = getCurrentNode(path)
+
+		if (previousNode !== currentNode) moveTo(node, path, currentNode, idPrefix)
 	}
 
 	const next = () => {
@@ -60,7 +63,6 @@ export function navigator(node, options) {
 					detail: {
 						path: indicesFromPath(path),
 						node: currentNode
-						// id: getId(currentNode, fields)
 					}
 				})
 			)
@@ -77,7 +79,6 @@ export function navigator(node, options) {
 						detail: {
 							path: indicesFromPath(path),
 							node: currentNode
-							// id: getId(currentNode, fields)
 						}
 					})
 				)
@@ -96,7 +97,6 @@ export function navigator(node, options) {
 					detail: {
 						path: indicesFromPath(path),
 						node: currentNode
-						// id: getId(currentNode, fields)
 					}
 				})
 			)
@@ -125,7 +125,7 @@ export function navigator(node, options) {
 	}
 
 	const handleClick = (event) => {
-		let target = findParentWithDataPath(event.target)
+		let target = findParentWithDataPath(event.target, node)
 		let indices = !target
 			? []
 			: target.dataset.path
@@ -147,7 +147,6 @@ export function navigator(node, options) {
 						detail: {
 							path: indices,
 							node: currentNode
-							// id: getId(currentNode, fields)
 						}
 					})
 				)
@@ -157,7 +156,6 @@ export function navigator(node, options) {
 					detail: {
 						path: indices,
 						node: currentNode
-						// id: getId(currentNode, fields)
 					}
 				})
 			)
@@ -178,29 +176,27 @@ export function navigator(node, options) {
 
 export function moveTo(node, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
-
+	// await tick()
 	let current = node.querySelector('#' + idPrefix + indices.join('-'))
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
-	// const id = getId(currentNode, fields)
 	node.dispatchEvent(
 		new CustomEvent('move', {
 			detail: {
 				path: indices,
 				node: currentNode
-				// id
 			}
 		})
 	)
 }
 
-export function findParentWithDataPath(element) {
+export function findParentWithDataPath(element, root) {
 	if (element.hasAttribute('data-path')) return element
 	let parent = element.parentNode
 
-	while (parent && !parent.hasAttribute('data-path')) {
+	while (parent && parent !== root && !parent.hasAttribute('data-path')) {
 		parent = parent.parentNode
 	}
 
-	return parent
+	return parent !== root ? parent : null
 }

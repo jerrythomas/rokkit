@@ -1,5 +1,566 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Tabs.svelte > should add a new tab 1`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Alpha
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Beta
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="2"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Gamma
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+       
+      <icon
+        aria-label="Add Tab"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="add"
+        />
+      </icon>
+    </tabs>
+  </div>
+</body>
+`;
+
+exports[`Tabs.svelte > should emit the add event 1`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Alpha
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Beta
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="2"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Gamma
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+       
+      <icon
+        aria-label="Add Tab"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="add"
+        />
+      </icon>
+    </tabs>
+  </div>
+</body>
+`;
+
+exports[`Tabs.svelte > should handle item value changes 1`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Alpha
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="true"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Beta
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="2"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Gamma
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+       
+      <icon
+        aria-label="Add Tab"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="add"
+        />
+      </icon>
+    </tabs>
+  </div>
+</body>
+`;
+
+exports[`Tabs.svelte > should handle item value changes 2`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Alpha
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Beta
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="true"
+        class="flex flex-row items-center tab"
+        data-path="2"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Gamma
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+       
+      <icon
+        aria-label="Add Tab"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="add"
+        />
+      </icon>
+    </tabs>
+  </div>
+</body>
+`;
+
+exports[`Tabs.svelte > should remove tabs when remove icon is clicked 1`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="true"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Beta
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Gamma
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+       
+      <icon
+        aria-label="Add Tab"
+        class="flex flex-shrink-0 items-center justify-center small"
+        role="button"
+        tabindex="0"
+      >
+        <i
+          aria-hidden="true"
+          class="add"
+        />
+      </icon>
+    </tabs>
+  </div>
+</body>
+`;
+
+exports[`Tabs.svelte > should render items using custom component 1`] = `
+<body>
+  <div>
+    <tabs
+      class="flex w-full "
+      role="listbox"
+      tabindex="0"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="0"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+          <span>
+            undefined
+          </span>
+        </item>
+         
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center tab"
+        data-path="1"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+          <span>
+            undefined
+          </span>
+        </item>
+         
+      </wrap-item>
+       
+    </tabs>
+  </div>
+</body>
+`;
+
 exports[`Tabs.svelte > should render text array 1`] = `
 <body>
   <div>
@@ -19,7 +580,7 @@ exports[`Tabs.svelte > should render text array 1`] = `
         >
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -36,7 +597,7 @@ exports[`Tabs.svelte > should render text array 1`] = `
         >
            
           <p>
-            b
+            Beta
           </p>
           
         </item>
@@ -68,7 +629,7 @@ exports[`Tabs.svelte > should render using default field mapping 1`] = `
           
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -86,7 +647,7 @@ exports[`Tabs.svelte > should render using default field mapping 1`] = `
           
            
           <p>
-            b
+            Beta
           </p>
           
         </item>
@@ -118,7 +679,7 @@ exports[`Tabs.svelte > should render using field mappings 1`] = `
           
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -136,7 +697,7 @@ exports[`Tabs.svelte > should render using field mappings 1`] = `
           
            
           <p>
-            a
+            Beta
           </p>
           
         </item>
@@ -167,7 +728,7 @@ exports[`Tabs.svelte > should support custom icons 1`] = `
         >
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -184,7 +745,7 @@ exports[`Tabs.svelte > should support custom icons 1`] = `
         >
            
           <p>
-            b
+            Beta
           </p>
           
         </item>
@@ -215,7 +776,7 @@ exports[`Tabs.svelte > should support custom icons 2`] = `
         >
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -232,7 +793,7 @@ exports[`Tabs.svelte > should support custom icons 2`] = `
         >
            
           <p>
-            b
+            Beta
           </p>
           
         </item>
@@ -263,7 +824,7 @@ exports[`Tabs.svelte > should support editable attribute 1`] = `
         >
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -280,7 +841,7 @@ exports[`Tabs.svelte > should support editable attribute 1`] = `
         >
            
           <p>
-            b
+            Beta
           </p>
           
         </item>
@@ -311,7 +872,7 @@ exports[`Tabs.svelte > should support editable attribute 2`] = `
         >
            
           <p>
-            a
+            Alpha
           </p>
           
         </item>
@@ -328,7 +889,7 @@ exports[`Tabs.svelte > should support editable attribute 2`] = `
         >
            
           <p>
-            b
+            Beta
           </p>
           
         </item>

@@ -15,7 +15,6 @@
 	export let fields = {}
 	export let using = {}
 	export let value = null
-
 	export let placeholder = ''
 
 	let activeIndex

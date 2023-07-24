@@ -3,7 +3,7 @@ import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
 
-import Custom from '../mocks/Custom.svelte'
+import MockItem from '../mocks/MockItem.svelte'
 import InputSelect from '../../src/input/InputSelect.svelte'
 
 expect.extend({ toHaveBeenDispatchedWith })
@@ -66,12 +66,27 @@ describe('InputSelect.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
+	it('should render with placeholder', async () => {
+		const { container, component } = render(InputSelect, {
+			name: 'opt',
+			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+			fields: { text: 'num' },
+			value: null,
+			placeholder: 'select a value'
+		})
+		let placeholder = container.querySelector('selected-item item p')
+		expect(placeholder.textContent).toEqual('select a value')
+		component.$set({ placeholder: '-' })
+		await tick()
+		placeholder = container.querySelector('selected-item item p')
+		expect(placeholder.textContent).toEqual('-')
+	})
 	it('should render items using custom component', () => {
 		const { container } = render(InputSelect, {
 			name: 'opt',
 			options: [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
-			using: { custom: Custom }
+			using: { custom: MockItem }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
