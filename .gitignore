@@ -21,3 +21,4 @@ vitest*timestamp*
 codeql-agent-results
 *.zip
 pdf
+.env
