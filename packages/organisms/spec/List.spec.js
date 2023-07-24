@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import Custom from './mocks/Custom.svelte'
+import MockItem from './mocks/MockItem.svelte'
 import List from '../src/List.svelte'
 import { toHaveBeenDispatchedWith } from 'validators'
 
@@ -53,7 +53,7 @@ describe('List.svelte', () => {
 		const { container } = render(List, {
 			items: [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
-			using: { custom: Custom }
+			using: { custom: MockItem }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

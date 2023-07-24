@@ -21,14 +21,18 @@
 
 	let cursor = []
 
-	function handleRemove(item) {
-		if (typeof item === Object) {
-			item[fields.isDeleted] = true
+	function handleRemove(event) {
+		if (typeof event.detail === Object) {
+			event.detail[fields.isDeleted] = true
 		} else {
-			options = options.filter((i) => i !== item)
+			options = options.filter((i) => i !== event.detail)
 		}
 
-		dispatch('remove', { item })
+		dispatch('remove', { item: event.detail })
+	}
+	function handleAdd(event) {
+		event.stopPropagation()
+		dispatch('add')
 	}
 	function handleNav(event) {
 		value = event.detail.node
@@ -77,7 +81,7 @@
 			role="button"
 			label="Add Tab"
 			size="small"
-			on:click={() => dispatch('add')}
+			on:click={handleAdd}
 		/>
 	{/if}
 </tabs>

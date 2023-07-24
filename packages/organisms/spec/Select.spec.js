@@ -3,9 +3,9 @@ import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
 
-import Custom from './mocks/Custom.svelte'
-
+import MockItem from './mocks/MockItem.svelte'
 import Select from '../src/Select.svelte'
+import { get } from 'svelte/store'
 
 expect.extend({ toHaveBeenDispatchedWith })
 
@@ -47,22 +47,38 @@ describe('Select.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render with alternate class', () => {
-		const { container } = render(Select, {
+	it('should render with alternate class', async () => {
+		const { container, component } = render(Select, {
 			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
 			class: 'myClass'
 		})
-		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		let classes = Array.from(container.querySelector('input-select').classList)
+
+		expect(classes).toContain('myClass')
+		component.$set({ class: 'myClass2' })
+		await tick()
+		classes = Array.from(container.querySelector('input-select').classList)
+		expect(classes).not.toContain('myClass')
+		expect(classes).toContain('myClass2')
 	})
-	it('should render items using custom component', () => {
-		const { container } = render(Select, {
-			options: [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }],
+	it('should render items using custom component', async () => {
+		const options = [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }]
+		const { container, component } = render(Select, {
+			options,
 			fields: { text: 'num' },
-			using: { custom: Custom }
+			using: { custom: MockItem },
+			value: options[0]
 		})
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+		const item = container.querySelector('selected-item')
+		await fireEvent.click(item)
+		await tick()
+		expect(container).toMatchSnapshot()
+
+		component.$set({ using: { default: MockItem, custom: MockItem } })
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
@@ -87,5 +103,84 @@ describe('Select.svelte', () => {
 		expect(handlers.change).toHaveBeenCalled()
 		expect(handlers.change).toHaveBeenDispatchedWith(options[1])
 		expect(handlers.select).toHaveBeenDispatchedWith(options[1])
+		await tick()
+		expect(container.querySelector('selected-item item')).toMatchSnapshot()
+		expect(container.querySelector('selected-item icon')).toMatchSnapshot()
+
+		// On selection the list should close, so items should not be visible
+		// expect(container.querySelector('scroll')).toBeFalsy()
+	})
+
+	it('should open/close drop down on focus and blur', async () => {
+		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
+		const { container, component } = render(Select, {
+			options: options,
+			value: options[1]
+		})
+
+		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+		const select = container.querySelector('selected-item')
+		await fireEvent.focus(select)
+		await fireEvent.keyDown(select, { key: 'ArrowDown' })
+		await tick()
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+
+		await fireEvent.blur(select)
+		await tick()
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+	})
+
+	it('should handle option changes', async () => {
+		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
+		const { container, component } = render(Select, {
+			options: options,
+			value: options[1]
+		})
+
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+		const select = container.querySelector('selected-item')
+		await fireEvent.focus(select)
+		await fireEvent.keyDown(select, { key: 'ArrowDown' })
+		await tick()
+		expect(container.querySelector('scroll')).toMatchSnapshot()
+
+		component.$set({ options: [{ text: 'a' }, { text: 'b' }] })
+		await tick()
+		expect(container.querySelector('scroll')).toMatchSnapshot()
+	})
+
+	it('should handle arrow keys for navigation and select', async () => {
+		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
+		const { container, component } = render(Select, {
+			options: options,
+			value: options[1]
+		})
+
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+		const select = container.querySelector('selected-item')
+		await fireEvent.focus(select)
+		await fireEvent.keyDown(select, { key: 'ArrowDown' })
+		await tick()
+		await fireEvent.keyDown(select, { key: 'ArrowDown' })
+		await tick()
+		await fireEvent.keyDown(select, { key: 'Enter' })
+		await tick()
+
+		expect(getPropertyValue(component, 'value')).toEqual(options[2])
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+
+		await fireEvent.focus(select)
+		await fireEvent.keyDown(select, { key: 'ArrowUp' })
+		await tick()
+		await fireEvent.keyDown(select, { key: 'ArrowUp' })
+		await tick()
+		await fireEvent.keyDown(select, { key: 'Enter' })
+		await tick()
+		expect(getPropertyValue(component, 'value')).toEqual(options[1])
+		expect(container.querySelector('selected-item')).toMatchSnapshot()
+
+		// expect(container.querySelector('scroll')).toMatchSnapshot()
 	})
 })
