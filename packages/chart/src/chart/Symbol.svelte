@@ -1,5 +1,5 @@
 <script>
-	import { namedShapes } from '../components/lib/shape'
+	import { namedShapes } from '../lib/shape'
 
 	export let x = 0
 	export let y = 0

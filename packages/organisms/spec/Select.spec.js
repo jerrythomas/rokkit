@@ -5,7 +5,6 @@ import { tick } from 'svelte'
 
 import MockItem from './mocks/MockItem.svelte'
 import Select from '../src/Select.svelte'
-import { get } from 'svelte/store'
 
 expect.extend({ toHaveBeenDispatchedWith })
 

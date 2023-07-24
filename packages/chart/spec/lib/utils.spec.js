@@ -15,7 +15,7 @@ import {
 	toNested,
 	getPaletteForValues,
 	aggregate
-} from './utils'
+} from '../../src/lib/utils'
 
 describe('Utility functions', () => {
 	beforeAll((suite) => {

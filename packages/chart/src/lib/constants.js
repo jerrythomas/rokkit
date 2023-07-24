@@ -1,3 +1,70 @@
+export const __muted__ = {
+	color: '#eeeeee',
+	fill: 'empty',
+	shape: 'circle'
+}
+export const __colors__ = [
+	'#FFDE6B',
+	'#EF89EE',
+	'#F79F1E',
+	'#02B8FF',
+	'#9F84EC',
+	'#15CBC4',
+	'#0092FD',
+	'#F63A57',
+	'#A2CB39',
+	'#FF6E2F',
+	'#FEB8B9',
+	'#af7aa1',
+	'#7EFFF5'
+]
+
+export const __patterns__ = {
+	A: 'M0 5A6 6 0 0 0 10 5',
+	B: 'M0 10L10 0',
+	C: 'M0 0A10 10 0 0 0 10 10',
+	D: 'M0 0L10 10',
+	E: 'M10 5A6 6 0 0 0 0 5',
+	F: 'M10 10A10 10 0 0 0 0 0',
+	G: 'M0 0L10 10ZM10 0L0 10Z',
+	H: 'M1 1L9 1L9 9L1 9Z',
+	I: 'M4 0L4 10M6 10L6 0M0 4L10 4M10 6L0 6',
+	J: 'M0 2L8 10M2 0L10 8M0 8L8 0M2 10L10 2',
+	K: 'M5 1A 4 4 0 0 0 9 5A4 4 0 0 0 5 9A4 4 0 0 0 1 5A4 4 0 0 0 5 1',
+	L: 'M1 3L7 9M3 1L9 7M1 7L7 1M3 9L9 3',
+	M: 'M2 2A4 4 0 0 0 8 2A4 4 0 0 0 8 8A4 4 0 0 0 2 8A4 4 0 0 0 2 2',
+	N: 'M0 0A5 5 0 0 0 10 0A5 5 0 0 0 10 10A5 5 0 0 0 0 10A5 5 0 0 0 0 0',
+	O: 'M5 2A 3 3 0 0 0 8 5A3 3 0 0 0 5 8A3 3 0 0 0 2 5A3 3 0 0 0 5 2',
+	P: 'M2 5L5 2L8 5L5 8Z',
+	Q: 'M3 5A2 2 0 0 0 7 5A2 2 0 0 0 3 5M1 5L9 5M5 1L5 9',
+	R: 'M2 8L8 2ZM1.5 3.5L3.5 1.5ZM6.5 8.5L8.5 6.5ZM0 0L10 10Z',
+	S:
+		'M2 8L8 2ZM1.5 3.5L3.5 1.5Z' +
+		'M6.5 8.5L8.5 6.5Z' +
+		'M2 2L8 8M1.5 6.5L3.5 8.5' +
+		'M6.5 1.5L8.5 3.5',
+	T:
+		'M5 1 A6 6 0 0 0 5 9' +
+		'A6 6 0 0 0 5 1' +
+		'M1 5A6 6 0 0 0 9 5A6 6 0 0 0 1 5',
+	U:
+		'M1.5 5A1 1 0 0 0 3.5 5A1 1 0 0 0 1.5 5' +
+		'M6.5 5A1 1 0 0 0 8.5 5A1 1 0 0 0 6.5 5' +
+		'M5 1.5A1 1 0 0 0 5 3.5A1 1 0 0 0 5 1.5' +
+		'M5 6.5A1 1 0 0 0 5 8.5A1 1 0 0 0 5 6.5',
+	V:
+		'M1.5 2.5A1 1 0 0 0 3.5 2.5A1 1 0 0 0 1.5 2.5' +
+		'M6.5 2.5A1 1 0 0 0 8.5 2.5A1 1 0 0 0 6.5 2.5' +
+		'M2.5 6.5A1 1 0 0 0 2.5 8.5A1 1 0 0 0 2.5 6.5' +
+		'M7.5 6.5A1 1 0 0 0 7.5 8.5A1 1 0 0 0 7.5 6.5' +
+		'M3.5 5A1 1 0 0 0 6.5 5A1 1 0 0 0 3.5 5',
+	W: 'M5 0L6 4L10 5L6 6L5 10L4 6L0 5L4 4Z' + 'M2 1V3M1 2H3' + 'M8 9V7M9 8H7',
+	X: 'M5 2L2.5 9L8.8 4.6L1.2 4.6L7.5 9Z',
+	Y: 'M0 5A5 5 0 0 0 5 0' + 'M5 10A5 5 0 0 0 0 5' + 'M5 10A5 5 0 0 0 5 0',
+	Z: 'M0 0L10 10M5 0L10 5M0 5 L5 10',
+	Z1: 'M0 0L10 10M3 0L10 7M0 7 L3 10'
+}
+
 export const colors = [
 	'#FFDE6B',
 	'#EF89EE',
@@ -265,63 +332,5 @@ export const palette = {
 		700: '#334155',
 		800: '#1e293b',
 		900: '#0f172a'
-	}
-}
-
-export class ColorBrewer {
-	constructor() {
-		this.colors = ['blue', 'pink', 'teal', 'indigo', 'purple', 'amber', 'rose']
-		this.palette = palette
-		this.grayscale = this.palette['trueGray']
-		this.fill = 100
-		this.stroke = 600
-		this.contrast = 600
-	}
-
-	dark() {
-		this.fill = 500
-		this.stroke = 700
-		this.contrast = 100
-		return this
-	}
-
-	mix(fill, stroke, contrast) {
-		this.fill = Object.keys(this.grayscale).includes(fill) ? fill : this.fill
-		this.stroke = Object.keys(this.grayscale).includes(stroke)
-			? stroke
-			: this.stroke
-		this.contrast = Object.keys(this.grayscale).includes(contrast)
-			? contrast
-			: this.contrast
-
-		return this
-	}
-
-	swatch(colors) {
-		this.palette = colors
-		return this
-	}
-
-	filter(colors) {
-		this.colors = colors
-		return this
-	}
-
-	gray() {
-		return {
-			fill: this.grayscale[this.fill],
-			stroke: this.grayscale[this.stroke],
-			contrast: this.grayscale[this.contrast]
-		}
-	}
-
-	brew() {
-		const palette = this.colors.map((color) => ({
-			fill: this.palette[color][this.fill],
-			stroke: this.palette[color][this.stroke],
-			contrast: this.palette[color][this.contrast]
-		}))
-
-		return palette
 	}
 }

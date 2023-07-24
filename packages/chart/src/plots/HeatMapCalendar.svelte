@@ -1,5 +1,5 @@
 <script>
-	import { summarize, heatmap } from './heatmap'
+	import { summarize, heatmap } from '../lib/heatmap'
 	import { interpolateHsl } from 'd3-interpolate'
 	import { scaleLinear } from 'd3-scale'
 	// import ContinuousLegend from '../elements/ContinuousLegend.svelte'

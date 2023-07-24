@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { uniqueId } from '../components/lib/utils'
+	import { uniqueId } from '../lib/utils-2'
 
 	export let x = 0
 	export let y = 0
