@@ -1,27 +1,30 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import Input from '../src/Input.svelte'
-import { nativeInputTypes } from '../src/input'
+import * as components from '../src/input'
 
-describe('Input.svelte', () => {
-	const types = Object.keys(nativeInputTypes)
+describe('HTML Input', () => {
+	const props = {
+		InputRadio: { options: ['foo', 'bar', 'baz'] },
+		InputSelect: { options: ['foo', 'bar', 'baz'] }
+	}
+	const names = Object.keys(components)
 	const withProps = [
-		['text', { minlength: 3, maxlength: 10, value: 'foo' }],
-		['number', { min: 3, max: 10, value: 4 }],
-		['checkbox', { value: true }],
+		['InputText', { minlength: 3, maxlength: 10, value: 'foo' }],
+		['InputNumber', { min: 3, max: 10, value: 4 }],
+		['InputCheckbox', { value: true }],
 		[
-			'radio',
-			{ options: ['foo', 'bar', 'baz'], value: 'foo', textAfter: false }
+			'InputRadio',
+			{ value: 'foo', options: ['foo', 'bar', 'baz'], flip: true }
 		],
 		[
-			'radio',
+			'InputRadio',
 			{
 				options: [{ text: 'foo' }, { text: 'bar' }, { text: 'baz' }],
 				value: 'foo'
 			}
 		],
 		[
-			'radio',
+			'InputRadio',
 			{
 				options: [
 					{ value: 1, text: 'foo' },
@@ -34,49 +37,63 @@ describe('Input.svelte', () => {
 	]
 	beforeEach(() => cleanup())
 
-	it('should render text input', () => {
-		const { container } = render(Input, { value: null })
-		const wrapper = container.childNodes[0]
-		expect(wrapper.innerHTML).toEqual('<input type="text">')
+	it('should contain all exported components', () => {
+		expect(names).toEqual([
+			'InputColor',
+			'InputDate',
+			'InputDateTime',
+			'InputEmail',
+			'InputFile',
+			'InputMonth',
+			'InputNumber',
+			'InputPassword',
+			'InputTel',
+			'InputText',
+			'InputTime',
+			'InputUrl',
+			'InputWeek',
+			'InputTextArea',
+			'InputRange',
+			'InputSelect',
+			'InputCheckbox',
+			'InputRadio'
+		])
 	})
 
-	it.each(types)('should render input for type "%s"', (type) => {
-		const { container } = render(Input, { type, value: null })
-		const wrapper = container.childNodes[0]
-		expect(wrapper.childNodes[0]).toMatchSnapshot()
-	})
-
-	it.each(types)('should render input for type "%s" as readonly', (type) => {
-		const { container } = render(Input, {
-			type,
+	it.each(names)('should render "%s"', (name) => {
+		const { container } = render(components[name], {
 			value: null,
-			readonly: true
+			...props[name]
 		})
 		const wrapper = container.childNodes[0]
 		expect(wrapper.childNodes[0]).toMatchSnapshot()
 	})
 
-	it.each(types)('should render input for type "%s" as required', (type) => {
-		const { container } = render(Input, {
-			type,
+	it.each(names)('should render "%s" as readonly', (name) => {
+		const { container } = render(components[name], {
 			value: null,
-			readonly: true
+			readonly: true,
+			...props[name]
 		})
 		const wrapper = container.childNodes[0]
 		expect(wrapper.childNodes[0]).toMatchSnapshot()
 	})
 
-	it.each(withProps)(
-		'should render input for type "%s" with custom props',
-		(type, props) => {
-			const { container } = render(Input, {
-				type,
-				...props
-			})
-			const wrapper = container.childNodes[0]
-			expect(wrapper.childNodes[0]).toMatchSnapshot()
-		}
-	)
+	it.each(names)('should render "%s" as required', (name) => {
+		const { container } = render(components[name], {
+			value: null,
+			required: true,
+			...props[name]
+		})
+		const wrapper = container.childNodes[0]
+		expect(wrapper.childNodes[0]).toMatchSnapshot()
+	})
+
+	it.each(withProps)('should render "%s" with custom props', (name, props) => {
+		const { container } = render(components[name], props)
+		const wrapper = container.childNodes[0]
+		expect(wrapper.childNodes[0]).toMatchSnapshot()
+	})
 
 	// it('should render text input as required', () => {
 	// 	const { container } = render(Input, {

@@ -182,30 +182,12 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
       aria-label=""
       class="vertical "
     >
-      <input-field
-        class="flex flex-col input-string "
-      >
-        <label
-          for="name"
-        >
-          Name
-        </label>
-         
-        <field
-          aria-label="Name"
-          class="w-full flex flex-row items-center"
-        >
-           
-          <input
-            id="name"
-            name="name"
-            type="text"
-          />
-          
-          
-        </field>
-         
-      </input-field>
+       
+      <p>
+        John
+      </p>
+      
+      
       
       <input-field
         class="flex flex-col input-number "
@@ -357,30 +339,12 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
       aria-label=""
       class="vertical "
     >
-      <input-field
-        class="flex flex-col input-string "
-      >
-        <label
-          for="name"
-        >
-          Name
-        </label>
-         
-        <field
-          aria-label="Name"
-          class="w-full flex flex-row items-center"
-        >
-           
-          <input
-            id="name"
-            name="name"
-            type="text"
-          />
-          
-          
-        </field>
-         
-      </input-field>
+       
+      <p>
+        John
+      </p>
+      
+      
       
       <input-field
         class="flex flex-col input-number "

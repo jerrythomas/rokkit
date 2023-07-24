@@ -1,11 +1,12 @@
 <script>
-	import { defaultIcons } from '@rokkit/core'
+	import { defaultStateIcons } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
 	let className = ''
 	export { className as class }
 	export let items
-	export let icons = defaultIcons.validity
+	export let icons = defaultStateIcons.validity
+	$: console.log(icons)
 </script>
 
 <div class="flex flex-col {className}">

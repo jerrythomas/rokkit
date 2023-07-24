@@ -1,7 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
-	import Tabs from '../Tabs.svelte'
 
 	const registry = getContext('registry')
 
@@ -13,7 +12,7 @@
 	export let fields = defaultFields
 	export let navigator = 'tabs'
 
-	$: component = $registry[navigator] ?? Tabs
+	$: component = $registry.navigators[navigator] ?? $registry.navigators.default
 </script>
 
 <section class={className}>

@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { nativeInputTypes } from './input'
+	import { types } from './types'
 
 	const registry = getContext('registry')
 
@@ -8,7 +8,7 @@
 	export let type = 'text'
 	export let using = {}
 
-	$: using = { ...nativeInputTypes, ...using, ...$registry }
+	$: using = { ...types, ...using, ...$registry?.editors }
 </script>
 
 {#if type in using}

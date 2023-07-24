@@ -4,30 +4,25 @@ import { tick } from 'svelte'
 import Register from './mocks/Register.svelte'
 import CustomField from './mocks/CustomField.svelte'
 import CustomWrapper from './mocks/CustomWrapper.svelte'
-
 import FieldLayout from '../src/FieldLayout.svelte'
 
 describe('FieldLayout.svelte', () => {
 	beforeEach(() => cleanup())
 
 	const inputAgeSchema = {
-		component: 'input',
 		key: 'age',
 		props: { type: 'number', label: 'Age', min: 0, max: 100 }
 	}
 	const inputNameSchema = {
-		component: 'input',
 		key: 'name',
 		props: { type: 'text', label: 'Name' }
 	}
 	const splitNameSchema = [
 		{
-			component: 'input',
 			key: 'first',
 			props: { type: 'text', label: 'First Name' }
 		},
 		{
-			component: 'input',
 			key: 'last',
 			props: { type: 'text', label: 'Last Name' }
 		}
@@ -133,7 +128,7 @@ describe('FieldLayout.svelte', () => {
 		let value = { name: { first: 'John', last: 'Smith' }, age: 30 }
 		const { container, component } = render(Register, {
 			render: FieldLayout,
-			components: { mock: CustomWrapper },
+			using: { wrappers: { mock: CustomWrapper } },
 			properties: { value, schema }
 		})
 		expect(container).toBeTruthy()
@@ -149,15 +144,10 @@ describe('FieldLayout.svelte', () => {
 		let value = { name: 'John', title: 'Mr.' }
 		const { container } = render(Register, {
 			render: FieldLayout,
-			components: { custom: CustomField },
+			using: { editors: { custom: CustomField } },
 			properties: { value, schema }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-
-	it('should render items using custom component', () => {})
-	it('should expand and collapse', () => {})
-	it('should autoclose others', () => {})
-	it('should pass select and change events', () => {})
 })

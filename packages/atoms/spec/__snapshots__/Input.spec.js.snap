@@ -1,196 +1,172 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Input.svelte > should render input for type "checkbox" 1`] = `
+exports[`HTML Input > should render "InputCheckbox" 1`] = `
 <input
-  hidden="true"
   type="checkbox"
 />
 `;
 
-exports[`Input.svelte > should render input for type "checkbox" as readonly 1`] = `
+exports[`HTML Input > should render "InputCheckbox" as readonly 1`] = `
 <input
-  hidden="true"
   readonly="true"
   type="checkbox"
 />
 `;
 
-exports[`Input.svelte > should render input for type "checkbox" as required 1`] = `
+exports[`HTML Input > should render "InputCheckbox" as required 1`] = `
 <input
-  hidden="true"
-  readonly="true"
+  required=""
   type="checkbox"
 />
 `;
 
-exports[`Input.svelte > should render input for type "checkbox" with custom props 1`] = `
+exports[`HTML Input > should render "InputCheckbox" with custom props 1`] = `
 <input
-  hidden="true"
   type="checkbox"
 />
 `;
 
-exports[`Input.svelte > should render input for type "color" 1`] = `
+exports[`HTML Input > should render "InputColor" 1`] = `
 <input
   type="color"
 />
 `;
 
-exports[`Input.svelte > should render input for type "color" as readonly 1`] = `
-<input
-  readonly="true"
-  type="color"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "color" as required 1`] = `
+exports[`HTML Input > should render "InputColor" as readonly 1`] = `
 <input
   readonly="true"
   type="color"
 />
 `;
 
-exports[`Input.svelte > should render input for type "date" 1`] = `
+exports[`HTML Input > should render "InputColor" as required 1`] = `
+<input
+  required=""
+  type="color"
+/>
+`;
+
+exports[`HTML Input > should render "InputDate" 1`] = `
 <input
   type="date"
 />
 `;
 
-exports[`Input.svelte > should render input for type "date" as readonly 1`] = `
+exports[`HTML Input > should render "InputDate" as readonly 1`] = `
 <input
   readonly="true"
   type="date"
 />
 `;
 
-exports[`Input.svelte > should render input for type "date" as required 1`] = `
+exports[`HTML Input > should render "InputDate" as required 1`] = `
 <input
-  readonly="true"
+  required=""
   type="date"
 />
 `;
 
-exports[`Input.svelte > should render input for type "datetime" 1`] = `
+exports[`HTML Input > should render "InputDateTime" 1`] = `
 <input
   type="datetime-local"
 />
 `;
 
-exports[`Input.svelte > should render input for type "datetime" as readonly 1`] = `
-<input
-  readonly="true"
-  type="datetime-local"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "datetime" as required 1`] = `
+exports[`HTML Input > should render "InputDateTime" as readonly 1`] = `
 <input
   readonly="true"
   type="datetime-local"
 />
 `;
 
-exports[`Input.svelte > should render input for type "email" 1`] = `
+exports[`HTML Input > should render "InputDateTime" as required 1`] = `
+<input
+  required=""
+  type="datetime-local"
+/>
+`;
+
+exports[`HTML Input > should render "InputEmail" 1`] = `
 <input
   type="email"
 />
 `;
 
-exports[`Input.svelte > should render input for type "email" as readonly 1`] = `
+exports[`HTML Input > should render "InputEmail" as readonly 1`] = `
 <input
   readonly="true"
   type="email"
 />
 `;
 
-exports[`Input.svelte > should render input for type "email" as required 1`] = `
+exports[`HTML Input > should render "InputEmail" as required 1`] = `
 <input
-  readonly="true"
+  required=""
   type="email"
 />
 `;
 
-exports[`Input.svelte > should render input for type "file" 1`] = `
+exports[`HTML Input > should render "InputFile" 1`] = `
 <input
   type="file"
 />
 `;
 
-exports[`Input.svelte > should render input for type "file" as readonly 1`] = `
-<input
-  readonly="true"
-  type="file"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "file" as required 1`] = `
+exports[`HTML Input > should render "InputFile" as readonly 1`] = `
 <input
   readonly="true"
   type="file"
 />
 `;
 
-exports[`Input.svelte > should render input for type "integer" 1`] = `
+exports[`HTML Input > should render "InputFile" as required 1`] = `
 <input
-  type="number"
+  required=""
+  type="file"
 />
 `;
 
-exports[`Input.svelte > should render input for type "integer" as readonly 1`] = `
-<input
-  readonly="true"
-  type="number"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "integer" as required 1`] = `
-<input
-  readonly="true"
-  type="number"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "month" 1`] = `
+exports[`HTML Input > should render "InputMonth" 1`] = `
 <input
   type="month"
 />
 `;
 
-exports[`Input.svelte > should render input for type "month" as readonly 1`] = `
+exports[`HTML Input > should render "InputMonth" as readonly 1`] = `
 <input
   readonly="true"
   type="month"
 />
 `;
 
-exports[`Input.svelte > should render input for type "month" as required 1`] = `
+exports[`HTML Input > should render "InputMonth" as required 1`] = `
 <input
-  readonly="true"
+  required=""
   type="month"
 />
 `;
 
-exports[`Input.svelte > should render input for type "number" 1`] = `
+exports[`HTML Input > should render "InputNumber" 1`] = `
 <input
   type="number"
 />
 `;
 
-exports[`Input.svelte > should render input for type "number" as readonly 1`] = `
-<input
-  readonly="true"
-  type="number"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "number" as required 1`] = `
+exports[`HTML Input > should render "InputNumber" as readonly 1`] = `
 <input
   readonly="true"
   type="number"
 />
 `;
 
-exports[`Input.svelte > should render input for type "number" with custom props 1`] = `
+exports[`HTML Input > should render "InputNumber" as required 1`] = `
+<input
+  required=""
+  type="number"
+/>
+`;
+
+exports[`HTML Input > should render "InputNumber" with custom props 1`] = `
 <input
   max="10"
   min="3"
@@ -198,91 +174,27 @@ exports[`Input.svelte > should render input for type "number" with custom props 
 />
 `;
 
-exports[`Input.svelte > should render input for type "password" 1`] = `
+exports[`HTML Input > should render "InputPassword" 1`] = `
 <input
   type="password"
 />
 `;
 
-exports[`Input.svelte > should render input for type "password" as readonly 1`] = `
-<input
-  readonly="true"
-  type="password"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "password" as required 1`] = `
+exports[`HTML Input > should render "InputPassword" as readonly 1`] = `
 <input
   readonly="true"
   type="password"
 />
 `;
 
-exports[`Input.svelte > should render input for type "radio" 1`] = `
-<radio-group
-  class=""
+exports[`HTML Input > should render "InputPassword" as required 1`] = `
+<input
+  required=""
+  type="password"
 />
 `;
 
-exports[`Input.svelte > should render input for type "radio" as readonly 1`] = `
-<radio-group
-  class="disabled"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "radio" as required 1`] = `
-<radio-group
-  class="disabled"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "radio" with custom props 1`] = `
-<radio-group
-  class=""
->
-  <label
-    class="flex flex-row-reverse items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="foo"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row-reverse items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="bar"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row-reverse items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="baz"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
-`;
-
-exports[`Input.svelte > should render input for type "radio" with custom props 2`] = `
+exports[`HTML Input > should render "InputRadio" 1`] = `
 <radio-group
   class=""
 >
@@ -328,7 +240,197 @@ exports[`Input.svelte > should render input for type "radio" with custom props 2
 </radio-group>
 `;
 
-exports[`Input.svelte > should render input for type "radio" with custom props 3`] = `
+exports[`HTML Input > should render "InputRadio" as readonly 1`] = `
+<radio-group
+  class="disabled"
+>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      readonly=""
+      type="radio"
+      value="foo"
+    />
+     
+    <p>
+      foo
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      readonly=""
+      type="radio"
+      value="bar"
+    />
+     
+    <p>
+      bar
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      readonly=""
+      type="radio"
+      value="baz"
+    />
+     
+    <p>
+      baz
+    </p>
+     
+  </label>
+</radio-group>
+`;
+
+exports[`HTML Input > should render "InputRadio" as required 1`] = `
+<radio-group
+  class=""
+>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      required=""
+      type="radio"
+      value="foo"
+    />
+     
+    <p>
+      foo
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      required=""
+      type="radio"
+      value="bar"
+    />
+     
+    <p>
+      bar
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      required=""
+      type="radio"
+      value="baz"
+    />
+     
+    <p>
+      baz
+    </p>
+     
+  </label>
+</radio-group>
+`;
+
+exports[`HTML Input > should render "InputRadio" with custom props 1`] = `
+<radio-group
+  class=""
+>
+  <label
+    class="flex flex-row-reverse items-center gap-2"
+  >
+    <input
+      type="radio"
+      value="foo"
+    />
+     
+    <p>
+      foo
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row-reverse items-center gap-2"
+  >
+    <input
+      type="radio"
+      value="bar"
+    />
+     
+    <p>
+      bar
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row-reverse items-center gap-2"
+  >
+    <input
+      type="radio"
+      value="baz"
+    />
+     
+    <p>
+      baz
+    </p>
+     
+  </label>
+</radio-group>
+`;
+
+exports[`HTML Input > should render "InputRadio" with custom props 2`] = `
+<radio-group
+  class=""
+>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      type="radio"
+      value="foo"
+    />
+     
+    <p>
+      foo
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      type="radio"
+      value="bar"
+    />
+     
+    <p>
+      bar
+    </p>
+     
+  </label>
+  <label
+    class="flex flex-row items-center gap-2"
+  >
+    <input
+      type="radio"
+      value="baz"
+    />
+     
+    <p>
+      baz
+    </p>
+     
+  </label>
+</radio-group>
+`;
+
+exports[`HTML Input > should render "InputRadio" with custom props 3`] = `
 <radio-group
   class=""
 >
@@ -374,101 +476,131 @@ exports[`Input.svelte > should render input for type "radio" with custom props 3
 </radio-group>
 `;
 
-exports[`Input.svelte > should render input for type "range" 1`] = `
+exports[`HTML Input > should render "InputRange" 1`] = `
 <input
   type="range"
 />
 `;
 
-exports[`Input.svelte > should render input for type "range" as readonly 1`] = `
-<input
-  readonly="true"
-  type="range"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "range" as required 1`] = `
+exports[`HTML Input > should render "InputRange" as readonly 1`] = `
 <input
   readonly="true"
   type="range"
 />
 `;
 
-exports[`Input.svelte > should render input for type "select" 1`] = `<select />`;
+exports[`HTML Input > should render "InputRange" as required 1`] = `
+<input
+  required=""
+  type="range"
+/>
+`;
 
-exports[`Input.svelte > should render input for type "select" as readonly 1`] = `
+exports[`HTML Input > should render "InputSelect" 1`] = `
+<select>
+  <option
+    value="foo"
+  >
+    foo
+  </option>
+  <option
+    value="bar"
+  >
+    bar
+  </option>
+  <option
+    value="baz"
+  >
+    baz
+  </option>
+</select>
+`;
+
+exports[`HTML Input > should render "InputSelect" as readonly 1`] = `
 <select
   readonly="true"
-/>
+>
+  <option
+    value="foo"
+  >
+    foo
+  </option>
+  <option
+    value="bar"
+  >
+    bar
+  </option>
+  <option
+    value="baz"
+  >
+    baz
+  </option>
+</select>
 `;
 
-exports[`Input.svelte > should render input for type "select" as required 1`] = `
+exports[`HTML Input > should render "InputSelect" as required 1`] = `
 <select
-  readonly="true"
-/>
+  required=""
+>
+  <option
+    value="foo"
+  >
+    foo
+  </option>
+  <option
+    value="bar"
+  >
+    bar
+  </option>
+  <option
+    value="baz"
+  >
+    baz
+  </option>
+</select>
 `;
 
-exports[`Input.svelte > should render input for type "string" 1`] = `
-<input
-  type="text"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "string" as readonly 1`] = `
-<input
-  readonly="true"
-  type="text"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "string" as required 1`] = `
-<input
-  readonly="true"
-  type="text"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "tel" 1`] = `
+exports[`HTML Input > should render "InputTel" 1`] = `
 <input
   type="url"
 />
 `;
 
-exports[`Input.svelte > should render input for type "tel" as readonly 1`] = `
-<input
-  readonly="true"
-  type="url"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "tel" as required 1`] = `
+exports[`HTML Input > should render "InputTel" as readonly 1`] = `
 <input
   readonly="true"
   type="url"
 />
 `;
 
-exports[`Input.svelte > should render input for type "text" 1`] = `
+exports[`HTML Input > should render "InputTel" as required 1`] = `
+<input
+  required=""
+  type="url"
+/>
+`;
+
+exports[`HTML Input > should render "InputText" 1`] = `
 <input
   type="text"
 />
 `;
 
-exports[`Input.svelte > should render input for type "text" as readonly 1`] = `
+exports[`HTML Input > should render "InputText" as readonly 1`] = `
 <input
   readonly="true"
   type="text"
 />
 `;
 
-exports[`Input.svelte > should render input for type "text" as required 1`] = `
+exports[`HTML Input > should render "InputText" as required 1`] = `
 <input
-  readonly="true"
+  required=""
   type="text"
 />
 `;
 
-exports[`Input.svelte > should render input for type "text" with custom props 1`] = `
+exports[`HTML Input > should render "InputText" with custom props 1`] = `
 <input
   maxlength="10"
   minlength="3"
@@ -476,82 +608,82 @@ exports[`Input.svelte > should render input for type "text" with custom props 1`
 />
 `;
 
-exports[`Input.svelte > should render input for type "textarea" 1`] = `
+exports[`HTML Input > should render "InputTextArea" 1`] = `
 <textarea
   type="week"
 />
 `;
 
-exports[`Input.svelte > should render input for type "textarea" as readonly 1`] = `
-<textarea
-  readonly="true"
-  type="week"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "textarea" as required 1`] = `
+exports[`HTML Input > should render "InputTextArea" as readonly 1`] = `
 <textarea
   readonly="true"
   type="week"
 />
 `;
 
-exports[`Input.svelte > should render input for type "time" 1`] = `
+exports[`HTML Input > should render "InputTextArea" as required 1`] = `
+<textarea
+  required=""
+  type="week"
+/>
+`;
+
+exports[`HTML Input > should render "InputTime" 1`] = `
 <input
   type="time"
 />
 `;
 
-exports[`Input.svelte > should render input for type "time" as readonly 1`] = `
+exports[`HTML Input > should render "InputTime" as readonly 1`] = `
 <input
   readonly="true"
   type="time"
 />
 `;
 
-exports[`Input.svelte > should render input for type "time" as required 1`] = `
+exports[`HTML Input > should render "InputTime" as required 1`] = `
 <input
-  readonly="true"
+  required=""
   type="time"
 />
 `;
 
-exports[`Input.svelte > should render input for type "url" 1`] = `
+exports[`HTML Input > should render "InputUrl" 1`] = `
 <input
   type="url"
 />
 `;
 
-exports[`Input.svelte > should render input for type "url" as readonly 1`] = `
-<input
-  readonly="true"
-  type="url"
-/>
-`;
-
-exports[`Input.svelte > should render input for type "url" as required 1`] = `
+exports[`HTML Input > should render "InputUrl" as readonly 1`] = `
 <input
   readonly="true"
   type="url"
 />
 `;
 
-exports[`Input.svelte > should render input for type "week" 1`] = `
+exports[`HTML Input > should render "InputUrl" as required 1`] = `
+<input
+  required=""
+  type="url"
+/>
+`;
+
+exports[`HTML Input > should render "InputWeek" 1`] = `
 <input
   type="week"
 />
 `;
 
-exports[`Input.svelte > should render input for type "week" as readonly 1`] = `
+exports[`HTML Input > should render "InputWeek" as readonly 1`] = `
 <input
   readonly="true"
   type="week"
 />
 `;
 
-exports[`Input.svelte > should render input for type "week" as required 1`] = `
+exports[`HTML Input > should render "InputWeek" as required 1`] = `
 <input
-  readonly="true"
+  required=""
   type="week"
 />
 `;

@@ -1,10 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`RadioGroup.svelte > should render using object 1`] = `
+exports[`Radio.svelte > should render using object 1`] = `
 <body>
   <div>
-    <radio
+    <radio-group
       class="flex flex-col cursor-pointer select-none "
+      id="null"
     >
       <label
         class="flex flex-row-reverse items-center gap-2"
@@ -63,16 +64,17 @@ exports[`RadioGroup.svelte > should render using object 1`] = `
         </p>
          
       </label>
-    </radio>
+    </radio-group>
   </div>
 </body>
 `;
 
-exports[`RadioGroup.svelte > should render using string array 1`] = `
+exports[`Radio.svelte > should render using string array 1`] = `
 <body>
   <div>
-    <radio
+    <radio-group
       class="flex flex-col cursor-pointer select-none "
+      id="null"
     >
       <label
         class="flex flex-row items-center gap-2"
@@ -131,16 +133,17 @@ exports[`RadioGroup.svelte > should render using string array 1`] = `
         </p>
          
       </label>
-    </radio>
+    </radio-group>
   </div>
 </body>
 `;
 
-exports[`RadioGroup.svelte > should render with field mapping 1`] = `
+exports[`Radio.svelte > should render with field mapping 1`] = `
 <body>
   <div>
-    <radio
+    <radio-group
       class="flex flex-col cursor-pointer select-none "
+      id="null"
     >
       <label
         class="flex flex-row-reverse items-center gap-2"
@@ -199,7 +202,7 @@ exports[`RadioGroup.svelte > should render with field mapping 1`] = `
         </p>
          
       </label>
-    </radio>
+    </radio-group>
   </div>
 </body>
 `;

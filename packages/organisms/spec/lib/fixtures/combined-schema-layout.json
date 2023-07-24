@@ -11,7 +11,7 @@
     },
     {
       "key": "age",
-      "component": "input",
+
       "props": {
         "label": "age",
         "type": "number",
@@ -26,7 +26,7 @@
       "elements": [
         {
           "key": "street",
-          "component": "input",
+
           "props": {
             "label": "street",
             "type": "string"
@@ -34,7 +34,7 @@
         },
         {
           "key": "city",
-          "component": "input",
+
           "props": {
             "label": "city",
             "type": "string"
@@ -42,7 +42,7 @@
         },
         {
           "key": "state",
-          "component": "input",
+
           "props": {
             "label": "state",
             "type": "string"
@@ -50,7 +50,7 @@
         },
         {
           "key": "zip",
-          "component": "input",
+
           "props": {
             "label": "zip",
             "type": "number",

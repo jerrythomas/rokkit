@@ -15,7 +15,7 @@
       "scope": "#/age",
       "key": "age",
       "label": "age",
-      "component": "input",
+
       "props": {
         "type": "number"
       }
@@ -30,7 +30,7 @@
           "scope": "#/address/street",
           "key": "street",
           "label": "street",
-          "component": "input",
+
           "props": {
             "type": "string"
           }
@@ -39,7 +39,7 @@
           "scope": "#/address/city",
           "key": "city",
           "label": "city",
-          "component": "input",
+
           "props": {
             "type": "string"
           }
@@ -48,7 +48,7 @@
           "scope": "#/address/state",
           "key": "state",
           "label": "state",
-          "component": "input",
+
           "props": {
             "type": "string"
           }
@@ -57,7 +57,7 @@
           "scope": "#/address/zip",
           "key": "zip",
           "label": "zip",
-          "component": "input",
+
           "props": {
             "type": "number"
           }

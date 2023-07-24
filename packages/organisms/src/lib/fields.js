@@ -1,4 +1,4 @@
-import { omit } from 'ramda'
+import { omit, pick } from 'ramda'
 
 /**
  * Derives a schema from a given value.
@@ -98,7 +98,7 @@ export function combineElementsWithSchema(elements, schema) {
 				elements: temp
 			}
 		} else {
-			attribute.component = element.component ?? 'input'
+			attribute = { ...attribute, ...pick(['component'], element) }
 			attribute.props = {
 				...omit(['scope', 'props', 'component', 'key'], element),
 				...attribute.props,

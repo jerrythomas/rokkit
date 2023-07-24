@@ -1,7 +1,8 @@
 <script>
 	import { getContext } from 'svelte'
 	import { pick, omit } from 'ramda'
-	import { Input, Icon } from '@rokkit/atoms'
+	import { Icon } from '@rokkit/atoms'
+	import Input from './input/Input.svelte'
 	import { componentTypes } from './types'
 
 	const registry = getContext('registry')

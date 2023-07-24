@@ -1,12 +1,12 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import RadioGroup from '../../src/input/RadioGroup.svelte'
+import Radio from '../../src/input/Radio.svelte'
 
-describe('RadioGroup.svelte', () => {
+describe('Radio.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render using string array', () => {
-		const { container } = render(RadioGroup, {
+		const { container } = render(Radio, {
 			name: 'radio',
 			value: 'Alpha',
 			options: ['Alpha', 'Beta', 'Gamma']
@@ -16,7 +16,7 @@ describe('RadioGroup.svelte', () => {
 	})
 
 	it('should render using object', () => {
-		const { container } = render(RadioGroup, {
+		const { container } = render(Radio, {
 			name: 'radio',
 			value: 'alpha',
 			options: [
@@ -30,7 +30,7 @@ describe('RadioGroup.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 	it('should render with field mapping', () => {
-		const { container } = render(RadioGroup, {
+		const { container } = render(Radio, {
 			name: 'radio',
 			value: 'alpha',
 			options: [

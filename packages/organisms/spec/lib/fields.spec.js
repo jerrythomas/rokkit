@@ -332,7 +332,6 @@ describe('fields', () => {
 			expect(combined).toEqual([
 				{
 					key: 'name',
-					component: 'input',
 					props: {
 						type: 'string',
 						label: 'name'
@@ -340,7 +339,7 @@ describe('fields', () => {
 				},
 				{
 					key: 'age',
-					component: 'input',
+
 					props: {
 						type: 'number',
 						label: 'age',
@@ -388,7 +387,7 @@ describe('fields', () => {
 			expect(combined).toEqual([
 				{
 					key: 'street',
-					component: 'input',
+
 					props: {
 						label: 'street',
 						type: 'string'
@@ -396,7 +395,7 @@ describe('fields', () => {
 				},
 				{
 					key: 'city',
-					component: 'input',
+
 					props: {
 						label: 'city',
 						type: 'string'
@@ -404,7 +403,7 @@ describe('fields', () => {
 				},
 				{
 					key: 'state',
-					component: 'input',
+
 					props: {
 						label: 'state',
 						type: 'string'
@@ -412,7 +411,7 @@ describe('fields', () => {
 				},
 				{
 					key: 'zip',
-					component: 'input',
+
 					props: {
 						label: 'zip',
 						type: 'number'
@@ -446,14 +445,12 @@ describe('fields', () => {
 				{
 					elements: [
 						{
-							component: 'input',
 							key: 'first_name',
 							props: {
 								type: 'string'
 							}
 						},
 						{
-							component: 'input',
 							key: 'last_name',
 							props: {
 								type: 'string'
@@ -494,7 +491,7 @@ describe('fields', () => {
 				elements: [
 					{
 						key: 'name',
-						component: 'input',
+
 						props: {
 							label: 'name',
 							type: 'string'
@@ -502,7 +499,7 @@ describe('fields', () => {
 					},
 					{
 						key: 'age',
-						component: 'input',
+
 						props: {
 							label: 'age',
 							type: 'number'
