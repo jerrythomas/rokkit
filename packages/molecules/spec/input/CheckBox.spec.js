@@ -1,19 +1,19 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
-import CheckBox from '../../src/input/CheckBox.svelte'
+import Checkbox from '../../src/input/Checkbox.svelte'
 
-describe('CheckBox.svelte', () => {
+describe('Checkbox.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('should render checkbox ', () => {
-		const { container } = render(CheckBox, { name: 'test' })
+	it('should render checkbox', () => {
+		const { container } = render(Checkbox, { name: 'test' })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should handle checkbox state change', async () => {
-		const { getByRole } = render(CheckBox, { name: 'test' })
+		const { getByRole } = render(Checkbox, { name: 'test' })
 		const checkbox = getByRole('checkbox')
 
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
@@ -23,7 +23,7 @@ describe('CheckBox.svelte', () => {
 	})
 
 	it('should apply custom class names', async () => {
-		const { getByRole, container, component } = render(CheckBox, {
+		const { getByRole, container, component } = render(Checkbox, {
 			name: 'test',
 			class: 'custom-class'
 		})
@@ -39,7 +39,7 @@ describe('CheckBox.svelte', () => {
 	})
 
 	it('should render checkbox with disabled state', () => {
-		const { getByRole } = render(CheckBox, { name: 'test', readOnly: true })
+		const { getByRole } = render(Checkbox, { name: 'test', readOnly: true })
 		const checkbox = getByRole('checkbox')
 
 		expect(Array.from(checkbox.classList)).toContain('disabled')
@@ -47,7 +47,7 @@ describe('CheckBox.svelte', () => {
 	})
 
 	it('should handle click events', async () => {
-		const { container } = render(CheckBox, { name: 'test', value: null })
+		const { container } = render(Checkbox, { name: 'test', value: null })
 		const checkbox = container.querySelector('checkbox')
 		expect(checkbox.getAttribute('aria-checked')).toBe('unknown')
 
@@ -61,7 +61,7 @@ describe('CheckBox.svelte', () => {
 	})
 
 	it('should handle clicks without changing value when disabled', async () => {
-		const { container, component } = render(CheckBox, {
+		const { container, component } = render(Checkbox, {
 			name: 'test',
 			readOnly: true
 		})

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CheckBox.svelte > should apply custom class names 1`] = `
+exports[`Checkbox.svelte > should apply custom class names 1`] = `
 <body>
   <div>
     <checkbox
@@ -24,51 +24,7 @@ exports[`CheckBox.svelte > should apply custom class names 1`] = `
 </body>
 `;
 
-exports[`CheckBox.svelte > should render checkbox  1`] = `
-<body>
-  <div>
-    <checkbox
-      aria-checked="unchecked"
-      aria-disabled="false"
-      class="flex items-center leading-loose cursor-pointer select-none checkbox "
-      role="checkbox"
-      tabindex="0"
-    >
-      <input
-        hidden=""
-        name="test"
-        type="checkbox"
-      />
-       
-      <icon
-        class="checkbox-unchecked"
-      />
-    </checkbox>
-  </div>
-</body>
-`;
-
-exports[`CheckBox.svelte > should render native checkbox  1`] = `
-<body>
-  <div>
-    <checkbox
-      aria-checked="unchecked"
-      aria-disabled="false"
-      class="flex items-center leading-loose cursor-pointer select-none checkbox "
-      role="checkbox"
-      tabindex="0"
-    >
-      <input
-        name="test"
-        type="checkbox"
-      />
-       
-    </checkbox>
-  </div>
-</body>
-`;
-
-exports[`CheckBox.svelte > should render native checkbox  2`] = `
+exports[`Checkbox.svelte > should render checkbox 1`] = `
 <body>
   <div>
     <checkbox

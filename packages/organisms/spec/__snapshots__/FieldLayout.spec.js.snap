@@ -668,25 +668,12 @@ exports[`FieldLayout.svelte > should render items using custom component 1`] = `
          
       </input-field>
       
-      <input-field
-        class="flex flex-col input-text "
-      >
-         
-        <field
-          aria-label="title"
-          class="w-full flex flex-row items-center"
-        >
-           
-          <input
-            id="title"
-            name="title"
-            type="text"
-          />
-          
-          
-        </field>
-         
-      </input-field>
+       
+      <p>
+        Mr.
+      </p>
+      
+      
       
       
     </field-layout>

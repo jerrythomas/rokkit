@@ -7,10 +7,10 @@
 	export let fields = defaultFields
 	export let options = []
 	export let readonly = false
-	export let textAfter = true
+	export let flip = false
 
 	$: fields = { ...defaultFields, ...fields }
-	$: flexDirection = textAfter ? 'flex-row' : 'flex-row-reverse'
+	$: flexDirection = flip ? 'flex-row-reverse' : 'flex-row'
 </script>
 
 <radio-group class={className} class:disabled={readonly}>

@@ -14,19 +14,19 @@ describe('NestedList.svelte', () => {
 	it('should render empty nested list', () => {
 		const { container } = render(NestedList)
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 	})
 	it('should render using default field mapping', () => {
 		const { container } = render(NestedList, {
 			items: [{ text: 'a' }, { text: 'b' }]
 		})
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 	})
 	it('should render nested items', () => {
 		const { container } = render(NestedList, { items })
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 	})
 	it('should render open items', () => {
 		const { container } = render(NestedList, {
@@ -37,7 +37,7 @@ describe('NestedList.svelte', () => {
 			]
 		})
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 	})
 	it('should render using field mappings', () => {
 		const { container } = render(NestedList, {
@@ -45,7 +45,7 @@ describe('NestedList.svelte', () => {
 			fields: { text: 'name' }
 		})
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 	})
 	it('should support custom class', async () => {
 		const { container, component } = render(NestedList, {
@@ -64,14 +64,25 @@ describe('NestedList.svelte', () => {
 			items
 		})
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 		component.$set({ icons: { open: 'open', close: 'close' } })
 		await tick()
-		expect(container).toMatchSnapshot()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
 	})
 
-	it('should render items using custom component', () => {})
-	it('should expand and collapse', () => {})
-	it('should autoclose others', () => {})
-	it('should pass select and change events', () => {})
+	it('should render with hierarchy', async () => {
+		const { container, component } = render(NestedList, {
+			items: [
+				{ text: 'a', children: [{ text: 'aa' }], _open: true },
+				{ text: 'b' },
+				{ text: 'c', children: [{ text: 'cc' }] }
+			],
+			hierarchy: [0]
+		})
+
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
+		component.$set({ hierarchy: [0, 0] })
+		await tick()
+		expect(container.querySelector('nested-list')).toMatchSnapshot()
+	})
 })

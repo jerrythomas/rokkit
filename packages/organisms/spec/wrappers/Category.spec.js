@@ -48,7 +48,7 @@ describe('Category.svelte', () => {
 	it('should render with alternative navigator', async () => {
 		const { container, component } = render(Register, {
 			render: Category,
-			components: { Switch },
+			using: { navigators: { Switch } },
 			properties: { options: items, navigator: 'Switch' }
 		})
 		expect(container).toBeTruthy()

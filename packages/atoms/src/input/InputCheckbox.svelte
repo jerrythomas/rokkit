@@ -3,7 +3,6 @@
 </script>
 
 <input
-	hidden
 	type="checkbox"
 	{...$$restProps}
 	bind:checked={value}

@@ -59,6 +59,7 @@
 		"@rokkit/atoms": "workspace:*",
 		"@rokkit/core": "workspace:*",
 		"@rokkit/molecules": "workspace:*",
+		"@rokkit/utils": "workspace:*",
 		"ramda": "^0.29.0"
 	}
 }
