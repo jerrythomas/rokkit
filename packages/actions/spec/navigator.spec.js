@@ -80,16 +80,17 @@ describe('navigator', () => {
 
 		let node = createNestedElement(tree)
 		let result = findParentWithDataPath(
-			node.children[0].children[0].children[0]
+			node.children[0].children[0].children[0],
+			node
 		)
 		expect(result).toEqual(node.children[0])
-		result = findParentWithDataPath(node.children[0].children[0])
+		result = findParentWithDataPath(node.children[0].children[0], node)
 		expect(result).toEqual(node.children[0])
-		result = findParentWithDataPath(node.children[0].children[1])
+		result = findParentWithDataPath(node.children[0].children[1], node)
 		expect(result).toEqual(node.children[0])
-		result = findParentWithDataPath(node.children[0].children[2])
+		result = findParentWithDataPath(node.children[0].children[2], node)
 		expect(result).toEqual(node.children[0].children[2])
-		result = findParentWithDataPath(node.children[1])
+		result = findParentWithDataPath(node.children[1], node)
 		expect(result).toEqual(null)
 	})
 
