@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
-	import { compact } from '../components/lib/utils'
-	import { funnel } from '../components/lib/funnel'
+	import { compact } from '../lib/utils-2'
+	import { funnel } from '../lib/funnel'
 
 	const chart = getContext('chart')
 
@@ -13,7 +13,6 @@
 
 	$: aes = { ...$chart.aes, ...compact({ x, y, fill, stat, curve }) }
 	$: data = funnel($chart.data, aes, $chart.width, $chart.height)
-
 </script>
 
 {#each data.stats as stat, i}

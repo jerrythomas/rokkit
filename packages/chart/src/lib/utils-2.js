@@ -2,47 +2,7 @@ import { scaleBand, scaleLinear } from 'd3-scale'
 import { min, max } from 'd3-array'
 import { ascending, quantile } from 'd3-array'
 import { nest } from 'd3-collection'
-import { omit, filter } from 'ramda'
-
-/**
- * Generates a unique id from current timestamp
- *
- * @returns {String} timestamp based unique id
- */
-export function uniqueId(prefix = '') {
-	return prefix + Date.now().toString(36)
-}
-
-/**
- * Capitalizes the first letter of input string
- *
- * @param {String} str
- * @returns {String}
- */
-export function initCap(str) {
-	return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-/**
- * Removes undefined and null values from the input object.
- *
- * @param {Object} obj
- * @returns {Object}
- */
-export function compact(obj) {
-	return filter((x) => x !== undefined && x !== null, obj)
-}
-
-/**
- * Converts an input number into it's hexadecimal representation, with optional left padded zeroes based on the `size`
- *
- * @param {number} value
- * @param {number} size
- * @returns
- */
-export function toHexString(value, size = 2) {
-	return value.toString(16).padStart(size, '0')
-}
+import { omit } from 'ramda'
 
 /**
  * Calculates a grid of centres to fit a list of items of `size` within the number of `columns` and `rows`.

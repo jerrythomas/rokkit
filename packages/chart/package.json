@@ -44,15 +44,12 @@
 		"d3-shape": "^3.2.0",
 		"date-fns": "^2.30.0",
 		"ramda": "^0.29.0",
-		"rokkit": "workspace:latest",
 		"yootils": "^0.3.1"
 	},
 	"files": [
 		"src/**/*.js",
 		"src/**/*.svelte",
-		"!src/fixtures",
-		"!src/mocks",
-		"!src/**/*.spec.js"
+		"!spec"
 	],
 	"exports": {
 		"./src": "./src",

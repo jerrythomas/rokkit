@@ -1,6 +1,6 @@
 <script>
 	// import { namedShapes } from '../lib/shape'
-	import { swatchStore } from '../swatch'
+	import { swatchStore } from '../lib/swatch'
 
 	export let x = 0
 	export let y = 0

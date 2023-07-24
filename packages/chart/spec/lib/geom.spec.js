@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { rollup, aggregate } from './geom'
+import { rollup, aggregate } from '../../src/lib/geom'
 import { median, variance, deviation } from 'd3-array'
 
 describe('Geometry', () => {
