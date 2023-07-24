@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 import frontmatter from 'frontmatter'
 import { omit } from 'ramda'
-
-import { getFiles, folderHierarchy } from './files.js'
+import { getSequenceAndKey, folderHierarchy } from './utils.js'
+import { getFiles } from './files.js'
 
 const extractors = {
 	js: async (filePath) => (await import(/* @vite-ignore */ filePath)).default,
@@ -13,22 +13,6 @@ const extractors = {
 		const fileContent = await fs.promises.readFile(filePath, 'utf-8')
 		return frontmatter(fileContent).data
 	}
-}
-
-/**
- * Get the sequence and key from a text string.
- * @param {string} text - The text to extract the sequence and key from.
- * @returns {Object|null} - An object containing the sequence and key or null if not found.
- */
-export function getSequenceAndKey(text) {
-	const result = /(?<number>\d+)(\s*-\s*)(?<key>.*)$/.exec(text)
-	if (result && result.groups) {
-		return {
-			sequence: parseInt(result.groups.number),
-			key: result.groups.key
-		}
-	}
-	return null
 }
 
 /**

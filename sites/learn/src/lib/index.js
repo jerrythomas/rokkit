@@ -1,8 +1,5 @@
 import { watchMedia } from '@rokkit/stores'
 import { assimilateTutorials } from '@rokkit/tutorial'
-import tutorials from '$lib/tutorials.json'
-
-export { tutorials }
 
 const mediaqueries = {
 	small: '(max-width: 767px)',

@@ -51,8 +51,7 @@
 		"!fixtures",
 		"src/**/*.js",
 		"src/**/*.svelte",
-		"!src/fixtures",
-		"!src/**/*.spec.js"
+		"!spec"
 	],
 	"exports": {
 		"./package.json": "./package.json",

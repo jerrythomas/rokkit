@@ -1,6 +1,5 @@
 import { omit } from 'ramda'
-import { getSequenceAndKey } from './collector'
-import { folderHierarchy } from './files'
+import { folderHierarchy, getSequenceAndKey } from './utils'
 
 export async function fetchImports(modules) {
 	return Promise.all(

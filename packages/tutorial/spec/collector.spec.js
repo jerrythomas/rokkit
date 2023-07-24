@@ -3,7 +3,6 @@ import fs from 'fs/promises'
 import { getFiles } from '../src/files'
 
 import {
-	getSequenceAndKey,
 	readFolderContent,
 	getFolder,
 	getMetadata,
@@ -54,18 +53,7 @@ describe('collector', () => {
 			route: null
 		}
 	]
-	describe('getSequenceAndKey', () => {
-		it('should return the sequence and key from the given text', () => {
-			const input = '01 - Introduction'
-			const expected = { sequence: 1, key: 'Introduction' }
-			expect(getSequenceAndKey(input)).toEqual(expected)
-		})
 
-		it('should return null if the input does not match the pattern', () => {
-			const input = 'Invalid Text'
-			expect(getSequenceAndKey(input)).toBeNull()
-		})
-	})
 	describe('readFolderContent', () => {
 		it('should return the correct file objects with content', async () => {
 			const result = await readFolderContent('fixtures/test-folder')
