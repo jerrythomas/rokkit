@@ -1,7 +1,7 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
-import Checkbox from '../../src/input/Checkbox.svelte'
+import Checkbox from '../../src/input/CheckBox.svelte'
 
 describe('Checkbox.svelte', () => {
 	beforeEach(() => cleanup())
