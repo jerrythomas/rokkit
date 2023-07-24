@@ -1,6 +1,5 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-
 import Searchable from '../src/Searchable.svelte'
 
 describe('Searchable.svelte', () => {
@@ -8,7 +7,6 @@ describe('Searchable.svelte', () => {
 
 	it('should render', () => {
 		const { container } = render(Searchable)
-		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 })

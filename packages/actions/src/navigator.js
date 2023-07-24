@@ -37,7 +37,13 @@ export function navigator(node, options) {
 		path = pathFromIndices(options.indices ?? [], items, fields)
 		currentNode = getCurrentNode(path)
 
-		if (previousNode !== currentNode) moveTo(node, path, currentNode, idPrefix)
+		if (previousNode !== currentNode && currentNode) {
+			const indices = indicesFromPath(path)
+			// await tick()
+			let current = node.querySelector('#' + idPrefix + indices.join('-'))
+			if (current)
+				current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+		}
 	}
 
 	const next = () => {

@@ -36,9 +36,7 @@ exports[`MultiFileViewer.svelte > should render 1`] = `
               </icon>
               
                
-              <p
-                class="w-full flex"
-              >
+              <p>
                 App.svelte
               </p>
               
@@ -67,9 +65,7 @@ exports[`MultiFileViewer.svelte > should render 1`] = `
               </icon>
               
                
-              <p
-                class="w-full flex"
-              >
+              <p>
                 main.js
               </p>
               
@@ -81,7 +77,7 @@ exports[`MultiFileViewer.svelte > should render 1`] = `
       </nav>
        
       <pre
-        class="language-svelte undefined"
+        class="language-svelte "
       >
         <code>
           <span

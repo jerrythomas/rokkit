@@ -9,13 +9,3 @@ exports[`Scrollable.svelte > should render 1`] = `
   </div>
 </body>
 `;
-
-exports[`Scrollable.svelte > should render with custom class 1`] = `
-<body>
-  <div>
-    <scroll
-      class="flex flex-col h-full overflow-scroll custom-class"
-    />
-  </div>
-</body>
-`;
