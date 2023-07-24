@@ -31,10 +31,10 @@
 		"@vitest/ui": "~0.33.0",
 		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",
-		"svelte": "^4.0.5",
+		"svelte": "^4.1.1",
 		"typescript": "^5.1.6",
 		"validators": "workspace:latest",
-		"vite": "^4.4.4",
+		"vite": "^4.4.6",
 		"vitest": "~0.33.0"
 	},
 	"files": [

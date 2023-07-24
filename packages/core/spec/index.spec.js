@@ -20,7 +20,18 @@ describe('utilities', () => {
 			'generateTicks',
 			'weekdays',
 			'getCalendarDays',
-			'id'
+			'id',
+			'getRegex',
+			'parseFilters',
+			'toInitCapCase',
+			'toPascalCase',
+			'toHyphenCase',
+			'sortByParts',
+			'compareStrings',
+			'uniqueId',
+			'compact',
+			'toHexString',
+			'adjustViewport'
 		])
 	})
 })

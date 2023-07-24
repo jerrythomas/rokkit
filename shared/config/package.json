@@ -20,9 +20,9 @@
     "@tsconfig/svelte": "^5.0.0",
     "eslint": "^8.45.0",
     "eslint-config-shared": "workspace:*",
-    "svelte": "^4.0.5",
+    "svelte": "^4.1.1",
     "typescript": "^5.1.6",
-    "vite": "^4.4.4",
+    "vite": "^4.4.6",
     "vitest": "^0.33.0"
   },
   "publishConfig": {

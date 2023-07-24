@@ -1,4 +1,4 @@
-import { toHyphenCase } from '@rokkit/utils'
+import { toHyphenCase } from '@rokkit/core'
 import * as NativeInput from '@rokkit/atoms/input'
 import * as RokkitInput from '@rokkit/molecules/input'
 
