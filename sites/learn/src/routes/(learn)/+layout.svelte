@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { goto } from '$app/navigation'
+	import { goto, afterNavigate } from '$app/navigation'
 	import { page } from '$app/stores'
 	import { Tree } from '@rokkit/organisms'
 	import { findValueFromPath } from '@rokkit/core'
@@ -26,9 +26,9 @@
 		}
 	}
 
-	$: if (!value || value.route != $page.params.slug){
-			value = findValueFromPath($page.params.slug, data.menu, fields)
-		}
+	afterNavigate(() => {
+		value = findValueFromPath($page.params.slug, data.menu, fields)
+	})
 </script>
 
 <svelte:head>
