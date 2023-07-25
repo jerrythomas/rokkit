@@ -1,46 +1,927 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative "
-      tabindex="0"
+exports[`MultiSelect.svelte > should add a selected item 1`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
     >
-      <selected-item
+      <wrap-item
         aria-selected="false"
-        class="w-full flex items-center"
+        class="flex flex-row items-center pill"
         role="option"
-        tabindex="-1"
       >
         <item
-          class="w-full flex"
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            One
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Three
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+         
+        <p>
+          Two
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item is-selected"
+        data-path="1"
+        role="option"
+      >
+         
+        <p>
+          Three
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should remove a selected item 1`] = `
+<input-select
+  class="flex flex-col relative"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Two
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+         
+        <p>
+          One
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="1"
+        role="option"
+      >
+         
+        <p>
+          Three
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render items using custom component 1`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+          <span>
+            Alpha
+          </span>
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        <span>
+          Beta
+        </span>
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="1"
+        role="option"
+      >
+        <span>
+          Charlie
+        </span>
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
+<input-select
+  class="flex flex-col relative "
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            One
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <icon
+      aria-label="closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </selected-item>
+   
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            One
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+         
+        <p>
+          Two
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="1"
+        role="option"
+      >
+         
+        <p>
+          Three
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            One
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            Two
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+         
+        <p>
+          Three
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using field mappings 1`] = `
+<input-select
+  class="flex flex-col relative "
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+          
+           
+          <p>
+            Two
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <icon
+      aria-label="closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </selected-item>
+   
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using field mappings 2`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+          
+           
+          <p>
+            Two
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p>
+          One
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p>
+          Three
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using field mappings 3`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <items
+      class="flex flex-wrap"
+    >
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
         >
            
           
         </item>
-        
          
         <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
           role="button"
-          tabindex="-1"
+          tabindex="0"
         >
           <i
             aria-hidden="true"
-            class="selector-closed"
+            class="action-remove"
           />
         </icon>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-          tabindex="-1"
-        />
-      </selected-item>
+      </wrap-item>
+      <wrap-item
+        aria-selected="false"
+        class="flex flex-row items-center pill"
+        role="option"
+      >
+        <item
+          class="flex flex-row items-center"
+        >
+          
+           
+          <p>
+            Two
+          </p>
+          
+        </item>
+         
+        <icon
+          aria-label="Remove"
+          class="flex flex-shrink-0 items-center justify-center small"
+          role="button"
+          tabindex="0"
+        >
+          <i
+            aria-hidden="true"
+            class="action-remove"
+          />
+        </icon>
+      </wrap-item>
+    </items>
+    
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
        
-    </input-select>
-  </div>
-</body>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p>
+          One
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p>
+          Three
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
 `;

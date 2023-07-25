@@ -30,6 +30,14 @@ describe('dismissable', () => {
 
 		expect(dismissSpy).toHaveBeenCalled()
 	})
+	it('dispatches "dismiss" event when pressing the Escape key', () => {
+		action = dismissable(node)
+
+		const keyupEvent = new KeyboardEvent('keyup', { key: 'Escape' })
+		document.dispatchEvent(keyupEvent)
+
+		expect(dismissSpy).toHaveBeenCalled()
+	})
 	it('does not dispatch "dismiss" event when other key is pressed', () => {
 		action = dismissable(node)
 
