@@ -1,5 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import DataEditor from '../src/DataEditor.svelte'
 import layout from './lib/fixtures/input-layout.json'
 import schema from './lib/fixtures/input-schema.json'
@@ -49,6 +50,17 @@ describe('DataEditor.svelte', () => {
 			using: { custom: CustomField }
 		})
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+
+	it('should handle changes', async () => {
+		const { container, component } = render(DataEditor, { value })
+		expect(container).toBeTruthy()
+		component.$set({ schema })
+		await tick()
+		expect(container).toMatchSnapshot()
+		component.$set({ layout })
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 })

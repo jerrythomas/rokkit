@@ -139,12 +139,41 @@ describe('FieldLayout.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render items using custom component', () => {
-		const schema = { elements: [inputNameSchema, customFieldSchema] }
-		let value = { name: 'John', title: 'Mr.' }
+	it('should render items using custom component', async () => {
+		let schema = {
+			elements: [
+				{
+					component: 'custom',
+					using: { components: { custom: CustomField } },
+					props: { label: 'The name', type: 'string', name: 'alias' }
+				}
+			]
+		}
+		let value = { name: 'John' }
+		const { container, component } = render(Register, {
+			render: FieldLayout,
+			properties: { value, schema }
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		// handle schema change
+		delete schema.elements[0]['key']
+		component.$set({ properties: { value, schema } })
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
+	it('should render items using default component', async () => {
+		let schema = {
+			elements: [
+				{
+					component: 'custom'
+				}
+			]
+		}
+		let value = { name: 'John' }
 		const { container } = render(Register, {
 			render: FieldLayout,
-			using: { editors: { custom: CustomField } },
 			properties: { value, schema }
 		})
 		expect(container).toBeTruthy()
