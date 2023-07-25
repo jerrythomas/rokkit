@@ -1,9 +1,8 @@
-// pannable.js
 /**
  * Handle drag and move events
  *
- * @param {*} node
- * @returns
+ * @param {HTMLElement} node
+ * @returns {import('./types').SvelteActionReturn}
  */
 export function pannable(node) {
 	let x

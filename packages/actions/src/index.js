@@ -1,3 +1,4 @@
+import './types'
 export { fillable } from './fillable'
 export { pannable } from './pannable'
 export { navigable } from './navigable'

@@ -1,17 +1,8 @@
 /**
- * A part of the path to node in hierarchy
- *
- * @typedef PathFragment
- * @property {integer}                             index  - Index to item in array
- * @property {Array<*>}                            items  - Array of items
- * @property {import('../constants').FieldMapping} fields - Field mapping for the data
- */
-
-/**
  * Check if the current item is a parent
  *
  * @param {*} item
- * @param {import('../constants').FieldMapping} fields
+ * @param {import('@rokkit/core').FieldMapping} fields
  * @returns {boolean}
  */
 export function hasChildren(item, fields) {
@@ -26,7 +17,7 @@ export function hasChildren(item, fields) {
  * Check if the current item is a parent and is expanded
  *
  * @param {*} item
- * @param {import('../constants').FieldMapping} fields
+ * @param {import('@rokkit/core').FieldMapping} fields
  * @returns {boolean}
  */
 export function isExpanded(item, fields) {
@@ -42,7 +33,7 @@ export function isExpanded(item, fields) {
  * Verify if at least one item has children
  *
  * @param {Array<*>} items
- * @param {import('../constants').FieldMapping} fields
+ * @param {import('@rokkit/core').FieldMapping} fields
  * @returns {boolean}
  */
 export function isNested(items, fields) {
@@ -55,7 +46,7 @@ export function isNested(items, fields) {
 /**
  * Navigate to last visible child in the hirarchy starting with the provided path
  *
- * @param {Array<PathFragment>} path - path to a node in the hierarchy
+ * @param {Array<import('./types').PathFragment>} path - path to a node in the hierarchy
  * @returns
  */
 export function navigateToLastVisibleChild(path) {
@@ -78,9 +69,9 @@ export function navigateToLastVisibleChild(path) {
 /**
  * Navigate to the next item
  *
- * @param {Array<PathFragment>}                 path  - path to a node in the hierarchy
+ * @param {Array<import('./types').PathFragment>}                 path  - path to a node in the hierarchy
  * @param {Array<*>}                            items - array of items
- * @param {import('../constants').FieldMapping} fields - field mapping
+ * @param {import('@rokkit/core').FieldMapping} fields - field mapping
  * @returns
  */
 export function moveNext(path, items, fields) {
@@ -115,7 +106,7 @@ export function moveNext(path, items, fields) {
 /**
  * Navigate to the previous item
  *
- * @param {Array<PathFragment>} path  - path to a node in the hierarchy
+ * @param {Array<import('./types').PathFragment>} path  - path to a node in the hierarchy
  * @returns
  */
 export function movePrevious(path) {
@@ -139,7 +130,7 @@ export function movePrevious(path) {
  *
  * @param {Array<integer>} indices
  * @param {Array<*>} items
- * @param {import('../constants').FieldMapping} fields
+ * @param {import('@rokkit/core').FieldMapping} fields
  * @returns
  */
 export function pathFromIndices(indices, items, fields) {
@@ -160,15 +151,34 @@ export function pathFromIndices(indices, items, fields) {
 	return path
 }
 
+/**
+ * Get the indices from the path
+ * @param {Array<import('./types').PathFragment>} path
+ * @returns {Array<integer>}
+ */
 export function indicesFromPath(path) {
 	return path.map(({ index }) => index)
 }
+
+/**
+ * Get the current node from the path
+ * @param {Array<import('./types').PathFragment>} path
+ * @returns {*}
+ */
 export function getCurrentNode(path) {
 	if (path.length === 0) return null
 	const lastIndex = path.length - 1
 	return path[lastIndex].items[path[lastIndex].index]
 }
 
+/**
+ * Find the item in the hierarchy using the indices
+ *
+ * @param {Array<*>} items
+ * @param {Array<integer>} indices
+ * @param {import('@rokkit/core').FieldMapping} fields
+ * @returns {*}
+ */
 export function findItem(items, indices, fields) {
 	let item = items[indices[0]]
 	let levelFields = fields

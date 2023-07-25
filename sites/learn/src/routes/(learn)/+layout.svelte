@@ -25,6 +25,7 @@
 			if (!$media.large) site.set({ ...$site, sidebar: false })
 		}
 	}
+
 	$: if (!value || value.route != $page.params.slug){
 			value = findValueFromPath($page.params.slug, data.menu, fields)
 		}

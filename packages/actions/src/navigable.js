@@ -1,3 +1,10 @@
+/**
+ * A svelte action function that captures keyboard evvents and emits event for corresponding movements.
+ *
+ * @param {HTMLElement} node
+ * @param {import('./types').NavigableOptions} options
+ * @returns {import('./types').SvelteActionReturn}
+ */
 export function navigable(
 	node,
 	{ horizontal = true, nested = false, enabled = true } = {}
