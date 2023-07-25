@@ -15,10 +15,10 @@
 	}
 </script>
 
-<aside class="h-full w-full flex flex-col border-r border-r-skin-subtle">
+<aside class="h-full w-full flex flex-col border-r border-r-skin-inset">
 	{#if $story}
 		<nav
-			class="box-border h-10 flex items-center gap-1 border-b border-b-skin-subtle text-sm"
+			class="box-border h-10 flex items-center gap-1 border-b border-b-skin-inset text-sm"
 		>
 			{#if !$site.sidebar}
 				<Icon

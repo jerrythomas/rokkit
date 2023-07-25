@@ -26,12 +26,12 @@
 	class:lg:relative={$site.sidebar}
 >
 	<nav
-		class="h-10 w-full flex items-center gap-2 border-b border-b-skin-subtle"
+		class="h-10 w-full flex items-center gap-2 border-b border-b-skin-inset"
 	>
 		<Icon
 			name="i-rokkit:action-cross"
 			role="button"
-			class="border-r border-r-skin-subtle"
+			class="border-r border-r-skin-inset"
 			on:click={() => ($site.sidebar = false)}
 		/>
 		<input
@@ -47,7 +47,7 @@
 <style>
 	aside {
 		@apply h-full z-5 overflow-auto;
-		@apply bg-skin-base border-r border-skin-subtle;
+		@apply bg-skin-base border-r border-skin-inset;
 		@apply transform ease-in-out;
 	}
 </style>
