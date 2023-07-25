@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Legend.svelte > should render 1`] = `
+<body>
+  <div>
+    <ul
+      class="flex flex-col"
+    >
+      <p>
+        undefined
+      </p>
+       
+    </ul>
+  </div>
+</body>
+`;

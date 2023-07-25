@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { colorBrewer } from '../lib/colors'
+	import { colorBrewer } from '../lib/palette'
 
 	let chart = getContext('chart')
 

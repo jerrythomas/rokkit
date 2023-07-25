@@ -2,7 +2,7 @@
 	import { aggregate, getScales } from '../lib/utils'
 
 	import BoxPlot from './BoxPlot.svelte'
-	import ScatterPlot from './old_ScatterPlot.svelte'
+	import ScatterPlot from './ScatterPlot.svelte'
 
 	export let data
 	export let width

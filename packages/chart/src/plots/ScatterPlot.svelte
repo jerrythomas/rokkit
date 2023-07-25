@@ -1,6 +1,6 @@
 <script>
 	import { clamp } from 'yootils'
-	import Symbol from '../chart/Symbol.svelte'
+	import {Symbol} from '@rokkit/molecules'
 	import { getContext } from 'svelte'
 
 	const chart = getContext('chart')

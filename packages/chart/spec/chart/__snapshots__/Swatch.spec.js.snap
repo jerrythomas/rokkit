@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Swatch.svelte > should render 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col leading-loose"
+    >
+       
+      <svg
+        class="cursor-pointer"
+        viewBox="0 0 10 NaN"
+        width="100%"
+      >
+        
+        
+        <defs />
+      </svg>
+    </div>
+  </div>
+</body>
+`;

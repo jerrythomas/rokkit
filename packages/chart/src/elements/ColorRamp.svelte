@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { uniqueId } from '../lib/utils'
+	import { id as uniqueId } from '@rokkit/core'
 
 	export let x = 0
 	export let y = 0

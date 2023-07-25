@@ -3,8 +3,7 @@
 
 	import { swatch } from '../lib/utils'
 	import { clamp } from 'yootils'
-	import Symbol from './Symbol.svelte'
-	import PatternDefs from './PatternDefs.svelte'
+	import {Symbol, DefinePatterns} from '@rokkit/molecules'
 
 	const dispatch = createEventDispatcher()
 
@@ -88,6 +87,6 @@
 				on:focus={forwardEvent('focus', i + start)}
 			/>
 		{/each}
-		<PatternDefs patterns={items} />
+		<DefinePatterns patterns={items} />
 	</svg>
 </div>

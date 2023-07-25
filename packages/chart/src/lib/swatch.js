@@ -5,7 +5,7 @@ import { writable } from 'svelte/store'
 export const swatchStore = writable({})
 
 // A set of 7 should be sufficient
-// array of names and patterns
-// array of names and shapes
-// array of colors
-// array of shades of one color.
+// set of patterns
+// set of shapes
+// set of colors
+// fill, stroke, text

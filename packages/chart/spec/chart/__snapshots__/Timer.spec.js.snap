@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Timer.svelte > should render 1`] = `
+<body>
+  <div>
+    <div
+      class="timer flex flex-row gap-2"
+    >
+      <button>
+        play
+      </button>
+       
+      <button>
+        pause
+      </button>
+       
+      <button>
+        reset
+      </button>
+    </div>
+  </div>
+</body>
+`;
