@@ -66,18 +66,6 @@ export function themeColors(modifier = 'none') {
 	return colors
 }
 
-// export function stateIconsFromNames(names) {
-// 	return names
-// 		.map((k) => [...k.split('-'), k])
-// 		.reduce(
-// 			(acc, [element, state, icon]) => ({
-// 				...acc,
-// 				[element]: { ...acc[element], [state]: icon }
-// 			}),
-// 			{}
-// 		)
-// }
-
 export function iconShortcuts(icons, collection, variants) {
 	const suffix = variants ? `-${variants}` : ''
 	const shortcuts = !collection

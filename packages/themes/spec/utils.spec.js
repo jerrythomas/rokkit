@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { shadesOf, stateColors, themeColors, iconShortcuts } from './utils'
+import { shadesOf, stateColors, themeColors, iconShortcuts } from '../src/utils'
 // import {  } from './constants'
 
 describe('utils', () => {

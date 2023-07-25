@@ -6,7 +6,8 @@ import {
 	hasChildren,
 	pathFromIndices,
 	indicesFromPath,
-	getCurrentNode
+	getCurrentNode,
+	isExpanded
 } from './hierarchy'
 
 /**
@@ -31,6 +32,7 @@ export function navigator(node, options) {
 
 	if (!enabled) return { destroy: () => {} }
 
+	// todo: Update should handle selection value change
 	const update = (options) => {
 		const previousNode = currentNode
 		items = options.items
@@ -41,8 +43,9 @@ export function navigator(node, options) {
 			const indices = indicesFromPath(path)
 			// await tick()
 			let current = node.querySelector('#' + idPrefix + indices.join('-'))
-			if (current)
+			if (current) {
 				current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+			}
 		}
 	}
 
@@ -50,7 +53,6 @@ export function navigator(node, options) {
 		const previousNode = currentNode
 		path = moveNext(path, items, fields)
 		currentNode = getCurrentNode(path)
-
 		if (previousNode !== currentNode) moveTo(node, path, currentNode, idPrefix)
 	}
 	const previous = () => {
@@ -63,31 +65,14 @@ export function navigator(node, options) {
 		}
 	}
 	const select = () => {
-		if (currentNode)
-			node.dispatchEvent(
-				new CustomEvent('select', {
-					detail: {
-						path: indicesFromPath(path),
-						node: currentNode
-					}
-				})
-			)
+		if (currentNode) emit('select', node, indicesFromPath(path), currentNode)
 	}
 	const collapse = () => {
 		if (currentNode) {
-			const collapse =
-				hasChildren(currentNode, path[path.length - 1].fields) &&
-				currentNode[path[path.length - 1].fields.isOpen]
+			const collapse = isExpanded(currentNode, path[path.length - 1].fields)
 			if (collapse) {
 				currentNode[path[path.length - 1].fields.isOpen] = false
-				node.dispatchEvent(
-					new CustomEvent('collapse', {
-						detail: {
-							path: indicesFromPath(path),
-							node: currentNode
-						}
-					})
-				)
+				emit('collapse', node, indicesFromPath(path), currentNode)
 			} else if (path.length > 0) {
 				path = path.slice(0, -1)
 				currentNode = getCurrentNode(path)
@@ -98,14 +83,7 @@ export function navigator(node, options) {
 	const expand = () => {
 		if (currentNode && hasChildren(currentNode, path[path.length - 1].fields)) {
 			currentNode[path[path.length - 1].fields.isOpen] = true
-			node.dispatchEvent(
-				new CustomEvent('expand', {
-					detail: {
-						path: indicesFromPath(path),
-						node: currentNode
-					}
-				})
-			)
+			emit('expand', node, indicesFromPath(path), currentNode)
 		}
 	}
 
@@ -148,23 +126,8 @@ export function navigator(node, options) {
 				const event = currentNode[path[path.length - 1].fields.isOpen]
 					? 'expand'
 					: 'collapse'
-				node.dispatchEvent(
-					new CustomEvent(event, {
-						detail: {
-							path: indices,
-							node: currentNode
-						}
-					})
-				)
-			}
-			node.dispatchEvent(
-				new CustomEvent('select', {
-					detail: {
-						path: indices,
-						node: currentNode
-					}
-				})
-			)
+				emit(event, node, indices, currentNode)
+			} else if (currentNode) emit('select', node, indices, currentNode)
 		}
 	}
 
@@ -182,18 +145,10 @@ export function navigator(node, options) {
 
 export function moveTo(node, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
-	// await tick()
 	let current = node.querySelector('#' + idPrefix + indices.join('-'))
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
-	node.dispatchEvent(
-		new CustomEvent('move', {
-			detail: {
-				path: indices,
-				node: currentNode
-			}
-		})
-	)
+	emit('move', node, indices, currentNode)
 }
 
 export function findParentWithDataPath(element, root) {
@@ -205,4 +160,15 @@ export function findParentWithDataPath(element, root) {
 	}
 
 	return parent !== root ? parent : null
+}
+
+function emit(event, node, indices, currentNode) {
+	node.dispatchEvent(
+		new CustomEvent(event, {
+			detail: {
+				path: indices,
+				node: currentNode
+			}
+		})
+	)
 }

@@ -21,8 +21,10 @@
 	let indices = []
 
 	function handle(event) {
-		value = event.detail.node
-		indices = event.detail.path
+		if (['select','move'].includes(event.type) ) {
+			value = event.detail.node
+		  indices = event.detail.path
+		}
 		if (['collapse', 'expand'].includes(event.type)) {
 			items = items
 		}

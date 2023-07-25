@@ -25,7 +25,6 @@
 	}
 
 	function handleThemeChange(event) {
-		console.log('select', event.detail)
 		theme.set({ ...current, name: event.detail.name })
 	}
 </script>
@@ -33,8 +32,7 @@
 <Select
 	options={themes}
 	value={currentTheme}
-	fields={{ text: 'title', id: 'name' }}
-	useItemAsValue
+	fields={{ text: 'title', value: 'name' }}
 	on:select={handleThemeChange}
 />
 <theme-mode
