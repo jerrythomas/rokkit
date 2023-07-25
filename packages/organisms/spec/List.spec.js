@@ -1,8 +1,9 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
+import { tick } from 'svelte'
 import MockItem from './mocks/MockItem.svelte'
 import List from '../src/List.svelte'
-import { toHaveBeenDispatchedWith } from 'validators'
+import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
 
 expect.extend({ toHaveBeenDispatchedWith })
 
@@ -40,14 +41,20 @@ describe('List.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render with alternate class', () => {
-		const { container } = render(List, {
+	it('should render with alternate class', async () => {
+		const { container, component } = render(List, {
 			items: [{ num: 1 }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
 			class: 'myClass'
 		})
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		let classes = Array.from(container.querySelector('list').classList)
+		expect(classes).toContain('myClass')
+		component.$set({ class: 'myOtherClass' })
+		await tick()
+		classes = Array.from(container.querySelector('list').classList)
+		expect(classes).not.toContain('myClass')
+		expect(classes).toContain('myOtherClass')
 	})
 	it('should render items using custom component', () => {
 		const { container } = render(List, {
@@ -75,14 +82,20 @@ describe('List.svelte', () => {
 		container.querySelectorAll('list item').forEach(async (item, index) => {
 			selected = { item: items[index], indices: [index] }
 			await fireEvent.click(item)
-			expect(component.$$.ctx[component.$$.props.value]).toEqual(selected.item)
+			expect(getPropertyValue(component, 'value')).toEqual(selected.item)
 			expect(onSelect).toHaveBeenCalled()
 			expect(onSelect).toHaveBeenDispatchedWith(selected)
 		})
 	})
-	it('should pass change event', () => {})
-	it('should add an item', () => {})
-	it('should remove selected item', () => {})
-	it('should clear selection', () => {})
-	it('should filter list by search string', () => {})
+	it('should render a list of values with hierarchy', async () => {
+		const { container, component } = render(List, {
+			items: [1, 2, 3],
+			hierarchy: [0]
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+		component.$set({ hierarchy: [0, 1] })
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
 })

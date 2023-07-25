@@ -124,4 +124,33 @@ describe('InputField.svelte', () => {
 		expect(icon).toBeTruthy()
 		expect(Array.from(icon.classList)).toContain('other')
 	})
+
+	it('should handle property changes', async () => {
+		const { container, component } = render(InputField)
+		let field = container.querySelector('field')
+
+		component.$set({ name: 'name' })
+		await tick()
+		expect(field.getAttribute('aria-label')).toEqual('name')
+
+		component.$set({ label: 'label' })
+		await tick()
+		expect(field.getAttribute('aria-label')).toEqual('label')
+
+		component.$set({ description: 'description' })
+		await tick()
+		expect(field.getAttribute('aria-label')).toEqual('description')
+
+		component.$set({ type: 'string', minlength: 5 })
+		await tick()
+		let input = container.querySelector('input')
+		expect(input.getAttribute('type')).toEqual('text')
+		expect(input.getAttribute('minlength')).toEqual('5')
+
+		component.$set({ icon: 'other' })
+		await tick()
+		let icon = container.querySelector('i')
+		expect(icon).toBeTruthy()
+		expect(Array.from(icon.classList)).toContain('other')
+	})
 })
