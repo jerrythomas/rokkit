@@ -6,7 +6,6 @@
 	export { className as class }
 	export let items
 	export let icons = defaultStateIcons.validity
-	$: console.log(icons)
 </script>
 
 <div class="flex flex-col {className}">
