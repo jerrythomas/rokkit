@@ -643,35 +643,47 @@ exports[`FieldLayout.svelte > should render items using custom component 1`] = `
       aria-label=""
       class="vertical "
     >
-      <input-field
-        class="flex flex-col input-text "
-      >
-        <label
-          for="name"
-        >
-          Name
-        </label>
-         
-        <field
-          aria-label="Name"
-          class="w-full flex flex-row items-center"
-        >
-           
-          <input
-            id="name"
-            name="name"
-            type="text"
-          />
-          
-          
-        </field>
-         
-      </input-field>
-      
        
-      <p>
-        Mr.
-      </p>
+      
+      
+      
+      
+    </field-layout>
+    
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render items using custom component 2`] = `
+<body>
+  <div>
+    <field-layout
+      aria-label=""
+      class="vertical "
+    >
+       
+      
+      
+      
+      
+    </field-layout>
+    
+    
+    
+  </div>
+</body>
+`;
+
+exports[`FieldLayout.svelte > should render items using default component 1`] = `
+<body>
+  <div>
+    <field-layout
+      aria-label=""
+      class="vertical "
+    >
+       
       
       
       
