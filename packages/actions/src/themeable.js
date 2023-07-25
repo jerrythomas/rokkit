@@ -1,7 +1,7 @@
 import { theme } from '@rokkit/stores'
 
 /**
- * Sets theme level classes based on the theme store
+ * A svelte action function that adds theme classes to the element
  *
  * @param {HTMLElement} node
  */
@@ -16,6 +16,14 @@ export function themable(node) {
 	})
 }
 
+/**
+ * Switch the class on the node
+ *
+ * @param {HTMLElement} node
+ * @param {string} current
+ * @param {string} previous
+ * @returns
+ */
 function switchClass(node, current, previous) {
 	if (current && current !== previous) {
 		node.classList.remove(previous)

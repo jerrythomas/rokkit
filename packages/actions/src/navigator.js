@@ -11,28 +11,21 @@ import {
 } from './hierarchy'
 
 /**
- * @typedef NavigatorOptions
- * @property {Array<*>}     items           - An array containing the data set to navigate
- * @property {boolean}      [vertical=true] - Identifies whether navigation shoud be vertical or horizontal
- * @property {string}       [idPrefix='id-'] - id prefix used for identifying individual node
- * @property {import('../constants').FieldMapping} fields - Field mapping to identify attributes to be used for state and identification of children
- */
-
-/**
  * Keyboard navigation for Lists and NestedLists. The data is either nested or not and is not
  * expected to switch from nested to simple list or vice-versa.
  *
- * @param {HTMLElement}      node    - The node on which the action is to be used on
- * @param {NavigatorOptions} options - Configuration options for the action
+ * @param {HTMLElement}                        element - Root element for the actionn
+ * @param {import('./types').NavigatorOptions} options - Configuration options for the action
  * @returns
  */
-export function navigator(node, options) {
+export function navigator(element, options) {
 	const { fields, enabled = true, vertical = true, idPrefix = 'id-' } = options
 	let items, path, currentNode
 
 	if (!enabled) return { destroy: () => {} }
 
 	// todo: Update should handle selection value change
+	// should we wait a tick before updating?
 	const update = (options) => {
 		const previousNode = currentNode
 		items = options.items
@@ -41,8 +34,7 @@ export function navigator(node, options) {
 
 		if (previousNode !== currentNode && currentNode) {
 			const indices = indicesFromPath(path)
-			// await tick()
-			let current = node.querySelector('#' + idPrefix + indices.join('-'))
+			let current = element.querySelector('#' + idPrefix + indices.join('-'))
 			if (current) {
 				current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 			}
@@ -53,26 +45,28 @@ export function navigator(node, options) {
 		const previousNode = currentNode
 		path = moveNext(path, items, fields)
 		currentNode = getCurrentNode(path)
-		if (previousNode !== currentNode) moveTo(node, path, currentNode, idPrefix)
+		if (previousNode !== currentNode)
+			moveTo(element, path, currentNode, idPrefix)
 	}
+
 	const previous = () => {
 		const previousNode = currentNode
 		path = movePrevious(path)
 		if (path.length > 0) {
 			currentNode = getCurrentNode(path)
 			if (previousNode !== currentNode)
-				moveTo(node, path, currentNode, idPrefix)
+				moveTo(element, path, currentNode, idPrefix)
 		}
 	}
 	const select = () => {
-		if (currentNode) emit('select', node, indicesFromPath(path), currentNode)
+		if (currentNode) emit('select', element, indicesFromPath(path), currentNode)
 	}
 	const collapse = () => {
 		if (currentNode) {
 			const collapse = isExpanded(currentNode, path[path.length - 1].fields)
 			if (collapse) {
 				currentNode[path[path.length - 1].fields.isOpen] = false
-				emit('collapse', node, indicesFromPath(path), currentNode)
+				emit('collapse', element, indicesFromPath(path), currentNode)
 			} else if (path.length > 0) {
 				path = path.slice(0, -1)
 				currentNode = getCurrentNode(path)
@@ -83,7 +77,7 @@ export function navigator(node, options) {
 	const expand = () => {
 		if (currentNode && hasChildren(currentNode, path[path.length - 1].fields)) {
 			currentNode[path[path.length - 1].fields.isOpen] = true
-			emit('expand', node, indicesFromPath(path), currentNode)
+			emit('expand', element, indicesFromPath(path), currentNode)
 		}
 	}
 
@@ -109,7 +103,7 @@ export function navigator(node, options) {
 	}
 
 	const handleClick = (event) => {
-		let target = findParentWithDataPath(event.target, node)
+		let target = findParentWithDataPath(event.target, element)
 		let indices = !target
 			? []
 			: target.dataset.path
@@ -126,31 +120,46 @@ export function navigator(node, options) {
 				const event = currentNode[path[path.length - 1].fields.isOpen]
 					? 'expand'
 					: 'collapse'
-				emit(event, node, indices, currentNode)
-			} else if (currentNode) emit('select', node, indices, currentNode)
+				emit(event, element, indices, currentNode)
+			} else if (currentNode) emit('select', element, indices, currentNode)
 		}
 	}
 
-	node.addEventListener('keydown', handleKeyDown)
-	node.addEventListener('click', handleClick)
+	element.addEventListener('keydown', handleKeyDown)
+	element.addEventListener('click', handleClick)
 
 	return {
 		update,
 		destroy() {
-			node.removeEventListener('keydown', handleKeyDown)
-			node.removeEventListener('click', handleClick)
+			element.removeEventListener('keydown', handleKeyDown)
+			element.removeEventListener('click', handleClick)
 		}
 	}
 }
 
-export function moveTo(node, path, currentNode, idPrefix) {
+/**
+ * Move to the element with the given path
+ *
+ * @param {HTMLElement} element
+ * @param {*} path
+ * @param {*} currentNode
+ * @param {*} idPrefix
+ */
+export function moveTo(element, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
-	let current = node.querySelector('#' + idPrefix + indices.join('-'))
+	let current = element.querySelector('#' + idPrefix + indices.join('-'))
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
-	emit('move', node, indices, currentNode)
+	emit('move', element, indices, currentNode)
 }
 
+/**
+ * Find the parent element with data-path attribute
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement} root
+ * @returns {HTMLElement}
+ */
 export function findParentWithDataPath(element, root) {
 	if (element.hasAttribute('data-path')) return element
 	let parent = element.parentNode
@@ -162,12 +171,20 @@ export function findParentWithDataPath(element, root) {
 	return parent !== root ? parent : null
 }
 
-function emit(event, node, indices, currentNode) {
-	node.dispatchEvent(
+/**
+ * Emit a custom event on the element with the path and node as detail
+ *
+ * @param {string} event
+ * @param {HTMLElement} element
+ * @param {Array<integer>} indices
+ * @param {*} node
+ */
+function emit(event, element, indices, node) {
+	element.dispatchEvent(
 		new CustomEvent(event, {
 			detail: {
 				path: indices,
-				node: currentNode
+				node: node
 			}
 		})
 	)

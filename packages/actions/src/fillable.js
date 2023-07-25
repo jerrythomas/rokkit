@@ -1,14 +1,8 @@
 /**
- * @typedef FillOptions
- * @property {Array<string>} options available options to fill
- * @property {integer} current       index of option to be filled
- * @property {boolean} check         validate filled values
- */
-/**
  * Action for filling a <del>?</del> element in html block.
  *
- * @param {*} node
- * @param {FillOptions} options
+ * @param {HTMLElement} node
+ * @param {import('./types').FillOptions} options
  * @returns
  */
 export function fillable(node, { options, current, check }) {
@@ -43,8 +37,8 @@ export function fillable(node, { options, current, check }) {
 /**
  * Initialize empty fillable element style and add listener for click
  *
- * @param {*} blanks
- * @param {*} click
+ * @param {HTMLCollection} blanks
+ * @param {EventListener} click
  */
 function initialize(blanks, click) {
 	Object.keys(blanks).map((ref) => {
@@ -58,8 +52,8 @@ function initialize(blanks, click) {
 /**
  * Fill current blank with provided option
  *
- * @param {*} blanks
- * @param {*} options
+ * @param {HTMLCollection} blanks
+ * @param {Array<import('./types.js').FillableData>} options
  * @param {*} current
  */
 function fill(blanks, options, current) {
@@ -76,8 +70,8 @@ function fill(blanks, options, current) {
 /**
  * Clear all fillable elements
  *
- * @param {*} event
- * @param {*} node
+ * @param {EventListener} event
+ * @param {HTMLElement} node
  */
 function clear(event, node) {
 	event.target.innerHTML = '?'
@@ -98,8 +92,8 @@ function clear(event, node) {
 /**
  * Validate the filled values
  *
- * @param {*} blanks
- * @param {*} data
+ * @param {HTMLCollection} blanks
+ * @param {import('./types').FillOptions} data
  */
 function validate(blanks, data) {
 	Object.keys(blanks).map((ref) => {

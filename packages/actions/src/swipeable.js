@@ -1,3 +1,11 @@
+/**
+ * A svelte action function that captures swipe actions and emits event for corresponding movements.
+ *
+ * @param {HTMLElement} node
+ * @param {import(./types).SwipeableOptions} options
+ * @returns {import('./types').SvelteActionReturn}
+ */
+
 export function swipeable(
 	node,
 	{
