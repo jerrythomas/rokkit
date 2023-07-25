@@ -17,32 +17,52 @@ describe('Select.svelte', () => {
 		events.map((e) => (handlers[e] = vi.fn()))
 	})
 
-	it('should render using default field mapping', () => {
+	it('should render string array', async () => {
 		const { container } = render(Select, { options: ['a', 'b', 'c'] })
 		expect(container).toBeTruthy()
+		await fireEvent.click(container.querySelector('selected-item'))
+		await tick()
+		expect(container).toMatchSnapshot()
+		let items = container.querySelectorAll('input-select list item')
+		expect(items.length).toEqual(3)
+		await fireEvent.click(items[1])
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render items using field mappings', () => {
+
+	it('should render items using field mapping', async () => {
 		const { container } = render(Select, {
 			options: [{ text: 1 }, { text: 2 }, { text: 3 }]
 		})
 		expect(container).toBeTruthy()
+		await fireEvent.click(container.querySelector('selected-item'))
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render items using custom mapping', () => {
+
+	it('should render items using custom mapping', async () => {
+		const options = [{ num: 1 }, { num: 2 }, { num: 3 }]
 		const { container } = render(Select, {
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+			options,
+			value: options[1],
 			fields: { text: 'num' }
 		})
 		expect(container).toBeTruthy()
+		await fireEvent.click(container.querySelector('selected-item'))
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render items using default item when data is invalid', () => {
+
+	it('should render items using default component, when invalid component is provided', async () => {
+		const options = [{ num: 1 }, { num: 2 }, { num: 3 }]
 		const { container } = render(Select, {
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+			options,
+			value: options[1],
 			fields: { text: 'num', component: 'num' }
 		})
 		expect(container).toBeTruthy()
+		await fireEvent.click(container.querySelector('selected-item'))
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
@@ -61,6 +81,7 @@ describe('Select.svelte', () => {
 		expect(classes).not.toContain('myClass')
 		expect(classes).toContain('myClass2')
 	})
+
 	it('should render items using custom component', async () => {
 		const options = [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }]
 		const { container, component } = render(Select, {
@@ -103,14 +124,13 @@ describe('Select.svelte', () => {
 		expect(handlers.change).toHaveBeenDispatchedWith(options[1])
 		expect(handlers.select).toHaveBeenDispatchedWith(options[1])
 		await tick()
-		expect(container.querySelector('selected-item item')).toMatchSnapshot()
-		expect(container.querySelector('selected-item icon')).toMatchSnapshot()
-
-		// On selection the list should close, so items should not be visible
-		// expect(container.querySelector('scroll')).toBeFalsy()
+		const classes = Array.from(
+			container.querySelector('input-select').classList
+		)
+		expect(classes).not.toContain('open')
 	})
 
-	it('should open/close drop down on focus and blur', async () => {
+	it('should open/close drop down on click and blur', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
 			options: options,
@@ -119,16 +139,46 @@ describe('Select.svelte', () => {
 
 		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
 
-		expect(container.querySelector('selected-item')).toMatchSnapshot()
-		const select = container.querySelector('selected-item')
-		await fireEvent.focus(select)
-		await fireEvent.keyDown(select, { key: 'ArrowDown' })
-		await tick()
-		expect(container.querySelector('selected-item')).toMatchSnapshot()
+		const wrapper = container.querySelector('input-select')
+		await fireEvent.click(wrapper.querySelector('selected-item'))
+		await fireEvent.focus(wrapper)
 
-		await fireEvent.blur(select)
 		await tick()
-		expect(container.querySelector('selected-item')).toMatchSnapshot()
+		let classes = Array.from(wrapper.classList)
+		expect(classes).toContain('open')
+		expect(wrapper).toMatchSnapshot()
+
+		await fireEvent.blur(wrapper)
+		await tick()
+		classes = Array.from(wrapper.classList)
+		expect(classes).not.toContain('open')
+		expect(wrapper).toMatchSnapshot()
+	})
+
+	it('should close drop down on escape key', async () => {
+		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
+		const { container, component } = render(Select, {
+			options: options,
+			value: options[1]
+		})
+
+		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+
+		const wrapper = container.querySelector('input-select')
+		await fireEvent.click(wrapper.querySelector('selected-item'))
+
+		await tick()
+		let classes = Array.from(wrapper.classList)
+		expect(classes).toContain('open')
+		expect(wrapper).toMatchSnapshot()
+
+		await fireEvent.keyUp(wrapper, {
+			key: 'Escape'
+		})
+		await tick()
+		classes = Array.from(wrapper.classList)
+		expect(classes).not.toContain('open')
+		expect(wrapper).toMatchSnapshot()
 	})
 
 	it('should handle option changes', async () => {
@@ -140,7 +190,7 @@ describe('Select.svelte', () => {
 
 		expect(container.querySelector('selected-item')).toMatchSnapshot()
 		const select = container.querySelector('selected-item')
-		await fireEvent.focus(select)
+
 		await fireEvent.keyDown(select, { key: 'ArrowDown' })
 		await tick()
 		expect(container.querySelector('scroll')).toMatchSnapshot()
@@ -159,7 +209,7 @@ describe('Select.svelte', () => {
 
 		expect(container.querySelector('selected-item')).toMatchSnapshot()
 		const select = container.querySelector('selected-item')
-		await fireEvent.focus(select)
+
 		await fireEvent.keyDown(select, { key: 'ArrowDown' })
 		await tick()
 		await fireEvent.keyDown(select, { key: 'ArrowDown' })
@@ -170,7 +220,6 @@ describe('Select.svelte', () => {
 		expect(getPropertyValue(component, 'value')).toEqual(options[2])
 		expect(container.querySelector('selected-item')).toMatchSnapshot()
 
-		await fireEvent.focus(select)
 		await fireEvent.keyDown(select, { key: 'ArrowUp' })
 		await tick()
 		await fireEvent.keyDown(select, { key: 'ArrowUp' })
@@ -179,7 +228,5 @@ describe('Select.svelte', () => {
 		await tick()
 		expect(getPropertyValue(component, 'value')).toEqual(options[1])
 		expect(container.querySelector('selected-item')).toMatchSnapshot()
-
-		// expect(container.querySelector('scroll')).toMatchSnapshot()
 	})
 })

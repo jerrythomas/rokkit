@@ -1,5 +1,197 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Select.svelte > should close drop down on escape key 1`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <item>
+      
+       
+      <p>
+        b
+      </p>
+      
+    </item>
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p>
+          a
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="true"
+        class="item is-selected"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p>
+          b
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p>
+          c
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
+exports[`Select.svelte > should close drop down on escape key 2`] = `
+<input-select
+  class="flex flex-col relative"
+  tabindex="0"
+>
+  <selected-item
+    aria-selected="true"
+    class="w-full flex items-center"
+    role="option"
+    tabindex="-1"
+  >
+    <item>
+      
+       
+      <p>
+        b
+      </p>
+      
+    </item>
+     
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+    <icon
+      aria-label="closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p>
+          a
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="true"
+        class="item is-selected"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p>
+          b
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p>
+          c
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
+`;
+
 exports[`Select.svelte > should emit the change event when the value changes 1`] = `
 <body>
   <div>
@@ -365,112 +557,196 @@ exports[`Select.svelte > should handle option changes 3`] = `
 </scroll>
 `;
 
-exports[`Select.svelte > should open/close drop down on focus and blur 1`] = `
-<selected-item
-  aria-selected="true"
-  class="w-full flex items-center"
-  role="option"
-  tabindex="-1"
+exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
+<input-select
+  class="flex flex-col relative open"
+  tabindex="0"
 >
-  <item>
-    
-     
-    <p>
-      b
-    </p>
-    
-  </item>
-   
-  <icon
-    aria-label="closed"
-    class="flex flex-shrink-0 items-center justify-center "
-    role="button"
+  <selected-item
+    aria-selected="false"
+    class="w-full flex items-center"
+    role="option"
     tabindex="-1"
   >
-    <i
+    <item>
+      
+       
+      <p>
+        b
+      </p>
+      
+    </item>
+     
+    <iframe
       aria-hidden="true"
-      class="selector-closed"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
     />
-  </icon>
-  <iframe
-    aria-hidden="true"
-    src="about:blank"
-    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-    tabindex="-1"
-  />
-</selected-item>
+    <icon
+      aria-label="opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p>
+          a
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="true"
+        class="item is-selected"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p>
+          b
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p>
+          c
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
 `;
 
-exports[`Select.svelte > should open/close drop down on focus and blur 2`] = `
-<selected-item
-  aria-selected="false"
-  class="w-full flex items-center"
-  role="option"
-  tabindex="-1"
+exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
+<input-select
+  class="flex flex-col relative"
+  tabindex="0"
 >
-  <item>
-    
-     
-    <p>
-      b
-    </p>
-    
-  </item>
-   
-  <iframe
-    aria-hidden="true"
-    src="about:blank"
-    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-    tabindex="-1"
-  />
-  <icon
-    aria-label="opened"
-    class="flex flex-shrink-0 items-center justify-center "
-    role="button"
+  <selected-item
+    aria-selected="true"
+    class="w-full flex items-center"
+    role="option"
     tabindex="-1"
   >
-    <i
-      aria-hidden="true"
-      class="selector-opened"
-    />
-  </icon>
-</selected-item>
-`;
-
-exports[`Select.svelte > should open/close drop down on focus and blur 3`] = `
-<selected-item
-  aria-selected="false"
-  class="w-full flex items-center"
-  role="option"
-  tabindex="-1"
->
-  <item>
-    
+    <item>
+      
+       
+      <p>
+        b
+      </p>
+      
+    </item>
      
-    <p>
-      b
-    </p>
-    
-  </item>
-   
-  <iframe
-    aria-hidden="true"
-    src="about:blank"
-    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-    tabindex="-1"
-  />
-  <icon
-    aria-label="opened"
-    class="flex flex-shrink-0 items-center justify-center "
-    role="button"
-    tabindex="-1"
-  >
-    <i
+    <iframe
       aria-hidden="true"
-      class="selector-opened"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
     />
-  </icon>
-</selected-item>
+    <icon
+      aria-label="closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="button"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
+  </selected-item>
+   
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+  >
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+      role="listbox"
+      tabindex="-1"
+    >
+       
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="0"
+        role="option"
+      >
+        
+         
+        <p>
+          a
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="true"
+        class="item is-selected"
+        data-path="1"
+        role="option"
+      >
+        
+         
+        <p>
+          b
+        </p>
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="item"
+        data-path="2"
+        role="option"
+      >
+        
+         
+        <p>
+          c
+        </p>
+        
+         
+      </item>
+    </list>
+  </scroll>
+</input-select>
 `;
 
 exports[`Select.svelte > should render items using custom component 1`] = `
@@ -708,7 +984,7 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
 <body>
   <div>
     <input-select
-      class="flex flex-col relative "
+      class="flex flex-col relative open"
       tabindex="0"
     >
       <selected-item
@@ -718,39 +994,97 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
         tabindex="-1"
       >
         <item>
+          
            
+          <p>
+            2
+          </p>
           
         </item>
          
-        <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="button"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-closed"
-          />
-        </icon>
         <iframe
           aria-hidden="true"
           src="about:blank"
           style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
           tabindex="-1"
         />
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="button"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
       </selected-item>
        
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+            
+             
+            <p>
+              1
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="true"
+            class="item is-selected"
+            data-path="1"
+            role="option"
+          >
+            
+             
+            <p>
+              2
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+            
+             
+            <p>
+              3
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
     </input-select>
   </div>
 </body>
 `;
 
-exports[`Select.svelte > should render items using default item when data is invalid 1`] = `
+exports[`Select.svelte > should render items using default component, when invalid component is provided 1`] = `
 <body>
   <div>
     <input-select
-      class="flex flex-col relative "
+      class="flex flex-col relative open"
       tabindex="0"
     >
       <selected-item
@@ -760,39 +1094,97 @@ exports[`Select.svelte > should render items using default item when data is inv
         tabindex="-1"
       >
         <item>
+          
            
+          <p>
+            2
+          </p>
           
         </item>
          
-        <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="button"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-closed"
-          />
-        </icon>
         <iframe
           aria-hidden="true"
           src="about:blank"
           style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
           tabindex="-1"
         />
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="button"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
       </selected-item>
        
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+            
+             
+            <p>
+              1
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="true"
+            class="item is-selected"
+            data-path="1"
+            role="option"
+          >
+            
+             
+            <p>
+              2
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+            
+             
+            <p>
+              3
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
     </input-select>
   </div>
 </body>
 `;
 
-exports[`Select.svelte > should render items using field mappings 1`] = `
+exports[`Select.svelte > should render items using field mapping 1`] = `
 <body>
   <div>
     <input-select
-      class="flex flex-col relative "
+      class="flex flex-col relative open"
       tabindex="0"
     >
       <selected-item
@@ -806,35 +1198,89 @@ exports[`Select.svelte > should render items using field mappings 1`] = `
           
         </item>
          
-        <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="button"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-closed"
-          />
-        </icon>
         <iframe
           aria-hidden="true"
           src="about:blank"
           style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
           tabindex="-1"
         />
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="button"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
       </selected-item>
        
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+            
+             
+            <p>
+              1
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="1"
+            role="option"
+          >
+            
+             
+            <p>
+              2
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+            
+             
+            <p>
+              3
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
     </input-select>
   </div>
 </body>
 `;
 
-exports[`Select.svelte > should render using default field mapping 1`] = `
+exports[`Select.svelte > should render string array 1`] = `
 <body>
   <div>
     <input-select
-      class="flex flex-col relative "
+      class="flex flex-col relative open"
       tabindex="0"
     >
       <selected-item
@@ -848,6 +1294,108 @@ exports[`Select.svelte > should render using default field mapping 1`] = `
           
         </item>
          
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="button"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </selected-item>
+       
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+             
+            <p>
+              a
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="1"
+            role="option"
+          >
+             
+            <p>
+              b
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+             
+            <p>
+              c
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
+    </input-select>
+  </div>
+</body>
+`;
+
+exports[`Select.svelte > should render string array 2`] = `
+<body>
+  <div>
+    <input-select
+      class="flex flex-col relative"
+      tabindex="0"
+    >
+      <selected-item
+        aria-selected="true"
+        class="w-full flex items-center"
+        role="option"
+        tabindex="-1"
+      >
+        <item>
+           
+          <p>
+            b
+          </p>
+          
+        </item>
+         
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
@@ -859,14 +1407,59 @@ exports[`Select.svelte > should render using default field mapping 1`] = `
             class="selector-closed"
           />
         </icon>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-          tabindex="-1"
-        />
       </selected-item>
        
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+             
+            <p>
+              a
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item is-selected"
+            data-path="1"
+            role="option"
+          >
+             
+            <p>
+              b
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+             
+            <p>
+              c
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
     </input-select>
   </div>
 </body>

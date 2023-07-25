@@ -14,7 +14,9 @@ export function dismissable(node) {
 		}
 	}
 	const keyup = (event) => {
-		if (event.keyCode === KEYCODE_ESC) {
+		if (event.keyCode === KEYCODE_ESC || event.key === 'Escape') {
+			event.stopPropagation()
+
 			node.dispatchEvent(new CustomEvent('dismiss', node))
 		}
 	}
