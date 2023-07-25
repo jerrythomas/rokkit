@@ -1,5 +1,5 @@
 // import { writable } from 'svelte/store'
-import { repeatAcross } from '../lib/utils'
+import { repeatAcross } from './utils'
 
 const palette = [
 	'#FFDE6B',
@@ -18,8 +18,8 @@ const palette = [
 ]
 
 export class Palette {
-	constructor(colors = palette) {
-		this.colors = colors
+	constructor(palette) {
+		this.colors = palette
 	}
 
 	set colors(value) {

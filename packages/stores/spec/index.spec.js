@@ -8,7 +8,9 @@ describe('stores', () => {
 			'theme',
 			'alerts',
 			'persistable',
-			'verifiable'
+			'verifiable',
+			'elapsed',
+			'timer'
 		])
 	})
 })

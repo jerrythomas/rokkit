@@ -1,5 +1,5 @@
 <script>
-	import Symbol from './Symbol.svelte'
+	import {Symbol} from '@rokkit/molecules'
 	import Texture from './Texture.svelte'
 
 	export let pattern

@@ -4,6 +4,10 @@ import { ascending, quantile } from 'd3-array'
 import { nest } from 'd3-collection'
 import { omit } from 'ramda'
 
+export function scaledPath(size, x) {
+	if (Array.isArray(x)) return x.map((x) => scaledPath(size, x)).join(' ')
+	return typeof size === 'number' ? x * size : x
+}
 /**
  * Calculates a grid of centres to fit a list of items of `size` within the number of `columns` and `rows`.
  *

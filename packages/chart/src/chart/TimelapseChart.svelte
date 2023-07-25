@@ -3,11 +3,11 @@
 	import { writable } from 'svelte/store'
 	import { slidingWindow, uniques, brewer } from '../lib'
 
-	import Grid from './Grid.svelte'
+	import Grid from './AxisGrid.svelte'
 	import Axis from './Axis.svelte'
 	import BoxPlot from '../plots/BoxPlot.svelte'
 	import ViolinPlot from '../plots/ViolinPlot.svelte'
-	import ScatterPlot from '../plots/old_ScatterPlot.svelte'
+	import ScatterPlot from '../plots/ScatterPlot.svelte'
 
 	let chart = writable({})
 	let axis

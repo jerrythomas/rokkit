@@ -2,8 +2,8 @@
 	import Chart from './Chart.svelte'
 	import AxisGrid from './AxisGrid.svelte'
 	import Axis from './Axis.svelte'
-	import AxisTicks from './AxisTicks.svelte'
-	import AxisLabels from './AxisLabels.svelte'
+	// import AxisTicks from './AxisTicks.svelte'
+	// import AxisLabels from './AxisLabels.svelte'
 
 	export let data
 	export let row
@@ -29,18 +29,18 @@
 
 				<Chart data={dataFilteredByCol} {x} {y}>
 					<Axis name="x" count={7} gap={10}>
-						<AxisTicks side="bottom">
+						<!-- <AxisTicks side="bottom">
 							{#if labels.x}
 								<AxisLabels angle={-60} />
 							{/if}
-						</AxisTicks>
+						</AxisTicks> -->
 					</Axis>
 					<Axis name="y" gap={10}>
-						<AxisTicks side="left">
+						<!-- <AxisTicks side="left">
 							{#if labels.y}
 								<AxisLabels />
 							{/if}
-						</AxisTicks>
+						</AxisTicks> -->
 						<AxisGrid />
 					</Axis>
 					<svelte:component this={plot} />

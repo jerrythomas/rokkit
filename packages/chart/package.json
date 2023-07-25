@@ -38,8 +38,12 @@
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
+		"@rokkit/molecules": "workspace:*",
+		"@rokkit/stores": "workspace:*",
 		"d3-array": "^3.2.4",
 		"d3-collection": "^1.0.7",
+		"d3-format": "^3.1.0",
+		"d3-interpolate": "^3.0.1",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"date-fns": "^2.30.0",

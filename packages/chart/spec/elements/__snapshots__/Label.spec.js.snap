@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Label.svelte > should render 1`] = `
+<body>
+  <div>
+    <text
+      class="label"
+      text-anchor="middle"
+      transform="translate(undefined,undefined) rotate(0)"
+    >
+      undefined
+    </text>
+  </div>
+</body>
+`;
