@@ -17,10 +17,10 @@
 	"devDependencies": {
 		"@iconify-json/file-icons": "^1.1.4",
 		"@iconify/utils": "^2.1.7",
-		"@playwright/test": "^1.36.1",
+		"@playwright/test": "^1.36.2",
 		"@sveltejs/adapter-auto": "^2.1.0",
 		"@sveltejs/kit": "^1.22.3",
-		"@sveltejs/vite-plugin-svelte": "^2.4.2",
+		"@sveltejs/vite-plugin-svelte": "^2.4.3",
 		"@testing-library/svelte": "^4.0.3",
 		"@unocss/core": "^0.53.6",
 		"@unocss/extractor-svelte": "^0.53.6",
@@ -35,7 +35,7 @@
 		"svelte-check": "^3.4.6",
 		"typescript": "^5.1.6",
 		"unocss": "^0.53.6",
-		"vite": "4.4.6",
+		"vite": "4.4.7",
 		"vitest": "^0.33.0"
 	},
 	"type": "module",

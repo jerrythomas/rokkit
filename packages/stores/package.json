@@ -25,7 +25,7 @@
 		"release": "tsc && pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^2.4.2",
+		"@sveltejs/vite-plugin-svelte": "^2.4.3",
 		"@testing-library/svelte": "^4.0.3",
 		"@types/ramda": "^0.29.3",
 		"@vitest/coverage-v8": "^0.33.0",
@@ -35,7 +35,7 @@
 		"svelte": "^4.1.1",
 		"typescript": "^5.1.6",
 		"validators": "workspace:latest",
-		"vite": "^4.4.6",
+		"vite": "^4.4.7",
 		"vitest": "~0.33.0"
 	},
 	"files": [
