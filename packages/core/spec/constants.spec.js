@@ -55,11 +55,11 @@ describe('Utility functions', () => {
 				info: 'state-info',
 				unknown: 'state-unknown'
 			},
-			validity: {
-				failed: 'validity-failed',
-				warning: 'validity-warning',
-				passed: 'validity-passed',
-				unknown: 'validity-unknown'
+			badge: {
+				fail: 'badge-fail',
+				warn: 'badge-warn',
+				pass: 'badge-pass',
+				unknown: 'badge-unknown'
 			}
 		})
 	})

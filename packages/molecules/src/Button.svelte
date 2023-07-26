@@ -29,7 +29,9 @@
 		</icon-left>
 	{/if}
 	<slot>
-		<p>{label}</p>
+		{#if label}
+			<p>{label}</p>
+		{/if}
 	</slot>
 	{#if rightIcon}
 		<icon-right>

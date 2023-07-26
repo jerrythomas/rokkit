@@ -1,4 +1,5 @@
 <script>
+	import { defaultFields, getComponent } from '@rokkit/core'
 	import { swipeable, navigable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
@@ -6,6 +7,7 @@
 	let className = 'three-col'
 	export { className as class }
 	export let items
+	export let fields = {}
 	export let small = true
 	export let duration = 400
 	export let easing = cubicInOut
@@ -29,6 +31,7 @@
 		return index > -1 ? index : 0
 	}
 
+	$: fields = { ...defaultFields, ...fields }
 	$: activeIndex = activeIndexFromPage(value)
 	$: {
 		direction = Math.sign(activeIndex - previous)
@@ -50,7 +53,8 @@
 >
 	{#each items as item, index}
 		{@const segmentClass = 'col-' + (index + 1)}
-		{@const props = item.props ?? {}}
+		{@const props = item[fields.props]}
+		{@const component = item[fields.component]}
 		{#if small && index === activeIndex}
 			<segment
 				class="absolute w-full h-full {segmentClass}"
@@ -61,11 +65,11 @@
 				}}
 				in:fly={{ x: direction * width, duration, easing }}
 			>
-				<svelte:component this={item.component} {...props} />
+				<svelte:component this={component} {...props} />
 			</segment>
 		{:else if !small}
 			<segment class={segmentClass}>
-				<svelte:component this={item.component} {...props} />
+				<svelte:component this={component} {...props} />
 			</segment>
 		{/if}
 	{/each}

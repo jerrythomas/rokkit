@@ -7,7 +7,7 @@ export function createNotificationStore() {
 	const messages = writable([])
 
 	function send(message, type = 'default', timeout) {
-		const content = typeof message === 'string' ? { message } : message
+		const content = { message }
 		messages.update((state) => {
 			return [
 				...state,
@@ -34,6 +34,7 @@ export function createNotificationStore() {
 
 	return {
 		subscribe,
+		clear: () => messages.set([]),
 		send,
 		default: (msg, timeout) => send(msg, 'default', timeout),
 		danger: (msg, timeout) => send(msg, 'danger', timeout),

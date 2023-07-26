@@ -1,13 +1,11 @@
 // import { tick } from 'svelte'
+import { isNested, hasChildren, isExpanded } from '@rokkit/core'
 import {
 	moveNext,
 	movePrevious,
-	isNested,
-	hasChildren,
 	pathFromIndices,
 	indicesFromPath,
-	getCurrentNode,
-	isExpanded
+	getCurrentNode
 } from './hierarchy'
 
 /**

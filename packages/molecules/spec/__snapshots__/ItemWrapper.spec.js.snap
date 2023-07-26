@@ -58,7 +58,7 @@ exports[`ItemWrapper.svelte > should render custom component 1`] = `
         class="flex flex-row items-center"
       >
         <span>
-          undefined
+          Test
         </span>
       </item>
        

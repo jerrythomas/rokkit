@@ -1,47 +1,4 @@
-/**
- * Check if the current item is a parent
- *
- * @param {*} item
- * @param {import('@rokkit/core').FieldMapping} fields
- * @returns {boolean}
- */
-export function hasChildren(item, fields) {
-	return (
-		typeof item === 'object' &&
-		fields.children in item &&
-		Array.isArray(item[fields.children])
-	)
-}
-
-/**
- * Check if the current item is a parent and is expanded
- *
- * @param {*} item
- * @param {import('@rokkit/core').FieldMapping} fields
- * @returns {boolean}
- */
-export function isExpanded(item, fields) {
-	if (item == null) return false
-	if (!hasChildren(item, fields)) return false
-	if (fields.isOpen in item) {
-		return item[fields.isOpen]
-	}
-	return false
-}
-
-/**
- * Verify if at least one item has children
- *
- * @param {Array<*>} items
- * @param {import('@rokkit/core').FieldMapping} fields
- * @returns {boolean}
- */
-export function isNested(items, fields) {
-	for (let i = 0; i < items.length; i++) {
-		if (hasChildren(items[i], fields)) return true
-	}
-	return false
-}
+import { hasChildren, isExpanded, isNested } from '@rokkit/core'
 
 /**
  * Navigate to last visible child in the hirarchy starting with the provided path

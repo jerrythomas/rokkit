@@ -1,0 +1,217 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Node.svelte > should render node 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path=""
+      id="id-"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          Alpha
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node in rtl 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center flex-row-reverse"
+      data-path=""
+      id="id-"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          An RTL Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node sibling node 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path=""
+      id="id-"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          Sibling Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node when path changes 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path="0"
+      id="id-0"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          A Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node when path changes 2`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path="1"
+      id="id-1"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          A Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node when selected 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="true"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center is-selected"
+      data-path=""
+      id="id-"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          A Selected Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node with collapsed icon 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path=""
+      id="id-"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          Collapsed Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node with expanded icon 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path=""
+      id="id-"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          Expanded Node
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;
+
+exports[`Node.svelte > should render node with path 1`] = `
+<body>
+  <div>
+    <node
+      aria-selected="false"
+      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+      data-path="0"
+      id="id-0"
+      role="option"
+    >
+       
+      <item>
+        
+         
+        <p>
+          Example
+        </p>
+        
+      </item>
+    </node>
+  </div>
+</body>
+`;

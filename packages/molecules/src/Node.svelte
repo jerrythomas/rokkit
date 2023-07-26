@@ -1,5 +1,10 @@
 <script>
-	import { defaultFields, defaultStateIcons, getComponent } from '@rokkit/core'
+	import {
+		defaultFields,
+		defaultStateIcons,
+		getComponent,
+		isExpanded
+	} from '@rokkit/core'
 	import { Icon, Connector } from '@rokkit/atoms'
 
 	export let value
@@ -12,15 +17,10 @@
 	export let rtl = false
 	export let path = []
 
-	$: stateIcons = { ...defaultStateIcons.node, ...(stateIcons ?? {}) }
-	$: hasChildren = fields.children in value
-	$: state =
-		hasChildren && value[fields.isOpen]
-			? { icon: stateIcons.opened, label: 'collapse' }
-			: { icon: stateIcons.closed, label: 'expand' }
-	// $: component = value[fields.component]
-	// 	? using[value[fields.component]] || using.default
-	// 	: using.default
+	$: stateIcons = { ...defaultStateIcons.node, ...stateIcons }
+	$: state = isExpanded(value, fields)
+		? { icon: stateIcons.opened, label: 'collapse' }
+		: { icon: stateIcons.closed, label: 'expand' }
 	$: component = getComponent(value, fields, using)
 </script>
 

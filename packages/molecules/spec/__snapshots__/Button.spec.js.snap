@@ -1,0 +1,195 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button.svelte > should render a button marked as primary 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center is-primary"
+      type="submit"
+    >
+       
+      <p>
+        Primary
+      </p>
+      
+       
+    </button>
+  </div>
+</body>
+`;
+
+exports[`Button.svelte > should render a button with a label 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center "
+      type="submit"
+    >
+       
+      <p>
+        Click me
+      </p>
+      
+       
+    </button>
+  </div>
+</body>
+`;
+
+exports[`Button.svelte > should render a button with a label and both icons 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center "
+      type="submit"
+    >
+      <icon-left
+        class="flex flex-row"
+      >
+        <icon
+          aria-label="email"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="email"
+          />
+        </icon>
+      </icon-left>
+       
+      <p>
+        Dual Icons
+      </p>
+      
+       
+      <icon-right>
+        <icon
+          aria-label="arrow-right"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="arrow-right"
+          />
+        </icon>
+      </icon-right>
+    </button>
+  </div>
+</body>
+`;
+
+exports[`Button.svelte > should render a button with a label and left icon 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center "
+      type="submit"
+    >
+      <icon-left
+        class="flex flex-row"
+      >
+        <icon
+          aria-label="theme"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="theme"
+          />
+        </icon>
+      </icon-left>
+       
+      <p>
+        With Left Icon
+      </p>
+      
+       
+    </button>
+  </div>
+</body>
+`;
+
+exports[`Button.svelte > should render a button with a label and right icon 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center "
+      type="submit"
+    >
+       
+      <p>
+        With Right Icon
+      </p>
+      
+       
+      <icon-right>
+        <icon
+          aria-label="arrow-right"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="arrow-right"
+          />
+        </icon>
+      </icon-right>
+    </button>
+  </div>
+</body>
+`;
+
+exports[`Button.svelte > should render a button with icon only 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center "
+      type="submit"
+    >
+      <icon-left
+        class="flex flex-row"
+      >
+        <icon
+          aria-label="colors"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="colors"
+          />
+        </icon>
+      </icon-left>
+       
+      
+       
+    </button>
+  </div>
+</body>
+`;
+
+exports[`Button.svelte > should render a button with outline style 1`] = `
+<body>
+  <div>
+    <button
+      class="flex flex-row items-center "
+      type="submit"
+    >
+       
+      <p>
+        Outline
+      </p>
+      
+       
+    </button>
+  </div>
+</body>
+`;

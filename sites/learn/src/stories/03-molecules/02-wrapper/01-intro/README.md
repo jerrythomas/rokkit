@@ -2,7 +2,7 @@
 title: Basic Usage
 ---
 
-The ItemWrapper component wraps a component and provides an optional remove functionality. This component can be used for displaying tags, selected items from a list, or other scenarios where a removable visual element is required. You can get all the features of the Item component in the ItemWrapper component. In addition, you can also use a custom component for the content.
+The ItemWrapper component wraps the [Item](../../item/intro) component and provides an optional remove functionality. This component can be used for displaying tags, selected items from a list, or other scenarios where a removable visual element is required. You can get all the features of the Item component in the ItemWrapper component. In addition, you can also use a custom component for the content.
 
 ## Basic Usage
 
@@ -22,7 +22,7 @@ Enabling the removable option
 
 ## Object data
 
-Rendering a ItemWrapper with an icon:
+Rendering an ItemWrapper with an icon:
 
 ```svelte
 <ItemWrapper
