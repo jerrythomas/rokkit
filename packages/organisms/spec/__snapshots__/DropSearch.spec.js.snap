@@ -3,12 +3,15 @@
 exports[`DropSearch.svelte > should render 1`] = `
 <body>
   <div>
-    <div
-      class="dropdown relative h-12 w-full flex flex-col outline-none"
+    <input-select
+      class="flex flex-col relative open"
       tabindex="0"
     >
-      <div
-        class="selected-item h-12 flex flex-shrink-0 items-center pl-4"
+      <selected-item
+        aria-selected="false"
+        class="w-full flex items-center"
+        role="option"
+        tabindex="-1"
       >
         <span
           class="flex flex-grow"
@@ -19,12 +22,171 @@ exports[`DropSearch.svelte > should render 1`] = `
           />
         </span>
          
-        <icon
-          class="selector-closed"
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
         />
-      </div>
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="button"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </selected-item>
        
-    </div>
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+            
+             
+            <p>
+              1
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="1"
+            role="option"
+          >
+            
+             
+            <p>
+              2
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+            
+             
+            <p>
+              3
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
+    </input-select>
+  </div>
+</body>
+`;
+
+exports[`DropSearch.svelte > should work with custom components 1`] = `
+<body>
+  <div>
+    <input-select
+      class="flex flex-col relative open"
+      tabindex="0"
+    >
+      <selected-item
+        aria-selected="false"
+        class="w-full flex items-center"
+        role="option"
+        tabindex="-1"
+      >
+        <span
+          class="flex flex-grow"
+        >
+          <input
+            class="w-full border-none bg-transparent p-0"
+            type="text"
+          />
+        </span>
+         
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="button"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </selected-item>
+       
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+            <span>
+              Alpha
+            </span>
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="1"
+            role="option"
+          >
+            <span>
+              Beta
+            </span>
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+            <span>
+              Charlie
+            </span>
+             
+          </item>
+        </list>
+      </scroll>
+    </input-select>
   </div>
 </body>
 `;

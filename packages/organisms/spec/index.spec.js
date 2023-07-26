@@ -15,7 +15,8 @@ describe('components', () => {
 			'Switch',
 			'Tabs',
 			'Tree',
-			'InputField'
+			'InputField',
+			'ListEditor'
 		])
 	})
 })
