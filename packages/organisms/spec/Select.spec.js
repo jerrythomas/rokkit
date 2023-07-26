@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest'
+import { describe, expect, it, beforeEach, afterAll, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
@@ -16,6 +16,7 @@ describe('Select.svelte', () => {
 		cleanup()
 		events.map((e) => (handlers[e] = vi.fn()))
 	})
+	afterAll(() => vi.resetAllMocks())
 
 	it('should render string array', async () => {
 		const { container } = render(Select, { options: ['a', 'b', 'c'] })

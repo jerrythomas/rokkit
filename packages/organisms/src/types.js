@@ -5,7 +5,7 @@ import InputSwitch from './input/InputSwitch.svelte'
 import List from './List.svelte'
 import Tabs from './Tabs.svelte'
 import Tree from './Tree.svelte'
-import InputArray from './InputArray.svelte'
+import ListEditor from './ListEditor.svelte'
 
 export const componentTypes = {
 	boolean: Checkbox,
@@ -15,7 +15,7 @@ export const componentTypes = {
 	enum: Select,
 	select: Select,
 	'multi-select': MultiSelect,
-	array: InputArray,
+	array: ListEditor,
 	switch: InputSwitch,
 	list: List,
 	tabs: Tabs,

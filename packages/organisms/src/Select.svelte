@@ -61,6 +61,7 @@
 	tabindex="0"
 	use:dismissable
 	use:navigable={{ horizontal: false, vertical: true }}
+	on:focus={() => (open = true)}
 	on:blur={() => (open = false)}
 	on:dismiss={() => (open = false)}
 	on:previous={handlePrevious}

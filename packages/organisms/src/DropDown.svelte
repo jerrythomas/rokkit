@@ -12,7 +12,7 @@
 
 	let className = ''
 	export { className as class }
-	export let items = []
+	export let options = []
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields
 	export let using = { default: Item }
@@ -42,6 +42,7 @@
 	aria-haspopup="true"
 	aria-controls="menu"
 	use:dismissable
+	on:focus={() => (open = true)}
 	on:blur={() => (open = false)}
 	on:dismiss={() => (open = false)}
 >
@@ -51,7 +52,7 @@
 		bind:clientHeight={offsetTop}
 		tabindex="-1"
 	>
-		{#if icon}
+		{#if icon !== null}
 			<Icon name={icon} />
 		{/if}
 		{#if !small && title}
@@ -64,13 +65,9 @@
 		{/if}
 	</button>
 	{#if open}
-		<!-- <div
-			class="absolute z-10 menu h-fit w-full flex flex-col"
-			style:top="{offsetTop}px"
-		> -->
 		<Slider top={offsetTop}>
 			<List
-				{items}
+				items={options}
 				{fields}
 				{using}
 				bind:value
@@ -78,6 +75,5 @@
 				tabindex="-1"
 			/>
 		</Slider>
-		<!-- </div> -->
 	{/if}
 </drop-down>
