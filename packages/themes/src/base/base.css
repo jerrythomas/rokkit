@@ -60,7 +60,8 @@ item,
 .item {
   @apply flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2;
 }
-item p {
+item p,
+summary p {
   @apply flex flex-grow;
 }
 /* .sidebar {

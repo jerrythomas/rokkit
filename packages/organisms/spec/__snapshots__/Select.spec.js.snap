@@ -288,31 +288,6 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
 </body>
 `;
 
-exports[`Select.svelte > should emit the change event when the value changes 2`] = `
-<item>
-  
-   
-  <p>
-    b
-  </p>
-  
-</item>
-`;
-
-exports[`Select.svelte > should emit the change event when the value changes 3`] = `
-<icon
-  aria-label="closed"
-  class="flex flex-shrink-0 items-center justify-center "
-  role="button"
-  tabindex="-1"
->
-  <i
-    aria-hidden="true"
-    class="selector-closed"
-  />
-</icon>
-`;
-
 exports[`Select.svelte > should handle arrow keys for navigation and select 1`] = `
 <selected-item
   aria-selected="true"

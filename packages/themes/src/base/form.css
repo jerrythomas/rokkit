@@ -12,6 +12,9 @@ field-layout.horizontal {
   @apply flex flex-row gap-4;
 }
 
+selected-item item {
+  @apply flex-grow;
+}
 input-field {
   @apply w-full m-0 py-1;
 }
