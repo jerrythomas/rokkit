@@ -1,5 +1,5 @@
 <script>
-	import { defaultFields } from '@rokkit/core'
+	import { defaultFields, getComponent } from '@rokkit/core'
 	import Item from './Item.svelte'
 
 	export let items = []
@@ -7,28 +7,24 @@
 	export let fields = defaultFields
 	export let using
 
-	$: fields = { ...defaultFields, ...(fields ?? {}) }
-	$: using = { default: Item, ...(using ?? {}) }
+	$: fields = { ...defaultFields, ...fields }
+	$: using = { default: Item, ...using }
 </script>
 
 <crumbs class="flex">
 	{#each items as item, index}
-		{#if item}
-			{@const component = item[fields.component]
-				? using[item[fields.component]] || using.default
-				: using.default}
-			{#if index > 0}
-				<span>
-					{#if separator.length == 1}
-						{separator}
-					{:else}
-						<icon class={separator} />
-					{/if}
-				</span>
-			{/if}
-			<crumb class:is-selected={index == items.length - 1}>
-				<svelte:component this={component} value={item} {fields} />
-			</crumb>
+		{@const component = getComponent(item, fields, using)}
+		{#if index > 0}
+			<span>
+				{#if separator.length == 1}
+					{separator}
+				{:else}
+					<icon class={separator} />
+				{/if}
+			</span>
 		{/if}
+		<crumb class:is-selected={index == items.length - 1}>
+			<svelte:component this={component} value={item} {fields} />
+		</crumb>
 	{/each}
 </crumbs>

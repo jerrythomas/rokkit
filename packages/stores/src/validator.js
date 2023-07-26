@@ -76,7 +76,7 @@ function getValidator(rule) {
  * @returns {import('./types').ValidationResult} - The result of the evaluation.
  */
 function evaluateRules(value, rules) {
-	let status = 'passed'
+	let status = 'pass'
 	let validations = []
 
 	rules.map((rule) => {
@@ -84,14 +84,14 @@ function evaluateRules(value, rules) {
 		const result = {
 			text: rule.text,
 			valid,
-			status: valid ? 'passed' : rule.optional ? 'warning' : 'failed'
+			status: valid ? 'pass' : rule.optional ? 'warn' : 'fail'
 		}
 
-		if (status !== 'failed' && !valid) status = result.status
+		if (status !== 'fail' && !valid) status = result.status
 		validations.push(result)
 	})
 
-	return { value, status, validations, isValid: status === 'passed' }
+	return { value, status, validations, isValid: status === 'pass' }
 }
 
 /**

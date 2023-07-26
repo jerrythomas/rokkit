@@ -4,30 +4,38 @@
 	import { alerts } from '@rokkit/stores'
 	import { dismissable } from '@rokkit/actions'
 	import { defaultFields, getComponent } from '@rokkit/core'
+	import { pick } from 'ramda'
 	import Item from './Item.svelte'
 
 	export let fields = defaultFields
 	export let using = { default: Item }
 
-	export let arrival
-	export let departure
+	export let arrival = {}
+	export let departure = {}
 
 	function dismissAll() {
-		alerts.set([])
+		alerts.clear()
 	}
 
-	$: arrive = arrival?.animation ?? fade
-	$: depart = departure?.animation ?? fade
-	$: optionsForIn = {
-		duration: arrival?.duration ?? 300,
-		easing: arrival?.easing ?? cubicIn,
-		delay: arrival?.delay ?? 0
+	$: arrival = {
+		animation: fade,
+		duration: 300,
+		easing: cubicIn,
+		delay: 0,
+		...arrival
 	}
-	$: optionsForOut = {
-		duration: departure?.duration ?? 300,
-		easing: departure?.easing ?? cubicOut,
-		delay: departure?.delay ?? 0
+	$: departure = {
+		animation: fade,
+		duration: 300,
+		easing: cubicOut,
+		delay: 0,
+		...departure
 	}
+
+	$: arrive = arrival.animation
+	$: depart = departure.animation
+	$: optionsForIn = pick(['duration', 'easing', 'delay'], arrival)
+	$: optionsForOut = pick(['duration', 'easing', 'delay'], departure)
 </script>
 
 <alert-list
@@ -35,7 +43,7 @@
 	use:dismissable
 	on:dismiss={dismissAll}
 >
-	{#each alerts as alert}
+	{#each $alerts as alert}
 		{@const component = getComponent(alert, fields, using)}
 		<alert
 			class={alert.type}
@@ -45,7 +53,7 @@
 			aria-label="Dismissable alert message"
 			aria-live="assertive"
 		>
-			<svelte:component this={component} value={alert} {fields} />
+			<svelte:component this={component} value={alert.message} {fields} />
 		</alert>
 	{/each}
 </alert-list>

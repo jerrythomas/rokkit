@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Alerts.svelte > should render alerts 1`] = `
+<body>
+  <div>
+    <alert-list
+      class="absolute z-10 flex flex-col gap-2"
+    >
+      <alert
+        aria-label="Dismissable alert message"
+        aria-live="assertive"
+        class="default"
+        role="alert"
+        style="animation: __svelte_665066525_0 300ms linear 0ms 1 both;"
+      >
+         
+        <p>
+          A simple message
+        </p>
+        
+         
+      </alert>
+    </alert-list>
+  </div>
+</body>
+`;
+
+exports[`Alerts.svelte > should render alerts with custom entry animation 1`] = `
+<body>
+  <div>
+    <alert-list
+      class="absolute z-10 flex flex-col gap-2"
+    >
+      <alert
+        aria-label="Dismissable alert message"
+        aria-live="assertive"
+        class="info"
+        role="alert"
+        style="animation: __svelte_665066525_0 300ms linear 0ms 1 both;"
+      >
+        
+         
+        <p>
+          Message object
+        </p>
+        
+         
+      </alert>
+    </alert-list>
+  </div>
+</body>
+`;
+
+exports[`Alerts.svelte > should render alerts with custom exit animation 1`] = `
+<body>
+  <div>
+    <alert-list
+      class="absolute z-10 flex flex-col gap-2"
+    >
+      <alert
+        aria-label="Dismissable alert message"
+        aria-live="assertive"
+        class="default"
+        role="alert"
+        style="animation: __svelte_665066525_0 300ms linear 0ms 1 both;"
+      >
+        
+         
+        <p>
+          Message object with type
+        </p>
+        
+         
+      </alert>
+    </alert-list>
+  </div>
+</body>
+`;

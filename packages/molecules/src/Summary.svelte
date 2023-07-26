@@ -1,5 +1,5 @@
 <script>
-	import { defaultFields } from '@rokkit/core'
+	import { defaultFields, getComponent, hasChildren } from '@rokkit/core'
 	import Item from './Item.svelte'
 
 	export let value
@@ -8,8 +8,8 @@
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
-	$: hasItems = value[fields.children] && value[fields.children].length > 0
-	$: component = using[value[fields.component] ?? 'default']
+	$: hasItems = hasChildren(value, fields)
+	$: component = getComponent(value, fields, using)
 </script>
 
 <summary
@@ -19,9 +19,9 @@
 	<svelte:component this={component} bind:value {fields} />
 	{#if hasItems}
 		{#if value[fields.isOpen]}
-			<icon class="accordion-opened sm" aria-label="expand" />
+			<icon class="accordion-opened sm" aria-label="collapse" />
 		{:else}
-			<icon class="accordion-closed sm" aria-label="collapse" />
+			<icon class="accordion-closed sm" aria-label="expand" />
 		{/if}
 	{/if}
 </summary>

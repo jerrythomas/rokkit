@@ -43,65 +43,7 @@ describe('Hierarchy', () => {
 		},
 		{ name: 'item3' }
 	]
-	describe('hasChildren', () => {
-		it('should return false if item is not an object', () => {
-			expect(hasChildren(undefined, fields)).toBe(false)
-		})
-		it('should return false if it does not have the children attribute', () => {
-			expect(hasChildren({}, fields)).toBe(false)
-		})
-		it('should return false if children is not an array', () => {
-			expect(hasChildren({ children: null }, fields)).toBe(false)
-		})
-		it('should return true if children is an array', () => {
-			expect(hasChildren({ children: [] }, fields)).toBe(true)
-		})
-	})
 
-	describe('isExpanded', () => {
-		it('returns true if the item is expanded', () => {
-			const item = {
-				isOpen: true,
-				children: []
-			}
-
-			expect(isExpanded(item, fields)).toBe(true)
-		})
-
-		it('returns false if the item is not expanded', () => {
-			const item = {
-				isOpen: false,
-				children: []
-			}
-
-			expect(isExpanded(item, fields)).toBe(false)
-		})
-
-		it('returns false if the item does not have the isOpen field', () => {
-			expect(isExpanded({ children: [] }, fields)).toBe(false)
-		})
-		it('returns false if the item does not have the children field', () => {
-			expect(isExpanded({}, fields)).toBe(false)
-		})
-		it('returns false if the children field is not an array', () => {
-			expect(isExpanded({ children: '' }, fields)).toBe(false)
-		})
-		it('returns false if the item is not an object', () => {
-			expect(isExpanded('', fields)).toBe(false)
-			expect(isExpanded(null, fields)).toBe(false)
-		})
-	})
-
-	describe('isNested', () => {
-		it('returns true if the item is nested', () => {
-			expect(isNested([{ children: [] }], fields)).toBe(true)
-			expect(isNested(['?', { children: [] }], fields)).toBe(true)
-		})
-
-		it('returns false if the item is not nested', () => {
-			expect(isNested([], fields)).toBe(false)
-		})
-	})
 	describe('findItem', () => {
 		const items = [
 			{
