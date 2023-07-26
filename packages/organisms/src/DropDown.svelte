@@ -52,20 +52,22 @@
 		bind:clientHeight={offsetTop}
 		tabindex="-1"
 	>
-		{#if icon !== null}
-			<Icon name={icon} />
-		{/if}
-		{#if !small && title}
-			<p class="w-full flex">{title}</p>
-		{/if}
-		{#if open}
-			<icon class={icons.opened} />
-		{:else}
-			<icon class={icons.closed} />
-		{/if}
+		<span class="flex items-center">
+			{#if icon !== null}
+				<Icon name={icon} />
+			{/if}
+			{#if !small && title}
+				<p class="w-full flex">{title}</p>
+			{/if}
+			{#if open}
+				<icon class={icons.opened} />
+			{:else}
+				<icon class={icons.closed} />
+			{/if}
+		</span>
 	</button>
 	{#if open}
-		<Slider top={offsetTop}>
+		<Slider top={offsetTop + 4}>
 			<List
 				items={options}
 				{fields}

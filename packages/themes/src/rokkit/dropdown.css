@@ -7,22 +7,41 @@
 .rokkit button[role='switch'] mark {
   @apply bg-primary;
 }
-.rokkit input-select:focus-within {
-  @apply outline-none;
+.rokkit input-select,
+.rokkit drop-down > button {
+  @apply border border-skin-muted rounded p-2px;
 }
+
+.rokkit drop-down > button {
+  @apply bg-skin-base;
+}
+.rokkit drop-down > button > span {
+  @apply rounded py-0;
+}
+.rokkit drop-down > button > span > * {
+  @apply h-full items-center;
+}
+.rokkit drop-down > button > span > icon {
+  @apply w-6 h-6;
+}
+
 .rokkit input-select > selected-item,
-.rokkit drop-down > button {
+.rokkit drop-down > button > span {
   @apply h-10 pl-4 pr-0 gap-4 items-center bg-skin-base normal-case outline-none;
-  @apply rounded border border-skin-muted text-skin-800;
-  @apply hover:bg-skin-muted hover:border-skin-500;
+  @apply rounded text-skin-800;
 }
-.rokkit drop-down > button {
-  @apply h-10 pl-4 pr-2;
+.rokkit drop-down > button > span {
+  @apply pr-2;
 }
-/* .rokkit input-select > icon,
-.rokkit drop-down > icon {
-	@apply border-l border-skin-muted h-10 w-10;
-} */
+
+.rokkit input-select:focus-within,
+.rokkit drop-down:focus-within > button {
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50 border-none;
+}
+
+.rokkit drop-down:focus-within > button > span {
+  @apply bg-skin-muted;
+}
 .rokkit input-select:hover > icon,
 .rokkit drop-down:hover > icon {
   @apply border-skin-500;
@@ -32,12 +51,6 @@
 }
 .rokkit input-select > selected-item > items {
   @apply flex-grow flex-wrap gap-2;
-}
-.rokkit input-select:focus-within > selected-item {
-  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50 border-none;
-}
-.rokkit input-select:focus-within > selected-item > icon {
-  @apply text-skin-50;
 }
 .rokkit .pill {
   @apply rounded-full bg-skin-inset border-skin-subtle border px-2 py-1 flex-grow-0;
@@ -54,15 +67,3 @@
 .rokkit .pill > item > img {
   @apply w-4 h-4;
 }
-
-/* .rokkit pill > icon {
-	@apply text-sm;
-} */
-/* .rokkit input-select,
-.rokkit drop-down {
-	@apply rounded focus:outline focus:outline-secondary focus:outline-2;
-} */
-/* .rokkit input-select:focus-within,
-.rokkit drop-down:focus-within {
-	@apply outline outline-secondary outline-2;
-} */
