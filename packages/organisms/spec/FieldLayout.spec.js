@@ -27,10 +27,7 @@ describe('FieldLayout.svelte', () => {
 			props: { type: 'text', label: 'Last Name' }
 		}
 	]
-	const customFieldSchema = {
-		component: 'custom',
-		key: 'title'
-	}
+
 	beforeEach(() => cleanup())
 
 	it('should render error when elements is missing', () => {

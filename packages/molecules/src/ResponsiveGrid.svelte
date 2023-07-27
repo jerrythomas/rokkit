@@ -1,5 +1,5 @@
 <script>
-	import { defaultFields, getComponent } from '@rokkit/core'
+	import { defaultFields } from '@rokkit/core'
 	import { swipeable, navigable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
@@ -11,7 +11,7 @@
 	export let small = true
 	export let duration = 400
 	export let easing = cubicInOut
-	export let value
+	export let value = null
 
 	let previous = -1
 	let activeIndex = 0

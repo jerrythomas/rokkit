@@ -1,8 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import {
-	hasChildren,
-	isExpanded,
-	isNested,
 	navigateToLastVisibleChild,
 	moveNext,
 	movePrevious,

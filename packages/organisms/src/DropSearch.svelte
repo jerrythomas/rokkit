@@ -1,5 +1,4 @@
 <script>
-	import { filter } from 'ramda'
 	import { defaultFields, getText } from '@rokkit/core'
 	import Select from './Select.svelte'
 
@@ -11,9 +10,9 @@
 	let searchText
 	let searchBox
 	let filtered = options
+
 	$: fields = { ...defaultFields, ...fields }
-	// $: filtered = filterBy(searchText, options, fields)
-	// on search change filter list
+
 	function applySearch(event) {
 		searchText = event.target.value
 		if (searchText) {

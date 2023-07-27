@@ -1,5 +1,6 @@
 import { writable, derived } from 'svelte/store'
 import { id } from '@rokkit/core'
+import { omit } from 'ramda'
 
 const TIMEOUT = 3000
 
@@ -7,6 +8,10 @@ export function createNotificationStore() {
 	const messages = writable([])
 
 	function send(message, type = 'default', timeout) {
+		if (typeof message === 'object') {
+			if (message.timeout) timeout = message.timeout
+			message = omit(['timeout'], message)
+		}
 		const content = { message }
 		messages.update((state) => {
 			return [

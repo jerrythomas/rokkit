@@ -1,6 +1,6 @@
 import { navigable } from '../src/navigable'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { toUseHandlersFor, toOnlyTrigger } from 'validators'
+import { getMockNode, toUseHandlersFor, toOnlyTrigger } from 'validators'
 
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
@@ -33,6 +33,26 @@ describe('Navigable Action', () => {
 		expect(navigable).toUseHandlersFor({}, 'keydown')
 		expect(navigable).toUseHandlersFor({ horizontal: false }, 'keydown')
 		expect(navigable).not.toUseHandlersFor({ enabled: false }, 'keydown')
+	})
+
+	it('should switch between enabled and disabled', () => {
+		const events = ['keydown']
+		const mock = getMockNode(events)
+		const handle = navigable(mock.node)
+
+		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+
+		// repeat calls should not call addEventListener again
+		handle.update({ enabled: true })
+		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+
+		// disabling should remove all event listeners
+		handle.update({ enabled: false })
+		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+
+		// repeat calls should not call removeEventListener again
+		handle.update({ enabled: false })
+		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
 	})
 
 	describe('Horizontal Navigation', () => {

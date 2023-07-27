@@ -1,6 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import { tick } from 'svelte'
 import BreadCrumbs from '../src/BreadCrumbs.svelte'
 
 describe('BreadCrumbs.svelte', () => {
