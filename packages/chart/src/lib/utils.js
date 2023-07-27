@@ -4,6 +4,12 @@ import { ascending, quantile } from 'd3-array'
 import { nest } from 'd3-collection'
 import { omit } from 'ramda'
 
+export function toArray(value) {
+	return Array.isArray(value) ? value : [value]
+}
+export function addToArray(array, value) {
+	return [...array, ...toArray(value)]
+}
 /**
  * Calculates a grid of centres to fit a list of items of `size` within the number of `columns` and `rows`.
  *
