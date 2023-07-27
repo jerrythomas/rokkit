@@ -1,6 +1,6 @@
 import { clamp } from 'yootils'
 import { ColorBrewer } from './color'
-import { toHexString, uniqueId } from './utils'
+import { toHexString, uniqueId, addToArray, toArray } from './utils'
 
 export const builtIn = [
 	{ path: 'M0 5A6 6 0 0 0 10 5', minAngle: 0, maxAngle: 90 },
@@ -125,20 +125,18 @@ export class PatternBrewer {
 	}
 
 	add(path) {
-		let paths = Array.isArray(path) ? path : [path]
-		this.paths = [...this.paths, ...paths]
-
+		this.paths = addToArray(this.pathc, path)
 		return this
 	}
 
 	filter(indices) {
-		indices = Array.isArray(indices) ? indices : [indices]
+		indices = toArray(indices)
 		this.indices = indices.filter((i) => i >= 0 && i < this.paths.length)
 		return this
 	}
 
 	colors(shades, repeat = false) {
-		this.shades = Array.isArray(shades) ? shades : [shades]
+		this.shades = toArray(shades)
 		this.repeat = repeat
 		return this
 	}

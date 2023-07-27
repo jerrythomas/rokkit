@@ -1,11 +1,13 @@
+function getOrigin(scale, axis) {
+	const origin = scale[axis].ticks
+		? scale(Math.max(0, Math.min(...scale[axis].domain())))
+		: scale[axis].range()[0]
+	return origin
+}
 export function axis(scale) {
 	const origin = {
-		x: scale.x.ticks
-			? scale.x(Math.max(0, Math.min(...scale.x.domain())))
-			: scale.x.range()[0],
-		y: scale.y.ticks
-			? scale.y(Math.max(0, Math.min(...scale.y.domain())))
-			: scale.y.range()[0]
+		x: getOrigin(scale, 'x'),
+		y: getOrigin(scale, 'y')
 	}
 	const ticks = {
 		x: axisTicks(scale.x, { axis: 'x', origin }),

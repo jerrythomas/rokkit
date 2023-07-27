@@ -1,3 +1,6 @@
+import { handleAction, getKeyboardActions } from './utils'
+
+const defaultOptions = { horizontal: true, nested: false, enabled: true }
 /**
  * A svelte action function that captures keyboard evvents and emits event for corresponding movements.
  *
@@ -5,60 +8,40 @@
  * @param {import('./types').NavigableOptions} options
  * @returns {import('./types').SvelteActionReturn}
  */
-export function navigable(
-	node,
-	{ horizontal = true, nested = false, enabled = true } = {}
-) {
+export function navigable(node, options) {
+	options = { ...defaultOptions, ...options }
+
 	let listening = false
-
-	const previous = () => node.dispatchEvent(new CustomEvent('previous'))
-	const next = () => node.dispatchEvent(new CustomEvent('next'))
-	const collapse = () => node.dispatchEvent(new CustomEvent('collapse'))
-	const expand = () => node.dispatchEvent(new CustomEvent('expand'))
-	const select = () => node.dispatchEvent(new CustomEvent('select'))
-
-	const movement = horizontal
-		? { ArrowLeft: previous, ArrowRight: next }
-		: { ArrowUp: previous, ArrowDown: next }
-	const change = nested
-		? horizontal
-			? { ArrowUp: collapse, ArrowDown: expand }
-			: { ArrowLeft: collapse, ArrowRight: expand }
-		: {}
-	const actions = {
-		Enter: select,
-		' ': select,
-		...movement,
-		...change
+	const handlers = {
+		previous: () => node.dispatchEvent(new CustomEvent('previous')),
+		next: () => node.dispatchEvent(new CustomEvent('next')),
+		collapse: () => node.dispatchEvent(new CustomEvent('collapse')),
+		expand: () => node.dispatchEvent(new CustomEvent('expand')),
+		select: () => node.dispatchEvent(new CustomEvent('select'))
 	}
 
-	function handleKeydown(event) {
-		if (actions[event.key]) {
-			event.preventDefault()
-			event.stopPropagation()
-			actions[event.key]()
-		}
-	}
+	let actions = {} //getKeyboardActions(node, { horizontal, nested })
+	const handleKeydown = (event) => handleAction(actions, event)
 
-	function updateListeners(enabled) {
-		if (enabled && !listening) node.addEventListener('keydown', handleKeydown)
-		else if (!enabled && listening)
+	function updateListeners(options) {
+		if (options.enabled) actions = getKeyboardActions(node, options, handlers)
+
+		if (options.enabled && !listening)
+			node.addEventListener('keydown', handleKeydown)
+		else if (!options.enabled && listening)
 			node.removeEventListener('keydown', handleKeydown)
-		listening = enabled
+		listening = options.enabled
 	}
 
-	updateListeners(enabled)
+	updateListeners(options)
 
 	return {
-		update: (options) => {
-			enabled = options.enabled
-			horizontal = options.horizontal
-			nested = options.nested
-
-			updateListeners(enabled)
+		update: (config) => {
+			options = { ...options, ...config }
+			updateListeners(options)
 		},
 		destroy: () => {
-			updateListeners(false)
+			updateListeners({ enabled: false })
 		}
 	}
 }

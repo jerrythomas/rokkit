@@ -1,4 +1,4 @@
-// import { tick } from 'svelte'
+import { handleAction, getKeyboardActions } from './utils'
 import { isNested, hasChildren, isExpanded } from '@rokkit/core'
 import {
 	moveNext,
@@ -92,13 +92,7 @@ export function navigator(element, options) {
 		: { ArrowDown: expand, ArrowUp: collapse }
 	const actions = { ...movement, Enter: select, ...states }
 
-	const handleKeyDown = (event) => {
-		if (actions[event.key]) {
-			event.preventDefault()
-			event.stopPropagation()
-			actions[event.key]()
-		}
-	}
+	const handleKeyDown = (event) => handleAction(actions, event)
 
 	const handleClick = (event) => {
 		let target = findParentWithDataPath(event.target, element)

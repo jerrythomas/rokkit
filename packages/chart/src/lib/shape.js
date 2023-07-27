@@ -1,6 +1,6 @@
 import { ColorBrewer } from './color'
 import { symbols } from '@rokkit/atoms/symbols'
-
+import { addToArray, toArray } from './utils'
 export class ShapeBrewer {
 	constructor() {
 		this.shapes = Object.keys(symbols)
@@ -17,21 +17,19 @@ export class ShapeBrewer {
 	}
 
 	add(shape) {
-		const shapes = Array.isArray(shape) ? shape : [shape]
-		this.shapes = [...this.shapes, ...shapes]
+		this.shapes = addToArray(this.shapes, shape)
 
 		return this
 	}
 
 	filter(keys) {
-		keys = Array.isArray(keys) ? keys : [keys]
-		this.keys = keys.filter((key) => key in this.shapes)
+		this.keys = toArray(keys).filter((key) => key in this.shapes)
 
 		return this
 	}
 
 	colors(shades, repeat = false) {
-		this.shades = Array.isArray(shades) ? shades : [shades]
+		this.shades = toArray(shades)
 		this.repeat = repeat
 		return this
 	}
