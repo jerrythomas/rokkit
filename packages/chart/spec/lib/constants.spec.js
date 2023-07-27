@@ -8,8 +8,7 @@ describe('constants', () => {
 			'__colors__',
 			'__patterns__',
 			'colors',
-			'palette',
-			'shapePaths'
+			'palette'
 		])
 	})
 })

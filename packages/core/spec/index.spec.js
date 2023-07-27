@@ -28,6 +28,7 @@ describe('utilities', () => {
 			'stateColors',
 			'themeColors',
 			'iconShortcuts',
+			'scaledPath',
 			'getRegex',
 			'parseFilters',
 			'toInitCapCase',

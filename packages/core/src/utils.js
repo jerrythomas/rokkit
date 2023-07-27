@@ -84,3 +84,8 @@ export function iconShortcuts(icons, collection, variants) {
 
 	return shortcuts
 }
+
+export function scaledPath(size, x) {
+	if (Array.isArray(x)) return x.map((x) => scaledPath(size, x)).join(' ')
+	return typeof x === 'number' ? x * size : x
+}
