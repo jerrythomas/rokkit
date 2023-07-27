@@ -1,4 +1,4 @@
-import { hasChildren, isExpanded, isNested } from '@rokkit/core'
+import { isExpanded } from '@rokkit/core'
 
 /**
  * Navigate to last visible child in the hirarchy starting with the provided path

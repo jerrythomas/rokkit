@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { swipeable } from '../src/swipeable'
-import { toUseHandlersFor, toOnlyTrigger } from 'validators'
+import {
+	getMockNode,
+	toUseHandlersFor,
+	toOnlyTrigger,
+	simulateTouchSwipe,
+	simulateMouseSwipe
+} from 'validators'
 
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
@@ -105,34 +111,23 @@ describe('swipable', () => {
 
 		handle.destroy()
 	})
+
+	it('should switch between enabled and disabled', () => {
+		const mock = getMockNode(events)
+		const handle = swipeable(mock.node)
+
+		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+
+		// repeat calls should not call addEventListener again
+		handle.update({ enabled: true })
+		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+
+		// disabling should remove all event listeners
+		handle.update({ enabled: false })
+		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+
+		// repeat calls should not call removeEventListener again
+		handle.update({ enabled: false })
+		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+	})
 })
-
-function simulateTouchSwipe(node, distance) {
-	const touchStart = new Touch({
-		identifier: 0,
-		target: node,
-		clientX: 0,
-		clientY: 0
-	})
-	const touchEnd = new Touch({
-		identifier: 0,
-		target: node,
-		clientX: distance.x,
-		clientY: distance.y
-	})
-	const touchStartEvent = new TouchEvent('touchstart', {
-		touches: [touchStart]
-	})
-	node.dispatchEvent(touchStartEvent)
-	const touchEndEvent = new TouchEvent('touchend', {
-		changedTouches: [touchEnd]
-	})
-	node.dispatchEvent(touchEndEvent)
-}
-
-function simulateMouseSwipe(node, distance) {
-	node.dispatchEvent(new MouseEvent('mouseup', { clientX: 0, clientY: 0 }))
-	node.dispatchEvent(
-		new MouseEvent('mousedown', { clientX: distance.x, clientY: distance.y })
-	)
-}

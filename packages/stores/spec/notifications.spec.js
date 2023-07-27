@@ -4,7 +4,6 @@ import { get } from 'svelte/store'
 
 describe('notifications', () => {
 	const defaultKeys = ['id', 'timeout', 'message', 'type']
-	const customKeys = ['id', 'timeout', 'text', 'type']
 	const types = ['default', 'danger', 'warning', 'info', 'success']
 
 	const input = [
@@ -14,13 +13,6 @@ describe('notifications', () => {
 		{ message: 'a success message', type: 'success', timeout: 1000 },
 		{ message: 'an informational message', type: 'info', timeout: 1000 }
 	]
-
-	// beforeEach(() => {
-	// 	vi.useFakeTimers()
-	// })
-	// afterEach(() => {
-	// 	vi.clearAllTimers()
-	// })
 
 	it('should send a notification', () => {
 		const alerts = createNotificationStore()
@@ -58,10 +50,20 @@ describe('notifications', () => {
 		alerts[type]({ text: 'object as message', timeout: 2000 })
 		items = get(alerts)
 		expect(items.length).toEqual(3)
-		expect(Object.keys(items[2])).toEqual(customKeys)
-		expect(items[2].text).toEqual('object as message')
+		expect(Object.keys(items[2])).toEqual(defaultKeys)
+		expect(Object.keys(items[2].message)).toEqual(['text'])
+		expect(items[2].message.text).toEqual('object as message')
 		expect(items[2].type).toEqual(type)
 		expect(items[2].timeout).toEqual(2000)
+
+		alerts[type]({ text: 'object as message' })
+		items = get(alerts)
+		expect(items.length).toEqual(4)
+		expect(Object.keys(items[3])).toEqual(defaultKeys)
+		expect(Object.keys(items[3].message)).toEqual(['text'])
+		expect(items[3].message.text).toEqual('object as message')
+		expect(items[3].type).toEqual(type)
+		expect(items[3].timeout).toEqual(3000)
 	})
 
 	it('should remove notifications after timeout', async () => {
@@ -92,5 +94,16 @@ describe('notifications', () => {
 			await vi.advanceTimersByTime(input[index].timeout ?? 3000)
 		}
 		vi.clearAllTimers()
+	})
+
+	it('should clear notifications', () => {
+		const alerts = createNotificationStore()
+		input.forEach((item) => alerts.send(item.message, item.type, item.timeout))
+		let items = get(alerts)
+		expect(items.length).toEqual(5)
+
+		alerts.clear()
+		items = get(alerts)
+		expect(items.length).toEqual(0)
 	})
 })

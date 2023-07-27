@@ -3,13 +3,25 @@ import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
 import { getPropertyValue } from 'validators'
 import Calendar from '../src/Calendar.svelte'
+import { getDaysInMonth, getDate } from 'date-fns'
 
 describe('Calendar.svelte', () => {
 	beforeEach(() => cleanup())
 	it('should render a calendar', () => {
-		const { container } = render(Calendar)
+		const { container } = render(Calendar, { fixed: false })
+		const today = new Date()
+		const count = getDaysInMonth(today)
+
 		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
+		const days = container.querySelectorAll('day-of-month')
+		const index = getDate(today)
+		expect(days.length).toEqual(count)
+
+		days.forEach((day, i) => {
+			expect(day.getAttribute('aria-selected')).toEqual(
+				i == index - 1 ? 'true' : 'false'
+			)
+		})
 	})
 
 	it('should render a calendar for specific date', () => {

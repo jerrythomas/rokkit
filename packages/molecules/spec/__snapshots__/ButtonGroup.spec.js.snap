@@ -28,32 +28,3 @@ exports[`ButtonGroup.svelte > should render a button group 1`] = `
   </div>
 </body>
 `;
-
-exports[`ButtonGroup.svelte > should render a button group with value 1`] = `
-<body>
-  <div>
-    <button-group
-      class="flex flex-row "
-    >
-      <button
-        class="flex cursor-pointer select-none"
-      >
-        One
-         
-      </button>
-      <button
-        class="flex cursor-pointer select-none active"
-      >
-        Two
-         
-      </button>
-      <button
-        class="flex cursor-pointer select-none"
-      >
-        Three
-         
-      </button>
-    </button-group>
-  </div>
-</body>
-`;

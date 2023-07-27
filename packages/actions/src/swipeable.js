@@ -16,8 +16,7 @@ export function swipeable(
 		minSpeed = 300
 	} = {}
 ) {
-	if (!enabled) return { destroy() {} }
-
+	let listening = false
 	let startX
 	let startY
 	let startTime
@@ -57,17 +56,37 @@ export function swipeable(
 		}
 	}
 
-	node.addEventListener('touchstart', touchStart)
-	node.addEventListener('touchend', touchEnd)
-	node.addEventListener('mousedown', touchStart)
-	node.addEventListener('mouseup', touchEnd)
-
-	return {
-		destroy() {
+	const updateListeners = (enabled) => {
+		if (enabled && !listening) {
+			node.addEventListener('touchstart', touchStart)
+			node.addEventListener('touchend', touchEnd)
+			node.addEventListener('mousedown', touchStart)
+			node.addEventListener('mouseup', touchEnd)
+			listening = true
+		}
+		if (!enabled && listening) {
 			node.removeEventListener('touchstart', touchStart)
 			node.removeEventListener('touchend', touchEnd)
 			node.removeEventListener('mousedown', touchStart)
 			node.removeEventListener('mouseup', touchEnd)
+			listening = false
+		}
+	}
+
+	updateListeners(enabled)
+
+	return {
+		update: (options) => {
+			horizontal = options.horizontal
+			vertical = options.vertical
+			threshold = options.threshold
+			enabled = options.enabled
+			minSpeed = options.minSpeed
+
+			updateListeners(enabled)
+		},
+		destroy() {
+			updateListeners(false)
 		}
 	}
 }
