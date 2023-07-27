@@ -1,13 +1,9 @@
 import { ColorBrewer } from './color'
-import { scaledPath } from './utils'
-import { shapePaths } from './constants'
+import { symbols } from '@rokkit/atoms/symbols'
 
 export class ShapeBrewer {
 	constructor() {
-		this.shapes = Object.entries(shapePaths).reduce(
-			(acc, [name, path]) => ({ ...acc, [name]: (s) => scaledPath(s, path) }),
-			{}
-		)
+		this.shapes = Object.keys(symbols)
 		this.repeat = false
 		this.keys = Object.keys(this.shapes)
 		this.gray = new ColorBrewer().gray()
@@ -16,13 +12,13 @@ export class ShapeBrewer {
 	}
 
 	clear() {
-		this.shapes = {}
+		this.shapes = []
 		return this
 	}
 
 	add(shape) {
-		const shapes = typeof shape === 'object' ? shape : { shape }
-		this.shapes = { ...this.shapes, ...shapes }
+		const shapes = Array.isArray(shape) ? shape : [shape]
+		this.shapes = [...this.shapes, ...shapes]
 
 		return this
 	}

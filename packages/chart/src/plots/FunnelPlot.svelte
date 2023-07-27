@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { compact } from '../lib/utils-2'
+	import { compact } from '@rokkit/core'
 	import { funnel } from '../lib/funnel'
 
 	const chart = getContext('chart')

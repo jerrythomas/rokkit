@@ -1,7 +1,7 @@
 <script>
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
-	import { compact } from '../lib/utils'
+	import { compact } from '@rokkit/core'
 	import { builtIn } from '../lib/theme'
 
 	let chart = writable({})

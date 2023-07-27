@@ -37,6 +37,7 @@
 		"vitest": "~0.33.0"
 	},
 	"dependencies": {
+		"@rokkit/atoms": "workspace:*",
 		"@rokkit/core": "workspace:*",
 		"@rokkit/molecules": "workspace:*",
 		"@rokkit/stores": "workspace:*",

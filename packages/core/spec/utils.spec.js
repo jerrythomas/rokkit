@@ -4,7 +4,8 @@ import {
 	shadesOf,
 	stateColors,
 	themeColors,
-	iconShortcuts
+	iconShortcuts,
+	scaledPath
 } from '../src/utils'
 
 describe('utils', () => {
@@ -213,6 +214,25 @@ describe('utils', () => {
 				'rating-empty': 'x:rating-empty-solid',
 				'action-sort-up': 'x:action-sort-up-solid'
 			})
+		})
+	})
+
+	describe('scaledPath', () => {
+		it('should generate a scaled path', () => {
+			expect(scaledPath(10, ['M', 1, 2])).toEqual('M 10 20')
+			expect(scaledPath(5, ['A', 0.1, 0.1, 0, 0, 0, 0, 0.1])).toEqual(
+				'A 0.5 0.5 0 0 0 0 0.5'
+			)
+			expect(
+				scaledPath(5, ['A', 0.1, 0.1, 0, 0, 0, 0, 0.1, 'V', 1, 2])
+			).toEqual('A 0.5 0.5 0 0 0 0 0.5 V 5 10')
+
+			expect(
+				scaledPath(5, [
+					['A', 0.1, 0.1, 0, 0, 0, 0, 0.1],
+					['V', 1, 2]
+				])
+			).toEqual('A 0.5 0.5 0 0 0 0 0.5 V 5 10')
 		})
 	})
 })
