@@ -1,12 +1,3 @@
-function deriveBasicSchema(data) {
-	return { type: typeof data }
-}
-function deriveStringSchema() {
-	return { type: 'string' }
-}
-function deriveDateSchema() {
-	return { type: 'date' }
-}
 function deriveObjectSchema(data) {
 	const properties = {}
 	for (const [key, value] of Object.entries(data)) {
@@ -32,14 +23,13 @@ function deriveArraySchema(data) {
  */
 export function deriveSchemaFromValue(data) {
 	if (data === null || data === undefined) {
-		return deriveStringSchema()
+		return { type: 'string' }
 	} else if (Array.isArray(data)) {
 		return deriveArraySchema(data)
 	} else if (data instanceof Date) {
-		return deriveDateSchema()
+		return { type: 'date' }
 	} else if (typeof data === 'object' && data !== null) {
 		return deriveObjectSchema(data)
-	} else {
-		return deriveBasicSchema(data)
 	}
+	return { type: typeof data }
 }

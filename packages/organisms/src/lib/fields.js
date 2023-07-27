@@ -9,44 +9,88 @@ import { omit, pick } from 'ramda'
  */
 export function getSchemaWithLayout(schema, layout) {
 	let combined = omit(['elements'], layout)
-	combined.elements = combineElementsWithSchema(layout.elements, schema)
+	combined.elements = layout.elements.map((element) =>
+		combineElementWithSchema(element, schema)
+	)
 
 	return combined
 }
 
 /**
- * Combine elements from layout with schema
+ * Combines an element from layout with schema
  *
- * @param {*} elements
- * @param {*} schema
+ * @param {import('../types').LayoutElement} element
+ * @param {import('../types').DataSchema} schema
  * @returns
  */
-export function combineElementsWithSchema(elements, schema) {
-	let combined = []
-	elements.forEach((element) => {
-		const { scope } = element
-		let attribute = findAttributeByPath(scope, schema)
+function combineElementWithSchema(element, schema) {
+	const { scope } = element
+	let attribute = findAttributeByPath(scope, schema)
 
-		if (Array.isArray(element.elements)) {
-			const temp = combineElementsWithSchema(element.elements, schema)
-			attribute = {
-				...omit(['component', 'props'], attribute),
-				...omit(['scope', 'elements'], element),
-				elements: temp
-			}
-		} else {
-			attribute = { ...attribute, ...pick(['component'], element) }
-			attribute.props = {
-				...omit(['scope', 'props', 'component', 'key'], element),
-				...attribute.props,
-				...element.props
-			}
+	if (Array.isArray(element.elements)) {
+		attribute = combineNestedElementsWithSchema(element, attribute, schema)
+	} else if (element.schema || attribute.props?.type === 'array') {
+		attribute = combineArrayElementsWithSchema(element, attribute)
+	} else {
+		attribute = combineBasicElementsWithSchema(element, attribute)
+	}
+
+	return attribute
+}
+
+/**
+ * Combines nested elements with schema
+ *
+ * @param {import('../types').LayoutElement} element
+ * @param {import('../types').LayoutSchema} attribute
+ * @param {import('../types').DataSchema} schema
+ * @returns
+ */
+function combineNestedElementsWithSchema(element, attribute, schema) {
+	const temp = element.elements.map((element) =>
+		combineElementWithSchema(element, schema)
+	)
+	return {
+		...omit(['component', 'props'], attribute),
+		...omit(['scope', 'elements'], element),
+		elements: temp
+	}
+}
+
+/**
+ * Combines array elements with schema
+ *
+ * @param {import('../types').LayoutElement} element
+ * @param {import('../types').LayoutSchema} attribute
+ */
+function combineArrayElementsWithSchema(element, attribute) {
+	const schema = getSchemaWithLayout(attribute.props.items, element.schema)
+	return {
+		...attribute,
+		...pick(['component'], element),
+		props: {
+			...omit(['items'], attribute.props),
+			schema
 		}
+	}
+}
 
-		combined.push(attribute)
-	})
-
-	return combined
+/**
+ * Combines basic elements with schema
+ * @param {import('../types').LayoutElement} element
+ * @param {import('../types').LayoutSchema} attribute
+ * @returns
+ */
+function combineBasicElementsWithSchema(element, attribute) {
+	return {
+		...attribute,
+		...pick(['component'], element),
+		props: {
+			...omit(['scope', 'props', 'component', 'key'], element),
+			...attribute.props,
+			...element.props
+		}
+	}
 }
 
 /**

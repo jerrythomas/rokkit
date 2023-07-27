@@ -14,16 +14,14 @@ describe('layout', () => {
 		it('should derive layout for array', () => {
 			const layout = deriveLayoutFromValue([{ name: 'hello', age: 21 }])
 			expect(layout).toEqual({
-				type: 'array',
-				elements: [
-					{
-						type: 'vertical',
-						elements: [
-							{ label: 'name', scope: '#/name' },
-							{ label: 'age', scope: '#/age' }
-						]
-					}
-				]
+				scope: '#',
+				schema: {
+					type: 'vertical',
+					elements: [
+						{ label: 'name', scope: '#/name' },
+						{ label: 'age', scope: '#/age' }
+					]
+				}
 			})
 		})
 		it('should derive layout for object', () => {
@@ -70,6 +68,39 @@ describe('layout', () => {
 				}
 			})
 			expect(layout).toEqual(derivedNestedLayout)
+		})
+
+		it('should derive layout for object with nested arrays', () => {
+			const layout = deriveLayoutFromValue({
+				name: 'John',
+				phoneNumbers: [{ type: 'home', number: '555-555-5555' }]
+			})
+			expect(layout).toEqual({
+				type: 'vertical',
+				elements: [
+					{
+						scope: '#/name',
+						label: 'name'
+					},
+					{
+						scope: '#/phoneNumbers',
+						title: 'phoneNumbers',
+						schema: {
+							type: 'vertical',
+							elements: [
+								{
+									scope: '#/type',
+									label: 'type'
+								},
+								{
+									scope: '#/number',
+									label: 'number'
+								}
+							]
+						}
+					}
+				]
+			})
 		})
 	})
 })

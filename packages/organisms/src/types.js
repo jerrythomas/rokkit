@@ -23,12 +23,12 @@ export const componentTypes = {
 }
 
 /**
- * @typedef Element
+ * @typedef LayoutElement
  * @property {string} scope - The path of the element.
  * @property {string} label - The label of the element.
  * @property {string} description - The description of the element.
  * @property {string} placeholder - The placeholder of the element.
- * @property {Array<Element>} [elements] - Optional sub Elements to be displayed in the layout.
+ * @property {Array<LayoutElement>} [elements] - Optional sub Elements to be displayed in the layout.
  */
 
 /**
