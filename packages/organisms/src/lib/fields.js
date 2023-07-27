@@ -1,66 +1,6 @@
 import { omit, pick } from 'ramda'
 
 /**
- * Derives a schema from a given value.
- *
- * @param {any} data
- * @returns {import('../types').DataSchema}
- */
-export function deriveSchemaFromValue(data) {
-	const schema = {}
-
-	if (data === null || data === undefined) {
-		schema['type'] = 'string'
-	} else if (Array.isArray(data)) {
-		schema['type'] = 'array'
-		schema['items'] = deriveSchemaFromValue(data.length > 0 ? data[0] : {})
-	} else if (data instanceof Date) {
-		schema['type'] = 'date'
-	} else if (typeof data === 'object' && data !== null) {
-		schema['type'] = 'object'
-		schema['properties'] = {}
-
-		for (const [key, value] of Object.entries(data)) {
-			schema['properties'][key] = deriveSchemaFromValue(value)
-		}
-	} else {
-		schema['type'] = typeof data
-	}
-
-	return schema
-}
-
-/**
- * Derives a layout from a given value.
- * @param {any} value
- * @param {string} scope
- * @returns {import('../types').DataLayout}
- */
-export function deriveLayoutFromValue(value, scope = '#') {
-	let elements = []
-	if (typeof value === 'object' && value !== null) {
-		for (const [label, val] of Object.entries(value)) {
-			let element = { label, scope: `${scope}/${label}` }
-
-			if (
-				typeof val === 'object' &&
-				val !== null &&
-				!Array.isArray(val) &&
-				!(val instanceof Date)
-			) {
-				element = {
-					title: element.label,
-					...omit(['label'], element),
-					...deriveLayoutFromValue(val, `${scope}/${label}`)
-				}
-			}
-			elements.push(element)
-		}
-	}
-	return { type: 'vertical', elements }
-}
-
-/**
  * Get combined schema and layout
  * @param {*} data
  * @param {import('../types').DataSchema} schema
@@ -68,9 +8,6 @@ export function deriveLayoutFromValue(value, scope = '#') {
  * @returns {import('../types').LayoutSchema}
  */
 export function getSchemaWithLayout(schema, layout) {
-	// if (!schema) schema = deriveSchemaFromValue(data)
-	// if (!layout) layout = deriveLayoutFromValue(data)
-
 	let combined = omit(['elements'], layout)
 	combined.elements = combineElementsWithSchema(layout.elements, schema)
 

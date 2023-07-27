@@ -897,6 +897,137 @@ exports[`DropDown.svelte > should render title 2`] = `
 </button>
 `;
 
+exports[`DropDown.svelte > should render using icon only 1`] = `
+<button
+  class="flex items-center"
+  tabindex="-1"
+>
+  <span
+    class="flex items-center"
+  >
+    <icon
+      aria-label="theme"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="theme"
+      />
+    </icon>
+     
+     
+    <icon
+      class="selector-closed"
+    />
+  </span>
+  <iframe
+    aria-hidden="true"
+    src="about:blank"
+    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+    tabindex="-1"
+  />
+</button>
+`;
+
+exports[`DropDown.svelte > should render using icon only 2`] = `
+<body>
+  <div>
+    <drop-down
+      aria-controls="menu"
+      aria-haspopup="true"
+      class="flex relative cursor-pointer select-none dropdown open"
+      tabindex="0"
+    >
+      <button
+        class="flex items-center"
+        tabindex="-1"
+      >
+        <span
+          class="flex items-center"
+        >
+          <icon
+            aria-label="theme"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="theme"
+            />
+          </icon>
+           
+           
+          <icon
+            class="selector-opened"
+          />
+        </span>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </button>
+       
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+             
+            <p>
+              One
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="1"
+            role="option"
+          >
+             
+            <p>
+              Two
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+             
+            <p>
+              Three
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
+    </drop-down>
+  </div>
+</body>
+`;
+
 exports[`DropDown.svelte > should toggle open state when button is clicked 1`] = `
 <body>
   <div>

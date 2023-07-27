@@ -25,6 +25,17 @@ describe('DropDown.svelte', () => {
 		expect(button.textContent.trim()).toBe('')
 	})
 
+	it('should render using icon only', async () => {
+		const { container } = render(DropDown, {
+			props: { options: ['One', 'Two', 'Three'], fields: {}, icon: 'theme' }
+		})
+		const button = container.querySelector('drop-down > button')
+		expect(button).toMatchSnapshot()
+		await fireEvent.click(button)
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
+
 	it('should render title', async () => {
 		const { container, component } = render(DropDown, {
 			props: { options: [], fields: {}, title: 'Select a value' }
@@ -58,6 +69,7 @@ describe('DropDown.svelte', () => {
 		await fireEvent.click(button)
 		expect(button.parentNode.classList.contains('open')).toBe(false)
 	})
+
 	it('should close the dropdown when focus is lost', async () => {
 		const { container } = render(DropDown, {
 			props: { options: [], fields: {} }
@@ -68,6 +80,7 @@ describe('DropDown.svelte', () => {
 		await fireEvent.blur(button.parentNode)
 		expect(button.parentNode.classList.contains('open')).toBe(false)
 	})
+
 	it('should dispatch a change event when an item is selected', async () => {
 		let selected = null
 		const options = [{ text: 'foo' }, { text: 'bar' }]

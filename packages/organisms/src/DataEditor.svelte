@@ -14,7 +14,7 @@
 		deriveSchemaFromValue,
 		deriveLayoutFromValue,
 		getSchemaWithLayout
-	} from './lib/fields'
+	} from './lib'
 
 	export let value
 	export let schema = null
