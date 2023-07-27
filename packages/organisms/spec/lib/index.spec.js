@@ -10,7 +10,6 @@ describe('lib', () => {
 			'deriveSchemaFromValue',
 			'deriveLayoutFromValue',
 			'getSchemaWithLayout',
-			'combineElementsWithSchema',
 			'findAttributeByPath'
 		])
 	})

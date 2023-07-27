@@ -1,4 +1,3 @@
-import { omit } from 'ramda'
 /**
  * Derives a layout from a given value.
  * @param {any} value
@@ -16,8 +15,8 @@ export function deriveLayoutFromValue(value, scope = '#') {
 
 function deriveArrayLayout(value, scope) {
 	return {
-		type: 'array',
-		elements: [deriveLayoutFromValue(value[0], scope)]
+		scope,
+		schema: deriveLayoutFromValue(value[0], '#')
 	}
 }
 
