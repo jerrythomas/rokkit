@@ -1,4 +1,4 @@
-import { handleAction, getKeyboardActions } from './utils'
+import { handleAction } from './utils'
 import { isNested, hasChildren, isExpanded } from '@rokkit/core'
 import {
 	moveNext,
