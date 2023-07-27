@@ -4,7 +4,7 @@ exports[`Symbol.svelte > should render default circle. 1`] = `
 <body>
   <div>
     <path
-      d="M2 10A8 8 0 0 0 18 10A8 8 0 0 0 2 10"
+      d="M 0 100 A 100 100 0 0 0 200 100 A 100 100 0 0 0 0 100"
       fill="currentColor"
       fill-rule="evenodd"
       role="button"
@@ -37,7 +37,7 @@ exports[`Symbol.svelte > should render using path when component is not provided
 <body>
   <div>
     <path
-      d="M10 1.732L0 18.468L20 18.468Z"
+      d="M 100 0 L 200 200 L 0 200 Z"
       fill="currentColor"
       fill-rule="evenodd"
       role="button"
