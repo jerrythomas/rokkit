@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { pannable } from '../src/pannable'
-import { createEvent, createTouchEvent } from 'validators/mocks'
+import { simulateMouseEvent, simulateTouchEvent } from 'validators'
 
 describe('pannable', () => {
 	let handlers = {}
@@ -46,7 +46,7 @@ describe('pannable', () => {
 	})
 	it('should emit the panstart event', () => {
 		const action = pannable(node)
-		let event = createEvent(10, 10)
+		let event = simulateMouseEvent(10, 10)
 
 		handlers.node['mousedown'](event)
 		expect(event.stopPropagation).toHaveBeenCalled()
@@ -67,13 +67,13 @@ describe('pannable', () => {
 	})
 	it('should emit the panmove event', () => {
 		const action = pannable(node)
-		let event = createEvent(10, 10)
+		let event = simulateMouseEvent(10, 10)
 		handlers.node['mousedown'](event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
 			name: 'panstart',
 			params: { detail: { x: 10, y: 10 } }
 		})
-		event = createEvent(15, 15)
+		event = simulateMouseEvent(15, 15)
 
 		handlers.window['mousemove'](event)
 		expect(event.stopPropagation).toHaveBeenCalled()
@@ -89,13 +89,13 @@ describe('pannable', () => {
 
 	it('should emit the panend event', () => {
 		const action = pannable(node)
-		let event = createEvent(10, 10)
+		let event = simulateMouseEvent(10, 10)
 		handlers.node['mousedown'](event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
 			name: 'panstart',
 			params: { detail: { x: 10, y: 10 } }
 		})
-		event = createEvent(15, 15)
+		event = simulateMouseEvent(15, 15)
 		handlers.window['mouseup'](event)
 		expect(event.stopPropagation).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
@@ -131,7 +131,7 @@ describe('pannable', () => {
 
 	it('should emit the panstart event on touchstart', () => {
 		const action = pannable(node)
-		let event = createTouchEvent(10, 10)
+		let event = simulateTouchEvent(10, 10)
 
 		handlers.node['touchstart'](event)
 		expect(event.stopPropagation).toHaveBeenCalled()
@@ -154,13 +154,13 @@ describe('pannable', () => {
 
 	it('should emit the panmove event on touchmove', () => {
 		const action = pannable(node)
-		let event = createTouchEvent(10, 10)
+		let event = simulateTouchEvent(10, 10)
 		handlers.node['touchstart'](event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
 			name: 'panstart',
 			params: { detail: { x: 10, y: 10 } }
 		})
-		event = createTouchEvent(15, 15)
+		event = simulateTouchEvent(15, 15)
 
 		handlers.window['touchmove'](event)
 		expect(event.stopPropagation).toHaveBeenCalled()
@@ -175,13 +175,13 @@ describe('pannable', () => {
 
 	it('should emit the panend event on touchend', () => {
 		const action = pannable(node)
-		let event = createTouchEvent(10, 10)
+		let event = simulateTouchEvent(10, 10)
 		handlers.node['touchstart'](event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
 			name: 'panstart',
 			params: { detail: { x: 10, y: 10 } }
 		})
-		event = createTouchEvent(15, 15)
+		event = simulateTouchEvent(15, 15)
 		handlers.window['touchend'](event)
 		expect(event.stopPropagation).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()

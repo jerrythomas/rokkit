@@ -1,6 +1,7 @@
 import { navigable } from '../src/navigable'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { getMockNode, toUseHandlersFor, toOnlyTrigger } from 'validators'
+import { toUseHandlersFor, toOnlyTrigger } from 'validators'
+import { getMockNode } from 'validators/mocks'
 
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
