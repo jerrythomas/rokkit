@@ -7,27 +7,10 @@ if (typeof window === 'undefined') {
 		setItem: () => {}
 	}
 }
-export function persistable(key, store) {
-	let value
-	const storageEventListener = (event) => {
-		if (event.key === key) {
-			event.stopPropagation()
-			event.preventDefault()
-			try {
-				const newValue = JSON.parse(event.newValue)
-				set(newValue)
-			} catch (e) {
-				console.error(PARSE_ERROR_MESSAGE, key)
-			}
-		}
-	}
 
-	try {
-		value = JSON.parse(localStorage.getItem(key))
-		store.set(value)
-	} catch {
-		console.error(PARSE_ERROR_MESSAGE, key)
-	}
+export function persistable(key, store) {
+	let value = getStoredValue(key, store)
+	const storageEventListener = createStorageEventListener(key, store)
 
 	const set = (newValue) => {
 		if (value !== newValue) {
@@ -56,6 +39,31 @@ export function persistable(key, store) {
 		destroy() {
 			if (typeof window !== 'undefined') {
 				window.removeEventListener('storage', storageEventListener)
+			}
+		}
+	}
+}
+
+function getStoredValue(key, store) {
+	try {
+		const value = JSON.parse(localStorage.getItem(key))
+		store.set(value)
+		return value
+	} catch {
+		console.error(PARSE_ERROR_MESSAGE, key)
+	}
+}
+
+function createStorageEventListener(key, store) {
+	return (event) => {
+		if (event.key === key) {
+			event.stopPropagation()
+			event.preventDefault()
+			try {
+				const newValue = JSON.parse(event.newValue)
+				store.set(newValue)
+			} catch (e) {
+				console.error(PARSE_ERROR_MESSAGE, key)
 			}
 		}
 	}
