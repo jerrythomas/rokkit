@@ -9,11 +9,17 @@ import fs from 'fs'
 
 export async function convert(folder, prefix, color = false) {
 	// Import icons
-	const iconSet = await importDirectory(folder, {
-		prefix
-	})
+	const iconSet = await importDirectory(folder, { prefix })
 
 	// Validate, clean up, fix palette and optimise
+	await processIcons(iconSet, color)
+
+	// Export
+	const collection = JSON.stringify(iconSet.export(), null, 2)
+	fs.writeFileSync(`./lib/${prefix}.json`, collection, 'utf8')
+}
+
+async function processIcons(iconSet, color) {
 	await iconSet.forEach(async (name, type) => {
 		if (type !== 'icon') {
 			return
@@ -28,20 +34,7 @@ export async function convert(folder, prefix, color = false) {
 
 		// Clean up and optimise icons
 		try {
-			// Clean up icon code
-			await cleanupSVG(svg)
-
-			if (!color) {
-				await parseColors(svg, {
-					defaultColor: 'currentColor',
-					callback: (attr, colorStr, color) => {
-						return !color || isEmptyColor(color) ? colorStr : 'currentColor'
-					}
-				})
-			}
-
-			// Optimise
-			await runSVGO(svg)
+			await cleanAndOptimizeIcon(svg, color)
 		} catch (err) {
 			// Invalid icon
 			console.error(`Error parsing ${name}:`, err)
@@ -52,8 +45,21 @@ export async function convert(folder, prefix, color = false) {
 		// Update icon
 		iconSet.fromSVG(name, svg)
 	})
+}
 
-	// Export
-	const collection = JSON.stringify(iconSet.export(), null, 2)
-	fs.writeFileSync(`./lib/${prefix}.json`, collection, 'utf8')
+async function cleanAndOptimizeIcon(svg, color) {
+	// Clean up icon code
+	cleanupSVG(svg)
+
+	if (!color) {
+		await parseColors(svg, {
+			defaultColor: 'currentColor',
+			callback: (attr, colorStr, color) => {
+				return !color || isEmptyColor(color) ? colorStr : 'currentColor'
+			}
+		})
+	}
+
+	// Optimise
+	runSVGO(svg)
 }

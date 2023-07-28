@@ -45,37 +45,32 @@ export function addPathMetadata(files) {
  * @returns
  */
 export function addModuleMetadata(modules, options) {
-	let result = modules.map((item) => {
-		let content = {}
-		if (item.name == options.metadataFilename) {
-			content = { ...item.content }
-		} else if (item.name == options.readmeFilename) {
-			content = { ...item.content.metadata, readme: item.content.default }
-		} else if (item.name == options.previewFilename) {
-			content = item.content.default
-				? { preview: item.content.default }
-				: { content: item.content }
-		} else {
-			content = { content: item.content }
-		}
-
+	return modules.map((item) => {
+		let content = getContentBasedOnName(item, options)
 		return {
 			...omit(['content'], item),
 			...content
 		}
 	})
-	return result
 }
 
-// export function addModuleSource(modules) {
-// 	let result = modules.map((item) => {
-// 		return {
-// 			...omit(['content'], item),
-// 			source: item.content
-// 		}
-// 	})
-// 	return result
-// }
+function getContentBasedOnName(item, options) {
+	if (item.name === options.metadataFilename) {
+		return { ...item.content }
+	}
+
+	if (item.name === options.readmeFilename) {
+		return { ...item.content.metadata, readme: item.content.default }
+	}
+
+	if (item.name === options.previewFilename) {
+		return item.content.default
+			? { preview: item.content.default }
+			: { content: item.content }
+	}
+
+	return { content: item.content }
+}
 
 /**
  * Recursively add part and its children to the data object.
