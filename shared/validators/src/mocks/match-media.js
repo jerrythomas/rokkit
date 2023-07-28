@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+
 function parseMediaQuery(mediaQuery) {
 	const regex = /\(([^:]+):\s*([^)]+)\)/g
 	const result = {}

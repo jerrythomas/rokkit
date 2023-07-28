@@ -31,7 +31,6 @@ describe('navigator', () => {
 
 	beforeEach(() => {
 		items = ['A', 'B']
-		// global.CustomEvent = getCustomEventMock()
 		node = document.createElement('div')
 
 		events.forEach((event) => {

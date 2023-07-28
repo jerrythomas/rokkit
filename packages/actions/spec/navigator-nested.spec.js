@@ -33,7 +33,6 @@ describe('navigator', () => {
 			{ name: 'A', children: ['A1'] },
 			{ name: 'B', children: ['B1'] }
 		]
-		// global.CustomEvent = getCustomEventMock()
 		node = createNestedElement({
 			name: 'node',
 			children: [

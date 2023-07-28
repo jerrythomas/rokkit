@@ -1,13 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { swipeable } from '../src/swipeable'
 import {
-	getMockNode,
 	toUseHandlersFor,
 	toOnlyTrigger,
 	simulateTouchSwipe,
 	simulateMouseSwipe
 } from 'validators'
-
+import { getMockNode } from 'validators/mocks'
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
 describe('swipable', () => {
@@ -52,13 +51,17 @@ describe('swipable', () => {
 
 		simulateTouchSwipe(node, { x: 100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeRight')
-		simulateMouseSwipe(node, { x: 100, y: 10 })
-		expect(handlers).toOnlyTrigger('swipeRight')
+		vi.resetAllMocks()
 
 		simulateTouchSwipe(node, { x: 90, y: 10 })
-		expect(handlers.swipeRight).toHaveBeenCalledTimes(1)
+		expect(handlers.swipeRight).not.toHaveBeenCalled()
+
+		simulateMouseSwipe(node, { x: 100, y: 10 })
+		expect(handlers).toOnlyTrigger('swipeRight')
+		vi.resetAllMocks()
+
 		simulateMouseSwipe(node, { x: 90, y: 10 })
-		expect(handlers.swipeRight).toHaveBeenCalledTimes(1)
+		expect(handlers.swipeRight).not.toHaveBeenCalled()
 
 		handle.destroy()
 	})
@@ -68,13 +71,11 @@ describe('swipable', () => {
 
 		simulateTouchSwipe(node, { x: -100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeLeft')
+		vi.resetAllMocks()
+
 		simulateMouseSwipe(node, { x: -100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeLeft')
-
-		handle.destroy()
-	})
-	it('should not dispatch swipeLeft event', () => {
-		const handle = swipeable(node)
+		vi.resetAllMocks()
 
 		simulateTouchSwipe(node, { x: -90, y: 10 })
 		expect(handlers.swipeLeft).not.toHaveBeenCalled()
@@ -89,10 +90,15 @@ describe('swipable', () => {
 
 		simulateTouchSwipe(node, { x: 10, y: -100 })
 		expect(handlers).toOnlyTrigger('swipeUp')
+		vi.resetAllMocks()
+
 		simulateMouseSwipe(node, { x: 10, y: -100 })
 		expect(handlers).toOnlyTrigger('swipeUp')
+		vi.resetAllMocks()
+
+		simulateTouchSwipe(node, { x: 10, y: -90 })
 		simulateMouseSwipe(node, { x: 10, y: -90 })
-		expect(handlers.swipeUp).toHaveBeenCalledTimes(1)
+		expect(handlers.swipeUp).not.toHaveBeenCalled()
 
 		handle.destroy()
 	})
@@ -103,11 +109,16 @@ describe('swipable', () => {
 		simulateTouchSwipe(node, { x: 10, y: 100 })
 		expect(handlers).toOnlyTrigger('swipeDown')
 		expect(handlers.swipeDown).toHaveBeenCalledTimes(1)
+		vi.resetAllMocks()
+
 		simulateMouseSwipe(node, { x: 10, y: 100 })
 		expect(handlers).toOnlyTrigger('swipeDown')
 		expect(handlers.swipeDown).toHaveBeenCalledTimes(1)
+		vi.resetAllMocks()
+
+		simulateTouchSwipe(node, { x: 10, y: 90 })
 		simulateMouseSwipe(node, { x: 10, y: 90 })
-		expect(handlers.swipeDown).toHaveBeenCalledTimes(1)
+		expect(handlers.swipeDown).not.toHaveBeenCalled()
 
 		handle.destroy()
 	})
