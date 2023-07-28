@@ -58,9 +58,8 @@ export function getClosestAncestorWithAttribute(element, attribute) {
  * Returns whether or not the event handlers are listening.
  *
  * @param {HTMLElement} element
- * @param {import('./types').TraversableOptions} options
- * @param {boolean} listening
- * @param {EventHandlers} handlers
+ * @param {import('../types').EventHandlers} handlers
+ * @param {import('../types').TraversableOptions} options
  * @returns {void}
  */
 export function setupEventHandlers(element, handlers, options) {
@@ -78,8 +77,7 @@ export function setupEventHandlers(element, handlers, options) {
  * Returns whether or not the event handlers are listening.
  *
  * @param {HTMLElement} element
- * @param {boolean} listening
- * @param {EventHandlers} handlers
+ * @param {import('../types').EventHandlers} handlers
  * @returns {void}
  */
 export function removeEventHandlers(element, handlers) {
