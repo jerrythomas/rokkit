@@ -7,7 +7,7 @@
 		ViolinPlot,
 		ScatterPlot
 	} from '@rokkit/chart'
-	import { data } from './data'
+	import data from './data.json'
 	import ChartControls from './ChartControls.svelte'
 
 	let theme = {
