@@ -4,7 +4,7 @@ import {
 	fetchImports,
 	addPathMetadata,
 	addModuleMetadata,
-	turorialsToNestedObject,
+	tutorialsToNestedObject,
 	generateRouteEntries,
 	convertFilesToFolderHierarchy
 } from './metamodel'
@@ -123,7 +123,7 @@ function processTutorials(files, options) {
 	let tutorials = {}
 	let routes
 	files.map((item) => {
-		tutorials = turorialsToNestedObject(tutorials, item)
+		tutorials = tutorialsToNestedObject(tutorials, item)
 	})
 	routes = generateRouteEntries(tutorials)
 	tutorials = convertFilesToFolderHierarchy(tutorials, options)
