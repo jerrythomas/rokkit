@@ -78,19 +78,12 @@ export function navigator(element, options) {
 			emit('expand', element, indicesFromPath(path), currentNode)
 		}
 	}
+	const handlers = { next, previous, select, collapse, expand }
 
 	update(options)
 
 	const nested = isNested(items, fields)
-	const movement = vertical
-		? { ArrowDown: next, ArrowUp: previous }
-		: { ArrowRight: next, ArrowLeft: previous }
-	const states = !nested
-		? {}
-		: vertical
-		? { ArrowRight: expand, ArrowLeft: collapse }
-		: { ArrowDown: expand, ArrowUp: collapse }
-	const actions = { ...movement, Enter: select, ...states }
+	const actions = mapKeyboardEventsToActions(vertical, nested, handlers)
 
 	const handleKeyDown = (event) => handleAction(actions, event)
 
@@ -180,4 +173,28 @@ function emit(event, element, indices, node) {
 			}
 		})
 	)
+}
+
+function mapKeyboardEventsToActions(vertical, nested, handlers) {
+	let actions = { Enter: handlers.select }
+
+	if (vertical) {
+		actions = {
+			...actions,
+			...{ ArrowDown: handlers.next, ArrowUp: handlers.previous },
+			...(nested
+				? { ArrowRight: handlers.expand, ArrowLeft: handlers.collapse }
+				: {})
+		}
+	} else {
+		actions = {
+			...actions,
+			...{ ArrowRight: handlers.next, ArrowLeft: handlers.previous },
+			...(nested
+				? { ArrowDown: handlers.expand, ArrowUp: handlers.collapse }
+				: {})
+		}
+	}
+
+	return actions
 }
