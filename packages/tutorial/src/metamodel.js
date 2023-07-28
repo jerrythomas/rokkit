@@ -85,43 +85,49 @@ export function addModuleMetadata(modules, options) {
  * @param {number} index - The index of the part in the item's parts array.
  * @returns {Object} - The updated data object.
  */
-export function turorialsToNestedObject(data, item, index = 0) {
+export function tutorialsToNestedObject(data, item, index = 0) {
 	const { key, sequence } = item.parts[index]
-
-	if (!data[key]) data[key] = { sequence, key }
+	data[key] = data[key] || { sequence, key }
 
 	if (index < item.parts.length - 1) {
-		if (!data[key].children) data[key].children = {}
-		data[key].children = turorialsToNestedObject(
-			data[key].children,
+		data[key].children = tutorialsToNestedObject(
+			data[key].children || {},
 			item,
 			index + 1
 		)
 	} else {
-		if (item.path) {
-			let root = item.path.split('/').shift()
-
-			if (!data[key][root]) data[key][root] = {}
-			if (!data[key][root].files) data[key][root].files = []
-
-			if (item.content) {
-				data[key][root].files.push(omit(['parts'], item))
-			} else if (item.preview) {
-				data[key][root].preview = item.preview
-			}
-		} else {
-			const route = item.parts
-				.slice(0, index + 1)
-				.map((part) => part.key)
-				.join('/')
-			data[key] = {
-				...data[key],
-				...(item.readme ? { route } : {}),
-				...omit(['parts', 'path', 'type', 'name'], item)
-			}
-		}
+		handleItemPath(data, item, key)
 	}
 	return data
+}
+
+function handleItemPath(data, item, key) {
+	if (item.path) {
+		handleItemWithPath(data, item, key)
+	} else {
+		handleItemWithoutPath(data, item, key)
+	}
+}
+
+function handleItemWithPath(data, item, key) {
+	let root = item.path.split('/').shift()
+	data[key][root] = data[key][root] || {}
+	data[key][root].files = data[key][root].files || []
+
+	if (item.content) {
+		data[key][root].files.push(omit(['parts'], item))
+	} else if (item.preview) {
+		data[key][root].preview = item.preview
+	}
+}
+
+function handleItemWithoutPath(data, item, key) {
+	const route = item.parts.map((part) => part.key).join('/')
+	data[key] = {
+		...data[key],
+		...(item.readme ? { route } : {}),
+		...omit(['parts', 'path', 'type', 'name'], item)
+	}
 }
 
 export function convertFilesToFolderHierarchy(tutorials, options) {

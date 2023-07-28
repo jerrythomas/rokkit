@@ -4,7 +4,7 @@ import {
 	addPathMetadata,
 	addModuleMetadata,
 	generateRouteEntries,
-	turorialsToNestedObject,
+	tutorialsToNestedObject,
 	convertFilesToFolderHierarchy
 } from '../src/metamodel.js'
 
@@ -207,7 +207,7 @@ describe('metamodel', () => {
 		]
 		it('should convert an item to nested object', () => {
 			let data = {}
-			data = turorialsToNestedObject({}, input[0])
+			data = tutorialsToNestedObject({}, input[0])
 			expect(data).toEqual({
 				welcome: {
 					sequence: 1,
@@ -216,7 +216,7 @@ describe('metamodel', () => {
 				}
 			})
 
-			data = turorialsToNestedObject({}, input[1])
+			data = tutorialsToNestedObject({}, input[1])
 			expect(data).toEqual({
 				welcome: {
 					sequence: 1,
@@ -233,7 +233,7 @@ describe('metamodel', () => {
 				}
 			})
 
-			data = turorialsToNestedObject({}, input[2])
+			data = tutorialsToNestedObject({}, input[2])
 			expect(data).toEqual({
 				welcome: {
 					sequence: 1,
@@ -250,7 +250,7 @@ describe('metamodel', () => {
 					}
 				}
 			})
-			data = turorialsToNestedObject({}, input[3])
+			data = tutorialsToNestedObject({}, input[3])
 			expect(data).toEqual({
 				welcome: {
 					sequence: 1,
@@ -274,7 +274,7 @@ describe('metamodel', () => {
 				}
 			})
 
-			data = turorialsToNestedObject({}, input[4])
+			data = tutorialsToNestedObject({}, input[4])
 			expect(data).toEqual({
 				welcome: {
 					sequence: 1,
@@ -301,7 +301,7 @@ describe('metamodel', () => {
 		it('should convert an array of items to nested object', () => {
 			let data = {}
 			input.map((item) => {
-				data = turorialsToNestedObject(data, item)
+				data = tutorialsToNestedObject(data, item)
 			})
 			expect(data).toEqual({
 				welcome: {
