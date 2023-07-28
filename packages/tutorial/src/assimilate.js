@@ -70,25 +70,12 @@ export function assimilateTutorials(modules, sources, options) {
 		if (loaded) return
 
 		console.info('Assimilating tutorials...')
-		let files = [
-			...(await fetchImports(modules)),
-			...(await fetchImports(sources))
-		].map((item) => ({
-			...item,
-			file: item.file.replace(new RegExp('^' + options.root), '')
-		}))
 
-		files = addPathMetadata(files)
-		files = addModuleMetadata(files, options)
+		let files = await fetchAndProcessFiles(modules, sources, options)
+		let result = processTutorials(files, options)
 
-		tutorials = {}
-		files.map((item) => {
-			tutorials = turorialsToNestedObject(tutorials, item)
-		})
-		routes = generateRouteEntries(tutorials)
-		tutorials = convertFilesToFolderHierarchy(tutorials, options)
-		tutorials = toSortedHierarchy(tutorials)
-
+		tutorials = result.tutorials
+		routes = result.routes
 		loaded = true
 		console.info('Assimilation complete.')
 	}
@@ -106,7 +93,6 @@ export function assimilateTutorials(modules, sources, options) {
 		if (!loaded) await assimilate()
 		return routes
 	}
-
 	// assimilate()
 
 	return {
@@ -117,4 +103,31 @@ export function assimilateTutorials(modules, sources, options) {
 		content: () => tutorials,
 		assimilated: () => loaded
 	}
+}
+
+async function fetchAndProcessFiles(modules, sources, options) {
+	let files = [
+		...(await fetchImports(modules)),
+		...(await fetchImports(sources))
+	].map((item) => ({
+		...item,
+		file: item.file.replace(new RegExp('^' + options.root), '')
+	}))
+
+	files = addPathMetadata(files)
+	files = addModuleMetadata(files, options)
+	return files
+}
+
+function processTutorials(files, options) {
+	let tutorials = {}
+	let routes
+	files.map((item) => {
+		tutorials = turorialsToNestedObject(tutorials, item)
+	})
+	routes = generateRouteEntries(tutorials)
+	tutorials = convertFilesToFolderHierarchy(tutorials, options)
+	tutorials = toSortedHierarchy(tutorials)
+
+	return { tutorials, routes }
 }
