@@ -6,36 +6,11 @@ const TIMEOUT = 3000
 
 export function createNotificationStore() {
 	const messages = writable([])
-
-	function send(message, type = 'default', timeout) {
-		if (typeof message === 'object') {
-			if (message.timeout) timeout = message.timeout
-			message = omit(['timeout'], message)
-		}
-		const content = { message }
-		messages.update((state) => {
-			return [
-				...state,
-				{ id: id(), timeout: timeout ?? TIMEOUT, ...content, type }
-			]
-		})
+	const send = (message, type = 'default', timeout) => {
+		addMessage(messages, message, type, timeout)
 	}
 
-	const notifications = derived(messages, ($messages, set) => {
-		set($messages)
-		if ($messages.length > 0) {
-			const timer = setInterval(() => {
-				messages.update((items) => {
-					items.shift()
-					return items
-				})
-			}, $messages[0].timeout)
-			return () => {
-				clearTimeout(timer)
-			}
-		}
-	})
-	const { subscribe } = notifications
+	const { subscribe } = getDerivedNotifications(messages)
 
 	return {
 		subscribe,
@@ -50,3 +25,31 @@ export function createNotificationStore() {
 }
 
 export const alerts = createNotificationStore()
+
+function addMessage(messages, message, type = 'default', timeout) {
+	if (typeof message === 'object') {
+		message = {
+			message: omit(['timeout'], message),
+			timeout: message.timeout ?? timeout ?? TIMEOUT
+		}
+	} else message = { message }
+	messages.update((state) => [
+		...state,
+		{ id: id(), timeout: timeout ?? TIMEOUT, ...message, type }
+	])
+}
+
+function getDerivedNotifications(messages) {
+	return derived(messages, ($messages, set) => {
+		set($messages)
+		if ($messages.length > 0) {
+			const timer = setInterval(() => {
+				messages.update((items) => {
+					items.shift()
+					return items
+				})
+			}, $messages[0].timeout)
+			return () => clearTimeout(timer)
+		}
+	})
+}
