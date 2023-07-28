@@ -12,44 +12,36 @@ export async function getFiles(folderPath, pattern = null, dir = '') {
 	const entries = await fs.promises.readdir(path.join(folderPath, dir), {
 		withFileTypes: true
 	})
-	const files = await Promise.all(
-		entries.map(async (entry) => {
-			const currentPath = path.join(dir, entry.name)
-			if (entry.isDirectory()) {
-				return getFiles(folderPath, pattern, currentPath)
-			}
-			if (pattern === null || pattern.test(entry.name)) {
-				return {
-					path: dir,
-					name: entry.name,
-					type: path.extname(entry.name).slice(1)
-				}
-			}
-			return null
-		})
-	)
 
-	return Array.prototype.concat(...files).filter(Boolean)
+	const files = await processEntries(entries, folderPath, pattern, dir)
+
+	return files.flat().filter(Boolean)
 }
 
-// export function filesToNestedArray(files) {
-// 	let data = []
+async function processEntries(entries, folderPath, pattern, dir) {
+	return Promise.all(
+		entries.map((entry) => processEntry(entry, folderPath, pattern, dir))
+	)
+}
 
-// 	files.forEach((item) => {
-// 		let current = data
-// 		let parts = item.path.split('/')
-// 		parts.forEach((part, index) => {
-// 			let element = current.find((element) => element.name == part)
-// 			if (!element) {
-// 				element = { name: part, type: 'folder' }
-// 				current.push(element)
-// 			}
-// 			current = element
-// 			if (index == parts.length - 1) {
-// 				if (!current.files) current.files = []
-// 				current.files.push(item)
-// 			}
-// 		})
-// 	})
-// 	return data
-// }
+async function processEntry(entry, folderPath, pattern, dir) {
+	const currentPath = path.join(dir, entry.name)
+
+	if (entry.isDirectory()) {
+		return getFiles(folderPath, pattern, currentPath)
+	}
+
+	if (pattern === null || pattern.test(entry.name)) {
+		return createFileObject(dir, entry)
+	}
+
+	return null
+}
+
+function createFileObject(dir, entry) {
+	return {
+		path: dir,
+		name: entry.name,
+		type: path.extname(entry.name).slice(1)
+	}
+}

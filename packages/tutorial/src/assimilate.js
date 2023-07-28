@@ -34,18 +34,36 @@ export function filterMenuItems(data, labs = false) {
 }
 
 export function findTutorial(flat, route) {
-	let index = flat.findIndex((item) => item.route == route)
-
+	const index = flat.findIndex((item) => item.route == route)
 	if (index == -1) return null
-	let prevIndex = index - 1
-	let nextIndex = index + 1
-	while (prevIndex >= 0 && !flat[prevIndex].route) prevIndex--
-	while (nextIndex <= flat.length - 1 && !flat[nextIndex].route) nextIndex++
-	let result = {
+
+	const prevIndex = findPrevIndex(flat, index)
+	const nextIndex = findNextIndex(flat, index)
+
+	const result = {
 		...flat[index],
 		previous: prevIndex >= 0 ? flat[prevIndex].route : null,
 		next: nextIndex < flat.length ? flat[nextIndex].route : null
 	}
+
+	const crumbs = generateCrumbs(flat, index)
+
+	return { ...result, crumbs }
+}
+
+function findPrevIndex(flat, index) {
+	let prevIndex = index - 1
+	while (prevIndex >= 0 && !flat[prevIndex].route) prevIndex--
+	return prevIndex
+}
+
+function findNextIndex(flat, index) {
+	let nextIndex = index + 1
+	while (nextIndex <= flat.length - 1 && !flat[nextIndex].route) nextIndex++
+	return nextIndex
+}
+
+function generateCrumbs(flat, index) {
 	let crumbs = [flat[index].title]
 	let level = flat[index].level
 
@@ -57,7 +75,7 @@ export function findTutorial(flat, route) {
 		}
 	}
 
-	return { ...result, crumbs }
+	return crumbs
 }
 
 export function assimilateTutorials(modules, sources, options) {
@@ -66,13 +84,12 @@ export function assimilateTutorials(modules, sources, options) {
 	let routes
 
 	options = { ...defaultOptions, ...(options ?? {}) }
+
 	const assimilate = async () => {
 		if (loaded) return
 
 		console.info('Assimilating tutorials...')
-
-		let files = await fetchAndProcessFiles(modules, sources, options)
-		let result = processTutorials(files, options)
+		let result = await processTutorials(modules, sources, options)
 
 		tutorials = result.tutorials
 		routes = result.routes
@@ -80,26 +97,25 @@ export function assimilateTutorials(modules, sources, options) {
 		console.info('Assimilation complete.')
 	}
 
-	const find = async (route, labs = false) => {
+	const ensureLoaded = async () => {
 		if (!loaded) await assimilate()
-		let flat = flattenNestedList(filterMenuItems(tutorials, labs))
-		return findTutorial(flat, route)
 	}
-	const menu = async (labs = false) => {
-		if (!loaded) await assimilate()
-		return filterMenuItems(tutorials, labs)
-	}
-	const entries = async () => {
-		if (!loaded) await assimilate()
-		return routes
-	}
-	// assimilate()
 
 	return {
 		assimilate,
-		menu,
-		find,
-		entries,
+		menu: async (labs = false) => {
+			await ensureLoaded()
+			return filterMenuItems(tutorials, labs)
+		},
+		find: async (route, labs = false) => {
+			await ensureLoaded()
+			let flat = flattenNestedList(filterMenuItems(tutorials, labs))
+			return findTutorial(flat, route)
+		},
+		entries: async () => {
+			await ensureLoaded()
+			return routes
+		},
 		content: () => tutorials,
 		assimilated: () => loaded
 	}
@@ -119,9 +135,10 @@ async function fetchAndProcessFiles(modules, sources, options) {
 	return files
 }
 
-function processTutorials(files, options) {
+async function processTutorials(modules, sources, options) {
 	let tutorials = {}
 	let routes
+	let files = await fetchAndProcessFiles(modules, sources, options)
 	files.map((item) => {
 		tutorials = tutorialsToNestedObject(tutorials, item)
 	})
