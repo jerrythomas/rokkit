@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/actions",
-	"version": "1.0.0-next.37",
+	"version": "1.0.0-next.38",
 	"description": "Contains generic actions that can be used in various components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
