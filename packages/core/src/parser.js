@@ -15,28 +15,19 @@ export function parseFilters(string) {
 	// Split the string into an array of tokens
 	const tokens = string.matchAll(regex)
 	let search = string
+
 	// Iterate over the tokens
 	for (const token of tokens) {
 		// Extract the named groups from the token
 		let { group, column, operator, value } = token.groups
 		search = search.replace(group, '').trim()
 
-		operator = operator
-			.replace(':', '~*')
-			.replace('=>', '>=')
-			.replace('=<', '<=')
+		operator = replaceOperators(operator)
+		value = processValue(value, operator)
 
-		if (value) {
-			value = !isNaN(parseInt(value)) ? parseInt(value) : removeQuotes(value)
-
-			if (operator.includes('~')) {
-				value = operator.includes('*')
-					? new RegExp(value, 'i')
-					: new RegExp(value)
-			}
-		}
 		if (column && value) results.push({ column, operator, value })
 	}
+
 	if (search.length > 0) {
 		results.push({
 			operator: '~*',
@@ -45,6 +36,22 @@ export function parseFilters(string) {
 	}
 
 	return results
+}
+
+function replaceOperators(operator) {
+	return operator.replace(':', '~*').replace('=>', '>=').replace('=<', '<=')
+}
+
+function processValue(value, operator) {
+	// if (!value) return value
+
+	value = !isNaN(parseInt(value)) ? parseInt(value) : removeQuotes(value)
+
+	if (operator.includes('~')) {
+		value = operator.includes('*') ? new RegExp(value, 'i') : new RegExp(value)
+	}
+
+	return value
 }
 
 function removeQuotes(str) {
