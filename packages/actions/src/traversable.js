@@ -1,6 +1,9 @@
 import {
 	getClosestAncestorWithAttribute,
-	mapKeyboardEventsToActions
+	mapKeyboardEventsToActions,
+	setupEventHandlers,
+	removeEventHandlers,
+	emit
 } from './lib'
 
 const defaultOptions = {
@@ -8,22 +11,49 @@ const defaultOptions = {
 	nested: false,
 	enabled: true
 }
+
+/**
+ * An action that can be used to traverse a nested list of items using keyboard and mouse.
+ *
+ * @param {HTMLElement} element
+ * @param {import('./types').TraversableOptions} data
+ * @returns
+ */
 export function traversable(element, data) {
 	let listening = false
 	let options = {}
 	let tracker = {}
 	let handlers = {}
+	let actions
+	let listeners
 
-	let actions = {
-		next: () => emit(element, 'move', tracker),
-		previous: () => emit(element, 'move', tracker),
-		select: () => emit(element, 'select', tracker),
-		escape: () => emit(element, 'escape', tracker),
-		collapse: () => emit(element, 'collapse', tracker),
-		expand: () => emit(element, 'expand', tracker)
+	const configure = (data) => {
+		options = { ...options, ...data }
+
+		listening = removeEventHandlers(element, listening, listeners)
+		actions = getActions(element, tracker)
+		handlers = mapKeyboardEventsToActions(actions, options)
+		listeners = getListeners(handlers, actions, tracker)
+		listening = setupEventHandlers(element, options, listening, listeners)
 	}
 
-	let listeners = {
+	configure({ ...defaultOptions, ...data })
+
+	return {
+		update: configure,
+		destroy: () => removeEventHandlers(element, listening, listeners)
+	}
+}
+
+/**
+ * Returns the listeners for the given handlers and actions.
+ *
+ * @param {import('./types').KeyboardActions} handlers
+ * @param {import('./types').ActionHandlers} actions
+ * @param {import('./types').PositionTracker} tracker
+ */
+function getListeners(handlers, actions, tracker) {
+	return {
 		keydown: (event) => {
 			const action = handlers[event.key]
 			if (action) action(event)
@@ -38,40 +68,24 @@ export function traversable(element, data) {
 			}
 		}
 	}
-
-	const configure = (data) => {
-		// const valueChanged = options.value !== data.value
-		options = { ...options, ...data }
-
-		listening = setupEventHandlers(element, options, listening, listeners)
-		handlers = mapKeyboardEventsToActions(actions, options)
-		// if (valueChanged) handleValueChange(element, options)
-	}
-
-	configure({ ...defaultOptions, ...data })
-
-	return {
-		update: configure,
-		destroy: () => configure({ enabled: false })
-	}
 }
 
-function setupEventHandlers(element, options, listening, handlers) {
-	const { enabled } = options
-
-	if (enabled && !listening) {
-		Object.entries(handlers).forEach(([event, handler]) =>
-			element.addEventListener(event, handler)
-		)
-	} else if (!enabled && listening) {
-		Object.entries(handlers).forEach(([event, handler]) =>
-			element.removeEventListener(event, handler)
-		)
+/**
+ *
+ * @param {HTMLElement} element
+ * @param {import('./types').PositionTracker} tracker
+ * @returns {import('./types').ActionHandlers}
+ */
+function getActions(element, tracker) {
+	const actions = {
+		next: () => emit(element, 'move', tracker),
+		previous: () => emit(element, 'move', tracker),
+		select: () => emit(element, 'select', tracker),
+		escape: () => emit(element, 'escape', tracker),
+		collapse: () => emit(element, 'collapse', tracker),
+		expand: () => emit(element, 'expand', tracker)
 	}
-	return enabled
+	return actions
 }
 
-function emit(element, event, tracker) {
-	element.dispatchEvent(new CustomEvent(event, { detail: tracker }))
-}
 // function handleValueChange(element, options) {}

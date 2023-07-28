@@ -51,3 +51,61 @@
  * @property {number}  threshold  - Threshold for swipe
  * @property {number}  minSpeed   - Minimum speed for swipe
  */
+
+/**
+ * @typedef TraversableOptions
+ * @property {boolean} horizontal - Traverse horizontally
+ * @property {boolean} nested     - Traverse nested items
+ * @property {boolean} enabled    - Enable traversal
+ * @property {string}  value      - Value to be used for traversal
+ * @property {Array<*>} items     - An array containing the data set to traverse
+ * @property {Array<integer} [indices] - Indices of the items to be traversed
+ */
+
+/**
+ * @typedef PositionTracker
+ * @property {integer} index
+ * @property {integer} previousIndex
+ */
+
+/**
+ * @typedef EventHandlers
+ * @property {function} [keydown]
+ * @property {function} [keyup]
+ * @property {function} [click]
+ * @property {function} [touchstart]
+ * @property {function} [touchmove]
+ * @property {function} [touchend]
+ * @property {function} [touchcancel]
+ * @property {function} [mousedown]
+ * @property {function} [mouseup]
+ * @property {function} [mousemove]
+ */
+
+/**
+ * @typedef {Object} ActionHandlers
+ * @property {Function} [next]
+ * @property {Function} [previous]
+ * @property {Function} [select]
+ * @property {Function} [escape]
+ * @property {Function} [collapse]
+ * @property {Function} [expand]
+ */
+
+/**
+ * @typedef {Object} NavigationOptions
+ * @property {Boolean} [horizontal]
+ * @property {Boolean} [nested]
+ * @property {Boolean} [enabled]
+ */
+
+/**
+ * @typedef {Object} KeyboardActions
+ * @property {Function} [ArrowDown]
+ * @property {Function} [ArrowUp]
+ * @property {Function} [ArrowRight]
+ * @property {Function} [ArrowLeft]
+ * @property {Function} [Enter]
+ * @property {Function} [Escape]
+ * @property {Function} [" "]
+ */

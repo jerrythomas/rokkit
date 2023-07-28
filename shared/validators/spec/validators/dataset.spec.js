@@ -16,19 +16,19 @@ describe('event', () => {
 			expect(result.message()).toBe(
 				`expected ${JSON.stringify(
 					input.dataset
-				)} to not match ${JSON.stringify(expected)}`
+				)} to not deeply equal ${JSON.stringify(expected)}`
 			)
 			expect(input).toHaveValidData(expected)
 		})
-		it('should fail if the element dataset does not matche expected', () => {
+		it('should fail if the element dataset does not match expected', () => {
 			let input = { dataset: { a: 1, b: 2 } }
 			let expected = { a: 1, b: 3 }
 			const result = toHaveValidData(input, expected)
 			expect(result.pass).toBe(false)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify(input.dataset)} to match ${JSON.stringify(
-					expected
-				)}`
+				`expected ${JSON.stringify(
+					input.dataset
+				)} to deeply equal ${JSON.stringify(expected)}`
 			)
 			expect(input).not.toHaveValidData(expected)
 		})
