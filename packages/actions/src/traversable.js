@@ -20,28 +20,27 @@ const defaultOptions = {
  * @returns
  */
 export function traversable(element, data) {
-	let listening = false
 	let options = {}
 	let tracker = {}
-	let handlers = {}
+	let handlers
 	let actions
 	let listeners
 
 	const configure = (data) => {
 		options = { ...options, ...data }
 
-		listening = removeEventHandlers(element, listening, listeners)
+		removeEventHandlers(element, listeners)
 		actions = getActions(element, tracker)
 		handlers = mapKeyboardEventsToActions(actions, options)
 		listeners = getListeners(handlers, actions, tracker)
-		listening = setupEventHandlers(element, options, listening, listeners)
+		setupEventHandlers(element, listeners, options)
 	}
 
 	configure({ ...defaultOptions, ...data })
 
 	return {
 		update: configure,
-		destroy: () => removeEventHandlers(element, listening, listeners)
+		destroy: () => removeEventHandlers(element, listeners)
 	}
 }
 
