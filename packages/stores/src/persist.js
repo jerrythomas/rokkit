@@ -10,7 +10,11 @@ if (typeof window === 'undefined') {
 
 export function persistable(key, store) {
 	let value = getStoredValue(key, store)
-	const storageEventListener = createStorageEventListener(key, store)
+	const handler = createStorageEventHandler(key, store)
+
+	if (typeof window !== 'undefined') {
+		window.addEventListener('storage', handler)
+	}
 
 	const set = (newValue) => {
 		if (value !== newValue) {
@@ -22,25 +26,23 @@ export function persistable(key, store) {
 
 	const update = (fn) => {
 		store.update((currentValue) => {
-			const value = fn(currentValue)
-			localStorage.setItem(key, JSON.stringify(value))
-			return value
+			const updatedValue = fn(currentValue)
+			localStorage.setItem(key, JSON.stringify(updatedValue))
+			return updatedValue
 		})
 	}
 
-	if (typeof window !== 'undefined') {
-		window.addEventListener('storage', storageEventListener)
+	const destroy = () => {
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('storage', handler)
+		}
 	}
 
 	return {
 		subscribe: store.subscribe,
 		set,
 		update,
-		destroy() {
-			if (typeof window !== 'undefined') {
-				window.removeEventListener('storage', storageEventListener)
-			}
-		}
+		destroy
 	}
 }
 
@@ -54,7 +56,7 @@ function getStoredValue(key, store) {
 	}
 }
 
-function createStorageEventListener(key, store) {
+function createStorageEventHandler(key, store) {
 	return (event) => {
 		if (event.key === key) {
 			event.stopPropagation()
