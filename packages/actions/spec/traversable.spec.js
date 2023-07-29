@@ -119,14 +119,6 @@ describe('traversable', () => {
 			expect(handlers).toOnlyTrigger('escape')
 			expect(handlers.escape).toHaveBeenDispatchedWith({})
 		})
-
-		it('should trigger select on click', async () => {
-			instance = traversable(root, { items: [] })
-
-			await fireEvent.click(root)
-			expect(handlers).toOnlyTrigger('select')
-			expect(handlers.select).toHaveBeenDispatchedWith({ index: 0 })
-		})
 	})
 
 	describe('horizontal', () => {

@@ -8,7 +8,8 @@ describe('internal', () => {
 			'mapKeyboardEventsToActions',
 			'getClosestAncestorWithAttribute',
 			'setupListeners',
-			'removeListeners'
+			'removeListeners',
+			'onNodeClick'
 		])
 	})
 })

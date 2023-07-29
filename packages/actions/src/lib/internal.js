@@ -1,4 +1,5 @@
 import { compact } from '@rokkit/core'
+import { hasChildren, isExpanded } from '@rokkit/core'
 
 /**
  * Emits a custom event with the given data.
@@ -86,4 +87,34 @@ export function removeListeners(element, listeners) {
 			element.removeEventListener(event, listener)
 		})
 	}
+}
+
+/**
+ * @typedef {Object} CurrentItem
+ * @property {*} item - The current item.
+ * @property {import('@rokkit/core').FieldMapping} fields - The fields mapping.
+ * @property {Array<integer>} position - Indices providing path to the item position in the tree.
+ */
+/**
+ * Handles the click event.
+ * @param {HTMLElement} element - The root element.
+ * @param {CurrentItem} current - A reference to the current Item
+ * @returns {CurrentItem} The updated current item.
+ */
+export function onNodeClick(element, current) {
+	const { item, fields, position } = current
+	const detail = { item, position }
+
+	if (hasChildren(item, fields)) {
+		if (isExpanded(item, fields)) {
+			item[fields.isOpen] = false
+			emit(element, 'collapse', detail)
+		} else {
+			item[fields.isOpen] = true
+			emit(element, 'expand', detail)
+		}
+	} else {
+		emit(element, 'select', detail)
+	}
+	return current
 }
