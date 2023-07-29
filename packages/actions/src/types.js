@@ -109,3 +109,10 @@
  * @property {Function} [Escape]
  * @property {Function} [" "]
  */
+
+/**
+ * @typedef {Object} TouchTracker
+ * @property {number} startX - The start X position of the touch.
+ * @property {number} startY - The start Y position of the touch.
+ * @property {number} startTime - The start time of the touch.
+ */

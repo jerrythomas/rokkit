@@ -46,20 +46,29 @@ export function moveNext(path, items, fields) {
 	} else if (current.index < current.items.length - 1) {
 		current.index++
 	} else {
-		let level = path.length - 2
-		while (level >= 0) {
-			const parent = path[level]
-			if (parent.index < parent.items.length - 1) {
-				parent.index++
-				path = path.slice(0, level + 1)
-				break
-			}
-			level--
-		}
+		path = navigateToNextLevel(path)
 	}
 	return path
 }
 
+/**
+ * Navigate to the next level
+ * @param {Array<import('./types').PathFragment>} path
+ * @returns {Array<import('./types').PathFragment>}
+ */
+function navigateToNextLevel(path) {
+	let level = path.length - 2
+	while (level >= 0) {
+		const parent = path[level]
+		if (parent.index < parent.items.length - 1) {
+			parent.index++
+			path = path.slice(0, level + 1)
+			break
+		}
+		level--
+	}
+	return path
+}
 /**
  * Navigate to the previous item
  *
