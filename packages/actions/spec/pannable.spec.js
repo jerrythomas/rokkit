@@ -119,8 +119,8 @@ describe('pannable', () => {
 		const action = pannable(node)
 		expect(node.addEventListener).toHaveBeenCalledWith(
 			'touchstart',
-			handlers.node['touchstart'],
-			{ passive: false }
+			handlers.node['touchstart']
+			// { passive: false }
 		)
 		action.destroy()
 		expect(node.removeEventListener).toBeCalledWith(
@@ -142,8 +142,8 @@ describe('pannable', () => {
 		})
 		expect(window.addEventListener).toHaveBeenCalledWith(
 			'touchmove',
-			handlers.window['touchmove'],
-			{ passive: false }
+			handlers.window['touchmove']
+			// { passive: false }
 		)
 		expect(window.addEventListener).toHaveBeenCalledWith(
 			'touchend',

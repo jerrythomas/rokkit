@@ -58,16 +58,16 @@ export function getClosestAncestorWithAttribute(element, attribute) {
  * Returns whether or not the event handlers are listening.
  *
  * @param {HTMLElement} element
- * @param {import('../types').EventHandlers} handlers
+ * @param {import('../types').EventHandlers} listeners
  * @param {import('../types').TraversableOptions} options
  * @returns {void}
  */
-export function setupEventHandlers(element, handlers, options) {
-	const { enabled } = options
+export function setupListeners(element, listeners, options) {
+	const { enabled } = { enabled: true, ...options }
 
 	if (enabled) {
-		Object.entries(handlers).forEach(([event, handler]) =>
-			element.addEventListener(event, handler)
+		Object.entries(listeners).forEach(([event, listener]) =>
+			element.addEventListener(event, listener)
 		)
 	}
 }
@@ -77,13 +77,13 @@ export function setupEventHandlers(element, handlers, options) {
  * Returns whether or not the event handlers are listening.
  *
  * @param {HTMLElement} element
- * @param {import('../types').EventHandlers} handlers
+ * @param {import('../types').EventHandlers} listeners
  * @returns {void}
  */
-export function removeEventHandlers(element, handlers) {
-	if (handlers) {
-		Object.entries(handlers).forEach(([event, handler]) => {
-			element.removeEventListener(event, handler)
+export function removeListeners(element, listeners) {
+	if (listeners) {
+		Object.entries(listeners).forEach(([event, listener]) => {
+			element.removeEventListener(event, listener)
 		})
 	}
 }

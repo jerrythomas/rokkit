@@ -1,3 +1,5 @@
+import { removeListeners, setupListeners } from './lib'
+
 /**
  * Handle drag and move events
  *
@@ -7,6 +9,18 @@
 export function pannable(node) {
 	let x
 	let y
+	let listeners = {
+		primary: {
+			mousedown: start,
+			touchstart: start
+		},
+		secondary: {
+			mousemove: move,
+			mouseup: stop,
+			touchmove: move,
+			touchend: stop
+		}
+	}
 
 	function track(event, name, delta = {}) {
 		x = event.clientX || event.touches[0].clientX
@@ -20,37 +34,42 @@ export function pannable(node) {
 		)
 	}
 
-	function handleMousedown(event) {
+	function start(event) {
 		track(event, 'panstart')
-		window.addEventListener('mousemove', handleMousemove)
-		window.addEventListener('mouseup', handleMouseup)
-		window.addEventListener('touchmove', handleMousemove, { passive: false })
-		window.addEventListener('touchend', handleMouseup)
+
+		setupListeners(window, listeners.secondary)
+		// window.addEventListener('mousemove', handleMousemove)
+		// window.addEventListener('mouseup', handleMouseup)
+		// window.addEventListener('touchmove', handleMousemove, { passive: false })
+		// window.addEventListener('touchend', handleMouseup)
 	}
 
-	function handleMousemove(event) {
+	function move(event) {
 		const dx = (event.clientX || event.touches[0].clientX) - x
 		const dy = (event.clientY || event.touches[0].clientY) - y
 
 		track(event, 'panmove', { dx, dy })
 	}
 
-	function handleMouseup(event) {
+	function stop(event) {
 		track(event, 'panend')
 
-		window.removeEventListener('mousemove', handleMousemove)
-		window.removeEventListener('mouseup', handleMouseup)
-		window.removeEventListener('touchmove', handleMousemove)
-		window.removeEventListener('touchend', handleMouseup)
+		removeListeners(window, listeners.secondary)
+		// window.removeEventListener('mousemove', handleMousemove)
+		// window.removeEventListener('mouseup', handleMouseup)
+		// window.removeEventListener('touchmove', handleMousemove)
+		// window.removeEventListener('touchend', handleMouseup)
 	}
 
-	node.addEventListener('mousedown', handleMousedown)
-	node.addEventListener('touchstart', handleMousedown, { passive: false })
+	setupListeners(node, listeners.primary)
+	// node.addEventListener('mousedown', handleMousedown)
+	// node.addEventListener('touchstart', handleMousedown, { passive: false })
 
 	return {
 		destroy() {
-			node.removeEventListener('mousedown', handleMousedown)
-			node.removeEventListener('touchstart', handleMousedown)
+			removeListeners(node, listeners.primary)
+			// node.removeEventListener('mousedown', handleMousedown)
+			// node.removeEventListener('touchstart', handleMousedown)
 		}
 	}
 }
