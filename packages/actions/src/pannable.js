@@ -36,12 +36,7 @@ export function pannable(node) {
 
 	function start(event) {
 		track(event, 'panstart')
-
 		setupListeners(window, listeners.secondary)
-		// window.addEventListener('mousemove', handleMousemove)
-		// window.addEventListener('mouseup', handleMouseup)
-		// window.addEventListener('touchmove', handleMousemove, { passive: false })
-		// window.addEventListener('touchend', handleMouseup)
 	}
 
 	function move(event) {
@@ -53,23 +48,12 @@ export function pannable(node) {
 
 	function stop(event) {
 		track(event, 'panend')
-
 		removeListeners(window, listeners.secondary)
-		// window.removeEventListener('mousemove', handleMousemove)
-		// window.removeEventListener('mouseup', handleMouseup)
-		// window.removeEventListener('touchmove', handleMousemove)
-		// window.removeEventListener('touchend', handleMouseup)
 	}
 
 	setupListeners(node, listeners.primary)
-	// node.addEventListener('mousedown', handleMousedown)
-	// node.addEventListener('touchstart', handleMousedown, { passive: false })
 
 	return {
-		destroy() {
-			removeListeners(node, listeners.primary)
-			// node.removeEventListener('mousedown', handleMousedown)
-			// node.removeEventListener('touchstart', handleMousedown)
-		}
+		destroy: () => removeListeners(node, listeners.primary)
 	}
 }
