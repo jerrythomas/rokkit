@@ -1,7 +1,8 @@
 <script>
 	import { setContext, getContext } from 'svelte'
 	import { writable } from 'svelte/store'
-	import { ButtonGroup, ResponsiveGrid } from '@rokkit/molecules'
+	import { ResponsiveGrid } from '@rokkit/molecules'
+	import { Switch } from '@rokkit/organisms'
 
 	import Notes from './Notes.svelte'
 	import Code from './Code.svelte'
@@ -51,5 +52,10 @@
 	bind:value={page}
 />
 {#if size == 'sm'}
-	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
+	<Switch
+		options={items}
+		fields={{ text: 'name' }}
+		bind:value={page}
+		class="my-2"
+	/>
 {/if}
