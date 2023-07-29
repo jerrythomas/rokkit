@@ -3,7 +3,7 @@ import { vi } from 'vitest'
  * Creates a mock node with functions to add and remove event handlers
  *
  * @param {Array<string} events
- * @returns
+ * @returns {{node: HTMLElement, listeners: Object<string, integer>}}
  */
 export function getMockNode(events) {
 	let listeners = events.reduce((acc, event) => ({ ...acc, [event]: 0 }), {})
@@ -15,20 +15,32 @@ export function getMockNode(events) {
 	return { node, listeners }
 }
 
+/**
+ * @typedef {Object} NestedItem
+ * @property {string} name
+ * @property {string} [dataPath]
+ * @property {string} [id]
+ * @property {Array<NestedItem>} [children]
+ */
+
+/**
+ * Creates a nested HTML element structure using the provided data
+ *
+ * @param {NestedItem} item
+ * @returns {HTMLElement}
+ */
 export function createNestedElement(item) {
-	const element = document.createElement(item.name)
-	if (item.dataPath) {
-		element.setAttribute('data-path', item.dataPath)
-	}
-	if (item.id) {
-		element.setAttribute('id', item.id)
-	}
+	const { name, dataPath, id, children } = item
+	const element = document.createElement(name)
+
+	if (dataPath) element.dataset.path = dataPath
+	if (id) element.id = id
+
 	element.scrollIntoView = vi.fn()
 
-	if (item.children && Array.isArray(item.children)) {
-		for (const child of item.children) {
-			element.appendChild(createNestedElement(child))
-		}
+	if (Array.isArray(children)) {
+		children.forEach((child) => element.appendChild(createNestedElement(child)))
 	}
+
 	return element
 }
