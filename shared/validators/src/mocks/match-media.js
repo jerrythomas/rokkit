@@ -1,5 +1,35 @@
 import { vi } from 'vitest'
 
+let watchMediaQueries = []
+let listeners = []
+
+/**
+ * @typedef {Object} MediaQuery
+ * @property {integer} [min-width]
+ * @property {integer} [max-width]
+ * @property {integer} [min-height]
+ * @property {integer} [max-height]
+ * @property {integer} [width]
+ * @property {integer} [height]
+ * @property {integer} [orientation]
+ * @property {integer} [aspect-ratio]
+ * @property {integer} [min-aspect-ratio]
+ * @property {integer} [max-aspect-ratio]
+ * @property {integer} [resolution]
+ * @property {integer} [min-resolution]
+ * @property {integer} [max-resolution]
+ * @property {integer} [scan]
+ * @property {integer} [grid]
+ * @property {integer} [update]
+ * @property {integer} [overflow-block]
+ */
+
+/**
+ * Parses a media query string into an object
+ *
+ * @param {string} mediaQuery
+ * @returns {MediaQuery}
+ */
 function parseMediaQuery(mediaQuery) {
 	const regex = /\(([^:]+):\s*([^)]+)\)/g
 	const result = {}
@@ -12,25 +42,29 @@ function parseMediaQuery(mediaQuery) {
 
 	return result
 }
+
+/**
+ * Simulates the evaluation of a media query
+ *
+ * @param {MediaQuery} mediaQuery
+ * @param {integer} width
+ * @returns
+ */
 function evaluateMediaQuery(mediaQuery, width) {
-	for (const property in mediaQuery) {
-		const value = mediaQuery[property]
+	const { 'min-width': minWidth, 'max-width': maxWidth } = mediaQuery
 
-		if (property === 'min-width' && width < value) {
-			return false
-		}
-
-		if (property === 'max-width' && width > value) {
-			return false
-		}
+	if ((minWidth && width < minWidth) || (maxWidth && width > maxWidth)) {
+		return false
 	}
 
 	return true
 }
 
-let watchMediaQueries = []
-let listeners = []
-
+/**
+ * Mocks the window.matchMedia function
+ * @param {string} query
+ * @returns {Object}
+ */
 export const matchMediaMock = vi.fn().mockImplementation((query) => {
 	const mediaQuery = parseMediaQuery(query)
 	const handler = (width) => evaluateMediaQuery(mediaQuery, width)
@@ -52,6 +86,10 @@ export const matchMediaMock = vi.fn().mockImplementation((query) => {
 	return watchMediaQueries[watchMediaQueries.length - 1]
 })
 
+/**
+ * Updates the media query matches
+ * @returns {void}
+ */
 export function updateMedia() {
 	watchMediaQueries.forEach((query) => {
 		query.matches = query.handler(window.innerWidth)

@@ -37,26 +37,44 @@ export function toUseHandlersFor(action, options, events) {
  * @returns
  */
 export function toOnlyTrigger(handler, events) {
-	events = typeof events === 'string' ? [events] : events
+	events = Array.isArray(events) ? events : [events]
 	const handlerKeys = Object.keys(handler)
-	const validEvents = events.every((event) => handlerKeys.includes(event))
-	const pass =
-		validEvents &&
-		Object.keys(handler).every((key) => {
-			const callCount = handler[key].mock.calls.length
-			return events.includes(key) ? callCount === 1 : callCount === 0
-		})
 
+	const isEventValid = (event) => handlerKeys.includes(event)
+	const isCallCountCorrect = (key) => {
+		const callCount = handler[key].mock.calls.length
+		return events.includes(key) ? callCount === 1 : callCount === 0
+	}
+
+	const validEvents = events.every(isEventValid)
+	const pass = validEvents && handlerKeys.every(isCallCountCorrect)
+
+	return {
+		message: () => getMessage(events, handlerKeys, pass, validEvents),
+		pass
+	}
+}
+
+/**
+ * Generates a message based on the validation state
+ * @param {Array<string>} events
+ * @param {Array<string>} handlerKeys
+ * @param {boolean} pass
+ * @param {boolean} validEvents
+ * @returns {string}
+ */
+function getMessage(events, handlerKeys, pass, validEvents) {
+	let message = ''
 	const names = events.join(', ')
 	const keys = handlerKeys.join(', ')
-	let message = ''
 
-	if (pass)
+	if (pass) {
 		message = `Expected other handlers besides [${names}] to be called, but none were`
-	else if (validEvents) {
+	} else if (validEvents) {
 		message = `Expected only [${names}] to be called once and the other handlers to not be called`
 	} else {
 		message = `Expected events from [${keys}] but got unexpected events [${names}]`
 	}
-	return { message: () => message, pass }
+
+	return message
 }
