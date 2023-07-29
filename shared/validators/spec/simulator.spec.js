@@ -40,12 +40,14 @@ describe('events', () => {
 		let handlers = {}
 
 		beforeEach(() => {
+			vi.useFakeTimers()
 			events.map((event) => {
 				handlers[event] = vi.fn()
 				node.addEventListener(event, handlers[event])
 			})
 		})
 		afterEach(() => {
+			vi.useRealTimers()
 			events.map((event) => node.removeEventListener(event, handlers[event]))
 		})
 		it('should simulate a mouse swipe', () => {
@@ -68,6 +70,7 @@ describe('events', () => {
 		let handlers = {}
 
 		beforeEach(() => {
+			vi.useFakeTimers()
 			events.map((event) => {
 				handlers[event] = vi.fn()
 				node.addEventListener(event, handlers[event])
@@ -75,6 +78,7 @@ describe('events', () => {
 		})
 		afterEach(() => {
 			events.map((event) => node.removeEventListener(event, handlers[event]))
+			vi.useRealTimers()
 		})
 
 		it('should simulate a touch swipe', () => {

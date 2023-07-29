@@ -1,12 +1,5 @@
-/**
- * A svelte action function that captures swipe actions and emits event for corresponding movements.
- *
- * @param {HTMLElement} node
- * @param {import(./types).SwipeableOptions} options
- * @returns {import('./types').SvelteActionReturn}
- */
-
 import { removeListeners, setupListeners } from './lib'
+
 const defaultOptions = {
 	horizontal: true,
 	vertical: false,
@@ -14,6 +7,14 @@ const defaultOptions = {
 	enabled: true,
 	minSpeed: 300
 }
+
+/**
+ * A svelte action function that captures swipe actions and emits event for corresponding movements.
+ *
+ * @param {HTMLElement} node
+ * @param {import(./types).SwipeableOptions} options
+ * @returns {import('./types').SvelteActionReturn}
+ */
 export function swipeable(node, options = defaultOptions) {
 	let track = {}
 	let listeners = {}
@@ -38,6 +39,13 @@ export function swipeable(node, options = defaultOptions) {
 	}
 }
 
+/**
+ * Returns the listeners for the swipeable action.
+ * @param {HTMLElement} node - The node where the event is dispatched.
+ * @param {import(./types).SwipeableOptions} options - The options for the swipe.
+ * @param {import(./types).TouchTracker} track - The tracking object.
+ * @returns {import(./types).Listeners}
+ */
 function getListeners(node, options, track) {
 	if (!options.enabled) return {}
 
@@ -50,6 +58,12 @@ function getListeners(node, options, track) {
 	return listeners
 }
 
+/**
+ * Handles the touch start event.
+ *
+ * @param {Event} event
+ * @param {import(./types).TouchTracker} track
+ */
 function touchStart(event, track) {
 	const touch = event.touches ? event.touches[0] : event
 	track.startX = touch.clientX
@@ -57,31 +71,39 @@ function touchStart(event, track) {
 	track.startTime = new Date().getTime()
 }
 
+/**
+ * Handles the touch end event.
+ *
+ * @param {Event} event - The touch event.
+ * @param {HTMLElement} node - The node where the event is dispatched.
+ * @param {import(./types).SwipeableOptions} options options - The options for the swipe.
+ * @param {import(./types).TouchTracker} track - The tracking object.
+ */
 function touchEnd(event, node, options, track) {
-	const { horizontal, vertical, threshold, minSpeed } = options
 	const touch = event.changedTouches ? event.changedTouches[0] : event
 	const distX = touch.clientX - track.startX
 	const distY = touch.clientY - track.startY
 	const duration = (new Date().getTime() - track.startTime) / 1000
 	const speed = Math.max(Math.abs(distX), Math.abs(distY)) / duration
 
-	if (horizontal && speed > minSpeed) {
-		if (Math.abs(distX) > Math.abs(distY) && Math.abs(distX) >= threshold) {
-			if (distX > 0 && distX / duration > minSpeed) {
-				node.dispatchEvent(new CustomEvent('swipeRight'))
-			} else {
-				node.dispatchEvent(new CustomEvent('swipeLeft'))
-			}
-		}
+	if (speed <= options.minSpeed) return
+
+	const isHorizontalSwipe =
+		options.horizontal &&
+		Math.abs(distX) > Math.abs(distY) &&
+		Math.abs(distX) >= options.threshold
+	const isVerticalSwipe =
+		options.vertical &&
+		Math.abs(distY) > Math.abs(distX) &&
+		Math.abs(distY) >= options.threshold
+
+	if (isHorizontalSwipe) {
+		const swipeDirection = distX > 0 ? 'Right' : 'Left'
+		node.dispatchEvent(new CustomEvent(`swipe${swipeDirection}`))
 	}
 
-	if (vertical && speed > minSpeed) {
-		if (Math.abs(distY) > Math.abs(distX) && Math.abs(distY) >= threshold) {
-			if (distY > 0) {
-				node.dispatchEvent(new CustomEvent('swipeDown'))
-			} else {
-				node.dispatchEvent(new CustomEvent('swipeUp'))
-			}
-		}
+	if (isVerticalSwipe) {
+		const swipeDirection = distY > 0 ? 'Down' : 'Up'
+		node.dispatchEvent(new CustomEvent(`swipe${swipeDirection}`))
 	}
 }

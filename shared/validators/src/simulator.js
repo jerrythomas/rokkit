@@ -18,7 +18,7 @@ export function simulateTouchEvent(clientX, clientY) {
 	}
 }
 
-export function simulateTouchSwipe(node, distance) {
+export function simulateTouchSwipe(node, distance, delay = 0) {
 	const touchStart = new Touch({
 		identifier: 0,
 		target: node,
@@ -35,13 +35,14 @@ export function simulateTouchSwipe(node, distance) {
 		touches: [touchStart]
 	})
 	node.dispatchEvent(touchStartEvent)
+	vi.advanceTimersByTime(delay)
 	const touchEndEvent = new TouchEvent('touchend', {
 		changedTouches: [touchEnd]
 	})
 	node.dispatchEvent(touchEndEvent)
 }
 
-export function simulateMouseSwipe(node, distance) {
+export function simulateMouseSwipe(node, distance, delay = 0) {
 	node.dispatchEvent(new MouseEvent('mousedown', { clientX: 0, clientY: 0 }))
 	node.dispatchEvent(
 		new MouseEvent('mousemove', {
@@ -49,6 +50,7 @@ export function simulateMouseSwipe(node, distance) {
 			clientY: distance.y / 2
 		})
 	)
+	vi.advanceTimersByTime(delay)
 	node.dispatchEvent(
 		new MouseEvent('mouseup', { clientX: distance.x, clientY: distance.y })
 	)
