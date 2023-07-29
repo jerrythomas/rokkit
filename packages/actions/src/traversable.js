@@ -1,8 +1,8 @@
 import {
 	getClosestAncestorWithAttribute,
 	mapKeyboardEventsToActions,
-	setupEventHandlers,
-	removeEventHandlers,
+	setupListeners,
+	removeListeners,
 	emit
 } from './lib'
 
@@ -29,18 +29,18 @@ export function traversable(element, data) {
 	const configure = (data) => {
 		options = { ...options, ...data }
 
-		removeEventHandlers(element, listeners)
+		removeListeners(element, listeners)
 		actions = getActions(element, tracker)
 		handlers = mapKeyboardEventsToActions(actions, options)
 		listeners = getListeners(handlers, actions, tracker)
-		setupEventHandlers(element, listeners, options)
+		setupListeners(element, listeners, options)
 	}
 
 	configure({ ...defaultOptions, ...data })
 
 	return {
 		update: configure,
-		destroy: () => removeEventHandlers(element, listeners)
+		destroy: () => removeListeners(element, listeners)
 	}
 }
 
