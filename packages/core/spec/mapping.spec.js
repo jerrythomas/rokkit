@@ -6,7 +6,9 @@ import {
 	getText,
 	hasChildren,
 	isExpanded,
-	isNested
+	isNested,
+	findItemByValue,
+	getItemByIndexArray
 } from '../src/mapping.js'
 
 describe('mapping', () => {
@@ -165,6 +167,66 @@ describe('mapping', () => {
 
 		it('returns false if the item is not nested', () => {
 			expect(isNested([], fields)).toBe(false)
+		})
+	})
+
+	describe('findItemByValue', () => {
+		it('should find an item by value in a nested tree', () => {
+			const items = [
+				{
+					value: 'a',
+					children: [{ value: 'b' }, { value: 'c', children: [{ value: 'd' }] }]
+				},
+				{ value: 'e' }
+			]
+			const fields = { children: 'children' }
+			const value = 'd'
+
+			const result = findItemByValue(items, fields, value)
+
+			expect(result).toEqual({
+				fields,
+				item: { value: 'd' },
+				position: [0, 1, 0]
+			})
+		})
+
+		it('should return null if the item is not found', () => {
+			const items = [
+				{
+					value: 'a',
+					children: [{ value: 'b' }, { value: 'c', children: [{ value: 'd' }] }]
+				},
+				{ value: 'e' }
+			]
+			const fields = { children: 'children' }
+			const value = 'f'
+
+			const result = findItemByValue(items, fields, value)
+
+			expect(result).toBeNull()
+		})
+	})
+	describe('getItemByIndexArray', () => {
+		const fields = { children: 'children' }
+		it('should return the correct item', () => {
+			const items = [
+				{ id: 1, children: [{ id: 2, children: [{ id: 3 }] }] },
+				{ id: 4, children: [{ id: 5 }] }
+			]
+			const indexArray = [0, 0, 0]
+			const item = getItemByIndexArray(indexArray, items, fields)
+			expect(item).toEqual({ fields, item: { id: 3 }, position: [0, 0, 0] })
+		})
+
+		it('should return undefined if the index array is out of bounds', () => {
+			const items = [
+				{ id: 1, children: [{ id: 2, children: [{ id: 3 }] }] },
+				{ id: 4, children: [{ id: 5 }] }
+			]
+			const indexArray = [0, 0, 0, 0]
+			const item = getItemByIndexArray(indexArray, items, fields)
+			expect(item).toBeFalsy()
 		})
 	})
 })

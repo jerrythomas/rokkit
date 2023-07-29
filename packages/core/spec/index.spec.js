@@ -19,6 +19,8 @@ describe('utilities', () => {
 			'hasChildren',
 			'isExpanded',
 			'isNested',
+			'findItemByValue',
+			'getItemByIndexArray',
 			'getLineTypes',
 			'generateTicks',
 			'weekdays',
