@@ -16,8 +16,8 @@ describe('validator', () => {
 			expect(validator).toBeDefined()
 			expect(typeof validator).toBe('function')
 
-			expect(validator('example')).toBe(true)
-			expect(validator('wrong')).toBe(false)
+			expect(validator('example')).toBeTruthy()
+			expect(validator('wrong')).toBeFalsy()
 		})
 
 		it('should return a pattern validator function for a RegExp pattern', () => {
@@ -27,8 +27,8 @@ describe('validator', () => {
 			expect(validator).toBeDefined()
 			expect(typeof validator).toBe('function')
 
-			expect(validator('example')).toBe(true)
-			expect(validator('wrong')).toBe(false)
+			expect(validator('example')).toBeTruthy()
+			expect(validator('wrong')).toBeFalsy()
 		})
 
 		it('should throw an error for an invalid pattern', () => {
@@ -49,9 +49,9 @@ describe('validator', () => {
 			expect(validator).toBeDefined()
 			expect(typeof validator).toBe('function')
 
-			expect(validator(3)).toBe(false)
-			expect(validator(7)).toBe(true)
-			expect(validator(12)).toBe(false)
+			expect(validator(3)).toBeFalsy()
+			expect(validator(7)).toBeTruthy()
+			expect(validator(12)).toBeFalsy()
 		})
 
 		it('should return a range validator for upper bound', () => {
@@ -60,8 +60,8 @@ describe('validator', () => {
 			expect(validator).toBeDefined()
 			expect(typeof validator).toBe('function')
 
-			expect(validator(7)).toBe(true)
-			expect(validator(12)).toBe(false)
+			expect(validator(7)).toBeTruthy()
+			expect(validator(12)).toBeFalsy()
 		})
 		it('should return a range validator for lower bound', () => {
 			const validator = getRangeValidator(5, null)
@@ -69,8 +69,8 @@ describe('validator', () => {
 			expect(validator).toBeDefined()
 			expect(typeof validator).toBe('function')
 
-			expect(validator(3)).toBe(false)
-			expect(validator(12)).toBe(true)
+			expect(validator(3)).toBeFalsy()
+			expect(validator(12)).toBeTruthy()
 		})
 	})
 
@@ -78,81 +78,94 @@ describe('validator', () => {
 		it('should return a validator for "number" type', () => {
 			const validator = getTypeValidator('number')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator(42)).toBe(true)
-			expect(validator('hello')).toBe(false)
-			expect(validator(null)).toBe(false)
-			expect(validator(undefined)).toBe(false)
+			expect(validator(42)).toBeTruthy()
+			expect(validator('hello')).toBeFalsy()
+			expect(validator(null)).toBeFalsy()
+			expect(validator(undefined)).toBeFalsy()
 		})
 
 		it('should return a validator for "email" type', () => {
 			const validator = getTypeValidator('email')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator('test@example.com')).toBe(true)
-			expect(validator('a@b.co.in')).toBe(true)
-			expect(validator('invalid-email')).toBe(false)
+			expect(validator('test@example.com')).toBeTruthy()
+			expect(validator('a@b.co.in')).toBeTruthy()
+			expect(validator('invalid-email')).toBeFalsy()
 		})
 
 		it('should return a validator for "url" type', () => {
 			const validator = getTypeValidator('url')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator('https://example.com')).toBe(true)
-			expect(validator('http://example.com')).toBe(true)
-			expect(validator('http://example.com?a=b')).toBe(true)
-			expect(validator('http://example.com?a=1&c=1')).toBe(true)
-			expect(validator('http://example.com?#123')).toBe(true)
-			expect(validator('invalid-url')).toBe(false)
-			expect(validator('http://x.y abc')).toBe(false)
+			expect(validator('https://example.com')).toBeTruthy()
+			expect(validator('http://example.com')).toBeTruthy()
+			expect(validator('http://example.com?a=b')).toBeTruthy()
+			expect(validator('http://example.com?a=1&c=1')).toBeTruthy()
+			expect(validator('http://example.com?#123')).toBeTruthy()
+			expect(validator('invalid-url')).toBeFalsy()
+			expect(validator('http://x.y abc')).toBeFalsy()
 		})
 
 		it('should return a validator for "array" type', () => {
 			const validator = getTypeValidator('array')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator([])).toBe(true)
-			expect(validator(null)).toBe(false)
-			expect(validator(undefined)).toBe(false)
-			expect(validator({})).toBe(false)
-			expect(validator('hello')).toBe(false)
+			expect(validator([])).toBeTruthy()
+			expect(validator(null)).toBeFalsy()
+			expect(validator(undefined)).toBeFalsy()
+			expect(validator({})).toBeFalsy()
+			expect(validator('hello')).toBeFalsy()
 		})
 		it('should return a validator for "object" type', () => {
 			const validator = getTypeValidator('object')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator({})).toBe(true)
-			expect(validator({ alpha: 'value' })).toBe(true)
-			expect(validator(null)).toBe(false)
-			expect(validator(undefined)).toBe(false)
-			expect(validator([])).toBe(false)
-			expect(validator('hello')).toBe(false)
-			expect(validator(2)).toBe(false)
+			expect(validator({})).toBeTruthy()
+			expect(validator({ alpha: 'value' })).toBeTruthy()
+			expect(validator(null)).toBeFalsy()
+			expect(validator(undefined)).toBeFalsy()
+			expect(validator([])).toBeFalsy()
+			expect(validator('hello')).toBeFalsy()
+			expect(validator(2)).toBeFalsy()
 		})
 		it('should return a validator for "color" type', () => {
 			const validator = getTypeValidator('color')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator('#000fff')).toBe(true)
-			expect(validator('#abcdef')).toBe(true)
-			expect(validator('#xxxxxx')).toBe(false)
-			expect(validator('123456')).toBe(false)
+			expect(validator('#000fff')).toBeTruthy()
+			expect(validator('#abcdef')).toBeTruthy()
+			expect(validator('#xxxxxx')).toBeFalsy()
+			expect(validator('123456')).toBeFalsy()
 		})
 		it('should return a validator for "string" type', () => {
 			const validator = getTypeValidator('string')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator('hello')).toBe(true)
-			expect(validator('')).toBe(true)
-			expect(validator(null)).toBe(false)
-			expect(validator(undefined)).toBe(false)
-			expect(validator([])).toBe(false)
-			expect(validator({})).toBe(false)
-			expect(validator(2)).toBe(false)
+			expect(validator('hello')).toBeTruthy()
+			expect(validator('')).toBeTruthy()
+			expect(validator(null)).toBeFalsy()
+			expect(validator(undefined)).toBeFalsy()
+			expect(validator([])).toBeFalsy()
+			expect(validator({})).toBeFalsy()
+			expect(validator(2)).toBeFalsy()
+		})
+		it('should return a validator for "date" type', () => {
+			const validator = getTypeValidator('date')
+			expect(validator).toBeInstanceOf(Function)
+			expect(validator('2020-01-01')).toBeTruthy()
+			expect(validator('2020-01-01T00:00:00.000Z')).toBeTruthy()
+			expect(validator('2020-01-01T00:00:00.000')).toBeTruthy()
+			expect(validator('2020-01-01T00:00:00')).toBeTruthy()
+			expect(validator('2020-01-01T00:00')).toBeTruthy()
+			expect(validator('2020-01-01T00')).toBeFalsy()
+			expect(validator('2020-01-01T')).toBeFalsy()
+			expect(validator('xyz')).toBeFalsy()
+			expect(validator('2020-01-01T00:00:00.000+00:00')).toBeTruthy()
 		})
 		it('should return a validator for "boolean" type', () => {
 			const validator = getTypeValidator('boolean')
 			expect(validator).toBeInstanceOf(Function)
-			expect(validator(true)).toBe(true)
-			expect(validator(false)).toBe(true)
-			expect(validator(null)).toBe(false)
-			expect(validator(undefined)).toBe(false)
-			expect(validator([])).toBe(false)
-			expect(validator({})).toBe(false)
-			expect(validator(2)).toBe(false)
+			expect(validator(true)).toBeTruthy()
+			expect(validator(false)).toBeTruthy()
+			expect(validator(null)).toBeFalsy()
+			expect(validator(undefined)).toBeFalsy()
+			expect(validator([])).toBeFalsy()
+			expect(validator({})).toBeFalsy()
+			expect(validator(2)).toBeFalsy()
 		})
 	})
 
@@ -184,7 +197,7 @@ describe('validator', () => {
 
 			expect(currentValue.value).toBe(value)
 			expect(currentValue.status).toBe('fail')
-			expect(currentValue.isValid).toBe(false)
+			expect(currentValue.isValid).toBeFalsy()
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.validations).toEqual(initialValidations)
 		})
@@ -196,7 +209,7 @@ describe('validator', () => {
 			let currentValue = get(store)
 			expect(currentValue.value).toBe(value)
 			expect(currentValue.status).toBe('fail')
-			expect(currentValue.isValid).toBe(false)
+			expect(currentValue.isValid).toBeFalsy()
 			expect(currentValue.validations).toHaveLength(5)
 			expect(currentValue.validations).toEqual(initialValidations)
 
@@ -206,7 +219,7 @@ describe('validator', () => {
 			expect(currentValue.value).toBe('newExample')
 			expect(currentValue.status).toBe('fail')
 			expect(currentValue.validations).toHaveLength(5)
-			expect(currentValue.isValid).toBe(false)
+			expect(currentValue.isValid).toBeFalsy()
 			expect(currentValue.validations).toEqual([
 				{
 					text: 'At least 1 upper case letter',
@@ -229,7 +242,7 @@ describe('validator', () => {
 			expect(currentValue.value).toBe('Example1!')
 			expect(currentValue.status).toBe('pass')
 			expect(currentValue.validations).toHaveLength(5)
-			expect(currentValue.isValid).toBe(true)
+			expect(currentValue.isValid).toBeTruthy()
 			expect(currentValue.validations).toEqual([
 				{ text: 'At least 1 upper case letter', valid: true, status: 'pass' },
 				{ text: 'At least 1 lower case letter', valid: true, status: 'pass' },
@@ -249,7 +262,7 @@ describe('validator', () => {
 			expect(currentValue.value).toBe('EXAMPLE1!')
 			expect(currentValue.status).toBe('warn')
 			expect(currentValue.validations).toHaveLength(5)
-			expect(currentValue.isValid).toBe(false)
+			expect(currentValue.isValid).toBeFalsy()
 			expect(currentValue.validations).toEqual([
 				{ text: 'At least 1 upper case letter', valid: true, status: 'pass' },
 				{
