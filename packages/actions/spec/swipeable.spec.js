@@ -27,12 +27,14 @@ describe('swipable', () => {
 		Object.entries(handlers).map(([event, handler]) =>
 			node.addEventListener(event, handler)
 		)
+		vi.useFakeTimers()
 	})
 
 	afterEach(() => {
 		Object.entries(handlers).map(([event, handler]) =>
 			node.removeEventListener(event, handler)
 		)
+		vi.useRealTimers()
 	})
 
 	it('should cleanup events on destroy', () => {
@@ -120,6 +122,18 @@ describe('swipable', () => {
 		simulateMouseSwipe(node, { x: 10, y: 90 })
 		expect(handlers.swipeDown).not.toHaveBeenCalled()
 
+		handle.destroy()
+	})
+
+	it('should not dispatch events when speed is slow', () => {
+		const handle = swipeable(node, { speed: 100 })
+
+		simulateTouchSwipe(node, { x: 1, y: 1 }, 1000)
+		Object.values(handlers).forEach((handler) =>
+			expect(handler).not.toHaveBeenCalled()
+		)
+		// expect(handlers).toOnlyTrigger('swipeRight')
+		// vi.resetAllMocks()
 		handle.destroy()
 	})
 
