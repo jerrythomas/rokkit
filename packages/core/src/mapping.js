@@ -84,3 +84,59 @@ export function isNested(items, fields) {
 	}
 	return false
 }
+
+/**
+ * Traverses the tree to find an item by value.
+ * @param {Array} items - The items array.
+ * @param {Object} fields - The fields mapping.
+ * @param {any} value - The value to find.
+ * @param {Array} position - The current position in the tree.
+ * @returns {Object} The found item, or null if not found.
+ */
+export function findItemByValue(items, fields, value, position = []) {
+	for (let i = 0; i < items.length; i++) {
+		const item = items[i]
+
+		// Check if the item's value matches the target value.
+		if (item.value === value) {
+			// Return the item and its position.
+			return { item, position: position.concat(i), fields }
+		}
+
+		// If the item has children, recurse into them.
+		if (hasChildren(item, fields)) {
+			const found = findItemByValue(
+				item[fields.children],
+				fields.fields ?? fields,
+				value,
+				position.concat(i)
+			)
+			// If the item was found in the children, return it.
+			if (found) return found
+		}
+	}
+
+	// If the item was not found, return null.
+	return null
+}
+
+/**
+ * Gets an item from an items array using an index array.
+ * @param {Array} indices - The index array.
+ * @param {Array} items - The items array.
+ * @param {Object} fields - The fields configuration.
+ * @returns {Object} The item.
+ */
+export function getItemByIndexArray(indices, items, fields) {
+	let item = items[indices[0]]
+	let levelFields = fields
+	for (let level = 1; level < indices.length; level++) {
+		if (hasChildren(item, levelFields)) {
+			item = item[levelFields.children][indices[level]]
+			levelFields = levelFields.fields ?? levelFields
+		} else {
+			return null
+		}
+	}
+	return { item, position: indices, fields: levelFields }
+}
