@@ -1,14 +1,23 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { cleanup, render } from '@testing-library/svelte'
+import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
 import Switch from '../src/Switch.svelte'
 
 describe('Switch.svelte', () => {
 	beforeEach(() => cleanup())
 
-	it('should render default', () => {
+	it('should render default', async () => {
 		const { container } = render(Switch, { value: false })
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+		const items = container.querySelectorAll('toggle-switch item')
+
+		expect(items.length).toBe(2)
+		await fireEvent.click(items[1])
+		await tick()
+		expect(container).toMatchSnapshot()
+		await fireEvent.click(items[0])
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render with value', () => {

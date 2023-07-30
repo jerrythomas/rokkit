@@ -19,7 +19,6 @@
 	function handleNav(event) {
 		value = event.detail.node
 		cursor = event.detail.path
-
 		dispatch('change', { item: value, indices: cursor })
 	}
 
@@ -57,7 +56,7 @@
 				aria-selected={item === value}
 				data-path={index}
 			>
-				{#if item == value}
+				{#if item === value}
 					<indicator class="absolute bottom-0 left-0 right-0 top-0" />
 				{/if}
 				{#if component}
