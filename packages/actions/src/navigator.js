@@ -106,7 +106,8 @@ export function navigator(element, options) {
 					? 'expand'
 					: 'collapse'
 				emit(event, element, indices, currentNode)
-			} else if (currentNode) emit('select', element, indices, currentNode)
+			} else if (currentNode !== null)
+				emit('select', element, indices, currentNode)
 		}
 	}
 

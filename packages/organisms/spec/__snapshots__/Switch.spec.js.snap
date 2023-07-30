@@ -35,6 +35,76 @@ exports[`Switch.svelte > should render default 1`] = `
 </body>
 `;
 
+exports[`Switch.svelte > should render default 2`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center is-on"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative"
+        data-path="0"
+        role="option"
+      >
+         
+         
+      </item>
+      <item
+        aria-selected="true"
+        class="relative"
+        data-path="1"
+        role="option"
+      >
+        <indicator
+          class="absolute bottom-0 left-0 right-0 top-0"
+        />
+         
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
+exports[`Switch.svelte > should render default 3`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center is-off"
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="true"
+        class="relative"
+        data-path="0"
+        role="option"
+      >
+        <indicator
+          class="absolute bottom-0 left-0 right-0 top-0"
+        />
+         
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative"
+        data-path="1"
+        role="option"
+      >
+         
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
 exports[`Switch.svelte > should render text array 1`] = `
 <body>
   <div>
