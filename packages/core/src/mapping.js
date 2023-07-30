@@ -1,3 +1,4 @@
+import { findValueFromPath } from '.'
 import { defaultFields } from './constants'
 
 /**
@@ -93,7 +94,7 @@ export function isNested(items, fields) {
  * @param {Array} position - The current position in the tree.
  * @returns {Object} The found item, or null if not found.
  */
-export function findItemByValue(items, fields, value, position = []) {
+export function findItemByValue(value, items, fields, position = []) {
 	for (let i = 0; i < items.length; i++) {
 		const item = items[i]
 
@@ -106,9 +107,9 @@ export function findItemByValue(items, fields, value, position = []) {
 		// If the item has children, recurse into them.
 		if (hasChildren(item, fields)) {
 			const found = findItemByValue(
+				value,
 				item[fields.children],
 				fields.fields ?? fields,
-				value,
 				position.concat(i)
 			)
 			// If the item was found in the children, return it.
@@ -139,4 +140,106 @@ export function getItemByIndexArray(indices, items, fields) {
 		}
 	}
 	return { item, position: indices, fields: levelFields }
+}
+
+/**
+ *
+ * @param {Array<integer>} position
+ * @param {Array<*>} items
+ * @param {import('@rokkit/core').FieldMapping} fields
+ * @returns
+ */
+export function findNearestItemBefore(position, items, fields) {
+	if (position.length == 0) return null
+
+	let index = position[position.length - 1]
+	if (index > 0) {
+		index -= 1
+		if (position.length == 1) {
+			return findLastVisibleChild(items[index], [index], fields)
+		}
+
+		const sibling = getItemByIndexArray(
+			[...position.slice(0, -1), index],
+			items,
+			fields
+		)
+		return findLastVisibleChild(sibling.item, sibling.position, sibling.fields)
+	} else {
+		return getItemByIndexArray(position.slice(0, -1), items, fields)
+	}
+}
+
+/**
+ *
+ * @param {*} parent
+ * @param {Array<integer>} position
+ * @param {import('@rokkit/core').FieldMapping} fields
+ * @returns
+ */
+export function findLastVisibleChild(parent, position, fields) {
+	if (isExpanded(parent, fields)) {
+		const children = parent[fields.children]
+		return findLastVisibleChild(
+			children[children.length - 1],
+			position.concat(children.length - 1),
+			fields.fields ?? fields
+		)
+	}
+	return { item: parent, position, fields }
+}
+
+export function findNearestItemAfter(position, items, fields) {
+	if (position.length == 0 || items.length == 0) return null
+
+	let current = getItemByIndexArray(position, items, fields)
+	// if (current === null) return null
+
+	if (isExpanded(current.item, current.fields)) {
+		return {
+			item: current.item[current.fields.children][0],
+			position: position.concat(0),
+			fields: current.fields.fields ?? current.fields
+		}
+	} else if (position.length == 1) {
+		if (position[0] < items.length - 1) {
+			return {
+				item: items[position[0] + 1],
+				position: [position[0] + 1],
+				fields
+			}
+		}
+		return null
+	} else {
+		let index = position[position.length - 1]
+		let parent = getItemByIndexArray(position.slice(0, -1), items, fields)
+
+		let children = parent.item[parent.fields.children]
+		if (index < children.length - 1) {
+			index += 1
+
+			const sibling = getItemByIndexArray(
+				[...position.slice(0, -1), index],
+				items,
+				fields
+			)
+			return { item: sibling.item, position: sibling.position, fields }
+		} else {
+			while (index == children.length - 1) {
+				index = position[position.length - 1]
+				position = position.slice(0, -1)
+				if (position.length == 0) return null
+				parent = getItemByIndexArray(position, items, fields)
+				children = parent.item[parent.fields.children]
+			}
+			if (index < children.length - 1) {
+				return {
+					item: children[index + 1],
+					position: [...position, index + 1],
+					fields
+				}
+			}
+			// console.log(position, index, children.length)
+		}
+	}
 }
