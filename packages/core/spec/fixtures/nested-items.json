@@ -1,0 +1,50 @@
+[
+  {
+    "text": "Item 1",
+    "is_open": true,
+    "nodes": [
+      {
+        "text": "Item 1.1",
+        "is_open": true,
+        "nodes": [
+          {
+            "text": "Item 1.1.1",
+            "is_open": false
+          },
+          {
+            "text": "Item 1.1.2",
+            "is_open": true,
+            "nodes": [
+              {
+                "text": "Item 1.1.2.1",
+                "is_open": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "text": "Item 1.2",
+        "is_open": true
+      },
+      {
+        "text": "Item 1.2",
+        "is_open": true
+      }
+    ]
+  },
+  {
+    "text": "Item 2",
+    "is_open": false,
+    "nodes": [
+      {
+        "text": "Item 2.1",
+        "is_open": true
+      }
+    ]
+  },
+  {
+    "text": "Item 3",
+    "is_open": true
+  }
+]
