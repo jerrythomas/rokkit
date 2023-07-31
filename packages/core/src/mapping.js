@@ -29,16 +29,38 @@ export function getIcon(value, fields = defaultFields) {
 		: value[fields.icon]
 }
 
+/**
+ * Get the value for the item. If the value is an object,
+ * it will use the field mapping to determine which attribute to get.
+ *
+ * @param {*} node
+ * @param {import('./types').FieldMapping} fields
+ * @returns {*}
+ */
 export function getValue(node, fields = defaultFields) {
 	return typeof node === 'object' && node !== null
 		? node[fields.value] ?? node[fields.text]
 		: node
 }
 
+/**
+ * Get the text for the item. If the text is an object,
+ * it will use the field mapping to determine which attribute to get.
+ *
+ * @param {*} node
+ * @param {import('./types').FieldMapping} fields
+ * @returns {*}
+ */
 export function getText(node, fields = defaultFields) {
 	return typeof node === 'object' && node !== null ? node[fields.text] : node
 }
 
+/**
+ * Gets the attribute from the node
+ * @param {*} node
+ * @param {string} attr
+ * @returns {*}
+ */
 export function getAttribute(node, attr) {
 	return typeof node === 'object' && node !== null ? node[attr] : null
 }

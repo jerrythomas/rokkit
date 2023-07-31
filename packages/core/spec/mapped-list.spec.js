@@ -33,7 +33,7 @@ describe('mapped-list', () => {
 			})
 		})
 
-		it('should return null if the item is not found', () => {
+		it('should return null item if the item is not found', () => {
 			const result = findItemByValue('f', items, fields)
 			expect(result).toBeNull()
 		})
@@ -59,14 +59,14 @@ describe('mapped-list', () => {
 			expect(item).toEqual({ fields, item: { id: 3 }, position: [0, 0, 0] })
 		})
 
-		it('should return undefined if the index array is out of bounds', () => {
+		it('should return null if the index array is out of bounds', () => {
 			const items = [
 				{ id: 1, nodes: [{ id: 2, nodes: [{ id: 3 }] }] },
 				{ id: 4, nodes: [{ id: 5 }] }
 			]
 			const indexArray = [0, 0, 0, 0]
 			const item = findItemByIndexArray(indexArray, items, fields)
-			expect(item).toBeFalsy()
+			expect(item).toBeNull()
 		})
 	})
 
@@ -273,6 +273,17 @@ describe('mapped-list', () => {
 				item: items[0].nodes[2],
 				fields,
 				position: [0, 2]
+			})
+		})
+
+		it('should update items', () => {
+			const newItems = [{ value: 'foo' }]
+			const newFields = { children: 'children' }
+			ml.update(newItems, newFields)
+			expect(ml.findByValue({ value: 'foo' })).toEqual({
+				item: { value: 'foo' },
+				fields: newFields,
+				position: [0]
 			})
 		})
 	})
