@@ -1,5 +1,5 @@
 import { isExpanded, hasChildren, getAttribute } from './mapping'
-
+import { equals } from 'ramda'
 /**
  * Traverses the tree to find an item by value.
  * @param {Array} items - The items array.
@@ -22,7 +22,7 @@ export function findItemByValue(
 			if (getAttribute(item, attr) === value) {
 				return { item, position: position.concat(i), fields }
 			}
-		} else if (item === value) {
+		} else if (equals(item, value)) {
 			return { item, position: position.concat(i), fields }
 		}
 
@@ -216,12 +216,16 @@ export function mappedList(items, fields) {
 	const findByIndexArray = (index) => findItemByIndexArray(index, items, fields)
 	const previous = (position) => findNearestItemBefore(position, items, fields)
 	const next = (position) => findNearestItemAfter(position, items, fields)
-
+	const update = (newItems, newFields) => {
+		items = newItems
+		fields = newFields
+	}
 	return {
 		findByValue,
 		findByAttribute,
 		findByIndexArray,
 		previous,
-		next
+		next,
+		update
 	}
 }
