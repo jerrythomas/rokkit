@@ -1,0 +1,146 @@
+/* Styles for 'input-field' class */
+.rokkit input-field field {
+  @apply p-2px box-border border border-skin-muted rounded;
+}
+.rokkit input-field input,
+.rokkit input-field textarea,
+.rokkit input-field select {
+  @apply border-0 rounded-sm;
+}
+.rokkit input-field label {
+  @apply text-secondary-600;
+}
+.rokkit input-field field:focus-within {
+  @apply border-skin-base bg-gradient-to-r from-primary to-secondary;
+}
+.rokkit input-field span {
+  @apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
+}
+.rokkit input-field message {
+  @apply px-2 py-1 bg-skin-base rounded;
+}
+.rokkit input-field.fail {
+  @apply bg-error rounded px-2;
+}
+
+/* Styles for 'input-range' class */
+.rokkit input-range range-track {
+  @apply h-2 mt-2 relative;
+}
+.rokkit input-range range-track span {
+  @apply bg-skin-subtle border box-border border-skin-muted rounded-full;
+}
+.rokkit input-range range-track selected {
+  @apply border top-0px bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
+}
+.rokkit input-range range-track thumb {
+  @apply rounded-sm focus:outline-none;
+}
+.rokkit input-range range-ticks {
+  font-size: 6px;
+  @apply bg-primary-100;
+}
+.rokkit .bookend range-track span::before,
+.rokkit .bookend range-track span::after {
+  content: '';
+  @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+}
+.rokkit .bookend range-track span::before {
+  @apply -left-1px;
+}
+.rokkit .bookend range-track span::after {
+  @apply -right-2px;
+}
+
+/* Styles for 'tick' class */
+.rokkit tick {
+  @apply h-6;
+}
+.rokkit tick span {
+  @apply border-skin-500 h-full;
+}
+.rokkit tick p {
+  @apply items-top text-skin-500;
+  font-size: 8px;
+}
+
+/* Styles for 'thumb' class */
+.rokkit thumb {
+  @apply bg-gradient-to-r from-primary to-secondary border-secondary shadow-xl border;
+}
+.rokkit thumb.sliding::before {
+  content: '';
+  @apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-500  opacity-30 rounded-sm;
+  transform: scale(2, 2);
+}
+
+/* Styles for 'button[role='switch']' class */
+.rokkit button[role='switch'] {
+  @apply rounded-full p-0 min-h-6 h-8 w-16;
+  @apply bg-skin-subtle border border-skin-subtle;
+}
+.rokkit button[role='switch'] > mark {
+  @apply rounded-full w-6 h-6 top-0.75;
+  @apply bg-gradient-to-r from-primary to-secondary;
+}
+
+/* Styles for 'rating' class */
+.rokkit rating {
+  @apply text-skin-600 text-xl h-10 justify-center rounded focus:outline focus:outline-secondary;
+}
+.rokkit rating > icon {
+  @apply w-8;
+}
+.rokkit rating:focus-within icon[aria-checked='true'] {
+  @apply text-primary;
+}
+.rokkit rating icon.hovering > i {
+  @apply text-secondary;
+}
+
+/* Styles for 'alert-list' class */
+.rokkit alert-list {
+  @apply top-4 right-4 w-80;
+}
+
+/* Pill styles */
+.rokkit .pill {
+  @apply rounded-full bg-skin-inset border-skin-subtle border px-2 py-1 flex-grow-0;
+}
+.rokkit .pill > icon[role='button'] {
+  @apply rounded-full w-5 h-5 hover:bg-skin-muted hover:text-current focus:rounded-full focus:m-0;
+}
+
+.rokkit .pill > item {
+  @apply gap-2 leading-6 px-2;
+}
+.rokkit .pill > item > img {
+  @apply w-4 h-4;
+}
+
+/* Styles for 'item' class */
+.rokkit item {
+  @apply flex flex-shrink items-center gap-1;
+}
+.rokkit item > p {
+  @apply flex-shrink text-ellipsis;
+}
+
+/* Image and link styles */
+.rokkit item > img,
+.rokkit item > a > img {
+  @apply w-6 h-6;
+}
+.rokkit item > a {
+  @apply gap-2;
+}
+.rokkit node item {
+  @apply px-1 gap-2;
+}
+/* Crumbs styles */
+.rokkit crumbs {
+  @apply flex-grow gap-1 text-sm;
+}
+.rokkit crumbs crumb.is-selected {
+  @apply text-secondary;
+}

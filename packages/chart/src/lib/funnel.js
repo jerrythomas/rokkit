@@ -1,34 +1,9 @@
-import { sum, median, max, mean, min, quantile, cumsum } from 'd3-array'
+import { max, cumsum } from 'd3-array'
 import { nest } from 'd3-collection'
-import { pick, flatten } from 'ramda'
+import { flatten } from 'ramda'
 import { area, curveBasis, curveBumpX, curveBumpY } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
-
-const aggregate = {
-	count: (values) => values.length,
-	sum: (values) => sum(values),
-	min: (values) => min(values),
-	max: (values) => max(values),
-	mean: (values) => mean(values),
-	median: (values) => median(values),
-	q1: (values) => quantile(values, 0.25),
-	q3: (values) => quantile(values, 0.75)
-}
-
-export function summarize(data, by, attr, stat = 'count') {
-	const stats = Array.isArray(stat) ? stat : [stat]
-	const grouped = nest()
-		.key((d) => by.map((f) => d[f]).join('|'))
-		.rollup((rows) => {
-			let agg = pick(by, rows[0])
-			stats.map(
-				(stat) => (agg[stat] = aggregate[stat](rows.map((d) => d[attr])))
-			)
-			return [agg]
-		})
-		.entries(data)
-	return flatten(grouped.map((group) => group.value))
-}
+import { summarize } from './summary'
 
 export function getUniques(input, aes) {
 	const attrs = ['x', 'y', 'fill']
@@ -58,74 +33,56 @@ export function fillMissing(fill, rows, key, aes) {
 	return filled
 }
 
-export function convertToPhases(input, aes) {
-	const uniques = getUniques(input, aes)
+/**
+ * Determines if the layout is vertical based on the given parameters.
+ * @param {Object} uniques - The unique values.
+ * @param {Object} aes - The aes object.
+ * @returns {boolean} - Returns true if the layout is vertical, false otherwise.
+ */
+function determineLayout(uniques, aes) {
 	let vertical = 'y' in uniques && uniques.y.some(isNaN)
 	const horizontal = 'x' in uniques && uniques.x.some(isNaN)
-
-	let summary = []
 
 	if (horizontal && vertical) {
 		if ((aes.stat || 'count') === 'count') {
 			vertical = false
-			console.warn('Assuming horizontal layout becuse stat is count')
+			console.warn('Assuming horizontal layout because stat is count')
 		} else {
 			console.error(
-				'cannot plot without at least one axis having numeric values'
+				'Cannot plot without at least one axis having numeric values'
 			)
-			return { uniques, vertical }
+			return null
 		}
 	}
+	return vertical
+}
+
+/**
+ * Converts to phases.
+ * @param {Array} input - The input data.
+ * @param {Object} aes - The aes object.
+ * @returns {Object} - The phases, uniques, and vertical properties.
+ */
+export function convertToPhases(input, aes) {
+	const uniques = getUniques(input, aes)
+	const vertical = determineLayout(uniques, aes)
+	if (vertical === null) return { uniques, vertical }
 
 	const key = vertical ? aes.y : aes.x
 	const value = vertical ? aes.x : aes.y
 
 	let by = [key]
-	if ('fill' in aes) {
-		by.push(aes.fill)
-	}
-	summary = summarize(input, by, value, aes.stat)
+	if ('fill' in aes) by.push(aes.fill)
+
+	const summary = summarize(input, by, value, aes.stat)
 	const phases = nest()
 		.key((d) => d[key])
-		.rollup((rows) => {
-			return 'fill' in aes ? fillMissing(uniques.fill, rows, key, aes) : rows
-		})
+		.rollup((rows) =>
+			'fill' in aes ? fillMissing(uniques.fill, rows, key, aes) : rows
+		)
 		.entries(summary)
 
 	return { phases, uniques, vertical }
-}
-
-export function mirror(input, aes) {
-	let domain = 0
-
-	const stats = input.phases.map((phase) => {
-		const stat = cumsum(phase.value.map((row) => row[aes.stat]))
-		const midpoint = max(stat) / 2
-		domain = Math.max(domain, midpoint)
-
-		const rows = phase.value.map((row, index) => {
-			if (input.vertical) {
-				return {
-					...row,
-					y: input.uniques.y.indexOf(row[aes.y]),
-					x1: stat[index] - midpoint,
-					x0: stat[index] - midpoint - row[aes.stat]
-				}
-			} else {
-				return {
-					...row,
-					x: input.uniques.x.indexOf(row[aes.x]),
-					y1: stat[index] - midpoint,
-					y0: stat[index] - midpoint - row[aes.stat]
-				}
-			}
-		})
-
-		phase.value = rows
-		return phase
-	})
-
-	return { ...input, stats, domain }
 }
 
 export function getScales(input, width, height) {
@@ -178,6 +135,82 @@ export function getPaths(vertical, scale, curve) {
 				.y1((d) => scale.y(d.y1))
 				.curve(curve)
 }
+
+/**
+ * Mirrors the input based on the provided aesthetic mappings.
+ *
+ * @param {Object} input - The input data with phases and uniques.
+ * @param {Object} aes - The aesthetic mappings.
+ * @returns {Object} The mirrored input with updated stats and domain.
+ */
+export function mirror(input, aes) {
+	const domain = calculateDomain(input)
+	const stats = calculateStats(input, aes, domain)
+
+	return { ...input, stats, domain }
+}
+
+/**
+ * Calculates the domain for the mirror operation.
+ *
+ * @param {Object} input - The input data with phases.
+ * @returns {number} The calculated domain.
+ */
+function calculateDomain(input) {
+	return input.phases.reduce((maxDomain, phase) => {
+		const stat = cumsum(phase.value.map((row) => row[aes.stat]))
+		const midpoint = max(stat) / 2
+		return Math.max(maxDomain, midpoint)
+	}, 0)
+}
+
+/**
+ * Calculates the stats for the mirror operation.
+ *
+ * @param {Object} input - The input data with phases and uniques.
+ * @param {Object} aes - The aesthetic mappings.
+ * @param {number} domain - The domain for the mirror operation.
+ * @returns {Array} The calculated stats.
+ */
+function calculateStats(input, aes, domain) {
+	return input.phases.map((phase) => {
+		const stat = cumsum(phase.value.map((row) => row[aes.stat]))
+		const midpoint = max(stat) / 2
+
+		phase.value = phase.value.map((row, index) => {
+			const position = calculatePosition(input, aes, row, stat, index, midpoint)
+			return { ...row, ...position }
+		})
+
+		return phase
+	})
+}
+
+/**
+ * Calculates the position for the mirror operation.
+ *
+ * @param {Object} input - The input data with uniques.
+ * @param {Object} aes - The aesthetic mappings.
+ * @param {Object} row - The current row.
+ * @param {Array} stat - The stat data.
+ * @param {number} index - The current index.
+ * @param {number} midpoint - The midpoint for the mirror operation.
+ * @returns {Object} The calculated position.
+ */
+function calculatePosition(input, aes, row, stat, index, midpoint) {
+	const axis = input.vertical ? 'y' : 'x'
+	const oppositeAxis = input.vertical ? 'x' : 'y'
+	const axisValue = input.uniques[axis].indexOf(row[aes[axis]])
+	const position1 = stat[index] - midpoint
+	const position0 = position1 - row[aes.stat]
+
+	return {
+		[axis]: axisValue,
+		[`${oppositeAxis}1`]: position1,
+		[`${oppositeAxis}0`]: position0
+	}
+}
+
 export function funnel(input, aes, width, height) {
 	let data = convertToPhases(input, aes)
 	data = mirror(data, aes)

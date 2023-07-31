@@ -12,7 +12,7 @@ describe('EventManager', () => {
 	})
 
 	it('should call activate and destroy', () => {
-		manager = new EventManager(element, handlers)
+		manager = EventManager(element, handlers)
 		manager.activate()
 		expect(element.addEventListener).toHaveBeenCalledWith(
 			'click',
@@ -29,7 +29,7 @@ describe('EventManager', () => {
 	})
 
 	it('should remove and add event handlers on update', () => {
-		manager = new EventManager(element, handlers)
+		manager = EventManager(element, handlers)
 		manager.update(true)
 		expect(element.addEventListener).toHaveBeenCalledWith(
 			'click',
@@ -47,7 +47,7 @@ describe('EventManager', () => {
 	it('should update the event handlers', () => {
 		const handlers1 = { click: vi.fn() }
 		const handlers2 = { click: vi.fn() }
-		manager = new EventManager(element, handlers1)
+		manager = EventManager(element, handlers1)
 
 		manager.update(true)
 		expect(element.addEventListener).toHaveBeenCalledWith(
@@ -68,7 +68,7 @@ describe('EventManager', () => {
 	})
 
 	it('should not call addEventListener or removeEventListener multiple times', () => {
-		manager = new EventManager(element, handlers)
+		manager = EventManager(element, handlers)
 
 		manager.activate()
 		manager.activate()

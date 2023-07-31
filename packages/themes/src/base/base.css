@@ -1,25 +1,33 @@
-/* * {
-	@apply focus:outline focus:outline-secondary focus:outline-2 focus:outline-offset-2;
-} */
-
-*[tabindex='-1'] {
-  @apply outline-none focus:outline-none;
+/* Global styles */
+*:focus {
+  @apply outline outline-2 outline-offset-2 outline-secondary;
+}
+*[tabindex='-1']:focus {
+  @apply outline-none;
 }
 
+/* Body styles */
 body {
   @apply flex flex-col w-screen overflow-hidden;
   height: var(--viewport-height, 100vh);
 }
 
+/* Link styles */
 a {
   @apply text-primary hover:text-secondary visited:text-secondary-600;
 }
 
-code,
-kbd,
-samp,
-pre {
+/* Code styles */
+code, kbd, samp, pre {
   @apply font-mono font-medium;
+}
+
+/* Disabled styles */
+.disabled {
+  @apply text-disabled;
+}
+.disabled input, .disabled textarea, .disabled select {
+  @apply outline-disabled;
 }
 
 icon {

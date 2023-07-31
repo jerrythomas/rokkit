@@ -1,0 +1,279 @@
+/* Styles for 'tabs' class */
+.rokkit tabs {
+  @apply border-b-2 border-skin-muted px-1 gap-1;
+}
+.rokkit tabs.is-below {
+  @apply border-b-0 border-t-2;
+}
+.rokkit tabs:focus-within {
+  @apply outline-none border-secondary;
+}
+.rokkit tabs .tab {
+  @apply leading-9 px-3 flex-shrink-0 items-center cursor-pointer rounded-t bg-skin-base gap-3;
+}
+.rokkit tabs.is-below .tab {
+  @apply rounded-b rounded-t-none;
+}
+.rokkit tabs.is-centered {
+  @apply justify-center;
+}
+.rokkit tabs .tab[aria-selected='true'] {
+  @apply bg-skin-muted;
+}
+.rokkit tabs:focus-within .tab[aria-selected='true'] {
+  @apply bg-gradient-to-b from-primary-500 to-secondary text-skin-50;
+}
+.rokkit tabs.is-below:focus-within .tab[aria-selected='true'] {
+  @apply bg-gradient-to-t;
+}
+
+/* Styles for 'button' and 'button-group' classes */
+.rokkit button,
+.rokkit .button {
+  @apply flex min-h-9 items-center rounded-full px-6 uppercase bg-skin-muted text-skin-700 cursor-pointer;
+  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+}
+
+.rokkit button.is-primary,
+.rokkit .button.is-primary {
+  @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+}
+
+.rokkit button-group {
+  @apply flex items-center justify-center m-auto py-1 gap-1px;
+}
+
+.rokkit button-group button {
+  @apply flex px-2 pt-0.5 uppercase rounded-none focus:outline-none;
+}
+.rokkit button-group button:first-child {
+  @apply rounded-l-full pl-3;
+}
+.rokkit button-group button:last-child {
+  @apply rounded-r-full pr-3;
+}
+
+.rokkit button-group button.active {
+  @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+}
+
+/* Input and Drop-down styles */
+.rokkit input-select,
+.rokkit drop-down > button {
+  @apply border border-skin-muted rounded p-2px;
+}
+
+.rokkit drop-down > button {
+  @apply bg-skin-base;
+}
+.rokkit drop-down > button > span {
+  @apply rounded py-0 pr-2;
+}
+.rokkit drop-down > button > span > * {
+  @apply h-full items-center;
+}
+.rokkit drop-down > button > span > icon {
+  @apply w-6 h-6;
+}
+
+.rokkit input-select > selected-item,
+.rokkit drop-down > button > span {
+  @apply h-10 pl-4 pr-0 gap-4 items-center bg-skin-base normal-case outline-none;
+  @apply rounded text-skin-800;
+}
+
+/* Focus styles */
+.rokkit input-select:focus-within,
+.rokkit drop-down:focus-within > button {
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50 border-none;
+}
+
+.rokkit drop-down:focus-within > button > span {
+  @apply bg-skin-muted;
+}
+
+/* Hover and Icon styles */
+.rokkit input-select:hover > icon,
+.rokkit drop-down:hover > icon {
+  @apply border-skin-500;
+}
+
+/* Scroll styles */
+.rokkit input-select scroll {
+  @apply mt-1 shadow-lg;
+}
+
+.rokkit input-select > selected-item > items {
+  @apply flex-grow flex-wrap gap-2;
+}
+
+/* Accordion styles */
+.rokkit accordion {
+  @apply flex-grow gap-1 overflow-y-scroll;
+}
+.rokkit accordion > div {
+  @apply rounded shadow relative;
+}
+
+/* List styles */
+.rokkit list {
+  @apply gap-1px bg-skin-subtle;
+}
+
+.rokkit list > item,
+.rokkit accordion div summary {
+  @apply leading-10 px-4 bg-skin-base text-skin-800 min-h-10;
+}
+.rokkit accordion > div > summary {
+  @apply rounded pr-2 bg-gradient from-skin-subtle to-skin-muted;
+}
+
+/* Remove default details marker from summary */
+.rokkit accordion > div > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Nested List and Tree styles */
+.rokkit :not(accordion > div) > list {
+  @apply rounded shadow border border-skin-400 overflow-y-scroll;
+}
+.rokkit :not(accordion > div) > list item {
+  @apply last:rounded-b first:rounded-t;
+}
+
+.rokkit accordion list item {
+  @apply last:rounded-b gap-2;
+}
+.rokkit accordion list item > a {
+  @apply gap-2;
+}
+.rokkit accordion list {
+  @apply rounded-b;
+}
+
+.rokkit accordion .is-expanded list {
+  @apply -mt-10 pt-10 rounded-t;
+}
+
+/* Nested List and Node styles */
+.rokkit nested-list {
+  @apply text-skin-800;
+}
+.rokkit nested-list node {
+  @apply px-2 h-8;
+}
+
+/* Tree styles */
+.rokkit tree {
+  @apply rounded;
+}
+
+/* Focus styles for Nested List, Tree, and Accordion */
+.rokkit nested-list,
+.rokkit nested-list:focus-within,
+.rokkit tree:focus-within {
+  @apply outline-none rounded;
+}
+
+.rokkit accordion,
+.rokkit list {
+  @apply rounded;
+}
+
+/* Remove outline from focused elements */
+.rokkit accordion:focus-within list,
+.rokkit drop-down:focus-within list,
+.rokkit input-select:focus-within list {
+  @apply outline-none focus:outline-none;
+}
+
+/* Focus and Hover styles for List and Node */
+.rokkit list:focus {
+  @apply outline outline-secondary;
+}
+.rokkit list item.is-hovering,
+.rokkit list item:hover,
+.rokkit node:hover {
+  @apply bg-skin-inset;
+}
+
+/* Selected and Hover styles for List and Node */
+.rokkit list item.is-selected > a {
+  @apply text-skin-50;
+}
+
+.rokkit list item.is-selected,
+.rokkit node.is-selected {
+  @apply bg-gradient-to-r from-skin-subtle to-skin-subtle text-skin-800;
+}
+
+/* Expanded and Selected styles for Accordion */
+.rokkit accordion .is-expanded summary {
+  @apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
+}
+
+.rokkit accordion .is-selected summary {
+  @apply bg-skin-subtle;
+}
+.rokkit accordion:focus-within .is-selected summary {
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+}
+
+/* Border styles for Accordion */
+.rokkit accordion > div {
+  @apply border border-skin-muted;
+}
+
+/* Folder Tree styles */
+.rokkit .folder-tree {
+  @apply bg-skin-inset h-full;
+}
+.rokkit .folder-tree nested-list {
+  @apply bg-skin-inset h-full;
+}
+.rokkit node > item {
+  @apply px-1;
+}
+.rokkit node > span {
+  @apply flex-shrink-0;
+}
+.rokkit node > span > i {
+  @apply border-skin-muted;
+}
+.rokkit node > icon {
+  @apply text-skin-muted;
+}
+
+/* Toggle Switch styles */
+.rokkit toggle-switch {
+  @apply min-w-12 min-h-6 rounded-full mx-auto;
+  @apply bg-skin-subtle border border-skin-muted;
+  @apply leading-loose p-2px;
+}
+.rokkit toggle-switch:focus-within {
+  @apply outline outline-secondary-500;
+}
+.rokkit toggle-switch item {
+  @apply items-center justify-center px-3 gap-1 py-0 leading-loose;
+  @apply min-w-6 min-h-6 rounded-full cursor-pointer;
+}
+.rokkit toggle-switch item > icon > i {
+  @apply text-lg;
+}
+
+.rokkit toggle-switch item[aria-selected='true'] {
+  @apply bg-gradient-to-r from-skin-800 to-skin-800 text-skin-muted;
+}
+
+.rokkit toggle-switch.compact > item {
+  @apply px-0 gap-0;
+}
+
+/* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
+.rokkit toggle-switch:focus-within item[aria-selected='true'],
+.rokkit list:focus-within item.is-selected,
+.rokkit tree:focus-within node[aria-selected='true'],
+.rokkit nested-list:focus-within node[aria-selected='true'] {
+  @apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+  @apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
+}

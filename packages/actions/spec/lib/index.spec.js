@@ -9,7 +9,8 @@ describe('internal', () => {
 			'getClosestAncestorWithAttribute',
 			'setupListeners',
 			'removeListeners',
-			'onNodeClick'
+			'handleItemClick',
+			'EventManager'
 		])
 	})
 })
