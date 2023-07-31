@@ -13,18 +13,26 @@ export function toUseHandlersFor(action, options, events) {
 		events = [events]
 	}
 	let mock = getMockNode(events)
-
 	const actionHandler = action(mock.node, options)
+	let result = events.map((event) => ({
+		event,
+		created: mock.listeners[event] == 1
+	}))
 
-	let pass = events.every((event) => mock.listeners[event] == 1)
 	actionHandler.destroy()
-	pass = pass && events.every((event) => mock.listeners[event] == 0)
+	result = result
+		.map((r) => ({ ...r, destroyed: mock.listeners[r.event] == 0 }))
+		.map((r) => ({ ...r, pass: r.created && r.destroyed }))
 
-	const names = events.join(',')
-	let message = ''
-	if (pass)
-		message = `Expected action not to use handlers for [${names}] but it did`
-	else message = `Expected action to use handlers for [${names}] but it didn't`
+	const pass = result.every((r) => r.pass)
+	const message = [
+		'Expected action',
+		pass ? 'not to' : 'to',
+		'manage handlers for',
+		`[${events.join(',')}]`,
+		'but result is',
+		JSON.stringify(result)
+	].join(' ')
 
 	return { message: () => message, pass }
 }
