@@ -80,7 +80,7 @@ describe('action', () => {
 			let result = toUseHandlersFor(mockAction, {}, 'click')
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
-				'Expected action not to use handlers for [click] but it did'
+				'Expected action not to manage handlers for [click] but result is [{"event":"click","created":true,"destroyed":true,"pass":true}]'
 			)
 			expect(mockAction).toUseHandlersFor({}, 'click')
 
@@ -90,7 +90,7 @@ describe('action', () => {
 			])
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
-				'Expected action not to use handlers for [click,touchstart] but it did'
+				'Expected action not to manage handlers for [click,touchstart] but result is [{"event":"click","created":true,"destroyed":true,"pass":true},{"event":"touchstart","created":true,"destroyed":true,"pass":true}]'
 			)
 			expect(mockAction).toUseHandlersFor({ touch: true }, [
 				'click',
@@ -102,7 +102,7 @@ describe('action', () => {
 			const result = toUseHandlersFor(mockAction, {}, ['click', 'touchstart'])
 			expect(result.pass).toBe(false)
 			expect(result.message()).toBe(
-				"Expected action to use handlers for [click,touchstart] but it didn't"
+				'Expected action to manage handlers for [click,touchstart] but result is [{"event":"click","created":true,"destroyed":true,"pass":true},{"event":"touchstart","created":false,"destroyed":true,"pass":false}]'
 			)
 			expect(mockAction).not.toUseHandlersFor({}, ['click', 'touchstart'])
 		})
