@@ -1,0 +1,38 @@
+/* General styles */
+.rokkit {
+  @apply select-none;
+}
+
+/* Zebra styles */
+.rokkit .zebra item {
+  @apply even:bg-skin-zebra hover:bg-skin-50;
+}
+
+/* Styles for 'icon' class */
+.rokkit icon:not([role='button']) {
+  @apply focus:outline-none;
+}
+.rokkit icon[role='button'] {
+  @apply text-skin-500 focus:rounded hover:text-secondary;
+}
+.rokkit icon[role='button']:focus {
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+}
+.rokkit icon.disabled[role='button'] {
+  @apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
+}
+
+/* Styles for input[type='number'] */
+.rokkit input[type='number'] {
+  @apply text-right;
+}
+.rokkit input[type='number']::-webkit-inner-spin-button,
+.rokkit input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Styles for 'searchable' class */
+.searchable input {
+  @apply border border-skin-subtle;
+}

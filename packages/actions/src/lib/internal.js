@@ -65,7 +65,6 @@ export function getClosestAncestorWithAttribute(element, attribute) {
  */
 export function setupListeners(element, listeners, options) {
 	const { enabled } = { enabled: true, ...options }
-
 	if (enabled) {
 		Object.entries(listeners).forEach(([event, listener]) =>
 			element.addEventListener(event, listener)
@@ -90,18 +89,12 @@ export function removeListeners(element, listeners) {
 }
 
 /**
- * @typedef {Object} CurrentItem
- * @property {*} item - The current item.
- * @property {import('@rokkit/core').FieldMapping} fields - The fields mapping.
- * @property {Array<integer>} position - Indices providing path to the item position in the tree.
- */
-/**
  * Handles the click event.
  * @param {HTMLElement} element - The root element.
  * @param {CurrentItem} current - A reference to the current Item
  * @returns {CurrentItem} The updated current item.
  */
-export function onNodeClick(element, current) {
+export function handleItemClick(element, current) {
 	const { item, fields, position } = current
 	const detail = { item, position }
 

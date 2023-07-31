@@ -3,7 +3,7 @@ import { toHaveBeenDispatchedWith } from 'validators'
 import {
 	mapKeyboardEventsToActions,
 	getClosestAncestorWithAttribute,
-	onNodeClick
+	handleItemClick
 } from '../../src/lib/internal'
 
 expect.extend({ toHaveBeenDispatchedWith })
@@ -104,7 +104,7 @@ describe('internal', () => {
 		})
 	})
 
-	describe('onNodeClick', () => {
+	describe('handleItemClick', () => {
 		const element = document.createElement('div')
 		const events = ['collapse', 'expand', 'select']
 		let handlers = {}
@@ -124,7 +124,7 @@ describe('internal', () => {
 				fields: { children: 'nodes', isOpen: 'isOpen' },
 				position: [0]
 			}
-			const result = onNodeClick(element, current)
+			const result = handleItemClick(element, current)
 			expect(handlers.collapse).toHaveBeenDispatchedWith({
 				item: current.item,
 				position: current.position
@@ -138,7 +138,7 @@ describe('internal', () => {
 				fields: { children: 'nodes', isOpen: 'isOpen' },
 				position: [0]
 			}
-			const result = onNodeClick(element, current)
+			const result = handleItemClick(element, current)
 			expect(handlers.expand).toHaveBeenDispatchedWith({
 				item: current.item,
 				position: current.position
@@ -152,7 +152,7 @@ describe('internal', () => {
 				fields: { children: 'nodes', isOpen: 'isOpen' },
 				position: [0]
 			}
-			const result = onNodeClick(element, current)
+			const result = handleItemClick(element, current)
 			expect(handlers.select).toHaveBeenDispatchedWith({
 				item: current.item,
 				position: current.position

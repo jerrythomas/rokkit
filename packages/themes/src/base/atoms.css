@@ -1,0 +1,58 @@
+/* Icon styles */
+icon {
+  @apply min-h-4 h-content;
+}
+icon[role='button'] {
+  @apply w-10 h-10 cursor-pointer aspect-square select-none focus:outline;
+}
+icon > i {
+  @apply text-2xl leading-6 aspect-square text-current;
+}
+icon.large > i {
+  @apply text-3xl;
+}
+icon.medium > i {
+  @apply text-lg leading-5;
+}
+icon.small > i {
+  @apply leading-4;
+  font-size: 1rem;
+}
+icon.large[role='button'] {
+  @apply w-12 h-12;
+}
+icon.medium[role='button'] {
+  @apply w-8 h-8;
+}
+icon.small[role='button'] {
+  @apply w-6 h-6;
+}
+
+/* Scroll styles */
+scroll {
+  @apply flex flex-col overflow-y-scroll;
+}
+
+/* Item styles */
+item, .item {
+  @apply flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2;
+}
+item p, summary p {
+  @apply flex flex-grow;
+}
+
+/* Square styles */
+square {
+  @apply flex flex-col items-center justify-center h-full min-h-full aspect-square;
+}
+
+/* Overlay styles */
+overlay {
+  @apply bg-skin-inset bg-opacity-50;
+}
+
+/* Checkbox styles */
+checkbox {
+  @apply gap-2;
+}
+

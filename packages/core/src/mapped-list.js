@@ -73,6 +73,9 @@ export function findItemByIndexArray(indices, items, fields) {
  */
 export function findNearestItemBefore(position, items, fields) {
 	if (position.length == 0) return null
+	if (items.length === 0) return null
+	if ((position ?? []).length === 0)
+		return { item: items[0], position: [0], fields }
 
 	let index = position[position.length - 1]
 	if (index > 0) {
@@ -119,7 +122,9 @@ export function findLastVisibleChild(parent, position, fields) {
  * @returns {Object|null} The next item or null if there is none.
  */
 export function findNearestItemAfter(position, items, fields) {
-	if (position.length === 0 || items.length === 0) return null
+	if (items.length === 0) return null
+	if ((position ?? []).length === 0)
+		return { item: items[0], position: [0], fields }
 
 	let current = findItemByIndexArray(position, items, fields)
 
@@ -216,6 +221,7 @@ export function mappedList(items, fields) {
 	const findByIndexArray = (index) => findItemByIndexArray(index, items, fields)
 	const previous = (position) => findNearestItemBefore(position, items, fields)
 	const next = (position) => findNearestItemAfter(position, items, fields)
+
 	const update = (newItems, newFields) => {
 		items = newItems
 		fields = newFields
