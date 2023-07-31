@@ -89,21 +89,20 @@ function touchEnd(event, node, options, track) {
 	if (speed <= options.minSpeed) return
 
 	const isHorizontalSwipe =
-		options.horizontal &&
-		Math.abs(distX) > Math.abs(distY) &&
-		Math.abs(distX) >= options.threshold
+		options.horizontal && Math.abs(distX) >= options.threshold
 	const isVerticalSwipe =
-		options.vertical &&
-		Math.abs(distY) > Math.abs(distX) &&
-		Math.abs(distY) >= options.threshold
+		options.vertical && Math.abs(distY) >= options.threshold
 
-	if (isHorizontalSwipe) {
-		const swipeDirection = distX > 0 ? 'Right' : 'Left'
-		node.dispatchEvent(new CustomEvent(`swipe${swipeDirection}`))
-	}
+	if (!isHorizontalSwipe && !isVerticalSwipe) return
 
-	if (isVerticalSwipe) {
-		const swipeDirection = distY > 0 ? 'Down' : 'Up'
-		node.dispatchEvent(new CustomEvent(`swipe${swipeDirection}`))
+	const swipeDirection = getSwipeDirection(distX, distY)
+	node.dispatchEvent(new CustomEvent(`swipe${swipeDirection}`))
+}
+
+function getSwipeDirection(distX, distY) {
+	if (Math.abs(distX) > Math.abs(distY)) {
+		return distX > 0 ? 'Right' : 'Left'
+	} else {
+		return distY > 0 ? 'Down' : 'Up'
 	}
 }

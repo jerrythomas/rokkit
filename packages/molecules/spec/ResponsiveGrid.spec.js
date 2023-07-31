@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { getPropertyValue, simulateTouchSwipe } from 'validators'
 import MockItem from './mocks/Custom.svelte'
@@ -13,9 +13,11 @@ describe('ResponsiveGrid.svelte', () => {
 	]
 
 	beforeEach(() => {
+		vi.useFakeTimers()
 		cleanup()
 		global.Touch = vi.fn().mockImplementation((input) => input)
 	})
+	afterEach(() => vi.useRealTimers())
 
 	it('should render a responsive grid', () => {
 		const { container } = render(ResponsiveGrid, {
