@@ -14,7 +14,7 @@ Example:
 <InputField type="rating" max="{5}" />
 
 <!-- Using a custom radiogroup component -->
-<InputField type="radiogroup" options="{radioOptions}" />
+<InputField type="radio" options="{radioOptions}" />
 ```
 
 By specifying the `type` property with the corresponding value (select, rating, or radiogroup) and providing the necessary props (e.g., `options`, `max`), you can use custom components within the InputField.

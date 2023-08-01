@@ -1,20 +1,37 @@
 <script>
-	import { InputField, Switch } from '@rokkit/organisms'
+	import { InputField } from '@rokkit/organisms'
 
-	let selected
-	let value
+	let value = {
+		toggle: 'water',
+		rating: 3,
+		radio: 'male'
+	}
+	let gender = ['male', 'female']
 	let options = [
-		{ id: 'option1', text: 'Option 1' },
-		{ id: 'option2', text: 'Option 2' },
-		{ id: 'option3', text: 'Option 3' }
+		{ value: 'water', text: 'Water' },
+		{ value: 'tea', text: 'Tea' },
+		{ value: 'coffee', text: 'Coffee' }
 	]
 </script>
 
-<InputField bind:value type="switch" label="Enter a value" {options} />
-<p>Selected Value: <b>{value}</b></p>
-
-<Switch
-	bind:value={selected}
+<InputField
+	bind:value={value.toggle}
+	type="switch"
+	label="Enter a value"
 	{options}
-	on:change={(event) => (value = event.detail.item.id)}
 />
+<InputField
+	bind:value={value.rating}
+	type="rating"
+	label="select a rating"
+	max={5}
+/>
+<InputField
+	bind:value={value.radio}
+	type="radio"
+	label="Gender"
+	options={gender}
+	class="horizontal"
+/>
+
+<pre>{JSON.stringify(value, null, 2)}</pre>
