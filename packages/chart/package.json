@@ -13,7 +13,7 @@
 		"access": "public"
 	},
 	"scripts": {
-		"prepublishOnly": "tsc",
+		"prepublishOnly": "rm -rf dist && tsc",
 		"format": "prettier --write .",
 		"lint": "eslint --fix .",
 		"test:ci": "vitest run",
@@ -21,7 +21,7 @@
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"latest": "pnpm upgrade --latest && pnpm test:ci",
-		"release": "tsc && pnpm publish --access public"
+		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.4.3",
