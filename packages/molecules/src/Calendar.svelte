@@ -65,7 +65,6 @@
 				{@const start = offset > 0 ? offset : 'auto'}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<day-of-month
-					class:active={isSameDay(date, value)}
 					class:weekend
 					style:grid-column-start={start}
 					on:click={() => (value = date)}
