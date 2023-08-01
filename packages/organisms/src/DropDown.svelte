@@ -1,12 +1,10 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { dismissable } from '@rokkit/actions'
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 
 	import { Icon, Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 	import List from './List.svelte'
-	// import Slider from './Slider.svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -38,19 +36,15 @@
 <drop-down
 	class="flex relative cursor-pointer select-none dropdown {className}"
 	class:open
-	tabindex="0"
 	aria-haspopup="true"
 	aria-controls="menu"
-	use:dismissable
-	on:focus={() => (open = true)}
-	on:blur={() => (open = false)}
-	on:dismiss={() => (open = false)}
 >
 	<button
-		on:click|stopPropagation={() => (open = !open)}
 		class="flex items-center"
 		bind:clientHeight={offsetTop}
-		tabindex="-1"
+		tabindex="0"
+		on:focus={() => (open = true)}
+		on:blur={() => (open = false)}
 	>
 		<span class="flex items-center">
 			{#if icon !== null}

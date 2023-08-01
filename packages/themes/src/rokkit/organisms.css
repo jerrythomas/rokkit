@@ -60,37 +60,25 @@
 /* Input and Drop-down styles */
 .rokkit input-select,
 .rokkit drop-down > button {
-  @apply border border-skin-muted rounded p-2px;
+  @apply border border-skin-muted rounded;
 }
 
 .rokkit drop-down > button {
-  @apply bg-skin-base;
+  @apply bg-skin-base p-0;
 }
 .rokkit drop-down > button > span {
-  @apply rounded py-0 pr-2;
+  @apply rounded py-0;
 }
 .rokkit drop-down > button > span > * {
-  @apply h-full items-center pl-4 pr-2;
+  @apply h-full items-center;
 }
-.rokkit drop-down > button > span > icon {
-  @apply w-6 h-6;
-}
-
-.rokkit input-select > selected-item,
-.rokkit drop-down > button > span {
-  @apply h-10 gap-4 items-center bg-skin-base normal-case outline-none;
-  @apply rounded text-skin-800;
-}
-.rokkit input-select > selected-item {
-  @apply pl-4;
-}
-/* Focus styles */
 
 .rokkit input-select:focus-within,
 .rokkit drop-down:focus-within > button {
-  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50 border-none;
+  @apply outline-none border-none p-2px;
+  @apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 }
-
+.rokkit input-select:focus-within > selected-item,
 .rokkit drop-down:focus-within > button > span {
   @apply bg-skin-muted;
 }

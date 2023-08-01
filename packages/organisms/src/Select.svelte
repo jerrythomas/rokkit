@@ -52,6 +52,7 @@
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
 	$: activeIndex = options.findIndex((item) => item === value)
+	$: console.log('open', open)
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -87,9 +88,9 @@
 			</item>
 		</slot>
 		{#if open}
-			<Icon name={icons.opened} label="opened" role="button" tabindex="-1" />
+			<Icon name={icons.opened} label="opened" tabindex="-1" />
 		{:else}
-			<Icon name={icons.closed} label="closed" role="button" tabindex="-1" />
+			<Icon name={icons.closed} label="closed" tabindex="-1" />
 		{/if}
 	</selected-item>
 	{#if open}

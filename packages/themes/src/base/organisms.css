@@ -18,9 +18,18 @@ alert.success, success {
   @apply bg-pass text-pass border-pass;
 }
 
-input-select {
-  @apply overflow-y-auto overflow-x-hidden;
-}
+input-select,
 drop-down {
-  @apply overflow-y-auto overflow-x-visible;
+  @apply overflow-visible cursor-pointer;
+}
+
+input-select selected-item > icon,
+drop-down > button > span > icon {
+  @apply w-9 h-full;
+}
+
+input-select > selected-item,
+drop-down > button > span {
+  @apply h-9 pl-3 gap-2 items-center bg-skin-base normal-case;
+  @apply rounded text-skin-800;
 }
