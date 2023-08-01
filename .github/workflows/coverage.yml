@@ -44,8 +44,8 @@ jobs:
         run: pnpm i
         env:
           NODE_OPTIONS: '--max_old_space_size=6144'
-      - name: Run tests
-        run: pnpm test
+      # - name: Run tests
+      #   run: pnpm test
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v4.0.0
         env:
