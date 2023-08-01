@@ -1,6 +1,6 @@
 {
 	"name": "rokkit",
-	"version": "1.0.0-next.43",
+	"version": "1.0.0-next.44",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
