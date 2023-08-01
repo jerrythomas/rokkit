@@ -63,8 +63,7 @@ export function navigator(element, options) {
 		if (currentNode) {
 			const collapse = isExpanded(currentNode, path[path.length - 1].fields)
 			if (collapse) {
-				currentNode[path[path.length - 1].fields.isOpen] = false
-				emit('collapse', element, indicesFromPath(path), currentNode)
+				toggle()
 			} else if (path.length > 0) {
 				path = path.slice(0, -1)
 				currentNode = getCurrentNode(path)
@@ -74,9 +73,14 @@ export function navigator(element, options) {
 	}
 	const expand = () => {
 		if (currentNode && hasChildren(currentNode, path[path.length - 1].fields)) {
-			currentNode[path[path.length - 1].fields.isOpen] = true
-			emit('expand', element, indicesFromPath(path), currentNode)
+			toggle()
 		}
+	}
+	function toggle() {
+		const expanded = isExpanded(currentNode, path[path.length - 1].fields)
+		const event = expanded ? 'collapse' : 'expand'
+		currentNode[path[path.length - 1].fields.isOpen] = !expanded
+		emit(event, element, indicesFromPath(path), currentNode)
 	}
 	const handlers = { next, previous, select, collapse, expand }
 
