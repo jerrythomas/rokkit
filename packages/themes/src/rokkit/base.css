@@ -1,17 +1,12 @@
-@import '../base/base.css';
+/* @import '../base/base.css'; */
 
 /* .rokkit * {
 	@apply focus:outline-offset-0;
 } */
 
-.rokkit item {
-  @apply flex flex-shrink items-center gap-1;
-}
-.rokkit item > p {
-  @apply flex-shrink text-ellipsis;
-}
 
-.rokkit icon:not([role='button']) {
+
+/* .rokkit icon:not([role='button']) {
   @apply focus:outline-none;
 }
 .rokkit icon[role='button'] {
@@ -22,4 +17,4 @@
 }
 .rokkit icon.disabled[role='button'] {
   @apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
-}
+} */

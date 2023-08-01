@@ -1,6 +1,3 @@
-/* container {
-	@apply overflow-hidden;
-} */
 container > segment {
   @apply overflow-hidden;
 }

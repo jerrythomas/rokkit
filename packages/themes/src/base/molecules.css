@@ -63,7 +63,7 @@ calendar cal-body days-of-month {
 day-of-month {
   @apply hover:bg-secondary-200 hover:rounded-full;
 }
-day-of-month.active {
+day-of-month[aria-selected='true'] {
   @apply bg-secondary-500 text-white rounded-full;
 }
 
@@ -75,7 +75,7 @@ field-layout.vertical {
   @apply flex flex-col gap-2;
 }
 field-layout.horizontal {
-  @apply flex flex-row gap-4;
+  @apply flex flex-col gap-2 md:flex-row md:gap-4;
 }
 selected-item item {
   @apply flex-grow;
@@ -87,15 +87,18 @@ input-field input, input-field textarea, input-field select, input-field > field
   @apply flex-grow outline-none min-h-10 leading-loose px-3;
   @apply bg-skin-subtle text-skin-800;
 }
-input-field label {
+input-field > label {
   @apply uppercase text-xs;
   @apply leading-loose;
 }
-input-field label.required::after {
+input-field > label.required::after {
   content: ' *';
   @apply state-danger;
 }
 
+radio-group label {
+  @apply uppercase cursor-pointer;
+}
 /* Progress bar styles */
 progress-bar {
   @apply bg-skin-muted border border-skin-subtle;
@@ -113,3 +116,5 @@ progress-bar value-bar {
   animation-iteration-count: infinite;
   animation-name: pendulum;
 }
+
+
