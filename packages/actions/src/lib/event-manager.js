@@ -4,22 +4,22 @@
 export function EventManager(element, handlers = {}) {
 	let listening = false
 
+	function toggle() {
+		const action = listening ? 'removeEventListener' : 'addEventListener'
+		Object.entries(handlers).forEach(([event, handler]) =>
+			element[action](event, handler)
+		)
+		listening = !listening
+	}
+
 	function activate() {
-		if (!listening) {
-			for (const event in handlers) {
-				element.addEventListener(event, handlers[event])
-			}
-			listening = true
-		}
+		if (!listening) toggle()
 	}
+
 	function destroy() {
-		if (listening) {
-			for (const event in handlers) {
-				element.removeEventListener(event, handlers[event])
-			}
-			listening = false
-		}
+		if (listening) toggle()
 	}
+
 	function update(enabled, newHandlers = handlers) {
 		if (listening !== enabled || handlers !== newHandlers) {
 			destroy()
