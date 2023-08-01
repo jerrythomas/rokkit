@@ -31,7 +31,7 @@ exports[`DropSearch.svelte > should render 1`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -131,7 +131,7 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i

@@ -29,7 +29,7 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -125,7 +125,7 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
     <icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -219,7 +219,7 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -307,7 +307,7 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 1`] 
   <icon
     aria-label="closed"
     class="flex flex-shrink-0 items-center justify-center "
-    role="button"
+    role="img"
     tabindex="-1"
   >
     <i
@@ -349,7 +349,7 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 2`] 
   <icon
     aria-label="closed"
     class="flex flex-shrink-0 items-center justify-center "
-    role="button"
+    role="img"
     tabindex="-1"
   >
     <i
@@ -385,7 +385,7 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 3`] 
   <icon
     aria-label="closed"
     class="flex flex-shrink-0 items-center justify-center "
-    role="button"
+    role="img"
     tabindex="-1"
   >
     <i
@@ -415,7 +415,7 @@ exports[`Select.svelte > should handle option changes 1`] = `
   <icon
     aria-label="closed"
     class="flex flex-shrink-0 items-center justify-center "
-    role="button"
+    role="img"
     tabindex="-1"
   >
     <i
@@ -561,7 +561,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -657,7 +657,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
     <icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -749,7 +749,7 @@ exports[`Select.svelte > should render items using custom component 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -801,7 +801,7 @@ exports[`Select.svelte > should render items using custom component 2`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -895,7 +895,7 @@ exports[`Select.svelte > should render items using custom component 3`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -986,7 +986,7 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -1086,7 +1086,7 @@ exports[`Select.svelte > should render items using default component, when inval
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -1182,7 +1182,7 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -1278,7 +1278,7 @@ exports[`Select.svelte > should render string array 1`] = `
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -1374,7 +1374,7 @@ exports[`Select.svelte > should render string array 2`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i

@@ -33,7 +33,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
         <icon
           aria-label="opened"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -129,7 +129,7 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -177,7 +177,7 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -225,7 +225,7 @@ exports[`InputSelect.svelte > should render items using default item when data i
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -273,7 +273,7 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -321,7 +321,7 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -369,7 +369,7 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i

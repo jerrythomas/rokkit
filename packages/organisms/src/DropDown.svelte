@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
-
+	import { dismissable } from '@rokkit/actions'
 	import { Icon, Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 	import List from './List.svelte'
@@ -43,6 +43,8 @@
 		class="flex items-center"
 		bind:clientHeight={offsetTop}
 		tabindex="0"
+		use:dismissable
+		on:dismiss={() => (open = false)}
 		on:focus={() => (open = true)}
 		on:blur={() => (open = false)}
 	>

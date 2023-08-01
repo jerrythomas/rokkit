@@ -80,7 +80,7 @@ exports[`MultiSelect.svelte > should add a selected item 1`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -184,7 +184,7 @@ exports[`MultiSelect.svelte > should remove a selected item 1`] = `
     <icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -286,7 +286,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -380,7 +380,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
     <icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -452,7 +452,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -583,7 +583,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -669,7 +669,7 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
     <icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -742,7 +742,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
@@ -873,7 +873,7 @@ exports[`MultiSelect.svelte > should render using field mappings 3`] = `
     <icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
-      role="button"
+      role="img"
       tabindex="-1"
     >
       <i
