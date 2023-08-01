@@ -3,6 +3,7 @@
 	"include": ["src/**/*.js", "src/**/*.svelte"],
 	"exclude": ["spec"],
 	"compilerOptions": {
-		"outDir": "dist"
+		"outDir": "dist",
+		"rootDir": "./src"
 	}
 }
