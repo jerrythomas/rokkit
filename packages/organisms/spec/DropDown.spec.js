@@ -199,34 +199,6 @@ describe('DropDown.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	// it('should emit the change event when the value changes', async () => {
-	// 	const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
-	// 	const { container, component } = render(DropDown, {
-	// 		options: options
-	// 	})
-
-	// 	Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
-
-	// 	const select = container.querySelector('drop-down ')
-	// 	await fireEvent.click(select)
-	// 	await tick()
-	// 	expect(container).toMatchSnapshot()
-
-	// 	const elements = container.querySelectorAll('drop-down list item')
-	// 	await fireEvent.click(elements[1])
-	// 	await tick()
-	// 	expect(getPropertyValue(component, 'value')).toEqual(options[1])
-	// 	expect(handlers.select).toHaveBeenCalled()
-	// 	expect(handlers.change).toHaveBeenCalled()
-	// 	expect(handlers.change).toHaveBeenDispatchedWith(options[1])
-	// 	expect(handlers.select).toHaveBeenDispatchedWith(options[1])
-	// 	await tick()
-	// 	const classes = Array.from(
-	// 		container.querySelector('drop-down').classList
-	// 	)
-	// 	expect(classes).not.toContain('open')
-	// })
-
 	it('should open/close drop down on click and blur', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(DropDown, {
@@ -296,6 +268,7 @@ describe('DropDown.svelte', () => {
 	// 	await tick()
 	// 	expect(container.querySelector('scroll')).toMatchSnapshot()
 	// })
+
 	//todo: test arrow keys
 	// it('should handle arrow keys for navigation and select', async () => {
 	// 	const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
@@ -305,6 +278,7 @@ describe('DropDown.svelte', () => {
 	// 	})
 
 	// 	expect(container.querySelector('drop-down ')).toMatchSnapshot()
+	// 	component.$on('change', handlers.change)
 	// 	const select = container.querySelector('drop-down ')
 
 	// 	await fireEvent.keyDown(select, { key: 'ArrowDown' })
@@ -313,17 +287,17 @@ describe('DropDown.svelte', () => {
 	// 	await tick()
 	// 	await fireEvent.keyDown(select, { key: 'Enter' })
 	// 	await tick()
+	// 	expect(handlers.change).toHaveBeenCalled()
+	// expect(getPropertyValue(component, 'value')).toEqual(options[2])
+	// expect(container.querySelector('drop-down ')).toMatchSnapshot()
 
-	// 	expect(getPropertyValue(component, 'value')).toEqual(options[2])
-	// 	expect(container.querySelector('drop-down ')).toMatchSnapshot()
-
-	// 	await fireEvent.keyDown(select, { key: 'ArrowUp' })
-	// 	await tick()
-	// 	await fireEvent.keyDown(select, { key: 'ArrowUp' })
-	// 	await tick()
-	// 	await fireEvent.keyDown(select, { key: 'Enter' })
-	// 	await tick()
-	// 	expect(getPropertyValue(component, 'value')).toEqual(options[1])
-	// 	expect(container.querySelector('drop-down ')).toMatchSnapshot()
+	// await fireEvent.keyDown(select, { key: 'ArrowUp' })
+	// await tick()
+	// await fireEvent.keyDown(select, { key: 'ArrowUp' })
+	// await tick()
+	// await fireEvent.keyDown(select, { key: 'Enter' })
+	// await tick()
+	// expect(getPropertyValue(component, 'value')).toEqual(options[1])
+	// expect(container.querySelector('drop-down ')).toMatchSnapshot()
 	// })
 })

@@ -19,8 +19,12 @@ describe('Select.svelte', () => {
 	afterAll(() => vi.resetAllMocks())
 
 	it('should render string array', async () => {
-		const { container } = render(Select, { options: ['a', 'b', 'c'] })
+		const { container, component } = render(Select, {
+			options: ['a', 'b', 'c']
+		})
 		expect(container).toBeTruthy()
+		component.$on('change', handlers.change)
+		component.$on('select', handlers.select)
 		await fireEvent.click(container.querySelector('selected-item'))
 		await tick()
 		expect(container).toMatchSnapshot()
@@ -28,6 +32,8 @@ describe('Select.svelte', () => {
 		expect(items.length).toEqual(3)
 		await fireEvent.click(items[1])
 		await tick()
+		expect(handlers.change).toHaveBeenDispatchedWith('b')
+		expect(handlers.select).toHaveBeenDispatchedWith('b')
 		expect(container).toMatchSnapshot()
 	})
 

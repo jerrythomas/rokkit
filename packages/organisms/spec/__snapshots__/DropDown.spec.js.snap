@@ -17,8 +17,16 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
        
        
       <icon
-        class="selector-opened"
-      />
+        aria-label="selector-opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
     </span>
     <iframe
       aria-hidden="true"
@@ -102,8 +110,16 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
        
        
       <icon
-        class="selector-closed"
-      />
+        aria-label="selector-closed"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </icon>
     </span>
     <iframe
       aria-hidden="true"
@@ -170,6 +186,143 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
 </drop-down>
 `;
 
+exports[`DropDown.svelte > should handle arrow keys for navigation and select 1`] = `
+<drop-down
+  aria-controls="menu"
+  aria-haspopup="true"
+  class="flex relative cursor-pointer select-none dropdown "
+  tabindex="0"
+>
+  <button
+    class="flex items-center"
+    tabindex="-1"
+  >
+    <span
+      class="flex items-center"
+    >
+       
+       
+      <icon
+        aria-label="selector-closed"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </icon>
+    </span>
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </button>
+   
+</drop-down>
+`;
+
+exports[`DropDown.svelte > should handle size change for button 1`] = `
+<body>
+  <div>
+    <drop-down
+      aria-controls="menu"
+      aria-haspopup="true"
+      class="flex relative cursor-pointer select-none dropdown open"
+      tabindex="0"
+    >
+      <button
+        class="flex items-center"
+        style="height: 20px;"
+        tabindex="-1"
+      >
+        <span
+          class="flex items-center"
+        >
+           
+           
+          <icon
+            aria-label="selector-opened"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-opened"
+            />
+          </icon>
+        </span>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </button>
+       
+      <scroll
+        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+        style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      >
+        <list
+          class="flex flex-col w-full flex-shrink-0 select-none list"
+          role="listbox"
+          tabindex="-1"
+        >
+           
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="0"
+            role="option"
+          >
+            
+             
+            <p>
+              a
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="true"
+            class="item is-selected"
+            data-path="1"
+            role="option"
+          >
+            
+             
+            <p>
+              b
+            </p>
+            
+             
+          </item>
+          <item
+            aria-selected="false"
+            class="item"
+            data-path="2"
+            role="option"
+          >
+            
+             
+            <p>
+              c
+            </p>
+            
+             
+          </item>
+        </list>
+      </scroll>
+    </drop-down>
+  </div>
+</body>
+`;
+
 exports[`DropDown.svelte > should open/close drop down on click and blur 1`] = `
 <drop-down
   aria-controls="menu"
@@ -187,8 +340,16 @@ exports[`DropDown.svelte > should open/close drop down on click and blur 1`] = `
        
        
       <icon
-        class="selector-opened"
-      />
+        aria-label="selector-opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
     </span>
     <iframe
       aria-hidden="true"
@@ -272,8 +433,16 @@ exports[`DropDown.svelte > should open/close drop down on click and blur 2`] = `
        
        
       <icon
-        class="selector-closed"
-      />
+        aria-label="selector-closed"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </icon>
     </span>
     <iframe
       aria-hidden="true"
@@ -359,8 +528,16 @@ exports[`DropDown.svelte > should render items using custom component 1`] = `
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -394,8 +571,16 @@ exports[`DropDown.svelte > should render items using custom component 2`] = `
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -429,8 +614,16 @@ exports[`DropDown.svelte > should render items using custom component 3`] = `
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -464,8 +657,16 @@ exports[`DropDown.svelte > should render items using custom mapping 1`] = `
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -499,8 +700,16 @@ exports[`DropDown.svelte > should render items using default component, when inv
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -534,8 +743,16 @@ exports[`DropDown.svelte > should render items using field mapping 1`] = `
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -569,8 +786,16 @@ exports[`DropDown.svelte > should render string array 1`] = `
            
            
           <icon
-            class="selector-opened"
-          />
+            aria-label="selector-opened"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-opened"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -655,8 +880,16 @@ exports[`DropDown.svelte > should render string array 2`] = `
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -752,8 +985,16 @@ exports[`DropDown.svelte > should render string array 3`] = `
            
            
           <icon
-            class="selector-opened"
-          />
+            aria-label="selector-opened"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-opened"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -846,8 +1087,16 @@ exports[`DropDown.svelte > should render title 1`] = `
     </p>
      
     <icon
-      class="selector-closed"
-    />
+      aria-label="selector-closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
   </span>
   <iframe
     aria-hidden="true"
@@ -885,8 +1134,16 @@ exports[`DropDown.svelte > should render title 2`] = `
     </p>
      
     <icon
-      class="selector-closed"
-    />
+      aria-label="selector-closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
   </span>
   <iframe
     aria-hidden="true"
@@ -919,8 +1176,16 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
      
      
     <icon
-      class="selector-closed"
-    />
+      aria-label="selector-closed"
+      class="flex flex-shrink-0 items-center justify-center "
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </icon>
   </span>
   <iframe
     aria-hidden="true"
@@ -961,8 +1226,16 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
            
            
           <icon
-            class="selector-opened"
-          />
+            aria-label="selector-opened"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-opened"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"
@@ -1047,8 +1320,16 @@ exports[`DropDown.svelte > should toggle open state when button is clicked 1`] =
            
            
           <icon
-            class="selector-closed"
-          />
+            aria-label="selector-closed"
+            class="flex flex-shrink-0 items-center justify-center "
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="selector-closed"
+            />
+          </icon>
         </span>
         <iframe
           aria-hidden="true"

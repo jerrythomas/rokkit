@@ -149,6 +149,65 @@ exports[`Switch.svelte > should render text array 1`] = `
 </body>
 `;
 
+exports[`Switch.svelte > should render text array 2`] = `
+<body>
+  <div>
+    <toggle-switch
+      class="flex items-center "
+      role="listbox"
+      tabindex="0"
+    >
+      <item
+        aria-selected="false"
+        class="relative"
+        data-path="0"
+        role="option"
+      >
+         
+         
+        <p>
+          a
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative"
+        data-path="1"
+        role="option"
+      >
+         
+         
+        <p>
+          b
+        </p>
+        
+        
+         
+      </item>
+      <item
+        aria-selected="false"
+        class="relative"
+        data-path="2"
+        role="option"
+      >
+         
+         
+        <p>
+          c
+        </p>
+        
+        
+         
+      </item>
+    </toggle-switch>
+    
+  </div>
+</body>
+`;
+
 exports[`Switch.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
