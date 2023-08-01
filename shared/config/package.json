@@ -1,6 +1,6 @@
 {
   "name": "shared-config",
-  "version": "1.0.0-next.42",
+  "version": "1.0.0-next.43",
   "main": "index.js",
   "type": "module",
   "license": "MIT",
