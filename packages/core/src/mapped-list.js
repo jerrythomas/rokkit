@@ -72,12 +72,12 @@ export function findItemByIndexArray(indices, items, fields) {
  * @returns
  */
 export function findNearestItemBefore(position, items, fields) {
-	if (position.length == 0) return null
-	if (items.length === 0) return null
+	if (position.length == 0 || items.length === 0) return null
 	if ((position ?? []).length === 0)
 		return { item: items[0], position: [0], fields }
 
 	let index = position[position.length - 1]
+	let result
 	if (index > 0) {
 		index -= 1
 		if (position.length == 1) {
@@ -89,10 +89,15 @@ export function findNearestItemBefore(position, items, fields) {
 			items,
 			fields
 		)
-		return findLastVisibleChild(sibling.item, sibling.position, sibling.fields)
+		result = findLastVisibleChild(
+			sibling.item,
+			sibling.position,
+			sibling.fields
+		)
 	} else {
-		return findItemByIndexArray(position.slice(0, -1), items, fields)
+		result = findItemByIndexArray(position.slice(0, -1), items, fields)
 	}
+	return result
 }
 
 /**
@@ -127,14 +132,15 @@ export function findNearestItemAfter(position, items, fields) {
 		return { item: items[0], position: [0], fields }
 
 	let current = findItemByIndexArray(position, items, fields)
-
+	let result
 	if (isExpanded(current.item, current.fields)) {
-		return getFirstChild(current, position)
+		result = getFirstChild(current, position)
 	} else if (position.length === 1) {
-		return getNextSiblingAtRoot(position, items, fields)
+		result = getNextSiblingAtRoot(position, items, fields)
 	} else {
-		return getNextSiblingOrAncestor(position, items, fields)
+		result = getNextSiblingOrAncestor(position, items, fields)
 	}
+	return result
 }
 
 /**
