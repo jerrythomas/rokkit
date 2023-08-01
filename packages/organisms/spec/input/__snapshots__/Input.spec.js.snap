@@ -131,7 +131,7 @@ exports[`Input.svelte > should render "enum" 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i
@@ -920,7 +920,7 @@ exports[`Input.svelte > should render "select" 1`] = `
         <icon
           aria-label="closed"
           class="flex flex-shrink-0 items-center justify-center "
-          role="button"
+          role="img"
           tabindex="-1"
         >
           <i

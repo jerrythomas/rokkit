@@ -56,7 +56,7 @@ describe('DropDown.svelte', () => {
 		)
 	})
 
-	it('should toggle open state when button is clicked', async () => {
+	it('should toggle open state on focus change', async () => {
 		const { container } = render(DropDown, {
 			props: { options: [], fields: {} }
 		})
@@ -64,20 +64,9 @@ describe('DropDown.svelte', () => {
 		expect(container).toMatchSnapshot()
 		const button = container.querySelector('drop-down > button')
 
-		await fireEvent.click(button)
+		await fireEvent.focus(button)
 		expect(button.parentNode.classList.contains('open')).toBe(true)
-		await fireEvent.click(button)
-		expect(button.parentNode.classList.contains('open')).toBe(false)
-	})
-
-	it('should close the dropdown when focus is lost', async () => {
-		const { container } = render(DropDown, {
-			props: { options: [], fields: {} }
-		})
-		const button = container.querySelector('drop-down > button')
-		await fireEvent.click(button)
-		expect(button.parentNode.classList.contains('open')).toBe(true)
-		await fireEvent.blur(button.parentNode)
+		await fireEvent.blur(button)
 		expect(button.parentNode.classList.contains('open')).toBe(false)
 	})
 
@@ -93,7 +82,7 @@ describe('DropDown.svelte', () => {
 
 		component.$on('change', handlers.change)
 		const button = container.querySelector('drop-down > button')
-		await fireEvent.click(button)
+		await fireEvent.focus(button)
 		expect(button.parentNode.classList.contains('open')).toBe(true)
 
 		container
@@ -112,17 +101,26 @@ describe('DropDown.svelte', () => {
 			options: ['a', 'b', 'c']
 		})
 		expect(container).toBeTruthy()
-		await fireEvent.focus(container.querySelector('drop-down'))
+		component.$on('change', handlers.change)
+		const wrapper = container.querySelector('drop-down')
+		const button = container.querySelector('drop-down > button')
+		await fireEvent.focus(button)
 		await tick()
+
 		expect(container).toMatchSnapshot()
 		let items = container.querySelectorAll('drop-down list item')
 		expect(items.length).toEqual(3)
 		await fireEvent.click(items[1])
 		await tick()
-		expect(container).toMatchSnapshot()
-		await fireEvent.blur(container.querySelector('drop-down'))
+
+		expect(handlers.change).toHaveBeenDispatchedWith({
+			item: 'b',
+			indices: [1]
+		})
+		expect(wrapper.classList.contains('open')).toBe(false)
+		await fireEvent.blur(button)
 		component.$set({ options: ['x', 'y', 'z'], icon: 'theme' })
-		await fireEvent.focus(container.querySelector('drop-down'))
+		await fireEvent.focus(button)
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -199,32 +197,6 @@ describe('DropDown.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should open/close drop down on click and blur', async () => {
-		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
-		const { container, component } = render(DropDown, {
-			options: options,
-			value: options[1]
-		})
-
-		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
-
-		const wrapper = container.querySelector('drop-down')
-		// ensure that the drop down is closed
-		await fireEvent.blur(wrapper)
-		await tick()
-		await fireEvent.click(wrapper.querySelector('button'))
-		await tick()
-		let classes = Array.from(wrapper.classList)
-		expect(classes).toContain('open')
-		expect(wrapper).toMatchSnapshot()
-
-		await fireEvent.blur(wrapper)
-		await tick()
-		classes = Array.from(wrapper.classList)
-		expect(classes).not.toContain('open')
-		expect(wrapper).toMatchSnapshot()
-	})
-
 	it('should close drop down on escape key', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(DropDown, {
@@ -235,7 +207,7 @@ describe('DropDown.svelte', () => {
 		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
 
 		const wrapper = container.querySelector('drop-down')
-		await fireEvent.click(wrapper.querySelector('button'))
+		await fireEvent.focus(wrapper.querySelector('button'))
 
 		await tick()
 		let classes = Array.from(wrapper.classList)
@@ -250,24 +222,6 @@ describe('DropDown.svelte', () => {
 		expect(classes).not.toContain('open')
 		expect(wrapper).toMatchSnapshot()
 	})
-
-	// it('should handle option changes', async () => {
-	// 	const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
-	// 	const { container, component } = render(DropDown, {
-	// 		options: options,
-	// 		value: options[1]
-	// 	})
-	//   const wrapper = container.querySelector('drop-down')
-	// 	expect(wrapper).toMatchSnapshot()
-
-	// 	await fireEvent.keyDown(wrapper, { key: 'ArrowDown' })
-	// 	await tick()
-	// 	expect(container.querySelector('scroll')).toMatchSnapshot()
-
-	// 	component.$set({ options: [{ text: 'a' }, { text: 'b' }] })
-	// 	await tick()
-	// 	expect(container.querySelector('scroll')).toMatchSnapshot()
-	// })
 
 	//todo: test arrow keys
 	// it('should handle arrow keys for navigation and select', async () => {

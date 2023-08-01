@@ -52,7 +52,6 @@
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
 	$: activeIndex = options.findIndex((item) => item === value)
-	$: console.log('open', open)
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
