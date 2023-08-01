@@ -70,7 +70,7 @@
   @apply rounded py-0 pr-2;
 }
 .rokkit drop-down > button > span > * {
-  @apply h-full items-center;
+  @apply h-full items-center pl-4 pr-2;
 }
 .rokkit drop-down > button > span > icon {
   @apply w-6 h-6;
@@ -78,11 +78,14 @@
 
 .rokkit input-select > selected-item,
 .rokkit drop-down > button > span {
-  @apply h-10 pl-4 pr-0 gap-4 items-center bg-skin-base normal-case outline-none;
+  @apply h-10 gap-4 items-center bg-skin-base normal-case outline-none;
   @apply rounded text-skin-800;
 }
-
+.rokkit input-select > selected-item {
+  @apply pl-4;
+}
 /* Focus styles */
+
 .rokkit input-select:focus-within,
 .rokkit drop-down:focus-within > button {
   @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50 border-none;
@@ -262,7 +265,7 @@
 }
 
 .rokkit toggle-switch item[aria-selected='true'] {
-  @apply bg-gradient-to-r from-skin-800 to-skin-800 text-skin-muted;
+  @apply bg-gradient-to-r from-skin-muted to-skin-muted;
 }
 
 .rokkit toggle-switch.compact > item {

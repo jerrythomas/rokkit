@@ -7,7 +7,7 @@
 .rokkit input-field select {
   @apply border-0 rounded-sm;
 }
-.rokkit input-field label {
+.rokkit input-field > label {
   @apply text-secondary-600;
 }
 .rokkit input-field field:focus-within {
@@ -143,4 +143,8 @@
 }
 .rokkit crumbs crumb.is-selected {
   @apply text-secondary;
+}
+
+.rokkit day-of-month[aria-selected='true'] {
+  @apply bg-gradient-to-r from-primary to-secondary;
 }

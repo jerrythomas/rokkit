@@ -1,4 +1,4 @@
-@import '../base/base.css';
+/* @import '../base.css'; */
 
 .minimal icon[role='button'] {
   @apply text-skin-muted focus:rounded hover:text-secondary-600 focus:outline-secondary-600 focus:m-1px;

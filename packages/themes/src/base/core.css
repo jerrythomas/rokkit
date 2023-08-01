@@ -1,0 +1,58 @@
+/* Global styles */
+*:focus {
+  @apply outline outline-2 outline-offset-2 outline-secondary;
+}
+*[tabindex='-1']:focus {
+  @apply outline-none;
+}
+
+/* Body styles */
+body {
+  @apply flex flex-col w-screen overflow-hidden;
+  height: var(--viewport-height, 100vh);
+}
+
+/* Link styles */
+a {
+  @apply text-primary hover:text-secondary visited:text-secondary-600;
+}
+
+/* Code styles */
+code, kbd, samp, pre {
+  @apply font-mono font-medium;
+}
+
+/* Disabled styles */
+.disabled {
+  @apply text-disabled;
+}
+.disabled input, .disabled textarea, .disabled select {
+  @apply outline-disabled;
+}
+.disabled {
+  @apply text-disabled;
+}
+.disabled input,
+.disabled textarea,
+.disabled select {
+  @apply outline-disabled;
+}
+
+input-field input,
+input-field toggle-switch,
+drop-down {
+  @apply focus:outline-none;
+}
+
+alert,
+error,
+info,
+warning,
+success {
+  @apply px-4 py-2 border rounded select-none cursor-pointer;
+}
+
+checkbox {
+  @apply gap-2;
+}
+

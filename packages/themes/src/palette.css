@@ -1,4 +1,16 @@
 @layer base {
+  :root {
+    --primary-hue: 25;
+    --primary-saturation: 95%;
+    --secondary-hue: 329;
+    --secondary-saturation: 80%;
+    --accent-hue: 329;
+    --accent-saturation: 80%;
+    --skin-hue: 223;
+    --skin-saturation: 11.5%;
+    --scroll-width: 0.5rem;
+  }
+  /* light theme colors */
   .light {
     --text-white: var(--skin-hue), var(--skin-saturation), 100%;
     --text-black: var(--skin-hue), var(--skin-saturation), 20%;
@@ -70,6 +82,7 @@
     --code-linenumbers: rgba(27, 31, 35, 0.3);
   }
 
+  /* dark theme colors */
   .dark {
     --text-white: var(--skin-hue), var(--skin-saturation), 20%;
     --text-black: var(--skin-hue), var(--skin-saturation), 100%;
@@ -119,7 +132,7 @@
     --skin-900: var(--skin-hue), var(--skin-saturation), 100%;
     --skin-zebra: var(--skin-hue), var(--skin-saturation), 22%;
 
-    /* one dark theme syntax colors */
+    /* dark theme syntax colors */
     --code-bg: #282c34;
     --code-fill: #282c34;
     --code-normal: #e06c75; /*#ABB2BF;*/
@@ -132,17 +145,6 @@
     --code-selector: #e06c75;
     --code-operator: #56b6c2;
     --code-function: #61afef;
-  }
-
-  :root {
-    --primary-hue: 25;
-    --primary-saturation: 95%;
-    --secondary-hue: 329;
-    --secondary-saturation: 80%;
-    --accent-hue: 329;
-    --accent-saturation: 80%;
-    --skin-hue: 223;
-    --skin-saturation: 11.5%;
   }
 
   @media (prefers-color-scheme: light) {

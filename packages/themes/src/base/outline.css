@@ -1,4 +1,0 @@
-accordion summary > a,
-list item > a {
-  @apply text-skin-800 visited:text-skin-800 underline-none focus:outline-none;
-}

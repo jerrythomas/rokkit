@@ -18,6 +18,9 @@ alert.success, success {
   @apply bg-pass text-pass border-pass;
 }
 
-accordion summary > a, list item > a {
-  @apply text-skin-800 visited:text-skin-800 underline-none focus:outline-none;
+input-select {
+  @apply overflow-y-auto overflow-x-hidden;
+}
+drop-down {
+  @apply overflow-y-auto overflow-x-visible;
 }

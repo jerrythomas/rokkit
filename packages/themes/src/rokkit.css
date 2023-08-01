@@ -1,14 +1,6 @@
-@import './rokkit/base.css';
+@import './base.css';
 
-@import './base/states.css';
-@import './base/calendar.css';
-@import './base/form.css';
-@import './base/layout.css';
-
-@import './rokkit/input.css';
-@import './rokkit/dropdown.css';
-@import './rokkit/list.css';
-@import './rokkit/tabs.css';
-@import './rokkit/form.css';
-
-@import './base/outline.css';
+@import './rokkit/atoms.css';
+@import './rokkit/molecules.css';
+@import './rokkit/organisms.css';
+@import './rokkit/layout.css';
