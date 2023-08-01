@@ -88,6 +88,7 @@ export function navigator(element, options) {
 	const handleKeyDown = (event) => handleAction(actions, event)
 
 	const handleClick = (event) => {
+		event.stopPropagation()
 		let target = findParentWithDataPath(event.target, element)
 		let indices = !target
 			? []
