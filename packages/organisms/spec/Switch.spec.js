@@ -25,9 +25,16 @@ describe('Switch.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render text array', () => {
-		const { container } = render(Switch, { value: null, options: ['a', 'b'] })
+	it('should render text array', async () => {
+		const { container, component } = render(Switch, {
+			value: null,
+			options: ['a', 'b']
+		})
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		component.$set({ options: ['a', 'b', 'c'] })
+		await tick()
 		expect(container).toMatchSnapshot()
 	})
 	it('should support editable attribute', () => {

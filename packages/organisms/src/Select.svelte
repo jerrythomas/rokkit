@@ -2,7 +2,7 @@
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 	import { Slider, Icon } from '@rokkit/atoms'
 	import { dismissable, navigable } from '@rokkit/actions'
-	import { createEventDispatcher } from 'svelte'
+	import { createEventDispatcher, tick } from 'svelte'
 	import List from './List.svelte'
 	import { Item } from '@rokkit/molecules'
 

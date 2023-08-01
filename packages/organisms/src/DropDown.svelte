@@ -60,9 +60,9 @@
 				<p class="w-full flex">{title}</p>
 			{/if}
 			{#if open}
-				<icon class={icons.opened} />
+				<Icon name={icons.opened} />
 			{:else}
-				<icon class={icons.closed} />
+				<Icon name={icons.closed} />
 			{/if}
 		</span>
 	</button>
