@@ -243,7 +243,7 @@ exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
           </day-of-month>
           <day-of-month
             aria-selected="true"
-            class="svelte-1lxgadd active"
+            class="svelte-1lxgadd"
             role="option"
             style="grid-column-start: auto;"
             tabindex="0"
@@ -581,7 +581,7 @@ exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
           </day-of-month>
           <day-of-month
             aria-selected="true"
-            class="svelte-1lxgadd active weekend"
+            class="svelte-1lxgadd weekend"
             role="option"
             style="grid-column-start: auto;"
             tabindex="0"
@@ -999,7 +999,7 @@ exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
           </day-of-month>
           <day-of-month
             aria-selected="true"
-            class="svelte-1lxgadd active weekend"
+            class="svelte-1lxgadd weekend"
             role="option"
             style="grid-column-start: auto;"
             tabindex="0"
@@ -1367,7 +1367,7 @@ exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
           </day-of-month>
           <day-of-month
             aria-selected="true"
-            class="svelte-1lxgadd active weekend"
+            class="svelte-1lxgadd weekend"
             role="option"
             style="grid-column-start: auto;"
             tabindex="0"
@@ -1765,7 +1765,7 @@ exports[`Calendar.svelte > should render a calendar with value changes 1`] = `
           </day-of-month>
           <day-of-month
             aria-selected="true"
-            class="svelte-1lxgadd weekend active"
+            class="svelte-1lxgadd weekend"
             role="option"
             style="grid-column-start: auto;"
             tabindex="0"
