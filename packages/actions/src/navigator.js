@@ -7,7 +7,7 @@ import {
 	indicesFromPath,
 	getCurrentNode
 } from './hierarchy'
-
+import { mapKeyboardEventsToActions } from './lib'
 /**
  * Keyboard navigation for Lists and NestedLists. The data is either nested or not and is not
  * expected to switch from nested to simple list or vice-versa.
@@ -83,7 +83,10 @@ export function navigator(element, options) {
 	update(options)
 
 	const nested = isNested(items, fields)
-	const actions = mapKeyboardEventsToActions(vertical, nested, handlers)
+	const actions = mapKeyboardEventsToActions(handlers, {
+		horizontal: !vertical,
+		nested
+	})
 
 	const handleKeyDown = (event) => handleAction(actions, event)
 
@@ -175,28 +178,4 @@ function emit(event, element, indices, node) {
 			}
 		})
 	)
-}
-
-function mapKeyboardEventsToActions(vertical, nested, handlers) {
-	let actions = { Enter: handlers.select }
-
-	if (vertical) {
-		actions = {
-			...actions,
-			...{ ArrowDown: handlers.next, ArrowUp: handlers.previous },
-			...(nested
-				? { ArrowRight: handlers.expand, ArrowLeft: handlers.collapse }
-				: {})
-		}
-	} else {
-		actions = {
-			...actions,
-			...{ ArrowRight: handlers.next, ArrowLeft: handlers.previous },
-			...(nested
-				? { ArrowDown: handlers.expand, ArrowUp: handlers.collapse }
-				: {})
-		}
-	}
-
-	return actions
 }
