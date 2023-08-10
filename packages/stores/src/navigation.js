@@ -1,12 +1,15 @@
 import { writable } from 'svelte/store'
 
-export function createNavigator(items) {
-	let value = null
+export function createNavigator(items, count = null) {
 	let index = -1
+	let start = 0
+	let end = (count || items.length) - 1
 
 	const cursor = writable({
-		value,
-		index
+		value: null,
+		index,
+		start,
+		end
 	})
 
 	const moveByOffset = (offset) => {
@@ -14,15 +17,40 @@ export function createNavigator(items) {
 		selectByIndex(position)
 	}
 
-	const select = (item) => {
-		selectByIndex(items.indexOf(item))
+	const adjustSubset = (position) => {
+		if (count === null) return
+
+		if (position < start) {
+			start = position
+			end = position + count - 1
+		} else if (position > end) {
+			end = Math.min(position, items.length - 1)
+			start = end - count + 1
+		}
 	}
+
+	const setStart = (position) => {
+		start = position
+		end = Math.min(start + count - 1, items.length - 1)
+		if (start + count > end) start = end - count + 1
+		cursor.update((state) => ({ ...state, start, end }))
+	}
+
+	const setSubset = (value) => {
+		if (value <= items.length) {
+			count = value
+			end = Math.min(start + count - 1, items.length - 1)
+			start = end - count + 1
+			cursor.update((state) => ({ ...state, start, end }))
+		}
+	}
+	const select = (item) => selectByIndex(items.indexOf(item))
 
 	const selectByIndex = (position) => {
 		if (position >= 0 && position !== index && position < items.length) {
 			index = position
-			value = items[index]
-			cursor.set({ value, index })
+			adjustSubset(position)
+			cursor.set({ value: items[index], index, start, end })
 		}
 	}
 
@@ -34,6 +62,8 @@ export function createNavigator(items) {
 		last: () => moveByOffset(items.length),
 		first: () => moveByOffset(-items.length),
 		select,
-		selectByIndex
+		selectByIndex,
+		setStart,
+		setSubset
 	}
 }
