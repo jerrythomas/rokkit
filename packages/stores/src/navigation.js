@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store'
 
-export function createNavigator(items, count = null) {
+export function createNavigator(items, visibleCount = null) {
 	let index = -1
 	let start = 0
-	let end = (count || items.length) - 1
+	let end = (visibleCount || items.length) - 1
 
 	const cursor = writable({
 		value: null,
@@ -17,31 +17,43 @@ export function createNavigator(items, count = null) {
 		selectByIndex(position)
 	}
 
-	const adjustSubset = (position) => {
-		if (count === null) return
+	const keepSelectedItemVisible = (position) => {
+		if (visibleCount === null) return
 
 		if (position < start) {
 			start = position
-			end = position + count - 1
+			end = position + visibleCount - 1
 		} else if (position > end) {
 			end = Math.min(position, items.length - 1)
-			start = end - count + 1
+			start = end - visibleCount + 1
 		}
 	}
 
-	const setStart = (position) => {
-		start = position
-		end = Math.min(start + count - 1, items.length - 1)
-		if (start + count > end) start = end - count + 1
-		cursor.update((state) => ({ ...state, start, end }))
+	const updateRange = (lower, upper) => {
+		if (lower !== start || upper !== end) {
+			start = lower
+			end = upper
+			cursor.update((state) => ({
+				...state,
+				start: start,
+				end: end
+			}))
+		}
 	}
 
-	const setSubset = (value) => {
+	const changeStart = (position) => {
+		let lower = position
+		let upper = Math.min(position + visibleCount - 1, items.length - 1)
+		if (lower + visibleCount > upper) lower = upper - visibleCount + 1
+		updateRange(lower, upper)
+	}
+
+	const changeVisibleCount = (value) => {
 		if (value <= items.length) {
-			count = value
-			end = Math.min(start + count - 1, items.length - 1)
-			start = end - count + 1
-			cursor.update((state) => ({ ...state, start, end }))
+			visibleCount = value
+			let max = Math.min(start + visibleCount - 1, items.length - 1)
+			let min = max - visibleCount + 1
+			updateRange(min, max)
 		}
 	}
 	const select = (item) => selectByIndex(items.indexOf(item))
@@ -49,8 +61,13 @@ export function createNavigator(items, count = null) {
 	const selectByIndex = (position) => {
 		if (position >= 0 && position !== index && position < items.length) {
 			index = position
-			adjustSubset(position)
-			cursor.set({ value: items[index], index, start, end })
+			keepSelectedItemVisible(position)
+			cursor.set({
+				value: items[index],
+				index,
+				start,
+				end
+			})
 		}
 	}
 
@@ -63,7 +80,7 @@ export function createNavigator(items, count = null) {
 		first: () => moveByOffset(-items.length),
 		select,
 		selectByIndex,
-		setStart,
-		setSubset
+		changeStart,
+		changeVisibleCount
 	}
 }

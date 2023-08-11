@@ -115,13 +115,13 @@ describe('list-navigation', () => {
 		expect(get(store)).toEqual({ index: 1, value: 2, start: 1, end: 5 })
 	})
 
-	it('should adjust subset range when start is changed', () => {
+	it('should adjust subset range', () => {
 		const store = createNavigator(items, 5)
 		expect(get(store)).toEqual({ index: -1, value: null, start: 0, end: 4 })
 		store.next()
-		store.setStart(1)
+		store.changeStart(1)
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 1, end: 5 })
-		store.setStart(8)
+		store.changeStart(8)
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 5, end: 9 })
 	})
 
@@ -129,11 +129,11 @@ describe('list-navigation', () => {
 		const store = createNavigator(items, 5)
 		expect(get(store)).toEqual({ index: -1, value: null, start: 0, end: 4 })
 		store.next()
-		store.setSubset(3)
+		store.changeVisibleCount(3)
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 0, end: 2 })
-		store.setSubset(10)
+		store.changeVisibleCount(10)
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 0, end: 9 })
-		store.setSubset(12)
+		store.changeVisibleCount(12)
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 0, end: 9 })
 	})
 })
