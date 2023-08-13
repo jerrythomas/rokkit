@@ -7,11 +7,11 @@ describe('EventManager', () => {
 	let manager
 
 	afterEach(() => {
-		if (manager) manager.destroy()
+		if (manager) manager.reset()
 		vi.resetAllMocks()
 	})
 
-	it('should call activate and destroy', () => {
+	it('should call activate and reset', () => {
 		manager = EventManager(element, handlers)
 		manager.activate()
 		expect(element.addEventListener).toHaveBeenCalledWith(
@@ -19,7 +19,7 @@ describe('EventManager', () => {
 			handlers.click
 		)
 
-		manager.destroy()
+		manager.reset()
 		expect(element.removeEventListener).toHaveBeenCalledWith(
 			'click',
 			handlers.click
@@ -30,12 +30,12 @@ describe('EventManager', () => {
 
 	it('should remove and add event handlers on update', () => {
 		manager = EventManager(element, handlers)
-		manager.update(true)
+		manager.update()
 		expect(element.addEventListener).toHaveBeenCalledWith(
 			'click',
 			handlers.click
 		)
-		manager.destroy()
+		manager.reset()
 		expect(element.removeEventListener).toHaveBeenCalledWith(
 			'click',
 			handlers.click
@@ -48,13 +48,14 @@ describe('EventManager', () => {
 		const handlers1 = { click: vi.fn() }
 		const handlers2 = { click: vi.fn() }
 		manager = EventManager(element, handlers1)
-
-		manager.update(true)
+		manager.update(handlers1, false)
+		expect(element.addEventListener).not.toHaveBeenCalled()
+		manager.update()
 		expect(element.addEventListener).toHaveBeenCalledWith(
 			'click',
 			handlers1.click
 		)
-		manager.update(true, handlers2)
+		manager.update(handlers2)
 		expect(element.removeEventListener).toHaveBeenCalledWith(
 			'click',
 			handlers1.click
@@ -72,9 +73,9 @@ describe('EventManager', () => {
 
 		manager.activate()
 		manager.activate()
-		manager.update(true)
-		manager.destroy()
-		manager.destroy()
+		manager.update()
+		manager.reset()
+		manager.reset()
 
 		expect(element.addEventListener).toHaveBeenCalledTimes(1)
 		expect(element.removeEventListener).toHaveBeenCalledTimes(1)

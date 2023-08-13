@@ -12,7 +12,7 @@ export function EventManager(element, handlers = {}) {
 			listening = true
 		}
 	}
-	function destroy() {
+	function reset() {
 		if (listening) {
 			Object.entries(handlers).forEach(([event, handler]) =>
 				element.removeEventListener(event, handler)
@@ -20,13 +20,14 @@ export function EventManager(element, handlers = {}) {
 			listening = false
 		}
 	}
-	function update(enabled, newHandlers = handlers) {
+	function update(newHandlers = handlers, enabled = true) {
 		if (listening !== enabled || handlers !== newHandlers) {
-			destroy()
+			reset()
 			handlers = newHandlers
+			// console.log(listening, enabled, handlers)
 			if (enabled) activate()
 		}
 	}
 
-	return { activate, destroy, update }
+	return { activate, reset, update }
 }
