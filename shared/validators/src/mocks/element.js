@@ -9,6 +9,14 @@ export function getMockNode(events) {
 	let listeners = events.reduce((acc, event) => ({ ...acc, [event]: 0 }), {})
 
 	const node = {
+		dispatchEvent: vi.fn(),
+		scrollTo: vi.fn(),
+		querySelectorAll: vi.fn().mockImplementation((selector) => {
+			return [document.createElement(selector)]
+		}),
+		querySelector: vi.fn().mockImplementation((selector) => {
+			return document.createElement(selector)
+		}),
 		addEventListener: vi.fn().mockImplementation((name) => ++listeners[name]),
 		removeEventListener: vi.fn().mockImplementation((name) => --listeners[name])
 	}

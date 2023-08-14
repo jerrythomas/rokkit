@@ -7,11 +7,21 @@ describe('element', () => {
 			const node = getMockNode(['click'])
 			expect(node).toEqual({
 				node: {
+					scrollTo: expect.any(Function),
+					querySelector: expect.any(Function),
+					querySelectorAll: expect.any(Function),
+					dispatchEvent: expect.any(Function),
 					addEventListener: expect.any(Function),
 					removeEventListener: expect.any(Function)
 				},
 				listeners: { click: 0 }
 			})
+		})
+		it('should get a mock node for querySelector', () => {
+			const { node } = getMockNode(['click'])
+
+			expect(typeof node.querySelector('div')).toEqual('object')
+			expect(Array.isArray(node.querySelectorAll('div'))).toBeTruthy()
 		})
 	})
 
