@@ -1,3 +1,48 @@
+/* List styles */
+.rokkit virtual-list-contents {
+  @apply flex flex-col;
+  @apply gap-1px bg-skin-inset;
+}
+
+.rokkit list {
+  @apply gap-1px bg-skin-subtle;
+}
+
+.rokkit list > item,
+.rokkit virtual-list-contents > virtual-list-item,
+.rokkit accordion div summary {
+  @apply leading-10 px-4 bg-skin-base text-skin-800 min-h-10;
+}
+.rokkit accordion > div > summary {
+  @apply rounded pr-2 bg-gradient from-skin-subtle to-skin-muted;
+}
+
+/* Remove default details marker from summary */
+.rokkit accordion > div > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Nested List and Tree styles */
+.rokkit :not(accordion > div) > list {
+  @apply rounded shadow border border-skin-400 overflow-y-scroll;
+}
+.rokkit :not(accordion > div) > list item {
+  @apply last:rounded-b first:rounded-t;
+}
+
+.rokkit accordion list item {
+  @apply last:rounded-b gap-2;
+}
+.rokkit accordion list item > a {
+  @apply gap-2;
+}
+.rokkit accordion list {
+  @apply rounded-b;
+}
+
+.rokkit accordion .is-expanded list {
+  @apply -mt-10 pt-10 rounded-t;
+}
 /* Styles for 'tabs' class */
 .rokkit tabs {
   @apply border-b-2 border-skin-muted px-1 gap-1;
@@ -80,7 +125,7 @@
 }
 .rokkit input-select:focus-within > selected-item,
 .rokkit drop-down:focus-within > button > span {
-  @apply bg-skin-muted;
+  @apply bg-skin-muted outline-none;
 }
 
 /* Hover and Icon styles */
@@ -90,8 +135,9 @@
 }
 
 /* Scroll styles */
-.rokkit input-select scroll {
-  @apply mt-1 shadow-lg;
+.rokkit input-select scroll,
+.rokkit input-select virtual-list {
+  @apply my-1 shadow-lg rounded;
 }
 
 .rokkit input-select > selected-item > items {
@@ -106,45 +152,7 @@
   @apply rounded shadow relative;
 }
 
-/* List styles */
-.rokkit list {
-  @apply gap-1px bg-skin-subtle;
-}
 
-.rokkit list > item,
-.rokkit accordion div summary {
-  @apply leading-10 px-4 bg-skin-base text-skin-800 min-h-10;
-}
-.rokkit accordion > div > summary {
-  @apply rounded pr-2 bg-gradient from-skin-subtle to-skin-muted;
-}
-
-/* Remove default details marker from summary */
-.rokkit accordion > div > summary::-webkit-details-marker {
-  display: none;
-}
-
-/* Nested List and Tree styles */
-.rokkit :not(accordion > div) > list {
-  @apply rounded shadow border border-skin-400 overflow-y-scroll;
-}
-.rokkit :not(accordion > div) > list item {
-  @apply last:rounded-b first:rounded-t;
-}
-
-.rokkit accordion list item {
-  @apply last:rounded-b gap-2;
-}
-.rokkit accordion list item > a {
-  @apply gap-2;
-}
-.rokkit accordion list {
-  @apply rounded-b;
-}
-
-.rokkit accordion .is-expanded list {
-  @apply -mt-10 pt-10 rounded-t;
-}
 
 /* Nested List and Node styles */
 .rokkit nested-list {
@@ -167,34 +175,40 @@
 }
 
 .rokkit accordion,
-.rokkit list {
+.rokkit list,
+.rokkit virtual-list-viewport {
   @apply rounded;
 }
 
 /* Remove outline from focused elements */
 .rokkit accordion:focus-within list,
 .rokkit drop-down:focus-within list,
-.rokkit input-select:focus-within list {
+.rokkit input-select:focus-within list,
+.rokkit input-select:focus-within virtual-list-viewport {
   @apply outline-none focus:outline-none;
 }
 
 /* Focus and Hover styles for List and Node */
-.rokkit list:focus {
+.rokkit list:focus,
+.rokkit virtual-list-viewport:focus {
   @apply outline outline-secondary;
 }
-.rokkit list item.is-hovering,
+/* .rokkit list item.is-hovering, */
+/* .rokkit virtual-list item.is-hovering, */
 .rokkit list item:hover,
+.rokkit virtual-list-contents virtual-list-item:hover,
 .rokkit node:hover {
   @apply bg-skin-inset;
 }
 
 /* Selected and Hover styles for List and Node */
-.rokkit list item.is-selected > a {
+.rokkit list item[aria-selected='true'] > a {
   @apply text-skin-50;
 }
 
-.rokkit list item.is-selected,
-.rokkit node.is-selected {
+.rokkit list item[aria-selected='true'],
+.rokkit virtual-list-contents virtual-list-item[aria-selected='true'],
+.rokkit node[aria-selected='true'] {
   @apply bg-gradient-to-r from-skin-subtle to-skin-subtle text-skin-800;
 }
 
@@ -203,10 +217,10 @@
   @apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
 }
 
-.rokkit accordion .is-selected summary {
+.rokkit accordion [aria-selected='true'] summary {
   @apply bg-skin-subtle;
 }
-.rokkit accordion:focus-within .is-selected summary {
+.rokkit accordion:focus-within [aria-selected='true'] summary {
   @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
 }
 
@@ -263,8 +277,10 @@
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit list:focus-within item.is-selected,
+.rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
 .rokkit tree:focus-within node[aria-selected='true'],
 .rokkit nested-list:focus-within node[aria-selected='true'] {
   @apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
   @apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
 }
+
