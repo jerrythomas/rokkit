@@ -1,3 +1,4 @@
+import { defaultFields } from './constants'
 import { isExpanded, hasChildren, getAttribute } from './mapping'
 import { equals } from 'ramda'
 /**
@@ -11,7 +12,7 @@ import { equals } from 'ramda'
 export function findItemByValue(
 	value,
 	items,
-	fields,
+	fields = defaultFields,
 	attr = null,
 	position = []
 ) {
