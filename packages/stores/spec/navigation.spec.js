@@ -123,6 +123,8 @@ describe('list-navigation', () => {
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 1, end: 5 })
 		store.changeStart(8)
 		expect(get(store)).toEqual({ index: 0, value: 1, start: 5, end: 9 })
+		store.changeStartByOffset(-1)
+		expect(get(store)).toEqual({ index: 0, value: 1, start: 4, end: 8 })
 	})
 
 	it('should adjust subset range when count is changed', () => {
