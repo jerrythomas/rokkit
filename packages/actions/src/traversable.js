@@ -74,7 +74,7 @@ export function traversable(element, options) {
 		options.nested = isNested(options.items, options.fields)
 		content.update(options.items, options.fields)
 		handlers = mapKeyboardEventsToActions(actions, options)
-		manager.update(options.enabled, listeners)
+		manager.update(listeners, options.enabled)
 		// current = handleValueChange(element, data, content, current)
 	}
 
@@ -82,7 +82,7 @@ export function traversable(element, options) {
 
 	return {
 		update,
-		destroy: () => manager.destroy()
+		destroy: () => manager.reset()
 	}
 }
 
