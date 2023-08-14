@@ -1,31 +1,4 @@
-const dimensionAttributes = {
-	vertical: {
-		scroll: 'scrollTop',
-		offset: 'offsetHeight',
-		paddingStart: 'paddingTop',
-		paddingEnd: 'paddingBottom'
-	},
-	horizontal: {
-		scroll: 'scrollLeft',
-		offset: 'offsetWidth',
-		paddingStart: 'paddingLeft',
-		paddingEnd: 'paddingRight'
-	}
-}
-
-const defaultOptions = {
-	itemSelector: 'virtual-list-item',
-	contentSelector: 'virtual-list-content'
-}
-
-const defaultResizerOptions = {
-	horizontal: false,
-	minimumSize: 40,
-	minimumVisible: 1,
-	maximumVisible: null,
-	availableSize: 200,
-	start: 0
-}
+import { dimensionAttributes, defaultResizerOptions } from './constants'
 
 export function virtualListResizer(options) {
 	options = { ...defaultResizerOptions, ...options }

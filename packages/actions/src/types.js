@@ -116,3 +116,9 @@
  * @property {number} startY - The start Y position of the touch.
  * @property {number} startTime - The start time of the touch.
  */
+
+/**
+ * @typedef {Object} PushDownOptions
+ * @property {string} selector - The CSS selector for the child element to which keyboard events will be forwarded.
+ * @property {Array<string>} [events=['keydown', 'keyup', 'keypress']] - The keyboard events to forward.
+ */

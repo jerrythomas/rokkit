@@ -10,7 +10,9 @@ describe('actions', () => {
 			'navigator',
 			'dismissable',
 			'themable',
-			'swipeable'
+			'swipeable',
+			'delegateKeyboardEvents',
+			'scrollable'
 		])
 	})
 })
