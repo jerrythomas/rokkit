@@ -48,6 +48,10 @@ export function createNavigator(items, visibleCount = null) {
 		updateRange(lower, upper)
 	}
 
+	const changeStartByOffset = (offset) => {
+		changeStart(start + offset)
+	}
+
 	const changeVisibleCount = (value) => {
 		if (value <= items.length) {
 			visibleCount = value
@@ -81,6 +85,7 @@ export function createNavigator(items, visibleCount = null) {
 		select,
 		selectByIndex,
 		changeStart,
+		changeStartByOffset,
 		changeVisibleCount
 	}
 }
