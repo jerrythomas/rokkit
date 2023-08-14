@@ -16,7 +16,9 @@ describe('components', () => {
 			'Tabs',
 			'Tree',
 			'InputField',
-			'ListEditor'
+			'ListEditor',
+			'VirtualSelect',
+			'VirtualList'
 		])
 	})
 })
