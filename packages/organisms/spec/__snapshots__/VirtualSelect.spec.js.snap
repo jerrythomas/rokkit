@@ -1,0 +1,173 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Select.svelte > should render string array 1`] = `
+<body>
+  <div>
+    <input-select>
+      <selected-item
+        aria-selected="false"
+        class="flex items-center"
+        role="option"
+        tabindex="0"
+      >
+        <p
+          class="placeholder"
+        >
+          Select
+        </p>
+        
+         
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </selected-item>
+       
+      <virtual-list-viewport
+        class="relative block overflow-y-auto svelte-1nt637a"
+        style="height: 100%;"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 0px;"
+        >
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="0"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="1"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="2"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="3"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="4"
+          >
+            Missing template
+             
+          </virtual-list-row>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </input-select>
+  </div>
+</body>
+`;
+
+exports[`Select.svelte > should render string array 2`] = `
+<body>
+  <div>
+    <input-select>
+      <selected-item
+        aria-selected="false"
+        class="flex items-center"
+        role="option"
+        tabindex="0"
+      >
+        <p
+          class="placeholder"
+        >
+          Select
+        </p>
+        
+         
+        <icon
+          aria-label="opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </selected-item>
+       
+      <virtual-list-viewport
+        class="relative block overflow-y-auto svelte-1nt637a"
+        style="height: 100%;"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 0px;"
+        >
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="0"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="1"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="2"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="3"
+          >
+            Missing template
+             
+          </virtual-list-row>
+          <virtual-list-row
+            class="block overflow-hidden"
+            data-index="4"
+          >
+            Missing template
+             
+          </virtual-list-row>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </input-select>
+  </div>
+</body>
+`;

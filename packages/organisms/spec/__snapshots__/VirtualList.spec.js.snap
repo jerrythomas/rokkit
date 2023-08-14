@@ -1,0 +1,137 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`VirtualList.svelte > render > should render 1`] = `
+<virtual-list-viewport
+  class="relative block svelte-1nt637a overflow-y-auto"
+  style="height: 100%;"
+  tabindex="0"
+>
+  <virtual-list-contents
+    class="block"
+  >
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="0"
+    >
+       
+      <p>
+        Item 1
+      </p>
+      
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="1"
+    >
+       
+      <p>
+        Item 2
+      </p>
+      
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="2"
+    >
+       
+      <p>
+        Item 3
+      </p>
+      
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="3"
+    >
+       
+      <p>
+        Item 4
+      </p>
+      
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="4"
+    >
+       
+      <p>
+        Item 5
+      </p>
+      
+       
+    </virtual-list-item>
+  </virtual-list-contents>
+</virtual-list-viewport>
+`;
+
+exports[`VirtualList.svelte > render > should render using slot 1`] = `
+<virtual-list-viewport
+  class="relative block svelte-1nt637a overflow-y-auto"
+  style="height: 100%;"
+  tabindex="0"
+>
+  <virtual-list-contents
+    class="block"
+  >
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="0"
+    >
+      <div>
+        Item 1
+      </div>
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="1"
+    >
+      <div>
+        Item 2
+      </div>
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="2"
+    >
+      <div>
+        Item 3
+      </div>
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="3"
+    >
+      <div>
+        Item 4
+      </div>
+       
+    </virtual-list-item>
+    <virtual-list-item
+      aria-current="false"
+      aria-selected="false"
+      data-index="4"
+    >
+      <div>
+        Item 5
+      </div>
+       
+    </virtual-list-item>
+  </virtual-list-contents>
+</virtual-list-viewport>
+`;
