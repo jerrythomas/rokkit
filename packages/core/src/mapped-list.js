@@ -74,8 +74,6 @@ export function findItemByIndexArray(indices, items, fields) {
  */
 export function findNearestItemBefore(position, items, fields) {
 	if (position.length == 0 || items.length === 0) return null
-	if ((position ?? []).length === 0)
-		return { item: items[0], position: [0], fields }
 
 	let index = position[position.length - 1]
 	let result
@@ -128,9 +126,7 @@ export function findLastVisibleChild(parent, position, fields) {
  * @returns {Object|null} The next item or null if there is none.
  */
 export function findNearestItemAfter(position, items, fields) {
-	if (items.length === 0) return null
-	if ((position ?? []).length === 0)
-		return { item: items[0], position: [0], fields }
+	if (items.length === 0 || position.length === 0) return null
 
 	let current = findItemByIndexArray(position, items, fields)
 	let result
