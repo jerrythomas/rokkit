@@ -1,11 +1,11 @@
 import { vi } from 'vitest'
 
-const globalConfig = {
-	viewport: {
-		offsetHeight: 500,
-		offsetWidth: 500
-	}
-}
+// const globalConfig = {
+// 	viewport: {
+// 		offsetHeight: 500,
+// 		offsetWidth: 500
+// 	}
+// }
 
 const defaultConfig = {
 	numberOfItems: 5,
@@ -15,6 +15,20 @@ const defaultConfig = {
 	itemTag: 'virtual-list-item'
 }
 
+const properties = {
+	paddingTop: '0px',
+	paddingBottom: '0px',
+	paddingLeft: '0px',
+	paddingRight: '0px',
+	height: '500px',
+	width: '500px'
+}
+
+const propertySpy = (name) => ({
+	set: vi.fn().mockImplementation((v) => (properties[name] = v)),
+	get: () => properties[name]
+})
+
 export function mockVirtualList(config) {
 	const { numberOfItems, start, viewportTag, contentsTag, itemTag } = {
 		...defaultConfig,
@@ -22,31 +36,39 @@ export function mockVirtualList(config) {
 	}
 	const viewport = document.createElement(viewportTag)
 	const contents = document.createElement(contentsTag)
-	contents.scrollTo = vi.fn().mockImplementation((x, y) => {
-		contents.scrollTop = x + y
+	viewport.scrollTo = vi.fn().mockImplementation((x, y) => {
+		viewport.scrollTop = x + y
 	})
 	viewport.appendChild(contents)
 
-	let paddingSpy = { set: vi.fn(), get: () => '10px' }
-	let heightSpy = { set: vi.fn(), get: () => '100px' }
-	let widthSpy = { set: vi.fn(), get: () => '100px' }
-
 	// Spy on padding setters for contents
-	Object.defineProperty(contents.style, 'paddingTop', paddingSpy)
-	Object.defineProperty(contents.style, 'paddingBottom', paddingSpy)
-	Object.defineProperty(contents.style, 'paddingLeft', paddingSpy)
-	Object.defineProperty(contents.style, 'paddingRight', paddingSpy)
+	Object.defineProperty(contents.style, 'paddingTop', propertySpy('paddingTop'))
+	Object.defineProperty(
+		contents.style,
+		'paddingBottom',
+		propertySpy('paddingBottom')
+	)
+	Object.defineProperty(
+		contents.style,
+		'paddingLeft',
+		propertySpy('paddingLeft')
+	)
+	Object.defineProperty(
+		contents.style,
+		'paddingRight',
+		propertySpy('paddingright')
+	)
 
 	// Spy on height and width setters for viewport
-	Object.defineProperty(viewport.style, 'height', heightSpy)
-	Object.defineProperty(viewport.style, 'width', widthSpy)
+	Object.defineProperty(viewport.style, 'height', propertySpy('height'))
+	Object.defineProperty(viewport.style, 'width', propertySpy('width'))
 
 	// Mock getters for offsetHeight and offsetWidth on viewport
 	Object.defineProperty(viewport, 'offsetHeight', {
-		get: () => globalConfig.viewport.offsetHeight
+		get: () => Number(properties.height.replace('px', ''))
 	})
 	Object.defineProperty(viewport, 'offsetWidth', {
-		get: () => globalConfig.viewport.offsetWidth
+		get: () => Number(properties.width.replace('px', ''))
 	})
 
 	for (let i = 0; i < numberOfItems; i++) {
@@ -64,9 +86,7 @@ export function mockVirtualList(config) {
 
 	return {
 		viewport,
-		paddingSpy,
-		heightSpy,
-		widthSpy,
-		config: globalConfig
+		contents,
+		properties
 	}
 }
