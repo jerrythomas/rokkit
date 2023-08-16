@@ -1,28 +1,27 @@
 import { dimensionAttributes, defaultResizerOptions } from './constants'
 
-export function virtualListResizer(options) {
+export function virtualListManager(options) {
 	options = { ...defaultResizerOptions, ...options }
 	const props =
 		dimensionAttributes[options.horizontal ? 'horizontal' : 'vertical']
 	let sizes = Array.from({ length: options.count }, () => null)
 	let averageSize = options.minimumSize
-	let visibleCount = options.maximumVisible
-		? options.maximumVisible
-		: options.minimumVisible
+	let visibleCount = options.maxVisible
+		? options.maxVisible
+		: options.minVisible
+	let index = -1
+	let delta = 0
 
 	let { start } = options
 	let end = start + visibleCount
 	let visible, before, after, total
 
 	const calculateSum = (start, end) =>
-		sizes
-			.slice(start, end)
-			.map((size) => size ?? averageSize)
-			.reduce((sum, size) => (sum += size), 0)
+		calculateSumOfSizes(sizes, start, end, averageSize)
 
 	const calculate = () => {
-		if (options.maximumVisible) {
-			visibleCount = options.maximumVisible
+		if (options.maxVisible) {
+			visibleCount = options.maxVisible
 		} else {
 			visibleCount = Math.min(
 				Math.ceil(options.availableSize / averageSize),
@@ -33,7 +32,7 @@ export function virtualListResizer(options) {
 				end = start + visibleCount
 			}
 
-			visible = calculateSum(start, end)
+			visible = calculateSumOfSizes(sizes, start, end, averageSize)
 
 			while (visible < options.availableSize && end < sizes.length) {
 				end += 1
@@ -41,10 +40,10 @@ export function virtualListResizer(options) {
 				visible += sizes[end] ?? averageSize
 			}
 		}
-		let stop = start + visibleCount
-		visible = calculateSum(start, stop)
+
+		visible = calculateSum(start, end)
 		before = calculateSum(0, start)
-		after = calculateSum(stop, sizes.length)
+		after = calculateSum(end, sizes.length)
 		total = visible + before + after
 		averageSize = total / sizes.length
 	}
@@ -70,6 +69,20 @@ export function virtualListResizer(options) {
 		calculate()
 	}
 
+	const moveByOffset = (offset) => {
+		let position = Math.max(0, Math.min(index + offset, options.count - 1))
+		delta = position - index
+		index = position
+		if (index > end - 1) {
+			end = Math.min(end + delta, options.count)
+			start = end - visibleCount
+		} else if (index < start) {
+			start = Math.max(0, start + delta)
+			end = start + visibleCount
+		}
+		calculate()
+	}
+
 	update(options)
 
 	return {
@@ -79,18 +92,44 @@ export function virtualListResizer(options) {
 		get visibleCount() {
 			return visibleCount
 		},
-		get visible() {
+		get visibleSize() {
 			return visible
 		},
-		get before() {
+		get spaceBefore() {
 			return before
 		},
-		get after() {
+		get spaceAfter() {
 			return after
 		},
-		get total() {
+		get totalSize() {
 			return total
 		},
+		get start() {
+			return start
+		},
+		get end() {
+			return end
+		},
+		get index() {
+			return index
+		},
+		get delta() {
+			return delta
+		},
+		moveByOffset,
+		next: () => moveByOffset(1),
+		previous: () => moveByOffset(-1),
+		nextPage: () => moveByOffset(visibleCount),
+		previousPage: () => moveByOffset(-visibleCount),
+		last: () => moveByOffset(options.count),
+		first: () => moveByOffset(-options.count),
 		update
 	}
+}
+
+function calculateSumOfSizes(sizes, start, end, averageSize) {
+	return sizes
+		.slice(start, end)
+		.map((size) => size ?? averageSize)
+		.reduce((sum, size) => (sum += size), 0)
 }

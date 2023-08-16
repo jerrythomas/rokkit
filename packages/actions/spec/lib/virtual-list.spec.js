@@ -1,39 +1,146 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
-import { virtualListResizer } from '../../src/lib/virtual-list'
+import { virtualListManager } from '../../src/lib/virtual-list'
 
-describe('virtualListResizer', () => {
-	it('should provide a resize manager', () => {
-		const resizer = virtualListResizer()
-		expect(resizer).toBeDefined()
-		expect(resizer.update).toBeDefined()
-		expect(resizer.total).toBeDefined()
-		expect(resizer.before).toBeDefined()
-		expect(resizer.after).toBeDefined()
-		expect(resizer.averageSize).toBeDefined()
-		expect(resizer.visibleCount).toBeDefined()
-		expect(resizer.visible).toBeDefined()
+describe('virtualListManager', () => {
+	describe('cache size', () => {
+		it('should provide a resize manager', () => {
+			const vlm = virtualListManager()
+			expect(vlm).toBeDefined()
+			expect(vlm.update).toBeDefined()
+			expect(vlm.totalSize).toBeDefined()
+			expect(vlm.spaceBefore).toBeDefined()
+			expect(vlm.spaceAfter).toBeDefined()
+			expect(vlm.averageSize).toBeDefined()
+			expect(vlm.visibleCount).toBeDefined()
+			expect(vlm.visibleSize).toBeDefined()
+		})
+
+		it('should increase cache when count increases', () => {
+			const vlm = virtualListManager({ count: 5, availableSize: 800 })
+			expect(vlm.visibleCount).toBe(5)
+			expect(vlm.visibleSize).toBe(200)
+			expect(vlm.totalSize).toBe(200)
+			vlm.update({ count: 10 })
+			expect(vlm.visibleCount).toBe(10)
+			expect(vlm.visibleSize).toBe(400)
+			expect(vlm.totalSize).toBe(400)
+		})
+
+		it('should decrease cache when count decreases', () => {
+			const vlm = virtualListManager({ count: 10, availableSize: 800 })
+
+			expect(vlm.visibleCount).toBe(10)
+			expect(vlm.visibleSize).toBe(400)
+			expect(vlm.totalSize).toBe(400)
+			vlm.update({ count: 8 })
+			expect(vlm.visibleCount).toBe(8)
+			expect(vlm.visibleSize).toBe(320)
+			expect(vlm.totalSize).toBe(320)
+		})
 	})
+	describe('movement', () => {
+		it('should move position by offset', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toBe(-1)
 
-	it('should increase cache when count increases', () => {
-		const resizer = virtualListResizer({ count: 5, availableSize: 800 })
-		expect(resizer.visibleCount).toBe(5)
-		expect(resizer.visible).toBe(200)
-		expect(resizer.total).toBe(200)
-		resizer.update({ count: 10 })
-		expect(resizer.visibleCount).toBe(10)
-		expect(resizer.visible).toBe(400)
-		expect(resizer.total).toBe(400)
-	})
-	it('should decrease cache when count decreases', () => {
-		const resizer = virtualListResizer({ count: 10, availableSize: 800 })
+			vlm.moveByOffset(1)
+			expect(vlm.index).toEqual(0)
+			expect(vlm.start).toEqual(0)
+			expect(vlm.end).toEqual(5)
+			expect(vlm.delta).toEqual(1)
+			expect(vlm.spaceBefore).toEqual(0)
+			expect(vlm.visibleSize).toEqual(200)
+			expect(vlm.spaceAfter).toEqual(600)
 
-		expect(resizer.visibleCount).toBe(10)
-		expect(resizer.visible).toBe(400)
-		expect(resizer.total).toBe(400)
-		resizer.update({ count: 8 })
-		expect(resizer.visibleCount).toBe(8)
-		expect(resizer.visible).toBe(320)
-		expect(resizer.total).toBe(320)
+			vlm.moveByOffset(5)
+			expect(vlm.index).toEqual(5)
+			expect(vlm.start).toEqual(5)
+			expect(vlm.end).toEqual(10)
+			expect(vlm.spaceBefore).toEqual(200)
+			expect(vlm.visibleSize).toEqual(200)
+			expect(vlm.spaceAfter).toEqual(400)
+
+			vlm.moveByOffset(16)
+			expect(vlm.index).toEqual(19)
+			expect(vlm.start).toEqual(15)
+			expect(vlm.end).toEqual(20)
+			expect(vlm.spaceBefore).toEqual(600)
+			expect(vlm.spaceAfter).toEqual(0)
+
+			vlm.moveByOffset(-6)
+			expect(vlm.index).toEqual(13)
+			expect(vlm.start).toEqual(9)
+			expect(vlm.end).toEqual(14)
+			expect(vlm.spaceBefore).toEqual(360)
+			expect(vlm.spaceAfter).toEqual(240)
+
+			vlm.moveByOffset(-25)
+			expect(vlm.index).toEqual(0)
+			expect(vlm.start).toEqual(0)
+			expect(vlm.end).toEqual(5)
+		})
+
+		it('should move to next item', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toEqual(-1)
+			vlm.next()
+			expect(vlm.index).toEqual(0)
+			vlm.next()
+			expect(vlm.index).toEqual(1)
+		})
+
+		it('should move to previous item', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toEqual(-1)
+			vlm.previous()
+			expect(vlm.index).toEqual(0)
+			vlm.next()
+			expect(vlm.index).toEqual(1)
+			vlm.previous()
+			expect(vlm.index).toEqual(0)
+		})
+
+		it('should move to first item', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toEqual(-1)
+			vlm.first()
+			expect(vlm.index).toEqual(0)
+		})
+
+		it('should move to last item', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toEqual(-1)
+			vlm.last()
+			expect(vlm.index).toEqual(19)
+		})
+
+		it('should move to next page', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toEqual(-1)
+			vlm.nextPage()
+			expect(vlm.index).toEqual(4)
+			vlm.nextPage()
+			expect(vlm.index).toEqual(9)
+			vlm.nextPage()
+			expect(vlm.index).toEqual(14)
+			vlm.nextPage()
+			expect(vlm.index).toEqual(19)
+		})
+
+		it('should move to previous page', () => {
+			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
+			expect(vlm.index).toEqual(-1)
+			vlm.last()
+			expect(vlm.index).toEqual(19)
+			vlm.previousPage()
+			expect(vlm.index).toEqual(14)
+			vlm.previousPage()
+			expect(vlm.index).toEqual(9)
+			vlm.previousPage()
+			expect(vlm.index).toEqual(4)
+			vlm.previousPage()
+			expect(vlm.index).toEqual(0)
+		})
 	})
 
 	describe('vertical', () => {
@@ -46,7 +153,7 @@ describe('virtualListResizer', () => {
 		])
 
 		describe('maxVisible is null', () => {
-			const resizer = virtualListResizer({
+			const vlm = virtualListManager({
 				count: 40,
 				availableSize: 400
 			})
@@ -54,18 +161,18 @@ describe('virtualListResizer', () => {
 			let end = 1
 
 			beforeEach(() => {
-				end = start + resizer.visibleCount
+				end = start + vlm.visibleCount
 			})
 
 			it('should fit elements within available size', () => {
 				expect(end).toBe(10)
-				resizer.update({ elements: elements.slice(start, end) })
-				expect(resizer.averageSize).toBe(42.5)
-				expect(resizer.visibleCount).toBe(10)
-				expect(resizer.visible).toEqual(500)
-				expect(resizer.before).toBe(0)
-				expect(resizer.after).toBe(1200)
-				expect(resizer.total).toBe(1700)
+				vlm.update({ elements: elements.slice(start, end) })
+				expect(vlm.averageSize).toBe(42.5)
+				expect(vlm.visibleCount).toBe(10)
+				expect(vlm.visibleSize).toEqual(500)
+				expect(vlm.spaceBefore).toBe(0)
+				expect(vlm.spaceAfter).toBe(1200)
+				expect(vlm.totalSize).toBe(1700)
 			})
 
 			it('should increase visible count when items get smaller', () => {
@@ -73,13 +180,13 @@ describe('virtualListResizer', () => {
 				start += 10
 				end += 10
 				const visible = elements.slice(start, end)
-				resizer.update({ elements: visible, start, end })
-				expect(resizer.averageSize).toBe(42.5)
-				expect(resizer.visibleCount).toBe(12)
-				expect(resizer.visible).toEqual(435)
-				expect(resizer.before).toBe(500)
-				expect(resizer.after).toBe(765)
-				expect(resizer.total).toBe(1700)
+				vlm.update({ elements: visible, start, end })
+				expect(vlm.averageSize).toBe(42.5)
+				expect(vlm.visibleCount).toBe(12)
+				expect(vlm.visibleSize).toEqual(435)
+				expect(vlm.spaceBefore).toBe(500)
+				expect(vlm.spaceAfter).toBe(765)
+				expect(vlm.totalSize).toBe(1700)
 			})
 
 			it('should decrease visible count when items get bigger', () => {
@@ -87,62 +194,62 @@ describe('virtualListResizer', () => {
 				start += 3
 				end += 3
 				const visible = elements.slice(start, end)
-				resizer.update({ elements: visible, start, end })
-				expect(resizer.visibleCount).toBe(11)
-				expect(resizer.averageSize).toBe(42.1875)
-				expect(resizer.visible).toEqual(420)
-				expect(resizer.before).toBe(590)
-				expect(resizer.after).toBe(677.5)
-				expect(resizer.total).toBe(1687.5)
+				vlm.update({ elements: visible, start, end })
+				expect(vlm.visibleCount).toBe(11)
+				expect(vlm.averageSize).toBe(42.1875)
+				expect(vlm.visibleSize).toEqual(420)
+				expect(vlm.spaceBefore).toBe(590)
+				expect(vlm.spaceAfter).toBe(677.5)
+				expect(vlm.totalSize).toBe(1687.5)
 			})
 		})
 
 		describe('maxVisible is defined', () => {
-			const resizer = virtualListResizer({
+			const vlm = virtualListManager({
 				count: 40,
-				maximumVisible: 5,
+				maxVisible: 5,
 				availableSize: 400
 			})
 			let start = 0
 			let end = 1
 
 			beforeAll(() => {
-				end = start + resizer.visibleCount
+				end = start + vlm.visibleCount
 			})
 
 			it('should retain fixed size', () => {
 				expect(end).toBe(5)
-				resizer.update({ elements: elements.slice(start, end) })
-				expect(resizer.averageSize).toBe(40)
-				expect(resizer.visibleCount).toBe(5)
-				expect(resizer.visible).toEqual(200)
-				expect(resizer.before).toBe(0)
-				expect(resizer.after).toBe(1400)
-				expect(resizer.total).toBe(1600)
+				vlm.update({ elements: elements.slice(start, end) })
+				expect(vlm.averageSize).toBe(40)
+				expect(vlm.visibleCount).toBe(5)
+				expect(vlm.visibleSize).toEqual(200)
+				expect(vlm.spaceBefore).toBe(0)
+				expect(vlm.spaceAfter).toBe(1400)
+				expect(vlm.totalSize).toBe(1600)
 			})
 
 			it('should resize when items get bigger', () => {
 				start += 5
 				end += 5
-				resizer.update({ elements: elements.slice(start, end), start, end })
-				expect(resizer.averageSize).toBe(42.5)
-				expect(resizer.visibleCount).toBe(5)
-				expect(resizer.visible).toEqual(300)
-				expect(resizer.before).toBe(200)
-				expect(resizer.after).toBe(1200)
-				expect(resizer.total).toBe(1700)
+				vlm.update({ elements: elements.slice(start, end), start, end })
+				expect(vlm.averageSize).toBe(42.5)
+				expect(vlm.visibleCount).toBe(5)
+				expect(vlm.visibleSize).toEqual(300)
+				expect(vlm.spaceBefore).toBe(200)
+				expect(vlm.spaceAfter).toBe(1200)
+				expect(vlm.totalSize).toBe(1700)
 			})
 
 			it('should resize when items get smaller', () => {
 				start += 5
 				end += 5
-				resizer.update({ elements: elements.slice(start, end), start, end })
-				expect(resizer.averageSize).toBe(42.8125)
-				expect(resizer.visibleCount).toBe(5)
-				expect(resizer.visible).toEqual(150)
-				expect(resizer.before).toBe(500)
-				expect(resizer.after).toBe(1062.5)
-				expect(resizer.total).toBe(1712.5)
+				vlm.update({ elements: elements.slice(start, end), start, end })
+				expect(vlm.averageSize).toBe(42.8125)
+				expect(vlm.visibleCount).toBe(5)
+				expect(vlm.visibleSize).toEqual(150)
+				expect(vlm.spaceBefore).toBe(500)
+				expect(vlm.spaceAfter).toBe(1062.5)
+				expect(vlm.totalSize).toBe(1712.5)
 			})
 		})
 	})
@@ -160,29 +267,29 @@ describe('virtualListResizer', () => {
 		)
 
 		describe('maxVisible is null', () => {
-			const resizer = virtualListResizer({
+			const vlm = virtualListManager({
 				count: 40,
 				availableSize: 500,
 				minimumSize: 100,
 				horizontal: true
 			})
 			let start = 0
-			let end = start + resizer.visibleCount
+			let end = start + vlm.visibleCount
 
 			it('should increase visible count when elements become smaller', () => {
 				start += 5
 				end += 5
-				resizer.update({ elements: elements.slice(start, end), start, end })
-				expect(resizer.averageSize).toBe(97.5)
-				expect(resizer.visibleCount).toBe(6)
-				expect(resizer.visible).toEqual(500)
+				vlm.update({ elements: elements.slice(start, end), start, end })
+				expect(vlm.averageSize).toBe(97.5)
+				expect(vlm.visibleCount).toBe(6)
+				expect(vlm.visibleSize).toEqual(500)
 			})
 		})
 
 		describe('maxVisible is defined', () => {
-			const resizer = virtualListResizer({
+			const vlm = virtualListManager({
 				count: 40,
-				maximumVisible: 5,
+				maxVisible: 5,
 				availableSize: 500,
 				minimumSize: 100,
 				horizontal: true
@@ -191,19 +298,19 @@ describe('virtualListResizer', () => {
 			let end = 1
 
 			beforeAll(() => {
-				end = start + resizer.visibleCount
+				end = start + vlm.visibleCount
 			})
 
 			it('should resize when items get bigger', () => {
 				start += 5
 				end += 5
-				resizer.update({ elements: elements.slice(start, end), start, end })
-				expect(resizer.averageSize).toBe(97.5)
-				expect(resizer.visibleCount).toBe(5)
-				expect(resizer.visible).toEqual(400)
-				expect(resizer.before).toBe(500)
-				expect(resizer.after).toBe(3000)
-				expect(resizer.total).toBe(3900)
+				vlm.update({ elements: elements.slice(start, end), start, end })
+				expect(vlm.averageSize).toBe(97.5)
+				expect(vlm.visibleCount).toBe(5)
+				expect(vlm.visibleSize).toEqual(400)
+				expect(vlm.spaceBefore).toBe(500)
+				expect(vlm.spaceAfter).toBe(3000)
+				expect(vlm.totalSize).toBe(3900)
 			})
 		})
 	})
