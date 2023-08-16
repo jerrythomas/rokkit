@@ -2,42 +2,6 @@ import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
 import { virtualListManager } from '../../src/lib/virtual-list'
 
 describe('virtualListManager', () => {
-	// describe('cache size', () => {
-	// 	it('should provide a resize manager', () => {
-	// 		const vlm = virtualListManager()
-	// 		expect(vlm).toBeDefined()
-	// 		expect(vlm.update).toBeDefined()
-	// 		expect(vlm.totalSize).toBeDefined()
-	// 		expect(vlm.spaceBefore).toBeDefined()
-	// 		expect(vlm.spaceAfter).toBeDefined()
-	// 		expect(vlm.averageSize).toBeDefined()
-	// 		expect(vlm.visibleCount).toBeDefined()
-	// 		expect(vlm.visibleSize).toBeDefined()
-	// 	})
-
-	// 	it('should increase cache when count increases', () => {
-	// 		const vlm = virtualListManager({ count: 5, availableSize: 800 })
-	// 		expect(vlm.visibleCount).toBe(5)
-	// 		expect(vlm.visibleSize).toBe(200)
-	// 		expect(vlm.totalSize).toBe(200)
-	// 		vlm.update({ count: 10 })
-	// 		expect(vlm.visibleCount).toBe(10)
-	// 		expect(vlm.visibleSize).toBe(400)
-	// 		expect(vlm.totalSize).toBe(400)
-	// 	})
-
-	// 	it('should decrease cache when count decreases', () => {
-	// 		const vlm = virtualListManager({ count: 10, availableSize: 800 })
-
-	// 		expect(vlm.visibleCount).toBe(10)
-	// 		expect(vlm.visibleSize).toBe(400)
-	// 		expect(vlm.totalSize).toBe(400)
-	// 		vlm.update({ count: 8 })
-	// 		expect(vlm.visibleCount).toBe(8)
-	// 		expect(vlm.visibleSize).toBe(320)
-	// 		expect(vlm.totalSize).toBe(320)
-	// 	})
-	// })
 	describe('movement', () => {
 		it('should move position by offset', () => {
 			const vlm = virtualListManager({ count: 20, maxVisible: 5 })
@@ -47,18 +11,18 @@ describe('virtualListManager', () => {
 			expect(vlm.index).toEqual(0)
 			expect(vlm.start).toEqual(0)
 			expect(vlm.end).toEqual(5)
-			expect(vlm.delta).toEqual(1)
+			expect(vlm.delta).toEqual(0)
 			expect(vlm.spaceBefore).toEqual(0)
 			expect(vlm.visibleSize).toEqual(200)
 			expect(vlm.spaceAfter).toEqual(600)
 
 			vlm.moveByOffset(5)
 			expect(vlm.index).toEqual(5)
-			expect(vlm.start).toEqual(5)
-			expect(vlm.end).toEqual(10)
-			expect(vlm.spaceBefore).toEqual(200)
+			expect(vlm.start).toEqual(1)
+			expect(vlm.end).toEqual(6)
+			expect(vlm.spaceBefore).toEqual(40)
 			expect(vlm.visibleSize).toEqual(200)
-			expect(vlm.spaceAfter).toEqual(400)
+			expect(vlm.spaceAfter).toEqual(560)
 
 			vlm.moveByOffset(16)
 			expect(vlm.index).toEqual(19)
@@ -270,7 +234,7 @@ describe('virtualListManager', () => {
 			const vlm = virtualListManager({
 				count: 40,
 				availableSize: 500,
-				minimumSize: 100,
+				minSize: 100,
 				horizontal: true
 			})
 			let start = 0
@@ -291,7 +255,7 @@ describe('virtualListManager', () => {
 				count: 40,
 				maxVisible: 5,
 				availableSize: 500,
-				minimumSize: 100,
+				minSize: 100,
 				horizontal: true
 			})
 			let start = 0

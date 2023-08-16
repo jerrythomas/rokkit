@@ -5,7 +5,7 @@ export function virtualListManager(options) {
 	options = { ...defaultResizerOptions, ...options }
 	const props =
 		dimensionAttributes[options.horizontal ? 'horizontal' : 'vertical']
-	const sizeManager = new SizeManager(options.count, options.minimumSize)
+	const sizeManager = new SizeManager(options.count, options.minSize)
 	let visibleCount = options.maxVisible
 		? options.maxVisible
 		: options.minVisible
@@ -13,7 +13,8 @@ export function virtualListManager(options) {
 	let delta = 0
 
 	let { start } = options
-	let end = start + visibleCount
+	let end = 0
+	let previous = { start, end }
 	let visible, before, after, total
 
 	const calculateSum = (start, end) => sizeManager.calculateSum(start, end)
@@ -44,30 +45,45 @@ export function virtualListManager(options) {
 		before = calculateSum(0, start)
 		after = calculateSum(end, options.count)
 		total = visible + before + after
+		if (delta === 0) calculateDelta()
 	}
 
 	const update = (data) => {
-		let { count, elements = [] } = data
+		let { count, elements = [], index: newIndex = index } = data
+
 		start = data.start || start
-		end = data.end || end
+		end = start + visibleCount
+		if (newIndex !== index) moveByOffset(newIndex - index)
 
 		sizeManager.updateCount(count ?? options.count)
 		sizeManager.updateSizes(elements, props.offset, start)
 		calculate()
 	}
 
+	const calculateDelta = () => {
+		delta = start - previous.start
+		if (delta === 0) {
+			delta = end - previous.end
+		}
+		previous = { start, end }
+	}
+
 	const moveByOffset = (offset) => {
 		let position = Math.max(0, Math.min(index + offset, options.count - 1))
 		delta = position - index
 		index = position
+		// console.log('moveByOffset', index, start, end, delta)
 		if (index > end - 1) {
-			end = Math.min(end + delta, options.count)
+			end = Math.min(index + 1, options.count)
 			start = end - visibleCount
 		} else if (index < start) {
 			start = Math.max(0, start + delta)
 			end = start + visibleCount
 		}
+		// console.log('moveByOffset', index, start, end, delta)
+		delta = 0
 		calculate()
+		// calculateDelta()
 	}
 
 	update(options)

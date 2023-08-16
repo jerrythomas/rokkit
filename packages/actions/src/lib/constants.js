@@ -3,21 +3,23 @@ export const dimensionAttributes = {
 		scroll: 'scrollTop',
 		offset: 'offsetHeight',
 		paddingStart: 'paddingTop',
-		paddingEnd: 'paddingBottom'
+		paddingEnd: 'paddingBottom',
+		size: 'height'
 	},
 	horizontal: {
 		scroll: 'scrollLeft',
 		offset: 'offsetWidth',
 		paddingStart: 'paddingLeft',
-		paddingEnd: 'paddingRight'
+		paddingEnd: 'paddingRight',
+		size: 'width'
 	}
 }
 
 export const defaultResizerOptions = {
 	horizontal: false,
-	minimumSize: 40,
-	minimumVisible: 1,
-	maximumVisible: null,
+	minSize: 40,
+	minVisible: 1,
+	maxVisible: null,
 	availableSize: 200,
 	start: 0
 }

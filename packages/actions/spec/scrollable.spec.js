@@ -12,7 +12,7 @@ describe('scrollable', () => {
 	let handlers = {}
 
 	beforeEach(() => {
-		mock = mockVirtualList()
+		mock = mockVirtualList({ numberOfItems: 5, start: 0 })
 
 		events.map((event) => {
 			handlers[event] = vi.fn()
@@ -39,9 +39,10 @@ describe('scrollable', () => {
 			expect(handlers.move).not.toHaveBeenCalled()
 			expect(handlers.select).not.toHaveBeenCalled()
 			expect(handlers.cancel).not.toHaveBeenCalled()
-			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 0, end: 0 })
+			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 0, end: 10 })
 			action.destroy()
 		})
+
 		it('should emit select event on click', () => {
 			const action = scrollable(mock.viewport, { items })
 			mock.viewport.children[0].children[1].click()
@@ -51,19 +52,57 @@ describe('scrollable', () => {
 			})
 			action.destroy()
 		})
+
 		it('should emit select event on enter', () => {
-			const action = scrollable(mock.viewport, { items })
+			const action = scrollable(mock.viewport, { items, value: items[0] })
 			mock.viewport.dispatchEvent(
 				new KeyboardEvent('keydown', { key: 'Enter' })
 			)
-			expect(handlers.select).toHaveBeenDispatchedWith({})
+			expect(handlers.select).toHaveBeenDispatchedWith({
+				index: 0,
+				value: { text: 0 }
+			})
 			action.destroy()
 		})
-		it('should emit refresh event on scroll', () => {
+
+		it('should update scroll position and emit refresh event on scroll', () => {
 			const action = scrollable(mock.viewport, { items })
+			expect(mock.viewport.offsetHeight).toBe(500)
 			mock.viewport.scrollTop = 100
 			mock.viewport.dispatchEvent(new Event('scroll'))
-			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 2, end: 0 })
+			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 2, end: 12 })
+			expect(mock.viewport.scrollTop).toBe(80)
+			expect(mock.viewport.scrollTo).toHaveBeenCalledWith(0, 80)
+			expect(mock.contents.style.paddingTop).toBe('80px')
+			expect(mock.contents.style.paddingBottom).toBe('0px')
+			expect(mock.viewport.offsetHeight).toBe(500)
+			action.destroy()
+		})
+
+		it('should resize and emit refresh event on scroll', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			expect(mock.viewport.offsetHeight).toBe(200)
+			mock.viewport.scrollTop = 100
+			mock.viewport.dispatchEvent(new Event('scroll'))
+			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 2, end: 7 })
+			expect(mock.viewport.scrollTop).toBe(80)
+			expect(mock.viewport.scrollTo).toHaveBeenCalledWith(0, 80)
+			expect(mock.contents.style.paddingTop).toBe('80px')
+			expect(mock.contents.style.paddingBottom).toBe('120px')
+			expect(mock.viewport.offsetHeight).toBe(200)
+			action.destroy()
+		})
+
+		it('should emit update index on value change', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 0, end: 5 })
+
+			action.update({ items, value: items[8] })
+			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 4, end: 9 })
+			expect(mock.viewport.scrollTop).toBe(160)
+			expect(mock.contents.style.paddingTop).toBe('160px')
+			expect(mock.contents.style.paddingBottom).toBe('40px')
+			expect(mock.viewport.offsetHeight).toBe(200)
 			action.destroy()
 		})
 	})
@@ -73,28 +112,8 @@ describe('scrollable', () => {
 			expect(handlers.move).not.toHaveBeenCalled()
 			expect(handlers.select).not.toHaveBeenCalled()
 			expect(handlers.cancel).not.toHaveBeenCalled()
-			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 0, end: 0 })
+			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 0, end: 10 })
 			action.destroy()
 		})
 	})
 })
-
-// function addItems(content, count, start, horizontal) {
-// 	for (let i = 0; i < count; i++) {
-// 		const row = document.createElement('virtual-list-row')
-// 		row.textContent = i + start
-// 		row.setAttribute('data-index', i + start)
-// 		if (horizontal)
-// 			Object.defineProperty(row, 'offsetWidth', {
-// 				value: 30,
-// 				configurable: true
-// 			})
-// 		else
-// 			Object.defineProperty(row, 'offsetHeight', {
-// 				value: 30,
-// 				configurable: true
-// 			})
-// 		content.appendChild(row)
-// 	}
-// 	return content
-// }
