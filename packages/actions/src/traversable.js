@@ -32,7 +32,6 @@ export function traversable(element, options) {
 		const result = content[direction](current.position)
 		if (result) {
 			current = result
-
 			checkAndEmit('move')
 		}
 	}

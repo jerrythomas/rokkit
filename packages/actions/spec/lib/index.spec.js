@@ -11,7 +11,7 @@ describe('internal', () => {
 			'removeListeners',
 			'handleItemClick',
 			'EventManager',
-			'virtualListResizer'
+			'virtualListManager'
 		])
 	})
 })
