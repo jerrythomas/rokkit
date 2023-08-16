@@ -1,11 +1,11 @@
 import { dimensionAttributes, defaultResizerOptions } from './constants'
+import { SizeManager } from './size-manager'
 
 export function virtualListManager(options) {
 	options = { ...defaultResizerOptions, ...options }
 	const props =
 		dimensionAttributes[options.horizontal ? 'horizontal' : 'vertical']
-	let sizes = Array.from({ length: options.count }, () => null)
-	let averageSize = options.minimumSize
+	const sizeManager = new SizeManager(options.count, options.minimumSize)
 	let visibleCount = options.maxVisible
 		? options.maxVisible
 		: options.minVisible
@@ -16,36 +16,34 @@ export function virtualListManager(options) {
 	let end = start + visibleCount
 	let visible, before, after, total
 
-	const calculateSum = (start, end) =>
-		calculateSumOfSizes(sizes, start, end, averageSize)
+	const calculateSum = (start, end) => sizeManager.calculateSum(start, end)
 
 	const calculate = () => {
 		if (options.maxVisible) {
 			visibleCount = options.maxVisible
 		} else {
 			visibleCount = Math.min(
-				Math.ceil(options.availableSize / averageSize),
-				sizes.length
+				Math.ceil(options.availableSize / sizeManager.averageSize),
+				options.count
 			)
 
 			if (visibleCount !== end - start) {
 				end = start + visibleCount
 			}
 
-			visible = calculateSumOfSizes(sizes, start, end, averageSize)
+			visible = sizeManager.calculateSum(start, end)
 
-			while (visible < options.availableSize && end < sizes.length) {
+			while (visible < options.availableSize && end < options.count) {
 				end += 1
 				visibleCount += 1
-				visible += sizes[end] ?? averageSize
+				visible += sizeManager.sizes[end] ?? sizeManager.averageSize
 			}
 		}
 
 		visible = calculateSum(start, end)
 		before = calculateSum(0, start)
-		after = calculateSum(end, sizes.length)
+		after = calculateSum(end, options.count)
 		total = visible + before + after
-		averageSize = total / sizes.length
 	}
 
 	const update = (data) => {
@@ -53,19 +51,8 @@ export function virtualListManager(options) {
 		start = data.start || start
 		end = data.end || end
 
-		if (count > sizes.length) {
-			sizes = [
-				...sizes,
-				...Array.from({ length: count - sizes.length }, () => null)
-			]
-		} else if (count < sizes.length) {
-			sizes = Array.from({ length: count }, () => null)
-			start = 0
-		}
-
-		elements.map((element, index) => {
-			sizes[index + start] = element[props.offset]
-		})
+		sizeManager.updateCount(count ?? options.count)
+		sizeManager.updateSizes(elements, props.offset, start)
 		calculate()
 	}
 
@@ -87,7 +74,7 @@ export function virtualListManager(options) {
 
 	return {
 		get averageSize() {
-			return averageSize
+			return sizeManager.averageSize
 		},
 		get visibleCount() {
 			return visibleCount
@@ -125,11 +112,4 @@ export function virtualListManager(options) {
 		first: () => moveByOffset(-options.count),
 		update
 	}
-}
-
-function calculateSumOfSizes(sizes, start, end, averageSize) {
-	return sizes
-		.slice(start, end)
-		.map((size) => size ?? averageSize)
-		.reduce((sum, size) => (sum += size), 0)
 }
