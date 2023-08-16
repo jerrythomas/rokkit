@@ -108,6 +108,12 @@ describe('mapped-list', () => {
 			expect(result).toBeNull()
 		})
 
+		it('should return first item', () => {
+			const current = { item: null, fields, position: [] }
+			const result = findNearestItemBefore(current.position, items, fields)
+			expect(result).toEqual({ item: items[0], fields, position: [0] })
+		})
+
 		it('should return the previous sibling if it is a leaf', () => {
 			const current = {
 				item: items[0].nodes[0].nodes[1],
@@ -162,6 +168,12 @@ describe('mapped-list', () => {
 			const current = { item: null, fields, position: [] }
 			const result = findNearestItemAfter(current.position, [], fields)
 			expect(result).toBeNull()
+		})
+
+		it('should return first item', () => {
+			const current = { item: null, fields, position: [] }
+			const result = findNearestItemAfter(current.position, items, fields)
+			expect(result).toEqual({ item: items[0], fields, position: [0] })
 		})
 
 		it('should return first child if it is open', () => {
