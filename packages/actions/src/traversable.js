@@ -1,10 +1,10 @@
 import { mappedList, isNested } from '@rokkit/core'
 import { pick } from 'ramda'
 import {
-	getClosestAncestorWithAttribute,
+	// getClosestAncestorWithAttribute,
 	mapKeyboardEventsToActions,
 	emit,
-	handleItemClick,
+	// handleItemClick,
 	EventManager
 } from './lib'
 

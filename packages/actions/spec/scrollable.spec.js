@@ -67,6 +67,7 @@ describe('scrollable', () => {
 
 		it('should update scroll position and emit refresh event on scroll', () => {
 			const action = scrollable(mock.viewport, { items })
+
 			expect(mock.viewport.offsetHeight).toBe(500)
 			mock.viewport.scrollTop = 100
 			mock.viewport.dispatchEvent(new Event('scroll'))
@@ -105,6 +106,91 @@ describe('scrollable', () => {
 			expect(mock.viewport.offsetHeight).toBe(200)
 			action.destroy()
 		})
+
+		it('should emit move event on arrow down', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'ArrowDown' })
+			)
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 0,
+				value: { text: 0 }
+			})
+			action.destroy()
+		})
+
+		it('should emit move event on arrow up', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			action.update({ value: items[5] })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'ArrowUp' })
+			)
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 4,
+				value: { text: 4 }
+			})
+			action.destroy()
+		})
+
+		it('should emit move event on page down', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'PageDown' })
+			)
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 4,
+				value: { text: 4 }
+			})
+			action.destroy()
+		})
+		it('should emit move event on page up', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			action.update({ value: items[9] })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'PageUp' })
+			)
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 4,
+				value: { text: 4 }
+			})
+			action.destroy()
+		})
+		it('should emit move event on home', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			mock.viewport.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home' }))
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 0,
+				value: { text: 0 }
+			})
+			action.destroy()
+		})
+		it('should emit move event on end', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			mock.viewport.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }))
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 9,
+				value: { text: 9 }
+			})
+			action.destroy()
+		})
+		it('should emit cancel event on escape', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'Escape' })
+			)
+			expect(handlers.cancel).toHaveBeenDispatchedWith(null)
+			action.destroy()
+		})
+		it('should not emit events on arrow left', () => {
+			const action = scrollable(mock.viewport, { items, maxVisible: 5 })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'ArrowLeft' })
+			)
+			expect(handlers.move).not.toHaveBeenCalled()
+			expect(handlers.select).not.toHaveBeenCalled()
+			expect(handlers.cancel).not.toHaveBeenCalled()
+			action.destroy()
+		})
 	})
 	describe('horizontal', () => {
 		it('should emit refresh event on init', () => {
@@ -113,6 +199,39 @@ describe('scrollable', () => {
 			expect(handlers.select).not.toHaveBeenCalled()
 			expect(handlers.cancel).not.toHaveBeenCalled()
 			expect(handlers.refresh).toHaveBeenDispatchedWith({ start: 0, end: 10 })
+			action.destroy()
+		})
+		it('should emit move event on arrow left', () => {
+			const action = scrollable(mock.viewport, {
+				items,
+				maxVisible: 5,
+				horizontal: true
+			})
+			action.update({ value: items[5] })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'ArrowLeft' })
+			)
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 4,
+				value: { text: 4 }
+			})
+			action.destroy()
+		})
+
+		it('should emit move event on arrow right', () => {
+			const action = scrollable(mock.viewport, {
+				items,
+				maxVisible: 5,
+				horizontal: true
+			})
+			action.update({ value: items[5] })
+			mock.viewport.dispatchEvent(
+				new KeyboardEvent('keydown', { key: 'ArrowRight' })
+			)
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				index: 6,
+				value: { text: 6 }
+			})
 			action.destroy()
 		})
 	})
