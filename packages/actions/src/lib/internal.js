@@ -1,23 +1,6 @@
 import { compact } from '@rokkit/core'
 import { hasChildren, isExpanded } from '@rokkit/core'
 
-const DIMENSION_PROPS = {
-	horizontal: {
-		dimension: 'width',
-		paddingStart: 'paddingLeft',
-		paddingEnd: 'paddingRight',
-		offset: 'offsetWidth',
-		scrollProp: 'scrollLeft'
-	},
-	vertical: {
-		dimension: 'height',
-		paddingStart: 'paddingTop',
-		paddingEnd: 'paddingBottom',
-		offset: 'offsetHeight',
-		scrollProp: 'scrollTop'
-	}
-}
-
 /**
  * Emits a custom event with the given data.
  *

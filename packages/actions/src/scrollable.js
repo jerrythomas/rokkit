@@ -1,6 +1,7 @@
 import { EventManager, emit, getClosestAncestorWithAttribute } from './lib'
 import { dimensionAttributes } from './lib/constants'
 import { virtualListManager } from './lib'
+import { compact } from '@rokkit/core'
 
 export function scrollable(element, data) {
 	let index = -1
@@ -14,6 +15,8 @@ export function scrollable(element, data) {
 		maxVisible,
 		minSize: data.minSize ?? 40
 	})
+	const keyboardActions = getKeyboardActions(vlm, data.horizontal)
+
 	const contents = element.querySelector('virtual-list-contents')
 	const listeners = {
 		click: (event) => {
@@ -26,21 +29,34 @@ export function scrollable(element, data) {
 		scroll: () => {
 			let start = Math.floor(element[props.scroll] / vlm.averageSize)
 			vlm.update({ start })
-			if (maxVisible) element.style[props.size] = vlm.visibleSize + 'px'
-			element.scrollTo(0, vlm.spaceBefore)
-			contents.style[props.paddingStart] = vlm.spaceBefore + 'px'
-			contents.style[props.paddingEnd] = vlm.spaceAfter + 'px'
+			adjustViewport()
 			if (vlm.deltaVisible !== 0) {
 				emit(element, 'refresh', { start: vlm.start, end: vlm.end })
 			}
 		},
 		keydown: (event) => {
-			if (['Enter', ' '].includes(event.key) && index !== -1) {
+			if (event.key in keyboardActions) {
+				keyboardActions[event.key]()
+				if (index !== vlm.index) {
+					index = vlm.index
+					adjustViewport()
+					emit(element, 'move', { index, value: items[index] })
+				}
+			} else if (['Enter', ' '].includes(event.key) && index !== -1) {
 				emit(element, 'select', { index, value: items[index] })
+			} else if (event.key === 'Escape') {
+				emit(element, 'cancel')
 			}
 		}
 	}
 	const manager = EventManager(element, listeners)
+
+	const adjustViewport = () => {
+		if (maxVisible) element.style[props.size] = vlm.visibleSize + 'px'
+		element.scrollTo(0, vlm.spaceBefore)
+		contents.style[props.paddingStart] = vlm.spaceBefore + 'px'
+		contents.style[props.paddingEnd] = vlm.spaceAfter + 'px'
+	}
 	const update = (data) => {
 		items = data.items ?? items
 
@@ -53,13 +69,7 @@ export function scrollable(element, data) {
 
 		const listItems = element.querySelectorAll('virtual-list-item')
 		vlm.update({ elements: listItems, count: items.length, start, end, index })
-
-		if (maxVisible) element.style[props.size] = vlm.visibleSize + 'px'
-		element.scrollTo(0, vlm.spaceBefore)
-		contents.style[props.paddingStart] = vlm.spaceBefore + 'px'
-		contents.style[props.paddingEnd] = vlm.spaceAfter + 'px'
-
-		// console.log('vlm.delta', vlm.delta)
+		adjustViewport()
 		if (vlm.delta !== 0) {
 			emit(element, 'refresh', { start: vlm.start, end: vlm.end })
 		}
@@ -72,4 +82,17 @@ export function scrollable(element, data) {
 		update,
 		destroy: () => manager.reset()
 	}
+}
+
+function getKeyboardActions(vlm, horizontal = false) {
+	return compact({
+		ArrowUp: horizontal ? null : () => vlm.previous(),
+		ArrowDown: horizontal ? null : () => vlm.next(),
+		ArrowLeft: !horizontal ? null : () => vlm.previous(),
+		ArrowRight: !horizontal ? null : () => vlm.next(),
+		Home: () => vlm.first(),
+		End: () => vlm.last(),
+		PageUp: () => vlm.previousPage(),
+		PageDown: () => vlm.nextPage()
+	})
 }
