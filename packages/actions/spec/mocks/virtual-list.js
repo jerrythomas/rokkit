@@ -20,8 +20,9 @@ const properties = {
 	paddingBottom: '0px',
 	paddingLeft: '0px',
 	paddingRight: '0px',
-	height: '500px',
-	width: '500px'
+	height: '200px',
+	width: '200px',
+	scrollTop: '0px'
 }
 
 const propertySpy = (name) => ({
@@ -37,6 +38,7 @@ export function mockVirtualList(config) {
 	const viewport = document.createElement(viewportTag)
 	const contents = document.createElement(contentsTag)
 	viewport.scrollTo = vi.fn().mockImplementation((x, y) => {
+		// console.log('setting scrollTop', x + y)
 		viewport.scrollTop = x + y
 	})
 	viewport.appendChild(contents)

@@ -1,7 +1,7 @@
 import { EventManager, emit, getClosestAncestorWithAttribute } from './lib'
 import { dimensionAttributes } from './lib/constants'
-import { virtualListManager } from './lib'
 import { compact } from '@rokkit/core'
+import { ViewportFactory } from './lib/viewport'
 
 export function scrollable(element, data) {
 	let index = -1
@@ -9,12 +9,13 @@ export function scrollable(element, data) {
 	const props = horizontal
 		? dimensionAttributes.horizontal
 		: dimensionAttributes.vertical
-	const vlm = virtualListManager({
-		count: items.length,
-		availableSize: element[props.offset],
+	const vlm = ViewportFactory(
+		items.length,
+		element[props.offset],
 		maxVisible,
-		minSize: data.minSize ?? 40
-	})
+		data.minSize ?? 40
+	)
+
 	const keyboardActions = getKeyboardActions(vlm, data.horizontal)
 
 	const contents = element.querySelector('virtual-list-contents')
@@ -27,12 +28,11 @@ export function scrollable(element, data) {
 			}
 		},
 		scroll: () => {
+			// console.log('scroll event', element[props.scroll])
 			let start = Math.floor(element[props.scroll] / vlm.averageSize)
-			vlm.update({ start })
+			vlm.updateStartEnd(start, vlm.end)
 			adjustViewport()
-			if (vlm.deltaVisible !== 0) {
-				emit(element, 'refresh', { start: vlm.start, end: vlm.end })
-			}
+			// console.log(props.paddingStart, props.paddingEnd, vlm.spaceBefore, vlm.spaceAfter)
 		},
 		keydown: (event) => {
 			if (event.key in keyboardActions) {
@@ -42,8 +42,8 @@ export function scrollable(element, data) {
 					adjustViewport()
 					emit(element, 'move', { index, value: items[index] })
 				}
-			} else if (['Enter', ' '].includes(event.key) && index !== -1) {
-				emit(element, 'select', { index, value: items[index] })
+			} else if (['Enter', ' '].includes(event.key) && vlm.index !== -1) {
+				emit(element, 'select', { index: vlm.index, value: items[vlm.index] })
 			} else if (event.key === 'Escape') {
 				emit(element, 'cancel')
 			}
@@ -53,26 +53,24 @@ export function scrollable(element, data) {
 
 	const adjustViewport = () => {
 		if (maxVisible) element.style[props.size] = vlm.visibleSize + 'px'
-		element.scrollTo(0, vlm.spaceBefore)
+
 		contents.style[props.paddingStart] = vlm.spaceBefore + 'px'
 		contents.style[props.paddingEnd] = vlm.spaceAfter + 'px'
-	}
-	const update = (data) => {
-		items = data.items ?? items
+		element.scrollTo(0, vlm.spaceBefore)
 
-		if (data.value) {
-			index = items.indexOf(data.value)
-		}
-
-		const start = data.start ?? vlm.start
-		const end = data.end ?? vlm.end
-
-		const listItems = element.querySelectorAll('virtual-list-item')
-		vlm.update({ elements: listItems, count: items.length, start, end, index })
-		adjustViewport()
-		if (vlm.delta !== 0) {
+		if (vlm.viewChanged)
 			emit(element, 'refresh', { start: vlm.start, end: vlm.end })
-		}
+	}
+
+	const update = (data) => {
+		const listItems = element.querySelectorAll('virtual-list-item')
+		items = data.items ?? items
+		vlm.count = items.length
+		vlm.updateStartEnd(data.start, data.end)
+		if (data.value) vlm.index = items.indexOf(data.value)
+		vlm.updateSizes(listItems, props.offset)
+
+		adjustViewport()
 	}
 
 	manager.activate()

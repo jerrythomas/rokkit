@@ -11,7 +11,10 @@ describe('internal', () => {
 			'removeListeners',
 			'handleItemClick',
 			'EventManager',
-			'virtualListManager'
+			'ViewPort',
+			'ResizableViewport',
+			'FillableViewport',
+			'ViewportFactory'
 		])
 	})
 })
