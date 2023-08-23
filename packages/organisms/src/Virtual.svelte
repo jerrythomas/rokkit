@@ -1,7 +1,11 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '@rokkit/core'
-	import { scrollable } from '@rokkit/actions'
+	import { createEventDispatcher, onMount } from 'svelte'
+	import { defaultFields, compact } from '@rokkit/core'
+	import {
+		dimensionAttributes,
+		virtualListViewport,
+		getClosestAncestorWithAttribute
+	} from '@rokkit/actions'
 	import { Item } from '@rokkit/molecules'
 
 	const dispatch = createEventDispatcher()
@@ -15,67 +19,141 @@
 	export let limit = null
 
 	export let start = 0
-	export let end = limit ? start + limit : 0
+	export let end = 0
 	export let tabindex = 0
+	export let gap = 1
 
-	let index = null
-	let current = null
+	let height = null
+	let width = null
 
-	function handle(event) {
-		current = event.detail.index
+	const viewport = virtualListViewport({
+		gap,
+		items,
+		value,
+		minSize,
+		maxVisible: limit
+	})
+	const bounds = viewport.bounds
+	const space = viewport.space
 
-		if (event.type === 'select') {
-			index = event.detail.index
-			value = event.detail.item
+	let index = -1
+	let current = -1
+	let root
+	let elements = []
+
+	function getKeyboardActions(vlm, horizontal = false) {
+		return compact({
+			ArrowUp: horizontal ? null : () => vlm.previous(),
+			ArrowDown: horizontal ? null : () => vlm.next(),
+			ArrowLeft: !horizontal ? null : () => vlm.previous(),
+			ArrowRight: !horizontal ? null : () => vlm.next(),
+			Home: () => vlm.first(),
+			End: () => vlm.last(),
+			PageUp: () => vlm.previousPage(),
+			PageDown: () => vlm.nextPage()
+		})
+	}
+	const handleClick = (event) => {
+		const target = getClosestAncestorWithAttribute(event.target, 'data-path')
+		if (target) {
+			index = parseInt(target.getAttribute('data-path'), 10)
+			if (index > -1) {
+				value = items[index]
+				viewport.update({ value })
+				dispatch('select', { index, value })
+			}
+		}
+	}
+	const handleScroll = () => {
+		viewport.scrollTo(root[props.scroll])
+	}
+
+	const handleScrollEnd = () => {
+		root.scrollTo(0, $space.before)
+	}
+
+	const handleKeydown = (event) => {
+		event.preventDefault()
+
+		if (event.key in keyboardActions) {
+			keyboardActions[event.key]()
+			if (index !== viewport.index) {
+				index = viewport.index
+				value = items[index]
+				viewport.update({ value })
+				dispatch('move', { index, value })
+			}
+		} else if (['Enter', ' '].includes(event.key) && viewport.index !== -1) {
+			index = viewport.index
+			value = items[index]
+			viewport.update({ value })
 			dispatch('select', { index, value })
-		} else if (event.type === 'refresh') {
-			start = event.detail.start
-			end = event.detail.end
-		} else {
-			dispatch(event.type, event.detail)
+		} else if (event.key === 'Escape') {
+			dispatch('cancel')
 		}
 	}
 
+	const props = horizontal
+		? dimensionAttributes.horizontal
+		: dimensionAttributes.vertical
+
+	onMount(() => {})
+
+	$: keyboardActions = getKeyboardActions(viewport, horizontal)
+	$: start = $bounds?.lower ?? 0
+	$: end = $bounds?.upper ?? 0
+	$: sizes = elements.map((element) => element[props.offset])
+	$: viewport.update({
+		items,
+		value,
+		sizes,
+		visibleSize: horizontal ? width : height
+	})
 	$: visible = items.slice(start, end).map((data, i) => {
 		return { index: i + start, data }
 	})
+	$: if ($space.visible) size = $space.visible + 'px'
+	$: if (root) root.scrollTo(0, $space.before)
 	$: fields = { ...defaultFields, ...fields }
 	$: listStyle = horizontal ? `width: ${size}` : `height: ${size}`
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<virtual-list-viewport
-	use:scrollable={{
-		items,
-		index: current,
-		value,
-		start,
-		end,
-		minSize,
-		maxVisible: limit
-	}}
-	on:refresh={handle}
-	on:move={handle}
-	style={listStyle}
-	class="relative block"
-	class:overflow-y-auto={!horizontal}
-	class:overflow-x-auto={horizontal}
-	{tabindex}
->
-	<virtual-list-contents class="block">
-		{#each visible as row (row.index)}
-			<virtual-list-item
-				data-index={row.index}
-				aria-selected={index === row.index}
-				aria-current={current === row.index}
-			>
-				<slot item={row.data}>
-					<Item value={row.data} {fields} />
-				</slot>
-			</virtual-list-item>
-		{/each}
-	</virtual-list-contents>
-</virtual-list-viewport>
+<virtual-list>
+	<virtual-list-viewport
+		on:click={handleClick}
+		on:keydown={handleKeydown}
+		on:scroll={handleScroll}
+		on:scrollend={handleScrollEnd}
+		role="listbox"
+		style={listStyle}
+		class="relative block"
+		bind:clientHeight={height}
+		bind:clientWidth={width}
+		bind:this={root}
+		class:overflow-y-auto={!horizontal}
+		class:overflow-x-auto={horizontal}
+		{tabindex}
+	>
+		<virtual-list-contents
+			class="block"
+			style:padding-top={$space.before + 'px'}
+			style:padding-bottom={$space.after + 'px'}
+		>
+			{#each visible as row, index (row.index)}
+				<virtual-list-item
+					data-path={row.index}
+					aria-selected={value === row.data}
+					aria-current={current === row.index}
+					bind:this={elements[index]}
+				>
+					<slot item={row.data}>
+						<Item value={row.data} {fields} />
+					</slot>
+				</virtual-list-item>
+			{/each}
+		</virtual-list-contents>
+	</virtual-list-viewport>
+</virtual-list>
 
 <style>
 	virtual-list-viewport {
