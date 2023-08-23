@@ -122,3 +122,9 @@
  * @property {string} selector - The CSS selector for the child element to which keyboard events will be forwarded.
  * @property {Array<string>} [events=['keydown', 'keyup', 'keypress']] - The keyboard events to forward.
  */
+
+/**
+ * @typedef {Object} Bounds
+ * @property {number} lower
+ * @property {number} upper
+ */

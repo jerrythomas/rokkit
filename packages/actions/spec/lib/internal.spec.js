@@ -3,7 +3,11 @@ import { toHaveBeenDispatchedWith } from 'validators'
 import {
 	mapKeyboardEventsToActions,
 	getClosestAncestorWithAttribute,
-	handleItemClick
+	handleItemClick,
+	updateSizes,
+	calculateSum,
+	fitIndexInViewport,
+	fixViewportForVisibileCount
 } from '../../src/lib/internal'
 
 expect.extend({ toHaveBeenDispatchedWith })
@@ -158,6 +162,58 @@ describe('internal', () => {
 				position: current.position
 			})
 			expect(result).toEqual(current)
+		})
+	})
+
+	describe('updateSizes', () => {
+		it('should update sizes using values provided', () => {
+			let result = updateSizes([0], [])
+			expect(result).toEqual([0])
+
+			result = updateSizes([0, 0, 0, 0, 0], [1, 1])
+			expect(result).toEqual([1, 1, 0, 0, 0])
+
+			result = updateSizes([0, 0, 0, 0, 0], [1, 1], 2)
+			expect(result).toEqual([0, 0, 1, 1, 0])
+			result = updateSizes([0, 0, 0, 0, 0], [1, 1], 4)
+			expect(result).toEqual([0, 0, 0, 0, 1, 1])
+		})
+	})
+
+	describe('calculateSum', () => {
+		it('should calculate sum of a slice', () => {
+			const sizes = [20, 20, 30, 30, null, null, null]
+			expect(calculateSum(sizes, 0, 2)).toEqual(40)
+			expect(calculateSum(sizes, 2, 4)).toEqual(60)
+			expect(calculateSum(sizes, 4, 7)).toEqual(120)
+			expect(calculateSum(sizes, 4, 7, 20)).toEqual(60)
+		})
+	})
+	describe('fitIndexInViewport', () => {
+		const visibleCount = 5
+		it('should fit the bounds to include index', () => {
+			let bounds = { lower: 0, upper: 5 }
+			let result = fitIndexInViewport(10, bounds, visibleCount)
+			expect(result).toEqual({ lower: 6, upper: 11 })
+			result = fitIndexInViewport(9, result, visibleCount)
+			expect(result).toEqual({ lower: 6, upper: 11 })
+			result = fitIndexInViewport(6, result, visibleCount)
+			expect(result).toEqual({ lower: 6, upper: 11 })
+			result = fitIndexInViewport(5, result, visibleCount)
+			expect(result).toEqual({ lower: 5, upper: 10 })
+		})
+	})
+
+	describe('fixViewportForVisibileCount', () => {
+		it('should adjust the viewport based on visibleCount', () => {
+			let result = fixViewportForVisibileCount({ lower: 0, upper: 5 }, 20, 5)
+			expect(result).toEqual({ lower: 0, upper: 5 })
+			result = fixViewportForVisibileCount({ lower: 0, upper: 3 }, 20, 5)
+			expect(result).toEqual({ lower: 0, upper: 5 })
+			result = fixViewportForVisibileCount({ lower: 17, upper: 3 }, 20, 5)
+			expect(result).toEqual({ lower: 15, upper: 20 })
+			result = fixViewportForVisibileCount({ lower: 10, upper: 16 }, 20, 5)
+			expect(result).toEqual({ lower: 10, upper: 15 })
 		})
 	})
 })
