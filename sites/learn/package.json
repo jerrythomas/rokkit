@@ -53,6 +53,7 @@
 		"@rokkit/stores": "workspace:*",
 		"@rokkit/themes": "workspace:*",
 		"@rokkit/tutorial": "workspace:*",
+		"@sveltejs/svelte-virtual-list": "^3.0.1",
 		"prism-svelte": "^0.5.0",
 		"prismjs": "^1.29.0",
 		"ramda": "^0.29.0"

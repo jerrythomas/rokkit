@@ -244,6 +244,9 @@ importers:
       '@testing-library/svelte':
         specifier: ^4.0.3
         version: 4.0.3(svelte@4.1.1)
+      '@types/ramda':
+        specifier: ^0.29.3
+        version: 0.29.3
       '@vitest/coverage-v8':
         specifier: ^0.33.0
         version: 0.33.0(vitest@0.33.0)
@@ -428,6 +431,9 @@ importers:
         specifier: ^0.29.0
         version: 0.29.0
     devDependencies:
+      '@playwright/experimental-ct-svelte':
+        specifier: ^1.36.2
+        version: 1.36.2(svelte@4.1.1)(vite@4.4.7)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^2.4.3
         version: 2.4.3(svelte@4.1.1)(vite@4.4.7)
@@ -724,6 +730,9 @@ importers:
       '@rokkit/tutorial':
         specifier: workspace:*
         version: link:../../packages/tutorial
+      '@sveltejs/svelte-virtual-list':
+        specifier: ^3.0.1
+        version: 3.0.1
       prism-svelte:
         specifier: ^0.5.0
         version: 0.5.0
@@ -1262,6 +1271,44 @@ packages:
     dev: false
     optional: true
 
+  /@playwright/experimental-ct-core@1.36.2:
+    resolution: {integrity: sha512-IH8I0kWmQziYWbnbkch+i0e/xbk3rc0z3UGM5si32VRSOo95Vx86kBwgN1jh61ZyNY9bGFjQSYMKgD2CTL7Xmg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      '@playwright/test': 1.36.2
+      playwright-core: 1.36.2
+      vite: 4.4.7(@types/node@20.4.5)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - terser
+    dev: true
+
+  /@playwright/experimental-ct-svelte@1.36.2(svelte@4.1.1)(vite@4.4.7):
+    resolution: {integrity: sha512-N86zoDZunL2QchQXj4mcLYGJf0ZomfODAOTlwIN29AV84ylmxmxCTk4R57m019bCZiJKZphISrKIaoRXD5kCEw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      '@playwright/experimental-ct-core': 1.36.2
+      '@sveltejs/vite-plugin-svelte': 2.4.3(svelte@4.1.1)(vite@4.4.7)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - svelte
+      - terser
+      - vite
+    dev: true
+
   /@playwright/test@1.36.2:
     resolution: {integrity: sha512-2rVZeyPRjxfPH6J0oGJqE8YxiM1IBRyM8hyrXYK7eSiAqmbNhxwcLa7dZ7fy9Kj26V7FYia5fh9XJRq4Dqme+g==}
     engines: {node: '>=16'}
@@ -1328,6 +1375,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@sveltejs/svelte-virtual-list@3.0.1:
+    resolution: {integrity: sha512-aF9TptS7NKKS7/TqpsxQBSDJ9Q0XBYzBehCeIC5DzdMEgrJZpIYao9LRLnyyo6SVodpapm2B7FE/Lj+FSA5/SQ==}
+    dev: false
 
   /@sveltejs/vite-plugin-svelte-inspector@1.0.3(@sveltejs/vite-plugin-svelte@2.4.3)(svelte@4.1.1)(vite@4.4.7):
     resolution: {integrity: sha512-Khdl5jmmPN6SUsVuqSXatKpQTMIifoQPDanaxC84m9JxIibWvSABJyHpyys0Z+1yYrxY5TTEQm+6elh0XCMaOA==}
