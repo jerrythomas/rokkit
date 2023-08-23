@@ -10,6 +10,17 @@ import MockVirtualListSlot from './mocks/MockVirtualListSlot.svelte'
 expect.extend({ toHaveBeenDispatchedWith })
 
 describe('VirtualList.svelte', () => {
+	let scroll = { left: 0, top: 0 }
+	Element.prototype.scrollTo = vi.fn().mockImplementation((left, top) => {
+		scroll = { left, top }
+	})
+	Object.defineProperty(Element.prototype, 'scrollTop', {
+		get: () => scroll.top
+	})
+	Object.defineProperty(Element.prototype, 'scrollLeft', {
+		get: () => scroll.left
+	})
+
 	const events = ['select']
 	const items = Array.from({ length: 10 }, (_, i) => `Item ${i + 1}`)
 
@@ -28,7 +39,6 @@ describe('VirtualList.svelte', () => {
 				items,
 				limit: 5
 			})
-
 			const wrapper = container.querySelector('virtual-list-viewport')
 			expect(wrapper).toMatchSnapshot()
 			const content = container.querySelectorAll('virtual-list-item')
@@ -40,7 +50,6 @@ describe('VirtualList.svelte', () => {
 				items,
 				limit: 5
 			})
-
 			const wrapper = container.querySelector('virtual-list-viewport')
 			expect(wrapper).toMatchSnapshot()
 			const content = container.querySelectorAll('virtual-list-item')
