@@ -111,3 +111,79 @@ export function handleItemClick(element, current) {
 	}
 	return current
 }
+
+/**
+ * Caclulates sum of array values between the given bounds.
+ * If a value is null, the default size is used.
+ * @param {Array<number|null>} sizes
+ * @param {number} lower
+ * @param {number} upper
+ * @param {number} [defaultSize]
+ * @returns {number}
+ */
+export function calculateSum(sizes, lower, upper, defaultSize = 40, gap = 0) {
+	return (
+		sizes
+			.slice(lower, upper)
+			.map((size) => size ?? defaultSize)
+			.reduce((acc, size) => acc + size + gap, 0) - gap
+	)
+}
+
+/**
+ * Updates the sizes array with the given values.
+ *
+ * @param {Array<number|null>} sizes
+ * @param {Array<number>} values
+ * @param {number} [offset]
+ * @returns {Array<number|null>}
+ */
+export function updateSizes(sizes, values, offset = 0) {
+	let result = [
+		...sizes.slice(0, offset),
+		...values,
+		...sizes.slice(offset + values.length)
+	]
+
+	return result
+}
+
+/**
+ * Adjusts the viewport to ensure that the bounds contain the given number of items.
+ *
+ * @param {import('../types').Bounds} current
+ * @param {number} count
+ * @param {number} visibleCount
+ * @returns {import('../types').Bounds}
+ */
+export function fixViewportForVisibileCount(current, count, visibleCount) {
+	let { lower, upper } = current
+	if (lower < 0) lower = 0
+	if (lower + visibleCount > count) {
+		upper = count
+		lower = Math.max(0, upper - visibleCount)
+	} else if (lower + visibleCount !== upper) {
+		upper = lower + visibleCount
+	}
+	return { lower, upper }
+}
+
+/**
+ * Adjusts the viewport to ensure the given index is visible.
+ *
+ * @param {number} index
+ * @param {import('../types').Bounds} current
+ * @param {number} visibleCount
+ * @returns {import('../types').Bounds}
+ */
+export function fitIndexInViewport(index, current, visibleCount) {
+	let { lower, upper } = current
+	if (index >= upper) {
+		upper = index + 1
+		lower = upper - visibleCount
+	} else if (index < lower) {
+		lower = index
+		upper = lower + visibleCount
+	}
+	return { lower, upper }
+}

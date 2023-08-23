@@ -1,5 +1,4 @@
 import { removeListeners, setupListeners } from './lib'
-
 /**
  * Handle drag and move events
  *

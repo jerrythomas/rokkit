@@ -10,11 +10,12 @@ describe('internal', () => {
 			'setupListeners',
 			'removeListeners',
 			'handleItemClick',
+			'calculateSum',
+			'updateSizes',
+			'fixViewportForVisibileCount',
+			'fitIndexInViewport',
 			'EventManager',
-			'ViewPort',
-			'ResizableViewport',
-			'FillableViewport',
-			'ViewportFactory'
+			'virtualListViewport'
 		])
 	})
 })
