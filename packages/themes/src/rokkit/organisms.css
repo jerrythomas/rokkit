@@ -189,8 +189,7 @@
 }
 
 /* Focus and Hover styles for List and Node */
-.rokkit list:focus,
-.rokkit virtual-list-viewport:focus {
+.rokkit list:focus {
   @apply outline outline-secondary;
 }
 /* .rokkit list item.is-hovering, */
@@ -204,6 +203,9 @@
 /* Selected and Hover styles for List and Node */
 .rokkit list item[aria-selected='true'] > a {
   @apply text-skin-50;
+}
+.rokkit virtual-list-item[aria-current='true'] {
+  @apply bg-skin-inset text-secondary;
 }
 
 .rokkit list item[aria-selected='true'],
@@ -272,6 +274,18 @@
 
 .rokkit toggle-switch.compact > item {
   @apply px-0 gap-0;
+}
+.rokkit virtual-list-viewport {
+  @apply border box-content border-skin-inset ;
+}
+.rokkit virtual-list-viewport:focus-within {
+  @apply outline-none ;
+}
+.rokkit virtual-list {
+  @apply p-2px from-transparent to-transparent rounded border border-skin-muted;
+}
+.rokkit virtual-list:focus-within {
+  @apply bg-gradient-to-r from-primary-500 to-secondary;
 }
 
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
