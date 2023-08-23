@@ -3,16 +3,18 @@
 exports[`VirtualList.svelte > render > should render 1`] = `
 <virtual-list-viewport
   class="relative block svelte-1nt637a overflow-y-auto"
-  style="height: 100%;"
+  role="listbox"
+  style="height: 4px;"
   tabindex="0"
 >
   <virtual-list-contents
     class="block"
+    style="padding-top: 0px; padding-bottom: 200px;"
   >
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="0"
+      data-path="0"
     >
        
       <p>
@@ -24,7 +26,7 @@ exports[`VirtualList.svelte > render > should render 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="1"
+      data-path="1"
     >
        
       <p>
@@ -36,7 +38,7 @@ exports[`VirtualList.svelte > render > should render 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="2"
+      data-path="2"
     >
        
       <p>
@@ -48,7 +50,7 @@ exports[`VirtualList.svelte > render > should render 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="3"
+      data-path="3"
     >
        
       <p>
@@ -60,7 +62,7 @@ exports[`VirtualList.svelte > render > should render 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="4"
+      data-path="4"
     >
        
       <p>
@@ -70,22 +72,30 @@ exports[`VirtualList.svelte > render > should render 1`] = `
        
     </virtual-list-item>
   </virtual-list-contents>
+  <iframe
+    aria-hidden="true"
+    src="about:blank"
+    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+    tabindex="-1"
+  />
 </virtual-list-viewport>
 `;
 
 exports[`VirtualList.svelte > render > should render using slot 1`] = `
 <virtual-list-viewport
   class="relative block svelte-1nt637a overflow-y-auto"
-  style="height: 100%;"
+  role="listbox"
+  style="height: 4px;"
   tabindex="0"
 >
   <virtual-list-contents
     class="block"
+    style="padding-top: 0px; padding-bottom: 200px;"
   >
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="0"
+      data-path="0"
     >
       <div>
         Item 1
@@ -95,7 +105,7 @@ exports[`VirtualList.svelte > render > should render using slot 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="1"
+      data-path="1"
     >
       <div>
         Item 2
@@ -105,7 +115,7 @@ exports[`VirtualList.svelte > render > should render using slot 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="2"
+      data-path="2"
     >
       <div>
         Item 3
@@ -115,7 +125,7 @@ exports[`VirtualList.svelte > render > should render using slot 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="3"
+      data-path="3"
     >
       <div>
         Item 4
@@ -125,7 +135,7 @@ exports[`VirtualList.svelte > render > should render using slot 1`] = `
     <virtual-list-item
       aria-current="false"
       aria-selected="false"
-      data-index="4"
+      data-path="4"
     >
       <div>
         Item 5
@@ -133,5 +143,11 @@ exports[`VirtualList.svelte > render > should render using slot 1`] = `
        
     </virtual-list-item>
   </virtual-list-contents>
+  <iframe
+    aria-hidden="true"
+    src="about:blank"
+    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+    tabindex="-1"
+  />
 </virtual-list-viewport>
 `;
