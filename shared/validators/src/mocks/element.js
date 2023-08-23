@@ -52,3 +52,19 @@ export function createNestedElement(item) {
 
 	return element
 }
+
+export function mixedSizeElements(data, prop) {
+	return data.reduce(
+		(elements, { count, size }) => [
+			...elements,
+			...elementsWithSize(count, size, prop)
+		],
+		[]
+	)
+}
+
+export function elementsWithSize(count, size, prop = 'offsetHeight') {
+	return Array.from({ length: count }, () => ({
+		[prop]: size
+	}))
+}
