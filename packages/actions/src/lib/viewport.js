@@ -38,6 +38,7 @@ export function virtualListViewport(options) {
 
 		if (items.length !== cache.length) {
 			cache = Array.from({ length: items.length }).fill(null)
+			if (items.length == 0) index = -1
 		}
 		current = { lower: data.start, upper: data.end }
 
@@ -115,6 +116,7 @@ export function virtualListViewport(options) {
 		},
 		update,
 		scrollTo,
+		moveByOffset,
 		next: () => moveByOffset(1),
 		previous: () => moveByOffset(-1),
 		nextPage: () => moveByOffset(visibleCount),

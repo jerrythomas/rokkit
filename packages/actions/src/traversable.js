@@ -69,11 +69,14 @@ export function traversable(element, options) {
 	}
 
 	const update = (data) => {
-		options = { ...defaultOptions, ...options, ...data }
+		options = { ...defaultOptions, ...options, value: current.item, ...data }
 		options.nested = isNested(options.items, options.fields)
 		content.update(options.items, options.fields)
 		handlers = mapKeyboardEventsToActions(actions, options)
 		manager.update(listeners, options.enabled)
+		if (options.value !== null) {
+			current = { ...current, ...content.findByValue(options.value) }
+		}
 		// current = handleValueChange(element, data, content, current)
 	}
 

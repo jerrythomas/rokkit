@@ -109,65 +109,92 @@ describe('traversable', () => {
 			})
 		})
 
-		// it('should trigger previous on ArrowUp', async () => {
-		// 	instance = traversable(root, { items, fields: defaultFields })
+		it('should trigger previous on ArrowUp', async () => {
+			instance = traversable(root, { items, fields: defaultFields })
 
-		// 	await fireEvent.keyDown(root, { key: 'ArrowUp' })
-		// 	// console.log(handlers.move.mock.calls)
-		// 	// expect(handlers).toOnlyTrigger('move')
-		// 	expect(handlers.move).toHaveBeenDispatchedWith({
-		// 		item: items[0],
-		// 		position: [0]
-		// 	})
-		// })
+			await fireEvent.keyDown(root, { key: 'ArrowUp' })
+			// console.log(handlers.move.mock.calls)
+			// expect(handlers).toOnlyTrigger('move')
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				item: items[0],
+				position: [0]
+			})
+		})
 
-		// it('should trigger collapse on ArrowLeft', async () => {
-		// 	instance = traversable(root, { items: [] })
+		it('should trigger collapse on ArrowLeft', async () => {
+			instance = traversable(root, { items, fields: defaultFields })
 
-		// 	await fireEvent.keyDown(root, { key: 'ArrowLeft' })
-		// 	expect(handlers.collapse).not.toHaveBeenCalled()
+			await fireEvent.keyDown(root, { key: 'ArrowLeft' })
+			expect(handlers.collapse).not.toHaveBeenCalled()
 
-		// 	instance.update({ nested: true })
-		// 	await fireEvent.keyDown(root, { key: 'ArrowLeft' })
-		// 	expect(handlers).toOnlyTrigger('collapse')
-		// 	expect(handlers.collapse).toHaveBeenDispatchedWith({})
-		// })
+			instance.update({ nested: true, value: items[0] })
+			await fireEvent.keyDown(root, { key: 'ArrowLeft' })
+			expect(handlers).toOnlyTrigger('collapse')
+			expect(handlers.collapse).toHaveBeenDispatchedWith({
+				item: items[0],
+				position: [0]
+			})
+		})
 
-		// it('should trigger expand on ArrowRight', async () => {
-		// 	instance = traversable(root, { items: [] })
+		it('should trigger expand on ArrowRight', async () => {
+			instance = traversable(root, { items, fields: defaultFields })
 
-		// 	await fireEvent.keyDown(root, { key: 'ArrowRight' })
-		// 	expect(handlers.expand).not.toHaveBeenCalled()
+			await fireEvent.keyDown(root, { key: 'ArrowRight' })
+			expect(handlers.expand).not.toHaveBeenCalled()
 
-		// 	instance.update({ nested: true })
-		// 	await fireEvent.keyDown(root, { key: 'ArrowRight' })
-		// 	expect(handlers).toOnlyTrigger('expand')
-		// 	expect(handlers.expand).toHaveBeenDispatchedWith({})
-		// })
+			instance.update({ nested: true, value: items[0] })
+			await fireEvent.keyDown(root, { key: 'ArrowRight' })
+			expect(handlers).toOnlyTrigger('expand')
+			expect(handlers.expand).toHaveBeenDispatchedWith({
+				item: items[0],
+				position: [0]
+			})
+		})
 
-		// it('should trigger select on Enter', async () => {
-		// 	instance = traversable(root, { items: [] })
+		it('should trigger select on Enter', async () => {
+			instance = traversable(root, {
+				items,
+				fields: defaultFields,
+				value: items[0]
+			})
 
-		// 	await fireEvent.keyDown(root, { key: 'Enter' })
-		// 	expect(handlers).toOnlyTrigger('select')
-		// 	expect(handlers.select).toHaveBeenDispatchedWith({})
-		// })
+			await fireEvent.keyDown(root, { key: 'Enter' })
+			expect(handlers).toOnlyTrigger('select')
+			expect(handlers.select).toHaveBeenDispatchedWith({
+				item: items[0],
+				position: [0]
+			})
+		})
 
-		// it('should trigger select on Space', async () => {
-		// 	instance = traversable(root, { items: [] })
+		it('should trigger select on Space', async () => {
+			instance = traversable(root, {
+				items,
+				fields: defaultFields,
+				value: items[0]
+			})
 
-		// 	await fireEvent.keyDown(root, { key: ' ' })
-		// 	expect(handlers).toOnlyTrigger('select')
-		// 	expect(handlers.select).toHaveBeenDispatchedWith({})
-		// })
+			await fireEvent.keyDown(root, { key: ' ' })
+			expect(handlers).toOnlyTrigger('select')
+			expect(handlers.select).toHaveBeenDispatchedWith({
+				item: items[0],
+				position: [0]
+			})
+		})
 
-		// it('should trigger escape on Escape', async () => {
-		// 	instance = traversable(root, { items: [] })
+		it('should trigger escape on Escape', async () => {
+			instance = traversable(root, {
+				items,
+				fields: defaultFields,
+				value: items[0]
+			})
 
-		// 	await fireEvent.keyDown(root, { key: 'Escape' })
-		// 	expect(handlers).toOnlyTrigger('escape')
-		// 	expect(handlers.escape).toHaveBeenDispatchedWith({})
-		// })
+			await fireEvent.keyDown(root, { key: 'Escape' })
+			expect(handlers).toOnlyTrigger('escape')
+			expect(handlers.escape).toHaveBeenDispatchedWith({
+				item: items[0],
+				position: [0]
+			})
+		})
 	})
 
 	// describe('horizontal', () => {
