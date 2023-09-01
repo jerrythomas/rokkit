@@ -7,7 +7,9 @@ describe('mocks', () => {
 			'matchMediaMock',
 			'updateMedia',
 			'getMockNode',
-			'createNestedElement'
+			'createNestedElement',
+			'mixedSizeElements',
+			'elementsWithSize'
 		])
 	})
 })
