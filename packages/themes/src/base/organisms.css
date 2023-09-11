@@ -2,19 +2,26 @@
 alert-list {
   @apply top-4 right-4 w-80;
 }
-alert, error, info, warning, success {
+alert,
+error,
+info,
+warning,
+success {
   @apply px-4 py-2 border rounded select-none cursor-pointer;
 }
 alert.error {
   @apply bg-error text-error border-error;
 }
-alert.info, info {
+alert.info,
+info {
   @apply bg-info text-info border-info;
 }
-alert.warning, warning {
+alert.warning,
+warning {
   @apply bg-warn text-warn border-warn;
 }
-alert.success, success {
+alert.success,
+success {
   @apply bg-pass text-pass border-pass;
 }
 

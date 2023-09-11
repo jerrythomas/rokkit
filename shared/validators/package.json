@@ -7,7 +7,7 @@
     "matchers",
     "validators"
   ],
-  "author": "",
+  "author": "Jerry Thomas<me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",
   "dependencies": {

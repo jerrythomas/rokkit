@@ -152,8 +152,6 @@
   @apply rounded shadow relative;
 }
 
-
-
 /* Nested List and Node styles */
 .rokkit nested-list {
   @apply text-skin-800;
@@ -276,10 +274,10 @@
   @apply px-0 gap-0;
 }
 .rokkit virtual-list-viewport {
-  @apply border box-content border-skin-inset ;
+  @apply border box-content border-skin-inset;
 }
 .rokkit virtual-list-viewport:focus-within {
-  @apply outline-none ;
+  @apply outline-none;
 }
 .rokkit virtual-list {
   @apply p-2px from-transparent to-transparent rounded border border-skin-muted;
@@ -291,10 +289,11 @@
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit list:focus-within item.is-selected,
-.rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
+.rokkit
+  virtual-list-viewport:focus-within
+  virtual-list-item[aria-selected='true'],
 .rokkit tree:focus-within node[aria-selected='true'],
 .rokkit nested-list:focus-within node[aria-selected='true'] {
   @apply bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
   @apply hover:from-secondary-500 hover:to-primary-500 hover:text-skin-50;
 }
-

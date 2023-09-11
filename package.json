@@ -20,7 +20,7 @@
 		"upgrade:all": "./scripts/upgrade.sh && pnpm upgrade --latest",
 		"coverage:lcov": "pnpm coverage && ./scripts/merge-lcov.sh"
 	},
-	"author": "Jerry Thomas<me@jerrythomas.name",
+	"author": "Jerry Thomas<me@jerrythomas.name>",
 	"license": "MIT",
 	"workspaces": [
 		"packages/core",

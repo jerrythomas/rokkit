@@ -18,7 +18,10 @@ a {
 }
 
 /* Code styles */
-code, kbd, samp, pre {
+code,
+kbd,
+samp,
+pre {
   @apply font-mono font-medium;
 }
 
@@ -26,7 +29,9 @@ code, kbd, samp, pre {
 .disabled {
   @apply text-disabled;
 }
-.disabled input, .disabled textarea, .disabled select {
+.disabled input,
+.disabled textarea,
+.disabled select {
   @apply outline-disabled;
 }
 .disabled {
@@ -55,4 +60,3 @@ success {
 checkbox {
   @apply gap-2;
 }
-
