@@ -1,5 +1,5 @@
 <script>
-	import VirtualList from '../../src/Virtual.svelte'
+	import VirtualList from '../../src/VirtualList.svelte'
 
 	export let items
 	export let limit

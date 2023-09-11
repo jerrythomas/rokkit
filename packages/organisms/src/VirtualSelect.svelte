@@ -56,8 +56,8 @@
 	{#if open}
 		<VirtualList
 			items={options}
-			{value}
-			{visibleCount}
+			bind:value
+			limit={visibleCount}
 			{fields}
 			{using}
 			{start}

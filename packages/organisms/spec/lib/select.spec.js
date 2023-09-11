@@ -35,4 +35,20 @@ describe('getPosition', () => {
 		const result = getListPosition(anchor, viewport)
 		expect(result).toEqual('left: 10px;bottom: 40px;')
 	})
+
+	it('should return empty string when anchor is not defined', () => {
+		const result = getListPosition(undefined, viewport)
+		expect(result).toEqual('')
+	})
+
+	it('should return empty string when viewport is not defined', () => {
+		const result = getListPosition(anchor, undefined)
+		expect(result).toEqual('')
+	})
+
+	it('should return empty string when window is not defined', () => {
+		global.window = undefined
+		const result = getListPosition(anchor, viewport)
+		expect(result).toEqual('')
+	})
 })

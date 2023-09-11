@@ -21,7 +21,8 @@ input-range thumb.sliding::before {
 }
 
 /* Bookend styles */
-.bookend range-track span::before, .bookend range-track span::after {
+.bookend range-track span::before,
+.bookend range-track span::after {
   content: '';
   @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 }
@@ -51,10 +52,13 @@ calendar {
 calendar month-year {
   @apply bg-secondary-400 text-white;
 }
-calendar cal-body days-of-week p, calendar cal-body days-of-month p {
+calendar cal-body days-of-week p,
+calendar cal-body days-of-month p {
   @apply h-8 w-8 text-xs;
 }
-calendar cal-body days-of-week p.weekend, calendar cal-body days-of-month p.weekend, calendar cal-body days-of-month p.holiday {
+calendar cal-body days-of-week p.weekend,
+calendar cal-body days-of-month p.weekend,
+calendar cal-body days-of-month p.holiday {
   @apply text-primary-700;
 }
 calendar cal-body days-of-month {
@@ -83,7 +87,10 @@ selected-item item {
 input-field {
   @apply w-full m-0 py-1;
 }
-input-field input, input-field textarea, input-field select, input-field > field > :not(icon) {
+input-field input,
+input-field textarea,
+input-field select,
+input-field > field > :not(icon) {
   @apply flex-grow outline-none min-h-10 leading-loose px-3;
   @apply bg-skin-subtle text-skin-800;
 }
@@ -116,5 +123,3 @@ progress-bar value-bar {
   animation-iteration-count: infinite;
   animation-name: pendulum;
 }
-
-

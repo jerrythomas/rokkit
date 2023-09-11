@@ -37,6 +37,7 @@
 	},
 	"files": [
 		"src/**/*.js",
+		"src/**/*.css",
 		"src/**/*.svelte",
 		"!src/fixtures",
 		"!src/**/*.spec.js"
