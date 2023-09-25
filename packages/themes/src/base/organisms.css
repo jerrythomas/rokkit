@@ -30,13 +30,18 @@ drop-down {
   @apply overflow-visible cursor-pointer;
 }
 
+input-field > field > input-select {
+  @apply px-0;
+}
+
 input-select selected-item > icon,
 drop-down > button > span > icon {
-  @apply w-9 h-full;
+  @apply w-10 h-full;
 }
 
 input-select > selected-item,
 drop-down > button > span {
-  @apply h-9 pl-3 gap-2 items-center bg-skin-base normal-case;
+  /* @apply bg-skin-base pl-3; */
+  @apply pl-3 min-h-10 gap-2 items-center normal-case;
   @apply rounded text-skin-800;
 }
