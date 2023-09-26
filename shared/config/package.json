@@ -16,14 +16,14 @@
     "./vitest.config.js": "./vitest.config.js"
   },
   "dependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.5",
+    "@sveltejs/vite-plugin-svelte": "^2.4.6",
     "@tsconfig/svelte": "^5.0.2",
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "eslint-config-shared": "workspace:*",
-    "svelte": "^4.2.0",
+    "svelte": "^4.2.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
-    "vitest": "^0.34.4"
+    "vitest": "^0.34.5"
   },
   "publishConfig": {
     "access": "public"

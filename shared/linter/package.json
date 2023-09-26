@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@alexanderniebuhr/prettier-plugin-unocss": "^0.0.4",
-		"eslint": "^8.49.0",
+		"eslint": "^8.50.0",
 		"eslint-config-prettier": "^9.0.0",
 		"prettier": "3.0.3",
 		"prettier-plugin-svelte": "^3.0.3"
@@ -19,7 +19,7 @@
 		"access": "public"
 	},
 	"devDependencies": {
-		"eslint-plugin-svelte": "^2.33.1",
-		"svelte": "^4.2.0"
+		"eslint-plugin-svelte": "^2.33.2",
+		"svelte": "^4.2.1"
 	}
 }
