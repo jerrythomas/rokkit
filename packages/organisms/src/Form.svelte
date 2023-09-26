@@ -9,5 +9,7 @@
 
 <form on:submit>
 	<DataEditor bind:value {schema} {layout} {using} />
-	<button type="submit">Submit</button>
+	<slot>
+		<button type="submit">Submit</button>
+	</slot>
 </form>
