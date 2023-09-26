@@ -21,6 +21,7 @@
 	let open = false
 	let offsetTop
 	let icons = defaultStateIcons.selector
+	let activeItem
 
 	function handleSelect() {
 		open = false
@@ -52,6 +53,7 @@
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
 	$: activeIndex = options.findIndex((item) => item === value)
+	$: offsetTop = activeItem?.offsetTop + activeItem?.clientHeight ?? 0
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -69,10 +71,11 @@
 	on:select={handleKeySelect}
 >
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- bind:clientHeight={offsetTop} -->
 	<selected-item
 		on:click|stopPropagation={() => (open = !open)}
 		class="w-full flex items-center"
-		bind:clientHeight={offsetTop}
+		bind:this={activeItem}
 		role="option"
 		tabindex="-1"
 		aria-selected={value !== null && !open}
