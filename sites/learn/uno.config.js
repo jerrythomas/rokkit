@@ -93,12 +93,10 @@ export default defineConfig({
 		presetTypography(),
 		presetIcons({
 			collections: {
-				rokkit: FileSystemIconLoader('./static/icons', (svg) =>
-					svg.replace(/black/, 'currentColor')
-				),
-				component: FileSystemIconLoader('./static/components', (svg) =>
-					svg.replace(/black/, 'currentColor')
-				),
+				rokkit: () =>
+					import('@rokkit/icons/states.json').then((i) => i.default),
+				component: () =>
+					import('@rokkit/icons/components.json').then((i) => i.default),
 				file: FileSystemIconLoader('./static/files', (svg) =>
 					svg.replace(/black/, 'currentColor')
 				)
