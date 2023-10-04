@@ -36,11 +36,7 @@
 		"vitest": "~0.34.6"
 	},
 	"files": [
-		"src/**/*.js",
-		"src/**/*.css",
-		"src/**/*.svelte",
-		"!src/fixtures",
-		"!src/**/*.spec.js"
+		"src"
 	],
 	"exports": {
 		"./modern.css": "./src/modern.css",

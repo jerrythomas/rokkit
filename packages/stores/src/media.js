@@ -3,6 +3,18 @@
  */
 import { writable } from 'svelte/store'
 
+const defaultBreakpoints = {
+	small: '(max-width: 767px)',
+	medium: '(min-width: 768px) and (max-width: 1023px)',
+	large: '(min-width: 1024px)',
+	extraLarge: '(min-width: 1280px)',
+	short: '(max-height: 399px)',
+	landscape: '(orientation: landscape)',
+	tiny: '(orientation: portrait) and (max-height: 599px)',
+	dark: '(prefers-color-scheme: dark)',
+	noanimations: '(prefers-reduced-motion: reduce)'
+}
+
 /**
  * @typedef {Object.<string, boolean>} MediaAttributes - Media object with additional attributes and a classNames property.
  *
@@ -37,7 +49,7 @@ export function calculate(queries) {
  * @param {*} breakpoints
  * @returns
  */
-export function watchMedia(breakpoints) {
+export function watchMedia(breakpoints = defaultBreakpoints) {
 	const { set, subscribe } = writable({ classNames: '' })
 	if (typeof window === 'undefined') return { subscribe }
 
