@@ -33,9 +33,12 @@
 	],
 	"exports": {
 		"./package.json": "./package.json",
-		"./ui.json": "./lib/states.json",
+		"./ui.json": "./lib/base.json",
+		"./light.json": "./lib/light.json",
+		"./solid.json": "./lib/solid.json",
+		"./twotone.json": "./lib/twotone.json",
 		"./components.json": "./lib/components.json",
 		"./auth.json": "./lib/auth.json",
-		".": "./lib/states.json"
+		".": "./lib/base.json"
 	}
 }
