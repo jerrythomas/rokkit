@@ -1,6 +1,6 @@
 {
   "prefix": "components",
-  "lastModified": 1696311540,
+  "lastModified": 1696403999,
   "icons": {
     "accordion": {
       "body": "<g fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M3 17a1 1 0 00-1 1v3a1 1 0 001 1h18a1 1 0 001-1v-3a1 1 0 00-1-1H3Zm16.133 2.492L18 18.409l.668-.699 1.832 1.75-1.75 1.832-.7-.667 1.083-1.133Z\" clip-rule=\"evenodd\"/><path fill-opacity=\".5\" d=\"M2 7h20v7.5a1 1 0 01-1 1H3a1 1 0 01-1-1V7Z\"/><path fill-rule=\"evenodd\" d=\"M3 2a1 1 0 00-1 1v4h20V3a1 1 0 00-1-1H3Zm15.8 2.383 1.084-1.133.698.668-1.75 1.832L17 4l.668-.7L18.8 4.384Z\" clip-rule=\"evenodd\"/></g>"

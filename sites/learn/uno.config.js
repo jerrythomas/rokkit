@@ -93,8 +93,7 @@ export default defineConfig({
 		presetTypography(),
 		presetIcons({
 			collections: {
-				rokkit: () =>
-					import('@rokkit/icons/states.json').then((i) => i.default),
+				rokkit: () => import('@rokkit/icons/ui.json').then((i) => i.default),
 				component: () =>
 					import('@rokkit/icons/components.json').then((i) => i.default),
 				file: FileSystemIconLoader('./static/files', (svg) =>
