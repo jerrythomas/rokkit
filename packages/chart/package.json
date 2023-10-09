@@ -33,7 +33,7 @@
 		"shared-config": "workspace:*",
 		"svelte": "^4.2.1",
 		"typescript": "^5.2.2",
-		"vite": "^4.4.9",
+		"vite": "^4.4.11",
 		"vitest": "~0.34.6"
 	},
 	"dependencies": {
@@ -48,7 +48,7 @@
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"date-fns": "^2.30.0",
-		"ramda": "^0.29.0",
+		"ramda": "^0.29.1",
 		"yootils": "^0.3.1"
 	},
 	"files": [

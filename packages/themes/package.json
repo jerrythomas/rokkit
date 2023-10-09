@@ -32,7 +32,7 @@
 		"shared-config": "workspace:*",
 		"svelte": "^4.2.1",
 		"typescript": "^5.2.2",
-		"vite": "^4.4.9",
+		"vite": "^4.4.11",
 		"vitest": "~0.34.6"
 	},
 	"files": [
