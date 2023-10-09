@@ -35,7 +35,7 @@
 		"svelte": "^4.2.1",
 		"typescript": "^5.2.2",
 		"validators": "workspace:latest",
-		"vite": "^4.4.9",
+		"vite": "^4.4.11",
 		"vitest": "~0.34.6"
 	},
 	"files": [
@@ -58,7 +58,7 @@
 	"dependencies": {
 		"@rokkit/actions": "workspace:latest",
 		"@rokkit/core": "workspace:latest",
-		"marked": "^9.0.3",
+		"marked": "^9.1.0",
 		"marked-gfm-heading-id": "^3.1.0",
 		"marked-mangle": "^1.1.4",
 		"prism-svelte": "^0.5.0",

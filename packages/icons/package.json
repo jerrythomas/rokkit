@@ -19,7 +19,7 @@
 		"access": "public"
 	},
 	"dependencies": {
-		"@mdi/svg": "^7.2.96"
+		"@mdi/svg": "^7.3.67"
 	},
 	"devDependencies": {
 		"@iconify/tools": "3.0.5",
