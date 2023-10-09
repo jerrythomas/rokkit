@@ -86,7 +86,7 @@
 
 /* Styles for 'rating' class */
 .rokkit rating {
-  @apply text-skin-600 text-xl h-10 justify-center rounded focus:outline focus:outline-secondary;
+  @apply text-skin-600 text-xl h-9 justify-center rounded focus:outline focus:outline-secondary;
 }
 .rokkit rating > icon {
   @apply w-8;
