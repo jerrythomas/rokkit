@@ -20,7 +20,7 @@ export function ThemeStore() {
 		const { name, mode } = value ?? {}
 		if (typeof name === 'string' && typeof mode === 'string') {
 			store.set(value)
-		} else if (value && value != {}) {
+		} else if (value !== null && value != {}) {
 			console.error('Both "name" and "mode" must be strings', value)
 		}
 	}

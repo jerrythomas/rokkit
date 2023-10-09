@@ -92,7 +92,7 @@ input-field textarea,
 input-field select,
 input-field > field > :not(icon) {
   @apply px-3;
-  @apply flex-grow outline-none min-h-10 leading-loose;
+  @apply flex-grow outline-none min-h-9 leading-loose;
   @apply bg-skin-subtle text-skin-800;
 }
 input-field > label {
