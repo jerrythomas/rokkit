@@ -4,7 +4,7 @@
 	export let properties
 </script>
 
-<aside class="mb-6 flex justify-center gap-4 bg-skin-subtle py-2">
+<aside class="mb-6 flex justify-center gap-4 bg-neutral-subtle py-2">
 	{#each properties as opt}
 		<div class="flex items-center gap-2 px-2">
 			<p>{opt.label}</p>

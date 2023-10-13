@@ -6,14 +6,14 @@
     --secondary-saturation: 80%;
     --accent-hue: 329;
     --accent-saturation: 80%;
-    --skin-hue: 223;
-    --skin-saturation: 11.5%;
+    --neutral-hue: 223;
+    --neutral-saturation: 11.5%;
     --scroll-width: 0.5rem;
   }
   /* light theme colors */
   .light {
-    --text-white: var(--skin-hue), var(--skin-saturation), 100%;
-    --text-black: var(--skin-hue), var(--skin-saturation), 20%;
+    --text-white: var(--neutral-hue), var(--neutral-saturation), 100%;
+    --text-black: var(--neutral-hue), var(--neutral-saturation), 20%;
 
     --primary-50: var(--primary-hue), var(--primary-saturation), 95%;
     --primary-100: var(--primary-hue), var(--primary-saturation), 90%;
@@ -48,17 +48,17 @@
     --accent-800: var(--accent-hue), var(--accent-saturation), 30%;
     --accent-900: var(--accent-hue), var(--accent-saturation), 20%;
 
-    --skin-50: var(--skin-hue), var(--skin-saturation), 100%;
-    --skin-100: var(--skin-hue), var(--skin-saturation), 95%;
-    --skin-200: var(--skin-hue), var(--skin-saturation), 90%;
-    --skin-300: var(--skin-hue), var(--skin-saturation), 80%;
-    --skin-400: var(--skin-hue), var(--skin-saturation), 70%;
-    --skin-500: var(--skin-hue), var(--skin-saturation), 60%;
-    --skin-600: var(--skin-hue), var(--skin-saturation), 50%;
-    --skin-700: var(--skin-hue), var(--skin-saturation), 40%;
-    --skin-800: var(--skin-hue), var(--skin-saturation), 30%;
-    --skin-900: var(--skin-hue), var(--skin-saturation), 20%;
-    --skin-zebra: var(--skin-hue), var(--skin-saturation), 98%;
+    --neutral-50: var(--neutral-hue), var(--neutral-saturation), 100%;
+    --neutral-100: var(--neutral-hue), var(--neutral-saturation), 95%;
+    --neutral-200: var(--neutral-hue), var(--neutral-saturation), 90%;
+    --neutral-300: var(--neutral-hue), var(--neutral-saturation), 80%;
+    --neutral-400: var(--neutral-hue), var(--neutral-saturation), 70%;
+    --neutral-500: var(--neutral-hue), var(--neutral-saturation), 60%;
+    --neutral-600: var(--neutral-hue), var(--neutral-saturation), 50%;
+    --neutral-700: var(--neutral-hue), var(--neutral-saturation), 40%;
+    --neutral-800: var(--neutral-hue), var(--neutral-saturation), 30%;
+    --neutral-900: var(--neutral-hue), var(--neutral-saturation), 20%;
+    --neutral-zebra: var(--neutral-hue), var(--neutral-saturation), 98%;
 
     /* light theme syntax colors */
     --tab-size: 2;
@@ -84,8 +84,8 @@
 
   /* dark theme colors */
   .dark {
-    --text-white: var(--skin-hue), var(--skin-saturation), 20%;
-    --text-black: var(--skin-hue), var(--skin-saturation), 100%;
+    --text-white: var(--neutral-hue), var(--neutral-saturation), 20%;
+    --text-black: var(--neutral-hue), var(--neutral-saturation), 100%;
 
     --primary-50: var(--primary-hue), var(--primary-saturation), 20%;
     --primary-100: var(--primary-hue), var(--primary-saturation), 30%;
@@ -120,17 +120,17 @@
     --accent-800: var(--accent-hue), var(--accent-saturation), 90%;
     --accent-900: var(--accent-hue), var(--accent-saturation), 95%;
 
-    --skin-50: var(--skin-hue), var(--skin-saturation), 20%;
-    --skin-100: var(--skin-hue), var(--skin-saturation), 25%;
-    --skin-200: var(--skin-hue), var(--skin-saturation), 30%;
-    --skin-300: var(--skin-hue), var(--skin-saturation), 40%;
-    --skin-400: var(--skin-hue), var(--skin-saturation), 50%;
-    --skin-500: var(--skin-hue), var(--skin-saturation), 60%;
-    --skin-600: var(--skin-hue), var(--skin-saturation), 70%;
-    --skin-700: var(--skin-hue), var(--skin-saturation), 80%;
-    --skin-800: var(--skin-hue), var(--skin-saturation), 90%;
-    --skin-900: var(--skin-hue), var(--skin-saturation), 100%;
-    --skin-zebra: var(--skin-hue), var(--skin-saturation), 22%;
+    --neutral-50: var(--neutral-hue), var(--neutral-saturation), 20%;
+    --neutral-100: var(--neutral-hue), var(--neutral-saturation), 25%;
+    --neutral-200: var(--neutral-hue), var(--neutral-saturation), 30%;
+    --neutral-300: var(--neutral-hue), var(--neutral-saturation), 40%;
+    --neutral-400: var(--neutral-hue), var(--neutral-saturation), 50%;
+    --neutral-500: var(--neutral-hue), var(--neutral-saturation), 60%;
+    --neutral-600: var(--neutral-hue), var(--neutral-saturation), 70%;
+    --neutral-700: var(--neutral-hue), var(--neutral-saturation), 80%;
+    --neutral-800: var(--neutral-hue), var(--neutral-saturation), 90%;
+    --neutral-900: var(--neutral-hue), var(--neutral-saturation), 100%;
+    --neutral-zebra: var(--neutral-hue), var(--neutral-saturation), 22%;
 
     /* dark theme syntax colors */
     --code-bg: #282c34;
@@ -149,8 +149,8 @@
 
   @media (prefers-color-scheme: light) {
     body:not(.dark) {
-      --text-white: var(--skin-hue), var(--skin-saturation), 100%;
-      --text-black: var(--skin-hue), var(--skin-saturation), 20%;
+      --text-white: var(--neutral-hue), var(--neutral-saturation), 100%;
+      --text-black: var(--neutral-hue), var(--neutral-saturation), 20%;
 
       --primary-50: var(--primary-hue), var(--primary-saturation), 95%;
       --primary-100: var(--primary-hue), var(--primary-saturation), 90%;
@@ -185,17 +185,17 @@
       --accent-800: var(--accent-hue), var(--accent-saturation), 30%;
       --accent-900: var(--accent-hue), var(--accent-saturation), 20%;
 
-      --skin-50: var(--skin-hue), var(--skin-saturation), 100%;
-      --skin-100: var(--skin-hue), var(--skin-saturation), 95%;
-      --skin-200: var(--skin-hue), var(--skin-saturation), 90%;
-      --skin-300: var(--skin-hue), var(--skin-saturation), 80%;
-      --skin-400: var(--skin-hue), var(--skin-saturation), 70%;
-      --skin-500: var(--skin-hue), var(--skin-saturation), 60%;
-      --skin-600: var(--skin-hue), var(--skin-saturation), 50%;
-      --skin-700: var(--skin-hue), var(--skin-saturation), 40%;
-      --skin-800: var(--skin-hue), var(--skin-saturation), 30%;
-      --skin-900: var(--skin-hue), var(--skin-saturation), 20%;
-      --skin-zebra: var(--skin-hue), var(--skin-saturation), 98%;
+      --neutral-50: var(--neutral-hue), var(--neutral-saturation), 100%;
+      --neutral-100: var(--neutral-hue), var(--neutral-saturation), 95%;
+      --neutral-200: var(--neutral-hue), var(--neutral-saturation), 90%;
+      --neutral-300: var(--neutral-hue), var(--neutral-saturation), 80%;
+      --neutral-400: var(--neutral-hue), var(--neutral-saturation), 70%;
+      --neutral-500: var(--neutral-hue), var(--neutral-saturation), 60%;
+      --neutral-600: var(--neutral-hue), var(--neutral-saturation), 50%;
+      --neutral-700: var(--neutral-hue), var(--neutral-saturation), 40%;
+      --neutral-800: var(--neutral-hue), var(--neutral-saturation), 30%;
+      --neutral-900: var(--neutral-hue), var(--neutral-saturation), 20%;
+      --neutral-zebra: var(--neutral-hue), var(--neutral-saturation), 98%;
 
       /* light theme syntax colors */
       --tab-size: 2;
@@ -222,8 +222,8 @@
 
   @media (prefers-color-scheme: dark) {
     body:not(.light) {
-      --text-white: var(--skin-hue), var(--skin-saturation), 20%;
-      --text-black: var(--skin-hue), var(--skin-saturation), 100%;
+      --text-white: var(--neutral-hue), var(--neutral-saturation), 20%;
+      --text-black: var(--neutral-hue), var(--neutral-saturation), 100%;
 
       --primary-50: var(--primary-hue), var(--primary-saturation), 20%;
       --primary-100: var(--primary-hue), var(--primary-saturation), 30%;
@@ -258,17 +258,17 @@
       --accent-800: var(--accent-hue), var(--accent-saturation), 90%;
       --accent-900: var(--accent-hue), var(--accent-saturation), 95%;
 
-      --skin-50: var(--skin-hue), var(--skin-saturation), 20%;
-      --skin-100: var(--skin-hue), var(--skin-saturation), 25%;
-      --skin-200: var(--skin-hue), var(--skin-saturation), 30%;
-      --skin-300: var(--skin-hue), var(--skin-saturation), 40%;
-      --skin-400: var(--skin-hue), var(--skin-saturation), 50%;
-      --skin-500: var(--skin-hue), var(--skin-saturation), 60%;
-      --skin-600: var(--skin-hue), var(--skin-saturation), 70%;
-      --skin-700: var(--skin-hue), var(--skin-saturation), 80%;
-      --skin-800: var(--skin-hue), var(--skin-saturation), 90%;
-      --skin-900: var(--skin-hue), var(--skin-saturation), 100%;
-      --skin-zebra: var(--skin-hue), var(--skin-saturation), 22%;
+      --neutral-50: var(--neutral-hue), var(--neutral-saturation), 20%;
+      --neutral-100: var(--neutral-hue), var(--neutral-saturation), 25%;
+      --neutral-200: var(--neutral-hue), var(--neutral-saturation), 30%;
+      --neutral-300: var(--neutral-hue), var(--neutral-saturation), 40%;
+      --neutral-400: var(--neutral-hue), var(--neutral-saturation), 50%;
+      --neutral-500: var(--neutral-hue), var(--neutral-saturation), 60%;
+      --neutral-600: var(--neutral-hue), var(--neutral-saturation), 70%;
+      --neutral-700: var(--neutral-hue), var(--neutral-saturation), 80%;
+      --neutral-800: var(--neutral-hue), var(--neutral-saturation), 90%;
+      --neutral-900: var(--neutral-hue), var(--neutral-saturation), 100%;
+      --neutral-zebra: var(--neutral-hue), var(--neutral-saturation), 22%;
 
       /* one dark theme syntax colors */
       --code-bg: #282c34;

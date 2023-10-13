@@ -1,3 +1,3 @@
 export default {
-	skin: 'yellow-orange'
+	neutral: 'yellow-orange'
 }

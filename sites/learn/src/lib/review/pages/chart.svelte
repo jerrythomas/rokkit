@@ -153,17 +153,17 @@
 
 <style lang="postcss">
 	card {
-		@apply bg-skin-50;
+		@apply bg-neutral-50;
 	}
 	:global(.chart) {
-		@apply border border-skin-200 bg-skin-50 text-skin-100 rounded-lg;
+		@apply border border-neutral-200 bg-neutral-50 text-neutral-100 rounded-lg;
 	}
 	:global(.axis) {
-		@apply text-skin-700 stroke-current;
+		@apply text-neutral-700 stroke-current;
 		stroke-width: 0.5;
 	}
 	:global(.axis .label) {
-		@apply text-skin-700 fill-current;
+		@apply text-neutral-700 fill-current;
 		stroke: none;
 	}
 	:global(.axis .grid) {

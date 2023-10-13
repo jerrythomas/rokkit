@@ -52,7 +52,7 @@ export function themeColors(modifier = 'none') {
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
 	let states = ['info', 'error', 'warn', 'pass']
-	let variants = ['skin', 'primary', 'secondary', 'accent']
+	let variants = ['neutral', 'primary', 'secondary', 'accent']
 	let colors = states.reduce(
 		(acc, state) => ({ ...acc, [state]: stateColors(state, modifier) }),
 		{}
@@ -61,10 +61,10 @@ export function themeColors(modifier = 'none') {
 		(acc, variant) => ({ ...acc, [variant]: shadesOf(variant, modifier) }),
 		colors
 	)
-	colors.skin = {
-		...colors.skin,
-		contrast: fn(`var(--skin-800)`),
-		zebra: fn(`var(--skin-zebra)`)
+	colors.neutral = {
+		...colors.neutral,
+		contrast: fn(`var(--neutral-800)`),
+		zebra: fn(`var(--neutral-zebra)`)
 	}
 
 	return colors

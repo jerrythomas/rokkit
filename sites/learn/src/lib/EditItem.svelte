@@ -22,7 +22,7 @@
 
 <style lang="postcss">
 	input[type='text'] {
-		@apply border-skin-200 px-2 leading-loose;
+		@apply border-neutral-200 px-2 leading-loose;
 	}
 	input[type='range'] {
 		@apply h-auto w-full;

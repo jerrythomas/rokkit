@@ -17,7 +17,7 @@
 
 	let selector
 	let open = true
-	let index = null
+	// let index = null
 	let start = 0
 
 	$: fields = { ...defaultFields, ...fields }
@@ -40,10 +40,7 @@
 				<p class="placeholder">{placeholder}</p>
 			{:else}
 				{@const component = getComponent(value, fields, using)}
-				{@const props =
-					typeof value === 'object'
-						? value[fields.props] || { fields }
-						: { fields }}
+				{@const props = typeof value === 'object' ? value[fields.props] || { fields } : { fields }}
 				<svelte:component this={component} bind:value {...props} />
 			{/if}
 		</slot>

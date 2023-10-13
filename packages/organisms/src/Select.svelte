@@ -2,7 +2,7 @@
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 	import { Slider, Icon } from '@rokkit/atoms'
 	import { dismissable, navigable } from '@rokkit/actions'
-	import { createEventDispatcher, tick } from 'svelte'
+	import { createEventDispatcher } from 'svelte'
 	import List from './List.svelte'
 	import { Item } from '@rokkit/molecules'
 
@@ -82,11 +82,7 @@
 	>
 		<slot>
 			<item>
-				<svelte:component
-					this={using.default}
-					value={value ?? placeholder}
-					{fields}
-				/>
+				<svelte:component this={using.default} value={value ?? placeholder} {fields} />
 			</item>
 		</slot>
 		{#if open}
@@ -97,14 +93,7 @@
 	</selected-item>
 	{#if open}
 		<Slider top={offsetTop}>
-			<List
-				items={options}
-				{fields}
-				{using}
-				bind:value
-				on:select={handleSelect}
-				tabindex="-1"
-			/>
+			<List items={options} {fields} {using} bind:value on:select={handleSelect} tabindex="-1" />
 		</Slider>
 	{/if}
 </input-select>

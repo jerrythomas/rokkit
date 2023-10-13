@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Chart.svelte > should render 1`] = `
+<body>
+  <div>
+    <svg
+      class="chart"
+      viewBox="0 0 800 450"
+      width="100%"
+    />
+  </div>
+</body>
+`;

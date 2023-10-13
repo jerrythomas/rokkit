@@ -50,7 +50,7 @@
 		{#each data as { label }, stage}
 			{#if label}
 				<p
-					class="col-span-3 w-full flex justify-center font-medium leading-loose text-center text-skin-800"
+					class="col-span-3 w-full flex justify-center font-medium leading-loose text-center text-neutral-800"
 					class:pending={stage > currentStage}
 				>
 					{label}
@@ -66,6 +66,6 @@
 		grid-template-columns: repeat(var(--count), 2fr 6fr 2fr);
 	}
 	.pending {
-		@apply text-skin-500 font-light;
+		@apply text-neutral-500 font-light;
 	}
 </style>

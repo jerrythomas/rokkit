@@ -33,7 +33,7 @@
 /**
  * @typedef Tutorial
  * @property {string} name
- * @property {string} [skin]
+ * @property {string} [neutral]
  * @property {Array<TutorialSlide>} slides
  */
 /**

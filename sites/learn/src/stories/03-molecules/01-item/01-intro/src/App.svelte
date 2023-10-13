@@ -12,7 +12,7 @@
 	<Item value="Sample Text" />
 </item>
 <item>
-	<Item value={{ text: 'A Sun Icon', icon: 'i-rokkit:mode-light-solid' }} />
+	<Item value={{ text: 'A Sun Icon', icon: 'i-rokkit:mode-light' }} />
 </item>
 <item>
 	<Item value={avatar} />

@@ -1,6 +1,6 @@
 export const layers = [
 	{
-		shade: 'text-skin-muted',
+		shade: 'text-neutral-muted',
 		items: [
 			{ cx: 30, cy: 61, r: 50 },
 			{ cx: 72, cy: 72, r: 50 },
@@ -14,7 +14,7 @@ export const layers = [
 		]
 	},
 	{
-		shade: 'text-skin-subtle',
+		shade: 'text-neutral-subtle',
 		items: [
 			{ cx: 28.5, cy: 44, r: 30 },
 			{ cx: 75.5, cy: 60, r: 30 },
@@ -26,7 +26,7 @@ export const layers = [
 		]
 	},
 	{
-		shade: 'text-skin-base',
+		shade: 'text-neutral-base',
 		items: [
 			{ cx: -5, cy: 54.5, rx: 50, ry: 35.5 },
 			{ cx: 37, cy: 78, r: 35 },

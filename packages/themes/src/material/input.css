@@ -2,8 +2,8 @@
   @apply border-box focus:outline-none;
 }
 .material input-field {
-  @apply box-border border border-skin-muted rounded;
-  @apply text-skin-800 leading-loose relative pb-0;
+  @apply box-border border border-neutral-muted rounded;
+  @apply text-neutral-800 leading-loose relative pb-0;
 }
 .material input-field.empty label {
   @apply absolute top-0 my-3.5 align-middle;
@@ -20,7 +20,7 @@
 
 .material input-field label,
 .material input-field:focus-within label {
-  @apply bg-skin-base absolute block z-1;
+  @apply bg-neutral-base absolute block z-1;
   @apply -top-2 left-3 my-0 px-1 leading-tight opacity-100;
 }
 
@@ -28,13 +28,13 @@
   @apply rounded cursor-pointer select-none;
 }
 .material input-select > selected-item {
-  @apply h-10 pl-4 pr-0 items-center bg-skin-base normal-case;
-  @apply rounded border border-skin-muted text-skin-800;
-  @apply hover:bg-skin-muted hover:border-secondary-600;
+  @apply h-10 pl-4 pr-0 items-center bg-neutral-base normal-case;
+  @apply rounded border border-neutral-muted text-neutral-800;
+  @apply hover:bg-neutral-muted hover:border-secondary-600;
 }
 
 .material input-select:hover square-icon {
-  @apply border-skin-500;
+  @apply border-neutral-500;
 }
 .material input-select scroll {
   @apply mt-2 shadow-lg;
@@ -51,7 +51,7 @@
 }
 
 .material rating {
-  @apply text-skin-600 text-xl focus:outline-none;
+  @apply text-neutral-600 text-xl focus:outline-none;
 }
 .material rating > icon {
   @apply w-8;
