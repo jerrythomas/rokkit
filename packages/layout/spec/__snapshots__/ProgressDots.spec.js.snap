@@ -8,7 +8,7 @@ exports[`ProgressDots.svelte > should allow clicking first item only 1`] = `
     >
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -18,7 +18,7 @@ exports[`ProgressDots.svelte > should allow clicking first item only 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -28,7 +28,7 @@ exports[`ProgressDots.svelte > should allow clicking first item only 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -38,7 +38,7 @@ exports[`ProgressDots.svelte > should allow clicking first item only 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -48,7 +48,7 @@ exports[`ProgressDots.svelte > should allow clicking first item only 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -79,7 +79,7 @@ exports[`ProgressDots.svelte > should render steps as dots 1`] = `
     >
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -89,7 +89,7 @@ exports[`ProgressDots.svelte > should render steps as dots 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -99,7 +99,7 @@ exports[`ProgressDots.svelte > should render steps as dots 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -109,7 +109,7 @@ exports[`ProgressDots.svelte > should render steps as dots 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"
@@ -119,7 +119,7 @@ exports[`ProgressDots.svelte > should render steps as dots 1`] = `
       />
       <dot
         aria-selected="false"
-        class="step h-3 w-3 flex border-2 border-skin-100 rounded-full bg-skin-300 svelte-vrkqtw"
+        class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
         data-active="false"
         data-clickable="false"
         data-completed="false"

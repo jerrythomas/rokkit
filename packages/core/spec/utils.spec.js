@@ -150,11 +150,11 @@ describe('utils', () => {
 				accent: shadesOf('accent', 'hsl'),
 				primary: shadesOf('primary', 'hsl'),
 				secondary: shadesOf('secondary', 'hsl'),
-				skin: {
-					...shadesOf('skin', 'hsl'),
-					base: 'hsl(var(--skin-100))',
-					contrast: 'hsl(var(--skin-800))',
-					zebra: 'hsl(var(--skin-zebra))'
+				neutral: {
+					...shadesOf('neutral', 'hsl'),
+					base: 'hsl(var(--neutral-100))',
+					contrast: 'hsl(var(--neutral-800))',
+					zebra: 'hsl(var(--neutral-zebra))'
 				},
 				info: stateColors('info', 'hsl'),
 				error: stateColors('error', 'hsl'),
@@ -172,11 +172,11 @@ describe('utils', () => {
 					accent: shadesOf('accent'),
 					primary: shadesOf('primary'),
 					secondary: shadesOf('secondary'),
-					skin: {
-						...shadesOf('skin'),
-						base: 'var(--skin-100)',
-						contrast: 'var(--skin-800)',
-						zebra: 'var(--skin-zebra)'
+					neutral: {
+						...shadesOf('neutral'),
+						base: 'var(--neutral-100)',
+						contrast: 'var(--neutral-800)',
+						zebra: 'var(--neutral-zebra)'
 					},
 					info: stateColors('info'),
 					error: stateColors('error'),

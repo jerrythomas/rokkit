@@ -24,13 +24,13 @@ export default defineConfig({
 	safelist: [
 		...defaultIcons,
 		...components.map((icon) => `i-component:${icon}`),
-		'text-skin-base',
-		'text-skin-subtle',
-		'text-skin-muted',
-		'bg-skin-base',
-		'bg-skin-subtle',
-		'bg-skin-muted',
-		'bg-skin-inset',
+		'text-neutral-base',
+		'text-neutral-subtle',
+		'text-neutral-muted',
+		'bg-neutral-base',
+		'bg-neutral-subtle',
+		'bg-neutral-muted',
+		'bg-neutral-inset',
 		'i-rokkit:github',
 		'i-rokkit:menu',
 		'i-rokkit:accordion-closed',
@@ -60,9 +60,9 @@ export default defineConfig({
 		'bg-pass': 'bg-green-100',
 		'text-pass': 'text-green-800',
 		'border-pass': 'border-green-700',
-		'bg-disabled': 'bg-skin-100',
-		'text-disabled': 'text-skin-300',
-		'border-disabled': 'border-skin-700',
+		'bg-disabled': 'bg-neutral-100',
+		'text-disabled': 'text-neutral-300',
+		'border-disabled': 'border-neutral-700',
 		'item-selected': 'border-l-3 border-secondary',
 		'state-danger': 'text-red',
 		svelte: 'i-file:svelte',
@@ -70,21 +70,14 @@ export default defineConfig({
 		folder: 'i-file:folder',
 		css: 'i-file:css',
 		'item-hover':
-			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-skin-contrast'
+			'bg-gradient-to-r from-primary-200 via-primary-200 bg-secondary-200 text-neutral-contrast'
 	},
 	theme: {
 		fontFamily: {
 			mono: ['Victor Mono', 'monospace'],
 			heading: ['Open Sans', 'sans-serif'],
 			sans: ['Overpass', 'ui-serif', 'sans-serif'],
-			body: [
-				'Open Sans',
-				'-apple-system',
-				'system-ui',
-				'Segoe-UI',
-				'ui-serif',
-				'sans-serif'
-			]
+			body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
 		},
 		colors: themeColors('hsl')
 	},
@@ -94,11 +87,9 @@ export default defineConfig({
 		presetIcons({
 			collections: {
 				rokkit: () => import('@rokkit/icons/ui.json').then((i) => i.default),
-				component: () =>
-					import('@rokkit/icons/components.json').then((i) => i.default),
-				file: FileSystemIconLoader('./static/files', (svg) =>
-					svg.replace(/black/, 'currentColor')
-				)
+				logo: () => import('@rokkit/icons/auth.json').then((i) => i.default),
+				component: () => import('@rokkit/icons/components.json').then((i) => i.default),
+				file: FileSystemIconLoader('./static/files', (svg) => svg.replace(/black/, 'currentColor'))
 			}
 		})
 	],

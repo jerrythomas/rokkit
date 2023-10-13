@@ -3,14 +3,14 @@
 .minimal textarea,
 .minimal select,
 .minimal fieldset {
-  @apply rounded leading-loose px-2 border border-skin-muted outline-none;
+  @apply rounded leading-loose px-2 border border-neutral-muted outline-none;
 }
 
 .minimal fieldset {
   @apply p-4 pt-2 gap-2 rounded-md;
 }
 .minimal fieldset legend {
-  @apply px-2 border-l border-r rounded-md leading-tight border-skin-muted hover:text-primary select-none;
+  @apply px-2 border-l border-r rounded-md leading-tight border-neutral-muted hover:text-primary select-none;
 }
 .minimal fieldset icon {
   @apply text-2xl;
@@ -21,14 +21,14 @@
 }
 
 .minimal input-field field {
-  @apply box-border border-b-1 border-skin-muted min-h-9 overflow-hidden;
+  @apply box-border border-b-1 border-neutral-muted min-h-9 overflow-hidden;
   @apply focus-within:border-b-secondary-600;
 }
 .minimal input-field:focus-within label {
   @apply text-secondary-600;
 }
 .minimal input-field span {
-  @apply border-r border-skin-muted bg-skin-base px-1 h-full aspect-square;
+  @apply border-r border-neutral-muted bg-neutral-base px-1 h-full aspect-square;
 }
 .minimal input-field input,
 .minimal input-field textarea,
@@ -38,10 +38,10 @@
 }
 
 .minimal input-field label {
-  @apply leading-6 w-full uppercase text-sm text-skin-500;
+  @apply leading-6 w-full uppercase text-sm text-neutral-500;
 }
 .minimal input-field message {
-  @apply px-2 py-1 bg-skin-base rounded;
+  @apply px-2 py-1 bg-neutral-base rounded;
 }
 
 .minimal input-field.fail {
@@ -52,7 +52,7 @@
   @apply h-1 mt-3 relative;
 }
 .minimal input-range range-track span {
-  @apply bg-skin-subtle box-border border-skin-muted rounded-full;
+  @apply bg-neutral-subtle box-border border-neutral-muted rounded-full;
 }
 .minimal input-range range-track selected {
   @apply border -top-0px -bottom-0px border-secondary-500 bg-secondary-600 rounded-full;
@@ -82,7 +82,7 @@
   @apply h-6;
 }
 .minimal tick span {
-  @apply border-skin-500 h-full;
+  @apply border-neutral-500 h-full;
 }
 .minimal tick p {
   @apply items-top;

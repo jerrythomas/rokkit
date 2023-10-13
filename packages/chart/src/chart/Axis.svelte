@@ -4,15 +4,11 @@
 
 	let chart = getContext('chart')
 
-	let top =
-		orient === 'bottom'
-			? $chart.height - $chart.margin.bottom
-			: $chart.margin.top
-	let left =
-		orient === 'right' ? $chart.width - $chart.margin.right : $chart.margin.left
-	let tickSizeInner = $chart.theme.tick.size.inner || 6
-	let tickSizeOuter = $chart.theme.tick.size.outer || 6
-	let tickPadding = $chart.theme.tick.size.padding || 3
+	let top = orient === 'bottom' ? $chart.height - $chart.margin?.bottom ?? 0 : $chart.margin.top
+	let left = orient === 'right' ? $chart.width - $chart.margin.right : $chart.margin?.left ?? 0
+	let tickSizeInner = $chart.theme.tick?.size?.inner || 6
+	let tickSizeOuter = $chart.theme.tick?.size?.outer || 6
+	let tickPadding = $chart.theme.tick?.size?.padding || 3
 
 	function axisPath(vertical, scale) {
 		const range = scale.range()
@@ -21,8 +17,7 @@
 			: `M${range[0]},${k * tickSizeOuter}V0H${range[1]}V${k * tickSizeOuter}`
 	}
 
-	$: anchor =
-		orient === 'right' ? 'start' : orient === 'left' ? 'end' : 'middle'
+	$: anchor = orient === 'right' ? 'start' : orient === 'left' ? 'end' : 'middle'
 	$: k = orient === 'top' || orient === 'left' ? -1 : 1
 	$: dy = orient === 'top' ? '0em' : orient === 'bottom' ? '0.71em' : '0.32em'
 	$: vertical = orient === 'left' || orient === 'right'
@@ -38,17 +33,11 @@
 	text-anchor={anchor}
 	class="axis"
 >
-	<path
-		class="domain"
-		stroke="currentColor"
-		d="{axisPath(vertical, axis.scale)}}"
-	/>
+	<path class="domain" stroke="currentColor" d="{axisPath(vertical, axis.scale)}}" />
 	{#each axis.ticks as tick}
 		<g
 			class="tick"
-			transform="translate({vertical ? 0 : tick.position},{vertical
-				? tick.position
-				: 0})"
+			transform="translate({vertical ? 0 : tick.position},{vertical ? tick.position : 0})"
 		>
 			<line
 				stroke="currentColor"

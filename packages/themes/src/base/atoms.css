@@ -49,7 +49,7 @@ summary p {
 
 /* Overlay styles */
 overlay {
-  @apply bg-skin-inset bg-opacity-50;
+  @apply bg-neutral-inset bg-opacity-50;
 }
 
 /* Checkbox styles */

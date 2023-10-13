@@ -1,6 +1,6 @@
 .minimal button {
   @apply rounded leading-loose select-none px-4;
-  @apply bg-skin-muted border border-skin-muted;
+  @apply bg-neutral-muted border border-neutral-muted;
 }
 .minimal button icon-left,
 .minimal button icon-right {
@@ -21,9 +21,9 @@
   @apply flex justify-center rounded-sm gap-1px;
 }
 .minimal button-group button {
-  @apply border-skin-400 border-none rounded-none;
-  @apply bg-skin-subtle shadow focus:outline-none;
-  @apply uppercase text-sm text-skin-800 leading-8 px-2;
+  @apply border-neutral-400 border-none rounded-none;
+  @apply bg-neutral-subtle shadow focus:outline-none;
+  @apply uppercase text-sm text-neutral-800 leading-8 px-2;
 }
 .minimal button-group button:not(:last-child) {
   @apply border-r;
@@ -44,7 +44,7 @@
 }
 .minimal input-select > selected-item {
   @apply leading-8 gap-4 items-center pl-2 min-h-8 cursor-pointer select-none;
-  @apply border-b-2 border-b-skin-muted;
+  @apply border-b-2 border-b-neutral-muted;
   @apply focus:border-b-secondary-600;
 }
 .minimal input-select:focus > selected-item {
@@ -57,7 +57,7 @@
   @apply flex-grow flex-wrap gap-2;
 }
 .minimal pill {
-  @apply gap-2 rounded-full border border-skin-400 px-2;
+  @apply gap-2 rounded-full border border-neutral-400 px-2;
 }
 .minimal pill > item {
   @apply gap-2 leading-6;
@@ -75,7 +75,7 @@
 
 .minimal button[role='switch'] {
   @apply rounded-full p-0 min-h-6 h-8 w-16;
-  @apply bg-skin-subtle border border-skin-subtle;
+  @apply bg-neutral-subtle border border-neutral-subtle;
 }
 
 .minimal button[role='switch'] > mark {

@@ -11,7 +11,7 @@
 
 <story class="grid h-full">
 	<header class="flex flex-col justify-center">{title}</header>
-	<h1 class="flex flex-col items-center justify-center bg-skin-300">
+	<h1 class="flex flex-col items-center justify-center bg-neutral-300">
 		Properties
 	</h1>
 	<content class="flex flex-grow flex-row items-center justify-around p-4">
@@ -21,7 +21,7 @@
 			{/each}
 		</board>
 	</content>
-	<props class="min-w-80 flex flex-col bg-skin-100 p-4">
+	<props class="min-w-80 flex flex-col bg-neutral-100 p-4">
 		<FieldLayout bind:data={props} {fields} />
 	</props>
 </story>

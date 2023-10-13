@@ -16,7 +16,7 @@
 @import '@rokkit/themes/rokkit.css';
 
 body {
-  @apply font-body bg-skin-base text-skin-800 font-extralight;
+  @apply font-body bg-neutral-base text-neutral-800 font-extralight;
 }
 body > app {
   @apply flex flex-col min-h-full min-w-full h-full w-full relative overflow-hidden;

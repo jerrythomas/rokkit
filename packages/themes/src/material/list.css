@@ -3,7 +3,7 @@
   @apply rounded  gap-1px;
 }
 .material list > item {
-  @apply bg-skin-subtle;
+  @apply bg-neutral-subtle;
 }
 .material item {
   @apply flex leading-10 items-center gap-2 px-3;
@@ -49,7 +49,7 @@
 }
 
 .material accordion .is-expanded summary {
-  @apply border-b border-skin-muted rounded-b-none sticky top-0 z-1;
+  @apply border-b border-neutral-muted rounded-b-none sticky top-0 z-1;
 }
 
 .material accordion .is-selected summary {
@@ -61,14 +61,14 @@
 } */
 .material node[aria-selected='true'],
 .material list item[aria-selected='true'] {
-  @apply bg-primary-500 text-skin-base;
+  @apply bg-primary-500 text-neutral-base;
 }
 .material crumbs {
   @apply flex-grow gap-1 text-sm;
 }
 
 .material toggle-switch item[aria-selected='true'] {
-  @apply bg-primary text-skin-50;
+  @apply bg-primary text-neutral-50;
 }
 .material crumbs crumb.is-selected {
   @apply text-secondary;
@@ -76,7 +76,7 @@
 
 .material toggle-switch {
   @apply min-w-12 min-h-6 rounded-full mx-auto;
-  @apply bg-skin-subtle border border-skin-muted;
+  @apply bg-neutral-subtle border border-neutral-muted;
   @apply p-2px;
 }
 .material toggle-switch item {

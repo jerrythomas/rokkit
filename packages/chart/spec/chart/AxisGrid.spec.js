@@ -6,7 +6,7 @@ describe('AxisGrid.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render', () => {
-		// const { container } = render(Grid)
+		// const { container } = render(AxisGrid)
 		// expect(container).toMatchSnapshot()
 	})
 })

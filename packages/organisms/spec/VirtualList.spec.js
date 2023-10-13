@@ -1,9 +1,8 @@
 import { describe, expect, it, beforeEach, afterAll, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
+import { toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
 
-import MockItem from './mocks/MockItem.svelte'
 import VirtualList from '../src/VirtualList.svelte'
 import MockVirtualListSlot from './mocks/MockVirtualListSlot.svelte'
 

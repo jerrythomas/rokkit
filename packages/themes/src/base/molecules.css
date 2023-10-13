@@ -3,7 +3,7 @@ input-range range-track {
   @apply h-1 mt-3 relative;
 }
 input-range range-track span {
-  @apply bg-skin-subtle border-skin-muted rounded-full;
+  @apply bg-neutral-subtle border-neutral-muted rounded-full;
 }
 input-range range-track selected {
   @apply top-0px bottom-0px;
@@ -38,7 +38,7 @@ input-range tick {
   @apply h-6;
 }
 input-range tick span {
-  @apply border-skin-500 h-full;
+  @apply border-neutral-500 h-full;
 }
 input-range tick p {
   @apply items-top;
@@ -93,7 +93,7 @@ input-field select,
 input-field > field > :not(icon) {
   @apply px-3;
   @apply flex-grow outline-none min-h-9 leading-loose;
-  @apply bg-skin-subtle text-skin-800;
+  @apply bg-neutral-subtle text-neutral-800;
 }
 input-field > label {
   @apply uppercase text-xs;
@@ -109,7 +109,7 @@ radio-group label {
 }
 /* Progress bar styles */
 progress-bar {
-  @apply bg-skin-muted border border-skin-subtle;
+  @apply bg-neutral-muted border border-neutral-subtle;
 }
 progress-bar value-bar {
   @apply bg-primary;

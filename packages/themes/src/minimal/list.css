@@ -10,14 +10,14 @@
 }
 .minimal list,
 .minimal accordion summary {
-  @apply border-l-2px border-l-skin-muted;
+  @apply border-l-2px border-l-neutral-muted;
 }
 .minimal :not(accordion > div) list:focus-within {
   @apply outline outline-offset-3 outline-secondary-700;
 }
 .minimal list > item,
 .minimal accordion summary {
-  @apply px-2 text-skin-700 bg-skin-base items-center leading-8;
+  @apply px-2 text-neutral-700 bg-neutral-base items-center leading-8;
 }
 
 .minimal item > a {
@@ -25,16 +25,16 @@
 }
 
 .minimal list item:hover {
-  @apply -m-l-2px border-l-2px border-l-skin-subtle;
+  @apply -m-l-2px border-l-2px border-l-neutral-subtle;
 }
 .minimal accordion summary:hover {
-  @apply border-l-skin-subtle;
+  @apply border-l-neutral-subtle;
 }
 .minimal list item.is-selected {
-  @apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-skin-subtle;
+  @apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-neutral-subtle;
 }
 .minimal accordion .is-selected summary {
-  @apply border-l-2px border-l-secondary-600 bg-skin-subtle;
+  @apply border-l-2px border-l-secondary-600 bg-neutral-subtle;
 }
 
 .minimal accordion .is-expanded summary {
@@ -100,11 +100,11 @@
 }
 
 .minimal .folder-tree {
-  @apply h-full bg-skin-inset min-w-40;
+  @apply h-full bg-neutral-inset min-w-40;
 }
 
 .minimal node > span > i {
-  @apply border-skin-muted;
+  @apply border-neutral-muted;
 }
 
 .minimal crumbs {
@@ -116,7 +116,7 @@
 
 .minimal toggle-switch {
   @apply min-w-12 min-h-6 rounded mx-auto;
-  @apply bg-skin-subtle border border-skin-muted;
+  @apply bg-neutral-subtle border border-neutral-muted;
   @apply leading-loose p-2px;
 }
 .minimal toggle-switch item {
@@ -130,5 +130,5 @@
   @apply px-0 gap-0 rounded-full;
 }
 .minimal toggle-switch item[aria-selected='true'] {
-  @apply bg-secondary text-skin-800;
+  @apply bg-secondary text-neutral-800;
 }

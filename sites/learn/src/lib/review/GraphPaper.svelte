@@ -7,7 +7,7 @@
 </script>
 
 <graph-paper
-	class="p-8 border bg-op-20 text-op-30 bg-skin-50 text-skin-300 border-skin-400 {className}"
+	class="p-8 border bg-op-20 text-op-30 bg-neutral-50 text-neutral-300 border-neutral-400 {className}"
 	style:--unit={unit}
 	style:--size="calc( {group} * {unit})"
 	style:--thin="{thickness}px"
@@ -29,9 +29,13 @@
 			),
 			linear-gradient(currentColor var(--thin), transparent var(--thin)),
 			linear-gradient(90deg, currentColor var(--thin), transparent var(--thin));
-		background-size: var(--size) var(--size), var(--size) var(--size),
-			var(--unit) var(--unit), var(--unit) var(--unit);
-		background-position: calc(-1 * var(--thin)) calc(-1 * var(--thin)),
+		background-size:
+			var(--size) var(--size),
+			var(--size) var(--size),
+			var(--unit) var(--unit),
+			var(--unit) var(--unit);
+		background-position:
+			calc(-1 * var(--thin)) calc(-1 * var(--thin)),
 			calc(-1 * var(--thin)) calc(-1 * var(--thin)),
 			calc(-1 * var(--thin)) calc(-1 * var(--thin)),
 			calc(-1 * var(--thin)) calc(-1 * var(--thin));

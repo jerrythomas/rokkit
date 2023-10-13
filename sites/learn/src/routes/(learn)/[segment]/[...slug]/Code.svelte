@@ -29,17 +29,17 @@
 
 {#if hasFiles}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<source-files class="h-full flex flex-col border-t border-t-skin-inset">
+	<source-files class="h-full flex flex-col border-t border-t-neutral-inset">
 		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<nav
-			class="h-8 w-full flex cursor-pointer items-center bg-skin-subtle px-4 text-sm"
+			class="h-8 w-full flex cursor-pointer items-center bg-neutral-subtle px-4 text-sm"
 			on:click={() => (active = active == 'code' ? 'files' : 'code')}
 		>
 			{[currentFile.path, currentFile.name].join('/')}
 		</nav>
 		<section class="relative h-full w-full flex flex-row overflow-auto">
 			<aside
-				class="h-full min-w-full flex flex-col border-r border-skin-subtle bg-skin-inset lg:min-w-50"
+				class="h-full min-w-full flex flex-col border-r border-neutral-subtle bg-neutral-inset lg:min-w-50"
 				class:-translate-x-full={!filesVisible}
 			>
 				<Tree

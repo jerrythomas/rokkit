@@ -5,7 +5,7 @@
 
 /* Zebra styles */
 .rokkit .zebra item {
-  @apply even:bg-skin-zebra hover:bg-skin-50;
+  @apply even:bg-neutral-zebra hover:bg-neutral-50;
 }
 
 /* Styles for 'icon' class */
@@ -13,13 +13,13 @@
   @apply focus:outline-none;
 }
 .rokkit icon[role='button'] {
-  @apply text-skin-500 focus:rounded hover:text-secondary;
+  @apply text-neutral-500 focus:rounded hover:text-secondary;
 }
 .rokkit icon[role='button']:focus {
-  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-skin-50;
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-neutral-50;
 }
 .rokkit icon.disabled[role='button'] {
-  @apply text-skin-subtle hover:text-skin-subtle cursor-not-allowed;
+  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
 }
 
 /* Styles for input[type='number'] */
@@ -32,10 +32,10 @@
 }
 
 .rokkit progress-bar value-bar {
-  @apply bg-gradient-to-r from-primary to-secondary text-skin-subtle;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-subtle;
 }
 
 /* Styles for 'searchable' class */
 .searchable input {
-  @apply border border-skin-subtle;
+  @apply border border-neutral-subtle;
 }
