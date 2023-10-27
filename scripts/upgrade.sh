@@ -1,5 +1,5 @@
 #!/bin/zsh
-workspaces=("packages" "sites" "shared")
+workspaces=("packages" "shared")
 paths=()
 for folder in "${workspaces[@]}"; do
     subfolders=($folder/*/)
