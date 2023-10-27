@@ -19,7 +19,7 @@
 		"@iconify/utils": "^2.1.11",
 		"@playwright/test": "^1.39.0",
 		"@sveltejs/adapter-auto": "^2.1.0",
-		"@sveltejs/kit": "^1.25.1",
+		"@sveltejs/kit": "^1.27.1",
 		"@sveltejs/vite-plugin-svelte": "^2.4.6",
 		"@testing-library/svelte": "^4.0.4",
 		"@unocss/core": "^0.56.5",
