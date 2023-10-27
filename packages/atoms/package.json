@@ -26,16 +26,16 @@
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^2.4.6",
-		"@testing-library/svelte": "^4.0.3",
-		"@types/prismjs": "^1.26.1",
+		"@testing-library/svelte": "^4.0.4",
+		"@types/prismjs": "^1.26.2",
 		"@vitest/coverage-v8": "^0.34.6",
 		"@vitest/ui": "~0.34.6",
 		"jsdom": "^22.1.0",
 		"shared-config": "workspace:*",
-		"svelte": "^4.2.1",
+		"svelte": "^4.2.2",
 		"typescript": "^5.2.2",
 		"validators": "workspace:latest",
-		"vite": "^4.4.11",
+		"vite": "^4.5.0",
 		"vitest": "~0.34.6"
 	},
 	"files": [
@@ -58,7 +58,7 @@
 	"dependencies": {
 		"@rokkit/actions": "workspace:latest",
 		"@rokkit/core": "workspace:latest",
-		"marked": "^9.1.0",
+		"marked": "^9.1.2",
 		"marked-gfm-heading-id": "^3.1.0",
 		"marked-mangle": "^1.1.4",
 		"prism-svelte": "^0.5.0",

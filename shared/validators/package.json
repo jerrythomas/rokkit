@@ -30,11 +30,11 @@
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@testing-library/svelte": "^4.0.3",
-    "@types/ramda": "^0.29.6",
+    "@testing-library/svelte": "^4.0.4",
+    "@types/ramda": "^0.29.7",
     "@vitest/coverage-v8": "^0.34.6",
     "shared-config": "workspace:*",
-    "svelte": "^4.2.1",
+    "svelte": "^4.2.2",
     "vitest": "^0.34.6"
   }
 }
