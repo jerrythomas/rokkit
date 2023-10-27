@@ -1,6 +1,6 @@
 {
 	"name": "eslint-config-shared",
-	"version": "1.0.0-next.55",
+	"version": "1.0.0-next.56",
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
