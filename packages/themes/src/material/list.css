@@ -68,7 +68,7 @@
 }
 
 .material toggle-switch item[aria-selected='true'] {
-  @apply bg-primary text-neutral-50;
+  @apply bg-primary text-neutral-200 dark:text-neutral-800
 }
 .material crumbs crumb.is-selected {
   @apply text-secondary;

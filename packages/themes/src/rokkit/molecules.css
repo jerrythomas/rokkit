@@ -146,5 +146,5 @@
 }
 
 .rokkit day-of-month[aria-selected='true'] {
-  @apply bg-gradient-to-r from-primary to-secondary;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }

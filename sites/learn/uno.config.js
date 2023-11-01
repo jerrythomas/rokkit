@@ -87,7 +87,9 @@ export default defineConfig({
 		colors: themeColors()
 	},
 	presets: [
-		presetUno(),
+		presetUno({
+			dark: 'class'
+		}),
 		presetTypography(),
 		presetIcons({
 			collections: {
