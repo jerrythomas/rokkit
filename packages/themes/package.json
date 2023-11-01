@@ -24,7 +24,6 @@
 		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@rokkit/core": "workspace:*",
 		"@sveltejs/vite-plugin-svelte": "^2.4.6",
 		"@vitest/coverage-v8": "^0.34.6",
 		"@vitest/ui": "~0.34.6",
@@ -52,6 +51,6 @@
 		}
 	},
 	"dependencies": {
-		"rokkit": "workspace:latest"
+		"@rokkit/core": "workspace:*"
 	}
 }
