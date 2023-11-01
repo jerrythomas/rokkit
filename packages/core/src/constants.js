@@ -1,3 +1,5 @@
+export { defaultColors, syntaxColors } from './colors'
+
 /**
  * @type {import('./types).FieldMapping} Fields
  */
@@ -29,7 +31,6 @@ export const defaultIcons = [
 	'action-clear',
 	'action-search',
 	'action-close',
-	'action-close-filled',
 	'node-opened',
 	'node-closed',
 	'selector-opened',
@@ -72,6 +73,18 @@ export const defaultKeyMap = {
 	ArrowUp: 'up',
 	Enter: 'select',
 	Escape: 'deselect'
+}
+
+export const defaultThemeMapping = {
+	neutral: 'slate',
+	primary: 'orange',
+	secondary: 'pink',
+	accent: 'sky',
+	success: 'green',
+	warning: 'yellow',
+	error: 'red',
+	info: 'cyan',
+	pass: 'green'
 }
 
 export function stateIconsFromNames(icons) {
