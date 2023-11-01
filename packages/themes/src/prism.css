@@ -44,7 +44,7 @@ code,
 :not(pre) > code[class*='language-'],
 pre[class*='language-'] {
   /* background: var(--code-bg); */
-  @apply bg-neutral-inset;
+  @apply bg-neutral-base;
 }
 
 :not(pre) > code[class*='language-'] {
