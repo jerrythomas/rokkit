@@ -44,17 +44,9 @@ export function virtualListViewport(options) {
 
 		cache = updateSizes(cache, data.sizes ?? [], current.lower)
 		averageSize =
-			cache.length == 0
-				? minSize
-				: calculateSum(cache, 0, cache.length, averageSize) / cache.length
+			cache.length == 0 ? minSize : calculateSum(cache, 0, cache.length, averageSize) / cache.length
 
-		let visible = calculateSum(
-			cache,
-			current.lower,
-			current.upper,
-			averageSize,
-			gap
-		)
+		let visible = calculateSum(cache, current.lower, current.upper, averageSize, gap)
 
 		if (maxVisible > 0) {
 			visibleCount = maxVisible

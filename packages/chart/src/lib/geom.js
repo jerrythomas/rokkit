@@ -1,14 +1,4 @@
-import {
-	sum,
-	min,
-	max,
-	mean,
-	mode,
-	median,
-	deviation,
-	variance,
-	flatRollup
-} from 'd3-array'
+import { sum, min, max, mean, mode, median, deviation, variance, flatRollup } from 'd3-array'
 
 const summaries = {
 	identity: (value) => value,
@@ -31,8 +21,7 @@ const summaries = {
  */
 export function rollup(stat) {
 	if (typeof stat === 'function') return stat
-	if (typeof stat !== 'string')
-		throw new TypeError('stat must be a string or function')
+	if (typeof stat !== 'string') throw new TypeError('stat must be a string or function')
 	if (!(stat in summaries)) throw new TypeError('Unknown stat: ' + stat)
 
 	return summaries[stat]

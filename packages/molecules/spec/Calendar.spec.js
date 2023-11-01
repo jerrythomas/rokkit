@@ -18,9 +18,7 @@ describe('Calendar.svelte', () => {
 		expect(days.length).toEqual(count)
 
 		days.forEach((day, i) => {
-			expect(day.getAttribute('aria-selected')).toEqual(
-				i == index - 1 ? 'true' : 'false'
-			)
+			expect(day.getAttribute('aria-selected')).toEqual(i == index - 1 ? 'true' : 'false')
 		})
 	})
 
@@ -58,9 +56,7 @@ describe('Calendar.svelte', () => {
 		await fireEvent.click(days[15])
 		await tick()
 		expect(container).toMatchSnapshot()
-		expect(getPropertyValue(component, 'value')).toEqual(
-			new Date('16-Jun-2023')
-		)
+		expect(getPropertyValue(component, 'value')).toEqual(new Date('16-Jun-2023'))
 	})
 
 	it('should change value when year is changed', async () => {
@@ -73,9 +69,7 @@ describe('Calendar.svelte', () => {
 		year.value = '2024'
 		await fireEvent.change(year)
 		await tick()
-		expect(getPropertyValue(component, 'value')).toEqual(
-			new Date('11-Jun-2024')
-		)
+		expect(getPropertyValue(component, 'value')).toEqual(new Date('11-Jun-2024'))
 	})
 
 	it('should render a calendar with value changes', async () => {

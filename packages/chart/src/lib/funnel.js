@@ -48,9 +48,7 @@ function determineLayout(uniques, aes) {
 			vertical = false
 			console.warn('Assuming horizontal layout because stat is count')
 		} else {
-			console.error(
-				'Cannot plot without at least one axis having numeric values'
-			)
+			console.error('Cannot plot without at least one axis having numeric values')
 			return null
 		}
 	}
@@ -77,9 +75,7 @@ export function convertToPhases(input, aes) {
 	const summary = summarize(input, by, value, aes.stat)
 	const phases = nest()
 		.key((d) => d[key])
-		.rollup((rows) =>
-			'fill' in aes ? fillMissing(uniques.fill, rows, key, aes) : rows
-		)
+		.rollup((rows) => ('fill' in aes ? fillMissing(uniques.fill, rows, key, aes) : rows))
 		.entries(summary)
 
 	return { phases, uniques, vertical }
@@ -214,8 +210,7 @@ function calculatePosition(input, aes, row, stat, index, midpoint) {
 export function funnel(input, aes, width, height) {
 	let data = convertToPhases(input, aes)
 	data = mirror(data, aes)
-	const curve =
-		aes.curve === 'basis' ? curveBasis : data.vertical ? curveBumpY : curveBumpX
+	const curve = aes.curve === 'basis' ? curveBasis : data.vertical ? curveBumpY : curveBumpX
 
 	if ('fill' in aes) {
 		let stats = flatten(data.stats.map((phase) => phase.value))

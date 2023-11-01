@@ -9,13 +9,7 @@ import { equals } from 'ramda'
  * @param {Array} position - The current position in the tree.
  * @returns {Object} The found item, or null if not found.
  */
-export function findItemByValue(
-	value,
-	items,
-	fields = defaultFields,
-	attr = null,
-	position = []
-) {
+export function findItemByValue(value, items, fields = defaultFields, attr = null, position = []) {
 	for (let i = 0; i < items.length; i++) {
 		const item = items[i]
 
@@ -84,16 +78,8 @@ export function findNearestItemBefore(position, items, fields) {
 			return findLastVisibleChild(items[index], [index], fields)
 		}
 
-		const sibling = findItemByIndexArray(
-			[...position.slice(0, -1), index],
-			items,
-			fields
-		)
-		result = findLastVisibleChild(
-			sibling.item,
-			sibling.position,
-			sibling.fields
-		)
+		const sibling = findItemByIndexArray([...position.slice(0, -1), index], items, fields)
+		result = findLastVisibleChild(sibling.item, sibling.position, sibling.fields)
 	} else {
 		result = findItemByIndexArray(position.slice(0, -1), items, fields)
 	}
@@ -188,11 +174,7 @@ function getNextSiblingOrAncestor(position, items, fields) {
 	if (index < children.length - 1) {
 		index += 1
 
-		const sibling = findItemByIndexArray(
-			[...position.slice(0, -1), index],
-			items,
-			fields
-		)
+		const sibling = findItemByIndexArray([...position.slice(0, -1), index], items, fields)
 		return { item: sibling.item, position: sibling.position, fields }
 	} else {
 		while (index === children.length - 1) {
@@ -220,8 +202,7 @@ function getNextSiblingOrAncestor(position, items, fields) {
  */
 export function mappedList(items, fields) {
 	const findByValue = (value) => findItemByValue(value, items, fields)
-	const findByAttribute = (value, attr) =>
-		findItemByValue(value, items, fields, attr)
+	const findByAttribute = (value, attr) => findItemByValue(value, items, fields, attr)
 	const findByIndexArray = (index) => findItemByIndexArray(index, items, fields)
 	const previous = (position) => findNearestItemBefore(position, items, fields)
 	const next = (position) => findNearestItemAfter(position, items, fields)

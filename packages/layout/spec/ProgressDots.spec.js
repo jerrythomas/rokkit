@@ -65,18 +65,15 @@ describe('ProgressDots.svelte', () => {
 	it.each([
 		[3, 1, -1],
 		[3, 1, 1]
-	])(
-		'should render properly for count %i, value %i, current %i',
-		async (count, value, current) => {
-			const { container } = render(ProgressDots, {
-				count,
-				value,
-				current
-			})
-			const dots = container.querySelectorAll('.step')
-			validateDots(dots, count, value, current)
-		}
-	)
+	])('should render properly for count %i, value %i, current %i', async (count, value, current) => {
+		const { container } = render(ProgressDots, {
+			count,
+			value,
+			current
+		})
+		const dots = container.querySelectorAll('.step')
+		validateDots(dots, count, value, current)
+	})
 
 	it('should have one active dot', async () => {
 		const { container } = render(ProgressDots, {
@@ -93,12 +90,7 @@ function validateDots(dots, count, value, current) {
 	expect(dots.length).toEqual(count)
 
 	dots.forEach((d, i) => {
-		expect(Array.from(d.classList)).toIncludeAll([
-			'flex',
-			'w-3',
-			'h-3',
-			'rounded-full'
-		])
+		expect(Array.from(d.classList)).toIncludeAll(['flex', 'w-3', 'h-3', 'rounded-full'])
 		expect({ ...d.dataset }).toEqual(expectedDataset(i, value, current))
 	})
 }

@@ -1,13 +1,5 @@
 import fs from 'fs'
-import {
-	beforeAll,
-	beforeEach,
-	afterEach,
-	describe,
-	expect,
-	it,
-	vi
-} from 'vitest'
+import { beforeAll, beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import {
 	swatch,
 	getScale,
@@ -174,17 +166,8 @@ describe('Utility functions', () => {
 	})
 
 	it('should map a palette to set of values', () => {
-		expect(getPaletteForValues([1, 2, 3, 4, 5], ['a', 'b'], 'x')).toEqual([
-			'a',
-			'b',
-			'x',
-			'x',
-			'x'
-		])
-		expect(getPaletteForValues([1, 2], ['a', 'b', 'c'], 'x')).toEqual([
-			'a',
-			'b'
-		])
+		expect(getPaletteForValues([1, 2, 3, 4, 5], ['a', 'b'], 'x')).toEqual(['a', 'b', 'x', 'x', 'x'])
+		expect(getPaletteForValues([1, 2], ['a', 'b', 'c'], 'x')).toEqual(['a', 'b'])
 	})
 
 	it('should nest data by attribute', (context) => {

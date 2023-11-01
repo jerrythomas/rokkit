@@ -14,9 +14,7 @@ describe('event', () => {
 			const result = toIncludeAll(input, expected)
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify(
-					input
-				)} to not include all of ${JSON.stringify(expected)}`
+				`expected ${JSON.stringify(input)} to not include all of ${JSON.stringify(expected)}`
 			)
 			expect(input).toIncludeAll(expected)
 		})
@@ -27,9 +25,7 @@ describe('event', () => {
 			const result = toIncludeAll(input, expected)
 			expect(result.pass).toBe(false)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify(input)} to include all of ${JSON.stringify(
-					expected
-				)}`
+				`expected ${JSON.stringify(input)} to include all of ${JSON.stringify(expected)}`
 			)
 			expect(input).not.toIncludeAll(expected)
 		})

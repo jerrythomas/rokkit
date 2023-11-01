@@ -4,11 +4,7 @@ export let items = [
 		children: [
 			{
 				text: 'home',
-				children: [
-					{ text: 'documents' },
-					{ text: 'pictures' },
-					{ text: 'desktop' }
-				]
+				children: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]
 			},
 			{ text: 'library' }
 		]
@@ -18,11 +14,7 @@ export let items = [
 		children: [
 			{
 				text: 'home',
-				children: [
-					{ text: 'documents' },
-					{ text: 'pictures' },
-					{ text: 'desktop' }
-				]
+				children: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]
 			},
 			{ text: 'library' }
 		]
@@ -32,11 +24,7 @@ export let items = [
 		children: [
 			{
 				text: 'home',
-				children: [
-					{ text: 'documents' },
-					{ text: 'pictures' },
-					{ text: 'desktop' }
-				]
+				children: [{ text: 'documents' }, { text: 'pictures' }, { text: 'desktop' }]
 			},
 			{ text: 'library' }
 		]

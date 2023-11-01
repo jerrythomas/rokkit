@@ -55,9 +55,7 @@ describe('action', () => {
 		it('should fail if event is not in handler', () => {
 			const result = toOnlyTrigger(handler, ['x'])
 			expect(result.pass).toBe(false)
-			expect(result.message()).toBe(
-				'Expected events from [a, b, c] but got unexpected events [x]'
-			)
+			expect(result.message()).toBe('Expected events from [a, b, c] but got unexpected events [x]')
 			expect(handler).not.toOnlyTrigger(['a', 'b'])
 		})
 	})
@@ -84,18 +82,12 @@ describe('action', () => {
 			)
 			expect(mockAction).toUseHandlersFor({}, 'click')
 
-			result = toUseHandlersFor(mockAction, { touch: true }, [
-				'click',
-				'touchstart'
-			])
+			result = toUseHandlersFor(mockAction, { touch: true }, ['click', 'touchstart'])
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
 				'Expected action not to manage handlers for [click,touchstart] but result is [{"event":"click","created":true,"destroyed":true,"pass":true},{"event":"touchstart","created":true,"destroyed":true,"pass":true}]'
 			)
-			expect(mockAction).toUseHandlersFor({ touch: true }, [
-				'click',
-				'touchstart'
-			])
+			expect(mockAction).toUseHandlersFor({ touch: true }, ['click', 'touchstart'])
 		})
 
 		it('should fail if all events are not registered or not cleaned up', () => {

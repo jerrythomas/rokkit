@@ -9,8 +9,7 @@ const TYPE_VALIDATORS = {
 	color: getPatternValidator(/^#[0-9a-fA-F]{6}$/),
 	date: (input) => input !== null && !isNaN(new Date(input).getTime()),
 	array: (input) => Array.isArray(input),
-	object: (input) =>
-		input !== null && typeof input === 'object' && !Array.isArray(input)
+	object: (input) => input !== null && typeof input === 'object' && !Array.isArray(input)
 }
 
 /**
@@ -37,12 +36,9 @@ export function getPatternValidator(pattern) {
  * @returns {import('./types').ValidationFunction}
  */
 export function getRangeValidator(min, max) {
-	if (min == null)
-		return (input) => input !== null && !isNaN(input) && input <= max
-	if (max == null)
-		return (input) => input !== null && !isNaN(input) && input >= min
-	return (input) =>
-		input !== null && !isNaN(input) && input >= min && input <= max
+	if (min == null) return (input) => input !== null && !isNaN(input) && input <= max
+	if (max == null) return (input) => input !== null && !isNaN(input) && input >= min
+	return (input) => input !== null && !isNaN(input) && input >= min && input <= max
 }
 
 /**

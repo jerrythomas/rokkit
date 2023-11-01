@@ -48,9 +48,7 @@ describe('forms', () => {
 		})
 
 		it('should return properties and editor if provided', () => {
-			expect(
-				getRenderer('string', { editor: 'textarea', placeholder: 'foo' })
-			).toEqual({
+			expect(getRenderer('string', { editor: 'textarea', placeholder: 'foo' })).toEqual({
 				component: 'textarea',
 				properties: { type: 'text', placeholder: 'foo' }
 			})

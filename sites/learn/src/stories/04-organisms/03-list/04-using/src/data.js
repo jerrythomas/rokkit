@@ -18,8 +18,7 @@ export const items = [
 				'https://unsplash.com/photos/B4TjXnI0Y2c/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8OHx8cGVyc29ufGVufDB8fHx8MTY4MzI5MTYxMQ&force=true&w=200'
 		},
 		subject: 'Project Update',
-		message:
-			'Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.'
+		message: 'Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.'
 	},
 	{
 		from: {
@@ -29,8 +28,7 @@ export const items = [
 				'https://unsplash.com/photos/C8Ta0gwPbQg/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjgzMzU4NzUx&force=true&w=200'
 		},
 		subject: 'Team Outing',
-		message:
-			'Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.'
+		message: 'Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.'
 	},
 	{
 		from: {
@@ -51,7 +49,6 @@ export const items = [
 				'https://unsplash.com/photos/NR705beN_CU/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8Mjl8fHBlcnNvbnxlbnwwfHx8fDE2ODMyOTc0MDU&force=true&w=200'
 		},
 		subject: 'New Task Assignment',
-		message:
-			'Per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.'
+		message: 'Per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.'
 	}
 ]

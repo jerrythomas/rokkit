@@ -3,8 +3,7 @@ export function getListPosition(anchor, viewport) {
 
 	let { top, left, width, height } = anchor.getBoundingClientRect()
 
-	const { width: viewportWidth, height: viewportHeight } =
-		viewport.getBoundingClientRect()
+	const { width: viewportWidth, height: viewportHeight } = viewport.getBoundingClientRect()
 
 	top += window.scrollX
 	left += window.scrollY

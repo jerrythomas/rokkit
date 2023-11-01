@@ -70,27 +70,11 @@ describe('dismissable', () => {
 		document.addEventListener = vi.fn()
 		document.removeEventListener = vi.fn()
 		const action = dismissable(node)
-		expect(document.addEventListener).toHaveBeenCalledWith(
-			'click',
-			expect.any(Function),
-			true
-		)
-		expect(document.addEventListener).toHaveBeenCalledWith(
-			'keyup',
-			expect.any(Function),
-			true
-		)
+		expect(document.addEventListener).toHaveBeenCalledWith('click', expect.any(Function), true)
+		expect(document.addEventListener).toHaveBeenCalledWith('keyup', expect.any(Function), true)
 		action.destroy()
-		expect(document.removeEventListener).toHaveBeenCalledWith(
-			'click',
-			expect.any(Function),
-			true
-		)
-		expect(document.removeEventListener).toHaveBeenCalledWith(
-			'keyup',
-			expect.any(Function),
-			true
-		)
+		expect(document.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function), true)
+		expect(document.removeEventListener).toHaveBeenCalledWith('keyup', expect.any(Function), true)
 		vi.resetAllMocks()
 	})
 })

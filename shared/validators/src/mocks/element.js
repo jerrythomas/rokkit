@@ -55,10 +55,7 @@ export function createNestedElement(item) {
 
 export function mixedSizeElements(data, prop) {
 	return data.reduce(
-		(elements, { count, size }) => [
-			...elements,
-			...elementsWithSize(count, size, prop)
-		],
+		(elements, { count, size }) => [...elements, ...elementsWithSize(count, size, prop)],
 		[]
 	)
 }

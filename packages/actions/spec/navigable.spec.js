@@ -19,15 +19,11 @@ describe('Navigable Action', () => {
 			collapse: vi.fn()
 		}
 
-		Object.entries(handler).map(([event, handler]) =>
-			node.addEventListener(event, handler)
-		)
+		Object.entries(handler).map(([event, handler]) => node.addEventListener(event, handler))
 	})
 
 	afterEach(() => {
-		Object.entries(handler).map(([event, handler]) =>
-			node.removeEventListener(event, handler)
-		)
+		Object.entries(handler).map(([event, handler]) => node.removeEventListener(event, handler))
 	})
 
 	it('should use handlers and cleanup on destroy', () => {

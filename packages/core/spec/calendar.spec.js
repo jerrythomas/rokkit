@@ -27,9 +27,7 @@ describe('calendar', () => {
 				expect(typeof day.date).toEqual('object')
 				expect(typeof day.weekend).toEqual('boolean')
 				expect(typeof day.holiday).toEqual('boolean')
-				expect(result.map(({ day }) => day)).toEqual(
-					Array.from({ length: 30 }, (_, i) => i + 1)
-				)
+				expect(result.map(({ day }) => day)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1))
 				expect(result[0].offset).toEqual(5)
 				expect(result.slice(1).filter((x) => x.offset != 0)).toEqual([])
 			}
@@ -56,8 +54,8 @@ describe('calendar', () => {
 				}
 			])
 			expect(result.map(({ day }) => day)).toEqual([
-				30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-				19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
+				30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+				24, 25, 26, 27, 28, 29
 			])
 		})
 
@@ -82,8 +80,8 @@ describe('calendar', () => {
 				}
 			])
 			expect(result.map(({ day }) => day)).toEqual([
-				30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-				19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
+				30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+				24, 25, 26, 27, 28, 29
 			])
 			expect(result.filter((x) => x.holiday)).toEqual([
 				{

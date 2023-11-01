@@ -21,8 +21,7 @@ export function getComponent(value, fields, using) {
  * @param {import('./types.js').FieldMapping} fields
  */
 export function getIcon(value, fields = defaultFields) {
-	if (fields.icon === undefined || typeof (value ?? '') !== 'object')
-		return null
+	if (fields.icon === undefined || typeof (value ?? '') !== 'object') return null
 
 	return typeof value[fields.icon] == 'object'
 		? value[fields.icon][value[fields.state]]
@@ -38,9 +37,7 @@ export function getIcon(value, fields = defaultFields) {
  * @returns {*}
  */
 export function getValue(node, fields = defaultFields) {
-	return typeof node === 'object' && node !== null
-		? node[fields.value] ?? node[fields.text]
-		: node
+	return typeof node === 'object' && node !== null ? node[fields.value] ?? node[fields.text] : node
 }
 
 /**

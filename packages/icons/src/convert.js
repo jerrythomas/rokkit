@@ -1,10 +1,4 @@
-import {
-	importDirectory,
-	cleanupSVG,
-	runSVGO,
-	parseColors,
-	isEmptyColor
-} from '@iconify/tools'
+import { importDirectory, cleanupSVG, runSVGO, parseColors, isEmptyColor } from '@iconify/tools'
 import fs from 'fs'
 
 export async function convert(folder, prefix, color = false) {

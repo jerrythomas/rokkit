@@ -134,10 +134,7 @@ describe('fields', () => {
 				name: 'John',
 				age: 30
 			}
-			const schema = getSchemaWithLayout(
-				deriveSchemaFromValue(value),
-				deriveLayoutFromValue(value)
-			)
+			const schema = getSchemaWithLayout(deriveSchemaFromValue(value), deriveLayoutFromValue(value))
 			expect(schema).toEqual({
 				type: 'vertical',
 				elements: [
@@ -162,10 +159,7 @@ describe('fields', () => {
 		})
 
 		it('should combine generated schema & layout for nested data', () => {
-			const schema = getSchemaWithLayout(
-				deriveSchemaFromValue(value),
-				deriveLayoutFromValue(value)
-			)
+			const schema = getSchemaWithLayout(deriveSchemaFromValue(value), deriveLayoutFromValue(value))
 			expect(schema).toEqual(resultWithOnlyData)
 		})
 

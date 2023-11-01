@@ -51,9 +51,7 @@ describe('DropDown.svelte', () => {
 		expect(button).toMatchSnapshot()
 		component.$set({ title: 'Select a different value' })
 		await tick()
-		expect(button.querySelector('p').textContent.trim()).toBe(
-			'Select a different value'
-		)
+		expect(button.querySelector('p').textContent.trim()).toBe('Select a different value')
 	})
 
 	it('should toggle open state on focus change', async () => {
@@ -85,15 +83,13 @@ describe('DropDown.svelte', () => {
 		await fireEvent.focus(button)
 		expect(button.parentNode.classList.contains('open')).toBe(true)
 
-		container
-			.querySelectorAll('drop-down list item')
-			.forEach(async (item, index) => {
-				selected = { item: options[index], indices: [index] }
-				await fireEvent.click(item)
-				expect(getPropertyValue(component, 'value')).toEqual(selected.item)
-				expect(handlers.change).toHaveBeenCalled()
-				expect(handlers.change).toHaveBeenDispatchedWith(selected)
-			})
+		container.querySelectorAll('drop-down list item').forEach(async (item, index) => {
+			selected = { item: options[index], indices: [index] }
+			await fireEvent.click(item)
+			expect(getPropertyValue(component, 'value')).toEqual(selected.item)
+			expect(handlers.change).toHaveBeenCalled()
+			expect(handlers.change).toHaveBeenDispatchedWith(selected)
+		})
 	})
 
 	it('should render string array', async () => {

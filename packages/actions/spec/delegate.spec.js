@@ -17,17 +17,11 @@ describe('delegateKeyboardEvents', () => {
 	it('should register a pushdown action', () => {
 		const action = delegateKeyboardEvents(element, { selector: 'span' })
 		events.forEach((event) => {
-			expect(element.addEventListener).toHaveBeenCalledWith(
-				event,
-				expect.any(Function)
-			)
+			expect(element.addEventListener).toHaveBeenCalledWith(event, expect.any(Function))
 		})
 		action.destroy()
 		events.forEach((event) => {
-			expect(element.removeEventListener).toHaveBeenCalledWith(
-				event,
-				expect.any(Function)
-			)
+			expect(element.removeEventListener).toHaveBeenCalledWith(event, expect.any(Function))
 		})
 	})
 
@@ -44,16 +38,10 @@ describe('delegateKeyboardEvents', () => {
 			selector: 'span',
 			events: ['keydown']
 		})
-		expect(element.addEventListener).toHaveBeenCalledWith(
-			'keydown',
-			expect.any(Function)
-		)
+		expect(element.addEventListener).toHaveBeenCalledWith('keydown', expect.any(Function))
 		expect(element.addEventListener).toHaveBeenCalledOnce()
 		action.destroy()
-		expect(element.removeEventListener).toHaveBeenCalledWith(
-			'keydown',
-			expect.any(Function)
-		)
+		expect(element.removeEventListener).toHaveBeenCalledWith('keydown', expect.any(Function))
 		expect(element.removeEventListener).toHaveBeenCalledOnce()
 	})
 

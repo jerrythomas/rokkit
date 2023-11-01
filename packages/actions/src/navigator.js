@@ -43,8 +43,7 @@ export function navigator(element, options) {
 		const previousNode = currentNode
 		path = moveNext(path, items, fields)
 		currentNode = getCurrentNode(path)
-		if (previousNode !== currentNode)
-			moveTo(element, path, currentNode, idPrefix)
+		if (previousNode !== currentNode) moveTo(element, path, currentNode, idPrefix)
 	}
 
 	const previous = () => {
@@ -52,8 +51,7 @@ export function navigator(element, options) {
 		path = movePrevious(path)
 		if (path.length > 0) {
 			currentNode = getCurrentNode(path)
-			if (previousNode !== currentNode)
-				moveTo(element, path, currentNode, idPrefix)
+			if (previousNode !== currentNode) moveTo(element, path, currentNode, idPrefix)
 		}
 	}
 	const select = () => {
@@ -110,12 +108,9 @@ export function navigator(element, options) {
 			if (hasChildren(currentNode, path[path.length - 1].fields)) {
 				currentNode[path[path.length - 1].fields.isOpen] =
 					!currentNode[path[path.length - 1].fields.isOpen]
-				const event = currentNode[path[path.length - 1].fields.isOpen]
-					? 'expand'
-					: 'collapse'
+				const event = currentNode[path[path.length - 1].fields.isOpen] ? 'expand' : 'collapse'
 				emit(event, element, indices, currentNode)
-			} else if (currentNode !== null)
-				emit('select', element, indices, currentNode)
+			} else if (currentNode !== null) emit('select', element, indices, currentNode)
 		}
 	}
 

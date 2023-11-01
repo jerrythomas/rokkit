@@ -1,5 +1,4 @@
-export const PARSE_ERROR_MESSAGE =
-	'Unable to parse value from local storage for key: '
+export const PARSE_ERROR_MESSAGE = 'Unable to parse value from local storage for key: '
 
 if (typeof window === 'undefined') {
 	global.localStorage = {

@@ -86,18 +86,14 @@ describe('internal', () => {
 		it('should return the element if it has the given attribute', () => {
 			const element = document.createElement('div')
 			element.setAttribute('data-test', 'test')
-			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(
-				element
-			)
+			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(element)
 		})
 		it('should return the element if it has the given attribute and is nested', () => {
 			const parent = document.createElement('div')
 			const element = document.createElement('div')
 			element.setAttribute('data-test', 'test')
 			parent.appendChild(element)
-			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(
-				element
-			)
+			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(element)
 		})
 		it('should return the closest ancestor if it has the given attribute', () => {
 			const element = document.createElement('div')

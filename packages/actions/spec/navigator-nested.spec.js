@@ -1,9 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import {
-	toUseHandlersFor,
-	toOnlyTrigger,
-	toHaveBeenDispatchedWith
-} from 'validators'
+import { toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith } from 'validators'
 import { createNestedElement } from 'validators/mocks'
 import { navigator } from '../src/navigator.js'
 

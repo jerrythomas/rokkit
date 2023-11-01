@@ -131,9 +131,7 @@ describe('Select.svelte', () => {
 		expect(handlers.change).toHaveBeenDispatchedWith(options[1])
 		expect(handlers.select).toHaveBeenDispatchedWith(options[1])
 		await tick()
-		const classes = Array.from(
-			container.querySelector('input-select').classList
-		)
+		const classes = Array.from(container.querySelector('input-select').classList)
 		expect(classes).not.toContain('open')
 	})
 

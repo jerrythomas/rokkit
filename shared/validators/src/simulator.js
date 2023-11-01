@@ -51,9 +51,7 @@ export function simulateMouseSwipe(node, distance, delay = 0) {
 		})
 	)
 	vi.advanceTimersByTime(delay)
-	node.dispatchEvent(
-		new MouseEvent('mouseup', { clientX: distance.x, clientY: distance.y })
-	)
+	node.dispatchEvent(new MouseEvent('mouseup', { clientX: distance.x, clientY: distance.y }))
 }
 
 // export function getCustomEventMock() {

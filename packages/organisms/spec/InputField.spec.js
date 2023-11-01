@@ -52,20 +52,17 @@ describe('InputField.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it.each(['pass', 'fail', 'warn'])(
-		'should render with label, value and status=%s',
-		(status) => {
-			const { container } = render(InputField, {
-				label: 'text',
-				value: 'text',
-				status,
-				message: 'error',
-				name: 'name'
-			})
-			expect(container).toBeTruthy()
-			expect(container).toMatchSnapshot()
-		}
-	)
+	it.each(['pass', 'fail', 'warn'])('should render with label, value and status=%s', (status) => {
+		const { container } = render(InputField, {
+			label: 'text',
+			value: 'text',
+			status,
+			message: 'error',
+			name: 'name'
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
 
 	it('should render with description', () => {
 		const { container } = render(InputField, {

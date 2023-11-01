@@ -6,15 +6,7 @@ describe('color', () => {
 		it('should create a color brewer object', () => {
 			const brewer = new ColorBrewer()
 			expect(brewer).toBeDefined()
-			expect(brewer.colors).toEqual([
-				'blue',
-				'pink',
-				'teal',
-				'indigo',
-				'purple',
-				'amber',
-				'rose'
-			])
+			expect(brewer.colors).toEqual(['blue', 'pink', 'teal', 'indigo', 'purple', 'amber', 'rose'])
 			expect(Object.keys(brewer.palette)).toEqual([
 				'indigo',
 				'blue',

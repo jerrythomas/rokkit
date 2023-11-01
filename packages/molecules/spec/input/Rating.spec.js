@@ -113,8 +113,7 @@ describe('Rating component', () => {
 		await fireEvent.mouseEnter(stars[value + 1])
 		await tick()
 		for (let i = 0; i < max; i++) {
-			if (i <= value + 1)
-				expect(Array.from(stars[i].classList)).toContain('hovering')
+			if (i <= value + 1) expect(Array.from(stars[i].classList)).toContain('hovering')
 			else expect(Array.from(stars[i].classList)).not.toContain('hovering')
 		}
 	})

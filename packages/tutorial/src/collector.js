@@ -7,8 +7,7 @@ import { getFiles } from './files.js'
 
 const extractors = {
 	js: async (filePath) => (await import(/* @vite-ignore */ filePath)).default,
-	json: async (filePath) =>
-		JSON.parse(await fs.promises.readFile(filePath, 'utf-8')),
+	json: async (filePath) => JSON.parse(await fs.promises.readFile(filePath, 'utf-8')),
 	md: async (filePath) => {
 		const fileContent = await fs.promises.readFile(filePath, 'utf-8')
 		return frontmatter(fileContent).data
@@ -113,9 +112,7 @@ export async function enrich(rootFolder, data) {
 	)
 	return result.map((item) => ({
 		...item,
-		route: item.parts.includes(null)
-			? null
-			: item.parts.map(({ key }) => key).join('/')
+		route: item.parts.includes(null) ? null : item.parts.map(({ key }) => key).join('/')
 	}))
 }
 
@@ -128,10 +125,7 @@ export function transform(data) {
 	let result = {}
 	data
 		.filter((item) => item.route != null)
-		.map(
-			(item) =>
-				(result = addPart(result, omit(item.name ? [] : ['route'], item), 0))
-		)
+		.map((item) => (result = addPart(result, omit(item.name ? [] : ['route'], item), 0)))
 	return result
 }
 
@@ -186,9 +180,7 @@ export async function collectTutorials(options) {
 		solutionFolder: options.solutionFolder || 'src',
 		tutorialMetadata: options.tutorialMetadata
 	}
-	const pattern = new RegExp(
-		`(${config.metadataFilename}|${config.readmeFilename})$`
-	)
+	const pattern = new RegExp(`(${config.metadataFilename}|${config.readmeFilename})$`)
 
 	let tutorials = await getFiles(config.rootFolder, pattern)
 	tutorials = await enrich(config.rootFolder, tutorials)

@@ -1,8 +1,4 @@
-export function getLineTypes(
-	hasChildren = false,
-	parentTypes = [],
-	position = 'child'
-) {
+export function getLineTypes(hasChildren = false, parentTypes = [], position = 'child') {
 	let types = parentTypes.slice(0, -1).map((type) => {
 		return type === 'child' ? 'sibling' : type === 'last' ? 'empty' : type
 	})

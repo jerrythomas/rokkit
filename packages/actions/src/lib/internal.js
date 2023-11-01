@@ -139,11 +139,7 @@ export function calculateSum(sizes, lower, upper, defaultSize = 40, gap = 0) {
  * @returns {Array<number|null>}
  */
 export function updateSizes(sizes, values, offset = 0) {
-	let result = [
-		...sizes.slice(0, offset),
-		...values,
-		...sizes.slice(offset + values.length)
-	]
+	let result = [...sizes.slice(0, offset), ...values, ...sizes.slice(offset + values.length)]
 
 	return result
 }

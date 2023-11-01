@@ -14,9 +14,7 @@ describe('event', () => {
 			const result = toHaveValidData(input, expected)
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify(
-					input.dataset
-				)} to not deeply equal ${JSON.stringify(expected)}`
+				`expected ${JSON.stringify(input.dataset)} to not deeply equal ${JSON.stringify(expected)}`
 			)
 			expect(input).toHaveValidData(expected)
 		})
@@ -26,9 +24,7 @@ describe('event', () => {
 			const result = toHaveValidData(input, expected)
 			expect(result.pass).toBe(false)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify(
-					input.dataset
-				)} to deeply equal ${JSON.stringify(expected)}`
+				`expected ${JSON.stringify(input.dataset)} to deeply equal ${JSON.stringify(expected)}`
 			)
 			expect(input).not.toHaveValidData(expected)
 		})

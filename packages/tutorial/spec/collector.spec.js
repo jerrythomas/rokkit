@@ -96,8 +96,7 @@ describe('collector', () => {
 				type: 'json'
 			})
 			expect(result).toEqual({
-				error:
-					"ENOENT: no such file or directory, open 'fixtures/empty-folder/meta.json'"
+				error: "ENOENT: no such file or directory, open 'fixtures/empty-folder/meta.json'"
 			})
 		})
 		it('should return error message in case of import errors', async () => {
@@ -107,9 +106,7 @@ describe('collector', () => {
 				type: 'js'
 			})
 
-			expect(result.error.split('\n')[0]).toEqual(
-				'Parse failure: Unexpected token (2:4)'
-			)
+			expect(result.error.split('\n')[0]).toEqual('Parse failure: Unexpected token (2:4)')
 		})
 	})
 	describe('getFolder', () => {
@@ -161,10 +158,7 @@ describe('collector', () => {
 	describe('enrich', () => {
 		it('should read and add metadata for each item in the data array', async () => {
 			const rootFolder = 'fixtures/tutorials'
-			const data = await getFiles(
-				rootFolder,
-				/(meta\.json|meta\.js|README.md)$/
-			)
+			const data = await getFiles(rootFolder, /(meta\.json|meta\.js|README.md)$/)
 			const enrichedData = await enrich(rootFolder, data)
 
 			expect(enrichedData).toEqual(enriched)

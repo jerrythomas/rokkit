@@ -26,18 +26,12 @@ describe('fillable', () => {
 			expect(d.classList.contains('empty')).toBe(true)
 			expect(d.name).toEqual('fill-' + index)
 			expect(d['data-index']).toEqual(index.toString())
-			expect(d.addEventListener).toHaveBeenCalledWith(
-				'click',
-				expect.any(Function)
-			)
+			expect(d.addEventListener).toHaveBeenCalledWith('click', expect.any(Function))
 		})
 
 		fillableAction.destroy()
 		del.map((d) => {
-			expect(d.removeEventListener).toHaveBeenCalledWith(
-				'click',
-				expect.any(Function)
-			)
+			expect(d.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function))
 			node.removeChild(d)
 		})
 	})
@@ -109,9 +103,6 @@ describe('fillable', () => {
 		node.appendChild(del)
 		fillableAction = fillable(node, { options, current, check })
 		fillableAction.destroy()
-		expect(del.removeEventListener).toHaveBeenCalledWith(
-			'click',
-			expect.any(Function)
-		)
+		expect(del.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function))
 	})
 })

@@ -78,9 +78,7 @@ describe('Connector.svelte', () => {
 
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
-			expect(span[0].className).toEqual(
-				'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last'
-			)
+			expect(span[0].className).toEqual('grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last')
 			expect(container).toMatchSnapshot()
 		})
 

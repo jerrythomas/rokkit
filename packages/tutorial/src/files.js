@@ -19,9 +19,7 @@ export async function getFiles(folderPath, pattern = null, dir = '') {
 }
 
 async function processEntries(entries, folderPath, pattern, dir) {
-	return Promise.all(
-		entries.map((entry) => processEntry(entry, folderPath, pattern, dir))
-	)
+	return Promise.all(entries.map((entry) => processEntry(entry, folderPath, pattern, dir)))
 }
 
 async function processEntry(entry, folderPath, pattern, dir) {

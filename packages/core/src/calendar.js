@@ -1,11 +1,4 @@
-import {
-	getDay,
-	getMonth,
-	getYear,
-	getDaysInMonth,
-	format,
-	isWeekend
-} from 'date-fns'
+import { getDay, getMonth, getYear, getDaysInMonth, format, isWeekend } from 'date-fns'
 
 export const weekdays = [
 	'Sunday',

@@ -127,9 +127,7 @@ export function aggregate(data, x, y) {
  * @returns
  */
 export function getPaletteForValues(values, palette, fallback) {
-	return values.map((_, index) =>
-		index < palette.length ? palette[index] : fallback
-	)
+	return values.map((_, index) => (index < palette.length ? palette[index] : fallback))
 }
 
 /**
@@ -156,8 +154,5 @@ export function toNested(data, key, label) {
  * @returns {Object} with keys as items in a and values as items in b
  */
 export function repeatAcross(b, a) {
-	return a.reduce(
-		(acc, item, index) => ({ ...acc, [item]: b[index % b.length] }),
-		{}
-	)
+	return a.reduce((acc, item, index) => ({ ...acc, [item]: b[index % b.length] }), {})
 }
