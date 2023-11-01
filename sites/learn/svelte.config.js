@@ -11,6 +11,11 @@ const config = {
 	],
 	kit: {
 		adapter: adapter()
+	},
+	vitePlugin: {
+		inspector: {
+			showToggleButton: 'always'
+		}
 	}
 }
 

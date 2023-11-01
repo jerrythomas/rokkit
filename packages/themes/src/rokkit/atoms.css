@@ -16,7 +16,7 @@
   @apply text-neutral-500 focus:rounded hover:text-secondary;
 }
 .rokkit icon[role='button']:focus {
-  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-neutral-50;
+  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-neutral-200 dark:text-neutral-800;
 }
 .rokkit icon.disabled[role='button'] {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
@@ -32,7 +32,7 @@
 }
 
 .rokkit progress-bar value-bar {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-subtle;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-subtle dark:text-neutral-800;
 }
 
 /* Styles for 'searchable' class */

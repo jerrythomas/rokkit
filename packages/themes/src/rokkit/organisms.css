@@ -66,7 +66,7 @@
   @apply bg-neutral-muted;
 }
 .rokkit tabs:focus-within .tab[aria-selected='true'] {
-  @apply bg-gradient-to-b from-primary-500 to-secondary text-neutral-50;
+  @apply bg-gradient-to-b from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
 .rokkit tabs.is-below:focus-within .tab[aria-selected='true'] {
   @apply bg-gradient-to-t;
@@ -81,7 +81,7 @@
 
 .rokkit button.is-primary,
 .rokkit .button.is-primary {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-subtle;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
 
 .rokkit button-group {
@@ -99,7 +99,7 @@
 }
 
 .rokkit button-group button.active {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-subtle;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
 
 /* Input and Drop-down styles */
@@ -129,7 +129,7 @@
 .rokkit drop-down:focus-within > button {
   /* @apply p-2px; */
   @apply outline-none border-none;
-  @apply bg-gradient-to-r from-primary-500 to-secondary text-neutral-50;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
 /* .rokkit :not(field) > input-select:focus-within > selected-item,
 .rokkit drop-down:focus-within > button > span {
@@ -208,7 +208,7 @@
 
 /* Selected and Hover styles for List and Node */
 .rokkit list item[aria-selected='true'] > a {
-  @apply text-neutral-50;
+  @apply text-neutral-200 dark:text-neutral-800
 }
 .rokkit virtual-list-item[aria-current='true'] {
   @apply bg-neutral-inset text-secondary;
@@ -229,7 +229,7 @@
   @apply bg-neutral-subtle;
 }
 .rokkit accordion:focus-within [aria-selected='true'] summary {
-  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-neutral-50;
+  @apply outline-none bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
 
 /* Border styles for Accordion */
@@ -291,7 +291,7 @@
   @apply p-2px from-transparent to-transparent rounded border border-neutral-muted;
 }
 .rokkit virtual-list:focus-within {
-  @apply bg-gradient-to-r from-primary-500 to-secondary;
+  @apply bg-gradient-to-r from-primary to-secondary;
 }
 
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
@@ -300,8 +300,8 @@
 .rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
 .rokkit tree:focus-within node[aria-selected='true'],
 .rokkit nested-list:focus-within node[aria-selected='true'] {
-  @apply bg-gradient-to-r from-primary-500 to-secondary text-neutral-50;
-  @apply hover:from-secondary-500 hover:to-primary-500 hover:text-neutral-50;
+  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply hover:from-secondary hover:to-primary hover:text-neutral-200 dark:text-neutral-800;
 }
 
 .rokkit input-select > selected-item > items {
