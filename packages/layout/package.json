@@ -44,8 +44,7 @@
 		"@rokkit/molecules": "workspace:*",
 		"@rokkit/organisms": "workspace:*",
 		"d3-scale": "^4.0.2",
-		"date-fns": "^2.30.0",
-		"rokkit": "workspace:latest"
+		"date-fns": "^2.30.0"
 	},
 	"files": [
 		"src/**/*.js",
