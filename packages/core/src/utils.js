@@ -120,7 +120,19 @@ export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, color
 		.reduce((acc, item) => ({ ...acc, [item.key]: item.value }), {})
 
 	return [
-		[`${name}-mode-light`, { ...light, ...syntaxColors['one-dark'].light }],
-		[`${name}-mode-dark`, { ...dark, ...syntaxColors['one-dark'].dark }]
+		[
+			`${name}-mode-light`,
+			{
+				...light,
+				...syntaxColors['one-dark'].light
+			}
+		],
+		[
+			`${name}-mode-dark`,
+			{
+				...dark,
+				...syntaxColors['one-dark'].dark
+			}
+		]
 	]
 }

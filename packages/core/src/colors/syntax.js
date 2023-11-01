@@ -2,7 +2,7 @@ export const syntaxColors = {
 	'one-dark': {
 		dark: {
 			'--tab-size': '2',
-			'--code-bg': '#282c34',
+			// '--code-bg': '#282c34',
 			'--code-fill': '#282c34',
 			'--code-normal': '#e06c75',
 			'--code-string': '#98c379',
@@ -22,7 +22,7 @@ export const syntaxColors = {
 		},
 		light: {
 			'--tab-size': '2',
-			'--code-bg': '#f3f4f6',
+			// '--code-bg': '#f3f4f6',
 			'--code-fill': '#f3f4f6',
 			'--code-normal': '#333333',
 			'--code-string': '#9D8248',
