@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { convert } from './convert.js'
 
-const groups = ['base', 'components', 'auth', 'light', 'solid', 'twotone']
+const groups = ['auth', 'app', 'base', 'light', 'solid', 'twotone', 'components']
 
 for (const group of groups) {
 	convert(`./src/${group}`, group, group === 'auth')
