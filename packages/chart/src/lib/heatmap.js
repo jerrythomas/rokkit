@@ -20,9 +20,7 @@ export function summarize(data, dateField = 'date', valueField) {
 	const nested = nest()
 		.key((d) => format(new Date(d[dateField]), DATE_FORMAT))
 		.rollup((d) =>
-			valueField
-				? d.map((value) => value[valueField]).reduce((a, b) => a + b, 0)
-				: d.length
+			valueField ? d.map((value) => value[valueField]).reduce((a, b) => a + b, 0) : d.length
 		)
 		.entries(data)
 

@@ -64,8 +64,7 @@ export function getTutorials(options) {
 	let hierarchy
 
 	const load = async () => {
-		tutorials = (await import(/* @vite-ignore */ options.tutorialMetadata))
-			.default
+		tutorials = (await import(/* @vite-ignore */ options.tutorialMetadata)).default
 		hierarchy = toSortedHierarchy(tutorials, {
 			children: 'children',
 			sequence: 'sequence'

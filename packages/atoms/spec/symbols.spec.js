@@ -7,13 +7,7 @@ import { render } from '@testing-library/svelte'
 describe('components', () => {
 	const names = Object.keys(components).filter((key) => key !== 'symbols')
 	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual([
-			'symbols',
-			'Shape',
-			'Circle',
-			'Square',
-			'Triangle'
-		])
+		expect(Object.keys(components)).toEqual(['symbols', 'Shape', 'Circle', 'Square', 'Triangle'])
 	})
 
 	it.each(names)('should render %s', (key) => {

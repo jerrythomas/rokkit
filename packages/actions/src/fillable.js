@@ -100,9 +100,7 @@ function validate(blanks, data) {
 		let index = data.options.findIndex(({ actualIndex }) => actualIndex == ref)
 		if (index > -1)
 			blanks[ref].classList.add(
-				data.options[index].expectedIndex == data.options[index].actualIndex
-					? 'pass'
-					: 'fail'
+				data.options[index].expectedIndex == data.options[index].actualIndex ? 'pass' : 'fail'
 			)
 	})
 }

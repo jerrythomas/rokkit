@@ -16,9 +16,7 @@ export function addPathMetadata(files) {
 		let name = parts.pop()
 		let path = parts.filter((part) => /^\d+/.test(part) != true).join('/')
 		let type = name.split('.').pop()
-		parts = parts
-			.map((part) => getSequenceAndKey(part))
-			.filter((part) => part != null)
+		parts = parts.map((part) => getSequenceAndKey(part)).filter((part) => part != null)
 
 		let metadata =
 			path == ''
@@ -64,9 +62,7 @@ function getContentBasedOnName(item, options) {
 	}
 
 	if (item.name === options.previewFilename) {
-		return item.content.default
-			? { preview: item.content.default }
-			: { content: item.content }
+		return item.content.default ? { preview: item.content.default } : { content: item.content }
 	}
 
 	return { content: item.content }
@@ -85,11 +81,7 @@ export function tutorialsToNestedObject(data, item, index = 0) {
 	data[key] = data[key] || { sequence, key }
 
 	if (index < item.parts.length - 1) {
-		data[key].children = tutorialsToNestedObject(
-			data[key].children || {},
-			item,
-			index + 1
-		)
+		data[key].children = tutorialsToNestedObject(data[key].children || {}, item, index + 1)
 	} else {
 		handleItemPath(data, item, key)
 	}
@@ -137,10 +129,7 @@ export function convertFilesToFolderHierarchy(tutorials, options) {
 			}
 		})
 		if (tutorial.children) {
-			tutorial.children = convertFilesToFolderHierarchy(
-				tutorial.children,
-				options
-			)
+			tutorial.children = convertFilesToFolderHierarchy(tutorial.children, options)
 		}
 	})
 	return tutorials

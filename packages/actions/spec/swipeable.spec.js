@@ -1,11 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { swipeable } from '../src/swipeable'
-import {
-	toUseHandlersFor,
-	toOnlyTrigger,
-	simulateTouchSwipe,
-	simulateMouseSwipe
-} from 'validators'
+import { toUseHandlersFor, toOnlyTrigger, simulateTouchSwipe, simulateMouseSwipe } from 'validators'
 import { getMockNode } from 'validators/mocks'
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
@@ -24,25 +19,18 @@ describe('swipable', () => {
 		}
 
 		global.Touch = vi.fn().mockImplementation((input) => input)
-		Object.entries(handlers).map(([event, handler]) =>
-			node.addEventListener(event, handler)
-		)
+		Object.entries(handlers).map(([event, handler]) => node.addEventListener(event, handler))
 		vi.useFakeTimers()
 	})
 
 	afterEach(() => {
-		Object.entries(handlers).map(([event, handler]) =>
-			node.removeEventListener(event, handler)
-		)
+		Object.entries(handlers).map(([event, handler]) => node.removeEventListener(event, handler))
 		vi.useRealTimers()
 	})
 
 	it('should cleanup events on destroy', () => {
 		expect(swipeable).toUseHandlersFor({}, events)
-		expect(swipeable).toUseHandlersFor(
-			{ horizontal: false, vertical: true },
-			events
-		)
+		expect(swipeable).toUseHandlersFor({ horizontal: false, vertical: true }, events)
 	})
 	it.each(events)('should not register %s when disabled', (event) => {
 		expect(swipeable).not.toUseHandlersFor({ enabled: false }, event)
@@ -129,9 +117,7 @@ describe('swipable', () => {
 		const handle = swipeable(node, { speed: 100 })
 
 		simulateTouchSwipe(node, { x: 1, y: 1 }, 1000)
-		Object.values(handlers).forEach((handler) =>
-			expect(handler).not.toHaveBeenCalled()
-		)
+		Object.values(handlers).forEach((handler) => expect(handler).not.toHaveBeenCalled())
 		// expect(handlers).toOnlyTrigger('swipeRight')
 		// vi.resetAllMocks()
 		handle.destroy()

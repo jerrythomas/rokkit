@@ -88,10 +88,8 @@ function touchEnd(event, node, options, track) {
 
 	if (speed <= options.minSpeed) return
 
-	const isHorizontalSwipe =
-		options.horizontal && Math.abs(distX) >= options.threshold
-	const isVerticalSwipe =
-		options.vertical && Math.abs(distY) >= options.threshold
+	const isHorizontalSwipe = options.horizontal && Math.abs(distX) >= options.threshold
+	const isVerticalSwipe = options.vertical && Math.abs(distY) >= options.threshold
 
 	if (!isHorizontalSwipe && !isVerticalSwipe) return
 

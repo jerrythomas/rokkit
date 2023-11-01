@@ -52,8 +52,7 @@ export class ChartBrewer {
 			fill: [...new Set(this.data.map((item) => item[this.fill]))]
 		}
 
-		let xOffset =
-			max(this.scaleValues.y.map((value) => value.toString().length)) * 10
+		let xOffset = max(this.scaleValues.y.map((value) => value.toString().length)) * 10
 		let yOffset = 20
 
 		this.margin = {
@@ -158,9 +157,7 @@ export class ChartBrewer {
 		}
 
 		// The maximum width of a violin must be x.bandwidth = the width dedicated to a group
-		var xNum = scaleLinear()
-			.range([0, this.axis.x.scale.bandwidth()])
-			.domain([0, maxNum])
+		var xNum = scaleLinear().range([0, this.axis.x.scale.bandwidth()]).domain([0, maxNum])
 
 		let result = area()
 			.x0(xNum(0))
@@ -179,8 +176,7 @@ export class ChartBrewer {
 }
 
 function tickValues(scale, whichAxis, params) {
-	let { values, count } =
-		whichAxis in params.ticks ? params.ticks[whichAxis] : {}
+	let { values, count } = whichAxis in params.ticks ? params.ticks[whichAxis] : {}
 	values =
 		Array.isArray(values) && values.length > 2
 			? values

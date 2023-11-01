@@ -34,8 +34,5 @@ Rendering an ItemWrapper with an icon:
 ## Field Mapping
 
 ```svelte
-<ItemWrapper
-  value={{ title: 'Content with mapping' }}
-  fields={{ text: 'title' }}
-/>
+<ItemWrapper value={{ title: 'Content with mapping' }} fields={{ text: 'title' }} />
 ```

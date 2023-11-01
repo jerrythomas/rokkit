@@ -26,10 +26,8 @@ export function navigable(node, options) {
 	function updateListeners(options) {
 		if (options.enabled) actions = getKeyboardActions(node, options, handlers)
 
-		if (options.enabled && !listening)
-			node.addEventListener('keydown', handleKeydown)
-		else if (!options.enabled && listening)
-			node.removeEventListener('keydown', handleKeydown)
+		if (options.enabled && !listening) node.addEventListener('keydown', handleKeydown)
+		else if (!options.enabled && listening) node.removeEventListener('keydown', handleKeydown)
 		listening = options.enabled
 	}
 

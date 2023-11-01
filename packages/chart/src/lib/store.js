@@ -12,12 +12,8 @@ import { tweened, cubicOut } from 'svelte/motion'
 export function animatedChart(input, key, valueFields = [], previous = []) {
 	const previousKeys = new Set(previous.map((item) => item[key]))
 	const currentKeys = new Set(input.map((item) => item[key]))
-	const toAdd = new Set(
-		[...currentKeys].filter((key) => !previousKeys.has(key))
-	)
-	const toRemove = new Set(
-		[...previousKeys].filter((key) => !currentKeys.has(key))
-	)
+	const toAdd = new Set([...currentKeys].filter((key) => !previousKeys.has(key)))
+	const toRemove = new Set([...previousKeys].filter((key) => !currentKeys.has(key)))
 
 	let data = input
 		.filter((item) => toAdd.has(item[key]))
@@ -25,10 +21,7 @@ export function animatedChart(input, key, valueFields = [], previous = []) {
 			let el = { ...item }
 			valueFields.forEach(
 				({ field, initialValue, attrs }) =>
-					(el[field] =
-						typeof initialValue === 'function'
-							? initialValue(el, attrs)
-							: initialValue)
+					(el[field] = typeof initialValue === 'function' ? initialValue(el, attrs) : initialValue)
 			)
 			return el
 		})

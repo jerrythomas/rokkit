@@ -12,9 +12,7 @@ describe('parser', () => {
 
 	describe('parseFilters', () => {
 		it('should handle a simple string', () => {
-			expect(parseFilters('abc')).toEqual([
-				{ operator: '~*', value: new RegExp('abc', 'i') }
-			])
+			expect(parseFilters('abc')).toEqual([{ operator: '~*', value: new RegExp('abc', 'i') }])
 		})
 
 		it('should handle named filter', () => {
@@ -39,30 +37,14 @@ describe('parser', () => {
 			expect(parseFilters('name!~abc')).toEqual([
 				{ operator: '!~', value: new RegExp('abc'), column: 'name' }
 			])
-			expect(parseFilters('name=abc')).toEqual([
-				{ operator: '=', value: 'abc', column: 'name' }
-			])
-			expect(parseFilters('name!=abc')).toEqual([
-				{ operator: '!=', value: 'abc', column: 'name' }
-			])
-			expect(parseFilters('age>1')).toEqual([
-				{ operator: '>', value: 1, column: 'age' }
-			])
-			expect(parseFilters('age>=1')).toEqual([
-				{ operator: '>=', value: 1, column: 'age' }
-			])
-			expect(parseFilters('age=>1')).toEqual([
-				{ operator: '>=', value: 1, column: 'age' }
-			])
-			expect(parseFilters('_age<10')).toEqual([
-				{ operator: '<', value: 10, column: '_age' }
-			])
-			expect(parseFilters('age_a<=10')).toEqual([
-				{ operator: '<=', value: 10, column: 'age_a' }
-			])
-			expect(parseFilters('age=<10')).toEqual([
-				{ operator: '<=', value: 10, column: 'age' }
-			])
+			expect(parseFilters('name=abc')).toEqual([{ operator: '=', value: 'abc', column: 'name' }])
+			expect(parseFilters('name!=abc')).toEqual([{ operator: '!=', value: 'abc', column: 'name' }])
+			expect(parseFilters('age>1')).toEqual([{ operator: '>', value: 1, column: 'age' }])
+			expect(parseFilters('age>=1')).toEqual([{ operator: '>=', value: 1, column: 'age' }])
+			expect(parseFilters('age=>1')).toEqual([{ operator: '>=', value: 1, column: 'age' }])
+			expect(parseFilters('_age<10')).toEqual([{ operator: '<', value: 10, column: '_age' }])
+			expect(parseFilters('age_a<=10')).toEqual([{ operator: '<=', value: 10, column: 'age_a' }])
+			expect(parseFilters('age=<10')).toEqual([{ operator: '<=', value: 10, column: 'age' }])
 		})
 
 		it('should handle multiple tokens', () => {
@@ -85,9 +67,7 @@ describe('parser', () => {
 		})
 
 		it('should handle quoted strings', () => {
-			expect(parseFilters('"rock and"')).toEqual([
-				{ operator: '~*', value: /rock and/i }
-			])
+			expect(parseFilters('"rock and"')).toEqual([{ operator: '~*', value: /rock and/i }])
 			expect(parseFilters('name:"rock and"')).toEqual([
 				{ operator: '~*', value: /rock and/i, column: 'name' }
 			])
@@ -102,12 +82,8 @@ describe('parser', () => {
 		})
 
 		it('should allow symbols when quoted', () => {
-			expect(parseFilters('name=?')).toEqual([
-				{ column: 'name', operator: '=', value: '?' }
-			])
-			expect(parseFilters('name="?"')).toEqual([
-				{ operator: '=', value: '?', column: 'name' }
-			])
+			expect(parseFilters('name=?')).toEqual([{ column: 'name', operator: '=', value: '?' }])
+			expect(parseFilters('name="?"')).toEqual([{ operator: '=', value: '?', column: 'name' }])
 			expect(parseFilters('name="rokk\'it"')).toEqual([
 				{ operator: '=', value: "rokk'it", column: 'name' }
 			])

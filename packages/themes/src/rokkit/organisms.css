@@ -297,9 +297,7 @@
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit list:focus-within item.is-selected,
-.rokkit
-  virtual-list-viewport:focus-within
-  virtual-list-item[aria-selected='true'],
+.rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
 .rokkit tree:focus-within node[aria-selected='true'],
 .rokkit nested-list:focus-within node[aria-selected='true'] {
   @apply bg-gradient-to-r from-primary-500 to-secondary text-neutral-50;

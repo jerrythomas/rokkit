@@ -19,12 +19,8 @@ export class ColorBrewer {
 
 	mix(fill, stroke, contrast) {
 		this.fill = Object.keys(this.grayscale).includes(fill) ? fill : this.fill
-		this.stroke = Object.keys(this.grayscale).includes(stroke)
-			? stroke
-			: this.stroke
-		this.contrast = Object.keys(this.grayscale).includes(contrast)
-			? contrast
-			: this.contrast
+		this.stroke = Object.keys(this.grayscale).includes(stroke) ? stroke : this.stroke
+		this.contrast = Object.keys(this.grayscale).includes(contrast) ? contrast : this.contrast
 
 		return this
 	}

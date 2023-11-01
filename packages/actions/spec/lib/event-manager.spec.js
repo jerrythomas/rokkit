@@ -14,16 +14,10 @@ describe('EventManager', () => {
 	it('should call activate and reset', () => {
 		manager = EventManager(element, handlers)
 		manager.activate()
-		expect(element.addEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers.click
-		)
+		expect(element.addEventListener).toHaveBeenCalledWith('click', handlers.click)
 
 		manager.reset()
-		expect(element.removeEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers.click
-		)
+		expect(element.removeEventListener).toHaveBeenCalledWith('click', handlers.click)
 		expect(element.addEventListener).toHaveBeenCalledTimes(1)
 		expect(element.removeEventListener).toHaveBeenCalledTimes(1)
 	})
@@ -31,15 +25,9 @@ describe('EventManager', () => {
 	it('should remove and add event handlers on update', () => {
 		manager = EventManager(element, handlers)
 		manager.update()
-		expect(element.addEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers.click
-		)
+		expect(element.addEventListener).toHaveBeenCalledWith('click', handlers.click)
 		manager.reset()
-		expect(element.removeEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers.click
-		)
+		expect(element.removeEventListener).toHaveBeenCalledWith('click', handlers.click)
 		expect(element.addEventListener).toHaveBeenCalledTimes(1)
 		expect(element.removeEventListener).toHaveBeenCalledTimes(1)
 	})
@@ -51,19 +39,10 @@ describe('EventManager', () => {
 		manager.update(handlers1, false)
 		expect(element.addEventListener).not.toHaveBeenCalled()
 		manager.update()
-		expect(element.addEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers1.click
-		)
+		expect(element.addEventListener).toHaveBeenCalledWith('click', handlers1.click)
 		manager.update(handlers2)
-		expect(element.removeEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers1.click
-		)
-		expect(element.addEventListener).toHaveBeenCalledWith(
-			'click',
-			handlers2.click
-		)
+		expect(element.removeEventListener).toHaveBeenCalledWith('click', handlers1.click)
+		expect(element.addEventListener).toHaveBeenCalledWith('click', handlers2.click)
 		expect(element.addEventListener).toHaveBeenCalledTimes(2)
 		expect(element.removeEventListener).toHaveBeenCalledTimes(1)
 	})

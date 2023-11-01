@@ -5,13 +5,9 @@ describe('hacks', () => {
 	describe('adjustViewport', () => {
 		it('should set the viewport height to 100vh', () => {
 			adjustViewport(true, true)
-			expect(document.body.style.getPropertyValue('--viewport-height')).toBe(
-				'100vh'
-			)
+			expect(document.body.style.getPropertyValue('--viewport-height')).toBe('100vh')
 			adjustViewport(true, false)
-			expect(document.body.style.getPropertyValue('--viewport-height')).toBe(
-				'100vh'
-			)
+			expect(document.body.style.getPropertyValue('--viewport-height')).toBe('100vh')
 		})
 		it('should set the viewport height to window.innerHeight + "px"', () => {
 			window.innerHeight = 100

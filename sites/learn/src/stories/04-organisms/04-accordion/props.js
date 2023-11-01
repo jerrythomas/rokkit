@@ -40,8 +40,7 @@ export const props = [
 	{
 		name: 'autoClose',
 		type: 'boolean',
-		purpose:
-			'Enable of disable automatic closing of previous open section. Defaults to false',
+		purpose: 'Enable of disable automatic closing of previous open section. Defaults to false',
 		required: false,
 		default: 'false'
 	}

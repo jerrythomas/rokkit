@@ -45,21 +45,9 @@ export function mockVirtualList(config) {
 
 	// Spy on padding setters for contents
 	Object.defineProperty(contents.style, 'paddingTop', propertySpy('paddingTop'))
-	Object.defineProperty(
-		contents.style,
-		'paddingBottom',
-		propertySpy('paddingBottom')
-	)
-	Object.defineProperty(
-		contents.style,
-		'paddingLeft',
-		propertySpy('paddingLeft')
-	)
-	Object.defineProperty(
-		contents.style,
-		'paddingRight',
-		propertySpy('paddingright')
-	)
+	Object.defineProperty(contents.style, 'paddingBottom', propertySpy('paddingBottom'))
+	Object.defineProperty(contents.style, 'paddingLeft', propertySpy('paddingLeft'))
+	Object.defineProperty(contents.style, 'paddingRight', propertySpy('paddingright'))
 
 	// Spy on height and width setters for viewport
 	Object.defineProperty(viewport.style, 'height', propertySpy('height'))

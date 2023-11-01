@@ -20,9 +20,7 @@ export function summarize(data, by, attr, stat = 'count') {
 		.key((d) => by.map((f) => d[f]).join('|'))
 		.rollup((rows) => {
 			let agg = pick(by, rows[0])
-			stats.map(
-				(stat) => (agg[stat] = aggregate[stat](rows.map((d) => d[attr])))
-			)
+			stats.map((stat) => (agg[stat] = aggregate[stat](rows.map((d) => d[attr]))))
 			return [agg]
 		})
 		.entries(data)

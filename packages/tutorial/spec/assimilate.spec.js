@@ -1,9 +1,5 @@
 import { describe, it, expect, afterEach, vi, beforeEach } from 'vitest'
-import {
-	filterMenuItems,
-	assimilateTutorials,
-	findTutorial
-} from '../src/assimilate'
+import { filterMenuItems, assimilateTutorials, findTutorial } from '../src/assimilate'
 
 describe('assimilate', () => {
 	describe('filterMenuItems', () => {
@@ -90,8 +86,7 @@ describe('assimilate', () => {
 		let modules, sources, options
 		beforeEach(() => {
 			modules = {
-				'./stories/01-intro/meta.json': () =>
-					Promise.resolve({ title: 'Intro' }),
+				'./stories/01-intro/meta.json': () => Promise.resolve({ title: 'Intro' }),
 				'./stories/01-intro/01-foo/README.md': () =>
 					Promise.resolve({
 						default: 'Notes for Foo Component',
@@ -134,10 +129,8 @@ describe('assimilate', () => {
 			}
 
 			sources = {
-				'./stories/01-intro/01-foo/src/App.svelte': () =>
-					Promise.resolve('<h1>Foo Component</h1>'),
-				'./stories/01-intro/01-foo/src/data.js': () =>
-					Promise.resolve('{ "foo": "bar" }')
+				'./stories/01-intro/01-foo/src/App.svelte': () => Promise.resolve('<h1>Foo Component</h1>'),
+				'./stories/01-intro/01-foo/src/data.js': () => Promise.resolve('{ "foo": "bar" }')
 				// './stories/foo/02/App.svelte': () =>
 				// 	Promise.resolve('Code for Foo Component/02'),
 				// './stories/foo/01/data.js': () =>

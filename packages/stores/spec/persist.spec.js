@@ -64,9 +64,7 @@ describe('persistable', () => {
 		const newValue = { test: 'Delta' }
 		expectedValue = newValue
 		localStorage.setItem(key, JSON.stringify(newValue))
-		window.dispatchEvent(
-			new StorageEvent('storage', { key, newValue: JSON.stringify(newValue) })
-		)
+		window.dispatchEvent(new StorageEvent('storage', { key, newValue: JSON.stringify(newValue) }))
 		expect(get(store)).toEqual(newValue)
 		expect(JSON.parse(localStorage.getItem(key))).toEqual(newValue)
 

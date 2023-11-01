@@ -29,13 +29,7 @@ function slidingWindowForNumbers(values, size, step, offset = 0, fmt = 0) {
 	return result
 }
 
-function slidingWindowForDates(
-	values,
-	size,
-	step,
-	offset = {},
-	fmt = 'yyyy-MM-dd'
-) {
+function slidingWindowForDates(values, size, step, offset = {}, fmt = 'yyyy-MM-dd') {
 	const largest = max(values)
 	let current = new Date(format(min(values), fmt))
 	let blocks = []

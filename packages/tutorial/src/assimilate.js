@@ -122,10 +122,7 @@ export function assimilateTutorials(modules, sources, options) {
 }
 
 async function fetchAndProcessFiles(modules, sources, options) {
-	let files = [
-		...(await fetchImports(modules)),
-		...(await fetchImports(sources))
-	].map((item) => ({
+	let files = [...(await fetchImports(modules)), ...(await fetchImports(sources))].map((item) => ({
 		...item,
 		file: item.file.replace(new RegExp('^' + options.root), '')
 	}))

@@ -12,10 +12,7 @@ describe('HTML Input', () => {
 		['InputText', { minlength: 3, maxlength: 10, value: 'foo' }],
 		['InputNumber', { min: 3, max: 10, value: 4 }],
 		['InputCheckbox', { value: true }],
-		[
-			'InputRadio',
-			{ value: 'foo', options: ['foo', 'bar', 'baz'], flip: true }
-		],
+		['InputRadio', { value: 'foo', options: ['foo', 'bar', 'baz'], flip: true }],
 		[
 			'InputRadio',
 			{

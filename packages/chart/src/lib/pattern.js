@@ -60,10 +60,7 @@ export const builtIn = [
 	},
 
 	{
-		path:
-			'M5 1 A6 6 0 0 0 5 9' +
-			'A6 6 0 0 0 5 1' +
-			'M1 5A6 6 0 0 0 9 5A6 6 0 0 0 1 5',
+		path: 'M5 1 A6 6 0 0 0 5 9' + 'A6 6 0 0 0 5 1' + 'M1 5A6 6 0 0 0 9 5A6 6 0 0 0 1 5',
 		minAngle: 0,
 		maxAngle: 90
 	},
@@ -87,8 +84,7 @@ export const builtIn = [
 		maxAngle: 90
 	},
 	{
-		path:
-			'M5 0L6 4L10 5L6 6L5 10L4 6L0 5L4 4Z' + 'M2 1V3M1 2H3' + 'M8 9V7M9 8H7',
+		path: 'M5 0L6 4L10 5L6 6L5 10L4 6L0 5L4 4Z' + 'M2 1V3M1 2H3' + 'M8 9V7M9 8H7',
 		minAngle: 0,
 		maxAngle: 90
 	},
@@ -145,9 +141,7 @@ export class PatternBrewer {
 		count = clamp(count, 1, 15)
 		this.paths = this.paths.map((path) => ({
 			...path,
-			angles: [...Array(count).keys()].map(
-				(i) => (i * (path.maxAngle - path.minAngle)) / count
-			)
+			angles: [...Array(count).keys()].map((i) => (i * (path.maxAngle - path.minAngle)) / count)
 		}))
 		return this
 	}

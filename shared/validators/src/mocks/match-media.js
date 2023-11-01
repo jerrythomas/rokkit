@@ -72,14 +72,10 @@ export const matchMediaMock = vi.fn().mockImplementation((query) => {
 	const queryObject = {
 		media: query,
 		matches: handler(window.innerWidth),
-		addListener: vi
-			.fn()
-			.mockImplementation((listener) => listeners.push(listener)),
+		addListener: vi.fn().mockImplementation((listener) => listeners.push(listener)),
 		removeListener: vi
 			.fn()
-			.mockImplementation((listener) =>
-				listeners.splice(listeners.indexOf(listener), 1)
-			),
+			.mockImplementation((listener) => listeners.splice(listeners.indexOf(listener), 1)),
 		handler
 	}
 	watchMediaQueries.push(queryObject)

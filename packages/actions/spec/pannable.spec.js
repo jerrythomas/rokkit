@@ -34,15 +34,9 @@ describe('pannable', () => {
 
 	it('should create a pannable node', () => {
 		const action = pannable(node)
-		expect(node.addEventListener).toHaveBeenCalledWith(
-			'mousedown',
-			handlers.node['mousedown']
-		)
+		expect(node.addEventListener).toHaveBeenCalledWith('mousedown', handlers.node['mousedown'])
 		action.destroy()
-		expect(node.removeEventListener).toBeCalledWith(
-			'mousedown',
-			handlers.node['mousedown']
-		)
+		expect(node.removeEventListener).toBeCalledWith('mousedown', handlers.node['mousedown'])
 	})
 	it('should emit the panstart event', () => {
 		const action = pannable(node)
@@ -55,14 +49,8 @@ describe('pannable', () => {
 			name: 'panstart',
 			params: { detail: { x: 10, y: 10 } }
 		})
-		expect(window.addEventListener).toHaveBeenCalledWith(
-			'mousemove',
-			handlers.window['mousemove']
-		)
-		expect(window.addEventListener).toHaveBeenCalledWith(
-			'mouseup',
-			handlers.window['mouseup']
-		)
+		expect(window.addEventListener).toHaveBeenCalledWith('mousemove', handlers.window['mousemove'])
+		expect(window.addEventListener).toHaveBeenCalledWith('mouseup', handlers.window['mouseup'])
 		action.destroy()
 	})
 	it('should emit the panmove event', () => {
@@ -105,14 +93,8 @@ describe('pannable', () => {
 		})
 		let mouseMoveHandler = handlers.window['mousemove']
 		let mouseUpHandler = handlers.window['mouseup']
-		expect(window.removeEventListener).toHaveBeenCalledWith(
-			'mousemove',
-			mouseMoveHandler
-		)
-		expect(window.removeEventListener).toHaveBeenCalledWith(
-			'mouseup',
-			mouseUpHandler
-		)
+		expect(window.removeEventListener).toHaveBeenCalledWith('mousemove', mouseMoveHandler)
+		expect(window.removeEventListener).toHaveBeenCalledWith('mouseup', mouseUpHandler)
 		action.destroy()
 	})
 	it('should create a pannable node with touch event listeners', () => {
@@ -123,10 +105,7 @@ describe('pannable', () => {
 			// { passive: false }
 		)
 		action.destroy()
-		expect(node.removeEventListener).toBeCalledWith(
-			'touchstart',
-			handlers.node['touchstart']
-		)
+		expect(node.removeEventListener).toBeCalledWith('touchstart', handlers.node['touchstart'])
 	})
 
 	it('should emit the panstart event on touchstart', () => {
@@ -145,10 +124,7 @@ describe('pannable', () => {
 			handlers.window['touchmove']
 			// { passive: false }
 		)
-		expect(window.addEventListener).toHaveBeenCalledWith(
-			'touchend',
-			handlers.window['touchend']
-		)
+		expect(window.addEventListener).toHaveBeenCalledWith('touchend', handlers.window['touchend'])
 		action.destroy()
 	})
 
@@ -191,14 +167,8 @@ describe('pannable', () => {
 		})
 		let touchMoveHandler = handlers.window['touchmove']
 		let touchEndHandler = handlers.window['touchend']
-		expect(window.removeEventListener).toHaveBeenCalledWith(
-			'touchmove',
-			touchMoveHandler
-		)
-		expect(window.removeEventListener).toHaveBeenCalledWith(
-			'touchend',
-			touchEndHandler
-		)
+		expect(window.removeEventListener).toHaveBeenCalledWith('touchmove', touchMoveHandler)
+		expect(window.removeEventListener).toHaveBeenCalledWith('touchend', touchEndHandler)
 		action.destroy()
 	})
 })

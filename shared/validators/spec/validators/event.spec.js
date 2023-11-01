@@ -17,9 +17,7 @@ describe('event', () => {
 
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify(
-					detail
-				)} to not deeply equal ${JSON.stringify(detail)}`
+				`expected ${JSON.stringify(detail)} to not deeply equal ${JSON.stringify(detail)}`
 			)
 			expect(spy).toHaveBeenDispatchedWith(detail)
 		})
@@ -29,9 +27,7 @@ describe('event', () => {
 			const result = toHaveBeenDispatchedWith(spy, detail)
 			expect(result.pass).toBe(false)
 			expect(result.message()).toBe(
-				`expected ${JSON.stringify('baz')} to deeply equal ${JSON.stringify(
-					detail
-				)}`
+				`expected ${JSON.stringify('baz')} to deeply equal ${JSON.stringify(detail)}`
 			)
 			expect(spy).not.toHaveBeenDispatchedWith(detail)
 		})

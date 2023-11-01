@@ -1,10 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
-import {
-	toUseHandlersFor,
-	toOnlyTrigger,
-	toHaveBeenDispatchedWith
-} from 'validators'
+import { toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith } from 'validators'
 import { createNestedElement } from 'validators/mocks'
 import { navigator, findParentWithDataPath } from '../src/navigator.js'
 
@@ -49,10 +45,7 @@ describe('navigator', () => {
 
 	it('should use handlers and cleanup on destroy', () => {
 		expect(navigator).toUseHandlersFor({ items: [] }, ['keydown', 'click'])
-		expect(navigator).toUseHandlersFor({ items: [], vertical: false }, [
-			'keydown',
-			'click'
-		])
+		expect(navigator).toUseHandlersFor({ items: [], vertical: false }, ['keydown', 'click'])
 	})
 	it('should not use handlers when disabled', () => {
 		expect(navigator).not.toUseHandlersFor({ enabled: false }, 'keydown')
@@ -78,10 +71,7 @@ describe('navigator', () => {
 		}
 
 		let node = createNestedElement(tree)
-		let result = findParentWithDataPath(
-			node.children[0].children[0].children[0],
-			node
-		)
+		let result = findParentWithDataPath(node.children[0].children[0].children[0], node)
 		expect(result).toEqual(node.children[0])
 		result = findParentWithDataPath(node.children[0].children[0], node)
 		expect(result).toEqual(node.children[0])

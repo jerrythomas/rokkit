@@ -1,11 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { fireEvent } from '@testing-library/svelte'
 import { getMockNode } from 'validators/mocks'
-import {
-	toUseHandlersFor,
-	toOnlyTrigger,
-	toHaveBeenDispatchedWith
-} from 'validators'
+import { toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith } from 'validators'
 import { traversable } from '../src/traversable'
 import { defaultFields } from '@rokkit/core'
 import { createNestedElement } from 'validators/mocks'
@@ -50,10 +46,7 @@ describe('traversable', () => {
 
 	it('should not use handlers when disabled', () => {
 		let data = { items: [], fields: defaultFields }
-		expect(traversable).not.toUseHandlersFor(
-			{ ...data, enabled: false },
-			'keydown'
-		)
+		expect(traversable).not.toUseHandlersFor({ ...data, enabled: false }, 'keydown')
 		expect(traversable).not.toUseHandlersFor(
 			{ ...data, enabled: false, horizontal: true },
 			'keydown'

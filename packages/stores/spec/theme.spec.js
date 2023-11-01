@@ -17,14 +17,14 @@ describe('ThemeStore', () => {
 	it('should throw an error if input is not valid', () => {
 		const themeStore = ThemeStore()
 		themeStore.set({ name: 'test', mode: 123 })
-		expect(console.error).toHaveBeenCalledWith(
-			'Both "name" and "mode" must be strings',
-			{ name: 'test', mode: 123 }
-		)
+		expect(console.error).toHaveBeenCalledWith('Both "name" and "mode" must be strings', {
+			name: 'test',
+			mode: 123
+		})
 		themeStore.set({ name: 123, mode: 'test' })
-		expect(console.error).toHaveBeenCalledWith(
-			'Both "name" and "mode" must be strings',
-			{ name: 123, mode: 'test' }
-		)
+		expect(console.error).toHaveBeenCalledWith('Both "name" and "mode" must be strings', {
+			name: 123,
+			mode: 'test'
+		})
 	})
 })
