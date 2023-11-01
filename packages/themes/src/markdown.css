@@ -24,7 +24,7 @@
 .markdown-body h5 .octicon-link,
 .markdown-body h6 .octicon-link {
   /* color: #1b1f23; */
-  @apply text-neutral-500;
+  @apply text-neutral;
   vertical-align: middle;
   visibility: hidden;
 }
@@ -714,7 +714,7 @@
 
 .markdown-body h6 {
   font-size: 0.85em;
-  @apply text-neutral-500;
+  @apply text-neutral;
   /* color: #6a737d; */
 }
 

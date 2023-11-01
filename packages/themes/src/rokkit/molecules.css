@@ -57,10 +57,10 @@
   @apply h-6;
 }
 .rokkit tick span {
-  @apply border-neutral-500 h-full;
+  @apply border-neutral h-full;
 }
 .rokkit tick p {
-  @apply items-top text-neutral-500;
+  @apply items-top text-neutral;
   font-size: 8px;
 }
 
@@ -70,7 +70,7 @@
 }
 .rokkit thumb.sliding::before {
   content: '';
-  @apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-500  opacity-30 rounded-sm;
+  @apply absolute left-0 top-0 right-0 bottom-0 bg-secondary  opacity-30 rounded-sm;
   transform: scale(2, 2);
 }
 

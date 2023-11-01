@@ -9,7 +9,8 @@ describe('utilities', () => {
 			'themeRules',
 			'defaultStateIcons',
 			'defaultIcons',
-			'defaultThemeColors'
+			'defaultThemeColors',
+			'palettes'
 		])
 	})
 })
