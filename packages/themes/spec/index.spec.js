@@ -6,6 +6,7 @@ describe('utilities', () => {
 		expect(Object.keys(utilities)).toEqual([
 			'iconShortcuts',
 			'themeColors',
+			'themeRules',
 			'defaultStateIcons',
 			'defaultIcons',
 			'defaultThemeColors'

@@ -1,2 +1,2 @@
-export { iconShortcuts, themeColors } from '@rokkit/core'
+export { iconShortcuts, themeColors, themeRules } from '@rokkit/core'
 export * from './constants'

@@ -39,15 +39,10 @@
 		</nav>
 		<section class="relative h-full w-full flex flex-row overflow-auto">
 			<aside
-				class="h-full min-w-full flex flex-col border-r border-neutral-subtle bg-neutral-inset lg:min-w-50"
+				class="h-full min-w-full flex flex-col border-r border-neutral-subtle bg-neutral-base lg:min-w-50"
 				class:-translate-x-full={!filesVisible}
 			>
-				<Tree
-					items={$story.files}
-					{fields}
-					value={currentFile}
-					on:select={handleSelect}
-				/>
+				<Tree items={$story.files} {fields} value={currentFile} on:select={handleSelect} />
 			</aside>
 			{#if code}
 				<CodeSnippet

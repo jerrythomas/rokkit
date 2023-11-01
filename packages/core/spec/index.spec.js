@@ -4,10 +4,13 @@ import * as utilities from '../src'
 describe('utilities', () => {
 	it('should contain all exported utilities', () => {
 		expect(Object.keys(utilities)).toEqual([
+			'defaultColors',
+			'syntaxColors',
 			'defaultFields',
 			'defaultIcons',
 			'defaultOptions',
 			'defaultKeyMap',
+			'defaultThemeMapping',
 			'stateIconsFromNames',
 			'defaultStateIcons',
 			'flattenNestedList',
@@ -36,6 +39,7 @@ describe('utilities', () => {
 			'themeColors',
 			'iconShortcuts',
 			'scaledPath',
+			'themeRules',
 			'getRegex',
 			'parseFilters',
 			'toInitCapCase',

@@ -1,3 +1,5 @@
+import { defaultThemeMapping, defaultColors, syntaxColors } from './constants'
+
 const modifiers = {
 	hsl: (value) => `hsl(${value})`,
 	rgb: (value) => `rgb(${value})`,
@@ -88,4 +90,49 @@ export function iconShortcuts(icons, collection, variants) {
 export function scaledPath(size, x) {
 	if (Array.isArray(x)) return x.map((x) => scaledPath(size, x)).join(' ')
 	return typeof x === 'number' ? x * size : x
+}
+
+export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, colors = defaultColors) {
+	const shades = ['50', 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+	mapping = { ...defaultThemeMapping, ...mapping }
+	const variants = Object.keys(mapping)
+
+	const rules = variants
+		.flatMap((variant) => [
+			shades.map((shade) => ({
+				key: `--${variant}-${shade}`,
+				value: colors[mapping[variant]][shade],
+				mode: 'light'
+			})),
+			shades.map((shade, i) => ({
+				key: `--${variant}-${shade}`,
+				value: colors[mapping[variant]][shades[shades.length - i - 1]],
+				mode: 'dark'
+			}))
+		])
+		.reduce((acc, item) => [...acc, ...item], [])
+
+	const light = rules
+		.filter((rule) => rule.mode === 'light')
+		.reduce((acc, item) => ({ ...acc, [item.key]: item.value }), {})
+	const dark = rules
+		.filter((rule) => rule.mode === 'dark')
+		.reduce((acc, item) => ({ ...acc, [item.key]: item.value }), {})
+
+	return [
+		[
+			`${name}-mode-light`,
+			{
+				...light,
+				...syntaxColors['one-dark'].light
+			}
+		],
+		[
+			`${name}-mode-dark`,
+			{
+				...dark,
+				...syntaxColors['one-dark'].dark
+			}
+		]
+	]
 }

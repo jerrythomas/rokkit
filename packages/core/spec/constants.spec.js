@@ -15,7 +15,7 @@ describe('Utility functions', () => {
 				add: 'action-add',
 				clear: 'action-clear',
 				search: 'action-search',
-				close: 'action-close-filled'
+				close: 'action-close'
 			},
 			node: {
 				opened: 'node-opened',

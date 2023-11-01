@@ -72,8 +72,8 @@
     --code-string: hsl(41, 37%, 45%); /*#183691 */
     --code-number: hsl(102, 27%, 50%); /* #0086b3;*/
     --code-atrule: var(--code-string);
-    --code-keyword: hsl(204, 58%, 45%); /* #795da3;*/
-    --code-comment: #969896; /*hsl(210, 25%, 60%)*/
+    --code-keyword: hsl(204, 58%, 45%); /* */
+    --code-comment: #969896;
     --code-property: #63a35c;
     --code-selector: var(--code-keyword);
     --code-operator: hsl(19, 67%, 45%);

@@ -28,6 +28,6 @@
 <Header
 	menu={data.sections}
 	version={data.version}
-	class={$page.url.pathname == '/' ? '' : 'shadow-md z-10'}
+	class={$page.url.pathname == '/' ? '' : 'shadow-md shadow-neutral-subtle z-10'}
 />
 <slot />
