@@ -13,10 +13,10 @@
   @apply focus:outline-none;
 }
 .rokkit icon[role='button'] {
-  @apply text-neutral-500 focus:rounded hover:text-secondary;
+  @apply text-neutral focus:rounded hover:text-secondary;
 }
 .rokkit icon[role='button']:focus {
-  @apply outline-none bg-gradient-to-r from-primary-500 to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply outline-none bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
 .rokkit icon.disabled[role='button'] {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;

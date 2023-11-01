@@ -38,7 +38,7 @@ input-range tick {
   @apply h-6;
 }
 input-range tick span {
-  @apply border-neutral-500 h-full;
+  @apply border-neutral h-full;
 }
 input-range tick p {
   @apply items-top;
@@ -68,7 +68,7 @@ day-of-month {
   @apply hover:bg-secondary-200 hover:rounded-full;
 }
 day-of-month[aria-selected='true'] {
-  @apply bg-secondary-500 text-white rounded-full;
+  @apply bg-secondary text-white rounded-full;
 }
 
 /* Form styles */

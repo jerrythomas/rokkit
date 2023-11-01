@@ -38,7 +38,7 @@
 }
 
 .minimal input-field label {
-  @apply leading-6 w-full uppercase text-sm text-neutral-500;
+  @apply leading-6 w-full uppercase text-sm text-neutral;
 }
 .minimal input-field message {
   @apply px-2 py-1 bg-neutral-base rounded;
@@ -55,7 +55,7 @@
   @apply bg-neutral-subtle box-border border-neutral-muted rounded-full;
 }
 .minimal input-range range-track selected {
-  @apply border -top-0px -bottom-0px border-secondary-500 bg-secondary-600 rounded-full;
+  @apply border -top-0px -bottom-0px border-secondary bg-secondary-600 rounded-full;
 }
 .minimal input-range range-track thumb {
   @apply rounded-full;
@@ -82,7 +82,7 @@
   @apply h-6;
 }
 .minimal tick span {
-  @apply border-neutral-500 h-full;
+  @apply border-neutral h-full;
 }
 .minimal tick p {
   @apply items-top;
@@ -90,7 +90,7 @@
 }
 
 .minimal thumb {
-  @apply -top-1.5 bg-secondary-500 shadow-xl border border-secondary-500;
+  @apply -top-1.5 bg-secondary shadow-xl border border-secondary;
 }
 .minimal thumb.sliding::before {
   content: '';

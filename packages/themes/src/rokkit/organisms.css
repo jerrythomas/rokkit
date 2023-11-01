@@ -139,7 +139,7 @@
 /* Hover and Icon styles */
 /* .rokkit input-select:hover > icon,
 .rokkit drop-down:hover > icon {
-  @apply border-neutral-500;
+  @apply border-neutral;
 } */
 
 /* Scroll styles */
@@ -264,7 +264,7 @@
   @apply leading-loose p-2px;
 }
 .rokkit toggle-switch:focus-within {
-  @apply outline outline-secondary-500;
+  @apply outline outline-secondary;
 }
 .rokkit toggle-switch item {
   @apply items-center justify-center px-3 gap-1 py-0 leading-loose;

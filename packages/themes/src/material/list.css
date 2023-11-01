@@ -13,7 +13,7 @@
   @apply w-4 h-4 rounded;
 }
 .material .tab.is-hovering {
-  @apply bg-primary-500;
+  @apply bg-primary;
 }
 
 .material tabs .tab {
@@ -53,7 +53,7 @@
 }
 
 .material accordion .is-selected summary {
-  @apply border-b-primary-500 border-b text-primary-600;
+  @apply border-b-primary border-b text-primary-600;
   @apply hover:text-primary-600;
 }
 /* .material list item[aria-selected='true'] {
@@ -61,7 +61,7 @@
 } */
 .material node[aria-selected='true'],
 .material list item[aria-selected='true'] {
-  @apply bg-primary-500 text-neutral-base;
+  @apply bg-primary text-neutral-base;
 }
 .material crumbs {
   @apply flex-grow gap-1 text-sm;

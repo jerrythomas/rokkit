@@ -34,7 +34,7 @@
 }
 
 .material input-select:hover square-icon {
-  @apply border-neutral-500;
+  @apply border-neutral;
 }
 .material input-select scroll {
   @apply mt-2 shadow-lg;

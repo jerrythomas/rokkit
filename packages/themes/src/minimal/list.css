@@ -53,7 +53,7 @@
 .minimal accordion item.is-selected,
 .minimal accordion item.is-selected > a {
   @apply text-secondary-600;
-  /* @apply hover:text-secondary-500; */
+  /* @apply hover:text-secondary; */
 }
 
 .minimal node {
