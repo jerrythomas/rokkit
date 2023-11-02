@@ -45,11 +45,13 @@
 		</nav>
 
 		<ThemeSwitcher />
-		<Icon
-			name="i-logo:github"
-			label="Rokkit on Github"
-			role="button"
-			on:click={() => goto('https://github.com/jerrythomas/rokkit')}
-		/>
+		<a href="https://github.com/jerrythomas/rokkit" target="_blank" rel="noopener noreferrer">
+			<Icon
+				name="i-logo:github"
+				label="Rokkit on Github"
+				role="button"
+				class="border border-neutral-muted rounded"
+			/>
+		</a>
 	</settings>
 </header>

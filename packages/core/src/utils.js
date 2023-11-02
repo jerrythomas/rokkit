@@ -45,8 +45,8 @@ export function stateColors(name, modifier = 'none') {
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 	return {
 		DEFAULT: fn(`var(--${name}-500)`),
-		light: fn(`var(--${name}-100)`),
-		dark: fn(`var(--${name}-800)`)
+		light: fn(`var(--${name}-200)`),
+		dark: fn(`var(--${name}-700)`)
 	}
 }
 

@@ -19,9 +19,6 @@
 	function toggleMode() {
 		const mode = current.mode === 'dark' ? 'light' : 'dark'
 		theme.set({ ...current, mode })
-		// if (!document.startViewTransition)
-		// 	document.startViewTransition = (fn) => fn()
-		// document.startViewTransition(() => theme.set({ ...current, mode }))
 	}
 
 	function handleThemeChange(event) {
@@ -35,10 +32,11 @@
 	fields={{ text: 'title', value: 'name' }}
 	on:select={handleThemeChange}
 />
-<theme-mode
-	role="switch"
-	aria-checked={current.mode === 'dark'}
-	class="flex p-0"
->
-	<Icon name={modeIcons[current.mode]} role="button" on:click={toggleMode} />
+<theme-mode role="switch" aria-checked={current.mode === 'dark'} class="flex p-0">
+	<Icon
+		name={modeIcons[current.mode]}
+		role="button"
+		on:click={toggleMode}
+		class="border border-neutral-muted rounded"
+	/>
 </theme-mode>

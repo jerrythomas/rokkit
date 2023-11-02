@@ -134,8 +134,8 @@ describe('utils', () => {
 				const result = stateColors(name, 'hsl')
 				expect(result).toEqual({
 					DEFAULT: `hsl(var(--${name}-500))`,
-					light: `hsl(var(--${name}-100))`,
-					dark: `hsl(var(--${name}-800))`
+					light: `hsl(var(--${name}-200))`,
+					dark: `hsl(var(--${name}-700))`
 				})
 			}
 		)
