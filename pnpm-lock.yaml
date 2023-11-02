@@ -547,6 +547,9 @@ importers:
 
   packages/tutorial:
     dependencies:
+      '@rokkit/core':
+        specifier: workspace:*
+        version: link:../core
       '@rokkit/molecules':
         specifier: workspace:latest
         version: link:../molecules
@@ -563,9 +566,6 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0(svelte@4.2.2)
     devDependencies:
-      '@rokkit/core':
-        specifier: workspace:*
-        version: link:../core
       '@sveltejs/vite-plugin-svelte':
         specifier: ^2.4.6
         version: 2.4.6(svelte@4.2.2)(vite@4.5.0)

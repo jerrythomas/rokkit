@@ -49,8 +49,7 @@ describe('utilities', () => {
 			'compareStrings',
 			'uniqueId',
 			'compact',
-			'toHexString',
-			'adjustViewport'
+			'toHexString'
 		])
 	})
 })

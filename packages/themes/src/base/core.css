@@ -9,7 +9,11 @@
 /* Body styles */
 body {
   @apply flex flex-col w-screen overflow-hidden;
-  height: var(--viewport-height, 100vh);
+  /* height: var(--viewport-height, 100dvh); */
+  height: 100vh;
+  height: --webkit-fill-available;
+  height: 100dvh;
+  max-height: 100dvh;
 }
 
 /* Link styles */
