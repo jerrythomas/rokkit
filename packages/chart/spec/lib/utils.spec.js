@@ -138,7 +138,7 @@ describe('Utility functions', () => {
 	// })
 
 	it('should generate statistical summary', (context) => {
-		let result = aggregate(context.meta.suite.data, 'group', 'score')
+		let result = aggregate(context.task.suite.data, 'group', 'score')
 		expect(result).toEqual([
 			{
 				key: 'beta',
@@ -183,7 +183,7 @@ describe('Utility functions', () => {
 			expect(item[0].value.length).toEqual(counts[k])
 		})
 
-		result = toNested(context.meta.suite.data, 'group', 'score')
+		result = toNested(context.task.suite.data, 'group', 'score')
 		expect(result).toEqual([
 			{ key: 'alpha', value: [{ score: 1 }, { score: 2 }, { score: 3 }] },
 			{ key: 'beta', value: [{ score: 2 }, { score: 4 }, { score: 6 }] }
