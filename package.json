@@ -35,22 +35,22 @@
 		"packages/tutorial"
 	],
 	"devDependencies": {
-		"bumpp": "^9.2.0",
-		"eslint": "^8.52.0",
-		"eslint-config-prettier": "^9.0.0",
+		"bumpp": "^9.2.1",
+		"eslint": "^8.55.0",
+		"eslint-config-prettier": "^9.1.0",
 		"eslint-config-shared": "workspace:*",
 		"front-matter": "^4.0.2",
 		"husky": "^8.0.3",
-		"lint-staged": "^15.0.2",
+		"lint-staged": "^15.2.0",
 		"madge": "^6.1.0",
-		"prettier": "3.0.3",
-		"prettier-plugin-svelte": "^3.0.3"
+		"prettier": "3.1.1",
+		"prettier-plugin-svelte": "^3.1.2"
 	},
 	"lint-staged": {
 		"*.{js,svelte}": "eslint --cache --fix",
 		"*.{js,svelte,md,json}": "prettier --write"
 	},
 	"dependencies": {
-		"turbo": "^1.10.16"
+		"turbo": "^1.11.2"
 	}
 }
