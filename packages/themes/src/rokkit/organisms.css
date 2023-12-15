@@ -75,7 +75,7 @@
 /* Styles for 'button' and 'button-group' classes */
 .rokkit button,
 .rokkit .button {
-  @apply flex min-h-9 items-center rounded-full px-6 uppercase bg-neutral-muted text-neutral-700 cursor-pointer;
+  @apply flex min-h-9 items-center rounded-full px-6 gap-3 uppercase bg-neutral-muted text-neutral-700 cursor-pointer;
   animation: button-pop var(--animation-btn, 0.25s) ease-out;
 }
 
@@ -208,7 +208,7 @@
 
 /* Selected and Hover styles for List and Node */
 .rokkit list item[aria-selected='true'] > a {
-  @apply text-neutral-200 dark:text-neutral-800
+  @apply text-neutral-200 dark:text-neutral-800;
 }
 .rokkit virtual-list-item[aria-current='true'] {
   @apply bg-neutral-inset text-secondary;

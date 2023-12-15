@@ -9,7 +9,7 @@
 		"build": "pnpm clean && turbo run build",
 		"test": "turbo run test:ci",
 		"coverage": "turbo run coverage",
-		"lint": "turbo run lint",
+		"lint": "eslint .",
 		"format": "prettier --write .",
 		"prepare": "husky install",
 		"latest": "pnpm clean && pnpm upgrade --latest && turbo run latest",

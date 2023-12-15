@@ -9,7 +9,7 @@
 		"latest": "pnpm upgrade --latest"
 	},
 	"dependencies": {
-		"@alexanderniebuhr/prettier-plugin-unocss": "^0.0.4",
+		"@unocss/eslint-config": "^0.57.1",
 		"eslint": "^8.52.0",
 		"eslint-config-prettier": "^9.0.0",
 		"prettier": "3.0.3",
