@@ -106,7 +106,7 @@ describe('collector', () => {
 				type: 'js'
 			})
 
-			expect(result.error.split('\n')[0]).toEqual('Parse failure: Unexpected token (2:4)')
+			expect(result.error.split('\n')[0]).toEqual("Expected ';', '}' or <eof>")
 		})
 	})
 	describe('getFolder', () => {

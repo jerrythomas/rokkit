@@ -1089,6 +1089,6 @@ exports[`Input.svelte > should render "week" 1`] = `
 </body>
 `;
 
-exports[`Input.svelte > should render different input on type change 1`] = `"<input type=\\"text\\">"`;
+exports[`Input.svelte > should render different input on type change 1`] = `"<input type="text">"`;
 
-exports[`Input.svelte > should render different input on type change 2`] = `"<input type=\\"number\\">"`;
+exports[`Input.svelte > should render different input on type change 2`] = `"<input type="number">"`;
