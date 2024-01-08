@@ -48,7 +48,8 @@
 		"./constants": "./src/constants.js",
 		".": {
 			"types": "./dist/index.d.ts",
-			"import": "./src/index.js"
+			"import": "./src/index.js",
+			"svelte": "./src/index.js"
 		}
 	},
 	"dependencies": {
