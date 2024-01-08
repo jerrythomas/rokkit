@@ -4,7 +4,6 @@
 	"description": "Themes for use with rokkit components.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
-	"svelte": "src/index.js",
 	"module": "src/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
