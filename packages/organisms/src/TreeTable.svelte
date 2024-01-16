@@ -6,7 +6,32 @@
   export let data = [] // Input array of objects
   export let columns = []
 
+  let hiddenPaths = []
+  let filtered = data
+
+  function toggle(item) {
+
+    const parentPath = item[nestedColumn.key] + '/'
+    if (item._isParent){
+      item._isExpanded = !item._isExpanded
+      if (item._isExpanded) {
+        hiddenPaths = [...hiddenPaths.filter(i => i !== parentPath)]
+      } else {
+        hiddenPaths = [...hiddenPaths, parentPath]
+      }
+      filtered = [...data.filter(isVisible)]
+    }
+  }
+
+  function isVisible(item) {
+    if (hiddenPaths.length === 0) return true
+    return !hiddenPaths.some(i => item[nestedColumn.key].startsWith(i))
+  }
+
+
+
   $: sizes = columns.map(col => col.width ?? '1fr').join(' ')
+  $: nestedColumn = columns.find(col => col.path)
 </script>
 
 <style>
@@ -33,7 +58,7 @@
     </tr>
   </thead>
   <tbody class="flex flex-col gap-1px overflow-y-auto ">
-    {#each data as item, index }
+    {#each filtered as item, index }
       {@const even = index % 2 === 0}
       <tr class="grid gap-1px" class:even>
         {#each columns as col}
@@ -45,13 +70,16 @@
                 <Connector type="empty" />
               {/each}
               {#if item._isParent}
-              <Icon name={item._isExpanded ? 'node-opened' : 'node-closed'} class="small"/>
+              <Icon name={item._isExpanded ? 'node-opened' : 'node-closed'}
+                    class="small cursor-pointer"
+                    on:click={()=>toggle(item)} />
               {/if}
             {/if}
             <Item value={value} fields={fields} />
           </td>
         {/each}
       </tr>
+
     {/each}
   </tbody>
 </table>
