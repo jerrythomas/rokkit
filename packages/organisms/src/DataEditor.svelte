@@ -10,11 +10,7 @@
 	const registry = writable({})
 	setContext('registry', registry)
 
-	import {
-		deriveSchemaFromValue,
-		deriveLayoutFromValue,
-		getSchemaWithLayout
-	} from './lib'
+	import { deriveSchemaFromValue, deriveLayoutFromValue, getSchemaWithLayout } from './lib'
 
 	export let value
 	export let schema = null

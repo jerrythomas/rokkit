@@ -25,21 +25,14 @@
 	class="-translate-x-full absolute left-0 top-0 w-full flex flex-shrink-0 flex-col gap-4 md:w-1/2 lg:w-80"
 	class:lg:relative={$site.sidebar}
 >
-	<nav
-		class="h-10 w-full flex items-center gap-2 border-b border-b-neutral-inset"
-	>
+	<nav class="h-10 w-full flex items-center gap-2 border-b border-b-neutral-inset">
 		<Icon
 			name="i-rokkit:action-cross"
 			role="button"
 			class="border-r border-r-neutral-inset"
 			on:click={() => ($site.sidebar = false)}
 		/>
-		<input
-			type="search"
-			placeholder="search"
-			bind:value={search}
-			class="embedded"
-		/>
+		<input type="search" placeholder="search" bind:value={search} class="embedded" />
 	</nav>
 	<slot />
 </aside>

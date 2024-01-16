@@ -111,6 +111,8 @@ export function navigator(element, options) {
 				const event = currentNode[path[path.length - 1].fields.isOpen] ? 'expand' : 'collapse'
 				emit(event, element, indices, currentNode)
 			} else if (currentNode !== null) emit('select', element, indices, currentNode)
+			emit('move', element, indices, currentNode)
+			// emit('select', element, indices, currentNode)
 		}
 	}
 

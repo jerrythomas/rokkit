@@ -27,12 +27,7 @@
 	<row>
 		{#each data as { text, completed, active, steps }, stage}
 			<div class="flex flex-col items-center justify-center first:col-start-2">
-				<Stage
-					{text}
-					{completed}
-					{active}
-					on:click={() => handleClick({ stage })}
-				/>
+				<Stage {text} {completed} {active} on:click={() => handleClick({ stage })} />
 			</div>
 			{#if steps}
 				<div class="col-span-2 flex flex-col items-center justify-center">

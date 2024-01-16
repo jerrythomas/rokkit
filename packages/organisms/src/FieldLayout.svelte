@@ -14,9 +14,7 @@
 </script>
 
 {#if !Array.isArray(schema.elements)}
-	<error>
-		Invalid schema. Expected schema to include an 'elements' array.
-	</error>
+	<error> Invalid schema. Expected schema to include an 'elements' array. </error>
 {:else}
 	<svelte:component this={wrapper} {...wrapperProps}>
 		{#each schema.elements as item}
@@ -29,12 +27,7 @@
 
 			{#if nested}
 				{#if item.key}
-					<svelte:self
-						{...props}
-						schema={item}
-						bind:value={value[item.key]}
-						on:change
-					/>
+					<svelte:self {...props} schema={item} bind:value={value[item.key]} on:change />
 				{:else}
 					<svelte:self {...props} schema={item} bind:value on:change />
 				{/if}
@@ -46,12 +39,7 @@
 				/>
 			{:else}
 				{@const name = elementPath.join('.')}
-				<InputField
-					{name}
-					bind:value={value[item.key]}
-					{...item.props}
-					on:change
-				/>
+				<InputField {name} bind:value={value[item.key]} {...item.props} on:change />
 			{/if}
 		{/each}
 	</svelte:component>

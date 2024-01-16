@@ -1,12 +1,5 @@
 <script>
-	import {
-		Chart,
-		Grid,
-		Axis,
-		BoxPlot,
-		ViolinPlot,
-		ScatterPlot
-	} from '@rokkit/chart'
+	import { Chart, Grid, Axis, BoxPlot, ViolinPlot, ScatterPlot } from '@rokkit/chart'
 	import data from './data.json'
 	import ChartControls from './ChartControls.svelte'
 

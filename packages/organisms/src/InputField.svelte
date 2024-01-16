@@ -49,10 +49,7 @@
 			{label}
 		</label>
 	{/if}
-	<field
-		class="w-full flex flex-row items-center"
-		aria-label={description ?? label ?? name}
-	>
+	<field class="w-full flex flex-row items-center" aria-label={description ?? label ?? name}>
 		{#if icon}
 			<Icon name={icon} />
 		{/if}

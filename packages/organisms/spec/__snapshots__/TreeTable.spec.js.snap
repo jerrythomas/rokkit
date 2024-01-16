@@ -1,0 +1,139 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TreeTable.svelte > should render using default field mapping 1`] = `
+<body>
+  <div>
+    <div
+      class="flex flex-col h-full w-full p-8 overflow-auto"
+      style="--sizes: 50% 50%;"
+    >
+      <table
+        class="flex flex-col h-full overflow-y-hidden"
+      >
+        <thead>
+          <tr
+            class="grid gap-1px svelte-oo1f8v"
+          >
+            <th
+              class="bg-neutral-400 svelte-oo1f8v"
+            >
+              path
+            </th>
+            <th
+              class="bg-neutral-400 svelte-oo1f8v"
+            >
+              Value
+            </th>
+          </tr>
+        </thead>
+         
+        <tbody
+          class="flex flex-col gap-1px overflow-y-auto "
+        >
+          <tr
+            class="grid gap-1px svelte-oo1f8v even"
+          >
+            <td
+              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+            >
+               
+              <icon
+                aria-label="node-opened"
+                class="flex flex-shrink-0 items-center justify-center small cursor-pointer"
+                role="img"
+                tabindex="-1"
+              >
+                <i
+                  aria-hidden="true"
+                  class="node-opened"
+                />
+              </icon>
+              
+               
+              
+               
+              <p>
+                root
+              </p>
+              
+            </td>
+            <td
+              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+            >
+               
+              
+               
+              
+            </td>
+             
+          </tr>
+          <tr
+            class="grid gap-1px svelte-oo1f8v"
+          >
+            <td
+              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+            >
+              <span
+                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+              />
+               
+              
+               
+              
+               
+              <p>
+                one
+              </p>
+              
+            </td>
+            <td
+              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+            >
+               
+              
+               
+              <p>
+                one
+              </p>
+              
+            </td>
+             
+          </tr>
+          <tr
+            class="grid gap-1px svelte-oo1f8v even"
+          >
+            <td
+              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+            >
+              <span
+                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+              />
+               
+              
+               
+              
+               
+              <p>
+                two
+              </p>
+              
+            </td>
+            <td
+              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+            >
+               
+              
+               
+              <p>
+                200
+              </p>
+              
+            </td>
+             
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+`;

@@ -27,13 +27,7 @@
 	}
 </script>
 
-<Select
-	bind:value
-	options={filtered}
-	{...$$restProps}
-	{fields}
-	on:select={handleSelect}
->
+<Select bind:value options={filtered} {...$$restProps} {fields} on:select={handleSelect}>
 	<span class="flex flex-grow">
 		<input
 			type="text"

@@ -19,9 +19,7 @@
 <sample class="flex flex-col relative {className}">
 	<h1><span class="text-neutral-600">{name}</span>: {page[fields.text]}</h1>
 	<content class="h-full w-full flex flex-row overflow-hidden">
-		<section
-			class="flex flex-grow flex-col items-center justify-center overflow-scroll p-4"
-		>
+		<section class="flex flex-grow flex-col items-center justify-center overflow-scroll p-4">
 			<wrapper class="flex flex-col h-full self-center {page.class}">
 				<svelte:component this={page.component} {...page.props} />
 			</wrapper>

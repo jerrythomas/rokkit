@@ -45,17 +45,7 @@
 	$: size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
 </script>
 
-<ResponsiveGrid
-	{items}
-	small={size == 'sm'}
-	class="three-col {size}"
-	bind:value={page}
-/>
+<ResponsiveGrid {items} small={size == 'sm'} class="three-col {size}" bind:value={page} />
 {#if size == 'sm'}
-	<Switch
-		options={items}
-		fields={{ text: 'name' }}
-		bind:value={page}
-		class="my-2"
-	/>
+	<Switch options={items} fields={{ text: 'name' }} bind:value={page} class="my-2" />
 {/if}

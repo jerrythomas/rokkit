@@ -12,14 +12,7 @@
 </script>
 
 {#if type in using}
-	<svelte:component
-		this={using[type]}
-		bind:value
-		{...$$restProps}
-		on:change
-		on:focus
-		on:blur
-	/>
+	<svelte:component this={using[type]} bind:value {...$$restProps} on:change on:focus on:blur />
 {:else}
 	<error>Type "{type}" is not supported by Input</error>
 {/if}

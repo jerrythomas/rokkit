@@ -6,5 +6,5 @@
 	let value = { first_name: null, last_name: null, gender: null, age: null }
 </script>
 
-<Form bind:value  {schema} {layout} />
+<Form bind:value {schema} {layout} />
 <pre>{JSON.stringify(value, null, 2)}</pre>

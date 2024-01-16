@@ -107,6 +107,14 @@ describe('mapping', () => {
 			const result = getText({ name: 'Alpha' }, { text: 'name' })
 			expect(result).toEqual('Alpha')
 		})
+		it('should return JSON strig for objects', () => {
+			const result = getText({ name: { key: 'Alpha' } }, { text: 'name' })
+			expect(result).toEqual('{\n  "key": "Alpha"\n}')
+		})
+		it('should return a string for boolean', () => {
+			const result = getText({ name: false }, { text: 'name' })
+			expect(result).toEqual('false')
+		})
 	})
 
 	describe('getAttribute', () => {

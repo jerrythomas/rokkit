@@ -51,8 +51,7 @@
 	on:collapse={handle}
 >
 	{#each items as item, index}
-		{@const hasItems =
-			item[fields.children] && item[fields.children].length > 0}
+		{@const hasItems = item[fields.children] && item[fields.children].length > 0}
 		{@const itemFields = { ...fields, ...(fields.fields ?? fields) }}
 
 		<div

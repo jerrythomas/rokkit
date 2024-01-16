@@ -13,10 +13,8 @@
 </script>
 
 {#each ticks as tick, i}
-	<text
-		x={x + padding + i * sizeWithSpace + size / 2}
-		y={y + size / 2}
-		font-size={textSize}>{tick}</text
+	<text x={x + padding + i * sizeWithSpace + size / 2} y={y + size / 2} font-size={textSize}
+		>{tick}</text
 	>
 	<rect
 		x={x + padding + i * sizeWithSpace}

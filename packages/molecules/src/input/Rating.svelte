@@ -64,15 +64,7 @@
 	on:keydown={handleKeyDown}
 >
 	{#if name}
-		<input
-			{name}
-			hidden
-			type="number"
-			bind:value
-			min={0}
-			{max}
-			readOnly={disabled}
-		/>
+		<input {name} hidden type="number" bind:value min={0} {max} readOnly={disabled} />
 	{/if}
 	{#each stars as selected, index}
 		{@const stateIcon = selected ? stateIcons.filled : stateIcons.empty}

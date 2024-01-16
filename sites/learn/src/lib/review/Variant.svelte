@@ -4,9 +4,7 @@
 	export let component
 </script>
 
-<card
-	class="min-w-80 flex flex-col border border-neutral-300 rounded-lg shadow"
->
+<card class="min-w-80 flex flex-col border border-neutral-300 rounded-lg shadow">
 	<h1 class="flex bg-neutral-200 px-4 leading-loose text-neutral-700">
 		{variant.title}
 	</h1>
