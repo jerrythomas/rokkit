@@ -9,7 +9,7 @@
 	export let striped = true
 
 	let hiddenPaths = []
-	let filtered = data
+
 
 	function toggle(item) {
 		if (nestedColumn === undefined) return
@@ -31,6 +31,7 @@
 		return !hiddenPaths.some((i) => item[nestedColumn.key].startsWith(i))
 	}
 
+	$: filtered = data
 	$: sizes = columns.map((col) => col.width ?? '1fr').join(' ')
 	$: nestedColumn = columns.find((col) => col.path)
 </script>

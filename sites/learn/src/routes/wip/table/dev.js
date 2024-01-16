@@ -1,7 +1,7 @@
-export const data = {
+export const dev = {
 	theme: {
-		logo: 'your_logo_path.png',
-		name: 'ROKKIT',
+		logo: 'development.png',
+		environment: 'dev',
 		palette: {
 			primary: {
 				main: '#2196F3',
