@@ -27,14 +27,9 @@
 	}
 
 	function handlePanMove(event) {
-		const { top, bottom, left, right } =
-			wall.parentElement.getBoundingClientRect()
+		const { top, bottom, left, right } = wall.parentElement.getBoundingClientRect()
 		const extents = horizontal ? [left, right] : [top, bottom]
-		let px = clamp(
-			extents[0],
-			extents[1],
-			horizontal ? event.detail.x : event.detail.y
-		)
+		let px = clamp(extents[0], extents[1], horizontal ? event.detail.x : event.detail.y)
 
 		pos = clamp(min, max, (100 * (px - extents[0])) / (extents[1] - extents[0]))
 

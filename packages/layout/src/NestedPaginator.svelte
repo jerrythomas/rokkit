@@ -39,9 +39,7 @@
 		let level = items[index][fields.level]
 		while (level > 0) {
 			trail.unshift(items[index])
-			index = items.findIndex(
-				(item, i) => i < index && item[fields.level] === level - 1
-			)
+			index = items.findIndex((item, i) => i < index && item[fields.level] === level - 1)
 			level = items[index][fields.level]
 		}
 		return trail
@@ -54,10 +52,7 @@
 
 <pages>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<icon
-		class="arrow-left cursor-pointer"
-		on:click={() => handleNav('previous')}
-	/>
+	<icon class="arrow-left cursor-pointer" on:click={() => handleNav('previous')} />
 	<BreadCrumbs items={trail} {fields} {using} />
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<icon class="arrow-right cursor-pointer" on:click={() => handleNav('next')} />
