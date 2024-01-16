@@ -228,10 +228,22 @@ describe('navigator', () => {
 				node: items[0]
 				// id: items[0].name
 			})
+			expect(handlers.move).toHaveBeenCalled()
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				path: [0],
+				node: items[0]
+				// id: items[0].name
+			})
 			node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 			expect(items[0][fields.isOpen]).toBeTruthy()
 			expect(handlers.expand).toHaveBeenCalled()
 			expect(handlers.expand).toHaveBeenDispatchedWith({
+				path: [0],
+				node: items[0]
+				// id: items[0].name
+			})
+			expect(handlers.move).toHaveBeenCalled()
+			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
 				node: items[0]
 				// id: items[0].name
@@ -393,10 +405,22 @@ describe('navigator', () => {
 				node: items[0]
 				// id: items[0].name
 			})
+			expect(handlers.move).toHaveBeenCalled()
+			expect(handlers.move).toHaveBeenDispatchedWith({
+				path: [0],
+				node: items[0]
+				// id: items[0].name
+			})
 			node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 			expect(items[0][fields.isOpen]).toBeTruthy()
 			expect(handlers.expand).toHaveBeenCalled()
 			expect(handlers.expand).toHaveBeenDispatchedWith({
+				path: [0],
+				node: items[0]
+				// id: items[0].name
+			})
+			expect(handlers.move).toHaveBeenCalled()
+			expect(handlers.move).toHaveBeenDispatchedWith({
 				path: [0],
 				node: items[0]
 				// id: items[0].name
