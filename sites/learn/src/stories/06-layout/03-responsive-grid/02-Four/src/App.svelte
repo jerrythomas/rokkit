@@ -1,5 +1,5 @@
 <script>
-	import { ResponsiveGrid , ButtonGroup} from '@rokkit/molecules'
+	import { ResponsiveGrid, ButtonGroup } from '@rokkit/molecules'
 	import PlaceHolder from './PlaceHolder.svelte'
 	import './style.css'
 
@@ -39,12 +39,7 @@
 </script>
 
 <ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />
-<ResponsiveGrid
-	{items}
-	small={size == 'sm'}
-	class="four-col {size}"
-	bind:value={page}
-/>
+<ResponsiveGrid {items} small={size == 'sm'} class="four-col {size}" bind:value={page} />
 {#if size == 'sm'}
 	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
 {/if}

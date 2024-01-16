@@ -22,13 +22,7 @@
 
 <section class="flex flex-grow flex-col p-8">
 	<ProgressDots count={5} value={-1} current={-1} />
-	<Stepper
-		data={filtered}
-		{steps}
-		{currentStage}
-		{currentStep}
-		on:click={handleClick}
-	/>
+	<Stepper data={filtered} {steps} {currentStage} {currentStep} on:click={handleClick} />
 	<div class="flex p-6" width="100px">
 		<Range />
 	</div>
@@ -48,10 +42,4 @@
 		</div>
 	{/if}
 </section>
-<ControlPanel
-	bind:stages
-	bind:steps
-	bind:showLabels
-	bind:data={filtered}
-	bind:formatString
-/>
+<ControlPanel bind:stages bind:steps bind:showLabels bind:data={filtered} bind:formatString />

@@ -31,12 +31,7 @@
 </script>
 
 <ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />
-<ResponsiveGrid
-	{items}
-	small={size == 'sm'}
-	class="demo-col {size}"
-	bind:value={page}
-/>
+<ResponsiveGrid {items} small={size == 'sm'} class="demo-col {size}" bind:value={page} />
 {#if size == 'sm'}
 	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
 {/if}

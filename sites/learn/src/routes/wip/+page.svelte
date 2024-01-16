@@ -1,6 +1,5 @@
 <script>
 	import { VirtualList } from '@rokkit/organisms'
-	// import VirtualList from '@sveltejs/svelte-virtual-list'
 	// import { Item } from '@rokkit/molecules'
 	const options = Array.from({ length: 50 }).map((_, i) => `Option ${i + 1}`)
 	let start

@@ -8,11 +8,7 @@
 	{#each properties as opt}
 		<div class="flex items-center gap-2 px-2">
 			<p>{opt.label}</p>
-			<Switch
-				bind:value={opt.value}
-				options={opt.options}
-				compact={opt.options.length == 2}
-			/>
+			<Switch bind:value={opt.value} options={opt.options} compact={opt.options.length == 2} />
 		</div>
 	{/each}
 </aside>

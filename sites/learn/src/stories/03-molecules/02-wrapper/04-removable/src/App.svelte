@@ -15,10 +15,6 @@
 
 <span class="flex flex-wrap gap-2">
 	{#each items as item, index}
-		<ItemWrapper
-			value={item.text}
-			removable={true}
-			on:remove={() => handleRemove(index)}
-		/>
+		<ItemWrapper value={item.text} removable={true} on:remove={() => handleRemove(index)} />
 	{/each}
 </span>

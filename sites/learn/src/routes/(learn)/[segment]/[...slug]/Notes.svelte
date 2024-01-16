@@ -17,9 +17,7 @@
 
 <aside class="h-full w-full flex flex-col border-r border-r-neutral-inset">
 	{#if $story}
-		<nav
-			class="box-border h-10 flex items-center gap-1 border-b border-b-neutral-inset text-sm"
-		>
+		<nav class="box-border h-10 flex items-center gap-1 border-b border-b-neutral-inset text-sm">
 			{#if !$site.sidebar}
 				<Icon
 					name="i-rokkit:menu"

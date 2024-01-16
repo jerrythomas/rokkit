@@ -11,9 +11,7 @@
 
 <story class="grid h-full">
 	<header class="flex flex-col justify-center">{title}</header>
-	<h1 class="flex flex-col items-center justify-center bg-neutral-300">
-		Properties
-	</h1>
+	<h1 class="flex flex-col items-center justify-center bg-neutral-300">Properties</h1>
 	<content class="flex flex-grow flex-row items-center justify-around p-4">
 		<board class="flex flex-row flex-wrap gap-4 p-4">
 			{#each variants as variant}
