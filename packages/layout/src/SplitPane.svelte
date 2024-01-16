@@ -18,16 +18,8 @@
 	function handlePanMove(event) {
 		const { top, bottom, left, right } = refs.wrapper.getBoundingClientRect()
 		const extents = horizontal ? [left, right] : [top, bottom]
-		let px = clamp(
-			extents[0],
-			extents[1],
-			horizontal ? event.detail.x : event.detail.y
-		)
-		pos = clamp(
-			limits[0],
-			100 - limits[1],
-			(100 * (px - extents[0])) / (extents[1] - extents[0])
-		)
+		let px = clamp(extents[0], extents[1], horizontal ? event.detail.x : event.detail.y)
+		pos = clamp(limits[0], 100 - limits[1], (100 * (px - extents[0])) / (extents[1] - extents[0]))
 		dispatch('change', { pos })
 	}
 
@@ -44,12 +36,7 @@
 	<div class={styles[1]} style="{dimension}: {100 - pos}%;">
 		<slot name="b" />
 	</div>
-	<span
-		class="wall"
-		use:pannable
-		on:panmove={handlePanMove}
-		style="{side}: calc({pos}% - 8px)"
-	/>
+	<span class="wall" use:pannable on:panmove={handlePanMove} style="{side}: calc({pos}% - 8px)" />
 </div>
 
 <style>

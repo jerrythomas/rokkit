@@ -1,5 +1,5 @@
 <script>
-	import {Symbol} from '@rokkit/molecules'
+	import { Symbol } from '@rokkit/molecules'
 	import Texture from './Texture.svelte'
 
 	export let pattern
@@ -11,14 +11,7 @@
 </script>
 
 <svg viewBox="0 0 {size} {size}">
-	<Symbol
-		x={size / 2}
-		y={size / 2}
-		{size}
-		fill={pattern.fillUrl || fill}
-		{stroke}
-		{shape}
-	/>
+	<Symbol x={size / 2} y={size / 2} {size} fill={pattern.fillUrl || fill} {stroke} {shape} />
 	{#if pattern}
 		<defs>
 			<Texture {...pattern} />

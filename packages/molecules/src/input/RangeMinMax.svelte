@@ -5,6 +5,7 @@
 
 	let className = ''
 	export { className as class }
+	export let name = null
 	export let min = 0
 	export let max = 100
 	export let value = [min, min]
@@ -28,10 +29,7 @@
 		}
 	}
 	function handleClick(event) {
-		const distance = [
-			Math.abs(event.detail - value[0]),
-			Math.abs(event.detail - value[1])
-		]
+		const distance = [Math.abs(event.detail - value[0]), Math.abs(event.detail - value[1])]
 		const index = single ? 1 : distance[0] < distance[1] ? 0 : 1
 
 		value[index] = event.detail
@@ -47,9 +45,7 @@
 
 	$: steps =
 		step > 0
-			? Array.from({ length: 1 + (max - min) / step }, (_, i) =>
-					Math.min(min + i * step, max)
-			  )
+			? Array.from({ length: 1 + (max - min) / step }, (_, i) => Math.min(min + i * step, max))
 			: []
 	$: updateScale(width, min, max)
 </script>
@@ -58,6 +54,7 @@
 	<error>Expected value to be an array</error>
 {:else}
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
+	  <input {name} type="hidden" bind:value={value} />
 		<range-track class="relative grid">
 			<span class="relative col-start-2 box-border" bind:clientWidth={width} />
 			<selected
@@ -66,23 +63,9 @@
 				style:width="{upper - lower}px"
 			/>
 			{#if !single}
-				<Thumb
-					bind:cx={lower}
-					bind:value={value[0]}
-					{steps}
-					{scale}
-					min={limits[0]}
-					max={upper}
-				/>
+				<Thumb bind:cx={lower} bind:value={value[0]} {steps} {scale} min={limits[0]} max={upper} />
 			{/if}
-			<Thumb
-				bind:cx={upper}
-				bind:value={value[1]}
-				{steps}
-				{scale}
-				min={lower}
-				max={limits[1]}
-			/>
+			<Thumb bind:cx={upper} bind:value={value[1]} {steps} {scale} min={lower} max={limits[1]} />
 		</range-track>
 
 		<ticks style:--count={tickItems.length - 1}>

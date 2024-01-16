@@ -28,7 +28,6 @@
 	}
 	let previous
 	function handleClick(row, column) {
-
 		if (previous) {
 			grid[previous.row][previous.column].isCurrent = false
 		}

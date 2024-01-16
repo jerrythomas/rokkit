@@ -22,9 +22,7 @@
 	}
 </script>
 
-<control
-	class="w-96 flex flex-col gap-4 border-gray-700 border-l bg-primary-100 p-8"
->
+<control class="w-96 flex flex-col gap-4 border-gray-700 border-l bg-primary-100 p-8">
 	<section class="flex flex-col gap-2">
 		<p class="border-accent-600 border-b leading-loose">Plot Type</p>
 		<div class="flex flex-col">

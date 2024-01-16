@@ -95,9 +95,7 @@
 		}
 	}
 
-	const props = horizontal
-		? dimensionAttributes.horizontal
-		: dimensionAttributes.vertical
+	const props = horizontal ? dimensionAttributes.horizontal : dimensionAttributes.vertical
 
 	$: keyboardActions = getKeyboardActions(viewport, horizontal)
 	$: start = $bounds?.lower
@@ -115,9 +113,7 @@
 	$: if ($space.visible) size = $space.visible + 'px'
 	$: if (root) root.scrollTo(0, $space.before)
 	$: fields = { ...defaultFields, ...fields }
-	$: listStyle = horizontal
-		? `width: ${size};`
-		: `height: ${size};` + getListPosition(anchor, root)
+	$: listStyle = horizontal ? `width: ${size};` : `height: ${size};` + getListPosition(anchor, root)
 </script>
 
 <virtual-list>

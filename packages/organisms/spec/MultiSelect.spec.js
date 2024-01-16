@@ -25,6 +25,7 @@ describe('MultiSelect.svelte', () => {
 		await tick()
 		expect(wrapper).toMatchSnapshot()
 	})
+
 	it('should render using field mappings', async () => {
 		const options = [{ name: 'One' }, { name: 'Two' }, { name: 'Three' }]
 		const { container, component } = render(MultiSelect, {
@@ -44,6 +45,7 @@ describe('MultiSelect.svelte', () => {
 		await tick()
 		expect(wrapper).toMatchSnapshot()
 	})
+
 	it('should render items using custom component', async () => {
 		const options = [{ name: 'Alpha' }, { name: 'Beta' }, { name: 'Charlie' }]
 		const { container } = render(MultiSelect, {
@@ -78,6 +80,7 @@ describe('MultiSelect.svelte', () => {
 		expect(items.length).toBe(2)
 		await fireEvent.click(items[1])
 		await tick()
+
 		expect(getPropertyValue(component, 'value')).toEqual(['One', 'Three'])
 		await fireEvent.click(select)
 		await tick()

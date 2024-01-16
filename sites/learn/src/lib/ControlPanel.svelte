@@ -10,9 +10,7 @@
 	$: ticks = Array.from({ length: steps }, (v, i) => (i + 1) / steps)
 </script>
 
-<aside
-	class="h-full w-80 flex flex-shrink-0 flex-grow-0 flex-col gap-6 bg-neutral-100 p-6"
->
+<aside class="h-full w-80 flex flex-shrink-0 flex-grow-0 flex-col gap-6 bg-neutral-100 p-6">
 	<label for="stages">
 		Number of Stages
 		<input type="range" id="stages" bind:value={stages} min="2" max="5" />
@@ -23,23 +21,11 @@
 	</label>
 	<label for="steps">
 		Number of Steps
-		<input
-			type="range"
-			id="steps"
-			name="volume"
-			bind:value={steps}
-			min="0"
-			max="8"
-		/>
+		<input type="range" id="steps" name="volume" bind:value={steps} min="0" max="8" />
 	</label>
 
 	<label for="labels" class="row">
-		<input
-			type="checkbox"
-			id="labels"
-			name="labels"
-			bind:checked={showLabels}
-		/>
+		<input type="checkbox" id="labels" name="labels" bind:checked={showLabels} />
 		Show Labels
 	</label>
 

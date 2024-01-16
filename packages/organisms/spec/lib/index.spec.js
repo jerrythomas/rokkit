@@ -7,10 +7,17 @@ describe('lib', () => {
 			'addRootNode',
 			'messages',
 			'dataTypes',
+			'deriveTypeFromValue',
 			'deriveSchemaFromValue',
 			'deriveLayoutFromValue',
 			'getSchemaWithLayout',
-			'findAttributeByPath'
+			'findAttributeByPath',
+			'deriveNestedSchema',
+			'flattenAttributes',
+			'flattenObject',
+			'flattenElement',
+			'generateIndex',
+			'generateTreeTable'
 		])
 	})
 })

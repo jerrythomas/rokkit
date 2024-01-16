@@ -94,6 +94,7 @@ describe('navigator', () => {
 
 		node.dispatchEvent(new MouseEvent('click'))
 		expect(handlers.select).not.toHaveBeenCalled()
+		expect(handlers.move).not.toHaveBeenCalled()
 
 		node.children[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 		expect(handlers.select).toHaveBeenCalled()
@@ -102,10 +103,22 @@ describe('navigator', () => {
 			node: 'A'
 			// id: 'A'
 		})
+		expect(handlers.move).toHaveBeenCalled()
+		expect(handlers.move).toHaveBeenDispatchedWith({
+			path: [0],
+			node: 'A'
+			// id: 'A'
+		})
 
 		node.children[1].dispatchEvent(new MouseEvent('click', { bubbles: true }))
 		expect(handlers.select).toHaveBeenCalled()
 		expect(handlers.select).toHaveBeenDispatchedWith({
+			path: [1],
+			node: 'B'
+			// id: 'B'
+		})
+		expect(handlers.move).toHaveBeenCalled()
+		expect(handlers.move).toHaveBeenDispatchedWith({
 			path: [1],
 			node: 'B'
 			// id: 'B'

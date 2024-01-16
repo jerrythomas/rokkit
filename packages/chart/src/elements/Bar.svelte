@@ -26,10 +26,4 @@
 <rect x={$scales.x(0)} {y} {width} {height} {fill} opacity={0.5} />
 <rect x={$scales.x(0)} {y} width={5} {height} {fill} />
 <Label x={width} y={y + textHeight + 8} anchor={textAnchor} label={name} />
-<Label
-	x={width}
-	y={y + height - 14}
-	anchor={textAnchor}
-	label={formattedValue}
-	small
-/>
+<Label x={width} y={y + height - 14} anchor={textAnchor} label={formattedValue} small />

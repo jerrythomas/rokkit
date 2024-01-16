@@ -1,0 +1,73 @@
+<script>
+	import { pick } from 'ramda'
+	import { createEventDispatcher } from 'svelte'
+	import Tree from './Tree.svelte'
+	import DataEditor from './DataEditor.svelte'
+	import Tabs from './Tabs.svelte'
+
+	const dispatch = createEventDispatcher()
+	export let value
+	export let schema
+	export let using = {}
+	export let fields = {
+		text: 'key',
+		icon: 'type'
+	}
+	let node = {
+		schema: null,
+		layout: null
+	}
+	let nodeValue = null
+	let nodeType = null
+	let nodeItem = null
+
+	function handle(event) {
+		dispatch('change', value)
+		const scope = event.detail.scope.split('/').slice(1)
+
+		node.schema = pick(['type', 'properties', 'items'], event.detail)
+		node.layout = event.detail.layout
+
+		nodeValue = value
+		nodeType = event.detail.type
+
+		for (let i = 0; i < scope.length; i++) {
+			nodeValue = nodeValue[scope[i]]
+		}
+	}
+</script>
+
+<container class="flex flex-row h-full w-full">
+	<aside class="flex h-full w-80 border-r border-r-neutral-subtle">
+		<Tree items={schema} {fields} class="w-full h-full" on:move={handle} />
+	</aside>
+	<content class="w-full h-full p-8 flex flex-col gap-4">
+		{#if !nodeValue}
+			<pre class="overflow-auto">{JSON.stringify(value, null, 2)}</pre>
+		{:else if node.layout}
+			{#if nodeType === 'array'}
+				<p>Arrays are not supported yet.</p>
+				<Tabs options={nodeValue} bind:value={nodeItem} />
+				{#if nodeItem}
+					<!--
+					<pre>{JSON.stringify(node.schema, null,2)}</pre>
+					<pre>{JSON.stringify(node.layout, null,2)}</pre> -->
+					<DataEditor
+						bind:value={nodeItem}
+						layout={node.layout}
+						schema={node.schema.items}
+						{using}
+					/>
+					<pre>{JSON.stringify(nodeItem, null, 2)}</pre>
+				{/if}
+			{:else}
+				<DataEditor bind:value={nodeValue} {...node} {using} />
+			{/if}
+		{:else}
+			<p>
+				No atomic attributes at this level. Select a child node to edit. Current value is below.
+			</p>
+			<pre>{JSON.stringify(nodeValue, null, 2)}</pre>
+		{/if}
+	</content>
+</container>

@@ -53,7 +53,7 @@
 		}
 	},
 	"dependencies": {
-		"date-fns": "^3.1.0",
+		"date-fns": "^3.2.0",
 		"ramda": "^0.29.1"
 	}
 }

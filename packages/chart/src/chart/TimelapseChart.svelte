@@ -40,9 +40,7 @@
 		const values = uniques(data, attr)
 		const groups = slidingWindow(values, size, step, offset).map((x) => ({
 			...x,
-			data: data.filter(
-				(y) => y.Petal_Length >= x.lowerBound && y.Petal_Length < x.upperBound
-			)
+			data: data.filter((y) => y.Petal_Length >= x.lowerBound && y.Petal_Length < x.upperBound)
 		}))
 
 		return groups
@@ -60,10 +58,7 @@
 	function switchChart(index) {
 		let chart = {}
 		if (index != null) {
-			chart = brewer()
-				.chart(phased.data[index].data, x, y)
-				.use(theme)
-				.computeAxis()
+			chart = brewer().chart(phased.data[index].data, x, y).use(theme).computeAxis()
 			chart.axis = axis
 			// chart.margin = { left: 40, right: 10, top: 10, bottom: 30 }
 		}
@@ -73,7 +68,6 @@
 
 	$: phased = timed(data, x, y, time)
 	$: $chart = switchChart(current)
-
 
 	// setup chart attributes that do not change over time
 	// get scales for x & y

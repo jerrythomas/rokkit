@@ -18,7 +18,7 @@
 		value = [...value.filter((item) => item != event.detail)]
 	}
 	function handleSelect(event) {
-		value = [...value, event.detail]
+		if (!value.includes(event.detail)) value = [...value, event.detail]
 	}
 	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }

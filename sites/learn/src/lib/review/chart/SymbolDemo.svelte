@@ -17,9 +17,7 @@
 		x: spacing / 2 + ((index % columns) + 0.5) * (size + spacing),
 		y: (0.5 + Math.floor(index / columns)) * (size + spacing)
 	}))
-	$: shades = repeat
-		? shapes.map((id, index) => shades[index % shades.length])
-		: shades
+	$: shades = repeat ? shapes.map((id, index) => shades[index % shades.length]) : shades
 </script>
 
 <svg viewBox="0 0 {width} {height}">

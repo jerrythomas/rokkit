@@ -15,9 +15,7 @@
 		x: $chart.flipCoords ? $chart.scale.x(0) : $chart.scale.x(d.x),
 		y: $chart.flipCoords ? $chart.scale.y(d.y) : $chart.scale.y(d.y),
 		y0: $chart.scale.y(0),
-		width: $chart.flipCoords
-			? $chart.scale.x(d.x) - $chart.scale.x(0)
-			: $chart.scale.x.bandwidth(),
+		width: $chart.flipCoords ? $chart.scale.x(d.x) - $chart.scale.x(0) : $chart.scale.x.bandwidth(),
 		height: $chart.flipCoords
 			? $chart.scale.y.bandwidth()
 			: $chart.scale.y(0) - $chart.scale.y(d.y),
@@ -31,7 +29,6 @@
 			text: $chart.flipCoords ? d.y + ' (' + d.x + ')' : d.x + ' (' + d.y + ')'
 		}
 	}))
-
 </script>
 
 {#each data as { x1, y1, x2, y2, color, label }}

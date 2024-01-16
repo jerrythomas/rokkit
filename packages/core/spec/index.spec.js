@@ -34,6 +34,7 @@ describe('utilities', () => {
 			'weekdays',
 			'getCalendarDays',
 			'id',
+			'isObject',
 			'shadesOf',
 			'stateColors',
 			'themeColors',

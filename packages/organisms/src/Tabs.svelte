@@ -76,12 +76,6 @@
 		/>
 	{/each}
 	{#if editable}
-		<Icon
-			name="add"
-			role="button"
-			label="Add Tab"
-			size="small"
-			on:click={handleAdd}
-		/>
+		<Icon name="add" role="button" label="Add Tab" size="small" on:click={handleAdd} />
 	{/if}
 </tabs>

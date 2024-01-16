@@ -47,15 +47,8 @@
 		on:select={handleNav}
 	>
 		{#each options as item, index (item)}
-			{@const component = useComponent
-				? getComponent(item, fields, using)
-				: null}
-			<item
-				class="relative"
-				role="option"
-				aria-selected={item === value}
-				data-path={index}
-			>
+			{@const component = useComponent ? getComponent(item, fields, using) : null}
+			<item class="relative" role="option" aria-selected={item === value} data-path={index}>
 				{#if item === value}
 					<indicator class="absolute bottom-0 left-0 right-0 top-0" />
 				{/if}

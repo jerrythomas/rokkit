@@ -3,7 +3,7 @@
 
 	import { swatch } from '../lib/utils'
 	import { clamp } from 'yootils'
-	import {Symbol, DefinePatterns} from '@rokkit/molecules'
+	import { Symbol, DefinePatterns } from '@rokkit/molecules'
 
 	const dispatch = createEventDispatcher()
 
@@ -29,11 +29,7 @@
 	}
 
 	function swapType(inputType) {
-		return inputType === 'square'
-			? 'circle'
-			: inputType === 'circle'
-			? 'square'
-			: type
+		return inputType === 'square' ? 'circle' : inputType === 'circle' ? 'square' : type
 	}
 
 	function click(index) {
@@ -63,11 +59,7 @@
 	{#if label}
 		<span class="py-2">{label}</span>
 	{/if}
-	<svg
-		viewBox="0 0 {grid.width} {grid.height}"
-		width="100%"
-		class="cursor-pointer"
-	>
+	<svg viewBox="0 0 {grid.width} {grid.height}" width="100%" class="cursor-pointer">
 		{#if label}
 			<title>A swatch with label {label}</title>
 		{/if}

@@ -1,3 +1,5 @@
+import { isObject } from '@rokkit/core'
+
 /**
  * Derives a layout from a given value.
  * @param {any} value
@@ -37,8 +39,4 @@ function deriveElementLayout(val, scope, label) {
 		}
 	}
 	return { label, scope: path }
-}
-
-function isObject(val) {
-	return typeof val === 'object' && val !== null && !(val instanceof Date)
 }

@@ -18,15 +18,8 @@
 
 <style>
 	graph-paper {
-		background-image: linear-gradient(
-				currentColor var(--thick),
-				transparent var(--thick)
-			),
-			linear-gradient(
-				90deg,
-				currentColor var(--thick),
-				transparent var(--thick)
-			),
+		background-image: linear-gradient(currentColor var(--thick), transparent var(--thick)),
+			linear-gradient(90deg, currentColor var(--thick), transparent var(--thick)),
 			linear-gradient(currentColor var(--thin), transparent var(--thin)),
 			linear-gradient(90deg, currentColor var(--thin), transparent var(--thin));
 		background-size:

@@ -5,12 +5,7 @@
 	export let seconds = 10
 </script>
 
-<svg
-	{width}
-	{height}
-	viewBox="0 0 {width} {height}"
-	style:--seconds="{seconds}s"
->
+<svg {width} {height} viewBox="0 0 {width} {height}" style:--seconds="{seconds}s">
 	{#each layers as layer}
 		<g fill={layer.fill}>
 			{#each layer.items as item, index}

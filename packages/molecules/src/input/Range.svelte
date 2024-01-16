@@ -1,6 +1,7 @@
 <script>
 	import RangeMinMax from './RangeMinMax.svelte'
 
+	export let name = null
 	export let min = 0
 	export let max = 100
 	export let value = min
@@ -13,12 +14,4 @@
 	$: value = bounds[1]
 </script>
 
-<RangeMinMax
-	bind:value={bounds}
-	{min}
-	{max}
-	{step}
-	{ticks}
-	{labelSkip}
-	single
-/>
+<RangeMinMax bind:value={bounds} {name} {min} {max} {step} {ticks} {labelSkip} single />

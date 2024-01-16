@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
+<body>
+  <div>
+    <container
+      class="flex flex-row h-full w-full"
+    >
+      <aside
+        class="flex h-full w-80 border-r border-r-neutral-subtle"
+      >
+        <tree
+          class="w-full h-full"
+          tabindex="0"
+        >
+          <nested-list
+            class="flex flex-col w-full list"
+            role="listbox"
+            tabindex="-1"
+          />
+        </tree>
+      </aside>
+       
+      <content
+        class="w-full h-full p-8 flex flex-col gap-4"
+      >
+        <pre
+          class="overflow-auto"
+        >
+          undefined
+        </pre>
+      </content>
+    </container>
+  </div>
+</body>
+`;

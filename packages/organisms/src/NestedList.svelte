@@ -17,17 +17,10 @@
 	$: icons = { ...defaultStateIcons.node, ...icons }
 	$: using = { default: Item, ...using }
 	$: fields = { ...defaultFields, ...fields }
-	$: nodeTypes = items.map((_, index) =>
-		index === items.length - 1 ? 'last' : 'child'
-	)
+	$: nodeTypes = items.map((_, index) => (index === items.length - 1 ? 'last' : 'child'))
 </script>
 
-<nested-list
-	class="flex flex-col w-full {className}"
-	role="listbox"
-	class:rtl
-	tabindex="-1"
->
+<nested-list class="flex flex-col w-full {className}" role="listbox" class:rtl tabindex="-1">
 	{#each items as item, index}
 		{@const hasChildren = fields.children in item}
 		{@const path = [...hierarchy, index]}

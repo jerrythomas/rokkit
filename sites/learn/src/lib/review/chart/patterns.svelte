@@ -13,9 +13,7 @@
 		} else if (event.detail.mode == 'colors') {
 			variations = brewer()
 				.pattern()
-				.filter(
-					event.detail.colors.items.map(() => event.detail.patterns.index)
-				)
+				.filter(event.detail.colors.items.map(() => event.detail.patterns.index))
 				.colors(event.detail.colors.items)
 				.brew()
 		} else {

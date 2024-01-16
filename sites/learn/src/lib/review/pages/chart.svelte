@@ -71,16 +71,7 @@
 		</Chart>
 	</card>
 	<card class="flex flex-col rounded-lg p-2 shadow-lg">
-		<Chart
-			{data}
-			x="year"
-			y="fired"
-			fill="name"
-			{width}
-			{height}
-			marginLeft={20}
-			marginBottom={8}
-		>
+		<Chart {data} x="year" y="fired" fill="name" {width} {height} marginLeft={20} marginBottom={8}>
 			<Axis name="x">
 				<AxisTicks side="bottom">
 					<AxisLabels format={timeFormat('%Y')} />
