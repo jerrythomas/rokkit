@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         pnpm-version: [8.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
@@ -47,7 +47,7 @@ jobs:
       # - name: Run tests
       #   run: pnpm test
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v4.0.0
+        uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
         with:
