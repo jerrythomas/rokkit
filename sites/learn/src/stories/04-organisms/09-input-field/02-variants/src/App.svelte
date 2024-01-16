@@ -14,18 +14,8 @@
 	]
 </script>
 
-<InputField
-	bind:value={value.toggle}
-	type="switch"
-	label="Enter a value"
-	{options}
-/>
-<InputField
-	bind:value={value.rating}
-	type="rating"
-	label="select a rating"
-	max={5}
-/>
+<InputField bind:value={value.toggle} type="switch" label="Enter a value" {options} />
+<InputField bind:value={value.rating} type="rating" label="select a rating" max={5} />
 <InputField
 	bind:value={value.radio}
 	type="radio"

@@ -20,20 +20,17 @@
 
 <style>
 	graph-paper {
-		background-image: linear-gradient(
-				currentColor var(--thick),
-				transparent var(--thick)
-			),
-			linear-gradient(
-				90deg,
-				currentColor var(--thick),
-				transparent var(--thick)
-			),
+		background-image: linear-gradient(currentColor var(--thick), transparent var(--thick)),
+			linear-gradient(90deg, currentColor var(--thick), transparent var(--thick)),
 			linear-gradient(currentColor var(--thin), transparent var(--thin)),
 			linear-gradient(90deg, currentColor var(--thin), transparent var(--thin));
-		background-size: var(--size) var(--size), var(--size) var(--size),
-			var(--unit) var(--unit), var(--unit) var(--unit);
-		background-position: calc(-1 * var(--thin)) calc(-1 * var(--thin)),
+		background-size:
+			var(--size) var(--size),
+			var(--size) var(--size),
+			var(--unit) var(--unit),
+			var(--unit) var(--unit);
+		background-position:
+			calc(-1 * var(--thin)) calc(-1 * var(--thin)),
 			calc(-1 * var(--thin)) calc(-1 * var(--thin)),
 			calc(-1 * var(--thin)) calc(-1 * var(--thin)),
 			calc(-1 * var(--thin)) calc(-1 * var(--thin));

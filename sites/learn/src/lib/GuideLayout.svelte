@@ -2,12 +2,7 @@
 	let active = 'notes'
 </script>
 
-<page
-	class="grid h-full w-full"
-	class:mini={true}
-	class:medium={false}
-	class:large={false}
->
+<page class="grid h-full w-full" class:mini={true} class:medium={false} class:large={false}>
 	<aside class:active={active == 'notes'}>aside</aside>
 	<section class:active={active == 'section'}>section</section>
 	<files class:active={active == 'files'}> files</files>

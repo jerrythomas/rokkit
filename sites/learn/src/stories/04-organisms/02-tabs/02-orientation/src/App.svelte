@@ -12,12 +12,7 @@
 <Controls bind:properties />
 
 <div class="flex flex-col" class:flex-col-reverse={options[0].value}>
-	<Tabs
-		{options}
-		bind:value
-		below={properties[0].value}
-		align={properties[1].value}
-	/>
+	<Tabs {options} bind:value below={properties[0].value} align={properties[1].value} />
 	<pre>
 	{JSON.stringify(value)}
 </pre>

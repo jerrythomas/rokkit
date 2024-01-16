@@ -15,10 +15,7 @@
 		removable={true}
 		on:remove={handleRemove}
 	/>
-	<ItemWrapper
-		value={{ title: 'Content with mapping' }}
-		fields={{ text: 'title' }}
-	/>
+	<ItemWrapper value={{ title: 'Content with mapping' }} fields={{ text: 'title' }} />
 </span>
 
 Click on the removable Removable to see the remove event details:

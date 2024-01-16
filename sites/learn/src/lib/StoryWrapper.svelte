@@ -20,9 +20,7 @@
 		</select>
 	</h1>
 	<content class="flex flex-grow flex-row">
-		<div
-			class="flex flex-grow flex-col items-center border-gray-300 border-r bg-gray-100 p-4"
-		>
+		<div class="flex flex-grow flex-col items-center border-gray-300 border-r bg-gray-100 p-4">
 			<slot name="component" />
 			<article class="w-100 flex p-4">
 				{summary}

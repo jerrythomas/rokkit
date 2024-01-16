@@ -15,9 +15,5 @@
 </script>
 
 <section>
-	<ButtonGroup
-		on:change={handleThemeChange}
-		items={themes}
-		value={currentTheme}
-	/>
+	<ButtonGroup on:change={handleThemeChange} items={themes} value={currentTheme} />
 </section>
