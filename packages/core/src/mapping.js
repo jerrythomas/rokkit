@@ -1,4 +1,6 @@
+import { type } from 'ramda'
 import { defaultFields } from './constants'
+import { isObject } from '.'
 
 /**
  * Get the component to be used to render the item.
@@ -22,7 +24,7 @@ export function getComponent(value, fields, using) {
  */
 export function getIcon(value, fields = defaultFields) {
 	if (fields.icon === undefined || typeof (value ?? '') !== 'object') return null
-
+	// console.log(fields.icon, fields.state, value[fields.icon][value[fields.state]])
 	return typeof value[fields.icon] == 'object'
 		? value[fields.icon][value[fields.state]]
 		: value[fields.icon]
@@ -49,7 +51,13 @@ export function getValue(node, fields = defaultFields) {
  * @returns {*}
  */
 export function getText(node, fields = defaultFields) {
-	return typeof node === 'object' && node !== null ? node[fields.text] : node
+	let value = typeof node === 'object' && node !== null ? node[fields.text] : node
+
+	return value != null
+		? isObject(value)
+			? JSON.stringify(value, null, 2)
+			: value.toString()
+		: value
 }
 
 /**
