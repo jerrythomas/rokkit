@@ -38,11 +38,7 @@
 	$: optionsForOut = pick(['duration', 'easing', 'delay'], departure)
 </script>
 
-<alert-list
-	class="absolute z-10 flex flex-col gap-2"
-	use:dismissable
-	on:dismiss={dismissAll}
->
+<alert-list class="absolute z-10 flex flex-col gap-2" use:dismissable on:dismiss={dismissAll}>
 	{#each $alerts as alert}
 		{@const component = getComponent(alert, fields, using)}
 		<alert

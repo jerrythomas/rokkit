@@ -12,10 +12,7 @@
 	$: component = getComponent(value, fields, using)
 </script>
 
-<summary
-	class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
-	tabindex="-1"
->
+<summary class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center" tabindex="-1">
 	<svelte:component this={component} bind:value {fields} />
 	{#if hasItems}
 		{#if value[fields.isOpen]}

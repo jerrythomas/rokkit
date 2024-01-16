@@ -1,10 +1,5 @@
 <script>
-	import {
-		defaultFields,
-		defaultStateIcons,
-		getValue,
-		getText
-	} from '@rokkit/core'
+	import { defaultFields, defaultStateIcons, getValue, getText } from '@rokkit/core'
 
 	let className = ''
 	export { className as class }
@@ -32,14 +27,7 @@
 		{@const state = itemValue === value ? 'on' : 'off'}
 
 		<label class="flex {flexDirection} items-center gap-2">
-			<input
-				hidden
-				type="radio"
-				{name}
-				bind:group={value}
-				value={itemValue}
-				{readOnly}
-			/>
+			<input hidden type="radio" {name} bind:group={value} value={itemValue} {readOnly} />
 			<icon class={stateIcons[state]} />
 			<p>{label}</p>
 		</label>

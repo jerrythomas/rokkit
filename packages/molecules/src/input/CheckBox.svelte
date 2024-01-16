@@ -36,14 +36,7 @@
 	on:keydown={handleKeydown}
 	{tabindex}
 >
-	<input
-		hidden
-		type="checkbox"
-		{name}
-		{readOnly}
-		bind:checked={value}
-		on:change
-	/>
+	<input hidden type="checkbox" {name} {readOnly} bind:checked={value} on:change />
 
 	<icon class={stateIcons[state]} />
 </checkbox>

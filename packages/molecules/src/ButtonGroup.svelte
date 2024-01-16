@@ -19,10 +19,7 @@
 <button-group class="flex flex-row {className}">
 	{#each items as item}
 		{@const text = getText(item, fields)}
-		<button
-			on:click={() => handle(item)}
-			class="flex cursor-pointer select-none"
-		>
+		<button on:click={() => handle(item)} class="flex cursor-pointer select-none">
 			{text}
 		</button>
 	{/each}
