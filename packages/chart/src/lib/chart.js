@@ -181,8 +181,8 @@ function tickValues(scale, whichAxis, params) {
 		Array.isArray(values) && values.length > 2
 			? values
 			: scale.ticks
-			? scale.ticks.apply(scale, [count])
-			: scale.domain()
+				? scale.ticks.apply(scale, [count])
+				: scale.domain()
 	const ticks = values.map((label) => ({ label, position: scale(label) }))
 
 	return ticks

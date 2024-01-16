@@ -23,9 +23,7 @@
 
 		<div class="flex flex-row">
 			{#each colValues as colItem}
-				{@const dataFilteredByCol = dataFilteredByRow.filter(
-					(d) => d[col] === colItem
-				)}
+				{@const dataFilteredByCol = dataFilteredByRow.filter((d) => d[col] === colItem)}
 
 				<Chart data={dataFilteredByCol} {x} {y}>
 					<Axis name="x" count={7} gap={10}>

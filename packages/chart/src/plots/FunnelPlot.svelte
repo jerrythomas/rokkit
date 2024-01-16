@@ -20,13 +20,7 @@
 {/each}
 {#each data.labels as label, index}
 	{#if index < data.labels.length - 1}
-		<line
-			x1={label.x1}
-			x2={label.x2}
-			y1={label.y1}
-			y2={label.y2}
-			stroke="currentColor"
-		/>
+		<line x1={label.x1} x2={label.x2} y1={label.y1} y2={label.y2} stroke="currentColor" />
 	{/if}
 	<text x={label.x} y={label.y} fill="currentColor">{label.label}</text>
 {/each}

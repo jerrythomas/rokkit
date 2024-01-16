@@ -13,9 +13,7 @@
 	$: scaleTicks = scaleLinear()
 		.range([x, x + 100])
 		.domain(scale.domain())
-	$: ticks = scale.ticks
-		.apply(scale, [tickCount])
-		.map((d) => ({ x: scaleTicks(d), label: d }))
+	$: ticks = scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), label: d }))
 
 	$: colors = scale.range()
 	$: id = uniqueId('legend-')
