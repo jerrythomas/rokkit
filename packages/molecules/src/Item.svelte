@@ -7,7 +7,6 @@
 
 	$: isObject = typeof (value ?? '-') == 'object'
 	$: text = getText(value, fields)
-
 </script>
 
 {#if isObject}
