@@ -1,0 +1,6 @@
+{
+  "category": "data",
+  "title": "TreeTable",
+  "labs": true,
+  "description": "Display your tabular data with one column represententing tree nodes which can be collapsed and expanded."
+}

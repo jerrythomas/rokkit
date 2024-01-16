@@ -62,6 +62,8 @@
 										class="small cursor-pointer"
 										on:click={() => toggle(item)}
 									/>
+								{:else if item._depth > 0}
+									<Connector type="empty" />
 								{/if}
 							{/if}
 							<Item {value} {fields} />

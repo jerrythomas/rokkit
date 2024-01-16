@@ -1,14 +1,11 @@
 <script>
-	import { defaultFields } from '@rokkit/core'
 
 	/** @type {Array<Object>} */
 	export let data = []
 	/** @type {Array<string>} */
 	export let columns = []
-	// export let fields = {}
 	let width
 
-	// $: fields = { ...defaultFields, ...fields }
 	$: columns = data.length == 0 ? [] : columns.length == 0 ? Object.keys(data[0]) : columns
 </script>
 
