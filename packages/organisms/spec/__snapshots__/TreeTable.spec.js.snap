@@ -3,7 +3,7 @@
 exports[`TreeTable.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
-    <div
+    <tree-table
       class="flex flex-col h-full w-full p-8 overflow-auto"
       style="--sizes: 50% 50%;"
     >
@@ -12,15 +12,15 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
       >
         <thead>
           <tr
-            class="grid gap-1px svelte-oo1f8v"
+            class="grid gap-1px svelte-wunja8"
           >
             <th
-              class="bg-neutral-400 svelte-oo1f8v"
+              class="bg-neutral-400 svelte-wunja8"
             >
               path
             </th>
             <th
-              class="bg-neutral-400 svelte-oo1f8v"
+              class="bg-neutral-400 svelte-wunja8"
             >
               Value
             </th>
@@ -28,13 +28,13 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
         </thead>
          
         <tbody
-          class="flex flex-col gap-1px overflow-y-auto "
+          class="flex flex-col gap-1px overflow-y-auto"
         >
           <tr
-            class="grid gap-1px svelte-oo1f8v even"
+            class="grid gap-1px svelte-wunja8 even"
           >
             <td
-              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+              class="flex gap-2 bg-neutral-muted svelte-wunja8"
             >
                
               <icon
@@ -58,7 +58,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               
             </td>
             <td
-              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+              class="flex gap-2 bg-neutral-muted svelte-wunja8"
             >
                
               
@@ -68,15 +68,18 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
              
           </tr>
           <tr
-            class="grid gap-1px svelte-oo1f8v"
+            class="grid gap-1px svelte-wunja8"
           >
             <td
-              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+              class="flex gap-2 bg-neutral-muted svelte-wunja8"
             >
               <span
                 class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
               />
                
+              <span
+                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+              />
               
                
               
@@ -87,7 +90,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               
             </td>
             <td
-              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+              class="flex gap-2 bg-neutral-muted svelte-wunja8"
             >
                
               
@@ -100,15 +103,18 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
              
           </tr>
           <tr
-            class="grid gap-1px svelte-oo1f8v even"
+            class="grid gap-1px svelte-wunja8 even"
           >
             <td
-              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+              class="flex gap-2 bg-neutral-muted svelte-wunja8"
             >
               <span
                 class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
               />
                
+              <span
+                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+              />
               
                
               
@@ -119,7 +125,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               
             </td>
             <td
-              class="flex gap-2 bg-neutral-muted svelte-oo1f8v"
+              class="flex gap-2 bg-neutral-muted svelte-wunja8"
             >
                
               
@@ -133,7 +139,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
           </tr>
         </tbody>
       </table>
-    </div>
+    </tree-table>
   </div>
 </body>
 `;

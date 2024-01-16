@@ -33,7 +33,7 @@ exports[`Table.svelte > should render using default field mapping 1`] = `
           class="w-full overflow-y-scroll"
         >
           <tr
-            class="border border-neutral-inset w-full gap-1px p-1px "
+            class="border border-neutral-inset w-full gap-1px p-1px"
           >
             <td
               class="px-4 h-10"
