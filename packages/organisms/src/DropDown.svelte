@@ -64,14 +64,7 @@
 	</button>
 	{#if open}
 		<Slider top={offsetTop + 4}>
-			<List
-				items={options}
-				{fields}
-				{using}
-				bind:value
-				on:select={handleSelect}
-				tabindex="-1"
-			/>
+			<List items={options} {fields} {using} bind:value on:select={handleSelect} tabindex="-1" />
 		</Slider>
 	{/if}
 </drop-down>

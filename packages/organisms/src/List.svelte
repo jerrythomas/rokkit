@@ -56,12 +56,7 @@
 			class:is-selected={value === item}
 			data-path={path}
 		>
-			<svelte:component
-				this={component}
-				bind:value={item}
-				{...props}
-				on:change
-			/>
+			<svelte:component this={component} bind:value={item} {...props} on:change />
 		</item>
 	{/each}
 </list>

@@ -4,6 +4,20 @@ import * as components from '../src'
 describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
+			'addRootNode',
+			'messages',
+			'dataTypes',
+			'deriveTypeFromValue',
+			'deriveSchemaFromValue',
+			'deriveLayoutFromValue',
+			'getSchemaWithLayout',
+			'findAttributeByPath',
+			'deriveNestedSchema',
+			'flattenAttributes',
+			'flattenObject',
+			'flattenElement',
+			'generateIndex',
+			'generateTreeTable',
 			'Accordion',
 			'DropDown',
 			'DropSearch',
@@ -19,7 +33,10 @@ describe('components', () => {
 			'InputField',
 			'ListEditor',
 			'VirtualSelect',
-			'VirtualList'
+			'VirtualList',
+			'NestedEditor',
+			'Table',
+			'TreeTable'
 		])
 	})
 })
