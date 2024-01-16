@@ -1,7 +1,7 @@
 <script>
-	import {TreeTable} from '@rokkit/organisms'
+	import { TreeTable } from '@rokkit/organisms'
 
 	export let data
-
 </script>
-<TreeTable data={data.data} columns={data.columns}/>
+
+<TreeTable data={data.data} columns={data.columns} />
