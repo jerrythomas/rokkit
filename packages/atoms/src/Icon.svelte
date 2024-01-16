@@ -29,11 +29,7 @@
 	$: small = size === 'small' || className.includes('small')
 	$: medium = size === 'medium' || className.includes('medium')
 	$: large = size === 'large' || className.includes('large')
-	$: checked = ['checkbox', 'option'].includes(role)
-		? checked !== null
-			? checked
-			: false
-		: null
+	$: checked = ['checkbox', 'option'].includes(role) ? (checked !== null ? checked : false) : null
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
