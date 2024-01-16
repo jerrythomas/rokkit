@@ -14,21 +14,9 @@
 
 <g class="grid">
 	{#each $chart.axis.x.ticks as tick}
-		<line
-			x1={tick.position}
-			x2={tick.position}
-			y1={yRange[0]}
-			y2={yRange[1]}
-			opacity={opacityV}
-		/>
+		<line x1={tick.position} x2={tick.position} y1={yRange[0]} y2={yRange[1]} opacity={opacityV} />
 	{/each}
 	{#each $chart.axis.y.ticks as tick}
-		<line
-			y1={tick.position}
-			y2={tick.position}
-			x1={xRange[0]}
-			x2={xRange[1]}
-			opacity={opacityH}
-		/>
+		<line y1={tick.position} y2={tick.position} x1={xRange[0]} x2={xRange[1]} opacity={opacityH} />
 	{/each}
 </g>

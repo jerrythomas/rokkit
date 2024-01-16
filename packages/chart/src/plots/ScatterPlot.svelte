@@ -1,6 +1,6 @@
 <script>
 	import { clamp } from 'yootils'
-	import {Symbol} from '@rokkit/molecules'
+	import { Symbol } from '@rokkit/molecules'
 	import { getContext } from 'svelte'
 
 	const chart = getContext('chart')
@@ -18,9 +18,7 @@
 {#if $chart.data}
 	{#each $chart.data as d}
 		<Symbol
-			x={$chart.axis.x.scale(d[$chart.x]) -
-				offset +
-				Math.random() * jitterWidth}
+			x={$chart.axis.x.scale(d[$chart.x]) - offset + Math.random() * jitterWidth}
 			y={$chart.axis.y.scale(d[$chart.y])}
 			{fill}
 			{stroke}

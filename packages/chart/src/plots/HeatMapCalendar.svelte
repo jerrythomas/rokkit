@@ -31,17 +31,13 @@
 	function hideToolTip() {
 		tooltip = null
 	}
-	$: scale = scaleLinear()
-		.domain([0, maximum])
-		.range(colors)
-		.interpolate(interpolateHsl)
+	$: scale = scaleLinear().domain([0, maximum]).range(colors).interpolate(interpolateHsl)
 
 	$: legendHeight = 2 * size + space * 3
 	$: sizeWithSpace = size + space
 	$: summary = summarize(data, dateField, valueField)
 	$: datamap = heatmap(summary, months)
-	$: width =
-		datamap.numberOfWeeks * sizeWithSpace + dayLabelWidth + 2 * padding - space
+	$: width = datamap.numberOfWeeks * sizeWithSpace + dayLabelWidth + 2 * padding - space
 	$: height = 7 * sizeWithSpace + labelHeight + 2 * padding + legendHeight
 </script>
 
@@ -76,11 +72,7 @@
 		{#each datamap.weekdays as name, i}
 			<text
 				x={padding + dayLabelWidth - 2 * space}
-				y={padding +
-					legendHeight +
-					i * sizeWithSpace +
-					labelHeight +
-					(size - labelHeight) / 2}
+				y={padding + legendHeight + i * sizeWithSpace + labelHeight + (size - labelHeight) / 2}
 				text-anchor="end"
 				font-size={labelHeight}>{name}</text
 			>

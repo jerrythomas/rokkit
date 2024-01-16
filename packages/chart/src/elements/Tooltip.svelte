@@ -4,11 +4,7 @@
 	export let hidden = true
 </script>
 
-<div
-	class="tooltip {$$props.class}"
-	{hidden}
-	style="--top: {top};--left: {left}"
->
+<div class="tooltip {$$props.class}" {hidden} style="--top: {top};--left: {left}">
 	<slot />
 </div>
 

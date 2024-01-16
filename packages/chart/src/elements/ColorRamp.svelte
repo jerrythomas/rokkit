@@ -14,9 +14,7 @@
 		.range([x, x + width])
 		.domain(scale.domain())
 	$: scalePercent = scaleLinear().range([0, 100]).domain(scale.domain())
-	$: ticks = scale.ticks
-		.apply(scale, [tickCount])
-		.map((d) => ({ x: scaleTicks(d), value: d }))
+	$: ticks = scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), value: d }))
 
 	$: colors = ticks.map(({ value }) => ({
 		color: scale(value),
