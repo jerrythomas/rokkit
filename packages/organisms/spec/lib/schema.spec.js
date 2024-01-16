@@ -1,7 +1,61 @@
 import { describe, it, expect } from 'vitest'
-import { deriveSchemaFromValue } from '../../src/lib/schema'
+import { deriveTypeFromValue, deriveSchemaFromValue } from '../../src/lib/schema'
 
 describe('schema', () => {
+	describe('deriveTypeFromValue', () => {
+		it('should derive type for string', () => {
+			const type = deriveTypeFromValue('hello')
+			expect(type).toEqual('string')
+		})
+
+		it('should derive type for number', () => {
+			const type = deriveTypeFromValue(1)
+			expect(type).toEqual('number')
+		})
+
+		it('should derive type for boolean', () => {
+			const type = deriveTypeFromValue(true)
+			expect(type).toEqual('boolean')
+		})
+
+		it('should derive type for array', () => {
+			const type = deriveTypeFromValue([])
+			expect(type).toEqual('array')
+		})
+
+		it('should derive type for object', () => {
+			const type = deriveTypeFromValue({})
+			expect(type).toEqual('object')
+		})
+
+		it('should derive type for null/undefined', () => {
+			let type = deriveTypeFromValue(undefined)
+			expect(type).toEqual('string')
+			type = deriveTypeFromValue(null)
+			expect(type).toEqual('string')
+		})
+
+		it('should derive type for date', () => {
+			const type = deriveTypeFromValue(new Date())
+			expect(type).toEqual('date')
+		})
+
+		it('should derive type for string array', () => {
+			const type = deriveTypeFromValue(['hello'])
+			expect(type).toEqual('array')
+		})
+
+		it('should derive type for number array', () => {
+			const type = deriveTypeFromValue([1])
+			expect(type).toEqual('array')
+		})
+
+		it('should derive type for null', () => {
+			const type = deriveTypeFromValue(null)
+			expect(type).toEqual('string')
+		})
+	})
+
 	describe('deriveSchemaFromValue', () => {
 		it('should derive schema for string', () => {
 			const schema = deriveSchemaFromValue('hello')

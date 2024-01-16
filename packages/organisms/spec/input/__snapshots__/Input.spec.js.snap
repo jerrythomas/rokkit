@@ -290,6 +290,12 @@ exports[`Input.svelte > should render "range" 1`] = `
     <input-range
       class="relative h-10 grid grid-rows-2 "
     >
+      <input
+        name="foo"
+        type="hidden"
+        value="0,"
+      />
+       
       <range-track
         class="relative grid svelte-yaxyzg"
       >
@@ -515,6 +521,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
     <input-range
       class="relative h-10 grid grid-rows-2 "
     >
+      <input
+        name="foo"
+        type="hidden"
+        value="0,100"
+      />
+       
       <range-track
         class="relative grid svelte-yaxyzg"
       >

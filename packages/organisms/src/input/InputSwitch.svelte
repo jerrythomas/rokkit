@@ -23,10 +23,4 @@
 </script>
 
 <input {name} type="hidden" bind:value />
-<Switch
-	value={selected}
-	{options}
-	{fields}
-	{...$$restProps}
-	on:change={handle}
-/>
+<Switch value={selected} {options} {fields} {...$$restProps} on:change={handle} />
