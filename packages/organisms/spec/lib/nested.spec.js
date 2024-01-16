@@ -34,7 +34,8 @@ describe('nested', () => {
 				'#/test': {
 					key: 'test',
 					scope: '#/test',
-					type: 'array'
+					type: 'array',
+					value: ['red', 'blue', 'green']
 				},
 				'#/test/[0]': { value: 'red', type: 'string', scope: '#/test/[0]', key: '[0]' },
 				'#/test/[1]': { value: 'blue', type: 'string', scope: '#/test/[1]', key: '[1]' },
@@ -59,7 +60,11 @@ describe('nested', () => {
 					key: 'test',
 					scope: '#/test',
 					type: 'object',
-					value: null
+					value: {
+						blue: '#0000FF',
+						green: '#00FF00',
+						red: '#FF0000'
+					}
 				},
 				'#/test/red': {
 					key: 'red',

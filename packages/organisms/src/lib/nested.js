@@ -70,7 +70,14 @@ export function flattenAttributes(input, scope = '#') {
 export function flattenObject(input, scope = '#') {
 	return flattenAttributes(input, scope).reduce(
 		(acc, item) => ({ ...acc, ...flattenElement(item) }),
-		{ [scope]: { type: 'object', value: null, scope, key: scope.split('/').slice(-1)[0] } }
+		{
+			[scope]: {
+				type: 'object',
+				value: input,
+				scope,
+				key: scope.split('/').slice(-1)[0]
+			}
+		}
 	)
 }
 
@@ -86,7 +93,7 @@ export function flattenElement(element) {
 				type: deriveTypeFromValue(item)
 			}))
 			.reduce((acc, item) => ({ ...acc, ...flattenElement(item) }), {
-				[element.scope]: pick(['key', 'type', 'scope'], element)
+				[element.scope]: pick(['key', 'type', 'scope', 'value'], element)
 			})
 	}
 	return { [element.scope]: element }
