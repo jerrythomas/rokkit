@@ -20,8 +20,8 @@
 					index == -1
 						? steps[0]
 						: result - steps[index - 1] > steps[index] - result
-						? steps[index]
-						: steps[index - 1]
+							? steps[index]
+							: steps[index - 1]
 			} else {
 				value = scale(x)
 			}
