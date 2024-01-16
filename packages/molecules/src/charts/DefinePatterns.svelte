@@ -10,9 +10,7 @@
 </script>
 
 {#if names.length < patterns.length}
-	<error>
-		Patterns should be an array and should have unique names for each pattern
-	</error>
+	<error> Patterns should be an array and should have unique names for each pattern </error>
 {:else if patterns.length > 0}
 	<defs>
 		{#each patterns as { name, component, fill, stroke }}

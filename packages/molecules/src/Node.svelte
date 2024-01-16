@@ -1,10 +1,5 @@
 <script>
-	import {
-		defaultFields,
-		defaultStateIcons,
-		getComponent,
-		isExpanded
-	} from '@rokkit/core'
+	import { defaultFields, defaultStateIcons, getComponent, isExpanded } from '@rokkit/core'
 	import { Icon, Connector } from '@rokkit/atoms'
 
 	export let value
