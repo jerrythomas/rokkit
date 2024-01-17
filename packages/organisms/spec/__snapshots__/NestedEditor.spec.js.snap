@@ -22,7 +22,7 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
       </aside>
        
       <content
-        class="w-full h-full p-8 flex flex-col gap-4"
+        class="flex flex-col w-full h-full p-8 gap-4 overflow-auto"
       >
         <pre
           class="overflow-auto"

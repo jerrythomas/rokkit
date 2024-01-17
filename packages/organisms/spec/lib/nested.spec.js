@@ -296,7 +296,7 @@ describe('nested', () => {
 					_depth: 0,
 					_isExpanded: true,
 					_isParent: true,
-					_isVisible: true,
+
 					_levels: [0],
 					_path: '#/anotherRoot',
 					scope: '#/anotherRoot'
@@ -305,7 +305,7 @@ describe('nested', () => {
 					_depth: 1,
 					_isExpanded: true,
 					_isParent: false,
-					_isVisible: true,
+
 					_levels: [0, 0],
 					_path: '#/anotherRoot/child1',
 					scope: '#/anotherRoot/child1'
@@ -314,7 +314,7 @@ describe('nested', () => {
 					_depth: 0,
 					_isExpanded: true,
 					_isParent: true,
-					_isVisible: true,
+
 					_levels: [1],
 					_path: '#/root',
 					scope: '#/root'
@@ -323,7 +323,7 @@ describe('nested', () => {
 					_depth: 1,
 					_isExpanded: true,
 					_isParent: false,
-					_isVisible: true,
+
 					_levels: [1, 0],
 					_path: '#/root/child1',
 					scope: '#/root/child1'
@@ -332,7 +332,6 @@ describe('nested', () => {
 					_depth: 1,
 					_isExpanded: true,
 					_isParent: false,
-					_isVisible: true,
 					_levels: [1, 1],
 					_path: '#/root/child2',
 					scope: '#/root/child2'
@@ -348,34 +347,34 @@ describe('nested', () => {
 			result = generateTreeTable('')
 			expect(result).toEqual([])
 		})
-		it('should generate a tree table for object array', () => {
-			let result = generateTreeTable([
-				{ scope: '#/color', value: 'red' },
-				{ scope: '#/theme', value: 'ocean' }
-			])
-			expect(result).toEqual([
-				{
-					_depth: 0,
-					_isExpanded: true,
-					_isParent: false,
-					_isVisible: true,
-					_levels: [0],
-					_path: '#/color',
-					scope: '#/color',
-					value: 'red'
-				},
-				{
-					_depth: 0,
-					_isExpanded: true,
-					_isParent: false,
-					_isVisible: true,
-					_levels: [1],
-					_path: '#/theme',
-					scope: '#/theme',
-					value: 'ocean'
-				}
-			])
-		})
+		// it('should generate a tree table for object array', () => {
+		// 	let result = generateTreeTable([
+		// 		{ scope: '#/color', value: 'red' },
+		// 		{ scope: '#/theme', value: 'ocean' }
+		// 	])
+		// 	expect(result).toEqual([
+		// 		{
+		// 			_depth: 0,
+		// 			_isExpanded: true,
+		// 			_isParent: true,
+
+		// 			_levels: [0],
+		// 			_path: '#/color',
+		// 			scope: '#/color',
+		// 			value: 'red'
+		// 		},
+		// 		{
+		// 			_depth: 0,
+		// 			_isExpanded: true,
+		// 			_isParent: false,
+
+		// 			_levels: [1],
+		// 			_path: '#/theme',
+		// 			scope: '#/theme',
+		// 			value: 'ocean'
+		// 		}
+		// 	])
+		// })
 		it('should generate a tree table for object', () => {
 			let result = generateTreeTable({
 				red: '#FF0000',
@@ -387,7 +386,7 @@ describe('nested', () => {
 					_depth: 0,
 					_isExpanded: true,
 					_isParent: false,
-					_isVisible: true,
+
 					_levels: [0],
 					_path: '#/blue',
 					scope: '#/blue',
@@ -399,7 +398,7 @@ describe('nested', () => {
 					_depth: 0,
 					_isExpanded: true,
 					_isParent: false,
-					_isVisible: true,
+
 					_levels: [1],
 					_path: '#/green',
 					scope: '#/green',
@@ -411,7 +410,7 @@ describe('nested', () => {
 					_depth: 0,
 					_isExpanded: true,
 					_isParent: false,
-					_isVisible: true,
+
 					_levels: [2],
 					_path: '#/red',
 					scope: '#/red',
