@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-  import { pick, omit } from 'ramda'
+	import { pick, omit } from 'ramda'
 	import { defaultFields } from '@rokkit/core'
 	import { Connector, Icon } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
@@ -19,45 +19,44 @@
 	let currentItem = null
 
 	function handleItemClick(event, item) {
-		if (item._isParent)
-		   toggle(item)
+		if (item._isParent) toggle(item)
 		else {
 			currentItem = item
 			value = getValue(item)
-		  dispatch('click', value)
+			dispatch('click', value)
 
 			if (event.metaKey) toggleSelection(event, item)
 		}
 	}
-  function getValue(item) {
+	function getValue(item) {
 		return omit(['_levels', '_isParent', '_isExpanded', '_depth', '_path', '_selected'], item)
 	}
-	function toggleSelection(e,item) {
+	function toggleSelection(e, item) {
 		e.stopPropagation()
 		e.preventDefault()
-		if (item._selected != 'checked')
-		   item._selected = 'checked'
-		else
-		   item._selected = 'unchecked'
-		// item._selected = !item._selected
+		if (item._selected != 'checked') item._selected = 'checked'
+		else item._selected = 'unchecked'
+
 		if (item._isParent) {
-			data.filter((i) => i[nestedColumn.key].startsWith(item[nestedColumn.key]+'/')).forEach((i) => (i._selected = item._selected))
+			data
+				.filter((i) => i[nestedColumn.key].startsWith(item[nestedColumn.key] + '/'))
+				.forEach((i) => (i._selected = item._selected))
 		} else {
-			// find parent and update its state
-			const parents = data.filter((i) => item[nestedColumn.key].startsWith(i[nestedColumn.key]+'/') && i._isParent)
+			const parents = data.filter(
+				(i) => item[nestedColumn.key].startsWith(i[nestedColumn.key] + '/') && i._isParent
+			)
 			parents.map((p) => {
-				const children = data.filter((i) => i[nestedColumn.key].startsWith(p[nestedColumn.key]+'/'))
+				const children = data.filter((i) =>
+					i[nestedColumn.key].startsWith(p[nestedColumn.key] + '/')
+				)
 				const selectedChildren = children.filter((i) => i._selected === 'checked')
 
-				if (selectedChildren.length === children.length)
-					p._selected = 'checked'
-				else if (selectedChildren.length === 0)
-					p._selected = 'unchecked'
-				else
-					p._selected = 'unknown'
+				if (selectedChildren.length === children.length) p._selected = 'checked'
+				else if (selectedChildren.length === 0) p._selected = 'unchecked'
+				else p._selected = 'unknown'
 			})
 		}
-    filtered = [...data.filter(isVisible)]
+		filtered = [...data.filter(isVisible)]
 		dispatch('select', data.filter((i) => i._selected).map(getValue))
 	}
 	function toggle(item) {
@@ -83,7 +82,7 @@
 	function addMultiSelectColumn(multiselect) {
 		if (multiselect) {
 			if (columns.some((col) => col.key === '_selected')) return
-      columns = [{ key: '_selected',label:'', width: '3rem' }, ...columns]
+			columns = [{ key: '_selected', label: '', width: '3rem' }, ...columns]
 			data.forEach((item) => {
 				item._selected = 'unchecked'
 			})
@@ -91,17 +90,6 @@
 			columns = [...columns.filter((col) => col.key !== '_selected')]
 		}
 	}
-	// function getCheckedState(item){
-  //    if (item._isParent) {
-  //      const children = data.filter((i) => i[nestedColumn.key].startsWith(item[nestedColumn.key]))
-	// 		 const selectedChildren = children.filter((i) => i._selected)
-	// 		 if (selectedChildren.length === 0) return 'unchecked'
-	// 		 if (selectedChildren.length === children.length) return 'checked'
-	// 		 return 'unknown'
-	// 	 } else {
-	// 		 return item._selected ? 'checked' : 'unchecked'
-	// 	 }
-	// }
 
 	$: filtered = data
 	$: addMultiSelectColumn(multiselect)
@@ -109,7 +97,7 @@
 	$: nestedColumn = columns.find((col) => col.path)
 </script>
 
-<tree-table class="{className}" style:--sizes={sizes}>
+<tree-table class={className} style:--sizes={sizes}>
 	<table>
 		<thead>
 			<tr>
@@ -121,37 +109,39 @@
 		<tbody>
 			{#each filtered as item, index}
 				{@const even = striped && index % 2 === 0}
-				<tr class:even
-						class:cursor-pointer={!item._isParent}
-						aria-current={currentItem === item}
-						on:click|preventDefault|stopPropagation={(e) => handleItemClick(e,item)}>
+				<tr
+					class:even
+					class:cursor-pointer={!item._isParent}
+					aria-current={currentItem === item}
+					on:click|preventDefault|stopPropagation={(e) => handleItemClick(e, item)}
+				>
 					{#each columns as col, index}
 						{@const value = { ...pick(['icon'], col), ...item }}
 						{@const fields = { ...defaultFields, text: col.key, ...col.fields }}
 						<td>
 							{#if multiselect && index === 0}
-							 <!-- {#if !item._isParent} -->
-							<Icon
-								name={'checkbox-' + item._selected}
-								class="small cursor-pointer"
-							  on:click={(e) => toggleSelection(e,item)}
-						  />
-						<!-- {/if} -->
+								<!-- {#if !item._isParent} -->
+								<Icon
+									name={'checkbox-' + item._selected}
+									class="small cursor-pointer"
+									on:click={(e) => toggleSelection(e, item)}
+								/>
+								<!-- {/if} -->
 							{:else}
-							{#if col.path}
-								{#each item._levels.slice(0, -1) as _}
-									<Connector type="empty" />
-								{/each}
-								{#if item._isParent}
-									<Icon
-										name={item._isExpanded ? 'node-opened' : 'node-closed'}
-										class="small cursor-pointer"
-									/>
-								{:else if item._depth > 0}
-									<Connector type="empty" />
+								{#if col.path}
+									{#each item._levels.slice(0, -1) as _}
+										<Connector type="empty" />
+									{/each}
+									{#if item._isParent}
+										<Icon
+											name={item._isExpanded ? 'node-opened' : 'node-closed'}
+											class="small cursor-pointer"
+										/>
+									{:else if item._depth > 0}
+										<Connector type="empty" />
+									{/if}
 								{/if}
-							{/if}
-							<Item {value} {fields} />
+								<Item {value} {fields} />
 							{/if}
 						</td>
 					{/each}

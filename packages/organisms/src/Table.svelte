@@ -1,5 +1,4 @@
 <script>
-
 	/** @type {Array<Object>} */
 	export let data = []
 	/** @type {Array<string>} */

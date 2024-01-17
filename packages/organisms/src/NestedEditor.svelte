@@ -24,8 +24,8 @@
 	let nodeType = null
 	let nodeItem = null
 	let columns = [
-		{ key: 'scope', path:true, label: 'path', fields: { text: 'key'}},
-		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type' }}
+		{ key: 'scope', path: true, label: 'path', fields: { text: 'key' } },
+		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type' } }
 	]
 
 	function handle(event) {
@@ -43,7 +43,7 @@
 		}
 	}
 
-	$: tableData = node?.layout ? []: generateTreeTable(nodeValue ?? value,'scope', true)
+	$: tableData = node?.layout ? [] : generateTreeTable(nodeValue ?? value, 'scope', true)
 </script>
 
 <container class="flex flex-row h-full w-full">
@@ -76,7 +76,7 @@
 			<p>
 				No atomic attributes at this level. Select a child node to edit. Current value is below.
 			</p>
-			<TreeTable data={tableData} columns={columns} class=""/>
+			<TreeTable data={tableData} {columns} class="" />
 		{/if}
 	</content>
 </container>

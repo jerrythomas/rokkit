@@ -21,3 +21,13 @@ export function addRootNode(items, root = '/', fields = defaultFields) {
 	}
 	return items
 }
+
+/**
+ * converts a flat array of items into a tree table structure using one of the columns as the path
+ * @param {Array<Object>} items
+ * @param {string} path
+ * @param {Array<string|Column} columns
+ * @param {boolean} multiselect
+ * @param {string}  filter
+ * @returns {TreeDableData}
+ */
