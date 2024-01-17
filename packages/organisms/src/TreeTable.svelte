@@ -4,6 +4,8 @@
 	import { Connector, Icon } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 
+	let className = ''
+	export { className as class }
 	export let data = []
 	export let columns = []
 	export let striped = true
@@ -36,10 +38,10 @@
 	$: nestedColumn = columns.find((col) => col.path)
 </script>
 
-<tree-table class="flex flex-col h-full w-full p-8 overflow-auto" style:--sizes={sizes}>
-	<table class="flex flex-col h-full overflow-y-hidden">
+<tree-table class="flex flex-col h-full w-full overflow-auto {className}" style:--sizes={sizes}>
+	<table class="flex flex-col mb-auto overflow-y-hidden">
 		<thead>
-			<tr class="grid gap-1px">
+			<tr class="grid gap-1px uppercase">
 				{#each columns as col}
 					<th class="bg-neutral-400">{col.label}</th>
 				{/each}
@@ -52,7 +54,7 @@
 					{#each columns as col}
 						{@const value = { ...pick(['icon'], col), ...item }}
 						{@const fields = { ...defaultFields, text: col.key, ...col.fields }}
-						<td class="flex gap-2 bg-neutral-muted">
+						<td class="flex gap-2 bg-neutral-subtle">
 							{#if col.path}
 								{#each item._levels.slice(0, -1) as _}
 									<Connector type="empty" />
@@ -81,11 +83,11 @@
 		grid-template-columns: var(--sizes);
 	}
 	tr.even > td {
-		@apply bg-neutral-subtle;
+		@apply bg-neutral-base;
 	}
 	th,
 	td {
-		@apply px-4 py-4;
+		@apply px-4 py-3;
 	}
 	td :global(icon) {
 		@apply text-secondary-700;

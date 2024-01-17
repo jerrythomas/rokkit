@@ -3,9 +3,12 @@
 	import { createEventDispatcher } from 'svelte'
 	import Tree from './Tree.svelte'
 	import DataEditor from './DataEditor.svelte'
+	import TreeTable from './TreeTable.svelte'
 	import Tabs from './Tabs.svelte'
+	import { generateTreeTable } from './lib'
 
 	const dispatch = createEventDispatcher()
+
 	export let value
 	export let schema
 	export let using = {}
@@ -20,6 +23,10 @@
 	let nodeValue = null
 	let nodeType = null
 	let nodeItem = null
+	let columns = [
+		{ key: 'scope', path:true, label: 'path', fields: { text: 'key'}},
+		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type' }}
+	]
 
 	function handle(event) {
 		dispatch('change', value)
@@ -35,13 +42,15 @@
 			nodeValue = nodeValue[scope[i]]
 		}
 	}
+
+	$: tableData = node?.layout ? []: generateTreeTable(nodeValue ?? value,'scope', true)
 </script>
 
 <container class="flex flex-row h-full w-full">
 	<aside class="flex h-full w-80 border-r border-r-neutral-subtle">
 		<Tree items={schema} {fields} class="w-full h-full" on:move={handle} />
 	</aside>
-	<content class="w-full h-full p-8 flex flex-col gap-4">
+	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-auto">
 		{#if !nodeValue}
 			<pre class="overflow-auto">{JSON.stringify(value, null, 2)}</pre>
 		{:else if node.layout}
@@ -67,7 +76,7 @@
 			<p>
 				No atomic attributes at this level. Select a child node to edit. Current value is below.
 			</p>
-			<pre>{JSON.stringify(nodeValue, null, 2)}</pre>
+			<TreeTable data={tableData} columns={columns} class=""/>
 		{/if}
 	</content>
 </container>
