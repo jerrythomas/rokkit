@@ -104,7 +104,6 @@ export function generateIndex(data, key = 'scope') {
 			_path: item[key],
 			_isParent: false,
 			_isExpanded: true,
-			_isVisible: true,
 			_levels: []
 		}))
 		.sort((a, b) => a[key].localeCompare(b[key]))
