@@ -2,7 +2,7 @@
 	import { NestedEditor, TreeTable } from '@rokkit/organisms'
 
 	export let data
-  let tabular = []
+	let tabular = []
 	let value
 
 	// function handle(event) {

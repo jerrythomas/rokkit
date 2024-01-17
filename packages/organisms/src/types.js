@@ -110,3 +110,28 @@ export const componentTypes = {
  * @property {Array<import('./rules').ValidationRule>} [rules]
  * @property {Properties} [props]
  */
+
+/**
+ * @typedef ColumnMetadata
+ * @property {string} key
+ * @property {string} [label]
+ * @property {string} [component]
+ * @property {import('@rokkit/core').FieldMapping} fields
+ */
+
+/**
+ * @typedef TableRow
+ * @property {boolean} _isSelected
+ * @property {boolean} _isParent
+ * @property {boolean} _isOpen
+ */
+
+/**
+ * @typedef TableData
+ * @property {Array<TableRow>} items
+ * @property {Array<Column>} columns
+ * @property {string} path
+ * @property {boolean} multiselect
+ * @property {string} filter
+ * @property {string} sort
+ */
