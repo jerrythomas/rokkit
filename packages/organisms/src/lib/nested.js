@@ -4,8 +4,6 @@ import { deriveSchemaFromValue, deriveTypeFromValue } from './schema'
 import { deriveLayoutFromValue } from './layout'
 
 export function deriveNestedSchema(input, scope = '#') {
-	// const type = deriveTypeFromValue(input)
-
 	const elements = flattenAttributes(input)
 	const atoms = elements.filter(({ type }) => !['object', 'array'].includes(type))
 
@@ -132,8 +130,16 @@ export function generateIndex(data, key = 'scope') {
 	return index
 }
 
-export function generateTreeTable(data, key = 'scope') {
-	if (Array.isArray(data)) return generateIndex(data, key)
-	if (isObject(data)) return generateIndex(Object.values(flattenObject(data)), key)
-	return []
+export function generateTreeTable(data, key = 'scope', ellipsis = false) {
+	let result = []
+	if (Array.isArray(data)) result = generateIndex(data, key)
+	if (isObject(data)) result = generateIndex(Object.values(flattenObject(data)), key)
+
+	if (ellipsis) {
+		result = result.map((item) => ({
+			...omit(['value'], item),
+			value: ['array', 'object'].includes(item.type) ? '...' : item.value
+		}))
+	}
+	return result
 }
