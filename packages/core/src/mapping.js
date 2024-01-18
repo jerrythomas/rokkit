@@ -1,4 +1,3 @@
-import { type } from 'ramda'
 import { defaultFields } from './constants'
 import { isObject } from '.'
 

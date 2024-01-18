@@ -65,11 +65,11 @@ importers:
         specifier: ^0.29.9
         version: 0.29.9
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -89,8 +89,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/atoms:
     dependencies:
@@ -126,11 +126,11 @@ importers:
         specifier: ^1.26.3
         version: 1.26.3
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -150,8 +150,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/chart:
     dependencies:
@@ -202,11 +202,11 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5(svelte@4.2.9)
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -226,8 +226,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/core:
     dependencies:
@@ -248,11 +248,11 @@ importers:
         specifier: ^0.29.9
         version: 0.29.9
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -272,8 +272,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/icons:
     dependencies:
@@ -322,11 +322,11 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5(svelte@4.2.9)
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -346,8 +346,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/molecules:
     dependencies:
@@ -383,11 +383,11 @@ importers:
         specifier: ^0.29.9
         version: 0.29.9
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -407,8 +407,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/organisms:
     dependencies:
@@ -435,11 +435,11 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5(svelte@4.2.9)
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -459,8 +459,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/stores:
     dependencies:
@@ -481,11 +481,11 @@ importers:
         specifier: ^0.29.9
         version: 0.29.9
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -505,8 +505,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/themes:
     dependencies:
@@ -518,11 +518,11 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(svelte@4.2.9)(vite@5.0.11)
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -539,8 +539,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   packages/tutorial:
     dependencies:
@@ -570,11 +570,11 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5(svelte@4.2.9)
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       '@vitest/ui':
-        specifier: ~1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(vitest@1.2.1)
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -594,8 +594,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ~1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ~1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   shared/config:
     dependencies:
@@ -621,8 +621,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ^1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   shared/linter:
     dependencies:
@@ -652,8 +652,8 @@ importers:
   shared/validators:
     dependencies:
       '@vitest/expect':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.1
+        version: 1.2.1
       ramda:
         specifier: ^0.29.1
         version: 0.29.1
@@ -665,8 +665,8 @@ importers:
         specifier: ^0.29.9
         version: 0.29.9
       '@vitest/coverage-v8':
-        specifier: ^1.2.0
-        version: 1.2.0(vitest@1.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(vitest@1.2.1)
       shared-config:
         specifier: workspace:*
         version: link:../config
@@ -674,8 +674,8 @@ importers:
         specifier: ^4.2.9
         version: 4.2.9
       vitest:
-        specifier: ^1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
   sites/learn:
     dependencies:
@@ -739,10 +739,10 @@ importers:
         version: 1.41.0
       '@sveltejs/adapter-auto':
         specifier: ^3.1.0
-        version: 3.1.0(@sveltejs/kit@2.3.3)
+        version: 3.1.0(@sveltejs/kit@2.3.4)
       '@sveltejs/kit':
-        specifier: ^2.3.3
-        version: 2.3.3(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.11)
+        specifier: ^2.3.4
+        version: 2.3.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.11)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
         version: 3.0.1(svelte@4.2.9)(vite@5.0.11)
@@ -795,8 +795,8 @@ importers:
         specifier: ^5.0.11
         version: 5.0.11
       vitest:
-        specifier: ^1.2.0
-        version: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+        specifier: ^1.2.1
+        version: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
 packages:
 
@@ -1570,92 +1570,92 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@rollup/rollup-android-arm-eabi@4.9.4:
-    resolution: {integrity: sha512-ub/SN3yWqIv5CWiAZPHVS1DloyZsJbtXmX4HxUTIpS0BHm9pW5iYBo2mIZi+hE3AeiTzHz33blwSnhdUo+9NpA==}
+  /@rollup/rollup-android-arm-eabi@4.9.5:
+    resolution: {integrity: sha512-idWaG8xeSRCfRq9KpRysDHJ/rEHBEXcHuJ82XY0yYFIWnLMjZv9vF/7DOq8djQ2n3Lk6+3qfSH8AqlmHlmi1MA==}
     cpu: [arm]
     os: [android]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-android-arm64@4.9.4:
-    resolution: {integrity: sha512-ehcBrOR5XTl0W0t2WxfTyHCR/3Cq2jfb+I4W+Ch8Y9b5G+vbAecVv0Fx/J1QKktOrgUYsIKxWAKgIpvw56IFNA==}
+  /@rollup/rollup-android-arm64@4.9.5:
+    resolution: {integrity: sha512-f14d7uhAMtsCGjAYwZGv6TwuS3IFaM4ZnGMUn3aCBgkcHAYErhV1Ad97WzBvS2o0aaDv4mVz+syiN0ElMyfBPg==}
     cpu: [arm64]
     os: [android]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-darwin-arm64@4.9.4:
-    resolution: {integrity: sha512-1fzh1lWExwSTWy8vJPnNbNM02WZDS8AW3McEOb7wW+nPChLKf3WG2aG7fhaUmfX5FKw9zhsF5+MBwArGyNM7NA==}
+  /@rollup/rollup-darwin-arm64@4.9.5:
+    resolution: {integrity: sha512-ndoXeLx455FffL68OIUrVr89Xu1WLzAG4n65R8roDlCoYiQcGGg6MALvs2Ap9zs7AHg8mpHtMpwC8jBBjZrT/w==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-darwin-x64@4.9.4:
-    resolution: {integrity: sha512-Gc6cukkF38RcYQ6uPdiXi70JB0f29CwcQ7+r4QpfNpQFVHXRd0DfWFidoGxjSx1DwOETM97JPz1RXL5ISSB0pA==}
+  /@rollup/rollup-darwin-x64@4.9.5:
+    resolution: {integrity: sha512-UmElV1OY2m/1KEEqTlIjieKfVwRg0Zwg4PLgNf0s3glAHXBN99KLpw5A5lrSYCa1Kp63czTpVll2MAqbZYIHoA==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-linux-arm-gnueabihf@4.9.4:
-    resolution: {integrity: sha512-g21RTeFzoTl8GxosHbnQZ0/JkuFIB13C3T7Y0HtKzOXmoHhewLbVTFBQZu+z5m9STH6FZ7L/oPgU4Nm5ErN2fw==}
+  /@rollup/rollup-linux-arm-gnueabihf@4.9.5:
+    resolution: {integrity: sha512-Q0LcU61v92tQB6ae+udZvOyZ0wfpGojtAKrrpAaIqmJ7+psq4cMIhT/9lfV6UQIpeItnq/2QDROhNLo00lOD1g==}
     cpu: [arm]
     os: [linux]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-linux-arm64-gnu@4.9.4:
-    resolution: {integrity: sha512-TVYVWD/SYwWzGGnbfTkrNpdE4HON46orgMNHCivlXmlsSGQOx/OHHYiQcMIOx38/GWgwr/po2LBn7wypkWw/Mg==}
+  /@rollup/rollup-linux-arm64-gnu@4.9.5:
+    resolution: {integrity: sha512-dkRscpM+RrR2Ee3eOQmRWFjmV/payHEOrjyq1VZegRUa5OrZJ2MAxBNs05bZuY0YCtpqETDy1Ix4i/hRqX98cA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-linux-arm64-musl@4.9.4:
-    resolution: {integrity: sha512-XcKvuendwizYYhFxpvQ3xVpzje2HHImzg33wL9zvxtj77HvPStbSGI9czrdbfrf8DGMcNNReH9pVZv8qejAQ5A==}
+  /@rollup/rollup-linux-arm64-musl@4.9.5:
+    resolution: {integrity: sha512-QaKFVOzzST2xzY4MAmiDmURagWLFh+zZtttuEnuNn19AiZ0T3fhPyjPPGwLNdiDT82ZE91hnfJsUiDwF9DClIQ==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-linux-riscv64-gnu@4.9.4:
-    resolution: {integrity: sha512-LFHS/8Q+I9YA0yVETyjonMJ3UA+DczeBd/MqNEzsGSTdNvSJa1OJZcSH8GiXLvcizgp9AlHs2walqRcqzjOi3A==}
+  /@rollup/rollup-linux-riscv64-gnu@4.9.5:
+    resolution: {integrity: sha512-HeGqmRJuyVg6/X6MpE2ur7GbymBPS8Np0S/vQFHDmocfORT+Zt76qu+69NUoxXzGqVP1pzaY6QIi0FJWLC3OPA==}
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-linux-x64-gnu@4.9.4:
-    resolution: {integrity: sha512-dIYgo+j1+yfy81i0YVU5KnQrIJZE8ERomx17ReU4GREjGtDW4X+nvkBak2xAUpyqLs4eleDSj3RrV72fQos7zw==}
+  /@rollup/rollup-linux-x64-gnu@4.9.5:
+    resolution: {integrity: sha512-Dq1bqBdLaZ1Gb/l2e5/+o3B18+8TI9ANlA1SkejZqDgdU/jK/ThYaMPMJpVMMXy2uRHvGKbkz9vheVGdq3cJfA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-linux-x64-musl@4.9.4:
-    resolution: {integrity: sha512-RoaYxjdHQ5TPjaPrLsfKqR3pakMr3JGqZ+jZM0zP2IkDtsGa4CqYaWSfQmZVgFUCgLrTnzX+cnHS3nfl+kB6ZQ==}
+  /@rollup/rollup-linux-x64-musl@4.9.5:
+    resolution: {integrity: sha512-ezyFUOwldYpj7AbkwyW9AJ203peub81CaAIVvckdkyH8EvhEIoKzaMFJj0G4qYJ5sw3BpqhFrsCc30t54HV8vg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-win32-arm64-msvc@4.9.4:
-    resolution: {integrity: sha512-T8Q3XHV+Jjf5e49B4EAaLKV74BbX7/qYBRQ8Wop/+TyyU0k+vSjiLVSHNWdVd1goMjZcbhDmYZUYW5RFqkBNHQ==}
+  /@rollup/rollup-win32-arm64-msvc@4.9.5:
+    resolution: {integrity: sha512-aHSsMnUw+0UETB0Hlv7B/ZHOGY5bQdwMKJSzGfDfvyhnpmVxLMGnQPGNE9wgqkLUs3+gbG1Qx02S2LLfJ5GaRQ==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-win32-ia32-msvc@4.9.4:
-    resolution: {integrity: sha512-z+JQ7JirDUHAsMecVydnBPWLwJjbppU+7LZjffGf+Jvrxq+dVjIE7By163Sc9DKc3ADSU50qPVw0KonBS+a+HQ==}
+  /@rollup/rollup-win32-ia32-msvc@4.9.5:
+    resolution: {integrity: sha512-AiqiLkb9KSf7Lj/o1U3SEP9Zn+5NuVKgFdRIZkvd4N0+bYrTOovVd0+LmYCPQGbocT4kvFyK+LXCDiXPBF3fyA==}
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
     optional: true
 
-  /@rollup/rollup-win32-x64-msvc@4.9.4:
-    resolution: {integrity: sha512-LfdGXCV9rdEify1oxlN9eamvDSjv9md9ZVMAbNHA87xqIfFCxImxan9qZ8+Un54iK2nnqPlbnSi4R54ONtbWBw==}
+  /@rollup/rollup-win32-x64-msvc@4.9.5:
+    resolution: {integrity: sha512-1q+mykKE3Vot1kaFJIDoUFv5TuW+QQVaf2FmTT9krg86pQrGStOSJJ0Zil7CFagyxDuouTepzt5Y5TVzyajOdQ==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
@@ -1664,17 +1664,17 @@ packages:
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
 
-  /@sveltejs/adapter-auto@3.1.0(@sveltejs/kit@2.3.3):
+  /@sveltejs/adapter-auto@3.1.0(@sveltejs/kit@2.3.4):
     resolution: {integrity: sha512-igS5hqCwdiXWb8NoWzThKCVQQj9tKgUkbTtzfxBPgSLOyFjkiGNDX0SgCoY2QIUWBqOkfGTOqGlrW5Ynw9oUvw==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.3.3(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.11)
+      '@sveltejs/kit': 2.3.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.11)
       import-meta-resolve: 4.0.0
     dev: true
 
-  /@sveltejs/kit@2.3.3(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.11):
-    resolution: {integrity: sha512-RYsOjZ7pFvZqPfL+4kNdL428kyJSy12Wk7BT+1XoUkwNe5F47z81n8kvm/2SfkD2NNXVKE9QBfhtiNJsssNWvQ==}
+  /@sveltejs/kit@2.3.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.11):
+    resolution: {integrity: sha512-Q4rXMMLSv38IeiVJhA3M0M0t6M8zNXsjj2xhUkWlxhkKu+cRqOL/vyFTuJ+5aiQlmMzCGq1yqFnHoc6R0NZ7gQ==}
     engines: {node: '>=18.13'}
     hasBin: true
     requiresBuild: true
@@ -2215,8 +2215,8 @@ packages:
       - rollup
     dev: true
 
-  /@vitest/coverage-v8@1.2.0(vitest@1.2.0):
-    resolution: {integrity: sha512-YvX8ULTUm1+zkvkl14IqXYGxE1h13OXKPoDsxazARKlp4YLrP28hHEBdplaU7ZTN/Yn6zy6Z3JadWNRJwcmyrQ==}
+  /@vitest/coverage-v8@1.2.1(vitest@1.2.1):
+    resolution: {integrity: sha512-fJEhKaDwGMZtJUX7BRcGxooGwg1Hl0qt53mVup/ZJeznhvL5EodteVnb/mcByhEcvVWbK83ZF31c7nPEDi4LOQ==}
     peerDependencies:
       vitest: ^1.0.0
     dependencies:
@@ -2233,53 +2233,53 @@ packages:
       std-env: 3.7.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+      vitest: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@vitest/expect@1.2.0:
-    resolution: {integrity: sha512-H+2bHzhyvgp32o7Pgj2h9RTHN0pgYaoi26Oo3mE+dCi1PAqV31kIIVfTbqMO3Bvshd5mIrJLc73EwSRrbol9Lw==}
+  /@vitest/expect@1.2.1:
+    resolution: {integrity: sha512-/bqGXcHfyKgFWYwIgFr1QYDaR9e64pRKxgBNWNXPefPFRhgm+K3+a/dS0cUGEreWngets3dlr8w8SBRw2fCfFQ==}
     dependencies:
-      '@vitest/spy': 1.2.0
-      '@vitest/utils': 1.2.0
+      '@vitest/spy': 1.2.1
+      '@vitest/utils': 1.2.1
       chai: 4.4.1
 
-  /@vitest/runner@1.2.0:
-    resolution: {integrity: sha512-vaJkDoQaNUTroT70OhM0NPznP7H3WyRwt4LvGwCVYs/llLaqhoSLnlIhUClZpbF5RgAee29KRcNz0FEhYcgxqA==}
+  /@vitest/runner@1.2.1:
+    resolution: {integrity: sha512-zc2dP5LQpzNzbpaBt7OeYAvmIsRS1KpZQw4G3WM/yqSV1cQKNKwLGmnm79GyZZjMhQGlRcSFMImLjZaUQvNVZQ==}
     dependencies:
-      '@vitest/utils': 1.2.0
+      '@vitest/utils': 1.2.1
       p-limit: 5.0.0
       pathe: 1.1.2
 
-  /@vitest/snapshot@1.2.0:
-    resolution: {integrity: sha512-P33EE7TrVgB3HDLllrjK/GG6WSnmUtWohbwcQqmm7TAk9AVHpdgf7M3F3qRHKm6vhr7x3eGIln7VH052Smo6Kw==}
+  /@vitest/snapshot@1.2.1:
+    resolution: {integrity: sha512-Tmp/IcYEemKaqAYCS08sh0vORLJkMr0NRV76Gl8sHGxXT5151cITJCET20063wk0Yr/1koQ6dnmP6eEqezmd/Q==}
     dependencies:
       magic-string: 0.30.5
       pathe: 1.1.2
       pretty-format: 29.7.0
 
-  /@vitest/spy@1.2.0:
-    resolution: {integrity: sha512-MNxSAfxUaCeowqyyGwC293yZgk7cECZU9wGb8N1pYQ0yOn/SIr8t0l9XnGRdQZvNV/ZHBYu6GO/W3tj5K3VN1Q==}
+  /@vitest/spy@1.2.1:
+    resolution: {integrity: sha512-vG3a/b7INKH7L49Lbp0IWrG6sw9j4waWAucwnksPB1r1FTJgV7nkBByd9ufzu6VWya/QTvQW4V9FShZbZIB2UQ==}
     dependencies:
       tinyspy: 2.2.0
 
-  /@vitest/ui@1.2.0(vitest@1.2.0):
-    resolution: {integrity: sha512-AFU8FBiSioYacEd0b8+2R/4GJJhxseD6bNIiEVntb505u1B/mcNMTVRepZql7r3RQJZQ7uijY9QyLdhlbh4XvA==}
+  /@vitest/ui@1.2.1(vitest@1.2.1):
+    resolution: {integrity: sha512-5kyEDpH18TB13Keutk5VScWG+LUDfPJOL2Yd1hqX+jv6+V74tp4ZYcmTgx//WDngiZA5PvX3qCHQ5KrhGzPbLg==}
     peerDependencies:
       vitest: ^1.0.0
     dependencies:
-      '@vitest/utils': 1.2.0
+      '@vitest/utils': 1.2.1
       fast-glob: 3.3.2
       fflate: 0.8.1
       flatted: 3.2.9
       pathe: 1.1.2
       picocolors: 1.0.0
       sirv: 2.0.4
-      vitest: 1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0)
+      vitest: 1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0)
 
-  /@vitest/utils@1.2.0:
-    resolution: {integrity: sha512-FyD5bpugsXlwVpTcGLDf3wSPYy8g541fQt14qtzo8mJ4LdEpDKZ9mQy2+qdJm2TZRpjY5JLXihXCgIxiRJgi5g==}
+  /@vitest/utils@1.2.1:
+    resolution: {integrity: sha512-bsH6WVZYe/J2v3+81M5LDU8kW76xWObKIURpPrOXm2pjBniBu2MERI/XP60GpS4PHU3jyK50LUutOwrx4CyHUg==}
     dependencies:
       diff-sequences: 29.6.3
       estree-walker: 3.0.3
@@ -2534,7 +2534,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001578
-      electron-to-chromium: 1.4.635
+      electron-to-chromium: 1.4.637
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
     dev: true
@@ -3293,8 +3293,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: false
 
-  /electron-to-chromium@1.4.635:
-    resolution: {integrity: sha512-iu/2D0zolKU3iDGXXxdOzNf72Jnokn+K1IN6Kk4iV6l1Tr2g/qy+mvmtfAiBwZe5S3aB5r92vp+zSZ69scYRrg==}
+  /electron-to-chromium@1.4.637:
+    resolution: {integrity: sha512-G7j3UCOukFtxVO1vWrPQUoDk3kL70mtvjc/DC/k2o7lE0wAdq+Vwp1ipagOow+BH0uVztFysLWbkM/RTIrbK3w==}
     dev: true
 
   /emoji-regex@10.3.0:
@@ -5571,26 +5571,26 @@ packages:
     dependencies:
       glob: 7.2.3
 
-  /rollup@4.9.4:
-    resolution: {integrity: sha512-2ztU7pY/lrQyXSCnnoU4ICjT/tCG9cdH3/G25ERqE3Lst6vl2BCM5hL2Nw+sslAvAf+ccKsAq1SkKQALyqhR7g==}
+  /rollup@4.9.5:
+    resolution: {integrity: sha512-E4vQW0H/mbNMw2yLSqJyjtkHY9dslf/p0zuT1xehNRqUTBOFMqEjguDvqhXr7N7r/4ttb2jr4T41d3dncmIgbQ==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
     dependencies:
       '@types/estree': 1.0.5
     optionalDependencies:
-      '@rollup/rollup-android-arm-eabi': 4.9.4
-      '@rollup/rollup-android-arm64': 4.9.4
-      '@rollup/rollup-darwin-arm64': 4.9.4
-      '@rollup/rollup-darwin-x64': 4.9.4
-      '@rollup/rollup-linux-arm-gnueabihf': 4.9.4
-      '@rollup/rollup-linux-arm64-gnu': 4.9.4
-      '@rollup/rollup-linux-arm64-musl': 4.9.4
-      '@rollup/rollup-linux-riscv64-gnu': 4.9.4
-      '@rollup/rollup-linux-x64-gnu': 4.9.4
-      '@rollup/rollup-linux-x64-musl': 4.9.4
-      '@rollup/rollup-win32-arm64-msvc': 4.9.4
-      '@rollup/rollup-win32-ia32-msvc': 4.9.4
-      '@rollup/rollup-win32-x64-msvc': 4.9.4
+      '@rollup/rollup-android-arm-eabi': 4.9.5
+      '@rollup/rollup-android-arm64': 4.9.5
+      '@rollup/rollup-darwin-arm64': 4.9.5
+      '@rollup/rollup-darwin-x64': 4.9.5
+      '@rollup/rollup-linux-arm-gnueabihf': 4.9.5
+      '@rollup/rollup-linux-arm64-gnu': 4.9.5
+      '@rollup/rollup-linux-arm64-musl': 4.9.5
+      '@rollup/rollup-linux-riscv64-gnu': 4.9.5
+      '@rollup/rollup-linux-x64-gnu': 4.9.5
+      '@rollup/rollup-linux-x64-musl': 4.9.5
+      '@rollup/rollup-win32-arm64-msvc': 4.9.5
+      '@rollup/rollup-win32-ia32-msvc': 4.9.5
+      '@rollup/rollup-win32-x64-msvc': 4.9.5
       fsevents: 2.3.3
 
   /rrweb-cssom@0.6.0:
@@ -6384,8 +6384,8 @@ packages:
       '@types/unist': 2.0.10
       unist-util-stringify-position: 2.0.3
 
-  /vite-node@1.2.0:
-    resolution: {integrity: sha512-ETnQTHeAbbOxl7/pyBck9oAPZZZo+kYnFt1uQDD+hPReOc+wCjXw4r4jHriBRuVDB5isHmPXxrfc1yJnfBERqg==}
+  /vite-node@1.2.1:
+    resolution: {integrity: sha512-fNzHmQUSOY+y30naohBvSW7pPn/xn3Ib/uqm+5wAJQJiqQsU0NBR78XdRJb04l4bOFKjpTWld0XAfkKlrDbySg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     dependencies:
@@ -6434,7 +6434,7 @@ packages:
     dependencies:
       esbuild: 0.19.11
       postcss: 8.4.33
-      rollup: 4.9.4
+      rollup: 4.9.5
     optionalDependencies:
       fsevents: 2.3.3
 
@@ -6448,8 +6448,8 @@ packages:
     dependencies:
       vite: 5.0.11
 
-  /vitest@1.2.0(@vitest/ui@1.2.0)(jsdom@23.2.0):
-    resolution: {integrity: sha512-Ixs5m7BjqvLHXcibkzKRQUvD/XLw0E3rvqaCMlrm/0LMsA0309ZqYvTlPzkhh81VlEyVZXFlwWnkhb6/UMtcaQ==}
+  /vitest@1.2.1(@vitest/ui@1.2.1)(jsdom@23.2.0):
+    resolution: {integrity: sha512-TRph8N8rnSDa5M2wKWJCMnztCZS9cDcgVTQ6tsTFTG/odHJ4l5yNVqvbeDJYJRZ6is3uxaEpFs8LL6QM+YFSdA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -6473,12 +6473,12 @@ packages:
       jsdom:
         optional: true
     dependencies:
-      '@vitest/expect': 1.2.0
-      '@vitest/runner': 1.2.0
-      '@vitest/snapshot': 1.2.0
-      '@vitest/spy': 1.2.0
-      '@vitest/ui': 1.2.0(vitest@1.2.0)
-      '@vitest/utils': 1.2.0
+      '@vitest/expect': 1.2.1
+      '@vitest/runner': 1.2.1
+      '@vitest/snapshot': 1.2.1
+      '@vitest/spy': 1.2.1
+      '@vitest/ui': 1.2.1(vitest@1.2.1)
+      '@vitest/utils': 1.2.1
       acorn-walk: 8.3.2
       cac: 6.7.14
       chai: 4.4.1
@@ -6494,7 +6494,7 @@ packages:
       tinybench: 2.6.0
       tinypool: 0.8.1
       vite: 5.0.11
-      vite-node: 1.2.0
+      vite-node: 1.2.1
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
