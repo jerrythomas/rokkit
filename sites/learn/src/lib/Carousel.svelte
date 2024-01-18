@@ -1,6 +1,5 @@
 <script>
 	import { getText } from '@rokkit/core'
-	import { get } from 'svelte/store'
 
 	export let items
 	export let value
@@ -11,6 +10,12 @@
 	{#each items as item}
 		{@const text = getText(item, fields)}
 		{@const image = item[fields.image]}
-		<carousel-item {item} />
+		<carousel-item>
+			{#if image}
+				<img src={image} alt={text} />
+			{:else}
+				<p>{text}</p>
+			{/if}
+		</carousel-item>
 	{/each}
 </carousel>
