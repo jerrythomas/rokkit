@@ -33,7 +33,7 @@
 		"shared-config": "workspace:*",
 		"svelte": "^4.2.9",
 		"typescript": "^5.3.3",
-		"validators": "workspace:1.0.0-next.68",
+		"validators": "workspace:latest",
 		"vite": "^5.0.12",
 		"vitest": "~1.2.2"
 	},
@@ -53,8 +53,8 @@
 		}
 	},
 	"dependencies": {
-		"@rokkit/core": "workspace:1.0.0-next.68",
-		"@rokkit/stores": "workspace:1.0.0-next.68",
+		"@rokkit/core": "workspace:latest",
+		"@rokkit/stores": "workspace:latest",
 		"ramda": "^0.29.1"
 	}
 }

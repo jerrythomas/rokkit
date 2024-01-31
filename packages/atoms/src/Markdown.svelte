@@ -4,7 +4,7 @@
 	import { gfmHeadingId } from 'marked-gfm-heading-id'
 
 	import 'prismjs'
-	import 'prism-svelte'
+	// import 'prism-svelte'
 
 	marked.use(mangle())
 	marked.use(gfmHeadingId())
