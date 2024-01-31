@@ -23,17 +23,17 @@
 		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^3.0.1",
-		"@testing-library/svelte": "^4.0.5",
-		"@vitest/coverage-v8": "^1.2.1",
-		"@vitest/ui": "~1.2.1",
+		"@sveltejs/vite-plugin-svelte": "^3.0.2",
+		"@testing-library/svelte": "^4.1.0",
+		"@vitest/coverage-v8": "^1.2.2",
+		"@vitest/ui": "~1.2.2",
 		"js-yaml": "^4.1.0",
-		"jsdom": "^23.2.0",
+		"jsdom": "^24.0.0",
 		"shared-config": "workspace:*",
 		"svelte": "^4.2.9",
 		"typescript": "^5.3.3",
-		"vite": "^5.0.11",
-		"vitest": "~1.2.1"
+		"vite": "^5.0.12",
+		"vitest": "~1.2.2"
 	},
 	"dependencies": {
 		"@rokkit/atoms": "workspace:*",
@@ -46,7 +46,7 @@
 		"d3-interpolate": "^3.0.1",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
-		"date-fns": "^3.2.0",
+		"date-fns": "^3.3.1",
 		"ramda": "^0.29.1",
 		"yootils": "^0.3.1"
 	},

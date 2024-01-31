@@ -40,8 +40,8 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-config-shared": "workspace:*",
 		"front-matter": "^4.0.2",
-		"husky": "^8.0.3",
-		"lint-staged": "^15.2.0",
+		"husky": "^9.0.7",
+		"lint-staged": "^15.2.1",
 		"madge": "^6.1.0",
 		"prettier": "3.2.4",
 		"prettier-plugin-svelte": "^3.1.2"
@@ -51,6 +51,6 @@
 		"*.{js,svelte,md,json}": "prettier --write"
 	},
 	"dependencies": {
-		"turbo": "^1.11.3"
+		"turbo": "^1.12.0"
 	}
 }

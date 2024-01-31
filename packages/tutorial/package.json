@@ -24,22 +24,22 @@
 		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^3.0.1",
-		"@testing-library/svelte": "^4.0.5",
-		"@vitest/coverage-v8": "^1.2.1",
-		"@vitest/ui": "~1.2.1",
-		"jsdom": "^23.2.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.2",
+		"@testing-library/svelte": "^4.1.0",
+		"@vitest/coverage-v8": "^1.2.2",
+		"@vitest/ui": "~1.2.2",
+		"jsdom": "^24.0.0",
 		"ramda": "^0.29.1",
 		"shared-config": "workspace:*",
 		"svelte": "^4.2.9",
 		"typescript": "^5.3.3",
-		"vite": "^5.0.11",
-		"vitest": "~1.2.1"
+		"vite": "^5.0.12",
+		"vitest": "~1.2.2"
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
-		"@rokkit/molecules": "workspace:latest",
-		"@rokkit/organisms": "workspace:latest",
+		"@rokkit/molecules": "workspace:1.0.0-next.68",
+		"@rokkit/organisms": "workspace:1.0.0-next.68",
 		"frontmatter": "^0.0.3",
 		"glob": "^10.3.10",
 		"mdsvex": "^0.11.0"

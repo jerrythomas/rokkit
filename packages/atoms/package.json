@@ -24,18 +24,18 @@
 		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^3.0.1",
-		"@testing-library/svelte": "^4.0.5",
+		"@sveltejs/vite-plugin-svelte": "^3.0.2",
+		"@testing-library/svelte": "^4.1.0",
 		"@types/prismjs": "^1.26.3",
-		"@vitest/coverage-v8": "^1.2.1",
-		"@vitest/ui": "~1.2.1",
-		"jsdom": "^23.2.0",
+		"@vitest/coverage-v8": "^1.2.2",
+		"@vitest/ui": "~1.2.2",
+		"jsdom": "^24.0.0",
 		"shared-config": "workspace:*",
 		"svelte": "^4.2.9",
 		"typescript": "^5.3.3",
-		"validators": "workspace:latest",
-		"vite": "^5.0.11",
-		"vitest": "~1.2.1"
+		"validators": "workspace:1.0.0-next.68",
+		"vite": "^5.0.12",
+		"vitest": "~1.2.2"
 	},
 	"files": [
 		"src/**/*.js",
@@ -56,9 +56,9 @@
 		}
 	},
 	"dependencies": {
-		"@rokkit/actions": "workspace:latest",
-		"@rokkit/core": "workspace:latest",
-		"marked": "^11.1.1",
+		"@rokkit/actions": "workspace:1.0.0-next.68",
+		"@rokkit/core": "workspace:1.0.0-next.68",
+		"marked": "^11.2.0",
 		"marked-gfm-heading-id": "^3.1.2",
 		"marked-mangle": "^1.1.6",
 		"prism-svelte": "^0.5.0",
