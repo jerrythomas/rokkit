@@ -20,7 +20,7 @@
 		schema: null,
 		layout: null
 	}
-	let nodeValue = null
+	let nodeValue = value
 	let nodeType = null
 	let nodeItem = null
 	let columns = [
@@ -50,17 +50,17 @@
 	<aside class="flex h-full w-80 border-r border-r-neutral-subtle">
 		<Tree items={schema} {fields} class="w-full h-full" on:move={handle} />
 	</aside>
-	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-auto">
+	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden">
+		<slot />
+		<section class="flex flex-col w-full flex-grow overflow-auto">
 		{#if !nodeValue}
-			<pre class="overflow-auto">{JSON.stringify(value, null, 2)}</pre>
+		  <p> Select a node to edit </p>
+		  <TreeTable data={tableData} {columns} class="" />
 		{:else if node.layout}
 			{#if nodeType === 'array'}
 				<p>Arrays are not supported yet.</p>
 				<Tabs options={nodeValue} bind:value={nodeItem} />
 				{#if nodeItem}
-					<!--
-					<pre>{JSON.stringify(node.schema, null,2)}</pre>
-					<pre>{JSON.stringify(node.layout, null,2)}</pre> -->
 					<DataEditor
 						bind:value={nodeItem}
 						layout={node.layout}
@@ -73,10 +73,10 @@
 				<DataEditor bind:value={nodeValue} {...node} {using} />
 			{/if}
 		{:else}
-			<p>
-				No atomic attributes at this level. Select a child node to edit. Current value is below.
-			</p>
-			<TreeTable data={tableData} {columns} class="" />
+			<p>No atomic attributes at this level. Select a child node to edit. Current value is below.</p>
+			<TreeTable data={tableData} {columns} />
 		{/if}
+	  </section>
+		<slot name="footer"/>
 	</content>
 </container>

@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '@rokkit/core'
+	import { defaultFields, isObject } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { Item } from '@rokkit/molecules'
 
@@ -22,6 +22,13 @@
 		cursor = event.detail.path
 
 		dispatch('select', { item: value, indices: cursor })
+	}
+	function equals(a, b) {
+		if (Array.isArray(fields.id))
+		   return fields.id.every((id) => isObject(a) && a[id] === b[id])
+		if (isObject(a) && fields.id in a)
+		   return a[fields.id] === b[fields.id]
+	  return JSON.stringify(a) === JSON.stringify(b)
 	}
 
 	$: fields = { ...defaultFields, ...fields }
@@ -52,8 +59,7 @@
 		<item
 			class="item"
 			role="option"
-			aria-selected={value === item}
-			class:is-selected={value === item}
+			aria-selected={equals(value,item)}
 			data-path={path}
 		>
 			<svelte:component this={component} bind:value={item} {...props} on:change />

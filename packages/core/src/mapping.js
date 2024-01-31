@@ -66,7 +66,7 @@ export function getText(node, fields = defaultFields) {
  * @returns {*}
  */
 export function getAttribute(node, attr) {
-	return typeof node === 'object' && node !== null ? node[attr] : null
+	return typeof node === 'object' && node !== null && attr != null ? node[attr] : null
 }
 /**
  * Check if the current item is a parent

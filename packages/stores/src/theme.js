@@ -17,12 +17,12 @@ export function ThemeStore() {
 	const store = writable({ name: 'rokkit', mode: 'dark' })
 
 	const set = (value) => {
-		const { name, mode } = value ?? {}
+		const { name = 'rokkit', mode = 'dark' } = value ?? {}
 		if (typeof name === 'string' && typeof mode === 'string') {
 			store.set(value)
-		} else if (value !== null && value != {}) {
-			console.error('Both "name" and "mode" must be strings', value)
-		}
+		} //else if (value !== null) {
+		// 	console.error('Both "name" and "mode" must be strings', value)
+		// }
 	}
 
 	return {
