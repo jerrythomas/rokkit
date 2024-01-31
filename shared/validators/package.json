@@ -11,7 +11,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@vitest/expect": "^1.2.1",
+    "@vitest/expect": "^1.2.2",
     "ramda": "^0.29.1"
   },
   "exports": {
@@ -30,11 +30,11 @@
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@testing-library/svelte": "^4.0.5",
-    "@types/ramda": "^0.29.9",
-    "@vitest/coverage-v8": "^1.2.1",
+    "@testing-library/svelte": "^4.1.0",
+    "@types/ramda": "^0.29.10",
+    "@vitest/coverage-v8": "^1.2.2",
     "shared-config": "workspace:*",
     "svelte": "^4.2.9",
-    "vitest": "^1.2.1"
+    "vitest": "^1.2.2"
   }
 }

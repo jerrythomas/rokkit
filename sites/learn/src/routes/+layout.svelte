@@ -22,9 +22,5 @@
 
 <svelte:body use:themable />
 <!-- class={$page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10'} -->
-<Header
-	menu={data.sections}
-	version={data.version}
-	class={headerStyle}
-/>
+<Header menu={data.sections} version={data.version} class={headerStyle} />
 <slot />

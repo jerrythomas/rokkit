@@ -53,30 +53,32 @@
 	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden">
 		<slot />
 		<section class="flex flex-col w-full flex-grow overflow-auto">
-		{#if !nodeValue}
-		  <p> Select a node to edit </p>
-		  <TreeTable data={tableData} {columns} class="" />
-		{:else if node.layout}
-			{#if nodeType === 'array'}
-				<p>Arrays are not supported yet.</p>
-				<Tabs options={nodeValue} bind:value={nodeItem} />
-				{#if nodeItem}
-					<DataEditor
-						bind:value={nodeItem}
-						layout={node.layout}
-						schema={node.schema.items}
-						{using}
-					/>
-					<pre>{JSON.stringify(nodeItem, null, 2)}</pre>
+			{#if !nodeValue}
+				<p>Select a node to edit</p>
+				<TreeTable data={tableData} {columns} class="" />
+			{:else if node.layout}
+				{#if nodeType === 'array'}
+					<p>Arrays are not supported yet.</p>
+					<Tabs options={nodeValue} bind:value={nodeItem} />
+					{#if nodeItem}
+						<DataEditor
+							bind:value={nodeItem}
+							layout={node.layout}
+							schema={node.schema.items}
+							{using}
+						/>
+						<pre>{JSON.stringify(nodeItem, null, 2)}</pre>
+					{/if}
+				{:else}
+					<DataEditor bind:value={nodeValue} {...node} {using} />
 				{/if}
 			{:else}
-				<DataEditor bind:value={nodeValue} {...node} {using} />
+				<p>
+					No atomic attributes at this level. Select a child node to edit. Current value is below.
+				</p>
+				<TreeTable data={tableData} {columns} />
 			{/if}
-		{:else}
-			<p>No atomic attributes at this level. Select a child node to edit. Current value is below.</p>
-			<TreeTable data={tableData} {columns} />
-		{/if}
-	  </section>
-		<slot name="footer"/>
+		</section>
+		<slot name="footer" />
 	</content>
 </container>

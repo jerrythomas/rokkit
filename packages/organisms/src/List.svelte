@@ -24,11 +24,9 @@
 		dispatch('select', { item: value, indices: cursor })
 	}
 	function equals(a, b) {
-		if (Array.isArray(fields.id))
-		   return fields.id.every((id) => isObject(a) && a[id] === b[id])
-		if (isObject(a) && fields.id in a)
-		   return a[fields.id] === b[fields.id]
-	  return JSON.stringify(a) === JSON.stringify(b)
+		if (Array.isArray(fields.id)) return fields.id.every((id) => isObject(a) && a[id] === b[id])
+		if (isObject(a) && fields.id in a) return a[fields.id] === b[fields.id]
+		return JSON.stringify(a) === JSON.stringify(b)
 	}
 
 	$: fields = { ...defaultFields, ...fields }
@@ -56,12 +54,7 @@
 			: using.default}
 		{@const path = [...hierarchy, index].join(',')}
 		{@const props = item[fields.props] || { fields }}
-		<item
-			class="item"
-			role="option"
-			aria-selected={equals(value,item)}
-			data-path={path}
-		>
+		<item class="item" role="option" aria-selected={equals(value, item)} data-path={path}>
 			<svelte:component this={component} bind:value={item} {...props} on:change />
 		</item>
 	{/each}

@@ -12,7 +12,7 @@
 	$: target = getAttribute(value, fields.target)
 </script>
 
-<a {href} {target} >
+<a {href} {target}>
 	{#if isObject}
 		{#if value[fields.icon]}
 			{@const iconName = getIcon(value, fields)}

@@ -214,8 +214,6 @@
   @apply bg-neutral-inset text-secondary;
 }
 
-
-
 /* Expanded and Selected styles for Accordion */
 .rokkit accordion .is-expanded summary {
   @apply border-b border-neutral-muted rounded-b-none sticky top-0 z-1;
@@ -305,7 +303,7 @@
   @apply hover:from-secondary hover:to-primary hover:text-neutral-200 dark:text-neutral-800;
 }
 
-.rokkit toggle-switch[aria-disabled='true']{
+.rokkit toggle-switch[aria-disabled='true'] {
   @apply bg-neutral-muted text-neutral-500 cursor-not-allowed;
 }
 .rokkit input-select > selected-item > items {

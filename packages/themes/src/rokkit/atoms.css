@@ -56,7 +56,7 @@
 .rokkit [aria-current='true'] a {
   @apply text-primary-100;
 }
-.rokkit [aria-current='true'] a:visited{
+.rokkit [aria-current='true'] a:visited {
   @apply text-primary-100;
 }
 .rokkit [aria-current='true'] a:hover {
