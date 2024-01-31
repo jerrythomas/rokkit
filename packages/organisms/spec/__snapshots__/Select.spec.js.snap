@@ -59,7 +59,7 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
       </item>
       <item
         aria-selected="true"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >
@@ -149,7 +149,7 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
       </item>
       <item
         aria-selected="true"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >
@@ -417,7 +417,7 @@ exports[`Select.svelte > should handle option changes 2`] = `
     </item>
     <item
       aria-selected="true"
-      class="item is-selected"
+      class="item"
       data-path="1"
       role="option"
     >
@@ -473,7 +473,7 @@ exports[`Select.svelte > should handle option changes 3`] = `
        
     </item>
     <item
-      aria-selected="false"
+      aria-selected="true"
       class="item"
       data-path="1"
       role="option"
@@ -549,7 +549,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
       </item>
       <item
         aria-selected="true"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >
@@ -639,7 +639,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
       </item>
       <item
         aria-selected="true"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >
@@ -757,7 +757,7 @@ exports[`Select.svelte > should render items using custom component 2`] = `
            
           <item
             aria-selected="true"
-            class="item is-selected"
+            class="item"
             data-path="0"
             role="option"
           >
@@ -845,7 +845,7 @@ exports[`Select.svelte > should render items using custom component 3`] = `
            
           <item
             aria-selected="true"
-            class="item is-selected"
+            class="item"
             data-path="0"
             role="option"
           >
@@ -944,7 +944,7 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
           </item>
           <item
             aria-selected="true"
-            class="item is-selected"
+            class="item"
             data-path="1"
             role="option"
           >
@@ -1038,7 +1038,7 @@ exports[`Select.svelte > should render items using default component, when inval
           </item>
           <item
             aria-selected="true"
-            class="item is-selected"
+            class="item"
             data-path="1"
             role="option"
           >
@@ -1307,7 +1307,7 @@ exports[`Select.svelte > should render string array 2`] = `
           </item>
           <item
             aria-selected="false"
-            class="item is-selected"
+            class="item"
             data-path="1"
             role="option"
           >

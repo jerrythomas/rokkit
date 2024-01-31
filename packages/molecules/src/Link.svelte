@@ -8,7 +8,7 @@
 
 	$: isObject = typeof (value ?? '-') == 'object'
 	$: text = getText(value, fields)
-	$: href = getAttribute(value, fields.href)
+	$: href = getAttribute(value, fields.url)
 	$: target = getAttribute(value, fields.target)
 </script>
 

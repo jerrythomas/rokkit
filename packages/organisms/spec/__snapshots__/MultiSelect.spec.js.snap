@@ -109,7 +109,7 @@ exports[`MultiSelect.svelte > should add a selected item 1`] = `
       </item>
       <item
         aria-selected="false"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >

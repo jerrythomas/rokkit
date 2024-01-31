@@ -14,7 +14,7 @@ exports[`ListEditor.svelte > should render 1`] = `
          
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="0"
           role="option"
         >
@@ -130,7 +130,7 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
          
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="0"
           role="option"
         >
@@ -253,7 +253,7 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
          
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="0"
           role="option"
         >
@@ -404,7 +404,7 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
         </item>
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="2"
           role="option"
         >
@@ -492,7 +492,7 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
          
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="0"
           role="option"
         >
@@ -599,7 +599,7 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
          
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="0"
           role="option"
         >
@@ -706,7 +706,7 @@ exports[`ListEditor.svelte > should render with path 1`] = `
          
         <item
           aria-selected="true"
-          class="item is-selected"
+          class="item"
           data-path="0"
           role="option"
         >
