@@ -38,8 +38,8 @@
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
-		"@rokkit/molecules": "workspace:latest",
-		"@rokkit/organisms": "workspace:latest",
+		"@rokkit/molecules": "workspace:*",
+		"@rokkit/organisms": "workspace:*",
 		"frontmatter": "^0.0.3",
 		"glob": "^10.3.10",
 		"mdsvex": "^0.11.0"
