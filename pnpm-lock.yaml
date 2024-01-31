@@ -45,10 +45,10 @@ importers:
   packages/actions:
     dependencies:
       '@rokkit/core':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../core
       '@rokkit/stores':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../stores
       ramda:
         specifier: ^0.29.1
@@ -82,7 +82,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       validators:
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../../shared/validators
       vite:
         specifier: ^5.0.12
@@ -94,10 +94,10 @@ importers:
   packages/atoms:
     dependencies:
       '@rokkit/actions':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../actions
       '@rokkit/core':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../core
       marked:
         specifier: ^11.2.0
@@ -143,7 +143,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       validators:
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../../shared/validators
       vite:
         specifier: ^5.0.12
@@ -265,7 +265,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       validators:
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../../shared/validators
       vite:
         specifier: ^5.0.12
@@ -400,7 +400,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       validators:
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../../shared/validators
       vite:
         specifier: ^5.0.12
@@ -452,7 +452,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       validators:
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../../shared/validators
       vite:
         specifier: ^5.0.12
@@ -464,7 +464,7 @@ importers:
   packages/stores:
     dependencies:
       '@rokkit/core':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../core
       ramda:
         specifier: ^0.29.1
@@ -498,7 +498,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       validators:
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../../shared/validators
       vite:
         specifier: ^5.0.12
@@ -547,10 +547,10 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@rokkit/molecules':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../molecules
       '@rokkit/organisms':
-        specifier: workspace:1.0.0-next.68
+        specifier: workspace:1.0.0-next.69
         version: link:../organisms
       frontmatter:
         specifier: ^0.0.3
