@@ -15,6 +15,7 @@ describe('components', () => {
 			'ButtonGroup',
 			'Calendar',
 			'Item',
+			'Link',
 			'ItemWrapper',
 			'Node',
 			'Summary',

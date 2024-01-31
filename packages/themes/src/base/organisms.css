@@ -57,7 +57,7 @@ tree-table {
   @apply flex flex-col h-full w-full overflow-auto;
 }
 tree-table > table {
-  @apply flex flex-col mb-auto overflow-y-hidden;
+  @apply flex flex-col w-full h-full justify-start border-collapse overflow-auto;
 }
 tree-table > table tr {
   @apply grid;

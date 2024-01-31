@@ -214,11 +214,7 @@
   @apply bg-neutral-inset text-secondary;
 }
 
-.rokkit list item[aria-selected='true'],
-.rokkit virtual-list-contents virtual-list-item[aria-selected='true'],
-.rokkit node[aria-selected='true'] {
-  @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle text-neutral-800;
-}
+
 
 /* Expanded and Selected styles for Accordion */
 .rokkit accordion .is-expanded summary {
@@ -294,9 +290,14 @@
   @apply bg-gradient-to-r from-primary to-secondary;
 }
 
+.rokkit list item[aria-selected='true'],
+.rokkit virtual-list-contents virtual-list-item[aria-selected='true'],
+.rokkit node[aria-selected='true'] {
+  @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle text-neutral-800;
+}
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
-.rokkit list:focus-within item.is-selected,
+.rokkit list:focus-within item[aria-selected='true'],
 .rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
 .rokkit tree:focus-within node[aria-selected='true'],
 .rokkit nested-list:focus-within node[aria-selected='true'] {
@@ -304,6 +305,9 @@
   @apply hover:from-secondary hover:to-primary hover:text-neutral-200 dark:text-neutral-800;
 }
 
+.rokkit toggle-switch[aria-disabled='true']{
+  @apply bg-neutral-muted text-neutral-500 cursor-not-allowed;
+}
 .rokkit input-select > selected-item > items {
   @apply flex-grow flex-wrap gap-2;
 }

@@ -14,6 +14,7 @@
 	export let striped = true
 	export let value = null
 	export let multiselect = false
+	export let using = {}
 
 	let hiddenPaths = []
 	let currentItem = null
@@ -91,6 +92,7 @@
 		}
 	}
 
+	$: using = { default: Item, ...using }
 	$: filtered = data
 	$: addMultiSelectColumn(multiselect)
 	$: sizes = columns.map((col) => col.width ?? '1fr').join(' ')
@@ -113,11 +115,12 @@
 					class:even
 					class:cursor-pointer={!item._isParent}
 					aria-current={currentItem === item}
-					on:click|preventDefault|stopPropagation={(e) => handleItemClick(e, item)}
+					on:click|stopPropagation={(e) => handleItemClick(e, item)}
 				>
 					{#each columns as col, index}
 						{@const value = { ...pick(['icon'], col), ...item }}
 						{@const fields = { ...defaultFields, text: col.key, ...col.fields }}
+						{@const component = using[fields.component] ?? using.default}
 						<td>
 							{#if multiselect && index === 0}
 								<!-- {#if !item._isParent} -->
@@ -141,7 +144,7 @@
 										<Connector type="empty" />
 									{/if}
 								{/if}
-								<Item {value} {fields} />
+								<svelte:component this={component} {value} {fields} />
 							{/if}
 						</td>
 					{/each}

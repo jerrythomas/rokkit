@@ -14,9 +14,13 @@
 	export let fields = defaultFields
 	export let using = {}
 	export let compact = false
+	export let disabled = false
+
 	let cursor = []
 
 	function handleNav(event) {
+		if (disabled) return
+		if (event.detail.node === value) return
 		value = event.detail.node
 		cursor = event.detail.path
 		dispatch('change', { item: value, indices: cursor })
@@ -35,6 +39,9 @@
 		class:is-off={options.length == 2 && value === options[0]}
 		class:is-on={options.length == 2 && value === options[1]}
 		class:compact
+		aria-label="Toggle Switch"
+		aria-orientation="horizontal"
+		aria-disabled={disabled}
 		tabindex="0"
 		role="listbox"
 		use:navigator={{

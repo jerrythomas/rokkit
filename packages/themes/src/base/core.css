@@ -18,9 +18,11 @@ body {
 
 /* Link styles */
 a {
-  @apply text-primary hover:text-secondary visited:text-secondary-600;
+  @apply cursor-pointer text-primary-800 hover:text-secondary-800 visited:text-secondary-700;
 }
-
+a:focus {
+  @apply outline-none;
+}
 /* Code styles */
 code,
 kbd,
@@ -63,4 +65,8 @@ success {
 
 checkbox {
   @apply gap-2;
+}
+
+button:disabled {
+  @apply bg-neutral-muted text-neutral-500 cursor-not-allowed;
 }
