@@ -20,9 +20,9 @@ export function ThemeStore() {
 		const { name = 'rokkit', mode = 'dark' } = value ?? {}
 		if (typeof name === 'string' && typeof mode === 'string') {
 			store.set(value)
-		} //else if (value !== null) {
-		// 	console.error('Both "name" and "mode" must be strings', value)
-		// }
+		} else if (value !== null) {
+			console.error('Both "name" and "mode" must be strings', value)
+		}
 	}
 
 	return {

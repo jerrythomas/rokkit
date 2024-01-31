@@ -22,13 +22,39 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
       </aside>
        
       <content
-        class="flex flex-col w-full h-full p-8 gap-4 overflow-auto"
+        class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden"
       >
-        <pre
-          class="overflow-auto"
+         
+        <section
+          class="flex flex-col w-full flex-grow overflow-auto"
         >
-          undefined
-        </pre>
+          <p>
+            Select a node to edit
+          </p>
+           
+          <tree-table
+            class=""
+            style="--sizes: 1fr 1fr;"
+          >
+            <table>
+              <thead>
+                <tr
+                  class="svelte-1y64wrd"
+                >
+                  <th>
+                    path
+                  </th>
+                  <th>
+                    value
+                  </th>
+                </tr>
+              </thead>
+               
+              <tbody />
+            </table>
+          </tree-table>
+        </section>
+         
       </content>
     </container>
   </div>

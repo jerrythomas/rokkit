@@ -61,7 +61,7 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
       </item>
       <item
         aria-selected="true"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >
@@ -153,7 +153,7 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
       </item>
       <item
         aria-selected="true"
-        class="item is-selected"
+        class="item"
         data-path="1"
         role="option"
       >

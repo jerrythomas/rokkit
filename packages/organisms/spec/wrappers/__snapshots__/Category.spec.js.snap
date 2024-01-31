@@ -377,6 +377,9 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
       class=""
     >
       <toggle-switch
+        aria-disabled="false"
+        aria-label="Toggle Switch"
+        aria-orientation="horizontal"
         class="flex items-center "
         role="listbox"
         tabindex="0"
@@ -445,6 +448,9 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       class=""
     >
       <toggle-switch
+        aria-disabled="false"
+        aria-label="Toggle Switch"
+        aria-orientation="horizontal"
         class="flex items-center "
         role="listbox"
         tabindex="0"

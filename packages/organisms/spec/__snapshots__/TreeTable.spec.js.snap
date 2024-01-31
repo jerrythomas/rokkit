@@ -47,11 +47,13 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
                 root
               </p>
               
+              
             </td>
             <td>
                
               
                
+              
               
             </td>
              
@@ -76,6 +78,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
                 one
               </p>
               
+              
             </td>
             <td>
                
@@ -84,6 +87,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               <p>
                 one
               </p>
+              
               
             </td>
              
@@ -108,6 +112,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
                 two
               </p>
               
+              
             </td>
             <td>
                
@@ -116,6 +121,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               <p>
                 200
               </p>
+              
               
             </td>
              

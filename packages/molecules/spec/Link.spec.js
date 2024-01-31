@@ -13,18 +13,18 @@ describe('Link.svelte', () => {
 	})
 
 	it('should render object', async () => {
-		const { container, component } = render(Link, { value: { text: '#', href: '#' } })
+		const { container, component } = render(Link, { value: { text: '#', url: '#' } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
 		let anchor = container.querySelector('a')
 		expect(anchor).toBeTruthy()
-		expect(anchor.href).toEqual('#')
+		expect(anchor.href).toEqual('http://localhost:3000/#')
 		let text = container.querySelector('p')
 		expect(text.textContent).toEqual('#')
 
 		// handle value change
-		component.$set({ text: 'hello' })
+		component.$set({ value: { text: 'hello', url: '/' } })
 		await tick()
 		text = container.querySelector('p')
 		expect(text).toBeTruthy()
@@ -33,17 +33,17 @@ describe('Link.svelte', () => {
 
 	it('should render icon', () => {
 		const { container } = render(Link, {
-			value: { text: 'hello', icon: 'info', href: '/' }
+			value: { text: 'hello', icon: 'info', url: '/' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 		let anchor = container.querySelector('a')
 		expect(anchor).toBeTruthy()
-		expect(anchor.href).toEqual('/')
+		expect(anchor.href).toEqual('http://localhost:3000/')
 	})
 	it('should render image', () => {
 		const { container } = render(Link, {
-			value: { text: 'hello', image: 'https://example.com/img.png', href: 'https://example.com' }
+			value: { text: 'hello', image: 'https://example.com/img.png', url: 'https://example.com' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -53,7 +53,7 @@ describe('Link.svelte', () => {
 			value: {
 				text: 'hello',
 				image: 'https://example.com/img.png',
-				icon: 'info'
+				icon: 'info',
 				href: 'https://example.com'
 			}
 		})
@@ -77,10 +77,10 @@ describe('Link.svelte', () => {
 			value: {
 				alt: 'hello',
 				profile: 'https://example.com/img.png',
-				ico: 'info'
-				url: 'https://example.com'
+				ico: 'info',
+				route: 'https://example.com'
 			},
-			fields: { text: 'alt', image: 'profile', icon: 'ico', href: 'url' }
+			fields: { text: 'alt', image: 'profile', icon: 'ico', url: 'route' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
