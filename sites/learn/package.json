@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/learn",
-	"version": "1.0.0-next.71",
+	"version": "1.0.0-next.72",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",

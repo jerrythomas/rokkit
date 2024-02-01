@@ -1,6 +1,6 @@
 {
   "name": "validators",
-  "version": "1.0.0-next.71",
+  "version": "1.0.0-next.72",
   "description": "Custom matchers for vitest.",
   "keywords": [
     "vitest",
