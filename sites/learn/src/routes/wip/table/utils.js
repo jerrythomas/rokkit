@@ -24,7 +24,7 @@ export function compareItem(item) {
 	let flat_props = Object.fromEntries(
 		instances
 			.map((instance, index) => [
-				[`${index}_type`, instance.type],
+				[`${index}_type`, 'type-' + instance.type],
 				[`${index}_value`, ['array', 'object'].includes(instance.type) ? '...' : instance.value]
 			])
 			.flat()
