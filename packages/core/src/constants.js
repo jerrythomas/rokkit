@@ -10,6 +10,7 @@ export const defaultFields = {
 	text: 'text',
 	children: 'children',
 	icon: 'icon',
+	iconPrefix: null,
 	image: 'image',
 	component: 'component',
 	summary: 'summary',

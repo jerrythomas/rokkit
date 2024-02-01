@@ -24,9 +24,11 @@ export function getComponent(value, fields, using) {
 export function getIcon(value, fields = defaultFields) {
 	if (fields.icon === undefined || typeof (value ?? '') !== 'object') return null
 	// console.log(fields.icon, fields.state, value[fields.icon][value[fields.state]])
-	return typeof value[fields.icon] == 'object'
-		? value[fields.icon][value[fields.state]]
-		: value[fields.icon]
+	const name =
+		typeof value[fields.icon] == 'object'
+			? value[fields.icon][value[fields.state]]
+			: value[fields.icon]
+	return fields.iconPrefix ? [fields.iconPrefix, name].join('-') : name
 }
 
 /**

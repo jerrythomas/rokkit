@@ -49,20 +49,20 @@ export default defineConfig({
 		'js',
 		'folder',
 		'css',
-		'array',
-		'object',
-		'string',
-		'number',
-		'boolean',
+		'type-array',
+		'type-object',
+		'type-string',
+		'type-number',
+		'type-boolean',
 		'-translate-x-full'
 	],
 	shortcuts: {
 		...iconShortcuts(defaultIcons, 'i-rokkit'),
-		array: 'i-component:input-array',
-		object: 'i-component:input-object',
-		string: 'i-component:input-text',
-		number: 'i-component:input-number',
-		boolean: 'i-component:checkbox'
+		'type-array': 'i-component:input-array',
+		'type-object': 'i-component:input-object',
+		'type-string': 'i-component:input-text',
+		'type-number': 'i-component:input-number',
+		'type-boolean': 'i-component:checkbox'
 	},
 	theme: {
 		fontFamily: {

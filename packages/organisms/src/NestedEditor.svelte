@@ -14,7 +14,8 @@
 	export let using = {}
 	export let fields = {
 		text: 'key',
-		icon: 'type'
+		icon: 'type',
+		iconPrefix: 'type'
 	}
 	let node = {
 		schema: null,
@@ -25,7 +26,7 @@
 	let nodeItem = null
 	let columns = [
 		{ key: 'scope', path: true, label: 'path', fields: { text: 'key' } },
-		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type' } }
+		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type', iconPrefix: 'type' } }
 	]
 
 	function handle(event) {
