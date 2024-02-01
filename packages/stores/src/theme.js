@@ -2,7 +2,7 @@ import { writable } from 'svelte/store'
 import { persistable } from './persist'
 
 const THEME_STORE_KEY = 'app-theme'
-
+const DEFAULT_THEME = { name: 'rokkit', mode: 'dark' }
 /**
  * @typedef {Object} Theme
  * @property {string} name
@@ -14,14 +14,15 @@ const THEME_STORE_KEY = 'app-theme'
  * @returns {import('svelte/store').Writable<Theme>}
  */
 export function ThemeStore() {
-	const store = writable({ name: 'rokkit', mode: 'dark' })
+	const store = writable(DEFAULT_THEME)
 
 	const set = (value) => {
-		const { name = 'rokkit', mode = 'dark' } = value ?? {}
+		const { name, mode } = { ...DEFAULT_THEME, ...value }
 		if (typeof name === 'string' && typeof mode === 'string') {
-			store.set(value)
-		} else if (value !== null) {
+			store.set({ name, mode })
+		} else {
 			console.error('Both "name" and "mode" must be strings', value)
+			store.set(DEFAULT_THEME)
 		}
 	}
 

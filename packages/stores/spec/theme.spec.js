@@ -17,6 +17,7 @@ describe('ThemeStore', () => {
 	it('should throw an error if input is not valid', () => {
 		const themeStore = ThemeStore()
 		themeStore.set({ name: 'test', mode: 123 })
+		expect(console.error).toHaveBeenCalled()
 		expect(console.error).toHaveBeenCalledWith('Both "name" and "mode" must be strings', {
 			name: 'test',
 			mode: 123

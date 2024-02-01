@@ -31,29 +31,30 @@ describe('Timer', () => {
 		let initial = get(elapsed)
 		timer.start()
 
-		vi.advanceTimersByTime(1000)
+		vi.advanceTimersByTime(5000)
 		let value = get(elapsed)
 		expect(value).toBeGreaterThan(initial)
 		let previous = value
 
-		vi.advanceTimersByTime(1000)
+		vi.advanceTimersByTime(5000)
 		value = get(elapsed)
 		expect(value).toBeGreaterThan(previous)
 
 		timer.stop()
-		vi.advanceTimersByTime(1000)
+		vi.advanceTimersByTime(5000)
 		expect(get(elapsed)).toBe(value)
 	})
 
 	it('should change elapsed time using toggle', async () => {
 		let initial = get(elapsed)
-		timer.toggle()
-		vi.advanceTimersByTime(1000)
+
+		timer.toggle() // should start
+		vi.advanceTimersByTime(5000)
 		let value = get(elapsed)
 		expect(value).toBeGreaterThan(initial)
 
-		timer.toggle()
-		vi.advanceTimersByTime(1000)
+		timer.toggle() // should stop
+		vi.advanceTimersByTime(5000)
 		expect(get(elapsed)).toBe(value)
 	})
 
@@ -64,11 +65,11 @@ describe('Timer', () => {
 		const initialValue = get(elapsed)
 
 		timer.start()
-		vi.advanceTimersByTime(1000)
+		vi.advanceTimersByTime(5000)
 		expect(get(elapsed)).toBe(initialValue)
 
 		timer.stop()
-		vi.advanceTimersByTime(1000)
+		vi.advanceTimersByTime(5000)
 		expect(get(elapsed)).toBe(initialValue)
 
 		global.window = backup // restore window
