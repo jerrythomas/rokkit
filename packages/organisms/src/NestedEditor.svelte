@@ -30,7 +30,6 @@
 	]
 
 	function handleChange(event) {
-		console.log(event.type, event.detail)
 		dispatch('change', value)
 	}
 	function handleMove(event) {
