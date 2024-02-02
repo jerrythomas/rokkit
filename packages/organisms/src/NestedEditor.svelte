@@ -29,7 +29,11 @@
 		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type', iconPrefix: 'type' } }
 	]
 
-	function handle(event) {
+	function handleChange(event) {
+		console.log(event.type, event.detail)
+		dispatch('change', value)
+	}
+	function handleMove(event) {
 		dispatch('change', value)
 		const scope = event.detail.scope.split('/').slice(1)
 
@@ -49,7 +53,7 @@
 
 <container class="flex flex-row h-full w-full">
 	<aside class="flex h-full w-80 border-r border-r-neutral-subtle">
-		<Tree items={schema} {fields} class="w-full h-full" on:move={handle} />
+		<Tree items={schema} {fields} class="w-full h-full" on:move={handleMove} />
 	</aside>
 	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden">
 		<slot />
@@ -71,7 +75,7 @@
 						<pre>{JSON.stringify(nodeItem, null, 2)}</pre>
 					{/if}
 				{:else}
-					<DataEditor bind:value={nodeValue} {...node} {using} />
+					<DataEditor bind:value={nodeValue} {...node} {using} on:change={handleChange} />
 				{/if}
 			{:else}
 				<p>

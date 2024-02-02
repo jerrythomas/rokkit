@@ -6,7 +6,9 @@
 	import { Item } from '@rokkit/molecules'
 	import Tabs from './Tabs.svelte'
 	import FieldLayout from './FieldLayout.svelte'
+	import { createEventDispatcher } from 'svelte'
 
+	const dispatch = createEventDispatcher()
 	const registry = writable({})
 	setContext('registry', registry)
 
@@ -18,6 +20,10 @@
 	export let using = {}
 
 	let schemaWithLayout
+
+	function handle(event) {
+		dispatch('change', value)
+	}
 	$: registry.set({
 		editors: { ...componentTypes, ...using?.editors },
 		components: { default: Item, ...using?.components },
@@ -29,4 +35,4 @@
 	$: schemaWithLayout = getSchemaWithLayout(schema, layout)
 </script>
 
-<FieldLayout schema={schemaWithLayout} bind:value />
+<FieldLayout schema={schemaWithLayout} bind:value on:change={handle} />
