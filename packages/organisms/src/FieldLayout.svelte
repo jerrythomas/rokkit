@@ -1,13 +1,18 @@
 <script>
-	import { getContext } from 'svelte'
+	import { getContext, createEventDispatcher } from 'svelte'
 	import { omit } from 'ramda'
 	import InputField from './InputField.svelte'
 
+	const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
 	export let value = {}
 	export let schema = {}
 	export let path = []
+
+	function handle(event) {
+		dispatch('change', value)
+	}
 
 	$: wrapper = $registry.wrappers[schema.wrapper] ?? $registry.wrappers.default
 	$: wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
@@ -27,9 +32,9 @@
 
 			{#if nested}
 				{#if item.key}
-					<svelte:self {...props} schema={item} bind:value={value[item.key]} on:change />
+					<svelte:self {...props} schema={item} bind:value={value[item.key]} on:change={handle} />
 				{:else}
-					<svelte:self {...props} schema={item} bind:value on:change />
+					<svelte:self {...props} schema={item} bind:value on:change={handle} />
 				{/if}
 			{:else if component}
 				<svelte:component
@@ -39,7 +44,7 @@
 				/>
 			{:else}
 				{@const name = elementPath.join('.')}
-				<InputField {name} bind:value={value[item.key]} {...item.props} on:change />
+				<InputField {name} bind:value={value[item.key]} {...item.props} on:change={handle} />
 			{/if}
 		{/each}
 	</svelte:component>

@@ -53,7 +53,7 @@
 		{#if icon}
 			<Icon name={icon} />
 		{/if}
-		<Input id={name} bind:value {type} {...props} {using} />
+		<Input id={name} bind:value {type} {...props} {using} on:change />
 	</field>
 	{#if message}
 		<message class={status}>{message}</message>

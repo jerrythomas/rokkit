@@ -1,11 +1,19 @@
 <script>
 	import { NestedEditor } from '@rokkit/organisms'
 
-	export let data
-</script>
 
-<NestedEditor bind:value={data.data} schema={data.schema}>
+	export let data
+
+	let value = data.data
+	let stringValue = JSON.stringify(data.data, null, 2)
+	function handle(event) {
+		stringValue = JSON.stringify(event.detail)
+	}
+</script>
+<content class="flex overflow-hidden">
+<NestedEditor bind:value schema={data.schema} on:change={handle}>
 	<span class="flex w-full justify-end">
-		<button class="btn btn-primary" on:click={() => console.log(data.data)}>Save</button>
+		<button class="btn btn-primary" on:click={() => console.log(value)}>Save</button>
 	</span>
 </NestedEditor>
+</content>
