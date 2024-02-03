@@ -10,9 +10,15 @@
 .rokkit input-field > label {
   @apply text-secondary-600;
 }
-.rokkit input-field field:focus-within {
+.rokkit input-field:not(.disabled) field:focus-within {
   @apply border-neutral-base bg-gradient-to-r from-primary to-secondary;
 }
+.rokkit input-field.disabled label {
+  @apply text-neutral-500;
+}
+/* .rokkit input-field.disabled field:focus-within {
+  @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle;
+} */
 .rokkit input-field span {
   @apply border-r border-neutral-muted bg-neutral-base px-1 h-full aspect-square;
 }

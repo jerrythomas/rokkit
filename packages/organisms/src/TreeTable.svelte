@@ -15,6 +15,7 @@
 	export let value = null
 	export let multiselect = false
 	export let using = {}
+	export let dataFilter = () => true
 
 	let hiddenPaths = []
 	let currentItem = null
@@ -32,6 +33,7 @@
 	function getValue(item) {
 		return omit(['_levels', '_isParent', '_isExpanded', '_depth', '_path', '_selected'], item)
 	}
+
 	function toggleSelection(e, item) {
 		e.stopPropagation()
 		e.preventDefault()
@@ -57,9 +59,10 @@
 				else p._selected = 'unknown'
 			})
 		}
-		filtered = [...data.filter(isVisible)]
+		visible = [...data.filter(dataFilter).filter(isVisible)]
 		dispatch('select', data.filter((i) => i._selected).map(getValue))
 	}
+
 	function toggle(item) {
 		if (nestedColumn === undefined) return
 
@@ -71,7 +74,7 @@
 			} else {
 				hiddenPaths = [...hiddenPaths, parentPath]
 			}
-			filtered = [...data.filter(isVisible)]
+			visible = [...data.filter(dataFilter).filter(isVisible)]
 		}
 	}
 
@@ -80,7 +83,7 @@
 		return !hiddenPaths.some((i) => item[nestedColumn.key].startsWith(i))
 	}
 
-	function addMultiSelectColumn(multiselect) {
+	function addMultiSelectColumn(multiselect, data) {
 		if (multiselect) {
 			if (columns.some((col) => col.key === '_selected')) return
 			columns = [{ key: '_selected', label: '', width: '3rem' }, ...columns]
@@ -93,8 +96,8 @@
 	}
 
 	$: using = { default: Item, ...using }
-	$: filtered = data
-	$: addMultiSelectColumn(multiselect)
+	$: visible = data.filter(dataFilter).filter(isVisible)
+	$: addMultiSelectColumn(multiselect, data)
 	$: sizes = columns.map((col) => col.width ?? '1fr').join(' ')
 	$: nestedColumn = columns.find((col) => col.path)
 </script>
@@ -109,7 +112,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each filtered as item, index}
+			{#each visible as item, index}
 				{@const even = striped && index % 2 === 0}
 				<tr
 					class:even
