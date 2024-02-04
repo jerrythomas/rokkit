@@ -1,6 +1,6 @@
 <script>
 	import * as Prism from 'prismjs'
-  import 'prism-svelte'
+	import 'prism-svelte'
 
 	let className = ''
 	export { className as class }
