@@ -60,7 +60,7 @@
 			})
 		}
 		visible = [...data.filter(dataFilter).filter(isVisible)]
-		dispatch('select', data.filter((i) => i._selected).map(getValue))
+		dispatch('select', data.filter((i) => i._selected === 'checked').map(getValue))
 	}
 
 	function toggle(item) {

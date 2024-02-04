@@ -11,13 +11,17 @@
 	export { className as class }
 	export let name
 	export let value = null
+	/** @type {string} */
 	export let label = null
+	/** @type {string} */
 	export let description = null
+	/** @type {string} */
 	export let icon = null
 	export let type = 'text'
 	export let required = false
 	export let status = 'default'
 	export let disabled = false
+	/** @type {string} */
 	export let message = null
 	export let using = {}
 	export let nolabel = false
