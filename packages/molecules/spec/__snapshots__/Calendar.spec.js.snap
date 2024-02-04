@@ -16,7 +16,7 @@ exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-left"
+            class="chevron-left"
           />
         </square>
          
@@ -40,7 +40,7 @@ exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-right"
+            class="chevron-right"
           />
         </square>
       </month-year>
@@ -414,7 +414,7 @@ exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-left"
+            class="chevron-left"
           />
         </square>
          
@@ -438,7 +438,7 @@ exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-right"
+            class="chevron-right"
           />
         </square>
       </month-year>
@@ -812,7 +812,7 @@ exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-left"
+            class="chevron-left"
           />
         </square>
          
@@ -836,7 +836,7 @@ exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-right"
+            class="chevron-right"
           />
         </square>
       </month-year>
@@ -1190,7 +1190,7 @@ exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-left"
+            class="chevron-left"
           />
         </square>
          
@@ -1214,7 +1214,7 @@ exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-right"
+            class="chevron-right"
           />
         </square>
       </month-year>
@@ -1588,7 +1588,7 @@ exports[`Calendar.svelte > should render a calendar with value changes 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-left"
+            class="chevron-left"
           />
         </square>
          
@@ -1612,7 +1612,7 @@ exports[`Calendar.svelte > should render a calendar with value changes 1`] = `
           tabindex="0"
         >
           <icon
-            class="i-carbon-chevron-right"
+            class="chevron-right"
           />
         </square>
       </month-year>

@@ -30,7 +30,7 @@
 			aria-selected={false}
 			tabindex="0"
 		>
-			<icon class="i-carbon-chevron-left" />
+			<icon class="chevron-left" />
 		</square>
 		<span class="flex flex-grow items-center justify-center gap-1px">
 			<p>{format(value, 'MMMM')}</p>
@@ -49,7 +49,7 @@
 			aria-selected={false}
 			tabindex="0"
 		>
-			<icon class="i-carbon-chevron-right" />
+			<icon class="chevron-right" />
 		</square>
 	</month-year>
 	<cal-body class="w-full flex flex-col cursor-pointer p-1">
