@@ -18,7 +18,7 @@
 	aria-selected={selected}
 	tabindex="0"
 >
-	<span class="col-start-2 h-5px border-l" />
+	<tick-bar class="col-start-2 h-5px border-l" />
 	<p class="col-span-2 flex justify-center">
 		{label}
 	</p>

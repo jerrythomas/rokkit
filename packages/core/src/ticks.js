@@ -13,6 +13,10 @@ export function generateTicks(
 	minorTickStep = upperBound - lowerBound,
 	majorTickStep = 1
 ) {
+	// lowerBound = +lowerBound
+	// upperBound = +upperBound
+	// minorTickStep = +minorTickStep
+	// majorTickStep = +majorTickStep
 	const length = 1 + Math.ceil((upperBound - lowerBound) / minorTickStep)
 	return Array.from({ length }, (_, i) => {
 		const value = i == length - 1 ? upperBound : lowerBound + minorTickStep * i

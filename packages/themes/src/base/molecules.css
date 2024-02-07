@@ -2,7 +2,7 @@
 input-range range-track {
   @apply h-1 mt-3 relative;
 }
-input-range range-track span {
+input-range range-track range-track-bar {
   @apply bg-neutral-subtle border-neutral-muted rounded-full;
 }
 input-range range-track selected {
@@ -21,27 +21,27 @@ input-range thumb.sliding::before {
 }
 
 /* Bookend styles */
-.bookend range-track span::before,
-.bookend range-track span::after {
+.bookend range-track range-track-bar::before,
+.bookend range-track range-track-bar::after {
   content: '';
   @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 }
-.bookend range-track span::before {
+.bookend range-track range-track-bar::before {
   @apply -left-1px;
 }
-.bookend range-track span::after {
+.bookend range-track range-track-bar::after {
   @apply -right-2px;
 }
 
 /* Input range tick styles */
 input-range tick {
-  @apply h-6;
+  grid-template-rows: 7px auto;
 }
-input-range tick span {
-  @apply border-neutral h-full;
+input-range tick tick-bar {
+  @apply border-neutral-600 h-full;
 }
 input-range tick p {
-  @apply items-top;
+  @apply items-top text-neutral-600 leading-tight;
   font-size: 8px;
 }
 

@@ -6,12 +6,18 @@
 	let className = ''
 	export { className as class }
 	export let name = null
+	/** @type {number} */
 	export let min = 0
+	/** @type {number} */
 	export let max = 100
+	/** @type {[number,number]} */
 	export let value = [min, min]
 	export let single = false
+	/** @type {number} */
 	export let step = 1
+	/** @type {number} */
 	export let ticks = 10
+	/** @type {number} */
 	export let labelSkip = 0
 
 	let limits = [0, 0]
@@ -42,8 +48,7 @@
 
 	$: tickStep = Math.max(1, Math.round((max - min) / ticks))
 	$: tickItems = generateTicks(min, max, tickStep, labelSkip + 1)
-
-	$: steps =
+  $: steps =
 		step > 0
 			? Array.from({ length: 1 + (max - min) / step }, (_, i) => Math.min(min + i * step, max))
 			: []
@@ -56,8 +61,8 @@
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<input {name} type="hidden" bind:value />
 		<range-track class="relative grid">
-			<span class="relative col-start-2 box-border" bind:clientWidth={width} />
-			<selected
+			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width} />
+			<selected-bar
 				class="absolute col-start-2"
 				style:left="{lower}px"
 				style:width="{upper - lower}px"
@@ -84,5 +89,6 @@
 		@apply grid;
 		grid-gap: calc((100% - 1rem * (var(--count) + 1)) / var(--count));
 		grid-template-columns: repeat(var(--count), 1rem) 1rem;
+		grid-template-rows: 7px auto;
 	}
 </style>
