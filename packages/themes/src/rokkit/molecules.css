@@ -19,7 +19,7 @@
 /* .rokkit input-field.disabled field:focus-within {
   @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle;
 } */
-.rokkit input-field span {
+.rokkit input-field > span {
   @apply border-r border-neutral-muted bg-neutral-base px-1 h-full aspect-square;
 }
 .rokkit input-field message {
@@ -33,40 +33,39 @@
 .rokkit input-range range-track {
   @apply h-2 mt-2 relative;
 }
-.rokkit input-range range-track span {
-  @apply bg-neutral-subtle border box-border border-neutral-muted rounded-full;
+.rokkit input-range range-track range-track-bar {
+  @apply bg-neutral-muted border box-border border-neutral-muted rounded-full;
 }
-.rokkit input-range range-track selected {
+.rokkit input-range range-track selected-bar {
   @apply border top-0px bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
 }
 .rokkit input-range range-track thumb {
   @apply rounded-sm focus:outline-none;
 }
-.rokkit input-range range-ticks {
-  font-size: 6px;
-  @apply bg-primary-100;
-}
-.rokkit .bookend range-track span::before,
-.rokkit .bookend range-track span::after {
+/* .rokkit input-range tick p {
+  @apply text-neutral-800;
+} */
+.rokkit .bookend range-track range-track-bar::before,
+.rokkit .bookend range-track range-track-bar::after {
   content: '';
   @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
 }
-.rokkit .bookend range-track span::before {
+.rokkit .bookend range-track range-track-bar::before {
   @apply -left-1px;
 }
-.rokkit .bookend range-track span::after {
+.rokkit .bookend range-track range-track-bar::after {
   @apply -right-2px;
 }
 
 /* Styles for 'tick' class */
-.rokkit tick {
+/* .rokkit tick {
   @apply h-6;
-}
-.rokkit tick span {
+} */
+.rokkit tick tick-bar {
   @apply border-neutral h-full;
 }
 .rokkit tick p {
-  @apply items-top text-neutral;
+  @apply items-top text-neutral-600;
   font-size: 8px;
 }
 

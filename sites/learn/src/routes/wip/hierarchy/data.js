@@ -1,60 +1,34 @@
 export const data = {
-	theme: {
-		logo: 'your_logo_path.png',
-		name: 'ROKKIT',
-		palette: {
-			primary: {
-				main: '#2196F3',
-				light: '#64B5F6',
-				dark: '#1565C0'
-			},
-			neutral: {
-				main: '#B0BEC5',
-				light: '#CFD8DC',
-				dark: '#78909C'
-			},
-			secondary: {
-				main: '#FF9800',
-				light: '#FFC107',
-				dark: '#F57C00'
-			}
+	tenant: {
+		name: 'Walgreens',
+		industry: 'Retail',
+		domain: 'Health & Wellness'
+	},
+	services: {
+		identity: {
+			provider: 'Okta',
+			url: 'https://walgreens.okta.com'
 		},
-		status: {
-			warn: {
-				main: '#FFC107',
-				light: '#FFD54F',
-				dark: '#FFA000'
-			},
-			error: {
-				main: '#FF5252',
-				light: '#EF9A9A',
-				dark: '#D32F2F'
-			},
-			info: {
-				main: '#2196F3',
-				light: '#90CAF9',
-				dark: '#1565C0'
-			},
-			success: {
-				main: '#4CAF50',
-				light: '#81C784',
-				dark: '#388E3C'
-			}
+		storage: {
+			provider: 'Azure',
+			url: 'https://walgreens.blob.core.windows.net'
 		}
 	},
-	departments: ['Sales', 'Marketing', 'Finance'],
-	modules: [
-		{
-			name: 'Module1',
-			enabled: true
+	modules: {
+		inventory: {
+			minimum_stock: 10,
+			restock_threshold: 20,
+			max_age: 365
 		},
-		{
-			name: 'Module2',
-			enabled: false
-		},
-		{
-			name: 'Module3',
-			enabled: true
+		perishable: {
+			minimum_stock: 5,
+			restock_threshold: 10,
+			max_age: 30
 		}
-	]
+	},
+	instance: {
+		type: 'production',
+		language: 'en-US',
+		time_zone: 'EST'
+	}
 }
