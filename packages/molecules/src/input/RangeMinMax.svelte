@@ -56,8 +56,8 @@
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<input {name} type="hidden" bind:value />
 		<range-track class="relative grid">
-			<span class="relative col-start-2 box-border" bind:clientWidth={width} />
-			<selected
+			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width} />
+			<selected-bar
 				class="absolute col-start-2"
 				style:left="{lower}px"
 				style:width="{upper - lower}px"

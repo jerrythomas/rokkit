@@ -78,9 +78,9 @@
   @apply -right-2px;
 }
 
-.minimal tick {
+/* .minimal tick {
   @apply h-6;
-}
+} */
 .minimal tick span {
   @apply border-neutral h-full;
 }

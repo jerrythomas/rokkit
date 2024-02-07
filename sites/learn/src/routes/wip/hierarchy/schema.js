@@ -1,108 +1,237 @@
-import { data } from './data'
-import { omit } from 'ramda'
-import { deriveSchemaFromValue, deriveLayoutFromValue } from '@rokkit/organisms/lib'
+// import { data } from './data'
+// import { omit } from 'ramda'
+// import { deriveSchemaFromValue, deriveLayoutFromValue } from '@rokkit/organisms/lib'
 
-const themewithoutObjects = omit(['palette', 'status'], data.theme)
 export const schema = [
 	{
-		path: '/theme',
-		key: 'theme',
+		key: 'tenant',
 		type: 'object',
-		schema: deriveSchemaFromValue(themewithoutObjects),
-		layout: deriveLayoutFromValue(themewithoutObjects),
-		// _open: true,
+		scope: '#/tenant',
+		properties: {
+			name: {
+				type: 'string',
+				default: 'Walgreens',
+				required: true,
+				maxLength: 100
+			},
+			industry: {
+				type: 'enum',
+				default: 'Retail',
+				options: ['Retail', 'Healthcare', 'Technology', 'Finance', 'Manufacturing']
+			},
+			domain: {
+				type: 'string',
+				default: 'Health & Wellness'
+			}
+		},
+		layout: {
+			type: 'vertical',
+			elements: [
+				{
+					label: 'name',
+					scope: '#/name'
+				},
+				{
+					label: 'industry',
+					scope: '#/industry'
+				},
+				{
+					label: 'domain',
+					scope: '#/domain'
+				}
+			]
+		}
+	},
+	{
+		key: 'services',
+		type: 'object',
+		scope: '#/services',
+		_open: true,
 		children: [
 			{
-				path: '/theme/palette',
-				key: 'primary',
+				key: 'identity',
 				type: 'object',
-
-				// _open: true,
-				children: [
-					{
-						path: '/theme/palette/primary',
-						key: 'primary',
-						type: 'object',
-						schema: deriveSchemaFromValue(data.theme.palette.primary),
-						layout: deriveLayoutFromValue(data.theme.palette.primary),
-						default: {}
+				scope: '#/services/identity',
+				properties: {
+					provider: {
+						type: 'enum',
+						default: 'Okta',
+						options: ['Okta', 'Auth0', 'AWS Cognito', 'Azure AD']
 					},
-					{
-						path: '/theme/palette/secondary',
-						key: 'secondary',
-						type: 'object',
-
-						schema: deriveSchemaFromValue(data.theme.palette.secondary),
-						layout: deriveLayoutFromValue(data.theme.palette.secondary),
-						default: {}
-					},
-					{
-						path: '/theme/palette/neutral',
-						key: 'neutral',
-						type: 'object',
-
-						schema: deriveSchemaFromValue(data.theme.palette.neutral),
-						layout: deriveLayoutFromValue(data.theme.palette.neutral),
-						default: {}
+					url: {
+						type: 'url',
+						default: 'https://walgreens.okta.com',
+						required: true
 					}
-				]
+				},
+				layout: {
+					type: 'vertical',
+					elements: [
+						{
+							label: 'provider',
+							scope: '#/provider'
+						},
+						{
+							label: 'url',
+							scope: '#/url'
+						}
+					]
+				}
 			},
 			{
-				path: '/theme/status',
-				key: 'status',
+				key: 'storage',
 				type: 'object',
-
-				// _open: true,
-				children: [
-					{
-						path: '/theme/status/info',
-						key: 'info',
-						type: 'object',
-
-						schema: deriveSchemaFromValue(data.theme.status.info),
-						layout: deriveLayoutFromValue(data.theme.status.info),
-						default: {}
+				scope: '#/services/storage',
+				properties: {
+					provider: {
+						type: 'enum',
+						default: 'Azure',
+						options: ['Azure', 'AWS', 'Google Cloud', 'IBM Cloud']
 					},
-					{
-						path: '/theme/status/warning',
-						key: 'warning',
-						type: 'object',
-
-						schema: deriveSchemaFromValue(data.theme.status.warn),
-						layout: deriveLayoutFromValue(data.theme.status.warn),
-						default: {}
+					url: {
+						type: 'url',
+						default: 'https://walgreens.blob.core.windows.net'
 					}
-				]
+				},
+				layout: {
+					type: 'vertical',
+					elements: [
+						{
+							label: 'provider',
+							scope: '#/provider'
+						},
+						{
+							label: 'url',
+							scope: '#/url'
+						}
+					]
+				}
 			}
 		]
 	},
 	{
-		path: '/departments',
-		type: 'array',
-
-		key: 'departments',
-		items: {
-			type: 'string'
-		},
-		default: []
-	},
-	{
-		path: '/modules',
-		type: 'array',
-
 		key: 'modules',
-		default: [],
-		items: {
-			type: 'object',
-			properties: {
-				name: {
-					type: 'string'
+		type: 'object',
+		scope: '#/modules',
+		_open: true,
+		children: [
+			{
+				key: 'inventory',
+				type: 'object',
+				scope: '#/modules/inventory',
+				properties: {
+					minimum_stock: {
+						type: 'number',
+						default: 10,
+						min: 0,
+						max: 50
+					},
+					restock_threshold: {
+						type: 'number',
+						default: 20
+					},
+					max_age: {
+						type: 'number',
+						default: 365
+					}
 				},
-				path: {
-					type: 'string'
+				layout: {
+					type: 'vertical',
+					elements: [
+						{
+							label: 'minimum stock',
+							scope: '#/minimum_stock'
+						},
+						{
+							label: 'restock threshold',
+							scope: '#/restock_threshold'
+						},
+						{
+							label: 'maximum age',
+							scope: '#/max_age'
+						}
+					]
+				}
+			},
+			{
+				key: 'perishable',
+				type: 'object',
+				scope: '#/modules/perishable',
+				properties: {
+					minimum_stock: {
+						type: 'number',
+						default: 5,
+						min: 0,
+						max: 50
+					},
+					restock_threshold: {
+						type: 'number',
+						default: 10
+					},
+					max_age: {
+						type: 'number',
+						default: 30,
+						min: 0,
+						max: 45
+					}
+				},
+				layout: {
+					type: 'vertical',
+					elements: [
+						{
+							label: 'minimum stock',
+							scope: '#/minimum_stock'
+						},
+						{
+							label: 'restock threshold',
+							scope: '#/restock_threshold'
+						},
+						{
+							label: 'maximum age',
+							scope: '#/max_age'
+						}
+					]
 				}
 			}
+		]
+	},
+	{
+		key: 'instance',
+		type: 'object',
+		scope: '#/instance',
+		properties: {
+			type: {
+				type: 'enum',
+				default: 'production',
+				options: ['production', 'staging', 'development', 'testing', 'debug']
+			},
+			language: {
+				type: 'enum',
+				default: 'en-US',
+				options: ['en-US', 'es-US', 'fr-CA', 'en-GB', 'en-AU']
+			},
+			time_zone: {
+				type: 'enum',
+				default: 'EST',
+				options: ['EST', 'CST', 'MST', 'PST', 'AKST', 'HST', 'IST']
+			}
 		},
-		layout: deriveLayoutFromValue(data.modules[0])
+		layout: {
+			type: 'vertical',
+			elements: [
+				{
+					label: 'type',
+					scope: '#/type'
+				},
+				{
+					label: 'language',
+					scope: '#/language'
+				},
+				{
+					label: 'time_zone',
+					scope: '#/time_zone'
+				}
+			]
+		}
 	}
 ]

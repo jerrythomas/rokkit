@@ -15,7 +15,6 @@
 		"latest": "pnpm upgrade --latest"
 	},
 	"devDependencies": {
-		"@iconify-json/file-icons": "^1.1.8",
 		"@iconify/utils": "^2.1.20",
 		"@playwright/test": "^1.41.1",
 		"@sveltejs/adapter-auto": "^3.1.1",

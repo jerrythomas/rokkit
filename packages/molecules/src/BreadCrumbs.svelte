@@ -5,7 +5,7 @@
 	export let items = []
 	export let separator = '/'
 	export let fields = defaultFields
-	export let using
+	export let using = { default: Item }
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
