@@ -7,8 +7,14 @@
 .rokkit input-field select {
   @apply border-0 rounded-sm;
 }
+.rokkit checkbox {
+  @apply outline-none;
+}
 .rokkit input-field > label {
   @apply text-secondary-600;
+}
+.rokkit input-field field > label {
+  @apply w-full h-full flex items-center text-secondary-600 uppercase text-xs;
 }
 .rokkit input-field:not(.disabled) field:focus-within {
   @apply border-neutral-base bg-gradient-to-r from-primary to-secondary;

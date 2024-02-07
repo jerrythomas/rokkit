@@ -67,11 +67,17 @@ exports[`ListEditor.svelte > should render 1`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="0.id"
+            >
+              0.id
+            </label>
              
             <field
               aria-label="0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="0.id"
@@ -81,6 +87,7 @@ exports[`ListEditor.svelte > should render 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -88,11 +95,17 @@ exports[`ListEditor.svelte > should render 1`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="0.text"
+            >
+              0.text
+            </label>
              
             <field
               aria-label="0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="0.text"
@@ -101,6 +114,7 @@ exports[`ListEditor.svelte > should render 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -190,11 +204,17 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="0.id"
+            >
+              0.id
+            </label>
              
             <field
               aria-label="0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="0.id"
@@ -204,6 +224,7 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -211,11 +232,17 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="0.text"
+            >
+              0.text
+            </label>
              
             <field
               aria-label="0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="0.text"
@@ -224,6 +251,7 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -313,11 +341,17 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="0.id"
+            >
+              0.id
+            </label>
              
             <field
               aria-label="0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="0.id"
@@ -327,6 +361,7 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -334,11 +369,17 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="0.text"
+            >
+              0.text
+            </label>
              
             <field
               aria-label="0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="0.text"
@@ -347,6 +388,7 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -429,11 +471,17 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="2.id"
+            >
+              0.id
+            </label>
              
             <field
-              aria-label="2.id"
+              aria-label="0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="2.id"
@@ -443,6 +491,7 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -450,11 +499,17 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="2.text"
+            >
+              0.text
+            </label>
              
             <field
-              aria-label="2.text"
+              aria-label="0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="2.text"
@@ -463,6 +518,7 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -536,11 +592,17 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="items.0.id"
+            >
+              items.0.id
+            </label>
              
             <field
               aria-label="items.0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="items.0.id"
@@ -550,6 +612,7 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -557,11 +620,17 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="items.0.text"
+            >
+              items.0.text
+            </label>
              
             <field
               aria-label="items.0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="items.0.text"
@@ -570,6 +639,7 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -643,11 +713,17 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="x.0.id"
+            >
+              items.0.id
+            </label>
              
             <field
-              aria-label="x.0.id"
+              aria-label="items.0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="x.0.id"
@@ -657,6 +733,7 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -664,11 +741,17 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="x.0.text"
+            >
+              items.0.text
+            </label>
              
             <field
-              aria-label="x.0.text"
+              aria-label="items.0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="x.0.text"
@@ -677,6 +760,7 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -759,11 +843,17 @@ exports[`ListEditor.svelte > should render with path 1`] = `
           <input-field
             class="flex flex-col input-text disabled"
           >
+            <label
+              for="items.0.id"
+            >
+              items.0.id
+            </label>
              
             <field
               aria-label="items.0.id"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="items.0.id"
@@ -773,6 +863,7 @@ exports[`ListEditor.svelte > should render with path 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>
@@ -780,11 +871,17 @@ exports[`ListEditor.svelte > should render with path 1`] = `
           <input-field
             class="flex flex-col input-text "
           >
+            <label
+              for="items.0.text"
+            >
+              items.0.text
+            </label>
              
             <field
               aria-label="items.0.text"
               class="w-full flex flex-row items-center"
             >
+               
                
               <input
                 id="items.0.text"
@@ -793,6 +890,7 @@ exports[`ListEditor.svelte > should render with path 1`] = `
               />
               
               
+               
             </field>
              
           </input-field>

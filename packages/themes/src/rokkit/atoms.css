@@ -62,3 +62,7 @@
 .rokkit [aria-current='true'] a:hover {
   @apply text-primary-100;
 }
+
+.rokkit.dark ::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
