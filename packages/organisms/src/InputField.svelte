@@ -10,9 +10,10 @@
 	let className = ''
 	export { className as class }
 	export let name
+	/** @type {any} */
 	export let value = null
 	/** @type {string} */
-	export let label = null
+	export let label = name
 	/** @type {string} */
 	export let description = null
 	/** @type {string} */
@@ -48,7 +49,7 @@
 	class:warn
 	class:empty={!value}
 >
-	{#if label && !nolabel}
+	{#if label && !nolabel && !['switch', 'checkbox'].includes(type)}
 		<label for={name} class:required>
 			{label}
 		</label>
@@ -57,7 +58,13 @@
 		{#if icon}
 			<Icon name={icon} />
 		{/if}
+		{#if type === 'switch'}
+		  <label for={name} class:required>{label}</label>
+		{/if}
 		<Input id={name} bind:value {type} {...props} {using} on:change />
+		{#if type === 'checkbox'}
+		  <label for={name} class:required>{label}</label>
+		{/if}
 	</field>
 	{#if message}
 		<message class={status}>{message}</message>

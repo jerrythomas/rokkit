@@ -3,10 +3,10 @@
   @apply outline-none;
 }
 .rokkit field toggle-switch {
-  @apply rounded-sm min-h-10 items-center justify-center px-3 border-none;
+  @apply min-h-10 items-center justify-center px-1 border-none rounded-sm;
 }
 .rokkit field toggle-switch item {
-  @apply leading-loose;
+  @apply leading-loose rounded-sm;
 }
 .rokkit field toggle-switch item p {
   @apply justify-center;

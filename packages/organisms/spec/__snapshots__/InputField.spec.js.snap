@@ -6,11 +6,17 @@ exports[`InputField.svelte > should render default 1`] = `
     <input-field
       class="flex flex-col input-text empty"
     >
+      <label
+        for="name"
+      >
+        name
+      </label>
        
       <field
         aria-label="name"
         class="w-full flex flex-row items-center"
       >
+         
          
         <input
           id="name"
@@ -19,6 +25,7 @@ exports[`InputField.svelte > should render default 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -32,11 +39,17 @@ exports[`InputField.svelte > should render null 1`] = `
     <input-field
       class="flex flex-col input-text empty"
     >
+      <label
+        for="name"
+      >
+        name
+      </label>
        
       <field
         aria-label="name"
         class="w-full flex flex-row items-center"
       >
+         
          
         <input
           id="name"
@@ -45,6 +58,7 @@ exports[`InputField.svelte > should render null 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -69,6 +83,7 @@ exports[`InputField.svelte > should render when disabled 1`] = `
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -77,6 +92,7 @@ exports[`InputField.svelte > should render when disabled 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -101,6 +117,7 @@ exports[`InputField.svelte > should render when disabled 2`] = `
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -108,6 +125,7 @@ exports[`InputField.svelte > should render when disabled 2`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -121,11 +139,17 @@ exports[`InputField.svelte > should render with custom class an type 1`] = `
     <input-field
       class="flex flex-col input-number custom empty"
     >
+      <label
+        for="name"
+      >
+        name
+      </label>
        
       <field
         aria-label="name"
         class="w-full flex flex-row items-center"
       >
+         
          
         <input
           id="name"
@@ -134,6 +158,7 @@ exports[`InputField.svelte > should render with custom class an type 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -158,6 +183,7 @@ exports[`InputField.svelte > should render with description 1`] = `
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -165,6 +191,7 @@ exports[`InputField.svelte > should render with description 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -178,6 +205,11 @@ exports[`InputField.svelte > should render with icon 1`] = `
     <input-field
       class="flex flex-col input-text empty"
     >
+      <label
+        for="name"
+      >
+        name
+      </label>
        
       <field
         aria-label="name"
@@ -195,6 +227,7 @@ exports[`InputField.svelte > should render with icon 1`] = `
           />
         </icon>
          
+         
         <input
           id="name"
           name="name"
@@ -202,6 +235,7 @@ exports[`InputField.svelte > should render with icon 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -226,6 +260,7 @@ exports[`InputField.svelte > should render with label and value 1`] = `
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -233,6 +268,7 @@ exports[`InputField.svelte > should render with label and value 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -257,6 +293,7 @@ exports[`InputField.svelte > should render with label and value 2`] = `
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -264,6 +301,7 @@ exports[`InputField.svelte > should render with label and value 2`] = `
         />
         
         
+         
       </field>
        
     </input-field>
@@ -288,6 +326,7 @@ exports[`InputField.svelte > should render with label, value and status=fail 1`]
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -295,6 +334,7 @@ exports[`InputField.svelte > should render with label, value and status=fail 1`]
         />
         
         
+         
       </field>
        
       <message
@@ -324,6 +364,7 @@ exports[`InputField.svelte > should render with label, value and status=pass 1`]
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -331,6 +372,7 @@ exports[`InputField.svelte > should render with label, value and status=pass 1`]
         />
         
         
+         
       </field>
        
       <message
@@ -360,6 +402,7 @@ exports[`InputField.svelte > should render with label, value and status=warn 1`]
         class="w-full flex flex-row items-center"
       >
          
+         
         <input
           id="name"
           name="name"
@@ -367,6 +410,7 @@ exports[`InputField.svelte > should render with label, value and status=warn 1`]
         />
         
         
+         
       </field>
        
       <message
@@ -385,11 +429,17 @@ exports[`InputField.svelte > should render with value 1`] = `
     <input-field
       class="flex flex-col input-text "
     >
+      <label
+        for="FirstName"
+      >
+        FirstName
+      </label>
        
       <field
         aria-label="FirstName"
         class="w-full flex flex-row items-center"
       >
+         
          
         <input
           id="FirstName"
@@ -398,6 +448,7 @@ exports[`InputField.svelte > should render with value 1`] = `
         />
         
         
+         
       </field>
        
     </input-field>

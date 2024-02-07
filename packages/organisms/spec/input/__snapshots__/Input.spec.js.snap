@@ -297,9 +297,9 @@ exports[`Input.svelte > should render "range" 1`] = `
       />
        
       <range-track
-        class="relative grid svelte-yaxyzg"
+        class="relative grid svelte-dg871c"
       >
-        <span
+        <range-track-bar
           class="relative col-start-2 box-border"
         >
           <iframe
@@ -308,9 +308,9 @@ exports[`Input.svelte > should render "range" 1`] = `
             style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
             tabindex="-1"
           />
-        </span>
+        </range-track-bar>
          
-        <selected
+        <selected-bar
           class="absolute col-start-2"
           style="left: 0px; width: 0px;"
         />
@@ -327,7 +327,7 @@ exports[`Input.svelte > should render "range" 1`] = `
       </range-track>
        
       <ticks
-        class="svelte-yaxyzg"
+        class="svelte-dg871c"
         style="--count: 10;"
       >
         <tick
@@ -336,7 +336,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -352,7 +352,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -368,7 +368,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -384,7 +384,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -400,7 +400,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -416,7 +416,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -432,7 +432,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -448,7 +448,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -464,7 +464,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -480,7 +480,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -496,7 +496,7 @@ exports[`Input.svelte > should render "range" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -528,9 +528,9 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       />
        
       <range-track
-        class="relative grid svelte-yaxyzg"
+        class="relative grid svelte-dg871c"
       >
-        <span
+        <range-track-bar
           class="relative col-start-2 box-border"
         >
           <iframe
@@ -539,9 +539,9 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
             style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
             tabindex="-1"
           />
-        </span>
+        </range-track-bar>
          
-        <selected
+        <selected-bar
           class="absolute col-start-2"
           style="left: 0px; width: 0px;"
         />
@@ -568,7 +568,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </range-track>
        
       <ticks
-        class="svelte-yaxyzg"
+        class="svelte-dg871c"
         style="--count: 10;"
       >
         <tick
@@ -577,7 +577,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -593,7 +593,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -609,7 +609,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -625,7 +625,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -641,7 +641,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -657,7 +657,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -673,7 +673,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -689,7 +689,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -705,7 +705,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -721,7 +721,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
@@ -737,7 +737,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
           role="option"
           tabindex="0"
         >
-          <span
+          <tick-bar
             class="col-start-2 h-5px border-l"
           />
            
