@@ -10,6 +10,7 @@ import {
 
 import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
+// import { ExternalIconLoader } from '@iconify/utils/lib/loader/external-loader'
 
 const components = [
 	'list',

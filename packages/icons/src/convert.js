@@ -1,4 +1,11 @@
-import { importDirectory, cleanupSVG, runSVGO, parseColors, isEmptyColor } from '@iconify/tools'
+import {
+	importDirectory,
+	cleanupSVG,
+	runSVGO,
+	parseColors,
+	isEmptyColor,
+	exportJSONPackage
+} from '@iconify/tools'
 import fs from 'fs'
 
 export async function convert(folder, prefix, color = false) {
@@ -11,6 +18,17 @@ export async function convert(folder, prefix, color = false) {
 	// Export
 	const collection = JSON.stringify(iconSet.export(), null, 2)
 	fs.writeFileSync(`./lib/${prefix}.json`, collection, 'utf8')
+	const target = `./lib/${iconSet.prefix}`
+	await exportJSONPackage(iconSet, {
+		target,
+		package: {
+			name: `@rokkit/${iconSet.prefix}`,
+			version: '1.0.0',
+			bugs: 'https://github.com/jerrythomas/rokkit/issues',
+			homepage: 'https://github.com/jerrythomas/rokkit'
+		},
+		cleanup: true
+	})
 }
 
 async function processIcons(iconSet, color) {
