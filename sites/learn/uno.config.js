@@ -8,8 +8,9 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
+import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
+import { palette } from './src/lib/colors'
 // import { ExternalIconLoader } from '@iconify/utils/lib/loader/external-loader'
 
 const components = [
@@ -26,7 +27,7 @@ const components = [
 
 export default defineConfig({
 	extractors: [extractorSvelte()],
-	rules: [...themeRules()],
+	rules: [...palette],
 	safelist: [
 		...defaultIcons,
 		'i-rokkit:navigate-right',
