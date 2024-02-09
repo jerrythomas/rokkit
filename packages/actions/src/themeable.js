@@ -11,7 +11,7 @@ export function themable(node) {
 	theme.subscribe((data) => {
 		switchClass(node, data.name, previous.name)
 		switchClass(node, data.mode, previous.mode)
-
+		// switchPalette(node, data.palette, previous.palette)
 		previous = data
 	})
 }
@@ -30,3 +30,13 @@ function switchClass(node, current, previous) {
 		node.classList.add(current)
 	}
 }
+
+// function switchPalette(node, current, previous) {
+// 	Object.keys(current).map((key) => {
+// 		if (!equals(current[key], previous[key])) {
+// 			Object.keys(current[key]).map((shade) => {
+// 				node.style.setProperty(`--${key}-${shade}`, current[key][shade])
+// 			})
+// 		}
+// 	})
+// }

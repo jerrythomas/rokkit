@@ -32,7 +32,7 @@ export function isObject(val) {
  * @returns
  */
 export function shadesOf(name, modifier = 'none') {
-	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
 	return shades.reduce(
@@ -42,16 +42,15 @@ export function shadesOf(name, modifier = 'none') {
 		}),
 		{
 			DEFAULT: fn(`var(--${name}-500)`),
-			inset: fn(`var(--${name}-50)`),
 			sunken: fn(`var(--${name}-50)`),
-			recessed: fn(`var(--${name}-50)`),
-			base: fn(`var(--${name}-100)`),
-			subtle: fn(`var(--${name}-200)`),
-			muted: fn(`var(--${name}-300)`),
-			raised: fn(`var(--${name}-400)`),
-			elevated: fn(`var(--${name}-500)`),
-			floating: fn(`var(--${name}-600)`),
-			contrast: fn(`var(--${name}-700)`)
+			inset: fn(`var(--${name}-100)`),
+			base: fn(`var(--${name}-200)`),
+			subtle: fn(`var(--${name}-300)`),
+			muted: fn(`var(--${name}-400)`),
+			raised: fn(`var(--${name}-500)`),
+			elevated: fn(`var(--${name}-600)`),
+			floating: fn(`var(--${name}-700)`),
+			contrast: fn(`var(--${name}-800)`)
 		}
 	)
 }
@@ -108,10 +107,9 @@ export function scaledPath(size, x) {
 }
 
 export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, colors = defaultColors) {
-	const shades = ['50', 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 	mapping = { ...defaultThemeMapping, ...mapping }
 	const variants = Object.keys(mapping)
-
 	const rules = variants
 		.flatMap((variant) => [
 			shades.map((shade) => ({
