@@ -13,7 +13,7 @@
       "request": "launch",
       "name": "Attach to Vitest",
       "skipFiles": ["<node_internals>/**"],
-      "runtimeExecutable": "/Users/Jerry/.nvm/versions/node/v16.15.0/bin/node",
+      "runtimeExecutable": "${env:NODE_PATH}",
       "program": "${workspaceFolder}/packages/tutorial/node_modules/vitest/vitest.mjs",
       "args": ["run", "${relativeFile}"]
     },
