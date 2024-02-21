@@ -1,8 +1,13 @@
 {
   "name": "validators",
-  "version": "1.0.0-next.79",
+  "version": "1.0.0-next.80",
   "description": "Custom matchers for vitest.",
-  "keywords": ["vitest", "matchers", "validators", "svelte"],
+  "keywords": [
+    "vitest",
+    "matchers",
+    "validators",
+    "svelte"
+  ],
   "author": "Jerry Thomas<me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",
