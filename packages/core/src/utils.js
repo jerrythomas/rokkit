@@ -105,7 +105,20 @@ export function scaledPath(size, x) {
 	if (Array.isArray(x)) return x.map((x) => scaledPath(size, x)).join(' ')
 	return typeof x === 'number' ? x * size : x
 }
-
+export function contrastColors(light, dark, shades, mapping) {
+	Object.keys(mapping).flatMap((variant) => [
+		shades.map((shade) => ({
+			key: `--on-${variant}-${shade}`,
+			value: shade < 500 ? dark : light,
+			mode: 'light'
+		})),
+		shades.map((shade) => ({
+			key: `--on-${variant}-${shade}`,
+			value: shade > 500 ? dark : light,
+			mode: 'dark'
+		}))
+	])
+}
 export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, colors = defaultColors) {
 	const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 	mapping = { ...defaultThemeMapping, ...mapping }

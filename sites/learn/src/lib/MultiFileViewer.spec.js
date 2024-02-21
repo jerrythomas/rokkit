@@ -1,6 +1,6 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import MultiFileViewer from '../src/MultiFileViewer.svelte'
+import MultiFileViewer from './MultiFileViewer.svelte'
 
 describe('MultiFileViewer.svelte', () => {
 	const fields = { text: 'file', icon: 'language' }
