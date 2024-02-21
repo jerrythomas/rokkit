@@ -20,7 +20,7 @@
 	$: nodeTypes = items.map((_, index) => (index === items.length - 1 ? 'last' : 'child'))
 </script>
 
-<nested-list class="flex flex-col w-full {className}" role="listbox" class:rtl tabindex="-1">
+<ul class="nested-list flex flex-col w-full {className}" class:rtl>
 	{#each items as item, index}
 		{@const hasChildren = fields.children in item}
 		{@const path = [...hierarchy, index]}
@@ -36,17 +36,18 @@
 			stateIcons={icons}
 			selected={value === item}
 		/>
-		<!-- types={[...connectors, type, nodeTypes[index]]} -->
 		{#if hasChildren && item[fields.isOpen]}
-			<svelte:self
-				items={item[fields.children]}
-				bind:value
-				{fields}
-				{using}
-				{icons}
-				types={connectors}
-				hierarchy={path}
-			/>
+			<li>
+				<svelte:self
+					items={item[fields.children]}
+					bind:value
+					{fields}
+					{using}
+					{icons}
+					types={connectors}
+					hierarchy={path}
+				/>
+			</li>
 		{/if}
 	{/each}
-</nested-list>
+</ul>

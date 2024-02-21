@@ -5,6 +5,7 @@ exports[`DropSearch.svelte > should render 1`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -40,6 +41,7 @@ exports[`DropSearch.svelte > should render 1`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -99,6 +101,7 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -134,6 +137,7 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"

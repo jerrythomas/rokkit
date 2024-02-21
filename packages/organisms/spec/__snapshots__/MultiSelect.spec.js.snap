@@ -3,6 +3,7 @@
 exports[`MultiSelect.svelte > should add a selected item 1`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -89,6 +90,7 @@ exports[`MultiSelect.svelte > should add a selected item 1`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -128,6 +130,7 @@ exports[`MultiSelect.svelte > should add a selected item 1`] = `
 exports[`MultiSelect.svelte > should remove a selected item 1`] = `
 <input-select
   class="flex flex-col relative"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -187,6 +190,7 @@ exports[`MultiSelect.svelte > should remove a selected item 1`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -226,6 +230,7 @@ exports[`MultiSelect.svelte > should remove a selected item 1`] = `
 exports[`MultiSelect.svelte > should render items using custom component 1`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -283,6 +288,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -318,6 +324,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
 exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 <input-select
   class="flex flex-col relative "
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -378,6 +385,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -437,6 +445,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -476,6 +485,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
 exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -562,6 +572,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -588,6 +599,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
 exports[`MultiSelect.svelte > should render using field mappings 1`] = `
 <input-select
   class="flex flex-col relative "
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -649,6 +661,7 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
 exports[`MultiSelect.svelte > should render using field mappings 2`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -709,6 +722,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -750,6 +764,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
 exports[`MultiSelect.svelte > should render using field mappings 3`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -834,6 +849,7 @@ exports[`MultiSelect.svelte > should render using field mappings 3`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"

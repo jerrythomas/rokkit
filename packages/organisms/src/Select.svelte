@@ -10,6 +10,7 @@
 
 	let className = ''
 	export { className as class }
+	export let name
 	export let options = []
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = {}
@@ -61,6 +62,8 @@
 	class="flex flex-col relative {className}"
 	class:open
 	tabindex="0"
+	role="listbox"
+	aria-label={name}
 	use:dismissable
 	use:navigable={{ horizontal: false, vertical: true }}
 	on:focus={() => (open = true)}

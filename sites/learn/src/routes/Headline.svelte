@@ -1,16 +1,11 @@
 <script>
 	import { Button } from '@rokkit/molecules'
 	import { goto } from '$app/navigation'
-	// import { getContext } from 'svelte'
 	import Background from './Background.svelte'
-
-	// const media = getContext('media')
 </script>
 
 <hero class="relative w-full flex flex-col">
 	<Background />
-	<!-- {/if} -->
-
 	<div
 		class="z-1 w-full flex flex-col items-center gap-14 p-12 md:w-1/2 md:p-10 lg:py-22 xl:p-25 2xl:p-40"
 	>

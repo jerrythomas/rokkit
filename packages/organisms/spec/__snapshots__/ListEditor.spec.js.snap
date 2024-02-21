@@ -7,6 +7,7 @@ exports[`ListEditor.svelte > should render 1`] = `
       class="flex "
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"
@@ -137,6 +138,7 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
       class="flex "
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"
@@ -274,6 +276,7 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
       class="flex "
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"
@@ -411,6 +414,7 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
       class="flex "
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"
@@ -541,6 +545,7 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
       class="flex my-list"
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"
@@ -662,6 +667,7 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
       class="flex new-list"
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"
@@ -783,6 +789,7 @@ exports[`ListEditor.svelte > should render with path 1`] = `
       class="flex "
     >
       <list
+        aria-label="list"
         class="flex flex-col w-full flex-shrink-0 select-none list"
         role="listbox"
         tabindex="0"

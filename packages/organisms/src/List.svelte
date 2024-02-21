@@ -8,6 +8,7 @@
 
 	let className = 'list'
 	export { className as class }
+	export let name = 'list'
 	export let items = []
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = {}
@@ -37,6 +38,7 @@
 <list
 	class="flex flex-col w-full flex-shrink-0 select-none {className}"
 	role="listbox"
+	aria-label={name}
 	use:navigator={{
 		items,
 		fields,

@@ -66,7 +66,7 @@
   @apply bg-neutral-muted;
 }
 .rokkit tabs:focus-within .tab[aria-selected='true'] {
-  @apply bg-gradient-to-b from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply bg-gradient-to-b from-primary to-secondary text-white;
 }
 .rokkit tabs.is-below:focus-within .tab[aria-selected='true'] {
   @apply bg-gradient-to-t;
@@ -81,7 +81,7 @@
 
 .rokkit button.is-primary,
 .rokkit .button.is-primary {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply bg-gradient-to-r from-primary to-secondary text-white;
 }
 
 .rokkit button-group {
@@ -99,10 +99,15 @@
 }
 
 .rokkit button-group button.active {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply bg-gradient-to-r from-primary to-secondary text-white;
 }
 .rokkit toggle {
-  @apply flex flex-row items-center p-2 rounded-md gap-3 max-w-max cursor-pointer;
+  @apply flex flex-row items-center gap-3 cursor-pointer;
+  @apply rounded-md border border-neutral-muted p-2;
+}
+
+.rokkit toggle:hover > icon {
+  @apply text-secondary;
 }
 .rokkit toggle:focus-within {
   @apply outline-none ring-2 ring-primary-500;
@@ -134,7 +139,7 @@
 .rokkit drop-down:focus-within > button {
   /* @apply p-2px; */
   @apply outline-none border-none;
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply bg-gradient-to-r from-primary to-secondary text-white;
 }
 /* .rokkit :not(field) > input-select:focus-within > selected-item,
 .rokkit drop-down:focus-within > button > span {
@@ -166,10 +171,10 @@
 }
 
 /* Nested List and Node styles */
-.rokkit nested-list {
+.rokkit .nested-list {
   @apply text-neutral-800;
 }
-.rokkit nested-list node {
+.rokkit .nested-list .node {
   @apply px-2 h-8;
 }
 
@@ -179,8 +184,8 @@
 }
 
 /* Focus styles for Nested List, Tree, and Accordion */
-.rokkit nested-list,
-.rokkit nested-list:focus-within,
+.rokkit .nested-list,
+.rokkit .nested-list:focus-within,
 .rokkit tree:focus-within {
   @apply outline-none rounded;
 }
@@ -207,13 +212,13 @@
 /* .rokkit virtual-list item.is-hovering, */
 .rokkit list item:hover,
 .rokkit virtual-list-contents virtual-list-item:hover,
-.rokkit node:hover {
+.rokkit .node:hover {
   @apply bg-neutral-inset;
 }
 
 /* Selected and Hover styles for List and Node */
 .rokkit list item[aria-selected='true'] > a {
-  @apply text-neutral-200 dark:text-neutral-800;
+  @apply text-white;
 }
 .rokkit virtual-list-item[aria-current='true'] {
   @apply bg-neutral-inset text-secondary;
@@ -228,7 +233,7 @@
   @apply bg-neutral-subtle;
 }
 .rokkit accordion:focus-within [aria-selected='true'] summary {
-  @apply outline-none bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply outline-none bg-gradient-to-r from-primary to-secondary text-white;
 }
 
 /* Border styles for Accordion */
@@ -240,19 +245,19 @@
 .rokkit .folder-tree {
   @apply bg-neutral-inset h-full;
 }
-.rokkit .folder-tree nested-list {
+.rokkit .folder-tree .nested-list{
   @apply bg-neutral-inset h-full;
 }
-.rokkit node > item {
+.rokkit .node > item {
   @apply px-1;
 }
-.rokkit node > span {
+.rokkit .node > span {
   @apply flex-shrink-0;
 }
-.rokkit node > span > i {
+.rokkit .node > span > i {
   @apply border-neutral-muted;
 }
-.rokkit node > icon {
+.rokkit .node > icon {
   @apply text-neutral-muted;
 }
 
@@ -295,17 +300,17 @@
 
 .rokkit list item[aria-selected='true'],
 .rokkit virtual-list-contents virtual-list-item[aria-selected='true'],
-.rokkit node[aria-selected='true'] {
+.rokkit .node[aria-selected='true'] {
   @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle text-neutral-800;
 }
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit list:focus-within item[aria-selected='true'],
 .rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
-.rokkit tree:focus-within node[aria-selected='true'],
-.rokkit nested-list:focus-within node[aria-selected='true'] {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
-  @apply hover:from-secondary hover:to-primary hover:text-neutral-200 dark:text-neutral-800;
+.rokkit tree:focus-within .node[aria-selected='true'],
+.rokkit .nested-list:focus-within .node[aria-selected='true'] {
+  @apply bg-gradient-to-r from-primary to-secondary text-white;
+  @apply hover:from-secondary hover:to-primary;
 }
 
 .rokkit toggle-switch[aria-disabled='true'] {

@@ -3,6 +3,7 @@
 exports[`Select.svelte > should close drop down on escape key 1`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -38,6 +39,7 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -93,6 +95,7 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
 exports[`Select.svelte > should close drop down on escape key 2`] = `
 <input-select
   class="flex flex-col relative"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -128,6 +131,7 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -185,6 +189,7 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -216,6 +221,7 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -396,6 +402,7 @@ exports[`Select.svelte > should handle option changes 2`] = `
   style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
 >
   <list
+    aria-label="list"
     class="flex flex-col w-full flex-shrink-0 select-none list"
     role="listbox"
     tabindex="-1"
@@ -453,6 +460,7 @@ exports[`Select.svelte > should handle option changes 3`] = `
   style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
 >
   <list
+    aria-label="list"
     class="flex flex-col w-full flex-shrink-0 select-none list"
     role="listbox"
     tabindex="-1"
@@ -493,6 +501,7 @@ exports[`Select.svelte > should handle option changes 3`] = `
 exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
 <input-select
   class="flex flex-col relative open"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -528,6 +537,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -583,6 +593,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
 exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
 <input-select
   class="flex flex-col relative"
+  role="listbox"
   tabindex="0"
 >
   <selected-item
@@ -618,6 +629,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
     style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -675,6 +687,7 @@ exports[`Select.svelte > should render items using custom component 1`] = `
   <div>
     <input-select
       class="flex flex-col relative "
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -715,6 +728,7 @@ exports[`Select.svelte > should render items using custom component 2`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -750,6 +764,7 @@ exports[`Select.svelte > should render items using custom component 2`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -806,6 +821,7 @@ exports[`Select.svelte > should render items using custom component 3`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -838,6 +854,7 @@ exports[`Select.svelte > should render items using custom component 3`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -888,6 +905,7 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -923,6 +941,7 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -982,6 +1001,7 @@ exports[`Select.svelte > should render items using default component, when inval
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -1017,6 +1037,7 @@ exports[`Select.svelte > should render items using default component, when inval
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -1076,6 +1097,7 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -1107,6 +1129,7 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -1166,6 +1189,7 @@ exports[`Select.svelte > should render string array 1`] = `
   <div>
     <input-select
       class="flex flex-col relative open"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -1197,6 +1221,7 @@ exports[`Select.svelte > should render string array 1`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -1253,6 +1278,7 @@ exports[`Select.svelte > should render string array 2`] = `
   <div>
     <input-select
       class="flex flex-col relative"
+      role="listbox"
       tabindex="0"
     >
       <selected-item
@@ -1287,6 +1313,7 @@ exports[`Select.svelte > should render string array 2`] = `
         style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"

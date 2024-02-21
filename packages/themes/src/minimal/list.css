@@ -56,23 +56,23 @@
   /* @apply hover:text-secondary; */
 }
 
-.minimal node {
+.minimal .node {
   @apply h-7 px-2;
 }
-.minimal node > item {
+.minimal .node > item {
   @apply px-1 gap-1;
 }
-.minimal node > span {
+.minimal .node > span {
   @apply w-3;
 }
-.minimal node > span > icon {
-  /* .minimal node > icon { */
+.minimal .node > span > icon {
+  /* .minimal .node > icon { */
   @apply text-sm;
 }
-.minimal node[aria-selected='true'] > item > p {
+.minimal .node[aria-selected='true'] > item > p {
   @apply text-secondary-600;
 }
-.minimal node.is-selected icon {
+.minimal .node.is-selected icon {
   @apply text-secondary-600;
   @apply hover:text-secondary-600;
 }
@@ -82,10 +82,10 @@
   @apply text-sm;
 }
 
-.minimal .small node {
+.minimal .small .node {
   @apply text-sm gap-1 h-5;
 }
-.minimal .small node > span > icon {
+.minimal .small .node > span > icon {
   @apply text-sm;
 }
 .minimal .small item > img,
@@ -103,7 +103,7 @@
   @apply h-full bg-neutral-inset min-w-40;
 }
 
-.minimal node > span > i {
+.minimal .node > span > i {
   @apply border-neutral-muted;
 }
 

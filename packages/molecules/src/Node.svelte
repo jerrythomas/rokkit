@@ -19,14 +19,11 @@
 	$: component = getComponent(value, fields, using)
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<node
+<li
 	id={'id-' + path.join('-')}
-	class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+	class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
 	class:is-selected={selected}
 	class:flex-row-reverse={rtl}
-	aria-selected={selected}
-	role="option"
 	data-path={path.join(',')}
 >
 	{#each types as type}
@@ -39,4 +36,4 @@
 	<item>
 		<svelte:component this={component} bind:value {fields} />
 	</item>
-</node>
+</li>
