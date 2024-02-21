@@ -344,6 +344,9 @@ importers:
       '@rokkit/organisms':
         specifier: workspace:*
         version: link:../organisms
+      '@rokkit/stores':
+        specifier: workspace:1.0.0-next.81
+        version: link:../stores
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2

@@ -40,6 +40,7 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
     style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -132,6 +133,7 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
     style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
   >
     <list
+      aria-label="list"
       class="flex flex-col w-full flex-shrink-0 select-none list"
       role="listbox"
       tabindex="-1"
@@ -478,6 +480,7 @@ exports[`DropDown.svelte > should render string array 1`] = `
         style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"
@@ -582,6 +585,7 @@ exports[`DropDown.svelte > should render string array 2`] = `
         style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
       >
         <list
+          aria-label="list"
           class="flex flex-col w-full flex-shrink-0 select-none list"
           role="listbox"
           tabindex="-1"

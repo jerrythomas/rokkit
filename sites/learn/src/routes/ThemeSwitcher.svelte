@@ -2,8 +2,9 @@
 	import { theme } from '@rokkit/stores'
 	import { defaultStateIcons } from '@rokkit/core'
 	import { Select } from '@rokkit/organisms'
-	import { Icon } from '@rokkit/atoms'
-	const modeIcons = defaultStateIcons.mode
+	import { ToggleThemeMode } from '@rokkit/layout'
+	// import { Icon } from '@rokkit/atoms'
+	// const modeIcons = defaultStateIcons.mode
 
 	export let themes = [
 		{ title: 'Rokkit', name: 'rokkit' },
@@ -12,31 +13,26 @@
 	]
 
 	let currentTheme
-
-	$: current = $theme
-	$: currentTheme = themes.find((theme) => theme.name === current.name)
-
-	function toggleMode() {
-		const mode = current.mode === 'dark' ? 'light' : 'dark'
-		theme.set({ ...current, mode })
-	}
+	$: currentTheme = themes.find(({ name }) => name === $theme.name)
 
 	function handleThemeChange(event) {
-		theme.set({ ...current, name: event.detail.name })
+		theme.update((current) => ({ ...current, name: event.detail.name }))
 	}
 </script>
 
 <Select
+	name="theme"
 	options={themes}
 	value={currentTheme}
 	fields={{ text: 'title', value: 'name' }}
 	on:select={handleThemeChange}
 />
-<theme-mode role="switch" aria-checked={current.mode === 'dark'} class="flex p-0">
+<ToggleThemeMode />
+<!-- <theme-mode role="switch" aria-checked={current.mode === 'dark'} class="flex p-0">
 	<Icon
 		name={modeIcons[current.mode]}
 		role="button"
 		on:click={toggleMode}
 		class="border border-neutral-muted rounded"
 	/>
-</theme-mode>
+</theme-mode> -->

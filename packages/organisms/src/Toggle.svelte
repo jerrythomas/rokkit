@@ -26,7 +26,7 @@
 
 <toggle
 	role="switch"
-	class="switch border border-neutral-300 {className}"
+	class={className}
 	aria-checked={value === options[1]}
 	aria-label={description}
 	aria-disabled={disabled}

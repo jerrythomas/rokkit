@@ -7,7 +7,7 @@ exports[`Toggle.svelte > should change class 1`] = `
       aria-checked="false"
       aria-disabled="false"
       aria-label="Toggle"
-      class="switch border border-neutral-300 custom"
+      class="custom"
       role="switch"
       tabindex="0"
     >
@@ -28,7 +28,7 @@ exports[`Toggle.svelte > should render default 1`] = `
       aria-checked="false"
       aria-disabled="false"
       aria-label="Toggle"
-      class="switch border border-neutral-300 "
+      class=""
       role="switch"
       tabindex="0"
     >

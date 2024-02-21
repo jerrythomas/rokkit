@@ -9,18 +9,24 @@
 	import { media } from '$lib'
 	import Header from './Header.svelte'
 
+	export let data
+
 	let site = writable({
-		sidebar: $media.large
+		sidebar: $media.large,
+		title: data.app.name,
+		description: data.app.about
 	})
 
 	setContext('site', site)
 	setContext('media', media)
 
-	export let data
 	$: headerStyle = $page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10'
 </script>
 
 <svelte:body use:themable />
-<!-- class={$page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10'} -->
+<svelte:head>
+	<title>{$site.title}</title>
+	<meta name="description" content={$site.description} />
+</svelte:head>
 <Header menu={data.sections} version={data.version} class={headerStyle} />
 <slot />

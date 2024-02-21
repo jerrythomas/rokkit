@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ToggleThemeMode.svelte > should render the component 1`] = `
+<body>
+  <div>
+    <toggle
+      aria-checked="true"
+      aria-disabled="false"
+      aria-label="Toggle"
+      class=""
+      role="switch"
+      tabindex="0"
+    >
+      <icon
+        aria-label="mode-light"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="mode-light"
+        />
+      </icon>
+      
+       
+      
+    </toggle>
+  </div>
+</body>
+`;

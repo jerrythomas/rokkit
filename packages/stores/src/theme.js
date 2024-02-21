@@ -27,13 +27,13 @@ export function ThemeStore() {
 			// store.set(DEFAULT_THEME)
 		}
 	}
-	const update = (fn) => {
-		set(fn(get(store)))
-	}
+	// const update = (fn) => {
+	// 	set(fn(get(store)))
+	// }
 
 	return {
 		...store,
-		update,
+		// update,
 		set
 	}
 }

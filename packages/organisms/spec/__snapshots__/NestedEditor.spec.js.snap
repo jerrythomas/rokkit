@@ -13,10 +13,8 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
           class="w-full h-full"
           tabindex="0"
         >
-          <nested-list
-            class="flex flex-col w-full list"
-            role="listbox"
-            tabindex="-1"
+          <ul
+            class="nested-list flex flex-col w-full list"
           />
         </tree>
       </aside>

@@ -1,25 +1,19 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`NestedList.svelte > should render empty nested list 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 />
 `;
 
 exports[`NestedList.svelte > should render nested items 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0"
     id="id-0"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -42,15 +36,13 @@ exports[`NestedList.svelte > should render nested items 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="1"
     id="id-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -65,15 +57,13 @@ exports[`NestedList.svelte > should render nested items 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="2"
     id="id-2"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -96,24 +86,20 @@ exports[`NestedList.svelte > should render nested items 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should render open items 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0"
     id="id-0"
-    role="option"
   >
     <icon
       aria-label="collapse"
@@ -136,57 +122,54 @@ exports[`NestedList.svelte > should render open items 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
-  <nested-list
-    class="flex flex-col w-full list"
-    role="listbox"
-    tabindex="-1"
-  >
-    <node
-      aria-selected="false"
-      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
-      data-path="0,0"
-      id="id-0-0"
-      role="option"
+  <li>
+    <ul
+      class="nested-list flex flex-col w-full list"
     >
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+      <li
+        class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0,0"
+        id="id-0-0"
       >
-        <i
-          class="border-r"
-        />
-         
-        <i
-          class="border-b"
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+        >
+          <i
+            class="border-r"
+          />
+           
+          <i
+            class="border-b"
+          />
+          
+        </span>
+        
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
         />
         
-      </span>
-      
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
-      
+         
+        <item>
+          
+           
+          <p>
+            aa
+          </p>
+          
+        </item>
+      </li>
        
-      <item>
-        
-         
-        <p>
-          aa
-        </p>
-        
-      </item>
-    </node>
+      
+    </ul>
      
-    
-  </nested-list>
+  </li>
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="1"
     id="id-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -201,15 +184,13 @@ exports[`NestedList.svelte > should render open items 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="2"
     id="id-2"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -232,24 +213,20 @@ exports[`NestedList.svelte > should render open items 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should render using default field mapping 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0"
     id="id-0"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -264,15 +241,13 @@ exports[`NestedList.svelte > should render using default field mapping 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="1"
     id="id-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -287,24 +262,20 @@ exports[`NestedList.svelte > should render using default field mapping 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should render using field mappings 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0"
     id="id-0"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -319,15 +290,13 @@ exports[`NestedList.svelte > should render using field mappings 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="1"
     id="id-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -342,24 +311,20 @@ exports[`NestedList.svelte > should render using field mappings 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should render with hierarchy 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0,0"
     id="id-0-0"
-    role="option"
   >
     <icon
       aria-label="collapse"
@@ -382,57 +347,54 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
-  <nested-list
-    class="flex flex-col w-full list"
-    role="listbox"
-    tabindex="-1"
-  >
-    <node
-      aria-selected="false"
-      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
-      data-path="0,0,0"
-      id="id-0-0-0"
-      role="option"
+  <li>
+    <ul
+      class="nested-list flex flex-col w-full list"
     >
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+      <li
+        class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0,0,0"
+        id="id-0-0-0"
       >
-        <i
-          class="border-r"
-        />
-         
-        <i
-          class="border-b"
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+        >
+          <i
+            class="border-r"
+          />
+           
+          <i
+            class="border-b"
+          />
+          
+        </span>
+        
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
         />
         
-      </span>
-      
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
-      
+         
+        <item>
+          
+           
+          <p>
+            aa
+          </p>
+          
+        </item>
+      </li>
        
-      <item>
-        
-         
-        <p>
-          aa
-        </p>
-        
-      </item>
-    </node>
+      
+    </ul>
      
-    
-  </nested-list>
+  </li>
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0,1"
     id="id-0-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -447,15 +409,13 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0,2"
     id="id-0-2"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -478,24 +438,20 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should render with hierarchy 2`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0,0,0"
     id="id-0-0-0"
-    role="option"
   >
     <icon
       aria-label="collapse"
@@ -518,57 +474,54 @@ exports[`NestedList.svelte > should render with hierarchy 2`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
-  <nested-list
-    class="flex flex-col w-full list"
-    role="listbox"
-    tabindex="-1"
-  >
-    <node
-      aria-selected="false"
-      class="min-h-5 flex flex-row cursor-pointer select-none items-center"
-      data-path="0,0,0,0"
-      id="id-0-0-0-0"
-      role="option"
+  <li>
+    <ul
+      class="nested-list flex flex-col w-full list"
     >
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+      <li
+        class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+        data-path="0,0,0,0"
+        id="id-0-0-0-0"
       >
-        <i
-          class="border-r"
-        />
-         
-        <i
-          class="border-b"
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+        >
+          <i
+            class="border-r"
+          />
+           
+          <i
+            class="border-b"
+          />
+          
+        </span>
+        
+        <span
+          class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
         />
         
-      </span>
-      
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
-      
+         
+        <item>
+          
+           
+          <p>
+            aa
+          </p>
+          
+        </item>
+      </li>
        
-      <item>
-        
-         
-        <p>
-          aa
-        </p>
-        
-      </item>
-    </node>
+      
+    </ul>
      
-    
-  </nested-list>
+  </li>
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0,0,1"
     id="id-0-0-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -583,15 +536,13 @@ exports[`NestedList.svelte > should render with hierarchy 2`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0,0,2"
     id="id-0-0-2"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -614,24 +565,20 @@ exports[`NestedList.svelte > should render with hierarchy 2`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should support custom icons 1`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0"
     id="id-0"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -654,15 +601,13 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="1"
     id="id-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -677,15 +622,13 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="2"
     id="id-2"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -708,24 +651,20 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;
 
 exports[`NestedList.svelte > should support custom icons 2`] = `
-<nested-list
-  class="flex flex-col w-full list"
-  role="listbox"
-  tabindex="-1"
+<ul
+  class="nested-list flex flex-col w-full list"
 >
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="0"
     id="id-0"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -748,15 +687,13 @@ exports[`NestedList.svelte > should support custom icons 2`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="1"
     id="id-1"
-    role="option"
   >
     <span
       class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
@@ -771,15 +708,13 @@ exports[`NestedList.svelte > should support custom icons 2`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-  <node
-    aria-selected="false"
-    class="min-h-5 flex flex-row cursor-pointer select-none items-center"
+  <li
+    class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
     data-path="2"
     id="id-2"
-    role="option"
   >
     <icon
       aria-label="expand"
@@ -802,8 +737,8 @@ exports[`NestedList.svelte > should support custom icons 2`] = `
       </p>
       
     </item>
-  </node>
+  </li>
    
   
-</nested-list>
+</ul>
 `;

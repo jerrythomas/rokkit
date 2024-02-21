@@ -3,7 +3,7 @@ icon {
   @apply min-h-4 h-content;
 }
 icon[role='button'] {
-  @apply w-10 h-10 cursor-pointer aspect-square select-none focus:outline;
+  @apply p-2 cursor-pointer aspect-square select-none focus:outline;
 }
 icon > i {
   @apply text-2xl leading-6 aspect-square text-current;

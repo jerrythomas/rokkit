@@ -10,10 +10,10 @@
 
 /* Styles for 'icon' class */
 .rokkit icon:not([role='button']) {
-  @apply focus:outline-none;
+  @apply focus:outline-none text-neutral-700;
 }
 .rokkit icon[role='button'] {
-  @apply text-neutral focus:rounded hover:text-secondary;
+  @apply text-neutral-700 focus:rounded hover:text-secondary rounded-md;
 }
 .rokkit icon[role='button']:focus {
   @apply outline-none bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
