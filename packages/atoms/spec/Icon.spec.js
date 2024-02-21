@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import { getPropertyValue } from 'validators'
+
 import Icon from '../src/Icon.svelte'
 
 describe('Icon component', () => {

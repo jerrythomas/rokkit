@@ -40,6 +40,7 @@ describe('utilities', () => {
 			'themeColors',
 			'iconShortcuts',
 			'scaledPath',
+			'contrastColors',
 			'themeRules',
 			'getRegex',
 			'parseFilters',

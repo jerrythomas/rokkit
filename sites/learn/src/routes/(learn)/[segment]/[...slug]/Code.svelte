@@ -1,6 +1,6 @@
 <script>
 	import { Tree } from '@rokkit/organisms'
-	import { CodeSnippet } from '@rokkit/atoms'
+	import CodeSnippet from '$lib/CodeSnippet.svelte'
 	import { getContext } from 'svelte'
 
 	const story = getContext('tutorial')
