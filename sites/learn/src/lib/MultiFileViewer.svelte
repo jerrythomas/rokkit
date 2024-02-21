@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
 	import { Tabs, Select } from '@rokkit/organisms'
-	import { CodeSnippet } from '@rokkit/atoms'
+	import CodeSnippet from './CodeSnippet.svelte'
 
 	const media = getContext('media')
 
