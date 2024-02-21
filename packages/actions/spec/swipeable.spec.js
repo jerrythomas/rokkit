@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { swipeable } from '../src/swipeable'
 import { toUseHandlersFor, toOnlyTrigger, simulateTouchSwipe, simulateMouseSwipe } from 'validators'
 import { getMockNode } from 'validators/mocks'
+
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
 describe('swipable', () => {

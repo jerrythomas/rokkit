@@ -36,7 +36,8 @@ describe('components', () => {
 			'VirtualList',
 			'NestedEditor',
 			'Table',
-			'TreeTable'
+			'TreeTable',
+			'Toggle'
 		])
 	})
 })

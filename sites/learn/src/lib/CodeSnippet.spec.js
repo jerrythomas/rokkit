@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import CodeSnippet from '../src/CodeSnippet.svelte'
+import CodeSnippet from './CodeSnippet.svelte'
 
 describe('CodeSnippet.svelte', () => {
 	beforeEach(() => cleanup())

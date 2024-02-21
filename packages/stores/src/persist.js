@@ -47,7 +47,7 @@ export function persistable(key, store) {
 
 function getStoredValue(key, store) {
 	try {
-		const value = JSON.parse(localStorage.getItem(key))
+		const value = JSON.parse(localStorage.getItem(key) ?? '{}')
 		store.set(value)
 		return value
 	} catch {
