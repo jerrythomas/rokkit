@@ -101,7 +101,12 @@
 .rokkit button-group button.active {
   @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
 }
-
+.rokkit toggle {
+  @apply flex flex-row items-center p-2 rounded-md gap-3 max-w-max cursor-pointer;
+}
+.rokkit toggle:focus-within {
+  @apply outline-none ring-2 ring-primary-500;
+}
 /* Input and Drop-down styles */
 .rokkit input-select,
 .rokkit drop-down > button {
