@@ -19,10 +19,12 @@
 	$: component = getComponent(value, fields, using)
 </script>
 
-<li
+<node
 	id={'id-' + path.join('-')}
 	class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
-	class:is-selected={selected}
+	aria-selected={selected}
+	aria-expanded={state.label === 'collapse'}
+	role="treeitem"
 	class:flex-row-reverse={rtl}
 	data-path={path.join(',')}
 >
@@ -36,4 +38,4 @@
 	<item>
 		<svelte:component this={component} bind:value {fields} />
 	</item>
-</li>
+</node>
