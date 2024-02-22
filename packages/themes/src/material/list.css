@@ -26,25 +26,25 @@
   @apply border-b-0 border-t-3;
 }
 
-.material .node {
+.material node {
   @apply h-7 px-2;
 }
-.material .node > item {
+.material node > item {
   @apply px-1 gap-1 bg-transparent;
 }
-.material .node > span {
+.material node > span {
   @apply w-3;
 }
 
-.material .node > span > icon {
+.material node > span > icon {
   @apply text-sm;
 }
 
-.material .nested-list:focus-within {
+.material nested-list:focus-within {
   @apply outline-none;
 }
 
-.material .node > span > i {
+.material node > span > i {
   @apply border-transparent;
 }
 
@@ -59,7 +59,7 @@
 /* .material list item[aria-selected='true'] {
   @apply bg-primary text-primary-800;
 } */
-.material .node[aria-selected='true'],
+.material node[aria-selected='true'],
 .material list item[aria-selected='true'] {
   @apply bg-primary text-neutral-base;
 }
