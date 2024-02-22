@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/layout",
-  "version": "1.0.0-next.81",
+  "version": "1.0.0-next.82",
   "description": "Layout and navigation controls for svelte",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
@@ -46,7 +46,12 @@
     "d3-scale": "^4.0.2",
     "date-fns": "^3.3.1"
   },
-  "files": ["src/**/*.js", "src/**/*.svelte", "!src/fixtures", "!spec"],
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "!src/fixtures",
+    "!spec"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
