@@ -3,10 +3,13 @@
 exports[`Node.svelte > should render node 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path=""
       id="id-"
+      role="treeitem"
     >
        
       <item>
@@ -17,7 +20,7 @@ exports[`Node.svelte > should render node 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -25,10 +28,13 @@ exports[`Node.svelte > should render node 1`] = `
 exports[`Node.svelte > should render node in rtl 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center flex-row-reverse"
       data-path=""
       id="id-"
+      role="treeitem"
     >
        
       <item>
@@ -39,7 +45,7 @@ exports[`Node.svelte > should render node in rtl 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -47,10 +53,13 @@ exports[`Node.svelte > should render node in rtl 1`] = `
 exports[`Node.svelte > should render node sibling node 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path=""
       id="id-"
+      role="treeitem"
     >
        
       <item>
@@ -61,7 +70,7 @@ exports[`Node.svelte > should render node sibling node 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -69,10 +78,13 @@ exports[`Node.svelte > should render node sibling node 1`] = `
 exports[`Node.svelte > should render node when path changes 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path="0"
       id="id-0"
+      role="treeitem"
     >
        
       <item>
@@ -83,7 +95,7 @@ exports[`Node.svelte > should render node when path changes 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -91,10 +103,13 @@ exports[`Node.svelte > should render node when path changes 1`] = `
 exports[`Node.svelte > should render node when path changes 2`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path="1"
       id="id-1"
+      role="treeitem"
     >
        
       <item>
@@ -105,7 +120,7 @@ exports[`Node.svelte > should render node when path changes 2`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -113,10 +128,13 @@ exports[`Node.svelte > should render node when path changes 2`] = `
 exports[`Node.svelte > should render node when selected 1`] = `
 <body>
   <div>
-    <li
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center is-selected"
+    <node
+      aria-expanded="false"
+      aria-selected="true"
+      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path=""
       id="id-"
+      role="treeitem"
     >
        
       <item>
@@ -127,7 +145,7 @@ exports[`Node.svelte > should render node when selected 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -135,10 +153,13 @@ exports[`Node.svelte > should render node when selected 1`] = `
 exports[`Node.svelte > should render node with collapsed icon 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path=""
       id="id-"
+      role="treeitem"
     >
        
       <item>
@@ -149,7 +170,7 @@ exports[`Node.svelte > should render node with collapsed icon 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -157,10 +178,13 @@ exports[`Node.svelte > should render node with collapsed icon 1`] = `
 exports[`Node.svelte > should render node with expanded icon 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="true"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path=""
       id="id-"
+      role="treeitem"
     >
        
       <item>
@@ -171,7 +195,7 @@ exports[`Node.svelte > should render node with expanded icon 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;
@@ -179,10 +203,13 @@ exports[`Node.svelte > should render node with expanded icon 1`] = `
 exports[`Node.svelte > should render node with path 1`] = `
 <body>
   <div>
-    <li
+    <node
+      aria-expanded="false"
+      aria-selected="false"
       class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
       data-path="0"
       id="id-0"
+      role="treeitem"
     >
        
       <item>
@@ -193,7 +220,7 @@ exports[`Node.svelte > should render node with path 1`] = `
         </p>
         
       </item>
-    </li>
+    </node>
   </div>
 </body>
 `;

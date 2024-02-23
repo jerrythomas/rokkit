@@ -145,7 +145,7 @@
 .rokkit item > a {
   @apply gap-2;
 }
-.rokkit .node item {
+.rokkit node item {
   @apply px-1 gap-2;
 }
 /* Crumbs styles */

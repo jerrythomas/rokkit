@@ -18,6 +18,7 @@
 	export let data
 	/** @type {any} */
 	let value
+	let items = data.menu
 
 	function handleSelect(event) {
 		if (!event.detail.children && event.detail.route) {
@@ -27,7 +28,8 @@
 	}
 
 	afterNavigate(() => {
-		value = findValueFromPath($page.params.slug, data.menu, fields)
+		value = findValueFromPath($page.params.slug, items, fields)
+		items = [...items]
 	})
 </script>
 
@@ -36,7 +38,7 @@
 </svelte:head>
 <main class="relative h-full w-full flex flex-grow overflow-hidden">
 	<Sidebar>
-		<Tree items={data.menu} {fields} bind:value on:select={handleSelect} />
+		<Tree {items} {fields} bind:value on:select={handleSelect} />
 	</Sidebar>
 	<content class="w-full flex flex-col">
 		<slot />
