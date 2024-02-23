@@ -30,6 +30,7 @@ export function findValueFromPath(slug, data, fields) {
 	const keys = slug.split('/')
 	let items = data
 	let value = null
+
 	keys.map((key, index) => {
 		const match = items.find((item) => item[fields.key] === key)
 		if (match) {
