@@ -11,7 +11,7 @@
 	$: site.update((current) => ({ ...current, title: data.app.name, description: data.app.about }))
 </script>
 
-<hero class="relative w-full flex flex-col bg-neutral-subtle h-full">
+<main class="relative w-full flex flex-col bg-neutral-subtle h-full">
 	<Background />
 	<div
 		class="z-1 w-full flex flex-col items-center gap-14 p-12 md:w-1/2 md:p-10 lg:py-22 xl:p-25 2xl:p-40"
@@ -31,4 +31,4 @@
 			</span>
 		</div>
 	</div>
-</hero>
+</main>
