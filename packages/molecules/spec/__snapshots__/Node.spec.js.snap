@@ -6,20 +6,25 @@ exports[`Node.svelte > should render node 1`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path=""
       id="id-"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          Alpha
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            Alpha
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -31,20 +36,25 @@ exports[`Node.svelte > should render node in rtl 1`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center flex-row-reverse"
+      class="node min-h-5 flex flex-col cursor-pointer select-none flex-row-reverse"
       data-path=""
       id="id-"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          An RTL Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            An RTL Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -56,20 +66,25 @@ exports[`Node.svelte > should render node sibling node 1`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path=""
       id="id-"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          Sibling Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            Sibling Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -81,20 +96,25 @@ exports[`Node.svelte > should render node when path changes 1`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path="0"
       id="id-0"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          A Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            A Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -106,20 +126,25 @@ exports[`Node.svelte > should render node when path changes 2`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path="1"
       id="id-1"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          A Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            A Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -131,20 +156,25 @@ exports[`Node.svelte > should render node when selected 1`] = `
     <node
       aria-expanded="false"
       aria-selected="true"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path=""
       id="id-"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          A Selected Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            A Selected Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -156,20 +186,25 @@ exports[`Node.svelte > should render node with collapsed icon 1`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path=""
       id="id-"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          Collapsed Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            Collapsed Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -181,20 +216,25 @@ exports[`Node.svelte > should render node with expanded icon 1`] = `
     <node
       aria-expanded="true"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path=""
       id="id-"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          Expanded Node
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            Expanded Node
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
@@ -206,20 +246,25 @@ exports[`Node.svelte > should render node with path 1`] = `
     <node
       aria-expanded="false"
       aria-selected="false"
-      class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+      class="node min-h-5 flex flex-col cursor-pointer select-none"
       data-path="0"
       id="id-0"
       role="treeitem"
     >
-       
-      <item>
-        
+      <div
+        class="flex flex-row items-center"
+      >
          
-        <p>
-          Example
-        </p>
-        
-      </item>
+        <item>
+          
+           
+          <p>
+            Example
+          </p>
+          
+        </item>
+      </div>
+       
     </node>
   </div>
 </body>
