@@ -9,6 +9,7 @@ expect.extend({ toHaveBeenDispatchedWith })
 describe('Rating component', () => {
 	it('should render the correct number of stars', async () => {
 		const { container } = render(Rating, { max: 5 })
+		expect(container).toMatchSnapshot()
 		const stars = container.querySelectorAll('icon')
 		expect(stars.length).toBe(5)
 	})
@@ -18,7 +19,7 @@ describe('Rating component', () => {
 		const stars = container.querySelectorAll('icon')
 		component.$set({ value: 4 })
 		await tick()
-
+		expect(container).toMatchSnapshot()
 		const selectedStars = Array.from(stars).filter(
 			(star) => star.getAttribute('aria-checked') === 'true'
 		)
@@ -34,6 +35,7 @@ describe('Rating component', () => {
 		const selectedStars = Array.from(stars).filter(
 			(star) => star.getAttribute('aria-checked') === 'true'
 		)
+		expect(container).toMatchSnapshot()
 		expect(selectedStars.length).toBe(4)
 		expect(container.querySelector('input').value).toBe('4')
 	})
@@ -52,6 +54,7 @@ describe('Rating component', () => {
 		const selectedStars = Array.from(stars).filter(
 			(star) => star.getAttribute('aria-checked') === 'true'
 		)
+		expect(container).toMatchSnapshot()
 		expect(selectedStars.length).toBe(0)
 		expect(container.querySelector('input').value).toBe('0')
 	})
@@ -116,6 +119,7 @@ describe('Rating component', () => {
 			if (i <= value + 1) expect(Array.from(stars[i].classList)).toContain('hovering')
 			else expect(Array.from(stars[i].classList)).not.toContain('hovering')
 		}
+		expect(container).toMatchSnapshot()
 	})
 
 	it('should not handle mouseenter and mouseleave events when disabled', async () => {
@@ -127,5 +131,6 @@ describe('Rating component', () => {
 		for (let i = 0; i < 5; i++) {
 			expect(Array.from(stars[i].classList)).not.toContain('hovering')
 		}
+		expect(container).toMatchSnapshot()
 	})
 })

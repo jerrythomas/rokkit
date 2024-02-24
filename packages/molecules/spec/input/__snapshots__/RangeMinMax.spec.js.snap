@@ -1,5 +1,972 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`RangeMinMax.svelte > should display error when value is not an array 1`] = `
+<body>
+  <div>
+    <error>
+      Expected value to be an array
+    </error>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > should handle class changes 1`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 test"
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="0,0"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > should handle class changes 2`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 test2"
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="0,0"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > should handle value changes 1`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="30,40"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="30"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="40"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > should handle value changes 2`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="20,30"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="20"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="30"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
 exports[`RangeMinMax.svelte > should render 1`] = `
 <body>
   <div>
@@ -612,6 +1579,1181 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
             class="col-span-2 flex justify-center"
           >
             80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > should render with value 1`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="30,40"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="30"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="40"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > should work using single mode 1`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="0,0"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > singgle value > should handle value changes 1`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="30"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="30"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > singgle value > should handle value changes 2`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="20"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="20"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            100
+          </p>
+        </tick>
+      </ticks>
+    </input-range>
+    
+  </div>
+</body>
+`;
+
+exports[`RangeMinMax.svelte > singgle value > should work using single mode 1`] = `
+<body>
+  <div>
+    <input-range
+      class="relative h-10 grid grid-rows-2 "
+    >
+      <input
+        name="range"
+        type="hidden"
+        value="0,0"
+      />
+       
+      <range-track
+        class="relative grid svelte-dg871c"
+      >
+        <range-track-bar
+          class="relative col-start-2 box-border"
+        >
+          <iframe
+            aria-hidden="true"
+            src="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+        </range-track-bar>
+         
+        <selected-bar
+          class="absolute col-start-2"
+          style="left: 0px; width: 0px;"
+        />
+         
+         
+        <thumb
+          aria-valuemax="0"
+          aria-valuemin="0"
+          aria-valuenow="0"
+          class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+          role="slider"
+          style="left: 0px;"
+          tabindex="0"
+        />
+      </range-track>
+       
+      <ticks
+        class="svelte-dg871c"
+        style="--count: 10;"
+      >
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            0
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            10
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            20
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            30
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            40
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            50
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            60
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            70
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            80
+          </p>
+        </tick>
+        <tick
+          aria-selected="false"
+          class="grid grid-cols-2 cursor-pointer select-none"
+          role="option"
+          tabindex="0"
+        >
+          <tick-bar
+            class="col-start-2 h-5px border-l"
+          />
+           
+          <p
+            class="col-span-2 flex justify-center"
+          >
+            90
           </p>
         </tick>
         <tick
