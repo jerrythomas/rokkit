@@ -12,16 +12,17 @@
 
 	$: state = value === null ? 'unknown' : value ? 'checked' : 'unchecked'
 
-	function handleClick() {
-		if (readOnly) return
+	function toggle(event) {
+		event.preventDefault()
+		event.stopPropagation()
 		value = !value
+	}
+	function handleClick(event) {
+		if (!readOnly) toggle(event)
 	}
 	function handleKeydown(event) {
 		if (readOnly) return
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault()
-			value = !value
-		}
+		if (event.key === 'Enter' || event.key === ' ') toggle(event)
 	}
 </script>
 
