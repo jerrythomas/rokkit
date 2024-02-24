@@ -35,9 +35,9 @@
 			{path}
 			stateIcons={icons}
 			selected={value === item}
-		/>
-		{#if hasChildren && item[fields.isOpen]}
-			<div role="treeitem" aria-selected={false}>
+		>
+			{#if hasChildren && item[fields.isOpen]}
+				<!-- <div role="treeitem" aria-selected={false}> -->
 				<svelte:self
 					items={item[fields.children]}
 					bind:value
@@ -47,7 +47,8 @@
 					types={connectors}
 					hierarchy={path}
 				/>
-			</div>
-		{/if}
+				<!-- </div> -->
+			{/if}
+		</Node>
 	{/each}
 </nested-list>

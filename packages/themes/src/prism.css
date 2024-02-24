@@ -8,19 +8,17 @@ pre[class*='language-'] {
   word-spacing: normal;
   tab-size: 2;
   hyphens: none;
-  /* font-family: 'Victor Mono', monospace; */
-  /* font-size: medium; */
   font-variant-ligatures: common-lig-values; /* common-ligatures; */
   line-height: 1.4;
   direction: ltr;
   cursor: text;
-  @apply font-mono text-sm;
+  @apply font-mono text-xs;
 }
 
 pre[class*='language-'] {
   overflow: auto;
   padding: 1.2em;
-  /* font-size: 85%; */
+
 }
 
 /* p code,
@@ -37,20 +35,14 @@ table code:before,
 table code:after {
   letter-spacing: -0.2em;
   content: '\00a0';
-  @apply rounded-md;
+  @apply rounded-sm;
 }
 
-code,
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
-  /* background: var(--code-bg); */
-  @apply bg-neutral-base;
+:not(pre) > code {
+  @apply rounded-md p-1;
 }
-
 :not(pre) > code[class*='language-'] {
-  padding: 0.1em;
-  /* border-radius: 0.3em; */
-  @apply rounded-md;
+  @apply rounded-sm;
 }
 
 .token.comment,

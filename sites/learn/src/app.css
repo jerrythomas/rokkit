@@ -26,6 +26,7 @@ input.embedded {
   @apply w-full h-full bg-transparent border-none focus:outline-none border-box;
 }
 
-markdown-body {
-  @apply font-sans;
-}
+/* notes pre,
+.markdown-body pre {
+  @apply rounded-md;
+} */

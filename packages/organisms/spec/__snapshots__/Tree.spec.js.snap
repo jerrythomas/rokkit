@@ -14,38 +14,37 @@ exports[`Tree.svelte > should add custom root node 1`] = `
         <node
           aria-expanded="true"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="0"
           id="id-0"
           role="treeitem"
         >
-          <icon
-            aria-label="collapse"
-            class="flex flex-shrink-0 items-center justify-center small w-4"
-            role="img"
-            tabindex="-1"
+          <div
+            class="flex flex-row items-center"
           >
-            <i
-              aria-hidden="true"
-              class="node-opened"
-            />
-          </icon>
-          
-           
-          <item>
+            <icon
+              aria-label="collapse"
+              class="flex flex-shrink-0 items-center justify-center small w-4"
+              role="img"
+              tabindex="-1"
+            >
+              <i
+                aria-hidden="true"
+                class="node-opened"
+              />
+            </icon>
             
              
-            <p>
-              root
-            </p>
-            
-          </item>
-        </node>
-         
-        <div
-          aria-selected="false"
-          role="treeitem"
-        >
+            <item>
+              
+               
+              <p>
+                root
+              </p>
+              
+            </item>
+          </div>
+           
           <nested-list
             class="nested-list flex flex-col w-full list"
             role="tree"
@@ -53,81 +52,88 @@ exports[`Tree.svelte > should add custom root node 1`] = `
             <node
               aria-expanded="false"
               aria-selected="false"
-              class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+              class="node min-h-5 flex flex-col cursor-pointer select-none"
               data-path="0,0"
               id="id-0-0"
               role="treeitem"
             >
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child"
+              <div
+                class="flex flex-row items-center"
               >
-                <i
-                  class="col-span-1 row-span-2 border-r"
-                />
-                 
-                <i
-                  class="border-b"
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child"
+                >
+                  <i
+                    class="col-span-1 row-span-2 border-r"
+                  />
+                   
+                  <i
+                    class="border-b"
+                  />
+                  
+                </span>
+                
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
                 />
                 
-              </span>
-              
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
-              
+                 
+                <item>
+                  
+                   
+                  <p>
+                    a
+                  </p>
+                  
+                </item>
+              </div>
                
-              <item>
-                
-                 
-                <p>
-                  a
-                </p>
-                
-              </item>
+               
             </node>
-             
-            
             <node
               aria-expanded="false"
               aria-selected="false"
-              class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+              class="node min-h-5 flex flex-col cursor-pointer select-none"
               data-path="0,1"
               id="id-0-1"
               role="treeitem"
             >
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+              <div
+                class="flex flex-row items-center"
               >
-                <i
-                  class="border-r"
-                />
-                 
-                <i
-                  class="border-b"
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+                >
+                  <i
+                    class="border-r"
+                  />
+                   
+                  <i
+                    class="border-b"
+                  />
+                  
+                </span>
+                
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
                 />
                 
-              </span>
-              
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
-              
+                 
+                <item>
+                  
+                   
+                  <p>
+                    a
+                  </p>
+                  
+                </item>
+              </div>
                
-              <item>
-                
-                 
-                <p>
-                  a
-                </p>
-                
-              </item>
+               
             </node>
-             
-            
           </nested-list>
            
-        </div>
-        
+        </node>
       </nested-list>
     </tree>
   </div>
@@ -148,51 +154,59 @@ exports[`Tree.svelte > should add root node when input has more than one item 1`
         <node
           aria-expanded="false"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="0"
           id="id-0"
           role="treeitem"
         >
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
-          
-           
-          <item>
+          <div
+            class="flex flex-row items-center"
+          >
+            <span
+              class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+            />
             
              
-            <p>
-              a
-            </p>
-            
-          </item>
+            <item>
+              
+               
+              <p>
+                a
+              </p>
+              
+            </item>
+          </div>
+           
+           
         </node>
-         
-        
         <node
           aria-expanded="false"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="1"
           id="id-1"
           role="treeitem"
         >
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
-          
-           
-          <item>
+          <div
+            class="flex flex-row items-center"
+          >
+            <span
+              class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+            />
             
              
-            <p>
-              a
-            </p>
-            
-          </item>
+            <item>
+              
+               
+              <p>
+                a
+              </p>
+              
+            </item>
+          </div>
+           
+           
         </node>
-         
-        
       </nested-list>
     </tree>
   </div>
@@ -229,35 +243,39 @@ exports[`Tree.svelte > should render nested tree 1`] = `
         <node
           aria-expanded="false"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="0"
           id="id-0"
           role="treeitem"
         >
-          <icon
-            aria-label="expand"
-            class="flex flex-shrink-0 items-center justify-center small w-4"
-            role="img"
-            tabindex="-1"
+          <div
+            class="flex flex-row items-center"
           >
-            <i
-              aria-hidden="true"
-              class="node-closed"
-            />
-          </icon>
-          
-           
-          <item>
+            <icon
+              aria-label="expand"
+              class="flex flex-shrink-0 items-center justify-center small w-4"
+              role="img"
+              tabindex="-1"
+            >
+              <i
+                aria-hidden="true"
+                class="node-closed"
+              />
+            </icon>
             
              
-            <p>
-              a
-            </p>
-            
-          </item>
+            <item>
+              
+               
+              <p>
+                a
+              </p>
+              
+            </item>
+          </div>
+           
+           
         </node>
-         
-        
       </nested-list>
     </tree>
   </div>
@@ -278,27 +296,31 @@ exports[`Tree.svelte > should render single node tree 1`] = `
         <node
           aria-expanded="false"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="0"
           id="id-0"
           role="treeitem"
         >
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
-          
-           
-          <item>
+          <div
+            class="flex flex-row items-center"
+          >
+            <span
+              class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+            />
             
              
-            <p>
-              a
-            </p>
-            
-          </item>
+            <item>
+              
+               
+              <p>
+                a
+              </p>
+              
+            </item>
+          </div>
+           
+           
         </node>
-         
-        
       </nested-list>
     </tree>
   </div>
@@ -319,51 +341,59 @@ exports[`Tree.svelte > should render using custom field mappings 1`] = `
         <node
           aria-expanded="false"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="0"
           id="id-0"
           role="treeitem"
         >
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
-          
-           
-          <item>
+          <div
+            class="flex flex-row items-center"
+          >
+            <span
+              class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+            />
             
              
-            <p>
-              a
-            </p>
-            
-          </item>
+            <item>
+              
+               
+              <p>
+                a
+              </p>
+              
+            </item>
+          </div>
+           
+           
         </node>
-         
-        
         <node
           aria-expanded="false"
           aria-selected="false"
-          class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+          class="node min-h-5 flex flex-col cursor-pointer select-none"
           data-path="1"
           id="id-1"
           role="treeitem"
         >
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
-          
-           
-          <item>
+          <div
+            class="flex flex-row items-center"
+          >
+            <span
+              class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+            />
             
              
-            <p>
-              a
-            </p>
-            
-          </item>
+            <item>
+              
+               
+              <p>
+                a
+              </p>
+              
+            </item>
+          </div>
+           
+           
         </node>
-         
-        
       </nested-list>
     </tree>
   </div>

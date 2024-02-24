@@ -174,7 +174,7 @@
 .rokkit nested-list {
   @apply text-neutral-800;
 }
-.rokkit nested-list node {
+.rokkit nested-list node > div {
   @apply px-2 h-8;
 }
 
@@ -212,7 +212,7 @@
 /* .rokkit virtual-list item.is-hovering, */
 .rokkit list item:hover,
 .rokkit virtual-list-contents virtual-list-item:hover,
-.rokkit node:hover {
+.rokkit node:hover > div {
   @apply bg-neutral-inset;
 }
 
@@ -248,16 +248,16 @@
 .rokkit .folder-tree nested-list {
   @apply bg-neutral-inset h-full;
 }
-.rokkit node > item {
+.rokkit node > div > item {
   @apply px-1;
 }
-.rokkit node > span {
+.rokkit node > div > span {
   @apply flex-shrink-0;
 }
-.rokkit node > span > i {
+.rokkit node > div > span > i {
   @apply border-neutral-muted;
 }
-.rokkit node > icon {
+.rokkit node > div > icon > i {
   @apply text-neutral-muted;
 }
 
@@ -300,15 +300,15 @@
 
 .rokkit list item[aria-selected='true'],
 .rokkit virtual-list-contents virtual-list-item[aria-selected='true'],
-.rokkit node[aria-selected='true'] {
+.rokkit node[aria-selected='true'] > div {
   @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle text-neutral-800;
 }
 /* Focus and Hover styles for Toggle Switch, List, Tree, and Nested List */
 .rokkit toggle-switch:focus-within item[aria-selected='true'],
 .rokkit list:focus-within item[aria-selected='true'],
 .rokkit virtual-list-viewport:focus-within virtual-list-item[aria-selected='true'],
-.rokkit tree:focus-within node[aria-selected='true'],
-.rokkit nested-list:focus-within node[aria-selected='true'] {
+.rokkit tree:focus-within node[aria-selected='true'] > div,
+.rokkit nested-list:focus-within node[aria-selected='true'] > div {
   @apply bg-gradient-to-r from-primary to-secondary text-white;
   @apply hover:from-secondary hover:to-primary;
 }
