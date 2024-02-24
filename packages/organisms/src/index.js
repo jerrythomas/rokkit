@@ -1,4 +1,3 @@
-export * from './lib'
 export { default as Accordion } from './Accordion.svelte'
 export { default as DropDown } from './DropDown.svelte'
 export { default as DropSearch } from './DropSearch.svelte'
