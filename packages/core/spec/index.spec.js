@@ -6,6 +6,8 @@ describe('utilities', () => {
 		expect(Object.keys(utilities)).toEqual([
 			'defaultColors',
 			'syntaxColors',
+			'shades',
+			'defaultPalette',
 			'defaultFields',
 			'defaultIcons',
 			'defaultOptions',

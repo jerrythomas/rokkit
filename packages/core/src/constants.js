@@ -1,4 +1,4 @@
-export { defaultColors, syntaxColors } from './colors'
+export { defaultColors, syntaxColors, shades, defaultPalette } from './colors'
 
 /**
  * @type {import('./types).FieldMapping} Fields
@@ -83,9 +83,9 @@ export const defaultThemeMapping = {
 	accent: 'sky',
 	success: 'green',
 	warning: 'yellow',
+	danger: 'red',
 	error: 'red',
-	info: 'cyan',
-	pass: 'green'
+	info: 'cyan'
 }
 
 export function stateIconsFromNames(icons) {

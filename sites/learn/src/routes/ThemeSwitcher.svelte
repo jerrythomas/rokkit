@@ -1,10 +1,6 @@
 <script>
 	import { theme } from '@rokkit/stores'
-	import { defaultStateIcons } from '@rokkit/core'
-	import { Select } from '@rokkit/organisms'
-	import { ToggleThemeMode } from '@rokkit/layout'
-	// import { Icon } from '@rokkit/atoms'
-	// const modeIcons = defaultStateIcons.mode
+	import { Select, ToggleThemeMode } from '@rokkit/ui'
 
 	export let themes = [
 		{ title: 'Rokkit', name: 'rokkit' },
@@ -28,11 +24,3 @@
 	on:select={handleThemeChange}
 />
 <ToggleThemeMode />
-<!-- <theme-mode role="switch" aria-checked={current.mode === 'dark'} class="flex p-0">
-	<Icon
-		name={modeIcons[current.mode]}
-		role="button"
-		on:click={toggleMode}
-		class="border border-neutral-muted rounded"
-	/>
-</theme-mode> -->

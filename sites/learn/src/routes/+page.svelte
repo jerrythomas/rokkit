@@ -3,7 +3,6 @@
 	import { goto } from '$app/navigation'
 	import { Button } from '@rokkit/molecules'
 	import Background from './Background.svelte'
-	// import HeadLine from './HeadLine.svelte'
 	const site = getContext('site')
 
 	export let data
@@ -21,9 +20,12 @@
 			<h2 class="w-full font-thin text-lg text-right">Empowering your UI with Rokkit</h2>
 		</span>
 
-		<div class="flex flex-col gap-6 font-thin text-justify text-xl xl:gap-8 xl:text-2xl">
+		<div class="flex flex-col gap-6 font-thin text-justify text-xl xl:gap-8">
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>
+			<code class="rounded-lg overflow-clip">
+				<pre class="language-bash"> degit jerrythomas/rokkit/sites/quick-start my-app</pre>
+			</code>
 			<span class="flex text-xl">
 				<Button on:click={() => goto('/tutorial/welcome/introduction')} type="primary">
 					Get Started
