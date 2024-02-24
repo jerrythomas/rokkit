@@ -115,6 +115,7 @@ export function handleItemClick(element, current) {
 /**
  * Caclulates sum of array values between the given bounds.
  * If a value is null, the default size is used.
+ *
  * @param {Array<number|null>} sizes
  * @param {number} lower
  * @param {number} upper
