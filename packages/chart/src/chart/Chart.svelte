@@ -8,14 +8,14 @@
 
 	setContext('chart', chart)
 
+	export let data
 	export let width = 800
 	export let height = 450
-	export let data
 	export let theme = builtIn
-	export let x
-	export let y
-	export let fill
-	export let color
+	export let x = 'x'
+	export let y = 'y'
+	export let fill = null
+	export let color = null
 	export let padding = 20
 	export let curve = 'basis'
 	export let stat = 'identity'
@@ -26,7 +26,12 @@
 		height,
 		data,
 		theme,
-		aes
+		aes,
+		axis: {
+			x: { scale: 'linear', orient: 'bottom' },
+			y: { scale: 'linear', orient: 'left' }
+		},
+		margin: { top: 10, right: 10, bottom: 10, left: 10 }
 	})
 </script>
 

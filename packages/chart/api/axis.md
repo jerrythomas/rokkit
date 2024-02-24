@@ -32,7 +32,7 @@ When at origin should ticks be centred on the axis?
 
 - Count
 - Values
-- Formatting (millions withh m suffix or date formats)
+- Formatting (millions with m suffix or date formats)
 
 ## Calculations
 
