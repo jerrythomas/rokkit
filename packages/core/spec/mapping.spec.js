@@ -67,6 +67,11 @@ describe('mapping', () => {
 			})
 			expect(result).toEqual('warn')
 		})
+
+		it('should return icon with prefix', () => {
+			const result = getIcon({ icon: 'info' }, { icon: 'icon', iconPrefix: 'fa' })
+			expect(result).toEqual('fa-info')
+		})
 	})
 
 	describe('getValue', () => {
