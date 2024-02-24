@@ -1,4 +1,4 @@
-import { flattenObject, generateIndex } from '@rokkit/organisms'
+import { flattenObject, generateIndex } from '@rokkit/organisms/utils'
 import { combine, getColumns } from './utils'
 import { dev } from './dev'
 import { uat } from './uat'
