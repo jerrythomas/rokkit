@@ -1,21 +1,11 @@
 import { defaultThemeMapping, defaultColors, syntaxColors } from './constants'
+import { shades, defaultPalette } from './colors'
 
 const modifiers = {
 	hsl: (value) => `hsl(${value})`,
 	rgb: (value) => `rgb(${value})`,
 	none: (value) => value
 }
-const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
-const defaultPalette = [
-	'neutral',
-	'primary',
-	'secondary',
-	'accent',
-	'info',
-	'error',
-	'warn',
-	'pass'
-]
 
 /**
  * Generate shades for a color using css varuable
@@ -58,7 +48,7 @@ export function stateColors(name, modifier = 'none') {
 export function themeColors(modifier = 'none') {
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
-	let states = ['info', 'error', 'warn', 'pass']
+	let states = ['info', 'danger', 'warning', 'success', 'error']
 	let variants = ['neutral', 'primary', 'secondary', 'accent']
 	let colors = states.reduce(
 		(acc, state) => ({ ...acc, [state]: stateColors(state, modifier) }),
@@ -96,7 +86,6 @@ export function contrastColors(light = '#ffffff', dark = '#000000', palette = de
 }
 
 export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, colors = defaultColors) {
-	// const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 	mapping = { ...defaultThemeMapping, ...mapping }
 	const variants = Object.keys(mapping)
 	const rules = variants

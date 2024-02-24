@@ -1,6 +1,6 @@
 <script>
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
-	import { Icon, ProgressBar } from '@rokkit/atoms'
+	import { Icon, ProgressBar } from '@rokkit/ui'
 	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 

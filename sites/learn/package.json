@@ -56,6 +56,7 @@
     "@rokkit/stores": "workspace:*",
     "@rokkit/themes": "workspace:*",
     "@rokkit/tutorial": "workspace:*",
+    "@rokkit/ui": "workspace:1.0.0-next.85",
     "prism-svelte": "^0.5.0",
     "prismjs": "^1.29.0",
     "ramda": "^0.29.1"

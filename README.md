@@ -19,18 +19,23 @@ Rokkit provides both composable and data-driven components.
 Components have been separated into the following packages. Refer to the package [stories](sites/rokkit) for examples of all available UI components. View a live demo [here](https://rokkit.vercel.app/)
 
 - [@rokkit/core](packages/core)
-- [@rokkit/input](packages/input)
-- [@rokkit/form](packages/form)
-- [@rokkit/chart](packages/chart)
-- [@rokkit/themes](packages/themes)
+- [@rokkit/actions](packages/actions)
+- [@rokkit/stores](packages/stores)
+- [@rokkit/atoms](packages/atoms)
+- [@rokkit/molecules](packages/molecules)
+- [@rokkit/organisms](packages/organisms)
 - [@rokkit/layout](packages/layout)
+- [@rokkit/icons](packages/icons)
+- [@rokkit/themes](packages/themes)
+- [@rokkit/ui](packages/ui)
 
 ## Installation
 
 To install Rokkit, use the following command:
 
 ```bash
-npm install @rokkit/core
+degit jerrythomas/rokkit/sites/quick-start my-app
+pnpm i
 ```
 
 ## Basic Usage
@@ -39,7 +44,7 @@ To use Rokkit in your Svelte project, simply import the desired control and use 
 
 ```svelte
 <script>
-  import { List } from '@rokkit/core'
+  import { List } from '@rokkit/ui'
 </script>
 
 <List items={['a', 'b', 'c']} />
@@ -51,7 +56,7 @@ One of the key features of Rokkit is its data-driven controls. These controls au
 
 ```svelte
 <script>
-  import { List } from '@rokkit/core'
+  import { List } from '@rokkit/ui'
 
   let items = ['a', 'b', 'c']
   let value
@@ -68,21 +73,16 @@ To apply a theme to your controls, simply pass a theme prop to the body element.
 <svelte:body class="rokkit dark" />
 ```
 
-If you want to provide users the option of switching between dark theme and light mode or custom themes, then you can also use the `themable` action with the `ThemeSwitcher` component.
+If you want to provide users the option of switching between dark theme and light mode or custom themes, then you can also use the `themable` action with the `ToggleThemeMode` component.
 
 ```svelte
 <script>
-  import { themable } from '@rokkit/core/actions'
-  import { ThemeSwitcher } from '@rokkit/core'
-
-  let themes = [
-    { title: 'Rokkit', name: 'rokkit' },
-    { title: 'Modern', name: 'modern' }
-  ]
+  import { themable } from '@rokkit/actions'
+  import { ToggleThemeMode } from '@rokkit/ui'
 </script>
 
 <svelte:body use:themable />
-<ThemeSwitcher {themes} />
+<ToggleThemeMode/>
 ```
 
 ## Documentation
@@ -94,18 +94,18 @@ We hope you enjoy using Rokkit in your projects!
 ## Features
 
 - [x] Data-driven
-- [x] Headless
+- [x] Unstyled
 - [x] Actions
 - [x] Utility functions
 - [x] Themes
+- [ ] Accessible
 - [ ] Responsive
 - [ ] Micro-animations
-- [ ] Accessible
 
 ## Quickstart
 
 ```bash
-degit jerrythomas/rokkit/sites/rokkit my-app
+degit jerrythomas/rokkit/sites/quick-start my-app
 cd my-app
 pnpm i
 pnpm dev

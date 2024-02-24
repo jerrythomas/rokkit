@@ -440,6 +440,336 @@
     "value": "#000000"
   },
   {
+    "key": "--on-success-50",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-100",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-200",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-300",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-400",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-500",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-600",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-700",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-800",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-900",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-950",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-50",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-100",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-200",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-300",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-400",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-500",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-success-600",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-700",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-800",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-900",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-success-950",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-50",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-100",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-200",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-300",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-400",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-500",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-600",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-700",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-800",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-900",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-950",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-50",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-100",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-200",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-300",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-400",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-500",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-warning-600",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-700",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-800",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-900",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-warning-950",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-50",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-100",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-200",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-300",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-400",
+    "mode": "light",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-500",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-600",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-700",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-800",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-900",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-950",
+    "mode": "light",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-50",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-100",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-200",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-300",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-400",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-500",
+    "mode": "dark",
+    "value": "#ffffff"
+  },
+  {
+    "key": "--on-danger-600",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-700",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-800",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-900",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
+    "key": "--on-danger-950",
+    "mode": "dark",
+    "value": "#000000"
+  },
+  {
     "key": "--on-info-50",
     "mode": "light",
     "value": "#000000"
@@ -546,336 +876,6 @@
   },
   {
     "key": "--on-info-950",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-50",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-100",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-200",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-300",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-400",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-500",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-600",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-700",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-800",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-900",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-950",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-50",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-100",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-200",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-300",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-400",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-500",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-error-600",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-700",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-800",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-900",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-error-950",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-50",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-100",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-200",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-300",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-400",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-500",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-600",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-700",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-800",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-900",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-950",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-50",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-100",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-200",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-300",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-400",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-500",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-warn-600",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-700",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-800",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-900",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-warn-950",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-50",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-100",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-200",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-300",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-400",
-    "mode": "light",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-500",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-600",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-700",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-800",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-900",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-950",
-    "mode": "light",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-50",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-100",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-200",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-300",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-400",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-500",
-    "mode": "dark",
-    "value": "#ffffff"
-  },
-  {
-    "key": "--on-pass-600",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-700",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-800",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-900",
-    "mode": "dark",
-    "value": "#000000"
-  },
-  {
-    "key": "--on-pass-950",
     "mode": "dark",
     "value": "#000000"
   }
