@@ -19,5 +19,13 @@ export const builtIn = {
 	palette,
 	patterns,
 	shapes,
-	symbols
+	symbols,
+	tick: {
+		size: {
+			major: 6,
+			minor: 4,
+			end: 6,
+			padding: 3
+		}
+	}
 }
