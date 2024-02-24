@@ -912,9 +912,6 @@ importers:
       '@rokkit/core':
         specifier: workspace:1.0.0-next.85
         version: link:../../packages/core
-      '@rokkit/icons':
-        specifier: workspace:1.0.0-next.85
-        version: link:../../packages/icons
       '@rokkit/themes':
         specifier: workspace:1.0.0-next.85
         version: link:../../packages/themes
@@ -925,6 +922,9 @@ importers:
       '@playwright/test':
         specifier: ^1.28.1
         version: 1.41.2
+      '@rokkit/icons':
+        specifier: workspace:1.0.0-next.85
+        version: link:../../packages/icons
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
         version: 3.1.1(@sveltejs/kit@2.5.0)
