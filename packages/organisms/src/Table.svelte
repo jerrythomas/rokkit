@@ -1,8 +1,24 @@
 <script>
+	import { createEventDispatcher } from 'svelte'
+	import { pick, omit } from 'ramda'
+	import { defaultFields, isObject } from '@rokkit/core'
+	import { Connector, Icon } from '@rokkit/atoms'
+	import { Item } from '@rokkit/molecules'
+
+	const dispatch = createEventDispatcher()
+
+	let className = ''
+	export { className as class }
 	/** @type {Array<Object>} */
 	export let data = []
 	/** @type {Array<string>} */
 	export let columns = []
+	export let striped = true
+	export let value = null
+	export let multiselect = false
+	export let using = {}
+	export let dataFilter = () => true
+
 	let width
 
 	$: columns = data.length == 0 ? [] : columns.length == 0 ? Object.keys(data[0]) : columns
@@ -13,6 +29,7 @@
 		<thead class="w-full" {width}>
 			<tr class="bg-neutral-inset upper text-neutral-800">
 				{#each columns as column}
+					{@const title = isObject(column) ? column.label ?? column.key : column}
 					<th class="px-4 h-10">{column}</th>
 				{/each}
 			</tr>
