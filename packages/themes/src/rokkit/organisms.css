@@ -258,7 +258,7 @@
   @apply border-neutral-muted;
 }
 .rokkit node > div > icon > i {
-  @apply text-neutral-muted;
+  @apply text-neutral-elevated;
 }
 
 /* Toggle Switch styles */
