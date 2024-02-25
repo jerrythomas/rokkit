@@ -20,6 +20,18 @@
 	let hiddenPaths = []
 	let currentItem = null
 
+	// function addLevels(data) {
+	// 	data = data.map((item) => {
+	// 		item._levels = item._path.split('/').length
+	// 		item._isParent = data.some(
+	// 			(i) => i._path.startsWith(item._path + '/') && i._path !== item._path
+	// 		)
+	// 		item._isExpanded = hiddenPaths.includes(item._path) ? false : true
+	// 		item._depth = item._path.split('/').length - 1
+	// 		item._selected = item._selected || 'unchecked'
+	// 		return item
+	// 	})
+	// }
 	function handleItemClick(event, item) {
 		if (item._isParent) toggle(item)
 		else {
@@ -95,6 +107,7 @@
 		}
 	}
 
+	// $: addLevels(data)
 	$: using = { default: Item, ...using }
 	$: visible = data.filter(dataFilter).filter(isVisible)
 	$: addMultiSelectColumn(multiselect, data)
@@ -107,7 +120,7 @@
 		<thead>
 			<tr>
 				{#each columns as col}
-					<th>{col.label}</th>
+					<th>{col.label ?? col.key}</th>
 				{/each}
 			</tr>
 		</thead>

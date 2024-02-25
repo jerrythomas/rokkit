@@ -1,5 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
+	import { getTicks } from '../utils/ticks.js'
 	const chart = getContext('chart')
 
 	export let orient = 'bottom'
@@ -7,32 +8,6 @@
 	export let minorTickStep = 0
 	export let lower = 0
 	export let upper = 100
-
-	function getTicks(lower, upper, majorTickStep, minorTickStep) {
-		if (majorTickStep === 0 && minorTickStep === 0) return []
-		const minorTicks = Array.from(
-			{ length: Math.floor((upper - lower) / minorTickStep) + 1 },
-			(_, i) => ({
-				position: i * minorTickStep,
-				label: i * minorTickStep,
-				type: 'minor'
-			})
-		)
-		const majorTicks = Array.from(
-			{ length: Math.floor((upper - lower) / majorTickStep) + 1 },
-			(_, i) => ({
-				position: i * majorTickStep,
-				label: i * majorTickStep,
-				type: 'major'
-			})
-		)
-		const end = [
-			{ position: upper, label: upper, type: 'end' },
-			{ position: lower, label: lower, type: 'end' }
-		]
-
-		return [...minorTicks, ...majorTicks, ...end].sort((a, b) => a.position - b.position)
-	}
 
 	let top = orient === 'bottom' ? $chart.height - $chart.margin.bottom : $chart.margin.top
 	let left = orient === 'right' ? $chart.width - $chart.margin.right : $chart.margin.left
@@ -51,7 +26,7 @@
 	$: k = orient === 'top' || orient === 'left' ? -1 : 1
 	$: dy = orient === 'top' ? '0em' : orient === 'bottom' ? '0.71em' : '0.32em'
 	$: vertical = orient === 'left' || orient === 'right'
-	$: ticks = getTicks(lower, upper, majorTickStep, minorTickStep)
+	$: ticks = getTicks(lower, upper, { major: majorTickStep, minor: minorTickStep })
 </script>
 
 <g

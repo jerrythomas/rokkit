@@ -1,17 +1,17 @@
 export const data = {
 	tenant: {
-		name: 'Walgreens',
+		name: 'Example',
 		industry: 'Retail',
-		domain: 'Health & Wellness'
+		domain: null
 	},
 	services: {
 		identity: {
 			provider: 'Okta',
-			url: 'https://walgreens.okta.com'
+			url: 'https://example.okta.com'
 		},
 		storage: {
 			provider: 'Azure',
-			url: 'https://walgreens.blob.core.windows.net'
+			url: 'https://storage.example.com'
 		}
 	},
 	modules: {

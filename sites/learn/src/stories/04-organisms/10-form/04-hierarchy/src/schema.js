@@ -6,15 +6,18 @@ export const schema = [
 		properties: {
 			name: {
 				type: 'string',
-				default: 'Walgreens'
+				default: 'Example',
+				required: true,
+				maxLength: 100
 			},
 			industry: {
-				type: 'string',
-				default: 'Retail'
+				type: 'enum',
+				default: 'Retail',
+				options: ['Retail', 'Healthcare', 'Technology', 'Finance', 'Manufacturing']
 			},
 			domain: {
 				type: 'string',
-				default: 'Health & Wellness'
+				default: null
 			}
 		},
 		layout: {
@@ -39,6 +42,7 @@ export const schema = [
 		key: 'services',
 		type: 'object',
 		scope: '#/services',
+		_open: true,
 		children: [
 			{
 				key: 'identity',
@@ -46,12 +50,14 @@ export const schema = [
 				scope: '#/services/identity',
 				properties: {
 					provider: {
-						type: 'string',
-						default: 'Okta'
+						type: 'enum',
+						default: 'Okta',
+						options: ['Okta', 'Auth0', 'AWS Cognito', 'Azure AD']
 					},
 					url: {
-						type: 'string',
-						default: 'https://walgreens.okta.com'
+						type: 'url',
+						default: 'https://example.okta.com',
+						required: true
 					}
 				},
 				layout: {
@@ -74,12 +80,13 @@ export const schema = [
 				scope: '#/services/storage',
 				properties: {
 					provider: {
-						type: 'string',
-						default: 'Azure'
+						type: 'enum',
+						default: 'Azure',
+						options: ['Azure', 'AWS', 'Google Cloud', 'IBM Cloud']
 					},
 					url: {
-						type: 'string',
-						default: 'https://walgreens.blob.core.windows.net'
+						type: 'url',
+						default: 'https://storage.example.com'
 					}
 				},
 				layout: {
@@ -102,6 +109,7 @@ export const schema = [
 		key: 'modules',
 		type: 'object',
 		scope: '#/modules',
+		_open: true,
 		children: [
 			{
 				key: 'inventory',
@@ -110,7 +118,9 @@ export const schema = [
 				properties: {
 					minimum_stock: {
 						type: 'number',
-						default: 10
+						default: 10,
+						min: 0,
+						max: 50
 					},
 					restock_threshold: {
 						type: 'number',
@@ -125,15 +135,55 @@ export const schema = [
 					type: 'vertical',
 					elements: [
 						{
-							label: 'minimum_stock',
+							label: 'minimum stock',
 							scope: '#/minimum_stock'
 						},
 						{
-							label: 'restock_threshold',
+							label: 'restock threshold',
 							scope: '#/restock_threshold'
 						},
 						{
-							label: 'max_age',
+							label: 'maximum age',
+							scope: '#/max_age'
+						}
+					]
+				}
+			},
+			{
+				key: 'perishable',
+				type: 'object',
+				scope: '#/modules/perishable',
+				properties: {
+					minimum_stock: {
+						type: 'number',
+						default: 5,
+						min: 0,
+						max: 50
+					},
+					restock_threshold: {
+						type: 'number',
+						default: 10
+					},
+					max_age: {
+						type: 'number',
+						default: 30,
+						min: 0,
+						max: 45
+					}
+				},
+				layout: {
+					type: 'vertical',
+					elements: [
+						{
+							label: 'minimum stock',
+							scope: '#/minimum_stock'
+						},
+						{
+							label: 'restock threshold',
+							scope: '#/restock_threshold'
+						},
+						{
+							label: 'maximum age',
 							scope: '#/max_age'
 						}
 					]
@@ -147,16 +197,19 @@ export const schema = [
 		scope: '#/instance',
 		properties: {
 			type: {
-				type: 'string',
-				default: 'production'
+				type: 'enum',
+				default: 'production',
+				options: ['production', 'staging', 'development', 'testing', 'debug']
 			},
 			language: {
-				type: 'string',
-				default: 'en-US'
+				type: 'enum',
+				default: 'en-US',
+				options: ['en-US', 'es-US', 'fr-CA', 'en-GB', 'en-AU']
 			},
 			time_zone: {
-				type: 'string',
-				default: 'EST'
+				type: 'enum',
+				default: 'EST',
+				options: ['EST', 'CST', 'MST', 'PST', 'AKST', 'HST', 'IST']
 			}
 		},
 		layout: {

@@ -20,7 +20,7 @@ exports[`components > should render Shape 1`] = `
 <body>
   <div>
     <path
-      d="M 0 50 A 50 50 0 0 0 100 50 A 50 50 0 0 0 0 50"
+      d="M 0 5 A 5 5 0 0 0 10 5 A 5 5 0 0 0 0 5"
       fill="none"
       fill-rule="evenodd"
       role="button"
@@ -70,7 +70,7 @@ exports[`components > should render the named shape circle 1`] = `
 <body>
   <div>
     <path
-      d="M 0 50 A 50 50 0 0 0 100 50 A 50 50 0 0 0 0 50"
+      d="M 0 5 A 5 5 0 0 0 10 5 A 5 5 0 0 0 0 5"
       fill="none"
       fill-rule="evenodd"
       role="button"
@@ -138,7 +138,7 @@ exports[`components > should render the named shape diamond 1`] = `
 <body>
   <div>
     <path
-      d="M 50 0 A 70 70 0 0 0 100 50 A 70 70 0 0 0 50 100 A 70 70 0 0 0 0 50 A 70 70 0 0 0 50 0"
+      d="M 5 0 A 7 7 0 0 0 10 5 A 7 7 0 0 0 5 10 A 7 7 0 0 0 0 5 A 7 7 0 0 0 5 0"
       fill="none"
       fill-rule="evenodd"
       role="button"
@@ -172,7 +172,7 @@ exports[`components > should render the named shape heart 1`] = `
 <body>
   <div>
     <path
-      d="M 90 50 A 8 8 0 0 0 50 20 A 8 8 0 0 0 10 50 L 50 90 L 90 50"
+      d="M 9 5 A 0.8 0.8 0 0 0 5 2 A 0.8 0.8 0 0 0 1 5 L 5 9 L 9 5"
       fill="none"
       fill-rule="evenodd"
       role="button"
@@ -206,7 +206,7 @@ exports[`components > should render the named shape rhombus 1`] = `
 <body>
   <div>
     <path
-      d="M 0 50 L 50 0 L 100 50 L 50 100 Z"
+      d="M 0 5 L 5 0 L 10 5 L 5 10 Z"
       fill="none"
       fill-rule="evenodd"
       role="button"
@@ -274,7 +274,7 @@ exports[`components > should render the named shape star 1`] = `
 <body>
   <div>
     <path
-      d="M 48.0001 0 L 59.2258 34.549099999999996 H 95.5529 L 66.1637 55.9017 L 77.38940000000001 90.4509 L 48.0001 69.09830000000001 L 18.6108 90.4509 L 29.8365 55.9017 L 0.447266 34.549099999999996 H 36.7744 L 48.0001 0 Z"
+      d="M 4.80001 0 L 5.92258 3.45491 H 9.55529 L 6.61637 5.59017 L 7.7389399999999995 9.04509 L 4.80001 6.90983 L 1.8610799999999998 9.04509 L 2.98365 5.59017 L 0.0447266 3.45491 H 3.6774400000000003 L 4.80001 0 Z"
       fill="none"
       fill-rule="evenodd"
       role="button"
@@ -291,7 +291,7 @@ exports[`components > should render the named shape triangle 1`] = `
 <body>
   <div>
     <path
-      d="M 50 0 L 100 100 L 0 100 Z"
+      d="M 5 0 L 10 10 L 0 10 Z"
       fill="none"
       fill-rule="evenodd"
       role="button"
