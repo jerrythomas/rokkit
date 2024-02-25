@@ -21,21 +21,24 @@
 
 <node
 	id={'id-' + path.join('-')}
-	class="node min-h-5 flex flex-row cursor-pointer select-none items-center"
+	class="node min-h-5 flex flex-col cursor-pointer select-none"
 	aria-selected={selected}
 	aria-expanded={state.label === 'collapse'}
 	role="treeitem"
 	class:flex-row-reverse={rtl}
 	data-path={path.join(',')}
 >
-	{#each types as type}
-		{#if type === 'icon'}
-			<Icon name={state.icon} label={state.label} class="small w-4" />
-		{:else}
-			<Connector {type} />
-		{/if}
-	{/each}
-	<item>
-		<svelte:component this={component} bind:value {fields} />
-	</item>
+	<div class="flex flex-row items-center">
+		{#each types as type}
+			{#if type === 'icon'}
+				<Icon name={state.icon} label={state.label} class="small w-4" />
+			{:else}
+				<Connector {type} />
+			{/if}
+		{/each}
+		<item>
+			<svelte:component this={component} bind:value {fields} />
+		</item>
+	</div>
+	<slot />
 </node>
