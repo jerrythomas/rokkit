@@ -41,10 +41,11 @@
 }
 
 .rokkit a {
-  @apply text-primary-800 cursor-pointer;
+  @apply text-primary-800 cursor-pointer underline underline-offset-4;
+  /* text-underline-offset: 0.25rem; */
 }
 .rokkit a:hover {
-  @apply text-secondary-800 cursor-pointer;
+  @apply text-secondary-700 cursor-pointer;
 }
 .rokkit a:visited {
   @apply text-primary-700;
