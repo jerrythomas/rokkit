@@ -7,7 +7,7 @@ exports[`Table.svelte > should render using default field mapping 1`] = `
       class="overflow-x"
     >
       <table
-        class="w-full"
+        class="w-full "
       >
         <thead
           class="w-full"

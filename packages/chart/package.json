@@ -58,6 +58,10 @@
 	"exports": {
 		"./src": "./src",
 		"./package.json": "./package.json",
+		"./lib": "./src/lib/index.js",
+		"./patterns": "./src/patterns/index.js",
+		"./symbols": "./src/symbols/index.js",
+		"./elements": "./src/elements/index.js",
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./src/index.js",

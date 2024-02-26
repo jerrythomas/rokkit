@@ -1,14 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import * as utilities from '../src'
+import * as components from '../src'
 
-describe('utilities', () => {
-	it('should contain all exported utilities', () => {
-		expect(Object.keys(utilities)).toEqual([
-			'Swatch',
-			'BarPlot',
-			'LinePlot',
-			'BoxPlot',
-			'ViolinPlot'
-		])
+describe('components', () => {
+	it('should contain all exported components', () => {
+		expect(Object.keys(components)).toEqual(['Chart', 'Symbol'])
 	})
 })
