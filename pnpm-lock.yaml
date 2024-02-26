@@ -791,6 +791,9 @@ importers:
       '@rokkit/atoms':
         specifier: workspace:*
         version: link:../../packages/atoms
+      '@rokkit/chart':
+        specifier: workspace:1.0.0-next.87
+        version: link:../../packages/chart
       '@rokkit/core':
         specifier: workspace:*
         version: link:../../packages/core
