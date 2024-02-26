@@ -46,9 +46,6 @@
 		"./src": "./src",
 		"./package.json": "./package.json",
 		"./input": "./src/input/index.js",
-		"./patterns": "./src/patterns/index.js",
-		"./symbols": "./src/symbols/index.js",
-		"./elements": "./src/elements/index.js",
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./src/index.js",
