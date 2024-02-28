@@ -48,6 +48,7 @@
     "@fontsource/victor-mono": "^5.0.11",
     "@rokkit/actions": "workspace:*",
     "@rokkit/atoms": "workspace:*",
+    "@rokkit/chart": "workspace:*",
     "@rokkit/core": "workspace:*",
     "@rokkit/icons": "workspace:*",
     "@rokkit/layout": "workspace:*",

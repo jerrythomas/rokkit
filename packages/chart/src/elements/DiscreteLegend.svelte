@@ -6,7 +6,7 @@
 	export let space = 2
 	export let padding = 5
 	export let scale
-	export let tickCount
+	export let tickCount = 10
 
 	$: sizeWithSpace = size + space
 	$: ticks = scale.ticks.apply(scale, [tickCount])
