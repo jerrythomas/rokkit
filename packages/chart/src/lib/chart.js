@@ -1,189 +1,208 @@
-// export function scales(data, aes, opts) {
-// 	const { x, y } = aes
-// 	const { width, height, flipCoords } = {
-// 		width: 800,
-// 		height: 600,
-// 		flipCoords: false,
-// 		...opts
-// 	}
+import { min, max } from 'd3-array'
+import { scaleBand, scaleLinear, scaleTime } from 'd3-scale'
 
-// 	return { x, y, width, height, flipCoords }
-// }
+function getScale(domain, range, padding = 0) {
+	if (domain.some(isNaN)) {
+		return scaleBand().domain(domain).range(range).padding(padding)
+	} else if (domain[0] instanceof Date) {
+		return scaleTime()
+			.domain([min(domain), max(domain)])
+			.range(range)
+			.nice()
+	}
 
-import { nest } from 'd3-collection'
-import { max, quantile, ascending, bin } from 'd3-array'
-import { scaleLinear } from 'd3-scale'
-import { area, curveCatmullRom } from 'd3-shape'
-import { getScale } from './utils'
+	return scaleLinear()
+		.domain([min([0, ...domain]), max([0, ...domain])])
+		.range(range)
+		.nice()
+}
 
-/**
- * axis, theme, params, fields
- */
-export class ChartBrewer {
-	constructor(data, x, y) {
-		this.data = data
-		this.x = x
-		this.y = y
-		this.fill = x
-		this.axis = null
-		this.stats = {}
-		// this.yOffset = 20
-		this.padding = 10
+class Chart {
+	// data = []
+	// width = 512
+	// height = 512
+	// origin = { x: 0, y: 0 }
+	// range = {
+	// 	x: [0, this.width],
+	// 	y: [this.height, 0]
+	// }
+	// x
+	// y
+	// stat = 'identity'
+	// scale
+	// fill
+	// color
+	// value
+	// shape
+	// valueFormat
+	// valueLabel
+	// domain
+	// margin
+	// spacing
+	// padding
+	// flipCoords = false
+
+	constructor(data, opts) {
+		this.width = +opts.width || 2048
+		this.height = +opts.height || 2048
+		this.flipCoords = opts.flipCoords || false
+		this.x = opts.x
+		this.y = opts.y
+		this.value = opts.value || opts.y
+		this.valueLabel = opts.valueLabel || this.value
+		this.valueFormat = opts.valueFormat || ((d) => d)
+		this.fill = opts.fill || opts.x
+		this.color = opts.color || opts.fill
+		this.shape = opts.shape || opts.fill
+
+		this.padding = opts.padding !== undefined ? +opts.padding : 32
+
+		this.spacing = +opts.spacing >= 0 && +opts.spacing <= 0.5 ? +opts.spacing : 0
 		this.margin = {
-			left: 10,
-			top: 10,
-			right: 10,
-			bottom: 10
+			top: +opts.margin?.top || 0,
+			left: +opts.margin?.left || 0,
+			right: +opts.margin?.right || 0,
+			bottom: +opts.margin?.bottom || 0
 		}
-		this.params = {
-			ticks: {}
+		this.domain = {
+			x: [...new Set(data.map((d) => d[this.x]))],
+			y: [...new Set(data.map((d) => d[this.y]))]
 		}
-		this.labels = []
-		this.width = 800
-		this.height = (this.width * 7) / 16
-		this.scaleValues = null
-		this.theme = {}
+		if (this.flipCoords) {
+			this.domain = { y: this.domain.x, x: this.domain.y }
+		}
+		this.stat = opts.stat || 'identity'
+
+		this.data = data.map((d) => ({
+			x: this.flipCoords ? d[this.y] : d[this.x],
+			y: this.flipCoords ? d[this.x] : d[this.y],
+			fill: d[this.fill],
+			color: d[this.color],
+			shape: d[this.shape]
+		}))
+
+		this.refresh()
 	}
 
-	computeMargin(xAxisOrientation, yAxisOrientation) {
-		this.scaleValues = {
-			x: [...new Set(this.data.map((item) => item[this.x]))],
-			y: [...new Set(this.data.map((item) => item[this.y]))],
-			fill: [...new Set(this.data.map((item) => item[this.fill]))]
+	padding(value) {
+		this.padding = value
+		return this.refresh()
+	}
+
+	margin(value) {
+		this.margin = value
+		return this.refresh()
+	}
+
+	refresh() {
+		this.range = {
+			x: [this.margin.left + this.padding, this.width - this.margin.right - this.padding],
+			y: [this.height - this.padding - this.margin.bottom, this.margin.top + this.padding]
 		}
 
-		let xOffset = max(this.scaleValues.y.map((value) => value.toString().length)) * 10
-		let yOffset = 20
-
-		this.margin = {
-			left: this.padding + (yAxisOrientation === 'left' ? xOffset : 0),
-			right: this.padding + (yAxisOrientation === 'left' ? 0 : xOffset),
-			top: this.padding + (xAxisOrientation === 'bottom' ? 0 : yOffset),
-			bottom: this.padding + (xAxisOrientation === 'bottom' ? yOffset : 0)
-		}
-	}
-
-	computeAxis(buffer = 0, inverse = false) {
-		let x = {}
-		let y = {}
-		let fill = {}
-
-		if (!this.scaleValues) {
-			this.computeMargin('bottom', 'left')
+		let scale = {
+			x: getScale(this.domain.x, this.range.x, this.spacing),
+			y: getScale(this.domain.y, this.range.y, this.spacing)
 		}
 
-		x.scale = getScale(
-			this.scaleValues.x,
-			[this.margin.left, this.width - this.margin.right],
-			buffer
-		)
-		const domainY = inverse
-			? [this.margin.top, this.height - this.margin.bottom]
-			: [this.height - this.margin.bottom, this.margin.top]
-		y.scale = getScale(this.scaleValues.y, domainY, buffer)
+		// scale['value'] = this.value === this.x ? scale.x : scale.y
 
-		x.ticks = tickValues(x.scale, 'x', this.params)
-		y.ticks = tickValues(y.scale, 'y', this.params)
+		this.origin = {
+			x: scale.x.ticks ? scale.x(Math.max(0, Math.min(...scale.x.domain()))) : scale.x.range()[0],
+			y: scale.y.ticks ? scale.y(Math.max(0, Math.min(...scale.y.domain()))) : scale.y.range()[0]
+		}
 
-		this.axis = { x, y, fill }
-		return this
-	}
-	use(theme) {
-		this.theme = theme
+		this.scale = scale
+
 		return this
 	}
 
-	params(margin, ticks) {
-		this.margin = margin
-		this.ticks = ticks
-		return this
+	// get scale() {
+	// 	return this.scale
+	// }
+	// get origin() {
+	// 	return this.origin
+	// }
+	// get margin() {
+	// 	return this.margin
+	// }
+	// get range() {
+	// 	const [x1, x2] = this.scale.x.range()
+	// 	const [y1, y2] = this.scale.y.range()
+
+	// 	return { x1, y1, x2, y2 }
+	// }
+	// get data() {
+	// 	// aggregate data group by x,y,fill,shape, color
+	// 	// stat = [min, max, avg, std, q1, q3, median, sum, count, box, all]
+
+	// 	return this.data
+	// }
+	// get width() {
+	// 	return this.width
+	// }
+	// get height() {
+	// 	return this.height
+	// }
+	// set width(value) {
+	// 	this.width = value
+	// }
+	// set height(value) {
+	// 	this.height = value
+	// }
+	// get domain() {
+	// 	return this.domain
+	// }
+	// get flipCoords() {
+	// 	return this.flipCoords
+	// }
+	aggregate(value, stat) {
+		this.value = value
+		this.stat = stat
+
+		// this.data = nest(this.data)
 	}
 
-	fillWith(fill) {
-		this.fill = fill
-		return this
-	}
+	ticks(axis, count, fontSize = 8) {
+		const scale = this.scale[axis]
+		const [minRange, maxRange] = scale.range()
+		let ticks = []
+		let offset = 0
 
-	highlight(values) {
-		this.highlight = values
-		return this
-	}
+		count = count || Math.abs((maxRange - minRange) / (fontSize * (axis === 'y' ? 8 : 8)))
 
-	animate() {
-		return this
-	}
+		if (scale.ticks) {
+			ticks = scale.ticks(Math.round(count))
+		} else {
+			offset = scale.bandwidth() / 2
+			count = Math.min(Math.round(count), scale.domain().length)
 
-	summary() {
-		const result = nest()
-			.key((d) => d[this.x])
-			.rollup((d) => {
-				let values = d.map((g) => g[this.y]).sort(ascending)
-				let q1 = quantile(values, 0.25)
-				let q3 = quantile(values, 0.75)
-				let median = quantile(values, 0.5)
-				let interQuantileRange = q3 - q1
-				let min = q1 - 1.5 * interQuantileRange
-				let max = q3 + 1.5 * interQuantileRange
-				return { q1, q3, median, interQuantileRange, min, max }
-			})
-			.entries(this.data)
-		return result
-	}
-
-	// assumes axis has been computes
-	violin() {
-		if (!this.axis) this.computeAxis()
-		// Features of the histogram
-		var histogramBins = bin()
-			.domain(this.axis.y.scale.domain())
-			.thresholds(this.axis.y.scale.ticks(20)) // Important: how many bins approx are going to be made? It is the 'resolution' of the violin plot
-			.value((d) => d)
-
-		// Compute the binning for each group of the dataset
-		var sumstat = nest()
-			.key((d) => d[this.x])
-			.rollup((d) => histogramBins(d.map((g) => +g[this.y])))
-			.entries(this.data)
-
-		// What is the biggest number of value in a bin? We need it cause this value will have a width of 100% of the bandwidth.
-		var maxNum = 0
-		for (let i in sumstat) {
-			let allBins = sumstat[i].value
-			let lengths = allBins.map((a) => a.length)
-			let longest = max(lengths)
-			if (longest > maxNum) {
-				maxNum = longest
+			ticks = scale.domain()
+			if (count < scale.domain().length) {
+				let diff = scale.domain().length - count
+				ticks = ticks.filter((d, i) => i % diff == 0)
 			}
 		}
 
-		// The maximum width of a violin must be x.bandwidth = the width dedicated to a group
-		var xNum = scaleLinear().range([0, this.axis.x.scale.bandwidth()]).domain([0, maxNum])
+		ticks = ticks
+			.map((t) => ({
+				label: t,
+				pos: scale(t)
+			}))
+			.map(({ label, pos }) => ({
+				label,
+				offset: {
+					x: axis === 'x' ? offset : 0,
+					y: axis === 'y' ? offset : 0
+				},
+				x: axis === 'x' ? pos : this.origin.x,
+				y: axis === 'y' ? pos : this.origin.y
+			}))
 
-		let result = area()
-			.x0(xNum(0))
-			.x1(function (d) {
-				return xNum(d.length)
-			})
-			.y((d) => this.axis.y.scale(d.x0))
-			.curve(curveCatmullRom)
-
-		let areas = sumstat.map((d) => ({
-			curve: result(d.value),
-			x: this.axis.x.scale(d.key)
-		}))
-		return areas
+		return ticks
 	}
 }
 
-function tickValues(scale, whichAxis, params) {
-	let { values, count } = whichAxis in params.ticks ? params.ticks[whichAxis] : {}
-	values =
-		Array.isArray(values) && values.length > 2
-			? values
-			: scale.ticks
-				? scale.ticks.apply(scale, [count])
-				: scale.domain()
-	const ticks = values.map((label) => ({ label, position: scale(label) }))
-
-	return ticks
+export function chart(data, aes) {
+	return new Chart(data, aes)
 }

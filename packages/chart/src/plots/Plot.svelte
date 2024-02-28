@@ -1,25 +1,40 @@
 <script>
-	import { aggregate, getScales } from '../lib/utils'
+	import { plotter } from '../lib/plots'
+	import { compact } from '@rokkit/core'
+	export let data = []
+	/** @type {'lineY'|'lineX'|'dot'|'plot'|'bar'} */
+	export let type = 'dot'
+	export let width = null
+	export let height = null
+	export let x = 'x'
+	export let y = 'y'
+	export let fill = null
+	export let stroke = null
+	export let symbol = null
+	export let grid = true
+	export let legend = false
+	export let labels = {}
+	export let tip = true
+	export let channels = null
 
-	import BoxPlot from './BoxPlot.svelte'
-	import ScatterPlot from './ScatterPlot.svelte'
-
-	export let data
-	export let width
-	export let height
-	export let x
-	export let y
-	export let plots = []
-
-	$: nested = aggregate(data, x, y)
-	$: scales = getScales(data, x, y, width, height)
+	$: showLegend = compact({
+		stroke: stroke ? { legend } : null,
+		color: fill && !symbol ? { legend } : null,
+		symbol: symbol ? { legend } : null
+	})
+	$: config = {
+		data,
+		type,
+		aes: compact({ x, y, fill, stroke, symbol, tip, channels }),
+		opts: compact({
+			width,
+			height,
+			grid,
+			...showLegend,
+			x: { label: labels?.x ?? x },
+			y: { label: labels?.y ?? y }
+		})
+	}
 </script>
 
-<svg viewBox="0 0 {width} {height}">
-	{#if plots.includes('box')}
-		<BoxPlot data={nested} {...scales} />
-	{/if}
-	{#if plots.includes('scatter')}
-		<ScatterPlot {data} {x} {y} {...scales} />
-	{/if}
-</svg>
+<plot use:plotter={config} />

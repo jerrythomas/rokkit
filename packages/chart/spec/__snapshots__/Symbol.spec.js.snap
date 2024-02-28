@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Symbol.svelte > should render default circle. 1`] = `
+<body>
+  <div>
+    <circle
+      cx="0"
+      cy="0"
+      fill="currentColor"
+      r="5"
+      role="button"
+      stroke="currentColor"
+      tabindex="0"
+    />
+    
+  </div>
+</body>
+`;
+
+exports[`Symbol.svelte > should render symbol provided 1`] = `
+<body>
+  <div>
+    
+  </div>
+</body>
+`;
+
+exports[`Symbol.svelte > should render using path when component is not provided 1`] = `
+<body>
+  <div>
+    
+  </div>
+</body>
+`;

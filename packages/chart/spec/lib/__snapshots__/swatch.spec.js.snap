@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Swatch Store > palette > should contain a set of palettes 1`] = `
+[
+  "gold",
+  "lavender",
+  "teal",
+  "rose",
+  "sky",
+  "yellow",
+  "pink",
+  "lime",
+  "red",
+  "cyan",
+  "orange",
+  "violet",
+  "emerald",
+  "wood",
+  "blue",
+  "amber",
+  "purple",
+  "zinc",
+  "stone",
+  "indigo",
+  "gray",
+]
+`;

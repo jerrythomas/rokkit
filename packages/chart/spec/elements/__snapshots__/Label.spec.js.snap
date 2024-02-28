@@ -6,9 +6,65 @@ exports[`Label.svelte > should render 1`] = `
     <text
       class="label"
       text-anchor="middle"
-      transform="translate(undefined,undefined) rotate(0)"
+      transform="translate(10,20) rotate(0)"
     >
-      undefined
+      Hello
+    </text>
+  </div>
+</body>
+`;
+
+exports[`Label.svelte > should render with anchor end 1`] = `
+<body>
+  <div>
+    <text
+      class="label"
+      text-anchor="end"
+      transform="translate(10,20) rotate(0)"
+    >
+      end
+    </text>
+  </div>
+</body>
+`;
+
+exports[`Label.svelte > should render with anchor middle 1`] = `
+<body>
+  <div>
+    <text
+      class="label"
+      text-anchor="middle"
+      transform="translate(10,20) rotate(0)"
+    >
+      middle
+    </text>
+  </div>
+</body>
+`;
+
+exports[`Label.svelte > should render with anchor start 1`] = `
+<body>
+  <div>
+    <text
+      class="label"
+      text-anchor="start"
+      transform="translate(10,20) rotate(0)"
+    >
+      start
+    </text>
+  </div>
+</body>
+`;
+
+exports[`Label.svelte > should render with rotation 1`] = `
+<body>
+  <div>
+    <text
+      class="label"
+      text-anchor="middle"
+      transform="translate(10,20) rotate(45)"
+    >
+      Angled
     </text>
   </div>
 </body>

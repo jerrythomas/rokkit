@@ -1,6 +1,6 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	import { id as uniqueId } from '@rokkit/core'
+	// import { id as uniqueId } from '@rokkit/core'
 
 	export let x = 0
 	export let y = 0
@@ -9,6 +9,7 @@
 	export let width = 100
 	export let tickCount = 5
 	export let scale
+	export let id = 'legend'
 
 	$: scaleTicks = scaleLinear()
 		.range([x, x + 100])
@@ -16,7 +17,7 @@
 	$: ticks = scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), label: d }))
 
 	$: colors = scale.range()
-	$: id = uniqueId('legend-')
+	// $: id = uniqueId('legend-')
 </script>
 
 <defs>

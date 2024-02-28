@@ -1,0 +1,5 @@
+---
+title: Palette
+---
+
+# {title}
