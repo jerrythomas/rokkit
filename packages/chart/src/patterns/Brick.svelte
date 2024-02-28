@@ -3,7 +3,7 @@
 	export let thickness = 0.5
 	export let stroke = 'currentColor'
 
-	const lines = [
+	$: lines = [
 		{ x1: 0, y1: 0.25 * size, x2: 0.5 * size, y2: 0.25 * size },
 		{ x1: 0.5 * size, y1: 0.75 * size, x2: size, y2: 0.75 * size },
 		{ x1: 0, y1: 0, x2: 0, y2: size },

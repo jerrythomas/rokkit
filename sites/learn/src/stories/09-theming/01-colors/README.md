@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Colors
 ---
 
 The Rokkit library provides a versatile palette containing various shades of the following colors:
