@@ -3,6 +3,6 @@ import * as components from '../src'
 
 describe('components', () => {
 	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual(['Chart', 'Symbol'])
+		expect(Object.keys(components)).toEqual(['Chart', 'Symbol', 'Plot'])
 	})
 })

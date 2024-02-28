@@ -9,6 +9,7 @@ describe('components', () => {
 			'Circles',
 			'Dots',
 			'CrossHatch',
+			'Waves',
 			'Tile',
 			'Triangles',
 			'CurvedWave'

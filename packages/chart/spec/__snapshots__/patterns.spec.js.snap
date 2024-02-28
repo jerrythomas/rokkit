@@ -248,3 +248,16 @@ exports[`components > should render Triangles 1`] = `
   </div>
 </body>
 `;
+
+exports[`components > should render Waves 1`] = `
+<body>
+  <div>
+    <path
+      d=""
+      fill="none"
+      stroke="currentColor"
+      stroke-width="0.5"
+    />
+  </div>
+</body>
+`;
