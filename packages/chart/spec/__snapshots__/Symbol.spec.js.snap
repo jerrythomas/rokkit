@@ -3,14 +3,15 @@
 exports[`Symbol.svelte > should render default circle. 1`] = `
 <body>
   <div>
-    <circle
-      cx="0"
-      cy="0"
+    <path
+      d="M 45 0 A 45 45 0 10 10 -45 0 A 45 45 0 10 10 45 0"
       fill="currentColor"
-      r="5"
+      fill-rule="evenodd"
       role="button"
       stroke="currentColor"
+      stroke-width="1"
       tabindex="0"
+      transform="translate(0,0)"
     />
     
   </div>

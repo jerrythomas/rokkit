@@ -6,12 +6,12 @@
 	export let size = 10
 	export let fill = 'currentColor'
 	export let stroke = 'currentColor'
-	export let shape = 'circle'
+	export let name = 'circle'
 	/** @type Object<string, any> */
 	export let using = components
 
-	$: component = using[shape] || using.default
-	$: props = using[shape] ? $$restProps : { name: shape, ...$$restProps }
+	$: component = using[name] || using.default
+	$: props = using[name] ? $$restProps : { name, ...$$restProps }
 </script>
 
 <svelte:component this={component} {x} {y} {size} {fill} {stroke} {...props} />

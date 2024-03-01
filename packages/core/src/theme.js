@@ -115,14 +115,16 @@ export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, color
 			`${name}-mode-light`,
 			{
 				...light,
-				...syntaxColors['one-dark'].light
+				...syntaxColors['one-dark'].light,
+				'--plot-background': 'var(--neutral-200)'
 			}
 		],
 		[
 			`${name}-mode-dark`,
 			{
 				...dark,
-				...syntaxColors['one-dark'].dark
+				...syntaxColors['one-dark'].dark,
+				'--plot-background': 'var(--neutral-200)'
 			}
 		]
 	]

@@ -6,13 +6,13 @@
 </script>
 
 <svg viewBox="0 0 {grid.width} {grid.height}">
-	{#each grid.data as { x, y, r },index}
+	{#each grid.data as { x, y, r }, index}
 		<Symbol
 			{x}
 			{y}
-			size={r*2}
-			shape={$swatch.keys.symbol[index]}
-			fill={$swatch.palette['teal'][500	]}
+			size={r / 5}
+			name={$swatch.keys.symbol[index]}
+			fill={$swatch.palette['teal'][500]}
 			stroke={$swatch.palette['teal'][500]}
 		/>
 	{/each}
