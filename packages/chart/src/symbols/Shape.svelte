@@ -3,14 +3,14 @@
 
 	export let x = 0
 	export let y = 0
-	export let size = 10
+	export let size = 1
 	export let fill = 'none'
 	export let stroke = 'currentColor'
-	export let thickness = 0.5
+	export let thickness = 1
 
 	export let name = 'circle'
 
-	$: d = name in namedShapes ? namedShapes[name](size): namedShapes['star'](size)
+	$: d = name in namedShapes ? namedShapes[name](size) : namedShapes['star'](size)
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -18,7 +18,7 @@
 	{d}
 	{fill}
 	{stroke}
-	transform="translate({x - size/2},{y - size/2})"
+	transform="translate({x},{y})"
 	stroke-width={thickness}
 	fill-rule="evenodd"
 	role="button"

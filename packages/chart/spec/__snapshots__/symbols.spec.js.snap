@@ -1,66 +1,516 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`components > should render circle 1`] = `
-<body>
-  <div>
-    <circle
-      cx="0"
-      cy="0"
-      fill="currentColor"
-      r="5"
-      role="button"
-      stroke="currentColor"
-      tabindex="0"
-    />
-  </div>
-</body>
-`;
-
-exports[`components > should render default 1`] = `
-<body>
-  <div>
-    <path
-      d="M 4.80001 0 L 5.92258 3.45491 H 9.55529 L 6.61637 5.59017 L 7.7389399999999995 9.04509 L 4.80001 6.90983 L 1.8610799999999998 9.04509 L 2.98365 5.59017 L 0.0447266 3.45491 H 3.6774400000000003 L 4.80001 0 Z"
-      fill="none"
-      fill-rule="evenodd"
-      role="button"
-      stroke="currentColor"
-      stroke-width="0.5"
-      tabindex="0"
-      transform="translate(-5,-5)"
-    />
-  </div>
-</body>
-`;
-
-exports[`components > should render square 1`] = `
+exports[`symbols > custom symbols > should render rounded-square 1`] = `
 <body>
   <div>
     <rect
       fill="currentColor"
-      height="10"
+      height="7.068"
       role="button"
-      rx="0.5"
-      ry="0.5"
+      rx="0.3534"
+      ry="0.3534"
       stroke="currentColor"
       tabindex="0"
-      width="10"
-      x="-5"
-      y="-5"
+      width="7.068"
+      x="-3.534"
+      y="-3.534"
     />
   </div>
 </body>
 `;
 
-exports[`components > should render triangle 1`] = `
+exports[`symbols > custom symbols > should render rounded-square with size and origin 1`] = `
 <body>
   <div>
-    <polygon
+    <rect
       fill="currentColor"
-      points="0, -5, 4.330127018922193, 2.5, -4.330127018922193, 2.5"
+      height="70.67999999999999"
       role="button"
+      rx="3.534"
+      ry="3.534"
       stroke="currentColor"
       tabindex="0"
+      width="70.67999999999999"
+      x="-30.339999999999996"
+      y="-29.339999999999996"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > custom symbols > should render rounded-square with stroke and fill 1`] = `
+<body>
+  <div>
+    <rect
+      fill="blue"
+      height="7.068"
+      role="button"
+      rx="0.3534"
+      ry="0.3534"
+      stroke="red"
+      tabindex="0"
+      width="7.068"
+      x="-3.534"
+      y="-3.534"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "asterisk" 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 4.769 L 0 -4.769 M -4.13 -2.384 L 4.13 2.384 M -4.13 2.384 L 4.13 -2.384"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "asterisk" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 47.69 L 0 -47.69 M -41.3 -23.84 L 41.3 23.84 M -41.3 23.84 L 41.3 -23.84"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "asterisk" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 4.769 L 0 -4.769 M -4.13 -2.384 L 4.13 2.384 M -4.13 2.384 L 4.13 -2.384"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "circle" 1`] = `
+<body>
+  <div>
+    <path
+      d="M 4.5 0 A 4.5 4.5 0 1 1 -4.5 0 A 4.5 4.5 0 1 1 4.5 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "circle" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M 45 0 A 45 45 0 10 10 -45 0 A 45 45 0 10 10 45 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "circle" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M 4.5 0 A 4.5 4.5 0 1 1 -4.5 0 A 4.5 4.5 0 1 1 4.5 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "cross" 1`] = `
+<body>
+  <div>
+    <path
+      d="M -4.87 -4.87 L 4.87 4.87 M -4.87 4.87 L 4.87 -4.87"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "cross" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M -48.7 -48.7 L 48.7 48.7 M -48.7 48.7 L 48.7 -48.7"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "cross" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M -4.87 -4.87 L 4.87 4.87 M -4.87 4.87 L 4.87 -4.87"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "diamond" 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 -4.995 L 4.995 0 L 0 4.995 L -4.995 0 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "diamond" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 -49.95 L 49.95 0 L 0 49.95 L -49.95 0 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "diamond" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 -4.995 L 4.995 0 L 0 4.995 L -4.995 0 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "heart" 1`] = `
+<body>
+  <div>
+    <path
+      d="M 4 0 A 0.8 0.8 0 0 0 0 -3 A 0.8 0.8 0 0 0 -4 0 L 0 4 L 4 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "heart" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M 40 0 A 8 8 0 0 0 0 -30 A 8 8 0 0 0 -40 0 L 0 40 L 40 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "heart" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M 4 0 A 0.8 0.8 0 0 0 0 -3 A 0.8 0.8 0 0 0 -4 0 L 0 4 L 4 0"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "plus" 1`] = `
+<body>
+  <div>
+    <path
+      d="M -6.873 0 L 6.873 0 M 0 6.873 L 0 -6.873"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "plus" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M -68.73 0 L 68.73 0 M 0 68.73 L 0 -68.73"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "plus" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M -6.873 0 L 6.873 0 M 0 6.873 L 0 -6.873"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "square" 1`] = `
+<body>
+  <div>
+    <path
+      d="M 3.534 3.534 L 3.534 -3.534 L -3.534 -3.534 L -3.534 3.534 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "square" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M 35.339999999999996 35.339999999999996 L 35.339999999999996 -35.339999999999996 L -35.339999999999996 -35.339999999999996 L -35.339999999999996 35.339999999999996 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "square" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M 3.534 3.534 L 3.534 -3.534 L -3.534 -3.534 L -3.534 3.534 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "star" 1`] = `
+<body>
+  <div>
+    <path
+      d="M -0.19999 -5 L 0.92258 -1.54509 H 4.55529 L 1.61637 0.59017 L 2.73894 4.04509 L -0.19999 1.90983 L -3.13892 4.04509 L -2.01635 0.59017 L -4.95527 -1.54509 H -1.32256 L -0.19999 -5 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "star" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M -1.9999 -50 L 9.2258 -15.4509 H 45.5529 L 16.163700000000002 5.9017 L 27.3894 40.450900000000004 L -1.9999 19.0983 L -31.389200000000002 40.450900000000004 L -20.1635 5.9017 L -49.552699999999994 -15.4509 H -13.2256 L -1.9999 -50 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "star" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M -0.19999 -5 L 0.92258 -1.54509 H 4.55529 L 1.61637 0.59017 L 2.73894 4.04509 L -0.19999 1.90983 L -3.13892 4.04509 L -2.01635 0.59017 L -4.95527 -1.54509 H -1.32256 L -0.19999 -5 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "triangle" 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 -5.443 L 4.714 2.721 L -4.714 2.721 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "triangle" with size and origin 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 -54.42999999999999 L 47.14 27.21 L -47.14 27.21 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(5,6)"
+    />
+  </div>
+</body>
+`;
+
+exports[`symbols > named paths > should render "triangle" with stroke and fill 1`] = `
+<body>
+  <div>
+    <path
+      d="M 0 -5.443 L 4.714 2.721 L -4.714 2.721 Z"
+      fill="none"
+      fill-rule="evenodd"
+      role="button"
+      stroke="currentColor"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(0,0)"
     />
   </div>
 </body>
