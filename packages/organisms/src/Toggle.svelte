@@ -7,6 +7,7 @@
 
 	let className = ''
 	export { className as class }
+	/** @type {[any,any]} */
 	export let options = [false, true]
 	export let value = options[0]
 	export let fields = {}

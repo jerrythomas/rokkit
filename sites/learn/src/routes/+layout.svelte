@@ -14,7 +14,8 @@
 	let site = writable({
 		sidebar: $media.large,
 		title: data.app.name,
-		description: data.app.about
+		description: data.app.about,
+		code: 'hidden'
 	})
 
 	setContext('site', site)

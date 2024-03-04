@@ -1,14 +1,16 @@
 container > segment {
-  @apply overflow-hidden;
+  @apply overflow-hidden h-full;
 }
-.three-col {
-  @apply grid w-full h-full overflow-hidden;
+
+.three-col,
+.two-col {
+  @apply grid w-full min-h-full overflow-hidden;
 }
 
 .three-col.md {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  /* @apply grid-cols-2 grid-rows-2; */
+  @apply grid-cols-2 grid-rows-2;
+  /* grid-template-columns: repeat(2, 1fr); */
+  /* grid-template-rows: repeat(2, 1fr); */
   grid-template-areas:
     'c-1 c-2'
     'c-1 c-3';
@@ -26,13 +28,38 @@ container > segment {
   grid-area: c-3;
 }
 .three-col.lg {
-  /* @apply grid-cols-5; */
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  @apply grid-cols-5 grid-rows-2;
+  /* grid-template-columns: repeat(5, 1fr); */
+  /* grid-template-rows: repeat(2, 1fr); */
   grid-template-areas:
     'c-1 c-1 c-2 c-2 c-2'
     'c-1 c-1 c-3 c-3 c-3';
 }
-.three-col.sm {
+.three-col.sm,
+.two-col.sm {
   @apply grid-cols-1 grid-rows-1;
+}
+
+.two-col.md {
+  @apply grid-rows-1 grid-cols-2;
+  /* grid-template-columns: repeat(2, 1fr); */
+  grid-template-areas: 'c-1 c-2';
+}
+.two-col.lg {
+  @apply grid-rows-1 grid-cols-5;
+  /* grid-template-columns: repeat(5, 1fr); */
+  grid-template-areas: 'c-1 c-1 c-2 c-2 c-2';
+}
+
+.two-col.md > .col-1,
+.two-col.lg > .col-1 {
+  grid-area: c-1;
+}
+.two-col.md > .col-2,
+.two-col.lg > .col-2 {
+  grid-area: c-2;
+}
+.two-col.md > .col-3,
+.two-col.lg > .col-3 {
+  display: none;
 }
