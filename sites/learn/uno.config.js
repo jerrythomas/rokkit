@@ -11,7 +11,6 @@ import {
 import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 import { palette } from './src/lib/colors'
-// import { ExternalIconLoader } from '@iconify/utils/lib/loader/external-loader'
 
 const components = [
 	'list',
@@ -85,7 +84,12 @@ export default defineConfig({
 				rokkit: () => import('@rokkit/icons/ui.json').then((i) => i.default),
 				logo: () => import('@rokkit/icons/auth.json').then((i) => i.default),
 				component: () => import('@rokkit/icons/components.json').then((i) => i.default),
-				file: FileSystemIconLoader('./static/files', (svg) => svg.replace(/black/, 'currentColor'))
+				file: FileSystemIconLoader('./static/icons/files', (svg) =>
+					svg.replace(/black/, 'currentColor')
+				),
+				app: FileSystemIconLoader('./static/icons/app', (svg) =>
+					svg.replace(/black/, 'currentColor')
+				)
 			}
 		})
 	],

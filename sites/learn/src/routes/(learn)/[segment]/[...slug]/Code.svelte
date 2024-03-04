@@ -18,7 +18,8 @@
 		if (!$media.large) active = 'code'
 	}
 
-	$: filesVisible = $media.large || active !== 'code'
+	// $: filesVisible = $media.large || active !== 'code'
+	$: filesVisible = active !== 'code'
 	$: hasFiles = $story.files && $story.files.length > 0
 	$: if (hasFiles) currentFile = $story.files[0].children[0]
 	$: if (currentFile && currentFile.content) {
@@ -37,12 +38,18 @@
 		>
 			{[currentFile.path, currentFile.name].join('/')}
 		</nav>
-		<section class="relative h-full w-full flex flex-row overflow-auto">
+		<section class="relative h-full w-full flex flex-row-reverse overflow-auto">
 			<aside
-				class="h-full min-w-full flex flex-col border-r border-neutral-subtle bg-neutral-base lg:min-w-50"
+				class="h-full min-w-full flex flex-col border-r border-neutral-subtle lg:min-w-50"
 				class:-translate-x-full={!filesVisible}
 			>
-				<Tree items={$story.files} {fields} value={currentFile} on:select={handleSelect} />
+				<Tree
+					items={$story.files}
+					{fields}
+					value={currentFile}
+					on:select={handleSelect}
+					class="text-xs"
+				/>
 			</aside>
 			{#if code}
 				<CodeSnippet

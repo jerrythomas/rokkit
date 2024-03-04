@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte'
 	import { goto, afterNavigate } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { Tree } from '@rokkit/organisms'
+	import { Tree } from '@rokkit/ui'
 	import { findValueFromPath } from '@rokkit/core'
 	import Sidebar from './Sidebar.svelte'
 	const media = getContext('media')
@@ -13,6 +13,7 @@
 		isOpen: 'isOpen',
 		key: 'key'
 	}
+
 	// const icons = { opened: 'accordion-opened', closed: 'accordion-closed' }
 
 	export let data
@@ -40,7 +41,7 @@
 	<Sidebar>
 		<Tree {items} {fields} bind:value on:select={handleSelect} />
 	</Sidebar>
-	<content class="w-full flex flex-col">
+	<content class="w-full flex flex-col relative">
 		<slot />
 	</content>
 </main>

@@ -2,6 +2,8 @@
 	import { defaultFields, getComponent } from '@rokkit/core'
 	import Item from './Item.svelte'
 
+	let className = ''
+	export { className as class }
 	export let items = []
 	export let separator = '/'
 	export let fields = defaultFields
@@ -11,7 +13,7 @@
 	$: using = { default: Item, ...using }
 </script>
 
-<crumbs class="flex">
+<crumbs class="flex {className}">
 	{#each items as item, index}
 		{@const component = getComponent(item, fields, using)}
 		{#if index > 0}

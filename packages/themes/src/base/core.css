@@ -49,6 +49,14 @@ pre {
   @apply outline-disabled;
 }
 
+/* plots*/
+plot {
+  @apply rounded-md bg-neutral-inset p-4;
+}
+g[aria-label='tip'] {
+  --plot-background: var(--neutral-200);
+}
+
 input-field input,
 input-field toggle-switch,
 drop-down {

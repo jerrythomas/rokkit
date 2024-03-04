@@ -20,15 +20,14 @@ describe('theme', () => {
 				900: `var(--${name}-900)`,
 				950: `var(--${name}-950)`,
 				DEFAULT: `var(--${name}-500)`,
-				base: `var(--${name}-200)`,
-				contrast: `var(--${name}-800)`,
+				inset: `var(--${name}-100)`,
+				base: `var(--${name}-50)`,
+				subtle: `var(--${name}-200)`,
+				muted: `var(--${name}-300)`,
+				raised: `var(--${name}-400)`,
 				elevated: `var(--${name}-600)`,
 				floating: `var(--${name}-700)`,
-				inset: `var(--${name}-100)`,
-				muted: `var(--${name}-400)`,
-				raised: `var(--${name}-500)`,
-				subtle: `var(--${name}-300)`,
-				sunken: `var(--${name}-50)`
+				contrast: `var(--${name}-800)`
 			})
 		})
 
@@ -47,15 +46,14 @@ describe('theme', () => {
 				900: `hsl(var(--${name}-900))`,
 				950: `hsl(var(--${name}-950))`,
 				DEFAULT: `hsl(var(--${name}-500))`,
-				base: `hsl(var(--${name}-200))`,
-				contrast: `hsl(var(--${name}-800))`,
+				inset: `hsl(var(--${name}-100))`,
+				base: `hsl(var(--${name}-50))`,
+				subtle: `hsl(var(--${name}-200))`,
+				muted: `hsl(var(--${name}-300))`,
+				raised: `hsl(var(--${name}-400))`,
 				elevated: `hsl(var(--${name}-600))`,
 				floating: `hsl(var(--${name}-700))`,
-				inset: `hsl(var(--${name}-100))`,
-				muted: `hsl(var(--${name}-400))`,
-				raised: `hsl(var(--${name}-500))`,
-				subtle: `hsl(var(--${name}-300))`,
-				sunken: `hsl(var(--${name}-50))`
+				contrast: `hsl(var(--${name}-800))`
 			})
 		})
 		it.each(palettes)('should generate shades using rgb modifier', (name) => {
@@ -73,15 +71,14 @@ describe('theme', () => {
 				900: `rgb(var(--${name}-900))`,
 				950: `rgb(var(--${name}-950))`,
 				DEFAULT: `rgb(var(--${name}-500))`,
-				base: `rgb(var(--${name}-200))`,
-				contrast: `rgb(var(--${name}-800))`,
+				base: `rgb(var(--${name}-50))`,
+				inset: `rgb(var(--${name}-100))`,
+				subtle: `rgb(var(--${name}-200))`,
+				muted: `rgb(var(--${name}-300))`,
+				raised: `rgb(var(--${name}-400))`,
 				elevated: `rgb(var(--${name}-600))`,
 				floating: `rgb(var(--${name}-700))`,
-				inset: `rgb(var(--${name}-100))`,
-				muted: `rgb(var(--${name}-400))`,
-				raised: `rgb(var(--${name}-500))`,
-				subtle: `rgb(var(--${name}-300))`,
-				sunken: `rgb(var(--${name}-50))`
+				contrast: `rgb(var(--${name}-800))`
 			})
 		})
 		it.each(palettes)('should generate shades with invalid modifier', (name) => {
@@ -99,15 +96,14 @@ describe('theme', () => {
 				900: `var(--${name}-900)`,
 				950: `var(--${name}-950)`,
 				DEFAULT: `var(--${name}-500)`,
-				base: `var(--${name}-200)`,
-				contrast: `var(--${name}-800)`,
+				inset: `var(--${name}-100)`,
+				base: `var(--${name}-50)`,
+				subtle: `var(--${name}-200)`,
+				muted: `var(--${name}-300)`,
+				raised: `var(--${name}-400)`,
 				elevated: `var(--${name}-600)`,
 				floating: `var(--${name}-700)`,
-				inset: `var(--${name}-100)`,
-				muted: `var(--${name}-400)`,
-				raised: `var(--${name}-500)`,
-				subtle: `var(--${name}-300)`,
-				sunken: `var(--${name}-50)`
+				contrast: `var(--${name}-800)`
 			})
 		})
 	})
@@ -135,8 +131,6 @@ describe('theme', () => {
 				secondary: shadesOf('secondary', 'hsl'),
 				neutral: {
 					...shadesOf('neutral', 'hsl'),
-					base: 'hsl(var(--neutral-200))',
-					contrast: 'hsl(var(--neutral-800))',
 					zebra: 'hsl(var(--neutral-zebra))'
 				},
 				info: stateColors('info', 'hsl'),
@@ -156,8 +150,6 @@ describe('theme', () => {
 				secondary: shadesOf('secondary'),
 				neutral: {
 					...shadesOf('neutral'),
-					base: 'var(--neutral-200)',
-					contrast: 'var(--neutral-800)',
 					zebra: 'var(--neutral-zebra)'
 				},
 				info: stateColors('info'),
@@ -238,17 +230,6 @@ describe('theme', () => {
 				'--neutral-900': '#0f172a',
 				'--neutral-950': '#020617',
 				'--plot-background': 'var(--neutral-200)',
-				// '--pass-100': '#dcfce7',
-				// '--pass-200': '#bbf7d0',
-				// '--pass-300': '#86efac',
-				// '--pass-400': '#4ade80',
-				// '--pass-50': '#f0fdf4',
-				// '--pass-500': '#22c55e',
-				// '--pass-600': '#16a34a',
-				// '--pass-700': '#15803d',
-				// '--pass-800': '#166534',
-				// '--pass-900': '#14532d',
-				// '--pass-950': '#052e16',
 				'--primary-100': '#ffedd5',
 				'--primary-200': '#fed7aa',
 				'--primary-300': '#fdba74',
@@ -295,11 +276,11 @@ describe('theme', () => {
 				'--warning-950': '#422006',
 
 				'--code-atrule': 'var(--code-string)',
-				// '--code-bg': '#f3f4f6',
+				// '--code-bg': 'var(--neutral-100)',
 				'--code-comment': '#969896',
 				'--code-cursor': '#24292e',
 				'--code-cursor-block': 'rgba(20, 255, 20, 0.5)',
-				'--code-fill': '#f3f4f6',
+				'--code-fill': 'var(--neutral-100)',
 				'--code-function': '#a71d5d',
 				'--code-gutter-marker': 'black',
 				'--code-gutter-subtle': '#999',
@@ -373,17 +354,6 @@ describe('theme', () => {
 				'--neutral-900': '#f1f5f9',
 				'--neutral-950': '#f8fafc',
 				'--plot-background': 'var(--neutral-200)',
-				// '--pass-100': '#14532d',
-				// '--pass-200': '#166534',
-				// '--pass-300': '#15803d',
-				// '--pass-400': '#16a34a',
-				// '--pass-50': '#052e16',
-				// '--pass-500': '#22c55e',
-				// '--pass-600': '#4ade80',
-				// '--pass-700': '#86efac',
-				// '--pass-800': '#bbf7d0',
-				// '--pass-900': '#dcfce7',
-				// '--pass-950': '#f0fdf4',
 				'--primary-100': '#7c2d12',
 				'--primary-200': '#9a3412',
 				'--primary-300': '#c2410c',
@@ -429,11 +399,11 @@ describe('theme', () => {
 				'--warning-900': '#fef9c3',
 				'--warning-950': '#fefce8',
 				'--code-atrule': 'var(--code-string)',
-				// '--code-bg': '#282c34',
+				// '--code-bg': 'var(--neutral-100)',
 				'--code-comment': '#5c6370',
 				'--code-cursor': '#24292e',
 				'--code-cursor-block': 'rgba(20, 255, 20, 0.5)',
-				'--code-fill': '#282c34',
+				'--code-fill': 'var(--neutral-100)',
 				'--code-function': '#61afef',
 				'--code-gutter-marker': 'black',
 				'--code-gutter-subtle': '#999',

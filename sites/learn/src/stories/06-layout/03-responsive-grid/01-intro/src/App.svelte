@@ -1,5 +1,5 @@
 <script>
-	import { ResponsiveGrid, ButtonGroup } from '@rokkit/molecules'
+	import { ResponsiveGrid, Switch } from '@rokkit/ui'
 	import PlaceHolder from './PlaceHolder.svelte'
 	import './style.css'
 
@@ -30,8 +30,8 @@
 	let page = items[0]
 </script>
 
-<ButtonGroup items={['sm', 'md', 'lg']} bind:value={size} />
+<Switch options={['sm', 'md', 'lg']} bind:value={size} class="text-xs" />
 <ResponsiveGrid {items} small={size == 'sm'} class="demo-col {size}" bind:value={page} />
 {#if size == 'sm'}
-	<ButtonGroup {items} fields={{ text: 'name' }} bind:value={page} />
+	<Switch options={items} fields={{ text: 'name' }} bind:value={page} />
 {/if}

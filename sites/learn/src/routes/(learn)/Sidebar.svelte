@@ -39,8 +39,8 @@
 
 <style>
 	aside {
-		@apply h-full z-5 overflow-auto;
-		@apply bg-neutral-base border-r border-neutral-inset;
+		@apply h-full z-5 overflow-auto text-xs;
+		@apply border-r border-neutral-inset;
 		@apply transform ease-in-out;
 	}
 </style>

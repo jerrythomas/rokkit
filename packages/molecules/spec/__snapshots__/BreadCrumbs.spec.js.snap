@@ -4,7 +4,7 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
 <body>
   <div>
     <crumbs
-      class="flex"
+      class="flex "
     >
        
       <crumb>
@@ -38,7 +38,7 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
 <body>
   <div>
     <crumbs
-      class="flex"
+      class="flex "
     >
        
       <crumb>
@@ -72,7 +72,7 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] 
 <body>
   <div>
     <crumbs
-      class="flex"
+      class="flex "
     >
        
       <crumb>

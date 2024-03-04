@@ -150,7 +150,7 @@
 }
 /* Crumbs styles */
 .rokkit crumbs {
-  @apply flex-grow gap-1 text-sm;
+  @apply flex-grow gap-1;
 }
 .rokkit crumbs crumb.is-selected {
   @apply text-secondary-700;

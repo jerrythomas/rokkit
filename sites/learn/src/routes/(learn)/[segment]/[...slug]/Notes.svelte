@@ -32,7 +32,7 @@
 				role="button"
 				on:click={() => gotoPage($story.previous)}
 			/>
-			<h1 class="w-full"><BreadCrumbs items={$story.crumbs} /></h1>
+			<h1 class="w-full"><BreadCrumbs items={$story.crumbs} class="text-xs" /></h1>
 			<Icon
 				name="i-rokkit:arrow-right"
 				disabled={!$story.next}

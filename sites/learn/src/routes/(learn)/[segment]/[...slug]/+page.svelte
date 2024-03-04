@@ -10,6 +10,7 @@
 
 	const story = writable({})
 	const media = getContext('media')
+	const site = getContext('site')
 	setContext('tutorial', story)
 
 	let items = [
@@ -40,12 +41,13 @@
 	}
 	let size = 'md'
 	export let data
-
+	// $: console.log($site)
 	$: loadComponent(data.tutorial)
 	$: size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
+	$: layout = $site.code === 'hidden' ? 'two-col' : 'three-col'
 </script>
 
-<ResponsiveGrid {items} small={size == 'sm'} class="three-col {size}" bind:value={page} />
+<ResponsiveGrid {items} small={size == 'sm'} class="{layout} {size}" bind:value={page} />
 {#if size == 'sm'}
 	<Switch options={items} fields={{ text: 'name' }} bind:value={page} class="my-2" />
 {/if}

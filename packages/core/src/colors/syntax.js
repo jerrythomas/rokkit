@@ -2,8 +2,8 @@ export const syntaxColors = {
 	'one-dark': {
 		dark: {
 			'--tab-size': '2',
-			// '--code-bg': '#282c34',
-			'--code-fill': '#282c34',
+			// '--code-bg': 'var(--neutral-100)',
+			'--code-fill': 'var(--neutral-100)',
 			'--code-normal': '#e06c75',
 			'--code-string': '#98c379',
 			'--code-number': '#d19a66',
@@ -22,8 +22,8 @@ export const syntaxColors = {
 		},
 		light: {
 			'--tab-size': '2',
-			// '--code-bg': '#f3f4f6',
-			'--code-fill': '#f3f4f6',
+			// '--code-bg': 'var(--neutral-100)',
+			'--code-fill': 'var(--neutral-100)',
 			'--code-normal': '#333333',
 			'--code-string': '#9D8248',
 			'--code-number': '#71A15D',

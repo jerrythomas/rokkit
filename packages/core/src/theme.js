@@ -23,12 +23,11 @@ export function shadesOf(name, modifier = 'none') {
 		}),
 		{
 			DEFAULT: fn(`var(--${name}-500)`),
-			sunken: fn(`var(--${name}-50)`),
+			base: fn(`var(--${name}-50)`),
 			inset: fn(`var(--${name}-100)`),
-			base: fn(`var(--${name}-200)`),
-			subtle: fn(`var(--${name}-300)`),
-			muted: fn(`var(--${name}-400)`),
-			raised: fn(`var(--${name}-500)`),
+			subtle: fn(`var(--${name}-200)`),
+			muted: fn(`var(--${name}-300)`),
+			raised: fn(`var(--${name}-400)`),
 			elevated: fn(`var(--${name}-600)`),
 			floating: fn(`var(--${name}-700)`),
 			contrast: fn(`var(--${name}-800)`)
@@ -60,7 +59,7 @@ export function themeColors(modifier = 'none') {
 	)
 	colors.neutral = {
 		...colors.neutral,
-		contrast: fn(`var(--neutral-800)`),
+		// contrast: fn(`var(--neutral-800)`),
 		zebra: fn(`var(--neutral-zebra)`)
 	}
 

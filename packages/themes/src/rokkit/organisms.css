@@ -212,8 +212,8 @@
 /* .rokkit virtual-list item.is-hovering, */
 .rokkit list item:hover,
 .rokkit virtual-list-contents virtual-list-item:hover,
-.rokkit node:hover > div {
-  @apply bg-neutral-inset;
+.rokkit node > div:hover {
+  @apply bg-neutral-subtle;
 }
 
 /* Selected and Hover styles for List and Node */
@@ -263,7 +263,7 @@
 
 /* Toggle Switch styles */
 .rokkit toggle-switch {
-  @apply min-w-12 min-h-6 rounded-full mx-auto;
+  @apply min-w-12 rounded-full mx-auto;
   @apply bg-neutral-subtle border border-neutral-muted;
   @apply leading-loose p-2px;
 }
@@ -356,4 +356,8 @@
 .rokkit tree-table tr[aria-current='true'] td icon,
 .rokkit tree-table tr.even[aria-current='true'] td icon {
   @apply text-secondary-100;
+}
+
+.rokkit container:focus-within {
+  @apply outline-none;
 }
