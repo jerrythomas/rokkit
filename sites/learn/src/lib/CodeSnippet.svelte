@@ -4,7 +4,9 @@
 
 	let className = ''
 	export { className as class }
+	/** @type {string} */
 	export let code
+	/** @type {string} */
 	export let language
 
 	$: parsed = Prism.highlight(code, Prism.languages[language], language)

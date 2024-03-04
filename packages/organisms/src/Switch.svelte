@@ -9,6 +9,7 @@
 	let className = ''
 	export { className as class }
 	export let value
+	/** @type {Array<any>} */
 	export let options = [false, true]
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields

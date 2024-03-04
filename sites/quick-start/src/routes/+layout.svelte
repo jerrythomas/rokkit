@@ -1,8 +1,8 @@
 <script>
-	import 'uno.css';
-	import '../app.css';
-	import { ToggleThemeMode } from '@rokkit/ui';
-	import { themable } from '@rokkit/actions';
+	import 'uno.css'
+	import '../app.css'
+	import { ToggleThemeMode } from '@rokkit/ui'
+	import { themable } from '@rokkit/actions'
 </script>
 
 <svelte:body use:themable />

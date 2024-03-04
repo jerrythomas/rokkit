@@ -1,6 +1,5 @@
 <script>
 	import { shades, defaultPalette as palette } from '@rokkit/core'
-	let value
 </script>
 
 <div class="flex flex-col gap-2">

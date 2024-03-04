@@ -48,7 +48,7 @@
 
 	$: tickStep = Math.max(1, Math.round((max - min) / ticks))
 	$: tickItems = generateTicks(min, max, tickStep, labelSkip + 1)
-  $: steps =
+	$: steps =
 		step > 0
 			? Array.from({ length: 1 + (max - min) / step }, (_, i) => Math.min(min + i * step, max))
 			: []

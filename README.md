@@ -82,7 +82,7 @@ If you want to provide users the option of switching between dark theme and ligh
 </script>
 
 <svelte:body use:themable />
-<ToggleThemeMode/>
+<ToggleThemeMode />
 ```
 
 ## Documentation

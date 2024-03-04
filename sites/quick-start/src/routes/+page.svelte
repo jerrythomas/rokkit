@@ -1,7 +1,7 @@
 <script>
-	import { List } from '@rokkit/ui';
-	export let data;
-	let value;
+	import { List } from '@rokkit/ui'
+	export let data
+	let value
 </script>
 
 <main class="h-full w-full flex flex-col p-8">

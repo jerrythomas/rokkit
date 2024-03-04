@@ -10,7 +10,7 @@
 	export let schema = {}
 	export let path = []
 
-	function handle(event) {
+	function handle() {
 		dispatch('change', value)
 	}
 

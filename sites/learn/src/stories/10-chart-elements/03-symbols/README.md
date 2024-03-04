@@ -10,12 +10,12 @@ Symbols are graphical representations used in charts to convey data points, cate
 
 The Symbol component is a versatile tool used in charting libraries to generate and render symbols at specified coordinates on a chart. It supports creating multiple shapes by providing the following attributes:
 
-- __x__: The x-coordinate of the symbol's position on the chart.
-- __y__: The y-coordinate of the symbol's position on the chart.
-- __name__: Specifies the name of the symbol, such as "circle", "square", "triangle", etc.
-- __size__ (optional): Determines the size of the symbol. If not specified, a default size is used.
-- __fill__ (optional): Specifies the fill color of the symbol. If not provided, the symbol may be rendered with a default fill color or left unfilled.
-- __stroke__ (optional): Specifies the stroke color or border color of the symbol. If not provided, the symbol may be rendered without a border.
+- **x**: The x-coordinate of the symbol's position on the chart.
+- **y**: The y-coordinate of the symbol's position on the chart.
+- **name**: Specifies the name of the symbol, such as "circle", "square", "triangle", etc.
+- **size** (optional): Determines the size of the symbol. If not specified, a default size is used.
+- **fill** (optional): Specifies the fill color of the symbol. If not provided, the symbol may be rendered with a default fill color or left unfilled.
+- **stroke** (optional): Specifies the stroke color or border color of the symbol. If not provided, the symbol may be rendered without a border.
 
 ## Example
 

@@ -41,6 +41,5 @@ In your `+page.svelte`
   let value
 </script>
 
-<List {items} bind:value />
-<p>Selected Value: <b>{value}</b></p>
+<List {items} bind:value /><p>Selected Value: <b>{value}</b></p>
 ```

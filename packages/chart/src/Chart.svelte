@@ -29,9 +29,9 @@
 		top: marginTop,
 		bottom: marginBottom
 	}
-	$: patterns = [...new Set(data.map((d) => d[pattern]))]
-	$: fills = [...new Set(data.map((d) => d[fill]))]
-	$: colors = [...new Set(data.map((d) => d[color]))]
+	// $: patterns = [...new Set(data.map((d) => d[pattern]))]
+	// $: fills = [...new Set(data.map((d) => d[fill]))]
+	// $: colors = [...new Set(data.map((d) => d[color]))]
 	$: config.set(
 		chart(data, {
 			x,
