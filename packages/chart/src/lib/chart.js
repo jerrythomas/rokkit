@@ -76,9 +76,9 @@ class Chart {
 		this.data = data.map((d) => ({
 			x: this.flipCoords ? d[this.y] : d[this.x],
 			y: this.flipCoords ? d[this.x] : d[this.y],
-			fill: d[this.fill],
-			color: d[this.color],
-			shape: d[this.shape]
+			// fill: d[this.fill],
+			color: d[this.color]
+			// shape: d[this.shape]
 		}))
 
 		this.refresh()

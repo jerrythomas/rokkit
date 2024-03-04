@@ -10,6 +10,6 @@ describe('swatchGrid', () => {
 	]
 	it('should return a swatchGrid', () => {
 		const chartData = chart(data, { x: 'x', y: 'y', color: 'color' })
-		// expect(chartData.data).toEqual(data)
+		expect(chartData.data).toEqual(data)
 	})
 })

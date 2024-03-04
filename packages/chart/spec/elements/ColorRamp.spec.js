@@ -1,14 +1,18 @@
-import { describe, expect, beforeEach, it } from 'vitest'
+import { describe, expect, beforeEach, it, vi, afterEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import ColorRamp from '../../src/elements/ColorRamp.svelte'
-import { scaleBand } from 'd3-scale'
+import { scaleLinear } from 'd3-scale'
 
 describe('ColorRamp.svelte', () => {
-	beforeEach(() => cleanup())
+	beforeEach(() => {
+		cleanup()
+		Math.random = vi.fn(() => 0.123456789)
+	})
+	afterEach(() => vi.restoreAllMocks())
 
 	it('should render', () => {
-		const scale = scaleBand().domain([0, 1]).range(['#f00', '#0f0'])
-		// const { container } = render(ColorRamp, { props: scale })
-		// expect(container).toMatchSnapshot()
+		const scale = scaleLinear().domain([0, 1]).range(['#f00', '#0f0'])
+		const { container } = render(ColorRamp, { props: { scale } })
+		expect(container).toMatchSnapshot()
 	})
 })

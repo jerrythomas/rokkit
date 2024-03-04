@@ -29,7 +29,7 @@
 		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type', iconPrefix: 'type' } }
 	]
 
-	function handleChange(event) {
+	function handleChange() {
 		dispatch('change', value)
 	}
 	function handleMove(event) {

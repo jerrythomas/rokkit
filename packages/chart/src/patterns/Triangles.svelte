@@ -11,5 +11,5 @@
 </script>
 
 {#each polygons as points}
-	<polygon points={points.join(', ')} {fill} {stroke} stroke-width=0 />
+	<polygon points={points.join(', ')} {fill} {stroke} stroke-width="0" />
 {/each}

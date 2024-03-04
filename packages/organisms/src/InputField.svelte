@@ -59,11 +59,11 @@
 			<Icon name={icon} />
 		{/if}
 		{#if type === 'switch'}
-		  <label for={name} class:required>{label}</label>
+			<label for={name} class:required>{label}</label>
 		{/if}
 		<Input id={name} bind:value {type} {...props} {using} on:change />
 		{#if type === 'checkbox'}
-		  <label for={name} class:required>{label}</label>
+			<label for={name} class:required>{label}</label>
 		{/if}
 	</field>
 	{#if message}

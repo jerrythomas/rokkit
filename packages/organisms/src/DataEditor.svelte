@@ -21,7 +21,7 @@
 
 	let schemaWithLayout
 
-	function handle(event) {
+	function handle() {
 		dispatch('change', value)
 	}
 	$: registry.set({

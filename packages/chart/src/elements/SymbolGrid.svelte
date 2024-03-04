@@ -6,7 +6,7 @@
 	export let size = 4
 	export let shade = 600
 
-	$: grid = swatchGrid(Object.keys($swatch.symbols).length, size, 10)
+	$: grid = swatchGrid($swatch.keys.symbol.length, size, 10)
 </script>
 
 <svg viewBox="0 0 {grid.width} {grid.height}">
@@ -14,8 +14,8 @@
 		<Symbol
 			{x}
 			{y}
-			r={(index + 1) / 2}
-			shape={$swatch.keys.symbol[6]}
+			size={r * 2}
+			name={$swatch.keys.symbol[index]}
 			fill={$swatch.palette[base][shade]}
 			stroke={$swatch.palette[base][shade]}
 		/>

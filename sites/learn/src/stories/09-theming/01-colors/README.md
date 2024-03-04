@@ -44,8 +44,8 @@ Example usage:
 ```javascript
 // Customizing the palette
 const mapping = {
-  primary: 'norway', // Override Primary color with custom color
-};
+  primary: 'norway' // Override Primary color with custom color
+}
 const colors = {
   norway: {
     DEFAULT: '#83A666',
@@ -60,10 +60,10 @@ const colors = {
     800: '#475C36',
     900: '#334227',
     950: '#29361F'
-  },
+  }
   // Include other palette colors with custom values as needed
-};
-themeRules('custom', mapping, colors);
+}
+themeRules('custom', mapping, colors)
 ```
 
 By using the `themeRules` function, users can tailor the Rokkit palette to suit the specific design requirements of their application. They can also utilize CSS variables for more granular control over color application.

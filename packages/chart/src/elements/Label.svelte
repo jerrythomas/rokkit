@@ -6,9 +6,8 @@
 	export let small = false
 	export let anchor = 'middle'
 
-
 	$: transform = `translate(${x},${y}) rotate(${angle})`
-	$: anchor = ['start','middle','end'].includes(anchor) ? anchor : 'middle'
+	$: anchor = ['start', 'middle', 'end'].includes(anchor) ? anchor : 'middle'
 </script>
 
 <text class="label" class:small text-anchor={anchor} {transform}>{text}</text>
