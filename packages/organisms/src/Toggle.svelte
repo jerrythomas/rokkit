@@ -15,6 +15,7 @@
 	export let description = 'Toggle'
 	export let tabindex = 0
 	export let disabled = false
+	export let minimal = false
 
 	function handle(e) {
 		// console.log('toggle clicked', value, e.detail)
@@ -34,6 +35,7 @@
 	{tabindex}
 	use:switchable={{ value, options, disabled }}
 	on:change={handle}
+	class:minimal
 >
 	<Item {value} {fields} />
 </toggle>
