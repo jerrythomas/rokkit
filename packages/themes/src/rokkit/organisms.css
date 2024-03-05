@@ -101,17 +101,7 @@
 .rokkit button-group button.active {
   @apply bg-gradient-to-r from-primary to-secondary text-white;
 }
-.rokkit toggle {
-  @apply flex flex-row items-center gap-3 cursor-pointer;
-  @apply rounded-md border border-neutral-muted p-2;
-}
 
-.rokkit toggle:hover > icon {
-  @apply text-secondary;
-}
-.rokkit toggle:focus-within {
-  @apply outline-none ring-2 ring-primary-500;
-}
 /* Input and Drop-down styles */
 .rokkit input-select,
 .rokkit drop-down > button {
@@ -318,44 +308,6 @@
 }
 .rokkit input-select > selected-item > items {
   @apply flex-grow flex-wrap gap-2;
-}
-
-/* Tree Table styles */
-.rokkit tree-table > table tr {
-  @apply gap-1px;
-}
-.rokkit tree-table > table {
-  @apply gap-2px;
-}
-.rokkit tree-table > table tr > th {
-  @apply bg-gradient-to-b from-neutral-muted to-neutral-subtle uppercase;
-}
-.rokkit tree-table > table > thead > tr > th {
-  @apply text-secondary-700 font-light;
-}
-.rokkit tree-table > table > tbody {
-  @apply gap-1px;
-}
-.rokkit tree-table > table > tbody > tr > td {
-  @apply bg-neutral-subtle gap-2;
-}
-.rokkit tree-table > table > tbody > tr.even > td {
-  @apply bg-neutral-muted;
-}
-.rokkit tree-table tr:hover td,
-.rokkit tree-table tr.even:hover td {
-  @apply bg-neutral-500;
-}
-.rokkit tree-table tr[aria-current='true'] td,
-.rokkit tree-table tr.even[aria-current='true'] td {
-  @apply bg-secondary-700 text-neutral-100;
-}
-.rokkit tree-table tr td icon {
-  @apply text-secondary-700;
-}
-.rokkit tree-table tr[aria-current='true'] td icon,
-.rokkit tree-table tr.even[aria-current='true'] td icon {
-  @apply text-secondary-100;
 }
 
 .rokkit container:focus-within {

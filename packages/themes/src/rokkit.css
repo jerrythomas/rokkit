@@ -4,3 +4,5 @@
 @import './rokkit/molecules.css';
 @import './rokkit/organisms.css';
 @import './rokkit/layout.css';
+@import './rokkit/toggle.css';
+@import './rokkit/table.css';

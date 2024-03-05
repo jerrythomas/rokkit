@@ -1,0 +1,85 @@
+th,
+td {
+  @apply px-5 py-3;
+}
+tr {
+  @apply gap-1px;
+}
+th {
+  @apply whitespace-nowrap;
+}
+th cell {
+  @apply flex items-center gap-2;
+}
+th[data-sortable='true'] {
+  @apply cursor-pointer;
+}
+th[data-sortable='true']:hover,
+th[data-sortable='true']:hover icon {
+  @apply text-primary-700;
+}
+
+table {
+  @apply w-full text-sm text-left rtl:text-right text-neutral-700;
+}
+table > thead {
+  @apply table-header-group text-xs uppercase bg-neutral-400;
+}
+table > caption {
+  @apply table-caption p-5 text-sm font-normal text-left rtl:text-right bg-neutral-subtle text-neutral-600;
+}
+
+table > tbody > tr {
+  @apply table-row border-b border-neutral-base bg-neutral-subtle;
+}
+table.striped > tbody > tr:nth-child(even) {
+  @apply bg-neutral-inset;
+}
+table > tfoot {
+  @apply table-footer-group;
+}
+table > tfoot > tr {
+  @apply table-row font-semibold text-neutral-800;
+}
+
+table-wrapper {
+  @apply shadow-md sm:rounded-lg;
+}
+
+/* Tree Table styles */
+/* .rokkit tree-table > table tr {
+  @apply gap-1px;
+}
+.rokkit tree-table > table {
+  @apply gap-2px;
+}
+.rokkit tree-table > table tr > th {
+  @apply bg-gradient-to-b from-neutral-muted to-neutral-subtle uppercase;
+}
+.rokkit tree-table > table > thead > tr > th {
+  @apply text-secondary-700 font-light;
+}
+.rokkit tree-table > table > tbody {
+  @apply gap-1px;
+}
+.rokkit tree-table > table > tbody > tr > td {
+  @apply bg-neutral-subtle gap-2;
+}
+.rokkit tree-table > table > tbody > tr.even > td {
+  @apply bg-neutral-muted;
+} */
+.rokkit tree-table tr:hover td,
+.rokkit tree-table tr.even:hover td {
+  @apply bg-neutral-500;
+}
+.rokkit tree-table tr[aria-current='true'] td,
+.rokkit tree-table tr.even[aria-current='true'] td {
+  @apply bg-secondary-700 text-neutral-100;
+}
+.rokkit tree-table tr td icon {
+  @apply text-secondary-700;
+}
+.rokkit tree-table tr[aria-current='true'] td icon,
+.rokkit tree-table tr.even[aria-current='true'] td icon {
+  @apply text-secondary-100;
+}
