@@ -1,0 +1,18 @@
+.rokkit toggle {
+  @apply flex flex-row items-center gap-3 cursor-pointer;
+  @apply rounded-md border border-neutral-muted p-2;
+}
+
+.rokkit toggle:hover > icon {
+  @apply text-secondary;
+}
+.rokkit toggle:focus-within {
+  @apply outline-none ring-2 ring-primary-500;
+}
+
+.rokkit toggle.minimal {
+  @apply py-0 border-none focus-within:ring-0;
+}
+.rokkit toggle.minimal icon > i {
+  @apply h-4;
+}
