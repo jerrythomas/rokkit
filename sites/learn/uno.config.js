@@ -63,7 +63,12 @@ export default defineConfig({
 		'type-object': 'i-component:input-object',
 		'type-string': 'i-component:input-text',
 		'type-number': 'i-component:input-number',
-		'type-boolean': 'i-component:checkbox'
+		'type-boolean': 'i-component:checkbox',
+		'sort-descending': 'i-solar:sort-from-bottom-to-top-line-duotone',
+		'sort-ascending': 'i-solar:sort-from-top-to-bottom-line-duotone',
+		'sort-desc': 'i-solar:sort-from-bottom-to-top-line-duotone',
+		'sort-asc': 'i-solar:sort-from-top-to-bottom-line-duotone',
+		'sort-none': 'i-solar:sort-vertical-line-duotone'
 	},
 	theme: {
 		fontFamily: {
@@ -89,7 +94,8 @@ export default defineConfig({
 				),
 				app: FileSystemIconLoader('./static/icons/app', (svg) =>
 					svg.replace(/black/, 'currentColor')
-				)
+				),
+				solar: () => import('@iconify-json/solar/icons.json').then((i) => i.default)
 			}
 		})
 	],
