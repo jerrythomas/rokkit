@@ -4,5 +4,6 @@
 @import './base/molecules.css';
 @import './base/organisms.css';
 @import './base/layout.css';
+@import './base/table.css';
 @import './base/carousel.css';
 @import './base/animation.css';

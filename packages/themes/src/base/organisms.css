@@ -51,21 +51,3 @@ drop-down > button > span {
   @apply pl-3 min-h-9 gap-2 items-center normal-case;
   @apply rounded text-neutral-800;
 }
-
-/* Tree Table styles */
-tree-table {
-  @apply flex flex-col h-full w-full overflow-auto;
-}
-tree-table > table {
-  @apply flex flex-col w-full h-full justify-start border-collapse overflow-auto;
-}
-tree-table > table tr {
-  @apply grid;
-}
-tree-table > table tr td,
-tree-table > table tr th {
-  @apply flex flex-row items-center px-4 py-3;
-}
-tree-table > table > tbody {
-  @apply flex flex-col overflow-y-auto;
-}

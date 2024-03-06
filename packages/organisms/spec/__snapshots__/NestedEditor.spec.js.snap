@@ -33,13 +33,12 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
            
           <tree-table
             class=""
-            style="--sizes: 1fr 1fr;"
           >
-            <table>
+            <table
+              class="striped"
+            >
               <thead>
-                <tr
-                  class="svelte-1y64wrd"
-                >
+                <tr>
                   <th>
                     path
                   </th>
