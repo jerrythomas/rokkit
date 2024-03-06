@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/tutorial",
-	"version": "1.0.0-next.90",
+	"version": "1.0.0-next.91",
 	"description": "Utilities for building tutorials.",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",

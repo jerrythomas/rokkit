@@ -1,6 +1,6 @@
 {
   "name": "quick-start",
-  "version": "1.0.0-next.90",
+  "version": "1.0.0-next.91",
   "private": true,
   "scripts": {
     "dev": "vite dev",
