@@ -50,6 +50,7 @@ describe('components', () => {
 			'Table',
 			'TreeTable',
 			'Toggle',
+			'Carousel',
 			'Sidebar',
 			'SplitPane',
 			'Stepper',

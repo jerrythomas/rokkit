@@ -23,7 +23,8 @@ describe('components', () => {
 			'NestedEditor',
 			'Table',
 			'TreeTable',
-			'Toggle'
+			'Toggle',
+			'Carousel'
 		])
 	})
 })
