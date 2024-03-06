@@ -6,8 +6,8 @@ export { defaultColors, syntaxColors, shades, defaultPalette } from './colors'
 export const defaultFields = {
 	id: 'id',
 	url: 'url',
-	value: 'value',
 	text: 'text',
+	value: 'value',
 	children: 'children',
 	icon: 'icon',
 	iconPrefix: null,
@@ -21,7 +21,8 @@ export const defaultFields = {
 	isOpen: '_open',
 	isDeleted: '_deleted',
 	level: 'level',
-	parent: 'parent'
+	parent: 'parent',
+	currency: 'currency'
 }
 
 export const defaultIcons = [
@@ -41,6 +42,7 @@ export const defaultIcons = [
 	'checkbox-unknown',
 	'rating-filled',
 	'rating-empty',
+	'rating-half',
 	'radio-off',
 	'radio-on',
 	'mode-dark',
@@ -57,7 +59,14 @@ export const defaultIcons = [
 	'badge-fail',
 	'badge-warn',
 	'badge-pass',
-	'badge-unknown'
+	'badge-unknown',
+	'sort-none',
+	'sort-ascending',
+	'sort-descending',
+	'validity-failed',
+	'validity-passed',
+	'validity-unknown',
+	'validity-warning'
 ]
 
 export const defaultOptions = {
