@@ -41,7 +41,6 @@ table > tfoot {
 table > tfoot > tr {
   @apply table-row font-semibold text-neutral-800;
 }
-
 table-wrapper {
   @apply shadow-md sm:rounded-lg;
 }

@@ -5,13 +5,12 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
   <div>
     <tree-table
       class=""
-      style="--sizes: 50% 50%;"
     >
-      <table>
+      <table
+        class="striped"
+      >
         <thead>
-          <tr
-            class="svelte-1y64wrd"
-          >
+          <tr>
             <th>
               path
             </th>
@@ -24,105 +23,116 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
         <tbody>
           <tr
             aria-current="false"
-            class="svelte-1y64wrd even"
           >
             <td>
-               
-              <icon
-                aria-label="node-opened"
-                class="flex flex-shrink-0 items-center justify-center small cursor-pointer"
-                role="img"
-                tabindex="-1"
-              >
-                <i
-                  aria-hidden="true"
-                  class="node-opened"
+              <cell>
+                 
+                <icon
+                  aria-label="node-opened"
+                  class="flex flex-shrink-0 items-center justify-center small cursor-pointer"
+                  role="img"
+                  tabindex="-1"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="node-opened"
+                  />
+                </icon>
+                
+                 
+                
+                 
+                <p>
+                  root
+                </p>
+                
+                
+              </cell>
+            </td>
+            <td>
+              <cell>
+                 
+                
+                 
+                
+                
+              </cell>
+            </td>
+             
+          </tr>
+          <tr
+            aria-current="false"
+            class="cursor-pointer"
+          >
+            <td>
+              <cell>
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
                 />
-              </icon>
-              
-               
-              
-               
-              <p>
-                root
-              </p>
-              
-              
+                 
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                />
+                
+                 
+                
+                 
+                <p>
+                  one
+                </p>
+                
+                
+              </cell>
             </td>
             <td>
-               
-              
-               
-              
-              
-            </td>
-             
-          </tr>
-          <tr
-            aria-current="false"
-            class="svelte-1y64wrd cursor-pointer"
-          >
-            <td>
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
-               
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
-              
-               
-              
-               
-              <p>
-                one
-              </p>
-              
-              
-            </td>
-            <td>
-               
-              
-               
-              <p>
-                one
-              </p>
-              
-              
+              <cell>
+                 
+                
+                 
+                <p>
+                  one
+                </p>
+                
+                
+              </cell>
             </td>
              
           </tr>
           <tr
             aria-current="false"
-            class="svelte-1y64wrd even cursor-pointer"
+            class="cursor-pointer"
           >
             <td>
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
-               
-              <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
-              
-               
-              
-               
-              <p>
-                two
-              </p>
-              
-              
+              <cell>
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                />
+                 
+                <span
+                  class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                />
+                
+                 
+                
+                 
+                <p>
+                  two
+                </p>
+                
+                
+              </cell>
             </td>
             <td>
-               
-              
-               
-              <p>
-                200
-              </p>
-              
-              
+              <cell>
+                 
+                
+                 
+                <p>
+                  200
+                </p>
+                
+                
+              </cell>
             </td>
              
           </tr>

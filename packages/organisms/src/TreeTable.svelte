@@ -20,18 +20,6 @@
 	let hiddenPaths = []
 	let currentItem = null
 
-	// function addLevels(data) {
-	// 	data = data.map((item) => {
-	// 		item._levels = item._path.split('/').length
-	// 		item._isParent = data.some(
-	// 			(i) => i._path.startsWith(item._path + '/') && i._path !== item._path
-	// 		)
-	// 		item._isExpanded = hiddenPaths.includes(item._path) ? false : true
-	// 		item._depth = item._path.split('/').length - 1
-	// 		item._selected = item._selected || 'unchecked'
-	// 		return item
-	// 	})
-	// }
 	function handleItemClick(event, item) {
 		if (item._isParent) toggle(item)
 		else {
@@ -111,12 +99,11 @@
 	$: using = { default: Item, ...using }
 	$: visible = data.filter(dataFilter).filter(isVisible)
 	$: addMultiSelectColumn(multiselect, data)
-	$: sizes = columns.map((col) => col.width ?? '1fr').join(' ')
 	$: nestedColumn = columns.find((col) => col.path)
 </script>
 
-<tree-table class={className} style:--sizes={sizes}>
-	<table>
+<tree-table class={className}>
+	<table class:striped>
 		<thead>
 			<tr>
 				{#each columns as col}
@@ -126,9 +113,7 @@
 		</thead>
 		<tbody>
 			{#each visible as item, index}
-				{@const even = striped && index % 2 === 0}
 				<tr
-					class:even
 					class:cursor-pointer={!item._isParent}
 					aria-current={currentItem === item}
 					on:click|stopPropagation={(e) => handleItemClick(e, item)}
@@ -138,30 +123,32 @@
 						{@const fields = { ...defaultFields, text: col.key, ...col.fields }}
 						{@const component = using[fields.component] ?? using.default}
 						<td>
-							{#if multiselect && index === 0}
-								<!-- {#if !item._isParent} -->
-								<Icon
-									name={'checkbox-' + item._selected}
-									class="small cursor-pointer"
-									on:click={(e) => toggleSelection(e, item)}
-								/>
-								<!-- {/if} -->
-							{:else}
-								{#if col.path}
-									{#each item._levels.slice(0, -1) as _}
-										<Connector type="empty" />
-									{/each}
-									{#if item._isParent}
-										<Icon
-											name={item._isExpanded ? 'node-opened' : 'node-closed'}
-											class="small cursor-pointer"
-										/>
-									{:else if item._depth > 0}
-										<Connector type="empty" />
+							<cell>
+								{#if multiselect && index === 0}
+									<!-- {#if !item._isParent} -->
+									<Icon
+										name={'checkbox-' + item._selected}
+										class="small cursor-pointer"
+										on:click={(e) => toggleSelection(e, item)}
+									/>
+									<!-- {/if} -->
+								{:else}
+									{#if col.path}
+										{#each item._levels.slice(0, -1) as _}
+											<Connector type="empty" />
+										{/each}
+										{#if item._isParent}
+											<Icon
+												name={item._isExpanded ? 'node-opened' : 'node-closed'}
+												class="small cursor-pointer"
+											/>
+										{:else if item._depth > 0}
+											<Connector type="empty" />
+										{/if}
 									{/if}
+									<svelte:component this={component} {value} {fields} />
 								{/if}
-								<svelte:component this={component} {value} {fields} />
-							{/if}
+							</cell>
 						</td>
 					{/each}
 				</tr>
@@ -169,17 +156,3 @@
 		</tbody>
 	</table>
 </tree-table>
-
-<style>
-	tr {
-		grid-template-columns: var(--sizes);
-	}
-
-	/* th,
-	td {
-		@apply px-4 py-3;
-	}
-	td :global(icon) {
-		@apply text-secondary-700;
-	} */
-</style>
