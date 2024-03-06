@@ -32,7 +32,8 @@ describe('Utility functions', () => {
 			},
 			rating: {
 				filled: 'rating-filled',
-				empty: 'rating-empty'
+				empty: 'rating-empty',
+				half: 'rating-half'
 			},
 			radio: {
 				off: 'radio-off',
@@ -60,6 +61,17 @@ describe('Utility functions', () => {
 				warn: 'badge-warn',
 				pass: 'badge-pass',
 				unknown: 'badge-unknown'
+			},
+			sort: {
+				ascending: 'sort-ascending',
+				descending: 'sort-descending',
+				none: 'sort-none'
+			},
+			validity: {
+				failed: 'validity-failed',
+				passed: 'validity-passed',
+				unknown: 'validity-unknown',
+				warning: 'validity-warning'
 			}
 		})
 	})
