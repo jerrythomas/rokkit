@@ -1,47 +1,51 @@
 <script>
-	// import { createEventDispatcher } from 'svelte'
-	// import { pick, omit } from 'ramda'
-	import { isObject } from '@rokkit/core'
-	// import { Connector, Icon } from '@rokkit/atoms'
-	// import { Item } from '@rokkit/molecules'
+	import TableHeaderCell from './TableHeaderCell.svelte'
+	import TableCell from './TableCell.svelte'
 
-	// const dispatch = createEventDispatcher()
-
-	let className = ''
-	export { className as class }
-	/** @type {Array<Object>} */
-	export let data = []
-	/** @type {Array<string>} */
-	export let columns = []
-	// export let striped = true
-	// export let value = null
-	// export let multiselect = false
-	// export let using = {}
-	// export let dataFilter = () => true
-
-	let width
-
-	$: columns = data.length == 0 ? [] : columns.length == 0 ? Object.keys(data[0]) : columns
+	export let data
+	export let caption = null
+	export let columns
+	export let summary = null
+	export let striped = false
 </script>
 
-<div class="overflow-x">
-	<table class="w-full {className}">
-		<thead class="w-full" {width}>
-			<tr class="bg-neutral-inset upper text-neutral-800">
+<table-wrapper class="relative overflow-x-auto">
+	<table class:striped>
+		{#if caption}
+			<caption>
+				{caption}
+			</caption>
+		{/if}
+		<thead>
+			<tr>
 				{#each columns as column}
-					{@const title = isObject(column) ? column.label ?? column.key : column}
-					<th class="px-4 h-10">{title}</th>
+					<TableHeaderCell {...column} />
 				{/each}
 			</tr>
 		</thead>
-		<tbody class="w-full overflow-y-scroll" bind:clientWidth={width}>
-			{#each data as row}
-				<tr class="border border-neutral-inset w-full gap-1px p-1px">
-					{#each columns as column}
-						<td class="px-4 h-10">{row[column]}</td>
+		<tbody>
+			{#each data as row, index}
+				<!-- {@const oddRow = striped && index % 2 === 0} -->
+				<tr>
+					{#each columns as { name, hidden, virtual, action, header }}
+						<TableCell {row} {name} {hidden} {virtual} {action} {header} />
 					{/each}
 				</tr>
 			{/each}
 		</tbody>
+		{#if summary}
+			<tfoot>
+				<tr>
+					{#each columns as { name, header, value }}
+						{#if header}
+							<th scope="row">{summary[name] ?? 'Total'}</th>
+						{/if}
+						{#if value}
+							<td>{value}</td>
+						{/if}
+					{/each}
+				</tr>
+			</tfoot>
+		{/if}
 	</table>
-</div>
+</table-wrapper>
