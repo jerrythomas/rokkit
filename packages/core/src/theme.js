@@ -66,19 +66,40 @@ export function themeColors(modifier = 'none') {
 	return colors
 }
 
+/**
+ * Creates an array of shade mapping objects for a given theme variant and mode.
+ * Each object represents a CSS custom property (variable) with its value set based on a provided condition.
+ *
+ * @param {string} variant - The name of the theme variant (e.g., 'primary', 'secondary').
+ * @param {'light' | 'dark'} mode - The theme mode for which the mappings are being created.
+ * @param {function(number): string} valueCondition - A function that takes a shade value and returns the color value
+ *                                                    based on the condition appropriate for light or dark mode.
+ * @returns {Array<{key: string, value: string, mode: string}>} An array of objects, where each object contains
+ *                                                              key, value, and mode properties corresponding to
+ *                                                              a CSS custom property definition.
+ */
+function createShadeMappings(variant, mode, valueCondition) {
+	return shades.map((shade) => ({
+		key: `--on-${variant}-${shade}`,
+		value: valueCondition(shade),
+		mode: mode
+	}))
+}
+
+/**
+ * Generates contrast colors for light and dark modes based on a given palette. Each color variant in the
+ * palette is mapped to either a light or dark contrast color depending on the shade's value.
+ *
+ * @param {string} [light='#ffffff'] - The default light color used when the shade is >= 500 in light mode or <= 500 in dark mode.
+ * @param {string} [dark='#000000'] - The default dark color used when the shade is < 500 in light mode or > 500 in dark mode.
+ * @param {Array<string>} [palette=defaultPalette] - An array of color variant names to generate contrast colors for.
+ * @returns {Array<Object>} An array containing contrast color rules organized by light and dark modes for each variant in the palette.
+ */
 export function contrastColors(light = '#ffffff', dark = '#000000', palette = defaultPalette) {
 	const colors = palette
 		.flatMap((variant) => [
-			shades.map((shade) => ({
-				key: `--on-${variant}-${shade}`,
-				value: shade < 500 ? dark : light,
-				mode: 'light'
-			})),
-			shades.map((shade) => ({
-				key: `--on-${variant}-${shade}`,
-				value: shade > 500 ? dark : light,
-				mode: 'dark'
-			}))
+			createShadeMappings(variant, 'light', (shade) => (shade < 500 ? dark : light)),
+			createShadeMappings(variant, 'dark', (shade) => (shade > 500 ? dark : light))
 		])
 		.reduce((acc, item) => [...acc, ...item], [])
 	return colors
