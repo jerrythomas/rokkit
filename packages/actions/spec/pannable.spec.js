@@ -38,6 +38,7 @@ describe('pannable', () => {
 		action.destroy()
 		expect(node.removeEventListener).toBeCalledWith('mousedown', handlers.node['mousedown'])
 	})
+
 	it('should emit the panstart event', () => {
 		const action = pannable(node)
 		let event = simulateMouseEvent(10, 10)

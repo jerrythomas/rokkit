@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent } from '@testing-library/svelte'
 import { switchable } from '../src/switchable'
 import { toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith } from 'validators'
-// import { getSpyDetail } from '../helper'
 
 expect.extend({ toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith })
 
