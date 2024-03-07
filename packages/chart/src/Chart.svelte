@@ -12,7 +12,7 @@
 	export let value = y
 	export let color = x
 	export let fill = x
-	export let pattern = x
+	// export let pattern = x
 	export let width = 2048
 	export let height = 2048
 	export let padding = height / 16
