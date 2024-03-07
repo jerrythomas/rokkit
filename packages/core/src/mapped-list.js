@@ -1,6 +1,20 @@
 import { defaultFields } from './constants'
 import { isExpanded, hasChildren, getAttribute } from './mapping'
 import { equals } from 'ramda'
+
+function isMatch(item, attr, value) {
+	const itemValue = attr ? getAttribute(item, attr) : item
+	return equals(itemValue, value)
+}
+
+function findInChildren(item, index, fields, value, attr, position) {
+	if (hasChildren(item, fields)) {
+		return findItemByValue(value, item[fields.children], fields.fields ?? fields, attr, [
+			...position,
+			index
+		])
+	}
+}
 /**
  * Traverses the tree to find an item by value.
  * @param {Array} items - The items array.
@@ -11,30 +25,14 @@ import { equals } from 'ramda'
  */
 export function findItemByValue(value, items, fields = defaultFields, attr = null, position = []) {
 	for (let i = 0; i < items.length; i++) {
-		const item = items[i]
-
-		if (attr) {
-			if (getAttribute(item, attr) === value) {
-				return { item, position: position.concat(i), fields }
-			}
-		} else if (equals(item, value)) {
-			return { item, position: position.concat(i), fields }
+		if (isMatch(items[i], attr, value)) {
+			return { item: items[i], position: [...position, i], fields }
 		}
 
-		// If the item has children, recurse into them.
-		if (hasChildren(item, fields)) {
-			const found = findItemByValue(
-				value,
-				item[fields.children],
-				fields.fields ?? fields,
-				attr,
-				position.concat(i)
-			)
-			if (found) return found
-		}
+		const foundInChildren = findInChildren(items[i], i, fields, value, attr, position)
+		if (foundInChildren) return foundInChildren
 	}
 
-	// If the item was not found, return null.
 	return null
 }
 
@@ -63,7 +61,7 @@ export function findItemByIndexArray(indices, items, fields) {
  *
  * @param {Array<integer>} position
  * @param {Array<*>} items
- * @param {import('@rokkit/core').FieldMapping} fields
+ * @param {import('./types').FieldMapping} fields
  * @returns
  */
 export function findNearestItemBefore(position, items, fields) {
@@ -90,7 +88,7 @@ export function findNearestItemBefore(position, items, fields) {
  *
  * @param {*} parent
  * @param {Array<integer>} position
- * @param {import('@rokkit/core').FieldMapping} fields
+ * @param {import('./types').FieldMapping} fields
  * @returns
  */
 export function findLastVisibleChild(parent, position, fields) {
@@ -197,7 +195,7 @@ function getNextSiblingOrAncestor(position, items, fields) {
 /**
  * Creates a mapped list from an items array and a fields mapping.
  * @param {Array<Object>} items - The items array.
- * @param {import('@rokkit/core').FieldMapping} fields - The fields mapping.
+ * @param {import('./types').FieldMapping} fields - The fields mapping.
  * @returns {Object} The mapped list.
  */
 export function mappedList(items, fields) {
