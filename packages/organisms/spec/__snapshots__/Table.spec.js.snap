@@ -3,59 +3,56 @@
 exports[`Table.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
-    <div
-      class="overflow-x"
+    <table-wrapper
+      class="relative overflow-x-auto"
     >
-      <table
-        class="w-full "
-      >
-        <thead
-          class="w-full"
-          width="0"
-        >
-          <tr
-            class="bg-neutral-inset upper text-neutral-800"
-          >
+      <table>
+         
+        <thead>
+          <tr>
             <th
-              class="px-4 h-10"
+              aria-label="id"
+              data-sortable="false"
+              scope="col"
             >
-              id
+              <cell>
+                id
+                 
+              </cell>
             </th>
+            
             <th
-              class="px-4 h-10"
+              aria-label="name"
+              data-sortable="false"
+              scope="col"
             >
-              name
+              <cell>
+                name
+                 
+              </cell>
             </th>
+            
           </tr>
         </thead>
          
-        <tbody
-          class="w-full overflow-y-scroll"
-        >
-          <tr
-            class="border border-neutral-inset w-full gap-1px p-1px"
-          >
-            <td
-              class="px-4 h-10"
-            >
+        <tbody>
+          <tr>
+            <td>
               1
             </td>
-            <td
-              class="px-4 h-10"
-            >
+            
+            
+            <td>
               test
             </td>
+            
+            
              
           </tr>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
         </tbody>
+         
       </table>
-    </div>
+    </table-wrapper>
   </div>
 </body>
 `;

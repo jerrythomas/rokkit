@@ -7,7 +7,9 @@ describe('Table.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render using default field mapping', () => {
-		const { container } = render(Table, { data: [{ id: 1, name: 'test' }] })
+		const { container } = render(Table, {
+			props: { data: [{ id: 1, name: 'test' }], columns: [{ name: 'id' }, { name: 'name' }] }
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})

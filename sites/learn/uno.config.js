@@ -8,9 +8,9 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { iconShortcuts, defaultIcons, themeColors } from '@rokkit/themes'
+import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
-import { palette } from './src/lib/colors'
+export const palette = themeRules('rokkit')
 
 const components = [
 	'list',

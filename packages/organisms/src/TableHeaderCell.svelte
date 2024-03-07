@@ -1,5 +1,5 @@
 <script>
-	import { Icon, Toggle } from '@rokkit/ui'
+	import { Icon } from '@rokkit/atoms'
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
