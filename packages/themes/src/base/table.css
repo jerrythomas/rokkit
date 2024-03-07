@@ -8,7 +8,7 @@ tr {
 th {
   @apply whitespace-nowrap;
 }
-th cell {
+table cell {
   @apply flex items-center gap-2;
 }
 th[data-sortable='true'] {
@@ -21,9 +21,11 @@ th[data-sortable='true']:hover icon {
 
 table {
   @apply w-full text-sm text-left rtl:text-right text-neutral-700;
+  @apply border-separate border-spacing-x-1px;
 }
 table > thead {
-  @apply table-header-group text-xs uppercase bg-neutral-400;
+  @apply table-header-group sticky top-0 z-10;
+  @apply text-xs uppercase bg-neutral-400;
 }
 table > caption {
   @apply table-caption p-5 text-sm font-normal text-left rtl:text-right bg-neutral-subtle text-neutral-600;
@@ -41,6 +43,7 @@ table > tfoot {
 table > tfoot > tr {
   @apply table-row font-semibold text-neutral-800;
 }
+tree-table,
 table-wrapper {
-  @apply shadow-md sm:rounded-lg;
+  @apply max-h-full overflow-y-auto;
 }
