@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import { palette } from './palette'
+import palette from './palette.json'
 import * as patterns from '../patterns'
 import { shapes } from '../symbols'
 
