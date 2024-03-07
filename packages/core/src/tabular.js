@@ -31,25 +31,12 @@ export function deriveColumnMetadata(dataArray) {
 	const columns = []
 
 	for (const key in firstRow) {
-		// if (Object.prototype.hasOwnProperty.call(firstRow, key)) {
 		const dataType = typeof firstRow[key]
 		const formatter = createFormatter(dataType, language)
 		const fields = { text: key }
 
 		if (key.endsWith('_currency')) {
-			const currencyColumn = key
-			const baseColumn = key.replace(/_currency$/, '')
-
-			// Find the existing column and update its currency attribute
-			const existingColumn = columns.find((column) => column.name === baseColumn)
-			existingColumn.dataType = 'currency'
-			existingColumn.formatter = createFormatter('currency', language, 2)
-			if (existingColumn) {
-				existingColumn.fields = {
-					...existingColumn.fields,
-					currency: currencyColumn
-				}
-			}
+			addCurrencyAttribute(key, columns, language)
 		} else {
 			columns.push({
 				name: key,
@@ -60,5 +47,22 @@ export function deriveColumnMetadata(dataArray) {
 		}
 	}
 
+	return columns
+}
+
+function addCurrencyAttribute(key, columns, language) {
+	const currencyColumn = key
+	const baseColumn = key.replace(/_currency$/, '')
+
+	// Find the existing column and update its currency attribute
+	const existingColumn = columns.find((column) => column.name === baseColumn)
+	existingColumn.dataType = 'currency'
+	existingColumn.formatter = createFormatter('currency', language, 2)
+	if (existingColumn) {
+		existingColumn.fields = {
+			...existingColumn.fields,
+			currency: currencyColumn
+		}
+	}
 	return columns
 }
