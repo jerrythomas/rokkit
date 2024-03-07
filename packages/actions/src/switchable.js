@@ -1,3 +1,5 @@
+import { removeListeners, setupListeners } from './lib'
+
 export function switchable(node, data) {
 	let index = 0
 	let { value, options, disabled } = data
@@ -10,14 +12,12 @@ export function switchable(node, data) {
 	}
 
 	const toggle = (increment = 1) => {
-		if (disabled) return
 		index = (index + increment) % options.length
 		value = options[index]
 		node.dispatchEvent(new CustomEvent('change', { detail: value }))
 	}
 
 	const keydown = (e) => {
-		if (disabled) return
 		if ([' ', 'Enter', 'ArrowRight', 'ArrowLeft'].includes(e.key)) {
 			e.preventDefault()
 			e.stopPropagation()
@@ -25,17 +25,16 @@ export function switchable(node, data) {
 			toggle(e.key === 'ArrowLeft' ? options.length - 1 : 1)
 		}
 	}
-	const click = () => toggle(1)
+	const listeners = {
+		click: () => toggle(1),
+		keydown
+	}
 
 	update(data)
-	node.addEventListener('click', click)
-	node.addEventListener('keydown', keydown)
+	setupListeners(node, listeners, { enabled: !disabled })
 
 	return {
 		update,
-		destroy() {
-			node.removeEventListener('click', click)
-			node.removeEventListener('keydown', keydown)
-		}
+		destroy: () => removeListeners(node, listeners)
 	}
 }
