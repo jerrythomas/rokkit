@@ -108,8 +108,8 @@ class Chart {
 		// scale['value'] = this.value === this.x ? scale.x : scale.y
 
 		this.origin = {
-			x: scale.x.ticks ? scale.x(Math.max(0, Math.min(...scale.x.domain()))) : scale.x.range()[0],
-			y: scale.y.ticks ? scale.y(Math.max(0, Math.min(...scale.y.domain()))) : scale.y.range()[0]
+			x: getOriginValue(scale.x),
+			y: getOriginValue(scale.y)
 		}
 
 		this.scale = scale
@@ -201,6 +201,10 @@ class Chart {
 
 		return ticks
 	}
+}
+
+function getOriginValue(scale) {
+	return scale.ticks ? scale(Math.max(0, Math.min(...scale.domain()))) : scale.range()[0]
 }
 
 export function chart(data, aes) {
