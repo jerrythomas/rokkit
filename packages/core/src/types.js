@@ -1,7 +1,16 @@
 /**
+ * Component map to be used to render the item.
+ * @typedef {Object<string, import('svelte').SvelteComponent>} ComponentMap
+ */
+
+/**
  * Options for the sort order of the column.
  *
  * @typedef {'ascending'|'descending'|'none'} SortOptions
+ */
+
+/**
+ * @typedef {checked|unchecked|indeterminate} SelectionState
  */
 
 /**
@@ -39,11 +48,6 @@
  */
 
 /**
- * Component map to be used to render the item.
- * @typedef {Object<string, import('svelte').SvelteComponent>} ComponentMap
- */
-
-/**
  * Column metadata for the table.
  *
  * @typedef {Object} ColumnMetadata
@@ -64,11 +68,15 @@
  * Track the state of a row in the table.
  *
  * @typedef {Object} RowState
- * @property {boolean} visible - Indicates whether the node is visible (true/false).
- * @property {string} [label] - The label of the hierarchy node.
- * @property {boolean} is_parent - Indicates if this node is a parent (true/false).
- * @property {boolean} is_collapsed - Indicates whether the node is collapsed (true/false).
- * @property {number[]} levels - Array of hierarchy indices, including parent indices.
+ * @property {number} index              - The index of the node in the flat list.
+ * @property {number} depth              - The depth of the node in the hierarchy.
+ * @property {string} [value]            - The value of the hierarchy node.
+ * @property {boolean} [isHidden]        - Indicates whether the node is visible (true/false).
+ * @property {boolean} [isParent]        - Indicates if this node is a parent (true/false).
+ * @property {boolean} [isExpanded]      - Indicates whether the node is expanded (true/false).
+ * @property {number} [parentIndex]      - The index of the parent node in the flat list.
+ * @property {SelectionState} [selected] - Indicates whether the node is selected (true/false/indeterminate).
+ * @property {Array<number>} childred    - The indices of the children in the flat list.
  */
 
 /**
