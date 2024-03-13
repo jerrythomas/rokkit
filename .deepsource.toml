@@ -1,1 +1,10 @@
 version = 1
+
+[[analyzers]]
+name = "test-coverage"
+
+[[analyzers]]
+name = "javascript"
+
+[[transformers]]
+name = "prettier"
