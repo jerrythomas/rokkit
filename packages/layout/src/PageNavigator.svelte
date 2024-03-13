@@ -19,8 +19,8 @@
 	let next
 
 	function updateOnChange(value, items) {
-		let index = items.findIndex((x) => x == value)
-		if (index == -1) value = items[0]
+		let index = items.findIndex((x) => x === value)
+		if (index === -1) value = items[0]
 		// } else {
 		previous = index > 0 ? items[index - 1] : null
 		next = index < items.length - 1 ? items[index + 1] : null
@@ -37,7 +37,7 @@
 	$: fields = { ...defaultFields, ...fields }
 	$: updateOnChange(value, items)
 
-	// $: value = items.findIndex((x) => x == value) ? value : items[0]
+	// $: value = items.findIndex((x) => x === value) ? value : items[0]
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -64,7 +64,7 @@
 				<pg
 					class:numbers
 					class:dot={!numbers}
-					class:is-selected={value == item}
+					class:is-selected={value === item}
 					on:click={() => handleClick(item)}
 					tabindex="0"
 					class="cursor-pointer"

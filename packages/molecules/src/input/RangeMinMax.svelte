@@ -39,7 +39,7 @@
 		const index = single ? 1 : distance[0] < distance[1] ? 0 : 1
 
 		value[index] = event.detail
-		if (index == 0) {
+		if (index === 0) {
 			lower = scale.invert(event.detail)
 		} else {
 			upper = scale.invert(event.detail)

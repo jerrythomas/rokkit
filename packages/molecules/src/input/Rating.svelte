@@ -15,7 +15,7 @@
 
 	function handleClick(index) {
 		if (!disabled) {
-			value = value == 1 && index == 0 ? index : index + 1
+			value = value === 1 && index === 0 ? index : index + 1
 			dispatch('change', { value })
 		}
 	}

@@ -14,12 +14,12 @@ export function addPathMetadata(files) {
 	let result = files.map((item) => {
 		let parts = item.file.split('/')
 		let name = parts.pop()
-		let path = parts.filter((part) => /^\d+/.test(part) != true).join('/')
+		let path = parts.filter((part) => /^\d+/.test(part) !== true).join('/')
 		let type = name.split('.').pop()
-		parts = parts.map((part) => getSequenceAndKey(part)).filter((part) => part != null)
+		parts = parts.map((part) => getSequenceAndKey(part)).filter((part) => part !== null)
 
 		let metadata =
-			path == ''
+			path === ''
 				? {}
 				: {
 						path,

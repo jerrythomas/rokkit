@@ -18,7 +18,7 @@ export function getCalendarDays(value, holidays = [], fixed = false) {
 	holidays = holidays.map((x) => format(new Date(x), 'yyyy-MMM-dd'))
 	let days = Array.from({ length: getDaysInMonth(value) }, (_, i) => ({
 		day: i + 1,
-		offset: i == 0 ? offset : 0,
+		offset: i === 0 ? offset : 0,
 		date: new Date(year, month, i + 1)
 	})).map((x) => ({
 		...x,

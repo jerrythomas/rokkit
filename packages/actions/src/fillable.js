@@ -58,7 +58,7 @@ function initialize(blanks, click) {
  */
 function fill(blanks, options, current) {
 	if (current > -1 && current < Object.keys(blanks).length) {
-		let index = options.findIndex(({ actualIndex }) => actualIndex == current)
+		let index = options.findIndex(({ actualIndex }) => actualIndex === current)
 		if (index > -1) {
 			blanks[current].innerHTML = options[index].value
 			blanks[current].classList.remove('empty')
@@ -100,7 +100,7 @@ function validate(blanks, data) {
 		let index = data.options.findIndex(({ actualIndex }) => actualIndex == ref)
 		if (index > -1)
 			blanks[ref].classList.add(
-				data.options[index].expectedIndex == data.options[index].actualIndex ? 'pass' : 'fail'
+				data.options[index].expectedIndex === data.options[index].actualIndex ? 'pass' : 'fail'
 			)
 	})
 }

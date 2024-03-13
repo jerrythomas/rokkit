@@ -17,7 +17,7 @@
 				const index = steps.findIndex((step) => step > result)
 
 				value =
-					index == -1
+					index === -1
 						? steps[0]
 						: result - steps[index - 1] > steps[index] - result
 							? steps[index]
@@ -34,11 +34,11 @@
 		}
 	}
 	function handleKeyDown(event) {
-		const index = steps.findIndex((step) => step == value)
-		if (event.key == 'ArrowLeft' && index > 0) {
+		const index = steps.findIndex((step) => step === value)
+		if (event.key === 'ArrowLeft' && index > 0) {
 			value = steps[index - 1]
 			cx = scale.invert(value)
-		} else if (event.key == 'ArrowRight' && index < steps.length - 1) {
+		} else if (event.key === 'ArrowRight' && index < steps.length - 1) {
 			value = steps[index + 1]
 			cx = scale.invert(value)
 		}

@@ -37,7 +37,7 @@
 	function toggleSelection(e, item) {
 		e.stopPropagation()
 		e.preventDefault()
-		if (item._selected != 'checked') item._selected = 'checked'
+		if (item._selected !== 'checked') item._selected = 'checked'
 		else item._selected = 'unchecked'
 
 		if (item._isParent) {

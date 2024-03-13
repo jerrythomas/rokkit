@@ -25,7 +25,7 @@ export function filterMenuItems(data, labs = false) {
 
 			if (item.children) {
 				item.children = filterMenuItems(item.children, labs)
-				if (item.children.length == 0) return null
+				if (item.children.length === 0) return null
 			}
 
 			return item
@@ -34,8 +34,8 @@ export function filterMenuItems(data, labs = false) {
 }
 
 export function findTutorial(flat, route) {
-	const index = flat.findIndex((item) => item.route == route)
-	if (index == -1) return null
+	const index = flat.findIndex((item) => item.route === route)
+	if (index === -1) return null
 
 	const prevIndex = findPrevIndex(flat, index)
 	const nextIndex = findNextIndex(flat, index)

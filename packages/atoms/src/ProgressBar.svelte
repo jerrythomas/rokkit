@@ -6,7 +6,7 @@
 	export let height = '1.5mm'
 	export let width = 10
 
-	$: indeterminate = value == null || max == null
+	$: indeterminate = value === null || max === null
 	$: percentage = indeterminate ? width : value / max
 </script>
 

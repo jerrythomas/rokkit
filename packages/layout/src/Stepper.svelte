@@ -12,7 +12,7 @@
 	export let currentStage
 
 	// $: data = data.map((d) => ({
-	// 	completed: d.steps?.value == d.steps?.count,
+	// 	completed: d.steps?.value === d.steps?.count,
 	// 	...d
 	// }))
 	function handleClick(d) {

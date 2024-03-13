@@ -55,7 +55,7 @@
 	<cal-body class="w-full flex flex-col cursor-pointer p-1">
 		<days-of-week class="grid grid-cols-7">
 			{#each weekdays as day, index}
-				<p class:weekend={index % 6 == 0}>
+				<p class:weekend={index % 6 === 0}>
 					{day.slice(0, 1)}
 				</p>
 			{/each}

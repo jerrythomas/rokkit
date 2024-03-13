@@ -20,18 +20,18 @@
 	$: steps = Array.from({ length: count }, (_, i) => i)
 </script>
 
-<span class="flex items-center gap-2 progress" class:empty={count == 0}>
+<span class="flex items-center gap-2 progress" class:empty={count === 0}>
 	{#each steps as step}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dot
 			class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300"
 			on:click={handleClick}
 			data-step={step}
-			data-active={step == current}
+			data-active={step === current}
 			data-completed={step <= value}
 			data-clickable={step <= value || step <= inprogress}
 			role="option"
-			aria-selected={step == current}
+			aria-selected={step === current}
 			tabindex="0"
 		/>
 	{/each}

@@ -20,7 +20,7 @@ const TYPE_VALIDATORS = {
  */
 export function getPatternValidator(pattern) {
 	if (typeof pattern === 'string') {
-		return (input) => input && input.match(pattern) != null
+		return (input) => input && input.match(pattern) !== null
 	} else if (pattern instanceof RegExp) {
 		return (input) => input && pattern.test(input)
 	} else {
@@ -28,6 +28,9 @@ export function getPatternValidator(pattern) {
 	}
 }
 
+function isValidNumber(input) {
+	return input !== null && input !== undefined && !isNaN(input)
+}
 /**
  * Get a validator function that takes a min and max value and returns a validation function
  *
@@ -36,9 +39,9 @@ export function getPatternValidator(pattern) {
  * @returns {import('./types').ValidationFunction}
  */
 export function getRangeValidator(min, max) {
-	if (min == null) return (input) => input !== null && !isNaN(input) && input <= max
-	if (max == null) return (input) => input !== null && !isNaN(input) && input >= min
-	return (input) => input !== null && !isNaN(input) && input >= min && input <= max
+	if (!isValidNumber(min)) return (input) => isValidNumber(input) && input <= max
+	if (!isValidNumber(max)) return (input) => isValidNumber(input) && input >= min
+	return (input) => isValidNumber(input) && input >= min && input <= max
 }
 
 /**
@@ -85,6 +88,7 @@ function evaluateRules(value, rules) {
 
 	rules.map((rule) => {
 		const valid = rule.validator(value)
+		// console.log(value, valid, rule.text, rule.optional)
 		const result = {
 			text: rule.text,
 			valid,

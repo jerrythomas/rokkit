@@ -18,7 +18,7 @@ describe('Calendar.svelte', () => {
 		expect(days.length).toEqual(count)
 
 		days.forEach((day, i) => {
-			expect(day.getAttribute('aria-selected')).toEqual(i == index - 1 ? 'true' : 'false')
+			expect(day.getAttribute('aria-selected')).toEqual(i === index - 1 ? 'true' : 'false')
 		})
 	})
 

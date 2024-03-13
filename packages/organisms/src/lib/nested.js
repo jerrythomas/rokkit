@@ -115,7 +115,7 @@ export function generateIndex(data, key = 'scope') {
 	index.forEach((item, row) => {
 		const path = item._path.split('/').slice(1)
 		item._depth = path.length - 1
-		if (row == 0) {
+		if (row === 0) {
 			item._levels = [0]
 		} else if (path.length > levels.length) {
 			index[row - 1]._isParent = true

@@ -10,7 +10,7 @@ import { isObject } from '.'
  * @param {import('./types.js').ComponentMap} using
  */
 export function getComponent(value, fields, using) {
-	return fields.component && typeof value == 'object'
+	return fields.component && typeof value === 'object'
 		? using[value[fields.component]] ?? using.default
 		: using.default
 }
@@ -25,7 +25,7 @@ export function getIcon(value, fields = defaultFields) {
 	if (fields.icon === undefined || typeof (value ?? '') !== 'object') return null
 	// console.log(fields.icon, fields.state, value[fields.icon][value[fields.state]])
 	const name =
-		typeof value[fields.icon] == 'object'
+		typeof value[fields.icon] === 'object'
 			? value[fields.icon][value[fields.state]]
 			: value[fields.icon]
 	return fields.iconPrefix ? [fields.iconPrefix, name].join('-') : name
@@ -52,7 +52,7 @@ export function getValue(node, fields = defaultFields) {
  * @returns {*}
  */
 export function getText(node, fields = defaultFields) {
-	let value = typeof node === 'object' && node !== null ? node[fields.text] : node
+	let value = typeof node === 'object' && node != null ? node[fields.text] : node
 
 	return value != null
 		? isObject(value)
@@ -68,7 +68,7 @@ export function getText(node, fields = defaultFields) {
  * @returns {*}
  */
 export function getAttribute(node, attr) {
-	return typeof node === 'object' && node !== null && attr != null ? node[attr] : null
+	return typeof node === 'object' && node !== null && attr !== null ? node[attr] : null
 }
 /**
  * Check if the current item is a parent
@@ -79,7 +79,7 @@ export function getAttribute(node, attr) {
  */
 export function hasChildren(item, fields) {
 	return (
-		item != null &&
+		item !== null &&
 		typeof item === 'object' &&
 		fields.children in item &&
 		Array.isArray(item[fields.children])
@@ -94,7 +94,7 @@ export function hasChildren(item, fields) {
  * @returns {boolean}
  */
 export function isExpanded(item, fields) {
-	if (item == null) return false
+	if (item === null) return false
 	if (!hasChildren(item, fields)) return false
 	if (fields.isOpen in item) {
 		return item[fields.isOpen]

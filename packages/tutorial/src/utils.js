@@ -10,7 +10,7 @@ export function folderHierarchy(files) {
 		let current = acc
 		parts.forEach((part, index) => {
 			let child = current.find((item) => item.name === part)
-			if (!child && part != '') {
+			if (!child && part !== '') {
 				child = {
 					name: part,
 					path: parts.slice(0, index).join('/'),
@@ -19,7 +19,7 @@ export function folderHierarchy(files) {
 				}
 				current.push(child)
 			}
-			if (part != '') current = child.children
+			if (part !== '') current = child.children
 		})
 		current.push(file)
 		return acc

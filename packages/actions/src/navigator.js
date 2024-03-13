@@ -102,7 +102,7 @@ export function navigator(element, options) {
 					.filter((item) => item !== '')
 					.map((item) => +item)
 
-		if (indices.length > 0 && event.target.tagName != 'DETAIL') {
+		if (indices.length > 0 && event.target.tagName !== 'DETAIL') {
 			path = pathFromIndices(indices, items, fields)
 			currentNode = getCurrentNode(path)
 			if (hasChildren(currentNode, path[path.length - 1].fields)) {

@@ -10,8 +10,8 @@
 	export let type = 'submit'
 	export let style = 'default'
 
-	$: isPrimary = type == 'primary'
-	$: isOutlined = style == 'outlined'
+	$: isPrimary = type === 'primary'
+	$: isOutlined = style === 'outlined'
 </script>
 
 <button

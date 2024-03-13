@@ -5,7 +5,7 @@ describe('addRootNode', () => {
 	it('should return empty array if items is empty', () => {
 		expect(addRootNode([])).toEqual([])
 	})
-	it('should return items if items.length == 1', () => {
+	it('should return items if items.length === 1', () => {
 		expect(addRootNode(['a'])).toEqual(['a'])
 	})
 	it('should return items wrapped in root node if items.length > 1', () => {
