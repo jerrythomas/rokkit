@@ -10,7 +10,7 @@ export function fillable(node, { options, current, check }) {
 	let blanks = node.getElementsByTagName('del')
 
 	function click(event) {
-		if ('?' !== event.target.innerHTML) {
+		if (event.target.innerHTML !== '?') {
 			clear(event, node)
 		}
 	}
