@@ -49,8 +49,8 @@
 <tabs
 	class="flex w-full {className}"
 	class:is-below={below}
-	class:justify-center={align == 'center'}
-	class:justify-end={align == 'right'}
+	class:justify-center={align === 'center'}
+	class:justify-end={align === 'right'}
 	tabindex="0"
 	role="listbox"
 	use:navigator={{

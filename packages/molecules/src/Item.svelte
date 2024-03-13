@@ -5,7 +5,7 @@
 	export let value
 	export let fields = defaultFields
 
-	$: isObject = typeof (value ?? '-') == 'object'
+	$: isObject = typeof (value ?? '-') === 'object'
 	$: text = getText(value, fields)
 </script>
 

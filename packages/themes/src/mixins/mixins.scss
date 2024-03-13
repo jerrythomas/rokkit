@@ -2,9 +2,9 @@
   @each $name, $color in $theme-colors {
     $hue: hue($color);
     $saturation: saturation($color);
-    @if $values != null {
-      $start: if($mode == 'dark', length($values), 1);
-      $offset: if($mode == 'dark', -1, 1);
+    @if $values !== null {
+      $start: if($mode === 'dark', length($values), 1);
+      $offset: if($mode === 'dark', -1, 1);
       @for $i from 0 to length($values) - 1 {
         $index: $start + $offset * $i;
         $lightness: nth($values, $index);
@@ -13,7 +13,7 @@
       }
     } @else {
       @for $i from 0 to 9 {
-        $lightness: if($mode == 'dark', $i * 10%, 100 - $i * 10%);
+        $lightness: if($mode === 'dark', $i * 10%, 100 - $i * 10%);
         $variable: '--#{$name}-#{50 + ($i) * 100}';
         #{$variable}: hsl($hue, $saturation, $lightness);
       }

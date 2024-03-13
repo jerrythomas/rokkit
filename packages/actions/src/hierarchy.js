@@ -80,7 +80,7 @@ export function movePrevious(path) {
 
 	const current = path[path.length - 1]
 
-	if (current.index == 0) {
+	if (current.index === 0) {
 		if (path.length > 1) path.pop()
 		return path
 	}

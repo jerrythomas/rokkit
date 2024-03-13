@@ -15,7 +15,7 @@
 	$: available = options.filter((item) => !value.includes(item))
 
 	function handleRemove(event) {
-		value = [...value.filter((item) => item != event.detail)]
+		value = [...value.filter((item) => item !== event.detail)]
 	}
 	function handleSelect(event) {
 		if (!value.includes(event.detail)) value = [...value, event.detail]

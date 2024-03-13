@@ -282,7 +282,9 @@ describe('validator', () => {
 				{ text: 'should be >= 5', min: 5 },
 				{ text: 'should be <= 10', max: 10 }
 			])
+			let x = getRangeValidator(undefined, 10)
 			let currentValue = get(store)
+
 			expect(currentValue.status).toBe('fail')
 			expect(currentValue.validations).toEqual([
 				{ text: 'should be numeric', valid: true, status: 'pass' },
@@ -292,6 +294,7 @@ describe('validator', () => {
 
 			store.update(7)
 			currentValue = get(store)
+
 			expect(currentValue.status).toBe('pass')
 			expect(currentValue.validations).toEqual([
 				{ text: 'should be numeric', valid: true, status: 'pass' },

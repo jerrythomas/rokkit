@@ -97,7 +97,7 @@ export function traversable(element, options) {
 // }
 
 // function scrollIntoView(element, position) {
-// 	if (!Array.isArray(position) || position.length == 0) return
+// 	if (!Array.isArray(position) || position.length === 0) return
 // 	const node = element.querySelector(`[data-index="${position.join(',')}"]`)
 // 	if (node) node.scrollIntoView()
 // }

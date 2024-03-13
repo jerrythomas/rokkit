@@ -18,14 +18,14 @@
 		{@const component = getComponent(item, fields, using)}
 		{#if index > 0}
 			<span>
-				{#if separator.length == 1}
+				{#if separator.length === 1}
 					{separator}
 				{:else}
 					<icon class={separator} />
 				{/if}
 			</span>
 		{/if}
-		<crumb class:is-selected={index == items.length - 1}>
+		<crumb class:is-selected={index === items.length - 1}>
 			<svelte:component this={component} value={item} {fields} />
 		</crumb>
 	{/each}

@@ -29,7 +29,7 @@ describe('calendar', () => {
 				expect(typeof day.holiday).toEqual('boolean')
 				expect(result.map(({ day }) => day)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1))
 				expect(result[0].offset).toEqual(5)
-				expect(result.slice(1).filter((x) => x.offset != 0)).toEqual([])
+				expect(result.slice(1).filter((x) => x.offset !== 0)).toEqual([])
 			}
 		})
 
@@ -43,7 +43,7 @@ describe('calendar', () => {
 			expect(Array.isArray(result)).toBeTruthy()
 			expect(result).toHaveLength(31)
 			expect(result[0].offset).toEqual(0)
-			expect(result.filter((x) => x.offset != 0)).toEqual([
+			expect(result.filter((x) => x.offset !== 0)).toEqual([
 				{
 					date: new Date('2023-Jul-01'),
 					day: 1,
@@ -69,7 +69,7 @@ describe('calendar', () => {
 			expect(Array.isArray(result)).toBeTruthy()
 			expect(result).toHaveLength(31)
 			expect(result[0].offset).toEqual(0)
-			expect(result.filter((x) => x.offset != 0)).toEqual([
+			expect(result.filter((x) => x.offset !== 0)).toEqual([
 				{
 					date: new Date('2023-Jul-01'),
 					day: 1,

@@ -37,8 +37,8 @@
 {:else}
 	<toggle-switch
 		class="flex items-center {className}"
-		class:is-off={options.length == 2 && value === options[0]}
-		class:is-on={options.length == 2 && value === options[1]}
+		class:is-off={options.length === 2 && value === options[0]}
+		class:is-on={options.length === 2 && value === options[1]}
 		class:compact
 		aria-label="Toggle Switch"
 		aria-orientation="horizontal"

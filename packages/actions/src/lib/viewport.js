@@ -38,13 +38,15 @@ export function virtualListViewport(options) {
 
 		if (items.length !== cache.length) {
 			cache = Array.from({ length: items.length }).fill(null)
-			if (items.length == 0) index = -1
+			if (items.length === 0) index = -1
 		}
 		current = { lower: data.start, upper: data.end }
 
 		cache = updateSizes(cache, data.sizes ?? [], current.lower)
 		averageSize =
-			cache.length == 0 ? minSize : calculateSum(cache, 0, cache.length, averageSize) / cache.length
+			cache.length === 0
+				? minSize
+				: calculateSum(cache, 0, cache.length, averageSize) / cache.length
 
 		let visible = calculateSum(cache, current.lower, current.upper, averageSize, gap)
 

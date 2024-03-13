@@ -180,7 +180,7 @@ class Chart {
 			ticks = scale.domain()
 			if (count < scale.domain().length) {
 				let diff = scale.domain().length - count
-				ticks = ticks.filter((d, i) => i % diff == 0)
+				ticks = ticks.filter((d, i) => i % diff === 0)
 			}
 		}
 

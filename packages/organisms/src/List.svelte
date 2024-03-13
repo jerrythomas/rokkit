@@ -42,7 +42,7 @@
 	use:navigator={{
 		items,
 		fields,
-		enabled: hierarchy.length == 0,
+		enabled: hierarchy.length === 0,
 		indices: cursor
 	}}
 	on:move={handleNav}

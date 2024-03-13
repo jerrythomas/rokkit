@@ -72,7 +72,7 @@ export function findNearestItemBefore(position, items, fields) {
 	let result
 	if (index > 0) {
 		index -= 1
-		if (position.length == 1) {
+		if (position.length === 1) {
 			return findLastVisibleChild(items[index], [index], fields)
 		}
 

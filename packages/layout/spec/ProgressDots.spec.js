@@ -100,7 +100,7 @@ function expectedDataset(index, value, current) {
 	// let enabled = true
 	return {
 		step: index.toString(),
-		active: (index == current).toString(),
+		active: (index === current).toString(),
 		completed: (index <= value).toString(),
 		clickable: (index <= value || index <= inprogress).toString()
 	}
