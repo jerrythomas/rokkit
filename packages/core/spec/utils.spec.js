@@ -17,7 +17,7 @@ describe('utils', () => {
 		})
 		it('should return false for non-objects', () => {
 			expect(isObject(null)).toBe(false)
-			expect(isObject(undefined)).toBe(false)
+			expect(isObject()).toBe(false)
 			expect(isObject(1)).toBe(false)
 			expect(isObject('')).toBe(false)
 			// expect(isObject([])).toBe(false)

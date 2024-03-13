@@ -42,7 +42,7 @@ describe('getPosition', () => {
 	})
 
 	it('should return empty string when viewport is not defined', () => {
-		const result = getListPosition(anchor, undefined)
+		const result = getListPosition(anchor)
 		expect(result).toEqual('')
 	})
 
