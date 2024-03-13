@@ -60,7 +60,7 @@ export function themeColors(modifier = 'none') {
 	colors.neutral = {
 		...colors.neutral,
 		// contrast: fn(`var(--neutral-800)`),
-		zebra: fn("var(--neutral-zebra)")
+		zebra: fn('var(--neutral-zebra)')
 	}
 
 	return colors
