@@ -34,7 +34,7 @@ export function folderHierarchy(files) {
  */
 export function getSequenceAndKey(text) {
 	const result = /(?<number>\d+)(\s*-\s*)(?<key>.*)$/.exec(text)
-	if (result && result.groups) {
+	if (result?.groups) {
 		return {
 			sequence: parseInt(result.groups.number),
 			key: result.groups.key

@@ -30,7 +30,7 @@ describe('notifications', () => {
 
 	it.each(types)('should send a "%s" notification', (type) => {
 		const alerts = createNotificationStore()
-		alerts[type](`a message`)
+		alerts[type]('a message')
 
 		let items = get(alerts)
 		expect(items.length).toEqual(1)
