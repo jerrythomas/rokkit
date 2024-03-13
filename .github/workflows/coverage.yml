@@ -54,3 +54,9 @@ jobs:
           coverageCommand: pnpm coverage:lcov
           debug: true
           coverageLocations: lcov.info:lcov
+      - name: Report results to DeepSource
+        env:
+          DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
+        run: |
+          curl https://deepsource.io/cli | sh
+          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info
