@@ -37,7 +37,7 @@ export function traversable(element, options) {
 	}
 
 	const checkAndEmit = (event) => {
-		if (current && current.item) {
+		if (current?.item) {
 			emit(element, event, pick(['item', 'position'], current))
 		}
 	}
