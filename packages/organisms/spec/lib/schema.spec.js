@@ -29,7 +29,7 @@ describe('schema', () => {
 		})
 
 		it('should derive type for null/undefined', () => {
-			let type = deriveTypeFromValue(undefined)
+			let type = deriveTypeFromValue()
 			expect(type).toEqual('string')
 			type = deriveTypeFromValue(null)
 			expect(type).toEqual('string')
@@ -86,7 +86,7 @@ describe('schema', () => {
 		})
 
 		it('should derive schema for null/undefined', () => {
-			let schema = deriveSchemaFromValue(undefined)
+			let schema = deriveSchemaFromValue()
 			expect(schema).toEqual({ type: 'string' })
 			schema = deriveSchemaFromValue(null)
 			expect(schema).toEqual({ type: 'string' })
