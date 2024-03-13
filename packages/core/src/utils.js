@@ -27,7 +27,7 @@ export function iconShortcuts(icons, collection, variants) {
 					[name]: [collection, name].join(':') + suffix
 				}),
 				{}
-			)
+		  )
 
 	return shortcuts
 }

@@ -24,7 +24,7 @@ export function addPathMetadata(files) {
 				: {
 						path,
 						type
-					}
+				  }
 
 		return {
 			...omit(['file'], item),
