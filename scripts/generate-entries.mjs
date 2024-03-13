@@ -61,7 +61,6 @@ function convertToJSONArrayAndWriteToFile(rootFolder) {
   const outputFile = join('./sites/learn/src/lib', 'entries.json')
 
   writeFileSync(outputFile, jsonData)
-  
 }
 
 // Example usage:
