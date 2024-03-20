@@ -57,7 +57,8 @@ class Chart {
 
 		this.padding = opts.padding !== undefined ? Number(opts.padding) : 32
 
-		this.spacing = Number(opts.spacing) >= 0 && Number(opts.spacing) <= 0.5 ? Number(opts.spacing) : 0
+		this.spacing =
+			Number(opts.spacing) >= 0 && Number(opts.spacing) <= 0.5 ? Number(opts.spacing) : 0
 		this.margin = {
 			top: Number(opts.margin?.top) || 0,
 			left: Number(opts.margin?.left) || 0,
