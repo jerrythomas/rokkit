@@ -100,7 +100,7 @@ export function navigator(element, options) {
 			: target.dataset.path
 					.split(',')
 					.filter((item) => item !== '')
-					.map((item) => +item)
+					.map((item) => Number(item))
 
 		if (indices.length > 0 && event.target.tagName !== 'DETAIL') {
 			path = pathFromIndices(indices, items, fields)
