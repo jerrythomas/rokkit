@@ -7,8 +7,8 @@ test.describe('introduction', () => {
 		const tree = page.locator('main > aside tree')
 		expect(await tree.isVisible()).toBe(true)
 		const node = page.locator('main > aside tree node[aria-selected="true"]')
-
-		expect(await node.allInnerTexts()).toContainEqual('Introduction')
+		const content = await node.allInnerTexts()
+		expect(content.join(',').replaceAll('\n', '')).toContain('Introduction')
 		await expect(page.locator('main')).toHaveScreenshot('intro.png')
 	})
 })

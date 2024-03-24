@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test'
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
 // const version = '__APP_VERSION__'
 test.describe('home', () => {
-	test('index page has expected h1', async ({ page }) => {
+	test('should render home page', async ({ page }) => {
 		await page.goto('/')
 		page.waitForSelector('button[type="submit"]')
 		const version = await page.locator('header > div > small').textContent()
