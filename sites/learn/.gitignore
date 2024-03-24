@@ -9,3 +9,7 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 codeql*
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

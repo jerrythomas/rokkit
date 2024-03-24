@@ -15,7 +15,6 @@
     "test:unit": "vitest"
   },
   "devDependencies": {
-    "@playwright/test": "^1.28.1",
     "@rokkit/icons": "workspace:*",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
@@ -40,7 +39,7 @@
   "dependencies": {
     "@rokkit/actions": "workspace:*",
     "@rokkit/core": "workspace:*",
-    "@rokkit/ui": "workspace:*",
-    "@rokkit/themes": "workspace:*"
+    "@rokkit/themes": "workspace:*",
+    "@rokkit/ui": "workspace:*"
   }
 }
