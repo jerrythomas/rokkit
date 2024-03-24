@@ -43,8 +43,8 @@ class Chart {
 	// flipCoords = false
 
 	constructor(data, opts) {
-		this.width = +opts.width || 2048
-		this.height = +opts.height || 2048
+		this.width = Number(opts.width) || 2048
+		this.height = Number(opts.height) || 2048
 		this.flipCoords = opts.flipCoords || false
 		this.x = opts.x
 		this.y = opts.y
@@ -55,14 +55,15 @@ class Chart {
 		this.color = opts.color || opts.fill
 		this.shape = opts.shape || opts.fill
 
-		this.padding = opts.padding !== undefined ? +opts.padding : 32
+		this.padding = opts.padding !== undefined ? Number(opts.padding) : 32
 
-		this.spacing = +opts.spacing >= 0 && +opts.spacing <= 0.5 ? +opts.spacing : 0
+		this.spacing =
+			Number(opts.spacing) >= 0 && Number(opts.spacing) <= 0.5 ? Number(opts.spacing) : 0
 		this.margin = {
-			top: +opts.margin?.top || 0,
-			left: +opts.margin?.left || 0,
-			right: +opts.margin?.right || 0,
-			bottom: +opts.margin?.bottom || 0
+			top: Number(opts.margin?.top) || 0,
+			left: Number(opts.margin?.left) || 0,
+			right: Number(opts.margin?.right) || 0,
+			bottom: Number(opts.margin?.bottom) || 0
 		}
 		this.domain = {
 			x: [...new Set(data.map((d) => d[this.x]))],
