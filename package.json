@@ -35,8 +35,8 @@
     "packages/tutorial"
   ],
   "devDependencies": {
-    "bumpp": "^9.3.0",
-    "eslint": "^8.56.0",
+    "bumpp": "^9.4.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-shared": "workspace:*",
     "front-matter": "^4.0.2",
@@ -44,13 +44,13 @@
     "lint-staged": "^15.2.2",
     "madge": "^6.1.0",
     "prettier": "3.2.5",
-    "prettier-plugin-svelte": "^3.2.1"
+    "prettier-plugin-svelte": "^3.2.2"
   },
   "lint-staged": {
     "*.{js,svelte}": "eslint --cache --fix",
     "*.{js,svelte,md,json}": "prettier --write"
   },
   "dependencies": {
-    "turbo": "^1.12.5"
+    "turbo": "^1.13.0"
   }
 }
