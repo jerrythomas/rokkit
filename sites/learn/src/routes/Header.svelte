@@ -1,6 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
+	import { page } from '$app/stores'
 	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
 	import { media } from '$lib'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
@@ -22,6 +23,8 @@
 	}
 	beforeNavigate(() => (loading = true))
 	afterNavigate(() => (loading = false))
+
+	$: showCodeToggle = !media.small && $page.url.pathname !== '/'
 </script>
 
 <header
@@ -52,7 +55,9 @@
 				>
 			{/each}
 		</nav>
-		<Toggle options={codeOptions} on:change={handleCodeVisibility} />
+		{#if showCodeToggle}
+		  <Toggle options={codeOptions} on:change={handleCodeVisibility} />
+		{/if}
 		<ThemeSwitcher />
 		<a href="https://github.com/jerrythomas/rokkit" target="_blank" rel="noopener noreferrer">
 			<Icon

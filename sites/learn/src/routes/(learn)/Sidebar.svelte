@@ -29,7 +29,7 @@
 		<Icon
 			name="i-rokkit:action-cross"
 			role="button"
-			class="border-r border-r-neutral-inset"
+			class="border-r border-r-neutral-inset rounded-none"
 			on:click={() => ($site.sidebar = false)}
 		/>
 		<input type="search" placeholder="search" bind:value={search} class="embedded" />

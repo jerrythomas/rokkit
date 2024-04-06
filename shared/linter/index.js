@@ -1,13 +1,39 @@
 module.exports = {
-	extends: ['eslint:recommended', 'prettier', 'plugin:svelte/prettier'],
+	extends: ['eslint:recommended', 'prettier', 'plugin:svelte/prettier', '@unocss'],
 	parserOptions: {
 		sourceType: 'module',
-		ecmaVersion: 2021,
+		ecmaVersion: 'latest',
 		allowImportExportEverywhere: false
 	},
 	env: {
 		browser: true,
-		es2021: true,
+		es6: true,
 		node: true
-	}
+	},
+	ignorePatterns: ['dist'],
+	rules: {
+		complexity: ['error', 5],
+		'max-depth': ['error', 2],
+		'max-params': ['error', 4],
+		'no-return-await': 'error',
+		eqeqeq: 'error',
+		'no-eq-null': 'error',
+		'no-implicit-coercion': 'error',
+		'max-lines-per-function': [
+			'error',
+			{
+				max: 30,
+				skipBlankLines: true,
+				skipComments: true
+			}
+		]
+	},
+	overrides: [
+		{
+			files: ['*.spec.js'],
+			rules: {
+				'max-lines-per-function': 'off'
+			}
+		}
+	]
 }

@@ -14,7 +14,9 @@ const config = {
 	},
 	vitePlugin: {
 		inspector: {
-			showToggleButton: 'always'
+			toggleKeyCombo: 'meta-shift',
+			showToggleButton: 'always',
+			toggleButtonPos: 'bottom-right'
 		}
 	}
 }
