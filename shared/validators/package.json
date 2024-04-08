@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@testing-library/svelte": "^4.1.0",
-    "@types/ramda": "^0.29.11",
+    "@types/ramda": "^0.29.12",
     "@vitest/coverage-v8": "^1.4.0",
     "shared-config": "workspace:*",
     "svelte": "^4.2.12",

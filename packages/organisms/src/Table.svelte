@@ -25,7 +25,6 @@
 		</thead>
 		<tbody>
 			{#each data as row, index}
-				<!-- {@const oddRow = striped && index % 2 === 0} -->
 				<tr>
 					{#each columns as { name, hidden, virtual, action, header }}
 						<TableCell {row} {name} {hidden} {virtual} {action} {header} />

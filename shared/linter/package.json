@@ -1,25 +1,25 @@
 {
-	"name": "eslint-config-shared",
-	"version": "1.0.0-next.93",
-	"main": "index.js",
-	"license": "MIT",
-	"scripts": {
-		"format": "prettier --write .",
-		"lint": "eslint --fix .",
-		"latest": "pnpm upgrade --latest"
-	},
-	"dependencies": {
-		"@unocss/eslint-config": "^0.58.8",
-		"eslint": "^8.57.0",
-		"eslint-config-prettier": "^9.1.0",
-		"prettier": "3.2.5",
-		"prettier-plugin-svelte": "^3.2.2"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"devDependencies": {
-		"eslint-plugin-svelte": "^2.35.1",
-		"svelte": "^4.2.12"
-	}
+  "name": "eslint-config-shared",
+  "version": "1.0.0-next.93",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "latest": "pnpm upgrade --latest"
+  },
+  "dependencies": {
+    "@unocss/eslint-config": "^0.59.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.2.5",
+    "prettier-plugin-svelte": "^3.2.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "eslint-plugin-svelte": "^2.35.1",
+    "svelte": "^4.2.12"
+  }
 }
