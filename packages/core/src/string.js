@@ -25,8 +25,8 @@ export function toPascalCase(text) {
 /**
  * Convert a PascalCase string to snake case with separator as hyphen
  *
- * @param {Strin} text
- * @returns
+ * @param {string} text
+ * @returns {string}
  */
 export function toHyphenCase(text) {
 	return text
@@ -40,11 +40,12 @@ export function toHyphenCase(text) {
  *
  * @param {String} a hyphen separates string
  * @param {String} b hyphen separates string
- * @returns
+ * @param {string} separator - separator to split the string
+ * @returns {Number} -1, 0, 1 based on comparison
  */
-export function sortByParts(a, b) {
-	const partsOfA = a.split('-')
-	const partsOfB = b.split('-')
+export function sortByParts(a, b, separator = '-') {
+	const partsOfA = a.split(separator)
+	const partsOfB = b.split(separator)
 
 	let result = compareStrings(partsOfA[0], partsOfB[0])
 	if (result === 0) result = partsOfA.length - partsOfB.length

@@ -24,3 +24,5 @@ pdf
 .env
 test-results
 archive
+packages/data
+sites/learn/src/routes/wip/
