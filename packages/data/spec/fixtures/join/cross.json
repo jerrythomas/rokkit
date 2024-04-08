@@ -1,0 +1,148 @@
+{
+  "no_rename": [
+    {
+      "class": "Galaxy",
+      "group_id": 1,
+      "id": 10,
+      "name": "Enterprise"
+    },
+    {
+      "class": "Defiant",
+      "group_id": 2,
+      "id": 10,
+      "name": "Enterprise"
+    },
+    {
+      "class": "Intrepid",
+      "group_id": 3,
+      "id": 10,
+      "name": "Enterprise"
+    },
+    {
+      "class": "Ambassador",
+      "group_id": 4,
+      "id": 10,
+      "name": "Enterprise"
+    },
+    {
+      "class": "Galaxy",
+      "group_id": 1,
+      "id": 20,
+      "name": "D'Kyr"
+    },
+    {
+      "class": "Defiant",
+      "group_id": 2,
+      "id": 20,
+      "name": "D'Kyr"
+    },
+    {
+      "class": "Intrepid",
+      "group_id": 3,
+      "id": 20,
+      "name": "D'Kyr"
+    },
+    {
+      "class": "Ambassador",
+      "group_id": 4,
+      "id": 20,
+      "name": "D'Kyr"
+    },
+    {
+      "class": "Galaxy",
+      "group_id": 1,
+      "id": 30,
+      "name": "Voyager"
+    },
+    {
+      "class": "Defiant",
+      "group_id": 2,
+      "id": 30,
+      "name": "Voyager"
+    },
+    {
+      "class": "Intrepid",
+      "group_id": 3,
+      "id": 30,
+      "name": "Voyager"
+    },
+    {
+      "class": "Ambassador",
+      "group_id": 4,
+      "id": 30,
+      "name": "Voyager"
+    },
+    {
+      "class": "Galaxy",
+      "group_id": 1,
+      "id": 40,
+      "name": "Narada"
+    },
+    {
+      "class": "Defiant",
+      "group_id": 2,
+      "id": 40,
+      "name": "Narada"
+    },
+    {
+      "class": "Intrepid",
+      "group_id": 3,
+      "id": 40,
+      "name": "Narada"
+    },
+    {
+      "class": "Ambassador",
+      "group_id": 4,
+      "id": 40,
+      "name": "Narada"
+    },
+    {
+      "class": "Galaxy",
+      "group_id": 1,
+      "id": 50,
+      "name": "Bird of Prey"
+    },
+    {
+      "class": "Defiant",
+      "group_id": 2,
+      "id": 50,
+      "name": "Bird of Prey"
+    },
+    {
+      "class": "Intrepid",
+      "group_id": 3,
+      "id": 50,
+      "name": "Bird of Prey"
+    },
+    {
+      "class": "Ambassador",
+      "group_id": 4,
+      "id": 50,
+      "name": "Bird of Prey"
+    },
+    {
+      "class": "Galaxy",
+      "group_id": 1,
+      "id": 60,
+      "name": "Scimitar"
+    },
+    {
+      "class": "Defiant",
+      "group_id": 2,
+      "id": 60,
+      "name": "Scimitar"
+    },
+    {
+      "class": "Intrepid",
+      "group_id": 3,
+      "id": 60,
+      "name": "Scimitar"
+    },
+    {
+      "class": "Ambassador",
+      "group_id": 4,
+      "id": 60,
+      "name": "Scimitar"
+    }
+  ]
+}
