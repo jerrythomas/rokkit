@@ -19,6 +19,7 @@ Rokkit provides both composable and data-driven components.
 Components have been separated into the following packages. Refer to the package [stories](sites/rokkit) for examples of all available UI components. View a live demo [here](https://rokkit.vercel.app/)
 
 - [@rokkit/core](packages/core)
+- [@rokkit/data](packages/data)
 - [@rokkit/actions](packages/actions)
 - [@rokkit/stores](packages/stores)
 - [@rokkit/atoms](packages/atoms)

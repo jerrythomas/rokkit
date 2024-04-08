@@ -1,0 +1,32 @@
+[
+  {
+    "country": "USA",
+    "state": "TN",
+    "city": "Nashville",
+    "name": "Nashville International Airport"
+  },
+  {
+    "country": "UK",
+    "state": "England",
+    "city": "London",
+    "name": "Heathrow Airport"
+  },
+  {
+    "country": "USA",
+    "state": "NY",
+    "city": "New York",
+    "name": "John F. Kennedy International Airport"
+  },
+  {
+    "country": "USA",
+    "state": "CA",
+    "city": "Los Angeles",
+    "name": "Los Angeles International Airport"
+  },
+  {
+    "country": "UK",
+    "state": "England",
+    "city": "London",
+    "name": "Gatwick Airport"
+  }
+]

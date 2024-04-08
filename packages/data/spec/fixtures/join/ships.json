@@ -1,0 +1,8 @@
+[
+  { "id": 10, "name": "Enterprise", "group_id": 1 },
+  { "id": 20, "name": "D'Kyr", "group_id": 2 },
+  { "id": 30, "name": "Voyager", "group_id": 2 },
+  { "id": 40, "name": "Narada", "group_id": 2 },
+  { "id": 50, "name": "Bird of Prey" },
+  { "id": 60, "name": "Scimitar" }
+]

@@ -1,0 +1,54 @@
+{
+  "name": "@rokkit/data",
+  "version": "1.0.0-next.93",
+  "description": "Contains generic data manipulation functions that can be used in various components.",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "src/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "rm -rf dist && tsc",
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "test:ci": "vitest run",
+    "test:ui": "vitest --ui",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "latest": "pnpm upgrade --latest && pnpm test:ci",
+    "release": "pnpm publish --access public"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
+    "@testing-library/svelte": "^4.1.0",
+    "@types/ramda": "^0.29.12",
+    "@vitest/coverage-v8": "^1.4.0",
+    "@vitest/ui": "~1.4.0",
+    "shared-config": "workspace:*",
+    "typescript": "^5.4.4",
+    "vite": "^5.2.8",
+    "vitest": "~1.4.0"
+  },
+  "files": ["src/**/*.js", "src/**/*.svelte"],
+  "exports": {
+    "./src": "./src",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "@lukeed/uuid": "^2.0.1",
+    "@rokkit/core": "workspace:*",
+    "d3-array": "^3.2.4",
+    "d3-collection": "^1.0.7",
+    "ramda": "^0.29.1",
+    "svelte": "^4.2.12"
+  }
+}

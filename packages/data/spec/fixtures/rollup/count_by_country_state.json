@@ -1,0 +1,22 @@
+[
+  {
+    "count": 1,
+    "country": "USA",
+    "state": "TN"
+  },
+  {
+    "count": 2,
+    "country": "UK",
+    "state": "England"
+  },
+  {
+    "count": 1,
+    "country": "USA",
+    "state": "NY"
+  },
+  {
+    "count": 1,
+    "country": "USA",
+    "state": "CA"
+  }
+]
