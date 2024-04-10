@@ -1,4 +1,7 @@
+import { omit } from 'ramda'
+import { get, writable } from 'svelte/store'
 import { deriveMetadata, deriveSortableColumn } from './infer'
+
 import {
 	flattenNestedChildren,
 	removeChildren,
@@ -10,15 +13,16 @@ import {
  * Creates a view object for managing data presentation with metadata and hierarchy structures,
  * as well as providing methods for sorting, selection, and toggling of data expansion.
  *
- * @param {Array<Object>} data - The source data array to be presented by the view.
- * @param {Object} options - The configuration options used for deriving metadata and hierarchy from the data.
- * @returns {Object} An object representing the view, providing methods to manipulate and query the presentation state.
+ * @param {Array<Object>} data    - The source data array to be presented by the view.
+ * @param {Object}        options - The configuration options used for deriving metadata and hierarchy from the data.
+ * @returns {import('svelte/store').Writable} An object representing the view, providing methods to manipulate and query the presentation state.
  */
 export function dataview(data, options) {
+	const store = writable({
+		columns: deriveMetadata(data, options),
+		hierarchy: deriveHierarchy(data, options)
+	})
 	let sortGroup = []
-
-	const metadata = deriveMetadata(data, options)
-	const hierarchy = deriveHierarchy(data, options)
 
 	/**
 	 * Sorts the hierarchy based on a specific field name and order.
@@ -28,30 +32,53 @@ export function dataview(data, options) {
 	 */
 	const sortBy = (name, ascending = true) => {
 		sortGroup = [...sortGroup, [name, ascending]]
+		// change the sort order in the metadata
+		const { columns, hierarchy } = get(store)
+		columns.forEach((column) => {
+			if (column.name === name) {
+				column.order = ascending ? 'ascending' : 'descending'
+			}
+		})
 		groupSort(hierarchy, sortGroup)
+		store.set({ columns, hierarchy })
 	}
 
 	return {
-		columns: metadata,
-		hierarchy,
+		...omit(['set', 'update'], store),
 		// filter: () => {},
 		/**
 		 * Clears the applied sort order from the hierarchy.
+		 * TODO: clearing sort should clear the sort orders in columns
 		 */
-		clearSort: () => (sortGroup = []),
+		clearSort: () => {
+			sortGroup = []
+			const { columns } = get(store)
+			columns.forEach((column) => {
+				column.order = 'none'
+			})
+			// clearSortOrder(metadata)
+		},
 		sortBy,
 		/**
 		 * Toggles the selection state of a data element at the specified index.
 		 *
 		 * @param {number} index - The index of the element in the hierarchy to select or deselect.
 		 */
-		select: (index) => toggleSelection(hierarchy[index]),
+		select: (index) => {
+			const { hierarchy } = get(store)
+			toggleSelection(hierarchy[index])
+			store.update((state) => ({ ...state, hierarchy }))
+		},
 		/**
 		 * Toggles the expansion state of a data element at the specified index.
 		 *
 		 * @param {number} index - The index of the element in the hierarchy to expand or collapse.
 		 */
-		toggle: (index) => toggleExpansion(hierarchy[index])
+		toggle: (index) => {
+			const { hierarchy } = get(store)
+			toggleExpansion(hierarchy[index])
+			store.update((state) => ({ ...state, hierarchy }))
+		}
 	}
 }
 

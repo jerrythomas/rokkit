@@ -18,7 +18,6 @@
 	export let minimal = false
 
 	function handle(e) {
-		// console.log('toggle clicked', value, e.detail)
 		value = e.detail
 		dispatch('change', value)
 	}

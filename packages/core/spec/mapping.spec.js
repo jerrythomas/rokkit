@@ -4,6 +4,7 @@ import {
 	getIcon,
 	getValue,
 	getText,
+	getFormattedText,
 	getAttribute,
 	hasChildren,
 	isExpanded,
@@ -112,13 +113,62 @@ describe('mapping', () => {
 			const result = getText({ name: 'Alpha' }, { text: 'name' })
 			expect(result).toEqual('Alpha')
 		})
-		it('should return JSON strig for objects', () => {
+		it('should return object value', () => {
 			const result = getText({ name: { key: 'Alpha' } }, { text: 'name' })
+			expect(result).toEqual({ key: 'Alpha' })
+		})
+		it('should return boolean', () => {
+			const result = getText({ name: false }, { text: 'name' })
+			expect(result).toEqual(false)
+		})
+	})
+
+	describe('getFormattedText', () => {
+		it('should return value if node is not an object', () => {
+			const result = getFormattedText('A')
+			expect(result).toEqual('A')
+		})
+		it('should return value if node is null', () => {
+			const result = getFormattedText(null)
+			expect(result).toEqual(null)
+		})
+		it('should return text for default mapping', () => {
+			const result = getFormattedText({ text: 'Alpha' })
+			expect(result).toEqual('Alpha')
+		})
+		it('should return text for custom fields', () => {
+			const result = getFormattedText({ name: 'Alpha' }, { text: 'name' })
+			expect(result).toEqual('Alpha')
+		})
+		it('should return JSON string for objects', () => {
+			const formatter = (value) => JSON.stringify(value, null, 2)
+			const result = getFormattedText({ name: { key: 'Alpha' } }, { text: 'name' }, formatter)
 			expect(result).toEqual('{\n  "key": "Alpha"\n}')
 		})
 		it('should return a string for boolean', () => {
-			const result = getText({ name: false }, { text: 'name' })
+			const formatter = (value) => value.toString()
+			const result = getFormattedText({ name: false }, { text: 'name' }, formatter)
 			expect(result).toEqual('false')
+		})
+		it('should return string value if formatter is invalid', () => {
+			const formatter = 'invalid'
+			const result = getFormattedText({ name: false }, { text: 'name' }, formatter)
+			expect(result).toEqual('false')
+		})
+		it('should format currency', () => {
+			const formatter = (value, currency) =>
+				value.toLocaleString('en-US', {
+					style: 'currency',
+					currency,
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2
+				})
+			const result = getFormattedText(
+				{ name: 1000, currency: 'USD' },
+				{ text: 'name', currency: 'currency' },
+				formatter
+			)
+			expect(result).toEqual('$1,000.00')
 		})
 	})
 

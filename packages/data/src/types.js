@@ -73,7 +73,7 @@
  *
  * @property {string}                 name        - The name of the column.
  * @property {string}                 type        - The data type of the column (e.g., "string", "number", "date").
- * @property {FieldMapping}           [fields]    - Additional attributes for the column.
+ * @property {FieldMapping}           [field] - The field mapping for the column.
  * @property {number}                 [digits=0]  - The number of digits for numeric values (defaults to 0).
  * @property {Function}               formatter   - A function to format the column value.
  * @property {boolean}                [sortable]  - Indicates if the column is sortable (true/false).
@@ -93,7 +93,7 @@
 /**
  * Track the state of a row in the table.
  *
- * @typedef {Object} RowState
+ * @typedef {Object} TreeTableNode
  * @property {number}         row          - Reference to actual row in the data.
  * @property {number}         depth        - The depth of the node in the hierarchy.
  * @property {string}         [value]      - The value of the hierarchy node.
@@ -108,8 +108,8 @@
 /**
  * Track the state of all rows in the table.
  *
- * @typedef {Object} RowStateMap
- * @property {RowState[]} rows - Flat list of hierarchy nodes.
+ * @typedef {Object} TreeTable
+ * @property {TreeTableNode[]} rows - Flat list of hierarchy nodes.
  */
 
 /**
@@ -192,5 +192,17 @@
  * @property {string} [prefix]                - prefix to be used for renaming keys in the second data set.
  * @property {string} [suffix]                - suffix to be used for renaming keys in the second data set.
  * @property {string} [separator='_']         - separator to be used for renaming keys in the second data set.
+ */
+
+/**
+ * DataView
+ * @typedef {Object} DataView
+ * @property {TreeTable} hierarchy - The state of the rows in the table.
+ * @property {Metadata} columns      - The metadata for the columns in the table.
+ * @property {Function} sortBy       - Sort the DataView by the specified columns.
+ * @property {Function} clearSort    - Clear the sorting of the DataView.
+ * @property {Function} filter       - Filter the DataView by the specified columns.
+ * @property {Function} toggle      - toggle expand or collapse the DataView by the specified columns.
+ * @property {Function} select      - select the DataView by the specified columns.
  */
 export {}

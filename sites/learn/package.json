@@ -51,6 +51,7 @@
     "@rokkit/atoms": "workspace:*",
     "@rokkit/chart": "workspace:*",
     "@rokkit/core": "workspace:*",
+    "@rokkit/data": "workspace:1.0.0-next.93",
     "@rokkit/icons": "workspace:*",
     "@rokkit/layout": "workspace:*",
     "@rokkit/molecules": "workspace:*",

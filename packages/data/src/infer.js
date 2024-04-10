@@ -189,7 +189,14 @@ export function deriveMetadata(dataArray, options = {}) {
 	if (dataArray.length === 0) return columns
 	const { actions, language } = { ...defaultViewOptions, ...options }
 
-	if (columns.length === 0) columns = deriveColumns(dataArray, options)
+	if (columns.length === 0) {
+		columns = deriveColumns(dataArray, options)
+	} else {
+		columns.forEach((col) => {
+			// if (col.sortable && !col.order) col.order = 'none'
+			if (!col.fields) col.fields = { text: col.name }
+		})
+	}
 	columns = addFormatters(columns, language)
 	if (actions.length > 0) columns = deriveActions(columns, actions)
 

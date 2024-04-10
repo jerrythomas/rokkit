@@ -17,6 +17,26 @@ export function isObject(val) {
 	return typeof val === 'object' && val !== null && !(val instanceof Date)
 }
 
+/**
+ * Converts the value to a string. If the value is an object, it will convert it to a JSON string.
+ *
+ * @param {*} value
+ * @returns {string}
+ */
+export function toString(value) {
+	if (value === null || value === undefined) return value
+	if (isObject(value)) return JSON.stringify(value, null, 2)
+	return value.toString()
+}
+
+/**
+ * Generates icon shortcuts for a collection of icons
+ *
+ * @param {string[]} icons
+ * @param {string} collection
+ * @param {string} variants
+ * @returns {Object}
+ */
 export function iconShortcuts(icons, collection, variants) {
 	const suffix = variants ? `-${variants}` : ''
 	const shortcuts = !collection
@@ -32,6 +52,13 @@ export function iconShortcuts(icons, collection, variants) {
 	return shortcuts
 }
 
+/**
+ * Scales the path by the size
+ *
+ * @param {number} size
+ * @param {string|number} x
+ * @returns {string|number}
+ */
 export function scaledPath(size, x) {
 	if (Array.isArray(x)) return x.map((x) => scaledPath(size, x)).join(' ')
 	return typeof x === 'number' ? x * size : x

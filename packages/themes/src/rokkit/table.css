@@ -8,8 +8,9 @@ tr {
 th {
   @apply whitespace-nowrap;
 }
-th cell {
-  @apply flex items-center gap-2;
+th cell,
+td cell {
+  @apply flex w-full items-center gap-2;
 }
 th[data-sortable='true'] {
   @apply cursor-pointer;
@@ -44,4 +45,13 @@ table > tfoot > tr {
 
 table-wrapper {
   @apply shadow-md sm:rounded-lg;
+}
+
+td cell.cell-type-integer p,
+td cell.cell-type-number p {
+  @apply text-right w-full;
+}
+
+td cell item {
+  @apply flex w-full;
 }

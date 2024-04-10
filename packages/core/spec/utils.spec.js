@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { id, isObject, iconShortcuts, scaledPath } from '../src/utils'
+import { id, isObject, toString, iconShortcuts, scaledPath } from '../src/utils'
 
 describe('utils', () => {
 	describe('id', () => {
@@ -24,6 +24,19 @@ describe('utils', () => {
 			expect(isObject(true)).toBe(false)
 			expect(isObject(false)).toBe(false)
 			expect(isObject(new Date())).toBe(false)
+		})
+	})
+
+	describe('toString', () => {
+		it('should convert to string', () => {
+			expect(toString(1)).toEqual('1')
+			expect(toString('a')).toEqual('a')
+			expect(toString(true)).toEqual('true')
+			expect(toString(false)).toEqual('false')
+			expect(toString(null)).toEqual(null)
+			expect(toString(undefined)).toEqual(undefined)
+			expect(toString({})).toEqual('{}')
+			expect(toString([])).toEqual('[]')
 		})
 	})
 

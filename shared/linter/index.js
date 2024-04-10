@@ -1,5 +1,4 @@
 module.exports = {
-	extends: ['eslint:recommended', 'prettier', 'plugin:svelte/prettier', '@unocss'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 'latest',
