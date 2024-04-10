@@ -51,7 +51,6 @@
     "@rokkit/atoms": "workspace:*",
     "@rokkit/chart": "workspace:*",
     "@rokkit/core": "workspace:*",
-    "@rokkit/data": "workspace:1.0.0-next.93",
     "@rokkit/icons": "workspace:*",
     "@rokkit/layout": "workspace:*",
     "@rokkit/molecules": "workspace:*",
@@ -60,11 +59,9 @@
     "@rokkit/themes": "workspace:*",
     "@rokkit/tutorial": "workspace:*",
     "@rokkit/ui": "workspace:*",
-    "@shikijs/markdown-it": "^1.2.4",
     "markdown-it": "^14.1.0",
     "prism-svelte": "^0.5.0",
     "prismjs": "^1.29.0",
-    "ramda": "^0.29.1",
-    "shiki": "^1.2.4"
+    "ramda": "^0.29.1"
   }
 }
