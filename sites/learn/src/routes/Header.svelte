@@ -56,7 +56,7 @@
 			{/each}
 		</nav>
 		{#if showCodeToggle}
-		  <Toggle options={codeOptions} on:change={handleCodeVisibility} />
+			<Toggle options={codeOptions} on:change={handleCodeVisibility} />
 		{/if}
 		<ThemeSwitcher />
 		<a href="https://github.com/jerrythomas/rokkit" target="_blank" rel="noopener noreferrer">
