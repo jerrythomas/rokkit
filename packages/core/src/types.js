@@ -10,7 +10,7 @@
  */
 
 /**
- * @typedef {checked|unchecked|indeterminate} SelectionState
+ * @typedef {'checked'|'unchecked'|'indeterminate'} SelectionState
  */
 
 /**

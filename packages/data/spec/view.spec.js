@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { pick, omit } from 'ramda'
+import { get } from 'svelte/store'
 import { dataview, determineSelectedState } from '../src/view'
 
 describe('view', () => {
@@ -12,8 +13,8 @@ describe('view', () => {
 			]
 			it('should create a view', () => {
 				const view = dataview(data)
-
-				expect(view.columns).toEqual([
+				// const { columns, hierarchy } = get(view)
+				expect(get(view).columns).toEqual([
 					{
 						name: 'name',
 						type: 'string',
@@ -33,7 +34,7 @@ describe('view', () => {
 						sorted: 'none'
 					}
 				])
-				expect(view.hierarchy).toEqual([
+				expect(get(view).hierarchy).toEqual([
 					{ depth: 0, row: { name: 'Alice', age: 25 } },
 					{ depth: 0, row: { name: 'Bob', age: 20 } },
 					{ depth: 0, row: { name: 'Charlie', age: 35 } }
@@ -48,7 +49,8 @@ describe('view', () => {
 			it('should sort by a column', () => {
 				const view = dataview(data)
 				view.sortBy('age')
-				expect(view.hierarchy).toEqual([
+				// const { hierarchy } = get(view)
+				expect(get(view).hierarchy).toEqual([
 					{ depth: 0, row: { name: 'Bob', age: 20 } },
 					{ depth: 0, row: { name: 'Alice', age: 25 } },
 					{ depth: 0, row: { name: 'Charlie', age: 35 } }
@@ -58,7 +60,8 @@ describe('view', () => {
 			it('should sort by a column in descending order', () => {
 				const view = dataview(data)
 				view.sortBy('age', false)
-				expect(view.hierarchy).toEqual([
+				// const { hierarchy } = get(view)
+				expect(get(view).hierarchy).toEqual([
 					{ depth: 0, row: { name: 'Charlie', age: 35 } },
 					{ depth: 0, row: { name: 'Alice', age: 25 } },
 					{ depth: 0, row: { name: 'Bob', age: 20 } }
@@ -68,7 +71,8 @@ describe('view', () => {
 			it('should select a row', () => {
 				const view = dataview(data)
 				view.select(0)
-				expect(view.hierarchy[0].selected).toBe('checked')
+				// const { hierarchy } = get(view)
+				expect(get(view).hierarchy[0].selected).toBe('checked')
 			})
 		})
 		describe('hierarchy', () => {
@@ -86,7 +90,8 @@ describe('view', () => {
 			it('should create a view', () => {
 				const view = dataview(data, { path: 'lineage' })
 
-				expect(view.columns).toEqual([
+				// const { columns, hierarchy } = get(view)
+				expect(get(view).columns).toEqual([
 					{
 						name: 'lineage',
 						type: 'string',
@@ -117,7 +122,7 @@ describe('view', () => {
 						formatter: expect.any(Function)
 					}
 				])
-				const hierarchy = [
+				const expected = [
 					{
 						depth: 1,
 						isExpanded: false,
@@ -186,7 +191,7 @@ describe('view', () => {
 						row: { name: 'Eve', lineage: '/Snow/Eve', age: 40 }
 					}
 				]
-				expect(view.hierarchy.map((x) => omit(['parent', 'children'], x))).toEqual(hierarchy)
+				expect(get(view).hierarchy.map((x) => omit(['parent', 'children'], x))).toEqual(expected)
 				// expect(view.filter).toBeInstanceOf(Function)
 				expect(view.clearSort).toBeInstanceOf(Function)
 				expect(view.sortBy).toBeInstanceOf(Function)
@@ -197,7 +202,8 @@ describe('view', () => {
 			it('should sort by a column', () => {
 				const view = dataview(data, { path: 'lineage' })
 				view.sortBy('age')
-				expect(view.hierarchy.map(({ row }) => row)).toEqual([
+				// const { hierarchy } = get(view)
+				expect(get(view).hierarchy.map(({ row }) => row)).toEqual([
 					{ name: 'Snow', lineage: '/Snow', age: 80 },
 					{ name: 'Charlie', lineage: '/Snow/Charlie', age: 35 },
 					{
@@ -237,7 +243,8 @@ describe('view', () => {
 				view.sortBy('age')
 				view.clearSort()
 				view.sortBy('name')
-				expect(view.hierarchy.map(({ row }) => row)).toEqual([
+				// const { hierarchy } = get(view)
+				expect(get(view).hierarchy.map(({ row }) => row)).toEqual([
 					{ name: 'Smith', lineage: '/Smith', age: 90 },
 					{ name: 'Alice', lineage: '/Smith/Alice', age: 55 },
 					{ name: 'Lexi', lineage: '/Smith/Alice/Lexi', age: 30 },
@@ -252,7 +259,8 @@ describe('view', () => {
 			it('should select/deselect a child row', () => {
 				const view = dataview(data, { path: 'lineage' })
 				view.select(3)
-				expect(view.hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
+				// let hierarchy = get(view).hierarchy
+				expect(get(view).hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
 					{ path: '/Smith', selected: 'indeterminate' },
 					{ path: '/Smith/Bob' },
 					{ path: '/Smith/Alice', selected: 'indeterminate' },
@@ -264,7 +272,8 @@ describe('view', () => {
 				])
 
 				view.select(3)
-				expect(view.hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
+				// hierarchy = get(view).hierarchy
+				expect(get(view).hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
 					{ path: '/Smith', selected: 'unchecked' },
 					{ path: '/Smith/Bob' },
 					{ path: '/Smith/Alice', selected: 'unchecked' },
@@ -279,7 +288,8 @@ describe('view', () => {
 			it('should select/deselect a parent row', () => {
 				const view = dataview(data, { path: 'lineage' })
 				view.select(0)
-				expect(view.hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
+				// let hierarchy = get(view).hierarchy
+				expect(get(view).hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
 					{ path: '/Smith', selected: 'checked' },
 					{ path: '/Smith/Bob', selected: 'checked' },
 					{ path: '/Smith/Alice', selected: 'checked' },
@@ -291,7 +301,8 @@ describe('view', () => {
 				])
 
 				view.select(0)
-				expect(view.hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
+				// hierarchy = get(view).hierarchy
+				expect(get(view).hierarchy.map((x) => pick(['path', 'selected'], x))).toEqual([
 					{ path: '/Smith', selected: 'unchecked' },
 					{ path: '/Smith/Bob', selected: 'unchecked' },
 					{ path: '/Smith/Alice', selected: 'unchecked' },
@@ -306,53 +317,62 @@ describe('view', () => {
 			it('should collapse/expand a node', () => {
 				const view = dataview(data, { path: 'lineage' })
 				view.toggle(0)
-				expect(view.hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual([
-					{ path: '/Smith', isHidden: false, isExpanded: true },
-					{ path: '/Smith/Bob', isHidden: false },
-					{ path: '/Smith/Alice', isHidden: false, isExpanded: false },
-					{ path: '/Smith/Alice/Lexi', isHidden: true },
-					{ path: '/Smith/Alice/Sofia', isHidden: true },
-					{ path: '/Snow', isHidden: false, isExpanded: false },
-					{ path: '/Snow/Charlie', isHidden: true },
-					{ path: '/Snow/Eve', isHidden: true }
-				])
+
+				expect(get(view).hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual(
+					[
+						{ path: '/Smith', isHidden: false, isExpanded: true },
+						{ path: '/Smith/Bob', isHidden: false },
+						{ path: '/Smith/Alice', isHidden: false, isExpanded: false },
+						{ path: '/Smith/Alice/Lexi', isHidden: true },
+						{ path: '/Smith/Alice/Sofia', isHidden: true },
+						{ path: '/Snow', isHidden: false, isExpanded: false },
+						{ path: '/Snow/Charlie', isHidden: true },
+						{ path: '/Snow/Eve', isHidden: true }
+					]
+				)
 				view.toggle(0)
-				expect(view.hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual([
-					{ path: '/Smith', isHidden: false, isExpanded: false },
-					{ path: '/Smith/Bob', isHidden: true },
-					{ path: '/Smith/Alice', isHidden: true, isExpanded: false },
-					{ path: '/Smith/Alice/Lexi', isHidden: true },
-					{ path: '/Smith/Alice/Sofia', isHidden: true },
-					{ path: '/Snow', isHidden: false, isExpanded: false },
-					{ path: '/Snow/Charlie', isHidden: true },
-					{ path: '/Snow/Eve', isHidden: true }
-				])
+				expect(get(view).hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual(
+					[
+						{ path: '/Smith', isHidden: false, isExpanded: false },
+						{ path: '/Smith/Bob', isHidden: true },
+						{ path: '/Smith/Alice', isHidden: true, isExpanded: false },
+						{ path: '/Smith/Alice/Lexi', isHidden: true },
+						{ path: '/Smith/Alice/Sofia', isHidden: true },
+						{ path: '/Snow', isHidden: false, isExpanded: false },
+						{ path: '/Snow/Charlie', isHidden: true },
+						{ path: '/Snow/Eve', isHidden: true }
+					]
+				)
 			})
 
 			it('should collapse/expand a node with all expanded at start', () => {
 				const view = dataview(data, { path: 'lineage', expanded: true })
 				view.toggle(0)
-				expect(view.hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual([
-					{ path: '/Smith', isHidden: false, isExpanded: false },
-					{ path: '/Smith/Bob', isHidden: true },
-					{ path: '/Smith/Alice', isHidden: true, isExpanded: true },
-					{ path: '/Smith/Alice/Lexi', isHidden: true },
-					{ path: '/Smith/Alice/Sofia', isHidden: true },
-					{ path: '/Snow', isHidden: false, isExpanded: true },
-					{ path: '/Snow/Charlie', isHidden: false },
-					{ path: '/Snow/Eve', isHidden: false }
-				])
+				expect(get(view).hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual(
+					[
+						{ path: '/Smith', isHidden: false, isExpanded: false },
+						{ path: '/Smith/Bob', isHidden: true },
+						{ path: '/Smith/Alice', isHidden: true, isExpanded: true },
+						{ path: '/Smith/Alice/Lexi', isHidden: true },
+						{ path: '/Smith/Alice/Sofia', isHidden: true },
+						{ path: '/Snow', isHidden: false, isExpanded: true },
+						{ path: '/Snow/Charlie', isHidden: false },
+						{ path: '/Snow/Eve', isHidden: false }
+					]
+				)
 				view.toggle(0)
-				expect(view.hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual([
-					{ path: '/Smith', isHidden: false, isExpanded: true },
-					{ path: '/Smith/Bob', isHidden: false },
-					{ path: '/Smith/Alice', isHidden: false, isExpanded: true },
-					{ path: '/Smith/Alice/Lexi', isHidden: false },
-					{ path: '/Smith/Alice/Sofia', isHidden: false },
-					{ path: '/Snow', isHidden: false, isExpanded: true },
-					{ path: '/Snow/Charlie', isHidden: false },
-					{ path: '/Snow/Eve', isHidden: false }
-				])
+				expect(get(view).hierarchy.map((x) => pick(['path', 'isExpanded', 'isHidden'], x))).toEqual(
+					[
+						{ path: '/Smith', isHidden: false, isExpanded: true },
+						{ path: '/Smith/Bob', isHidden: false },
+						{ path: '/Smith/Alice', isHidden: false, isExpanded: true },
+						{ path: '/Smith/Alice/Lexi', isHidden: false },
+						{ path: '/Smith/Alice/Sofia', isHidden: false },
+						{ path: '/Snow', isHidden: false, isExpanded: true },
+						{ path: '/Snow/Charlie', isHidden: false },
+						{ path: '/Snow/Eve', isHidden: false }
+					]
+				)
 			})
 		})
 	})

@@ -1,15 +1,17 @@
 <script>
-	import { defaultFields, getIcon, getText } from '@rokkit/core'
+	import { identity } from 'ramda'
+	import { defaultFields, getIcon, isObject, getFormattedText } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
 	export let value
 	export let fields = defaultFields
+	export let formatter = null
 
-	$: isObject = typeof (value ?? '-') === 'object'
-	$: text = getText(value, fields)
+	// $: isObject = typeof (value ?? '-') === 'object'
+	$: text = getFormattedText(value, fields, formatter)
 </script>
 
-{#if isObject}
+{#if isObject(value)}
 	{#if value[fields.icon]}
 		{@const iconName = getIcon(value, fields)}
 		<Icon name={iconName} />

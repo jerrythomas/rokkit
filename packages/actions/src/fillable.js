@@ -96,8 +96,8 @@ function clear(event, node) {
  * @param {import('./types').FillOptions} data
  */
 function validate(blanks, data) {
-	Object.keys(blanks).map((ref) => {
-		let index = data.options.findIndex(({ actualIndex }) => actualIndex == ref)
+	Object.keys(blanks).map((_, ref) => {
+		let index = data.options.findIndex(({ actualIndex }) => actualIndex === ref)
 		if (index > -1)
 			blanks[ref].classList.add(
 				data.options[index].expectedIndex === data.options[index].actualIndex ? 'pass' : 'fail'

@@ -24,16 +24,11 @@ export function ThemeStore() {
 			store.update((cur) => ({ ...cur, ...partial }))
 		} else if (Object.keys(partial).length > 0) {
 			console.error('Both "name" and "mode" must be strings', value)
-			// store.set(DEFAULT_THEME)
 		}
 	}
-	// const update = (fn) => {
-	// 	set(fn(get(store)))
-	// }
 
 	return {
 		...store,
-		// update,
 		set
 	}
 }

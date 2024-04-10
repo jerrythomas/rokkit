@@ -16,12 +16,12 @@ export function toUseHandlersFor(action, options, events) {
 	const actionHandler = action(mock.node, options)
 	let result = events.map((event) => ({
 		event,
-		created: mock.listeners[event] == 1
+		created: mock.listeners[event] === 1
 	}))
 
 	actionHandler.destroy()
 	result = result
-		.map((r) => ({ ...r, destroyed: mock.listeners[r.event] == 0 }))
+		.map((r) => ({ ...r, destroyed: mock.listeners[r.event] === 0 }))
 		.map((r) => ({ ...r, pass: r.created && r.destroyed }))
 
 	const pass = result.every((r) => r.pass)

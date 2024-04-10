@@ -4,18 +4,15 @@
 
 	const dispatch = createEventDispatcher()
 
+	let className = ''
+	export { className as class }
+	/** @type {string} */
 	export let name
+	/** @type {string|null} */
 	export let label
 	export let sortable = false
 	export let hidden = false
 	export let order = 'none'
-
-	const options = [
-		{ icon: 'sort-none', value: 'none', label: 'None' },
-		{ icon: 'sort-ascending', value: 'asc', label: 'Ascending' },
-		{ icon: 'sort-descending', value: 'desc', label: 'Descending' }
-	]
-	let value = options.find((x) => x.value === order) ?? options[0]
 
 	const handleSort = (event) => {
 		if (!sortable) return
@@ -31,18 +28,17 @@
 </script>
 
 {#if !hidden}
-	<th scope="col" on:click={handleSort} data-sortable={sortable} aria-label={description}>
+	<th
+		scope="col"
+		on:click={handleSort}
+		data-sortable={sortable}
+		aria-label={description}
+		class={className}
+	>
 		<cell>
-			{label ?? name}
+			{title}
 			{#if sortable}
-				<Icon name={icon} class="small" />
-				<!-- <Toggle
-					{options}
-					{value}
-					on:change={(e) => handleSort(name, e.detail)}
-					minimal
-					{description}
-				/> -->
+				<Icon name={icon} class="small" label="change the sort order" />
 			{/if}
 		</cell>
 	</th>

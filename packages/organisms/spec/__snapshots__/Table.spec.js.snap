@@ -3,15 +3,18 @@
 exports[`Table.svelte > should render using default field mapping 1`] = `
 <body>
   <div>
-    <table-wrapper
-      class="relative overflow-x-auto"
+    <tree-table
+      class=""
     >
-      <table>
+      <table
+        class="striped"
+      >
          
         <thead>
           <tr>
             <th
               aria-label="id"
+              class=""
               data-sortable="false"
               scope="col"
             >
@@ -23,6 +26,7 @@ exports[`Table.svelte > should render using default field mapping 1`] = `
             
             <th
               aria-label="name"
+              class=""
               data-sortable="false"
               scope="col"
             >
@@ -36,23 +40,45 @@ exports[`Table.svelte > should render using default field mapping 1`] = `
         </thead>
          
         <tbody>
-          <tr>
+          <tr
+            aria-current="false"
+            class="cursor-pointer"
+          >
             <td>
-              1
+              <cell
+                class="cell-type-undefined"
+              >
+                 
+                
+                 
+                <p>
+                  1
+                </p>
+                
+                
+              </cell>
             </td>
-            
-            
             <td>
-              test
+              <cell
+                class="cell-type-undefined"
+              >
+                 
+                
+                 
+                <p>
+                  test
+                </p>
+                
+                
+              </cell>
             </td>
-            
-            
              
           </tr>
+          
         </tbody>
          
       </table>
-    </table-wrapper>
+    </tree-table>
   </div>
 </body>
 `;

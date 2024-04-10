@@ -512,6 +512,9 @@ importers:
       '@rokkit/core':
         specifier: workspace:*
         version: link:../core
+      '@rokkit/data':
+        specifier: workspace:1.0.0-next.93
+        version: link:../data
       '@rokkit/molecules':
         specifier: workspace:*
         version: link:../molecules
@@ -849,6 +852,9 @@ importers:
       '@rokkit/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@rokkit/data':
+        specifier: workspace:1.0.0-next.93
+        version: link:../../packages/data
       '@rokkit/icons':
         specifier: workspace:*
         version: link:../../packages/icons

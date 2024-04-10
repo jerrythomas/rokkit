@@ -1,5 +1,5 @@
 import { defaultFields } from './constants'
-import { isObject } from '.'
+import { toString, isObject } from './utils'
 
 /**
  * Get the component to be used to render the item.
@@ -10,7 +10,7 @@ import { isObject } from '.'
  * @param {import('./types.js').ComponentMap} using
  */
 export function getComponent(value, fields, using) {
-	return fields.component && typeof value === 'object'
+	return fields.component && isObject(value)
 		? using[value[fields.component]] ?? using.default
 		: using.default
 }
@@ -47,20 +47,36 @@ export function getValue(node, fields = defaultFields) {
  * Get the text for the item. If the text is an object,
  * it will use the field mapping to determine which attribute to get.
  *
- * @param {*} node
+ * @param {*}                              node
  * @param {import('./types').FieldMapping} fields
- * @returns {*}
+ * @returns {string}
  */
 export function getText(node, fields = defaultFields) {
-	let value = typeof node === 'object' && node != null ? node[fields.text] : node
-
-	return value != null
-		? isObject(value)
-			? JSON.stringify(value, null, 2)
-			: value.toString()
-		: value
+	const value = isObject(node) ? node[fields.text] : node
+	return value
+	// return value != null
+	// 	? isObject(value)
+	// 		? JSON.stringify(value, null, 2)
+	// 		: value.toString()
+	// 	: value
 }
 
+/**
+ * Get the formatted text for the item. If the text is an object, use the field mapping to determine
+ * which attribute to get currency. Use the formatter or identity function to format the text.
+ *
+ * @param {*}                              node
+ * @param {import('./types').FieldMapping} fields
+ * @param {function}                       formatter
+ * @returns {*}
+ */
+export function getFormattedText(node, fields = defaultFields, formatter = toString) {
+	const value = isObject(node) ? node[fields.text] : node
+	const currency = getAttribute(node, fields.currency)
+	const formatValue = typeof formatter === 'function' ? formatter : toString
+
+	return currency ? formatValue(value, currency) : formatValue(value)
+}
 /**
  * Gets the attribute from the node
  * @param {*} node

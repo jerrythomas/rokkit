@@ -78,3 +78,15 @@ checkbox {
 button:disabled {
   @apply bg-neutral-muted text-neutral-500 cursor-not-allowed;
 }
+
+cell.cell-type-string {
+  @apply text-left;
+}
+cell.cell-type-integer item p,
+cell.cell-type-number item p {
+  @apply text-right;
+}
+
+cell item {
+  @apply flex w-full;
+}
