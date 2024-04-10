@@ -51,13 +51,9 @@ function parseMediaQuery(mediaQuery) {
  * @returns
  */
 function evaluateMediaQuery(mediaQuery, width) {
-	const { 'min-width': minWidth, 'max-width': maxWidth } = mediaQuery
+	const { 'min-width': minWidth = 0, 'max-width': maxWidth = width } = mediaQuery
 
-	if ((minWidth && width < minWidth) || (maxWidth && width > maxWidth)) {
-		return false
-	}
-
-	return true
+	return width >= minWidth && width <= maxWidth
 }
 
 /**
