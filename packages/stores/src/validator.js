@@ -28,9 +28,16 @@ export function getPatternValidator(pattern) {
 	}
 }
 
+/**
+ * Check if the input is a valid number
+ *
+ * @param {*} input
+ * @returns {boolean}
+ */
 function isValidNumber(input) {
 	return input !== null && input !== undefined && !isNaN(input)
 }
+
 /**
  * Get a validator function that takes a min and max value and returns a validation function
  *
@@ -52,9 +59,7 @@ export function getRangeValidator(min, max) {
  * @throws {Error} - If the type is invalid
  */
 export function getTypeValidator(type) {
-	if (type in TYPE_VALIDATORS) {
-		return TYPE_VALIDATORS[type]
-	}
+	if (type in TYPE_VALIDATORS) return TYPE_VALIDATORS[type]
 
 	return (input) => typeof input === type
 }
@@ -67,10 +72,16 @@ export function getTypeValidator(type) {
  * @throws {Error} - If the rule is invalid.
  */
 function getValidator(rule) {
-	if (typeof rule.validator === 'function') return rule.validator
-	if (rule.pattern) return getPatternValidator(rule.pattern)
-	if (rule.min || rule.max) return getRangeValidator(rule.min, rule.max)
-	if (rule.type) return getTypeValidator(rule.type)
+	const { validator, pattern = null, min = null, max = null, type = null } = rule
+	const strategies = [
+		{ satisfies: typeof validator === 'function', validator },
+		{ satisfies: pattern !== null, validator: getPatternValidator(pattern ?? '*') },
+		{ satisfies: min !== null || max !== null, validator: getRangeValidator(min, max) },
+		{ satisfies: type !== null, validator: getTypeValidator(type) }
+	]
+
+	const result = strategies.find((x) => x.satisfies)
+	if (result) return result.validator
 
 	throw new Error('Invalid rule')
 }
@@ -88,7 +99,6 @@ function evaluateRules(value, rules) {
 
 	rules.map((rule) => {
 		const valid = rule.validator(value)
-		// console.log(value, valid, rule.text, rule.optional)
 		const result = {
 			text: rule.text,
 			valid,
