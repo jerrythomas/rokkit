@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/organisms",
-  "version": "1.0.0-next.93",
+  "version": "1.0.0-next.94",
   "description": "Organisms components",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
@@ -36,7 +36,12 @@
     "vite": "^5.2.8",
     "vitest": "~1.4.0"
   },
-  "files": ["src/**/*.js", "src/**/*.svelte", "!src/mocks", "!src/**/*.spec.js"],
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "!src/mocks",
+    "!src/**/*.spec.js"
+  ],
   "exports": {
     "./src": "./src",
     "./wrappers": "./src/wrappers/index.js",

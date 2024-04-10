@@ -513,7 +513,7 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@rokkit/data':
-        specifier: workspace:1.0.0-next.93
+        specifier: workspace:1.0.0-next.94
         version: link:../data
       '@rokkit/molecules':
         specifier: workspace:*
@@ -853,7 +853,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
       '@rokkit/data':
-        specifier: workspace:1.0.0-next.93
+        specifier: workspace:1.0.0-next.94
         version: link:../../packages/data
       '@rokkit/icons':
         specifier: workspace:*
