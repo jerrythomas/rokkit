@@ -10,16 +10,17 @@
 		select: null,
 		multi: [],
 		switch: 'a',
-		radio: false
+		radio: false,
+		rating: 3
 	}
 	let display = ''
 
 	$: display = JSON.stringify(value, null, 2)
 </script>
 
-<section class="grid grid-cols-3 gap-4">
-	<div class="flex flex-col p-4 gap-2 h-full overflow-hidden">
-		<InputField name="range" type="range" min={0} max={100} ticks={20} bind:value={value.range} />
+<section class="grid grid-cols-5 overflow-hidden gap-4">
+	<div class="flex flex-col p-4 gap-2 h-full overflow-y-scroll col-span-3">
+		<InputField name="range" type="range" min={0} max={50} ticks={10} bind:value={value.range} />
 		<InputField name="color" type="color" bind:value={value.color} />
 		<InputField name="date" type="date" bind:value={value.date} />
 		<InputField name="time" type="time" bind:value={value.time} />
@@ -35,6 +36,7 @@
 		<InputField name="checkbox" type="checkbox" bind:value={value.checkbox} />
 		<InputField name="radio" type="radio" bind:value={value.radio} options={['a', 'b', 'c']} />
 		<InputField name="switch" type="switch" bind:value={value.switch} options={['a', 'b', 'c']} />
+		<InputField name="rating" type="rating" bind:value={value.rating} />
 	</div>
-	<pre class="text-sm overflow-y-scroll p-4 col-span-2">{display}</pre>
+	<pre class="text-xs overflow-y-scroll col-span-2 p-4">{display}</pre>
 </section>
