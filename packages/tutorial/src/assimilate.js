@@ -136,7 +136,7 @@ async function processTutorials(modules, sources, options) {
 	let tutorials = {}
 	let routes
 	let files = await fetchAndProcessFiles(modules, sources, options)
-	files.map((item) => {
+	files.forEach((item) => {
 		tutorials = tutorialsToNestedObject(tutorials, item)
 	})
 	routes = generateRouteEntries(tutorials)

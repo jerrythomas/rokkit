@@ -27,7 +27,7 @@ describe('VirtualList.svelte', () => {
 
 	beforeEach(() => {
 		cleanup()
-		events.map((e) => (handlers[e] = vi.fn()))
+		events.forEach((e) => (handlers[e] = vi.fn()))
 	})
 
 	afterAll(() => vi.resetAllMocks())

@@ -41,14 +41,14 @@ describe('events', () => {
 
 		beforeEach(() => {
 			vi.useFakeTimers()
-			events.map((event) => {
+			events.forEach((event) => {
 				handlers[event] = vi.fn()
 				node.addEventListener(event, handlers[event])
 			})
 		})
 		afterEach(() => {
 			vi.useRealTimers()
-			events.map((event) => node.removeEventListener(event, handlers[event]))
+			events.forEach((event) => node.removeEventListener(event, handlers[event]))
 		})
 		it('should simulate a mouse swipe', () => {
 			simulateMouseSwipe(node, { x: 10, y: 20 })
@@ -71,13 +71,13 @@ describe('events', () => {
 
 		beforeEach(() => {
 			vi.useFakeTimers()
-			events.map((event) => {
+			events.forEach((event) => {
 				handlers[event] = vi.fn()
 				node.addEventListener(event, handlers[event])
 			})
 		})
 		afterEach(() => {
-			events.map((event) => node.removeEventListener(event, handlers[event]))
+			events.forEach((event) => node.removeEventListener(event, handlers[event]))
 			vi.useRealTimers()
 		})
 

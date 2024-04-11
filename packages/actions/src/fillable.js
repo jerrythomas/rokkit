@@ -27,7 +27,7 @@ export function fillable(node, { options, current, check }) {
 			if (data.check) validate(blanks, data)
 		},
 		destroy() {
-			Object.keys(blanks).map((ref) => {
+			Object.keys(blanks).forEach((ref) => {
 				blanks[ref].removeEventListener('click', click)
 			})
 		}
@@ -41,7 +41,7 @@ export function fillable(node, { options, current, check }) {
  * @param {EventListener} click
  */
 function initialize(blanks, click) {
-	Object.keys(blanks).map((ref) => {
+	Object.keys(blanks).forEach((ref) => {
 		blanks[ref].addEventListener('click', click)
 		blanks[ref].classList.add('empty')
 		blanks[ref].name = 'fill-' + ref
@@ -96,7 +96,7 @@ function clear(event, node) {
  * @param {import('./types').FillOptions} data
  */
 function validate(blanks, data) {
-	Object.keys(blanks).map((_, ref) => {
+	Object.keys(blanks).forEach((_, ref) => {
 		let index = data.options.findIndex(({ actualIndex }) => actualIndex === ref)
 		if (index > -1)
 			blanks[ref].classList.add(

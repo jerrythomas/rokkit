@@ -125,7 +125,7 @@ export function transform(data) {
 	let result = {}
 	data
 		.filter((item) => item.route !== null)
-		.map((item) => (result = addPart(result, omit(item.name ? [] : ['route'], item), 0)))
+		.forEach((item) => (result = addPart(result, omit(item.name ? [] : ['route'], item), 0)))
 	return result
 }
 

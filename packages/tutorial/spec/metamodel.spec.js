@@ -300,7 +300,7 @@ describe('metamodel', () => {
 		})
 		it('should convert an array of items to nested object', () => {
 			let data = {}
-			input.map((item) => {
+			input.forEach((item) => {
 				data = tutorialsToNestedObject(data, item)
 			})
 			expect(data).toEqual({

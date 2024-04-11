@@ -110,7 +110,7 @@ describe('internal', () => {
 		let handlers = {}
 
 		beforeEach(() => {
-			events.map((event) => {
+			events.forEach((event) => {
 				handlers[event] = vi.fn()
 				element.addEventListener(event, handlers[event])
 			})

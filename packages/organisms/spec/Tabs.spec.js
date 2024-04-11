@@ -12,7 +12,7 @@ describe('Tabs.svelte', () => {
 	let handlers = {}
 	beforeEach(() => {
 		cleanup()
-		events.map((name) => (handlers[name] = vi.fn()))
+		events.forEach((name) => (handlers[name] = vi.fn()))
 	})
 
 	it('should render text array', () => {
