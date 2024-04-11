@@ -14,7 +14,7 @@ describe('fillable', () => {
 	it('should initialize the empty fillable element with click listener', () => {
 		let del = [document.createElement('del'), document.createElement('del')]
 
-		del.map((d) => {
+		del.forEach((d) => {
 			d.addEventListener = vi.fn()
 			d.removeEventListener = vi.fn()
 			node.appendChild(d)
@@ -22,7 +22,7 @@ describe('fillable', () => {
 
 		const fillableAction = fillable(node, { options, current, check })
 
-		del.map((d, index) => {
+		del.forEach((d, index) => {
 			expect(d.classList.contains('empty')).toBe(true)
 			expect(d.name).toEqual('fill-' + index)
 			expect(d['data-index']).toEqual(index.toString())
@@ -30,7 +30,7 @@ describe('fillable', () => {
 		})
 
 		fillableAction.destroy()
-		del.map((d) => {
+		del.forEach((d) => {
 			expect(d.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function))
 			node.removeChild(d)
 		})

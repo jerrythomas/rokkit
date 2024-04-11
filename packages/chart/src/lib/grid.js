@@ -7,10 +7,11 @@
 
 /**
  * @typedef SwatchGrid
- * @property {number} width
- * @property {number} height
+ * @property {number}      width
+ * @property {number}      height
  * @property {GridPoint[]} data
  */
+
 /**
  * Calculates a grid of centres to fit a list of items of `size` within the number of `columns` and `rows`.
  *
@@ -47,8 +48,16 @@ export function swatchGrid(count, size, pad = 0, columns = 0, rows = 0) {
 	return { width, height, data }
 }
 
+/**
+ * Spreads values as patterns with colors from a palette
+ *
+ * @param {number[]} values
+ * @param {string[]} patterns
+ * @param {string[]} palette
+ * @returns {Record<number, { id: string, pattern: string, color: string }>}
+ */
 export function spreadValuesAsPatterns(values, patterns, palette) {
-	values
+	const result = values
 		.map((value, index) => ({
 			pattern: patterns[index % patterns.length],
 			color: palette[index % palette.length],
@@ -65,4 +74,5 @@ export function spreadValuesAsPatterns(values, patterns, palette) {
 			}),
 			{}
 		)
+	return result
 }

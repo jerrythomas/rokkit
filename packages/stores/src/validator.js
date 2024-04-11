@@ -97,7 +97,7 @@ function evaluateRules(value, rules) {
 	let status = 'pass'
 	let validations = []
 
-	rules.map((rule) => {
+	rules.forEach((rule) => {
 		const valid = rule.validator(value)
 		const result = {
 			text: rule.text,

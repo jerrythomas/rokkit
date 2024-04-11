@@ -38,7 +38,7 @@ describe('switchable', () => {
 		await fireEvent.click(node)
 		expect(handle).not.toHaveBeenCalled()
 
-		keys.map(async (key) => {
+		keys.forEach(async (key) => {
 			await fireEvent.keyDown(node, key)
 			expect(handle).not.toHaveBeenCalled()
 		})

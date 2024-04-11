@@ -13,7 +13,7 @@ describe('DropDown.svelte', () => {
 
 	beforeEach(() => {
 		cleanup()
-		events.map((e) => (handlers[e] = vi.fn()))
+		events.forEach((e) => (handlers[e] = vi.fn()))
 	})
 	afterAll(() => vi.resetAllMocks())
 
@@ -200,7 +200,7 @@ describe('DropDown.svelte', () => {
 			value: options[1]
 		})
 
-		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
 
 		const wrapper = container.querySelector('drop-down')
 		await fireEvent.focus(wrapper.querySelector('button'))

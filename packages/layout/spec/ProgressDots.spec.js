@@ -50,7 +50,7 @@ describe('ProgressDots.svelte', () => {
 		const dots = Array.from(container.querySelectorAll('.step'))
 		// validateDots(dots, 5, -1, -1)
 
-		dots.slice(1).map(async (d) => {
+		dots.slice(1).forEach(async (d) => {
 			await fireEvent.click(d)
 			await tick()
 			validateDots(dots, 5, -1, -1)

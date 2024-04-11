@@ -14,7 +14,7 @@ describe('Select.svelte', () => {
 
 	beforeEach(() => {
 		cleanup()
-		events.map((e) => (handlers[e] = vi.fn()))
+		events.forEach((e) => (handlers[e] = vi.fn()))
 	})
 	afterAll(() => vi.resetAllMocks())
 
@@ -115,7 +115,7 @@ describe('Select.svelte', () => {
 			options: options
 		})
 
-		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
 
 		const select = container.querySelector('selected-item')
 		await fireEvent.click(select)
@@ -142,7 +142,7 @@ describe('Select.svelte', () => {
 			value: options[1]
 		})
 
-		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
 
 		const wrapper = container.querySelector('input-select')
 		await fireEvent.click(wrapper.querySelector('selected-item'))
@@ -167,7 +167,7 @@ describe('Select.svelte', () => {
 			value: options[1]
 		})
 
-		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
 
 		const wrapper = container.querySelector('input-select')
 		await fireEvent.click(wrapper.querySelector('selected-item'))

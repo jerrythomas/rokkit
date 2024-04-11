@@ -20,12 +20,12 @@ describe('swipable', () => {
 		}
 
 		global.Touch = vi.fn().mockImplementation((input) => input)
-		Object.entries(handlers).map(([event, handler]) => node.addEventListener(event, handler))
+		Object.entries(handlers).forEach(([event, handler]) => node.addEventListener(event, handler))
 		vi.useFakeTimers()
 	})
 
 	afterEach(() => {
-		Object.entries(handlers).map(([event, handler]) => node.removeEventListener(event, handler))
+		Object.entries(handlers).forEach(([event, handler]) => node.removeEventListener(event, handler))
 		vi.useRealTimers()
 	})
 

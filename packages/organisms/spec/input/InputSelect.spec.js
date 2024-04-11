@@ -14,7 +14,7 @@ describe('InputSelect.svelte', () => {
 
 	beforeEach(() => {
 		cleanup()
-		events.map((e) => (handlers[e] = vi.fn()))
+		events.forEach((e) => (handlers[e] = vi.fn()))
 	})
 
 	afterEach(() => {
@@ -98,7 +98,7 @@ describe('InputSelect.svelte', () => {
 			options: [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		})
 
-		Object.keys(handlers).map((e) => component.$on(e, handlers[e]))
+		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
 
 		const select = container.querySelector('selected-item')
 		await fireEvent.click(select)

@@ -4,7 +4,7 @@ import { defaultFields } from './constants'
 export function flattenNestedList(items, fields = defaultFields, level = 0) {
 	fields = { ...defaultFields, ...fields }
 	let data = []
-	items.map((item) => {
+	items.forEach((item) => {
 		const children = item[fields.children] ?? []
 		data = [
 			...data,
@@ -31,7 +31,7 @@ export function findValueFromPath(slug, data, fields) {
 	let items = data
 	let value = null
 
-	keys.map((key, index) => {
+	keys.forEach((key, index) => {
 		const match = items.find((item) => item[fields.key] === key)
 		if (match) {
 			if (index < keys.length - 1) {

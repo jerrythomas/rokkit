@@ -86,7 +86,7 @@ describe('navigator', () => {
 	it('should dispatch select when an item is clicked.', () => {
 		options = { items, fields }
 		navigatorInstance = navigator(node, options)
-		items.map((_, index) => {
+		items.forEach((_, index) => {
 			const child = document.createElement('span')
 			child.dataset.path = index
 			node.appendChild(child)
