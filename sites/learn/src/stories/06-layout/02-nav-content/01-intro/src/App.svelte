@@ -1,6 +1,6 @@
 <script>
 	import ContentNavigator from './ContentNavigator.svelte'
-	import { Tabs } from '@rokkit/organisms'
+	import { Tabs } from '@rokkit/ui'
 
 	let items = ['one', 'two', 'three', 'four']
 
