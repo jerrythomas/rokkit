@@ -12,11 +12,6 @@ export function createNavigator(items, visibleCount = null) {
 		end
 	})
 
-	const moveByOffset = (offset) => {
-		let position = Math.max(0, Math.min(index + offset, items.length - 1))
-		selectByIndex(position)
-	}
-
 	const keepSelectedItemVisible = (position) => {
 		if (visibleCount === null) return
 
@@ -60,7 +55,6 @@ export function createNavigator(items, visibleCount = null) {
 			updateRange(min, max)
 		}
 	}
-	const select = (item) => selectByIndex(items.indexOf(item))
 
 	const selectByIndex = (position) => {
 		if (position >= 0 && position !== index && position < items.length) {
@@ -73,6 +67,13 @@ export function createNavigator(items, visibleCount = null) {
 				end
 			})
 		}
+	}
+
+	const select = (item) => selectByIndex(items.indexOf(item))
+
+	const moveByOffset = (offset) => {
+		let position = Math.max(0, Math.min(index + offset, items.length - 1))
+		selectByIndex(position)
 	}
 
 	return {
