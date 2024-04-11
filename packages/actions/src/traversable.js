@@ -28,17 +28,17 @@ export function traversable(element, options) {
 	let current = { position: [], item: null }
 	let handlers = {}
 
+	const checkAndEmit = (event) => {
+		if (current?.item) {
+			emit(element, event, pick(['item', 'position'], current))
+		}
+	}
+
 	const moveCursor = (direction) => {
 		const result = content[direction](current.position)
 		if (result) {
 			current = result
 			checkAndEmit('move')
-		}
-	}
-
-	const checkAndEmit = (event) => {
-		if (current?.item) {
-			emit(element, event, pick(['item', 'position'], current))
 		}
 	}
 
