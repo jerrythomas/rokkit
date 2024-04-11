@@ -18,9 +18,9 @@ export function fillable(node, { options, current, check }) {
 	initialize(blanks, click)
 
 	return {
-		update({ options, current }) {
-			data.options = options
-			data.current = current
+		update(input) {
+			data.options = input.options
+			data.current = input.current
 			data.check = check
 
 			fill(blanks, data.options, data.current)

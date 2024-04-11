@@ -45,7 +45,7 @@ function combineElementWithSchema(element, schema) {
  * @returns
  */
 function combineNestedElementsWithSchema(element, attribute, schema) {
-	const temp = element.elements.map((element) => combineElementWithSchema(element, schema))
+	const temp = element.elements.map((el) => combineElementWithSchema(el, schema))
 	return {
 		...omit(['component', 'props'], attribute),
 		...omit(['scope', 'elements'], element),

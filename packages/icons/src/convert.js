@@ -64,10 +64,10 @@ async function cleanAndOptimizeIcon(svg, color) {
 	cleanupSVG(svg)
 
 	if (!color) {
-		await parseColors(svg, {
+		parseColors(svg, {
 			defaultColor: 'currentColor',
-			callback: (attr, colorStr, color) => {
-				return !color || isEmptyColor(color) ? colorStr : 'currentColor'
+			callback: (_, colorStr, value) => {
+				return !value || isEmptyColor(value) ? colorStr : 'currentColor'
 			}
 		})
 	}

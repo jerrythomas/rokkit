@@ -60,6 +60,6 @@ export function iconShortcuts(icons, collection, variants) {
  * @returns {string|number}
  */
 export function scaledPath(size, x) {
-	if (Array.isArray(x)) return x.map((x) => scaledPath(size, x)).join(' ')
+	if (Array.isArray(x)) return x.map((v) => scaledPath(size, v)).join(' ')
 	return typeof x === 'number' ? x * size : x
 }

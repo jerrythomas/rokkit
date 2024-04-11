@@ -63,19 +63,19 @@ export function model() {
  * @returns {Array}             - the derived model
  */
 function deriveModel(data, sparse = false) {
-	const model = []
+	const result = []
 	let item = data
 
 	if (Array.isArray(data)) item = sparse ? getDeepScanSample(data) : data[0]
 
 	const kv = Object.entries(item)
 	kv.forEach(([key, value]) => {
-		model.push({
+		result.push({
 			name: key,
 			type: getType(value)
 		})
 	})
-	return model
+	return result
 }
 
 /**

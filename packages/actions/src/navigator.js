@@ -24,10 +24,10 @@ export function navigator(element, options) {
 
 	// todo: Update should handle selection value change
 	// should we wait a tick before updating?
-	const update = (options) => {
+	const update = (input) => {
 		const previousNode = currentNode
-		items = options.items
-		path = pathFromIndices(options.indices ?? [], items, fields)
+		items = input.items
+		path = pathFromIndices(input.indices ?? [], items, fields)
 		currentNode = getCurrentNode(path)
 
 		if (previousNode !== currentNode && currentNode) {
@@ -59,8 +59,8 @@ export function navigator(element, options) {
 	}
 	const collapse = () => {
 		if (currentNode) {
-			const collapse = isExpanded(currentNode, path[path.length - 1].fields)
-			if (collapse) {
+			const expanded = isExpanded(currentNode, path[path.length - 1].fields)
+			if (expanded) {
 				toggle()
 			} else if (path.length > 0) {
 				path = path.slice(0, -1)
@@ -108,8 +108,8 @@ export function navigator(element, options) {
 			if (hasChildren(currentNode, path[path.length - 1].fields)) {
 				currentNode[path[path.length - 1].fields.isOpen] =
 					!currentNode[path[path.length - 1].fields.isOpen]
-				const event = currentNode[path[path.length - 1].fields.isOpen] ? 'expand' : 'collapse'
-				emit(event, element, indices, currentNode)
+				const eventName = currentNode[path[path.length - 1].fields.isOpen] ? 'expand' : 'collapse'
+				emit(eventName, element, indices, currentNode)
 			} else if (currentNode !== null) emit('select', element, indices, currentNode)
 			emit('move', element, indices, currentNode)
 			// emit('select', element, indices, currentNode)

@@ -4,10 +4,10 @@ export function switchable(node, data) {
 	let index = 0
 	let { value, options, disabled } = data
 
-	const update = (data) => {
-		value = data.value === null || data.value === undefined ? options[0] : data.value
-		options = data.options
-		disabled = data.disabled
+	const update = (input) => {
+		value = input.value === null || input.value === undefined ? options[0] : input.value
+		options = input.options
+		disabled = input.disabled
 		index = options.indexOf(value)
 	}
 
