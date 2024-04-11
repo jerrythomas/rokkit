@@ -23,12 +23,12 @@ export function navigable(node, options) {
 	let actions = {} //getKeyboardActions(node, { horizontal, nested })
 	const handleKeydown = (event) => handleAction(actions, event)
 
-	function updateListeners(options) {
-		if (options.enabled) actions = getKeyboardActions(node, options, handlers)
+	function updateListeners(input) {
+		if (input.enabled) actions = getKeyboardActions(node, input, handlers)
 
-		if (options.enabled && !listening) node.addEventListener('keydown', handleKeydown)
-		else if (!options.enabled && listening) node.removeEventListener('keydown', handleKeydown)
-		listening = options.enabled
+		if (input.enabled && !listening) node.addEventListener('keydown', handleKeydown)
+		else if (!input.enabled && listening) node.removeEventListener('keydown', handleKeydown)
+		listening = input.enabled
 	}
 
 	updateListeners(options)

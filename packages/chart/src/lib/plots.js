@@ -15,11 +15,11 @@ export function plotter(node, options) {
 	render()
 
 	return {
-		update: (options) => {
-			data = options.data
-			aes = options.aes
-			type = options.type
-			opts = options.opts
+		update: (input) => {
+			data = input.data
+			aes = input.aes
+			type = input.type
+			opts = input.opts
 			render()
 		}
 	}

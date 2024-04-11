@@ -121,10 +121,11 @@ export function convertFilesToFolderHierarchy(tutorials, options) {
 	Object.keys(tutorials).forEach((key) => {
 		let tutorial = tutorials[key]
 		let keys = [options.partialFolder, options.solutionFolder]
-		keys.forEach((key) => {
-			if (tutorial[key]) {
-				if (tutorial[key].files) {
-					tutorial[key].files = folderHierarchy(tutorial[key].files)
+
+		keys.forEach((folder) => {
+			if (tutorial[folder]) {
+				if (tutorial[folder].files) {
+					tutorial[folder].files = folderHierarchy(tutorial[folder].files)
 				}
 			}
 		})

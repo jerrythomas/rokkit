@@ -126,7 +126,7 @@ export function verifiable(input, rules) {
 		validator: getValidator(rule)
 	}))
 
-	const evaluate = (input) => result.set(evaluateRules(input, rules))
+	const evaluate = (value) => result.set(evaluateRules(value, rules))
 
 	evaluate(input)
 

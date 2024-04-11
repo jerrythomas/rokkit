@@ -24,10 +24,7 @@ export function deriveNestedSchema(input, scope = '#') {
 		)
 		schema.layout = {
 			type: 'vertical',
-			elements: atoms.map(({ key, scope }) => ({
-				label: key,
-				scope: scope
-			}))
+			elements: atoms.map(({ key: label, scope }) => ({ label, scope }))
 		}
 	}
 

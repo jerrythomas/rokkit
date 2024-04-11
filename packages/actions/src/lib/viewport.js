@@ -80,15 +80,15 @@ export function virtualListViewport(options) {
 		const previous = get(bounds)
 		if (maxVisible > 0) {
 			let visible = calculateSum(cache, lower, upper, averageSize, gap)
-			space.update((value) => (value = { ...value, visible }))
+			space.update((state) => (state = { ...state, visible }))
 		}
 		if (previous.lower !== lower) {
 			let before = calculateSum(cache, 0, lower, averageSize)
-			space.update((value) => (value = { ...value, before }))
+			space.update((state) => (state = { ...state, before }))
 		}
 		if (previous.upper !== upper) {
 			let after = calculateSum(cache, upper, cache.length, averageSize)
-			space.update((value) => (value = { ...value, after }))
+			space.update((state) => (state = { ...state, after }))
 		}
 		if (previous.lower !== lower || previous.upper !== upper) {
 			bounds.set({ lower, upper })

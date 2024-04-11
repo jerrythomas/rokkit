@@ -19,10 +19,10 @@ export function swipeable(node, options = defaultOptions) {
 	let track = {}
 	let listeners = {}
 
-	const updateListeners = (options) => {
+	const updateListeners = (props) => {
 		removeListeners(node, listeners)
-		listeners = getListeners(node, options, track)
-		setupListeners(node, listeners, options)
+		listeners = getListeners(node, props, track)
+		setupListeners(node, listeners, props)
 	}
 
 	options = { ...defaultOptions, ...options }
