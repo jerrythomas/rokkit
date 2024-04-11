@@ -56,18 +56,20 @@
   /* @apply hover:text-secondary; */
 }
 
-.minimal node {
-  @apply h-7 px-2;
+/* .minimal nested-list {
+  @apply text-sm;
+} */
+.minimal node > div {
+  @apply h-7 px-2 py-1;
 }
 .minimal node > item {
   @apply px-1 gap-1;
 }
-.minimal node > span {
-  @apply w-3;
+.minimal node > div > span > i {
+  @apply border-none w-3;
 }
-.minimal node > span > icon {
-  /* .minimal node > icon { */
-  @apply text-sm;
+.minimal node > div > icon {
+  @apply text-xs text-neutral-400;
 }
 .minimal node[aria-selected='true'] > item > p {
   @apply text-secondary-600;
@@ -82,10 +84,10 @@
   @apply text-sm;
 }
 
-.minimal .small node {
+.minimal .small node > div {
   @apply text-sm gap-1 h-5;
 }
-.minimal .small node > span > icon {
+.minimal .small node > div > icon {
   @apply text-sm;
 }
 .minimal .small item > img,
@@ -103,9 +105,9 @@
   @apply h-full bg-neutral-inset min-w-40;
 }
 
-.minimal node > span > i {
+/* .minimal node > div > i {
   @apply border-neutral-muted;
-}
+} */
 
 .minimal crumbs {
   @apply flex-grow gap-1 text-sm;

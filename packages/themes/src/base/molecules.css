@@ -72,9 +72,9 @@ day-of-month[aria-selected='true'] {
 }
 
 /* Form styles */
-/* form button[type='submit'] {
-  @apply mt-4;
-} */
+form {
+  @apply flex flex-col gap-4;
+}
 field-layout.vertical {
   @apply flex flex-col gap-2;
 }

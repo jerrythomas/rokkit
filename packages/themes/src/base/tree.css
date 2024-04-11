@@ -1,0 +1,18 @@
+tree,
+nested-list {
+  @apply flex flex-col w-full text-sm;
+}
+nested-list node > div {
+  @apply px-2 h-8;
+}
+
+nested-list node {
+  @apply flex flex-col;
+}
+
+node > div > item {
+  @apply px-1;
+}
+node > div > span {
+  @apply flex-shrink-0;
+}
