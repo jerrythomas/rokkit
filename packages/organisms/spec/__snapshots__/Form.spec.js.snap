@@ -185,11 +185,13 @@ exports[`Form.svelte > should render a form 1`] = `
       
       
        
-      <button
-        type="submit"
-      >
-        Submit
-      </button>
+      <span>
+        <button
+          type="submit"
+        >
+          Submit
+        </button>
+      </span>
     </form>
   </div>
 </body>
@@ -360,11 +362,13 @@ exports[`Form.svelte > should render a form with layout 1`] = `
       
       
        
-      <button
-        type="submit"
-      >
-        Submit
-      </button>
+      <span>
+        <button
+          type="submit"
+        >
+          Submit
+        </button>
+      </span>
     </form>
   </div>
 </body>
@@ -539,11 +543,13 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
       
       
        
-      <button
-        type="submit"
-      >
-        Submit
-      </button>
+      <span>
+        <button
+          type="submit"
+        >
+          Submit
+        </button>
+      </span>
     </form>
   </div>
 </body>
@@ -738,11 +744,13 @@ exports[`Form.svelte > should render a form with schema 1`] = `
       
       
        
-      <button
-        type="submit"
-      >
-        Submit
-      </button>
+      <span>
+        <button
+          type="submit"
+        >
+          Submit
+        </button>
+      </span>
     </form>
   </div>
 </body>

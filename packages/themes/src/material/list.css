@@ -26,7 +26,7 @@
   @apply border-b-0 border-t-3;
 }
 
-.material node {
+.material node > div {
   @apply h-7 px-2;
 }
 .material node > item {

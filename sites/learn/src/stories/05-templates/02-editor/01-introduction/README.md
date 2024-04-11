@@ -1,5 +1,5 @@
 ---
-title: NestedEditor
+title: Introduction
 ---
 
 Sometimes you may need to deal with a nested hierarchy of data. For example, you may have nested objects at different levels. In such cases you can use the NestedEditor to edit the nested data.

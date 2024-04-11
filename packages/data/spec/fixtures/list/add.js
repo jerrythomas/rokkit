@@ -1,33 +1,4 @@
-const alpha = {
-	id: 1,
-	name: 'Alpha',
-	lookup_id: 1
-}
-const beta = {
-	id: 2,
-	name: 'Beta',
-	lookup_id: 1
-}
-const charlie = {
-	id: 3,
-	name: 'Charlie',
-	lookup_id: 1
-}
-const delta = {
-	id: 4,
-	name: 'Delta',
-	lookup_id: 2
-}
-const echo = {
-	id: 5,
-	name: 'Echo',
-	lookup_id: 2
-}
-const foxtrot = {
-	id: 6,
-	name: 'Foxtrot',
-	lookup_id: 2
-}
+import { alpha, beta, charlie, foxtrot } from './raw'
 
 const start = [charlie, beta]
 const additions = [

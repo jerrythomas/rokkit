@@ -1,4 +1,4 @@
-export let data = [
+export const data = [
 	{
 		text: '01',
 		label: 'Account Holder Detail',
