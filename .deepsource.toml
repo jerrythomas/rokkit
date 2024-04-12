@@ -12,4 +12,4 @@ environment = ["nodejs", "vitest", "browser"]
 [[transformers]]
 name = "prettier"
 
-test_patterns = ["**/spec/**"]
+test_patterns = ["**/spec/**", "**/tests/**"]
