@@ -24,7 +24,7 @@ describe('forms', () => {
 		it('should return input/number for integer', () => {
 			expect(getRenderer('integer')).toEqual({
 				component: 'input',
-				properties: { type: 'number', pattern: /d+/ }
+				properties: { type: 'number', pattern: /\d+/ }
 			})
 		})
 		it('should return radio-group for enum', () => {
