@@ -1,0 +1,13 @@
+version = 1
+
+[[analyzers]]
+name = "test-coverage"
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  environment = ["vitest"]
+
+[[transformers]]
+name = "prettier"
