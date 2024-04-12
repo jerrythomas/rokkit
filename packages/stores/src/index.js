@@ -1,4 +1,4 @@
-import './types'
+export * from './types'
 export { watchMedia } from './media'
 export { theme } from './theme'
 export { alerts } from './notifications'

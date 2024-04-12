@@ -1,6 +1,18 @@
 import { omit } from 'ramda'
 
+const inputProperties = {
+	string: 'text',
+	number: 'number',
+	integer: 'number'
+}
+
+const typeComponentMap = {
+	boolean: 'checkbox',
+	enum: 'radio-group'
+}
+
 /**
+ * Get the renderer properties for a given type
  *
  * @param {string} type
  * @param {Object} options
@@ -9,24 +21,9 @@ import { omit } from 'ramda'
 export function getRenderer(type, options) {
 	let component = 'input'
 	let properties = {}
-
-	switch (type) {
-		case 'string':
-			properties = { type: 'text' }
-			break
-		case 'number':
-			properties = { type: 'number' }
-			break
-		case 'boolean':
-			component = 'checkbox'
-			break
-		case 'integer':
-			properties = { type: 'number', pattern: /d+/ }
-			break
-		case 'enum':
-			component = 'radio-group'
-			break
-	}
+	if (type in inputProperties) properties.type = inputProperties[type]
+	if (type in typeComponentMap) component = typeComponentMap[type]
+	if (type === 'integer') properties.pattern = /\d+/
 
 	return {
 		component: options?.editor ?? component,
