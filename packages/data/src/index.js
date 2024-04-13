@@ -1,4 +1,4 @@
-import './types'
+export * from './types'
 export * from './utils'
 export { renamer } from './renamer'
 export { model } from './model'

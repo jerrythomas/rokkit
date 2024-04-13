@@ -205,4 +205,5 @@
  * @property {Function} toggle      - toggle expand or collapse the DataView by the specified columns.
  * @property {Function} select      - select the DataView by the specified columns.
  */
-export {}
+
+export default {}
