@@ -10,6 +10,6 @@ node_modules
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+**/fixtures/error
 dist
 **/dist
-**/fixtures/error
