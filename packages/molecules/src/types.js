@@ -6,4 +6,4 @@
  * @property {stroke} [stroke='currentColor']
  */
 
-export default {}
+export default null

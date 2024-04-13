@@ -6,8 +6,4 @@ export { default as RangeTick } from './RangeTick.svelte'
 export { default as Thumb } from './Thumb.svelte'
 export { default as Slider } from './Slider.svelte'
 export { default as Fillable } from './Fillable.svelte'
-// export { default as Markdown } from './Markdown.svelte'
-// export { default as CodeSnippet } from './CodeSnippet.svelte'
 export { default as ProgressBar } from './ProgressBar.svelte'
-
-// export * from './input'

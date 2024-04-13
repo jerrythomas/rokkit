@@ -128,3 +128,5 @@
  * @property {number} lower
  * @property {number} upper
  */
+
+export default null

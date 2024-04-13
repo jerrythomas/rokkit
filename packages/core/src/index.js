@@ -1,4 +1,4 @@
-import './types'
+export * from './types'
 export * from './constants'
 export * from './nested'
 export * from './mapping'

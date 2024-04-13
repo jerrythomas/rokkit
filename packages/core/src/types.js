@@ -85,3 +85,5 @@
  * @typedef {Object} RowStateMap
  * @property {RowState[]} rows - Flat list of hierarchy nodes.
  */
+
+export default null

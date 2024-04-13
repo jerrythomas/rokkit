@@ -1,31 +1,17 @@
 /**
- * Options for the sort order of the column.
- *
- * @typedef {'ascending'|'descending'|'none'} SortOptions
- */
-
-/**
- * Options for aligning text in a column.
- * @typedef {'left'|'center'|'right'|'justify'} HorizontalAlignOptions
- */
-
-/**
- * Options for the action type of the column.
- * @typedef {'edit'|'delete'|'select'} ActionTypes
- */
-
-/**
- * @typedef {'checked'|'unchecked'|'indeterminate'} SelectionState
- */
-
-/**
- * @typedef {string|[string,boolean]|ColumnSorter} SortableColumn
+ * @typedef {import('@rokkit/core').FieldMapping} FieldMapping
+ * @typedef {import('@rokkit/core').SortOptions} SortOptions
+ * @typedef {import('@rokkit/core').HorizontalAlignOptions} HorizontalAlignOptions
+ * @typedef {import('@rokkit/core').ActionTypes} ActionTypes
+ * @typedef {import('@rokkit/core').SelectionState} SelectionState
  */
 
 /**
  * @typedef {Object} ColumnSorter
  * @property {string}   name
  * @property {function} sorter
+ *
+ * @typedef {string|[string,boolean]|ColumnSorter} SortableColumn
  */
 
 /**
@@ -42,28 +28,6 @@
  * @property {string} [prefix]         - Prefix to be added to each attribute
  * @property {string} [suffix]         - Suffix to be added to each attribute
  * @property {string} [separator='_']  - Separator to be used when adding prefix or suffix. defaults to _
- */
-
-/**
- * Structure to map custom fields for rendering. This is used to identofy the attributes for various purposes.
- *
- * @typedef FieldMapping
- * @property {string} [id='id']              Unique id for the item
- * @property {string} [text='text']          the text to render
- * @property {string} [value='value']        the value associated with the item
- * @property {string} [url='url']            a URL
- * @property {string} [icon='icon']          icon to render
- * @property {string} [image='image']        the image to render
- * @property {string} [children='children']  children of the item
- * @property {string} [summary='summary']    summary of the item
- * @property {string} [notes='notes']        notes for the item
- * @property {string} [props='props']        additional properties
- * @property {string} [isOpen='_open']       item is open or closed
- * @property {string} [level='level']        level of item
- * @property {string} [parent='parent']      item is a parent
- * @property {string} [currency='currency]   column specifying currency to be used for the current value
- * @property {string} [isDeleted='_deleted'] item is deleted
- * @property {FieldMapping} [fields]         Field mapping to be used on children in the next level
  */
 
 /**
@@ -206,4 +170,4 @@
  * @property {Function} select      - select the DataView by the specified columns.
  */
 
-export default {}
+export default null
