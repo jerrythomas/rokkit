@@ -1,9 +1,10 @@
+import { noop } from '@rokkit/core'
 export const PARSE_ERROR_MESSAGE = 'Unable to parse value from local storage for key: '
 
 if (typeof window === 'undefined') {
 	global.localStorage = {
 		getItem: () => '{}',
-		setItem: () => {}
+		setItem: noop
 	}
 }
 

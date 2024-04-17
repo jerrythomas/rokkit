@@ -1,5 +1,5 @@
 import { handleAction } from './utils'
-import { isNested, hasChildren, isExpanded } from '@rokkit/core'
+import { noop, isNested, hasChildren, isExpanded } from '@rokkit/core'
 import {
 	moveNext,
 	movePrevious,
@@ -22,7 +22,7 @@ export function navigator(element, options) {
 		path = null,
 		currentNode = null
 
-	if (!enabled) return { destroy: () => {} }
+	if (!enabled) return { destroy: noop }
 
 	// todo: Update should handle selection value change
 	// should we wait a tick before updating?

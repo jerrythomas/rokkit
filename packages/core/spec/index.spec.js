@@ -36,6 +36,7 @@ describe('utilities', () => {
 			'generateTicks',
 			'weekdays',
 			'getCalendarDays',
+			'noop',
 			'id',
 			'isObject',
 			'toString',
