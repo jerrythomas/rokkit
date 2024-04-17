@@ -82,7 +82,7 @@ function createShadeMappings(variant, mode, valueCondition) {
 	return shades.map((shade) => ({
 		key: `--on-${variant}-${shade}`,
 		value: valueCondition(shade),
-		mode: mode
+		mode
 	}))
 }
 

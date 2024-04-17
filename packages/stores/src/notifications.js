@@ -43,7 +43,7 @@ function addMessage(messages, message, type = 'default', timeout = TIMEOUT) {
 			timeout: message.timeout ?? timeout
 		}
 	} else message = { message }
-	messages.update((state) => [...state, { id: id(), timeout: timeout, ...message, type }])
+	messages.update((state) => [...state, { id: id(), timeout, ...message, type }])
 }
 
 /**

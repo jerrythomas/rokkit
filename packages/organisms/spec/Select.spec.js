@@ -112,7 +112,7 @@ describe('Select.svelte', () => {
 	it('should emit the change event when the value changes', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options: options
+			options
 		})
 
 		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
@@ -138,7 +138,7 @@ describe('Select.svelte', () => {
 	it('should open/close drop down on click and blur', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options: options,
+			options,
 			value: options[1]
 		})
 
@@ -163,7 +163,7 @@ describe('Select.svelte', () => {
 	it('should close drop down on escape key', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options: options,
+			options,
 			value: options[1]
 		})
 
@@ -189,7 +189,7 @@ describe('Select.svelte', () => {
 	it('should handle option changes', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options: options,
+			options,
 			value: options[1]
 		})
 
@@ -208,7 +208,7 @@ describe('Select.svelte', () => {
 	it('should handle arrow keys for navigation and select', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options: options,
+			options,
 			value: options[1]
 		})
 

@@ -77,8 +77,6 @@ describe('traversable', () => {
 	})
 
 	describe('vertical', () => {
-		beforeEach(() => {})
-
 		afterEach(() => {
 			vi.resetAllMocks()
 			if (instance) instance.destroy()

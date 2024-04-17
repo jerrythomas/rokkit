@@ -196,7 +196,7 @@ describe('DropDown.svelte', () => {
 	it('should close drop down on escape key', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(DropDown, {
-			options: options,
+			options,
 			value: options[1]
 		})
 

@@ -10,8 +10,6 @@ describe('getPosition', () => {
 		getBoundingClientRect: () => anchorProps
 	}
 
-	beforeEach(() => {})
-
 	it('should return viewport position for top left', () => {
 		anchorProps = { top: 10, left: 20, width: 80, height: 40 }
 		const result = getListPosition(anchor, viewport)

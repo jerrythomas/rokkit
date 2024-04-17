@@ -177,7 +177,7 @@ function emit(event, element, indices, node) {
 		new CustomEvent(event, {
 			detail: {
 				path: indices,
-				node: node
+				node
 			}
 		})
 	)
