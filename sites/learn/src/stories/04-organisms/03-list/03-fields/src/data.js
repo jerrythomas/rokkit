@@ -1,4 +1,4 @@
-export let items = [
+export const items = [
 	{
 		name: 'Fruits',
 		photo: '/examples/fruits.jpg',

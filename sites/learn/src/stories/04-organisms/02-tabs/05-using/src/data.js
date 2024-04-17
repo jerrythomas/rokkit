@@ -1,4 +1,4 @@
-export let options = [
+export const options = [
 	{
 		name: 'Fruits',
 		photo: '/examples/fruits.jpg',
