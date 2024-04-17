@@ -7,7 +7,7 @@ expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
 describe('swipable', () => {
 	const events = ['touchstart', 'touchend', 'mousedown', 'mouseup']
-	let node
+	let node = null
 	let handlers = {}
 
 	beforeEach(() => {

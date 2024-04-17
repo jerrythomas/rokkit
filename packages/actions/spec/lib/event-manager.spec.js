@@ -4,7 +4,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 describe('EventManager', () => {
 	const element = { addEventListener: vi.fn(), removeEventListener: vi.fn() }
 	const handlers = { click: vi.fn() }
-	let manager
+	let manager = null
 
 	afterEach(() => {
 		if (manager) manager.reset()

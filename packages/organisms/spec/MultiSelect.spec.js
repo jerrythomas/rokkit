@@ -91,7 +91,7 @@ describe('MultiSelect.svelte', () => {
 			options: ['One', 'Two', 'Three'],
 			value: ['One', 'Two']
 		})
-		let wrapper = container.querySelector('input-select')
+		const wrapper = container.querySelector('input-select')
 		const select = wrapper.querySelector('selected-item')
 
 		const items = select.querySelectorAll('wrap-item')

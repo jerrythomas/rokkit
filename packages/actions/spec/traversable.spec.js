@@ -12,8 +12,8 @@ describe('traversable', () => {
 	const events = ['move', 'select', 'collapse', 'expand', 'escape']
 	const handlers = {}
 	let root = document.createElement('div')
-	let instance
-	let items
+	let instance = null
+	let items = null
 
 	beforeEach(() => {
 		items = [

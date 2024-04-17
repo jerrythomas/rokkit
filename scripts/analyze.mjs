@@ -9,7 +9,7 @@ function processMadgeOutput(madgeOutput) {
     const componentName = fileName.split('.')[0]
     const extension = fileName.split('.')[1]
     const hasTests = Boolean(madgeOutput[`${filePath.split('.')[0]}.spec.js`])
-    let type
+    let type = null
     if (filePath.includes('/store/')) {
       type = 'store'
     } else if (filePath.includes('/actions/')) {

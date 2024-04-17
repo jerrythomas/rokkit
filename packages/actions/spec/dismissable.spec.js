@@ -2,7 +2,9 @@ import { vi, it, expect, describe, beforeEach, afterEach } from 'vitest'
 import { dismissable } from '../src/dismissable'
 
 describe('dismissable', () => {
-	let node, action, dismissSpy
+	let node = null,
+		action = null,
+		dismissSpy = null
 
 	beforeEach(() => {
 		node = document.createElement('div')

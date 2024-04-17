@@ -3,7 +3,7 @@ import { theme } from '@rokkit/stores'
 import { themable } from '../src/themeable'
 
 describe('themable', () => {
-	let node
+	let node = null
 	beforeEach(() => {
 		node = {
 			style: {

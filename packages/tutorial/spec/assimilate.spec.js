@@ -83,7 +83,9 @@ describe('assimilate', () => {
 	})
 
 	describe('assimilateTutorials', () => {
-		let modules, sources, options
+		let modules = null,
+			sources = null,
+			options = null
 		beforeEach(() => {
 			modules = {
 				'./stories/01-intro/meta.json': () => Promise.resolve({ title: 'Intro' }),

@@ -4,7 +4,7 @@ import { simulateMouseEvent, simulateTouchEvent } from 'validators'
 
 describe('pannable', () => {
 	let handlers = {}
-	let node
+	let node = null
 
 	beforeEach(() => {
 		global.CustomEvent = vi.fn().mockImplementation((name, params) => ({
