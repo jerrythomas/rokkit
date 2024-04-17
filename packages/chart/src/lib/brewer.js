@@ -14,4 +14,4 @@ export function getFillPatterns(values, swatch, gray = false) {
 	return mix
 }
 
-export function getStrokePatterns() {}
+// export function getStrokePatterns() {}

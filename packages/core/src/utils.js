@@ -1,7 +1,9 @@
 /**
  * A function that performs no operations.
  */
-export function noop() {}
+export function noop() {
+	// intentionally empty to support default actions
+}
 
 /**
  * Generates a random id
