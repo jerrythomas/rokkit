@@ -12,31 +12,21 @@ describe('parser', () => {
 
 	describe('parseFilters', () => {
 		it('should handle a simple string', () => {
-			expect(parseFilters('abc')).toEqual([{ operator: '~*', value: new RegExp('abc', 'i') }])
+			expect(parseFilters('abc')).toEqual([{ operator: '~*', value: /abc/i }])
 		})
 
 		it('should handle named filter', () => {
-			expect(parseFilters('name:abc')).toEqual([
-				{ operator: '~*', value: new RegExp('abc', 'i'), column: 'name' }
-			])
+			expect(parseFilters('name:abc')).toEqual([{ operator: '~*', value: /abc/i, column: 'name' }])
 		})
 
 		it('should allow operators', () => {
-			expect(parseFilters('name:abc')).toEqual([
-				{ operator: '~*', value: new RegExp('abc', 'i'), column: 'name' }
-			])
-			expect(parseFilters('name~*abc')).toEqual([
-				{ operator: '~*', value: new RegExp('abc', 'i'), column: 'name' }
-			])
-			expect(parseFilters('name~abc')).toEqual([
-				{ operator: '~', value: new RegExp('abc'), column: 'name' }
-			])
+			expect(parseFilters('name:abc')).toEqual([{ operator: '~*', value: /abc/i, column: 'name' }])
+			expect(parseFilters('name~*abc')).toEqual([{ operator: '~*', value: /abc/i, column: 'name' }])
+			expect(parseFilters('name~abc')).toEqual([{ operator: '~', value: /abc/, column: 'name' }])
 			expect(parseFilters('name!~*abc')).toEqual([
-				{ operator: '!~*', value: new RegExp('abc', 'i'), column: 'name' }
+				{ operator: '!~*', value: /abc/i, column: 'name' }
 			])
-			expect(parseFilters('name!~abc')).toEqual([
-				{ operator: '!~', value: new RegExp('abc'), column: 'name' }
-			])
+			expect(parseFilters('name!~abc')).toEqual([{ operator: '!~', value: /abc/, column: 'name' }])
 			expect(parseFilters('name=abc')).toEqual([{ operator: '=', value: 'abc', column: 'name' }])
 			expect(parseFilters('name!=abc')).toEqual([{ operator: '!=', value: 'abc', column: 'name' }])
 			expect(parseFilters('age>1')).toEqual([{ operator: '>', value: 1, column: 'age' }])
@@ -50,12 +40,12 @@ describe('parser', () => {
 		it('should handle multiple tokens', () => {
 			expect(parseFilters('abc age=10')).toEqual([
 				{ operator: '=', value: 10, column: 'age' },
-				{ operator: '~*', value: new RegExp('abc', 'i') }
+				{ operator: '~*', value: /abc/i }
 			])
 			expect(parseFilters('age>=10 gender!=m abc')).toEqual([
 				{ operator: '>=', value: 10, column: 'age' },
 				{ operator: '!=', value: 'm', column: 'gender' },
-				{ operator: '~*', value: new RegExp('abc', 'i') }
+				{ operator: '~*', value: /abc/i }
 			])
 		})
 

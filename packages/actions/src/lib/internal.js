@@ -1,5 +1,4 @@
-import { compact } from '@rokkit/core'
-import { hasChildren, isExpanded } from '@rokkit/core'
+import { compact, hasChildren, isExpanded } from '@rokkit/core'
 
 /**
  * Emits a custom event with the given data.
