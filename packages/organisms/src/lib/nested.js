@@ -3,6 +3,13 @@ import { isObject } from '@rokkit/core'
 import { deriveSchemaFromValue, deriveTypeFromValue } from './schema'
 import { deriveLayoutFromValue } from './layout'
 
+/**
+ * Derives a nested schema from an object
+ *
+ * @param {Object} input - The object to derive the schema from
+ * @param {String} scope - The scope of the object
+ * @returns {Object} The derived schema
+ */
 export function deriveNestedSchema(input, scope = '#') {
 	const elements = flattenAttributes(input)
 	const atoms = elements.filter(({ type }) => !['object', 'array'].includes(type))
@@ -24,35 +31,52 @@ export function deriveNestedSchema(input, scope = '#') {
 		)
 		schema.layout = {
 			type: 'vertical',
-			elements: atoms.map(({ key: label, scope }) => ({ label, scope }))
+			elements: atoms.map((el) => ({ label: el.key, scope: el.scope }))
 		}
 	}
 
 	if (atoms.length < elements.length) {
-		schema.children = [
-			...elements
-				.filter(({ type }) => type === 'object')
-				.map((item) => ({
-					...omit(['value', 'scope'], item),
-					scope: [scope, item.key].join('/'),
-					...deriveNestedSchema(item.value, [scope, item.key].join('/'))
-				})),
-			...elements
-				.filter(({ type }) => type === 'array')
-				.map((item) => ({
-					...omit(['value'], item),
-					default: [],
-					scope: [scope, item.key].join('/'),
-					items: deriveSchemaFromValue(item.value.length ? item.value[0] : null),
-					layout: deriveLayoutFromValue(item.value.length ? item.value[0] : null)
-				}))
-		]
+		schema.children = deriveSchemaForChildren(elements, scope)
 	}
 
 	if (scope !== '#') return schema
 	return schema.properties ? [schema] : schema.children
 }
 
+/**
+ * Derives the children of an object
+ *
+ * @param {Array} elements - The elements to derive children from
+ * @param {String} scope - The scope of the object
+ * @returns {Array} The derived children
+ */
+function deriveSchemaForChildren(elements, scope) {
+	return [
+		...elements
+			.filter(({ type }) => type === 'object')
+			.map((item) => ({
+				...omit(['value', 'scope'], item),
+				scope: [scope, item.key].join('/'),
+				...deriveNestedSchema(item.value, [scope, item.key].join('/'))
+			})),
+		...elements
+			.filter(({ type }) => type === 'array')
+			.map((item) => ({
+				...omit(['value'], item),
+				default: [],
+				scope: [scope, item.key].join('/'),
+				items: deriveSchemaFromValue(item.value.length ? item.value[0] : null),
+				layout: deriveLayoutFromValue(item.value.length ? item.value[0] : null)
+			}))
+	]
+}
+
+/**
+ * Flattens an object into an array of key-value pairs
+ *
+ * @param {Object} input - The object to flatten
+ * @param {String} scope - The scope of the object
+ */
 export function flattenAttributes(input, scope = '#') {
 	return Object.entries(input).map(([key, value]) => ({
 		key,
@@ -62,6 +86,12 @@ export function flattenAttributes(input, scope = '#') {
 	}))
 }
 
+/**
+ * Flattens an object into a flat object
+ *
+ * @param {Object} input - The object to flatten
+ * @param {String} scope - The scope of the object
+ */
 export function flattenObject(input, scope = '#') {
 	return flattenAttributes(input, scope).reduce(
 		(acc, item) => ({ ...acc, ...flattenElement(item) }),
@@ -76,6 +106,11 @@ export function flattenObject(input, scope = '#') {
 	)
 }
 
+/**
+ * Flattens an element into a flat object
+ *
+ * @param {Object} element - The element to flatten
+ */
 export function flattenElement(element) {
 	if (element.type === 'object') {
 		return flattenObject(element.value, element.scope)
@@ -94,6 +129,12 @@ export function flattenElement(element) {
 	return { [element.scope]: element }
 }
 
+/**
+ * Generates an index array referencing the input data
+ *
+ * @param {Object} data - The flat object to index
+ * @param {String} key - The key to use as index
+ */
 export function generateIndex(data, key = 'scope') {
 	const index = data
 		.map((item) => ({
@@ -126,6 +167,13 @@ export function generateIndex(data, key = 'scope') {
 	return index
 }
 
+/**
+ * Generates a tree table from the input data
+ *
+ * @param {Object} data - The data to generate the tree table from
+ * @param {String} key - The key to use as index
+ * @param {Boolean} ellipsis - Whether to truncate the value
+ */
 export function generateTreeTable(data, key = 'scope', ellipsis = false) {
 	let result = []
 	if (Array.isArray(data)) result = generateIndex(data, key)
