@@ -1,6 +1,6 @@
 import data from './data.json'
 
-export async function load() {
+export function load() {
 	const body = {
 		data: data.map((d) => ({
 			...d,

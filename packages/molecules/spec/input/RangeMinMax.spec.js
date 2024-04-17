@@ -73,7 +73,7 @@ describe('RangeMinMax.svelte', () => {
 	})
 
 	describe('singgle value', () => {
-		it('should work using single mode', async () => {
+		it('should work using single mode', () => {
 			const { container } = render(RangeMinMax, {
 				name: 'range',
 				single: true

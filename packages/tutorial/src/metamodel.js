@@ -1,6 +1,12 @@
 import { omit } from 'ramda'
 import { folderHierarchy, getSequenceAndKey } from './utils'
 
+/**
+ * Fetches the content of the modules.
+ *
+ * @param {Object} modules - The modules to fetch the content from.
+ * @returns {Promise<Array>} - The content of the modules.
+ */
 export async function fetchImports(modules) {
 	return Promise.all(
 		Object.entries(modules).map(async ([file, content]) => ({
@@ -10,6 +16,12 @@ export async function fetchImports(modules) {
 	)
 }
 
+/**
+ * Adds metadata to the files.
+ *
+ * @param {Array} files - The files to add metadata to.
+ * @returns {Array} - The files with metadata.
+ */
 export function addPathMetadata(files) {
 	let result = files.map((item) => {
 		let parts = item.file.split('/')
@@ -37,6 +49,7 @@ export function addPathMetadata(files) {
 }
 
 /**
+ * Adds metadata to the module
  *
  * @param {*} modules
  * @param {import('./types.js').TutorialOptions} options
@@ -52,6 +65,13 @@ export function addModuleMetadata(modules, options) {
 	})
 }
 
+/**
+ * Returns the content based on the name of the item.
+ *
+ * @param {Object} item - The item to get the content from.
+ * @param {import('./types.js').TutorialOptions} options - The options to use.
+ * @returns {Object} - The content of the item.
+ */
 function getContentBasedOnName(item, options) {
 	if (item.name === options.metadataFilename) {
 		return { ...item.content }
@@ -88,6 +108,13 @@ export function tutorialsToNestedObject(data, item, index = 0) {
 	return data
 }
 
+/**
+ * Handles the item based on whether it has a path or not.
+ *
+ * @param {Object} data - The data object to add the item to.
+ * @param {Object} item - The item to add to the data object.
+ * @param {string} key - The key to use for the item in the data object.
+ */
 function handleItemPath(data, item, key) {
 	if (item.path) {
 		handleItemWithPath(data, item, key)
@@ -96,6 +123,13 @@ function handleItemPath(data, item, key) {
 	}
 }
 
+/**
+ * Handles the item with a path.
+ *
+ * @param {Object} data - The data object to add the item to.
+ * @param {Object} item - The item to add to the data object.
+ * @param {string} key - The key to use for the item in the data object.
+ */
 function handleItemWithPath(data, item, key) {
 	let root = item.path.split('/').shift()
 	data[key][root] = data[key][root] || {}
@@ -108,6 +142,13 @@ function handleItemWithPath(data, item, key) {
 	}
 }
 
+/**
+ * Handles the item without a path.
+ *
+ * @param {Object} data - The data object to add the item to.
+ * @param {Object} item - The item to add to the data object.
+ * @param {string} key - The key to use for the item in the data object.
+ */
 function handleItemWithoutPath(data, item, key) {
 	const route = item.parts.map((part) => part.key).join('/')
 	data[key] = {
@@ -117,6 +158,12 @@ function handleItemWithoutPath(data, item, key) {
 	}
 }
 
+/**
+ * Converts an array of files to a folder hierarchy.
+ *
+ * @param {Array} files - The files to convert to a folder hierarchy.
+ * @returns {Object} - The folder hierarchy.
+ */
 export function convertFilesToFolderHierarchy(tutorials, options) {
 	Object.keys(tutorials).forEach((key) => {
 		let tutorial = tutorials[key]
@@ -136,6 +183,12 @@ export function convertFilesToFolderHierarchy(tutorials, options) {
 	return tutorials
 }
 
+/**
+ * Converts an array of files to a folder hierarchy.
+ *
+ * @param {Array} files - The files to convert to a folder hierarchy.
+ * @returns {Object} - The folder hierarchy.
+ */
 export function generateRouteEntries(input) {
 	const output = []
 

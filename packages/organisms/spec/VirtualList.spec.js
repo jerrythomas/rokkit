@@ -33,7 +33,7 @@ describe('VirtualList.svelte', () => {
 	afterAll(() => vi.resetAllMocks())
 
 	describe('render', () => {
-		it('should render', async () => {
+		it('should render', () => {
 			const { container } = render(VirtualList, {
 				items,
 				limit: 5
@@ -44,7 +44,7 @@ describe('VirtualList.svelte', () => {
 			expect(content.length).toBe(5)
 		})
 
-		it('should render using slot', async () => {
+		it('should render using slot', () => {
 			const { container } = render(MockVirtualListSlot, {
 				items,
 				limit: 5
@@ -259,8 +259,8 @@ describe('VirtualList.svelte', () => {
 				index: 1
 			})
 		})
-		it('should jump forward on scroll down', async () => {})
-		it('should jump backward on scroll up', async () => {})
+		// it('should jump forward on scroll down', async () => {})
+		// it('should jump backward on scroll up', async () => {})
 	})
 
 	describe('horizontal', () => {
@@ -323,7 +323,7 @@ describe('VirtualList.svelte', () => {
 				index: 4
 			})
 		})
-		it('should jump forward on scroll right', async () => {})
-		it('should jump backward on scroll right', async () => {})
+		// it('should jump forward on scroll right', async () => {})
+		// it('should jump backward on scroll right', async () => {})
 	})
 })

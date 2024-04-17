@@ -7,7 +7,7 @@ import Rating from '../../src/input/Rating.svelte'
 expect.extend({ toHaveBeenDispatchedWith })
 
 describe('Rating component', () => {
-	it('should render the correct number of stars', async () => {
+	it('should render the correct number of stars', () => {
 		const { container } = render(Rating, { max: 5 })
 		expect(container).toMatchSnapshot()
 		const stars = container.querySelectorAll('icon')

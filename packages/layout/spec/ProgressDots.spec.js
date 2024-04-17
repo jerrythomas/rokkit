@@ -65,7 +65,7 @@ describe('ProgressDots.svelte', () => {
 	it.each([
 		[3, 1, -1],
 		[3, 1, 1]
-	])('should render properly for count %i, value %i, current %i', async (count, value, current) => {
+	])('should render properly for count %i, value %i, current %i', (count, value, current) => {
 		const { container } = render(ProgressDots, {
 			count,
 			value,
@@ -75,7 +75,7 @@ describe('ProgressDots.svelte', () => {
 		validateDots(dots, count, value, current)
 	})
 
-	it('should have one active dot', async () => {
+	it('should have one active dot', () => {
 		const { container } = render(ProgressDots, {
 			count: 3,
 			value: 1,

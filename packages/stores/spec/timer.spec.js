@@ -27,7 +27,7 @@ describe('Timer', () => {
 		expect(get(elapsed)).toBe(0)
 	})
 
-	it('should change elapsed time using start and stop', async () => {
+	it('should change elapsed time using start and stop', () => {
 		let initial = get(elapsed)
 		timer.start()
 
@@ -45,7 +45,7 @@ describe('Timer', () => {
 		expect(get(elapsed)).toBe(value)
 	})
 
-	it('should change elapsed time using toggle', async () => {
+	it('should change elapsed time using toggle', () => {
 		let initial = get(elapsed)
 
 		timer.toggle() // should start

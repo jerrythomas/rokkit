@@ -1,1 +1,1 @@
-export let items = ['alpha', 'beta', 'gamma']
+export const items = ['alpha', 'beta', 'gamma']

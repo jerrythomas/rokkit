@@ -8,12 +8,19 @@ import {
 } from '@iconify/tools'
 import fs from 'fs'
 
+/**
+ * Convert icons
+ *
+ * @param {string} folder Folder with icons
+ * @param {string} prefix Prefix for icon set
+ * @param {boolean} color True if color should be preserved
+ */
 export async function convert(folder, prefix, color = false) {
 	// Import icons
 	const iconSet = await importDirectory(folder, { prefix })
 
 	// Validate, clean up, fix palette and optimise
-	await processIcons(iconSet, color)
+	processIcons(iconSet, color)
 
 	// Export
 	const collection = JSON.stringify(iconSet.export(), null, 2)
@@ -31,8 +38,14 @@ export async function convert(folder, prefix, color = false) {
 	})
 }
 
-async function processIcons(iconSet, color) {
-	await iconSet.forEach(async (name, type) => {
+/**
+ * Process icons
+ *
+ * @param {IconifyTools} iconSet Icon set
+ * @param {boolean} color True if color should be preserved
+ */
+function processIcons(iconSet, color) {
+	iconSet.forEach((name, type) => {
 		if (type !== 'icon') {
 			return
 		}
@@ -46,7 +59,7 @@ async function processIcons(iconSet, color) {
 
 		// Clean up and optimise icons
 		try {
-			await cleanAndOptimizeIcon(svg, color)
+			cleanAndOptimizeIcon(svg, color)
 		} catch (err) {
 			// Invalid icon
 			console.error(`Error parsing ${name}:`, err)
@@ -59,7 +72,13 @@ async function processIcons(iconSet, color) {
 	})
 }
 
-async function cleanAndOptimizeIcon(svg, color) {
+/**
+ * Clean up and optimise SVG icon
+ *
+ * @param {string} svg SVG code
+ * @param {boolean} color True if color should be preserved
+ */
+function cleanAndOptimizeIcon(svg, color) {
 	// Clean up icon code
 	cleanupSVG(svg)
 
