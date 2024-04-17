@@ -12,7 +12,7 @@ describe('Timer', () => {
 	})
 
 	it('should initialize elapsed with zero', () => {
-		let value = get(elapsed)
+		const value = get(elapsed)
 		expect(value).toBe(0)
 	})
 
@@ -28,13 +28,13 @@ describe('Timer', () => {
 	})
 
 	it('should change elapsed time using start and stop', () => {
-		let initial = get(elapsed)
+		const initial = get(elapsed)
 		timer.start()
 
 		vi.advanceTimersByTime(5000)
 		let value = get(elapsed)
 		expect(value).toBeGreaterThan(initial)
-		let previous = value
+		const previous = value
 
 		vi.advanceTimersByTime(5000)
 		value = get(elapsed)
@@ -46,11 +46,11 @@ describe('Timer', () => {
 	})
 
 	it('should change elapsed time using toggle', () => {
-		let initial = get(elapsed)
+		const initial = get(elapsed)
 
 		timer.toggle() // should start
 		vi.advanceTimersByTime(5000)
-		let value = get(elapsed)
+		const value = get(elapsed)
 		expect(value).toBeGreaterThan(initial)
 
 		timer.toggle() // should stop

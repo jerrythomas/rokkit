@@ -6,9 +6,9 @@ import { removeListeners, setupListeners } from './lib'
  * @returns {import('./types').SvelteActionReturn}
  */
 export function pannable(node) {
-	let x
-	let y
-	let listeners = {
+	let x = 0
+	let y = 0
+	const listeners = {
 		primary: {
 			mousedown: start,
 			touchstart: start

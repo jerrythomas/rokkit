@@ -37,7 +37,7 @@ describe('events', () => {
 	describe('simulateMouseSwipe', () => {
 		const events = ['mousedown', 'mouseup']
 
-		let handlers = {}
+		const handlers = {}
 
 		beforeEach(() => {
 			vi.useFakeTimers()
@@ -67,7 +67,7 @@ describe('events', () => {
 	describe('simulateTouchSwipe', () => {
 		const events = ['touchstart', 'touchend']
 
-		let handlers = {}
+		const handlers = {}
 
 		beforeEach(() => {
 			vi.useFakeTimers()

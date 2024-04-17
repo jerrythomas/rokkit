@@ -13,7 +13,7 @@ export function toSortedHierarchy(data, fields = {}) {
 	fields = { ...defaultFields, ...fields }
 	return Object.values(data)
 		.map((item) => {
-			let res = { ...item, title: item.title ?? item.name }
+			const res = { ...item, title: item.title ?? item.name }
 			if (item[fields.children]) {
 				res[fields.children] = toSortedHierarchy(item[fields.children], fields)
 			}
@@ -29,8 +29,8 @@ export function toSortedHierarchy(data, fields = {}) {
  * @returns {Object|null} - The found tutorial or null if not found.
  */
 export function findTutorial(tutorials, route) {
+	const crumbs = []
 	let current = tutorials
-	let crumbs = []
 
 	for (let i = 0; i < route.length; i++) {
 		const key = route[i]

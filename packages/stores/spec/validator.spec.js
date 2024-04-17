@@ -193,7 +193,7 @@ describe('validator', () => {
 			expect(store.subscribe).toBeDefined()
 			expect(store.update).toBeDefined()
 
-			let currentValue = get(store)
+			const currentValue = get(store)
 
 			expect(currentValue.value).toBe(value)
 			expect(currentValue.status).toBe('fail')
@@ -257,7 +257,7 @@ describe('validator', () => {
 			optionalRules[1].optional = true
 
 			const store = verifiable('EXAMPLE1!', optionalRules)
-			let currentValue = get(store)
+			const currentValue = get(store)
 
 			expect(currentValue.value).toBe('EXAMPLE1!')
 			expect(currentValue.status).toBe('warn')

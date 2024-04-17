@@ -70,7 +70,7 @@ export function compareStrings(a, b) {
  * @returns {String} timestamp based unique id
  */
 export function uniqueId(prefix = '', separator = '-') {
-	let pair = prefix && prefix.length > 0 ? [prefix] : []
+	const pair = prefix && prefix.length > 0 ? [prefix] : []
 	pair.push(Date.now().toString(36))
 	return pair.join(separator)
 }

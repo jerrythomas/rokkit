@@ -6,7 +6,7 @@ import schema from './lib/fixtures/input-schema.json'
 import CustomField from './mocks/CustomField.svelte'
 
 describe('Form.svelte', () => {
-	let value = {
+	const value = {
 		name: 'John',
 		age: 30,
 		address: {

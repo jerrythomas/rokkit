@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { chart } from '../../src/lib/chart'
 
 describe('swatchGrid', () => {
-	let data = [
+	const data = [
 		{ x: 0, y: 0, color: 'red' },
 		{ x: 10, y: 0, color: 'green' },
 		{ x: 20, y: 0, color: 'blue' },

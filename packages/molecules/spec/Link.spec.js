@@ -17,7 +17,7 @@ describe('Link.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		let anchor = container.querySelector('a')
+		const anchor = container.querySelector('a')
 		expect(anchor).toBeTruthy()
 		expect(anchor.href).toEqual('http://localhost:3000/#')
 		let text = container.querySelector('p')
@@ -37,7 +37,7 @@ describe('Link.svelte', () => {
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		let anchor = container.querySelector('a')
+		const anchor = container.querySelector('a')
 		expect(anchor).toBeTruthy()
 		expect(anchor.href).toEqual('http://localhost:3000/')
 	})

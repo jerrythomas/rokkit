@@ -23,14 +23,14 @@ export async function fetchImports(modules) {
  * @returns {Array} - The files with metadata.
  */
 export function addPathMetadata(files) {
-	let result = files.map((item) => {
+	const result = files.map((item) => {
 		let parts = item.file.split('/')
-		let name = parts.pop()
-		let path = parts.filter((part) => /^\d+/.test(part) !== true).join('/')
-		let type = name.split('.').pop()
+		const name = parts.pop()
+		const path = parts.filter((part) => /^\d+/.test(part) !== true).join('/')
+		const type = name.split('.').pop()
 		parts = parts.map((part) => getSequenceAndKey(part)).filter((part) => part !== null)
 
-		let metadata =
+		const metadata =
 			path === ''
 				? {}
 				: {
@@ -57,7 +57,7 @@ export function addPathMetadata(files) {
  */
 export function addModuleMetadata(modules, options) {
 	return modules.map((item) => {
-		let content = getContentBasedOnName(item, options)
+		const content = getContentBasedOnName(item, options)
 		return {
 			...omit(['content'], item),
 			...content
@@ -131,7 +131,7 @@ function handleItemPath(data, item, key) {
  * @param {string} key - The key to use for the item in the data object.
  */
 function handleItemWithPath(data, item, key) {
-	let root = item.path.split('/').shift()
+	const root = item.path.split('/').shift()
 	data[key][root] = data[key][root] || {}
 	data[key][root].files = data[key][root].files || []
 
@@ -166,8 +166,8 @@ function handleItemWithoutPath(data, item, key) {
  */
 export function convertFilesToFolderHierarchy(tutorials, options) {
 	Object.keys(tutorials).forEach((key) => {
-		let tutorial = tutorials[key]
-		let keys = [options.partialFolder, options.solutionFolder]
+		const tutorial = tutorials[key]
+		const keys = [options.partialFolder, options.solutionFolder]
 
 		keys.forEach((folder) => {
 			if (tutorial[folder]) {

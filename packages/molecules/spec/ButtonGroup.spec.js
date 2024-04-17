@@ -6,8 +6,8 @@ import { toHaveBeenDispatchedWith } from 'validators'
 
 expect.extend({ toHaveBeenDispatchedWith })
 describe('ButtonGroup.svelte', () => {
-	let handlers = {}
-	let events = ['click']
+	const handlers = {}
+	const events = ['click']
 	const items = ['One', 'Two', 'Three']
 	beforeEach(() => {
 		cleanup()
@@ -25,7 +25,7 @@ describe('ButtonGroup.svelte', () => {
 			items
 		})
 		component.$on('click', handlers.click)
-		let buttons = container.querySelectorAll('button')
+		const buttons = container.querySelectorAll('button')
 		await fireEvent.click(buttons[0])
 		await tick()
 		expect(handlers.click).toHaveBeenDispatchedWith(items[0])

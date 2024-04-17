@@ -19,7 +19,7 @@ export function ThemeStore() {
 
 	const set = (value) => {
 		const partial = pick(['name', 'mode'], value)
-		let isValid = Object.keys(partial).every((key) => typeof value[key] === 'string')
+		const isValid = Object.keys(partial).every((key) => typeof value[key] === 'string')
 		if (isValid) {
 			store.update((cur) => ({ ...cur, ...partial }))
 		} else if (Object.keys(partial).length > 0) {

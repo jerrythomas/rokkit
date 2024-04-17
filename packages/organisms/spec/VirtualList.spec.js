@@ -23,7 +23,7 @@ describe('VirtualList.svelte', () => {
 	const events = ['select', 'move']
 	const items = Array.from({ length: 10 }, (_, i) => `Item ${i + 1}`)
 
-	let handlers = {}
+	const handlers = {}
 
 	beforeEach(() => {
 		cleanup()

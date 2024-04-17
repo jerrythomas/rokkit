@@ -89,7 +89,7 @@ export function assimilateTutorials(modules, sources, options) {
 		if (loaded) return
 
 		console.info('Assimilating tutorials...')
-		let result = await processTutorials(modules, sources, options)
+		const result = await processTutorials(modules, sources, options)
 
 		tutorials = result.tutorials
 		routes = result.routes
@@ -109,7 +109,7 @@ export function assimilateTutorials(modules, sources, options) {
 		},
 		find: async (route, labs = false) => {
 			await ensureLoaded()
-			let flat = flattenNestedList(filterMenuItems(tutorials, labs))
+			const flat = flattenNestedList(filterMenuItems(tutorials, labs))
 			return findTutorial(flat, route)
 		},
 		entries: async () => {
@@ -134,12 +134,11 @@ async function fetchAndProcessFiles(modules, sources, options) {
 
 async function processTutorials(modules, sources, options) {
 	let tutorials = {}
-	let routes
-	let files = await fetchAndProcessFiles(modules, sources, options)
+	const files = await fetchAndProcessFiles(modules, sources, options)
 	files.forEach((item) => {
 		tutorials = tutorialsToNestedObject(tutorials, item)
 	})
-	routes = generateRouteEntries(tutorials)
+	const routes = generateRouteEntries(tutorials)
 	tutorials = convertFilesToFolderHierarchy(tutorials, options)
 	tutorials = toSortedHierarchy(tutorials)
 

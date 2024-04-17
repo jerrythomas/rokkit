@@ -51,7 +51,7 @@ describe('FieldLayout.svelte', () => {
 
 	it('should render set of inputs', () => {
 		const schema = { elements: [inputNameSchema, inputAgeSchema] }
-		let value = { name: 'John', age: 30 }
+		const value = { name: 'John', age: 30 }
 		const { container } = render(Register, {
 			render: FieldLayout,
 			properties: { value, schema }
@@ -71,7 +71,7 @@ describe('FieldLayout.svelte', () => {
 				inputAgeSchema
 			]
 		}
-		let value = { name: { first: 'John', last: 'Smith' }, age: 30 }
+		const value = { name: { first: 'John', last: 'Smith' }, age: 30 }
 		const { container, component } = render(Register, {
 			render: FieldLayout,
 			properties: { value, schema }
@@ -96,7 +96,7 @@ describe('FieldLayout.svelte', () => {
 				inputAgeSchema
 			]
 		}
-		let value = { first: 'John', last: 'Smith', age: 30 }
+		const value = { first: 'John', last: 'Smith', age: 30 }
 		const { container, component } = render(Register, {
 			render: FieldLayout,
 			properties: { value, schema }
@@ -110,7 +110,7 @@ describe('FieldLayout.svelte', () => {
 	})
 
 	it('should render groups with custom wrapper', async () => {
-		let schema = {
+		const schema = {
 			elements: [
 				{
 					title: 'A Group',
@@ -122,7 +122,7 @@ describe('FieldLayout.svelte', () => {
 				inputAgeSchema
 			]
 		}
-		let value = { name: { first: 'John', last: 'Smith' }, age: 30 }
+		const value = { name: { first: 'John', last: 'Smith' }, age: 30 }
 		const { container, component } = render(Register, {
 			render: FieldLayout,
 			using: { wrappers: { mock: CustomWrapper } },
@@ -137,7 +137,7 @@ describe('FieldLayout.svelte', () => {
 	})
 
 	it('should render items using custom component', async () => {
-		let schema = {
+		const schema = {
 			elements: [
 				{
 					component: 'custom',
@@ -146,7 +146,7 @@ describe('FieldLayout.svelte', () => {
 				}
 			]
 		}
-		let value = { name: 'John' }
+		const value = { name: 'John' }
 		const { container, component } = render(Register, {
 			render: FieldLayout,
 			properties: { value, schema }
@@ -168,7 +168,7 @@ describe('FieldLayout.svelte', () => {
 				}
 			]
 		}
-		let value = { name: 'John' }
+		const value = { name: 'John' }
 		const { container } = render(Register, {
 			render: FieldLayout,
 			properties: { value, schema }

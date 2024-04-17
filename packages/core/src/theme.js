@@ -47,8 +47,8 @@ export function stateColors(name, modifier = 'none') {
 export function themeColors(modifier = 'none') {
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 
-	let states = ['info', 'danger', 'warning', 'success', 'error']
-	let variants = ['neutral', 'primary', 'secondary', 'accent']
+	const states = ['info', 'danger', 'warning', 'success', 'error']
+	const variants = ['neutral', 'primary', 'secondary', 'accent']
 	let colors = states.reduce(
 		(acc, state) => ({ ...acc, [state]: stateColors(state, modifier) }),
 		{}

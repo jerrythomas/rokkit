@@ -108,7 +108,7 @@ describe('fields', () => {
 					age: { type: 'number', min: 0, max: 100 }
 				}
 			}
-			let attribute = findAttributeByPath(null, schema)
+			const attribute = findAttributeByPath(null, schema)
 			expect(attribute).toEqual({
 				props: schema
 			})
@@ -116,7 +116,7 @@ describe('fields', () => {
 	})
 
 	describe('getSchemaWithLayout', () => {
-		let value = {
+		const value = {
 			name: 'John',
 			age: 30,
 			address: {
@@ -130,7 +130,7 @@ describe('fields', () => {
 		const layout = inputLayout
 
 		it('should combine generated schema and layout', () => {
-			let value = {
+			const value = {
 				name: 'John',
 				age: 30
 			}

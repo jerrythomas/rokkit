@@ -14,7 +14,7 @@ describe('MultiSelect.svelte', () => {
 			value: ['One']
 		})
 		expect(container).toBeTruthy()
-		let wrapper = container.querySelector('input-select')
+		const wrapper = container.querySelector('input-select')
 		expect(wrapper).toMatchSnapshot()
 		const select = wrapper.querySelector('selected-item')
 		await fireEvent.click(select)
@@ -34,7 +34,7 @@ describe('MultiSelect.svelte', () => {
 			fields: { text: 'name' }
 		})
 		expect(container).toBeTruthy()
-		let wrapper = container.querySelector('input-select')
+		const wrapper = container.querySelector('input-select')
 		expect(wrapper).toMatchSnapshot()
 		const select = wrapper.querySelector('selected-item')
 		await fireEvent.click(select)
@@ -55,7 +55,7 @@ describe('MultiSelect.svelte', () => {
 			using: { default: MockItem }
 		})
 		expect(container).toBeTruthy()
-		let wrapper = container.querySelector('input-select')
+		const wrapper = container.querySelector('input-select')
 		const select = wrapper.querySelector('selected-item')
 		await fireEvent.click(select)
 		await tick()
@@ -68,7 +68,7 @@ describe('MultiSelect.svelte', () => {
 			options: ['One', 'Two', 'Three'],
 			value: ['One']
 		})
-		let wrapper = container.querySelector('input-select')
+		const wrapper = container.querySelector('input-select')
 		const select = wrapper.querySelector('selected-item')
 
 		const selectedItems = select.querySelectorAll('wrap-item')

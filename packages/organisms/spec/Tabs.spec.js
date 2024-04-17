@@ -9,7 +9,7 @@ expect.extend({ toHaveBeenDispatchedWith })
 
 describe('Tabs.svelte', () => {
 	const events = ['select', 'remove', 'add']
-	let handlers = {}
+	const handlers = {}
 	beforeEach(() => {
 		cleanup()
 		events.forEach((name) => (handlers[name] = vi.fn()))

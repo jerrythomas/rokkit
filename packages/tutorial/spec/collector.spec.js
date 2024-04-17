@@ -198,7 +198,7 @@ describe('collector', () => {
 
 	describe('removeLeafNodesWithoutReadme', () => {
 		it('should remove leaf nodes without a README.md', () => {
-			let data = {
+			const data = {
 				introduction: {
 					path: '01-introduction'
 				},
@@ -214,7 +214,7 @@ describe('collector', () => {
 					title: 'Bar'
 				}
 			}
-			let result = removeInvalidEntries(data, {
+			const result = removeInvalidEntries(data, {
 				readmeFilename: 'README.md'
 			})
 			expect(result.errors).toEqual([
@@ -244,7 +244,7 @@ describe('collector', () => {
 			})
 		})
 		it('should remove nested nodes without a README at leaf nodes', () => {
-			let data = {
+			const data = {
 				introduction: {
 					path: '01-introduction',
 					title: 'Introduction'
@@ -260,7 +260,7 @@ describe('collector', () => {
 					title: 'Bar'
 				}
 			}
-			let result = removeInvalidEntries(data, {
+			const result = removeInvalidEntries(data, {
 				readmeFilename: 'README.md'
 			})
 			expect(result.errors).toEqual([

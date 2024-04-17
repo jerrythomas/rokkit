@@ -131,7 +131,7 @@ export function transform(data) {
 
 export function removeInvalidEntries(data, options) {
 	let errors = []
-	let invalid = []
+	const invalid = []
 
 	for (const key in data) {
 		if (!data[key].title && !data[key].name) {
@@ -142,7 +142,7 @@ export function removeInvalidEntries(data, options) {
 			})
 		}
 		if (data[key].children) {
-			let result = removeInvalidEntries(data[key].children, options)
+			const result = removeInvalidEntries(data[key].children, options)
 			data[key].children = result.data
 			if (Object.keys(data[key].children).length === 0) {
 				invalid.push({ key, path: data[key].path, error: 'Empty folder' })
@@ -196,7 +196,7 @@ export async function collectTutorials(options) {
 		})
 	)
 	tutorials = transform(tutorials)
-	let result = removeInvalidEntries(tutorials, config)
+	const result = removeInvalidEntries(tutorials, config)
 
 	if (result.errors.length > 0) {
 		console.info('Invalid entries found:')

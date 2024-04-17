@@ -8,7 +8,7 @@ import { omit, pick } from 'ramda'
  * @returns {import('../types').LayoutSchema}
  */
 export function getSchemaWithLayout(schema, layout) {
-	let combined = omit(['elements'], layout)
+	const combined = omit(['elements'], layout)
 	combined.elements = layout.elements.map((element) => combineElementWithSchema(element, schema))
 
 	return combined

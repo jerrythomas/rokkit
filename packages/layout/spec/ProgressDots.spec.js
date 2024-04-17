@@ -96,8 +96,7 @@ function validateDots(dots, count, value, current) {
 }
 
 function expectedDataset(index, value, current) {
-	let inprogress = current === value + 1 ? current : -1
-	// let enabled = true
+	const inprogress = current === value + 1 ? current : -1
 	return {
 		step: index.toString(),
 		active: (index === current).toString(),

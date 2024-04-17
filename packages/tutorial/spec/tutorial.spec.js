@@ -71,7 +71,7 @@ describe('getTutorials', () => {
 		expect(content.tutorials()).not.toBeDefined()
 		expect(content.hierarchy()).not.toBeDefined()
 
-		let tutorial = await content.get('missing')
+		const tutorial = await content.get('missing')
 		expect(tutorial).toEqual({
 			name: 'README.md',
 			key: 'missing',

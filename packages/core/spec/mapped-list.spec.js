@@ -248,7 +248,7 @@ describe('mapped-list', () => {
 		const ml = mappedList(items, fields)
 
 		it('should find by value', () => {
-			let item = ml.findByValue(value)
+			const item = ml.findByValue(value)
 			expect(item).toEqual({
 				item: items[0].nodes[1],
 				fields,
@@ -257,7 +257,7 @@ describe('mapped-list', () => {
 		})
 
 		it('should find by value of attribute', () => {
-			let item = ml.findByAttribute(value.text, 'text')
+			const item = ml.findByAttribute(value.text, 'text')
 			expect(item).toEqual({
 				item: items[0].nodes[1],
 				fields,
@@ -266,12 +266,12 @@ describe('mapped-list', () => {
 		})
 
 		it('should find by index array', () => {
-			let item = ml.findByIndexArray([0, 1])
+			const item = ml.findByIndexArray([0, 1])
 			expect(item).toEqual({ item: value, fields, position: [0, 1] })
 		})
 
 		it('should find previous visible child', () => {
-			let item = ml.previous([0, 1])
+			const item = ml.previous([0, 1])
 			expect(item).toEqual({
 				item: items[0].nodes[0].nodes[1].nodes[0],
 				fields,

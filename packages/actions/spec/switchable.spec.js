@@ -7,7 +7,7 @@ expect.extend({ toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith })
 
 describe('switchable', () => {
 	const keys = [' ', 'Enter', 'ArrowRight', 'ArrowLeft']
-	let handle = vi.fn()
+	const handle = vi.fn()
 	const node = document.createElement('div')
 
 	beforeEach(() => {
@@ -20,7 +20,7 @@ describe('switchable', () => {
 
 	it('should use handlers and cleanup on destroy', () => {
 		const events = ['keydown', 'click']
-		let data = { value: null, options: [false, true], disabled: false }
+		const data = { value: null, options: [false, true], disabled: false }
 		expect(switchable).toUseHandlersFor(data, events)
 	})
 

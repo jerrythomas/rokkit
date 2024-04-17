@@ -1,5 +1,5 @@
 /** @type {import('./$types').PageServerLoad} */
-export async function load() {
+export function load() {
 	return {
 		items: ['Fruits', 'Vegetables', 'Nuts', 'Spices']
 	}

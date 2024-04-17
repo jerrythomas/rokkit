@@ -12,7 +12,7 @@ export function toUseHandlersFor(action, options, events) {
 	if (typeof events === 'string') {
 		events = [events]
 	}
-	let mock = getMockNode(events)
+	const mock = getMockNode(events)
 	const actionHandler = action(mock.node, options)
 	let result = events.map((event) => ({
 		event,

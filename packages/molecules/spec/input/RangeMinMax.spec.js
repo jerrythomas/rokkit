@@ -45,7 +45,7 @@ describe('RangeMinMax.svelte', () => {
 			class: 'test'
 		})
 		expect(container).toMatchSnapshot()
-		let range = container.querySelector('input-range')
+		const range = container.querySelector('input-range')
 		expect(Array.from(range.classList)).toContain('test')
 		component.$set({ class: 'test2' })
 		await tick()

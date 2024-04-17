@@ -114,7 +114,7 @@ describe('string', () => {
 
 	describe('compact', () => {
 		it('should remove undefined and null values', () => {
-			let result = compact({ x: undefined, y: null, fill: 'something' })
+			const result = compact({ x: undefined, y: null, fill: 'something' })
 			expect(result).toEqual({ fill: 'something' })
 		})
 	})

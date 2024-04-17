@@ -6,8 +6,8 @@
  * @returns
  */
 export function fillable(node, { options, current, check }) {
-	let data = { options, current, check }
-	let blanks = node.getElementsByTagName('del')
+	const data = { options, current, check }
+	const blanks = node.getElementsByTagName('del')
 
 	function click(event) {
 		if (event.target.innerHTML !== '?') {
@@ -58,7 +58,7 @@ function initialize(blanks, click) {
  */
 function fill(blanks, options, current) {
 	if (current > -1 && current < Object.keys(blanks).length) {
-		let index = options.findIndex(({ actualIndex }) => actualIndex === current)
+		const index = options.findIndex(({ actualIndex }) => actualIndex === current)
 		if (index > -1) {
 			blanks[current].innerHTML = options[index].value
 			blanks[current].classList.remove('empty')
@@ -97,7 +97,7 @@ function clear(event, node) {
  */
 function validate(blanks, data) {
 	Object.keys(blanks).forEach((_, ref) => {
-		let index = data.options.findIndex(({ actualIndex }) => actualIndex === ref)
+		const index = data.options.findIndex(({ actualIndex }) => actualIndex === ref)
 		if (index > -1)
 			blanks[ref].classList.add(
 				data.options[index].expectedIndex === data.options[index].actualIndex ? 'pass' : 'fail'
