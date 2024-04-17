@@ -1,4 +1,4 @@
-export let items = [
+export const items = [
 	{
 		category: 'Fruits',
 		isOpen: true,
