@@ -67,7 +67,7 @@ describe('notifications', () => {
 	})
 
 	it('should remove notifications after timeout', async () => {
-		let expected = input.map((item) => ({
+		const expected = input.map((item) => ({
 			...item,
 			timeout: item.timeout ?? 3000
 		}))
@@ -76,7 +76,7 @@ describe('notifications', () => {
 		const alerts = createNotificationStore()
 
 		input.forEach((item) => alerts.send(item.message, item.type, item.timeout))
-		let items = get(alerts)
+		const items = get(alerts)
 		expect(items.length).toEqual(5)
 
 		alerts.subscribe((items) => {

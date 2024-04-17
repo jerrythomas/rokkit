@@ -23,7 +23,7 @@ describe('ListEditor.svelte', () => {
 			}
 		]
 	}
-	let items = [
+	const items = [
 		{ id: 1, text: 'Alpha' },
 		{ id: 2, text: 'Beta' },
 		{ id: 3, text: 'Charlie' }
@@ -75,7 +75,7 @@ describe('ListEditor.svelte', () => {
 			properties: { value: items, schema }
 		})
 		expect(container).toBeTruthy()
-		let listItems = container.querySelectorAll('list-editor list item')
+		const listItems = container.querySelectorAll('list-editor list item')
 		expect(listItems.length).toBe(3)
 		await fireEvent.click(listItems[2])
 		await tick()

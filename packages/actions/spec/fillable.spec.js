@@ -12,7 +12,7 @@ describe('fillable', () => {
 	})
 
 	it('should initialize the empty fillable element with click listener', () => {
-		let del = [document.createElement('del'), document.createElement('del')]
+		const del = [document.createElement('del'), document.createElement('del')]
 
 		del.forEach((d) => {
 			d.addEventListener = vi.fn()
@@ -37,7 +37,7 @@ describe('fillable', () => {
 	})
 
 	it('should fill the fillable element with the current option value', () => {
-		let del = document.createElement('del')
+		const del = document.createElement('del')
 		node.appendChild(del)
 		fillableAction = fillable(node, { options, current, check })
 
@@ -48,7 +48,7 @@ describe('fillable', () => {
 	})
 
 	it('should clear the filled fillable element on click', () => {
-		let del = document.createElement('del')
+		const del = document.createElement('del')
 
 		del.innerHTML = '?'
 		node.appendChild(del)
@@ -71,7 +71,7 @@ describe('fillable', () => {
 	})
 
 	it('should validate the filled values', () => {
-		let del = document.createElement('del')
+		const del = document.createElement('del')
 		node.appendChild(del)
 		options = [{ actualIndex: 0, value: 'Option 1', expectedIndex: 0 }]
 		check = true
@@ -86,7 +86,7 @@ describe('fillable', () => {
 		expect(del.classList.contains('pass')).toBe(true)
 	})
 	it('should validate the filled values', () => {
-		let del = document.createElement('del')
+		const del = document.createElement('del')
 		node.appendChild(del)
 		options = [{ actualIndex: 0, value: 'Option 1', expectedIndex: 1 }]
 		check = true
@@ -98,7 +98,7 @@ describe('fillable', () => {
 	})
 
 	it('should destroy the fillable element listener', () => {
-		let del = document.createElement('del')
+		const del = document.createElement('del')
 		del.removeEventListener = vi.fn()
 		node.appendChild(del)
 		fillableAction = fillable(node, { options, current, check })

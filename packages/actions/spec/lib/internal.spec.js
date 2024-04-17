@@ -107,7 +107,7 @@ describe('internal', () => {
 	describe('handleItemClick', () => {
 		const element = document.createElement('div')
 		const events = ['collapse', 'expand', 'select']
-		let handlers = {}
+		const handlers = {}
 
 		beforeEach(() => {
 			events.forEach((event) => {

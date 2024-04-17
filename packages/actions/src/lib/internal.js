@@ -27,8 +27,8 @@ export function mapKeyboardEventsToActions(handlers, options) {
 		nested: false,
 		...options
 	}
-	let expand = nested ? handlers.expand : null
-	let collapse = nested ? handlers.collapse : null
+	const expand = nested ? handlers.expand : null
+	const collapse = nested ? handlers.collapse : null
 
 	return compact({
 		ArrowDown: horizontal ? expand : next,
@@ -140,7 +140,7 @@ export function calculateSum(sizes, lower, upper, defaultSize = 40, gap = 0) {
  * @returns {Array<number|null>}
  */
 export function updateSizes(sizes, values, offset = 0) {
-	let result = [...sizes.slice(0, offset), ...values, ...sizes.slice(offset + values.length)]
+	const result = [...sizes.slice(0, offset), ...values, ...sizes.slice(offset + values.length)]
 
 	return result
 }

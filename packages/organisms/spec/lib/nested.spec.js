@@ -224,7 +224,7 @@ describe('nested', () => {
 		})
 
 		it('should generate a nested schema', () => {
-			let result = deriveNestedSchema({
+			const result = deriveNestedSchema({
 				theme: {
 					primary: {
 						main: '#2196F3',
@@ -376,7 +376,7 @@ describe('nested', () => {
 		// 	])
 		// })
 		it('should generate a tree table for object', () => {
-			let result = generateTreeTable({
+			const result = generateTreeTable({
 				red: '#FF0000',
 				blue: '#0000FF',
 				green: '#00FF00'

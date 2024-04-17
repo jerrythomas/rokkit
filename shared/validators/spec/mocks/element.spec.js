@@ -85,14 +85,14 @@ describe('element', () => {
 
 	describe('elementsWithSize', () => {
 		it('should return an array of elements with offsetHeight property', () => {
-			let result = elementsWithSize(10, 20)
+			const result = elementsWithSize(10, 20)
 			expect(result.length).toBe(10)
 			result.forEach((element) => {
 				expect(element.offsetHeight).toBe(20)
 			})
 		})
 		it('should return an array of elements with offsetWidth property', () => {
-			let result = elementsWithSize(10, 20, 'offsetWidth')
+			const result = elementsWithSize(10, 20, 'offsetWidth')
 			expect(result.length).toBe(10)
 			result.forEach((element) => {
 				expect(element.offsetWidth).toBe(20)
@@ -102,7 +102,7 @@ describe('element', () => {
 
 	describe('mixedSizeElements', () => {
 		it('should create an array of mixed size elements', () => {
-			let result = mixedSizeElements([
+			const result = mixedSizeElements([
 				{ count: 10, size: 20 },
 				{ count: 5, size: 10 }
 			])
@@ -116,7 +116,7 @@ describe('element', () => {
 			})
 		})
 		it('should create an array of mixed size elements with offsetWidth', () => {
-			let result = mixedSizeElements(
+			const result = mixedSizeElements(
 				[
 					{ count: 10, size: 20 },
 					{ count: 5, size: 10 }

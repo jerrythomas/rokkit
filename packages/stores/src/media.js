@@ -31,10 +31,10 @@ const defaultBreakpoints = {
  * @returns {Media}
  */
 export function calculate(queries) {
-	let media = { classNames: '' }
-	let classNames = []
+	const media = { classNames: '' }
+	const classNames = []
 
-	for (let name in queries) {
+	for (const name in queries) {
 		media[name] = queries[name].matches
 		if (media[name]) {
 			classNames.push(`media-${name}`)
@@ -53,17 +53,17 @@ export function watchMedia(breakpoints = defaultBreakpoints) {
 	const { set, subscribe } = writable({ classNames: '' })
 	if (typeof window === 'undefined') return { subscribe }
 
-	let queries = {}
+	const queries = {}
 	const updateMedia = () => set(calculate(queries))
 
-	for (let key in breakpoints) {
+	for (const key in breakpoints) {
 		queries[key] = window.matchMedia(breakpoints[key])
 		queries[key].addListener(updateMedia)
 	}
 
 	updateMedia()
 	const destroy = () => {
-		for (let key in queries) {
+		for (const key in queries) {
 			queries[key].removeListener(updateMedia)
 		}
 	}

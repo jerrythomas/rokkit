@@ -48,7 +48,7 @@ describe('assimilate', () => {
 			}
 		]
 		it('should find a tutorial', () => {
-			let result = findTutorial(data, 'alpha/two')
+			const result = findTutorial(data, 'alpha/two')
 			expect(result).toEqual({
 				route: 'alpha/two',
 				title: 'Two',
@@ -59,7 +59,7 @@ describe('assimilate', () => {
 			})
 		})
 		it('should find a tutorial where next is null', () => {
-			let result = findTutorial(data, 'beta/one')
+			const result = findTutorial(data, 'beta/one')
 			expect(result).toEqual({
 				route: 'beta/one',
 				title: 'One',
@@ -70,7 +70,7 @@ describe('assimilate', () => {
 			})
 		})
 		it('should find a tutorial where previous is null', () => {
-			let result = findTutorial(data, 'alpha/one')
+			const result = findTutorial(data, 'alpha/one')
 			expect(result).toEqual({
 				route: 'alpha/one',
 				title: 'One',

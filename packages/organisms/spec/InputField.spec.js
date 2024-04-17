@@ -101,7 +101,7 @@ describe('InputField.svelte', () => {
 
 		component.$set({ class: 'other' })
 		await tick()
-		let wrapper = container.querySelector('input-field')
+		const wrapper = container.querySelector('input-field')
 		expect(wrapper).toBeTruthy()
 		expect(Array.from(wrapper.classList)).toContain('other')
 		expect(Array.from(wrapper.classList)).toContain('input-number')
@@ -117,14 +117,14 @@ describe('InputField.svelte', () => {
 
 		component.$set({ icon: 'other' })
 		await tick()
-		let icon = container.querySelector('i')
+		const icon = container.querySelector('i')
 		expect(icon).toBeTruthy()
 		expect(Array.from(icon.classList)).toContain('other')
 	})
 
 	it('should handle property changes', async () => {
 		const { container, component } = render(InputField)
-		let field = container.querySelector('field')
+		const field = container.querySelector('field')
 
 		component.$set({ name: 'name' })
 		await tick()
@@ -140,13 +140,13 @@ describe('InputField.svelte', () => {
 
 		component.$set({ type: 'string', minlength: 5 })
 		await tick()
-		let input = container.querySelector('input')
+		const input = container.querySelector('input')
 		expect(input.getAttribute('type')).toEqual('text')
 		expect(input.getAttribute('minlength')).toEqual('5')
 
 		component.$set({ icon: 'other' })
 		await tick()
-		let icon = container.querySelector('i')
+		const icon = container.querySelector('i')
 		expect(icon).toBeTruthy()
 		expect(Array.from(icon.classList)).toContain('other')
 	})

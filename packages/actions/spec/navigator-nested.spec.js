@@ -18,11 +18,11 @@ describe('navigator', () => {
 		isOpen: 'isOpen'
 	}
 
-	let handlers = {}
-	let node
-	let options
-	let navigatorInstance
-	let items
+	const handlers = {}
+	let node = null
+	let options = {}
+	let navigatorInstance = null
+	let items = []
 
 	beforeEach(() => {
 		items = [
@@ -137,7 +137,7 @@ describe('navigator', () => {
 				indices: [0, 0]
 			})
 
-			let event = new KeyboardEvent('keydown', { key: 'Enter' })
+			const event = new KeyboardEvent('keydown', { key: 'Enter' })
 			node.dispatchEvent(event)
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
@@ -312,7 +312,7 @@ describe('navigator', () => {
 				indices: [0, 0]
 			})
 
-			let event = new KeyboardEvent('keydown', { key: 'Enter' })
+			const event = new KeyboardEvent('keydown', { key: 'Enter' })
 			node.dispatchEvent(event)
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({

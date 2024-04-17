@@ -16,7 +16,7 @@ const defaultOptions = {
  * @returns {import('./types').SvelteActionReturn}
  */
 export function swipeable(node, options = defaultOptions) {
-	let track = {}
+	const track = {}
 	let listeners = {}
 
 	const updateListeners = (props) => {
@@ -49,7 +49,7 @@ export function swipeable(node, options = defaultOptions) {
 function getListeners(node, options, track) {
 	if (!options.enabled) return {}
 
-	let listeners = {
+	const listeners = {
 		touchend: (e) => touchEnd(e, node, options, track),
 		touchstart: (e) => touchStart(e, track),
 		mousedown: (e) => touchStart(e, track),

@@ -108,10 +108,10 @@ describe('Rating component', () => {
 	})
 
 	it('should handle mouseenter and mouseleave events', async () => {
-		let max = 5
-		let value = 2
+		const max = 5
+		const value = 2
 		const { container } = render(Rating, { value, max })
-		let stars = container.querySelectorAll('icon')
+		const stars = container.querySelectorAll('icon')
 
 		await fireEvent.mouseEnter(stars[value + 1])
 		await tick()

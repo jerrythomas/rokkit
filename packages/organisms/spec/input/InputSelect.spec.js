@@ -10,7 +10,7 @@ expect.extend({ toHaveBeenDispatchedWith })
 
 describe('InputSelect.svelte', () => {
 	const events = ['change', 'select']
-	let handlers = {}
+	const handlers = {}
 
 	beforeEach(() => {
 		cleanup()

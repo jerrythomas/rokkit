@@ -100,8 +100,8 @@ export function movePrevious(path) {
  * @returns
  */
 export function pathFromIndices(indices, items, fields) {
-	let path = []
-	let fragment
+	const path = []
+	let fragment = {}
 	indices.forEach((index, level) => {
 		if (level === 0) {
 			fragment = { index, items, fields }

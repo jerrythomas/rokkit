@@ -94,8 +94,8 @@ export function navigator(element, options) {
 
 	const handleClick = (event) => {
 		event.stopPropagation()
-		let target = findParentWithDataPath(event.target, element)
-		let indices = !target
+		const target = findParentWithDataPath(event.target, element)
+		const indices = !target
 			? []
 			: target.dataset.path
 					.split(',')
@@ -138,7 +138,7 @@ export function navigator(element, options) {
  */
 export function moveTo(element, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
-	let current = element.querySelector('#' + idPrefix + indices.join('-'))
+	const current = element.querySelector('#' + idPrefix + indices.join('-'))
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
 	emit('move', element, indices, currentNode)

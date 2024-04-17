@@ -14,7 +14,7 @@ export function deriveNestedSchema(input, scope = '#') {
 	const elements = flattenAttributes(input)
 	const atoms = elements.filter(({ type }) => !['object', 'array'].includes(type))
 
-	let schema = {
+	const schema = {
 		type: 'object'
 	}
 

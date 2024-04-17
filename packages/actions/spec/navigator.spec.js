@@ -19,11 +19,11 @@ describe('navigator', () => {
 		isOpen: 'isOpen'
 	}
 
-	let handlers = {}
-	let node
-	let options
-	let navigatorInstance
-	let items
+	const handlers = {}
+	let node = null
+	let options = {}
+	let navigatorInstance = null
+	let items = []
 
 	beforeEach(() => {
 		items = ['A', 'B']
@@ -52,7 +52,7 @@ describe('navigator', () => {
 		expect(navigator).not.toUseHandlersFor({ enabled: false }, 'click')
 	})
 	it('should find the parent with data path', () => {
-		let tree = {
+		const tree = {
 			name: 'div',
 			children: [
 				{
@@ -70,7 +70,7 @@ describe('navigator', () => {
 			]
 		}
 
-		let node = createNestedElement(tree)
+		const node = createNestedElement(tree)
 		let result = findParentWithDataPath(node.children[0].children[0].children[0], node)
 		expect(result).toEqual(node.children[0])
 		result = findParentWithDataPath(node.children[0].children[0], node)
@@ -178,7 +178,7 @@ describe('navigator', () => {
 				indices: [0]
 			})
 
-			let event = new KeyboardEvent('keydown', { key: 'Enter' })
+			const event = new KeyboardEvent('keydown', { key: 'Enter' })
 			node.dispatchEvent(event)
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({
@@ -270,7 +270,7 @@ describe('navigator', () => {
 				indices: [0]
 			})
 
-			let event = new KeyboardEvent('keydown', { key: 'Enter' })
+			const event = new KeyboardEvent('keydown', { key: 'Enter' })
 			node.dispatchEvent(event)
 			expect(handlers.select).toHaveBeenCalledTimes(1)
 			expect(handlers.select).toHaveBeenDispatchedWith({

@@ -6,8 +6,8 @@ import { getFillPatterns } from '../../src/lib/brewer'
 describe('brewer', () => {
 	const baseSwatch = get(swatch)
 	it('should generate a set of patterns for given values', () => {
-		let values = ['a', 'b', 'c', 'd']
-		let result = getFillPatterns(values, baseSwatch)
+		const values = ['a', 'b', 'c', 'd']
+		const result = getFillPatterns(values, baseSwatch)
 		expect(result).toEqual({
 			a: { color: 'gold', pattern: 'Brick' },
 			b: { color: 'lavender', pattern: 'Circles' },

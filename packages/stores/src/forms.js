@@ -20,7 +20,7 @@ const typeComponentMap = {
  */
 export function getRenderer(type, options) {
 	let component = 'input'
-	let properties = {}
+	const properties = {}
 	if (type in inputProperties) properties.type = inputProperties[type]
 	if (type in typeComponentMap) component = typeComponentMap[type]
 	if (type === 'integer') properties.pattern = /\d+/

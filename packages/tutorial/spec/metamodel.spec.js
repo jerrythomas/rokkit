@@ -29,7 +29,7 @@ describe('metamodel', () => {
 
 	describe('addPathMetadata', () => {
 		it('should add metadata from path', () => {
-			let input = [
+			const input = [
 				{ file: '01-welcome/meta.json' },
 				{
 					file: '01-welcome/01-overview/README.md'
@@ -44,7 +44,7 @@ describe('metamodel', () => {
 					file: '01-welcome/02-component/01-intro/README.md'
 				}
 			]
-			let result = addPathMetadata(input)
+			const result = addPathMetadata(input)
 			expect(result).toEqual([
 				{
 					name: 'meta.json',
@@ -88,7 +88,7 @@ describe('metamodel', () => {
 	})
 	describe('addMetadata', () => {
 		it('should add metadata for modules', () => {
-			let input = [
+			const input = [
 				{ name: 'meta.json', content: { title: 'Welcome' } },
 				{
 					name: 'README.md',
@@ -120,7 +120,7 @@ describe('metamodel', () => {
 				readmeFilename: 'README.md',
 				previewFilename: 'App.svelte'
 			}
-			let result = addModuleMetadata(input, options)
+			const result = addModuleMetadata(input, options)
 			expect(result).toEqual([
 				{
 					name: 'meta.json',

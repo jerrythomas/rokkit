@@ -6,7 +6,7 @@ import { vi } from 'vitest'
  * @returns {{node: HTMLElement, listeners: Object<string, integer>}}
  */
 export function getMockNode(events) {
-	let listeners = events.reduce((acc, event) => ({ ...acc, [event]: 0 }), {})
+	const listeners = events.reduce((acc, event) => ({ ...acc, [event]: 0 }), {})
 
 	const node = {
 		dispatchEvent: vi.fn(),

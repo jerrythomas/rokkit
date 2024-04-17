@@ -114,8 +114,8 @@ export function findNearestItemAfter(position, items, fields) {
 	if (items.length === 0) return null
 	if (position.length === 0) return { item: items[0], position: [0], fields }
 
-	let current = findItemByIndexArray(position, items, fields)
-	let result
+	const current = findItemByIndexArray(position, items, fields)
+	let result = null
 	if (isExpanded(current.item, current.fields)) {
 		result = getFirstChild(current, position)
 	} else if (position.length === 1) {

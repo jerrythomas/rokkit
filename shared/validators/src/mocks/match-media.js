@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 
-let watchMediaQueries = []
-let listeners = []
+const watchMediaQueries = []
+const listeners = []
 
 /**
  * @typedef {Object} MediaQuery

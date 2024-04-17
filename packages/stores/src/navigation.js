@@ -38,7 +38,7 @@ export function createNavigator(items, visibleCount = null) {
 
 	const changeStart = (position) => {
 		let lower = position
-		let upper = Math.min(position + visibleCount - 1, items.length - 1)
+		const upper = Math.min(position + visibleCount - 1, items.length - 1)
 		if (lower + visibleCount > upper) lower = upper - visibleCount + 1
 		updateRange(lower, upper)
 	}
@@ -50,8 +50,8 @@ export function createNavigator(items, visibleCount = null) {
 	const changeVisibleCount = (value) => {
 		if (value <= items.length) {
 			visibleCount = value
-			let max = Math.min(start + visibleCount - 1, items.length - 1)
-			let min = max - visibleCount + 1
+			const max = Math.min(start + visibleCount - 1, items.length - 1)
+			const min = max - visibleCount + 1
 			updateRange(min, max)
 		}
 	}
@@ -72,7 +72,7 @@ export function createNavigator(items, visibleCount = null) {
 	const select = (item) => selectByIndex(items.indexOf(item))
 
 	const moveByOffset = (offset) => {
-		let position = Math.max(0, Math.min(index + offset, items.length - 1))
+		const position = Math.max(0, Math.min(index + offset, items.length - 1))
 		selectByIndex(position)
 	}
 

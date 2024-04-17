@@ -24,7 +24,7 @@ describe('ItemWrapper.svelte', () => {
 		// handle value change
 		component.$set({ value: 'hello' })
 		await tick()
-		let text = container.querySelector('p')
+		const text = container.querySelector('p')
 		expect(text).toBeTruthy()
 		expect(text.textContent).toBe('hello')
 	})
@@ -87,14 +87,14 @@ describe('ItemWrapper.svelte', () => {
 	})
 
 	it('should render with custom class', () => {
-		let { container } = render(ItemWrapper, { value: 'Test', class: 'pill' })
+		const { container } = render(ItemWrapper, { value: 'Test', class: 'pill' })
 
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render removable with custom class', () => {
-		let { container } = render(ItemWrapper, {
+		const { container } = render(ItemWrapper, {
 			value: 'Test',
 			class: 'pill',
 			removable: true

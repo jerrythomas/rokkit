@@ -10,7 +10,7 @@ expect.extend({ toHaveBeenDispatchedWith, toUseHandlersFor, toOnlyTrigger })
 
 describe('traversable', () => {
 	const events = ['move', 'select', 'collapse', 'expand', 'escape']
-	let handlers = {}
+	const handlers = {}
 	let root = document.createElement('div')
 	let instance
 	let items
@@ -45,7 +45,7 @@ describe('traversable', () => {
 	// })
 
 	it('should not use handlers when disabled', () => {
-		let data = { items: [], fields: defaultFields }
+		const data = { items: [], fields: defaultFields }
 		expect(traversable).not.toUseHandlersFor({ ...data, enabled: false }, 'keydown')
 		expect(traversable).not.toUseHandlersFor(
 			{ ...data, enabled: false, horizontal: true },

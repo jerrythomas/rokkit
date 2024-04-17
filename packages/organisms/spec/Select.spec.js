@@ -10,7 +10,7 @@ expect.extend({ toHaveBeenDispatchedWith })
 
 describe('Select.svelte', () => {
 	const events = ['change', 'select']
-	let handlers = {}
+	const handlers = {}
 
 	beforeEach(() => {
 		cleanup()
@@ -28,7 +28,7 @@ describe('Select.svelte', () => {
 		await fireEvent.click(container.querySelector('selected-item'))
 		await tick()
 		expect(container).toMatchSnapshot()
-		let items = container.querySelectorAll('input-select list item')
+		const items = container.querySelectorAll('input-select list item')
 		expect(items.length).toEqual(3)
 		await fireEvent.click(items[1])
 		await tick()

@@ -21,7 +21,7 @@ describe('VirtualSelect.svelte', () => {
 	const events = ['change', 'select']
 	const items = Array.from({ length: 10 }, (_, i) => `Item ${i + 1}`)
 
-	let handlers = {}
+	const handlers = {}
 
 	beforeEach(() => {
 		cleanup()

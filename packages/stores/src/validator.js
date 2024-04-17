@@ -95,7 +95,7 @@ function getValidator(rule) {
  */
 function evaluateRules(value, rules) {
 	let status = 'pass'
-	let validations = []
+	const validations = []
 
 	rules.forEach((rule) => {
 		const valid = rule.validator(value)

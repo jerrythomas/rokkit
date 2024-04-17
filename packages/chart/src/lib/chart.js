@@ -101,7 +101,7 @@ class Chart {
 			y: [this.height - this.padding - this.margin.bottom, this.margin.top + this.padding]
 		}
 
-		let scale = {
+		const scale = {
 			x: getScale(this.domain.x, this.range.x, this.spacing),
 			y: getScale(this.domain.y, this.range.y, this.spacing)
 		}
@@ -180,7 +180,7 @@ class Chart {
 
 			ticks = scale.domain()
 			if (count < scale.domain().length) {
-				let diff = scale.domain().length - count
+				const diff = scale.domain().length - count
 				ticks = ticks.filter((d, i) => i % diff === 0)
 			}
 		}

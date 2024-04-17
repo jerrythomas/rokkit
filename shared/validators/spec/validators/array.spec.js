@@ -9,8 +9,8 @@ describe('event', () => {
 		})
 
 		it('should pass if the array includes all the values', () => {
-			let input = [1, 2, 3]
-			let expected = [1, 2]
+			const input = [1, 2, 3]
+			const expected = [1, 2]
 			const result = toIncludeAll(input, expected)
 			expect(result.pass).toBe(true)
 			expect(result.message()).toBe(
@@ -20,8 +20,8 @@ describe('event', () => {
 		})
 
 		it('should fail if the array does not include all the values', () => {
-			let input = [1, 2, 3]
-			let expected = [1, 2, 4]
+			const input = [1, 2, 3]
+			const expected = [1, 2, 4]
 			const result = toIncludeAll(input, expected)
 			expect(result.pass).toBe(false)
 			expect(result.message()).toBe(

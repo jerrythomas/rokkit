@@ -6,7 +6,7 @@ import { tick } from 'svelte'
 import ResponsiveGrid from '../src/ResponsiveGrid.svelte'
 
 describe('ResponsiveGrid.svelte', () => {
-	let items = [
+	const items = [
 		{ component: MockItem, props: { value: ' Content for A' } },
 		{ component: MockItem, props: { value: ' Content for B' } },
 		{ component: MockItem, props: { value: ' Content for C' } }

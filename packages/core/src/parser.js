@@ -19,11 +19,11 @@
  * @returns {RegExp} - The regular expression pattern to identify search filter elements.
  */
 export function getRegex() {
-	let column = '[\\w]+'
-	let operator = ':|>|<|>=|<=|=<|=>|=|!=|~|~\\*|!~|!~\\*'
-	let value = '("[^"]+"|[^\\s=:<>!~*]+)'
+	const column = '[\\w]+'
+	const operator = ':|>|<|>=|<=|=<|=>|=|!=|~|~\\*|!~|!~\\*'
+	const value = '("[^"]+"|[^\\s=:<>!~*]+)'
 
-	let pattern = `(?<group>((?<column>${column})\\s?(?<operator>${operator})\\s?)(?<value>${value}))`
+	const pattern = `(?<group>((?<column>${column})\\s?(?<operator>${operator})\\s?)(?<value>${value}))`
 
 	return new RegExp(pattern, 'gm')
 }

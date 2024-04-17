@@ -9,7 +9,7 @@ expect.extend({ toHaveBeenDispatchedWith })
 
 describe('DropDown.svelte', () => {
 	const events = ['change']
-	let handlers = {}
+	const handlers = {}
 
 	beforeEach(() => {
 		cleanup()
@@ -104,7 +104,7 @@ describe('DropDown.svelte', () => {
 		await tick()
 
 		expect(container).toMatchSnapshot()
-		let items = container.querySelectorAll('drop-down list item')
+		const items = container.querySelectorAll('drop-down list item')
 		expect(items.length).toEqual(3)
 		await fireEvent.click(items[1])
 		await tick()

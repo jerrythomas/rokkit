@@ -16,7 +16,7 @@ describe('utils', () => {
 	})
 	describe('folderHierarchy', () => {
 		it('should convert an array of files without folders as an array', () => {
-			let files = [
+			const files = [
 				{ path: '', name: 'x.md', content: '...' },
 				{ path: '', name: 'a.js', content: '...' }
 			]
@@ -26,7 +26,7 @@ describe('utils', () => {
 			])
 		})
 		it('should convert an array of files without folders as an array', () => {
-			let files = [
+			const files = [
 				{ path: 'a', name: 'x.md', content: '...' },
 				{ path: '', name: 'a.js', content: '...' }
 			]
@@ -41,7 +41,7 @@ describe('utils', () => {
 			])
 		})
 		it('should convert an array of files with path into a nested array', () => {
-			let files = [
+			const files = [
 				{ path: 'a/b/c', name: 'x.md', content: '...' },
 				{ path: 'a/b/c', name: 'a.js', content: '...' },
 				{ path: 'a/b', name: 'x.json', content: '...' }
