@@ -188,7 +188,7 @@ describe('internal', () => {
 	describe('fitIndexInViewport', () => {
 		const visibleCount = 5
 		it('should fit the bounds to include index', () => {
-			let bounds = { lower: 0, upper: 5 }
+			const bounds = { lower: 0, upper: 5 }
 			let result = fitIndexInViewport(10, bounds, visibleCount)
 			expect(result).toEqual({ lower: 6, upper: 11 })
 			result = fitIndexInViewport(9, result, visibleCount)

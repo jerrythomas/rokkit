@@ -80,8 +80,8 @@ function generateCrumbs(flat, index) {
 
 export function assimilateTutorials(modules, sources, options) {
 	let loaded = false
-	let tutorials
-	let routes
+	let tutorials = null
+	let routes = null
 
 	options = { ...defaultOptions, ...(options ?? {}) }
 

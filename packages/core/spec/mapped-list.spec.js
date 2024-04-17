@@ -280,7 +280,7 @@ describe('mapped-list', () => {
 		})
 
 		it('should find next visible child', () => {
-			let item = ml.next([0, 1])
+			const item = ml.next([0, 1])
 			expect(item).toEqual({
 				item: items[0].nodes[2],
 				fields,

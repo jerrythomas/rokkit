@@ -2,7 +2,11 @@ import { vi, it, expect, describe, beforeEach } from 'vitest'
 import { fillable } from '../src/fillable'
 
 describe('fillable', () => {
-	let node, options, current, check, fillableAction
+	let node = null,
+		options = [],
+		current = 0,
+		check = false,
+		fillableAction = null
 	beforeEach(() => {
 		node = document.createElement('div')
 		options = [{ actualIndex: 0, value: 'Option 1' }]

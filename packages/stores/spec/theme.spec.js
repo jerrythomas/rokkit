@@ -8,8 +8,8 @@ describe('ThemeStore', () => {
 
 	it('should set the store with valid input', () => {
 		const themeStore = ThemeStore()
+		let currentValue = null
 		themeStore.set({ name: 'test', mode: 'light' })
-		let currentValue
 		themeStore.subscribe((val) => (currentValue = val))
 		expect(currentValue).toEqual({ name: 'test', mode: 'light' })
 	})

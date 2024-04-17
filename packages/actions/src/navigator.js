@@ -18,7 +18,9 @@ import { mapKeyboardEventsToActions } from './lib'
  */
 export function navigator(element, options) {
 	const { fields, enabled = true, vertical = true, idPrefix = 'id-' } = options
-	let items, path, currentNode
+	let items = [],
+		path = null,
+		currentNode = null
 
 	if (!enabled) return { destroy: () => {} }
 
@@ -32,7 +34,7 @@ export function navigator(element, options) {
 
 		if (previousNode !== currentNode && currentNode) {
 			const indices = indicesFromPath(path)
-			let current = element.querySelector(`#${idPrefix}${indices.join('-')}`)
+			const current = element.querySelector(`#${idPrefix}${indices.join('-')}`)
 			if (current) {
 				current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 			}

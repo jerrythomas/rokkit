@@ -34,7 +34,7 @@ function parseMediaQuery(mediaQuery) {
 	const regex = /\(([^:]+):\s*([^)]+)\)/g
 	const result = {}
 
-	let match
+	let match = null
 	while ((match = regex.exec(mediaQuery)) !== null) {
 		const [, property, value] = match
 		result[property.trim()] = parseInt(value.trim(), 10)

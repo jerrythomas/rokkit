@@ -69,7 +69,7 @@ export function findNearestItemBefore(position, items, fields) {
 	if (position.length === 0) return { item: items[0], position: [0], fields }
 
 	let index = position[position.length - 1]
-	let result
+	let result = null
 	if (index > 0) {
 		index -= 1
 		if (position.length === 1) {

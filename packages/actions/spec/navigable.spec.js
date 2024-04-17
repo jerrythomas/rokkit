@@ -6,7 +6,7 @@ import { getMockNode } from 'validators/mocks'
 expect.extend({ toUseHandlersFor, toOnlyTrigger })
 
 describe('Navigable Action', () => {
-	let node
+	let node = null
 	let handler = {}
 
 	beforeEach(() => {

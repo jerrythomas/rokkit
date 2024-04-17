@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 
-let req
-let prev
+let req = null
+let prev = null
 const elapsed = writable(0)
 
 const tick = (timestamp) => {

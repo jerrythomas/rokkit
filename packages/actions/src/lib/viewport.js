@@ -15,7 +15,7 @@ export function virtualListViewport(options) {
 		before: 0,
 		after: 0
 	})
-	let items
+	let items = null
 	let averageSize = minSize
 	let visibleCount = maxVisible
 	let value = null

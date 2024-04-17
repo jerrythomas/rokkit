@@ -60,8 +60,8 @@ export function getTutorials(options) {
 		tutorialMetadata: options.tutorialMetadata
 	}
 
-	let tutorials
-	let hierarchy
+	let tutorials = null
+	let hierarchy = null
 
 	const load = async () => {
 		tutorials = (await import(/* @vite-ignore */ options.tutorialMetadata)).default

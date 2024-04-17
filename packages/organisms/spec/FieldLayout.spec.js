@@ -161,7 +161,7 @@ describe('FieldLayout.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 	it('should render items using default component', () => {
-		let schema = {
+		const schema = {
 			elements: [
 				{
 					component: 'custom'

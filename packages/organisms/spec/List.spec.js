@@ -66,7 +66,7 @@ describe('List.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 	it('should emit select event', () => {
-		let selected
+		let selected = null
 
 		const items = [{ name: 'item 1' }, { name: 'item 2' }]
 		const onSelect = vi.fn()

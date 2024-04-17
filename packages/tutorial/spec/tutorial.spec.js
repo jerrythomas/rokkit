@@ -19,8 +19,8 @@ describe('getTutorials', () => {
 		const tutorials = JSON.parse(fs.readFileSync(options.tutorialMetadata))
 
 		const content = getTutorials(options)
-		expect(content.tutorials()).not.toBeDefined()
-		expect(content.hierarchy()).not.toBeDefined()
+		expect(content.tutorials()).toBeNull()
+		expect(content.hierarchy()).toBeNull()
 
 		await content.load()
 		expect(content.tutorials()).toEqual(tutorials)
@@ -68,8 +68,8 @@ describe('getTutorials', () => {
 
 	it('should load tutorials on demand', async () => {
 		const content = getTutorials(options)
-		expect(content.tutorials()).not.toBeDefined()
-		expect(content.hierarchy()).not.toBeDefined()
+		expect(content.tutorials()).toBeNull()
+		expect(content.hierarchy()).toBeNull()
 
 		const tutorial = await content.get('missing')
 		expect(tutorial).toEqual({

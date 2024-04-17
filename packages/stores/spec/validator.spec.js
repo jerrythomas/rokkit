@@ -253,7 +253,7 @@ describe('validator', () => {
 		})
 
 		it('should handle optional rules', () => {
-			let optionalRules = rules
+			const optionalRules = rules
 			optionalRules[1].optional = true
 
 			const store = verifiable('EXAMPLE1!', optionalRules)
