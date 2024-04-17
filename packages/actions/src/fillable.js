@@ -44,7 +44,7 @@ function initialize(blanks, click) {
 	Object.keys(blanks).forEach((ref) => {
 		blanks[ref].addEventListener('click', click)
 		blanks[ref].classList.add('empty')
-		blanks[ref].name = 'fill-' + ref
+		blanks[ref].name = `fill-${ref}`
 		blanks[ref]['data-index'] = ref
 	})
 }

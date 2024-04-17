@@ -67,7 +67,7 @@ export function spreadValuesAsPatterns(values, patterns, palette) {
 			(acc, { value, pattern, color }) => ({
 				...acc,
 				[value]: {
-					id: pattern + '_' + color,
+					id: `${pattern}_${color}`,
 					pattern,
 					color
 				}
