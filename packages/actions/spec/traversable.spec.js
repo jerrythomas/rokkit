@@ -1,10 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { fireEvent } from '@testing-library/svelte'
-import { getMockNode } from 'validators/mocks'
 import { toUseHandlersFor, toOnlyTrigger, toHaveBeenDispatchedWith } from 'validators'
+import { getMockNode, createNestedElement } from 'validators/mocks'
 import { traversable } from '../src/traversable'
 import { defaultFields } from '@rokkit/core'
-import { createNestedElement } from 'validators/mocks'
 import nested from './fixtures/nested.json'
 expect.extend({ toHaveBeenDispatchedWith, toUseHandlersFor, toOnlyTrigger })
 

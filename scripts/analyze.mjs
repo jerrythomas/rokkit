@@ -19,7 +19,7 @@ function processMadgeOutput(madgeOutput) {
     } else {
       type = 'utility function'
     }
-    let level
+    let level = null
     switch (type) {
       case 'store':
       case 'action':
