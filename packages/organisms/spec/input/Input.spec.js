@@ -56,7 +56,7 @@ describe('Input.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render error for invalid input type', async () => {
+	it('should render error for invalid input type', () => {
 		const { container } = render(Input, {
 			type: 'foo',
 			value: null

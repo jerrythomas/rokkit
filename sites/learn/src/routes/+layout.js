@@ -2,7 +2,7 @@ import { guide } from '$lib'
 
 /** @type {import('./$types').LayoutLoad} */
 export async function load() {
-	guide.assimilate()
+	await guide.assimilate()
 	return {
 		sections: [],
 		// eslint-disable-next-line no-undef

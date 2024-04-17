@@ -17,7 +17,7 @@ describe('DropDown.svelte', () => {
 	})
 	afterAll(() => vi.resetAllMocks())
 
-	it('should render empty text', async () => {
+	it('should render empty text', () => {
 		const { container } = render(DropDown, {
 			props: { options: [], fields: {} }
 		})

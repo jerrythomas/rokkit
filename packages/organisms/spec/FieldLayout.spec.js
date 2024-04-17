@@ -160,7 +160,7 @@ describe('FieldLayout.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render items using default component', async () => {
+	it('should render items using default component', () => {
 		let schema = {
 			elements: [
 				{

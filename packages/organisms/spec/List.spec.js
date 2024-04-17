@@ -65,7 +65,7 @@ describe('List.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('should emit select event', async () => {
+	it('should emit select event', () => {
 		let selected
 
 		const items = [{ name: 'item 1' }, { name: 'item 2' }]

@@ -28,7 +28,7 @@ describe('metamodel', () => {
 	})
 
 	describe('addPathMetadata', () => {
-		it('should add metadata from path', async () => {
+		it('should add metadata from path', () => {
 			let input = [
 				{ file: '01-welcome/meta.json' },
 				{
@@ -87,7 +87,7 @@ describe('metamodel', () => {
 		})
 	})
 	describe('addMetadata', () => {
-		it('should add metadata for modules', async () => {
+		it('should add metadata for modules', () => {
 			let input = [
 				{ name: 'meta.json', content: { title: 'Welcome' } },
 				{
