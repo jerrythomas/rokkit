@@ -32,7 +32,7 @@ export function navigator(element, options) {
 
 		if (previousNode !== currentNode && currentNode) {
 			const indices = indicesFromPath(path)
-			let current = element.querySelector('#' + idPrefix + indices.join('-'))
+			let current = element.querySelector(`#${idPrefix}${indices.join('-')}`)
 			if (current) {
 				current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 			}
@@ -138,7 +138,7 @@ export function navigator(element, options) {
  */
 export function moveTo(element, path, currentNode, idPrefix) {
 	const indices = indicesFromPath(path)
-	const current = element.querySelector('#' + idPrefix + indices.join('-'))
+	const current = element.querySelector(`#${idPrefix}${indices.join('-')}`)
 	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
 
 	emit('move', element, indices, currentNode)

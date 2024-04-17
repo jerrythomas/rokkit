@@ -118,8 +118,8 @@ export function flattenElement(element) {
 		return element.value
 			.map((item, index) => ({
 				value: item,
-				scope: [element.scope, '[' + index + ']'].join('/'),
-				key: '[' + index + ']',
+				scope: [element.scope, `[${index}]`].join('/'),
+				key: `[${index}]`,
 				type: deriveTypeFromValue(item)
 			}))
 			.reduce((acc, item) => ({ ...acc, ...flattenElement(item) }), {

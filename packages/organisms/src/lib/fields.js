@@ -108,7 +108,7 @@ export function findAttributeByPath(scope, schema) {
 		currentKey = key
 	})
 
-	if (!schemaPointer) throw new Error('Invalid scope: ' + scope)
+	if (!schemaPointer) throw new Error(`Invalid scope: ${scope}`)
 
 	return {
 		key: currentKey,

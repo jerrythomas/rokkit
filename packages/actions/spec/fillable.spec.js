@@ -24,7 +24,7 @@ describe('fillable', () => {
 
 		del.forEach((d, index) => {
 			expect(d.classList.contains('empty')).toBe(true)
-			expect(d.name).toEqual('fill-' + index)
+			expect(d.name).toEqual(`fill-${index}`)
 			expect(d['data-index']).toEqual(index.toString())
 			expect(d.addEventListener).toHaveBeenCalledWith('click', expect.any(Function))
 		})

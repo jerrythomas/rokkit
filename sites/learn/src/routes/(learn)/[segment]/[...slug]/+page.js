@@ -8,7 +8,7 @@ export async function load({ params }) {
 	const tutorial = await guide.find(params.slug, params.segment === 'labs')
 	if (!tutorial)
 		error(404, {
-			message: 'No tutorial found for ' + params.slug
+			message: `No tutorial found for ${params.slug}`
 		})
 
 	tutorial.src.files[0]._open = true
