@@ -1,3 +1,4 @@
+// skipcq: JS-C1003 - Importing all plots from observablehq/plot
 import * as Plot from '@observablehq/plot'
 
 export function plotter(node, options) {

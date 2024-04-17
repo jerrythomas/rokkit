@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { compare, quickSearch, list } from '../src/list'
+// skipcq: JS-C1003 - Importing all data sets for testing
 import * as context from './fixtures/list-data'
 
 describe('List Data', () => {

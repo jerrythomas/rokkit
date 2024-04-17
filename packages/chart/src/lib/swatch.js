@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
 import palette from './palette.json'
+// skipcq: JS-C1003 - Importing all patterns
 import * as patterns from '../patterns'
 import { shapes } from '../symbols'
 

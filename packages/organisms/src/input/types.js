@@ -1,5 +1,7 @@
 import { toHyphenCase } from '@rokkit/core'
+// skipcq: JS-C1003 - Importing all components from atoms
 import * as NativeInput from '@rokkit/atoms/input'
+// skipcq: JS-C1003 - Importing all components from molecules
 import * as RokkitInput from '@rokkit/molecules/input'
 
 import InputSelect from './InputSelect.svelte'
