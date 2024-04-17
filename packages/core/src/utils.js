@@ -1,4 +1,9 @@
 /**
+ * A function that performs no operations.
+ */
+export function noop() {}
+
+/**
  * Generates a random id
  *
  * @returns {string} A random id

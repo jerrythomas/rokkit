@@ -1,7 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { id, isObject, toString, iconShortcuts, scaledPath } from '../src/utils'
+import { noop, id, isObject, toString, iconShortcuts, scaledPath } from '../src/utils'
 
 describe('utils', () => {
+	describe('noop', () => {
+		it('should be a function', () => {
+			expect(typeof noop).toBe('function')
+		})
+	})
 	describe('id', () => {
 		it('should generate a random id', () => {
 			const value = id()

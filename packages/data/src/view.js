@@ -45,7 +45,7 @@ export function dataview(data, options) {
 
 	return {
 		...omit(['set', 'update'], store),
-		// filter: () => {},
+		// filter: noop,
 		/**
 		 * Clears the applied sort order from the hierarchy.
 		 * TODO: clearing sort should clear the sort orders in columns
