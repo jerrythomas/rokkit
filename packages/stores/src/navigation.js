@@ -30,8 +30,8 @@ export function createNavigator(items, visibleCount = null) {
 			end = upper
 			cursor.update((state) => ({
 				...state,
-				start: start,
-				end: end
+				start,
+				end
 			}))
 		}
 	}
