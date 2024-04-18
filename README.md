@@ -26,6 +26,7 @@ Components have been separated into the following packages. Refer to the package
 - [@rokkit/molecules](packages/molecules)
 - [@rokkit/organisms](packages/organisms)
 - [@rokkit/layout](packages/layout)
+- [@rokkit/chart](packages/chart)
 - [@rokkit/icons](packages/icons)
 - [@rokkit/themes](packages/themes)
 - [@rokkit/ui](packages/ui)
