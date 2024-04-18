@@ -7,6 +7,7 @@ Rokkit is a monorepo using [pnpm workspaces](https://pnpm.io/workspaces) for eas
 | Package                         |
 | ------------------------------- |
 | [core](packages/core)           |
+| [data](packages/data)           |
 | [actions](packages/actions)     |
 | [stores](packages/stores)       |
 | [atoms](packages/atoms)         |
