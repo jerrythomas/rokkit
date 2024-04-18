@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+// skipcq: JS-C1003 - Importing all components for verification
 import * as validators from '../../src/validators'
 
 describe('validators', () => {

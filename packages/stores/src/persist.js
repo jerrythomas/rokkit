@@ -8,13 +8,18 @@ if (typeof window === 'undefined') {
 	}
 }
 
+/**
+ * Create a persistable store
+ *
+ * @param {string} key - The key to use for the local storage
+ * @param {Writable} store - The store to set the value to
+ * @returns {Object} The persistable store
+ */
 export function persistable(key, store) {
 	let value = getStoredValue(key, store)
 	const handler = createStorageEventHandler(key, store)
 
-	if (typeof window !== 'undefined') {
-		window.addEventListener('storage', handler)
-	}
+	if (typeof window !== 'undefined') window.addEventListener('storage', handler)
 
 	const set = (newValue) => {
 		if (value !== newValue) {
@@ -33,9 +38,7 @@ export function persistable(key, store) {
 	}
 
 	const destroy = () => {
-		if (typeof window !== 'undefined') {
-			window.removeEventListener('storage', handler)
-		}
+		if (typeof window !== 'undefined') window.removeEventListener('storage', handler)
 	}
 
 	return {
@@ -46,6 +49,12 @@ export function persistable(key, store) {
 	}
 }
 
+/**
+ * Get the stored value from local storage
+ * @param {string} key - The key to use for the local storage
+ * @param {Writable} store - The store to set the value to
+ * @returns {Object} The stored value
+ */
 function getStoredValue(key, store) {
 	try {
 		const value = JSON.parse(localStorage.getItem(key) ?? '{}')
@@ -54,8 +63,16 @@ function getStoredValue(key, store) {
 	} catch {
 		console.error(PARSE_ERROR_MESSAGE, key)
 	}
+	return {}
 }
 
+/**
+ * Create a storage event handler
+ *
+ * @param {string} key - The key to use for the local storage
+ * @param {Writable} store - The store to set the value to
+ * @returns {Function} The storage event handler
+ */
 function createStorageEventHandler(key, store) {
 	return (event) => {
 		if (event.key === key) {

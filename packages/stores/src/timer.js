@@ -2,9 +2,15 @@ import { writable } from 'svelte/store'
 
 let req = null
 let prev = null
-const elapsed = writable(0)
 
-const tick = (timestamp) => {
+export const elapsed = writable(0)
+
+/**
+ * Handles an animation frame.
+ *
+ * @param {number} timestamp
+ */
+function tick(timestamp) {
 	if (!prev) prev = timestamp
 	const diff = Math.round(timestamp - prev)
 
@@ -15,7 +21,7 @@ const tick = (timestamp) => {
 	req = window.requestAnimationFrame(tick)
 }
 
-const timer = {
+export const timer = {
 	start() {
 		if (typeof window === 'undefined') return
 		else if (!req) {
@@ -41,4 +47,4 @@ const timer = {
 	}
 }
 
-export { timer, elapsed }
+// export { timer, elapsed }

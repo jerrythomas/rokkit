@@ -86,4 +86,4 @@
  * @property {RowState[]} rows - Flat list of hierarchy nodes.
  */
 
-export default null
+export default {}

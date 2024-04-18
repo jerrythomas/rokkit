@@ -1,5 +1,6 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
+// skipcq: JS-C1003 - Importing all components for verification
 import * as components from '../src/input'
 
 describe('HTML Input', () => {
