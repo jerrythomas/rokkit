@@ -45,6 +45,7 @@ export function calculate(queries) {
 }
 
 /**
+ * Watch the media queries and update the store with the current media state.
  *
  * @param {*} breakpoints
  * @returns

@@ -26,4 +26,4 @@
  * @property {ValidationFunction} [validator]
  */
 
-export default null
+export default {}

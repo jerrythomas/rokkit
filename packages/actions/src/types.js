@@ -129,4 +129,4 @@
  * @property {number} upper
  */
 
-export default null
+export default {}

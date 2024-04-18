@@ -170,4 +170,4 @@
  * @property {Function} select      - select the DataView by the specified columns.
  */
 
-export default null
+export default {}

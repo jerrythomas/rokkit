@@ -4,6 +4,7 @@ import { pick } from 'ramda'
 
 const THEME_STORE_KEY = 'app-theme'
 const DEFAULT_THEME = { name: 'rokkit', mode: 'dark' }
+
 /**
  * @typedef {Object} Theme
  * @property {string} name
