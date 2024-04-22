@@ -13,6 +13,7 @@
 	export let path = []
 
 	$: stateIcons = { ...defaultStateIcons.node, ...stateIcons }
+	$: stateName = isExpanded(value, fields) ? 'opened' : 'closed'
 	$: state = isExpanded(value, fields)
 		? { icon: stateIcons.opened, label: 'collapse' }
 		: { icon: stateIcons.closed, label: 'expand' }
@@ -31,7 +32,7 @@
 	<div class="flex flex-row items-center">
 		{#each types as type}
 			{#if type === 'icon'}
-				<Icon name={state.icon} label={state.label} class="small w-4" />
+				<Icon name={state.icon} label={state.label} state={stateName} class="small w-4" />
 			{:else}
 				<Connector {type} />
 			{/if}

@@ -272,3 +272,22 @@ exports[`Icon component > should render the icon with the specified size 3`] = `
   </div>
 </body>
 `;
+
+exports[`Icon component > should render the icon with the specified state 1`] = `
+<body>
+  <div>
+    <icon
+      aria-label="i-rokkit:node-opened"
+      class="flex flex-shrink-0 items-center justify-center "
+      data-state="opened"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="i-rokkit:node-opened"
+      />
+    </icon>
+  </div>
+</body>
+`;

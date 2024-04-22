@@ -1,0 +1,11 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#folder-specific-settings
+{
+  "tab_size": 2,
+  "file_types": {
+    "SQL": ["ddl"]
+  },
+  "show_whitespaces": "all"
+}
