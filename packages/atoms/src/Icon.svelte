@@ -6,6 +6,7 @@
 	let className = ''
 	export { className as class }
 	export let name
+	export let state = null
 	export let size = 'base'
 	export let role = 'img'
 	export let label = name
@@ -48,6 +49,7 @@
 	on:blur
 	on:click={handleClick}
 	on:keydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
+	data-state={state}
 	{tabindex}
 >
 	<i class={name} aria-hidden="true" />
