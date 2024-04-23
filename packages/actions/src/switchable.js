@@ -1,5 +1,11 @@
 import { removeListeners, setupListeners } from './lib'
 
+/**
+ * A switchable action that allows the user to cycle through a list of options
+ *
+ * @param {HTMLElement} node
+ * @param {Object}      data
+ */
 export function switchable(node, data) {
 	let index = 0
 	let { value, options, disabled } = data
@@ -17,18 +23,7 @@ export function switchable(node, data) {
 		node.dispatchEvent(new CustomEvent('change', { detail: value }))
 	}
 
-	const keydown = (e) => {
-		if ([' ', 'Enter', 'ArrowRight', 'ArrowLeft'].includes(e.key)) {
-			e.preventDefault()
-			e.stopPropagation()
-
-			toggle(e.key === 'ArrowLeft' ? options.length - 1 : 1)
-		}
-	}
-	const listeners = {
-		click: () => toggle(1),
-		keydown
-	}
+	const listeners = getEventHandlers(options, toggle)
 
 	update(data)
 	setupListeners(node, listeners, { enabled: !disabled })
@@ -37,4 +32,21 @@ export function switchable(node, data) {
 		update,
 		destroy: () => removeListeners(node, listeners)
 	}
+}
+/**
+ * Returns a keydown handler for the switchable component
+ *
+ * @param {Object} options
+ */
+function getEventHandlers(options, toggle) {
+	const keydown = (e) => {
+		if ([' ', 'Enter', 'ArrowRight', 'ArrowLeft'].includes(e.key)) {
+			e.preventDefault()
+			e.stopPropagation()
+
+			toggle(e.key === 'ArrowLeft' ? options.length - 1 : 1)
+		}
+	}
+
+	return { keydown, click: () => toggle(1) }
 }
