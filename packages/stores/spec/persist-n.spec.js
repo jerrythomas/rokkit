@@ -2,9 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { persistable } from '../src/persist'
 import { writable, get } from 'svelte/store'
 
-/**
- * @vitest-environment node
- */
+// @vitest-environment node
 describe('persistable', () => {
 	const key = 'test_key'
 	it('should not fail when running on node env', () => {

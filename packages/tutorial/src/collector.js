@@ -133,14 +133,8 @@ export function removeInvalidEntries(data, options) {
 	let errors = []
 	const invalid = []
 
-	for (const key in data) {
-		if (!data[key].title && !data[key].name) {
-			invalid.push({
-				key,
-				path: data[key].path,
-				error: 'Each level should have a title or a name property.'
-			})
-		}
+	Object.keys(data).forEach((key) => {
+		validateLevel(data, key, invalid)
 		if (data[key].children) {
 			const result = removeInvalidEntries(data[key].children, options)
 			data[key].children = result.data
@@ -155,7 +149,7 @@ export function removeInvalidEntries(data, options) {
 				error: 'Innermost level should have a readme'
 			})
 		}
-	}
+	})
 
 	return {
 		data: omit(
@@ -166,6 +160,16 @@ export function removeInvalidEntries(data, options) {
 	}
 }
 
+function validateLevel(data, key, invalid) {
+	if (!data[key].title && !data[key].name) {
+		invalid.push({
+			key,
+			path: data[key].path,
+			error: 'Each level should have a title or a name property.'
+		})
+	}
+	// return null
+}
 /**
  *
  * @param {import('./types').TutorialOptions} options

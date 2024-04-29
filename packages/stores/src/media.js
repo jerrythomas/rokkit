@@ -1,5 +1,5 @@
 /**
- * Taken from https://github.com/cibernox/svelte-media and converted to esm with jsdoc.
+ * refactored from https://github.com/cibernox/svelte-media .
  */
 import { writable } from 'svelte/store'
 
@@ -34,12 +34,10 @@ export function calculate(queries) {
 	const media = { classNames: '' }
 	const classNames = []
 
-	for (const name in queries) {
+	Object.keys(queries).forEach((name) => {
 		media[name] = queries[name].matches
-		if (media[name]) {
-			classNames.push(`media-${name}`)
-		}
-	}
+		if (media[name]) classNames.push(`media-${name}`)
+	})
 	media.classNames = classNames.join(' ')
 	return media
 }
@@ -57,17 +55,14 @@ export function watchMedia(breakpoints = defaultBreakpoints) {
 	const queries = {}
 	const updateMedia = () => set(calculate(queries))
 
-	for (const key in breakpoints) {
+	Object.keys(breakpoints).forEach((key) => {
 		queries[key] = window.matchMedia(breakpoints[key])
 		queries[key].addListener(updateMedia)
-	}
+	})
 
 	updateMedia()
-	const destroy = () => {
-		for (const key in queries) {
-			queries[key].removeListener(updateMedia)
-		}
-	}
+	const destroy = () =>
+		Object.keys(queries).forEach((key) => queries[key].removeListener(updateMedia))
 
 	return { subscribe, destroy }
 }

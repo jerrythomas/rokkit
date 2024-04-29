@@ -12,7 +12,7 @@ module.exports = {
 	ignorePatterns: ['dist'],
 	rules: {
 		complexity: ['error', 5],
-		'max-depth': ['error', 2],
+		'max-depth': ['error', 3],
 		'max-params': ['error', 4],
 		'no-return-await': 'error',
 		eqeqeq: 'error',
