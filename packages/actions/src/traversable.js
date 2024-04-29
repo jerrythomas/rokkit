@@ -1,3 +1,4 @@
+import { has } from 'ramda'
 import { EventManager } from './lib'
 const defaultConfig = {
 	allowDrag: false,
@@ -204,14 +205,23 @@ function getKeydownHandler(store, options, root) {
 	return handleKeydown
 }
 
+/**
+ * Get the action for the keydown event
+ *
+ * @param {KeyboardEvent} event    - The keyboard event
+ * @param {Object}        handlers - The key handlers object
+ */
 function getAction(event, handlers) {
 	const key = event.key.length === 1 ? event.key.toUpperCase() : event.key
 	const modifier = identifyModifiers(event).join('-')
 	if (modifier.length === 0) return handlers.actions[key]
-	if (handlers.modifierActions.hasOwnProperty(modifier)) {
+
+	if (has(modifier, handlers.modifierActions)) {
 		return handlers.modifierActions[modifier][key]
 	}
+	return null
 }
+
 /**
  * Identify modifier keys pressed in the event
  *
@@ -301,6 +311,7 @@ function getShiftKeyActionsForGrid(store) {
 /**
  * Identify if an html element is a toggle state icon
  * A toggle state icon element tag is ICON and has a data-state attribute value of 'opened' or 'closed'
+ *
  * @param {HTMLElement} element - The html element to check
  */
 function isToggleStateIcon(element) {

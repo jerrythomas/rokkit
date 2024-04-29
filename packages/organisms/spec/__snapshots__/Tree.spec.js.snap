@@ -25,6 +25,7 @@ exports[`Tree.svelte > should add custom root node 1`] = `
             <icon
               aria-label="collapse"
               class="flex flex-shrink-0 items-center justify-center small w-4"
+              data-state="opened"
               role="img"
               tabindex="-1"
             >
@@ -254,6 +255,7 @@ exports[`Tree.svelte > should render nested tree 1`] = `
             <icon
               aria-label="expand"
               class="flex flex-shrink-0 items-center justify-center small w-4"
+              data-state="closed"
               role="img"
               tabindex="-1"
             >
