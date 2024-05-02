@@ -49,7 +49,7 @@ export function traversable(root, config) {
 	 */
 	function destroy() {
 		manager.reset()
-		store.onNavigate(null)
+		// store.onNavigate(null)
 	}
 
 	update(config)
@@ -66,20 +66,21 @@ export function traversable(root, config) {
 function getKeyHandlers(store, options) {
 	const { pageSize, horizontal, vertical } = options
 	const isGrid = horizontal && vertical
+	const arrowActions = isGrid
+		? getArrowKeyActionsForGrid(store)
+		: getArrowKeyActions(store, horizontal)
 
 	const actions = {
-		ArrowUp: () => store.moveUp(),
-		ArrowDown: () => store.moveDown(),
-		ArrowRight: () => store.moveRight(),
-		ArrowLeft: () => store.moveLeft(),
-		PageUp: () => store.moveUp(pageSize),
-		PageDown: () => store.moveDown(pageSize),
+		...arrowActions,
+		PageUp: () => store.moveByOffset(-pageSize),
+		PageDown: () => store.moveByOffset(pageSize),
 		Home: () => store.moveFirst(),
 		End: () => store.moveLast(),
 		Enter: () => store.select(),
 		Escape: () => store.escape(),
 		' ': () => store.select()
 	}
+
 	const modifierActions = {
 		ctrl: getMetaKeyActions(store, horizontal),
 		meta: getMetaKeyActions(store, horizontal),
@@ -87,6 +88,30 @@ function getKeyHandlers(store, options) {
 	}
 
 	return { actions, modifierActions }
+}
+
+/**
+ * Get action handlers based on direction
+ *
+ * @param {Object} store       - The store object with navigation methods
+ * @param {boolean} horizontal - if the content is navigable horizontally
+ */
+function getArrowKeyActions(store, horizontal = false) {
+	if (horizontal) {
+		return {
+			ArrowUp: () => store.collapse(),
+			ArrowDown: () => store.expand(),
+			ArrowRight: () => store.moveByOffset(1),
+			ArrowLeft: () => store.moveByOffset(-1)
+		}
+	} else {
+		return {
+			ArrowUp: () => store.moveByOffset(-1),
+			ArrowDown: () => store.moveByOffset(1),
+			ArrowRight: () => store.expand(),
+			ArrowLeft: () => store.collapse()
+		}
+	}
 }
 
 /**
@@ -111,11 +136,11 @@ function getClickHandler(store, options) {
 			if (multiselect) {
 				handleMultiSelect(store, indexPath, modifiers)
 			} else {
+				store.moveTo(indexPath)
 				store.select(indexPath)
 			}
-			// dispatch event change with current item
-			// dispatch event select with selected items
 		}
+		// dispatchEvents(store, event)
 	}
 
 	return handleClick
@@ -194,11 +219,8 @@ function getKeydownHandler(store, options, root) {
 		if (action) {
 			event.preventDefault()
 			action()
-			scrollIntoView(root, store.currentItem())
-			// if store.selectionChanged dispatch event select with selected items
-			// if store.valueChanged dispatch event change with current item
-			// if store.expanded dispatch event expand with expanded items
-			// if store.collapsed dispatch event collapse with collapsed items
+			scrollIntoView(root, store)
+			// dispatchEvents(root, store)
 		}
 	}
 
@@ -238,7 +260,7 @@ function identifyModifiers(event) {
 }
 
 /**
- * Get the meta key actions for a list
+ * Get the meta key actions for a list/tree
  *
  * @param {Object}  store      - The store object with navigation methods
  * @param {boolean} horizontal - The orientation of the list/tree
@@ -292,6 +314,23 @@ function getShiftKeyActions(store, horizontal = false) {
 }
 
 /**
+ * Get the arrow key actions for a grid
+ *
+ * @param {Object} store - The store object with navigation methods
+ * @returns {Object}     - The map of actions
+ */
+function getArrowKeyActionsForGrid(store) {
+	return {
+		ArrowUp: () => store.moveByOffset(-1),
+		ArrowDown: () => store.moveByOffset(1),
+		ArrowRight: () => store.moveByOffset(0, 1),
+		ArrowLeft: () => store.moveByOffset(0, -1),
+		Home: () => store.moveByOffset(-Infinity, -Infinity),
+		End: () => store.moveByOffset(Infinity, Infinity)
+	}
+}
+
+/**
  * Get the shift key actions for a grid
  *
  * @param {Object} store - The store object with navigation methods
@@ -299,12 +338,12 @@ function getShiftKeyActions(store, horizontal = false) {
  */
 function getShiftKeyActionsForGrid(store) {
 	return {
-		ArrowUp: () => store.selectRowRange(-1),
-		ArrowDown: () => store.selectRowRange(1),
-		ArrowRight: () => store.selectRange(1),
-		ArrowLeft: () => store.selectRange(-1),
-		Home: () => store.selectRange(-Infinity),
-		End: () => store.selectRange(Infinity)
+		ArrowUp: () => store.selectRange(-1),
+		ArrowDown: () => store.selectRange(1),
+		ArrowRight: () => store.selectRange(0, 1),
+		ArrowLeft: () => store.selectRange(0, -1),
+		Home: () => store.selectRange(0, -Infinity),
+		End: () => store.selectRange(0, Infinity)
 	}
 }
 
@@ -336,10 +375,28 @@ function getTargetIndex(event) {
  * Make the current item visible in the view
  *
  * @param {HTMLElement} root - The root element which contains the items
- * @param {Object}      item - The item to make visible
+ * @param {Object}      store - The item to make visible
  */
-function scrollIntoView(root, item) {
-	const dataIndex = item.index.join('-')
+function scrollIntoView(root, store) {
+	const item = store.currentItem()
+	const dataIndex = item.indexPath.join('-')
 	const node = root.querySelector(`[data-index="${dataIndex}"]`)
 	if (node) node.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+}
+
+/**
+ * Dispatch custom events based on the state changes
+ *
+ * @param {HTMLElement} root  - The root element to dispatch the events from
+ * @param {Object}      store - The store object with navigation methods
+ */
+function dispatchEvents(root, store) {
+	const current = get(store)
+
+	Object.keys(current.changed).forEach((key) => {
+		const event = key === 'value' ? 'change' : key
+		const detail =
+			key === 'value' ? current.value : current.changed[key].map((k) => current.data[k].value)
+		root.dispatchEvent(new CustomEvent(event, { detail }))
+	})
 }

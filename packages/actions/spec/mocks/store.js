@@ -1,16 +1,15 @@
 export const mockStore = {
-	moveUp: vi.fn(),
-	moveDown: vi.fn(),
-	moveLeft: vi.fn(),
-	moveRight: vi.fn(),
+	moveTo: vi.fn(),
+	moveByOffset: vi.fn(),
 	moveFirst: vi.fn(),
 	moveLast: vi.fn(),
+	collapse: vi.fn(),
+	expand: vi.fn(),
 	select: vi.fn(),
 	selectAll: vi.fn(),
 	selectNone: vi.fn(),
 	selectInvert: vi.fn(),
 	selectRange: vi.fn(),
-	onNavigate: vi.fn(),
 	toggleExpansion: vi.fn(),
 	toggleSelection: vi.fn(),
 	cut: vi.fn(),
@@ -22,5 +21,5 @@ export const mockStore = {
 	dragStart: vi.fn(),
 	dragOver: vi.fn(),
 	dropOver: vi.fn(),
-	currentItem: vi.fn(() => ({ index: [0] }))
+	currentItem: vi.fn(() => ({ indexPath: [0] }))
 }

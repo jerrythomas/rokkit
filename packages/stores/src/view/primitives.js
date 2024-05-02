@@ -1,4 +1,4 @@
-import { equals } from 'ramda'
+import { equals, has } from 'ramda'
 /**
  * Creates a list view data store using the given items.
  *
@@ -41,8 +41,8 @@ export function findIndexByValue(data, value) {
  */
 export function moveByOffset(state, offset) {
 	const index = Math.max(0, Math.min(state.data.length - 1, state.currentIndex + offset))
-	if (index !== state.currentIndex)
-		return { ...state, currentIndex: index, value: state.data[index].value }
+	if (index !== state.currentIndex) state = moveTo(state, index)
+	// return { ...state, currentIndex: index, value: state.data[index].value }
 	return state
 }
 
@@ -57,7 +57,7 @@ export function moveTo(state, pathIndex) {
 	const index = findIndex(state.data, pathIndex)
 
 	if (index !== state.currentIndex && index > -1)
-		return { ...state, currentIndex: index, value: state.data[index].value }
+		return { ...state, currentIndex: index, rangeStart: index, value: state.data[index].value }
 	return state
 }
 
@@ -69,7 +69,7 @@ export function moveTo(state, pathIndex) {
  * @returns {Object} The updated state.
  */
 export function select(state, pathIndex) {
-	const index = findIndex(state.data, pathIndex)
+	const index = findIndex(state.data, pathIndex ?? state.currentIndex)
 	if (index <= -1) return state
 
 	if (!state.data[index].isSelected) {
@@ -87,7 +87,7 @@ export function select(state, pathIndex) {
  * @returns {Object} The updated state.
  */
 export function unselect(state, pathIndex) {
-	const index = findIndex(state.data, pathIndex)
+	const index = findIndex(state.data, pathIndex ?? state.currentIndex)
 	if (index === -1) return state
 
 	if (state.data[index].isSelected) {
@@ -105,7 +105,7 @@ export function unselect(state, pathIndex) {
  * @returns {Object} The updated state.
  */
 export function toggleSelection(state, pathIndex) {
-	const index = findIndex(state.data, pathIndex)
+	const index = findIndex(state.data, pathIndex ?? state.currentIndex)
 	if (index === -1) return state
 
 	if (state.data[index].isSelected) {
@@ -137,6 +137,45 @@ export function unselectAll(state) {
 }
 
 /**
+ * Invert selection for all items.
+ *
+ * @param {Object} state
+ * @returns {Object} The updated state.
+ */
+export function invertSelection(state) {
+	state.data.forEach((_, index) => toggleSelection(state, index))
+	return state
+}
+
+/**
+ * Add items to selection based on range
+ *
+ * @param {Object} state
+ * @param (integer) offset
+ * @returns {Object} The updated state.
+ */
+export function selectRange(state, offset) {
+	if (!has('rangeStart', state)) return state
+	const rangeEnd = state.rangeStart + offset
+
+	if (rangeEnd !== state.rangeEnd) {
+		state = unselectAll(state)
+		state.rangeEnd = rangeEnd
+
+		const min = Math.min(state.rangeStart, state.rangeEnd)
+		const max = Math.max(state.rangeStart, state.rangeEnd)
+
+		const range = Array.from({ length: max - min + 1 }).map((_, i) => i + min)
+
+		range.forEach((index) => {
+			state = select(state, index)
+		})
+	}
+
+	return state
+}
+
+/**
  * Expands the item at the given index.
  *
  * @param {Object} state
@@ -144,11 +183,11 @@ export function unselectAll(state) {
  * @returns {Object} The updated state.
  */
 export function expand(state, pathIndex) {
-	const index = findIndex(state.data, pathIndex)
+	const index = findIndex(state.data, pathIndex ?? state.currentIndex)
 	if (index === -1) return state
 
 	const item = state.data[index]
-	if (!item.isParent || !item.isExpanded) return state
+	if (!item.isParent || item.isExpanded) return state
 
 	item.isExpanded = true
 	updateChildVisibility(item.children, item.isExpanded)
@@ -164,7 +203,7 @@ export function expand(state, pathIndex) {
  * @returns {Object} The updated state.
  */
 export function collapse(state, pathIndex) {
-	const index = findIndex(state.data, pathIndex)
+	const index = findIndex(state.data, pathIndex ?? state.currentIndex)
 	if (index === -1) return state
 
 	const item = state.data[index]
@@ -184,7 +223,7 @@ export function collapse(state, pathIndex) {
  * @returns {Object} The updated state.
  */
 export function toggleExpansion(state, pathIndex) {
-	const index = findIndex(state.data, pathIndex)
+	const index = findIndex(state.data, pathIndex ?? state.currentIndex)
 	if (index === -1) return state
 	if (state.data[index].isExpanded) {
 		return collapse(state, index)

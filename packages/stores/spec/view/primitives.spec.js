@@ -53,7 +53,7 @@ describe('view -> primitives', () => {
 		it('should move the current index by the given offset', () => {
 			const state = { data, currentIndex: 0 }
 			const result = moveByOffset(state, 1)
-			expect(result).toEqual({ data, currentIndex: 1, value: 'b' })
+			expect(result).toEqual({ data, currentIndex: 1, rangeStart: 1, value: 'b' })
 		})
 		it('should not move the current index if the offset is out of bounds', () => {
 			const state = { data, currentIndex: 2 }
@@ -66,7 +66,7 @@ describe('view -> primitives', () => {
 		it('should move to an index', () => {
 			const state = { data, currentIndex: 0 }
 			const result = moveTo(state, 2)
-			expect(result).toEqual({ data, currentIndex: 2, value: 'c' })
+			expect(result).toEqual({ data, currentIndex: 2, rangeStart: 2, value: 'c' })
 		})
 		it('should not move to an index if it is out of bounds', () => {
 			const state = { data, currentIndex: 0 }
