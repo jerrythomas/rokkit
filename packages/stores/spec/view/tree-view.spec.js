@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
-// import { createView } from '../../src/view'
-import { omit } from 'ramda'
+import { createView } from '../../src/view'
+import { getTree, serializeNodesUsingIndex, getNestedAttributes } from '../../src/view/tree'
+import { get } from 'svelte/store'
+import { omit, clone } from 'ramda'
 
 describe('view for tree', () => {
 	const items = [
@@ -16,49 +18,6 @@ describe('view for tree', () => {
 			]
 		}
 	]
-	function getNode(item, index, path = []) {
-		const isParent = Array.isArray(item.children) && item.children.length > 0
-		const indexPath = [...path, index]
-		const node = {
-			depth: path.length,
-			isParent,
-			indexPath,
-			value: item,
-			children: []
-		}
-		if (Array.isArray(item.children)) {
-			item.children.forEach((child, pos) =>
-				node.children.push({
-					...getNode(child, pos, indexPath),
-					parent: node
-				})
-			)
-		}
-
-		return node
-	}
-	function flattenNodes(nodes) {
-		let data = []
-		nodes.forEach((node) => {
-			// data.push(node)
-			data = [...data, node, ...flattenNodes(node.children)]
-			// flattenNodes(node.children, data)
-		})
-		return data
-	}
-	function getTree(items, path = []) {
-		const data = items.map((item, index) => getNode(item, index, path))
-		// console.log(data)
-		return flattenNodes(data)
-	}
-
-	function serializeNodesUsingIndex(tree) {
-		return tree.map((node) => {
-			const parent = node.parent ? node.parent.indexPath : null
-			const children = serializeNodesUsingIndex(node.children)
-			return { ...omit(['parent', 'children'], node), parent, children }
-		})
-	}
 
 	const tree = [
 		{ depth: 0, children: [], isParent: true, indexPath: [0], value: items[0] },
@@ -98,20 +57,29 @@ describe('view for tree', () => {
 		expect(result.length).toEqual(8)
 		expect(serializeNodesUsingIndex(result)).toEqual(serializeNodesUsingIndex(tree))
 	})
-	// it('should not change state on expand', () => {
-	// 	const view = createView(items)
 
-	// 	view.expand(1)
-	// 	// const expected = clone(getList(items))
-	// 	// expected[1].isExpanded = true
-	// 	expect(get(view)).toEqual({
-	// 		data: getList(items),
-	// 		fields: undefined,
-	// 		value: 'a',
-	// 		currentIndex: 0,
-	// 		selectedItems: []
-	// 	})
-	// })
+	describe('expand/collapse', () => {
+		const view = createView(items, { nested: true })
+		const hierarchy = getTree(items)
+
+		it('should change parent state on expand', () => {
+			view.expand(0)
+
+			const result = get(view)
+			expect(omit(['data'], result)).toEqual({
+				fields: undefined,
+				value: items[0],
+				currentIndex: 0,
+				selectedItems: []
+			})
+			const expected = serializeNodesUsingIndex(hierarchy)
+			expected[0].isExpanded = true
+
+			expect(getNestedAttributes(result.data, ['isParent', 'isExpanded'])).toEqual(
+				getNestedAttributes(expected, ['isParent', 'isExpanded'])
+			)
+		})
+	})
 
 	// it('should not change state on collapse', () => {
 	// 	const items = ['a', 'b', 'c']

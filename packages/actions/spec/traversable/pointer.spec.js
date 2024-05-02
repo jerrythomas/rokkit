@@ -6,8 +6,22 @@ import { createTree } from '../mocks/tree'
 
 describe('traversable', () => {
 	const items = [
-		{ text: 'smith', children: [{ text: 'john' }, { text: 'jane' }] },
-		{ text: 'hunt', children: [{ text: 'ethan' }, { text: 'emily' }] }
+		{
+			text: 'smith',
+			indexPath: [0],
+			children: [
+				{ text: 'john', indexPath: [0, 0] },
+				{ text: 'jane', indexPath: [0, 1] }
+			]
+		},
+		{
+			text: 'hunt',
+			indexPath: [0],
+			children: [
+				{ text: 'ethan', indexPath: [1, 0] },
+				{ text: 'emily', indexPath: [1, 1] }
+			]
+		}
 	]
 	const root = createTree(items)
 	document.body.appendChild(root)
@@ -20,7 +34,7 @@ describe('traversable', () => {
 		const instance = traversable(root, { store: mockStore })
 		beforeEach(() => {
 			vi.resetAllMocks()
-			mockStore.currentItem = vi.fn(() => ({ index: [0] }))
+			mockStore.currentItem = vi.fn(() => ({ indexPath: [0] }))
 		})
 		afterAll(() => {
 			instance.destroy()
@@ -42,6 +56,7 @@ describe('traversable', () => {
 			await fireEvent.drop(root)
 			expect(mockStore.dropOver).not.toHaveBeenCalled()
 		})
+
 		it.each(nodes)('should not trigger drag/drop actions', async (node) => {
 			await fireEvent.dragStart(node)
 			expect(mockStore.dragStart).not.toHaveBeenCalled()
@@ -56,11 +71,13 @@ describe('traversable', () => {
 		it.each(nodes)('should trigger select on node click', async (node) => {
 			const indices = node.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node)
+			expect(mockStore.moveTo).toHaveBeenCalledWith(indices)
 			expect(mockStore.select).toHaveBeenCalledWith(indices)
 		})
 		it.each(texts)('should trigger select on content click', async (node) => {
 			const indices = node.parentNode.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node)
+			expect(mockStore.moveTo).toHaveBeenCalledWith(indices)
 			expect(mockStore.select).toHaveBeenCalledWith(indices)
 		})
 
@@ -68,6 +85,7 @@ describe('traversable', () => {
 			const indices = icon.parentNode.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(icon)
 			expect(mockStore.toggleExpansion).toHaveBeenCalledWith(indices)
+			expect(mockStore.moveTo).not.toHaveBeenCalled()
 			expect(mockStore.select).not.toHaveBeenCalled()
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 			expect(mockStore.toggleSelection).not.toHaveBeenCalled()
@@ -79,7 +97,7 @@ describe('traversable', () => {
 
 		beforeEach(() => {
 			vi.resetAllMocks()
-			mockStore.currentItem = vi.fn(() => ({ index: [0] }))
+			mockStore.currentItem = vi.fn(() => ({ indexPath: [0] }))
 		})
 		afterAll(() => {
 			instance.destroy()

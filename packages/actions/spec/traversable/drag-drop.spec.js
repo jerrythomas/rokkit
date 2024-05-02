@@ -6,8 +6,22 @@ import { createTree } from '../mocks/tree'
 
 describe('traversable', () => {
 	const items = [
-		{ text: 'smith', children: [{ text: 'john' }, { text: 'jane' }] },
-		{ text: 'hunt', children: [{ text: 'ethan' }, { text: 'emily' }] }
+		{
+			text: 'smith',
+			indexPath: [0],
+			children: [
+				{ text: 'john', indexPath: [0, 0] },
+				{ text: 'jane', indexPath: [0, 1] }
+			]
+		},
+		{
+			text: 'hunt',
+			indexPath: [0],
+			children: [
+				{ text: 'ethan', indexPath: [1, 0] },
+				{ text: 'emily', indexPath: [1, 1] }
+			]
+		}
 	]
 	const root = createTree(items)
 	document.body.appendChild(root)

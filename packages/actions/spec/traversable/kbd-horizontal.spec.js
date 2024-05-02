@@ -7,8 +7,22 @@ import { createTree } from '../mocks/tree'
 describe('traversable', () => {
 	describe('horizontal', () => {
 		const items = [
-			{ text: 'smith', children: [{ text: 'john' }, { text: 'jane' }] },
-			{ text: 'hunt', children: [{ text: 'ethan' }, { text: 'emily' }] }
+			{
+				text: 'smith',
+				indexPath: [0],
+				children: [
+					{ text: 'john', indexPath: [0, 0] },
+					{ text: 'jane', indexPath: [0, 1] }
+				]
+			},
+			{
+				text: 'hunt',
+				indexPath: [0],
+				children: [
+					{ text: 'ethan', indexPath: [1, 0] },
+					{ text: 'emily', indexPath: [1, 1] }
+				]
+			}
 		]
 		const root = createTree(items)
 		document.body.appendChild(root)
@@ -17,7 +31,7 @@ describe('traversable', () => {
 		// const instance = traversable(root, { store, options: { vertical: false, horizontal: true } })
 		beforeEach(() => {
 			vi.resetAllMocks()
-			mockStore.currentItem = vi.fn(() => ({ index: [0, 0] }))
+			mockStore.currentItem = vi.fn(() => ({ indexPath: [0, 0] }))
 			instance = traversable(root, {
 				store: mockStore,
 				options: { vertical: false, horizontal: true }
@@ -27,26 +41,26 @@ describe('traversable', () => {
 			if (instance) instance.destroy()
 		})
 
-		it('should trigger moveDown on ArrowDown', async () => {
+		it('should trigger expand on ArrowDown', async () => {
 			await fireEvent.keyDown(root, { key: 'ArrowDown' })
-			expect(mockStore.moveDown).toHaveBeenCalledWith()
+			expect(mockStore.expand).toHaveBeenCalledWith()
 			expect(mockCurrentNode.scrollIntoView).toHaveBeenCalledWith({
 				behavior: 'smooth',
 				block: 'nearest'
 			})
 		})
-		it('should trigger moveUp on ArrowUp', async () => {
+		it('should trigger collapse on ArrowUp', async () => {
 			await fireEvent.keyDown(root, { key: 'ArrowUp' })
-			expect(mockStore.moveUp).toHaveBeenCalledWith()
+			expect(mockStore.collapse).toHaveBeenCalledWith()
 			expect(mockCurrentNode.scrollIntoView).toHaveBeenCalled()
 		})
-		it('should trigger moveLeft on ArrowLeft', async () => {
+		it('should trigger moveByOffset on ArrowLeft', async () => {
 			await fireEvent.keyDown(root, { key: 'ArrowLeft' })
-			expect(mockStore.moveLeft).toHaveBeenCalledWith()
+			expect(mockStore.moveByOffset).toHaveBeenCalledWith(-1)
 		})
-		it('should trigger moveRight on ArrowRight', async () => {
+		it('should trigger moveByOffset on ArrowRight', async () => {
 			await fireEvent.keyDown(root, { key: 'ArrowRight' })
-			expect(mockStore.moveRight).toHaveBeenCalledWith()
+			expect(mockStore.moveByOffset).toHaveBeenCalledWith(1)
 		})
 		it('should trigger select on Enter', async () => {
 			await fireEvent.keyDown(root, { key: 'Enter' })
@@ -68,13 +82,13 @@ describe('traversable', () => {
 			await fireEvent.keyDown(root, { key: 'End' })
 			expect(mockStore.moveLast).toHaveBeenCalledWith()
 		})
-		it('should trigger moveUp on PageUp', async () => {
+		it('should trigger moveByOffset on PageUp', async () => {
 			await fireEvent.keyDown(root, { key: 'PageUp' })
-			expect(mockStore.moveUp).toHaveBeenCalledWith(10)
+			expect(mockStore.moveByOffset).toHaveBeenCalledWith(-10)
 		})
-		it('should trigger moveDown on PageDown', async () => {
+		it('should trigger moveByOffset on PageDown', async () => {
 			await fireEvent.keyDown(root, { key: 'PageDown' })
-			expect(mockStore.moveDown).toHaveBeenCalledWith(10)
+			expect(mockStore.moveByOffset).toHaveBeenCalledWith(10)
 		})
 		it('should trigger moveFirst on ctrl+ArrowLeft', async () => {
 			await fireEvent.keyDown(root, { key: 'ArrowLeft', ctrlKey: true })
@@ -178,6 +192,8 @@ describe('traversable', () => {
 			await fireEvent.keyDown(root, { key: 'ArrowDown', shiftKey: true })
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 			await fireEvent.keyDown(root, { key: 'ArrowUp', shiftKey: true })
+			expect(mockStore.selectRange).not.toHaveBeenCalled()
+			await fireEvent.keyDown(root, { key: 'ArrowUp', shiftKey: true, ctrlKey: true })
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 		})
 	})
