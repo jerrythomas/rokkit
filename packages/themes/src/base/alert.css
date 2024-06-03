@@ -1,0 +1,15 @@
+alert-list alert {
+  @apply bg-neutral border-neutral-muted text-neutral-800;
+}
+alert-list alert.danger {
+  @apply bg-danger border-danger-muted text-neutral-800;
+}
+alert-list alert.success {
+  @apply bg-success border-success-muted text-neutral-800;
+}
+alert-list alert.info {
+  @apply bg-info border-info-muted text-neutral-800;
+}
+alert-list alert.warning {
+  @apply bg-warning border-warning-muted text-neutral-800;
+}
