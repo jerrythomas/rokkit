@@ -214,6 +214,19 @@ exports[`Input.svelte > should render "password" 1`] = `
 </body>
 `;
 
+exports[`Input.svelte > should render "phone" 1`] = `
+<body>
+  <div>
+    <input
+      name="foo"
+      type="tel"
+    />
+    
+    
+  </div>
+</body>
+`;
+
 exports[`Input.svelte > should render "radio" 1`] = `
 <body>
   <div>
@@ -1033,7 +1046,7 @@ exports[`Input.svelte > should render "tel" 1`] = `
   <div>
     <input
       name="foo"
-      type="url"
+      type="tel"
     />
     
     
