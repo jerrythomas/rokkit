@@ -1,67 +1,61 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Summary.svelte > should render summary text 1`] = `
-<body>
-  <div>
-    <summary
-      class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
-      tabindex="-1"
-    >
-       
-      <p>
-        Content for A
-      </p>
-      
-       
-    </summary>
-  </div>
-</body>
+<div>
+  <summary
+    class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
+    tabindex="-1"
+  >
+     
+    <p>
+      Content for A
+    </p>
+    
+     
+  </summary>
+</div>
 `;
 
 exports[`Summary.svelte > should render summary with collapsed icon 1`] = `
-<body>
-  <div>
-    <summary
-      class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
-      tabindex="-1"
-    >
-      
-       
-      <p>
-        Content for Collapses
-      </p>
-      
-       
-      <icon
-        aria-label="expand"
-        class="accordion-closed sm"
-      />
-      
-    </summary>
-  </div>
-</body>
+<div>
+  <summary
+    class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
+    tabindex="-1"
+  >
+    
+     
+    <p>
+      Content for Collapses
+    </p>
+    
+     
+    <icon
+      aria-label="expand"
+      class="accordion-closed sm"
+    />
+    
+  </summary>
+</div>
 `;
 
 exports[`Summary.svelte > should render summary with expanded icon 1`] = `
-<body>
-  <div>
-    <summary
-      class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
-      tabindex="-1"
-    >
-      
-       
-      <p>
-        Content for Expanded
-      </p>
-      
-       
-      <icon
-        aria-label="collapse"
-        class="accordion-opened sm"
-      />
-      
-    </summary>
-  </div>
-</body>
+<div>
+  <summary
+    class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
+    tabindex="-1"
+  >
+    
+     
+    <p>
+      Content for Expanded
+    </p>
+    
+     
+    <icon
+      aria-label="collapse"
+      class="accordion-opened sm"
+    />
+    
+  </summary>
+</div>
 `;

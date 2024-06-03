@@ -1,11 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Scrollable.svelte > should render 1`] = `
-<body>
-  <div>
-    <scroll
-      class="flex flex-col h-full overflow-scroll "
-    />
-  </div>
-</body>
+<div>
+  <scroll
+    class="flex flex-col h-full overflow-scroll "
+  />
+</div>
 `;

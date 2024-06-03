@@ -1,30 +1,143 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`DataEditor.svelte > should handle changes 1`] = `
-<body>
-  <div>
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  >
+    <input-field
+      class="flex flex-col input-string "
+    >
+      <label
+        for="name"
+      >
+        name
+      </label>
+       
+      <field
+        aria-label="name"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="name"
+          name="name"
+          type="text"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
+    <input-field
+      class="flex flex-col input-number "
+    >
+      <label
+        for="age"
+      >
+        age
+      </label>
+       
+      <field
+        aria-label="age"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="age"
+          max="100"
+          min="0"
+          name="age"
+          type="number"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
     <field-layout
-      aria-label=""
+      aria-label="address"
       class="vertical "
     >
       <input-field
         class="flex flex-col input-string "
       >
         <label
-          for="name"
+          for="address.street"
         >
-          name
+          street
         </label>
          
         <field
-          aria-label="name"
+          aria-label="street"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="name"
-            name="name"
+            id="address.street"
+            name="address.street"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.city"
+        >
+          city
+        </label>
+         
+        <field
+          aria-label="city"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.city"
+            name="address.city"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.state"
+        >
+          state
+        </label>
+         
+        <field
+          aria-label="state"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.state"
+            name="address.state"
             type="text"
           />
           
@@ -38,22 +151,22 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
         class="flex flex-col input-number "
       >
         <label
-          for="age"
+          for="address.zip"
         >
-          age
+          zip
         </label>
          
         <field
-          aria-label="age"
+          aria-label="zip"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="age"
-            max="100"
+            id="address.zip"
+            max="99999"
             min="0"
-            name="age"
+            name="address.zip"
             type="number"
           />
           
@@ -63,168 +176,166 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
          
       </input-field>
       
-      <field-layout
-        aria-label="address"
-        class="vertical "
-      >
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.street"
-          >
-            street
-          </label>
-           
-          <field
-            aria-label="street"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.street"
-              name="address.street"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.city"
-          >
-            city
-          </label>
-           
-          <field
-            aria-label="city"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.city"
-              name="address.city"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.state"
-          >
-            state
-          </label>
-           
-          <field
-            aria-label="state"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.state"
-              name="address.state"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-number "
-        >
-          <label
-            for="address.zip"
-          >
-            zip
-          </label>
-           
-          <field
-            aria-label="zip"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.zip"
-              max="99999"
-              min="0"
-              name="address.zip"
-              type="number"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        
-      </field-layout>
-      
-      
-      
-      
       
     </field-layout>
     
     
-  </div>
-</body>
+    
+    
+    
+  </field-layout>
+  
+  
+</div>
 `;
 
 exports[`DataEditor.svelte > should handle changes 2`] = `
-<body>
-  <div>
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  >
+     
+    <p>
+      John
+    </p>
+    
+    
+    
+    <input-field
+      class="flex flex-col input-number "
+    >
+      <label
+        for="age"
+      >
+        age
+      </label>
+       
+      <field
+        aria-label="age"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="age"
+          max="100"
+          min="0"
+          name="age"
+          type="number"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
     <field-layout
-      aria-label=""
+      aria-label="Address"
       class="vertical "
     >
-       
-      <p>
-        John
-      </p>
-      
-      
-      
       <input-field
-        class="flex flex-col input-number "
+        class="flex flex-col input-string "
       >
         <label
-          for="age"
+          for="address.street"
         >
-          age
+          street
         </label>
          
         <field
-          aria-label="age"
+          aria-label="street"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="age"
-            max="100"
+            id="address.street"
+            name="address.street"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.city"
+        >
+          city
+        </label>
+         
+        <field
+          aria-label="city"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.city"
+            name="address.city"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.state"
+        >
+          state
+        </label>
+         
+        <field
+          aria-label="state"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.state"
+            name="address.state"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="address.zip"
+        >
+          zip
+        </label>
+         
+        <field
+          aria-label="zip"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.zip"
+            max="99999"
             min="0"
-            name="age"
+            name="address.zip"
             type="number"
           />
           
@@ -234,159 +345,155 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
          
       </input-field>
       
-      <field-layout
-        aria-label="Address"
-        class="vertical "
-      >
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.street"
-          >
-            street
-          </label>
-           
-          <field
-            aria-label="street"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.street"
-              name="address.street"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.city"
-          >
-            city
-          </label>
-           
-          <field
-            aria-label="city"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.city"
-              name="address.city"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.state"
-          >
-            state
-          </label>
-           
-          <field
-            aria-label="state"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.state"
-              name="address.state"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-number "
-        >
-          <label
-            for="address.zip"
-          >
-            zip
-          </label>
-           
-          <field
-            aria-label="zip"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.zip"
-              max="99999"
-              min="0"
-              name="address.zip"
-              type="number"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        
-      </field-layout>
-      
-      
-      
-      
       
     </field-layout>
     
     
-  </div>
-</body>
+    
+    
+    
+  </field-layout>
+  
+  
+</div>
 `;
 
 exports[`DataEditor.svelte > should render an object editor 1`] = `
-<body>
-  <div>
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  >
+    <input-field
+      class="flex flex-col input-string "
+    >
+      <label
+        for="name"
+      >
+        name
+      </label>
+       
+      <field
+        aria-label="name"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="name"
+          name="name"
+          type="text"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
+    <input-field
+      class="flex flex-col input-number "
+    >
+      <label
+        for="age"
+      >
+        age
+      </label>
+       
+      <field
+        aria-label="age"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="age"
+          name="age"
+          type="number"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
     <field-layout
-      aria-label=""
+      aria-label="address"
       class="vertical "
     >
       <input-field
         class="flex flex-col input-string "
       >
         <label
-          for="name"
+          for="address.street"
         >
-          name
+          street
         </label>
          
         <field
-          aria-label="name"
+          aria-label="street"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="name"
-            name="name"
+            id="address.street"
+            name="address.street"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.city"
+        >
+          city
+        </label>
+         
+        <field
+          aria-label="city"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.city"
+            name="address.city"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.state"
+        >
+          state
+        </label>
+         
+        <field
+          aria-label="state"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.state"
+            name="address.state"
             type="text"
           />
           
@@ -400,20 +507,20 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
         class="flex flex-col input-number "
       >
         <label
-          for="age"
+          for="address.zip"
         >
-          age
+          zip
         </label>
          
         <field
-          aria-label="age"
+          aria-label="zip"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="age"
-            name="age"
+            id="address.zip"
+            name="address.zip"
             type="number"
           />
           
@@ -423,495 +530,135 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
          
       </input-field>
       
-      <field-layout
-        aria-label="address"
-        class="vertical "
-      >
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.street"
-          >
-            street
-          </label>
-           
-          <field
-            aria-label="street"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.street"
-              name="address.street"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.city"
-          >
-            city
-          </label>
-           
-          <field
-            aria-label="city"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.city"
-              name="address.city"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.state"
-          >
-            state
-          </label>
-           
-          <field
-            aria-label="state"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.state"
-              name="address.state"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-number "
-        >
-          <label
-            for="address.zip"
-          >
-            zip
-          </label>
-           
-          <field
-            aria-label="zip"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.zip"
-              name="address.zip"
-              type="number"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        
-      </field-layout>
-      
-      
-      
-      
       
     </field-layout>
     
     
-  </div>
-</body>
+    
+    
+    
+  </field-layout>
+  
+  
+</div>
 `;
 
 exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="vertical "
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  >
+     
+    <p>
+      John
+    </p>
+    
+    
+    
+    <input-field
+      class="flex flex-col input-number "
     >
+      <label
+        for="age"
+      >
+        age
+      </label>
        
-      <p>
-        John
-      </p>
-      
-      
-      
-      <input-field
-        class="flex flex-col input-number "
+      <field
+        aria-label="age"
+        class="w-full flex flex-row items-center"
       >
-        <label
-          for="age"
-        >
-          age
-        </label>
          
-        <field
-          aria-label="age"
-          class="w-full flex flex-row items-center"
-        >
-           
-           
-          <input
-            id="age"
-            name="age"
-            type="number"
-          />
-          
-          
-           
-        </field>
          
-      </input-field>
-      
-      <field-layout
-        aria-label="Address"
-        class="vertical "
-      >
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.street"
-          >
-            street
-          </label>
-           
-          <field
-            aria-label="street"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.street"
-              name="address.street"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.city"
-          >
-            city
-          </label>
-           
-          <field
-            aria-label="city"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.city"
-              name="address.city"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.state"
-          >
-            state
-          </label>
-           
-          <field
-            aria-label="state"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.state"
-              name="address.state"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-number "
-        >
-          <label
-            for="address.zip"
-          >
-            zip
-          </label>
-           
-          <field
-            aria-label="zip"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.zip"
-              name="address.zip"
-              type="number"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
+        <input
+          id="age"
+          name="age"
+          type="number"
+        />
         
         
-      </field-layout>
-      
-      
-      
-      
-      
-    </field-layout>
-    
-    
-  </div>
-</body>
-`;
-
-exports[`DataEditor.svelte > should render an object editor using schema & layout 1`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="vertical "
-    >
+         
+      </field>
        
-      <p>
-        John
-      </p>
-      
-      
-      
-      <input-field
-        class="flex flex-col input-number "
-      >
-        <label
-          for="age"
-        >
-          age
-        </label>
-         
-        <field
-          aria-label="age"
-          class="w-full flex flex-row items-center"
-        >
-           
-           
-          <input
-            id="age"
-            max="100"
-            min="0"
-            name="age"
-            type="number"
-          />
-          
-          
-           
-        </field>
-         
-      </input-field>
-      
-      <field-layout
-        aria-label="Address"
-        class="vertical "
-      >
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.street"
-          >
-            street
-          </label>
-           
-          <field
-            aria-label="street"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.street"
-              name="address.street"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.city"
-          >
-            city
-          </label>
-           
-          <field
-            aria-label="city"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.city"
-              name="address.city"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.state"
-          >
-            state
-          </label>
-           
-          <field
-            aria-label="state"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.state"
-              name="address.state"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-number "
-        >
-          <label
-            for="address.zip"
-          >
-            zip
-          </label>
-           
-          <field
-            aria-label="zip"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.zip"
-              max="99999"
-              min="0"
-              name="address.zip"
-              type="number"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        
-      </field-layout>
-      
-      
-      
-      
-      
-    </field-layout>
+    </input-field>
     
-    
-  </div>
-</body>
-`;
-
-exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
-<body>
-  <div>
     <field-layout
-      aria-label=""
+      aria-label="Address"
       class="vertical "
     >
       <input-field
         class="flex flex-col input-string "
       >
         <label
-          for="name"
+          for="address.street"
         >
-          name
+          street
         </label>
          
         <field
-          aria-label="name"
+          aria-label="street"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="name"
-            name="name"
+            id="address.street"
+            name="address.street"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.city"
+        >
+          city
+        </label>
+         
+        <field
+          aria-label="city"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.city"
+            name="address.city"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.state"
+        >
+          state
+        </label>
+         
+        <field
+          aria-label="state"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.state"
+            name="address.state"
             type="text"
           />
           
@@ -925,22 +672,20 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
         class="flex flex-col input-number "
       >
         <label
-          for="age"
+          for="address.zip"
         >
-          age
+          zip
         </label>
          
         <field
-          aria-label="age"
+          aria-label="zip"
           class="w-full flex flex-row items-center"
         >
            
            
           <input
-            id="age"
-            max="100"
-            min="0"
-            name="age"
+            id="address.zip"
+            name="address.zip"
             type="number"
           />
           
@@ -950,130 +695,373 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
          
       </input-field>
       
-      <field-layout
-        aria-label="address"
-        class="vertical "
+      
+    </field-layout>
+    
+    
+    
+    
+    
+  </field-layout>
+  
+  
+</div>
+`;
+
+exports[`DataEditor.svelte > should render an object editor using schema & layout 1`] = `
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  >
+     
+    <p>
+      John
+    </p>
+    
+    
+    
+    <input-field
+      class="flex flex-col input-number "
+    >
+      <label
+        for="age"
       >
-        <input-field
-          class="flex flex-col input-string "
+        age
+      </label>
+       
+      <field
+        aria-label="age"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="age"
+          max="100"
+          min="0"
+          name="age"
+          type="number"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
+    <field-layout
+      aria-label="Address"
+      class="vertical "
+    >
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.street"
         >
-          <label
-            for="address.street"
-          >
-            street
-          </label>
-           
-          <field
-            aria-label="street"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.street"
-              name="address.street"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
+          street
+        </label>
+         
+        <field
+          aria-label="street"
+          class="w-full flex flex-row items-center"
         >
-          <label
-            for="address.city"
-          >
-            city
-          </label>
            
-          <field
-            aria-label="city"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.city"
-              name="address.city"
-              type="text"
-            />
-            
-            
-             
-          </field>
            
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-string "
-        >
-          <label
-            for="address.state"
-          >
-            state
-          </label>
+          <input
+            id="address.street"
+            name="address.street"
+            type="text"
+          />
+          
+          
            
-          <field
-            aria-label="state"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.state"
-              name="address.state"
-              type="text"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        <input-field
-          class="flex flex-col input-number "
-        >
-          <label
-            for="address.zip"
-          >
-            zip
-          </label>
-           
-          <field
-            aria-label="zip"
-            class="w-full flex flex-row items-center"
-          >
-             
-             
-            <input
-              id="address.zip"
-              max="99999"
-              min="0"
-              name="address.zip"
-              type="number"
-            />
-            
-            
-             
-          </field>
-           
-        </input-field>
-        
-        
-      </field-layout>
+        </field>
+         
+      </input-field>
       
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.city"
+        >
+          city
+        </label>
+         
+        <field
+          aria-label="city"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.city"
+            name="address.city"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
       
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.state"
+        >
+          state
+        </label>
+         
+        <field
+          aria-label="state"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.state"
+            name="address.state"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
       
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="address.zip"
+        >
+          zip
+        </label>
+         
+        <field
+          aria-label="zip"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.zip"
+            max="99999"
+            min="0"
+            name="address.zip"
+            type="number"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
       
       
     </field-layout>
     
     
-  </div>
-</body>
+    
+    
+    
+  </field-layout>
+  
+  
+</div>
+`;
+
+exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  >
+    <input-field
+      class="flex flex-col input-string "
+    >
+      <label
+        for="name"
+      >
+        name
+      </label>
+       
+      <field
+        aria-label="name"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="name"
+          name="name"
+          type="text"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
+    <input-field
+      class="flex flex-col input-number "
+    >
+      <label
+        for="age"
+      >
+        age
+      </label>
+       
+      <field
+        aria-label="age"
+        class="w-full flex flex-row items-center"
+      >
+         
+         
+        <input
+          id="age"
+          max="100"
+          min="0"
+          name="age"
+          type="number"
+        />
+        
+        
+         
+      </field>
+       
+    </input-field>
+    
+    <field-layout
+      aria-label="address"
+      class="vertical "
+    >
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.street"
+        >
+          street
+        </label>
+         
+        <field
+          aria-label="street"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.street"
+            name="address.street"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.city"
+        >
+          city
+        </label>
+         
+        <field
+          aria-label="city"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.city"
+            name="address.city"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-string "
+      >
+        <label
+          for="address.state"
+        >
+          state
+        </label>
+         
+        <field
+          aria-label="state"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.state"
+            name="address.state"
+            type="text"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      <input-field
+        class="flex flex-col input-number "
+      >
+        <label
+          for="address.zip"
+        >
+          zip
+        </label>
+         
+        <field
+          aria-label="zip"
+          class="w-full flex flex-row items-center"
+        >
+           
+           
+          <input
+            id="address.zip"
+            max="99999"
+            min="0"
+            name="address.zip"
+            type="number"
+          />
+          
+          
+           
+        </field>
+         
+      </input-field>
+      
+      
+    </field-layout>
+    
+    
+    
+    
+    
+  </field-layout>
+  
+  
+</div>
 `;

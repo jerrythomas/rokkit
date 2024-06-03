@@ -1,91 +1,79 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ProgressBar.svelte > should render indeterminate progress 1`] = `
-<body>
-  <div>
-    <progress-bar
-      class="flex w-full indeterminate"
-      style="height: 1.5mm;"
-    >
-      <value-bar
-        style="width: 10%; height: 1.5mm;"
-      />
-    </progress-bar>
-  </div>
-</body>
+<div>
+  <progress-bar
+    class="flex w-full indeterminate"
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 10%; height: 1.5mm;"
+    />
+  </progress-bar>
+</div>
 `;
 
 exports[`ProgressBar.svelte > should render progress bar with class 1`] = `
-<body>
-  <div>
-    <progress-bar
-      class="flex w-full my-class indeterminate"
-      style="height: 1.5mm;"
-    >
-      <value-bar
-        style="width: 10%; height: 1.5mm;"
-      />
-    </progress-bar>
-  </div>
-</body>
+<div>
+  <progress-bar
+    class="flex w-full my-class indeterminate"
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 10%; height: 1.5mm;"
+    />
+  </progress-bar>
+</div>
 `;
 
 exports[`ProgressBar.svelte > should render progress bar with class 2`] = `
-<body>
-  <div>
-    <progress-bar
-      class="flex w-full my-class-1 indeterminate"
-      style="height: 1.5mm;"
-    >
-      <value-bar
-        style="width: 10%; height: 1.5mm;"
-      />
-    </progress-bar>
-  </div>
-</body>
+<div>
+  <progress-bar
+    class="flex w-full my-class-1 indeterminate"
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 10%; height: 1.5mm;"
+    />
+  </progress-bar>
+</div>
 `;
 
 exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
-<body>
-  <div>
-    <progress-bar
-      class="flex w-full "
-      style="height: 1.5mm;"
-    >
-      <value-bar
-        style="width: 0.5%; height: 1.5mm;"
-      />
-    </progress-bar>
-  </div>
-</body>
+<div>
+  <progress-bar
+    class="flex w-full "
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 0.5%; height: 1.5mm;"
+    />
+  </progress-bar>
+</div>
 `;
 
 exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
-<body>
-  <div>
-    <progress-bar
-      class="flex w-full "
-      style="height: 1.5mm;"
-    >
-      <value-bar
-        style="width: 1%; height: 1.5mm;"
-      />
-    </progress-bar>
-  </div>
-</body>
+<div>
+  <progress-bar
+    class="flex w-full "
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 1%; height: 1.5mm;"
+    />
+  </progress-bar>
+</div>
 `;
 
 exports[`ProgressBar.svelte > should render progress with custom height, indicator width 1`] = `
-<body>
-  <div>
-    <progress-bar
-      class="flex w-full indeterminate"
-      style="height: 3px;"
-    >
-      <value-bar
-        style="width: 50%; height: 3px;"
-      />
-    </progress-bar>
-  </div>
-</body>
+<div>
+  <progress-bar
+    class="flex w-full indeterminate"
+    style="height: 3px;"
+  >
+    <value-bar
+      style="width: 50%; height: 3px;"
+    />
+  </progress-bar>
+</div>
 `;

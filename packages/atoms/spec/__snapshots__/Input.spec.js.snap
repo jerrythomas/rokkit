@@ -1,689 +1,225 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`HTML Input > should render "InputCheckbox" 1`] = `
-<input
-  type="checkbox"
-/>
-`;
+exports[`HTML Input > should render "InputCheckbox" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputCheckbox" as readonly 1`] = `
-<input
-  readonly="true"
-  type="checkbox"
-/>
-`;
+exports[`HTML Input > should render "InputCheckbox" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputCheckbox" as required 1`] = `
-<input
-  required=""
-  type="checkbox"
-/>
-`;
+exports[`HTML Input > should render "InputCheckbox" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputCheckbox" with custom props 1`] = `
-<input
-  type="checkbox"
-/>
-`;
+exports[`HTML Input > should render "InputCheckbox" with custom props 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputColor" 1`] = `
-<input
-  type="color"
-/>
-`;
+exports[`HTML Input > should render "InputColor" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputColor" as readonly 1`] = `
-<input
-  readonly="true"
-  type="color"
-/>
-`;
+exports[`HTML Input > should render "InputColor" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputColor" as required 1`] = `
-<input
-  required=""
-  type="color"
-/>
-`;
+exports[`HTML Input > should render "InputColor" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputDate" 1`] = `
-<input
-  type="date"
-/>
-`;
+exports[`HTML Input > should render "InputDate" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputDate" as readonly 1`] = `
-<input
-  readonly="true"
-  type="date"
-/>
-`;
+exports[`HTML Input > should render "InputDate" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputDate" as required 1`] = `
-<input
-  required=""
-  type="date"
-/>
-`;
+exports[`HTML Input > should render "InputDate" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputDateTime" 1`] = `
-<input
-  type="datetime-local"
-/>
-`;
+exports[`HTML Input > should render "InputDateTime" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputDateTime" as readonly 1`] = `
-<input
-  readonly="true"
-  type="datetime-local"
-/>
-`;
+exports[`HTML Input > should render "InputDateTime" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputDateTime" as required 1`] = `
-<input
-  required=""
-  type="datetime-local"
-/>
-`;
+exports[`HTML Input > should render "InputDateTime" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputEmail" 1`] = `
-<input
-  type="email"
-/>
-`;
+exports[`HTML Input > should render "InputEmail" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputEmail" as readonly 1`] = `
-<input
-  readonly="true"
-  type="email"
-/>
-`;
+exports[`HTML Input > should render "InputEmail" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputEmail" as required 1`] = `
-<input
-  required=""
-  type="email"
-/>
-`;
+exports[`HTML Input > should render "InputEmail" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputFile" 1`] = `
-<input
-  type="file"
-/>
-`;
+exports[`HTML Input > should render "InputFile" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputFile" as readonly 1`] = `
-<input
-  readonly="true"
-  type="file"
-/>
-`;
+exports[`HTML Input > should render "InputFile" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputFile" as required 1`] = `
-<input
-  required=""
-  type="file"
-/>
-`;
+exports[`HTML Input > should render "InputFile" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputMonth" 1`] = `
-<input
-  type="month"
-/>
-`;
+exports[`HTML Input > should render "InputMonth" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputMonth" as readonly 1`] = `
-<input
-  readonly="true"
-  type="month"
-/>
-`;
+exports[`HTML Input > should render "InputMonth" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputMonth" as required 1`] = `
-<input
-  required=""
-  type="month"
-/>
-`;
+exports[`HTML Input > should render "InputMonth" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputNumber" 1`] = `
-<input
-  type="number"
-/>
-`;
+exports[`HTML Input > should render "InputNumber" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputNumber" as readonly 1`] = `
-<input
-  readonly="true"
-  type="number"
-/>
-`;
+exports[`HTML Input > should render "InputNumber" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputNumber" as required 1`] = `
-<input
-  required=""
-  type="number"
-/>
-`;
+exports[`HTML Input > should render "InputNumber" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputNumber" with custom props 1`] = `
-<input
-  max="10"
-  min="3"
-  type="number"
-/>
-`;
+exports[`HTML Input > should render "InputNumber" with custom props 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputPassword" 1`] = `
-<input
-  type="password"
-/>
-`;
+exports[`HTML Input > should render "InputPassword" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputPassword" as readonly 1`] = `
-<input
-  readonly="true"
-  type="password"
-/>
-`;
+exports[`HTML Input > should render "InputPassword" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputPassword" as required 1`] = `
-<input
-  required=""
-  type="password"
-/>
-`;
+exports[`HTML Input > should render "InputPassword" as required 1`] = `undefined`;
 
 exports[`HTML Input > should render "InputRadio" 1`] = `
-<radio-group
-  class=""
+<label
+  class="flex flex-row items-center gap-2"
 >
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="foo"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="bar"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="baz"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
+  <input
+    type="radio"
+    value="foo"
+  />
+   
+  <p>
+    foo
+  </p>
+   
+</label>
 `;
 
 exports[`HTML Input > should render "InputRadio" as readonly 1`] = `
-<radio-group
-  class="disabled"
+<label
+  class="flex flex-row items-center gap-2"
 >
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      readonly=""
-      type="radio"
-      value="foo"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      readonly=""
-      type="radio"
-      value="bar"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      readonly=""
-      type="radio"
-      value="baz"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
+  <input
+    readonly=""
+    type="radio"
+    value="foo"
+  />
+   
+  <p>
+    foo
+  </p>
+   
+</label>
 `;
 
 exports[`HTML Input > should render "InputRadio" as required 1`] = `
-<radio-group
-  class=""
+<label
+  class="flex flex-row items-center gap-2"
 >
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      required=""
-      type="radio"
-      value="foo"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      required=""
-      type="radio"
-      value="bar"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      required=""
-      type="radio"
-      value="baz"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
+  <input
+    required=""
+    type="radio"
+    value="foo"
+  />
+   
+  <p>
+    foo
+  </p>
+   
+</label>
 `;
 
 exports[`HTML Input > should render "InputRadio" with custom props 1`] = `
-<radio-group
-  class=""
+<label
+  class="flex flex-row-reverse items-center gap-2"
 >
-  <label
-    class="flex flex-row-reverse items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="foo"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row-reverse items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="bar"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row-reverse items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="baz"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
+  <input
+    type="radio"
+    value="foo"
+  />
+   
+  <p>
+    foo
+  </p>
+   
+</label>
 `;
 
 exports[`HTML Input > should render "InputRadio" with custom props 2`] = `
-<radio-group
-  class=""
+<label
+  class="flex flex-row items-center gap-2"
 >
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="foo"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="bar"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="baz"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
+  <input
+    type="radio"
+    value="foo"
+  />
+   
+  <p>
+    foo
+  </p>
+   
+</label>
 `;
 
 exports[`HTML Input > should render "InputRadio" with custom props 3`] = `
-<radio-group
-  class=""
+<label
+  class="flex flex-row items-center gap-2"
 >
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="1"
-    />
-     
-    <p>
-      foo
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="2"
-    />
-     
-    <p>
-      bar
-    </p>
-     
-  </label>
-  <label
-    class="flex flex-row items-center gap-2"
-  >
-    <input
-      type="radio"
-      value="3"
-    />
-     
-    <p>
-      baz
-    </p>
-     
-  </label>
-</radio-group>
+  <input
+    type="radio"
+    value="1"
+  />
+   
+  <p>
+    foo
+  </p>
+   
+</label>
 `;
 
-exports[`HTML Input > should render "InputRange" 1`] = `
-<input
-  type="range"
-/>
-`;
+exports[`HTML Input > should render "InputRange" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputRange" as readonly 1`] = `
-<input
-  readonly="true"
-  type="range"
-/>
-`;
+exports[`HTML Input > should render "InputRange" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputRange" as required 1`] = `
-<input
-  required=""
-  type="range"
-/>
-`;
+exports[`HTML Input > should render "InputRange" as required 1`] = `undefined`;
 
 exports[`HTML Input > should render "InputSelect" 1`] = `
-<select>
-  <option
-    value="foo"
-  >
-    foo
-  </option>
-  <option
-    value="bar"
-  >
-    bar
-  </option>
-  <option
-    value="baz"
-  >
-    baz
-  </option>
-</select>
+<option
+  value="foo"
+>
+  foo
+</option>
 `;
 
 exports[`HTML Input > should render "InputSelect" as readonly 1`] = `
-<select
-  readonly="true"
+<option
+  value="foo"
 >
-  <option
-    value="foo"
-  >
-    foo
-  </option>
-  <option
-    value="bar"
-  >
-    bar
-  </option>
-  <option
-    value="baz"
-  >
-    baz
-  </option>
-</select>
+  foo
+</option>
 `;
 
 exports[`HTML Input > should render "InputSelect" as required 1`] = `
-<select
-  required=""
+<option
+  value="foo"
 >
-  <option
-    value="foo"
-  >
-    foo
-  </option>
-  <option
-    value="bar"
-  >
-    bar
-  </option>
-  <option
-    value="baz"
-  >
-    baz
-  </option>
-</select>
+  foo
+</option>
 `;
 
-exports[`HTML Input > should render "InputTel" 1`] = `
-<input
-  type="tel"
-/>
-`;
+exports[`HTML Input > should render "InputTel" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTel" as readonly 1`] = `
-<input
-  readonly="true"
-  type="tel"
-/>
-`;
+exports[`HTML Input > should render "InputTel" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTel" as required 1`] = `
-<input
-  required=""
-  type="tel"
-/>
-`;
+exports[`HTML Input > should render "InputTel" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputText" 1`] = `
-<input
-  type="text"
-/>
-`;
+exports[`HTML Input > should render "InputText" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputText" as readonly 1`] = `
-<input
-  readonly="true"
-  type="text"
-/>
-`;
+exports[`HTML Input > should render "InputText" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputText" as required 1`] = `
-<input
-  required=""
-  type="text"
-/>
-`;
+exports[`HTML Input > should render "InputText" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputText" with custom props 1`] = `
-<input
-  maxlength="10"
-  minlength="3"
-  type="text"
-/>
-`;
+exports[`HTML Input > should render "InputText" with custom props 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTextArea" 1`] = `
-<textarea
-  type="week"
-/>
-`;
+exports[`HTML Input > should render "InputTextArea" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTextArea" as readonly 1`] = `
-<textarea
-  readonly="true"
-  type="week"
-/>
-`;
+exports[`HTML Input > should render "InputTextArea" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTextArea" as required 1`] = `
-<textarea
-  required=""
-  type="week"
-/>
-`;
+exports[`HTML Input > should render "InputTextArea" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTime" 1`] = `
-<input
-  type="time"
-/>
-`;
+exports[`HTML Input > should render "InputTime" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTime" as readonly 1`] = `
-<input
-  readonly="true"
-  type="time"
-/>
-`;
+exports[`HTML Input > should render "InputTime" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputTime" as required 1`] = `
-<input
-  required=""
-  type="time"
-/>
-`;
+exports[`HTML Input > should render "InputTime" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputUrl" 1`] = `
-<input
-  type="url"
-/>
-`;
+exports[`HTML Input > should render "InputUrl" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputUrl" as readonly 1`] = `
-<input
-  readonly="true"
-  type="url"
-/>
-`;
+exports[`HTML Input > should render "InputUrl" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputUrl" as required 1`] = `
-<input
-  required=""
-  type="url"
-/>
-`;
+exports[`HTML Input > should render "InputUrl" as required 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputWeek" 1`] = `
-<input
-  type="week"
-/>
-`;
+exports[`HTML Input > should render "InputWeek" 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputWeek" as readonly 1`] = `
-<input
-  readonly="true"
-  type="week"
-/>
-`;
+exports[`HTML Input > should render "InputWeek" as readonly 1`] = `undefined`;
 
-exports[`HTML Input > should render "InputWeek" as required 1`] = `
-<input
-  required=""
-  type="week"
-/>
-`;
+exports[`HTML Input > should render "InputWeek" as required 1`] = `undefined`;

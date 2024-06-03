@@ -20,7 +20,10 @@ describe('Select.svelte', () => {
 
 	it('should render string array', async () => {
 		const { container, component } = render(Select, {
-			options: ['a', 'b', 'c']
+			props: {
+				name: 'test',
+				options: ['a', 'b', 'c']
+			}
 		})
 		expect(container).toBeTruthy()
 		component.$on('change', handlers.change)
@@ -39,7 +42,10 @@ describe('Select.svelte', () => {
 
 	it('should render items using field mapping', async () => {
 		const { container } = render(Select, {
-			options: [{ text: 1 }, { text: 2 }, { text: 3 }]
+			props: {
+				name: 'test',
+				options: [{ text: 1 }, { text: 2 }, { text: 3 }]
+			}
 		})
 		expect(container).toBeTruthy()
 		await fireEvent.click(container.querySelector('selected-item'))
@@ -50,9 +56,12 @@ describe('Select.svelte', () => {
 	it('should render items using custom mapping', async () => {
 		const options = [{ num: 1 }, { num: 2 }, { num: 3 }]
 		const { container } = render(Select, {
-			options,
-			value: options[1],
-			fields: { text: 'num' }
+			props: {
+				name: 'test',
+				options,
+				value: options[1],
+				fields: { text: 'num' }
+			}
 		})
 		expect(container).toBeTruthy()
 		await fireEvent.click(container.querySelector('selected-item'))
@@ -63,9 +72,12 @@ describe('Select.svelte', () => {
 	it('should render items using default component, when invalid component is provided', async () => {
 		const options = [{ num: 1 }, { num: 2 }, { num: 3 }]
 		const { container } = render(Select, {
-			options,
-			value: options[1],
-			fields: { text: 'num', component: 'num' }
+			props: {
+				name: 'test',
+				options,
+				value: options[1],
+				fields: { text: 'num', component: 'num' }
+			}
 		})
 		expect(container).toBeTruthy()
 		await fireEvent.click(container.querySelector('selected-item'))
@@ -75,9 +87,12 @@ describe('Select.svelte', () => {
 
 	it('should render with alternate class', async () => {
 		const { container, component } = render(Select, {
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
-			fields: { text: 'num' },
-			class: 'myClass'
+			props: {
+				name: 'test',
+				options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+				fields: { text: 'num' },
+				class: 'myClass'
+			}
 		})
 		let classes = Array.from(container.querySelector('input-select').classList)
 
@@ -92,10 +107,13 @@ describe('Select.svelte', () => {
 	it('should render items using custom component', async () => {
 		const options = [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }]
 		const { container, component } = render(Select, {
-			options,
-			fields: { text: 'num' },
-			using: { custom: MockItem },
-			value: options[0]
+			props: {
+				name: 'test',
+				options,
+				fields: { text: 'num' },
+				using: { custom: MockItem },
+				value: options[0]
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -112,7 +130,10 @@ describe('Select.svelte', () => {
 	it('should emit the change event when the value changes', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options
+			props: {
+				name: 'test',
+				options
+			}
 		})
 
 		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
@@ -138,8 +159,11 @@ describe('Select.svelte', () => {
 	it('should open/close drop down on click and blur', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options,
-			value: options[1]
+			props: {
+				name: 'test',
+				options,
+				value: options[1]
+			}
 		})
 
 		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
@@ -163,8 +187,11 @@ describe('Select.svelte', () => {
 	it('should close drop down on escape key', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options,
-			value: options[1]
+			props: {
+				name: 'test',
+				options,
+				value: options[1]
+			}
 		})
 
 		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
@@ -189,8 +216,11 @@ describe('Select.svelte', () => {
 	it('should handle option changes', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options,
-			value: options[1]
+			props: {
+				name: 'test',
+				options,
+				value: options[1]
+			}
 		})
 
 		expect(container.querySelector('selected-item')).toMatchSnapshot()
@@ -208,8 +238,11 @@ describe('Select.svelte', () => {
 	it('should handle arrow keys for navigation and select', async () => {
 		const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 		const { container, component } = render(Select, {
-			options,
-			value: options[1]
+			props: {
+				name: 'test',
+				options,
+				value: options[1]
+			}
 		})
 
 		expect(container.querySelector('selected-item')).toMatchSnapshot()

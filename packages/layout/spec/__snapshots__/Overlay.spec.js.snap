@@ -1,13 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Overlay.svelte > should render 1`] = `
-<body>
-  <div>
-    <overlay
-      aria-hidden="true"
-      class="absolute left-0 top-0 h-screen w-screen"
-      role="presentation"
-    />
-  </div>
-</body>
+<div>
+  <overlay
+    aria-hidden="true"
+    class="absolute left-0 top-0 h-screen w-screen"
+    role="presentation"
+  />
+</div>
 `;

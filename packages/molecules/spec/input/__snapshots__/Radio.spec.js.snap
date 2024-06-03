@@ -1,208 +1,202 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Radio.svelte > should render using object 1`] = `
-<body>
-  <div>
-    <radio-group
-      class="flex flex-col cursor-pointer select-none "
-      id="null"
+<div>
+  <radio-group
+    class="flex flex-col cursor-pointer select-none "
+    id="null"
+  >
+    <label
+      class="flex flex-row-reverse items-center gap-2"
     >
-      <label
-        class="flex flex-row-reverse items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="alpha"
-        />
-         
-        <icon
-          class="radio-on"
-        />
-         
-        <p>
-          Alpha
-        </p>
-         
-      </label>
-      <label
-        class="flex flex-row-reverse items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="beta"
-        />
-         
-        <icon
-          class="radio-off"
-        />
-         
-        <p>
-          Beta
-        </p>
-         
-      </label>
-      <label
-        class="flex flex-row-reverse items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="charlie"
-        />
-         
-        <icon
-          class="radio-off"
-        />
-         
-        <p>
-          Charlie
-        </p>
-         
-      </label>
-    </radio-group>
-  </div>
-</body>
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="alpha"
+      />
+       
+      <icon
+        class="radio-on"
+      />
+       
+      <p>
+        Alpha
+      </p>
+       
+    </label>
+    <label
+      class="flex flex-row-reverse items-center gap-2"
+    >
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="beta"
+      />
+       
+      <icon
+        class="radio-off"
+      />
+       
+      <p>
+        Beta
+      </p>
+       
+    </label>
+    <label
+      class="flex flex-row-reverse items-center gap-2"
+    >
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="charlie"
+      />
+       
+      <icon
+        class="radio-off"
+      />
+       
+      <p>
+        Charlie
+      </p>
+       
+    </label>
+  </radio-group>
+</div>
 `;
 
 exports[`Radio.svelte > should render using string array 1`] = `
-<body>
-  <div>
-    <radio-group
-      class="flex flex-col cursor-pointer select-none "
-      id="null"
+<div>
+  <radio-group
+    class="flex flex-col cursor-pointer select-none "
+    id="null"
+  >
+    <label
+      class="flex flex-row items-center gap-2"
     >
-      <label
-        class="flex flex-row items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="Alpha"
-        />
-         
-        <icon
-          class="radio-on"
-        />
-         
-        <p>
-          Alpha
-        </p>
-         
-      </label>
-      <label
-        class="flex flex-row items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="Beta"
-        />
-         
-        <icon
-          class="radio-off"
-        />
-         
-        <p>
-          Beta
-        </p>
-         
-      </label>
-      <label
-        class="flex flex-row items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="Gamma"
-        />
-         
-        <icon
-          class="radio-off"
-        />
-         
-        <p>
-          Gamma
-        </p>
-         
-      </label>
-    </radio-group>
-  </div>
-</body>
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="Alpha"
+      />
+       
+      <icon
+        class="radio-on"
+      />
+       
+      <p>
+        Alpha
+      </p>
+       
+    </label>
+    <label
+      class="flex flex-row items-center gap-2"
+    >
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="Beta"
+      />
+       
+      <icon
+        class="radio-off"
+      />
+       
+      <p>
+        Beta
+      </p>
+       
+    </label>
+    <label
+      class="flex flex-row items-center gap-2"
+    >
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="Gamma"
+      />
+       
+      <icon
+        class="radio-off"
+      />
+       
+      <p>
+        Gamma
+      </p>
+       
+    </label>
+  </radio-group>
+</div>
 `;
 
 exports[`Radio.svelte > should render with field mapping 1`] = `
-<body>
-  <div>
-    <radio-group
-      class="flex flex-col cursor-pointer select-none "
-      id="null"
+<div>
+  <radio-group
+    class="flex flex-col cursor-pointer select-none "
+    id="null"
+  >
+    <label
+      class="flex flex-row-reverse items-center gap-2"
     >
-      <label
-        class="flex flex-row-reverse items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="alpha"
-        />
-         
-        <icon
-          class="radio-on"
-        />
-         
-        <p>
-          Alpha
-        </p>
-         
-      </label>
-      <label
-        class="flex flex-row-reverse items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="beta"
-        />
-         
-        <icon
-          class="radio-off"
-        />
-         
-        <p>
-          Beta
-        </p>
-         
-      </label>
-      <label
-        class="flex flex-row-reverse items-center gap-2"
-      >
-        <input
-          hidden=""
-          name="radio"
-          type="radio"
-          value="charlie"
-        />
-         
-        <icon
-          class="radio-off"
-        />
-         
-        <p>
-          Charlie
-        </p>
-         
-      </label>
-    </radio-group>
-  </div>
-</body>
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="alpha"
+      />
+       
+      <icon
+        class="radio-on"
+      />
+       
+      <p>
+        Alpha
+      </p>
+       
+    </label>
+    <label
+      class="flex flex-row-reverse items-center gap-2"
+    >
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="beta"
+      />
+       
+      <icon
+        class="radio-off"
+      />
+       
+      <p>
+        Beta
+      </p>
+       
+    </label>
+    <label
+      class="flex flex-row-reverse items-center gap-2"
+    >
+      <input
+        hidden=""
+        name="radio"
+        type="radio"
+        value="charlie"
+      />
+       
+      <icon
+        class="radio-off"
+      />
+       
+      <p>
+        Charlie
+      </p>
+       
+    </label>
+  </radio-group>
+</div>
 `;

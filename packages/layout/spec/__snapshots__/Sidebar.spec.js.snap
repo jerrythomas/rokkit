@@ -1,14 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Sidebar.svelte > should render sidebar 1`] = `
-<body>
-  <div>
-    <aside
-      class="sidebar flex flex-col"
-    >
-       
-       
-    </aside>
-  </div>
-</body>
+<div>
+  <aside
+    class="sidebar flex flex-col"
+  >
+     
+     
+  </aside>
+</div>
 `;

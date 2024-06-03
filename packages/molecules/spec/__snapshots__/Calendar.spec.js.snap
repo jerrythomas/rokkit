@@ -1,1971 +1,1961 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
-<body>
-  <div>
-    <calendar
-      class="mx-auto flex flex-col select-none items-center"
+<div>
+  <calendar
+    class="mx-auto flex flex-col select-none items-center"
+  >
+    <month-year
+      class="h-10 w-full flex flex-row items-center"
     >
-      <month-year
-        class="h-10 w-full flex flex-row items-center"
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
       >
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-left"
-          />
-        </square>
-         
-        <span
-          class="flex flex-grow items-center justify-center gap-1px"
-        >
-          <p>
-            June
-          </p>
-           
-          <input
-            class="w-14 flex flex-grow-0 border-none bg-transparent"
-            type="number"
-          />
-        </span>
-         
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-right"
-          />
-        </square>
-      </month-year>
+        <icon
+          class="chevron-left"
+        />
+      </square>
        
-      <cal-body
-        class="w-full flex flex-col cursor-pointer p-1"
+      <span
+        class="flex flex-grow items-center justify-center gap-1px"
       >
-        <days-of-week
-          class="grid grid-cols-7 svelte-1lxgadd"
-        >
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            M 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            W 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            F 
-          </p>
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-        </days-of-week>
+        <p>
+          June
+        </p>
          
-        <days-of-month
-          class="grid grid-cols-7 grid-rows-5"
+        <input
+          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          type="number"
+        />
+      </span>
+       
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
+      >
+        <icon
+          class="chevron-right"
+        />
+      </square>
+    </month-year>
+     
+    <cal-body
+      class="w-full flex flex-col cursor-pointer p-1"
+    >
+      <days-of-week
+        class="grid grid-cols-7 svelte-1lxgadd"
+      >
+        <p
+          class="svelte-1lxgadd weekend"
         >
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: 5;"
-            tabindex="0"
-          >
-            1
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            2
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            3
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            4
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            5
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            6
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            7
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            8
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            9
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            10
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            11
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            12
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            13
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            14
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            15
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="true"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            16
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            17
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            18
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            19
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            20
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            21
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            22
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            23
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            24
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            25
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            26
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            27
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            28
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            29
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            30
-             
-          </day-of-month>
-        </days-of-month>
-      </cal-body>
-    </calendar>
-  </div>
-</body>
+          S 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          M 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          W 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          F 
+        </p>
+        <p
+          class="svelte-1lxgadd weekend"
+        >
+          S 
+        </p>
+      </days-of-week>
+       
+      <days-of-month
+        class="grid grid-cols-7 grid-rows-5"
+      >
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: 5;"
+          tabindex="0"
+        >
+          1
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          2
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          3
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          4
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          5
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          6
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          7
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          8
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          9
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          10
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          11
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          12
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          13
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          14
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          15
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="true"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          16
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          17
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          18
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          19
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          20
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          21
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          22
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          23
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          24
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          25
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          26
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          27
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          28
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          29
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          30
+           
+        </day-of-month>
+      </days-of-month>
+    </cal-body>
+  </calendar>
+</div>
 `;
 
 exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
-<body>
-  <div>
-    <calendar
-      class="mx-auto flex flex-col select-none items-center"
+<div>
+  <calendar
+    class="mx-auto flex flex-col select-none items-center"
+  >
+    <month-year
+      class="h-10 w-full flex flex-row items-center"
     >
-      <month-year
-        class="h-10 w-full flex flex-row items-center"
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
       >
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-left"
-          />
-        </square>
-         
-        <span
-          class="flex flex-grow items-center justify-center gap-1px"
-        >
-          <p>
-            June
-          </p>
-           
-          <input
-            class="w-14 flex flex-grow-0 border-none bg-transparent"
-            type="number"
-          />
-        </span>
-         
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-right"
-          />
-        </square>
-      </month-year>
+        <icon
+          class="chevron-left"
+        />
+      </square>
        
-      <cal-body
-        class="w-full flex flex-col cursor-pointer p-1"
+      <span
+        class="flex flex-grow items-center justify-center gap-1px"
       >
-        <days-of-week
-          class="grid grid-cols-7 svelte-1lxgadd"
-        >
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            M 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            W 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            F 
-          </p>
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-        </days-of-week>
+        <p>
+          June
+        </p>
          
-        <days-of-month
-          class="grid grid-cols-7 grid-rows-5"
+        <input
+          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          type="number"
+        />
+      </span>
+       
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
+      >
+        <icon
+          class="chevron-right"
+        />
+      </square>
+    </month-year>
+     
+    <cal-body
+      class="w-full flex flex-col cursor-pointer p-1"
+    >
+      <days-of-week
+        class="grid grid-cols-7 svelte-1lxgadd"
+      >
+        <p
+          class="svelte-1lxgadd weekend"
         >
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: 5;"
-            tabindex="0"
-          >
-            1
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            2
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            3
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            4
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            5
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            6
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            7
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            8
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            9
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="true"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            10
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            11
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            12
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            13
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            14
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            15
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            16
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            17
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            18
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            19
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            20
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            21
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            22
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            23
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            24
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            25
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            26
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            27
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            28
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            29
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            30
-             
-          </day-of-month>
-        </days-of-month>
-      </cal-body>
-    </calendar>
-  </div>
-</body>
+          S 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          M 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          W 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          F 
+        </p>
+        <p
+          class="svelte-1lxgadd weekend"
+        >
+          S 
+        </p>
+      </days-of-week>
+       
+      <days-of-month
+        class="grid grid-cols-7 grid-rows-5"
+      >
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: 5;"
+          tabindex="0"
+        >
+          1
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          2
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          3
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          4
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          5
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          6
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          7
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          8
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          9
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="true"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          10
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          11
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          12
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          13
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          14
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          15
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          16
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          17
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          18
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          19
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          20
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          21
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          22
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          23
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          24
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          25
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          26
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          27
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          28
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          29
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          30
+           
+        </day-of-month>
+      </days-of-month>
+    </cal-body>
+  </calendar>
+</div>
 `;
 
 exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
-<body>
-  <div>
-    <calendar
-      class="mx-auto flex flex-col select-none items-center"
+<div>
+  <calendar
+    class="mx-auto flex flex-col select-none items-center"
+  >
+    <month-year
+      class="h-10 w-full flex flex-row items-center"
     >
-      <month-year
-        class="h-10 w-full flex flex-row items-center"
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
       >
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-left"
-          />
-        </square>
-         
-        <span
-          class="flex flex-grow items-center justify-center gap-1px"
-        >
-          <p>
-            February
-          </p>
-           
-          <input
-            class="w-14 flex flex-grow-0 border-none bg-transparent"
-            type="number"
-          />
-        </span>
-         
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-right"
-          />
-        </square>
-      </month-year>
+        <icon
+          class="chevron-left"
+        />
+      </square>
        
-      <cal-body
-        class="w-full flex flex-col cursor-pointer p-1"
+      <span
+        class="flex flex-grow items-center justify-center gap-1px"
       >
-        <days-of-week
-          class="grid grid-cols-7 svelte-1lxgadd"
-        >
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            M 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            W 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            F 
-          </p>
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-        </days-of-week>
+        <p>
+          February
+        </p>
          
-        <days-of-month
-          class="grid grid-cols-7 grid-rows-5"
+        <input
+          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          type="number"
+        />
+      </span>
+       
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
+      >
+        <icon
+          class="chevron-right"
+        />
+      </square>
+    </month-year>
+     
+    <cal-body
+      class="w-full flex flex-col cursor-pointer p-1"
+    >
+      <days-of-week
+        class="grid grid-cols-7 svelte-1lxgadd"
+      >
+        <p
+          class="svelte-1lxgadd weekend"
         >
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: 4;"
-            tabindex="0"
-          >
-            1
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            2
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            3
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            4
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            5
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            6
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            7
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            8
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            9
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            10
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            11
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="true"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            12
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            13
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            14
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            15
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            16
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            17
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            18
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            19
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            20
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            21
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            22
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            23
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            24
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            25
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            26
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            27
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            28
-             
-          </day-of-month>
-        </days-of-month>
-      </cal-body>
-    </calendar>
-  </div>
-</body>
+          S 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          M 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          W 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          F 
+        </p>
+        <p
+          class="svelte-1lxgadd weekend"
+        >
+          S 
+        </p>
+      </days-of-week>
+       
+      <days-of-month
+        class="grid grid-cols-7 grid-rows-5"
+      >
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: 4;"
+          tabindex="0"
+        >
+          1
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          2
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          3
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          4
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          5
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          6
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          7
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          8
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          9
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          10
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          11
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="true"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          12
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          13
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          14
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          15
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          16
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          17
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          18
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          19
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          20
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          21
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          22
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          23
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          24
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          25
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          26
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          27
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          28
+           
+        </day-of-month>
+      </days-of-month>
+    </cal-body>
+  </calendar>
+</div>
 `;
 
 exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
-<body>
-  <div>
-    <calendar
-      class="mx-auto flex flex-col select-none items-center"
+<div>
+  <calendar
+    class="mx-auto flex flex-col select-none items-center"
+  >
+    <month-year
+      class="h-10 w-full flex flex-row items-center"
     >
-      <month-year
-        class="h-10 w-full flex flex-row items-center"
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
       >
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-left"
-          />
-        </square>
-         
-        <span
-          class="flex flex-grow items-center justify-center gap-1px"
-        >
-          <p>
-            June
-          </p>
-           
-          <input
-            class="w-14 flex flex-grow-0 border-none bg-transparent"
-            type="number"
-          />
-        </span>
-         
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-right"
-          />
-        </square>
-      </month-year>
+        <icon
+          class="chevron-left"
+        />
+      </square>
        
-      <cal-body
-        class="w-full flex flex-col cursor-pointer p-1"
+      <span
+        class="flex flex-grow items-center justify-center gap-1px"
       >
-        <days-of-week
-          class="grid grid-cols-7 svelte-1lxgadd"
-        >
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            M 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            W 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            F 
-          </p>
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-        </days-of-week>
+        <p>
+          June
+        </p>
          
-        <days-of-month
-          class="grid grid-cols-7 grid-rows-5"
+        <input
+          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          type="number"
+        />
+      </span>
+       
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
+      >
+        <icon
+          class="chevron-right"
+        />
+      </square>
+    </month-year>
+     
+    <cal-body
+      class="w-full flex flex-col cursor-pointer p-1"
+    >
+      <days-of-week
+        class="grid grid-cols-7 svelte-1lxgadd"
+      >
+        <p
+          class="svelte-1lxgadd weekend"
         >
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: 5;"
-            tabindex="0"
-          >
-            1
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            2
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            3
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            4
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            5
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            6
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            7
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            8
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            9
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            10
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="true"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            11
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            12
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            13
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            14
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            15
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            16
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            17
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            18
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            19
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            20
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            21
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            22
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            23
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            24
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            25
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            26
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            27
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            28
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            29
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            30
-             
-          </day-of-month>
-        </days-of-month>
-      </cal-body>
-    </calendar>
-  </div>
-</body>
+          S 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          M 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          W 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          F 
+        </p>
+        <p
+          class="svelte-1lxgadd weekend"
+        >
+          S 
+        </p>
+      </days-of-week>
+       
+      <days-of-month
+        class="grid grid-cols-7 grid-rows-5"
+      >
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: 5;"
+          tabindex="0"
+        >
+          1
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          2
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          3
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          4
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          5
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          6
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          7
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          8
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          9
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          10
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="true"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          11
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          12
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          13
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          14
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          15
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          16
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          17
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          18
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          19
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          20
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          21
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          22
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          23
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          24
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          25
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          26
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          27
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          28
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          29
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          30
+           
+        </day-of-month>
+      </days-of-month>
+    </cal-body>
+  </calendar>
+</div>
 `;
 
 exports[`Calendar.svelte > should render a calendar with value changes 1`] = `
-<body>
-  <div>
-    <calendar
-      class="mx-auto flex flex-col select-none items-center"
+<div>
+  <calendar
+    class="mx-auto flex flex-col select-none items-center"
+  >
+    <month-year
+      class="h-10 w-full flex flex-row items-center"
     >
-      <month-year
-        class="h-10 w-full flex flex-row items-center"
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
       >
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-left"
-          />
-        </square>
-         
-        <span
-          class="flex flex-grow items-center justify-center gap-1px"
-        >
-          <p>
-            June
-          </p>
-           
-          <input
-            class="w-14 flex flex-grow-0 border-none bg-transparent"
-            type="number"
-          />
-        </span>
-         
-        <square
-          aria-selected="false"
-          class="cursor-pointer select-none"
-          role="option"
-          tabindex="0"
-        >
-          <icon
-            class="chevron-right"
-          />
-        </square>
-      </month-year>
+        <icon
+          class="chevron-left"
+        />
+      </square>
        
-      <cal-body
-        class="w-full flex flex-col cursor-pointer p-1"
+      <span
+        class="flex flex-grow items-center justify-center gap-1px"
       >
-        <days-of-week
-          class="grid grid-cols-7 svelte-1lxgadd"
-        >
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            M 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            W 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            T 
-          </p>
-          <p
-            class="svelte-1lxgadd"
-          >
-            F 
-          </p>
-          <p
-            class="svelte-1lxgadd weekend"
-          >
-            S 
-          </p>
-        </days-of-week>
+        <p>
+          June
+        </p>
          
-        <days-of-month
-          class="grid grid-cols-7 grid-rows-5"
+        <input
+          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          type="number"
+        />
+      </span>
+       
+      <square
+        aria-selected="false"
+        class="cursor-pointer select-none"
+        role="option"
+        tabindex="0"
+      >
+        <icon
+          class="chevron-right"
+        />
+      </square>
+    </month-year>
+     
+    <cal-body
+      class="w-full flex flex-col cursor-pointer p-1"
+    >
+      <days-of-week
+        class="grid grid-cols-7 svelte-1lxgadd"
+      >
+        <p
+          class="svelte-1lxgadd weekend"
         >
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: 5;"
-            tabindex="0"
-          >
-            1
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            2
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            3
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            4
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            5
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            6
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            7
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            8
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            9
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            10
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="true"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            11
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            12
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            13
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            14
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            15
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            16
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            17
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            18
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            19
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            20
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            21
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            22
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            23
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            24
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd weekend"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            25
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            26
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            27
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            28
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            29
-             
-          </day-of-month>
-          <day-of-month
-            aria-selected="false"
-            class="svelte-1lxgadd"
-            role="option"
-            style="grid-column-start: auto;"
-            tabindex="0"
-          >
-            30
-             
-          </day-of-month>
-        </days-of-month>
-      </cal-body>
-    </calendar>
-  </div>
-</body>
+          S 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          M 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          W 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          T 
+        </p>
+        <p
+          class="svelte-1lxgadd"
+        >
+          F 
+        </p>
+        <p
+          class="svelte-1lxgadd weekend"
+        >
+          S 
+        </p>
+      </days-of-week>
+       
+      <days-of-month
+        class="grid grid-cols-7 grid-rows-5"
+      >
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: 5;"
+          tabindex="0"
+        >
+          1
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          2
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          3
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          4
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          5
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          6
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          7
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          8
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          9
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          10
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="true"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          11
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          12
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          13
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          14
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          15
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          16
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          17
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          18
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          19
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          20
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          21
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          22
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          23
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          24
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd weekend"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          25
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          26
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          27
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          28
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          29
+           
+        </day-of-month>
+        <day-of-month
+          aria-selected="false"
+          class="svelte-1lxgadd"
+          role="option"
+          style="grid-column-start: auto;"
+          tabindex="0"
+        >
+          30
+           
+        </day-of-month>
+      </days-of-month>
+    </cal-body>
+  </calendar>
+</div>
 `;

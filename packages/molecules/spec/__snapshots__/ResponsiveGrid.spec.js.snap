@@ -1,149 +1,141 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
-<body>
-  <div>
-    <container
-      class="overflow-hidden test-class"
-      tabindex="0"
+<div>
+  <container
+    class="overflow-hidden test-class"
+    tabindex="0"
+  >
+    <segment
+      class="absolute w-full h-full col-1"
     >
-      <segment
-        class="absolute w-full h-full col-1"
-      >
-        <span>
-          New Content for A
-        </span>
-         
-      </segment>
-      
-      
-      
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-    </container>
-  </div>
-</body>
+      <span>
+        New Content for A
+      </span>
+       
+    </segment>
+    
+    
+    
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </container>
+</div>
 `;
 
 exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
-<body>
-  <div>
-    <container
-      class="overflow-hidden test-class"
-      tabindex="0"
+<div>
+  <container
+    class="overflow-hidden test-class"
+    tabindex="0"
+  >
+    <segment
+      class="col-1"
     >
-      <segment
-        class="col-1"
-      >
-        <span>
-          New Content for A
-        </span>
-         
-      </segment>
-      
-      <segment
-        class="col-2"
-      >
-        <span>
-           Content for B
-        </span>
-         
-      </segment>
-      
-      <segment
-        class="col-3"
-      >
-        <span>
-           Content for C
-        </span>
-         
-      </segment>
-      
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-    </container>
-  </div>
-</body>
+      <span>
+        New Content for A
+      </span>
+       
+    </segment>
+    
+    <segment
+      class="col-2"
+    >
+      <span>
+         Content for B
+      </span>
+       
+    </segment>
+    
+    <segment
+      class="col-3"
+    >
+      <span>
+         Content for C
+      </span>
+       
+    </segment>
+    
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </container>
+</div>
 `;
 
 exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
-<body>
-  <div>
-    <container
-      class="overflow-hidden three-col"
-      tabindex="0"
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <segment
+      class="col-1"
     >
-      <segment
-        class="col-1"
-      >
-        <span>
-           Content for A
-        </span>
-         
-      </segment>
-      
-      <segment
-        class="col-2"
-      >
-        <span>
-           Content for B
-        </span>
-         
-      </segment>
-      
-      <segment
-        class="col-3"
-      >
-        <span>
-           Content for C
-        </span>
-         
-      </segment>
-      
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-    </container>
-  </div>
-</body>
+      <span>
+         Content for A
+      </span>
+       
+    </segment>
+    
+    <segment
+      class="col-2"
+    >
+      <span>
+         Content for B
+      </span>
+       
+    </segment>
+    
+    <segment
+      class="col-3"
+    >
+      <span>
+         Content for C
+      </span>
+       
+    </segment>
+    
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </container>
+</div>
 `;
 
 exports[`ResponsiveGrid.svelte > should render a responsive grid for small devices 1`] = `
-<body>
-  <div>
-    <container
-      class="overflow-hidden three-col"
-      tabindex="0"
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <segment
+      class="absolute w-full h-full col-1"
     >
-      <segment
-        class="absolute w-full h-full col-1"
-      >
-        <span>
-           Content for A
-        </span>
-         
-      </segment>
-      
-      
-      
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-    </container>
-  </div>
-</body>
+      <span>
+         Content for A
+      </span>
+       
+    </segment>
+    
+    
+    
+    <iframe
+      aria-hidden="true"
+      src="about:blank"
+      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+      tabindex="-1"
+    />
+  </container>
+</div>
 `;

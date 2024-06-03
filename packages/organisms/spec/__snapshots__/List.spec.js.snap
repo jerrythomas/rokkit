@@ -1,388 +1,374 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`List.svelte > should render a list of values 1`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0"
+      role="option"
     >
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0"
-        role="option"
-      >
-         
-        <p>
-          1
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="1"
-        role="option"
-      >
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="2"
-        role="option"
-      >
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+      <p>
+        1
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="1"
+      role="option"
+    >
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="2"
+      role="option"
+    >
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;
 
 exports[`List.svelte > should render a list of values with hierarchy 1`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0,0"
+      role="option"
     >
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0,0"
-        role="option"
-      >
-         
-        <p>
-          1
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0,1"
-        role="option"
-      >
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0,2"
-        role="option"
-      >
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+      <p>
+        1
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0,1"
+      role="option"
+    >
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0,2"
+      role="option"
+    >
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;
 
 exports[`List.svelte > should render a list of values with hierarchy 2`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0,1,0"
+      role="option"
     >
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0,1,0"
-        role="option"
-      >
-         
-        <p>
-          1
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0,1,1"
-        role="option"
-      >
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0,1,2"
-        role="option"
-      >
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+      <p>
+        1
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0,1,1"
+      role="option"
+    >
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0,1,2"
+      role="option"
+    >
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;
 
 exports[`List.svelte > should render items using custom component 1`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0"
+      role="option"
     >
+      <span>
+        1
+      </span>
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0"
-        role="option"
-      >
-        <span>
-          1
-        </span>
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="1"
-        role="option"
-      >
-        
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="2"
-        role="option"
-      >
-        
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="1"
+      role="option"
+    >
+      
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="2"
+      role="option"
+    >
+      
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;
 
 exports[`List.svelte > should render items using custom mapping 1`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0"
+      role="option"
     >
+      
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0"
-        role="option"
-      >
-        
-         
-        <p>
-          1
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="1"
-        role="option"
-      >
-        
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="2"
-        role="option"
-      >
-        
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+      <p>
+        1
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="1"
+      role="option"
+    >
+      
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="2"
+      role="option"
+    >
+      
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;
 
 exports[`List.svelte > should render items using default item when data is invalid 1`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0"
+      role="option"
     >
+      
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0"
-        role="option"
-      >
-        
-         
-        <p>
-          1
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="1"
-        role="option"
-      >
-        
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="2"
-        role="option"
-      >
-        
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+      <p>
+        1
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="1"
+      role="option"
+    >
+      
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="2"
+      role="option"
+    >
+      
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;
 
 exports[`List.svelte > should render items using field mappings 1`] = `
-<body>
-  <div>
-    <list
-      aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
-      role="listbox"
-      tabindex="0"
+<div>
+  <list
+    aria-label="list"
+    class="flex flex-col w-full flex-shrink-0 select-none list"
+    role="listbox"
+    tabindex="0"
+  >
+     
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="0"
+      role="option"
     >
+      
        
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="0"
-        role="option"
-      >
-        
-         
-        <p>
-          1
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="1"
-        role="option"
-      >
-        
-         
-        <p>
-          2
-        </p>
-        
-         
-      </item>
-      <item
-        aria-selected="false"
-        class="item"
-        data-path="2"
-        role="option"
-      >
-        
-         
-        <p>
-          3
-        </p>
-        
-         
-      </item>
-    </list>
-  </div>
-</body>
+      <p>
+        1
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="1"
+      role="option"
+    >
+      
+       
+      <p>
+        2
+      </p>
+      
+       
+    </item>
+    <item
+      aria-selected="false"
+      class="item"
+      data-path="2"
+      role="option"
+    >
+      
+       
+      <p>
+        3
+      </p>
+      
+       
+    </item>
+  </list>
+</div>
 `;

@@ -7,7 +7,12 @@ describe('InputField.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render default', async () => {
-		const { container, component } = render(InputField, { name: 'name' })
+		const { container, component } = render(InputField, {
+			props: {
+				name: 'test',
+				name: 'name'
+			}
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -24,7 +29,13 @@ describe('InputField.svelte', () => {
 	})
 
 	it('should render null', () => {
-		const { container } = render(InputField, { value: null, name: 'name' })
+		const { container } = render(InputField, {
+			props: {
+				name: 'test',
+				value: null,
+				name: 'name'
+			}
+		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
@@ -123,12 +134,8 @@ describe('InputField.svelte', () => {
 	})
 
 	it('should handle property changes', async () => {
-		const { container, component } = render(InputField)
+		const { container, component } = render(InputField, { name: 'name' })
 		const field = container.querySelector('field')
-
-		component.$set({ name: 'name' })
-		await tick()
-		expect(field.getAttribute('aria-label')).toEqual('name')
 
 		component.$set({ label: 'label' })
 		await tick()

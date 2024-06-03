@@ -24,18 +24,18 @@
 		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^3.0.2",
-		"@testing-library/svelte": "^4.1.0",
-		"@types/prismjs": "^1.26.3",
-		"@vitest/coverage-v8": "^1.4.0",
-		"@vitest/ui": "~1.4.0",
-		"jsdom": "^24.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.1.1",
+		"@testing-library/svelte": "^5.1.0",
+		"@types/prismjs": "^1.26.4",
+		"@vitest/coverage-v8": "^1.6.0",
+		"@vitest/ui": "~1.6.0",
+		"jsdom": "^24.1.0",
 		"shared-config": "workspace:*",
-		"svelte": "^4.2.12",
-		"typescript": "^5.4.4",
+		"svelte": "^4.2.17",
+		"typescript": "^5.4.5",
 		"validators": "workspace:*",
-		"vite": "^5.2.8",
-		"vitest": "~1.4.0"
+		"vite": "^5.2.12",
+		"vitest": "~1.6.0"
 	},
 	"files": [
 		"src/**/*.js",
@@ -55,7 +55,7 @@
 	"dependencies": {
 		"@rokkit/actions": "workspace:*",
 		"@rokkit/core": "workspace:*",
-		"marked": "^12.0.1",
+		"marked": "^12.0.2",
 		"marked-gfm-heading-id": "^3.1.3",
 		"marked-mangle": "^1.1.7"
 	}

@@ -1,24 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`RangeTick.svelte > should render 1`] = `
-<body>
-  <div>
-    <tick
-      aria-selected="false"
-      class="grid grid-cols-2 cursor-pointer select-none"
-      role="option"
-      tabindex="0"
+<div>
+  <tick
+    aria-selected="false"
+    class="grid grid-cols-2 cursor-pointer select-none"
+    role="option"
+    tabindex="0"
+  >
+    <tick-bar
+      class="col-start-2 h-5px border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
     >
-      <tick-bar
-        class="col-start-2 h-5px border-l"
-      />
-       
-      <p
-        class="col-span-2 flex justify-center"
-      >
-        10
-      </p>
-    </tick>
-  </div>
-</body>
+      10
+    </p>
+  </tick>
+</div>
 `;

@@ -1,71 +1,61 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Label.svelte > should render 1`] = `
-<body>
-  <div>
-    <text
-      class="label"
-      text-anchor="middle"
-      transform="translate(10,20) rotate(0)"
-    >
-      Hello
-    </text>
-  </div>
-</body>
+<div>
+  <text
+    class="label"
+    text-anchor="middle"
+    transform="translate(10,20) rotate(0)"
+  >
+    Hello
+  </text>
+</div>
 `;
 
 exports[`Label.svelte > should render with anchor end 1`] = `
-<body>
-  <div>
-    <text
-      class="label"
-      text-anchor="end"
-      transform="translate(10,20) rotate(0)"
-    >
-      end
-    </text>
-  </div>
-</body>
+<div>
+  <text
+    class="label"
+    text-anchor="end"
+    transform="translate(10,20) rotate(0)"
+  >
+    end
+  </text>
+</div>
 `;
 
 exports[`Label.svelte > should render with anchor middle 1`] = `
-<body>
-  <div>
-    <text
-      class="label"
-      text-anchor="middle"
-      transform="translate(10,20) rotate(0)"
-    >
-      middle
-    </text>
-  </div>
-</body>
+<div>
+  <text
+    class="label"
+    text-anchor="middle"
+    transform="translate(10,20) rotate(0)"
+  >
+    middle
+  </text>
+</div>
 `;
 
 exports[`Label.svelte > should render with anchor start 1`] = `
-<body>
-  <div>
-    <text
-      class="label"
-      text-anchor="start"
-      transform="translate(10,20) rotate(0)"
-    >
-      start
-    </text>
-  </div>
-</body>
+<div>
+  <text
+    class="label"
+    text-anchor="start"
+    transform="translate(10,20) rotate(0)"
+  >
+    start
+  </text>
+</div>
 `;
 
 exports[`Label.svelte > should render with rotation 1`] = `
-<body>
-  <div>
-    <text
-      class="label"
-      text-anchor="middle"
-      transform="translate(10,20) rotate(45)"
-    >
-      Angled
-    </text>
-  </div>
-</body>
+<div>
+  <text
+    class="label"
+    text-anchor="middle"
+    transform="translate(10,20) rotate(45)"
+  >
+    Angled
+  </text>
+</div>
 `;
