@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/core",
-  "version": "1.0.0-next.94",
+  "version": "1.0.0-next.95",
   "description": "Core components, actions and stores for svelte apps.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
@@ -37,7 +37,11 @@
     "vite": "^5.2.8",
     "vitest": "~1.4.0"
   },
-  "files": ["src/**/*.js", "src/**/*.svelte", "!spec"],
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "!spec"
+  ],
   "exports": {
     "./src": "./src",
     "./package.json": "./package.json",
