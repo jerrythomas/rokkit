@@ -24,6 +24,7 @@ export const types = {
 	integer: NativeInput.InputNumber,
 	boolean: RokkitInput.Checkbox,
 	enum: InputSelect,
+	phone: NativeInput.InputTel,
 	...native,
 	...override,
 	...extractComponentMap({ InputSelect, InputSwitch })

@@ -22,6 +22,7 @@ describe('Input.svelte', () => {
 			'integer',
 			'boolean',
 			'enum',
+			'phone',
 			'color',
 			'date',
 			'date-time',
