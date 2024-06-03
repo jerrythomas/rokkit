@@ -2,11 +2,25 @@ import { defaultFields } from './constants'
 import { isExpanded, hasChildren, getAttribute } from './mapping'
 import { equals } from 'ramda'
 
+/**
+ * Checks if a specifc attribute of an item matches a value.
+ *
+ * @param {Object} item - The item.
+ * @param {string} attr - The attribute to check.
+ */
 function isMatch(item, attr, value) {
 	const itemValue = attr ? getAttribute(item, attr) : item
 	return equals(itemValue, value)
 }
 
+/**
+ * Traverses the tree to find an item by value.
+ * @param {Array} items - The items array.
+ * @param {Object} fields - The fields mapping.
+ * @param {any} value - The value to find.
+ * @param {Array} position - The current position in the tree.
+ * @returns {Object} The found item, or null if not found.
+ */
 function findInChildren(item, index, fields, value, attr, position) {
 	if (hasChildren(item, fields)) {
 		return findItemByValue(value, item[fields.children], fields.fields ?? fields, attr, [
@@ -85,6 +99,7 @@ export function findNearestItemBefore(position, items, fields) {
 }
 
 /**
+ * Returns the next sibling of the current item.
  *
  * @param {*} parent
  * @param {Array<integer>} position
