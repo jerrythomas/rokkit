@@ -1,4 +1,5 @@
 export const mockStore = {
+	getEvents: vi.fn().mockReturnValue([]),
 	moveTo: vi.fn(),
 	moveByOffset: vi.fn(),
 	moveFirst: vi.fn(),
