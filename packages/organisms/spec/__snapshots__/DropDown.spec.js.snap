@@ -187,454 +187,438 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
 `;
 
 exports[`DropDown.svelte > should render items using custom component 1`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render items using custom component 2`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render items using custom component 3`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render items using custom mapping 1`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render items using default component, when invalid component is provided 1`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render items using field mapping 1`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render string array 1`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown open"
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown open"
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-opened"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-opened"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-          tabindex="-1"
-        />
-      </button>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
+         
+         
+        <icon
+          aria-label="selector-opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
         >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
+        >
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-             
-            <p>
-              a
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-             
-            <p>
-              b
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-             
-            <p>
-              c
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </drop-down>
-  </div>
-</body>
+          <p>
+            a
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+           
+          <p>
+            b
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+           
+          <p>
+            c
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render string array 2`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown open"
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown open"
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-          <icon
-            aria-label="theme"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="theme"
-            />
-          </icon>
-           
-           
-          <icon
-            aria-label="selector-opened"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-opened"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-          tabindex="-1"
-        />
-      </button>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
+        <icon
+          aria-label="theme"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
         >
+          <i
+            aria-hidden="true"
+            class="theme"
+          />
+        </icon>
+         
+         
+        <icon
+          aria-label="selector-opened"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-opened"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
+        >
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-             
-            <p>
-              x
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-             
-            <p>
-              y
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-             
-            <p>
-              z
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </drop-down>
-  </div>
-</body>
+          <p>
+            x
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+           
+          <p>
+            y
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+           
+          <p>
+            z
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should render title 1`] = `
@@ -774,96 +758,92 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
 `;
 
 exports[`DropDown.svelte > should render using icon only 2`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-          <icon
-            aria-label="theme"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="theme"
-            />
-          </icon>
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        <icon
+          aria-label="theme"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="theme"
+          />
+        </icon>
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;
 
 exports[`DropDown.svelte > should toggle open state on focus change 1`] = `
-<body>
-  <div>
-    <drop-down
-      aria-controls="menu"
-      aria-haspopup="true"
-      class="flex relative cursor-pointer select-none dropdown "
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="flex relative cursor-pointer select-none dropdown "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
     >
-      <button
+      <span
         class="flex items-center"
-        tabindex="0"
       >
-        <span
-          class="flex items-center"
-        >
-           
-           
-          <icon
-            aria-label="selector-closed"
-            class="flex flex-shrink-0 items-center justify-center "
-            role="img"
-            tabindex="-1"
-          >
-            <i
-              aria-hidden="true"
-              class="selector-closed"
-            />
-          </icon>
-        </span>
-        <iframe
-          aria-hidden="true"
-          src="about:blank"
-          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+         
+         
+        <icon
+          aria-label="selector-closed"
+          class="flex flex-shrink-0 items-center justify-center "
+          role="img"
           tabindex="-1"
-        />
-      </button>
-       
-    </drop-down>
-  </div>
-</body>
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </icon>
+      </span>
+      <iframe
+        aria-hidden="true"
+        src="about:blank"
+        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+    </button>
+     
+  </drop-down>
+</div>
 `;

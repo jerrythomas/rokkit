@@ -1,738 +1,724 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`VirtualSelect.svelte > should close the dropdown when focus is lost 1`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
+      <p
+        class="placeholder"
       >
-        <p
-          class="placeholder"
-        >
-          Select
-        </p>
-        
-         
-        <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-closed"
-          />
-        </icon>
-      </selected-item>
+        Select
+      </p>
+      
        
-    </input-select>
-  </div>
-</body>
+      <icon
+        aria-label="closed"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </icon>
+    </selected-item>
+     
+  </input-select>
+</div>
 `;
 
 exports[`VirtualSelect.svelte > should render object array 1`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
+      <p
+        class="placeholder"
       >
-        <p
-          class="placeholder"
-        >
-          Select
-        </p>
-        
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+        Select
+      </p>
+      
        
-      <virtual-list>
-        <virtual-list-viewport
-          class="relative block svelte-1nt637a overflow-y-auto"
-          role="listbox"
-          style="height: 4px; left: 0px; top: 0px;"
-          tabindex="-1"
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <virtual-list>
+      <virtual-list-viewport
+        class="relative block svelte-1nt637a overflow-y-auto"
+        role="listbox"
+        style="height: 4px; left: 0px; top: 0px;"
+        tabindex="-1"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 200px;"
         >
-          <virtual-list-contents
-            class="block"
-            style="padding-top: 0px; padding-bottom: 200px;"
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
           >
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="0"
-            >
-              
-               
-              <p>
-                Item 1
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="1"
-            >
-              
-               
-              <p>
-                Item 2
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="2"
-            >
-              
-               
-              <p>
-                Item 3
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="3"
-            >
-              
-               
-              <p>
-                Item 4
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="4"
-            >
-              
-               
-              <p>
-                Item 5
-              </p>
-              
-               
-            </virtual-list-item>
-          </virtual-list-contents>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
-        </virtual-list-viewport>
-      </virtual-list>
-    </input-select>
-  </div>
-</body>
+            
+             
+            <p>
+              Item 1
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+          >
+            
+             
+            <p>
+              Item 2
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="2"
+          >
+            
+             
+            <p>
+              Item 3
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="3"
+          >
+            
+             
+            <p>
+              Item 4
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="4"
+          >
+            
+             
+            <p>
+              Item 5
+            </p>
+            
+             
+          </virtual-list-item>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </virtual-list>
+  </input-select>
+</div>
 `;
 
 exports[`VirtualSelect.svelte > should render object array 2`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
+      <p
+        class="placeholder"
       >
-        <p
-          class="placeholder"
-        >
-          Select
-        </p>
-        
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+        Select
+      </p>
+      
        
-      <virtual-list>
-        <virtual-list-viewport
-          class="relative block svelte-1nt637a overflow-y-auto"
-          role="listbox"
-          style="height: 4px; left: 0px; top: 0px;"
-          tabindex="-1"
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <virtual-list>
+      <virtual-list-viewport
+        class="relative block svelte-1nt637a overflow-y-auto"
+        role="listbox"
+        style="height: 4px; left: 0px; top: 0px;"
+        tabindex="-1"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 200px;"
         >
-          <virtual-list-contents
-            class="block"
-            style="padding-top: 0px; padding-bottom: 200px;"
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
           >
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="0"
-            >
-              
-               
-              <p>
-                Item 1
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="1"
-            >
-              
-               
-              <p>
-                Item 2
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="2"
-            >
-              
-               
-              <p>
-                Item 3
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="3"
-            >
-              
-               
-              <p>
-                Item 4
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="4"
-            >
-              
-               
-              <p>
-                Item 5
-              </p>
-              
-               
-            </virtual-list-item>
-          </virtual-list-contents>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
-        </virtual-list-viewport>
-      </virtual-list>
-    </input-select>
-  </div>
-</body>
+            
+             
+            <p>
+              Item 1
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+          >
+            
+             
+            <p>
+              Item 2
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="2"
+          >
+            
+             
+            <p>
+              Item 3
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="3"
+          >
+            
+             
+            <p>
+              Item 4
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="4"
+          >
+            
+             
+            <p>
+              Item 5
+            </p>
+            
+             
+          </virtual-list-item>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </virtual-list>
+  </input-select>
+</div>
 `;
 
 exports[`VirtualSelect.svelte > should render string array 1`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
+      <p
+        class="placeholder"
       >
-        <p
-          class="placeholder"
-        >
-          Select
-        </p>
-        
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+        Select
+      </p>
+      
        
-      <virtual-list>
-        <virtual-list-viewport
-          class="relative block svelte-1nt637a overflow-y-auto"
-          role="listbox"
-          style="height: 4px; left: 0px; top: 0px;"
-          tabindex="-1"
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <virtual-list>
+      <virtual-list-viewport
+        class="relative block svelte-1nt637a overflow-y-auto"
+        role="listbox"
+        style="height: 4px; left: 0px; top: 0px;"
+        tabindex="-1"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 200px;"
         >
-          <virtual-list-contents
-            class="block"
-            style="padding-top: 0px; padding-bottom: 200px;"
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
           >
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="0"
-            >
-               
-              <p>
-                Item 1
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="1"
-            >
-               
-              <p>
-                Item 2
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="2"
-            >
-               
-              <p>
-                Item 3
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="3"
-            >
-               
-              <p>
-                Item 4
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="4"
-            >
-               
-              <p>
-                Item 5
-              </p>
-              
-               
-            </virtual-list-item>
-          </virtual-list-contents>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
-        </virtual-list-viewport>
-      </virtual-list>
-    </input-select>
-  </div>
-</body>
+             
+            <p>
+              Item 1
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+          >
+             
+            <p>
+              Item 2
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="2"
+          >
+             
+            <p>
+              Item 3
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="3"
+          >
+             
+            <p>
+              Item 4
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="4"
+          >
+             
+            <p>
+              Item 5
+            </p>
+            
+             
+          </virtual-list-item>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </virtual-list>
+  </input-select>
+</div>
 `;
 
 exports[`VirtualSelect.svelte > should render string array 2`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
+      <p
+        class="placeholder"
       >
-        <p
-          class="placeholder"
-        >
-          Select
-        </p>
-        
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+        Select
+      </p>
+      
        
-      <virtual-list>
-        <virtual-list-viewport
-          class="relative block svelte-1nt637a overflow-y-auto"
-          role="listbox"
-          style="height: 4px; left: 0px; top: 0px;"
-          tabindex="-1"
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <virtual-list>
+      <virtual-list-viewport
+        class="relative block svelte-1nt637a overflow-y-auto"
+        role="listbox"
+        style="height: 4px; left: 0px; top: 0px;"
+        tabindex="-1"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 200px;"
         >
-          <virtual-list-contents
-            class="block"
-            style="padding-top: 0px; padding-bottom: 200px;"
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
           >
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="0"
-            >
-               
-              <p>
-                Item 1
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="1"
-            >
-               
-              <p>
-                Item 2
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="2"
-            >
-               
-              <p>
-                Item 3
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="3"
-            >
-               
-              <p>
-                Item 4
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="4"
-            >
-               
-              <p>
-                Item 5
-              </p>
-              
-               
-            </virtual-list-item>
-          </virtual-list-contents>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
-        </virtual-list-viewport>
-      </virtual-list>
-    </input-select>
-  </div>
-</body>
+             
+            <p>
+              Item 1
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+          >
+             
+            <p>
+              Item 2
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="2"
+          >
+             
+            <p>
+              Item 3
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="3"
+          >
+             
+            <p>
+              Item 4
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="4"
+          >
+             
+            <p>
+              Item 5
+            </p>
+            
+             
+          </virtual-list-item>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </virtual-list>
+  </input-select>
+</div>
 `;
 
 exports[`VirtualSelect.svelte > should render with selected value 1`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
-      >
-         
-        <p>
-          Item 3
-        </p>
-        
-        
-        
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
        
-      <virtual-list>
-        <virtual-list-viewport
-          class="relative block svelte-1nt637a overflow-y-auto"
-          role="listbox"
-          style="height: 4px; left: 0px; top: 0px;"
-          tabindex="-1"
+      <p>
+        Item 3
+      </p>
+      
+      
+      
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <virtual-list>
+      <virtual-list-viewport
+        class="relative block svelte-1nt637a overflow-y-auto"
+        role="listbox"
+        style="height: 4px; left: 0px; top: 0px;"
+        tabindex="-1"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 200px;"
         >
-          <virtual-list-contents
-            class="block"
-            style="padding-top: 0px; padding-bottom: 200px;"
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
           >
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="0"
-            >
-               
-              <p>
-                Item 1
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="1"
-            >
-               
-              <p>
-                Item 2
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="true"
-              data-path="2"
-            >
-               
-              <p>
-                Item 3
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="3"
-            >
-               
-              <p>
-                Item 4
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="4"
-            >
-               
-              <p>
-                Item 5
-              </p>
-              
-               
-            </virtual-list-item>
-          </virtual-list-contents>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
-        </virtual-list-viewport>
-      </virtual-list>
-    </input-select>
-  </div>
-</body>
+             
+            <p>
+              Item 1
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+          >
+             
+            <p>
+              Item 2
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="true"
+            data-path="2"
+          >
+             
+            <p>
+              Item 3
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="3"
+          >
+             
+            <p>
+              Item 4
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="4"
+          >
+             
+            <p>
+              Item 5
+            </p>
+            
+             
+          </virtual-list-item>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </virtual-list>
+  </input-select>
+</div>
 `;
 
 exports[`VirtualSelect.svelte > should render with selected value 2`] = `
-<body>
-  <div>
-    <input-select>
-      <selected-item
-        aria-selected="false"
-        class="flex items-center"
-        role="option"
-        tabindex="0"
-      >
-         
-        <p>
-          Item 3
-        </p>
-        
-        
-        
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+<div>
+  <input-select>
+    <selected-item
+      aria-selected="false"
+      class="flex items-center"
+      role="option"
+      tabindex="0"
+    >
        
-      <virtual-list>
-        <virtual-list-viewport
-          class="relative block svelte-1nt637a overflow-y-auto"
-          role="listbox"
-          style="height: 4px; left: 0px; top: 0px;"
-          tabindex="-1"
+      <p>
+        Item 3
+      </p>
+      
+      
+      
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <virtual-list>
+      <virtual-list-viewport
+        class="relative block svelte-1nt637a overflow-y-auto"
+        role="listbox"
+        style="height: 4px; left: 0px; top: 0px;"
+        tabindex="-1"
+      >
+        <virtual-list-contents
+          class="block"
+          style="padding-top: 0px; padding-bottom: 200px;"
         >
-          <virtual-list-contents
-            class="block"
-            style="padding-top: 0px; padding-bottom: 200px;"
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
           >
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="0"
-            >
-               
-              <p>
-                Item 1
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="1"
-            >
-               
-              <p>
-                Item 2
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="true"
-              data-path="2"
-            >
-               
-              <p>
-                Item 3
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="3"
-            >
-               
-              <p>
-                Item 4
-              </p>
-              
-               
-            </virtual-list-item>
-            <virtual-list-item
-              aria-current="false"
-              aria-selected="false"
-              data-path="4"
-            >
-               
-              <p>
-                Item 5
-              </p>
-              
-               
-            </virtual-list-item>
-          </virtual-list-contents>
-          <iframe
-            aria-hidden="true"
-            src="about:blank"
-            style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-            tabindex="-1"
-          />
-        </virtual-list-viewport>
-      </virtual-list>
-    </input-select>
-  </div>
-</body>
+             
+            <p>
+              Item 1
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+          >
+             
+            <p>
+              Item 2
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="true"
+            data-path="2"
+          >
+             
+            <p>
+              Item 3
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="3"
+          >
+             
+            <p>
+              Item 4
+            </p>
+            
+             
+          </virtual-list-item>
+          <virtual-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="4"
+          >
+             
+            <p>
+              Item 5
+            </p>
+            
+             
+          </virtual-list-item>
+        </virtual-list-contents>
+        <iframe
+          aria-hidden="true"
+          src="about:blank"
+          style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
+          tabindex="-1"
+        />
+      </virtual-list-viewport>
+    </virtual-list>
+  </input-select>
+</div>
 `;

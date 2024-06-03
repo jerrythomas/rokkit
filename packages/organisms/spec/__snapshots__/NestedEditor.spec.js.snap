@@ -1,60 +1,58 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
-<body>
-  <div>
-    <container
-      class="flex flex-row h-full w-full"
+<div>
+  <container
+    class="flex flex-row h-full w-full"
+  >
+    <aside
+      class="flex h-full w-80 border-r border-r-neutral-subtle"
     >
-      <aside
-        class="flex h-full w-80 border-r border-r-neutral-subtle"
+      <tree
+        class="w-full h-full"
+        tabindex="0"
       >
-        <tree
-          class="w-full h-full"
-          tabindex="0"
-        >
-          <nested-list
-            class="nested-list flex flex-col w-full list"
-            role="tree"
-          />
-        </tree>
-      </aside>
+        <nested-list
+          class="nested-list flex flex-col w-full list"
+          role="tree"
+        />
+      </tree>
+    </aside>
+     
+    <content
+      class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden"
+    >
        
-      <content
-        class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden"
+      <section
+        class="flex flex-col w-full flex-grow overflow-auto"
       >
+        <p>
+          Select a node to edit
+        </p>
          
-        <section
-          class="flex flex-col w-full flex-grow overflow-auto"
+        <tree-table
+          class=""
         >
-          <p>
-            Select a node to edit
-          </p>
-           
-          <tree-table
-            class=""
+          <table
+            class="striped"
           >
-            <table
-              class="striped"
-            >
-              <thead>
-                <tr>
-                  <th>
-                    path
-                  </th>
-                  <th>
-                    value
-                  </th>
-                </tr>
-              </thead>
-               
-              <tbody />
-            </table>
-          </tree-table>
-        </section>
-         
-      </content>
-    </container>
-  </div>
-</body>
+            <thead>
+              <tr>
+                <th>
+                  path
+                </th>
+                <th>
+                  value
+                </th>
+              </tr>
+            </thead>
+             
+            <tbody />
+          </table>
+        </tree-table>
+      </section>
+       
+    </content>
+  </container>
+</div>
 `;

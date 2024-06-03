@@ -74,11 +74,11 @@ describe('Input.svelte', () => {
 			value: null
 		})
 		expect(container.querySelector('error')).toBeNull()
-		expect(container.querySelector('div').innerHTML).toMatchSnapshot()
+		expect(container).toMatchSnapshot()
 
 		component.$set({ type: 'number' })
 		await tick()
 		expect(container.querySelector('error')).toBeNull()
-		expect(container.querySelector('div').innerHTML).toMatchSnapshot()
+		expect(container).toMatchSnapshot()
 	})
 })

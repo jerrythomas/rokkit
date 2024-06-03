@@ -1,35 +1,29 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Message.svelte > should render empty 1`] = `
-<body>
-  <div>
-    
-  </div>
-</body>
+<div>
+  
+</div>
 `;
 
 exports[`Message.svelte > should render error message 1`] = `
-<body>
-  <div>
-    <message
-      class="error"
-    >
-      Error
-    </message>
-    
-  </div>
-</body>
+<div>
+  <message
+    class="error"
+  >
+    Error
+  </message>
+  
+</div>
 `;
 
 exports[`Message.svelte > should render error message 2`] = `
-<body>
-  <div>
-    <message
-      class="info"
-    >
-      Info
-    </message>
-    
-  </div>
-</body>
+<div>
+  <message
+    class="info"
+  >
+    Info
+  </message>
+  
+</div>
 `;

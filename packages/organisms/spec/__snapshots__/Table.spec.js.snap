@@ -1,84 +1,82 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Table.svelte > should render using default field mapping 1`] = `
-<body>
-  <div>
-    <tree-table
-      class=""
+<div>
+  <tree-table
+    class=""
+  >
+    <table
+      class="striped"
     >
-      <table
-        class="striped"
-      >
-         
-        <thead>
-          <tr>
-            <th
-              aria-label="id"
-              class=""
-              data-sortable="false"
-              scope="col"
-            >
-              <cell>
-                id
-                 
-              </cell>
-            </th>
-            
-            <th
-              aria-label="name"
-              class=""
-              data-sortable="false"
-              scope="col"
-            >
-              <cell>
-                name
-                 
-              </cell>
-            </th>
-            
-          </tr>
-        </thead>
-         
-        <tbody>
-          <tr
-            aria-current="false"
-            class="cursor-pointer"
+       
+      <thead>
+        <tr>
+          <th
+            aria-label="id"
+            class=""
+            data-sortable="false"
+            scope="col"
           >
-            <td>
-              <cell
-                class="cell-type-undefined"
-              >
-                 
-                
-                 
-                <p>
-                  1
-                </p>
-                
-                
-              </cell>
-            </td>
-            <td>
-              <cell
-                class="cell-type-undefined"
-              >
-                 
-                
-                 
-                <p>
-                  test
-                </p>
-                
-                
-              </cell>
-            </td>
-             
-          </tr>
+            <cell>
+              id
+               
+            </cell>
+          </th>
           
-        </tbody>
-         
-      </table>
-    </tree-table>
-  </div>
-</body>
+          <th
+            aria-label="name"
+            class=""
+            data-sortable="false"
+            scope="col"
+          >
+            <cell>
+              name
+               
+            </cell>
+          </th>
+          
+        </tr>
+      </thead>
+       
+      <tbody>
+        <tr
+          aria-current="false"
+          class="cursor-pointer"
+        >
+          <td>
+            <cell
+              class="cell-type-undefined"
+            >
+               
+              
+               
+              <p>
+                1
+              </p>
+              
+              
+            </cell>
+          </td>
+          <td>
+            <cell
+              class="cell-type-undefined"
+            >
+               
+              
+               
+              <p>
+                test
+              </p>
+              
+              
+            </cell>
+          </td>
+           
+        </tr>
+        
+      </tbody>
+       
+    </table>
+  </tree-table>
+</div>
 `;

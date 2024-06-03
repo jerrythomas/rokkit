@@ -1,56 +1,46 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Wrapper.svelte > should render using default props 1`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="vertical "
-    />
-  </div>
-</body>
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical "
+  />
+</div>
 `;
 
 exports[`Wrapper.svelte > should render using specified class 1`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="vertical custom-class"
-    />
-  </div>
-</body>
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical custom-class"
+  />
+</div>
 `;
 
 exports[`Wrapper.svelte > should render using specified class 2`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="vertical custom-class-2"
-    />
-  </div>
-</body>
+<div>
+  <field-layout
+    aria-label=""
+    class="vertical custom-class-2"
+  />
+</div>
 `;
 
 exports[`Wrapper.svelte > should render using specified type 1`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="horizontal "
-    />
-  </div>
-</body>
+<div>
+  <field-layout
+    aria-label=""
+    class="horizontal "
+  />
+</div>
 `;
 
 exports[`Wrapper.svelte > should render using specified type 2`] = `
-<body>
-  <div>
-    <field-layout
-      aria-label=""
-      class="section "
-    />
-  </div>
-</body>
+<div>
+  <field-layout
+    aria-label=""
+    class="section "
+  />
+</div>
 `;

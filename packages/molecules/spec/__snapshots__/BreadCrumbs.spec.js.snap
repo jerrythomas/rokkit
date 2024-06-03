@@ -1,105 +1,99 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
-<body>
-  <div>
-    <crumbs
-      class="flex "
+<div>
+  <crumbs
+    class="flex "
+  >
+     
+    <crumb>
+       
+      <p>
+        Alpha
+      </p>
+      
+       
+    </crumb>
+    <span>
+      /
+    </span>
+     
+    <crumb
+      class="is-selected"
     >
        
-      <crumb>
-         
-        <p>
-          Alpha
-        </p>
-        
-         
-      </crumb>
-      <span>
-        /
-      </span>
+      <p>
+        Beta
+      </p>
+      
        
-      <crumb
-        class="is-selected"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-         
-      </crumb>
-    </crumbs>
-  </div>
-</body>
+    </crumb>
+  </crumbs>
+</div>
 `;
 
 exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
-<body>
-  <div>
-    <crumbs
-      class="flex "
+<div>
+  <crumbs
+    class="flex "
+  >
+     
+    <crumb>
+       
+      <p>
+        Alpha
+      </p>
+      
+       
+    </crumb>
+    <span>
+      &gt;
+    </span>
+     
+    <crumb
+      class="is-selected"
     >
        
-      <crumb>
-         
-        <p>
-          Alpha
-        </p>
-        
-         
-      </crumb>
-      <span>
-        &gt;
-      </span>
+      <p>
+        Beta
+      </p>
+      
        
-      <crumb
-        class="is-selected"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-         
-      </crumb>
-    </crumbs>
-  </div>
-</body>
+    </crumb>
+  </crumbs>
+</div>
 `;
 
 exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] = `
-<body>
-  <div>
-    <crumbs
-      class="flex "
+<div>
+  <crumbs
+    class="flex "
+  >
+     
+    <crumb>
+       
+      <p>
+        Alpha
+      </p>
+      
+       
+    </crumb>
+    <span>
+      <icon
+        class="icon"
+      />
+    </span>
+     
+    <crumb
+      class="is-selected"
     >
        
-      <crumb>
-         
-        <p>
-          Alpha
-        </p>
-        
-         
-      </crumb>
-      <span>
-        <icon
-          class="icon"
-        />
-      </span>
+      <p>
+        Beta
+      </p>
+      
        
-      <crumb
-        class="is-selected"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-         
-      </crumb>
-    </crumbs>
-  </div>
-</body>
+    </crumb>
+  </crumbs>
+</div>
 `;

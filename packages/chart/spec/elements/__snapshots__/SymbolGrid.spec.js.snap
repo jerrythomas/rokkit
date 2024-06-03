@@ -1,124 +1,122 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
-<body>
-  <div>
-    <svg
-      viewBox="0 0 66 52"
-    >
-      <path
-        d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(12,12)"
-      />
-      
-      <path
-        d="M 14.136 14.136 L 14.136 -14.136 L -14.136 -14.136 L -14.136 14.136 Z"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(26,12)"
-      />
-      
-      <path
-        d="M 0 -21.772 L 18.856 10.884 L -18.856 10.884 Z"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(40,12)"
-      />
-      
-      <path
-        d="M 0 -19.98 L 19.98 0 L 0 19.98 L -19.98 0 Z"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(54,12)"
-      />
-      
-      <path
-        d="M -27.492 0 L 27.492 0 M 0 27.492 L 0 -27.492"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(12,26)"
-      />
-      
-      <path
-        d="M 0 19.076 L 0 -19.076 M -16.52 -9.536 L 16.52 9.536 M -16.52 9.536 L 16.52 -9.536"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(26,26)"
-      />
-      
-      <path
-        d="M -19.48 -19.48 L 19.48 19.48 M -19.48 19.48 L 19.48 -19.48"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(40,26)"
-      />
-      
-      <path
-        d="M 16 0 A 3.2 3.2 0 0 0 0 -12 A 3.2 3.2 0 0 0 -16 0 L 0 16 L 16 0"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(54,26)"
-      />
-      
-      <path
-        d="M -0.79996 -20 L 3.69032 -6.18036 H 18.22116 L 6.46548 2.36068 L 10.95576 16.18036 L -0.79996 7.63932 L -12.55568 16.18036 L -8.0654 2.36068 L -19.82108 -6.18036 H -5.29024 L -0.79996 -20 Z"
-        fill="#11b8aa"
-        fill-rule="evenodd"
-        role="button"
-        stroke="#11b8aa"
-        stroke-width="1"
-        tabindex="0"
-        transform="translate(12,40)"
-      />
-      
-      <rect
-        fill="#11b8aa"
-        height="28.272"
-        role="button"
-        rx="1.4136"
-        ry="1.4136"
-        stroke="#11b8aa"
-        tabindex="0"
-        width="28.272"
-        x="11.864"
-        y="25.864"
-      />
-      
-    </svg>
-  </div>
-</body>
+<div>
+  <svg
+    viewBox="0 0 66 52"
+  >
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(12,12)"
+    />
+    
+    <path
+      d="M 14.136 14.136 L 14.136 -14.136 L -14.136 -14.136 L -14.136 14.136 Z"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(26,12)"
+    />
+    
+    <path
+      d="M 0 -21.772 L 18.856 10.884 L -18.856 10.884 Z"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(40,12)"
+    />
+    
+    <path
+      d="M 0 -19.98 L 19.98 0 L 0 19.98 L -19.98 0 Z"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(54,12)"
+    />
+    
+    <path
+      d="M -27.492 0 L 27.492 0 M 0 27.492 L 0 -27.492"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(12,26)"
+    />
+    
+    <path
+      d="M 0 19.076 L 0 -19.076 M -16.52 -9.536 L 16.52 9.536 M -16.52 9.536 L 16.52 -9.536"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(26,26)"
+    />
+    
+    <path
+      d="M -19.48 -19.48 L 19.48 19.48 M -19.48 19.48 L 19.48 -19.48"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(40,26)"
+    />
+    
+    <path
+      d="M 16 0 A 3.2 3.2 0 0 0 0 -12 A 3.2 3.2 0 0 0 -16 0 L 0 16 L 16 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(54,26)"
+    />
+    
+    <path
+      d="M -0.79996 -20 L 3.69032 -6.18036 H 18.22116 L 6.46548 2.36068 L 10.95576 16.18036 L -0.79996 7.63932 L -12.55568 16.18036 L -8.0654 2.36068 L -19.82108 -6.18036 H -5.29024 L -0.79996 -20 Z"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(12,40)"
+    />
+    
+    <rect
+      fill="#11b8aa"
+      height="28.272"
+      role="button"
+      rx="1.4136"
+      ry="1.4136"
+      stroke="#11b8aa"
+      tabindex="0"
+      width="28.272"
+      x="11.864"
+      y="25.864"
+    />
+    
+  </svg>
+</div>
 `;

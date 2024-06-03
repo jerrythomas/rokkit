@@ -1,168 +1,148 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Item.svelte > should render default 1`] = `
-<body>
-  <div>
-     
-    
-  </div>
-</body>
+<div>
+   
+  
+</div>
 `;
 
 exports[`Item.svelte > should render empty when field mapping is invalid 1`] = `
-<body>
-  <div>
-    
-     
-    
-  </div>
-</body>
+<div>
+  
+   
+  
+</div>
 `;
 
 exports[`Item.svelte > should render icon 1`] = `
-<body>
-  <div>
-    <icon
-      aria-label="info"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="info"
-      />
-    </icon>
-    
-     
-    <p>
-      hello
-    </p>
-    
-  </div>
-</body>
+<div>
+  <icon
+    aria-label="info"
+    class="flex flex-shrink-0 items-center justify-center "
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="info"
+    />
+  </icon>
+  
+   
+  <p>
+    hello
+  </p>
+  
+</div>
 `;
 
 exports[`Item.svelte > should render icon based on state 1`] = `
-<body>
-  <div>
-    <icon
-      aria-label="info"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="info"
-      />
-    </icon>
-    
-     
-    <p>
-      hello
-    </p>
-    
-  </div>
-</body>
+<div>
+  <icon
+    aria-label="info"
+    class="flex flex-shrink-0 items-center justify-center "
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="info"
+    />
+  </icon>
+  
+   
+  <p>
+    hello
+  </p>
+  
+</div>
 `;
 
 exports[`Item.svelte > should render image 1`] = `
-<body>
-  <div>
-    <img
-      alt="hello"
-      class="min-h-4 min-w-4 object-cover"
-      src="https://example.com/img.png"
-    />
-    
-     
-    <p>
-      hello
-    </p>
-    
-  </div>
-</body>
+<div>
+  <img
+    alt="hello"
+    class="min-h-4 min-w-4 object-cover"
+    src="https://example.com/img.png"
+  />
+  
+   
+  <p>
+    hello
+  </p>
+  
+</div>
 `;
 
 exports[`Item.svelte > should render image and icon 1`] = `
-<body>
-  <div>
-    <icon
-      aria-label="info"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="info"
-      />
-    </icon>
-    
-     
-    <p>
-      hello
-    </p>
-    
-  </div>
-</body>
+<div>
+  <icon
+    aria-label="info"
+    class="flex flex-shrink-0 items-center justify-center "
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="info"
+    />
+  </icon>
+  
+   
+  <p>
+    hello
+  </p>
+  
+</div>
 `;
 
 exports[`Item.svelte > should render null 1`] = `
-<body>
-  <div>
-     
-    
-  </div>
-</body>
+<div>
+   
+  
+</div>
 `;
 
 exports[`Item.svelte > should render object 1`] = `
-<body>
-  <div>
-    
-     
-    <p>
-      hello
-    </p>
-    
-  </div>
-</body>
+<div>
+  
+   
+  <p>
+    hello
+  </p>
+  
+</div>
 `;
 
 exports[`Item.svelte > should render using field mapping 1`] = `
-<body>
-  <div>
-    <icon
-      aria-label="info"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="info"
-      />
-    </icon>
-    
-     
-    <p>
-      hello
-    </p>
-    
-  </div>
-</body>
+<div>
+  <icon
+    aria-label="info"
+    class="flex flex-shrink-0 items-center justify-center "
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="info"
+    />
+  </icon>
+  
+   
+  <p>
+    hello
+  </p>
+  
+</div>
 `;
 
 exports[`Item.svelte > should render with value 1`] = `
-<body>
-  <div>
-     
-    <p>
-      text
-    </p>
-    
-  </div>
-</body>
+<div>
+   
+  <p>
+    text
+  </p>
+  
+</div>
 `;

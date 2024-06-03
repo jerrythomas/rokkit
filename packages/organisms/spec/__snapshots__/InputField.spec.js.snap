@@ -1,457 +1,431 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`InputField.svelte > should render default 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text empty"
+<div>
+  <input-field
+    class="flex flex-col input-text empty"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        name
-      </label>
+      name
+    </label>
+     
+    <field
+      aria-label="name"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="name"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render null 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text empty"
+<div>
+  <input-field
+    class="flex flex-col input-text empty"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        name
-      </label>
+      name
+    </label>
+     
+    <field
+      aria-label="name"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="name"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render when disabled 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text disabled"
+<div>
+  <input-field
+    class="flex flex-col input-text disabled"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="text"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="text"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          readonly=""
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        readonly=""
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render when disabled 2`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text"
+<div>
+  <input-field
+    class="flex flex-col input-text"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="text"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="text"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with custom class an type 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-number custom empty"
+<div>
+  <input-field
+    class="flex flex-col input-number custom empty"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        name
-      </label>
+      name
+    </label>
+     
+    <field
+      aria-label="name"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="name"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="number"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="number"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with description 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text "
+<div>
+  <input-field
+    class="flex flex-col input-text "
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="description"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="description"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with icon 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text empty"
+<div>
+  <input-field
+    class="flex flex-col input-text empty"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
+      name
+    </label>
+     
+    <field
+      aria-label="name"
+      class="w-full flex flex-row items-center"
+    >
+      <icon
+        aria-label="icon"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
       >
-        name
-      </label>
-       
-      <field
-        aria-label="name"
-        class="w-full flex flex-row items-center"
-      >
-        <icon
-          aria-label="icon"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="icon"
-          />
-        </icon>
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
+        <i
+          aria-hidden="true"
+          class="icon"
         />
-        
-        
-         
-      </field>
+      </icon>
        
-    </input-field>
-  </div>
-</body>
+       
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with label and value 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text "
+<div>
+  <input-field
+    class="flex flex-col input-text "
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="text"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="text"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with label and value 2`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text "
+<div>
+  <input-field
+    class="flex flex-col input-text "
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        other
-      </label>
+      other
+    </label>
+     
+    <field
+      aria-label="other"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="other"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with label, value and status=fail 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text fail"
+<div>
+  <input-field
+    class="flex flex-col input-text fail"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="text"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="text"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-      <message
-        class="fail"
-      >
-        error
-      </message>
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+    <message
+      class="fail"
+    >
+      error
+    </message>
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with label, value and status=pass 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text pass"
+<div>
+  <input-field
+    class="flex flex-col input-text pass"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="text"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="text"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-      <message
-        class="pass"
-      >
-        error
-      </message>
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+    <message
+      class="pass"
+    >
+      error
+    </message>
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with label, value and status=warn 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text warn"
+<div>
+  <input-field
+    class="flex flex-col input-text warn"
+  >
+    <label
+      for="name"
     >
-      <label
-        for="name"
-      >
-        text
-      </label>
+      text
+    </label>
+     
+    <field
+      aria-label="text"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="text"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="name"
-          name="name"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-      <message
-        class="warn"
-      >
-        error
-      </message>
-    </input-field>
-  </div>
-</body>
+      <input
+        id="name"
+        name="name"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+    <message
+      class="warn"
+    >
+      error
+    </message>
+  </input-field>
+</div>
 `;
 
 exports[`InputField.svelte > should render with value 1`] = `
-<body>
-  <div>
-    <input-field
-      class="flex flex-col input-text "
+<div>
+  <input-field
+    class="flex flex-col input-text "
+  >
+    <label
+      for="FirstName"
     >
-      <label
-        for="FirstName"
-      >
-        FirstName
-      </label>
+      FirstName
+    </label>
+     
+    <field
+      aria-label="FirstName"
+      class="w-full flex flex-row items-center"
+    >
        
-      <field
-        aria-label="FirstName"
-        class="w-full flex flex-row items-center"
-      >
-         
-         
-        <input
-          id="FirstName"
-          name="FirstName"
-          type="text"
-        />
-        
-        
-         
-      </field>
        
-    </input-field>
-  </div>
-</body>
+      <input
+        id="FirstName"
+        name="FirstName"
+        type="text"
+      />
+      
+      
+       
+    </field>
+     
+  </input-field>
+</div>
 `;

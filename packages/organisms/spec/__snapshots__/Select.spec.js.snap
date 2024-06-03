@@ -2,6 +2,7 @@
 
 exports[`Select.svelte > should close drop down on escape key 1`] = `
 <input-select
+  aria-label="test"
   class="flex flex-col relative open"
   role="listbox"
   tabindex="0"
@@ -94,6 +95,7 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
 
 exports[`Select.svelte > should close drop down on escape key 2`] = `
 <input-select
+  aria-label="test"
   class="flex flex-col relative"
   role="listbox"
   tabindex="0"
@@ -185,95 +187,94 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
 `;
 
 exports[`Select.svelte > should emit the change event when the value changes 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
+      <item>
+         
+        
+      </item>
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
-           
-          
-        </item>
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
       >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
         >
+          
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-            
-             
-            <p>
-              a
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-            
-             
-            <p>
-              b
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-            
-             
-            <p>
-              c
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
+          <p>
+            a
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+          
+           
+          <p>
+            b
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+          
+           
+          <p>
+            c
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
 `;
 
 exports[`Select.svelte > should handle arrow keys for navigation and select 1`] = `
@@ -500,6 +501,7 @@ exports[`Select.svelte > should handle option changes 3`] = `
 
 exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
 <input-select
+  aria-label="test"
   class="flex flex-col relative open"
   role="listbox"
   tabindex="0"
@@ -592,6 +594,7 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
 
 exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
 <input-select
+  aria-label="test"
   class="flex flex-col relative"
   role="listbox"
   tabindex="0"
@@ -683,684 +686,676 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
 `;
 
 exports[`Select.svelte > should render items using custom component 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative "
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="true"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="true"
-        class="w-full flex items-center"
-        role="option"
+      <item>
+        
+         
+        <p>
+          1
+        </p>
+        
+      </item>
+       
+      <icon
+        aria-label="closed"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
-          
-           
-          <p>
-            1
-          </p>
-          
-        </item>
-         
-        <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-closed"
-          />
-        </icon>
-      </selected-item>
-       
-    </input-select>
-  </div>
-</body>
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </icon>
+    </selected-item>
+     
+  </input-select>
+</div>
 `;
 
 exports[`Select.svelte > should render items using custom component 2`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
-        tabindex="-1"
-      >
-        <item>
-          
-           
-          <p>
-            1
-          </p>
-          
-        </item>
+      <item>
+        
          
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+        <p>
+          1
+        </p>
+        
+      </item>
        
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
-        >
-           
-          <item
-            aria-selected="true"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-            <span>
-              1
-            </span>
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-            
-             
-            <p>
-              2
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-            
-             
-            <p>
-              3
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
-`;
-
-exports[`Select.svelte > should render items using custom component 3`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
-    >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="true"
+          class="item"
+          data-path="0"
+          role="option"
+        >
           <span>
             1
           </span>
-        </item>
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
-        >
            
-          <item
-            aria-selected="true"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-            <span>
-              1
-            </span>
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-            <span>
-              2
-            </span>
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-            <span>
-              3
-            </span>
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+          
+           
+          <p>
+            2
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+          
+           
+          <p>
+            3
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
+`;
+
+exports[`Select.svelte > should render items using custom component 3`] = `
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <span>
+          1
+        </span>
+      </item>
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="true"
+          class="item"
+          data-path="0"
+          role="option"
+        >
+          <span>
+            1
+          </span>
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+          <span>
+            2
+          </span>
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+          <span>
+            3
+          </span>
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
 `;
 
 exports[`Select.svelte > should render items using custom mapping 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
+      <item>
+        
+         
+        <p>
+          2
+        </p>
+        
+      </item>
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
+        >
+          
+           
+          <p>
+            1
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="true"
+          class="item"
+          data-path="1"
+          role="option"
+        >
           
            
           <p>
             2
           </p>
           
-        </item>
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
-        >
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-            
-             
-            <p>
-              1
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="true"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-            
-             
-            <p>
-              2
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-            
-             
-            <p>
-              3
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+          
+           
+          <p>
+            3
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
 `;
 
 exports[`Select.svelte > should render items using default component, when invalid component is provided 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
+      <item>
+        
+         
+        <p>
+          2
+        </p>
+        
+      </item>
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
+        >
+          
+           
+          <p>
+            1
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="true"
+          class="item"
+          data-path="1"
+          role="option"
+        >
           
            
           <p>
             2
           </p>
           
-        </item>
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
-        >
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-            
-             
-            <p>
-              1
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="true"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-            
-             
-            <p>
-              2
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-            
-             
-            <p>
-              3
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+          
+           
+          <p>
+            3
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
 `;
 
 exports[`Select.svelte > should render items using field mapping 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
+      <item>
+         
+        
+      </item>
+       
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
-           
-          
-        </item>
-         
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
       >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
         >
+          
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-            
-             
-            <p>
-              1
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-            
-             
-            <p>
-              2
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-            
-             
-            <p>
-              3
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
+          <p>
+            1
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+          
+           
+          <p>
+            2
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+          
+           
+          <p>
+            3
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
 `;
 
 exports[`Select.svelte > should render string array 1`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative open"
-      role="listbox"
-      tabindex="0"
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
     >
-      <selected-item
-        aria-selected="false"
-        class="w-full flex items-center"
-        role="option"
-        tabindex="-1"
-      >
-        <item>
-           
-          
-        </item>
+      <item>
          
-        <icon
-          aria-label="opened"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-opened"
-          />
-        </icon>
-      </selected-item>
+        
+      </item>
        
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
-        >
-           
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-             
-            <p>
-              a
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-             
-            <p>
-              b
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-             
-            <p>
-              c
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
-`;
-
-exports[`Select.svelte > should render string array 2`] = `
-<body>
-  <div>
-    <input-select
-      class="flex flex-col relative"
-      role="listbox"
-      tabindex="0"
-    >
-      <selected-item
-        aria-selected="true"
-        class="w-full flex items-center"
-        role="option"
+      <icon
+        aria-label="opened"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
         tabindex="-1"
       >
-        <item>
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
+        >
+           
+          <p>
+            a
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
            
           <p>
             b
           </p>
           
+           
         </item>
-         
-        <icon
-          aria-label="closed"
-          class="flex flex-shrink-0 items-center justify-center "
-          role="img"
-          tabindex="-1"
-        >
-          <i
-            aria-hidden="true"
-            class="selector-closed"
-          />
-        </icon>
-      </selected-item>
-       
-      <scroll
-        class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-        style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
-      >
-        <list
-          aria-label="list"
-          class="flex flex-col w-full flex-shrink-0 select-none list"
-          role="listbox"
-          tabindex="-1"
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
         >
            
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="0"
-            role="option"
-          >
-             
-            <p>
-              a
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="1"
-            role="option"
-          >
-             
-            <p>
-              b
-            </p>
-            
-             
-          </item>
-          <item
-            aria-selected="false"
-            class="item"
-            data-path="2"
-            role="option"
-          >
-             
-            <p>
-              c
-            </p>
-            
-             
-          </item>
-        </list>
-      </scroll>
-    </input-select>
-  </div>
-</body>
+          <p>
+            c
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
+`;
+
+exports[`Select.svelte > should render string array 2`] = `
+<div>
+  <input-select
+    aria-label="test"
+    class="flex flex-col relative"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="true"
+      class="w-full flex items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+         
+        <p>
+          b
+        </p>
+        
+      </item>
+       
+      <icon
+        aria-label="closed"
+        class="flex flex-shrink-0 items-center justify-center "
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </icon>
+    </selected-item>
+     
+    <scroll
+      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+    >
+      <list
+        aria-label="list"
+        class="flex flex-col w-full flex-shrink-0 select-none list"
+        role="listbox"
+        tabindex="-1"
+      >
+         
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="0"
+          role="option"
+        >
+           
+          <p>
+            a
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="1"
+          role="option"
+        >
+           
+          <p>
+            b
+          </p>
+          
+           
+        </item>
+        <item
+          aria-selected="false"
+          class="item"
+          data-path="2"
+          role="option"
+        >
+           
+          <p>
+            c
+          </p>
+          
+           
+        </item>
+      </list>
+    </scroll>
+  </input-select>
+</div>
 `;
