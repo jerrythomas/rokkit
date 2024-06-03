@@ -4,7 +4,7 @@ exports[`Alerts.svelte > should render alerts 1`] = `
 <body>
   <div>
     <alert-list
-      class="absolute z-10 flex flex-col gap-2"
+      class="absolute z-10 flex flex-col gap-2 "
     >
       <alert
         aria-label="Dismissable alert message"
@@ -29,7 +29,7 @@ exports[`Alerts.svelte > should render alerts with custom entry animation 1`] = 
 <body>
   <div>
     <alert-list
-      class="absolute z-10 flex flex-col gap-2"
+      class="absolute z-10 flex flex-col gap-2 "
     >
       <alert
         aria-label="Dismissable alert message"
@@ -55,7 +55,7 @@ exports[`Alerts.svelte > should render alerts with custom exit animation 1`] = `
 <body>
   <div>
     <alert-list
-      class="absolute z-10 flex flex-col gap-2"
+      class="absolute z-10 flex flex-col gap-2 "
     >
       <alert
         aria-label="Dismissable alert message"

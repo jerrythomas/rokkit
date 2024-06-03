@@ -7,6 +7,8 @@
 	import { pick } from 'ramda'
 	import Item from './Item.svelte'
 
+	let className = ''
+	export { className as class }
 	export let fields = defaultFields
 	export let using = { default: Item }
 
@@ -38,7 +40,11 @@
 	$: optionsForOut = pick(['duration', 'easing', 'delay'], departure)
 </script>
 
-<alert-list class="absolute z-10 flex flex-col gap-2" use:dismissable on:dismiss={dismissAll}>
+<alert-list
+	class="absolute z-10 flex flex-col gap-2 {className}"
+	use:dismissable
+	on:dismiss={dismissAll}
+>
 	{#each $alerts as alert}
 		{@const component = getComponent(alert, fields, using)}
 		<alert
