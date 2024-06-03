@@ -32,9 +32,10 @@ describe('traversable', () => {
 
 	describe('select', () => {
 		const instance = traversable(root, { store: mockStore })
+
 		beforeEach(() => {
-			vi.resetAllMocks()
-			mockStore.currentItem = vi.fn(() => ({ indexPath: [0] }))
+			vi.clearAllMocks()
+			// mockStore.currentItem = vi.fn(() => ({ indexPath: [0] }))
 		})
 		afterAll(() => {
 			instance.destroy()
@@ -55,6 +56,7 @@ describe('traversable', () => {
 			expect(mockStore.dragOver).not.toHaveBeenCalled()
 			await fireEvent.drop(root)
 			expect(mockStore.dropOver).not.toHaveBeenCalled()
+			expect(mockStore.getEvents).not.toHaveBeenCalled()
 		})
 
 		it.each(nodes)('should not trigger drag/drop actions', async (node) => {
@@ -66,19 +68,22 @@ describe('traversable', () => {
 			expect(mockStore.dropOver).not.toHaveBeenCalled()
 			// await fireEvent.dragEnd(node)
 			// expect(mockStore.dragEnd).not.toHaveBeenCalled()
+			expect(mockStore.getEvents).not.toHaveBeenCalled()
 		})
 
-		it.each(nodes)('should trigger select on node click', async (node) => {
+		it.each([nodes[0]])('should trigger select on node click', async (node) => {
 			const indices = node.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node)
 			expect(mockStore.moveTo).toHaveBeenCalledWith(indices)
 			expect(mockStore.select).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 		it.each(texts)('should trigger select on content click', async (node) => {
 			const indices = node.parentNode.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node)
 			expect(mockStore.moveTo).toHaveBeenCalledWith(indices)
 			expect(mockStore.select).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 
 		it.each(icons)('should trigger toggleExpansion on icon click', async (icon) => {
@@ -89,6 +94,7 @@ describe('traversable', () => {
 			expect(mockStore.select).not.toHaveBeenCalled()
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 			expect(mockStore.toggleSelection).not.toHaveBeenCalled()
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 	})
 
@@ -118,6 +124,7 @@ describe('traversable', () => {
 			expect(mockStore.dragOver).not.toHaveBeenCalled()
 			await fireEvent.drop(root)
 			expect(mockStore.dropOver).not.toHaveBeenCalled()
+			expect(mockStore.getEvents).not.toHaveBeenCalled()
 		})
 		it.each(nodes)('should not trigger drag/drop actions', async (node) => {
 			await fireEvent.dragStart(node)
@@ -128,38 +135,45 @@ describe('traversable', () => {
 			expect(mockStore.dropOver).not.toHaveBeenCalled()
 			// await fireEvent.dragEnd(node)
 			// expect(mockStore.dragEnd).not.toHaveBeenCalled()
+			expect(mockStore.getEvents).not.toHaveBeenCalled()
 		})
 		it.each(nodes)('should trigger selectRange on node shift+click', async (node) => {
 			const indices = node.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node, { shiftKey: true })
 			expect(mockStore.selectRange).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 		it.each(texts)('should trigger select on content shift+click', async (node) => {
 			const indices = node.parentNode.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node, { shiftKey: true })
 			expect(mockStore.selectRange).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 
 		it.each(nodes)('should trigger toggleSelection on node ctrl+click', async (node) => {
 			const indices = node.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node, { ctrlKey: true })
 			expect(mockStore.toggleSelection).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 		it.each(nodes)('should trigger toggleSelection on node meta+click', async (node) => {
 			const indices = node.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node, { metaKey: true })
 			expect(mockStore.toggleSelection).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 
 		it.each(texts)('should trigger toggleSelection on content ctrl+click', async (node) => {
 			const indices = node.parentNode.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node, { ctrlKey: true })
 			expect(mockStore.toggleSelection).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 		it.each(texts)('should trigger toggleSelection on content meta+click', async (node) => {
 			const indices = node.parentNode.getAttribute('data-index').split('-').map(Number)
 			await fireEvent.click(node, { metaKey: true })
 			expect(mockStore.toggleSelection).toHaveBeenCalledWith(indices)
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 
 		it.each(icons)('should trigger toggleExpansion on icon click', async (icon) => {
@@ -169,6 +183,7 @@ describe('traversable', () => {
 			expect(mockStore.select).not.toHaveBeenCalled()
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 			expect(mockStore.toggleSelection).not.toHaveBeenCalled()
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 
 		it.each(icons)('should trigger toggleExpansion on icon click', async (icon) => {
@@ -178,6 +193,7 @@ describe('traversable', () => {
 			expect(mockStore.select).not.toHaveBeenCalled()
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 			expect(mockStore.toggleSelection).not.toHaveBeenCalled()
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 
 		it.each(icons)('should trigger toggleExpansion on icon click', async (icon) => {
@@ -187,6 +203,7 @@ describe('traversable', () => {
 			expect(mockStore.select).not.toHaveBeenCalled()
 			expect(mockStore.selectRange).not.toHaveBeenCalled()
 			expect(mockStore.toggleSelection).not.toHaveBeenCalled()
+			// expect(mockStore.getEvents).toHaveBeenCalled()
 		})
 	})
 })

@@ -140,7 +140,7 @@ function getClickHandler(store, options) {
 				store.select(indexPath)
 			}
 		}
-		// dispatchEvents(store, event)
+		// dispatchEvents(event.target, store)
 	}
 
 	return handleClick
@@ -220,7 +220,7 @@ function getKeydownHandler(store, options, root) {
 			event.preventDefault()
 			action()
 			scrollIntoView(root, store)
-			// dispatchEvents(root, store)
+			dispatchEvents(root, store)
 		}
 	}
 
@@ -391,12 +391,6 @@ function scrollIntoView(root, store) {
  * @param {Object}      store - The store object with navigation methods
  */
 function dispatchEvents(root, store) {
-	const current = get(store)
-
-	Object.keys(current.changed).forEach((key) => {
-		const event = key === 'value' ? 'change' : key
-		const detail =
-			key === 'value' ? current.value : current.changed[key].map((k) => current.data[k].value)
-		root.dispatchEvent(new CustomEvent(event, { detail }))
-	})
+	const events = store.getEvents()
+	events.forEach((event, detail) => root.dispatchEvent(new CustomEvent(event, { detail })))
 }
