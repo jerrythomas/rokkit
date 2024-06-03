@@ -26,4 +26,7 @@
  * @property {ValidationFunction} [validator]
  */
 
+/**
+ * @typedef {'default'|'error'|'info'|'warning'|'danger'|'success'} NotificationType
+ */
 export default {}

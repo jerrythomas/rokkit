@@ -19,6 +19,7 @@ export function createNotificationStore() {
 		clear: () => messages.set([]),
 		send: (message, type, timeout) => addMessage(messages, message, type, timeout),
 		default: (msg, timeout) => addMessage(messages, msg, 'default', timeout),
+		error: (msg, timeout) => addMessage(messages, msg, 'error', timeout),
 		danger: (msg, timeout) => addMessage(messages, msg, 'danger', timeout),
 		warning: (msg, timeout) => addMessage(messages, msg, 'warning', timeout),
 		info: (msg, timeout) => addMessage(messages, msg, 'info', timeout),
@@ -31,10 +32,10 @@ export const alerts = createNotificationStore()
 /**
  * Adds a new message to the notification queue.
  *
- * @param {import('svelte/store').Writable} messages          - A Svelte writable store containing the notification messages.
- * @param {String|Object}                   message           - The notification message or object with details.
- * @param {String}                          [type='default']  - The type of notification (e.g., 'default', 'info').
- * @param {Number}                          [timeout=TIMEOUT] - Duration in milliseconds before the notification is automatically dismissed.
+ * @param {import('svelte/store').Writable}    messages          - A Svelte writable store containing the notification messages.
+ * @param {String|Object}                      message           - The notification message or object with details.
+ * @param {import('./types').NotificationType} [type='default']  - The type of notification (e.g., 'default', 'info').
+ * @param {Number}                             [timeout=TIMEOUT] - Duration in milliseconds before the notification is automatically dismissed.
  */
 function addMessage(messages, message, type = 'default', timeout = TIMEOUT) {
 	if (typeof message === 'object') {

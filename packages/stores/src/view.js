@@ -26,13 +26,16 @@ import {
  */
 // eslint-disable-next-line max-lines-per-function
 export function createView(items, options = {}) {
-	const { fields, currentIndex = 0, nested = false } = options
+	const { fields, nested = false } = options
 	const data = nested ? getTree(items) : getList(items)
+
+	let currentIndex = validatedIndex(data, options.currentIndex ?? 0)
 
 	const view = writable({
 		data,
 		fields,
-		value: data[currentIndex].value,
+		events: [],
+		value: getValue(data, currentIndex),
 		currentIndex,
 		selectedItems: []
 	})
@@ -40,6 +43,7 @@ export function createView(items, options = {}) {
 
 	return {
 		subscribe,
+		getEvents: () => getAllEvents(view),
 		currentItem: () => getCurrentItem(view),
 		moveByOffset: (offset = 1) => update((state) => moveByOffset(state, offset)),
 		moveFirst: () => update((state) => moveByOffset(state, -Infinity)),
@@ -72,4 +76,25 @@ function getCurrentItem(view) {
 	const currentItem =
 		state.data.length > 0 && state.currentIndex >= 0 ? state.data[state.currentIndex] : null
 	return currentItem
+}
+
+/**
+ * Get all events and clears the events array.
+ *
+ * @param {Object} store
+ * @returns {Object} The updated state.
+ */
+function getAllEvents(store) {
+	const events = get(store).events
+	store.update((state) => ({ ...state, events: [] }))
+	return events
+}
+
+function validatedIndex(data, index) {
+	return index < 0 || index >= data.length ? -1 : index
+}
+
+function getValue(data, index) {
+	if (index >= 0) return data[index].value
+	return null
 }
