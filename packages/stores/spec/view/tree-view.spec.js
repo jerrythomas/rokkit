@@ -66,12 +66,13 @@ describe('view for tree', () => {
 			view.expand(0)
 
 			const result = get(view)
-			expect(omit(['data'], result)).toEqual({
+			expect(omit(['data', 'events'], result)).toEqual({
 				fields: undefined,
 				value: items[0],
 				currentIndex: 0,
 				selectedItems: []
 			})
+			expect(result.events).toEqual([{ event: 'expand', detail: { path: [0], value: items[0] } }])
 			const expected = serializeNodesUsingIndex(hierarchy)
 			expected[0].isExpanded = true
 

@@ -51,12 +51,19 @@ describe('view -> primitives', () => {
 	})
 	describe('moveByOffset', () => {
 		it('should move the current index by the given offset', () => {
-			const state = { data, currentIndex: 0 }
+			const state = { data, currentIndex: 0, events: [], selectedItems: [] }
 			const result = moveByOffset(state, 1)
-			expect(result).toEqual({ data, currentIndex: 1, rangeStart: 1, value: 'b' })
+			expect(result).toEqual({
+				data,
+				currentIndex: 1,
+				rangeStart: 1,
+				value: 'b',
+				selectedItems: [],
+				events: [{ event: 'move', detail: { path: [1], value: items[1] } }]
+			})
 		})
 		it('should not move the current index if the offset is out of bounds', () => {
-			const state = { data, currentIndex: 2 }
+			const state = { data, currentIndex: 2, events: [], selectedItems: [] }
 			const result = moveByOffset(state, 1)
 			expect(result).toEqual(state)
 		})
@@ -64,12 +71,19 @@ describe('view -> primitives', () => {
 
 	describe('moveTo', () => {
 		it('should move to an index', () => {
-			const state = { data, currentIndex: 0 }
+			const state = { data, currentIndex: 0, events: [], selectedItems: [] }
 			const result = moveTo(state, 2)
-			expect(result).toEqual({ data, currentIndex: 2, rangeStart: 2, value: 'c' })
+			expect(result).toEqual({
+				data,
+				currentIndex: 2,
+				rangeStart: 2,
+				value: 'c',
+				selectedItems: [],
+				events: [{ event: 'move', detail: { path: [2], value: items[2] } }]
+			})
 		})
 		it('should not move to an index if it is out of bounds', () => {
-			const state = { data, currentIndex: 0 }
+			const state = { data, currentIndex: 0, events: [], selectedItems: [] }
 			const result = moveTo(state, 3)
 			expect(result).toEqual(state)
 		})
@@ -77,17 +91,18 @@ describe('view -> primitives', () => {
 
 	describe('select', () => {
 		it('should select an item', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = select(state, 1)
 			expect(result).toEqual({
 				data: data.map((item, index) => ({ ...item, isSelected: index === 1 })),
 				currentIndex: 0,
-				selectedItems: [1]
+				selectedItems: [1],
+				events: [{ event: 'select', detail: ['b'] }]
 			})
 		})
 
 		it('should not select when index is out of bounds', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = select(state, 3)
 			expect(result).toEqual(state)
 		})
@@ -95,16 +110,17 @@ describe('view -> primitives', () => {
 
 	describe('unselect', () => {
 		it('should unselect an item', () => {
-			const state = { data, currentIndex: 0, selectedItems: [1] }
+			const state = { data, currentIndex: 0, selectedItems: [1], events: [] }
 			const result = unselect(state, 1)
 			expect(result).toEqual({
-				data: data.map((item, index) => ({ ...item, isSelected: false })),
+				data: data.map((item) => ({ ...item, isSelected: false })),
 				currentIndex: 0,
-				selectedItems: []
+				selectedItems: [],
+				events: [{ event: 'select', detail: [] }]
 			})
 		})
 		it('should not unselect when index is out of bounds', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = unselect(state, 3)
 			expect(result).toEqual(state)
 		})
@@ -112,49 +128,53 @@ describe('view -> primitives', () => {
 
 	describe('selectAll', () => {
 		it('should select all items', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = selectAll(state)
 			expect(result).toEqual({
 				data: data.map((item) => ({ ...item, isSelected: true })),
 				currentIndex: 0,
-				selectedItems: [0, 1, 2]
+				selectedItems: [0, 1, 2],
+				events: [{ event: 'select', detail: ['a', 'b', 'c'] }]
 			})
 		})
 	})
 
 	describe('unselectAll', () => {
 		it('should unselect all items', () => {
-			const state = { data, currentIndex: 0, selectedItems: [0, 1, 2] }
+			const state = { data, currentIndex: 0, selectedItems: [0, 1, 2], events: [] }
 			const result = unselectAll(state)
 			expect(result).toEqual({
 				data: data.map((item) => ({ ...item, isSelected: false })),
 				currentIndex: 0,
-				selectedItems: []
+				selectedItems: [],
+				events: [{ event: 'select', detail: [] }]
 			})
 		})
 	})
 
 	describe('toggleSelection', () => {
 		it('should toggle the selection of an item', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = toggleSelection(state, 1)
 			expect(result).toEqual({
 				data: data.map((item, index) => ({ ...item, isSelected: index === 1 })),
 				currentIndex: 0,
-				selectedItems: [1]
+				selectedItems: [1],
+				events: [{ event: 'select', detail: ['b'] }]
 			})
 		})
 		it('should unselect an item if it is already selected', () => {
-			const state = { data, currentIndex: 0, selectedItems: [1] }
+			const state = { data, currentIndex: 0, selectedItems: [1], events: [] }
 			const result = toggleSelection(state, 1)
 			expect(result).toEqual({
 				data: data.map((item) => ({ ...item, isSelected: false })),
 				currentIndex: 0,
-				selectedItems: []
+				selectedItems: [],
+				events: [{ event: 'select', detail: [] }]
 			})
 		})
 		it('should not toggle the selection if index is out of bounds', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = toggleSelection(state, 3)
 			expect(result).toEqual(state)
 		})
@@ -185,7 +205,7 @@ describe('view -> primitives', () => {
 		// })
 
 		it('should not expand when index is out of bounds', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = expand(state, [3])
 			expect(result).toEqual(state)
 		})
@@ -215,7 +235,7 @@ describe('view -> primitives', () => {
 		// 	})
 		// })
 		it('should not collapse when index is out of bounds', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = collapse(state, [3])
 			expect(result).toEqual(state)
 		})
@@ -247,7 +267,7 @@ describe('view -> primitives', () => {
 		// 	})
 		// })
 		it('should not toggle the expansion if index is out of bounds', () => {
-			const state = { data, currentIndex: 0, selectedItems: [] }
+			const state = { data, currentIndex: 0, selectedItems: [], events: [] }
 			const result = toggleExpansion(state, 3)
 			expect(result).toEqual(state)
 		})
