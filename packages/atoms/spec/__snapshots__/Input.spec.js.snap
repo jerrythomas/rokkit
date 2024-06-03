@@ -562,21 +562,21 @@ exports[`HTML Input > should render "InputSelect" as required 1`] = `
 
 exports[`HTML Input > should render "InputTel" 1`] = `
 <input
-  type="url"
+  type="tel"
 />
 `;
 
 exports[`HTML Input > should render "InputTel" as readonly 1`] = `
 <input
   readonly="true"
-  type="url"
+  type="tel"
 />
 `;
 
 exports[`HTML Input > should render "InputTel" as required 1`] = `
 <input
   required=""
-  type="url"
+  type="tel"
 />
 `;
 
