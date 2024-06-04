@@ -1,5 +1,5 @@
 <script>
-	import { DropDown } from '@rokkit/organisms'
+	import { DropDown } from '@rokkit/ui'
 
 	let options = ['Alpha ', 'Beta', 'Gamma']
 	let value

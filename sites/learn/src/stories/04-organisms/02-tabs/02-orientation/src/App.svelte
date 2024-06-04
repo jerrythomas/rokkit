@@ -1,5 +1,5 @@
 <script>
-	import { Tabs } from '@rokkit/organisms'
+	import { Tabs } from '@rokkit/ui'
 	import Controls from './Controls.svelte'
 	let options = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
 	let value

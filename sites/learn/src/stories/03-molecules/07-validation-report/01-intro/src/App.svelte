@@ -1,5 +1,5 @@
 <script>
-	import { ValidationReport } from '@rokkit/molecules'
+	import { ValidationReport } from '@rokkit/ui'
 
 	let items = [
 		{ text: 'Should be a number', valid: true, status: 'pass' },

@@ -7,13 +7,15 @@
 </script>
 
 <graph-paper
-	class="p-8 border bg-op-20 text-op-30 bg-neutral-50 text-neutral-300 border-neutral-400 {className}"
+	class="flex flex-col bg-op-20 text-op-40 {className}"
 	style:--unit={unit}
 	style:--size="calc( {group} * {unit})"
 	style:--thin="{thickness}px"
 	style:--thick="{2 * thickness}px"
 >
-	<slot />
+	<content class="min-h-full flex flex-col">
+		<slot />
+	</content>
 </graph-paper>
 
 <style>

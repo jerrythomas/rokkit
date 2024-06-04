@@ -10,7 +10,7 @@ Let's start with a basic example.
 
 ```svelte
 <script>
-  import { Switch } from '@rokkit/organisms'
+  import { Switch } from '@rokkit/ui'
 </script>
 
 <Switch />

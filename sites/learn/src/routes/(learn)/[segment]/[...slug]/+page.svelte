@@ -1,8 +1,7 @@
 <script>
 	import { setContext, getContext } from 'svelte'
 	import { writable } from 'svelte/store'
-	import { ResponsiveGrid } from '@rokkit/molecules'
-	import { Switch } from '@rokkit/organisms'
+	import { ResponsiveGrid, Switch } from '@rokkit/ui'
 
 	import Notes from './Notes.svelte'
 	import Code from './Code.svelte'

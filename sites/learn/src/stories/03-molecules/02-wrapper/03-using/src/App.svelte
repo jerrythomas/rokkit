@@ -1,5 +1,5 @@
 <script>
-	import { ItemWrapper } from '@rokkit/molecules'
+	import { ItemWrapper } from '@rokkit/ui'
 	import Status from './Status.svelte'
 
 	let using = { default: Status }

@@ -86,6 +86,4 @@
  * @property {string} metadata - filename containing component metadata
  */
 
-export {}
-
 export default {}

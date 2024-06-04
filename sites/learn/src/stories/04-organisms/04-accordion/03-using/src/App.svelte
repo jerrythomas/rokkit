@@ -1,5 +1,5 @@
 <script>
-	import { Accordion } from '@rokkit/organisms'
+	import { Accordion } from '@rokkit/ui'
 	import Link from './Link.svelte'
 	import { items } from './data.js'
 

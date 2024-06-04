@@ -29,5 +29,6 @@ declare namespace App {
 		menu?: ComponentMenu[]
 		examples?: Sample[]
 	}
+	// interface PageState {}
 	// interface Platform {}
 }

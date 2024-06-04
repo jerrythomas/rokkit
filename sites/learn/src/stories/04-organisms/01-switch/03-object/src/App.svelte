@@ -1,5 +1,5 @@
 <script>
-	import { Switch } from '@rokkit/organisms'
+	import { Switch } from '@rokkit/ui'
 
 	let options = [
 		{ icon: 'i-rokkit:mode-dark', mode: 'dark' },

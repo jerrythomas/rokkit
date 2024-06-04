@@ -1,5 +1,5 @@
 <script>
-	import { List } from '@rokkit/organisms'
+	import { List } from '@rokkit/ui'
 	let value
 	let items = [
 		{

@@ -6,7 +6,7 @@ To add validation properties and datatypes to each attribute of the form, we can
 
 ```svelte
 <script>
-  import { Form } from '@rokkit/organisms'
+  import { Form } from '@rokkit/ui'
 
   const schema = {
     type: 'object',

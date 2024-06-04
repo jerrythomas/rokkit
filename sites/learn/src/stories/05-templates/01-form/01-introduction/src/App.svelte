@@ -1,5 +1,5 @@
 <script>
-	import { Form } from '@rokkit/organisms'
+	import { Form } from '@rokkit/ui'
 
 	let value = {
 		name: 'John Doe',

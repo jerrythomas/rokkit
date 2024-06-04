@@ -1,5 +1,5 @@
 <script>
-	import { DropDown } from '@rokkit/organisms'
+	import { DropDown } from '@rokkit/ui'
 	import { options } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }

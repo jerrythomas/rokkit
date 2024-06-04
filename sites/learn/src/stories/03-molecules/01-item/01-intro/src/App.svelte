@@ -1,5 +1,5 @@
 <script>
-	import { Item } from '@rokkit/molecules'
+	import { Item } from '@rokkit/ui'
 
 	let avatar = {
 		text: 'John Doe',

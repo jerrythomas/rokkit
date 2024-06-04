@@ -1,5 +1,5 @@
 <script>
-	import { Select } from '@rokkit/organisms'
+	import { Select } from '@rokkit/ui'
 
 	let options = ['Alpha ', 'Beta', 'Gamma']
 	let value

@@ -1,5 +1,5 @@
 <script>
-	import { Rating } from '@rokkit/molecules'
+	import { Rating } from '@rokkit/ui'
 
 	let value
 </script>

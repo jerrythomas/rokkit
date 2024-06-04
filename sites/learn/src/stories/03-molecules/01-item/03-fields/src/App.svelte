@@ -1,5 +1,5 @@
 <script>
-	import { Item } from '@rokkit/molecules'
+	import { Item } from '@rokkit/ui'
 
 	let value = { name: 'A Heart Icon', symbol: 'i-rokkit:heart-filled' }
 	let fields = { text: 'name', icon: 'symbol' }
