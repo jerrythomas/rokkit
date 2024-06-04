@@ -1,15 +1,30 @@
-alert-list alert {
-  @apply bg-neutral border-neutral-muted text-neutral-800;
+/* Alert styles */
+alert-list {
+  @apply top-12 right-8 w-80;
 }
-alert-list alert.danger {
-  @apply bg-danger border-danger-muted text-neutral-800;
+
+alert,
+error,
+info,
+warning,
+success {
+  @apply px-4 py-2 border rounded select-none cursor-pointer;
 }
-alert-list alert.success {
-  @apply bg-success border-success-muted text-neutral-800;
+
+alert.error,
+alert.danger,
+error {
+  @apply bg-error text-error-contrast border-error-muted;
 }
-alert-list alert.info {
-  @apply bg-info border-info-muted text-neutral-800;
+alert.info,
+info {
+  @apply bg-info text-info-contrast border-info-muted;
 }
-alert-list alert.warning {
-  @apply bg-warning border-warning-muted text-neutral-800;
+alert.warning,
+warning {
+  @apply bg-warn text-warn-contrast border-warn-muted;
+}
+alert.success,
+success {
+  @apply bg-success text-success-contrast border-success-muted;
 }
