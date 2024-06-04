@@ -29,15 +29,13 @@ export function dataview(data, options) {
 		// filter: noop,
 		/**
 		 * Clears the applied sort order from the hierarchy.
-		 * TODO: clearing sort should clear the sort orders in columns
 		 */
 		clearSort: () => {
 			sortGroup = []
-			const { columns } = get(store)
-			columns.forEach((column) => {
-				column.order = 'none'
-			})
-			// clearSortOrder(metadata)
+			store.update((state) => ({
+				...state,
+				columns: state.columns.map((column) => ({ ...column, order: 'none' }))
+			}))
 		},
 		sortBy: (name, ascending) => sortHierarchyBy(store, sortGroup, name, ascending),
 		select: (index) => toggleState(store, index, 'selection'),
