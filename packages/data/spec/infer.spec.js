@@ -217,7 +217,7 @@ describe('infer', () => {
 		})
 	})
 
-	describe('deriveColumnMetadata', () => {
+	describe('deriveMetadata', () => {
 		it('should return empty array for empty data', () => {
 			expect(deriveMetadata([])).toEqual([])
 		})
@@ -373,6 +373,26 @@ describe('infer', () => {
 					filterable: true,
 					sorted: 'none',
 					fields: { text: 'salary' },
+					formatter: expect.any(Function)
+				}
+			])
+		})
+
+		it('should derive column metadata for specific columns', () => {
+			const data = [
+				{ name: 'John', age: 25, salary: 50000.5 },
+				{ name: 'Jane', age: 30, salary: 60000.0 }
+			]
+			const metadata = deriveMetadata(data, { columns: [{ name: 'name' }, { name: 'age' }] })
+			expect(metadata).toEqual([
+				{
+					name: 'name',
+					fields: { text: 'name' },
+					formatter: expect.any(Function)
+				},
+				{
+					name: 'age',
+					fields: { text: 'age' },
 					formatter: expect.any(Function)
 				}
 			])
