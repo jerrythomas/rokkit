@@ -160,6 +160,26 @@ exports[`components > should render Dots 1`] = `
 </div>
 `;
 
+exports[`components > should render OutlineCircles 1`] = `
+<div>
+  <circle
+    cx="0"
+    cy="0"
+    fill="currentColor"
+    r="5"
+    stroke="currentColor"
+  />
+  <circle
+    cx="10"
+    cy="10"
+    fill="currentColor"
+    r="5"
+    stroke="currentColor"
+  />
+  
+</div>
+`;
+
 exports[`components > should render Tile 1`] = `
 <div>
   <line

@@ -1,15 +1,22 @@
 /**
  * @typedef GridPoint
- * @property {number} x
- * @property {number} y
- * @property {number} r
+ * @property {number} x - x-coordinate of the point
+ * @property {number} y - y-coordinate of the point
+ * @property {number} r - radius of the point
  */
 
 /**
  * @typedef SwatchGrid
- * @property {number}      width
- * @property {number}      height
- * @property {GridPoint[]} data
+ * @property {number}      width  - width of the grid
+ * @property {number}      height - height of the grid
+ * @property {GridPoint[]} data   - data points of the grid
+ */
+
+/**
+ * @tyoedef {Object} GridOptions
+ * @property {number} [pad=0]     - The padding between the items
+ * @property {number} [columns=0] - The number of columns
+ * @property {number} [rows=0]    - The number of rows
  */
 
 /**
@@ -19,14 +26,14 @@
  * - Value in columns is prioritized over rows for recalculating the grid
  * - Supports padding between the items
  *
- * @param {number} count
- * @param {number} size
- * @param {number} pad
- * @param {number} columns
- * @param {number} rows
+ * @param {number}      count   - number of items
+ * @param {number}      size    - size of the items
+ * @param {GridOptions} options - options for the grid
  * @returns {SwatchGrid}
  */
-export function swatchGrid(count, size, pad = 0, columns = 0, rows = 0) {
+export function swatchGrid(count, size, options) {
+	const { pad = 0 } = options || {}
+	let { columns = 0, rows = 0 } = options || {}
 	if (columns > 0) {
 		rows = Math.ceil(count / columns)
 	} else if (rows > 0) {
@@ -51,9 +58,9 @@ export function swatchGrid(count, size, pad = 0, columns = 0, rows = 0) {
 /**
  * Spreads values as patterns with colors from a palette
  *
- * @param {number[]} values
- * @param {string[]} patterns
- * @param {string[]} palette
+ * @param {number[]} values   - values to spread
+ * @param {string[]} patterns - patterns to spread
+ * @param {string[]} palette  - colors to spread
  * @returns {Record<number, { id: string, pattern: string, color: string }>}
  */
 export function spreadValuesAsPatterns(values, patterns, palette) {

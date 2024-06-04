@@ -455,3 +455,18 @@ exports[`symbols > named paths > should render "triangle" with stroke and fill 1
   />
 </div>
 `;
+
+exports[`symbols > named paths > should render default 1`] = `
+<div>
+  <path
+    d="M 4.5 0 A 4.5 4.5 0 1 1 -4.5 0 A 4.5 4.5 0 1 1 4.5 0"
+    fill="none"
+    fill-rule="evenodd"
+    role="button"
+    stroke="currentColor"
+    stroke-width="1"
+    tabindex="0"
+    transform="translate(0,0)"
+  />
+</div>
+`;
