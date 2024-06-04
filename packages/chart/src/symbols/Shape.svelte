@@ -10,7 +10,7 @@
 
 	export let name = 'circle'
 
-	$: d = name in namedShapes ? namedShapes[name](size) : namedShapes['star'](size)
+	$: d = name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size)
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

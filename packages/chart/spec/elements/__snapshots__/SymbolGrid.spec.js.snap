@@ -3,7 +3,7 @@
 exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
 <div>
   <svg
-    viewBox="0 0 66 52"
+    viewBox="0 0 16 12"
   >
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
@@ -13,7 +13,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(12,12)"
+      transform="translate(2,2)"
     />
     
     <path
@@ -24,7 +24,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(26,12)"
+      transform="translate(6,2)"
     />
     
     <path
@@ -35,7 +35,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(40,12)"
+      transform="translate(10,2)"
     />
     
     <path
@@ -46,7 +46,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(54,12)"
+      transform="translate(14,2)"
     />
     
     <path
@@ -57,7 +57,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(12,26)"
+      transform="translate(2,6)"
     />
     
     <path
@@ -68,7 +68,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(26,26)"
+      transform="translate(6,6)"
     />
     
     <path
@@ -79,7 +79,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(40,26)"
+      transform="translate(10,6)"
     />
     
     <path
@@ -90,7 +90,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(54,26)"
+      transform="translate(14,6)"
     />
     
     <path
@@ -101,7 +101,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       stroke-width="1"
       tabindex="0"
-      transform="translate(12,40)"
+      transform="translate(2,10)"
     />
     
     <rect
@@ -113,8 +113,8 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       stroke="#11b8aa"
       tabindex="0"
       width="28.272"
-      x="11.864"
-      y="25.864"
+      x="-8.136"
+      y="-4.135999999999999"
     />
     
   </svg>

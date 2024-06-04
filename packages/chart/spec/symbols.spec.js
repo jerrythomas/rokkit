@@ -40,5 +40,9 @@ describe('symbols', () => {
 			const { container } = render(components.default, { props: { name, size: 10, x: 5, y: 6 } })
 			expect(container).toMatchSnapshot()
 		})
+		it('should render default', () => {
+			const { container } = render(components.default, { props: { name: 'unknown' } })
+			expect(container).toMatchSnapshot()
+		})
 	})
 })
