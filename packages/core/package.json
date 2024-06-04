@@ -39,6 +39,7 @@
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.json",
     "src/**/*.svelte",
     "!spec"
   ],
