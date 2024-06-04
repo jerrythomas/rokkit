@@ -1,5 +1,5 @@
 <script>
-	import { Icon,BreadCrumbs } from '@rokkit/ui'
+	import { Icon, BreadCrumbs } from '@rokkit/ui'
 	import { getContext } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'

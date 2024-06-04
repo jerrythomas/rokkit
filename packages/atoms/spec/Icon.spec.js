@@ -71,11 +71,11 @@ describe('Icon component', () => {
 	})
 
 	it('should render the icon with the specified state', () => {
-	  const { container } = render(Icon, {
-      name: 'i-rokkit:node-opened',
-      state: 'opened'
-    })
-    expect(container).toMatchSnapshot()
+		const { container } = render(Icon, {
+			name: 'i-rokkit:node-opened',
+			state: 'opened'
+		})
+		expect(container).toMatchSnapshot()
 	})
 
 	it('should render the icon with checkbox role with default state', async () => {

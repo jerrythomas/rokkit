@@ -20,6 +20,6 @@
 		"icons": "icons.json"
 	},
 	"dependencies": {
-		"@iconify/types": "*"
+		"@iconify/types": "^2.0.0"
 	}
 }

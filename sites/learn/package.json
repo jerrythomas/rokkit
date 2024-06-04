@@ -24,7 +24,7 @@
     "@sveltejs/kit": "^2.5.10",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@testing-library/svelte": "^5.1.0",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.14.1",
     "@unocss/core": "^0.60.4",
     "@unocss/extractor-svelte": "^0.60.4",
     "@unocss/preset-icons": "^0.60.4",
