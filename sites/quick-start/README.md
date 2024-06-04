@@ -10,7 +10,6 @@ cd my-app
 pnpm i
 ```
 
-
 ## Developing
 
 Once you've created a project and installed dependencies with `pnpm install` (or `npm install` or `bun`), start a development server:
