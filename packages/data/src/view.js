@@ -24,25 +24,6 @@ export function dataview(data, options) {
 	})
 	let sortGroup = []
 
-	/**
-	 * Sorts the hierarchy based on a specific field name and order.
-	 *
-	 * @param {string} name - The field name to sort by.
-	 * @param {boolean} [ascending=true] - Whether the sort should be in ascending order.
-	 */
-	const sortBy = (name, ascending = true) => {
-		sortGroup = [...sortGroup, [name, ascending]]
-		// change the sort order in the metadata
-		const { columns, hierarchy } = get(store)
-		columns.forEach((column) => {
-			if (column.name === name) {
-				column.order = ascending ? 'ascending' : 'descending'
-			}
-		})
-		groupSort(hierarchy, sortGroup)
-		store.set({ columns, hierarchy })
-	}
-
 	return {
 		...omit(['set', 'update'], store),
 		// filter: noop,
@@ -58,28 +39,43 @@ export function dataview(data, options) {
 			})
 			// clearSortOrder(metadata)
 		},
-		sortBy,
-		/**
-		 * Toggles the selection state of a data element at the specified index.
-		 *
-		 * @param {number} index - The index of the element in the hierarchy to select or deselect.
-		 */
-		select: (index) => {
-			const { hierarchy } = get(store)
-			toggleSelection(hierarchy[index])
-			store.update((state) => ({ ...state, hierarchy }))
-		},
-		/**
-		 * Toggles the expansion state of a data element at the specified index.
-		 *
-		 * @param {number} index - The index of the element in the hierarchy to expand or collapse.
-		 */
-		toggle: (index) => {
-			const { hierarchy } = get(store)
-			toggleExpansion(hierarchy[index])
-			store.update((state) => ({ ...state, hierarchy }))
-		}
+		sortBy: (name, ascending) => sortHierarchyBy(store, sortGroup, name, ascending),
+		select: (index) => toggleState(store, index, 'selection'),
+		toggle: (index) => toggleState(store, index, 'expansion')
 	}
+}
+
+/**
+ * Sorts the hierarchy based on a specific field name and order.
+ *
+ * @param {string} name - The field name to sort by.
+ * @param {boolean} [ascending=true] - Whether the sort should be in ascending order.
+ */
+const sortHierarchyBy = (store, sortGroup, name, ascending = true) => {
+	sortGroup = [...sortGroup, [name, ascending]]
+	// change the sort order in the metadata
+	const { columns, hierarchy } = get(store)
+	columns.forEach((column) => {
+		if (column.name === name) {
+			column.order = ascending ? 'ascending' : 'descending'
+		}
+	})
+	groupSort(hierarchy, sortGroup)
+	store.set({ columns, hierarchy })
+}
+
+/**
+ * Toggles the expansion or selection stateof a data element at the specified index.
+ *
+ * @param {import('svelte/store').Writable} store - The store object representing the view.
+ * @param {number} index - The index of the element in the hierarchy to expand or collapse.
+ * @param {string} mode - The mode to toggle, either 'expansion' or 'selection'.
+ */
+function toggleState(store, index, mode) {
+	const { hierarchy } = get(store)
+	if (mode === 'selection') toggleSelection(hierarchy[index])
+	else if (mode === 'expansion') toggleExpansion(hierarchy[index])
+	store.update((state) => ({ ...state, hierarchy }))
 }
 
 /**
