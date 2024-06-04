@@ -23,10 +23,11 @@ Add [UnoCSS](https://github.com/unocss/unocss) to your svelte-kit project using 
 
 ### Clone the quick start template
 
+Follow the instructions in the readme of the template repo.
+
 ```bash
-degit jerrythomas/rokkit/sites/quick-start my-app
+npx degit jerrythomas/rokkit/sites/quick-start my-app
 cd my-app
-pnpm i
 ```
 
 ### Try out one of the components
