@@ -28,6 +28,7 @@ Follow the instructions in the readme of the template repo.
 ```bash
 npx degit jerrythomas/rokkit/sites/quick-start my-app
 cd my-app
+pnpm i
 ```
 
 ### Try out one of the components

@@ -1,5 +1,5 @@
 <script>
-	import { Range } from '@rokkit/molecules'
+	import { Range } from '@rokkit/ui'
 
 	let value
 </script>

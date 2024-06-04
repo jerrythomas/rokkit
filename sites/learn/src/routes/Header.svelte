@@ -2,8 +2,8 @@
 	import { getContext } from 'svelte'
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
 	import { media } from '$lib'
+	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	const site = getContext('site')

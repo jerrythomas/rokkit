@@ -1,5 +1,5 @@
 <script>
-	import { Form } from '@rokkit/organisms'
+	import { Form } from '@rokkit/ui'
 	import { schema } from './schema.js'
 	import { layout } from './layout.js'
 

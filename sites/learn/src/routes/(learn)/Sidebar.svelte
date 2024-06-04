@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { Icon } from '@rokkit/atoms'
+	import { Icon } from '@rokkit/ui'
 	let site = getContext('site')
 	/**
 	 * @type {HTMLElement}

@@ -1,5 +1,5 @@
 <script>
-	import { MultiSelect } from '@rokkit/organisms'
+	import { MultiSelect } from '@rokkit/ui'
 
 	let options = ['Alpha ', 'Beta', 'Gamma']
 	let value

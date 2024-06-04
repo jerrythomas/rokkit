@@ -10,7 +10,7 @@ To get started, you can simply provide an object as the initial value for the fo
 
 ```svelte
 <script>
-  import { Form } from '@rokkit/organisms'
+  import { Form } from '@rokkit/ui'
 
   let value = {
     name: 'John Doe',

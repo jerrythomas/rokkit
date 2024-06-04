@@ -1,6 +1,6 @@
 <script>
 	import { defaultFields } from '@rokkit/core'
-	import { Item } from '@rokkit/molecules'
+	import { Item } from '@rokkit/ui'
 
 	export let value
 	export let fields = defaultFields

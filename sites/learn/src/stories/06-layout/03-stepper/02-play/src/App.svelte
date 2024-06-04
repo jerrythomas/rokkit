@@ -1,8 +1,8 @@
 <script>
-	import { Stepper, Range, ProgressDots } from '@rokkit/core'
+	import { Stepper, Range, ProgressDots } from '@rokkit/ui'
 	import ControlPanel from './ControlPanel.svelte'
+	import { data } from './data'
 
-	export let data = []
 	export let stages = 5
 	export let steps = 4
 	export let showLabels = true

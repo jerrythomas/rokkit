@@ -1,5 +1,5 @@
 <script>
-	import { Stepper } from '@rokkit/layout'
+	import { Stepper } from '@rokkit/ui'
 	import { data } from './data'
 
 	let value

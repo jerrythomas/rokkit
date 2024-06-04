@@ -843,9 +843,6 @@ importers:
       '@rokkit/actions':
         specifier: workspace:*
         version: link:../../packages/actions
-      '@rokkit/atoms':
-        specifier: workspace:*
-        version: link:../../packages/atoms
       '@rokkit/chart':
         specifier: workspace:*
         version: link:../../packages/chart
@@ -855,15 +852,6 @@ importers:
       '@rokkit/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@rokkit/layout':
-        specifier: workspace:*
-        version: link:../../packages/layout
-      '@rokkit/molecules':
-        specifier: workspace:*
-        version: link:../../packages/molecules
-      '@rokkit/organisms':
-        specifier: workspace:*
-        version: link:../../packages/organisms
       '@rokkit/stores':
         specifier: workspace:*
         version: link:../../packages/stores
@@ -5587,7 +5575,7 @@ snapshots:
 
   agent-base@7.1.0:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.5
     transitivePeerDependencies:
       - supports-color
 
@@ -6822,7 +6810,7 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4
+      debug: 4.3.5
     transitivePeerDependencies:
       - supports-color
 
@@ -6836,7 +6824,7 @@ snapshots:
   https-proxy-agent@7.0.4:
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4
+      debug: 4.3.5
     transitivePeerDependencies:
       - supports-color
 

@@ -1,5 +1,5 @@
 <script>
-	import { Tabs } from '@rokkit/organisms'
+	import { Tabs } from '@rokkit/ui'
 	import { options } from './data.js'
 	import Custom from './Custom.svelte'
 

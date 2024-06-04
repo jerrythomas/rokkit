@@ -7,7 +7,7 @@ You can provide a boolean variable to toggle validations on or off for the form.
 
 ```svelte
 <script>
-  import { Form } from '@rokkit/organisms'
+  import { Form } from '@rokkit/ui'
 
   const schema = {
     name: { type: 'string', required: true },

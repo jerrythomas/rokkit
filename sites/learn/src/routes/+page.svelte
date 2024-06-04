@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
 	import { goto } from '$app/navigation'
-	import { Button } from '@rokkit/molecules'
+	import { Button } from '@rokkit/ui'
 	import Background from './Background.svelte'
 	const site = getContext('site')
 
