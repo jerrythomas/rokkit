@@ -1,4 +1,4 @@
-# Rokkit Stories
+# Learn Rokkit
 
 This package contains the code for the documentation site for Rokkit. The website is automatically published to [Vercel](https://vercel.com) on push/merge into the main branch. Visit the documentation at [rokkit.vercel.app](https://rokkit.vercel.app)
 

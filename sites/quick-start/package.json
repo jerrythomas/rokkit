@@ -15,7 +15,7 @@
     "test:unit": "vitest"
   },
   "devDependencies": {
-    "@rokkit/icons": "workspace:*",
+    "@rokkit/icons": "latest",
     "@sveltejs/adapter-auto": "^3.2.1",
     "@sveltejs/kit": "^2.5.10",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
@@ -37,9 +37,9 @@
   },
   "type": "module",
   "dependencies": {
-    "@rokkit/actions": "workspace:*",
-    "@rokkit/core": "workspace:*",
-    "@rokkit/themes": "workspace:*",
-    "@rokkit/ui": "workspace:*"
+    "@rokkit/actions": "latest",
+    "@rokkit/core": "latest",
+    "@rokkit/themes": "latest",
+    "@rokkit/ui": "latest"
   }
 }
