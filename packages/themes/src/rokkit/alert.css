@@ -1,0 +1,4 @@
+/* Styles for 'alert-list' class */
+.rokkit alert-list {
+  @apply top-12 right-8 w-80;
+}
