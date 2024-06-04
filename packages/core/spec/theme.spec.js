@@ -27,7 +27,8 @@ describe('theme', () => {
 				raised: `var(--${name}-400)`,
 				elevated: `var(--${name}-600)`,
 				floating: `var(--${name}-700)`,
-				contrast: `var(--${name}-800)`
+				contrast: `var(--${name}-800)`,
+				overlay: `var(--${name}-900)`
 			})
 		})
 
@@ -53,7 +54,8 @@ describe('theme', () => {
 				raised: `hsl(var(--${name}-400))`,
 				elevated: `hsl(var(--${name}-600))`,
 				floating: `hsl(var(--${name}-700))`,
-				contrast: `hsl(var(--${name}-800))`
+				contrast: `hsl(var(--${name}-800))`,
+				overlay: `hsl(var(--${name}-900))`
 			})
 		})
 		it.each(palettes)('should generate shades using rgb modifier', (name) => {
@@ -78,7 +80,8 @@ describe('theme', () => {
 				raised: `rgb(var(--${name}-400))`,
 				elevated: `rgb(var(--${name}-600))`,
 				floating: `rgb(var(--${name}-700))`,
-				contrast: `rgb(var(--${name}-800))`
+				contrast: `rgb(var(--${name}-800))`,
+				overlay: `rgb(var(--${name}-900))`
 			})
 		})
 		it.each(palettes)('should generate shades with invalid modifier', (name) => {
@@ -103,7 +106,8 @@ describe('theme', () => {
 				raised: `var(--${name}-400)`,
 				elevated: `var(--${name}-600)`,
 				floating: `var(--${name}-700)`,
-				contrast: `var(--${name}-800)`
+				contrast: `var(--${name}-800)`,
+				overlay: `var(--${name}-900)`
 			})
 		})
 	})

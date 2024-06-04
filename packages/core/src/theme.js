@@ -30,7 +30,8 @@ export function shadesOf(name, modifier = 'none') {
 			raised: fn(`var(--${name}-400)`),
 			elevated: fn(`var(--${name}-600)`),
 			floating: fn(`var(--${name}-700)`),
-			contrast: fn(`var(--${name}-800)`)
+			contrast: fn(`var(--${name}-800)`),
+			overlay: fn(`var(--${name}-900)`)
 		}
 	)
 }
@@ -70,13 +71,12 @@ export function themeColors(modifier = 'none') {
  * Creates an array of shade mapping objects for a given theme variant and mode.
  * Each object represents a CSS custom property (variable) with its value set based on a provided condition.
  *
- * @param {string} variant - The name of the theme variant (e.g., 'primary', 'secondary').
- * @param {'light' | 'dark'} mode - The theme mode for which the mappings are being created.
+ * @param {string}                   variant        - The name of the theme variant (e.g., 'primary', 'secondary').
+ * @param {'light' | 'dark'}         mode           - The theme mode for which the mappings are being created.
  * @param {function(number): string} valueCondition - A function that takes a shade value and returns the color value
  *                                                    based on the condition appropriate for light or dark mode.
- * @returns {Array<{key: string, value: string, mode: string}>} An array of objects, where each object contains
- *                                                              key, value, and mode properties corresponding to
- *                                                              a CSS custom property definition.
+ * @returns {{import('./types'}.ShadeMappings>} An array of objects, where each object contains key, value, and mode
+ *                                              properties corresponding to  a CSS custom property definition.
  */
 function createShadeMappings(variant, mode, valueCondition) {
 	return shades.map((shade) => ({
@@ -110,7 +110,7 @@ export function contrastColors(light = '#ffffff', dark = '#000000', palette = de
  * @param {string} variant - The name of the variant to generate rules for.
  * @param {Object} colors - The object containing color definitions.
  * @param {Object} mapping - An object that maps variant names to color property names.
- * @returns {Array<Object>} An array containing the color rules for both light and dark modes.
+ * @returns {import('./types').ShadeMappings} An array containing the color rules for both light and dark modes.
  */
 function generateColorRules(variant, colors, mapping) {
 	return shades.flatMap((shade, index) => [
@@ -165,9 +165,9 @@ function createThemeVariant(name, mode, colors, extraColors) {
 /**
  * Constructs and returns the light and dark theme variants based on provided color mapping and color definitions.
  *
- * @param {string} name - The base name for the theme, defaults to 'rokkit' if not provided.
+ * @param {string} name                          - The base name for the theme, defaults to 'rokkit' if not provided.
  * @param {Object} [mapping=defaultThemeMapping] - An object mapping variant names to color property names.
- * @param {Object} [colors=defaultColors] - The object containing default color definitions.
+ * @param {Object} [colors=defaultColors]        - The object containing default color definitions.
  * @returns {Array<Array>} An array containing two arrays, one for the light theme variant and another for the dark theme.
  */
 export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, colors = defaultColors) {

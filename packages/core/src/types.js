@@ -86,4 +86,16 @@
  * @property {RowState[]} rows - Flat list of hierarchy nodes.
  */
 
+/**
+ * Shade mapping for color variables
+ *
+ * @typedef {Object} ShadeMapping
+ * @property {string} key   - the variable name to be used
+ * @property {string} value - the value to be used
+ * @property {string} mode  - light or dark mode
+ */
+
+/**
+ * @typedef {Array<ShadeMapping>} ShadeMappings
+ */
 export default {}
