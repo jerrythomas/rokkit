@@ -36,10 +36,10 @@ export function traversable(root, config) {
 			keydown: getKeydownHandler(store, options, root),
 			click: getClickHandler(store, options)
 		}
-		if (options.allowDrag) listeners.dragstart = getDragStartHandler(store)
+		if (options.allowDrag) listeners.dragstart = getDragEventHandler(store, 'dragStart')
 		if (options.allowDrop) {
-			listeners.dragover = getDragOverHandler(store)
-			listeners.drop = getDropHandler(store)
+			listeners.dragover = getDragEventHandler(store, 'dragOver')
+			listeners.drop = getDragEventHandler(store, 'dropOver')
 		}
 		manager.update(listeners)
 	}
@@ -145,44 +145,14 @@ function getClickHandler(store, options) {
 
 	return handleClick
 }
-/**
- * Get a function to handle the dragstart event
- *
- * @param {Object} store - The store object with navigation methods
- */
-function getDragStartHandler(store) {
-	function handleDragStart(event) {
+function getDragEventHandler(store, eventName) {
+	function handle(event) {
 		const index = getTargetIndex(event)
-		if (index) store.dragStart(index)
+		if (index) store[eventName](index)
 	}
-	return handleDragStart
+	return handle
 }
 
-/**
- * Get a function to handle the dragover event
- *
- * @param {Object} store - The store object with navigation methods
- */
-function getDragOverHandler(store) {
-	function handleDragOver(event) {
-		const index = getTargetIndex(event)
-		if (index) store.dragOver(index)
-	}
-	return handleDragOver
-}
-
-/**
- * Get a function to handle the drop event
- *
- * @param {Object} store - The store object with navigation methods
- */
-function getDropHandler(store) {
-	function handleDrop(event) {
-		const index = getTargetIndex(event)
-		if (index) store.dropOver(index)
-	}
-	return handleDrop
-}
 /**
  * Handle multi-select based on the modifier keys pressed
  *

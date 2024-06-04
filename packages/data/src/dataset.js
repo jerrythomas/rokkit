@@ -40,7 +40,7 @@ export function dataset(data, options = {}) {
 		// joins
 		innerJoin: (other, condition) => dataset(innerJoin(data, other.select(), condition)),
 		leftJoin: (other, condition) => dataset(leftJoin(data, other.select(), condition)),
-		rightJoin: (other, condition) => dataset(rightJoin(data, other.select(), condition)),
+		rightJoin: (other, condition) => dataset(leftJoin(other.select(), data, condition)),
 		fullJoin: (other, condition) => dataset(fullJoin(data, other.select(), condition)),
 		crossJoin: (other) => dataset(crossJoin(data, other.select())),
 		semiJoin: (other, condition) => dataset(semiJoin(data, other.select(), condition)),
@@ -179,6 +179,8 @@ function innerJoin(first, second, condition) {
  * are returned. When combining the rows, the columns from the first dataset take precedence.
  * If there is no match in the second dataset, only the row from the first dataset is returned.
  *
+ * This can be used to perform a right join by swapping the datasets.
+ *
  * @param {Array}    first     - The first dataset to join.
  * @param {Array}    second    - The second dataset to join.
  * @param {Function} condition - The condition to join the datasets on.
@@ -186,22 +188,6 @@ function innerJoin(first, second, condition) {
  */
 function leftJoin(first, second, condition) {
 	const { inner, outer } = joinData(first, second, condition)
-	return inner.concat(outer)
-}
-
-/**
- * Performs a right join on two datasets based on a condition. Result includes all rows from the second
- * dataset and matching rows from the first dataset. In case of multiple matches, all combinations
- * are returned. When combining the rows, the columns from the second dataset take precedence.
- * If there is no match in the first dataset, only the row from the second dataset is returned.
- *
- * @param {Array}    first     - The first dataset to join.
- * @param {Array}    second    - The second dataset to join.
- * @param {Function} condition - The condition to join the datasets on.
- * @returns {Array}            - The joined dataset.
- */
-function rightJoin(first, second, condition) {
-	const { inner, outer } = joinData(second, first, condition)
 	return inner.concat(outer)
 }
 
