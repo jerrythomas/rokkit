@@ -6,7 +6,7 @@ icon[role='button'] {
   @apply p-2 cursor-pointer aspect-square select-none focus:outline;
 }
 icon > i {
-  @apply text-2xl leading-6 aspect-square text-current;
+  @apply text-2xl leading-6 aspect-square text-current mx-auto;
 }
 icon.large > i {
   @apply text-3xl;
