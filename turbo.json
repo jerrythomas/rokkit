@@ -1,17 +1,30 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "globalDependencies": [
+    "tsconfig.json",
+    ".prettierignore",
+    ".env.*"
+  ],
+  "tasks": {
     "prepublishOnly": {},
     "build": {
-      "dependsOn": ["test:ci", "prepublishOnly"],
-      "outputs": [".svelte-kit/**", "dist/**"]
+      "dependsOn": [
+        "test:ci",
+        "prepublishOnly"
+      ],
+      "outputs": [
+        ".svelte-kit/**",
+        "dist/**"
+      ]
     },
     "test:ci": {
       "outputs": [],
       "dependsOn": []
     },
     "coverage": {
-      "outputs": ["coverage/**"]
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "lint": {
       "outputs": [],
@@ -27,8 +40,9 @@
       "outputs": []
     },
     "release": {
-      "dependsOn": ["test:ci"]
+      "dependsOn": [
+        "test:ci"
+      ]
     }
-  },
-  "globalDependencies": ["tsconfig.json", ".prettierignore", ".env.*"]
+  }
 }

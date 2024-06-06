@@ -3,7 +3,7 @@
   "version": "1.0.0-next.96",
   "description": "",
   "main": "index.js",
-  "packageManager": "pnpm",
+  "packageManager": "pnpm@9.2.0",
   "scripts": {
     "clean": "find . -name 'coverage' -o -name 'vitest*timestamp*' -o -name '.vercel' | xargs rm -rf",
     "prepublishOnly": "turbo run prepublishOnly",
@@ -47,6 +47,6 @@
     "*.{js,svelte,md,json}": "prettier --write"
   },
   "dependencies": {
-    "turbo": "^1.13.3"
+    "turbo": "^2.0.1"
   }
 }
