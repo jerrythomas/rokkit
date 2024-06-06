@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	import { defaultFields, defaultStateIcons, getComponent, compact } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
-	import { defaultFields, defaultStateIcons, getComponent } from '@rokkit/core'
 	import Item from './Item.svelte'
 
 	const dispatch = createEventDispatcher()
@@ -31,11 +31,7 @@
 	data-path={index}
 >
 	<item class="flex flex-row items-center">
-		{#if index}
-			<svelte:component this={component} bind:value {index} {fields} />
-		{:else}
-			<svelte:component this={component} bind:value {fields} />
-		{/if}
+		<svelte:component this={component} bind:value {fields} />
 	</item>
 	{#if removable}
 		<Icon name={icon} role="button" label="Remove" size="small" on:click={handleClick} />
