@@ -9,7 +9,6 @@ describe('InputField.svelte', () => {
 	it('should render default', async () => {
 		const { container, component } = render(InputField, {
 			props: {
-				name: 'test',
 				name: 'name'
 			}
 		})
@@ -31,7 +30,6 @@ describe('InputField.svelte', () => {
 	it('should render null', () => {
 		const { container } = render(InputField, {
 			props: {
-				name: 'test',
 				value: null,
 				name: 'name'
 			}

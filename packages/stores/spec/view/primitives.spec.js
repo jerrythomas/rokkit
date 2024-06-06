@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest'
-import { clone } from 'ramda'
 import {
 	getList,
 	findIndex,
@@ -13,9 +12,7 @@ import {
 	toggleSelection,
 	expand,
 	collapse,
-	toggleExpansion,
-	expandAll,
-	collapseAll
+	toggleExpansion
 } from '../../src/view/primitives'
 
 describe('view -> primitives', () => {

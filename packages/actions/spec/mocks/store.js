@@ -1,3 +1,5 @@
+import { vi } from 'vitest'
+
 export const mockStore = {
 	getEvents: vi.fn().mockReturnValue([]),
 	moveTo: vi.fn(),

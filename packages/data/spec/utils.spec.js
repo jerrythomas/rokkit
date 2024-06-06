@@ -11,7 +11,7 @@ describe('utils', () => {
 			expect(typeOf({ name: 'John' })).toBe('object')
 			expect(typeOf(new Date())).toBe('date')
 			expect(typeOf('2020-01-01')).toBe('date')
-			expect(typeOf(undefined)).toBe('string')
+			expect(typeOf()).toBe('string')
 			expect(typeOf(null)).toBe('string')
 		})
 	})

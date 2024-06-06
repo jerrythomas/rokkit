@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { createView } from '../../src/view'
 import { getTree, serializeNodesUsingIndex, getNestedAttributes } from '../../src/view/tree'
 import { get } from 'svelte/store'
-import { omit, clone } from 'ramda'
+import { omit } from 'ramda'
 
 describe('view for tree', () => {
 	const items = [
