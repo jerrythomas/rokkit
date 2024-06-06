@@ -528,6 +528,9 @@ importers:
       '@testing-library/svelte':
         specifier: ^5.1.0
         version: 5.1.0(svelte@4.2.17)(vite@5.2.12(@types/node@20.14.1))(vitest@1.6.0(@types/node@20.14.1)(@vitest/ui@1.6.0)(jsdom@24.1.0))
+      '@types/ramda':
+        specifier: ^0.30.0
+        version: 0.30.0
       '@vitest/coverage-v8':
         specifier: ^1.6.0
         version: 1.6.0(vitest@1.6.0(@types/node@20.14.1)(@vitest/ui@1.6.0)(jsdom@24.1.0))
