@@ -1,6 +1,6 @@
 import { defaultPathOptions } from './constants'
 import { getDeepScanSample } from './infer'
-import { getType } from './utils'
+import { typeOf } from './utils'
 
 /**
  * Merges currency-related attributes into the corresponding base columns.
@@ -64,7 +64,7 @@ export function deriveColumnProperties(sample, options) {
 
 	let columns = Object.keys(sample).map((key) => ({
 		name: key,
-		type: getType(sample[key]),
+		type: typeOf(sample[key]),
 		sortable: true,
 		filterable: true,
 		sorted: 'none',
@@ -90,7 +90,7 @@ export function deriveColumnMetadata(data, options = {}) {
 	if (Array.isArray(metadata) && metadata.length > 0) return metadata
 	if (data.length === 0) return []
 	const sample = deepScan ? getDeepScanSample(data) : data[0]
-	return Object.entries(sample).map(([name, value]) => ({ name, type: getType(value) }))
+	return Object.entries(sample).map(([name, value]) => ({ name, type: typeOf(value) }))
 }
 
 /**

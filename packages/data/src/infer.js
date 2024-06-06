@@ -3,7 +3,7 @@ import { compact } from '@rokkit/core'
 import { omit } from 'ramda'
 import { createFormatter } from './formatter'
 import { defaultViewOptions, defaultActionOrder } from './constants'
-import { getType } from './utils'
+import { typeOf } from './utils'
 import { deriveColumnProperties } from './metadata'
 
 /**
@@ -14,7 +14,7 @@ import { deriveColumnProperties } from './metadata'
  * @throws {Error} Throws an error if the value type is not supported or the value format is invalid.
  */
 export function deriveSortableColumn(value) {
-	const type = getType(value)
+	const type = typeOf(value)
 
 	const configGenerators = {
 		array: arrayConfigGenerator,
@@ -166,10 +166,10 @@ export function inferDataType(values) {
 		return 'null'
 	}
 
-	let type = getType(nonNullValues[0])
+	let type = typeOf(nonNullValues[0])
 
 	for (let i = 1; i < nonNullValues.length; i++) {
-		if (getType(nonNullValues[i]) !== type) {
+		if (typeOf(nonNullValues[i]) !== type) {
 			type = 'mixed'
 			break
 		}

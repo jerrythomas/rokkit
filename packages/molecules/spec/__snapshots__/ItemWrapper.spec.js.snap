@@ -15,6 +15,7 @@ exports[`ItemWrapper.svelte > should handle value change 1`] = `
         hello
       </p>
       
+      
     </item>
      
   </wrap-item>
@@ -36,6 +37,7 @@ exports[`ItemWrapper.svelte > should render 1`] = `
         hello
       </p>
       
+      
     </item>
      
   </wrap-item>
@@ -55,6 +57,7 @@ exports[`ItemWrapper.svelte > should render custom component 1`] = `
       <span>
         Test
       </span>
+      
     </item>
      
   </wrap-item>
@@ -77,6 +80,7 @@ exports[`ItemWrapper.svelte > should render object 1`] = `
         Test
       </p>
       
+      
     </item>
      
   </wrap-item>
@@ -96,6 +100,7 @@ exports[`ItemWrapper.svelte > should render object configured component 1`] = `
       <span>
         Test
       </span>
+      
     </item>
      
   </wrap-item>
@@ -116,6 +121,7 @@ exports[`ItemWrapper.svelte > should render removable with custom class 1`] = `
       <p>
         Test
       </p>
+      
       
     </item>
      
@@ -150,6 +156,7 @@ exports[`ItemWrapper.svelte > should render removable with custom icon 1`] = `
         Test
       </p>
       
+      
     </item>
      
     <icon
@@ -183,6 +190,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
         Test
       </p>
       
+      
     </item>
      
     <icon
@@ -215,6 +223,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
       <p>
         Test
       </p>
+      
       
     </item>
      
@@ -260,6 +269,7 @@ exports[`ItemWrapper.svelte > should render using field mapping 1`] = `
         hello
       </p>
       
+      
     </item>
      
   </wrap-item>
@@ -281,6 +291,7 @@ exports[`ItemWrapper.svelte > should render with custom class 1`] = `
         Test
       </p>
       
+      
     </item>
      
   </wrap-item>
@@ -301,6 +312,7 @@ exports[`ItemWrapper.svelte > should render with removable prop 1`] = `
       <p>
         Test
       </p>
+      
       
     </item>
      
@@ -334,6 +346,7 @@ exports[`ItemWrapper.svelte > should render with selected prop 1`] = `
         Test
       </p>
       
+      
     </item>
      
   </wrap-item>
@@ -355,6 +368,7 @@ exports[`ItemWrapper.svelte > should update when value changes 1`] = `
       <p>
         hello
       </p>
+      
       
     </item>
      
