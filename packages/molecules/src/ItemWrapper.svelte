@@ -31,7 +31,11 @@
 	data-path={index}
 >
 	<item class="flex flex-row items-center">
-		<svelte:component this={component} bind:value {index} {fields} />
+		{#if index}
+			<svelte:component this={component} bind:value {index} {fields} />
+		{:else}
+			<svelte:component this={component} bind:value {fields} />
+		{/if}
 	</item>
 	{#if removable}
 		<Icon name={icon} role="button" label="Remove" size="small" on:click={handleClick} />

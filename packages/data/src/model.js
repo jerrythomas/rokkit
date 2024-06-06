@@ -1,6 +1,6 @@
 import { identity, clone as copy } from 'ramda'
 import { getDeepScanSample } from './infer'
-import { getType } from './utils'
+import { typeOf } from './utils'
 
 /**
  * A model is a representation of a dataset
@@ -72,7 +72,7 @@ function deriveModel(data, sparse = false) {
 	kv.forEach(([key, value]) => {
 		result.push({
 			name: key,
-			type: getType(value)
+			type: typeOf(value)
 		})
 	})
 	return result
