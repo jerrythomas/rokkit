@@ -10,8 +10,11 @@ describe('MultiSelect.svelte', () => {
 
 	it('should render using default field mapping', async () => {
 		const { container, component } = render(MultiSelect, {
-			options: ['One', 'Two', 'Three'],
-			value: ['One']
+			props: {
+				name: 'test',
+				options: ['One', 'Two', 'Three'],
+				value: ['One']
+			}
 		})
 		expect(container).toBeTruthy()
 		const wrapper = container.querySelector('input-select')
@@ -29,9 +32,12 @@ describe('MultiSelect.svelte', () => {
 	it('should render using field mappings', async () => {
 		const options = [{ name: 'One' }, { name: 'Two' }, { name: 'Three' }]
 		const { container, component } = render(MultiSelect, {
-			options,
-			value: [options[1]],
-			fields: { text: 'name' }
+			props: {
+				options,
+				name: 'test',
+				value: [options[1]],
+				fields: { text: 'name' }
+			}
 		})
 		expect(container).toBeTruthy()
 		const wrapper = container.querySelector('input-select')
@@ -49,10 +55,13 @@ describe('MultiSelect.svelte', () => {
 	it('should render items using custom component', async () => {
 		const options = [{ name: 'Alpha' }, { name: 'Beta' }, { name: 'Charlie' }]
 		const { container } = render(MultiSelect, {
-			options,
-			value: [options[0]],
-			fields: { text: 'name' },
-			using: { default: MockItem }
+			props: {
+				options,
+				name: 'test',
+				value: [options[0]],
+				fields: { text: 'name' },
+				using: { default: MockItem }
+			}
 		})
 		expect(container).toBeTruthy()
 		const wrapper = container.querySelector('input-select')
@@ -65,8 +74,11 @@ describe('MultiSelect.svelte', () => {
 
 	it('should add a selected item', async () => {
 		const { container, component } = render(MultiSelect, {
-			options: ['One', 'Two', 'Three'],
-			value: ['One']
+			props: {
+				name: 'test',
+				options: ['One', 'Two', 'Three'],
+				value: ['One']
+			}
 		})
 		const wrapper = container.querySelector('input-select')
 		const select = wrapper.querySelector('selected-item')
@@ -88,8 +100,11 @@ describe('MultiSelect.svelte', () => {
 	})
 	it('should remove a selected item', async () => {
 		const { container, component } = render(MultiSelect, {
-			options: ['One', 'Two', 'Three'],
-			value: ['One', 'Two']
+			props: {
+				name: 'test',
+				options: ['One', 'Two', 'Three'],
+				value: ['One', 'Two']
+			}
 		})
 		const wrapper = container.querySelector('input-select')
 		const select = wrapper.querySelector('selected-item')
@@ -106,9 +121,12 @@ describe('MultiSelect.svelte', () => {
 
 	it('should render with custom class', async () => {
 		const { container, component } = render(MultiSelect, {
-			options: ['One', 'Two', 'Three'],
-			value: ['One'],
-			class: 'custom-class'
+			props: {
+				name: 'test',
+				options: ['One', 'Two', 'Three'],
+				value: ['One'],
+				class: 'custom-class'
+			}
 		})
 		expect(container).toBeTruthy()
 		let classes = Array.from(container.querySelector('input-select').classList)

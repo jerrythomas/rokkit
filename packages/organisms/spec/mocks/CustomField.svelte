@@ -1,6 +1,6 @@
 <script>
 	export let value
-	export let name
+	export let name = null
 	export let label
 	export let type
 </script>

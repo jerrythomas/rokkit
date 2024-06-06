@@ -21,22 +21,24 @@ describe('DataEditor.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render an object editor', () => {
-		const { container } = render(DataEditor, { value })
+		const { container } = render(DataEditor, { props: { value } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render an object editor using schema', () => {
-		const { container } = render(DataEditor, { value, schema })
+		const { container } = render(DataEditor, { props: { value, schema } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render an object editor using layout', () => {
 		const { container } = render(DataEditor, {
-			value,
-			layout,
-			using: { custom: CustomField }
+			props: {
+				value,
+				layout,
+				using: { components: { custom: CustomField } }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -44,17 +46,21 @@ describe('DataEditor.svelte', () => {
 
 	it('should render an object editor using schema & layout', () => {
 		const { container } = render(DataEditor, {
-			value,
-			schema,
-			layout,
-			using: { custom: CustomField }
+			props: {
+				value,
+				schema,
+				layout,
+				using: { components: { custom: CustomField } }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should handle changes', async () => {
-		const { container, component } = render(DataEditor, { value })
+		const { container, component } = render(DataEditor, {
+			props: { value, using: { components: { custom: CustomField } } }
+		})
 		expect(container).toBeTruthy()
 		component.$set({ schema })
 		await tick()

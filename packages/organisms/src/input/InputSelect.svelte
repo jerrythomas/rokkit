@@ -22,4 +22,4 @@
 </script>
 
 <input {name} type="hidden" bind:value />
-<Select value={selected} {options} {fields} {...$$restProps} on:change={handle} />
+<Select name="" value={selected} {options} {fields} {...$$restProps} on:change={handle} />

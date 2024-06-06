@@ -8,7 +8,6 @@ describe('lib', () => {
 			'addRootNode',
 			'messages',
 			'dataTypes',
-			'deriveTypeFromValue',
 			'deriveSchemaFromValue',
 			'deriveLayoutFromValue',
 			'getSchemaWithLayout',

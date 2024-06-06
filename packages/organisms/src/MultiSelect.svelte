@@ -5,6 +5,7 @@
 
 	let className = ''
 	export { className as class }
+	export let name
 	export let value = []
 	export let options = []
 	/** @type {import('@rokkit/core').FieldMapping} */
@@ -25,6 +26,7 @@
 </script>
 
 <Select
+	{name}
 	options={available}
 	{fields}
 	{using}

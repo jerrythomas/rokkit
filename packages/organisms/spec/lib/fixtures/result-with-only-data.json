@@ -14,7 +14,7 @@
 
       "props": {
         "label": "age",
-        "type": "number"
+        "type": "integer"
       }
     },
     {
@@ -51,7 +51,7 @@
 
           "props": {
             "label": "zip",
-            "type": "number"
+            "type": "integer"
           }
         }
       ]

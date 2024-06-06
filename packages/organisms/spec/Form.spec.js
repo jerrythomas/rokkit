@@ -20,22 +20,24 @@ describe('Form.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render a form', () => {
-		const { container } = render(Form, { value })
+		const { container } = render(Form, { props: { value } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render a form with schema', () => {
-		const { container } = render(Form, { value, schema })
+		const { container } = render(Form, { props: { value, schema } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render a form with layout', () => {
 		const { container } = render(Form, {
-			value,
-			layout,
-			using: { custom: CustomField }
+			props: {
+				value,
+				layout,
+				using: { components: { custom: CustomField } }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -43,10 +45,12 @@ describe('Form.svelte', () => {
 
 	it('should render a form with schema & layout', () => {
 		const { container } = render(Form, {
-			value,
-			schema,
-			layout,
-			using: { custom: CustomField }
+			props: {
+				value,
+				schema,
+				layout,
+				using: { components: { custom: CustomField } }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

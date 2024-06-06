@@ -17,7 +17,7 @@ describe('fields', () => {
 				type: 'object',
 				properties: {
 					name: { type: 'string' },
-					age: { type: 'number', min: 0, max: 100 }
+					age: { type: 'integer', min: 0, max: 100 }
 				}
 			}
 			let attribute = findAttributeByPath('#/name', schema)
@@ -32,7 +32,7 @@ describe('fields', () => {
 			expect(attribute).toEqual({
 				key: 'age',
 				props: {
-					type: 'number',
+					type: 'integer',
 					min: 0,
 					max: 100
 				}
@@ -49,7 +49,7 @@ describe('fields', () => {
 							street: { type: 'string' },
 							city: { type: 'string' },
 							state: { type: 'string' },
-							zip: { type: 'number' }
+							zip: { type: 'integer' }
 						}
 					}
 				}
@@ -82,7 +82,7 @@ describe('fields', () => {
 			expect(attribute).toEqual({
 				key: 'zip',
 				props: {
-					type: 'number'
+					type: 'integer'
 				}
 			})
 		})
@@ -92,7 +92,7 @@ describe('fields', () => {
 				type: 'object',
 				properties: {
 					name: { type: 'string' },
-					age: { type: 'number', min: 0, max: 100 }
+					age: { type: 'integer', min: 0, max: 100 }
 				}
 			}
 			expect(() => {
@@ -105,7 +105,7 @@ describe('fields', () => {
 				type: 'object',
 				properties: {
 					name: { type: 'string' },
-					age: { type: 'number', min: 0, max: 100 }
+					age: { type: 'integer', min: 0, max: 100 }
 				}
 			}
 			const attribute = findAttributeByPath(null, schema)
@@ -151,7 +151,7 @@ describe('fields', () => {
 
 						props: {
 							label: 'age',
-							type: 'number'
+							type: 'integer'
 						}
 					}
 				]
@@ -188,7 +188,7 @@ describe('fields', () => {
 							type: 'object',
 							properties: {
 								name: { type: 'string' },
-								age: { type: 'number' }
+								age: { type: 'integer' }
 							}
 						}
 					}
@@ -237,7 +237,7 @@ describe('fields', () => {
 									},
 									{
 										key: 'age',
-										props: { label: 'age', type: 'number' }
+										props: { label: 'age', type: 'integer' }
 									}
 								]
 							}
