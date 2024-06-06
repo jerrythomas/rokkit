@@ -113,7 +113,7 @@ describe('nested', () => {
 					properties: {
 						count: {
 							default: 10,
-							type: 'number'
+							type: 'integer'
 						},
 						enabled: {
 							default: true,
@@ -260,7 +260,7 @@ describe('nested', () => {
 							properties: {
 								count: {
 									default: 10,
-									type: 'number'
+									type: 'integer'
 								},
 								enabled: {
 									default: true,

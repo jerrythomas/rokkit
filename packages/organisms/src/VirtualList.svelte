@@ -14,6 +14,7 @@
 	export let value = null
 	export let items = []
 	export let fields = {}
+	export let using = {}
 	export let size = '100%'
 	export let horizontal = false
 	export let minSize = 40
@@ -96,7 +97,7 @@
 	}
 
 	const props = horizontal ? dimensionAttributes.horizontal : dimensionAttributes.vertical
-
+	$: using = { default: Item, ...using }
 	$: keyboardActions = getKeyboardActions(viewport, horizontal)
 	$: start = $bounds?.lower
 	$: end = $bounds?.upper
@@ -145,7 +146,7 @@
 					bind:this={elements[index]}
 				>
 					<slot item={row.data}>
-						<Item value={row.data} {fields} />
+						<svelte:component this={using.default} {fields} value={row.data} />
 					</slot>
 				</virtual-list-item>
 			{/each}

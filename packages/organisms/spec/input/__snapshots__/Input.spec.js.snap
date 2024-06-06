@@ -101,6 +101,7 @@ exports[`Input.svelte > should render "enum" 1`] = `
   />
    
   <input-select
+    aria-label=""
     class="flex flex-col relative "
     role="listbox"
     tabindex="0"
@@ -888,6 +889,7 @@ exports[`Input.svelte > should render "select" 1`] = `
   />
    
   <input-select
+    aria-label=""
     class="flex flex-col relative "
     role="listbox"
     tabindex="0"

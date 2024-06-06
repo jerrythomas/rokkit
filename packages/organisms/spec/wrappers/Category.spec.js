@@ -1,29 +1,44 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
-import { Category } from '../../src/wrappers'
-import Register from '../mocks/Register.svelte'
+import { writable } from 'svelte/store'
+import { Wrapper, Category } from '../../src/wrappers'
 import Switch from '../../src/Switch.svelte'
+import { Item } from '@rokkit/molecules'
+import Tabs from '../../src/Tabs.svelte'
 
 describe('Category.svelte', () => {
 	const items = ['one', 'two', 'three']
+	const using = {
+		editors: {},
+		components: {},
+		wrappers: {},
+		navigators: {}
+	}
+	const registry = writable({
+		editors: { ...using.editors },
+		components: { default: Item, ...using.components },
+		wrappers: { default: Wrapper, ...using.wrappers },
+		navigators: { default: Tabs, ...using.navigators }
+	})
+
 	beforeEach(() => {
 		cleanup()
 	})
 
 	it('should render using default props', () => {
-		const { container } = render(Register, {
-			render: Category,
-			properties: { options: items }
+		const { container } = render(Category, {
+			context: new Map([['registry', registry]]),
+			props: { options: items }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render using specified type', async () => {
-		const { container, component } = render(Register, {
-			render: Category,
-			properties: { options: items, type: 'horizontal' }
+		const { container, component } = render(Category, {
+			context: new Map([['registry', registry]]),
+			props: { options: items, type: 'horizontal' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -34,9 +49,9 @@ describe('Category.svelte', () => {
 	})
 
 	it('should render using specified class', async () => {
-		const { container, component } = render(Register, {
-			render: Category,
-			properties: { options: items, class: 'custom-class' }
+		const { container, component } = render(Category, {
+			context: new Map([['registry', registry]]),
+			props: { options: items, class: 'custom-class' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -45,29 +60,31 @@ describe('Category.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render with alternative navigator', async () => {
-		const { container, component } = render(Register, {
-			render: Category,
-			using: { navigators: { Switch } },
-			properties: { options: items, navigator: 'Switch' }
-		})
-		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
-
-		component.$set({ navigator: 'tabs' })
-		await tick()
-		expect(container).toMatchSnapshot()
-	})
-
 	it('should render with extra props', async () => {
-		const { container, component } = render(Register, {
-			render: Category,
-			properties: { options: items, align: 'center' }
+		const { container, component } = render(Category, {
+			context: new Map([['registry', registry]]),
+			props: { options: items, align: 'center' }
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
 		component.$set({ align: 'right' })
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
+	it('should render with alternative navigator', async () => {
+		registry.update((state) => {
+			state.navigators = { ...state.navigators, Switch }
+			return state
+		})
+		const { container, component } = render(Category, {
+			context: new Map([['registry', registry]]),
+			props: { options: items, navigator: 'Switch' }
+		})
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		component.$set({ navigator: 'tabs' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

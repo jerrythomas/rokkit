@@ -5,12 +5,12 @@
 	import DataEditor from './DataEditor.svelte'
 	import TreeTable from './TreeTable.svelte'
 	import Tabs from './Tabs.svelte'
-	import { generateTreeTable } from './lib'
+	import { generateTreeTable, deriveNestedSchema } from './lib'
 
 	const dispatch = createEventDispatcher()
 
 	export let value
-	export let schema
+	export let schema = deriveNestedSchema(value)
 	export let using = {}
 	export let fields = {
 		text: 'key',

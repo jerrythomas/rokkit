@@ -15,7 +15,44 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
         <nested-list
           class="nested-list flex flex-col w-full list"
           role="tree"
-        />
+        >
+          <node
+            aria-expanded="false"
+            aria-selected="false"
+            class="node min-h-5 flex flex-col cursor-pointer select-none"
+            data-path="0"
+            id="id-0"
+            role="treeitem"
+          >
+            <div
+              class="flex flex-row items-center"
+            >
+              <span
+                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+              />
+              
+               
+              <item>
+                <icon
+                  aria-label="type-object"
+                  class="flex flex-shrink-0 items-center justify-center "
+                  role="img"
+                  tabindex="-1"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="type-object"
+                  />
+                </icon>
+                
+                 
+                
+              </item>
+            </div>
+             
+             
+          </node>
+        </nested-list>
       </tree>
     </aside>
      
@@ -27,7 +64,7 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
         class="flex flex-col w-full flex-grow overflow-auto"
       >
         <p>
-          Select a node to edit
+          No atomic attributes at this level. Select a child node to edit. Current value is below.
         </p>
          
         <tree-table
@@ -47,7 +84,94 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
               </tr>
             </thead>
              
-            <tbody />
+            <tbody>
+              <tr
+                aria-current="false"
+                class="cursor-pointer"
+              >
+                <td>
+                  <cell>
+                     
+                    
+                     
+                    
+                     
+                    <p>
+                      a
+                    </p>
+                    
+                    
+                  </cell>
+                </td>
+                <td>
+                  <cell>
+                     
+                    <icon
+                      aria-label="type-integer"
+                      class="flex flex-shrink-0 items-center justify-center "
+                      role="img"
+                      tabindex="-1"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="type-integer"
+                      />
+                    </icon>
+                    
+                     
+                    <p>
+                      1
+                    </p>
+                    
+                    
+                  </cell>
+                </td>
+                 
+              </tr>
+              <tr
+                aria-current="false"
+                class="cursor-pointer"
+              >
+                <td>
+                  <cell>
+                     
+                    
+                     
+                    
+                     
+                    <p>
+                      b
+                    </p>
+                    
+                    
+                  </cell>
+                </td>
+                <td>
+                  <cell>
+                     
+                    <icon
+                      aria-label="type-integer"
+                      class="flex flex-shrink-0 items-center justify-center "
+                      role="img"
+                      tabindex="-1"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="type-integer"
+                      />
+                    </icon>
+                    
+                     
+                    <p>
+                      2
+                    </p>
+                    
+                    
+                  </cell>
+                </td>
+                 
+              </tr>
+            </tbody>
           </table>
         </tree-table>
       </section>

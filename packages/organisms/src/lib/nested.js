@@ -1,6 +1,7 @@
 import { omit, pick } from 'ramda'
 import { isObject } from '@rokkit/core'
-import { deriveSchemaFromValue, deriveTypeFromValue } from './schema'
+import { typeOf } from '@rokkit/data'
+import { deriveSchemaFromValue } from './schema'
 import { deriveLayoutFromValue } from './layout'
 
 /**
@@ -81,7 +82,7 @@ export function flattenAttributes(input, scope = '#') {
 	return Object.entries(input).map(([key, value]) => ({
 		key,
 		value,
-		type: deriveTypeFromValue(value),
+		type: typeOf(value),
 		scope: [scope, key].join('/')
 	}))
 }
@@ -120,7 +121,7 @@ export function flattenElement(element) {
 				value: item,
 				scope: [element.scope, `[${index}]`].join('/'),
 				key: `[${index}]`,
-				type: deriveTypeFromValue(item)
+				type: typeOf(item)
 			}))
 			.reduce((acc, item) => ({ ...acc, ...flattenElement(item) }), {
 				[element.scope]: pick(['key', 'type', 'scope', 'value'], element)

@@ -84,6 +84,7 @@ exports[`VirtualSelect.svelte > should render object array 1`] = `
               Item 1
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -96,6 +97,7 @@ exports[`VirtualSelect.svelte > should render object array 1`] = `
             <p>
               Item 2
             </p>
+            
             
              
           </virtual-list-item>
@@ -110,6 +112,7 @@ exports[`VirtualSelect.svelte > should render object array 1`] = `
               Item 3
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -123,6 +126,7 @@ exports[`VirtualSelect.svelte > should render object array 1`] = `
               Item 4
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -135,6 +139,7 @@ exports[`VirtualSelect.svelte > should render object array 1`] = `
             <p>
               Item 5
             </p>
+            
             
              
           </virtual-list-item>
@@ -202,6 +207,7 @@ exports[`VirtualSelect.svelte > should render object array 2`] = `
               Item 1
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -214,6 +220,7 @@ exports[`VirtualSelect.svelte > should render object array 2`] = `
             <p>
               Item 2
             </p>
+            
             
              
           </virtual-list-item>
@@ -228,6 +235,7 @@ exports[`VirtualSelect.svelte > should render object array 2`] = `
               Item 3
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -241,6 +249,7 @@ exports[`VirtualSelect.svelte > should render object array 2`] = `
               Item 4
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -253,6 +262,7 @@ exports[`VirtualSelect.svelte > should render object array 2`] = `
             <p>
               Item 5
             </p>
+            
             
              
           </virtual-list-item>
@@ -319,6 +329,7 @@ exports[`VirtualSelect.svelte > should render string array 1`] = `
               Item 1
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -330,6 +341,7 @@ exports[`VirtualSelect.svelte > should render string array 1`] = `
             <p>
               Item 2
             </p>
+            
             
              
           </virtual-list-item>
@@ -343,6 +355,7 @@ exports[`VirtualSelect.svelte > should render string array 1`] = `
               Item 3
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -355,6 +368,7 @@ exports[`VirtualSelect.svelte > should render string array 1`] = `
               Item 4
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -366,6 +380,7 @@ exports[`VirtualSelect.svelte > should render string array 1`] = `
             <p>
               Item 5
             </p>
+            
             
              
           </virtual-list-item>
@@ -432,6 +447,7 @@ exports[`VirtualSelect.svelte > should render string array 2`] = `
               Item 1
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -443,6 +459,7 @@ exports[`VirtualSelect.svelte > should render string array 2`] = `
             <p>
               Item 2
             </p>
+            
             
              
           </virtual-list-item>
@@ -456,6 +473,7 @@ exports[`VirtualSelect.svelte > should render string array 2`] = `
               Item 3
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -468,6 +486,7 @@ exports[`VirtualSelect.svelte > should render string array 2`] = `
               Item 4
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -479,6 +498,7 @@ exports[`VirtualSelect.svelte > should render string array 2`] = `
             <p>
               Item 5
             </p>
+            
             
              
           </virtual-list-item>
@@ -546,6 +566,7 @@ exports[`VirtualSelect.svelte > should render with selected value 1`] = `
               Item 1
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -557,6 +578,7 @@ exports[`VirtualSelect.svelte > should render with selected value 1`] = `
             <p>
               Item 2
             </p>
+            
             
              
           </virtual-list-item>
@@ -570,6 +592,7 @@ exports[`VirtualSelect.svelte > should render with selected value 1`] = `
               Item 3
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -582,6 +605,7 @@ exports[`VirtualSelect.svelte > should render with selected value 1`] = `
               Item 4
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -593,6 +617,7 @@ exports[`VirtualSelect.svelte > should render with selected value 1`] = `
             <p>
               Item 5
             </p>
+            
             
              
           </virtual-list-item>
@@ -660,6 +685,7 @@ exports[`VirtualSelect.svelte > should render with selected value 2`] = `
               Item 1
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -671,6 +697,7 @@ exports[`VirtualSelect.svelte > should render with selected value 2`] = `
             <p>
               Item 2
             </p>
+            
             
              
           </virtual-list-item>
@@ -684,6 +711,7 @@ exports[`VirtualSelect.svelte > should render with selected value 2`] = `
               Item 3
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -696,6 +724,7 @@ exports[`VirtualSelect.svelte > should render with selected value 2`] = `
               Item 4
             </p>
             
+            
              
           </virtual-list-item>
           <virtual-list-item
@@ -707,6 +736,7 @@ exports[`VirtualSelect.svelte > should render with selected value 2`] = `
             <p>
               Item 5
             </p>
+            
             
              
           </virtual-list-item>

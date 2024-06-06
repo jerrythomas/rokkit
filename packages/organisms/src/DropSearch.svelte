@@ -3,6 +3,7 @@
 	import Select from './Select.svelte'
 
 	export let options
+	export let name = null
 	export let value = null
 	/** @type {import('@rokkit/core').FieldMapping} */
 	export let fields = defaultFields
@@ -27,7 +28,7 @@
 	}
 </script>
 
-<Select bind:value options={filtered} {...$$restProps} {fields} on:select={handleSelect}>
+<Select {name} bind:value options={filtered} {...$$restProps} {fields} on:select={handleSelect}>
 	<span class="flex flex-grow">
 		<input
 			type="text"

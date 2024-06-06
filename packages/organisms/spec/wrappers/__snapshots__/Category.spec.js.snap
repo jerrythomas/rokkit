@@ -68,7 +68,6 @@ exports[`Category.svelte > should render using default props 1`] = `
       class="vertical"
     />
   </section>
-  
 </div>
 `;
 
@@ -140,14 +139,13 @@ exports[`Category.svelte > should render using specified class 1`] = `
       class="vertical"
     />
   </section>
-  
 </div>
 `;
 
 exports[`Category.svelte > should render using specified class 2`] = `
 <div>
   <section
-    class="custom-class"
+    class="custom-class-2"
   >
     <tabs
       class="flex w-full "
@@ -212,7 +210,6 @@ exports[`Category.svelte > should render using specified class 2`] = `
       class="vertical"
     />
   </section>
-  
 </div>
 `;
 
@@ -284,7 +281,6 @@ exports[`Category.svelte > should render using specified type 1`] = `
       class="horizontal"
     />
   </section>
-  
 </div>
 `;
 
@@ -353,10 +349,9 @@ exports[`Category.svelte > should render using specified type 2`] = `
     </tabs>
      
     <field-layout
-      class="horizontal"
+      class="section"
     />
   </section>
-  
 </div>
 `;
 
@@ -425,7 +420,6 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
       class="vertical"
     />
   </section>
-  
 </div>
 `;
 
@@ -434,67 +428,69 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
   <section
     class=""
   >
-    <toggle-switch
-      aria-disabled="false"
-      aria-label="Toggle Switch"
-      aria-orientation="horizontal"
-      class="flex items-center "
+    <tabs
+      class="flex w-full "
       role="listbox"
       tabindex="0"
     >
-      <item
+      <wrap-item
         aria-selected="false"
-        class="relative"
+        class="flex flex-row items-center tab"
         data-path="0"
         role="option"
       >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            one
+          </p>
+          
+        </item>
          
-         
-        <p>
-          one
-        </p>
-        
-        
-         
-      </item>
-      <item
+      </wrap-item>
+      <wrap-item
         aria-selected="false"
-        class="relative"
+        class="flex flex-row items-center tab"
         data-path="1"
         role="option"
       >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            two
+          </p>
+          
+        </item>
          
-         
-        <p>
-          two
-        </p>
-        
-        
-         
-      </item>
-      <item
+      </wrap-item>
+      <wrap-item
         aria-selected="false"
-        class="relative"
+        class="flex flex-row items-center tab"
         data-path="2"
         role="option"
       >
+        <item
+          class="flex flex-row items-center"
+        >
+           
+          <p>
+            three
+          </p>
+          
+        </item>
          
-         
-        <p>
-          three
-        </p>
-        
-        
-         
-      </item>
-    </toggle-switch>
-    
+      </wrap-item>
+       
+    </tabs>
      
     <field-layout
       class="vertical"
     />
   </section>
-  
 </div>
 `;
 
@@ -566,7 +562,6 @@ exports[`Category.svelte > should render with extra props 1`] = `
       class="vertical"
     />
   </section>
-  
 </div>
 `;
 
@@ -576,7 +571,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
     class=""
   >
     <tabs
-      class="flex w-full justify-center"
+      class="flex w-full justify-end"
       role="listbox"
       tabindex="0"
     >
@@ -638,6 +633,5 @@ exports[`Category.svelte > should render with extra props 2`] = `
       class="vertical"
     />
   </section>
-  
 </div>
 `;

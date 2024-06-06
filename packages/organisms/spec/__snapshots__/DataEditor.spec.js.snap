@@ -195,11 +195,17 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
     aria-label=""
     class="vertical "
   >
+    <h1>
+      string
+      :
+      Name
+    </h1>
      
     <p>
+      null
+      :
       John
     </p>
-    
     
     
     <input-field
@@ -392,7 +398,7 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
     </input-field>
     
     <input-field
-      class="flex flex-col input-number "
+      class="flex flex-col input-integer "
     >
       <label
         for="age"
@@ -504,7 +510,7 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
       </input-field>
       
       <input-field
-        class="flex flex-col input-number "
+        class="flex flex-col input-integer "
       >
         <label
           for="address.zip"
@@ -549,11 +555,17 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
     aria-label=""
     class="vertical "
   >
+    <h1>
+      string
+      :
+      Name
+    </h1>
      
     <p>
+      null
+      :
       John
     </p>
-    
     
     
     <input-field
@@ -714,11 +726,17 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
     aria-label=""
     class="vertical "
   >
+    <h1>
+      string
+      :
+      Name
+    </h1>
      
     <p>
+      null
+      :
       John
     </p>
-    
     
     
     <input-field
