@@ -115,6 +115,49 @@ function generateCrumbs(flat, index) {
 }
 
 /**
+ * Processes files from dynamic imports and adds metadata.
+ *
+ * @param {Array} modules - The modules to process.
+ * @param {Array} sources - The sources to process.
+ * @param {Object} options - The options to use.
+ * @returns {Promise<Object>} - The tutorials and routes.
+ */
+async function fetchAndProcessFiles(modules, sources, options) {
+	const importedModules = await fetchImports(modules)
+	const importedSources = await fetchImports(sources)
+
+	let files = [...importedModules, ...importedSources].map((item) => ({
+		...item,
+		file: item.file.replace(new RegExp(`^${options.root}`), '')
+	}))
+
+	files = addPathMetadata(files)
+	files = addModuleMetadata(files, options)
+	return files
+}
+
+/**
+ * Process the tutorials, generates the hierarchy and sorts it.
+ *
+ * @param {Array} modules - The modules to process.
+ * @param {Array} sources - The sources to process.
+ * @param {Object} options - The options to use.
+ * @returns {Promise<Object>} - The tutorials and routes.
+ */
+async function processTutorials(modules, sources, options) {
+	let tutorials = {}
+	const files = await fetchAndProcessFiles(modules, sources, options)
+	files.forEach((item) => {
+		tutorials = tutorialsToNestedObject(tutorials, item)
+	})
+	const routes = generateRouteEntries(tutorials)
+	tutorials = convertFilesToFolderHierarchy(tutorials, options)
+	tutorials = toSortedHierarchy(tutorials)
+
+	return { tutorials, routes }
+}
+
+/**
  * Processes the tutorials and returns the tutorials and routes.
  *
  * @param {Array} modules - The modules to process.
@@ -163,47 +206,4 @@ export function assimilateTutorials(modules, sources, options) {
 		content: () => tutorials,
 		assimilated: () => loaded
 	}
-}
-
-/**
- * Processes files from dynamic imports and adds metadata.
- *
- * @param {Array} modules - The modules to process.
- * @param {Array} sources - The sources to process.
- * @param {Object} options - The options to use.
- * @returns {Promise<Object>} - The tutorials and routes.
- */
-async function fetchAndProcessFiles(modules, sources, options) {
-	const importedModules = await fetchImports(modules)
-	const importedSources = await fetchImports(sources)
-
-	let files = [...importedModules, ...importedSources].map((item) => ({
-		...item,
-		file: item.file.replace(new RegExp(`^${options.root}`), '')
-	}))
-
-	files = addPathMetadata(files)
-	files = addModuleMetadata(files, options)
-	return files
-}
-
-/**
- * Process the tutorials, generates the hierarchy and sorts it.
- *
- * @param {Array} modules - The modules to process.
- * @param {Array} sources - The sources to process.
- * @param {Object} options - The options to use.
- * @returns {Promise<Object>} - The tutorials and routes.
- */
-async function processTutorials(modules, sources, options) {
-	let tutorials = {}
-	const files = await fetchAndProcessFiles(modules, sources, options)
-	files.forEach((item) => {
-		tutorials = tutorialsToNestedObject(tutorials, item)
-	})
-	const routes = generateRouteEntries(tutorials)
-	tutorials = convertFilesToFolderHierarchy(tutorials, options)
-	tutorials = toSortedHierarchy(tutorials)
-
-	return { tutorials, routes }
 }

@@ -20,6 +20,7 @@ module.exports = {
 		eqeqeq: 'error',
 		'no-eq-null': 'error',
 		'no-implicit-coercion': 'error',
+		// 'no-use-before-define': 'error',
 		'max-lines-per-function': [
 			'warn',
 			{
