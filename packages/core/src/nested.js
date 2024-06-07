@@ -1,6 +1,14 @@
 import { omit } from 'ramda'
 import { defaultFields } from './constants'
 
+/**
+ * Flattens a nested list of items
+ *
+ * @param {Array}                         items
+ * @param {import('./types).FieldMapping} fields
+ * @param {number}                        level
+ * @returns {Array}
+ */
 export function flattenNestedList(items, fields = defaultFields, level = 0) {
 	fields = { ...defaultFields, ...fields }
 	let data = []
@@ -20,9 +28,11 @@ export function flattenNestedList(items, fields = defaultFields, level = 0) {
 }
 
 /**
- * Converts a path slug to a value in the menu
+ * Matches a path slug to a value in the menu
  *
- * @param {string} slug
+ * @param {string}                         slug
+ * @param {Array}                          data
+ * @param {import('./types').FieldMapping} fields
  * @returns {any}
  */
 export function findValueFromPath(slug, data, fields) {

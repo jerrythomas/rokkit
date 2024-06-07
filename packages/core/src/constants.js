@@ -97,6 +97,12 @@ export const defaultThemeMapping = {
 	info: 'cyan'
 }
 
+/**
+ * Generate a state icon mapping from a list of icon names
+ *
+ * @param {string[]} icons
+ * @returns {import('./types').StateIcons}
+ */
 export function stateIconsFromNames(icons) {
 	return icons
 		.map((k) => [...k.split('-')])

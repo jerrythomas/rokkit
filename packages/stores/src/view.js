@@ -29,7 +29,7 @@ export function createView(items, options = {}) {
 	const { fields, nested = false } = options
 	const data = nested ? getTree(items) : getList(items)
 
-	let currentIndex = validatedIndex(data, options.currentIndex ?? 0)
+	const currentIndex = validatedIndex(data, options.currentIndex ?? 0)
 
 	const view = writable({
 		data,

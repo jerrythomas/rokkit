@@ -62,7 +62,7 @@ describe('action', () => {
 
 	describe('toUseHandlersFor', () => {
 		const mockAction = (node, options) => {
-			const handler = () => {}
+			const handler = vi.fn()
 			node.addEventListener('click', handler)
 			if (options.touch) node.addEventListener('touchstart', handler)
 			return {

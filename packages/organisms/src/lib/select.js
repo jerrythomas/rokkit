@@ -8,7 +8,7 @@
 export function getListPosition(anchor, viewport) {
 	if (typeof window === 'undefined' || !anchor || !viewport) return ''
 
-	let bounds = anchor.getBoundingClientRect()
+	const bounds = anchor.getBoundingClientRect()
 
 	bounds.top += window.scrollX
 	bounds.left += window.scrollY
