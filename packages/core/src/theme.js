@@ -11,6 +11,7 @@ const modifiers = {
  * Generate shades for a color using css varuable
  *
  * @param {string} name
+ * @param {string} modifier
  * @returns
  */
 export function shadesOf(name, modifier = 'none') {
@@ -36,6 +37,13 @@ export function shadesOf(name, modifier = 'none') {
 	)
 }
 
+/**
+ * Generate shades for a color using css varuable
+ *
+ * @param {string} name
+ * @param {string} modifier
+ * @returns {object}
+ */
 export function stateColors(name, modifier = 'none') {
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 	return {
@@ -75,7 +83,7 @@ export function themeColors(modifier = 'none') {
  * @param {'light' | 'dark'}         mode           - The theme mode for which the mappings are being created.
  * @param {function(number): string} valueCondition - A function that takes a shade value and returns the color value
  *                                                    based on the condition appropriate for light or dark mode.
- * @returns {{import('./types'}.ShadeMappings>} An array of objects, where each object contains key, value, and mode
+ * @returns {{import('./types'}.ShadeMapping[]>} An array of objects, where each object contains key, value, and mode
  *                                              properties corresponding to  a CSS custom property definition.
  */
 function createShadeMappings(variant, mode, valueCondition) {

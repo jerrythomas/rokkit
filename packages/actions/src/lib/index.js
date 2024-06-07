@@ -1,4 +1,5 @@
-export * from './constants'
+export { dimensionAttributes, defaultResizerOptions, defaultVirtualListOptions } from './constants'
+// skipcq: JS-E1004 - Needed for exposing all functions
 export * from './internal'
-export * from './event-manager'
-export * from './viewport'
+export { EventManager } from './event-manager'
+export { virtualListViewport } from './viewport'

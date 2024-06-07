@@ -1,4 +1,6 @@
+// skipcq: JS-E1004 - Needed for exposing all types
 export * from './types'
+// skipcq: JS-E1004 - Needed for exposing collection of functions
 export * from './lib'
 export { fillable } from './fillable'
 export { pannable } from './pannable'

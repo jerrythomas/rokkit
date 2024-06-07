@@ -96,6 +96,20 @@
  */
 
 /**
- * @typedef {Array<ShadeMapping>} ShadeMappings
+ * @typedef {Object} TickMark
+ * @property {number} value - The value of the tick mark.
+ * @property {string} label - The label for the tick mark.
+ * @property {boolean} major - Indicates if the tick mark is a major tick.
  */
+
+/**
+ * @typedef {Object} CalendarDay
+ * @property {number}  day     - The day of the month.
+ * @property {number}  offset  - indicates the offset for positioning
+ * @property {date}    date    - Datevalue for the day.
+ * @property {string}  text    - formatted text for the day.
+ * @property {boolean} holiday - Indicates if the day is a holiday.
+ * @property {boolean} weekend - Indicates if the day is on the weekend.
+ */
+
 export default {}

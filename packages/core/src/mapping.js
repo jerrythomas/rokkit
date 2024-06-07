@@ -5,7 +5,7 @@ import { toString, isObject } from './utils'
  * Get the component to be used to render the item.
  * If the component is null or undefined, it will return the default component.
  *
- * @param {object|string} value
+ * @param {object|string}                     value
  * @param {import('./types.js').FieldMapping} fields
  * @param {import('./types.js').ComponentMap} using
  */
@@ -18,24 +18,34 @@ export function getComponent(value, fields, using) {
 /**
  * Get the icon for the item. If the icon is an object, it will use the state to determine which icon to use.
  *
- * @param {object|string} value
+ * @param {object|string}                     value
  * @param {import('./types.js').FieldMapping} fields
+ * @returns {string}
  */
 export function getIcon(value, fields = defaultFields) {
 	if (fields.icon === undefined || typeof (value ?? '') !== 'object') return null
-	// console.log(fields.icon, fields.state, value[fields.icon][value[fields.state]])
-	const name =
-		typeof value[fields.icon] === 'object'
-			? value[fields.icon][value[fields.state]]
-			: value[fields.icon]
+
+	const name = getIconFromObject(value, fields)
 	return fields.iconPrefix ? [fields.iconPrefix, name].join('-') : name
+}
+
+/**
+ * Get the icon for the item. If the icon is an object, it will use the state to determine which icon to use.
+ *
+ * @param {object}                            value
+ * @param {import('./types.js').FieldMapping} fields
+ * @returns {string}
+ */
+function getIconFromObject(value, fields) {
+	if (typeof value[fields.icon] === 'object') return value[fields.icon][value[fields.state]]
+	return value[fields.icon]
 }
 
 /**
  * Get the value for the item. If the value is an object,
  * it will use the field mapping to determine which attribute to get.
  *
- * @param {*} node
+ * @param {*}                              node
  * @param {import('./types').FieldMapping} fields
  * @returns {*}
  */
@@ -54,11 +64,6 @@ export function getValue(node, fields = defaultFields) {
 export function getText(node, fields = defaultFields) {
 	const value = isObject(node) ? node[fields.text] : node
 	return value
-	// return value != null
-	// 	? isObject(value)
-	// 		? JSON.stringify(value, null, 2)
-	// 		: value.toString()
-	// 	: value
 }
 
 /**
@@ -67,8 +72,8 @@ export function getText(node, fields = defaultFields) {
  *
  * @param {*}                              node
  * @param {import('./types').FieldMapping} fields
- * @param {function}                       formatter
- * @returns {*}
+ * @param {Function}                       formatter
+ * @returns {Function}
  */
 export function getFormattedText(node, fields = defaultFields, formatter = toString) {
 	const value = isObject(node) ? node[fields.text] : node
@@ -79,7 +84,7 @@ export function getFormattedText(node, fields = defaultFields, formatter = toStr
 }
 /**
  * Gets the attribute from the node
- * @param {*} node
+ * @param {*}      node
  * @param {string} attr
  * @returns {*}
  */
@@ -89,7 +94,7 @@ export function getAttribute(node, attr) {
 /**
  * Check if the current item is a parent
  *
- * @param {*} item
+ * @param {*}                              item
  * @param {import('./types').FieldMapping} fields
  * @returns {boolean}
  */
@@ -105,7 +110,7 @@ export function hasChildren(item, fields) {
 /**
  * Check if the current item is a parent and is expanded
  *
- * @param {*} item
+ * @param {*}                              item
  * @param {import('./types').FieldMapping} fields
  * @returns {boolean}
  */
@@ -121,7 +126,7 @@ export function isExpanded(item, fields) {
 /**
  * Verify if at least one item has children
  *
- * @param {Array<*>} items
+ * @param {Array<*>}                       items
  * @param {import('./types').FieldMapping} fields
  * @returns {boolean}
  */

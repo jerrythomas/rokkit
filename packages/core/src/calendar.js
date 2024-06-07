@@ -10,6 +10,14 @@ export const weekdays = [
 	'Saturday'
 ]
 
+/**
+ * Get the days in the month.
+ *
+ * @param {Date}    value
+ * @param {Array}   holidays
+ * @param {boolean} fixed
+ * @returns {import('./types').CalendarDay[]}
+ */
 export function getCalendarDays(value, holidays = [], fixed = false) {
 	const month = getMonth(value)
 	const year = getYear(value)
