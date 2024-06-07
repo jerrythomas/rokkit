@@ -158,7 +158,6 @@ describe('navigator', () => {
 			expect(handlers.collapse).not.toHaveBeenCalled()
 		})
 
-		//todo: test move to parent instead of collapse
 		it('should dispatch collapse event on ArrowLeft', () => {
 			items[0][fields.isOpen] = true
 			navigatorInstance = navigator(node, {

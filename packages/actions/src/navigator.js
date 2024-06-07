@@ -24,8 +24,6 @@ export function navigator(element, options) {
 
 	if (!enabled) return { destroy: noop }
 
-	// todo: Update should handle selection value change
-	// should we wait a tick before updating?
 	const update = (input) => {
 		const previousNode = currentNode
 		items = input.items
