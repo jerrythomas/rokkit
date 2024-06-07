@@ -19,6 +19,7 @@ describe('components', () => {
 	})
 
 	it.each(Object.keys(components))('should render %s', (key) => {
+		// skipcq: JS-E1007 - Using dynamic key to access object
 		const { container } = render(components[key])
 		expect(container).toMatchSnapshot()
 	})
