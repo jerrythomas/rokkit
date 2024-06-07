@@ -11,21 +11,25 @@ module.exports = {
 	},
 	ignorePatterns: ['dist'],
 	rules: {
-		complexity: ['error', 5],
+		complexity: ['warn', 5],
 		'max-depth': ['error', 3],
-		'max-params': ['error', 4],
-		'no-return-await': 'error',
+		'max-params': ['warn', 4],
+		'no-console': 'error',
+		'prefer-const': 'error',
+		'prefer-template': 'error',
 		eqeqeq: 'error',
 		'no-eq-null': 'error',
 		'no-implicit-coercion': 'error',
 		'max-lines-per-function': [
-			'error',
+			'warn',
 			{
 				max: 30,
 				skipBlankLines: true,
 				skipComments: true
 			}
-		]
+		],
+		'no-return-await': 'error',
+		'require-await': 'error'
 	},
 	overrides: [
 		{

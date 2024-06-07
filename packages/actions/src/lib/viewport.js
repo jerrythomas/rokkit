@@ -8,7 +8,8 @@ import {
 } from './internal'
 
 export function virtualListViewport(options) {
-	let { minSize = 40, maxVisible = 0, visibleSize, gap = 0 } = options
+	const { gap = 0 } = options
+	let { minSize = 40, maxVisible = 0, visibleSize } = options
 	let current = { lower: 0, upper: 0 }
 	const bounds = writable({ lower: 0, upper: 0 })
 	const space = writable({

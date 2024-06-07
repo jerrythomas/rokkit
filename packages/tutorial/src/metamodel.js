@@ -7,7 +7,7 @@ import { folderHierarchy, getSequenceAndKey } from './utils'
  * @param {Object} modules - The modules to fetch the content from.
  * @returns {Promise<Array>} - The content of the modules.
  */
-export async function fetchImports(modules) {
+export function fetchImports(modules) {
 	return Promise.all(
 		Object.entries(modules).map(async ([file, content]) => ({
 			file,
@@ -184,10 +184,10 @@ export function convertFilesToFolderHierarchy(tutorials, options) {
 }
 
 /**
- * Converts an array of files to a folder hierarchy.
+ * Extracts all thr routes from the folder hierarchy and returns them as an array.
  *
  * @param {Array} files - The files to convert to a folder hierarchy.
- * @returns {Object} - The folder hierarchy.
+ * @returns {Array<string>} - array of route paths
  */
 export function generateRouteEntries(input) {
 	const output = []

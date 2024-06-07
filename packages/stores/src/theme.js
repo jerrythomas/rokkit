@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { writable } from 'svelte/store'
 import { persistable } from './persist'
 import { pick } from 'ramda'

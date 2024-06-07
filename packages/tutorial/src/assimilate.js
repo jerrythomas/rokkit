@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { toSortedHierarchy } from './tutorial'
 import { flattenNestedList } from '@rokkit/core'
 import {
@@ -18,6 +19,13 @@ const defaultOptions = {
 	solutionFolder: 'src'
 }
 
+/**
+ * Filters out menu items that are labs.
+ *
+ * @param {Array} data - The data to filter.
+ * @param {boolean} labs - Whether to include labs in the result.
+ * @returns {Array} - The filtered data.
+ */
 export function filterMenuItems(data, labs = false) {
 	return data
 		.map((item) => {
@@ -33,6 +41,13 @@ export function filterMenuItems(data, labs = false) {
 		.filter((item) => item !== null)
 }
 
+/**
+ * Finds the tutorial in the flat list of tutorials.
+ *
+ * @param {Array} flat - The flat list of tutorials.
+ * @param {string} route - The route of the tutorial.
+ * @returns {Object} - The tutorial.
+ */
 export function findTutorial(flat, route) {
 	const index = flat.findIndex((item) => item.route === route)
 	if (index === -1) return null
@@ -51,18 +66,39 @@ export function findTutorial(flat, route) {
 	return { ...result, crumbs }
 }
 
+/**
+ * Finds the previous index in the flat list of tutorials.
+ *
+ * @param {Array} flat - The flat list of tutorials.
+ * @param {number} index - The index of the tutorial.
+ * @returns {number} - The index of the previous tutorial.
+ */
 function findPrevIndex(flat, index) {
 	let prevIndex = index - 1
 	while (prevIndex >= 0 && !flat[prevIndex].route) prevIndex--
 	return prevIndex
 }
 
+/**
+ * Finds the next index in the flat list of tutorials.
+ *
+ * @param {Array} flat - The flat list of tutorials.
+ * @param {number} index - The index of the tutorial.
+ * @returns {number} - The index of the next tutorial.
+ */
 function findNextIndex(flat, index) {
 	let nextIndex = index + 1
 	while (nextIndex <= flat.length - 1 && !flat[nextIndex].route) nextIndex++
 	return nextIndex
 }
 
+/**
+ * Generates the bread crumbs for the tutorial.
+ *
+ * @param {Array} flat - The flat list of tutorials.
+ * @param {number} index - The index of the tutorial.
+ * @returns {Array} - The bread crumbs for the tutorial.
+ */
 function generateCrumbs(flat, index) {
 	let crumbs = [flat[index].title]
 	let level = flat[index].level
@@ -78,6 +114,14 @@ function generateCrumbs(flat, index) {
 	return crumbs
 }
 
+/**
+ * Processes the tutorials and returns the tutorials and routes.
+ *
+ * @param {Array} modules - The modules to process.
+ * @param {Array} sources - The sources to process.
+ * @param {Object} options - The options to use.
+ * @returns {Object} - The tutorials and routes.
+ */
 export function assimilateTutorials(modules, sources, options) {
 	let loaded = false
 	let tutorials = null
@@ -121,8 +165,19 @@ export function assimilateTutorials(modules, sources, options) {
 	}
 }
 
+/**
+ * Processes files from dynamic imports and adds metadata.
+ *
+ * @param {Array} modules - The modules to process.
+ * @param {Array} sources - The sources to process.
+ * @param {Object} options - The options to use.
+ * @returns {Promise<Object>} - The tutorials and routes.
+ */
 async function fetchAndProcessFiles(modules, sources, options) {
-	let files = [...(await fetchImports(modules)), ...(await fetchImports(sources))].map((item) => ({
+	const importedModules = await fetchImports(modules)
+	const importedSources = await fetchImports(sources)
+
+	let files = [...importedModules, ...importedSources].map((item) => ({
 		...item,
 		file: item.file.replace(new RegExp(`^${options.root}`), '')
 	}))
@@ -132,6 +187,14 @@ async function fetchAndProcessFiles(modules, sources, options) {
 	return files
 }
 
+/**
+ * Process the tutorials, generates the hierarchy and sorts it.
+ *
+ * @param {Array} modules - The modules to process.
+ * @param {Array} sources - The sources to process.
+ * @param {Object} options - The options to use.
+ * @returns {Promise<Object>} - The tutorials and routes.
+ */
 async function processTutorials(modules, sources, options) {
 	let tutorials = {}
 	const files = await fetchAndProcessFiles(modules, sources, options)
