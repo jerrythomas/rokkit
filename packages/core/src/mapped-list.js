@@ -28,6 +28,7 @@ function findInChildren(item, index, fields, value, attr, position) {
 			index
 		])
 	}
+	return null
 }
 /**
  * Traverses the tree to find an item by value.
@@ -186,7 +187,6 @@ function getNextSiblingOrAncestor(position, items, fields) {
 	let children = parent.item[parent.fields.children]
 	if (index < children.length - 1) {
 		index += 1
-
 		const sibling = findItemByIndexArray([...position.slice(0, -1), index], items, fields)
 		return { item: sibling.item, position: sibling.position, fields }
 	} else {
@@ -197,12 +197,10 @@ function getNextSiblingOrAncestor(position, items, fields) {
 			parent = findItemByIndexArray(position, items, fields)
 			children = parent.item[parent.fields.children]
 		}
-		if (index < children.length - 1) {
-			return {
-				item: children[index + 1],
-				position: [...position, index + 1],
-				fields
-			}
+		return {
+			item: children[index + 1],
+			position: [...position, index + 1],
+			fields
 		}
 	}
 }

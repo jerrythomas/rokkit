@@ -5,7 +5,7 @@ export * from './constants'
 export { flattenNestedList, findValueFromPath } from './nested'
 // skipcq: JS-E1004 - Needed for exposing all functions
 export * from './mapping'
-export * from './mapped-list'
+export { mappedList } from './mapped-list'
 export { getLineTypes } from './connector'
 export { generateTicks } from './ticks'
 export { weekdays, getCalendarDays } from './calendar'
