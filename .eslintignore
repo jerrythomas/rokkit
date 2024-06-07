@@ -13,3 +13,4 @@ yarn.lock
 **/fixtures/error
 dist
 **/dist
+packages/archive

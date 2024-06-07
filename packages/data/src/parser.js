@@ -48,7 +48,8 @@ export function parseFilters(string) {
 	// Iterate over the tokens
 	for (const token of tokens) {
 		// Extract the named groups from the token
-		let { group, column, operator, value } = token.groups
+		const { group, column } = token.groups
+		let { operator, value } = token.groups
 		search = search.replace(group, '').trim()
 
 		operator = replaceOperators(operator)

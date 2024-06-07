@@ -64,20 +64,26 @@
 
 /**
  * @typedef {Object} SourceContent
- * @property {any} preview - Svelte component for previewing the example.
- * @property {Array<FileMetadata>} files - Metadata including source for the example.
+ * @property {any}                 preview - Svelte component for previewing the example.
+ * @property {Array<FileMetadata>} files   - Metadata including source for the example.
  */
 
 /**
  * @typedef {Object} TutorialMetadata
- * @property {string} title - The title of the tutorial.
- * @property {number} sequence - The sequence of the tutorial.
- * @property {string} key - Key used for identifying the tutorial.
- * @property {string} route - The route to the tutorial.
- * @property {any} readme - The readme content as a svelte component.
- * @property {any} preview - The app preview as a svelte component.
- * @property {SourceContent} [pre] - Contains preview and source files for partial example
- * @property {SourceContent} [src] - Contains preview and source files for completed example.
+ * @property {string}        title    - The title of the tutorial.
+ * @property {number}        sequence - The sequence of the tutorial.
+ * @property {string}        key      - Key used for identifying the tutorial.
+ * @property {string}        route    - The route to the tutorial.
+ * @property {any}           readme   - The readme content as a svelte component.
+ * @property {any}           preview  - The app preview as a svelte component.
+ * @property {SourceContent} [pre]    - Contains preview and source files for partial example
+ * @property {SourceContent} [src]    - Contains preview and source files for completed example.
  * @property {Array<TutorialMetadata>} [children] - Contains metadata for sub tutorials.
+ */
+
+/**
+ * @typedef {Object} TutorialData
+ * @property {Array<TutorialMetadata>} tutorials - The metadata for the tutorials.
+ * @property {Array<string>} routes - List of routes for the tutorials.
  */
 export default {}

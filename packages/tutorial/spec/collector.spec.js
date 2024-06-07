@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import fs from 'fs/promises'
 import { getFiles } from '../src/files'

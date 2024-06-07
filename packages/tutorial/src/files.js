@@ -26,8 +26,8 @@ export async function getFiles(folderPath, pattern = null, dir = '') {
  * @param {string} dir - The current directory.
  * @returns {Promise<Array<import('.types').FileMetadata>>} - An array of matched files.
  */
-async function processEntries(entries, folderPath, pattern, dir) {
-	return Promise.all(entries.map(async (entry) => processEntry(entry, folderPath, pattern, dir)))
+function processEntries(entries, folderPath, pattern, dir) {
+	return Promise.all(entries.map((entry) => processEntry(entry, folderPath, pattern, dir)))
 }
 
 /**
@@ -38,7 +38,7 @@ async function processEntries(entries, folderPath, pattern, dir) {
  * @param {string} dir - The current directory.
  * @returns {Promise<import('./types').FileMetadata>} - The matched file.
  */
-async function processEntry(entry, folderPath, pattern, dir) {
+function processEntry(entry, folderPath, pattern, dir) {
 	const currentPath = path.join(dir, entry.name)
 	if (entry.isDirectory()) {
 		return getFiles(folderPath, pattern, currentPath)

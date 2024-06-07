@@ -61,7 +61,7 @@ function processIcons(iconSet, color) {
 		try {
 			cleanAndOptimizeIcon(svg, color)
 		} catch (err) {
-			// Invalid icon
+			// eslint-disable-next-line no-console
 			console.error(`Error parsing ${name}:`, err)
 			iconSet.remove(name)
 			return

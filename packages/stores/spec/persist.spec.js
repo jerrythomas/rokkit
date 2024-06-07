@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { persistable, PARSE_ERROR_MESSAGE } from '../src/persist'
 import { writable, get } from 'svelte/store'
 
+/* eslint-disable no-console */
 describe('persistable', () => {
 	const key = 'test_key'
 
