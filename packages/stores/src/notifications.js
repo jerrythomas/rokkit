@@ -5,31 +5,6 @@ import { id } from '@rokkit/core'
 const TIMEOUT = 3000
 
 /**
- * Creates a notification store that can manage and display notifications.
- * Allows for sending notifications of various types and clearing all notifications.
- *
- * @returns {Object} An object containing methods to interact with the notification store.
- */
-export function createNotificationStore() {
-	const messages = writable([])
-	const { subscribe } = getDerivedNotifications(messages)
-
-	return {
-		subscribe,
-		clear: () => messages.set([]),
-		send: (message, type, timeout) => addMessage(messages, message, type, timeout),
-		default: (msg, timeout) => addMessage(messages, msg, 'default', timeout),
-		error: (msg, timeout) => addMessage(messages, msg, 'error', timeout),
-		danger: (msg, timeout) => addMessage(messages, msg, 'danger', timeout),
-		warning: (msg, timeout) => addMessage(messages, msg, 'warning', timeout),
-		info: (msg, timeout) => addMessage(messages, msg, 'info', timeout),
-		success: (msg, timeout) => addMessage(messages, msg, 'success', timeout)
-	}
-}
-
-export const alerts = createNotificationStore()
-
-/**
  * Adds a new message to the notification queue.
  *
  * @param {import('svelte/store').Writable}    messages          - A Svelte writable store containing the notification messages.
@@ -66,5 +41,31 @@ function getDerivedNotifications(messages) {
 			}, $messages[0].timeout)
 			return () => clearTimeout(timer)
 		}
+		return null
 	})
 }
+
+/**
+ * Creates a notification store that can manage and display notifications.
+ * Allows for sending notifications of various types and clearing all notifications.
+ *
+ * @returns {Object} An object containing methods to interact with the notification store.
+ */
+export function createNotificationStore() {
+	const messages = writable([])
+	const { subscribe } = getDerivedNotifications(messages)
+
+	return {
+		subscribe,
+		clear: () => messages.set([]),
+		send: (message, type, timeout) => addMessage(messages, message, type, timeout),
+		default: (msg, timeout) => addMessage(messages, msg, 'default', timeout),
+		error: (msg, timeout) => addMessage(messages, msg, 'error', timeout),
+		danger: (msg, timeout) => addMessage(messages, msg, 'danger', timeout),
+		warning: (msg, timeout) => addMessage(messages, msg, 'warning', timeout),
+		info: (msg, timeout) => addMessage(messages, msg, 'info', timeout),
+		success: (msg, timeout) => addMessage(messages, msg, 'success', timeout)
+	}
+}
+
+export const alerts = createNotificationStore()
