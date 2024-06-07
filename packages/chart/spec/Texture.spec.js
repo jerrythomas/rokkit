@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 // skipcq: JS-C1003 - Importing all components for verification
+import * as templates from '../src/template/shapes'
 import Texture from '../src/template/Texture.svelte'
 import { library } from '../src/template/constants'
 import { render } from '@testing-library/svelte'
-import * as templates from '../src/template/shapes'
 
 describe('templates', () => {
 	it('should contain all exported components', () => {

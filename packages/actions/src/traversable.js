@@ -21,40 +21,38 @@ const defaultConfig = {
  * @param {boolean}     config.options.vertical   - The orientation of the list/tree
  */
 export function traversable(root, config) {
-	let store = config.store
+	// let store = config.store
 	const manager = EventManager(root, {})
 
-	/**
-	 * Update the event handlers based on the configuration
-	 * @param {Object} config - The configuration object
-	 */
-	function update(config) {
-		store = config.store
-		const options = { ...defaultConfig, ...config.options }
+	updateEventHandlers(root, manager, config)
 
-		const listeners = {
-			keydown: getKeydownHandler(store, options, root),
-			click: getClickHandler(store, options)
-		}
-		if (options.allowDrag) listeners.dragstart = getDragEventHandler(store, 'dragStart')
-		if (options.allowDrop) {
-			listeners.dragover = getDragEventHandler(store, 'dragOver')
-			listeners.drop = getDragEventHandler(store, 'dropOver')
-		}
-		manager.update(listeners)
+	return {
+		destroy: () => manager.reset(),
+		update: (newConfig) => updateEventHandlers(root, manager, newConfig)
 	}
+}
 
-	/**
-	 * Cleanup action on destroy
-	 */
-	function destroy() {
-		manager.reset()
-		// store.onNavigate(null)
+/**
+ * Update the event handlers based on the configuration
+ *
+ * @param {HTMLElement} root    - The DOM root node to add the action to
+ * @param {Object} manager - The event manager object
+ * @param {Object} config - The configuration object
+ */
+function updateEventHandlers(root, manager, config) {
+	const store = config.store
+	const options = { ...defaultConfig, ...config.options }
+
+	const listeners = {
+		keydown: getKeydownHandler(store, options, root),
+		click: getClickHandler(store, options)
 	}
-
-	update(config)
-
-	return { destroy, update }
+	if (options.allowDrag) listeners.dragstart = getDragEventHandler(store, 'dragStart')
+	if (options.allowDrop) {
+		listeners.dragover = getDragEventHandler(store, 'dragOver')
+		listeners.drop = getDragEventHandler(store, 'dropOver')
+	}
+	manager.update(listeners)
 }
 
 /**
@@ -169,6 +167,7 @@ function handleMultiSelect(store, index, modifier) {
 		store.select(index)
 	}
 }
+
 /**
  * Get the keydown event handler
  *

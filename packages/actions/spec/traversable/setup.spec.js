@@ -30,5 +30,7 @@ describe('traversable', () => {
 			data = { store: mockStore, options: { allowDrop: true, horizontal: true } }
 			expect(traversable).toUseHandlersFor(data, events)
 		})
+
+		// it('should update the handlers when config changes', () => {})
 	})
 })
