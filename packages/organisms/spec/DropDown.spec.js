@@ -219,7 +219,6 @@ describe('DropDown.svelte', () => {
 		expect(wrapper).toMatchSnapshot()
 	})
 
-	//todo: test arrow keys
 	// it('should handle arrow keys for navigation and select', async () => {
 	// 	const options = [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
 	// 	const { container, component } = render(DropDown, {
