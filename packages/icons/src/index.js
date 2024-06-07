@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { convert } from './convert.js'
 
 const groups = ['auth', 'app', 'base', 'light', 'solid', 'twotone', 'components']

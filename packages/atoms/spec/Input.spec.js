@@ -59,6 +59,7 @@ describe('HTML Input', () => {
 	})
 
 	it.each(names)('should render "%s"', (name) => {
+		// skipcq: JS-E1007
 		const { container } = render(components[name], {
 			value: null,
 			...props[name]
@@ -68,6 +69,7 @@ describe('HTML Input', () => {
 	})
 
 	it.each(names)('should render "%s" as readonly', (name) => {
+		// skipcq: JS-E1007
 		const { container } = render(components[name], {
 			value: null,
 			readonly: true,
@@ -78,6 +80,7 @@ describe('HTML Input', () => {
 	})
 
 	it.each(names)('should render "%s" as required', (name) => {
+		// skipcq: JS-E1007
 		const { container } = render(components[name], {
 			value: null,
 			required: true,
@@ -88,29 +91,9 @@ describe('HTML Input', () => {
 	})
 
 	it.each(withProps)('should render "%s" with custom props', (name, props) => {
+		// skipcq: JS-E1007
 		const { container } = render(components[name], props)
 		const wrapper = container.childNodes[0]
 		expect(wrapper.childNodes[0]).toMatchSnapshot()
 	})
-
-	// it('should render text input as required', () => {
-	// 	const { container } = render(Input, {
-	// 		value: 'foo',
-	// 		required: true
-	// 	})
-	// 	const wrapperDiv = container.childNodes[0]
-	// 	expect(wrapperDiv.innerHTML).toEqual('<input type="text" required="">')
-	// })
-
-	// it('should render text input with length limits', () => {
-	// 	const { container } = render(Input, {
-	// 		value: 'foo',
-	// 		minlength: 3,
-	// 		maxlength: 10
-	// 	})
-	// 	const wrapperDiv = container.childNodes[0]
-	// 	expect(wrapperDiv.innerHTML).toEqual(
-	// 		'<input type="text" minlength="3" maxlength="10">'
-	// 	)
-	// })
 })
