@@ -204,7 +204,11 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
     <p>
       null
       :
-      John
+      "John"
+    </p>
+     
+    <p>
+      []
     </p>
     
     
@@ -564,7 +568,11 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
     <p>
       null
       :
-      John
+      "John"
+    </p>
+     
+    <p>
+      []
     </p>
     
     
@@ -735,7 +743,11 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
     <p>
       null
       :
-      John
+      "John"
+    </p>
+     
+    <p>
+      []
     </p>
     
     

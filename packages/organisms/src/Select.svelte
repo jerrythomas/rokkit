@@ -4,6 +4,7 @@
 	import { dismissable, navigable } from '@rokkit/actions'
 	import { createEventDispatcher } from 'svelte'
 	import List from './List.svelte'
+	// import ListItems from './ListItems.svelte'
 	import { Item } from '@rokkit/molecules'
 
 	const dispatch = createEventDispatcher()
@@ -74,7 +75,6 @@
 	on:select={handleKeySelect}
 >
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- bind:clientHeight={offsetTop} -->
 	<selected-item
 		on:click|stopPropagation={() => (open = !open)}
 		class="w-full flex items-center"
@@ -96,6 +96,14 @@
 	</selected-item>
 	{#if open}
 		<Slider top={offsetTop}>
+			<!-- <list class="flex flex-col w-full flex-shrink-0 select-none" role="listbox" tabindex="-1">
+			<ListItems
+				items={options}
+				bind:value
+				{fields}
+				{using}
+			/>
+		</list> -->
 			<List items={options} {fields} {using} bind:value on:select={handleSelect} tabindex="-1" />
 		</Slider>
 	{/if}

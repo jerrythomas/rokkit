@@ -211,7 +211,11 @@ exports[`Form.svelte > should render a form with layout 1`] = `
       <p>
         null
         :
-        John
+        "John"
+      </p>
+       
+      <p>
+        []
       </p>
       
       
@@ -392,7 +396,11 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
       <p>
         null
         :
-        John
+        "John"
+      </p>
+       
+      <p>
+        []
       </p>
       
       

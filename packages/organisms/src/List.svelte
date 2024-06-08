@@ -1,8 +1,9 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
-	import { defaultFields, isObject } from '@rokkit/core'
+	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { Item } from '@rokkit/molecules'
+	import ListItems from './ListItems.svelte'
 
 	const dispatch = createEventDispatcher()
 
@@ -24,11 +25,11 @@
 
 		dispatch('select', { item: value, indices: cursor })
 	}
-	function equals(a, b) {
-		if (Array.isArray(fields.id)) return fields.id.every((id) => isObject(a) && a[id] === b[id])
-		if (isObject(a) && fields.id in a) return a[fields.id] === b[fields.id]
-		return JSON.stringify(a) === JSON.stringify(b)
-	}
+	// function equals(a, b) {
+	// 	if (Array.isArray(fields.id)) return fields.id.every((id) => isObject(a) && a[id] === b[id])
+	// 	if (isObject(a) && fields.id in a) return a[fields.id] === b[fields.id]
+	// 	return JSON.stringify(a) === JSON.stringify(b)
+	// }
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }
@@ -50,14 +51,5 @@
 	{tabindex}
 >
 	<slot />
-	{#each filtered as item, index}
-		{@const component = item[fields.component]
-			? using[item[fields.component]] || using.default
-			: using.default}
-		{@const path = [...hierarchy, index].join(',')}
-		{@const props = item[fields.props] || { fields }}
-		<item class="item" role="option" aria-selected={equals(value, item)} data-path={path}>
-			<svelte:component this={component} bind:value={item} {...props} on:change />
-		</item>
-	{/each}
+	<ListItems items={filtered} {fields} {using} {value} {hierarchy} on:change />
 </list>

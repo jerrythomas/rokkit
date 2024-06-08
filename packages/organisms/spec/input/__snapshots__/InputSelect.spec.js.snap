@@ -91,6 +91,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           
            
         </item>
+        
       </list>
     </scroll>
   </input-select>

@@ -48,6 +48,7 @@ exports[`List.svelte > should render a list of values 1`] = `
       
        
     </item>
+    
   </list>
 </div>
 `;
@@ -100,6 +101,7 @@ exports[`List.svelte > should render a list of values with hierarchy 1`] = `
       
        
     </item>
+    
   </list>
 </div>
 `;
@@ -152,6 +154,7 @@ exports[`List.svelte > should render a list of values with hierarchy 2`] = `
       
        
     </item>
+    
   </list>
 </div>
 `;
@@ -204,6 +207,7 @@ exports[`List.svelte > should render items using custom component 1`] = `
       
        
     </item>
+    
   </list>
 </div>
 `;
@@ -259,6 +263,7 @@ exports[`List.svelte > should render items using custom mapping 1`] = `
       
        
     </item>
+    
   </list>
 </div>
 `;
@@ -314,6 +319,7 @@ exports[`List.svelte > should render items using default item when data is inval
       
        
     </item>
+    
   </list>
 </div>
 `;
@@ -369,6 +375,7 @@ exports[`List.svelte > should render items using field mappings 1`] = `
       
        
     </item>
+    
   </list>
 </div>
 `;
