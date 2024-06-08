@@ -3,7 +3,8 @@
 	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { Item, Summary } from '@rokkit/molecules'
-	import List from './List.svelte'
+	// import List from './List.svelte'
+	import ListItems from './ListItems.svelte'
 
 	const dispatch = createEventDispatcher()
 	let className = ''
@@ -63,7 +64,17 @@
 		>
 			<Summary {fields} {using} bind:value={item} />
 			{#if hasItems && item[fields.isOpen]}
-				<List
+				<list class="flex flex-col w-full flex-shrink-0 select-none" role="listbox" tabindex="-1">
+					<ListItems
+						bind:items={item[fields.children]}
+						bind:value
+						fields={itemFields}
+						{using}
+						hierarchy={[index]}
+						on:change
+					/>
+				</list>
+				<!-- <List
 					bind:items={item[fields.children]}
 					bind:value
 					fields={itemFields}
@@ -71,7 +82,7 @@
 					on:select
 					hierarchy={[index]}
 					tabindex="-1"
-				/>
+				/> -->
 			{/if}
 		</div>
 	{/each}

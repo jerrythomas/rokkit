@@ -54,6 +54,7 @@ exports[`ListEditor.svelte > should render 1`] = `
         
          
       </item>
+      
     </list>
      
     <item-editor
@@ -183,6 +184,7 @@ exports[`ListEditor.svelte > should render slot content 1`] = `
         
          
       </item>
+      
     </list>
      
     <item-editor
@@ -319,6 +321,7 @@ exports[`ListEditor.svelte > should render slot content 2`] = `
         
          
       </item>
+      
     </list>
      
     <item-editor
@@ -455,6 +458,7 @@ exports[`ListEditor.svelte > should render when item is selected 1`] = `
         
          
       </item>
+      
     </list>
      
     <item-editor
@@ -575,6 +579,7 @@ exports[`ListEditor.svelte > should render with custom components 1`] = `
         </span>
          
       </item>
+      
     </list>
      
     <item-editor
@@ -695,6 +700,7 @@ exports[`ListEditor.svelte > should render with custom components 2`] = `
         </span>
          
       </item>
+      
     </list>
      
     <item-editor
@@ -824,6 +830,7 @@ exports[`ListEditor.svelte > should render with path 1`] = `
         
          
       </item>
+      
     </list>
      
     <item-editor

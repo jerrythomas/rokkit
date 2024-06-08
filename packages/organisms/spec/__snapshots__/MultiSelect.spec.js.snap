@@ -123,6 +123,7 @@ exports[`MultiSelect.svelte > should add a selected item 1`] = `
         
          
       </item>
+      
     </list>
   </scroll>
 </input-select>
@@ -224,6 +225,7 @@ exports[`MultiSelect.svelte > should remove a selected item 1`] = `
         
          
       </item>
+      
     </list>
   </scroll>
 </input-select>
@@ -319,6 +321,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
         </span>
          
       </item>
+      
     </list>
   </scroll>
 </input-select>
@@ -482,6 +485,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
         
          
       </item>
+      
     </list>
   </scroll>
 </input-select>
@@ -597,6 +601,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
         
          
       </item>
+      
     </list>
   </scroll>
 </input-select>
@@ -764,6 +769,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
         
          
       </item>
+      
     </list>
   </scroll>
 </input-select>
@@ -892,6 +898,7 @@ exports[`MultiSelect.svelte > should render using field mappings 3`] = `
         
          
       </item>
+      
     </list>
   </scroll>
 </input-select>

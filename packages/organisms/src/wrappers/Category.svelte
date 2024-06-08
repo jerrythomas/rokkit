@@ -20,7 +20,7 @@
 		this={component}
 		{options}
 		{fields}
-		using={$registry}
+		using={$registry.components}
 		bind:value={category}
 		{...$$restProps}
 	/>
