@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { clone } from 'ramda'
 import {
 	getList,
 	findIndex,
@@ -56,7 +57,7 @@ describe('view -> primitives', () => {
 				rangeStart: 1,
 				value: 'b',
 				selectedItems: [],
-				events: [{ event: 'move', detail: { path: [1], value: items[1] } }]
+				events: [{ type: 'move', detail: { path: [1], value: items[1] } }]
 			})
 		})
 		it('should not move the current index if the offset is out of bounds', () => {
@@ -76,7 +77,7 @@ describe('view -> primitives', () => {
 				rangeStart: 2,
 				value: 'c',
 				selectedItems: [],
-				events: [{ event: 'move', detail: { path: [2], value: items[2] } }]
+				events: [{ type: 'move', detail: { path: [2], value: items[2] } }]
 			})
 		})
 		it('should not move to an index if it is out of bounds', () => {
@@ -94,7 +95,7 @@ describe('view -> primitives', () => {
 				data: data.map((item, index) => ({ ...item, isSelected: index === 1 })),
 				currentIndex: 0,
 				selectedItems: [1],
-				events: [{ event: 'select', detail: ['b'] }]
+				events: [{ type: 'select', detail: ['b'] }]
 			})
 		})
 
@@ -113,7 +114,7 @@ describe('view -> primitives', () => {
 				data: data.map((item) => ({ ...item, isSelected: false })),
 				currentIndex: 0,
 				selectedItems: [],
-				events: [{ event: 'select', detail: [] }]
+				events: [{ type: 'select', detail: [] }]
 			})
 		})
 		it('should not unselect when index is out of bounds', () => {
@@ -131,7 +132,7 @@ describe('view -> primitives', () => {
 				data: data.map((item) => ({ ...item, isSelected: true })),
 				currentIndex: 0,
 				selectedItems: [0, 1, 2],
-				events: [{ event: 'select', detail: ['a', 'b', 'c'] }]
+				events: [{ type: 'select', detail: ['a', 'b', 'c'] }]
 			})
 		})
 	})
@@ -144,7 +145,7 @@ describe('view -> primitives', () => {
 				data: data.map((item) => ({ ...item, isSelected: false })),
 				currentIndex: 0,
 				selectedItems: [],
-				events: [{ event: 'select', detail: [] }]
+				events: [{ type: 'select', detail: [] }]
 			})
 		})
 	})
@@ -157,7 +158,7 @@ describe('view -> primitives', () => {
 				data: data.map((item, index) => ({ ...item, isSelected: index === 1 })),
 				currentIndex: 0,
 				selectedItems: [1],
-				events: [{ event: 'select', detail: ['b'] }]
+				events: [{ type: 'select', detail: ['b'] }]
 			})
 		})
 		it('should unselect an item if it is already selected', () => {
@@ -167,7 +168,7 @@ describe('view -> primitives', () => {
 				data: data.map((item) => ({ ...item, isSelected: false })),
 				currentIndex: 0,
 				selectedItems: [],
-				events: [{ event: 'select', detail: [] }]
+				events: [{ type: 'select', detail: [] }]
 			})
 		})
 		it('should not toggle the selection if index is out of bounds', () => {
@@ -193,7 +194,7 @@ describe('view -> primitives', () => {
 		// 	const state = { data, currentIndex: 0, selectedItems: [] }
 		// 	const result = expand(state, [1])
 		// 	const expected = clone(data)
-		// 	expected[1].isExpanded = true
+		// 	// expected[1].isExpanded = true
 		// 	expect(result).toEqual({
 		// 		data: expected,
 		// 		currentIndex: 0,
@@ -240,10 +241,11 @@ describe('view -> primitives', () => {
 
 	describe('toggleExpansion', () => {
 		// it('should toggle the expansion of an item', () => {
-		// 	const state = { data, currentIndex: 0, selectedItems: [] }
-		// 	const result = toggleExpansion(state, 0)
 		// 	const expected = clone(data)
 		// 	expected[0].isExpanded = true
+		// 	const state = { data, currentIndex: 0, selectedItems: [] }
+		// 	const result = toggleExpansion(state, 0)
+
 		// 	expect(result).toEqual({
 		// 		data: expected,
 		// 		currentIndex: 0,
