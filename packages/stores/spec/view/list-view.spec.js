@@ -13,7 +13,7 @@ describe('view for lists', () => {
 			expect(get(view)).toEqual({
 				data: getList(items),
 				fields: undefined,
-				events: [],
+				// events: [],
 				value: 'a',
 				currentIndex: 0,
 				selectedItems: []
@@ -38,8 +38,10 @@ describe('view for lists', () => {
 				'collapse',
 				'toggleExpansion',
 				'expandAll',
-				'collapseAll'
+				'collapseAll',
+				'events'
 			])
+			expect(get(view.events)).toEqual([])
 		})
 
 		it('should fetch the current item', () => {
@@ -70,8 +72,8 @@ describe('view for lists', () => {
 		it('should get all events', () => {
 			const view = createView(items)
 			view.moveByOffset(1)
-			expect(view.getEvents()).toEqual([{ event: 'move', detail: { path: [1], value: items[1] } }])
-			expect(view.getEvents()).toEqual([])
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [1], value: items[1] } }])
+			// expect(view.getEvents()).toEqual([])
 		})
 	})
 
@@ -87,9 +89,9 @@ describe('view for lists', () => {
 				value: 'b',
 				currentIndex: 1,
 				rangeStart: 1,
-				selectedItems: [],
-				events: [{ event: 'move', detail: { path: [1], value: items[1] } }]
+				selectedItems: []
 			})
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [1], value: items[1] } }])
 		})
 
 		it('should move to first', () => {
@@ -103,12 +105,12 @@ describe('view for lists', () => {
 				value: 'a',
 				currentIndex: 0,
 				rangeStart: 0,
-				selectedItems: [],
-				events: [
-					{ event: 'move', detail: { path: [1], value: items[1] } },
-					{ event: 'move', detail: { path: [0], value: items[0] } }
-				]
+				selectedItems: []
 			})
+			expect(get(view.events)).toEqual([
+				{ type: 'move', detail: { path: [1], value: items[1] } },
+				{ type: 'move', detail: { path: [0], value: items[0] } }
+			])
 		})
 
 		it('should move to last', () => {
@@ -121,9 +123,9 @@ describe('view for lists', () => {
 				value: 'c',
 				currentIndex: 2,
 				rangeStart: 2,
-				selectedItems: [],
-				events: [{ event: 'move', detail: { path: [2], value: items[2] } }]
+				selectedItems: []
 			})
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [2], value: items[2] } }])
 		})
 
 		it('should move to an index', () => {
@@ -135,16 +137,20 @@ describe('view for lists', () => {
 				value: 'c',
 				currentIndex: 2,
 				rangeStart: 2,
-				selectedItems: [],
-				events: [{ event: 'move', detail: { path: [2], value: items[2] } }]
+				selectedItems: []
+				// events: [{ event: 'move', detail: { path: [2], value: items[2] } }]
 			}
 			expect(get(view)).toEqual(expected)
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [2], value: items[2] } }])
 			view.moveTo(-1)
 			expect(get(view)).toEqual(expected)
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [2], value: items[2] } }])
 			view.moveTo(3)
 			expect(get(view)).toEqual(expected)
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [2], value: items[2] } }])
 			view.moveTo([3])
 			expect(get(view)).toEqual(expected)
+			expect(get(view.events)).toEqual([{ type: 'move', detail: { path: [2], value: items[2] } }])
 		})
 	})
 
@@ -160,9 +166,9 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [1],
-				events: [{ event: 'select', detail: [items[1]] }]
+				selectedItems: [1]
 			})
+			expect(get(view.events)).toEqual([{ type: 'select', detail: [items[1]] }])
 		})
 
 		it('should unselect an item', () => {
@@ -175,12 +181,13 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [],
-				events: [
-					{ event: 'select', detail: [items[1]] },
-					{ event: 'select', detail: [] }
-				]
+				selectedItems: []
 			})
+
+			expect(get(view.events)).toEqual([
+				{ type: 'select', detail: [items[1]] },
+				{ type: 'select', detail: [] }
+			])
 		})
 
 		it('should toggle selection', () => {
@@ -192,21 +199,23 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [1],
-				events: [{ event: 'select', detail: [items[1]] }]
+				selectedItems: [1]
 			})
+
+			expect(get(view.events)).toEqual([{ type: 'select', detail: [items[1]] }])
 			view.toggleSelection(1)
 			expect(get(view)).toEqual({
 				data: getList(items),
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [],
-				events: [
-					{ event: 'select', detail: [items[1]] },
-					{ event: 'select', detail: [] }
-				]
+				selectedItems: []
 			})
+
+			expect(get(view.events)).toEqual([
+				{ type: 'select', detail: [items[1]] },
+				{ type: 'select', detail: [] }
+			])
 		})
 
 		it('should select all items', () => {
@@ -218,9 +227,9 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [0, 1, 2],
-				events: [{ event: 'select', detail: items }]
+				selectedItems: [0, 1, 2]
 			})
+			expect(get(view.events)).toEqual([{ type: 'select', detail: items }])
 		})
 
 		it('should unselect all items', () => {
@@ -233,12 +242,13 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [],
-				events: [
-					{ event: 'select', detail: items },
-					{ event: 'select', detail: [] }
-				]
+				selectedItems: []
 			})
+
+			expect(get(view.events)).toEqual([
+				{ type: 'select', detail: items },
+				{ type: 'select', detail: [] }
+			])
 		})
 
 		it('should not select a range', () => {
@@ -249,9 +259,9 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [],
-				events: []
+				selectedItems: []
 			})
+			expect(get(view.events)).toEqual([])
 		})
 		it('should select a range', () => {
 			const view = createView(items)
@@ -264,12 +274,13 @@ describe('view for lists', () => {
 				currentIndex: 1,
 				rangeStart: 1,
 				rangeEnd: 2,
-				selectedItems: [1, 2],
-				events: [
-					{ event: 'move', detail: { path: [1], value: items[1] } },
-					{ event: 'select', detail: [items[1], items[2]] }
-				]
+				selectedItems: [1, 2]
 			})
+
+			expect(get(view.events)).toEqual([
+				{ type: 'move', detail: { path: [1], value: items[1] } },
+				{ type: 'select', detail: [items[1], items[2]] }
+			])
 		})
 
 		it('should invert selection', () => {
@@ -281,12 +292,13 @@ describe('view for lists', () => {
 				fields: undefined,
 				value: 'a',
 				currentIndex: 0,
-				selectedItems: [0, 2],
-				events: [
-					{ event: 'select', detail: [items[1]] },
-					{ event: 'select', detail: [items[0], items[2]] }
-				]
+				selectedItems: [0, 2]
 			})
+
+			expect(get(view.events)).toEqual([
+				{ type: 'select', detail: [items[1]] },
+				{ type: 'select', detail: [items[0], items[2]] }
+			])
 		})
 	})
 
@@ -294,7 +306,7 @@ describe('view for lists', () => {
 		const items = ['a', 'b', 'c']
 		const initialState = {
 			data: getList(items),
-			events: [],
+			// events: [],
 			fields: undefined,
 			value: 'a',
 			currentIndex: 0,

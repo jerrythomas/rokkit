@@ -1,4 +1,5 @@
 import { writable, get } from 'svelte/store'
+import { omit } from 'ramda'
 import { getTree } from './view/tree'
 import {
 	getList,
@@ -17,6 +18,7 @@ import {
 	unselectAll,
 	invertSelection
 } from './view/primitives'
+
 /**
  * Creates a view store with extended functionalities.
  *
@@ -28,40 +30,47 @@ import {
 export function createView(items, options = {}) {
 	const { fields, nested = false } = options
 	const data = nested ? getTree(items) : getList(items)
-
+	const events = writable([])
 	const currentIndex = validatedIndex(data, options.currentIndex ?? 0)
 
 	const view = writable({
 		data,
 		fields,
-		events: [],
 		value: getValue(data, currentIndex),
 		currentIndex,
 		selectedItems: []
 	})
-	const { subscribe, update } = view
+	const { subscribe } = view
+
+	const updateView = (updateCallback) => {
+		let state = get(view)
+		state = updateCallback(state)
+		events.update((data) => [...data, ...(state.events ?? [])])
+		view.set(omit(['events'], state))
+	}
 
 	return {
 		subscribe,
 		getEvents: () => getAllEvents(view),
 		currentItem: () => getCurrentItem(view),
-		moveByOffset: (offset = 1) => update((state) => moveByOffset(state, offset)),
-		moveFirst: () => update((state) => moveByOffset(state, -Infinity)),
-		moveLast: () => update((state) => moveByOffset(state, Infinity)),
-		moveTo: (index) => update((state) => moveTo(state, index)),
-		select: (index) => update((state) => select(state, index)),
-		unselect: (index) => update((state) => unselect(state, index)),
-		toggleSelection: (index) => update((state) => toggleSelection(state, index)),
-		selectAll: () => update((state) => selectAll(state)),
-		unselectAll: () => update((state) => unselectAll(state)),
-		selectNone: () => update((state) => unselectAll(state)),
-		selectRange: (offset) => update((state) => selectRange(state, offset)),
-		invertSelection: () => update((state) => invertSelection(state)),
-		expand: (index) => update((state) => expand(state, index)),
-		collapse: (index) => update((state) => collapse(state, index)),
-		toggleExpansion: (index) => update((state) => toggleExpansion(state, index)),
-		expandAll: () => update((state) => expandAll(state)),
-		collapseAll: () => update((state) => collapseAll(state))
+		moveByOffset: (offset = 1) => updateView((state) => moveByOffset(state, offset)),
+		moveFirst: () => updateView((state) => moveByOffset(state, -Infinity)),
+		moveLast: () => updateView((state) => moveByOffset(state, Infinity)),
+		moveTo: (index) => updateView((state) => moveTo(state, index)),
+		select: (index) => updateView((state) => select(state, index)),
+		unselect: (index) => updateView((state) => unselect(state, index)),
+		toggleSelection: (index) => updateView((state) => toggleSelection(state, index)),
+		selectAll: () => updateView((state) => selectAll(state)),
+		unselectAll: () => updateView((state) => unselectAll(state)),
+		selectNone: () => updateView((state) => unselectAll(state)),
+		selectRange: (offset) => updateView((state) => selectRange(state, offset)),
+		invertSelection: () => updateView((state) => invertSelection(state)),
+		expand: (index) => updateView((state) => expand(state, index)),
+		collapse: (index) => updateView((state) => collapse(state, index)),
+		toggleExpansion: (index) => updateView((state) => toggleExpansion(state, index)),
+		expandAll: () => updateView((state) => expandAll(state)),
+		collapseAll: () => updateView((state) => collapseAll(state)),
+		events
 	}
 }
 
@@ -79,21 +88,23 @@ function getCurrentItem(view) {
 }
 
 /**
- * Get all events and clears the events array.
+ * Validates the index.
  *
- * @param {Object} store
- * @returns {Object} The updated state.
+ * @param {Array} data
+ * @param {Number} index
+ * @returns {Number} The validated index.
  */
-function getAllEvents(store) {
-	const events = get(store).events
-	store.update((state) => ({ ...state, events: [] }))
-	return events
-}
-
 function validatedIndex(data, index) {
 	return index < 0 || index >= data.length ? -1 : index
 }
 
+/**
+ * Gets the value of the item at the specified index.
+ *
+ * @param {Array} data
+ * @param {Number} index
+ * @returns {Object} The value of the item.
+ */
 function getValue(data, index) {
 	if (index >= 0) return data[index].value
 	return null
