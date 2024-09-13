@@ -43,7 +43,6 @@ export function moveByOffset(state, offset) {
 	const index = Math.max(0, Math.min(state.data.length - 1, state.currentIndex + offset))
 	if (index !== state.currentIndex) state = moveTo(state, index)
 
-	// addEvent(state, 'move', index)
 	return state
 }
 

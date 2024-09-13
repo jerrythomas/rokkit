@@ -23,6 +23,12 @@ const defaultConfig = {
 export function traversable(root, config) {
 	// let store = config.store
 	const manager = EventManager(root, {})
+	const events = config.store.events
+
+	events.subscribe((data) => {
+		data.forEach(({ event, detail }) => root.dispatchEvent(new CustomEvent(event, { detail })))
+		events.set([])
+	})
 
 	updateEventHandlers(root, manager, config)
 
@@ -143,6 +149,14 @@ function getClickHandler(store, options) {
 
 	return handleClick
 }
+
+/**
+ * Get the handler function for the drag events
+ *
+ * @param {Object} store    - The store object with navigation methods
+ * @param {string} eventName - The name of the event to dispatch
+ * @returns {Function} The event handler function
+ */
 function getDragEventHandler(store, eventName) {
 	function handle(event) {
 		const index = getTargetIndex(event)
@@ -189,7 +203,7 @@ function getKeydownHandler(store, options, root) {
 			event.preventDefault()
 			action()
 			scrollIntoView(root, store)
-			dispatchEvents(root, store)
+			// dispatchEvents(root, store)
 		}
 	}
 
@@ -359,7 +373,7 @@ function scrollIntoView(root, store) {
  * @param {HTMLElement} root  - The root element to dispatch the events from
  * @param {Object}      store - The store object with navigation methods
  */
-function dispatchEvents(root, store) {
-	const events = store.getEvents()
-	events.forEach((event, detail) => root.dispatchEvent(new CustomEvent(event, { detail })))
-}
+// function dispatchEvents(root, store) {
+// 	const events = store.getEvents()
+// 	events.forEach((event, detail) => root.dispatchEvent(new CustomEvent(event, { detail })))
+// }
