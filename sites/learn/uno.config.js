@@ -55,7 +55,9 @@ export default defineConfig({
 		'type-string',
 		'type-number',
 		'type-boolean',
-		'-translate-x-full'
+		'-translate-x-full',
+		'i-app:code-visible',
+		'i-app:code-hidden'
 	],
 	shortcuts: {
 		...iconShortcuts(defaultIcons, 'i-rokkit'),
@@ -92,9 +94,7 @@ export default defineConfig({
 				file: FileSystemIconLoader('./static/icons/files', (svg) =>
 					svg.replace(/black/, 'currentColor')
 				),
-				app: FileSystemIconLoader('./static/icons/app', (svg) =>
-					svg.replace(/black/, 'currentColor')
-				),
+				app: () => import('@rokkit/icons/app.json').then((i) => i.default),
 				solar: () => import('@iconify-json/solar/icons.json').then((i) => i.default)
 			}
 		})
