@@ -1,10 +1,21 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { writable, get } from 'svelte/store'
+import { get } from 'svelte/store'
 import { createRegistry } from '../src/registry'
 
 describe('registry', () => {
 	it('should create the registry', () => {
 		const registry = createRegistry()
+		expect(registry).toEqual({
+			subscribe: expect.any(Function),
+			addNavigators: expect.any(Function),
+			addEditors: expect.any(Function),
+			addComponents: expect.any(Function),
+			addWrappers: expect.any(Function),
+			getNavigator: expect.any(Function),
+			getEditor: expect.any(Function),
+			getComponent: expect.any(Function),
+			getWrapper: expect.any(Function)
+		})
 		expect(get(registry)).toEqual({
 			navigators: {},
 			editors: {},

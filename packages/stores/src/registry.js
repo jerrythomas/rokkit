@@ -34,7 +34,6 @@ export function createRegistry() {
 	}
 
 	return {
-		subscribe: registry.subscribe,
 		addNavigators: (components) => add('navigators', components),
 		addEditors: (components) => add('editors', components),
 		addComponents: (components) => add('components', components),
@@ -42,6 +41,7 @@ export function createRegistry() {
 		getComponent: (value, fields) => getComponent(value, fields, get(registry).components),
 		getNavigator: (value, fields) => getComponent(value, fields, get(registry).navigators),
 		getEditor: (value, fields) => getComponent(value, fields, get(registry).editors),
-		getWrapper: (value, fields) => getComponent(value, fields, get(registry).wrappers)
+		getWrapper: (value, fields) => getComponent(value, fields, get(registry).wrappers),
+		subscribe: registry.subscribe
 	}
 }

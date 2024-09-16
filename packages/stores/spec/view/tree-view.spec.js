@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { createView } from '../../src/view'
 import { getTree, serializeNodesUsingIndex, getNestedAttributes } from '../../src/view/tree'
 import { get } from 'svelte/store'
-import { omit } from 'ramda'
+import { omit, clone } from 'ramda'
 
 describe('view for tree', () => {
 	const items = [
@@ -72,7 +72,7 @@ describe('view for tree', () => {
 				currentIndex: 0,
 				selectedItems: []
 			})
-			expect(result.events).toEqual([{ event: 'expand', detail: { path: [0], value: items[0] } }])
+			expect(get(view.events)).toEqual([{ type: 'expand', detail: { path: [0], value: items[0] } }])
 			const expected = serializeNodesUsingIndex(hierarchy)
 			expected[0].isExpanded = true
 
@@ -82,74 +82,77 @@ describe('view for tree', () => {
 		})
 	})
 
-	// it('should not change state on collapse', () => {
-	// 	const items = ['a', 'b', 'c']
-	// 	const view = createView(items)
+	describe('events', () => {
+		it('should not change state on collapse', () => {
+			const items = ['a', 'b', 'c']
+			const expected = clone(getTree(items))
+			// expected[1].isExpanded = false
 
-	// 	view.expand(1)
-	// 	view.collapse(1)
-	// 	// const expected = clone(getList(items))
-	// 	// expected[1].isExpanded = false
-	// 	expect(get(view)).toEqual({
-	// 		data: getList(items),
-	// 		fields: undefined,
-	// 		value: 'a',
-	// 		currentIndex: 0,
-	// 		selectedItems: []
-	// 	})
-	// })
+			const view = createView(items, { nested: true })
 
-	// it('should not change state on toggle expansion', () => {
-	// 	const items = ['a', 'b', 'c']
-	// 	const view = createView(items)
+			view.expand(1)
+			view.collapse(1)
 
-	// 	view.toggleExpansion(1)
-	// 	const expected = clone(getList(items))
-	// 	// expected[1].isExpanded = true
-	// 	expect(get(view)).toEqual({
-	// 		data: expected,
-	// 		fields: undefined,
-	// 		value: 'a',
-	// 		currentIndex: 0,
-	// 		selectedItems: []
-	// 	})
-	// 	view.toggleExpansion(1)
-	// 	// expected[1].isExpanded = false
-	// 	expect(get(view)).toEqual({
-	// 		data: expected,
-	// 		fields: undefined,
-	// 		value: 'a',
-	// 		currentIndex: 0,
-	// 		selectedItems: []
-	// 	})
-	// })
+			expect(get(view)).toEqual({
+				data: expected,
+				fields: undefined,
+				value: 'a',
+				currentIndex: 0,
+				selectedItems: []
+			})
+		})
 
-	// it('should not change state on expandAll', () => {
-	// 	const items = ['a', 'b', 'c']
-	// 	const view = createView(items)
+		// it('should not change state on toggle expansion', () => {
+		// 	const items = ['a', 'b', 'c']
+		// 	const view = createView(items)
 
-	// 	view.expandAll()
-	// 	expect(get(view)).toEqual({
-	// 		data: getList(items), //.map((item) => ({ ...item, isExpanded: true })),
-	// 		fields: undefined,
-	// 		value: 'a',
-	// 		currentIndex: 0,
-	// 		selectedItems: []
-	// 	})
-	// })
+		// 	view.toggleExpansion(1)
+		// 	const expected = clone(getList(items))
+		// 	// expected[1].isExpanded = true
+		// 	expect(get(view)).toEqual({
+		// 		data: expected,
+		// 		fields: undefined,
+		// 		value: 'a',
+		// 		currentIndex: 0,
+		// 		selectedItems: []
+		// 	})
+		// 	view.toggleExpansion(1)
+		// 	// expected[1].isExpanded = false
+		// 	expect(get(view)).toEqual({
+		// 		data: expected,
+		// 		fields: undefined,
+		// 		value: 'a',
+		// 		currentIndex: 0,
+		// 		selectedItems: []
+		// 	})
+		// })
 
-	// it('should not change state on collapseAll', () => {
-	// 	const items = ['a', 'b', 'c']
-	// 	const view = createView(items)
+		// it('should not change state on expandAll', () => {
+		// 	const items = ['a', 'b', 'c']
+		// 	const view = createView(items)
 
-	// 	view.expandAll()
-	// 	view.collapseAll()
-	// 	expect(get(view)).toEqual({
-	// 		data: getList(items), //.map((item) => ({ ...item, isExpanded: false })),
-	// 		fields: undefined,
-	// 		value: 'a',
-	// 		currentIndex: 0,
-	// 		selectedItems: []
-	// 	})
-	// })
+		// 	view.expandAll()
+		// 	expect(get(view)).toEqual({
+		// 		data: getList(items), //.map((item) => ({ ...item, isExpanded: true })),
+		// 		fields: undefined,
+		// 		value: 'a',
+		// 		currentIndex: 0,
+		// 		selectedItems: []
+		// 	})
+		// })
+
+		// it('should not change state on collapseAll', () => {
+		// 	const items = ['a', 'b', 'c']
+		// 	const view = createView(items)
+
+		// 	view.expandAll()
+		// 	view.collapseAll()
+		// 	expect(get(view)).toEqual({
+		// 		data: getList(items), //.map((item) => ({ ...item, isExpanded: false })),
+		// 		fields: undefined,
+		// 		value: 'a',
+		// 		currentIndex: 0,
+		// 		selectedItems: []
+		// 	})
+	})
 })
