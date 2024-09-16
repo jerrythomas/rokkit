@@ -1,7 +1,8 @@
 import { vi } from 'vitest'
+import { writable } from 'svelte/store'
 
 export const mockStore = {
-	getEvents: vi.fn().mockReturnValue([]),
+	events: writable([]),
 	moveTo: vi.fn(),
 	moveByOffset: vi.fn(),
 	moveFirst: vi.fn(),
