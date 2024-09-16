@@ -960,20 +960,20 @@ importers:
     dependencies:
       '@rokkit/actions':
         specifier: '*'
-        version: 1.0.0-next.96
+        version: 1.0.0-next.97
       '@rokkit/core':
         specifier: '*'
-        version: 1.0.0-next.96
+        version: 1.0.0-next.97
       '@rokkit/themes':
         specifier: '*'
-        version: 1.0.0-next.96
+        version: 1.0.0-next.97
       '@rokkit/ui':
         specifier: '*'
-        version: 1.0.0-next.96
+        version: 1.0.0-next.97
     devDependencies:
       '@rokkit/icons':
         specifier: '*'
-        version: 1.0.0-next.96
+        version: 1.0.0-next.97
       '@sveltejs/adapter-auto':
         specifier: ^3.2.1
         version: 3.2.1(@sveltejs/kit@2.5.10(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.17)(vite@5.2.12(@types/node@20.14.1)))(svelte@4.2.17)(vite@5.2.12(@types/node@20.14.1)))
@@ -1486,38 +1486,38 @@ packages:
   '@polka/url@1.0.0-next.25':
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
 
-  '@rokkit/actions@1.0.0-next.96':
+  '@rokkit/actions@1.0.0-next.97':
     resolution: {integrity: sha512-IvbsqqYGySYaCl/AUNzIWtLEiqPuzZuNb1nQZ2hg7W7nb14SWZa0udGlUZ2gIjJSpjH7cT+EbE0H2NqG1fjg+Q==}
 
-  '@rokkit/atoms@1.0.0-next.96':
+  '@rokkit/atoms@1.0.0-next.97':
     resolution: {integrity: sha512-qAUQNF48Q/H46E6XnaytZWbYU3LjCiA7J+mx5EsDSs7zwEyIpTmsqPSGC78jsaK/P4EMsEB1iv2E9uIrWPFr0w==}
 
-  '@rokkit/core@1.0.0-next.96':
+  '@rokkit/core@1.0.0-next.97':
     resolution: {integrity: sha512-B1iWH2G8lztYkp958sVC8NVvJf705NAfZkDMhxDVZaDG5rDlUK6iBf5Zei7tpu+sOi6/ipVwO/ZDmadZ6OZVtQ==}
 
-  '@rokkit/data@1.0.0-next.96':
+  '@rokkit/data@1.0.0-next.97':
     resolution: {integrity: sha512-gXVVYqLdNx9h1q7nW58lzOr+/hu5dGdq4fzjDMG8/c3qJ4QfoTyuKJlk4g/ac4W9oKmLyLb3YtL6ZAyIm5cl6A==}
 
-  '@rokkit/icons@1.0.0-next.96':
+  '@rokkit/icons@1.0.0-next.97':
     resolution: {integrity: sha512-2qQexuvclQ4vQvHGIjrx/btZ40hRF/mzgbmL+Gmchp+5tLcxysKvck+2lgon0HldeuBHim3S+0nN0ZVqIPCLKw==}
     hasBin: true
 
-  '@rokkit/layout@1.0.0-next.96':
+  '@rokkit/layout@1.0.0-next.97':
     resolution: {integrity: sha512-raKbhebayst6i3AxiWrtE41U5hvqIo6LfZRg5VWrwSsqpElil4N6Q9c39N+Bh9pZbgnpV+D43RQRHQFfDqciAQ==}
 
-  '@rokkit/molecules@1.0.0-next.96':
+  '@rokkit/molecules@1.0.0-next.97':
     resolution: {integrity: sha512-AYKwswcZx9B4WOHeC0ypXJ55kYqU8xC1Rlw2noqx+NLBynw7pOl/70AEzsIpFDAjwZsd11XKV/gWuuLKEf9l7A==}
 
-  '@rokkit/organisms@1.0.0-next.96':
+  '@rokkit/organisms@1.0.0-next.97':
     resolution: {integrity: sha512-0kTvTDtB2rejw+UEUIfYDqUygc8i/HfVUWx5MP8zAief0s0rRguE6T2c6ENHUIxLKMuXUOL+8pdcnj36d1Tnlw==}
 
-  '@rokkit/stores@1.0.0-next.96':
+  '@rokkit/stores@1.0.0-next.97':
     resolution: {integrity: sha512-taKg1n1aMN6qNjYke6wdylI+vncNOIl+1fKTVevCDfVSURESEPvQ+l+en9DPtY3rDJZpTz4zDNUiSt0Eqeq0cA==}
 
-  '@rokkit/themes@1.0.0-next.96':
+  '@rokkit/themes@1.0.0-next.97':
     resolution: {integrity: sha512-rgHchUxZrOkQRsbyy2SMCUpNVg+hz3tvAbS2ATMLxUzkVvOgSX8ioEhzptHhVo71iXemxlS4ZR3pN1URAgeV3w==}
 
-  '@rokkit/ui@1.0.0-next.96':
+  '@rokkit/ui@1.0.0-next.97':
     resolution: {integrity: sha512-pTbuxFgyJsV11Tibvk9p6QSLgdRmHXZ6dfykLL2WKZ0aVHRzkB/d/DN3uHhf4Rzm8gUyxCsDjoxJYJWhJqiwUQ==}
 
   '@rollup/pluginutils@5.1.0':
@@ -4966,85 +4966,85 @@ snapshots:
 
   '@polka/url@1.0.0-next.25': {}
 
-  '@rokkit/actions@1.0.0-next.96':
+  '@rokkit/actions@1.0.0-next.97':
     dependencies:
-      '@rokkit/core': 1.0.0-next.96
-      '@rokkit/stores': 1.0.0-next.96
+      '@rokkit/core': 1.0.0-next.97
+      '@rokkit/stores': 1.0.0-next.97
       ramda: 0.30.1
 
-  '@rokkit/atoms@1.0.0-next.96':
+  '@rokkit/atoms@1.0.0-next.97':
     dependencies:
-      '@rokkit/actions': 1.0.0-next.96
-      '@rokkit/core': 1.0.0-next.96
+      '@rokkit/actions': 1.0.0-next.97
+      '@rokkit/core': 1.0.0-next.97
       marked: 12.0.2
       marked-gfm-heading-id: 3.1.3(marked@12.0.2)
       marked-mangle: 1.1.7(marked@12.0.2)
 
-  '@rokkit/core@1.0.0-next.96':
+  '@rokkit/core@1.0.0-next.97':
     dependencies:
       date-fns: 3.6.0
       ramda: 0.30.1
 
-  '@rokkit/data@1.0.0-next.96':
+  '@rokkit/data@1.0.0-next.97':
     dependencies:
       '@lukeed/uuid': 2.0.1
-      '@rokkit/core': 1.0.0-next.96
+      '@rokkit/core': 1.0.0-next.97
       d3-array: 3.2.4
       d3-collection: 1.0.7
       ramda: 0.30.1
       svelte: 4.2.17
 
-  '@rokkit/icons@1.0.0-next.96':
+  '@rokkit/icons@1.0.0-next.97':
     dependencies:
       '@mdi/svg': 7.4.47
 
-  '@rokkit/layout@1.0.0-next.96':
+  '@rokkit/layout@1.0.0-next.97':
     dependencies:
-      '@rokkit/actions': 1.0.0-next.96
-      '@rokkit/atoms': 1.0.0-next.96
-      '@rokkit/core': 1.0.0-next.96
-      '@rokkit/molecules': 1.0.0-next.96
-      '@rokkit/organisms': 1.0.0-next.96
-      '@rokkit/stores': 1.0.0-next.96
+      '@rokkit/actions': 1.0.0-next.97
+      '@rokkit/atoms': 1.0.0-next.97
+      '@rokkit/core': 1.0.0-next.97
+      '@rokkit/molecules': 1.0.0-next.97
+      '@rokkit/organisms': 1.0.0-next.97
+      '@rokkit/stores': 1.0.0-next.97
       d3-scale: 4.0.2
       date-fns: 3.6.0
 
-  '@rokkit/molecules@1.0.0-next.96':
+  '@rokkit/molecules@1.0.0-next.97':
     dependencies:
-      '@rokkit/actions': 1.0.0-next.96
-      '@rokkit/atoms': 1.0.0-next.96
-      '@rokkit/core': 1.0.0-next.96
-      '@rokkit/stores': 1.0.0-next.96
+      '@rokkit/actions': 1.0.0-next.97
+      '@rokkit/atoms': 1.0.0-next.97
+      '@rokkit/core': 1.0.0-next.97
+      '@rokkit/stores': 1.0.0-next.97
       d3-scale: 4.0.2
       date-fns: 3.6.0
       ramda: 0.30.1
 
-  '@rokkit/organisms@1.0.0-next.96':
+  '@rokkit/organisms@1.0.0-next.97':
     dependencies:
-      '@rokkit/actions': 1.0.0-next.96
-      '@rokkit/atoms': 1.0.0-next.96
-      '@rokkit/core': 1.0.0-next.96
-      '@rokkit/data': 1.0.0-next.96
-      '@rokkit/molecules': 1.0.0-next.96
+      '@rokkit/actions': 1.0.0-next.97
+      '@rokkit/atoms': 1.0.0-next.97
+      '@rokkit/core': 1.0.0-next.97
+      '@rokkit/data': 1.0.0-next.97
+      '@rokkit/molecules': 1.0.0-next.97
       ramda: 0.30.1
 
-  '@rokkit/stores@1.0.0-next.96':
+  '@rokkit/stores@1.0.0-next.97':
     dependencies:
-      '@rokkit/core': 1.0.0-next.96
+      '@rokkit/core': 1.0.0-next.97
       ramda: 0.30.1
 
-  '@rokkit/themes@1.0.0-next.96':
+  '@rokkit/themes@1.0.0-next.97':
     dependencies:
-      '@rokkit/core': 1.0.0-next.96
+      '@rokkit/core': 1.0.0-next.97
 
-  '@rokkit/ui@1.0.0-next.96':
+  '@rokkit/ui@1.0.0-next.97':
     dependencies:
-      '@rokkit/actions': 1.0.0-next.96
-      '@rokkit/atoms': 1.0.0-next.96
-      '@rokkit/core': 1.0.0-next.96
-      '@rokkit/layout': 1.0.0-next.96
-      '@rokkit/molecules': 1.0.0-next.96
-      '@rokkit/organisms': 1.0.0-next.96
+      '@rokkit/actions': 1.0.0-next.97
+      '@rokkit/atoms': 1.0.0-next.97
+      '@rokkit/core': 1.0.0-next.97
+      '@rokkit/layout': 1.0.0-next.97
+      '@rokkit/molecules': 1.0.0-next.97
+      '@rokkit/organisms': 1.0.0-next.97
       ramda: 0.30.1
 
   '@rollup/pluginutils@5.1.0(rollup@4.18.0)':

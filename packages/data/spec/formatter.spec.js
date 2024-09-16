@@ -20,7 +20,7 @@ describe('createFormatter', () => {
 
 	it('should format dates according to the provided locale', () => {
 		const formatDate = createFormatter('date', 'en-US')
-		expect(formatDate(new Date('2023-01-01'))).toBe('1/1/2023')
+		expect(formatDate(new Date('2023-01-01T00:00:00'))).toBe('1/1/2023')
 	})
 
 	it('should format time according to the provided locale', () => {
