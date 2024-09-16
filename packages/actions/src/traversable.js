@@ -1,5 +1,6 @@
 import { has } from 'ramda'
 import { EventManager } from './lib'
+
 const defaultConfig = {
 	allowDrag: false,
 	allowDrop: false,
@@ -21,19 +22,24 @@ const defaultConfig = {
  * @param {boolean}     config.options.vertical   - The orientation of the list/tree
  */
 export function traversable(root, config) {
-	// let store = config.store
 	const manager = EventManager(root, {})
 	const events = config.store.events
 
-	events.subscribe((data) => {
-		data.forEach(({ event, detail }) => root.dispatchEvent(new CustomEvent(event, { detail })))
-		events.set([])
+	const unsubscribe = events.subscribe((data) => {
+		if (data.length > 0) {
+			data.forEach(({ type, detail }) => root.dispatchEvent(new CustomEvent(type, { detail })))
+			events.set([])
+		}
 	})
 
 	updateEventHandlers(root, manager, config)
 
 	return {
-		destroy: () => manager.reset(),
+		destroy: () => {
+			// console.log(typeof unsubscribe)
+			unsubscribe()
+			manager.reset()
+		},
 		update: (newConfig) => updateEventHandlers(root, manager, newConfig)
 	}
 }
