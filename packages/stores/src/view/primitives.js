@@ -205,9 +205,6 @@ export function expand(state, pathIndex, emit = true) {
 	const item = state.data[index]
 
 	if (item.isParent && !item.isExpanded) {
-		// item.isExpanded = true
-		// updateChildVisibility(item.children, item.isExpanded)
-		// if (events) addEvent(state, 'expand', index)
 		state = toggle(state, index, emit)
 	}
 
@@ -227,8 +224,6 @@ export function collapse(state, pathIndex, emit = true) {
 
 	const item = state.data[index]
 	if (item.isParent && item.isExpanded) {
-		// item.isExpanded = false
-		// updateChildVisibility(item.children, item.isExpanded)
 		state = toggle(state, index, emit)
 	}
 
@@ -327,11 +322,13 @@ function updateChildVisibility(children, isVisible) {
  * @returns {Object} The updated state.
  */
 export function addEvent(state, event, index = -1) {
+	state.events = state.events ?? []
+
 	if (event === 'select') {
 		const detail = state.selectedItems.map((i) => state.data[i].value)
-		state.events.push({ event, detail })
+		state.events.push({ type: event, detail })
 	} else if (event === 'move' || index > -1) {
 		const { value = null, indexPath = null } = index >= 0 ? state.data[index] : {}
-		state.events.push({ event, detail: { value, path: indexPath } })
+		state.events.push({ type: event, detail: { value, path: indexPath } })
 	}
 }
