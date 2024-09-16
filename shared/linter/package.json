@@ -10,16 +10,16 @@
   },
   "dependencies": {
     "@unocss/eslint-config": "^0.60.4",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "3.3.0",
-    "prettier-plugin-svelte": "^3.2.3"
+    "prettier-plugin-svelte": "^3.2.6"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "eslint-plugin-svelte": "^2.39.0",
-    "svelte": "^4.2.17"
+    "eslint-plugin-svelte": "^2.44.0",
+    "svelte": "^4.2.19"
   }
 }
