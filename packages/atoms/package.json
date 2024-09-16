@@ -1,6 +1,6 @@
 {
 	"name": "@rokkit/atoms",
-	"version": "1.0.0-next.97",
+	"version": "1.0.0-next.98",
 	"description": "Atomic components are small, reusable building blocks that can be combined to create complex UI elements",
 	"author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -24,17 +24,17 @@
 		"release": "pnpm publish --access public"
 	},
 	"devDependencies": {
-		"@sveltejs/vite-plugin-svelte": "^3.1.1",
-		"@testing-library/svelte": "^5.1.0",
+		"@sveltejs/vite-plugin-svelte": "^3.1.2",
+		"@testing-library/svelte": "^5.2.1",
 		"@types/prismjs": "^1.26.4",
 		"@vitest/coverage-v8": "^1.6.0",
 		"@vitest/ui": "~1.6.0",
-		"jsdom": "^24.1.0",
+		"jsdom": "^24.1.3",
 		"shared-config": "workspace:*",
-		"svelte": "^4.2.17",
-		"typescript": "^5.4.5",
+		"svelte": "^4.2.19",
+		"typescript": "^5.6.2",
 		"validators": "workspace:*",
-		"vite": "^5.2.12",
+		"vite": "^5.4.6",
 		"vitest": "~1.6.0"
 	},
 	"files": [
@@ -56,7 +56,7 @@
 		"@rokkit/actions": "workspace:*",
 		"@rokkit/core": "workspace:*",
 		"marked": "^12.0.2",
-		"marked-gfm-heading-id": "^3.1.3",
-		"marked-mangle": "^1.1.7"
+		"marked-gfm-heading-id": "^3.2.0",
+		"marked-mangle": "^1.1.9"
 	}
 }

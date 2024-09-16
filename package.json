@@ -1,9 +1,9 @@
 {
   "name": "rokkit",
-  "version": "1.0.0-next.97",
+  "version": "1.0.0-next.98",
   "description": "",
   "main": "index.js",
-  "packageManager": "pnpm@9.2.0",
+  "packageManager": "pnpm@9.10.0",
   "scripts": {
     "clean": "find . -name 'coverage' -o -name 'vitest*timestamp*' -o -name '.vercel' | xargs rm -rf",
     "prepublishOnly": "turbo run prepublishOnly",
@@ -15,8 +15,8 @@
     "prepare": "husky",
     "latest": "pnpm clean && pnpm upgrade --latest && turbo run latest",
     "check-git": "if [ -n \"$(git status --porcelain)\" ]; then echo 'You have uncommitted changes or untracked files.' && exit 1; fi",
-    "bump": "pnpm check-git && bumpp",
-    "bump:next": "pnpm check-git && bumpp --preid=next",
+    "bump": "pnpm check-git && bumpp --no-push",
+    "bump:next": "pnpm check-git && bumpp --preid=next --no-push",
     "release": "turbo run release",
     "upgrade:all": "./scripts/upgrade.sh && pnpm upgrade --latest",
     "coverage:lcov": "pnpm coverage && ./scripts/merge-lcov.sh"
@@ -29,22 +29,22 @@
     "shared/*"
   ],
   "devDependencies": {
-    "bumpp": "^9.4.1",
-    "eslint": "^8.57.0",
+    "bumpp": "^9.5.2",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-shared": "workspace:*",
     "front-matter": "^4.0.2",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.5",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "madge": "^7.0.0",
     "prettier": "3.3.0",
-    "prettier-plugin-svelte": "^3.2.3"
+    "prettier-plugin-svelte": "^3.2.6"
   },
   "lint-staged": {
     "*.{js,svelte}": "eslint --cache --fix",
     "*.{js,svelte,md,json}": "prettier --write"
   },
   "dependencies": {
-    "turbo": "^2.0.1"
+    "turbo": "^2.1.2"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/data",
-  "version": "1.0.0-next.97",
+  "version": "1.0.0-next.98",
   "description": "Contains generic data manipulation functions that can be used in various components.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
@@ -23,14 +23,14 @@
     "release": "pnpm publish --access public"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.1.1",
-    "@testing-library/svelte": "^5.1.0",
-    "@types/ramda": "^0.30.0",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@testing-library/svelte": "^5.2.1",
+    "@types/ramda": "^0.30.2",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "~1.6.0",
     "shared-config": "workspace:*",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.12",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.6",
     "vitest": "~1.6.0"
   },
   "files": [
@@ -52,6 +52,6 @@
     "d3-array": "^3.2.4",
     "d3-collection": "^1.0.7",
     "ramda": "^0.30.1",
-    "svelte": "^4.2.17"
+    "svelte": "^4.2.19"
   }
 }
