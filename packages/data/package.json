@@ -26,12 +26,12 @@
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@testing-library/svelte": "^5.2.1",
     "@types/ramda": "^0.30.2",
-    "@vitest/coverage-v8": "^1.6.0",
-    "@vitest/ui": "~1.6.0",
+    "@vitest/coverage-v8": "^2.1.1",
+    "@vitest/ui": "~2.1.1",
     "shared-config": "workspace:*",
     "typescript": "^5.6.2",
     "vite": "^5.4.6",
-    "vitest": "~1.6.0"
+    "vitest": "~2.1.1"
   },
   "files": [
     "src/**/*.js",
