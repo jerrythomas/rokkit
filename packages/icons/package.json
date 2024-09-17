@@ -22,7 +22,7 @@
     "@mdi/svg": "^7.4.47"
   },
   "devDependencies": {
-    "@iconify/tools": "4.0.4",
+    "@iconify/tools": "4.0.6",
     "@iconify/types": "^2.0.0",
     "iconify": "^1.4.0"
   },
