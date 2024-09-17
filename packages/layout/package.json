@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/layout",
-  "version": "1.0.0-next.98",
+  "version": "1.0.0-next.99",
   "description": "Layout and navigation controls for svelte",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
@@ -44,7 +44,7 @@
     "@rokkit/organisms": "workspace:*",
     "@rokkit/stores": "workspace:*",
     "d3-scale": "^4.0.2",
-    "date-fns": "^4.0.0"
+    "date-fns": "^4.1.0"
   },
   "files": [
     "src/**/*.js",

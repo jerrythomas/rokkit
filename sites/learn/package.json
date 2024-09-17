@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/learn",
-  "version": "1.0.0-next.98",
+  "version": "1.0.0-next.99",
   "private": true,
   "scripts": {
     "dev": "vite dev",
@@ -20,8 +20,8 @@
     "@iconify-json/solar": "^1.2.0",
     "@iconify/utils": "^2.1.33",
     "@playwright/test": "^1.47.1",
-    "@sveltejs/adapter-auto": "^3.2.4",
-    "@sveltejs/kit": "^2.5.27",
+    "@sveltejs/adapter-auto": "^3.2.5",
+    "@sveltejs/kit": "^2.5.28",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@testing-library/svelte": "^5.2.1",
     "@types/node": "^20.16.5",
