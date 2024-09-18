@@ -23,11 +23,6 @@
   },
   "author": "Jerry Thomas<me@jerrythomas.name>",
   "license": "MIT",
-  "workspaces": [
-    "packages/*",
-    "sites/*",
-    "shared/*"
-  ],
   "devDependencies": {
     "bumpp": "^9.5.2",
     "eslint": "^9.10.0",
