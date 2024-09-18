@@ -59,7 +59,7 @@
 		"@rokkit/core": "workspace:*",
 		"@rokkit/stores": "workspace:*",
 		"d3-scale": "^4.0.2",
-		"date-fns": "^4.0.0",
+		"date-fns": "^4.1.0",
 		"ramda": "^0.30.1"
 	}
 }
