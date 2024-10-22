@@ -1,16 +1,33 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { defaultStateIcons } from '@rokkit/core'
 
-	let className = ''
-	export { className as class }
-	export let id = null
-	export let name
-	export let value = false
-	export let readOnly = false
-	export let stateIcons = defaultStateIcons.checkbox
-	export let tabindex = 0
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [id]
+	 * @property {any} name
+	 * @property {boolean} [value]
+	 * @property {boolean} [readOnly]
+	 * @property {any} [stateIcons]
+	 * @property {number} [tabindex]
+	 */
 
-	$: state = value === null ? 'unknown' : value ? 'checked' : 'unchecked'
+	/** @type {Props} */
+	let {
+		class: className = '',
+		id = null,
+		name,
+		value = $bindable(false),
+		readOnly = false,
+		stateIcons = defaultStateIcons.checkbox,
+		tabindex = 0
+	} = $props();
+
+	let state = $derived(value === null ? 'unknown' : value ? 'checked' : 'unchecked')
 
 	function toggle(event) {
 		event.preventDefault()
@@ -33,11 +50,11 @@
 	role="checkbox"
 	aria-checked={state}
 	aria-disabled={readOnly}
-	on:click={handleClick}
-	on:keydown={handleKeydown}
+	onclick={handleClick}
+	onkeydown={handleKeydown}
 	{tabindex}
 >
-	<input hidden type="checkbox" {name} {readOnly} bind:checked={value} on:change />
+	<input hidden type="checkbox" {name} {readOnly} bind:checked={value} onchange={bubble('change')} />
 
-	<icon class={stateIcons[state]} />
+	<icon class={stateIcons[state]}></icon>
 </checkbox>

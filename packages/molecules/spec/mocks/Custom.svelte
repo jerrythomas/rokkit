@@ -1,7 +1,6 @@
 <script>
 	import { getText, defaultFields } from '@rokkit/core'
-	export let value
-	export let fields = defaultFields
+	let { value, fields = defaultFields } = $props();
 </script>
 
 <span>{getText(value, fields)}</span>

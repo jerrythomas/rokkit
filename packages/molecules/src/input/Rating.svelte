@@ -1,17 +1,35 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { createEventDispatcher } from 'svelte'
 	import { defaultStateIcons } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 	const dispatch = createEventDispatcher()
 
-	export let id = null
-	export let name = null
-	export let value = 0
-	export let max = 5
-	export let disabled = false
-	export let stateIcons = defaultStateIcons.rating
-	export let placeholder = 'Rating'
-	export let tabindex = 0
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [id]
+	 * @property {any} [name]
+	 * @property {number} [value]
+	 * @property {number} [max]
+	 * @property {boolean} [disabled]
+	 * @property {any} [stateIcons]
+	 * @property {string} [placeholder]
+	 * @property {number} [tabindex]
+	 */
+
+	/** @type {Props} */
+	let {
+		id = null,
+		name = null,
+		value = $bindable(0),
+		max = 5,
+		disabled = false,
+		stateIcons = defaultStateIcons.rating,
+		placeholder = 'Rating',
+		tabindex = 0
+	} = $props();
 
 	function handleClick(index) {
 		if (!disabled) {
@@ -48,20 +66,20 @@
 	}
 
 	// let hovering = false
-	let hoverIndex = -1
-	$: stars = [...Array(max).keys()].map((i) => i < value)
+	let hoverIndex = $state(-1)
+	let stars = $derived([...Array(max).keys()].map((i) => i < value))
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rating
 	{id}
 	class="flex cursor-pointer select-none"
 	class:disabled
 	{tabindex}
 	role="radiogroup"
-	on:focus
-	on:blur
-	on:keydown={handleKeyDown}
+	onfocus={bubble('focus')}
+	onblur={bubble('blur')}
+	onkeydown={handleKeyDown}
 >
 	{#if name}
 		<input {name} hidden type="number" bind:value min={0} {max} readOnly={disabled} />

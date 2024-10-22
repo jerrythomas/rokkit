@@ -3,12 +3,18 @@
 	import { defaultFields, getIcon, isObject, getFormattedText } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
-	export let value
-	export let fields = defaultFields
-	export let formatter = null
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} value
+	 * @property {any} [fields]
+	 * @property {any} [formatter]
+	 */
+
+	/** @type {Props} */
+	let { value, fields = defaultFields, formatter = null } = $props();
 
 	// $: isObject = typeof (value ?? '-') === 'object'
-	$: text = getFormattedText(value, fields, formatter)
+	let text = $derived(getFormattedText(value, fields, formatter))
 </script>
 
 {#if isObject(value)}

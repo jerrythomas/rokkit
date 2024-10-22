@@ -1,30 +1,48 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { Thumb, RangeTick } from '@rokkit/atoms'
 	import { generateTicks } from '@rokkit/core'
 	import { scaleLinear } from 'd3-scale'
 
-	let className = ''
-	export { className as class }
-	export let name = null
-	/** @type {number} */
-	export let min = 0
-	/** @type {number} */
-	export let max = 100
-	/** @type {[number,number]} */
-	export let value = [min, min]
-	export let single = false
-	/** @type {number} */
-	export let step = 1
-	/** @type {number} */
-	export let ticks = 10
-	/** @type {number} */
-	export let labelSkip = 0
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [name]
+	 * @property {number} [min]
+	 * @property {number} [max]
+	 * @property {[number,number]} [value]
+	 * @property {boolean} [single]
+	 * @property {number} [step]
+	 * @property {number} [ticks]
+	 * @property {number} [labelSkip]
+	 */
 
-	let limits = [0, 0]
-	let lower = min
-	let upper = min
-	let scale
-	let width
+	/** @type {Props} */
+	let {
+		class: className = '',
+		name = null,
+		min = 0,
+		max = 100,
+		value = $bindable([min, min]),
+		single = false,
+		step = 1,
+		ticks = 10,
+		labelSkip = 0
+	} = $props();
+
+	let limits = $state([0, 0])
+	let lower = $state(min)
+	let upper = $state(min)
+	let scale = $state()
+	let width = $state()
 
 	function updateScale(width, min, max) {
 		if (width) {
@@ -46,13 +64,15 @@
 		}
 	}
 
-	$: tickStep = Math.max(1, Math.round((max - min) / ticks))
-	$: tickItems = generateTicks(min, max, tickStep, labelSkip + 1)
-	$: steps =
-		step > 0
+	let tickStep = $derived(Math.max(1, Math.round((max - min) / ticks)))
+	let tickItems = $derived(generateTicks(min, max, tickStep, labelSkip + 1))
+	let steps =
+		$derived(step > 0
 			? Array.from({ length: 1 + (max - min) / step }, (_, i) => Math.min(min + i * step, max))
-			: []
-	$: updateScale(width, min, max)
+			: [])
+	run(() => {
+		updateScale(width, min, max)
+	});
 </script>
 
 {#if !Array.isArray(value)}
@@ -61,12 +81,12 @@
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<input {name} type="hidden" bind:value />
 		<range-track class="relative grid">
-			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width} />
+			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width}></range-track-bar>
 			<selected-bar
 				class="absolute col-start-2"
 				style:left="{lower}px"
 				style:width="{upper - lower}px"
-			/>
+			></selected-bar>
 			{#if !single}
 				<Thumb bind:cx={lower} bind:value={value[0]} {steps} {scale} min={limits[0]} max={upper} />
 			{/if}

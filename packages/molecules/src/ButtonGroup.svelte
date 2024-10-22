@@ -1,15 +1,25 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, getText } from '@rokkit/core'
 	const dispatch = createEventDispatcher()
 
-	let className = ''
 
-	export { className as class }
-	export let items = []
-	export let fields = {}
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [items]
+	 * @property {any} [fields]
+	 */
 
-	$: fields = { ...defaultFields, ...fields }
+	/** @type {Props} */
+	let { class: className = '', items = [], fields = $bindable({}) } = $props();
+
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
 
 	function handle(item) {
 		dispatch('click', item)
@@ -19,7 +29,7 @@
 <button-group class="flex flex-row {className}">
 	{#each items as item}
 		{@const text = getText(item, fields)}
-		<button on:click={() => handle(item)} class="flex cursor-pointer select-none">
+		<button onclick={() => handle(item)} class="flex cursor-pointer select-none">
 			{text}
 		</button>
 	{/each}

@@ -6,22 +6,39 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let value
-	export let fields = defaultFields
-	export let using = { default: Item }
-	export let removable = false
-	export let selected = false
-	export let index = null
-	export let icons = defaultStateIcons.action
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} value
+	 * @property {any} [fields]
+	 * @property {any} [using]
+	 * @property {boolean} [removable]
+	 * @property {boolean} [selected]
+	 * @property {any} [index]
+	 * @property {any} [icons]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		value = $bindable(),
+		fields = defaultFields,
+		using = { default: Item },
+		removable = false,
+		selected = false,
+		index = null,
+		icons = defaultStateIcons.action
+	} = $props();
 
 	function handleClick() {
 		dispatch('remove', value)
 	}
 
-	$: icon = icons?.remove ?? defaultStateIcons.action.remove
-	$: component = getComponent(value, fields, using)
+	let icon = $derived(icons?.remove ?? defaultStateIcons.action.remove)
+	let component = $derived(getComponent(value, fields, using))
+
+	const SvelteComponent = $derived(component);
 </script>
 
 <wrap-item
@@ -31,7 +48,7 @@
 	data-path={index}
 >
 	<item class="flex flex-row items-center">
-		<svelte:component this={component} bind:value {fields} />
+		<SvelteComponent bind:value {fields} />
 	</item>
 	{#if removable}
 		<Icon name={icon} role="button" label="Remove" size="small" on:click={handleClick} />
