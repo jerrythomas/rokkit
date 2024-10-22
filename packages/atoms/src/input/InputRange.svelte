@@ -1,8 +1,14 @@
 <script>
-	export let value
-	export let min = undefined
-	export let max = undefined
-	export let list = undefined
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
+	let {
+		value = $bindable(),
+		min = undefined,
+		max = undefined,
+		list = undefined,
+		...rest
+	} = $props();
 </script>
 
-<input bind:value type="range" {...$$restProps} {min} {max} {list} on:change on:focus on:blur />
+<input bind:value type="range" {...rest} {min} {max} {list} onchange={bubble('change')} onfocus={bubble('focus')} onblur={bubble('blur')} />

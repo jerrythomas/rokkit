@@ -1,24 +1,32 @@
 <script>
+	import { stopPropagation } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
-	export let label = ''
-	export let value
-	export let selected = false
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [label]
+	 * @property {any} value
+	 * @property {boolean} [selected]
+	 */
+
+	/** @type {Props} */
+	let { label = '', value, selected = false } = $props();
 
 	function handleClick() {
 		dispatch('click', value)
 	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <tick
 	class="grid grid-cols-2 cursor-pointer select-none"
-	on:click|stopPropagation={handleClick}
+	onclick={stopPropagation(handleClick)}
 	role="option"
 	aria-selected={selected}
 	tabindex="0"
 >
-	<tick-bar class="col-start-2 h-5px border-l" />
+	<tick-bar class="col-start-2 h-5px border-l"></tick-bar>
 	<p class="col-span-2 flex justify-center">
 		{label}
 	</p>

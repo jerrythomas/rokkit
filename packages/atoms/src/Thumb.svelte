@@ -1,11 +1,13 @@
 <script>
 	import { pannable } from '@rokkit/actions'
-	export let min
-	export let max
-	export let cx
-	export let steps
-	export let scale
-	export let value
+	let {
+		min,
+		max,
+		cx = $bindable(),
+		steps,
+		scale,
+		value = $bindable()
+	} = $props();
 
 	function handlePanMove(event) {
 		let x = cx + event.detail.dx
@@ -43,24 +45,24 @@
 			cx = scale.invert(value)
 		}
 	}
-	let sliding = false
+	let sliding = $state(false)
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <thumb
 	class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
 	style:left="{cx}px"
 	class:sliding
 	tabindex="0"
-	on:focus={() => (sliding = true)}
-	on:blur={() => (sliding = false)}
+	onfocus={() => (sliding = true)}
+	onblur={() => (sliding = false)}
 	use:pannable
-	on:panmove={handlePanMove}
-	on:panstart={() => (sliding = true)}
-	on:panend={handlePanEnd}
-	on:keydown={handleKeyDown}
+	onpanmove={handlePanMove}
+	onpanstart={() => (sliding = true)}
+	onpanend={handlePanEnd}
+	onkeydown={handleKeyDown}
 	role="slider"
 	aria-valuenow={value}
 	aria-valuemin={min}
 	aria-valuemax={max}
-/>
+></thumb>

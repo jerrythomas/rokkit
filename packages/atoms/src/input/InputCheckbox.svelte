@@ -1,5 +1,8 @@
 <script>
-	export let value
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
+	let { value = $bindable(), ...rest } = $props();
 </script>
 
-<input type="checkbox" {...$$restProps} bind:checked={value} on:change on:focus on:blur />
+<input type="checkbox" {...rest} bind:checked={value} onchange={bubble('change')} onfocus={bubble('focus')} onblur={bubble('blur')} />

@@ -1,16 +1,35 @@
 <script>
+	import { run, createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { defaultFields, getValue, getText } from '@rokkit/core'
 
-	let className = ''
-	export { className as class }
-	export let value
-	export let fields = defaultFields
-	export let options = []
-	export let readonly = false
-	export let flip = false
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} value
+	 * @property {any} [fields]
+	 * @property {any} [options]
+	 * @property {boolean} [readonly]
+	 * @property {boolean} [flip]
+	 */
 
-	$: fields = { ...defaultFields, ...fields }
-	$: flexDirection = flip ? 'flex-row-reverse' : 'flex-row'
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		class: className = '',
+		value = $bindable(),
+		fields = $bindable(defaultFields),
+		options = [],
+		readonly = false,
+		flip = false,
+		...rest
+	} = $props();
+
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	let flexDirection = $derived(flip ? 'flex-row-reverse' : 'flex-row')
 </script>
 
 <radio-group class={className} class:disabled={readonly}>
@@ -21,13 +40,13 @@
 		<label class="flex {flexDirection} items-center gap-2">
 			<input
 				type="radio"
-				{...$$restProps}
+				{...rest}
 				bind:group={value}
 				value={itemValue}
 				readOnly={readonly}
-				on:change
-				on:focus
-				on:blur
+				onchange={bubble('change')}
+				onfocus={bubble('focus')}
+				onblur={bubble('blur')}
 			/>
 			<p>{label}</p>
 		</label>

@@ -1,10 +1,9 @@
 <script>
-	export let id
-	export let items
+	let { id, items } = $props();
 </script>
 
 <datalist {id}>
 	{#each items as value}
-		<option {value} />
+		<option {value}></option>
 	{/each}
 </datalist>

@@ -1,20 +1,34 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { marked } from 'marked'
 	import { mangle } from 'marked-mangle'
 	import { gfmHeadingId } from 'marked-gfm-heading-id'
 	import { fillable } from '@rokkit/actions'
 
-	export let text = ''
-	export let options = []
-	export let current = 0
-	export let check = false
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [text]
+	 * @property {any} [options]
+	 * @property {number} [current]
+	 * @property {boolean} [check]
+	 */
+
+	/** @type {Props} */
+	let {
+		text = '',
+		options = [],
+		current = 0,
+		check = false
+	} = $props();
 
 	marked.use(mangle())
 	marked.use(gfmHeadingId())
 
-	$: parsed = marked(text)
+	let parsed = $derived(marked(text))
 </script>
 
-<div use:fillable={{ options, current, check }} on:remove class="flex-grow">
+<div use:fillable={{ options, current, check }} onremove={bubble('remove')} class="flex-grow">
 	{@html parsed}
 </div>
