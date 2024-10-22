@@ -5,8 +5,12 @@ exports[`Sidebar.svelte > should render sidebar 1`] = `
   <aside
     class="sidebar flex flex-col"
   >
+    <!---->
      
+    <!---->
      
+    <!---->
   </aside>
+  
 </div>
 `;

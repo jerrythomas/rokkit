@@ -33,7 +33,7 @@ describe('Switch.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ options: ['a', 'b', 'c'] })
+		setProperties(component, { options: ['a', 'b', 'c'] })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -45,7 +45,7 @@ describe('Switch.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ editable: true })
+		setProperties(component, { editable: true })
 		expect(container).toMatchSnapshot()
 	})
 	it('should render using default field mapping', () => {
@@ -74,7 +74,7 @@ describe('Switch.svelte', () => {
 		let wrapper = container.querySelector('toggle-switch')
 		expect(Array.from(wrapper.classList)).toContain('custom')
 
-		component.$set({ class: 'other' })
+		setProperties(component, { class: 'other' })
 		await tick()
 		wrapper = container.querySelector('toggle-switch')
 		expect(Array.from(wrapper.classList)).toContain('other')
@@ -86,7 +86,7 @@ describe('Switch.svelte', () => {
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		component.$set({ icons: { remove: 'close' } })
+		setProperties(component, { icons: { remove: 'close' } })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

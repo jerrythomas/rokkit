@@ -13,6 +13,7 @@ exports[`Icon component > should call the click event when the icon is clicked 1
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -30,6 +31,7 @@ exports[`Icon component > should handle role=option as checkbox 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -46,6 +48,7 @@ exports[`Icon component > should render the icon as disabled 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -62,6 +65,7 @@ exports[`Icon component > should render the icon with a custom class 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -79,6 +83,7 @@ exports[`Icon component > should render the icon with checkbox role 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -96,6 +101,7 @@ exports[`Icon component > should render the icon with checkbox role with default
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -112,6 +118,7 @@ exports[`Icon component > should render the icon with the provided name 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -128,6 +135,7 @@ exports[`Icon component > should render the icon with the provided name and labe
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -144,6 +152,7 @@ exports[`Icon component > should render the icon with the size when specified in
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -160,6 +169,7 @@ exports[`Icon component > should render the icon with the size when specified in
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -176,6 +186,7 @@ exports[`Icon component > should render the icon with the size when specified in
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -192,6 +203,7 @@ exports[`Icon component > should render the icon with the specified role 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -208,6 +220,7 @@ exports[`Icon component > should render the icon with the specified size 1`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -224,6 +237,7 @@ exports[`Icon component > should render the icon with the specified size 2`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -240,6 +254,7 @@ exports[`Icon component > should render the icon with the specified size 3`] = `
       class="i-rokkit:mode-dark"
     />
   </icon>
+  
 </div>
 `;
 
@@ -257,5 +272,6 @@ exports[`Icon component > should render the icon with the specified state 1`] = 
       class="i-rokkit:node-opened"
     />
   </icon>
+  
 </div>
 `;

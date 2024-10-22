@@ -15,16 +15,19 @@ describe('ButtonGroup.svelte', () => {
 	})
 
 	it('should render a button group', () => {
-		const { container } = render(ButtonGroup, { items })
+		const { container } = render(ButtonGroup, { props: { items } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should handle clicks', async () => {
 		const { container, component } = render(ButtonGroup, {
-			items
+			props: {
+				items
+			},
+			events: { click: handlers.click }
 		})
-		component.$on('click', handlers.click)
+
 		const buttons = container.querySelectorAll('button')
 		await fireEvent.click(buttons[0])
 		await tick()

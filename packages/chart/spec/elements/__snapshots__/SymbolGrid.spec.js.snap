@@ -5,6 +5,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
   <svg
     viewBox="0 0 16 12"
   >
+    <!---->
     <path
       d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
       fill="#11b8aa"
@@ -16,6 +17,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(2,2)"
     />
     
+    <!---->
     <path
       d="M 14.136 14.136 L 14.136 -14.136 L -14.136 -14.136 L -14.136 14.136 Z"
       fill="#11b8aa"
@@ -27,6 +29,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(6,2)"
     />
     
+    <!---->
     <path
       d="M 0 -21.772 L 18.856 10.884 L -18.856 10.884 Z"
       fill="#11b8aa"
@@ -38,6 +41,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(10,2)"
     />
     
+    <!---->
     <path
       d="M 0 -19.98 L 19.98 0 L 0 19.98 L -19.98 0 Z"
       fill="#11b8aa"
@@ -49,6 +53,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(14,2)"
     />
     
+    <!---->
     <path
       d="M -27.492 0 L 27.492 0 M 0 27.492 L 0 -27.492"
       fill="#11b8aa"
@@ -60,6 +65,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(2,6)"
     />
     
+    <!---->
     <path
       d="M 0 19.076 L 0 -19.076 M -16.52 -9.536 L 16.52 9.536 M -16.52 9.536 L 16.52 -9.536"
       fill="#11b8aa"
@@ -71,6 +77,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(6,6)"
     />
     
+    <!---->
     <path
       d="M -19.48 -19.48 L 19.48 19.48 M -19.48 19.48 L 19.48 -19.48"
       fill="#11b8aa"
@@ -82,6 +89,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(10,6)"
     />
     
+    <!---->
     <path
       d="M 16 0 A 3.2 3.2 0 0 0 0 -12 A 3.2 3.2 0 0 0 -16 0 L 0 16 L 16 0"
       fill="#11b8aa"
@@ -93,6 +101,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(14,6)"
     />
     
+    <!---->
     <path
       d="M -0.79996 -20 L 3.69032 -6.18036 H 18.22116 L 6.46548 2.36068 L 10.95576 16.18036 L -0.79996 7.63932 L -12.55568 16.18036 L -8.0654 2.36068 L -19.82108 -6.18036 H -5.29024 L -0.79996 -20 Z"
       fill="#11b8aa"
@@ -104,6 +113,7 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       transform="translate(2,10)"
     />
     
+    <!---->
     <rect
       fill="#11b8aa"
       height="28.272"
@@ -117,6 +127,8 @@ exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
       y="-4.135999999999999"
     />
     
+    
   </svg>
+  
 </div>
 `;

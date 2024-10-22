@@ -1,12 +1,10 @@
 <script>
-	import { run } from 'svelte/legacy';
+	// import { run } from 'svelte/legacy';
 
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, getText } from '@rokkit/core'
 	const dispatch = createEventDispatcher()
 
-
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -15,11 +13,11 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', items = [], fields = $bindable({}) } = $props();
+	let { class: className = '', items = [], fields = $bindable({}) } = $props()
 
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 
 	function handle(item) {
 		dispatch('click', item)

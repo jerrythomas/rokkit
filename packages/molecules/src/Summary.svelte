@@ -1,21 +1,24 @@
 <script>
-	import { run } from 'svelte/legacy';
-
 	import { defaultFields, getComponent, hasChildren } from '@rokkit/core'
 	import Item from './Item.svelte'
 
-	let { value = $bindable(), fields = $bindable({}), using = $bindable({}) } = $props();
+	/**
+	 * @typedef {Object} SummaryProps
+	 * @property {string|Object} value
+	 * @property {Object} fields
+	 * @property {Object} using
+	 */
+	let { value = $bindable(), fields = $bindable({}), using = $bindable({}) } = $props()
 
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
-	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
+
 	let hasItems = $derived(hasChildren(value, fields))
 	let component = $derived(getComponent(value, fields, using))
 
-	const SvelteComponent = $derived(component);
+	const SvelteComponent = $derived(component)
 </script>
 
 <summary class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center" tabindex="-1">

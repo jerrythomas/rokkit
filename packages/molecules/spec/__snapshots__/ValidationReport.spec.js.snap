@@ -19,11 +19,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           class="badge-pass"
         />
       </icon>
+      <!---->
        
       <p>
         This check passed
       </p>
-       
     </message>
     <message
       class="flex gap-2 fail"
@@ -39,11 +39,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           class="badge-fail"
         />
       </icon>
+      <!---->
        
       <p>
         This check failed
       </p>
-       
     </message>
     <message
       class="flex gap-2 unknown"
@@ -59,11 +59,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           class="badge-unknown"
         />
       </icon>
+      <!---->
        
       <p>
         This check is unknown
       </p>
-       
     </message>
     <message
       class="flex gap-2 warn"
@@ -79,13 +79,15 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           class="badge-warn"
         />
       </icon>
+      <!---->
        
       <p>
         This check is warning
       </p>
-       
     </message>
+    
   </status-report>
+  
 </div>
 `;
 
@@ -108,11 +110,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           class="pass"
         />
       </icon>
+      <!---->
        
       <p>
         This check passed
       </p>
-       
     </message>
     <message
       class="flex gap-2 fail"
@@ -128,11 +130,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           class="fail"
         />
       </icon>
+      <!---->
        
       <p>
         This check failed
       </p>
-       
     </message>
     <message
       class="flex gap-2 unknown"
@@ -148,11 +150,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           class="unknown"
         />
       </icon>
+      <!---->
        
       <p>
         This check is unknown
       </p>
-       
     </message>
     <message
       class="flex gap-2 warn"
@@ -168,12 +170,14 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           class="warn"
         />
       </icon>
+      <!---->
        
       <p>
         This check is warning
       </p>
-       
     </message>
+    
   </status-report>
+  
 </div>
 `;

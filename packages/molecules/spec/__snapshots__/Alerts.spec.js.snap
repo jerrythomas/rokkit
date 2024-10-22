@@ -10,16 +10,19 @@ exports[`Alerts.svelte > should render alerts 1`] = `
       aria-live="assertive"
       class="default"
       role="alert"
-      style="animation: __svelte_665066525_0 300ms linear 0ms 1 both;"
     >
+      <!---->
+      <!---->
        
       <p>
         A simple message
       </p>
-      
-       
+      <!---->
+      <!---->
     </alert>
+    
   </alert-list>
+  
 </div>
 `;
 
@@ -33,17 +36,23 @@ exports[`Alerts.svelte > should render alerts with custom entry animation 1`] = 
       aria-live="assertive"
       class="info"
       role="alert"
-      style="animation: __svelte_665066525_0 300ms linear 0ms 1 both;"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         Message object
       </p>
-      
-       
+      <!---->
+      <!---->
     </alert>
+    
   </alert-list>
+  
 </div>
 `;
 
@@ -57,16 +66,22 @@ exports[`Alerts.svelte > should render alerts with custom exit animation 1`] = `
       aria-live="assertive"
       class="default"
       role="alert"
-      style="animation: __svelte_665066525_0 300ms linear 0ms 1 both;"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         Message object with type
       </p>
-      
-       
+      <!---->
+      <!---->
     </alert>
+    
   </alert-list>
+  
 </div>
 `;

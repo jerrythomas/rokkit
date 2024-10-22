@@ -20,7 +20,7 @@ describe('Toggle.svelte', () => {
 		expect(text.textContent).toEqual('false')
 
 		// handle value change
-		component.$set({ value: true })
+		setProperties(component, { value: true })
 		await tick()
 		text = container.querySelector('p')
 		expect(text.textContent).toEqual('true')
@@ -75,7 +75,7 @@ describe('Toggle.svelte', () => {
 	it('should change class', async () => {
 		const { container, component } = render(Toggle)
 		expect(container).toBeTruthy()
-		component.$set({ class: 'custom' })
+		setProperties(component, { class: 'custom' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

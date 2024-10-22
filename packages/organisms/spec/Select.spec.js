@@ -97,7 +97,7 @@ describe('Select.svelte', () => {
 		let classes = Array.from(container.querySelector('input-select').classList)
 
 		expect(classes).toContain('myClass')
-		component.$set({ class: 'myClass2' })
+		setProperties(component, { class: 'myClass2' })
 		await tick()
 		classes = Array.from(container.querySelector('input-select').classList)
 		expect(classes).not.toContain('myClass')
@@ -122,7 +122,7 @@ describe('Select.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ using: { default: MockItem, custom: MockItem } })
+		setProperties(component, { using: { default: MockItem, custom: MockItem } })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -230,7 +230,7 @@ describe('Select.svelte', () => {
 		await tick()
 		expect(container.querySelector('scroll')).toMatchSnapshot()
 
-		component.$set({ options: [{ text: 'a' }, { text: 'b' }] })
+		setProperties(component, { options: [{ text: 'a' }, { text: 'b' }] })
 		await tick()
 		expect(container.querySelector('scroll')).toMatchSnapshot()
 	})

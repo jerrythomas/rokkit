@@ -14,6 +14,7 @@ exports[`symbols > custom symbols > should render rounded-square 1`] = `
     x="-3.534"
     y="-3.534"
   />
+  
 </div>
 `;
 
@@ -31,6 +32,7 @@ exports[`symbols > custom symbols > should render rounded-square with size and o
     x="-30.339999999999996"
     y="-29.339999999999996"
   />
+  
 </div>
 `;
 
@@ -48,6 +50,7 @@ exports[`symbols > custom symbols > should render rounded-square with stroke and
     x="-3.534"
     y="-3.534"
   />
+  
 </div>
 `;
 
@@ -63,6 +66,7 @@ exports[`symbols > named paths > should render "asterisk" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -78,6 +82,7 @@ exports[`symbols > named paths > should render "asterisk" with size and origin 1
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -93,6 +98,7 @@ exports[`symbols > named paths > should render "asterisk" with stroke and fill 1
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -108,6 +114,7 @@ exports[`symbols > named paths > should render "circle" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -123,6 +130,7 @@ exports[`symbols > named paths > should render "circle" with size and origin 1`]
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -138,6 +146,7 @@ exports[`symbols > named paths > should render "circle" with stroke and fill 1`]
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -153,6 +162,7 @@ exports[`symbols > named paths > should render "cross" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -168,6 +178,7 @@ exports[`symbols > named paths > should render "cross" with size and origin 1`] 
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -183,6 +194,7 @@ exports[`symbols > named paths > should render "cross" with stroke and fill 1`] 
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -198,6 +210,7 @@ exports[`symbols > named paths > should render "diamond" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -213,6 +226,7 @@ exports[`symbols > named paths > should render "diamond" with size and origin 1`
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -228,6 +242,7 @@ exports[`symbols > named paths > should render "diamond" with stroke and fill 1`
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -243,6 +258,7 @@ exports[`symbols > named paths > should render "heart" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -258,6 +274,7 @@ exports[`symbols > named paths > should render "heart" with size and origin 1`] 
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -273,6 +290,7 @@ exports[`symbols > named paths > should render "heart" with stroke and fill 1`] 
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -288,6 +306,7 @@ exports[`symbols > named paths > should render "plus" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -303,6 +322,7 @@ exports[`symbols > named paths > should render "plus" with size and origin 1`] =
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -318,6 +338,7 @@ exports[`symbols > named paths > should render "plus" with stroke and fill 1`] =
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -333,6 +354,7 @@ exports[`symbols > named paths > should render "square" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -348,6 +370,7 @@ exports[`symbols > named paths > should render "square" with size and origin 1`]
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -363,6 +386,7 @@ exports[`symbols > named paths > should render "square" with stroke and fill 1`]
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -378,6 +402,7 @@ exports[`symbols > named paths > should render "star" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -393,6 +418,7 @@ exports[`symbols > named paths > should render "star" with size and origin 1`] =
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -408,6 +434,7 @@ exports[`symbols > named paths > should render "star" with stroke and fill 1`] =
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -423,6 +450,7 @@ exports[`symbols > named paths > should render "triangle" 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -438,6 +466,7 @@ exports[`symbols > named paths > should render "triangle" with size and origin 1
     tabindex="0"
     transform="translate(5,6)"
   />
+  
 </div>
 `;
 
@@ -453,6 +482,7 @@ exports[`symbols > named paths > should render "triangle" with stroke and fill 1
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;
 
@@ -468,5 +498,6 @@ exports[`symbols > named paths > should render default 1`] = `
     tabindex="0"
     transform="translate(0,0)"
   />
+  
 </div>
 `;

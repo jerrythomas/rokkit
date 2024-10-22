@@ -3,9 +3,15 @@
 exports[`Link.svelte > should render empty when field mapping is invalid 1`] = `
 <div>
   <a>
+    <!---->
+    <!---->
     
+    
+    <!---->
      
+    <!---->
   </a>
+  
 </div>
 `;
 
@@ -14,6 +20,7 @@ exports[`Link.svelte > should render icon 1`] = `
   <a
     href="/"
   >
+    <!---->
     <icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
@@ -26,17 +33,21 @@ exports[`Link.svelte > should render icon 1`] = `
       />
     </icon>
     
+    <!---->
      
     <p>
       hello
     </p>
+    <!---->
   </a>
+  
 </div>
 `;
 
 exports[`Link.svelte > should render icon based on state 1`] = `
 <div>
   <a>
+    <!---->
     <icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
@@ -49,11 +60,14 @@ exports[`Link.svelte > should render icon based on state 1`] = `
       />
     </icon>
     
+    <!---->
      
     <p>
       hello
     </p>
+    <!---->
   </a>
+  
 </div>
 `;
 
@@ -62,23 +76,30 @@ exports[`Link.svelte > should render image 1`] = `
   <a
     href="https://example.com"
   >
+    <!---->
+    <!---->
     <img
       alt="hello"
       class="min-h-4 min-w-4 object-cover"
       src="https://example.com/img.png"
     />
     
+    
+    <!---->
      
     <p>
       hello
     </p>
+    <!---->
   </a>
+  
 </div>
 `;
 
 exports[`Link.svelte > should render image and icon 1`] = `
 <div>
   <a>
+    <!---->
     <icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
@@ -91,19 +112,25 @@ exports[`Link.svelte > should render image and icon 1`] = `
       />
     </icon>
     
+    <!---->
      
     <p>
       hello
     </p>
+    <!---->
   </a>
+  
 </div>
 `;
 
 exports[`Link.svelte > should render null 1`] = `
 <div>
   <a>
+    <!---->
      
+    <!---->
   </a>
+  
 </div>
 `;
 
@@ -112,12 +139,18 @@ exports[`Link.svelte > should render object 1`] = `
   <a
     href="#"
   >
+    <!---->
+    <!---->
     
+    
+    <!---->
      
     <p>
       #
     </p>
+    <!---->
   </a>
+  
 </div>
 `;
 
@@ -126,6 +159,7 @@ exports[`Link.svelte > should render using field mapping 1`] = `
   <a
     href="https://example.com"
   >
+    <!---->
     <icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
@@ -138,10 +172,13 @@ exports[`Link.svelte > should render using field mapping 1`] = `
       />
     </icon>
     
+    <!---->
      
     <p>
       hello
     </p>
+    <!---->
   </a>
+  
 </div>
 `;

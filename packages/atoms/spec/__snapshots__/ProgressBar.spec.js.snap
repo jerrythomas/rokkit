@@ -10,6 +10,7 @@ exports[`ProgressBar.svelte > should render indeterminate progress 1`] = `
       style="width: 10%; height: 1.5mm;"
     />
   </progress-bar>
+  
 </div>
 `;
 
@@ -23,19 +24,21 @@ exports[`ProgressBar.svelte > should render progress bar with class 1`] = `
       style="width: 10%; height: 1.5mm;"
     />
   </progress-bar>
+  
 </div>
 `;
 
 exports[`ProgressBar.svelte > should render progress bar with class 2`] = `
 <div>
   <progress-bar
-    class="flex w-full my-class-1 indeterminate"
+    class="flex w-full my-class indeterminate"
     style="height: 1.5mm;"
   >
     <value-bar
       style="width: 10%; height: 1.5mm;"
     />
   </progress-bar>
+  
 </div>
 `;
 
@@ -49,6 +52,7 @@ exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
       style="width: 0.5%; height: 1.5mm;"
     />
   </progress-bar>
+  
 </div>
 `;
 
@@ -59,9 +63,10 @@ exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 1%; height: 1.5mm;"
+      style="width: 0.5%; height: 1.5mm;"
     />
   </progress-bar>
+  
 </div>
 `;
 
@@ -75,5 +80,6 @@ exports[`ProgressBar.svelte > should render progress with custom height, indicat
       style="width: 50%; height: 3px;"
     />
   </progress-bar>
+  
 </div>
 `;

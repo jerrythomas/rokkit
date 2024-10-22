@@ -27,7 +27,7 @@ describe('Tabs.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ editable: true })
+		setProperties(component, { editable: true })
 		expect(container).toMatchSnapshot()
 	})
 	it('should render using default field mapping', () => {
@@ -52,7 +52,7 @@ describe('Tabs.svelte', () => {
 		})
 		let wrapper = container.querySelector('tabs')
 		expect(Array.from(wrapper.classList)).toContain('custom')
-		component.$set({ class: 'other' })
+		setProperties(component, { class: 'other' })
 		await tick()
 		wrapper = container.querySelector('tabs')
 		expect(Array.from(wrapper.classList)).toContain('other')
@@ -63,7 +63,7 @@ describe('Tabs.svelte', () => {
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		component.$set({ icons: { remove: 'close' } })
+		setProperties(component, { icons: { remove: 'close' } })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -82,7 +82,7 @@ describe('Tabs.svelte', () => {
 			editable: true
 		})
 		expect(container).toMatchSnapshot()
-		component.$set({ value: 'Gamma' })
+		setProperties(component, { value: 'Gamma' })
 		component.$on('select', handlers.select)
 		await tick()
 		expect(container).toMatchSnapshot()

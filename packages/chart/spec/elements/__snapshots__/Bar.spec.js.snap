@@ -8,14 +8,12 @@ exports[`Bar.svelte > should render a bar 1`] = `
     opacity="0.5"
     y="65"
   />
-   
   <rect
     fill="red"
     height="60"
     width="5"
     y="65"
   />
-   
   <text
     class="label"
     text-anchor="end"
@@ -23,7 +21,7 @@ exports[`Bar.svelte > should render a bar 1`] = `
   >
     Alpha
   </text>
-   
+  <!---->
   <text
     class="label small"
     text-anchor="end"
@@ -31,5 +29,7 @@ exports[`Bar.svelte > should render a bar 1`] = `
   >
     1000.0%
   </text>
+  <!---->
+  
 </div>
 `;

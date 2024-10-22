@@ -2,21 +2,32 @@
 
 exports[`Item.svelte > should render default 1`] = `
 <div>
+  <!---->
+  <!---->
    
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render empty when field mapping is invalid 1`] = `
 <div>
+  <!---->
+  <!---->
+  <!---->
   
+  
+  <!---->
    
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render icon 1`] = `
 <div>
+  <!---->
+  <!---->
   <icon
     aria-label="info"
     class="flex flex-shrink-0 items-center justify-center "
@@ -29,16 +40,20 @@ exports[`Item.svelte > should render icon 1`] = `
     />
   </icon>
   
+  <!---->
    
   <p>
     hello
   </p>
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render icon based on state 1`] = `
 <div>
+  <!---->
+  <!---->
   <icon
     aria-label="info"
     class="flex flex-shrink-0 items-center justify-center "
@@ -51,32 +66,42 @@ exports[`Item.svelte > should render icon based on state 1`] = `
     />
   </icon>
   
+  <!---->
    
   <p>
     hello
   </p>
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render image 1`] = `
 <div>
+  <!---->
+  <!---->
+  <!---->
   <img
     alt="hello"
     class="min-h-4 min-w-4 object-cover"
     src="https://example.com/img.png"
   />
   
+  
+  <!---->
    
   <p>
     hello
   </p>
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render image and icon 1`] = `
 <div>
+  <!---->
+  <!---->
   <icon
     aria-label="info"
     class="flex flex-shrink-0 items-center justify-center "
@@ -89,34 +114,47 @@ exports[`Item.svelte > should render image and icon 1`] = `
     />
   </icon>
   
+  <!---->
    
   <p>
     hello
   </p>
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render null 1`] = `
 <div>
+  <!---->
+  <!---->
    
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render object 1`] = `
 <div>
+  <!---->
+  <!---->
+  <!---->
   
+  
+  <!---->
    
   <p>
     hello
   </p>
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render using field mapping 1`] = `
 <div>
+  <!---->
+  <!---->
   <icon
     aria-label="info"
     class="flex flex-shrink-0 items-center justify-center "
@@ -129,20 +167,25 @@ exports[`Item.svelte > should render using field mapping 1`] = `
     />
   </icon>
   
+  <!---->
    
   <p>
     hello
   </p>
+  <!---->
   
 </div>
 `;
 
 exports[`Item.svelte > should render with value 1`] = `
 <div>
+  <!---->
+  <!---->
    
   <p>
     text
   </p>
+  <!---->
   
 </div>
 `;

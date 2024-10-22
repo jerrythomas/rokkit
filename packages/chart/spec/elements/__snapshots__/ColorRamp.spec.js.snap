@@ -30,9 +30,9 @@ exports[`ColorRamp.svelte > should render 1`] = `
         offset="100%"
         stop-color="rgb(0, 255, 0)"
       />
+      
     </lineargradient>
   </defs>
-   
   <rect
     fill="url(#4fzzzxj)"
     height="10"
@@ -40,7 +40,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     x="0"
     y="10"
   />
-   
   <line
     class="svelte-rzinxm"
     x1="0"
@@ -48,7 +47,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="6.666666666666667"
     y2="20"
   />
-   
   <text
     class="svelte-rzinxm"
     font-size="5"
@@ -64,7 +62,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="6.666666666666667"
     y2="20"
   />
-   
   <text
     class="svelte-rzinxm"
     font-size="5"
@@ -80,7 +77,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="6.666666666666667"
     y2="20"
   />
-   
   <text
     class="svelte-rzinxm"
     font-size="5"
@@ -96,7 +92,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="6.666666666666667"
     y2="20"
   />
-   
   <text
     class="svelte-rzinxm"
     font-size="5"
@@ -112,7 +107,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="6.666666666666667"
     y2="20"
   />
-   
   <text
     class="svelte-rzinxm"
     font-size="5"
@@ -128,7 +122,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="6.666666666666667"
     y2="20"
   />
-   
   <text
     class="svelte-rzinxm"
     font-size="5"
@@ -137,7 +130,7 @@ exports[`ColorRamp.svelte > should render 1`] = `
   >
     1
   </text>
-   
+  <!---->
   <line
     class="svelte-rzinxm"
     x1="0"
@@ -145,5 +138,6 @@ exports[`ColorRamp.svelte > should render 1`] = `
     y1="20"
     y2="20"
   />
+  
 </div>
 `;

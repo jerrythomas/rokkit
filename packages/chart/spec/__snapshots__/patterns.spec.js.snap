@@ -2,6 +2,7 @@
 
 exports[`components > should render Brick 1`] = `
 <div>
+  <!---->
   <line
     stroke="currentColor"
     stroke-linecap="round"
@@ -48,11 +49,13 @@ exports[`components > should render Brick 1`] = `
     y2="10"
   />
   
+  
 </div>
 `;
 
 exports[`components > should render Circles 1`] = `
 <div>
+  <!---->
   <circle
     cx="0"
     cy="0"
@@ -68,11 +71,13 @@ exports[`components > should render Circles 1`] = `
     stroke="currentColor"
   />
   
+  
 </div>
 `;
 
 exports[`components > should render CrossHatch 1`] = `
 <div>
+  <!---->
   <line
     stroke="currentColor"
     stroke-linecap="round"
@@ -92,6 +97,7 @@ exports[`components > should render CrossHatch 1`] = `
     y2="0"
   />
   
+  
 </div>
 `;
 
@@ -103,11 +109,13 @@ exports[`components > should render CurvedWave 1`] = `
     stroke="currentColor"
     stroke-width="0.5"
   />
+  
 </div>
 `;
 
 exports[`components > should render Dots 1`] = `
 <div>
+  <!---->
   <circle
     cx="2"
     cy="2"
@@ -157,11 +165,13 @@ exports[`components > should render Dots 1`] = `
     r="0.8"
   />
   
+  
 </div>
 `;
 
 exports[`components > should render OutlineCircles 1`] = `
 <div>
+  <!---->
   <circle
     cx="0"
     cy="0"
@@ -177,11 +187,13 @@ exports[`components > should render OutlineCircles 1`] = `
     stroke="currentColor"
   />
   
+  
 </div>
 `;
 
 exports[`components > should render Tile 1`] = `
 <div>
+  <!---->
   <line
     stroke="currentColor"
     stroke-linecap="round"
@@ -228,11 +240,13 @@ exports[`components > should render Tile 1`] = `
     y2="10"
   />
   
+  
 </div>
 `;
 
 exports[`components > should render Triangles 1`] = `
 <div>
+  <!---->
   <polygon
     fill="currentColor"
     points="0, 5, 5, 10, 0, 10"
@@ -252,6 +266,7 @@ exports[`components > should render Triangles 1`] = `
     stroke-width="0"
   />
   
+  
 </div>
 `;
 
@@ -263,5 +278,6 @@ exports[`components > should render Waves 1`] = `
     stroke="currentColor"
     stroke-width="0.5"
   />
+  
 </div>
 `;

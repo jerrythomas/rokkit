@@ -24,8 +24,8 @@
   "author": "Jerry Thomas<me@jerrythomas.name>",
   "license": "MIT",
   "devDependencies": {
-    "bumpp": "^9.5.2",
-    "eslint": "^9.10.0",
+    "bumpp": "^9.7.1",
+    "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-shared": "workspace:*",
     "front-matter": "^4.0.2",
@@ -33,7 +33,7 @@
     "lint-staged": "^15.2.10",
     "madge": "^8.0.0",
     "prettier": "3.3.3",
-    "prettier-plugin-svelte": "^3.2.6"
+    "prettier-plugin-svelte": "^3.2.7"
   },
   "lint-staged": {
     "*.{js,svelte}": "eslint --cache --fix",
