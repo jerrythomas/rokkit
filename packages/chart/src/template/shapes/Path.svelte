@@ -1,12 +1,23 @@
 <script>
 	import { scaledPath } from '@rokkit/core'
 
-	export let size = 10
-	export let thickness = 0.5
-	export let stroke = 'currentColor'
-	export let data = []
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [size]
+	 * @property {number} [thickness]
+	 * @property {string} [stroke]
+	 * @property {any} [data]
+	 */
 
-	$: d = scaledPath(size, data)
+	/** @type {Props} */
+	let {
+		size = 10,
+		thickness = 0.5,
+		stroke = 'currentColor',
+		data = []
+	} = $props();
+
+	let d = $derived(scaledPath(size, data))
 </script>
 
 <path {d} {stroke} stroke-width={thickness} fill="none" />

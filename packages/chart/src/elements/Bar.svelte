@@ -2,25 +2,40 @@
 	import { format } from 'd3-format'
 	import Label from './Label.svelte'
 
-	export let rank
-	export let value
-	export let name
-	export let formatString = '.1%'
-	export let scales
-	export let height = 60
-	export let fill
-	export let spaceBetween = 5
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} rank
+	 * @property {any} value
+	 * @property {any} name
+	 * @property {string} [formatString]
+	 * @property {any} scales
+	 * @property {number} [height]
+	 * @property {any} fill
+	 * @property {number} [spaceBetween]
+	 */
+
+	/** @type {Props} */
+	let {
+		rank,
+		value,
+		name,
+		formatString = '.1%',
+		scales,
+		height = 60,
+		fill,
+		spaceBetween = 5
+	} = $props();
 
 	const textHeight = 16
 	const charWidth = 12
-	$: y = rank * (height + spaceBetween)
-	$: width = $scales.x(value)
+	let y = $derived(rank * (height + spaceBetween))
+	let width = $derived($scales.x(value))
 
-	$: textWidth = name.length * charWidth
-	$: textOffset = width <= textWidth ? width + charWidth : width
-	$: textAnchor = textOffset > width ? 'start' : 'end'
+	let textWidth = $derived(name.length * charWidth)
+	let textOffset = $derived(width <= textWidth ? width + charWidth : width)
+	let textAnchor = $derived(textOffset > width ? 'start' : 'end')
 
-	$: formattedValue = format(formatString)(value)
+	let formattedValue = $derived(format(formatString)(value))
 </script>
 
 <rect x={$scales.x(0)} {y} {width} {height} {fill} opacity={0.5} />

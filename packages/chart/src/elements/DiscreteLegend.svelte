@@ -1,15 +1,30 @@
 <script>
-	export let x = 0
-	export let y = 0
-	export let textSize = 5
-	export let size = 10
-	export let space = 2
-	export let padding = 5
-	export let scale
-	export let tickCount = 10
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [x]
+	 * @property {number} [y]
+	 * @property {number} [textSize]
+	 * @property {number} [size]
+	 * @property {number} [space]
+	 * @property {number} [padding]
+	 * @property {any} scale
+	 * @property {number} [tickCount]
+	 */
 
-	$: sizeWithSpace = size + space
-	$: ticks = scale.ticks.apply(scale, [tickCount])
+	/** @type {Props} */
+	let {
+		x = 0,
+		y = 0,
+		textSize = 5,
+		size = 10,
+		space = 2,
+		padding = 5,
+		scale,
+		tickCount = 10
+	} = $props();
+
+	let sizeWithSpace = $derived(size + space)
+	let ticks = $derived(scale.ticks.apply(scale, [tickCount]))
 </script>
 
 {#each ticks as tick, i}

@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
 	import { chart } from './lib'
@@ -6,47 +8,73 @@
 	let config = writable({})
 	setContext('chart', config)
 
-	export let data
-	export let x
-	export let y
-	export let value = y
-	export let color = x
-	export let fill = x
-	// export let pattern = x
-	export let width = 2048
-	export let height = 2048
-	export let padding = height / 16
-	export let marginLeft = 0
-	export let marginRight = 0
-	export let marginTop = 0
-	export let marginBottom = 0
-	export let flipCoords = false
-	export let spacing = 0.1
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} data
+	 * @property {any} x
+	 * @property {any} y
+	 * @property {any} [value]
+	 * @property {any} [color]
+	 * @property {any} [fill]
+	 * @property {number} [width] - export let pattern = x
+	 * @property {number} [height]
+	 * @property {any} [padding]
+	 * @property {number} [marginLeft]
+	 * @property {number} [marginRight]
+	 * @property {number} [marginTop]
+	 * @property {number} [marginBottom]
+	 * @property {boolean} [flipCoords]
+	 * @property {number} [spacing]
+	 * @property {import('svelte').Snippet} [children]
+	 */
 
-	$: margin = {
+	/** @type {Props} */
+	let {
+		data,
+		x,
+		y,
+		value = y,
+		color = x,
+		fill = x,
+		width = 2048,
+		height = 2048,
+		padding = height / 16,
+		marginLeft = 0,
+		marginRight = 0,
+		marginTop = 0,
+		marginBottom = 0,
+		flipCoords = false,
+		spacing = 0.1,
+		children
+	} = $props();
+
+	let margin = $derived({
 		left: marginLeft,
 		right: marginRight,
 		top: marginTop,
 		bottom: marginBottom
-	}
+	})
 	// $: patterns = [...new Set(data.map((d) => d[pattern]))]
 	// $: fills = [...new Set(data.map((d) => d[fill]))]
 	// $: colors = [...new Set(data.map((d) => d[color]))]
-	$: config.set(
-		chart(data, {
-			x,
-			y,
-			value,
-			color,
-			fill,
-			width,
-			height,
-			padding,
-			margin,
-			flipCoords,
-			spacing
-		})
-	)
+	run(() => {
+		config.set(
+			chart(data, {
+				x,
+				y,
+				value,
+				color,
+				fill,
+				width,
+				height,
+				padding,
+				margin,
+				flipCoords,
+				spacing
+			})
+		)
+	});
 </script>
 
 <svg
@@ -63,5 +91,5 @@
 		fill="none"
 		stroke="currentColor"
 	/>
-	<slot />
+	{@render children?.()}
 </svg>

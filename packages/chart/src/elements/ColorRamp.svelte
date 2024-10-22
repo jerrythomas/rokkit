@@ -2,25 +2,39 @@
 	import { scaleLinear } from 'd3-scale'
 	import { id as uniqueId } from '@rokkit/core'
 
-	export let x = 0
-	export let y = 0
-	export let textSize = 5
-	export let height = 10
-	export let width = 100
-	export let tickCount = 5
-	export let scale
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [x]
+	 * @property {number} [y]
+	 * @property {number} [textSize]
+	 * @property {number} [height]
+	 * @property {number} [width]
+	 * @property {number} [tickCount]
+	 * @property {any} scale
+	 */
 
-	$: scaleTicks = scaleLinear()
+	/** @type {Props} */
+	let {
+		x = 0,
+		y = 0,
+		textSize = 5,
+		height = 10,
+		width = 100,
+		tickCount = 5,
+		scale
+	} = $props();
+
+	let scaleTicks = $derived(scaleLinear()
 		.range([x, x + width])
-		.domain(scale.domain())
-	$: scalePercent = scaleLinear().range([0, 100]).domain(scale.domain())
-	$: ticks = scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), value: d }))
+		.domain(scale.domain()))
+	let scalePercent = $derived(scaleLinear().range([0, 100]).domain(scale.domain()))
+	let ticks = $derived(scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), value: d })))
 
-	$: colors = ticks.map(({ value }) => ({
+	let colors = $derived(ticks.map(({ value }) => ({
 		color: scale(value),
 		offset: `${scalePercent(value)}%`
-	}))
-	$: id = uniqueId('legend-')
+	})))
+	let id = $derived(uniqueId('legend-'))
 </script>
 
 <defs>
