@@ -7,10 +7,10 @@ describe('mocks', () => {
 		expect(Object.keys(mocks)).toEqual([
 			'matchMediaMock',
 			'updateMedia',
-			'getMockNode',
-			'createNestedElement',
+			'elementsWithSize',
 			'mixedSizeElements',
-			'elementsWithSize'
+			'getMockNode',
+			'createNestedElement'
 		])
 	})
 })

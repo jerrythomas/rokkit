@@ -35,7 +35,7 @@
     "@types/ramda": "^0.30.2",
     "@vitest/coverage-v8": "^2.1.1",
     "shared-config": "workspace:*",
-    "svelte": "^4.2.19",
+    "svelte": "^5.0.0",
     "vitest": "^2.1.1"
   }
 }
