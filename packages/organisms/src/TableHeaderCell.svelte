@@ -4,15 +4,28 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	/** @type {string} */
-	export let name
-	/** @type {string|null} */
-	export let label
-	export let sortable = false
-	export let hidden = false
-	export let order = 'none'
+	
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {string} name
+	 * @property {string|null} label
+	 * @property {boolean} [sortable]
+	 * @property {boolean} [hidden]
+	 * @property {string} [order]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		name,
+		label,
+		sortable = false,
+		hidden = false,
+		order = $bindable('none')
+	} = $props();
 
 	const handleSort = (event) => {
 		if (!sortable) return
@@ -22,15 +35,15 @@
 		dispatch('sort', { name, extend, order })
 	}
 
-	$: title = label ?? name
-	$: description = sortable ? `sort by ${title}` : title
-	$: icon = `sort-${order}`
+	let title = $derived(label ?? name)
+	let description = $derived(sortable ? `sort by ${title}` : title)
+	let icon = $derived(`sort-${order}`)
 </script>
 
 {#if !hidden}
 	<th
 		scope="col"
-		on:click={handleSort}
+		onclick={handleSort}
 		data-sortable={sortable}
 		aria-label={description}
 		class={className}

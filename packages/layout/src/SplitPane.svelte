@@ -4,12 +4,27 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let vertical = false
-	export let limits = [50, 30]
-	export let pos = 70
-	export let styles = ['', '']
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [vertical]
+	 * @property {any} [limits]
+	 * @property {number} [pos]
+	 * @property {any} [styles]
+	 * @property {import('svelte').Snippet} [a]
+	 * @property {import('svelte').Snippet} [b]
+	 */
 
-	let refs = {}
+	/** @type {Props} */
+	let {
+		vertical = false,
+		limits = [50, 30],
+		pos = $bindable(70),
+		styles = ['', ''],
+		a,
+		b
+	} = $props();
+
+	let refs = $state({})
 
 	function clamp(min, max, value) {
 		return min > value ? min : max < value ? max : value
@@ -23,20 +38,20 @@
 		dispatch('change', { pos })
 	}
 
-	$: horizontal = !vertical
-	$: side = horizontal ? 'left' : 'top'
-	$: dimension = horizontal ? 'width' : 'height'
-	$: direction = vertical ? 'vertical' : 'horizontal'
+	let horizontal = $derived(!vertical)
+	let side = $derived(horizontal ? 'left' : 'top')
+	let dimension = $derived(horizontal ? 'width' : 'height')
+	let direction = $derived(vertical ? 'vertical' : 'horizontal')
 </script>
 
 <div class="wrapper {direction}" bind:this={refs.wrapper}>
 	<div class={styles[0]} style="{dimension}: {pos}%;">
-		<slot name="a" />
+		{@render a?.()}
 	</div>
 	<div class={styles[1]} style="{dimension}: {100 - pos}%;">
-		<slot name="b" />
+		{@render b?.()}
 	</div>
-	<span class="wall" use:pannable on:panmove={handlePanMove} style="{side}: calc({pos}% - 8px)" />
+	<span class="wall" use:pannable onpanmove={handlePanMove} style="{side}: calc({pos}% - 8px)"></span>
 </div>
 
 <style>

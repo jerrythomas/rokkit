@@ -1,7 +1,7 @@
 <script>
 	import { Switch } from '@rokkit/ui'
 
-	export let properties
+	let { properties } = $props();
 </script>
 
 <aside class="mb-6 flex justify-center gap-4 bg-neutral-subtle py-2">

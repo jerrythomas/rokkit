@@ -1,6 +1,6 @@
 <script>
 	import { List } from '@rokkit/ui'
-	let value
+	let value = $state()
 	let items = [
 		{
 			text: 'Fruits',

@@ -1,7 +1,5 @@
 <script>
-	export let label
-	export let progress
-	export let steps
+	let { label = $bindable(), progress = $bindable(), steps } = $props();
 </script>
 
 <div class="w-full flex flex-col gap-2 border">

@@ -14,12 +14,19 @@
 		key: 'key'
 	}
 
-	// const icons = { opened: 'accordion-opened', closed: 'accordion-closed' }
+	
 
-	export let data
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} data - const icons = { opened: 'accordion-opened', closed: 'accordion-closed' }
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { data, children } = $props();
 	/** @type {any} */
-	let value
-	let items = data.menu
+	let value = $state()
+	let items = $state(data.menu)
 
 	function handleSelect(event) {
 		if (!event.detail.children && event.detail.route) {
@@ -42,6 +49,6 @@
 		<Tree {items} {fields} bind:value on:select={handleSelect} />
 	</Sidebar>
 	<content class="w-full flex flex-col relative">
-		<slot />
+		{@render children?.()}
 	</content>
 </main>

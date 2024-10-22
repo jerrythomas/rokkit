@@ -1,6 +1,5 @@
 <script>
-	export let value
-	export let fields
+	let { value, fields } = $props();
 </script>
 
 <p>{value[fields.text]}</p>

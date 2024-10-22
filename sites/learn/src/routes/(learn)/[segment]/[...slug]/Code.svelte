@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { Tree } from '@rokkit/ui'
 	import CodeSnippet from '$lib/CodeSnippet.svelte'
 	import { getContext } from 'svelte'
@@ -6,12 +8,12 @@
 	const story = getContext('tutorial')
 	const media = getContext('media')
 
-	let currentFile
-	let code
-	let language
+	let currentFile = $state()
+	let code = $state()
+	let language = $state()
 	let fields = { text: 'name', icon: 'type' }
 
-	let active = 'code'
+	let active = $state('code')
 
 	function handleSelect({ detail }) {
 		currentFile = detail
@@ -19,22 +21,26 @@
 	}
 
 	// $: filesVisible = $media.large || active !== 'code'
-	$: filesVisible = active !== 'code'
-	$: hasFiles = $story.files && $story.files.length > 0
-	$: if (hasFiles) currentFile = $story.files[0].children[0]
-	$: if (currentFile && currentFile.content) {
-		code = currentFile.content
-		language = currentFile.type
-	}
+	let filesVisible = $derived(active !== 'code')
+	let hasFiles = $derived($story.files && $story.files.length > 0)
+	run(() => {
+		if (hasFiles) currentFile = $story.files[0].children[0]
+	});
+	run(() => {
+		if (currentFile && currentFile.content) {
+			code = currentFile.content
+			language = currentFile.type
+		}
+	});
 </script>
 
 {#if hasFiles}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<source-files class="h-full flex flex-col border-t border-t-neutral-inset">
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<nav
 			class="h-8 w-full flex cursor-pointer items-center bg-neutral-subtle px-4 text-sm"
-			on:click={() => (active = active == 'code' ? 'files' : 'code')}
+			onclick={() => (active = active == 'code' ? 'files' : 'code')}
 		>
 			{[currentFile.path, currentFile.name].join('/')}
 		</nav>

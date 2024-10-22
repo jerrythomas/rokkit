@@ -1,14 +1,27 @@
 <script>
-	let className = ''
-	export { className as class }
-	export let title = 'Section'
-	export let open = true
-	export let type = 'vertical'
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {string} [title]
+	 * @property {boolean} [open]
+	 * @property {string} [type]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		title = 'Section',
+		open = $bindable(true),
+		type = 'vertical',
+		children
+	} = $props();
 </script>
 
 <details bind:open class={className}>
 	<summary>{title}</summary>
 	<field-layout class={type}>
-		<slot />
+		{@render children?.()}
 	</field-layout>
 </details>

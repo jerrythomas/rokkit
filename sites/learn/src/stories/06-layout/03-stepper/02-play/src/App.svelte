@@ -1,23 +1,41 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { Stepper, Range, ProgressDots } from '@rokkit/ui'
 	import ControlPanel from './ControlPanel.svelte'
 	import { data } from './data'
 
-	export let stages = 5
-	export let steps = 4
-	export let showLabels = true
-	export let formatString = '02'
-	export let currentStage = 2
-	export let currentStep = 2
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [stages]
+	 * @property {number} [steps]
+	 * @property {boolean} [showLabels]
+	 * @property {string} [formatString]
+	 * @property {number} [currentStage]
+	 * @property {number} [currentStep]
+	 */
 
-	let clickData
+	/** @type {Props} */
+	let {
+		stages = $bindable(5),
+		steps = $bindable(4),
+		showLabels = $bindable(true),
+		formatString = $bindable('02'),
+		currentStage = 2,
+		currentStep = 2
+	} = $props();
+
+	let clickData = $state()
 	function handleClick(e) {
 		clickData = e.detail
 	}
 
-	$: filtered = showLabels
-		? data.slice(0, stages)
-		: data.slice(0, stages).map((d) => ({ progress: d.progress }))
+	let filtered;
+	run(() => {
+		filtered = showLabels
+			? data.slice(0, stages)
+			: data.slice(0, stages).map((d) => ({ progress: d.progress }))
+	});
 </script>
 
 <section class="flex flex-grow flex-col p-8">

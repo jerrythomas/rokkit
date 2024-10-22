@@ -1,10 +1,23 @@
 <script>
-	let className = ''
-	export { className as class }
-	export let vertical = false
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {boolean} [vertical]
+	 * @property {import('svelte').Snippet} [nav]
+	 * @property {import('svelte').Snippet} [content]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		vertical = false,
+		nav,
+		content
+	} = $props();
 </script>
 
 <nav-content class="flex w-full h-full {className}" class:flex-col={vertical}>
-	<slot name="nav" />
-	<slot name="content" />
+	{@render nav?.()}
+	{@render content?.()}
 </nav-content>

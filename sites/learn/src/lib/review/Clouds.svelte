@@ -1,8 +1,14 @@
 <script>
-	let className = 'flex flex-grow w-full mx-0 h-auto'
-	export { className as class }
-	export let layers
-	export let seconds = 10
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} layers
+	 * @property {number} [seconds]
+	 */
+
+	/** @type {Props} */
+	let { class: className = 'flex flex-grow w-full mx-0 h-auto', layers, seconds = 10 } = $props();
 </script>
 
 <svg

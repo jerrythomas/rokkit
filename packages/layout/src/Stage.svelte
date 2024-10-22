@@ -1,17 +1,18 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { Icon } from '@rokkit/atoms'
 
-	export let text
-	export let completed
-	export let active
+	let { text, completed, active } = $props();
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <div
 	class="circle stage h-16 w-16 cursor-pointer select-none"
 	class:completed
 	class:active
-	on:click
+	onclick={bubble('click')}
 	role="option"
 	aria-selected={active}
 	tabindex="0"

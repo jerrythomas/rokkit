@@ -5,7 +5,7 @@
 
 	let using = { default: Custom }
 	let fields = { text: 'name', image: 'photo', url: 'artist' }
-	let value
+	let value = $state()
 </script>
 
 <Tabs {options} {using} {fields} bind:value />

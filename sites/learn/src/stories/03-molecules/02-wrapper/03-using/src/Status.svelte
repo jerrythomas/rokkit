@@ -1,5 +1,5 @@
 <script>
-	export let value
+	let { value } = $props();
 </script>
 
 <div
@@ -7,5 +7,5 @@
 	class:bg-green={value == 'success'}
 	class:bg-red={value == 'failure'}
 	class:bg-yellow={value == 'warning'}
-/>
+></div>
 <p>{value}</p>

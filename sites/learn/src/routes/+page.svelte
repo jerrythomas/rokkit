@@ -1,13 +1,17 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { getContext } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { Button } from '@rokkit/ui'
 	import Background from './Background.svelte'
 	const site = getContext('site')
 
-	export let data
+	let { data } = $props();
 
-	$: site.update((current) => ({ ...current, title: data.app.name, description: data.app.about }))
+	run(() => {
+		site.update((current) => ({ ...current, title: data.app.name, description: data.app.about }))
+	});
 </script>
 
 <main class="relative flex flex-col h-full w-full max-w-full bg-neutral-inset overflow-auto">

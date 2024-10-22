@@ -9,7 +9,7 @@
 	import { media } from '$lib'
 	import Header from './Header.svelte'
 
-	export let data
+	let { data, children } = $props();
 
 	let site = writable({
 		sidebar: $media.large,
@@ -21,7 +21,7 @@
 	setContext('site', site)
 	setContext('media', media)
 
-	$: headerStyle = $page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10'
+	let headerStyle = $derived($page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10')
 </script>
 
 <svelte:body use:themable />
@@ -30,4 +30,4 @@
 	<meta name="description" content={$site.description} />
 </svelte:head>
 <Header menu={data.sections} version={data.version} class={headerStyle} />
-<slot />
+{@render children?.()}

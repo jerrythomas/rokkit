@@ -2,7 +2,7 @@
 	import { DropDown } from '@rokkit/ui'
 
 	let options = ['Alpha ', 'Beta', 'Gamma']
-	let value
+	let value = $state()
 </script>
 
 <DropDown {options} bind:value title="Select a value" />

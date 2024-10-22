@@ -40,8 +40,9 @@
 			/>
 		</nav>
 
+		{@const SvelteComponent = $story.readme}
 		<notes class="markdown-body h-full w-full overflow-auto p-8 font-thin">
-			<svelte:component this={$story.readme} />
+			<SvelteComponent />
 		</notes>
 	{/if}
 </aside>

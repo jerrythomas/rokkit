@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { setContext, getContext } from 'svelte'
 	import { writable } from 'svelte/store'
 	import { ResponsiveGrid, Switch } from '@rokkit/ui'
@@ -26,7 +28,7 @@
 			name: 'Code'
 		}
 	]
-	let page = items[0]
+	let page = $state(items[0])
 
 	async function loadComponent(tutorial) {
 		story.set({
@@ -38,12 +40,16 @@
 			next: tutorial.next
 		})
 	}
-	let size = 'md'
-	export let data
+	let size = $state('md')
+	let { data } = $props();
 	// $: console.log($site)
-	$: loadComponent(data.tutorial)
-	$: size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
-	$: layout = $site.code === 'hidden' ? 'two-col' : 'three-col'
+	run(() => {
+		loadComponent(data.tutorial)
+	});
+	run(() => {
+		size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
+	});
+	let layout = $derived($site.code === 'hidden' ? 'two-col' : 'three-col')
 </script>
 
 <ResponsiveGrid {items} small={size == 'sm'} class="{layout} {size}" bind:value={page} />

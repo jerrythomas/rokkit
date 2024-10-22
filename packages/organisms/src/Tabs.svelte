@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
@@ -7,19 +9,35 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let options = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using
-	export let value = null
-	export let below = false
-	export let align = 'left'
-	export let editable = false
-	export let icons = defaultStateIcons.action
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [options]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} using
+	 * @property {any} [value]
+	 * @property {boolean} [below]
+	 * @property {string} [align]
+	 * @property {boolean} [editable]
+	 * @property {any} [icons]
+	 */
 
-	let cursor = []
+	/** @type {Props} */
+	let {
+		class: className = '',
+		options = $bindable([]),
+		fields = $bindable({}),
+		using = $bindable(),
+		value = $bindable(null),
+		below = false,
+		align = 'left',
+		editable = false,
+		icons = $bindable(defaultStateIcons.action)
+	} = $props();
+
+	let cursor = $state([])
 
 	function handleRemove(event) {
 		if (typeof event.detail === Object) {
@@ -40,10 +58,16 @@
 
 		dispatch('select', { item: value, indices: cursor })
 	}
-	$: using = { default: Item, ...using }
-	$: icons = { ...defaultStateIcons.action, ...icons }
-	$: filtered = options.filter((item) => !item[fields.isDeleted])
-	$: fields = { ...defaultFields, ...fields }
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	run(() => {
+		icons = { ...defaultStateIcons.action, ...icons }
+	});
+	let filtered = $derived(options.filter((item) => !item[fields.isDeleted]))
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
 </script>
 
 <tabs
@@ -59,8 +83,8 @@
 		vertical: false,
 		indices: cursor
 	}}
-	on:move={handleNav}
-	on:select={handleNav}
+	onmove={handleNav}
+	onselect={handleNav}
 >
 	{#each filtered as item, index}
 		<ItemWrapper

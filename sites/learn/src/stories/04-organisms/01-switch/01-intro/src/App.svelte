@@ -1,7 +1,7 @@
 <script>
 	import { Switch } from '@rokkit/ui'
 
-	let value = false
+	let value = $state(false)
 </script>
 
 <Switch bind:value />

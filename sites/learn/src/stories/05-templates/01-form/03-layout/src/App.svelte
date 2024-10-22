@@ -3,7 +3,7 @@
 	import { schema } from './schema.js'
 	import { layout } from './layout.js'
 
-	let value = { first_name: null, last_name: null, gender: null, age: null }
+	let value = $state({ first_name: null, last_name: null, gender: null, age: null })
 </script>
 
 <Form bind:value {schema} {layout} />

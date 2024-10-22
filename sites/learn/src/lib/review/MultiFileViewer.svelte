@@ -5,18 +5,31 @@
 
 	const media = getContext('media')
 
-	let className = ''
-	export { className as class }
-	export let items
-	export let fields
-	export let value = null
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} items
+	 * @property {any} fields
+	 * @property {any} [value]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		items,
+		fields,
+		value = $bindable(null)
+	} = $props();
 
 	let navigator = media && $media.small ? Select : Tabs
+
+	const SvelteComponent = $derived(navigator);
 </script>
 
 <multi-file class="flex flex-col {className}">
 	<nav class="w-full items-center">
-		<svelte:component this={navigator} {items} {fields} bind:value />
+		<SvelteComponent {items} {fields} bind:value />
 	</nav>
 	{#if value}
 		{@const language = value.file.split('.')[1]}

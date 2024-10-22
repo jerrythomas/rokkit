@@ -7,24 +7,30 @@
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	const site = getContext('site')
-	let className = ''
-	export { className as class }
+	
 
-	export let version
-	export let menu = []
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} version
+	 * @property {any} [menu]
+	 */
+
+	/** @type {Props} */
+	let { class: className = '', version, menu = [] } = $props();
 	const codeOptions = [
 		{ icon: 'i-app:code-visible', value: 'hidden', label: 'Hide Code' },
 		{ icon: 'i-app:code-hidden', value: 'visible', label: 'Show Code' }
 	]
 
-	let loading = false
+	let loading = $state(false)
 	const handleCodeVisibility = ({ detail }) => {
 		site.update((current) => ({ ...current, code: detail.value }))
 	}
 	beforeNavigate(() => (loading = true))
 	afterNavigate(() => (loading = false))
 
-	$: showCodeToggle = !media.small && $page.url.pathname !== '/'
+	let showCodeToggle = $derived(!media.small && $page.url.pathname !== '/')
 </script>
 
 <header

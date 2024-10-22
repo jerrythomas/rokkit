@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
@@ -7,17 +9,34 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = 'list'
-	export { className as class }
-	export let name = 'list'
-	export let items = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using = {}
-	export let value = null
-	export let tabindex = 0
-	export let hierarchy = []
-	let cursor = []
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {string} [name]
+	 * @property {any} [items]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {any} [value]
+	 * @property {number} [tabindex]
+	 * @property {any} [hierarchy]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = 'list',
+		name = 'list',
+		items = [],
+		fields = $bindable({}),
+		using = $bindable({}),
+		value = $bindable(null),
+		tabindex = 0,
+		hierarchy = [],
+		children
+	} = $props();
+	let cursor = $state([])
 
 	function handleNav(event) {
 		value = event.detail.node
@@ -26,9 +45,13 @@
 		dispatch('select', { item: value, indices: cursor })
 	}
 
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
-	$: filtered = items.filter((item) => !item[fields.isDeleted])
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	let filtered = $derived(items.filter((item) => !item[fields.isDeleted]))
 </script>
 
 <list
@@ -41,10 +64,10 @@
 		enabled: hierarchy.length === 0,
 		indices: cursor
 	}}
-	on:move={handleNav}
-	on:select={handleNav}
+	onmove={handleNav}
+	onselect={handleNav}
 	{tabindex}
 >
-	<slot />
+	{@render children?.()}
 	<ListItems items={filtered} {fields} {using} {value} {hierarchy} on:change />
 </list>

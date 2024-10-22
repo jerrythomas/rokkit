@@ -2,7 +2,7 @@
 	import { List } from '@rokkit/ui'
 
 	let items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
-	let value
+	let value = $state()
 </script>
 
 <List {items} bind:value />

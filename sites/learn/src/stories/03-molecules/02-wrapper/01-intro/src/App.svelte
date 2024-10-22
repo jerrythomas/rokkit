@@ -1,7 +1,7 @@
 <script>
 	import { ItemWrapper } from '@rokkit/ui'
 
-	let message
+	let message = $state()
 	function handleRemove(event) {
 		message = JSON.stringify(event.detail, null, 2)
 	}

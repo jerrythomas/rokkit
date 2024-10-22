@@ -2,10 +2,9 @@
 	import { defaultFields } from '@rokkit/core'
 	import { Item } from '@rokkit/ui'
 
-	export let value
-	export let fields = defaultFields
+	let { value, fields = defaultFields } = $props();
 
-	$: target = fields.target ? value[fields.target] : ''
+	let target = $derived(fields.target ? value[fields.target] : '')
 </script>
 
 <a class="flex flex-grow flex-row items-center" href={value[fields.url]} {target} tabindex="-1">

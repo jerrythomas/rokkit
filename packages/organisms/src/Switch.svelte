@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, getComponent } from '@rokkit/core'
 	import { Item } from '@rokkit/molecules'
@@ -6,18 +8,32 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let value
-	/** @type {Array<any>} */
-	export let options = [false, true]
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = defaultFields
-	export let using = {}
-	export let compact = false
-	export let disabled = false
+	
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} value
+	 * @property {Array<any>} [options]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {boolean} [compact]
+	 * @property {boolean} [disabled]
+	 */
 
-	let cursor = []
+	/** @type {Props} */
+	let {
+		class: className = '',
+		value = $bindable(),
+		options = [false, true],
+		fields = $bindable(defaultFields),
+		using = $bindable({}),
+		compact = false,
+		disabled = false
+	} = $props();
+
+	let cursor = $state([])
 
 	function handleNav(event) {
 		if (disabled) return
@@ -27,9 +43,13 @@
 		dispatch('change', { item: value, indices: cursor })
 	}
 
-	$: useComponent = !options.every((item) => [false, true].includes(item))
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
+	let useComponent = $derived(!options.every((item) => [false, true].includes(item)))
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		using = { default: Item, ...using }
+	});
 </script>
 
 {#if !Array.isArray(options) || options.length < 2}
@@ -51,17 +71,18 @@
 			vertical: false,
 			indices: cursor
 		}}
-		on:move={handleNav}
-		on:select={handleNav}
+		onmove={handleNav}
+		onselect={handleNav}
 	>
 		{#each options as item, index (item)}
 			{@const component = useComponent ? getComponent(item, fields, using) : null}
 			<item class="relative" role="option" aria-selected={item === value} data-path={index}>
 				{#if item === value}
-					<indicator class="absolute bottom-0 left-0 right-0 top-0" />
+					<indicator class="absolute bottom-0 left-0 right-0 top-0"></indicator>
 				{/if}
 				{#if component}
-					<svelte:component this={component} value={item} {fields} />
+					{@const SvelteComponent = component}
+					<SvelteComponent value={item} {fields} />
 				{/if}
 			</item>
 		{/each}

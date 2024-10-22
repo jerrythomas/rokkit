@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import List from './List.svelte'
 	import FieldLayout from './FieldLayout.svelte'
 	import { defaultFields } from '@rokkit/core'
@@ -7,16 +9,31 @@
 	const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
-	let className = ''
-	export { className as class }
-	export let value = []
-	export let fields = defaultFields
-	export let schema
-	export let path = []
-	export let below = false
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [value]
+	 * @property {any} [fields]
+	 * @property {any} schema
+	 * @property {any} [path]
+	 * @property {boolean} [below]
+	 * @property {import('svelte').Snippet} [children]
+	 */
 
-	let index = 0
-	let item = value[index]
+	/** @type {Props} */
+	let {
+		class: className = '',
+		value = $bindable([]),
+		fields = defaultFields,
+		schema,
+		path = [],
+		below = false,
+		children
+	} = $props();
+
+	let index = $state(0)
+	let item = $state(value[index])
 
 	function handleSelect(event) {
 		index = event.detail.indices[0]
@@ -25,7 +42,10 @@
 		dispatch('select', { item: value, indices: path })
 	}
 
-	$: location = [...path, index]
+	let location;
+	run(() => {
+		location = [...path, index]
+	});
 </script>
 
 <list-editor class="flex {className}">
@@ -37,7 +57,7 @@
 		on:select={handleSelect}
 	/>
 	<item-editor class="flex" class:below>
-		<slot />
+		{@render children?.()}
 		<FieldLayout bind:value={item} {schema} path={location} />
 	</item-editor>
 </list-editor>

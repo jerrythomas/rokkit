@@ -2,11 +2,11 @@
 	import { Form } from '@rokkit/ui'
 	import { schema } from './schema'
 
-	let value = {
+	let value = $state({
 		name: 'John Doe',
 		email: 'john.doe@example.com',
 		age: 30
-	}
+	})
 </script>
 
 <Form bind:value {schema} />

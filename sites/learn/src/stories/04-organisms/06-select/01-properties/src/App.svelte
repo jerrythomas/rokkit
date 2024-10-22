@@ -2,7 +2,7 @@
 	import { Select } from '@rokkit/ui'
 
 	let options = ['Alpha ', 'Beta', 'Gamma']
-	let value
+	let value = $state()
 </script>
 
 <Select {options} bind:value placeholder="Select a value" />

@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { isEqual } from 'date-fns'
 	import { timeFormat } from 'd3-time-format'
 
@@ -14,12 +16,14 @@
 		// ViolinPlot,
 		ScatterPlot
 	} from '@rokkit/chart'
-	export let data = []
+	let { data = $bindable([]) } = $props();
 
 	let width = 400
 	let height = 400
-	$: data = data.map((d) => ({ ...d, year: new Date(d.year) }))
-	$: bars = data.filter((d) => isEqual(d.year, new Date('2015-01-01')))
+	run(() => {
+		data = data.map((d) => ({ ...d, year: new Date(d.year) }))
+	});
+	let bars = $derived(data.filter((d) => isEqual(d.year, new Date('2015-01-01'))))
 </script>
 
 <main class="flex flex-col flex-wrap gap-8">

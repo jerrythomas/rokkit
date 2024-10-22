@@ -2,7 +2,7 @@
 	import { MultiSelect } from '@rokkit/ui'
 
 	let options = ['Alpha ', 'Beta', 'Gamma']
-	let value
+	let value = $state()
 </script>
 
 <MultiSelect {options} bind:value placeholder="Select multiple values" />

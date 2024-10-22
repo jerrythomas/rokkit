@@ -2,14 +2,14 @@
 	import { theme } from '@rokkit/stores'
 	import { Select, ToggleThemeMode } from '@rokkit/ui'
 
-	export let themes = [
+	let { themes = [
 		{ title: 'Rokkit', name: 'rokkit' },
 		{ title: 'Minimal', name: 'minimal' },
 		{ title: 'Material', name: 'material' }
-	]
+	] } = $props();
 
-	let currentTheme
-	$: currentTheme = themes.find(({ name }) => name === $theme.name)
+	let currentTheme = $derived(themes.find(({ name }) => name === $theme.name))
+	
 
 	function handleThemeChange(event) {
 		theme.update((current) => ({ ...current, name: event.detail.name }))

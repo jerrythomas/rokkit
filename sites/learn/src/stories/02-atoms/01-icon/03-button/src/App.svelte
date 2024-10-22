@@ -1,7 +1,7 @@
 <script>
 	import { Icon } from '@rokkit/ui'
 
-	let count = 0
+	let count = $state(0)
 	function handleClick() {
 		count += 1
 	}

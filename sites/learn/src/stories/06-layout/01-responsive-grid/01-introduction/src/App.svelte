@@ -26,8 +26,8 @@
 			}
 		}
 	]
-	let size = 'sm'
-	let page = items[0]
+	let size = $state('sm')
+	let page = $state(items[0])
 </script>
 
 <Switch options={['sm', 'md', 'lg']} bind:value={size} class="text-xs" />

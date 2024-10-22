@@ -1,7 +1,14 @@
 <script>
 	import Scrollable from './Scrollable.svelte'
 
-	export let search = ''
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [search]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { search = $bindable(''), children } = $props();
 </script>
 
 <div class="searchable h-full w-full flex flex-col overflow-hidden">
@@ -14,6 +21,6 @@
 		/>
 	</div>
 	<Scrollable>
-		<slot />
+		{@render children?.()}
 	</Scrollable>
 </div>

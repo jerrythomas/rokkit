@@ -7,9 +7,15 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let data
-	// export let currentStep
-	export let currentStage
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} data
+	 * @property {any} currentStage - export let currentStep
+	 */
+
+	/** @type {Props} */
+	let { data, currentStage } = $props();
 
 	// $: data = data.map((d) => ({
 	// 	completed: d.steps?.value === d.steps?.count,

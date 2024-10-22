@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
 	import Wrapper from '../../src/wrappers/Wrapper.svelte'
@@ -7,23 +9,27 @@
 	const registry = writable({})
 	setContext('registry', registry)
 
-	export let render
-	export let using
-	export let properties = {}
+	let { render, using = $bindable(), properties = {} } = $props();
 
-	$: using = {
-		editors: {},
-		components: {},
-		wrappers: {},
-		navigators: {},
-		...using
-	}
-	$: registry.set({
-		editors: { ...using.editors },
-		components: { default: Item, ...using.components },
-		wrappers: { default: Wrapper, ...using.wrappers },
-		navigators: { default: Tabs, ...using.navigators }
-	})
+	run(() => {
+		using = {
+			editors: {},
+			components: {},
+			wrappers: {},
+			navigators: {},
+			...using
+		}
+	});
+	run(() => {
+		registry.set({
+			editors: { ...using.editors },
+			components: { default: Item, ...using.components },
+			wrappers: { default: Wrapper, ...using.wrappers },
+			navigators: { default: Tabs, ...using.navigators }
+		})
+	});
+
+	const SvelteComponent = $derived(render);
 </script>
 
-<svelte:component this={render} {...properties} />
+<SvelteComponent {...properties} />

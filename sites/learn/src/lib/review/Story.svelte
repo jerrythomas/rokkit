@@ -2,11 +2,13 @@
 	import Variant from './review/Variant.svelte'
 	import { FieldLayout } from '@rokkit/form'
 
-	export let title
-	export let props
-	export let fields
-	export let component
-	export let variants = [{}]
+	let {
+		title,
+		props = $bindable(),
+		fields,
+		component,
+		variants = [{}]
+	} = $props();
 </script>
 
 <story class="grid h-full">

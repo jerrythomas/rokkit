@@ -10,7 +10,7 @@
 			image: 'photo'
 		}
 	}
-	let value
+	let value = $state()
 </script>
 
 <Accordion {items} {fields} autoClose bind:value />

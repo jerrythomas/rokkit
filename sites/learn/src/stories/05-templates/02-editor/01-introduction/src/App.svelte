@@ -3,7 +3,7 @@
 	import { schema } from './schema.js'
 	import { data } from './data.js'
 
-	let value = data
+	let value = $state(data)
 	// let stringValue = JSON.stringify(data, null, 2)
 
 	// function handle(event) {

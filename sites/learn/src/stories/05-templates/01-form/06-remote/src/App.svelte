@@ -17,7 +17,7 @@
 		]
 	}
 
-	let value = {}
+	let value = $state({})
 </script>
 
 <Form {schema} {layout} bind:value />

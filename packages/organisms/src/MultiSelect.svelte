@@ -1,19 +1,35 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import Select from './Select.svelte'
 	import { ItemWrapper, Item } from '@rokkit/molecules'
 	import { defaultFields } from '@rokkit/core'
 
-	let className = ''
-	export { className as class }
-	export let name
-	export let value = []
-	export let options = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using = {}
-	export let placeholder = ''
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} name
+	 * @property {any} [value]
+	 * @property {any} [options]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {string} [placeholder]
+	 */
 
-	$: available = options.filter((item) => !value.includes(item))
+	/** @type {Props} */
+	let {
+		class: className = '',
+		name,
+		value = $bindable([]),
+		options = [],
+		fields = $bindable({}),
+		using = $bindable({}),
+		placeholder = ''
+	} = $props();
+
+	let available = $derived(options.filter((item) => !value.includes(item)))
 
 	function handleRemove(event) {
 		value = [...value.filter((item) => item !== event.detail)]
@@ -21,8 +37,12 @@
 	function handleSelect(event) {
 		if (!value.includes(event.detail)) value = [...value, event.detail]
 	}
-	$: using = { default: Item, ...using }
-	$: fields = { ...defaultFields, ...fields }
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
 </script>
 
 <Select
@@ -49,7 +69,7 @@
 		</items>
 	{:else}
 		<item class="w-full flex">
-			<svelte:component this={using.default} value={placeholder} />
+			<using.default value={placeholder} />
 		</item>
 	{/if}
 </Select>

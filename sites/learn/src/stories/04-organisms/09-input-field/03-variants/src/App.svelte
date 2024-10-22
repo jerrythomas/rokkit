@@ -1,6 +1,8 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { InputField } from '@rokkit/ui'
-	let value = {
+	let value = $state({
 		range: 10,
 		color: '#00f0f0',
 		date: new Date().toISOString().split('T')[0],
@@ -12,10 +14,12 @@
 		switch: 'a',
 		radio: false,
 		rating: 3
-	}
-	let display = ''
+	})
+	let display = $state('')
 
-	$: display = JSON.stringify(value, null, 2)
+	run(() => {
+		display = JSON.stringify(value, null, 2)
+	});
 </script>
 
 <section class="grid grid-cols-5 overflow-hidden gap-4">

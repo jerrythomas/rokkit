@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
@@ -7,17 +9,34 @@
 	import ListItems from './ListItems.svelte'
 
 	const dispatch = createEventDispatcher()
-	let className = ''
-	export { className as class }
-	export let items = []
-	export let fields = {}
-	export let using = {}
-	export let autoClose = false
-	export let value = null
-	let cursor = []
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [items]
+	 * @property {any} [fields]
+	 * @property {any} [using]
+	 * @property {boolean} [autoClose]
+	 * @property {any} [value]
+	 */
 
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
+	/** @type {Props} */
+	let {
+		class: className = '',
+		items = $bindable([]),
+		fields = $bindable({}),
+		using = $bindable({}),
+		autoClose = false,
+		value = $bindable(null)
+	} = $props();
+	let cursor = $state([])
+
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		using = { default: Item, ...using }
+	});
 
 	function handle(event) {
 		value = event.detail.node
@@ -36,7 +55,7 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <accordion
 	class="flex flex-col w-full select-none {className}"
 	tabindex="0"
@@ -46,10 +65,10 @@
 		enabled: true,
 		indices: cursor
 	}}
-	on:select={handle}
-	on:move={handle}
-	on:expand={handle}
-	on:collapse={handle}
+	onselect={handle}
+	onmove={handle}
+	onexpand={handle}
+	oncollapse={handle}
 >
 	{#each items as item, index}
 		{@const hasItems = item[fields.children] && item[fields.children].length > 0}

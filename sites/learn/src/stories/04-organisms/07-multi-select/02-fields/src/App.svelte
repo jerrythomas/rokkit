@@ -3,7 +3,7 @@
 	import { options } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }
-	let value
+	let value = $state()
 </script>
 
 <MultiSelect {options} {fields} bind:value />

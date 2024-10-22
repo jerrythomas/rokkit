@@ -1,10 +1,11 @@
 <script>
 	import VirtualList from '../../src/VirtualList.svelte'
 
-	export let items
-	export let limit
+	let { items, limit } = $props();
 </script>
 
-<VirtualList {items} {limit} let:item>
-	<div>{item}</div>
+<VirtualList {items} {limit} >
+	{#snippet children({ item })}
+		<div>{item}</div>
+	{/snippet}
 </VirtualList>

@@ -1,17 +1,21 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields, flattenNestedList } from '@rokkit/core'
 	import { Item, BreadCrumbs } from '@rokkit/molecules'
 	// import { flattenNestedList } from './lib/nested'
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
-	export let items
-	export let value
-	export let fields
-	export let using
+	let {
+		items,
+		value = $bindable(),
+		fields = $bindable(),
+		using = $bindable()
+	} = $props();
 
-	let trail
-	let flatList
+	let trail = $state()
+	let flatList = $state()
 
 	function handleNav(event) {
 		let current = flatList.findIndex((item) => item === value)
@@ -45,15 +49,21 @@
 		return trail
 	}
 
-	$: flatList = flattenNestedList(items, fields)
-	$: fields = { ...defaultFields, ...(fields ?? {}) }
-	$: using = { default: Item, ...(using ?? {}) }
+	run(() => {
+		flatList = flattenNestedList(items, fields)
+	});
+	run(() => {
+		fields = { ...defaultFields, ...(fields ?? {}) }
+	});
+	run(() => {
+		using = { default: Item, ...(using ?? {}) }
+	});
 </script>
 
 <pages>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<icon class="arrow-left cursor-pointer" on:click={() => handleNav('previous')} />
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<icon class="arrow-left cursor-pointer" onclick={() => handleNav('previous')}></icon>
 	<BreadCrumbs items={trail} {fields} {using} />
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<icon class="arrow-right cursor-pointer" on:click={() => handleNav('next')} />
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<icon class="arrow-right cursor-pointer" onclick={() => handleNav('next')}></icon>
 </pages>

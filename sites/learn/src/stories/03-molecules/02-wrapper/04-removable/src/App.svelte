@@ -1,11 +1,11 @@
 <script>
 	import { ItemWrapper } from '@rokkit/ui'
 
-	let items = [
+	let items = $state([
 		{ text: 'Sample Removable 1' },
 		{ text: 'Sample Removable 2' },
 		{ text: 'Sample Removable 3' }
-	]
+	])
 
 	function handleRemove(index) {
 		items.splice(index, 1)
