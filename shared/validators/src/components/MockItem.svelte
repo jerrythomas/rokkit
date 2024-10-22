@@ -1,5 +1,5 @@
 <script>
-	export let value
+	let { value } = $props();
 </script>
 
 {value}
