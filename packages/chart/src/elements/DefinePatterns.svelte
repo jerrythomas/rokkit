@@ -1,12 +1,18 @@
 <script>
 	import { uniq } from 'ramda'
 
-	export let size = 10
-	export let patternUnits = 'userSpaceOnUse'
-	/** @type {Array<import('./types').Pattern>} */
-	export let patterns = []
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [size]
+	 * @property {string} [patternUnits]
+	 * @property {Array<import('./types').Pattern>} [patterns]
+	 */
 
-	$: names = uniq(patterns.map(({ id }) => id))
+	/** @type {Props} */
+	let { size = 10, patternUnits = 'userSpaceOnUse', patterns = [] } = $props();
+
+	let names = $derived(uniq(patterns.map(({ id }) => id)))
 </script>
 
 {#if names.length < patterns.length}
@@ -14,8 +20,9 @@
 {:else if patterns.length > 0}
 	<defs>
 		{#each patterns as { id, component, fill, stroke }}
+			{@const SvelteComponent = component}
 			<pattern {id} {patternUnits} width={size} height={size}>
-				<svelte:component this={component} {size} {fill} {stroke} />
+				<SvelteComponent {size} {fill} {stroke} />
 			</pattern>
 		{/each}
 	</defs>

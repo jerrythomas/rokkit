@@ -1,7 +1,13 @@
 <script>
 	const thickness = 0.5
-	export let size = 10
-	export let stroke = 'currentColor'
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [size]
+	 * @property {string} [stroke]
+	 */
+
+	/** @type {Props} */
+	let { size = 10, stroke = 'currentColor' } = $props();
 
 	const lines = [
 		{ x1: 0, y1: 0.25 * size, x2: 0.5 * size, y2: 0.25 * size },

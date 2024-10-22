@@ -1,7 +1,13 @@
 <script>
-	export let size = 10
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [size]
+	 * @property {string} [fill]
+	 * @property {string} [stroke]
+	 */
+
+	/** @type {Props} */
+	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props();
 
 	const polygons = [
 		[0, 0.5 * size, 0.5 * size, size, 0, size],

@@ -1,9 +1,21 @@
 <script>
-	export let size = 10
-	export let thickness = 0.5
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
-	export let data = []
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [size]
+	 * @property {number} [thickness]
+	 * @property {string} [fill]
+	 * @property {string} [stroke]
+	 * @property {any} [data]
+	 */
+
+	/** @type {Props} */
+	let {
+		size = 10,
+		thickness = 0.5,
+		fill = 'currentColor',
+		stroke = 'currentColor',
+		data = []
+	} = $props();
 
 	const polygons = data.map((points) => points.map((point) => point * size).join(', '))
 	// [

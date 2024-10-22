@@ -1,15 +1,31 @@
 <script>
-	export let x = 0
-	export let y = 0
-	export let size = 1
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
+	import { createBubbler } from 'svelte/legacy';
 
-	$: r = size * 3.534
-	$: props = { rx: r * 0.1, ry: r * 0.1, ...$$restProps }
+	const bubble = createBubbler();
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [x]
+	 * @property {number} [y]
+	 * @property {number} [size]
+	 * @property {string} [fill]
+	 * @property {string} [stroke]
+	 */
+
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		x = 0,
+		y = 0,
+		size = 1,
+		fill = 'currentColor',
+		stroke = 'currentColor',
+		...rest
+	} = $props();
+
+	let r = $derived(size * 3.534)
+	let props = $derived({ rx: r * 0.1, ry: r * 0.1, ...rest })
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <rect
 	x={x - r}
 	y={y - r}
@@ -19,9 +35,9 @@
 	{stroke}
 	{...props}
 	role="button"
-	on:click
-	on:mouseover
-	on:mouseleave
-	on:focus
+	onclick={bubble('click')}
+	onmouseover={bubble('mouseover')}
+	onmouseleave={bubble('mouseleave')}
+	onfocus={bubble('focus')}
 	tabindex="0"
 />

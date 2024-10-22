@@ -1,28 +1,49 @@
 <script>
 	import { plotter } from '../lib/plots'
 	import { compact } from '@rokkit/core'
-	export let data = []
-	/** @type {'lineY'|'lineX'|'dot'|'plot'|'bar'} */
-	export let type = 'dot'
-	export let width = null
-	export let height = null
-	export let x = 'x'
-	export let y = 'y'
-	export let fill = null
-	export let stroke = null
-	export let symbol = null
-	export let grid = true
-	export let legend = false
-	export let labels = {}
-	export let tip = true
-	export let channels = null
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [data]
+	 * @property {'lineY'|'lineX'|'dot'|'plot'|'bar'} [type]
+	 * @property {any} [width]
+	 * @property {any} [height]
+	 * @property {string} [x]
+	 * @property {string} [y]
+	 * @property {any} [fill]
+	 * @property {any} [stroke]
+	 * @property {any} [symbol]
+	 * @property {boolean} [grid]
+	 * @property {boolean} [legend]
+	 * @property {any} [labels]
+	 * @property {boolean} [tip]
+	 * @property {any} [channels]
+	 */
 
-	$: showLegend = compact({
+	/** @type {Props} */
+	let {
+		data = [],
+		type = 'dot',
+		width = null,
+		height = null,
+		x = 'x',
+		y = 'y',
+		fill = null,
+		stroke = null,
+		symbol = null,
+		grid = true,
+		legend = false,
+		labels = {},
+		tip = true,
+		channels = null
+	} = $props();
+
+	let showLegend = $derived(compact({
 		stroke: stroke ? { legend } : null,
 		color: fill && !symbol ? { legend } : null,
 		symbol: symbol ? { legend } : null
-	})
-	$: config = {
+	}))
+	let config = $derived({
 		data,
 		type,
 		aes: compact({ x, y, fill, stroke, symbol, tip, channels }),
@@ -34,7 +55,7 @@
 			x: { label: labels?.x ?? x },
 			y: { label: labels?.y ?? y }
 		})
-	}
+	})
 </script>
 
-<plot use:plotter={config} />
+<plot use:plotter={config}></plot>

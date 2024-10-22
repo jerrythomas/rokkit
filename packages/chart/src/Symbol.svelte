@@ -1,17 +1,34 @@
 <script>
 	import { components } from './symbols'
 
-	export let x = 0
-	export let y = 0
-	export let size = 10
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
-	export let name = 'circle'
-	/** @type Object<string, any> */
-	export let using = components
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [x]
+	 * @property {number} [y]
+	 * @property {number} [size]
+	 * @property {string} [fill]
+	 * @property {string} [stroke]
+	 * @property {string} [name]
+	 * @property {any} [using]
+	 */
 
-	$: component = using[name] || using.default
-	$: props = using[name] ? $$restProps : { name, ...$$restProps }
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		x = 0,
+		y = 0,
+		size = 10,
+		fill = 'currentColor',
+		stroke = 'currentColor',
+		name = 'circle',
+		using = components,
+		...rest
+	} = $props();
+
+	let component = $derived(using[name] || using.default)
+	let props = $derived(using[name] ? rest : { name, ...rest })
+
+	const SvelteComponent = $derived(component);
 </script>
 
-<svelte:component this={component} {x} {y} {size} {fill} {stroke} {...props} />
+<SvelteComponent {x} {y} {size} {fill} {stroke} {...props} />

@@ -2,11 +2,17 @@
 	import { swatch, swatchGrid } from '../lib'
 	import Symbol from '../Symbol.svelte'
 
-	export let base = 'teal'
-	export let size = 4
-	export let shade = 600
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [base]
+	 * @property {number} [size]
+	 * @property {number} [shade]
+	 */
 
-	$: grid = swatchGrid($swatch.keys.symbol.length, size, 10)
+	/** @type {Props} */
+	let { base = 'teal', size = 4, shade = 600 } = $props();
+
+	let grid = $derived(swatchGrid($swatch.keys.symbol.length, size, 10))
 </script>
 
 <svg viewBox="0 0 {grid.width} {grid.height}">
