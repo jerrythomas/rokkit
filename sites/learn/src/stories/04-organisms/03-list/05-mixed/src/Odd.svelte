@@ -1,5 +1,5 @@
 <script>
-	export let value
+	let { value } = $props();
 </script>
 
 <div class="h-32 w-full flex gap-4 py-3 font-extralight text-sm">

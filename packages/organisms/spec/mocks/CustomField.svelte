@@ -1,9 +1,21 @@
 <script>
-	export let value
-	export let name = null
-	export let label = null
-	export let type = null
-	$: extraProps = $$restProps
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} value
+	 * @property {any} [name]
+	 * @property {any} [label]
+	 * @property {any} [type]
+	 */
+
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		value,
+		name = null,
+		label = null,
+		type = null,
+		...rest
+	} = $props();
+	let extraProps = $derived(rest)
 </script>
 
 <h1>{type}:{label}</h1>

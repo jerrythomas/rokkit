@@ -5,6 +5,7 @@
 
 <section class="h-full w-full flex flex-col gap-4 overflow-scroll p-8">
 	{#if $story}
-		<svelte:component this={$story.preview} />
+		{@const SvelteComponent = $story.preview}
+		<SvelteComponent />
 	{/if}
 </section>

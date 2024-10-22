@@ -2,11 +2,11 @@
 	import { Tabs } from '@rokkit/ui'
 	import Controls from './Controls.svelte'
 	let options = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
-	let value
-	let properties = [
+	let value = $state()
+	let properties = $state([
 		{ label: 'Below', value: false, options: [false, true] },
 		{ label: 'Align', value: 'left', options: ['left', 'center', 'right'] }
-	]
+	])
 </script>
 
 <Controls bind:properties />

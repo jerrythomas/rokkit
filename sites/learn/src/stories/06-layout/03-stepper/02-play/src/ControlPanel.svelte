@@ -1,13 +1,25 @@
 <script>
 	import EditItem from './EditItem.svelte'
 
-	export let stages = 2
-	export let steps = 0
-	export let showLabels = false
-	export let formatString = ''
-	export let data
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [stages]
+	 * @property {number} [steps]
+	 * @property {boolean} [showLabels]
+	 * @property {string} [formatString]
+	 * @property {any} data
+	 */
 
-	$: ticks = Array.from({ length: steps }, (v, i) => (i + 1) / steps)
+	/** @type {Props} */
+	let {
+		stages = $bindable(2),
+		steps = $bindable(0),
+		showLabels = $bindable(false),
+		formatString = $bindable(''),
+		data
+	} = $props();
+
+	let ticks = $derived(Array.from({ length: steps }, (v, i) => (i + 1) / steps))
 </script>
 
 <aside class="h-full w-80 flex flex-shrink-0 flex-grow-0 flex-col gap-6 bg-neutral-100 p-6">

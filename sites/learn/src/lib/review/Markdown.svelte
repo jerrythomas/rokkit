@@ -9,8 +9,14 @@
 	marked.use(mangle())
 	marked.use(gfmHeadingId())
 
-	export let content = ''
-	$: preview = marked(content || '')
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [content]
+	 */
+
+	/** @type {Props} */
+	let { content = '' } = $props();
+	let preview = $derived(marked(content || ''))
 </script>
 
 <article class="prose">

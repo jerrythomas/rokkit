@@ -4,12 +4,16 @@
 
 	let items = ['one', 'two', 'three', 'four']
 
-	let value
+	let value = $state()
 </script>
 
 <ContentNavigator vertical>
-	<Tabs {items} bind:value slot="nav" />
-	<pre slot="content" class="flex-grow">
-		{JSON.stringify(value)}
-	</pre>
+	{#snippet nav()}
+		<Tabs {items} bind:value  />
+	{/snippet}
+	{#snippet content()}
+		<pre  class="flex-grow">
+			{JSON.stringify(value)}
+		</pre>
+	{/snippet}
 </ContentNavigator>

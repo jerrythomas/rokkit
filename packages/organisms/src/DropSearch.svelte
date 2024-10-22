@@ -1,18 +1,34 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields, getText } from '@rokkit/core'
 	import Select from './Select.svelte'
 
-	export let options
-	export let name = null
-	export let value = null
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = defaultFields
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} options
+	 * @property {any} [name]
+	 * @property {any} [value]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 */
 
-	let searchText
-	let searchBox
-	let filtered = options
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		options,
+		name = null,
+		value = $bindable(null),
+		fields = $bindable(defaultFields),
+		...rest
+	} = $props();
 
-	$: fields = { ...defaultFields, ...fields }
+	let searchText = $state()
+	let searchBox = $state()
+	let filtered = $state(options)
+
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
 
 	function applySearch(event) {
 		searchText = event.target.value
@@ -28,14 +44,14 @@
 	}
 </script>
 
-<Select {name} bind:value options={filtered} {...$$restProps} {fields} on:select={handleSelect}>
+<Select {name} bind:value options={filtered} {...rest} {fields} on:select={handleSelect}>
 	<span class="flex flex-grow">
 		<input
 			type="text"
 			class="w-full border-none bg-transparent p-0"
 			bind:value={searchText}
 			bind:this={searchBox}
-			on:change={applySearch}
+			onchange={applySearch}
 		/>
 	</span>
 </Select>

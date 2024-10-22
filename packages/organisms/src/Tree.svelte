@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
@@ -7,18 +9,32 @@
 	import NestedList from './NestedList.svelte'
 
 	const dispatch = createEventDispatcher()
-	let className = ''
-	export { className as class }
-	/** @type {Array<Object>} */
-	export let items = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using = { default: Item }
-	/** @type {string} */
-	export let root = null
-	export let value = null
+	
+	
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {Array<Object>} [items]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {string} [root]
+	 * @property {any} [value]
+	 */
 
-	let indices = []
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		class: className = '',
+		items = $bindable([]),
+		fields = $bindable({}),
+		using = { default: Item },
+		root = null,
+		value = $bindable(null),
+		...rest
+	} = $props();
+
+	let indices = $state([])
 
 	function handle(event) {
 		if (['select', 'move'].includes(event.type)) {
@@ -31,19 +47,23 @@
 		dispatch(event.type, value)
 	}
 
-	$: fields = { ...defaultFields, ...fields }
-	$: items = addRootNode(items, root, fields)
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		items = addRootNode(items, root, fields)
+	});
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <tree
 	use:navigator={{ items, fields, indices }}
-	on:select={handle}
-	on:move={handle}
-	on:expand={handle}
-	on:collapse={handle}
+	onselect={handle}
+	onmove={handle}
+	onexpand={handle}
+	oncollapse={handle}
 	tabindex="0"
 	class={className}
 >
-	<NestedList {items} {fields} {using} bind:value {...$$restProps} />
+	<NestedList {items} {fields} {using} bind:value {...rest} />
 </tree>

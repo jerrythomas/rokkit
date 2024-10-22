@@ -4,27 +4,44 @@
 
 	const registry = getContext('registry')
 
-	let className = ''
-	export { className as class }
-	export let options = []
-	export let type = 'vertical'
-	export let category = null
-	export let fields = defaultFields
-	export let navigator = 'tabs'
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [options]
+	 * @property {string} [type]
+	 * @property {any} [category]
+	 * @property {any} [fields]
+	 * @property {string} [navigator]
+	 * @property {import('svelte').Snippet} [children]
+	 */
 
-	$: component = $registry.navigators[navigator] ?? $registry.navigators.default
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		class: className = '',
+		options = [],
+		type = 'vertical',
+		category = $bindable(null),
+		fields = defaultFields,
+		navigator = 'tabs',
+		children,
+		...rest
+	} = $props();
+
+	let component = $derived($registry.navigators[navigator] ?? $registry.navigators.default)
+
+	const SvelteComponent = $derived(component);
 </script>
 
 <section class={className}>
-	<svelte:component
-		this={component}
+	<SvelteComponent
 		{options}
 		{fields}
 		using={$registry.components}
 		bind:value={category}
-		{...$$restProps}
+		{...rest}
 	/>
 	<field-layout class={type}>
-		<slot />
+		{@render children?.()}
 	</field-layout>
 </section>

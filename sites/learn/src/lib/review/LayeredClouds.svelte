@@ -1,8 +1,19 @@
 <script>
-	export let width = 320
-	export let height = 72
-	export let layers = []
-	export let seconds = 10
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [width]
+	 * @property {number} [height]
+	 * @property {any} [layers]
+	 * @property {number} [seconds]
+	 */
+
+	/** @type {Props} */
+	let {
+		width = 320,
+		height = 72,
+		layers = [],
+		seconds = 10
+	} = $props();
 </script>
 
 <svg {width} {height} viewBox="0 0 {width} {height}" style:--seconds="{seconds}s">

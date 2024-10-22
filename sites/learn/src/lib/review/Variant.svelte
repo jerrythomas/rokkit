@@ -1,7 +1,7 @@
 <script>
-	export let variant
-	export let props
-	export let component
+	let { variant, props, component } = $props();
+
+	const SvelteComponent = $derived(component);
 </script>
 
 <card class="min-w-80 flex flex-col border border-neutral-300 rounded-lg shadow">
@@ -9,7 +9,7 @@
 		{variant.title}
 	</h1>
 	<preview class="p-4">
-		<svelte:component this={component} {...variant.attr} {...props} />
+		<SvelteComponent {...variant.attr} {...props} />
 	</preview>
 	<block-quote>{variant.summary}</block-quote>
 </card>

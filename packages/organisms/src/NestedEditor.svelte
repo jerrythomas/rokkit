@@ -9,21 +9,25 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let value
-	export let schema = deriveNestedSchema(value)
-	export let using = {}
-	export let fields = {
+	let {
+		value,
+		schema = deriveNestedSchema(value),
+		using = {},
+		fields = {
 		text: 'key',
 		icon: 'type',
 		iconPrefix: 'type'
-	}
-	let node = {
+	},
+		children,
+		footer
+	} = $props();
+	let node = $state({
 		schema: null,
 		layout: null
-	}
-	let nodeValue = value
-	let nodeType = null
-	let nodeItem = null
+	})
+	let nodeValue = $state(value)
+	let nodeType = $state(null)
+	let nodeItem = $state(null)
 	let columns = [
 		{ key: 'scope', path: true, label: 'path', fields: { text: 'key' } },
 		{ key: 'value', label: 'value', fields: { text: 'value', icon: 'type', iconPrefix: 'type' } }
@@ -47,7 +51,7 @@
 		}
 	}
 
-	$: tableData = node?.layout ? [] : generateTreeTable(nodeValue ?? value, 'scope', true)
+	let tableData = $derived(node?.layout ? [] : generateTreeTable(nodeValue ?? value, 'scope', true))
 </script>
 
 <container class="flex flex-row h-full w-full">
@@ -55,7 +59,7 @@
 		<Tree items={schema} {fields} class="w-full h-full" on:move={handleMove} />
 	</aside>
 	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden">
-		<slot />
+		{@render children?.()}
 		<section class="flex flex-col w-full flex-grow overflow-auto">
 			{#if !nodeValue}
 				<p>Select a node to edit</p>
@@ -83,6 +87,6 @@
 				<TreeTable data={tableData} {columns} />
 			{/if}
 		</section>
-		<slot name="footer" />
+		{@render footer?.()}
 	</content>
 </container>

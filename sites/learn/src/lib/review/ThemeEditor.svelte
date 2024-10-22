@@ -1,8 +1,7 @@
 <script>
 	import { ButtonGroup } from '@rokkit/form'
 
-	export let themes = ['minimal', 'material', 'spicy']
-	export let currentTheme = themes[2]
+	let { themes = ['minimal', 'material', 'spicy'], currentTheme = $bindable(themes[2]) } = $props();
 
 	function handleThemeChange(event) {
 		document.body.classList.remove(currentTheme)

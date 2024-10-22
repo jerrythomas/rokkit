@@ -1,4 +1,6 @@
 <script>
+	import { run, stopPropagation } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { pick } from 'ramda'
 	import { defaultFields, getComponent } from '@rokkit/core'
@@ -9,29 +11,49 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	/** @type {Array<object>} */
-	export let data = []
-	/** @type {Array<object>} */
-	export let columns = []
-	/** @type {string|null} */
-	export let caption = null
-	/** @type {object|null} */
-	export let summary = null
-	export let striped = true
-	export let value = null
-	export let multiselect = false
-	/** @type {string|null} */
-	export let hierarchyField = null
-	export let separator = '/'
-	export let using = {}
+	
+	
+	
+	
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {Array<object>} [data]
+	 * @property {Array<object>} [columns]
+	 * @property {string|null} [caption]
+	 * @property {object|null} [summary]
+	 * @property {boolean} [striped]
+	 * @property {any} [value]
+	 * @property {boolean} [multiselect]
+	 * @property {string|null} [hierarchyField]
+	 * @property {string} [separator]
+	 * @property {any} [using]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		data = [],
+		columns = [],
+		caption = null,
+		summary = null,
+		striped = true,
+		value = $bindable(null),
+		multiselect = false,
+		hierarchyField = null,
+		separator = '/',
+		using = $bindable({})
+	} = $props();
 
 	/** @type {any|null} */
-	let currentItem = null
+	let currentItem = $state(null)
 
-	$: using = { default: Item, ...using }
-	$: view = dataview(data, { columns, path: hierarchyField, separator })
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	let view = $derived(dataview(data, { columns, path: hierarchyField, separator }))
 
 	function handleItemClick(event, index) {
 		// const { hierarchy } = get(view)
@@ -70,7 +92,9 @@
 		view.sortBy(name, ascending)
 	}
 
-	$: using = { default: Item, ...using }
+	run(() => {
+		using = { default: Item, ...using }
+	});
 </script>
 
 <tree-table class={className}>
@@ -94,7 +118,7 @@
 					<tr
 						class:cursor-pointer={!item.isParent}
 						aria-current={currentItem === item}
-						on:click|stopPropagation={(e) => handleItemClick(e, index)}
+						onclick={stopPropagation((e) => handleItemClick(e, index))}
 					>
 						{#each $view.columns as col, colIndex}
 							{@const value = { ...pick(['icon'], col), ...item.row }}
@@ -124,7 +148,8 @@
 											{/if}
 										{/if}
 										<!-- <item> -->
-										<svelte:component this={component} {value} {...props} />
+										{@const SvelteComponent = component}
+										<SvelteComponent {value} {...props} />
 										<!-- </item> -->
 									{/if}
 								</cell>

@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { getContext } from 'svelte'
 	import { pick, omit } from 'ramda'
 	import { Icon } from '@rokkit/atoms'
@@ -7,37 +9,60 @@
 
 	const registry = getContext('registry')
 
-	let className = ''
-	export { className as class }
-	export let name
-	/** @type {any} */
-	export let value = null
-	/** @type {string} */
-	export let label = name
-	/** @type {string} */
-	export let description = null
-	/** @type {string} */
-	export let icon = null
-	export let type = 'text'
-	export let required = false
-	export let status = 'default'
-	export let disabled = false
-	/** @type {string} */
-	export let message = null
-	export let using = {}
-	export let nolabel = false
+	
+	
+	
+	
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} name
+	 * @property {any} [value]
+	 * @property {string} [label]
+	 * @property {string} [description]
+	 * @property {string} [icon]
+	 * @property {string} [type]
+	 * @property {boolean} [required]
+	 * @property {string} [status]
+	 * @property {boolean} [disabled]
+	 * @property {string} [message]
+	 * @property {any} [using]
+	 * @property {boolean} [nolabel]
+	 */
 
-	$: using = { ...componentTypes, ...$registry, ...using }
-	$: pass = status === 'pass'
-	$: fail = status === 'fail'
-	$: warn = status === 'warn'
-	$: rootProps = pick(['id'], $$restProps)
-	$: props = {
+	/** @type {Props & { [key: string]: any }} */
+	let {
+		class: className = '',
+		name,
+		value = $bindable(null),
+		label = name,
+		description = null,
+		icon = null,
+		type = 'text',
+		required = false,
+		status = 'default',
+		disabled = false,
+		message = null,
+		using = $bindable({}),
+		nolabel = false,
+		...rest
+	} = $props();
+
+	run(() => {
+		using = { ...componentTypes, ...$registry, ...using }
+	});
+	let pass = $derived(status === 'pass')
+	let fail = $derived(status === 'fail')
+	let warn = $derived(status === 'warn')
+	let rootProps = $derived(pick(['id'], rest))
+	let props = $derived({
 		required,
 		readOnly: disabled,
-		...omit(['id'], $$restProps),
+		...omit(['id'], rest),
 		name
-	}
+	})
 </script>
 
 <input-field

@@ -5,7 +5,7 @@
 		{ icon: 'i-rokkit:mode-dark', mode: 'dark' },
 		{ icon: 'i-rokkit:mode-light', mode: 'light' }
 	]
-	let value
+	let value = $state()
 </script>
 
 <Switch {options} bind:value compact />

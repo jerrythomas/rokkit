@@ -2,7 +2,7 @@
 	import { brewer, Swatch } from '@rokkit/charts'
 	import ControlPanel from './ControlPanel.svelte'
 
-	let variations = brewer().pattern().brew()
+	let variations = $state(brewer().pattern().brew())
 
 	function changeHandler(event) {
 		if (event.detail.mode === 'patterns') {

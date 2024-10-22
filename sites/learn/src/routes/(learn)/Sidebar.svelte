@@ -1,12 +1,21 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { getContext } from 'svelte'
 	import { Icon } from '@rokkit/ui'
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
 	let site = getContext('site')
 	/**
 	 * @type {HTMLElement}
 	 */
-	let sidebar
-	let search = ''
+	let sidebar = $state()
+	let search = $state('')
 
 	function toggle(site) {
 		sidebar.classList.add('duration-200')
@@ -17,7 +26,9 @@
 		}
 		sidebar.classList.remove('duration-200')
 	}
-	$: if (sidebar) toggle($site)
+	run(() => {
+		if (sidebar) toggle($site)
+	});
 </script>
 
 <aside
@@ -34,7 +45,7 @@
 		/>
 		<input type="search" placeholder="search" bind:value={search} class="embedded" />
 	</nav>
-	<slot />
+	{@render children?.()}
 </aside>
 
 <style>

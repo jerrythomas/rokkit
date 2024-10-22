@@ -1,7 +1,6 @@
 <script>
-	let className
-	export let content
-	export { className as class }
+	let { class: className, content } = $props();
+	
 </script>
 
 <div class="w-full h-full flex items-center justify-center text-white {className}">

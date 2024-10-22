@@ -1,4 +1,6 @@
 <script>
+	import { run, stopPropagation } from 'svelte/legacy';
+
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 	import { Slider, Icon } from '@rokkit/atoms'
 	import { dismissable, navigable } from '@rokkit/actions'
@@ -9,21 +11,37 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let name = null
-	export let options = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using = {}
-	export let value = null
-	export let placeholder = ''
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [name]
+	 * @property {any} [options]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {any} [value]
+	 * @property {string} [placeholder]
+	 * @property {import('svelte').Snippet} [children]
+	 */
 
-	let activeIndex
-	let open = false
-	let offsetTop
+	/** @type {Props} */
+	let {
+		class: className = '',
+		name = null,
+		options = [],
+		fields = $bindable({}),
+		using = $bindable({}),
+		value = $bindable(null),
+		placeholder = '',
+		children
+	} = $props();
+
+	let activeIndex = $state()
+	let open = $state(false)
+	let offsetTop = $derived(activeItem?.offsetTop + activeItem?.clientHeight ?? 0)
 	let icons = defaultStateIcons.selector
-	let activeItem
+	let activeItem = $state()
 
 	function handleSelect() {
 		open = false
@@ -52,13 +70,19 @@
 		}
 	}
 
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
-	$: activeIndex = options.findIndex((item) => item === value)
-	$: offsetTop = activeItem?.offsetTop + activeItem?.clientHeight ?? 0
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	run(() => {
+		activeIndex = options.findIndex((item) => item === value)
+	});
+	
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <input-select
 	class="flex flex-col relative {className}"
 	class:open
@@ -67,27 +91,27 @@
 	aria-label={name}
 	use:dismissable
 	use:navigable={{ horizontal: false, vertical: true }}
-	on:focus={() => (open = true)}
-	on:blur={() => (open = false)}
-	on:dismiss={() => (open = false)}
-	on:previous={handlePrevious}
-	on:next={handleNext}
-	on:select={handleKeySelect}
+	onfocus={() => (open = true)}
+	onblur={() => (open = false)}
+	ondismiss={() => (open = false)}
+	onprevious={handlePrevious}
+	onnext={handleNext}
+	onselect={handleKeySelect}
 >
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<selected-item
-		on:click|stopPropagation={() => (open = !open)}
+		onclick={stopPropagation(() => (open = !open))}
 		class="w-full flex items-center"
 		bind:this={activeItem}
 		role="option"
 		tabindex="-1"
 		aria-selected={value !== null && !open}
 	>
-		<slot>
+		{#if children}{@render children()}{:else}
 			<item>
-				<svelte:component this={using.default} value={value ?? placeholder} {fields} />
+				<using.default value={value ?? placeholder} {fields} />
 			</item>
-		</slot>
+		{/if}
 		{#if open}
 			<Icon name={icons.opened} label="opened" tabindex="-1" />
 		{:else}

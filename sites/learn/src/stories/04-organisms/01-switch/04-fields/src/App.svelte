@@ -7,7 +7,7 @@
 	let fields = {
 		text: 'mode'
 	}
-	let value
+	let value = $state()
 </script>
 
 <Switch {options} {fields} bind:value />

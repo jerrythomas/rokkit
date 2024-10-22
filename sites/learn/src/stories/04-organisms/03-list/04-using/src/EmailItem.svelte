@@ -1,5 +1,5 @@
 <script>
-	export let value
+	let { value } = $props();
 </script>
 
 <message-item class="w-full flex items-center gap-3">

@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	// ensure that parent has position: relative.
 	// on reaching limit remove mouse events.
 	import { createEventDispatcher } from 'svelte'
@@ -6,14 +8,27 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let vertical = false
-	export let index
-	export let min = 0
-	export let max = 100
-	export let pos = 50
-	export let offset = 0
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [vertical]
+	 * @property {any} index
+	 * @property {number} [min]
+	 * @property {number} [max]
+	 * @property {number} [pos]
+	 * @property {number} [offset]
+	 */
 
-	let wall
+	/** @type {Props} */
+	let {
+		vertical = false,
+		index,
+		min = $bindable(0),
+		max = $bindable(100),
+		pos = $bindable(50),
+		offset = 0
+	} = $props();
+
+	let wall = $state()
 
 	function clamp(min, max, value) {
 		return min > value ? min : max < value ? max : value
@@ -35,9 +50,11 @@
 
 		dispatch('change', { pos, index, offset })
 	}
-	$: fixLimits()
-	$: horizontal = !vertical
-	$: side = horizontal ? 'left' : 'top'
+	run(() => {
+		fixLimits()
+	});
+	let horizontal = $derived(!vertical)
+	let side = $derived(horizontal ? 'left' : 'top')
 </script>
 
 <span
@@ -46,9 +63,9 @@
 	class:vertical
 	class:horizontal
 	use:pannable
-	on:panmove={handlePanMove}
+	onpanmove={handlePanMove}
 	style="{side}: calc({pos}% - 8px)"
-/>
+></span>
 
 <style>
 	.wall {

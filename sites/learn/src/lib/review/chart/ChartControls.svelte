@@ -1,5 +1,7 @@
 <script>
-	export let data
+	import { run } from 'svelte/legacy';
+
+	let { data } = $props();
 
 	let fields = Object.keys(data[0])
 	let plots = [
@@ -8,9 +10,8 @@
 		{ name: 'Scatter', options: ['Fill', 'Stroke', 'Shape', 'Size'] },
 		{ name: 'Line', options: ['DashArray', 'Stroke', 'Size'] }
 	]
-	let plot = 'Box'
-	let aes
-	$: onPlotTypeChange(plot)
+	let plot = $state('Box')
+	let aes = $state()
 
 	function onPlotTypeChange(plot) {
 		let currentPlot = plots.filter((x) => x.name === plot)[0]
@@ -20,6 +21,9 @@
 			fields
 		}))
 	}
+	run(() => {
+		onPlotTypeChange(plot)
+	});
 </script>
 
 <control class="w-96 flex flex-col gap-4 border-gray-700 border-l bg-primary-100 p-8">

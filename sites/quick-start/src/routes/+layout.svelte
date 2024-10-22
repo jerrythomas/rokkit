@@ -3,6 +3,13 @@
 	import '../app.css'
 	import { ToggleThemeMode } from '@rokkit/ui'
 	import { themable } from '@rokkit/actions'
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
 </script>
 
 <svelte:body use:themable />
@@ -14,4 +21,4 @@
 	<h1 class="text-xl font-bold">Quick Start Template</h1>
 	<ToggleThemeMode />
 </header>
-<slot />
+{@render children?.()}

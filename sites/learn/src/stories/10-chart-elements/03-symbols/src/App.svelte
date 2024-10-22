@@ -2,7 +2,7 @@
 	import { Symbol } from '@rokkit/chart'
 	import { swatch, swatchGrid } from '@rokkit/chart/lib'
 
-	$: grid = swatchGrid($swatch.keys.symbol.length, 10, 10)
+	let grid = $derived(swatchGrid($swatch.keys.symbol.length, 10, 10))
 </script>
 
 <svg viewBox="0 0 {grid.width} {grid.height}">

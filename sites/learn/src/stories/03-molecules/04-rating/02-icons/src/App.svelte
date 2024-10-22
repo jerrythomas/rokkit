@@ -1,7 +1,7 @@
 <script>
 	import { Rating } from '@rokkit/ui'
 
-	let value
+	let value = $state()
 	const stateIcons = {
 		filled: 'i-rokkit:heart-filled',
 		empty: 'i-rokkit:heart-outlined'

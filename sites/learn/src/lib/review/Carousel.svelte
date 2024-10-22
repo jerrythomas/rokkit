@@ -1,9 +1,7 @@
 <script>
 	import { getText } from '@rokkit/core'
 
-	export let items
-	export let value
-	export let fields
+	let { items, value, fields } = $props();
 </script>
 
 <carousel>

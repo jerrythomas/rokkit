@@ -1,10 +1,12 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	// import { SwatchButton, brewer, SwatchGrid } from '@rokkit/chart'
 	import { Timer, toNested, Chart, BarPlot, colors } from '@rokkit/chart'
 	import data from './stackoverflow.json'
 
 	// export let columns = 5
-	let currentKeyframe = 0
+	let currentKeyframe = $state(0)
 	let fields = {
 		x: 'value',
 		y: 'rank',
@@ -38,13 +40,15 @@
 	// 		y: { count: 5 }
 	// 	}
 	// }
-	let languageColors = {}
+	let languageColors = $state({})
 	// let patterns = brewer().pattern().brew()
 	// $: console.log(patterns)
-	$: names = [...new Set(data.map((d) => d.name))]
-	$: names.map((name, i) => (languageColors[name] = colors[i % colors.length]))
-	$: keyframes = toNested(data, 'date', 'name')
-	$: currentData = keyframes[currentKeyframe].value
+	let names = $derived([...new Set(data.map((d) => d.name))])
+	run(() => {
+		names.map((name, i) => (languageColors[name] = colors[i % colors.length]))
+	});
+	let keyframes = $derived(toNested(data, 'date', 'name'))
+	let currentData = $derived(keyframes[currentKeyframe].value)
 	// $: console.log(names)
 </script>
 

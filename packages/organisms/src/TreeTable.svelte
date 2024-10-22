@@ -1,4 +1,6 @@
 <script>
+	import { run, stopPropagation } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { pick, omit } from 'ramda'
 	import { defaultFields } from '@rokkit/core'
@@ -7,18 +9,33 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let data = []
-	export let columns = []
-	export let striped = true
-	export let value = null
-	export let multiselect = false
-	export let using = {}
-	export let dataFilter = () => true
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [data]
+	 * @property {any} [columns]
+	 * @property {boolean} [striped]
+	 * @property {any} [value]
+	 * @property {boolean} [multiselect]
+	 * @property {any} [using]
+	 * @property {any} [dataFilter]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		data = [],
+		columns = $bindable([]),
+		striped = true,
+		value = $bindable(null),
+		multiselect = false,
+		using = $bindable({}),
+		dataFilter = () => true
+	} = $props();
 
 	let hiddenPaths = []
-	let currentItem = null
+	let currentItem = $state(null)
 
 	function handleItemClick(event, item) {
 		if (item._isParent) toggle(item)
@@ -96,10 +113,17 @@
 	}
 
 	// $: addLevels(data)
-	$: using = { default: Item, ...using }
-	$: visible = data.filter(dataFilter).filter(isVisible)
-	$: addMultiSelectColumn(multiselect, data)
-	$: nestedColumn = columns.find((col) => col.path)
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	let visible;
+	run(() => {
+		visible = data.filter(dataFilter).filter(isVisible)
+	});
+	run(() => {
+		addMultiSelectColumn(multiselect, data)
+	});
+	let nestedColumn = $derived(columns.find((col) => col.path))
 </script>
 
 <tree-table class={className}>
@@ -116,7 +140,7 @@
 				<tr
 					class:cursor-pointer={!item._isParent}
 					aria-current={currentItem === item}
-					on:click|stopPropagation={(e) => handleItemClick(e, item)}
+					onclick={stopPropagation((e) => handleItemClick(e, item))}
 				>
 					{#each columns as col, index}
 						{@const value = { ...pick(['icon'], col), ...item }}
@@ -146,7 +170,8 @@
 											<Connector type="empty" />
 										{/if}
 									{/if}
-									<svelte:component this={component} {value} {fields} />
+									{@const SvelteComponent = component}
+									<SvelteComponent {value} {fields} />
 								{/if}
 							</cell>
 						</td>

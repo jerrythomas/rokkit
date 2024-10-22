@@ -1,9 +1,8 @@
 <script>
-	export let title
-	export let type
+	let { title, type, children } = $props();
 </script>
 
 <field-layout class={type}>
 	<h1>{title}</h1>
-	<slot />
+	{@render children?.()}
 </field-layout>

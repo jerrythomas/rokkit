@@ -2,7 +2,7 @@
 	import { Switch } from '@rokkit/ui'
 
 	let options = ['one', 'two', 'three']
-	let value
+	let value = $state()
 </script>
 
 <Switch {options} bind:value />

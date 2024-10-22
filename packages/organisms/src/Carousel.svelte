@@ -1,9 +1,17 @@
 <script>
-	let className = ''
-	export { className as class }
-	export let items = []
-	export let value
-	let currentIndex = 0
+	import { run } from 'svelte/legacy';
+
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [items]
+	 * @property {any} value
+	 */
+
+	/** @type {Props} */
+	let { class: className = '', items = [], value = $bindable() } = $props();
+	let currentIndex = $state(0)
 
 	function handleKey(e, index) {
 		const prevIndex = currentIndex
@@ -21,7 +29,9 @@
 			e.stopPropagation()
 		}
 	}
-	$: value = items[currentIndex]
+	run(() => {
+		value = items[currentIndex]
+	});
 </script>
 
 {#if items.length === 0}
@@ -38,10 +48,10 @@
 					role="radio"
 					aria-checked={currentIndex === index}
 					aria-label={`Slide ${index + 1}`}
-					on:click={() => (currentIndex = index)}
-					on:keydown={(e) => handleKey(e, index)}
+					onclick={() => (currentIndex = index)}
+					onkeydown={(e) => handleKey(e, index)}
 					tabindex={0}
-				/>
+				></dot>
 			{/each}
 		</dot-nav>
 	</carousel>

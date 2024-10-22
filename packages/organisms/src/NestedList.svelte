@@ -1,23 +1,48 @@
 <script>
+	import NestedList from './NestedList.svelte';
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields, defaultStateIcons, getLineTypes } from '@rokkit/core'
 	import { Node, Item } from '@rokkit/molecules'
 
-	let className = 'list'
-	export { className as class }
-	export let items = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = defaultFields
-	export let using = {}
-	export let types = []
-	export let value = null
-	export let rtl = false
-	export let hierarchy = []
-	export let icons
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [items]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {any} [types]
+	 * @property {any} [value]
+	 * @property {boolean} [rtl]
+	 * @property {any} [hierarchy]
+	 * @property {any} icons
+	 */
 
-	$: icons = { ...defaultStateIcons.node, ...icons }
-	$: using = { default: Item, ...using }
-	$: fields = { ...defaultFields, ...fields }
-	$: nodeTypes = items.map((_, index) => (index === items.length - 1 ? 'last' : 'child'))
+	/** @type {Props} */
+	let {
+		class: className = 'list',
+		items = [],
+		fields = $bindable(defaultFields),
+		using = $bindable({}),
+		types = [],
+		value = $bindable(null),
+		rtl = false,
+		hierarchy = [],
+		icons = $bindable()
+	} = $props();
+
+	run(() => {
+		icons = { ...defaultStateIcons.node, ...icons }
+	});
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	let nodeTypes = $derived(items.map((_, index) => (index === items.length - 1 ? 'last' : 'child')))
 </script>
 
 <nested-list class="nested-list flex flex-col w-full {className}" class:rtl role="tree">
@@ -38,7 +63,7 @@
 		>
 			{#if hasChildren && item[fields.isOpen]}
 				<!-- <div role="treeitem" aria-selected={false}> -->
-				<svelte:self
+				<NestedList
 					items={item[fields.children]}
 					bind:value
 					{fields}

@@ -1,9 +1,22 @@
 <script>
-	let className = ''
-	export { className as class }
-	export let unit = '.5rem'
-	export let group = 4
-	export let thickness = 0.5
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {string} [unit]
+	 * @property {number} [group]
+	 * @property {number} [thickness]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		unit = '.5rem',
+		group = 4,
+		thickness = 0.5,
+		children
+	} = $props();
 </script>
 
 <graph-paper
@@ -14,7 +27,7 @@
 	style:--thick="{2 * thickness}px"
 >
 	<content class="min-h-full flex flex-col">
-		<slot />
+		{@render children?.()}
 	</content>
 </graph-paper>
 

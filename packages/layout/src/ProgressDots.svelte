@@ -2,11 +2,9 @@
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
-	export let count
-	export let value = -1
-	export let current = -1
+	let { count, value = -1, current = $bindable(-1) } = $props();
 
-	$: inprogress = current === value + 1 ? current : inprogress
+	let inprogress = $derived(current === value + 1 ? current : inprogress)
 	// $: enabled = count > 0
 
 	function handleClick(e) {
@@ -17,15 +15,15 @@
 		}
 	}
 
-	$: steps = Array.from({ length: count }, (_, i) => i)
+	let steps = $derived(Array.from({ length: count }, (_, i) => i))
 </script>
 
 <span class="flex items-center gap-2 progress" class:empty={count === 0}>
 	{#each steps as step}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<dot
 			class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300"
-			on:click={handleClick}
+			onclick={handleClick}
 			data-step={step}
 			data-active={step === current}
 			data-completed={step <= value}
@@ -33,7 +31,7 @@
 			role="option"
 			aria-selected={step === current}
 			tabindex="0"
-		/>
+		></dot>
 	{/each}
 </span>
 

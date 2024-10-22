@@ -1,28 +1,50 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields } from '@rokkit/core'
 	import { switchable } from '@rokkit/actions'
 	import { Item } from '@rokkit/molecules'
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	/** @type {[any,any]} */
-	export let options = [false, true]
-	export let value = options[0]
-	export let fields = {}
-	export let using = {}
-	export let description = 'Toggle'
-	export let tabindex = 0
-	export let disabled = false
-	export let minimal = false
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {[any,any]} [options]
+	 * @property {any} [value]
+	 * @property {any} [fields]
+	 * @property {any} [using]
+	 * @property {string} [description]
+	 * @property {number} [tabindex]
+	 * @property {boolean} [disabled]
+	 * @property {boolean} [minimal]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		options = [false, true],
+		value = $bindable(options[0]),
+		fields = $bindable({}),
+		using = $bindable({}),
+		description = 'Toggle',
+		tabindex = 0,
+		disabled = false,
+		minimal = false
+	} = $props();
 
 	function handle(e) {
 		value = e.detail
 		dispatch('change', value)
 	}
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		using = { default: Item, ...using }
+	});
 </script>
 
 <toggle
@@ -33,7 +55,7 @@
 	aria-disabled={disabled}
 	{tabindex}
 	use:switchable={{ value, options, disabled }}
-	on:change={handle}
+	onchange={handle}
 	class:minimal
 >
 	<Item {value} {fields} />

@@ -2,7 +2,7 @@
 	import { Tabs } from '@rokkit/ui'
 
 	let options = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
-	let value
+	let value = $state()
 </script>
 
 <Tabs {options} bind:value />

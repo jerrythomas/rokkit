@@ -1,17 +1,33 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import DataEditor from './DataEditor.svelte'
 
-	export let value
-	export let schema = null
-	export let layout = null
-	export let using = {}
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} value
+	 * @property {any} [schema]
+	 * @property {any} [layout]
+	 * @property {any} [using]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		value = $bindable(),
+		schema = null,
+		layout = null,
+		using = {},
+		children
+	} = $props();
 </script>
 
-<form on:submit>
+<form onsubmit={bubble('submit')}>
 	<DataEditor bind:value {schema} {layout} {using} />
 	<span>
-		<slot>
+		{#if children}{@render children()}{:else}
 			<button type="submit">Submit</button>
-		</slot>
+		{/if}
 	</span>
 </form>

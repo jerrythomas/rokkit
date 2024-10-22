@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 	import { dismissable } from '@rokkit/actions'
@@ -8,22 +10,41 @@
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let options = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = defaultFields
-	export let using = { default: Item }
-	export let value = null
-	export let title = null
-	export let icon = null
-	export let small = false
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [options]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
+	 * @property {any} [using]
+	 * @property {any} [value]
+	 * @property {any} [title]
+	 * @property {any} [icon]
+	 * @property {boolean} [small]
+	 */
 
-	$: using = { default: Item, ...using }
-	$: fields = { ...defaultFields, ...fields }
+	/** @type {Props} */
+	let {
+		class: className = '',
+		options = [],
+		fields = $bindable(defaultFields),
+		using = $bindable({ default: Item }),
+		value = $bindable(null),
+		title = null,
+		icon = null,
+		small = false
+	} = $props();
 
-	let offsetTop = 0
-	let open = false
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+
+	let offsetTop = $state(0)
+	let open = $state(false)
 	let icons = defaultStateIcons.selector
 
 	function handleSelect(event) {
@@ -32,7 +53,7 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <drop-down
 	class="flex relative cursor-pointer select-none dropdown {className}"
 	class:open
@@ -44,9 +65,9 @@
 		bind:clientHeight={offsetTop}
 		tabindex="0"
 		use:dismissable
-		on:dismiss={() => (open = false)}
-		on:focus={() => (open = true)}
-		on:blur={() => (open = false)}
+		ondismiss={() => (open = false)}
+		onfocus={() => (open = true)}
+		onblur={() => (open = false)}
 	>
 		<span class="flex items-center">
 			{#if icon !== null}

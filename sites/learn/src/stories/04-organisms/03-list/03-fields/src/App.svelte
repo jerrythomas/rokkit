@@ -3,7 +3,7 @@
 	import { items } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }
-	let value
+	let value = $state()
 </script>
 
 <List {items} {fields} bind:value />

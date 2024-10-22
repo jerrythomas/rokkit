@@ -1,4 +1,6 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, compact } from '@rokkit/core'
 	import {
@@ -11,22 +13,44 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let value = null
-	export let items = []
-	export let fields = {}
-	export let using = {}
-	export let size = '100%'
-	export let horizontal = false
-	export let minSize = 40
-	export let limit = null
-	export let anchor = null
-	export let start = 0
-	export let end = 0
-	export let tabindex = 0
-	export let gap = 1
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [value]
+	 * @property {any} [items]
+	 * @property {any} [fields]
+	 * @property {any} [using]
+	 * @property {string} [size]
+	 * @property {boolean} [horizontal]
+	 * @property {number} [minSize]
+	 * @property {any} [limit]
+	 * @property {any} [anchor]
+	 * @property {number} [start]
+	 * @property {number} [end]
+	 * @property {number} [tabindex]
+	 * @property {number} [gap]
+	 * @property {import('svelte').Snippet<[any]>} [children]
+	 */
 
-	let height = null
-	let width = null
+	/** @type {Props} */
+	let {
+		value = $bindable(null),
+		items = [],
+		fields = $bindable({}),
+		using = $bindable({}),
+		size = $bindable('100%'),
+		horizontal = false,
+		minSize = 40,
+		limit = null,
+		anchor = null,
+		start = $bindable(0),
+		end = $bindable(0),
+		tabindex = 0,
+		gap = 1,
+		children
+	} = $props();
+
+	let height = $state(null)
+	let width = $state(null)
 
 	const viewport = virtualListViewport({
 		gap,
@@ -39,9 +63,9 @@
 	const space = viewport.space
 
 	let index = -1
-	let current = -1
-	let root
-	let elements = []
+	let current = $state(-1)
+	let root = $state()
+	let elements = $state([])
 
 	function getKeyboardActions(viewport, horizontal = false) {
 		return compact({
@@ -97,32 +121,46 @@
 	}
 
 	const props = horizontal ? dimensionAttributes.horizontal : dimensionAttributes.vertical
-	$: using = { default: Item, ...using }
-	$: keyboardActions = getKeyboardActions(viewport, horizontal)
-	$: start = $bounds?.lower
-	$: end = $bounds?.upper
-	$: sizes = elements.map((element) => element[props.offset])
-	$: viewport.update({
-		items,
-		value,
-		sizes,
-		visibleSize: horizontal ? width : height
-	})
-	$: visible = items.slice(start, end).map((data, i) => {
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	let keyboardActions = $derived(getKeyboardActions(viewport, horizontal))
+	run(() => {
+		start = $bounds?.lower
+	});
+	run(() => {
+		end = $bounds?.upper
+	});
+	let sizes = $derived(elements.map((element) => element[props.offset]))
+	run(() => {
+		viewport.update({
+			items,
+			value,
+			sizes,
+			visibleSize: horizontal ? width : height
+		})
+	});
+	let visible = $derived(items.slice(start, end).map((data, i) => {
 		return { index: i + start, data }
-	})
-	$: if ($space.visible) size = $space.visible + 'px'
-	$: if (root) root.scrollTo(0, $space.before)
-	$: fields = { ...defaultFields, ...fields }
-	$: listStyle = horizontal ? `width: ${size};` : `height: ${size};` + getListPosition(anchor, root)
+	}))
+	run(() => {
+		if ($space.visible) size = $space.visible + 'px'
+	});
+	run(() => {
+		if (root) root.scrollTo(0, $space.before)
+	});
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	let listStyle = $derived(horizontal ? `width: ${size};` : `height: ${size};` + getListPosition(anchor, root))
 </script>
 
 <virtual-list>
 	<virtual-list-viewport
-		on:click={handleClick}
-		on:keydown={handleKeydown}
-		on:scroll={handleScroll}
-		on:scrollend={handleScrollEnd}
+		onclick={handleClick}
+		onkeydown={handleKeydown}
+		onscroll={handleScroll}
+		onscrollend={handleScrollEnd}
 		role="listbox"
 		style={listStyle}
 		class="relative block"
@@ -145,9 +183,9 @@
 					aria-current={current === row.index}
 					bind:this={elements[index]}
 				>
-					<slot item={row.data}>
-						<svelte:component this={using.default} {fields} value={row.data} />
-					</slot>
+					{#if children}{@render children({ item: row.data, })}{:else}
+						<using.default {fields} value={row.data} />
+					{/if}
 				</virtual-list-item>
 			{/each}
 		</virtual-list-contents>

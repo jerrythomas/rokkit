@@ -1,23 +1,46 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { identity } from 'ramda'
 	import { getComponent, defaultFields } from '@rokkit/core'
 	import { Connector, Icon } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 
-	let className = ''
-	export { className as class }
-	export let value
-	export let fields = defaultFields
-	export let formatter = identity
-	export let using = {}
-	export let levels = []
-	export let isParent = false
-	export let isExpanded = false
-	export let depth = 0
-	export let path = null
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} value
+	 * @property {any} [fields]
+	 * @property {any} [formatter]
+	 * @property {any} [using]
+	 * @property {any} [levels]
+	 * @property {boolean} [isParent]
+	 * @property {boolean} [isExpanded]
+	 * @property {number} [depth]
+	 * @property {any} [path]
+	 */
 
-	$: using = { default: Item, ...using }
-	$: component = getComponent(value, fields, using)
+	/** @type {Props} */
+	let {
+		class: className = '',
+		value = $bindable(),
+		fields = defaultFields,
+		formatter = identity,
+		using = $bindable({}),
+		levels = [],
+		isParent = false,
+		isExpanded = false,
+		depth = 0,
+		path = null
+	} = $props();
+
+	run(() => {
+		using = { default: Item, ...using }
+	});
+	let component = $derived(getComponent(value, fields, using))
+
+	const SvelteComponent = $derived(component);
 </script>
 
 <td class={className}>
@@ -32,6 +55,6 @@
 				<Connector type="empty" />
 			{/if}
 		{/if}
-		<svelte:component this={component} bind:value {fields} {formatter} />
+		<SvelteComponent bind:value {fields} {formatter} />
 	</cell>
 </td>

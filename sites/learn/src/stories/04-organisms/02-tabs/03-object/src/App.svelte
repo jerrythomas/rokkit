@@ -1,6 +1,6 @@
 <script>
 	import { Tabs } from '@rokkit/ui'
-	let value
+	let value = $state()
 	let options = [
 		{
 			text: 'Fruits',

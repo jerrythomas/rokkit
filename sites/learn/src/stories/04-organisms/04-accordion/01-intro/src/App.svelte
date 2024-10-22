@@ -2,7 +2,7 @@
 	import { Accordion } from '@rokkit/ui'
 	import { items } from './data'
 
-	let value
+	let value = $state()
 </script>
 
 <Accordion {items} bind:value />

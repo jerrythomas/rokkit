@@ -22,7 +22,7 @@
 	function changeHandler(event) {
 		console.log('change occurred', event.detail)
 	}
-	$: height = Math.ceil(shapes.length / columns) * (size + gap) + 4 * gap
+	let height = $derived(Math.ceil(shapes.length / columns) * (size + gap) + 4 * gap)
 </script>
 
 <div class="h-full flex flex-row">

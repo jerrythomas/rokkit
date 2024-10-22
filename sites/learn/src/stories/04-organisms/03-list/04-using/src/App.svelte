@@ -4,7 +4,7 @@
 	import EmailItem from './EmailItem.svelte'
 
 	let using = { default: EmailItem }
-	let value
+	let value = $state()
 </script>
 
 <List {items} {using} bind:value />

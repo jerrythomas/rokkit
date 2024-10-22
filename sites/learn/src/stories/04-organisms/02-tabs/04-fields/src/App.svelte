@@ -3,7 +3,7 @@
 	import { options } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }
-	let value
+	let value = $state()
 </script>
 
 <Tabs {options} {fields} bind:value />
