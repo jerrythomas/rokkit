@@ -20,7 +20,7 @@ describe('Section.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ title: 'custom' })
+		setProperties(component, { title: 'custom' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -30,7 +30,7 @@ describe('Section.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ type: 'section' })
+		setProperties(component, { type: 'section' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -40,7 +40,7 @@ describe('Section.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ class: 'custom-class-2' })
+		setProperties(component, { class: 'custom-class-2' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

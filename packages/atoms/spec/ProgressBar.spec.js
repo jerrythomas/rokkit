@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
+import { setProperties } from 'validators'
 import ProgressBar from '../src/ProgressBar.svelte'
 
 describe('ProgressBar.svelte', () => {
@@ -13,20 +14,22 @@ describe('ProgressBar.svelte', () => {
 	})
 
 	it('should render progress with custom height, indicator width', () => {
-		const { container } = render(ProgressBar, { height: '3px', width: 50 })
+		const { container } = render(ProgressBar, { props: { height: '3px', width: 50 } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render progress bar with value', async () => {
 		const { container, component } = render(ProgressBar, {
-			value: 50,
-			max: 100
+			props: {
+				value: 50,
+				max: 100
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ value: 100 })
+		setProperties(component, { value: 100 })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -38,7 +41,7 @@ describe('ProgressBar.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ class: 'my-class-1' })
+		setProperties(component, { class: 'my-class-1' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

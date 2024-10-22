@@ -70,7 +70,6 @@ exports[`HTML Input > should render "InputRadio" 1`] = `
   <p>
     foo
   </p>
-   
 </label>
 `;
 
@@ -87,7 +86,6 @@ exports[`HTML Input > should render "InputRadio" as readonly 1`] = `
   <p>
     foo
   </p>
-   
 </label>
 `;
 
@@ -104,7 +102,6 @@ exports[`HTML Input > should render "InputRadio" as required 1`] = `
   <p>
     foo
   </p>
-   
 </label>
 `;
 
@@ -120,7 +117,6 @@ exports[`HTML Input > should render "InputRadio" with custom props 1`] = `
   <p>
     foo
   </p>
-   
 </label>
 `;
 
@@ -136,7 +132,6 @@ exports[`HTML Input > should render "InputRadio" with custom props 2`] = `
   <p>
     foo
   </p>
-   
 </label>
 `;
 
@@ -152,7 +147,6 @@ exports[`HTML Input > should render "InputRadio" with custom props 3`] = `
   <p>
     foo
   </p>
-   
 </label>
 `;
 

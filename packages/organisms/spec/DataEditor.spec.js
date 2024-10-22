@@ -62,10 +62,10 @@ describe('DataEditor.svelte', () => {
 			props: { value, using: { components: { custom: CustomField } } }
 		})
 		expect(container).toBeTruthy()
-		component.$set({ schema })
+		setProperties(component, { schema })
 		await tick()
 		expect(container).toMatchSnapshot()
-		component.$set({ layout })
+		setProperties(component, { layout })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

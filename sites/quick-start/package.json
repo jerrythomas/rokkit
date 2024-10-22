@@ -15,31 +15,31 @@
     "test:unit": "vitest"
   },
   "devDependencies": {
-    "@rokkit/icons": "1.0.0-next.97",
-    "@sveltejs/adapter-auto": "^3.2.5",
-    "@sveltejs/kit": "^2.5.28",
+    "@rokkit/icons": "1.0.0-next.100",
+    "@sveltejs/adapter-auto": "^3.3.0",
+    "@sveltejs/kit": "^2.7.2",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
-    "@types/eslint": "^8.56.12",
-    "@unocss/extractor-svelte": "^0.60.4",
-    "@unocss/reset": "^0.60.4",
-    "@unocss/vite": "^0.60.4",
-    "eslint": "^9.10.0",
+    "@types/eslint": "^9.6.1",
+    "@unocss/extractor-svelte": "^0.63.6",
+    "@unocss/reset": "^0.63.6",
+    "@unocss/vite": "^0.63.6",
+    "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-svelte": "^2.45.1",
+    "eslint-plugin-svelte": "^2.46.0",
     "prettier": "^3.3.3",
-    "prettier-plugin-svelte": "^3.2.6",
-    "svelte": "^5.0.0",
-    "svelte-check": "^4.0.0",
-    "typescript": "^5.6.2",
-    "unocss": "^0.60.4",
-    "vite": "^5.4.6",
-    "vitest": "^1.6.0"
+    "prettier-plugin-svelte": "^3.2.7",
+    "svelte": "^5.0.5",
+    "svelte-check": "^4.0.5",
+    "typescript": "^5.6.3",
+    "unocss": "^0.63.6",
+    "vite": "^5.4.9",
+    "vitest": "^2.1.3"
   },
   "type": "module",
   "dependencies": {
-    "@rokkit/actions": "1.0.0-next.97",
-    "@rokkit/core": "1.0.0-next.97",
-    "@rokkit/themes": "1.0.0-next.97",
-    "@rokkit/ui": "1.0.0-next.97"
+    "@rokkit/actions": "1.0.0-next.100",
+    "@rokkit/core": "1.0.0-next.100",
+    "@rokkit/themes": "1.0.0-next.100",
+    "@rokkit/ui": "1.0.0-next.100"
   }
 }

@@ -43,7 +43,7 @@ describe('Category.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ type: 'section' })
+		setProperties(component, { type: 'section' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -56,7 +56,7 @@ describe('Category.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ class: 'custom-class-2' })
+		setProperties(component, { class: 'custom-class-2' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -68,7 +68,7 @@ describe('Category.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ align: 'right' })
+		setProperties(component, { align: 'right' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -84,7 +84,7 @@ describe('Category.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ navigator: 'tabs' })
+		setProperties(component, { navigator: 'tabs' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

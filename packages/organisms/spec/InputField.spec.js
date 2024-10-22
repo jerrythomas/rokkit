@@ -20,7 +20,7 @@ describe('InputField.svelte', () => {
 		expect(input.value).toBe('')
 
 		// handle value change
-		component.$set({ value: 'hello' })
+		setProperties(component, { value: 'hello' })
 		await tick()
 		input = container.querySelector('input')
 		expect(input).toBeTruthy()
@@ -56,7 +56,7 @@ describe('InputField.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 		// handle change
-		component.$set({ label: 'other' })
+		setProperties(component, { label: 'other' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -94,7 +94,7 @@ describe('InputField.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ disabled: false })
+		setProperties(component, { disabled: false })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -108,7 +108,7 @@ describe('InputField.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ class: 'other' })
+		setProperties(component, { class: 'other' })
 		await tick()
 		const wrapper = container.querySelector('input-field')
 		expect(wrapper).toBeTruthy()
@@ -124,7 +124,7 @@ describe('InputField.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({ icon: 'other' })
+		setProperties(component, { icon: 'other' })
 		await tick()
 		const icon = container.querySelector('i')
 		expect(icon).toBeTruthy()
@@ -135,21 +135,21 @@ describe('InputField.svelte', () => {
 		const { container, component } = render(InputField, { name: 'name' })
 		const field = container.querySelector('field')
 
-		component.$set({ label: 'label' })
+		setProperties(component, { label: 'label' })
 		await tick()
 		expect(field.getAttribute('aria-label')).toEqual('label')
 
-		component.$set({ description: 'description' })
+		setProperties(component, { description: 'description' })
 		await tick()
 		expect(field.getAttribute('aria-label')).toEqual('description')
 
-		component.$set({ type: 'string', minlength: 5 })
+		setProperties(component, { type: 'string', minlength: 5 })
 		await tick()
 		const input = container.querySelector('input')
 		expect(input.getAttribute('type')).toEqual('text')
 		expect(input.getAttribute('minlength')).toEqual('5')
 
-		component.$set({ icon: 'other' })
+		setProperties(component, { icon: 'other' })
 		await tick()
 		const icon = container.querySelector('i')
 		expect(icon).toBeTruthy()

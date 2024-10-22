@@ -5,6 +5,9 @@ exports[`Slider.svelte > should render 1`] = `
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
     style="top: 16px;"
-  />
+  >
+    <!---->
+  </scroll>
+  
 </div>
 `;

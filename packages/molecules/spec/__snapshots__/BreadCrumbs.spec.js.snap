@@ -5,30 +5,41 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
   <crumbs
     class="flex "
   >
+    <!---->
+    <!---->
      
     <crumb>
+      <!---->
+      <!---->
        
       <p>
         Alpha
       </p>
-      
-       
+      <!---->
+      <!---->
     </crumb>
+    <!---->
     <span>
       /
+      <!---->
     </span>
+    <!---->
      
     <crumb
       class="is-selected"
     >
+      <!---->
+      <!---->
        
       <p>
         Beta
       </p>
-      
-       
+      <!---->
+      <!---->
     </crumb>
+    
   </crumbs>
+  
 </div>
 `;
 
@@ -37,30 +48,41 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
   <crumbs
     class="flex "
   >
+    <!---->
+    <!---->
      
     <crumb>
+      <!---->
+      <!---->
        
       <p>
         Alpha
       </p>
-      
-       
+      <!---->
+      <!---->
     </crumb>
+    <!---->
     <span>
       &gt;
+      <!---->
     </span>
+    <!---->
      
     <crumb
       class="is-selected"
     >
+      <!---->
+      <!---->
        
       <p>
         Beta
       </p>
-      
-       
+      <!---->
+      <!---->
     </crumb>
+    
   </crumbs>
+  
 </div>
 `;
 
@@ -69,31 +91,42 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] 
   <crumbs
     class="flex "
   >
+    <!---->
+    <!---->
      
     <crumb>
+      <!---->
+      <!---->
        
       <p>
         Alpha
       </p>
-      
-       
+      <!---->
+      <!---->
     </crumb>
+    <!---->
     <span>
       <icon
         class="icon"
       />
+      <!---->
     </span>
+    <!---->
      
     <crumb
       class="is-selected"
     >
+      <!---->
+      <!---->
        
       <p>
         Beta
       </p>
-      
-       
+      <!---->
+      <!---->
     </crumb>
+    
   </crumbs>
+  
 </div>
 `;

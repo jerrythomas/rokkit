@@ -2,33 +2,43 @@
 
 exports[`DefinePatterns.svelte > should be empty when patterns are not provided. 1`] = `
 <div>
+  <!---->
+  <!---->
+  
+  
   
 </div>
 `;
 
 exports[`DefinePatterns.svelte > should render error when pattern names are not unique 1`] = `
 <div>
+  <!---->
   <error>
     Patterns should be an array and should have unique names for each pattern
   </error>
+  
   
 </div>
 `;
 
 exports[`DefinePatterns.svelte > should render the patterns using fills and colors when provided 1`] = `
 <div>
+  <!---->
   <error>
     Patterns should be an array and should have unique names for each pattern
   </error>
+  
   
 </div>
 `;
 
 exports[`DefinePatterns.svelte > should render the patterns when provided 1`] = `
 <div>
+  <!---->
   <error>
     Patterns should be an array and should have unique names for each pattern
   </error>
+  
   
 </div>
 `;

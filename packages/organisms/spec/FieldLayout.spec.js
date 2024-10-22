@@ -156,7 +156,7 @@ describe('FieldLayout.svelte', () => {
 
 		// handle schema change
 		delete schema.elements[0].key
-		component.$set({ properties: { value, schema } })
+		setProperties(component, { properties: { value, schema } })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

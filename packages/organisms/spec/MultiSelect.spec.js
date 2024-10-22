@@ -24,7 +24,7 @@ describe('MultiSelect.svelte', () => {
 		await tick()
 		expect(wrapper).toMatchSnapshot()
 
-		component.$set({ value: ['One', 'Two'] })
+		setProperties(component, { value: ['One', 'Two'] })
 		await tick()
 		expect(wrapper).toMatchSnapshot()
 	})
@@ -47,7 +47,7 @@ describe('MultiSelect.svelte', () => {
 		await tick()
 		expect(wrapper).toMatchSnapshot()
 
-		component.$set({ value: [options[3], options[1]] })
+		setProperties(component, { value: [options[3], options[1]] })
 		await tick()
 		expect(wrapper).toMatchSnapshot()
 	})
@@ -131,7 +131,7 @@ describe('MultiSelect.svelte', () => {
 		expect(container).toBeTruthy()
 		let classes = Array.from(container.querySelector('input-select').classList)
 		expect(classes).toContain('custom-class')
-		component.$set({ class: 'custom-class-2' })
+		setProperties(component, { class: 'custom-class-2' })
 		await tick()
 		classes = Array.from(container.querySelector('input-select').classList)
 		expect(classes).not.toContain('custom-class')

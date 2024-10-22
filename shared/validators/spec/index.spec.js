@@ -11,6 +11,7 @@ describe('functions', () => {
 			'toHaveValidData',
 			'toHaveBeenDispatchedWith',
 			'getPropertyValue',
+			'setProperties',
 			'simulateMouseEvent',
 			'simulateTouchEvent',
 			'simulateTouchSwipe',

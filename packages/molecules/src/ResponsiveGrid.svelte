@@ -1,12 +1,11 @@
 <script>
-	import { run } from 'svelte/legacy';
+	// import { run } from 'svelte/legacy';
 
 	import { defaultFields } from '@rokkit/core'
 	import { swipeable, navigable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -27,11 +26,11 @@
 		duration = 400,
 		easing = cubicInOut,
 		value = $bindable(null)
-	} = $props();
+	} = $props()
 
 	let previous = $state(-1)
 	let activeIndex = $state(0)
-	let direction = $state(1)
+	let direction = $derived(Math.sign(activeIndex - previous))
 	let width = $state()
 
 	function handleNext() {
@@ -47,16 +46,12 @@
 		return index > -1 ? index : 0
 	}
 
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
-	run(() => {
 		activeIndex = activeIndexFromPage(value)
-	});
-	run(() => {
-		direction = Math.sign(activeIndex - previous)
+		// direction = Math.sign(activeIndex - previous)
 		previous = activeIndex
-	});
+	})
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->

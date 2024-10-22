@@ -18,7 +18,7 @@ describe('Wrapper.svelte', () => {
 		expect(container).toMatchSnapshot()
 
 		// handle type changes
-		component.$set({ type: 'section' })
+		setProperties(component, { type: 'section' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
@@ -29,7 +29,7 @@ describe('Wrapper.svelte', () => {
 		expect(container).toMatchSnapshot()
 
 		// handle class changes
-		component.$set({ class: 'custom-class-2' })
+		setProperties(component, { class: 'custom-class-2' })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

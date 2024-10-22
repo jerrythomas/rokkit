@@ -11,7 +11,7 @@
 	 */
 
 	/** @type {Props} */
-	let { value, fields = defaultFields, formatter = null } = $props();
+	let { value = $bindable(), fields = defaultFields, formatter = null } = $props()
 
 	// $: isObject = typeof (value ?? '-') === 'object'
 	let text = $derived(getFormattedText(value, fields, formatter))

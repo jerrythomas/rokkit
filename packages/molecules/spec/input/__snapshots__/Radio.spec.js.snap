@@ -4,7 +4,6 @@ exports[`Radio.svelte > should render using object 1`] = `
 <div>
   <radio-group
     class="flex flex-col cursor-pointer select-none "
-    id="null"
   >
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -23,7 +22,6 @@ exports[`Radio.svelte > should render using object 1`] = `
       <p>
         Alpha
       </p>
-       
     </label>
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -42,7 +40,6 @@ exports[`Radio.svelte > should render using object 1`] = `
       <p>
         Beta
       </p>
-       
     </label>
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -61,9 +58,10 @@ exports[`Radio.svelte > should render using object 1`] = `
       <p>
         Charlie
       </p>
-       
     </label>
+    
   </radio-group>
+  
 </div>
 `;
 
@@ -71,7 +69,6 @@ exports[`Radio.svelte > should render using string array 1`] = `
 <div>
   <radio-group
     class="flex flex-col cursor-pointer select-none "
-    id="null"
   >
     <label
       class="flex flex-row items-center gap-2"
@@ -90,7 +87,6 @@ exports[`Radio.svelte > should render using string array 1`] = `
       <p>
         Alpha
       </p>
-       
     </label>
     <label
       class="flex flex-row items-center gap-2"
@@ -109,7 +105,6 @@ exports[`Radio.svelte > should render using string array 1`] = `
       <p>
         Beta
       </p>
-       
     </label>
     <label
       class="flex flex-row items-center gap-2"
@@ -128,9 +123,10 @@ exports[`Radio.svelte > should render using string array 1`] = `
       <p>
         Gamma
       </p>
-       
     </label>
+    
   </radio-group>
+  
 </div>
 `;
 
@@ -138,7 +134,6 @@ exports[`Radio.svelte > should render with field mapping 1`] = `
 <div>
   <radio-group
     class="flex flex-col cursor-pointer select-none "
-    id="null"
   >
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -157,7 +152,6 @@ exports[`Radio.svelte > should render with field mapping 1`] = `
       <p>
         Alpha
       </p>
-       
     </label>
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -176,7 +170,6 @@ exports[`Radio.svelte > should render with field mapping 1`] = `
       <p>
         Beta
       </p>
-       
     </label>
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -195,8 +188,9 @@ exports[`Radio.svelte > should render with field mapping 1`] = `
       <p>
         Charlie
       </p>
-       
     </label>
+    
   </radio-group>
+  
 </div>
 `;

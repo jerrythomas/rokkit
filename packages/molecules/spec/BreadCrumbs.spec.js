@@ -5,15 +5,17 @@ import BreadCrumbs from '../src/BreadCrumbs.svelte'
 describe('BreadCrumbs.svelte', () => {
 	beforeEach(() => cleanup())
 	it('should render breadcrumbs', () => {
-		const { container } = render(BreadCrumbs, { items: ['Alpha', 'Beta'] })
+		const { container } = render(BreadCrumbs, { props: { items: ['Alpha', 'Beta'] } })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render breadcrumbs with separator', () => {
 		const { container } = render(BreadCrumbs, {
-			items: ['Alpha', 'Beta'],
-			separator: '>'
+			props: {
+				items: ['Alpha', 'Beta'],
+				separator: '>'
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -21,8 +23,10 @@ describe('BreadCrumbs.svelte', () => {
 
 	it('should render breadcrumbs with separator icon', () => {
 		const { container } = render(BreadCrumbs, {
-			items: ['Alpha', 'Beta'],
-			separator: 'icon'
+			props: {
+				items: ['Alpha', 'Beta'],
+				separator: 'icon'
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

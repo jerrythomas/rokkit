@@ -8,6 +8,8 @@ exports[`DataList.svelte > should render 1`] = `
     <option
       value="alpha"
     />
+    
   </datalist>
+  
 </div>
 `;

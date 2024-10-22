@@ -7,6 +7,7 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
     role="radiogroup"
     tabindex="0"
   >
+    <!---->
      
     <icon
       aria-checked="true"
@@ -68,7 +69,9 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
         class="rating-empty"
       />
     </icon>
+    <!---->
   </rating>
+  
 </div>
 `;
 
@@ -79,6 +82,7 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
     role="radiogroup"
     tabindex="0"
   >
+    <!---->
      
     <icon
       aria-checked="true"
@@ -140,7 +144,9 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
         class="rating-empty"
       />
     </icon>
+    <!---->
   </rating>
+  
 </div>
 `;
 
@@ -151,6 +157,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
     role="radiogroup"
     tabindex="0"
   >
+    <!---->
      
     <icon
       aria-checked="false"
@@ -212,7 +219,9 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         class="rating-empty"
       />
     </icon>
+    <!---->
   </rating>
+  
 </div>
 `;
 
@@ -230,6 +239,7 @@ exports[`Rating component > should reset the value to zero 1`] = `
       name="rating"
       type="number"
     />
+    <!---->
      
     <icon
       aria-checked="false"
@@ -291,79 +301,9 @@ exports[`Rating component > should reset the value to zero 1`] = `
         class="rating-empty"
       />
     </icon>
+    <!---->
   </rating>
-</div>
-`;
-
-exports[`Rating component > should select the correct number of stars when value changes 1`] = `
-<div>
-  <rating
-    class="flex cursor-pointer select-none"
-    role="radiogroup"
-    tabindex="0"
-  >
-     
-    <icon
-      aria-checked="true"
-      aria-label="Rating 1 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 2 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 3 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 4 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 5 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-  </rating>
+  
 </div>
 `;
 
@@ -381,6 +321,7 @@ exports[`Rating component > should update value on click when not disabled 1`] =
       name="rating"
       type="number"
     />
+    <!---->
      
     <icon
       aria-checked="true"
@@ -442,6 +383,8 @@ exports[`Rating component > should update value on click when not disabled 1`] =
         class="rating-empty"
       />
     </icon>
+    <!---->
   </rating>
+  
 </div>
 `;

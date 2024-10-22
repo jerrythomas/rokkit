@@ -55,12 +55,12 @@ describe('ListEditor.svelte', () => {
 			using: { components: {} },
 			properties: { value: items, schema, path: ['items'], class: 'my-list' }
 		})
-		component.$set({ using: { components: { default: MockItem } } })
+		setProperties(component, { using: { components: { default: MockItem } } })
 		await tick()
 		expect(container.querySelector('.my-list')).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		component.$set({
+		setProperties(component, {
 			properties: { value: items, schema, path: ['x'], class: 'new-list' }
 		})
 		await tick()
@@ -89,7 +89,7 @@ describe('ListEditor.svelte', () => {
 		})
 		expect(container).toMatchSnapshot()
 
-		component.$set({ properties: { value: items, schema, below: true } })
+		setProperties(component, { properties: { value: items, schema, below: true } })
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

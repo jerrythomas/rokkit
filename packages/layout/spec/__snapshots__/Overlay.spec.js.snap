@@ -6,6 +6,9 @@ exports[`Overlay.svelte > should render 1`] = `
     aria-hidden="true"
     class="absolute left-0 top-0 h-screen w-screen"
     role="presentation"
-  />
+  >
+    <!---->
+  </overlay>
+  
 </div>
 `;

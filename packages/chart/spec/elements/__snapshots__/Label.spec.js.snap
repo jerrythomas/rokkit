@@ -9,6 +9,7 @@ exports[`Label.svelte > should render 1`] = `
   >
     Hello
   </text>
+  
 </div>
 `;
 
@@ -21,6 +22,7 @@ exports[`Label.svelte > should render with anchor end 1`] = `
   >
     end
   </text>
+  
 </div>
 `;
 
@@ -33,6 +35,7 @@ exports[`Label.svelte > should render with anchor middle 1`] = `
   >
     middle
   </text>
+  
 </div>
 `;
 
@@ -45,6 +48,7 @@ exports[`Label.svelte > should render with anchor start 1`] = `
   >
     start
   </text>
+  
 </div>
 `;
 
@@ -57,5 +61,6 @@ exports[`Label.svelte > should render with rotation 1`] = `
   >
     Angled
   </text>
+  
 </div>
 `;

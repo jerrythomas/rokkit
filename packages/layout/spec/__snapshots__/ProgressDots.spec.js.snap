@@ -1,127 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ProgressDots.svelte > should allow clicking first item only 1`] = `
-<div>
-  <span
-    class="flex items-center gap-2 progress svelte-vrkqtw"
-  >
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="0"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="1"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="2"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="3"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="4"
-      role="option"
-      tabindex="0"
-    />
-  </span>
-</div>
-`;
-
 exports[`ProgressDots.svelte > should render line when empty 1`] = `
 <div>
   <span
     class="flex items-center gap-2 progress svelte-vrkqtw empty"
-  />
-</div>
-`;
-
-exports[`ProgressDots.svelte > should render steps as dots 1`] = `
-<div>
-  <span
-    class="flex items-center gap-2 progress svelte-vrkqtw"
   >
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="0"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="1"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="2"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="3"
-      role="option"
-      tabindex="0"
-    />
-    <dot
-      aria-selected="false"
-      class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300 svelte-vrkqtw"
-      data-active="false"
-      data-clickable="false"
-      data-completed="false"
-      data-step="4"
-      role="option"
-      tabindex="0"
-    />
+    
   </span>
+  
 </div>
 `;

@@ -76,7 +76,7 @@ describe('InputSelect.svelte', () => {
 		})
 		let placeholder = container.querySelector('selected-item item p')
 		expect(placeholder.textContent).toEqual('select a value')
-		component.$set({ placeholder: '-' })
+		setProperties(component, { placeholder: '-' })
 		await tick()
 		placeholder = container.querySelector('selected-item item p')
 		expect(placeholder.textContent).toEqual('-')

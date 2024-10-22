@@ -6,13 +6,18 @@ exports[`Button.svelte > should render a button marked as primary 1`] = `
     class="flex flex-row items-center is-primary"
     type="submit"
   >
+    <!---->
      
+    <!---->
     <p>
       Primary
     </p>
     
+    <!---->
      
+    <!---->
   </button>
+  
 </div>
 `;
 
@@ -22,13 +27,18 @@ exports[`Button.svelte > should render a button with a label 1`] = `
     class="flex flex-row items-center "
     type="submit"
   >
+    <!---->
      
+    <!---->
     <p>
       Click me
     </p>
     
+    <!---->
      
+    <!---->
   </button>
+  
 </div>
 `;
 
@@ -52,12 +62,16 @@ exports[`Button.svelte > should render a button with a label and both icons 1`] 
           class="email"
         />
       </icon>
+      <!---->
     </icon-left>
+    <!---->
      
+    <!---->
     <p>
       Dual Icons
     </p>
     
+    <!---->
      
     <icon-right>
       <icon
@@ -71,8 +85,11 @@ exports[`Button.svelte > should render a button with a label and both icons 1`] 
           class="arrow-right"
         />
       </icon>
+      <!---->
     </icon-right>
+    <!---->
   </button>
+  
 </div>
 `;
 
@@ -96,14 +113,20 @@ exports[`Button.svelte > should render a button with a label and left icon 1`] =
           class="theme"
         />
       </icon>
+      <!---->
     </icon-left>
+    <!---->
      
+    <!---->
     <p>
       With Left Icon
     </p>
     
+    <!---->
      
+    <!---->
   </button>
+  
 </div>
 `;
 
@@ -113,11 +136,14 @@ exports[`Button.svelte > should render a button with a label and right icon 1`] 
     class="flex flex-row items-center "
     type="submit"
   >
+    <!---->
      
+    <!---->
     <p>
       With Right Icon
     </p>
     
+    <!---->
      
     <icon-right>
       <icon
@@ -131,8 +157,11 @@ exports[`Button.svelte > should render a button with a label and right icon 1`] 
           class="arrow-right"
         />
       </icon>
+      <!---->
     </icon-right>
+    <!---->
   </button>
+  
 </div>
 `;
 
@@ -156,11 +185,17 @@ exports[`Button.svelte > should render a button with icon only 1`] = `
           class="colors"
         />
       </icon>
+      <!---->
     </icon-left>
+    <!---->
      
+    <!---->
     
+    <!---->
      
+    <!---->
   </button>
+  
 </div>
 `;
 
@@ -170,12 +205,17 @@ exports[`Button.svelte > should render a button with outline style 1`] = `
     class="flex flex-row items-center "
     type="submit"
   >
+    <!---->
      
+    <!---->
     <p>
       Outline
     </p>
     
+    <!---->
      
+    <!---->
   </button>
+  
 </div>
 `;

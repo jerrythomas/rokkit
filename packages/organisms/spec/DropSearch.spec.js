@@ -45,7 +45,7 @@ describe('DropSearch.svelte', () => {
 		})
 		expect(container).toBeTruthy()
 
-		component.$set({ using: { default: MockItem } })
+		setProperties(component, { using: { default: MockItem } })
 		await tick()
 		container.querySelector('input-select').focus()
 		await tick()
