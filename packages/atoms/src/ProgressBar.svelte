@@ -1,15 +1,27 @@
 <script>
-	let className = ''
-	export { className as class }
-	export let value = null
-	export let max = null
-	export let height = '1.5mm'
-	export let width = 10
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [value]
+	 * @property {any} [max]
+	 * @property {string} [height]
+	 * @property {number} [width]
+	 */
 
-	$: indeterminate = value === null || max === null
-	$: percentage = indeterminate ? width : value / max
+	/** @type {Props} */
+	let {
+		class: className = '',
+		value = null,
+		max = null,
+		height = '1.5mm',
+		width = 10
+	} = $props();
+
+	let indeterminate = $derived(value === null || max === null)
+	let percentage = $derived(indeterminate ? width : value / max)
 </script>
 
 <progress-bar class:indeterminate class="flex w-full {className}" style:height>
-	<value-bar style:width="{percentage}%" style:height />
+	<value-bar style:width="{percentage}%" style:height></value-bar>
 </progress-bar>

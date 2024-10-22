@@ -1,10 +1,22 @@
 <script>
 	import { slide, fade } from 'svelte/transition'
 
-	let className = 'menu'
-	export { className as class }
-	export let top = 16
-	export let offset = -top
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {number} [top]
+	 * @property {any} [offset]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = 'menu',
+		top = 16,
+		offset = -top,
+		children
+	} = $props();
 </script>
 
 <scroll
@@ -13,5 +25,5 @@
 	style:top="{top}px"
 	class="flex flex-col absolute w-full z-10 overflow-scroll {className}"
 >
-	<slot />
+	{@render children?.()}
 </scroll>

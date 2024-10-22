@@ -1,18 +1,37 @@
 <script>
+	import { run, createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
 
-	let className = ''
-	export { className as class }
-	export let name
-	export let state = null
-	export let size = 'base'
-	export let role = 'img'
-	export let label = name
-	export let disabled = false
-	export let tabindex = 0
-	export let checked = null
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} name
+	 * @property {any} [state]
+	 * @property {string} [size]
+	 * @property {string} [role]
+	 * @property {any} [label]
+	 * @property {boolean} [disabled]
+	 * @property {number} [tabindex]
+	 * @property {any} [checked]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		name,
+		state = null,
+		size = 'base',
+		role = 'img',
+		label = name,
+		disabled = false,
+		tabindex = $bindable(0),
+		checked = $bindable(null)
+	} = $props();
 
 	function handleClick(e) {
 		if (disabled) {
@@ -26,14 +45,18 @@
 		dispatch('click')
 	}
 
-	$: tabindex = role === 'img' || disabled ? -1 : tabindex
-	$: small = size === 'small' || className.includes('small')
-	$: medium = size === 'medium' || className.includes('medium')
-	$: large = size === 'large' || className.includes('large')
-	$: checked = ['checkbox', 'option'].includes(role) ? (checked !== null ? checked : false) : null
+	run(() => {
+		tabindex = role === 'img' || disabled ? -1 : tabindex
+	});
+	let small = $derived(size === 'small' || className.includes('small'))
+	let medium = $derived(size === 'medium' || className.includes('medium'))
+	let large = $derived(size === 'large' || className.includes('large'))
+	run(() => {
+		checked = ['checkbox', 'option'].includes(role) ? (checked !== null ? checked : false) : null
+	});
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <icon
 	class="flex flex-shrink-0 items-center justify-center {className}"
 	class:small
@@ -43,14 +66,14 @@
 	{role}
 	aria-label={label}
 	aria-checked={checked}
-	on:mouseenter
-	on:mouseleave
-	on:focus
-	on:blur
-	on:click={handleClick}
-	on:keydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
+	onmouseenter={bubble('mouseenter')}
+	onmouseleave={bubble('mouseleave')}
+	onfocus={bubble('focus')}
+	onblur={bubble('blur')}
+	onclick={handleClick}
+	onkeydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
 	data-state={state}
 	{tabindex}
 >
-	<i class={name} aria-hidden="true" />
+	<i class={name} aria-hidden="true"></i>
 </icon>

@@ -1,12 +1,13 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { defaultFields, getValue, getText } from '@rokkit/core'
 
-	export let value
-	export let fields = defaultFields
-	export let options = []
+	let { value = $bindable(), fields = defaultFields, options = [], ...rest } = $props();
 </script>
 
-<select bind:value {...$$restProps} on:change on:focus on:blur>
+<select bind:value {...rest} onchange={bubble('change')} onfocus={bubble('focus')} onblur={bubble('blur')}>
 	{#each options as option}
 		<option value={getValue(option, fields)}>{getText(option, fields)}</option>
 	{/each}
