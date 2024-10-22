@@ -20,7 +20,7 @@ describe('view for lists', () => {
 			})
 			expect(Object.keys(view)).toEqual([
 				'subscribe',
-				'getEvents',
+				// 'getEvents',
 				'currentItem',
 				'moveByOffset',
 				'moveFirst',

@@ -43,15 +43,14 @@ export function createView(items, options = {}) {
 	const { subscribe } = view
 
 	const updateView = (updateCallback) => {
-		let state = get(view)
-		state = updateCallback(state)
-		events.update((data) => [...data, ...(state.events ?? [])])
+		const state = updateCallback({ ...get(view), events: [] })
+		events.update((value) => [...value, ...(state.events ?? [])])
 		view.set(omit(['events'], state))
 	}
 
 	return {
 		subscribe,
-		getEvents: () => getAllEvents(view),
+		// getEvents: () => getAllEvents(view),
 		currentItem: () => getCurrentItem(view),
 		moveByOffset: (offset = 1) => updateView((state) => moveByOffset(state, offset)),
 		moveFirst: () => updateView((state) => moveByOffset(state, -Infinity)),

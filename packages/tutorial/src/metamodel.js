@@ -2,6 +2,78 @@ import { omit } from 'ramda'
 import { folderHierarchy, getSequenceAndKey } from './utils'
 
 /**
+ * Returns the content based on the name of the item.
+ *
+ * @param {Object} item - The item to get the content from.
+ * @param {import('./types.js').TutorialOptions} options - The options to use.
+ * @returns {Object} - The content of the item.
+ */
+function getContentBasedOnName(item, options) {
+	if (item.name === options.metadataFilename) {
+		return { ...item.content }
+	}
+
+	if (item.name === options.readmeFilename) {
+		return { ...item.content.metadata, readme: item.content.default }
+	}
+
+	if (item.name === options.previewFilename) {
+		return item.content.default ? { preview: item.content.default } : { content: item.content }
+	}
+
+	return { content: item.content }
+}
+
+/**
+ * Handles the item with a path.
+ *
+ * @param {Object} data - The data object to add the item to.
+ * @param {Object} item - The item to add to the data object.
+ * @param {string} key - The key to use for the item in the data object.
+ */
+function handleItemWithPath(data, item, key) {
+	const root = item.path.split('/').shift()
+	data[key][root] = data[key][root] || {}
+	data[key][root].files = data[key][root].files || []
+
+	if (item.content) {
+		data[key][root].files.push(omit(['parts'], item))
+	} else if (item.preview) {
+		data[key][root].preview = item.preview
+	}
+}
+
+/**
+ * Handles the item without a path.
+ *
+ * @param {Object} data - The data object to add the item to.
+ * @param {Object} item - The item to add to the data object.
+ * @param {string} key - The key to use for the item in the data object.
+ */
+function handleItemWithoutPath(data, item, key) {
+	const route = item.parts.map((part) => part.key).join('/')
+	data[key] = {
+		...data[key],
+		...(item.readme ? { route } : {}),
+		...omit(['parts', 'path', 'type', 'name'], item)
+	}
+}
+/**
+ * Handles the item based on whether it has a path or not.
+ *
+ * @param {Object} data - The data object to add the item to.
+ * @param {Object} item - The item to add to the data object.
+ * @param {string} key - The key to use for the item in the data object.
+ */
+function handleItemPath(data, item, key) {
+	if (item.path) {
+		handleItemWithPath(data, item, key)
+	} else {
+		handleItemWithoutPath(data, item, key)
+	}
+}
+
+/**
  * Fetches the content of the modules.
  *
  * @param {Object} modules - The modules to fetch the content from.
@@ -66,29 +138,6 @@ export function addModuleMetadata(modules, options) {
 }
 
 /**
- * Returns the content based on the name of the item.
- *
- * @param {Object} item - The item to get the content from.
- * @param {import('./types.js').TutorialOptions} options - The options to use.
- * @returns {Object} - The content of the item.
- */
-function getContentBasedOnName(item, options) {
-	if (item.name === options.metadataFilename) {
-		return { ...item.content }
-	}
-
-	if (item.name === options.readmeFilename) {
-		return { ...item.content.metadata, readme: item.content.default }
-	}
-
-	if (item.name === options.previewFilename) {
-		return item.content.default ? { preview: item.content.default } : { content: item.content }
-	}
-
-	return { content: item.content }
-}
-
-/**
  * Recursively add part and its children to the data object.
  *
  * @param {Object} data - The data object to add the part to.
@@ -106,56 +155,6 @@ export function tutorialsToNestedObject(data, item, index = 0) {
 		handleItemPath(data, item, key)
 	}
 	return data
-}
-
-/**
- * Handles the item based on whether it has a path or not.
- *
- * @param {Object} data - The data object to add the item to.
- * @param {Object} item - The item to add to the data object.
- * @param {string} key - The key to use for the item in the data object.
- */
-function handleItemPath(data, item, key) {
-	if (item.path) {
-		handleItemWithPath(data, item, key)
-	} else {
-		handleItemWithoutPath(data, item, key)
-	}
-}
-
-/**
- * Handles the item with a path.
- *
- * @param {Object} data - The data object to add the item to.
- * @param {Object} item - The item to add to the data object.
- * @param {string} key - The key to use for the item in the data object.
- */
-function handleItemWithPath(data, item, key) {
-	const root = item.path.split('/').shift()
-	data[key][root] = data[key][root] || {}
-	data[key][root].files = data[key][root].files || []
-
-	if (item.content) {
-		data[key][root].files.push(omit(['parts'], item))
-	} else if (item.preview) {
-		data[key][root].preview = item.preview
-	}
-}
-
-/**
- * Handles the item without a path.
- *
- * @param {Object} data - The data object to add the item to.
- * @param {Object} item - The item to add to the data object.
- * @param {string} key - The key to use for the item in the data object.
- */
-function handleItemWithoutPath(data, item, key) {
-	const route = item.parts.map((part) => part.key).join('/')
-	data[key] = {
-		...data[key],
-		...(item.readme ? { route } : {}),
-		...omit(['parts', 'path', 'type', 'name'], item)
-	}
 }
 
 /**

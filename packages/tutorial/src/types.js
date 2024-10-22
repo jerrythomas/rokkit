@@ -1,4 +1,11 @@
 /**
+ * @typedef {Object} Extractors
+ * @property {function(string): Promise<any>} js - Function to extract metadata from JavaScript files.
+ * @property {function(string): Promise<any>} json - Function to extract metadata from JSON files.
+ * @property {function(string): Promise<any>} md - Function to extract metadata from Markdown files.
+ */
+
+/**
  * @typedef StoryFile
  * @property {string} file
  * @property {string} fileName

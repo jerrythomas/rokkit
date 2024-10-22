@@ -1,6 +1,30 @@
 import { getMockNode } from '../mocks'
 
 /**
+ * Generates a message based on the validation state
+ * @param {Array<string>} events
+ * @param {Array<string>} handlerKeys
+ * @param {boolean} pass
+ * @param {boolean} validEvents
+ * @returns {string}
+ */
+function getMessage(events, handlerKeys, pass, validEvents) {
+	let message = ''
+	const names = events.join(', ')
+	const keys = handlerKeys.join(', ')
+
+	if (pass) {
+		message = `Expected other handlers besides [${names}] to be called, but none were`
+	} else if (validEvents) {
+		message = `Expected only [${names}] to be called once and the other handlers to not be called`
+	} else {
+		message = `Expected events from [${keys}] but got unexpected events [${names}]`
+	}
+
+	return message
+}
+
+/**
  * Checks if all the given events are registered by the action and cleaned up on destroy.
  *
  * @param {*} action
@@ -61,28 +85,4 @@ export function toOnlyTrigger(handler, events) {
 		message: () => getMessage(events, handlerKeys, pass, validEvents),
 		pass
 	}
-}
-
-/**
- * Generates a message based on the validation state
- * @param {Array<string>} events
- * @param {Array<string>} handlerKeys
- * @param {boolean} pass
- * @param {boolean} validEvents
- * @returns {string}
- */
-function getMessage(events, handlerKeys, pass, validEvents) {
-	let message = ''
-	const names = events.join(', ')
-	const keys = handlerKeys.join(', ')
-
-	if (pass) {
-		message = `Expected other handlers besides [${names}] to be called, but none were`
-	} else if (validEvents) {
-		message = `Expected only [${names}] to be called once and the other handlers to not be called`
-	} else {
-		message = `Expected events from [${keys}] but got unexpected events [${names}]`
-	}
-
-	return message
 }
