@@ -1,4 +1,33 @@
 import { vi } from 'vitest'
+
+/**
+ * Creates an array of elements with the specified size
+ *
+ * @param {number} count
+ * @param {number} size
+ * @param {string} [prop='offsetHeight']
+ * @returns {Array<Object<string, number>>}
+ */
+export function elementsWithSize(count, size, prop = 'offsetHeight') {
+	return Array.from({ length: count }, () => ({
+		[prop]: size
+	}))
+}
+
+/**
+ * Creates an array of elements with mixed sizes
+ *
+ * @param {Array<{count: number, size: number}>} data
+ * @param {string} prop
+ * @returns {Array<Object<string, number>>}
+ */
+export function mixedSizeElements(data, prop) {
+	return data.reduce(
+		(elements, { count, size }) => [...elements, ...elementsWithSize(count, size, prop)],
+		[]
+	)
+}
+
 /**
  * Creates a mock node with functions to add and remove event handlers
  *
@@ -51,17 +80,4 @@ export function createNestedElement(item) {
 	}
 
 	return element
-}
-
-export function mixedSizeElements(data, prop) {
-	return data.reduce(
-		(elements, { count, size }) => [...elements, ...elementsWithSize(count, size, prop)],
-		[]
-	)
-}
-
-export function elementsWithSize(count, size, prop = 'offsetHeight') {
-	return Array.from({ length: count }, () => ({
-		[prop]: size
-	}))
 }

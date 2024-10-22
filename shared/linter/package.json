@@ -1,8 +1,8 @@
 {
   "name": "eslint-config-shared",
   "version": "1.0.0-next.99",
-  "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --fix .",
@@ -21,5 +21,11 @@
   "devDependencies": {
     "eslint-plugin-svelte": "^2.44.0",
     "svelte": "^4.2.19"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.js"
+    }
   }
 }

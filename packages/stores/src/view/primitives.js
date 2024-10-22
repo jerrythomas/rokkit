@@ -322,7 +322,7 @@ function updateChildVisibility(children, isVisible) {
  * @returns {Object} The updated state.
  */
 export function addEvent(state, event, index = -1) {
-	state.events = state.events ?? []
+	// state.events = state.events ?? []
 
 	if (event === 'select') {
 		const detail = state.selectedItems.map((i) => state.data[i].value)

@@ -5,7 +5,6 @@ export async function load() {
 	await guide.assimilate()
 	return {
 		sections: [],
-		// eslint-disable-next-line no-undef
 		version: __APP_VERSION__,
 		app: {
 			name: 'Rokkit',

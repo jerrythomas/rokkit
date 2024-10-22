@@ -25,11 +25,6 @@
 
 		dispatch('select', { item: value, indices: cursor })
 	}
-	// function equals(a, b) {
-	// 	if (Array.isArray(fields.id)) return fields.id.every((id) => isObject(a) && a[id] === b[id])
-	// 	if (isObject(a) && fields.id in a) return a[fields.id] === b[fields.id]
-	// 	return JSON.stringify(a) === JSON.stringify(b)
-	// }
 
 	$: fields = { ...defaultFields, ...fields }
 	$: using = { default: Item, ...using }

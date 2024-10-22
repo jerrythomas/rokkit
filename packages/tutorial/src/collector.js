@@ -6,6 +6,7 @@ import { omit } from 'ramda'
 import { getSequenceAndKey, folderHierarchy } from './utils.js'
 import { getFiles } from './files.js'
 
+/** @type {import('./types').Extractors} */
 const extractors = {
 	js: async (filePath) => (await import(/* @vite-ignore */ filePath)).default,
 	json: async (filePath) => JSON.parse(await fs.promises.readFile(filePath, 'utf-8')),
@@ -13,37 +14,6 @@ const extractors = {
 		const fileContent = await fs.promises.readFile(filePath, 'utf-8')
 		return frontmatter(fileContent).data
 	}
-}
-
-/**
- * Recursively add part and its children to the data object.
- * @param {Object} data - The data object to add the part to.
- * @param {Object} item - The item containing the part information.
- * @param {number} index - The index of the part in the item's parts array.
- * @returns {Object} - The updated data object.
- */
-function addPart(data, item, index) {
-	const { key, sequence } = item.parts[index]
-
-	if (!data[key]) {
-		data[key] = {
-			sequence,
-			key
-		}
-	}
-
-	if (index < item.parts.length - 1) {
-		if (!data[key].children) {
-			data[key].children = {}
-		}
-		addPart(data[key].children, item, index + 1)
-	} else {
-		data[key] = {
-			...data[key],
-			...omit(['parts'], item)
-		}
-	}
-	return data
 }
 
 /**
@@ -83,6 +53,12 @@ export async function readFolderContent(folder) {
 	return files
 }
 
+/**
+ * Get the folder content and its preview file if it exists.
+ * @param {string} baseFolder - The base folder path.
+ * @param {string} folder - The folder to get the content from.
+ * @returns {Promise<Object|null>} - A promise that resolves to an object containing the folder content and preview file, or null if the folder does not exist or is empty.
+ */
 export async function getFolder(baseFolder, folder) {
 	const folderPath = path.join(baseFolder, folder)
 	if (!fs.existsSync(folderPath)) return null
@@ -97,6 +73,7 @@ export async function getFolder(baseFolder, folder) {
 		files: folderHierarchy(files)
 	}
 }
+
 /**
  * Read and add metadata for each item in the data array.
  * @param {string} rootFolder - The root folder containing the items.
@@ -118,6 +95,37 @@ export async function enrich(rootFolder, data) {
 }
 
 /**
+ * Recursively add part and its children to the data object.
+ * @param {Object} data - The data object to add the part to.
+ * @param {Object} item - The item containing the part information.
+ * @param {number} index - The index of the part in the item's parts array.
+ * @returns {Object} - The updated data object.
+ */
+function addPart(data, item, index) {
+	const { key, sequence } = item.parts[index]
+
+	if (!data[key]) {
+		data[key] = {
+			sequence,
+			key
+		}
+	}
+
+	if (index < item.parts.length - 1) {
+		if (!data[key].children) {
+			data[key].children = {}
+		}
+		addPart(data[key].children, item, index + 1)
+	} else {
+		data[key] = {
+			...data[key],
+			...omit(['parts'], item)
+		}
+	}
+	return data
+}
+
+/**
  * Convert the array of file objects into a hierarchical data structure.
  * @param {Array} data - The array of file objects.
  * @returns {Object} - The hierarchical data object.
@@ -130,6 +138,28 @@ export function transform(data) {
 	return result
 }
 
+/**
+ * Validate the level of the data object.
+ * @param {Object} data - The data object to validate.
+ * @param {string} key - The key of the data object to validate.
+ * @param {Array} invalid - The array to store invalid entries.
+ */
+function validateLevel(data, key, invalid) {
+	if (!data[key].title && !data[key].name) {
+		invalid.push({
+			key,
+			path: data[key].path,
+			error: 'Each level should have a title or a name property.'
+		})
+	}
+}
+
+/**
+ * Remove invalid entries from the data object.
+ * @param {Object} data - The data object to remove invalid entries from.
+ * @param {Object} options - The options object containing validation criteria.
+ * @returns {Object} - An object containing the cleaned data and any errors found.
+ */
 export function removeInvalidEntries(data, options) {
 	let errors = []
 	const invalid = []
@@ -161,20 +191,10 @@ export function removeInvalidEntries(data, options) {
 	}
 }
 
-function validateLevel(data, key, invalid) {
-	if (!data[key].title && !data[key].name) {
-		invalid.push({
-			key,
-			path: data[key].path,
-			error: 'Each level should have a title or a name property.'
-		})
-	}
-	// return null
-}
 /**
- *
- * @param {import('./types').TutorialOptions} options
- * @returns
+ * Collect tutorials based on the provided options.
+ * @param {import('./types').TutorialOptions} options - The options for collecting tutorials.
+ * @returns {Promise<void>} - A promise that resolves when the tutorials have been collected and written to the metadata file.
  */
 export async function collectTutorials(options) {
 	const config = {

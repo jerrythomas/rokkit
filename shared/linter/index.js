@@ -1,43 +1,53 @@
-module.exports = {
-	parserOptions: {
-		sourceType: 'module',
-		ecmaVersion: 'latest',
-		allowImportExportEverywhere: false
+export const sharedConfig = [
+	{
+		ignores: [
+			'**/dist/**',
+			'**/node_modules/**',
+			'**/coverage/**',
+			'**/.svelte-kit/',
+			'**/build/**',
+			'packages/archive',
+			'packages/icons/lib'
+		]
 	},
-	env: {
-		browser: true,
-		es6: true,
-		node: true
-	},
-	ignorePatterns: ['dist'],
-	rules: {
-		complexity: ['warn', 5],
-		'max-depth': ['error', 3],
-		'max-params': ['warn', 4],
-		'no-console': 'error',
-		'prefer-const': 'error',
-		'prefer-template': 'error',
-		eqeqeq: 'error',
-		'no-eq-null': 'error',
-		'no-implicit-coercion': 'error',
-		// 'no-use-before-define': 'error',
-		'max-lines-per-function': [
-			'warn',
-			{
-				max: 30,
-				skipBlankLines: true,
-				skipComments: true
+	{
+		languageOptions: {
+			sourceType: 'module',
+			ecmaVersion: 'latest',
+			globals: {
+				browser: true,
+				es6: true,
+				node: true
 			}
-		],
-		'no-return-await': 'error',
-		'require-await': 'error'
+		},
+		rules: {
+			complexity: ['warn', 5],
+			'max-depth': ['error', 3],
+			'max-params': ['warn', 4],
+			'no-console': 'error',
+			'prefer-const': 'error',
+			'prefer-template': 'error',
+			eqeqeq: 'error',
+			'no-eq-null': 'error',
+			'no-implicit-coercion': 'error',
+			'no-use-before-define': 'error',
+			'max-lines-per-function': [
+				'warn',
+				{
+					max: 30,
+					skipBlankLines: true,
+					skipComments: true
+				}
+			],
+			'no-return-await': 'error',
+			'require-await': 'error'
+		},
+		files: ['**/*.js']
 	},
-	overrides: [
-		{
-			files: ['*.spec.js'],
-			rules: {
-				'max-lines-per-function': 'off'
-			}
+	{
+		files: ['**/*.spec.js', '**/spec/mocks/**'],
+		rules: {
+			'max-lines-per-function': 'off'
 		}
-	]
-}
+	}
+]
