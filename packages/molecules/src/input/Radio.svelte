@@ -1,19 +1,39 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields, defaultStateIcons, getValue, getText } from '@rokkit/core'
 
-	let className = ''
-	export { className as class }
-	export let value
-	export let name
-	export let id = null
-	export let fields = defaultFields
-	export let options = []
-	export let readOnly = false
-	export let textAfter = true
-	export let stateIcons = defaultStateIcons.radio
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} value
+	 * @property {any} name
+	 * @property {any} [id]
+	 * @property {any} [fields]
+	 * @property {any} [options]
+	 * @property {boolean} [readOnly]
+	 * @property {boolean} [textAfter]
+	 * @property {any} [stateIcons]
+	 */
 
-	$: fields = { ...defaultFields, ...fields }
-	$: flexDirection = textAfter ? 'flex-row' : 'flex-row-reverse'
+	/** @type {Props} */
+	let {
+		class: className = '',
+		value = $bindable(),
+		name,
+		id = null,
+		fields = $bindable(defaultFields),
+		options = [],
+		readOnly = false,
+		textAfter = true,
+		stateIcons = defaultStateIcons.radio
+	} = $props();
+
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	let flexDirection = $derived(textAfter ? 'flex-row' : 'flex-row-reverse')
 </script>
 
 <radio-group
@@ -28,7 +48,7 @@
 
 		<label class="flex {flexDirection} items-center gap-2">
 			<input hidden type="radio" {name} bind:group={value} value={itemValue} {readOnly} />
-			<icon class={stateIcons[state]} />
+			<icon class={stateIcons[state]}></icon>
 			<p>{label}</p>
 		</label>
 	{/each}

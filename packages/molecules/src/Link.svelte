@@ -2,14 +2,20 @@
 	import { defaultFields, getAttribute, getIcon, getText } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
-	/** @type {*} */
-	export let value
-	export let fields = defaultFields
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {*} value
+	 * @property {any} [fields]
+	 */
 
-	$: isObject = typeof (value ?? '-') === 'object'
-	$: text = getText(value, fields)
-	$: href = getAttribute(value, fields.url)
-	$: target = getAttribute(value, fields.target)
+	/** @type {Props} */
+	let { value, fields = defaultFields } = $props();
+
+	let isObject = $derived(typeof (value ?? '-') === 'object')
+	let text = $derived(getText(value, fields))
+	let href = $derived(getAttribute(value, fields.url))
+	let target = $derived(getAttribute(value, fields.target))
 </script>
 
 <a {href} {target}>

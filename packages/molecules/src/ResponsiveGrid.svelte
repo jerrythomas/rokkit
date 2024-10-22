@@ -1,22 +1,38 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields } from '@rokkit/core'
 	import { swipeable, navigable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
 
-	let className = 'three-col'
-	export { className as class }
-	export let items
-	export let fields = {}
-	export let small = true
-	export let duration = 400
-	export let easing = cubicInOut
-	export let value = null
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} items
+	 * @property {any} [fields]
+	 * @property {boolean} [small]
+	 * @property {number} [duration]
+	 * @property {any} [easing]
+	 * @property {any} [value]
+	 */
 
-	let previous = -1
-	let activeIndex = 0
-	let direction = 1
-	let width
+	/** @type {Props} */
+	let {
+		class: className = 'three-col',
+		items,
+		fields = $bindable({}),
+		small = true,
+		duration = 400,
+		easing = cubicInOut,
+		value = $bindable(null)
+	} = $props();
+
+	let previous = $state(-1)
+	let activeIndex = $state(0)
+	let direction = $state(1)
+	let width = $state()
 
 	function handleNext() {
 		if (activeIndex < items.length - 1) value = items[activeIndex + 1]
@@ -31,22 +47,26 @@
 		return index > -1 ? index : 0
 	}
 
-	$: fields = { ...defaultFields, ...fields }
-	$: activeIndex = activeIndexFromPage(value)
-	$: {
+	run(() => {
+		fields = { ...defaultFields, ...fields }
+	});
+	run(() => {
+		activeIndex = activeIndexFromPage(value)
+	});
+	run(() => {
 		direction = Math.sign(activeIndex - previous)
 		previous = activeIndex
-	}
+	});
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <container
 	use:swipeable={{ enabled: small }}
-	on:swipeLeft={handleNext}
-	on:swipeRight={handlePrevious}
+	onswipeLeft={handleNext}
+	onswipeRight={handlePrevious}
 	use:navigable={{ enabled: small }}
-	on:previous={handlePrevious}
-	on:next={handleNext}
+	onprevious={handlePrevious}
+	onnext={handleNext}
 	tabindex={0}
 	class="overflow-hidden {className}"
 	bind:clientWidth={width}
@@ -56,6 +76,7 @@
 		{@const props = item[fields.props]}
 		{@const component = item[fields.component]}
 		{#if small && index === activeIndex}
+			{@const SvelteComponent = component}
 			<segment
 				class="absolute w-full h-full {segmentClass}"
 				out:fade={{
@@ -65,11 +86,12 @@
 				}}
 				in:fly={{ x: direction * width, duration, easing }}
 			>
-				<svelte:component this={component} {...props} />
+				<SvelteComponent {...props} />
 			</segment>
 		{:else if !small}
+			{@const SvelteComponent_1 = component}
 			<segment class={segmentClass}>
-				<svelte:component this={component} {...props} />
+				<SvelteComponent_1 {...props} />
 			</segment>
 		{/if}
 	{/each}

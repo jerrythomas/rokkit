@@ -1,43 +1,65 @@
 <script>
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { Icon } from '@rokkit/atoms'
-	let className = ''
 
-	export { className as class }
+	
 
-	export let leftIcon = null
-	export let rightIcon = null
-	export let label = null
-	export let type = 'submit'
-	export let style = 'default'
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [leftIcon]
+	 * @property {any} [rightIcon]
+	 * @property {any} [label]
+	 * @property {string} [type]
+	 * @property {string} [style]
+	 * @property {import('svelte').Snippet} [left]
+	 * @property {import('svelte').Snippet} [children]
+	 * @property {import('svelte').Snippet} [right]
+	 */
 
-	$: isPrimary = type === 'primary'
-	$: isOutlined = style === 'outlined'
+	/** @type {Props} */
+	let {
+		class: className = '',
+		leftIcon = null,
+		rightIcon = null,
+		label = null,
+		type = 'submit',
+		style = 'default',
+		left,
+		children,
+		right
+	} = $props();
+
+	let isPrimary = $derived(type === 'primary')
+	let isOutlined = $derived(style === 'outlined')
 </script>
 
 <button
 	type="submit"
 	class="flex flex-row items-center {className}"
-	on:click
+	onclick={bubble('click')}
 	class:is-primary={isPrimary}
 	class:is-outlined={isOutlined}
 >
 	{#if leftIcon}
 		<icon-left class="flex flex-row">
-			<slot name="left">
+			{#if left}{@render left()}{:else}
 				<Icon name={leftIcon} />
-			</slot>
+			{/if}
 		</icon-left>
 	{/if}
-	<slot>
+	{#if children}{@render children()}{:else}
 		{#if label}
 			<p>{label}</p>
 		{/if}
-	</slot>
+	{/if}
 	{#if rightIcon}
 		<icon-right>
-			<slot name="right">
+			{#if right}{@render right()}{:else}
 				<Icon name={rightIcon} />
-			</slot>
+			{/if}
 		</icon-right>
 	{/if}
 </button>

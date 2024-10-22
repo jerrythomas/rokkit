@@ -2,9 +2,15 @@
 	import { format, isSameDay, addMonths } from 'date-fns'
 	import { weekdays, getCalendarDays } from '@rokkit/core'
 
-	export let value = new Date()
-	export let holidays = []
-	export let fixed = true
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [value]
+	 * @property {any} [holidays]
+	 * @property {boolean} [fixed]
+	 */
+
+	/** @type {Props} */
+	let { value = $bindable(new Date()), holidays = [], fixed = true } = $props();
 
 	function handleChange(event) {
 		value = new Date(event.target.value, value.getMonth(), value.getDate())
@@ -16,21 +22,21 @@
 		value = addMonths(value, -1)
 	}
 
-	$: year = value.getFullYear()
-	$: days = getCalendarDays(value, holidays, fixed)
+	let year = $derived(value.getFullYear())
+	let days = $derived(getCalendarDays(value, holidays, fixed))
 </script>
 
 <calendar class="mx-auto flex flex-col select-none items-center">
 	<month-year class="h-10 w-full flex flex-row items-center">
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<square
 			class="cursor-pointer select-none"
-			on:click={previousMonth}
+			onclick={previousMonth}
 			role="option"
 			aria-selected={false}
 			tabindex="0"
 		>
-			<icon class="chevron-left" />
+			<icon class="chevron-left"></icon>
 		</square>
 		<span class="flex flex-grow items-center justify-center gap-1px">
 			<p>{format(value, 'MMMM')}</p>
@@ -38,18 +44,18 @@
 				type="number"
 				value={year}
 				class="w-14 flex flex-grow-0 border-none bg-transparent"
-				on:change={handleChange}
+				onchange={handleChange}
 			/>
 		</span>
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<square
 			class="cursor-pointer select-none"
-			on:click={nextMonth}
+			onclick={nextMonth}
 			role="option"
 			aria-selected={false}
 			tabindex="0"
 		>
-			<icon class="chevron-right" />
+			<icon class="chevron-right"></icon>
 		</square>
 	</month-year>
 	<cal-body class="w-full flex flex-col cursor-pointer p-1">
@@ -63,11 +69,11 @@
 		<days-of-month class="grid grid-cols-7 grid-rows-5">
 			{#each days as { day, offset, date, weekend }}
 				{@const start = offset > 0 ? offset : 'auto'}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<day-of-month
 					class:weekend
 					style:grid-column-start={start}
-					on:click={() => (value = date)}
+					onclick={() => (value = date)}
 					role="option"
 					aria-selected={isSameDay(date, value)}
 					tabindex="0"

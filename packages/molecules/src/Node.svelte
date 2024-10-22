@@ -1,23 +1,46 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { defaultFields, defaultStateIcons, getComponent, isExpanded } from '@rokkit/core'
 	import { Icon, Connector } from '@rokkit/atoms'
 
-	export let value
-	export let fields = defaultFields
-	export let types = []
-	export let stateIcons = defaultStateIcons.node
 
-	export let selected = false
-	export let using = {}
-	export let rtl = false
-	export let path = []
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} value
+	 * @property {any} [fields]
+	 * @property {any} [types]
+	 * @property {any} [stateIcons]
+	 * @property {boolean} [selected]
+	 * @property {any} [using]
+	 * @property {boolean} [rtl]
+	 * @property {any} [path]
+	 * @property {import('svelte').Snippet} [children]
+	 */
 
-	$: stateIcons = { ...defaultStateIcons.node, ...stateIcons }
-	$: stateName = isExpanded(value, fields) ? 'opened' : 'closed'
-	$: state = isExpanded(value, fields)
+	/** @type {Props} */
+	let {
+		value = $bindable(),
+		fields = defaultFields,
+		types = [],
+		stateIcons = $bindable(defaultStateIcons.node),
+		selected = false,
+		using = {},
+		rtl = false,
+		path = [],
+		children
+	} = $props();
+
+	run(() => {
+		stateIcons = { ...defaultStateIcons.node, ...stateIcons }
+	});
+	let stateName = $derived(isExpanded(value, fields) ? 'opened' : 'closed')
+	let state = $derived(isExpanded(value, fields)
 		? { icon: stateIcons.opened, label: 'collapse' }
-		: { icon: stateIcons.closed, label: 'expand' }
-	$: component = getComponent(value, fields, using)
+		: { icon: stateIcons.closed, label: 'expand' })
+	let component = $derived(getComponent(value, fields, using))
+
+	const SvelteComponent = $derived(component);
 </script>
 
 <node
@@ -38,8 +61,8 @@
 			{/if}
 		{/each}
 		<item>
-			<svelte:component this={component} bind:value {fields} />
+			<SvelteComponent bind:value {fields} />
 		</item>
 	</div>
-	<slot />
+	{@render children?.()}
 </node>
