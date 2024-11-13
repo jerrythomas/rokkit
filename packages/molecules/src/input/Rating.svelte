@@ -1,11 +1,6 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
-	import { createEventDispatcher } from 'svelte'
-	import { defaultStateIcons } from '@rokkit/core'
+	import { createEmitter, defaultStateIcons } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
-	const dispatch = createEventDispatcher()
 
 	/**
 	 * @typedef {Object} Props
@@ -17,6 +12,7 @@
 	 * @property {any} [stateIcons]
 	 * @property {string} [placeholder]
 	 * @property {number} [tabindex]
+	 * @event {CustomEvent} [onchange]
 	 */
 
 	/** @type {Props} */
@@ -28,24 +24,24 @@
 		disabled = false,
 		stateIcons = defaultStateIcons.rating,
 		placeholder = 'Rating',
-		tabindex = 0
-	} = $props();
+		tabindex = 0,
+		...events
+	} = $props()
 
+	let emitter = $derived(createEmitter(events, ['change']))
 	function handleClick(index) {
 		if (!disabled) {
 			value = value === 1 && index === 0 ? index : index + 1
-			dispatch('change', { value })
+			emitter.change({ value })
 		}
 	}
 	function handleEnter(index) {
 		if (!disabled) {
-			// hovering = true
 			hoverIndex = index
 		}
 	}
 	function handleLeave() {
 		if (!disabled) {
-			// hovering = false
 			hoverIndex = -1
 		}
 	}
@@ -65,7 +61,6 @@
 		}
 	}
 
-	// let hovering = false
 	let hoverIndex = $state(-1)
 	let stars = $derived([...Array(max).keys()].map((i) => i < value))
 </script>
@@ -77,8 +72,6 @@
 	class:disabled
 	{tabindex}
 	role="radiogroup"
-	onfocus={bubble('focus')}
-	onblur={bubble('blur')}
 	onkeydown={handleKeyDown}
 >
 	{#if name}
@@ -94,9 +87,9 @@
 			{disabled}
 			checked={index < value}
 			class={index <= hoverIndex ? 'hovering' : ''}
-			on:mouseenter={() => handleEnter(index)}
-			on:mouseleave={handleLeave}
-			on:click={() => handleClick(index)}
+			onmouseenter={() => handleEnter(index)}
+			onmouseleave={handleLeave}
+			onclick={() => handleClick(index)}
 			tabindex="-1"
 		/>
 	{/each}

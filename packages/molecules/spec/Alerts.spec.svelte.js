@@ -18,12 +18,12 @@ describe('Alerts.svelte', () => {
 	})
 
 	// Problem with svelte animations
-	// it('should render alerts', async () => {
-	// 	const { container } = render(Alerts)
-	// 	alerts.send(messages[0])
-	// 	await tick()
-	// 	expect(container).toMatchSnapshot()
-	// })
+	it('should render alerts', async () => {
+		const { container } = render(Alerts)
+		alerts.send(messages[0])
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
 
 	// it('should render alerts with custom entry animation', async () => {
 	// 	const { container } = render(Alerts, { props: { arrival: { animation: fade } } })

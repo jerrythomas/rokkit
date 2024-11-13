@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { fade } from 'svelte/transition'
 	import { cubicIn, cubicOut } from 'svelte/easing'
@@ -8,8 +8,6 @@
 	import { defaultFields, getComponent } from '@rokkit/core'
 	import { pick } from 'ramda'
 	import Item from './Item.svelte'
-
-	
 
 	/**
 	 * @typedef {Object} Props
@@ -27,13 +25,13 @@
 		using = { default: Item },
 		arrival = $bindable({}),
 		departure = $bindable({})
-	} = $props();
+	} = $props()
 
 	function dismissAll() {
 		alerts.clear()
 	}
 
-	run(() => {
+	$effect.pre(() => {
 		arrival = {
 			animation: fade,
 			duration: 300,
@@ -41,8 +39,8 @@
 			delay: 0,
 			...arrival
 		}
-	});
-	run(() => {
+		// });
+		// run(() => {
 		departure = {
 			animation: fade,
 			duration: 300,
@@ -50,7 +48,7 @@
 			delay: 0,
 			...departure
 		}
-	});
+	})
 
 	let arrive = $derived(arrival.animation)
 	let depart = $derived(departure.animation)

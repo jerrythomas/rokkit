@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import { setProperties } from 'validators'
 import Icon from '../src/Icon.svelte'
+import { tick } from 'svelte'
 
 describe('Icon component', () => {
 	it('should render the icon with the provided name', () => {
@@ -19,19 +20,18 @@ describe('Icon component', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render the icon with a custom class', () => {
-		const { container, component } = render(Icon, {
-			props: {
-				name: 'i-rokkit:mode-dark',
-				class: 'custom-class'
-			}
+	it('should render the icon with a custom class', async () => {
+		const props = $state({
+			name: 'i-rokkit:mode-dark',
+			class: 'custom-class'
+		})
+		const { container } = render(Icon, {
+			props
 		})
 		expect(container).toMatchSnapshot()
-
-		// Forced update to fix coverage report for class property
-		// https://github.com/vitest-dev/vitest/issues/3336 */
-		// https://github.com/sveltejs/svelte/issues/7824
-		setProperties(component, { class: 'trigger-update-please' })
+		props.class = 'custom-class-2'
+		await tick()
+		expect(container).toMatchSnapshot()
 	})
 
 	it('should render the icon as disabled', () => {

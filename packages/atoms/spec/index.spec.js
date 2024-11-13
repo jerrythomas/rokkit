@@ -13,8 +13,6 @@ describe('components', () => {
 			'Thumb',
 			'Slider',
 			'Fillable',
-			// 'Markdown',
-			// 'CodeSnippet',
 			'ProgressBar'
 		])
 	})

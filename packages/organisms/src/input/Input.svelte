@@ -1,6 +1,4 @@
 <script>
-	import { run } from 'svelte/legacy';
-
 	import { getContext } from 'svelte'
 	import { types } from './types'
 
@@ -14,16 +12,13 @@
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
-	let { value = $bindable(), type = 'text', using = $bindable({}), ...rest } = $props();
-
-	run(() => {
-		using = { ...types, ...using, ...$registry?.editors }
-	});
+	let { value = $bindable(), type = 'text', using = $bindable({}), ...rest } = $props()
+	let components = $derived({ ...types, ...using, ...$registry?.editors })
 </script>
 
-{#if type in using}
-	{@const SvelteComponent = using[type]}
-	<SvelteComponent bind:value {...rest} on:change on:focus on:blur />
+{#if type in components}
+	{@const SvelteComponent = components[type]}
+	<SvelteComponent bind:value {...rest} />
 {:else}
 	<error>Type "{type}" is not supported by Input</error>
 {/if}

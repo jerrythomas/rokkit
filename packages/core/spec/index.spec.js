@@ -57,7 +57,8 @@ describe('utilities', () => {
 			'compareStrings',
 			'uniqueId',
 			'compact',
-			'toHexString'
+			'toHexString',
+			'createEmitter'
 		])
 	})
 })

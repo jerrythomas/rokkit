@@ -1,8 +1,5 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
-	let { value = $bindable(), ...rest } = $props();
+	let { value = $bindable(), ...rest } = $props()
 </script>
 
-<input bind:value type="file" {...rest} onchange={bubble('change')} onfocus={bubble('focus')} onblur={bubble('blur')} />
+<input bind:value type="file" {...rest} />

@@ -1,20 +1,8 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-	import { getContext } from 'svelte'
 	import { pick, omit } from 'ramda'
 	import { Icon } from '@rokkit/atoms'
 	import Input from './input/Input.svelte'
-	import { componentTypes } from './types'
 
-	const registry = getContext('registry')
-
-	
-	
-	
-	
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -48,11 +36,9 @@
 		using = $bindable({}),
 		nolabel = false,
 		...rest
-	} = $props();
+	} = $props()
 
-	run(() => {
-		using = { ...componentTypes, ...$registry, ...using }
-	});
+	// let usingComponents = $derived({ ...componentTypes, ...$registry, ...using })
 	let pass = $derived(status === 'pass')
 	let fail = $derived(status === 'fail')
 	let warn = $derived(status === 'warn')
@@ -86,7 +72,7 @@
 		{#if type === 'switch'}
 			<label for={name} class:required>{label}</label>
 		{/if}
-		<Input id={name} bind:value {type} {...props} {using} on:change />
+		<Input id={name} bind:value {type} {...props} using={usingComponents} on:change />
 		{#if type === 'checkbox'}
 			<label for={name} class:required>{label}</label>
 		{/if}

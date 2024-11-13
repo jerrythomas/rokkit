@@ -31,7 +31,7 @@ exports[`ProgressBar.svelte > should render progress bar with class 1`] = `
 exports[`ProgressBar.svelte > should render progress bar with class 2`] = `
 <div>
   <progress-bar
-    class="flex w-full my-class indeterminate"
+    class="flex w-full my-class-2 indeterminate"
     style="height: 1.5mm;"
   >
     <value-bar
@@ -63,7 +63,7 @@ exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 0.5%; height: 1.5mm;"
+      style="width: 1%; height: 1.5mm;"
     />
   </progress-bar>
   
