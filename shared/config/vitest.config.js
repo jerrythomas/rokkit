@@ -7,6 +7,7 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
+		include: ['**/*.{spec,spec.svelte}.?(c|m)[jt]s?(x)'],
 		coverage: {
 			reporter: ['text', 'html', 'lcov'],
 			all: true,

@@ -1,4 +1,5 @@
 import { EventManager } from './lib'
+
 /**
  * Svelte action function for forwarding keyboard events from a parent element to a child.
  * The child is selected using a CSS selector passed in the options object.

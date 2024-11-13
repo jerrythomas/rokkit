@@ -1,10 +1,6 @@
 <script>
-	import { run, createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
 	import { defaultFields, getValue, getText } from '@rokkit/core'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -24,11 +20,11 @@
 		readonly = false,
 		flip = false,
 		...rest
-	} = $props();
+	} = $props()
 
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	let flexDirection = $derived(flip ? 'flex-row-reverse' : 'flex-row')
 </script>
 
@@ -38,16 +34,7 @@
 		{@const label = getText(item, fields)}
 
 		<label class="flex {flexDirection} items-center gap-2">
-			<input
-				type="radio"
-				{...rest}
-				bind:group={value}
-				value={itemValue}
-				readOnly={readonly}
-				onchange={bubble('change')}
-				onfocus={bubble('focus')}
-				onblur={bubble('blur')}
-			/>
+			<input type="radio" {...rest} bind:group={value} value={itemValue} readOnly={readonly} />
 			<p>{label}</p>
 		</label>
 	{/each}

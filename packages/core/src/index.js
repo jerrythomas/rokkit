@@ -15,3 +15,4 @@ export * from './utils'
 export * from './theme'
 // skipcq: JS-E1004 - Needed for exposing all functions
 export * from './string'
+export * from './events'

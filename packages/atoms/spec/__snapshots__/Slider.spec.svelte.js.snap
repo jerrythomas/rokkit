@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Slider.svelte > should render 1`] = `
+<div>
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll foo"
+    style="top: 16px;"
+  >
+    <!---->
+  </scroll>
+  
+</div>
+`;
+
+exports[`Slider.svelte > should render 2`] = `
+<div>
+  <scroll
+    class="flex flex-col absolute w-full z-10 overflow-scroll bar"
+    style="top: 16px;"
+  >
+    <!---->
+  </scroll>
+  
+</div>
+`;

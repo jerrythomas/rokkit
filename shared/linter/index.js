@@ -45,7 +45,7 @@ export const sharedConfig = [
 		files: ['**/*.js']
 	},
 	{
-		files: ['**/*.spec.js', '**/spec/mocks/**'],
+		files: ['**/*.spec.js', '**/*.spec.svelte.js', '**/spec/mocks/**'],
 		rules: {
 			'max-lines-per-function': 'off'
 		}

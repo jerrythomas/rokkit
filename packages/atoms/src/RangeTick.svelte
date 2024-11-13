@@ -1,6 +1,4 @@
 <script>
-	import { stopPropagation } from 'svelte/legacy';
-
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 	/**
@@ -11,7 +9,7 @@
 	 */
 
 	/** @type {Props} */
-	let { label = '', value, selected = false } = $props();
+	let { label = '', value, selected = false } = $props()
 
 	function handleClick() {
 		dispatch('click', value)
@@ -21,7 +19,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <tick
 	class="grid grid-cols-2 cursor-pointer select-none"
-	onclick={stopPropagation(handleClick)}
+	onclick={handleClick}
 	role="option"
 	aria-selected={selected}
 	tabindex="0"

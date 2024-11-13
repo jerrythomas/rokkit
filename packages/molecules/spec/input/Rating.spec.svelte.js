@@ -1,10 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { fireEvent, render } from '@testing-library/svelte'
-import { toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
 import Rating from '../../src/input/Rating.svelte'
-
-expect.extend({ toHaveBeenDispatchedWith })
 
 describe('Rating component', () => {
 	it('should render the correct number of stars', () => {
@@ -14,24 +11,27 @@ describe('Rating component', () => {
 		expect(stars.length).toBe(5)
 	})
 
-	// it('should select the correct number of stars when value changes', async () => {
-	// 	const { container, component } = render(Rating, { props: { value: 3, max: 5 } })
-	// 	const stars = container.querySelectorAll('icon')
-	// 	// setProperties(component, { value: 4 })
-	// 	await tick()
-	// 	expect(container).toMatchSnapshot()
-	// 	const selectedStars = Array.from(stars).filter(
-	// 		(star) => star.getAttribute('aria-checked') === 'true'
-	// 	)
-	// 	expect(selectedStars.length).toBe(4)
-	// })
+	it('should select the correct number of stars when value changes', async () => {
+		const props = $state({ value: 3, max: 5 })
+		const { container, component } = render(Rating, { props })
+		const stars = container.querySelectorAll('icon')
+		props.value = 4
+		await tick()
+		expect(container).toMatchSnapshot()
+		const selectedStars = Array.from(stars).filter(
+			(star) => star.getAttribute('aria-checked') === 'true'
+		)
+		expect(selectedStars.length).toBe(4)
+	})
 
 	it('should update value on click when not disabled', async () => {
-		const { container } = render(Rating, { props: { value: 2, max: 5, name: 'rating' } })
+		const props = $state({ value: 2, max: 5, name: 'rating' })
+		const { container } = render(Rating, { props })
 		const stars = container.querySelectorAll('icon')
 
 		await fireEvent.click(stars[3])
 		await tick()
+
 		const selectedStars = Array.from(stars).filter(
 			(star) => star.getAttribute('aria-checked') === 'true'
 		)
@@ -103,15 +103,15 @@ describe('Rating component', () => {
 		const { component, container } = render(Rating, {
 			props: {
 				value: 2,
-				max: 5
-			},
-			events: { change: handleChange }
+				max: 5,
+				onchange: handleChange
+			}
 		})
-		// component.$on('change', handleChange)
+
 		const stars = container.querySelectorAll('icon')
 
 		await fireEvent.click(stars[3])
-		expect(handleChange).toHaveBeenDispatchedWith({ value: 4 })
+		expect(handleChange).toHaveBeenCalledWith({ value: 4 })
 	})
 
 	it('should handle mouseenter and mouseleave events', async () => {

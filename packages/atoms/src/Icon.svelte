@@ -1,12 +1,5 @@
 <script>
-	import { run, createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
-	import { createEventDispatcher } from 'svelte'
-
-	const dispatch = createEventDispatcher()
-
-	
+	import { createEmitter } from '@rokkit/core'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -18,6 +11,10 @@
 	 * @property {boolean} [disabled]
 	 * @property {number} [tabindex]
 	 * @property {any} [checked]
+	 * @event {MouseEvent} [onclick]
+	 * @event {CustomEvent} [onchange]
+	 * @event {MouseEvent} [onmouseenter]
+	 * @event {MouseEvent} [onmouseleave]
 	 */
 
 	/** @type {Props} */
@@ -30,33 +27,34 @@
 		label = name,
 		disabled = false,
 		tabindex = $bindable(0),
-		checked = $bindable(null)
-	} = $props();
+		checked = $bindable(null),
+		...events
+	} = $props()
 
+	let emitter = $derived(createEmitter(events, ['click', 'change', 'mouseenter', 'mouseleave']))
 	function handleClick(e) {
-		if (disabled) {
-			e.preventDefault()
-			e.stopPropagation()
+		e.preventDefault()
+		e.stopPropagation()
+
+		if (!disabled) {
+			if (role === 'checkbox' || role === 'option') {
+				checked = !checked
+				emitter.change(checked)
+			}
+			emitter.click()
 		}
-		if (role === 'checkbox' || role === 'option') {
-			checked = !checked
-			dispatch('change', { detail: checked })
-		}
-		dispatch('click')
 	}
 
-	run(() => {
-		tabindex = role === 'img' || disabled ? -1 : tabindex
-	});
+	let validatedTabindex = $derived(role === 'img' || disabled ? -1 : tabindex)
+	let ariaChecked = $derived(
+		['checkbox', 'option'].includes(role) ? (checked !== null ? checked : false) : null
+	)
+
 	let small = $derived(size === 'small' || className.includes('small'))
 	let medium = $derived(size === 'medium' || className.includes('medium'))
 	let large = $derived(size === 'large' || className.includes('large'))
-	run(() => {
-		checked = ['checkbox', 'option'].includes(role) ? (checked !== null ? checked : false) : null
-	});
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <icon
 	class="flex flex-shrink-0 items-center justify-center {className}"
 	class:small
@@ -65,15 +63,13 @@
 	class:disabled
 	{role}
 	aria-label={label}
-	aria-checked={checked}
-	onmouseenter={bubble('mouseenter')}
-	onmouseleave={bubble('mouseleave')}
-	onfocus={bubble('focus')}
-	onblur={bubble('blur')}
+	aria-checked={ariaChecked}
 	onclick={handleClick}
 	onkeydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
 	data-state={state}
-	{tabindex}
+	tabindex={validatedTabindex}
+	onmouseenter={emitter.mouseenter}
+	onnmouseleave={emitter.nmouseleave}
 >
 	<i class={name} aria-hidden="true"></i>
 </icon>

@@ -1,10 +1,6 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
 	import { defaultStateIcons } from '@rokkit/core'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -25,7 +21,7 @@
 		readOnly = false,
 		stateIcons = defaultStateIcons.checkbox,
 		tabindex = 0
-	} = $props();
+	} = $props()
 
 	let state = $derived(value === null ? 'unknown' : value ? 'checked' : 'unchecked')
 
@@ -54,7 +50,7 @@
 	onkeydown={handleKeydown}
 	{tabindex}
 >
-	<input hidden type="checkbox" {name} {readOnly} bind:checked={value} onchange={bubble('change')} />
+	<input hidden type="checkbox" {name} {readOnly} bind:checked={value} />
 
 	<icon class={stateIcons[state]}></icon>
 </checkbox>

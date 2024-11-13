@@ -69,6 +69,23 @@ exports[`Icon component > should render the icon with a custom class 1`] = `
 </div>
 `;
 
+exports[`Icon component > should render the icon with a custom class 2`] = `
+<div>
+  <icon
+    aria-label="i-rokkit:mode-dark"
+    class="flex flex-shrink-0 items-center justify-center custom-class-2"
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="i-rokkit:mode-dark"
+    />
+  </icon>
+  
+</div>
+`;
+
 exports[`Icon component > should render the icon with checkbox role 1`] = `
 <div>
   <icon
