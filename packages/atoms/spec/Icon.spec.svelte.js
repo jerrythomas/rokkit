@@ -93,12 +93,12 @@ describe('Icon component', () => {
 	it('should render the icon with checkbox role with default state', async () => {
 		const handleClick = vi.fn()
 
-		const { container, component } = render(Icon, {
+		const { container } = render(Icon, {
 			props: {
 				name: 'i-rokkit:mode-dark',
-				role: 'checkbox'
-			},
-			events: { click: handleClick }
+				role: 'checkbox',
+				onclick: handleClick
+			}
 		})
 		expect(container).toMatchSnapshot()
 		const iconWrapper = container.querySelector('[role="checkbox"]')
@@ -119,9 +119,9 @@ describe('Icon component', () => {
 			props: {
 				name: 'i-rokkit:mode-dark',
 				role: 'checkbox',
-				checked: false
-			},
-			events: { click: handleClick }
+				checked: false,
+				onclick: handleClick
+			}
 		})
 		expect(container).toMatchSnapshot()
 
@@ -144,9 +144,9 @@ describe('Icon component', () => {
 			props: {
 				name: 'i-rokkit:mode-dark',
 				role: 'option',
-				checked: false
-			},
-			events: { click: handleClick }
+				checked: false,
+				onclick: handleClick
+			}
 		})
 		expect(container).toMatchSnapshot()
 
@@ -167,9 +167,9 @@ describe('Icon component', () => {
 		const { component, container } = render(Icon, {
 			props: {
 				name: 'i-rokkit:mode-dark',
-				role: 'button'
-			},
-			events: { click: handleClick }
+				role: 'button',
+				onclick: handleClick
+			}
 		})
 		expect(container).toMatchSnapshot()
 		const iconWrapper = container.querySelector('[role="button"]')
@@ -183,9 +183,9 @@ describe('Icon component', () => {
 		const { getByRole, component } = render(Icon, {
 			props: {
 				name: 'i-rokkit:mode-dark',
-				role: 'button'
-			},
-			events: { click: handleClick }
+				role: 'button',
+				onclick: handleClick
+			}
 		})
 
 		const iconWrapper = getByRole('button')
