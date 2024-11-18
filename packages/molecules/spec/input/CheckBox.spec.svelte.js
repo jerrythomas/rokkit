@@ -24,10 +24,11 @@ describe('Checkbox.svelte', () => {
 	})
 
 	it('should apply custom class names', async () => {
-		const { getByRole, container, component } = render(Checkbox, {
+		const props = $state({
 			name: 'test',
 			class: 'custom-class'
 		})
+		const { getByRole, container, component } = render(Checkbox, { props })
 		expect(container).toMatchSnapshot()
 
 		const checkbox = getByRole('checkbox')
@@ -35,8 +36,9 @@ describe('Checkbox.svelte', () => {
 
 		// handle class change failing test
 		// setProperties(component, { class: 'new-class' })
-		// await tick()
-		// expect(Array.from(checkbox.classList)).toContain('new-class')
+		props.class = 'new-class'
+		await tick()
+		expect(Array.from(checkbox.classList)).toContain('new-class')
 	})
 
 	it('should render checkbox with disabled state', () => {
@@ -63,12 +65,11 @@ describe('Checkbox.svelte', () => {
 	})
 
 	it('should handle clicks without changing value when disabled', async () => {
-		const { container, component } = render(Checkbox, {
-			props: {
-				name: 'test',
-				readOnly: true
-			}
+		const props = $state({
+			name: 'test',
+			readOnly: true
 		})
+		const { container } = render(Checkbox, { props })
 		const checkbox = container.querySelector('checkbox')
 
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
@@ -77,10 +78,9 @@ describe('Checkbox.svelte', () => {
 		await tick()
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
 
-		// failing test
-		// setProperties(component, { readOnly: false })
-		// await fireEvent.click(checkbox)
-		// await tick()
-		// expect(checkbox.getAttribute('aria-checked')).toBe('checked')
+		props.readOnly = false
+		await fireEvent.click(checkbox)
+		await tick()
+		expect(checkbox.getAttribute('aria-checked')).toBe('checked')
 	})
 })
