@@ -1,5 +1,68 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`ItemWrapper.svelte > should handle change for removable property 1`] = `
+<div>
+  <wrap-item
+    aria-selected="false"
+    class="flex flex-row items-center "
+    role="option"
+  >
+    <item
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <!---->
+       
+      <p>
+        hello
+      </p>
+      <!---->
+      <!---->
+    </item>
+     
+    <!---->
+  </wrap-item>
+  
+</div>
+`;
+
+exports[`ItemWrapper.svelte > should handle change for removable property 2`] = `
+<div>
+  <wrap-item
+    aria-selected="false"
+    class="flex flex-row items-center "
+    role="option"
+  >
+    <item
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <!---->
+       
+      <p>
+        hello
+      </p>
+      <!---->
+      <!---->
+    </item>
+     
+    <icon
+      aria-label="Remove"
+      class="flex flex-shrink-0 items-center justify-center small"
+      role="button"
+      tabindex="0"
+    >
+      <i
+        aria-hidden="true"
+        class="action-remove"
+      />
+    </icon>
+    <!---->
+  </wrap-item>
+  
+</div>
+`;
+
 exports[`ItemWrapper.svelte > should handle value change 1`] = `
 <div>
   <wrap-item
@@ -237,6 +300,47 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
       <i
         aria-hidden="true"
         class="action-remove"
+      />
+    </icon>
+    <!---->
+  </wrap-item>
+  
+</div>
+`;
+
+exports[`ItemWrapper.svelte > should render removable with default icon when null 2`] = `
+<div>
+  <wrap-item
+    aria-selected="false"
+    class="flex flex-row items-center "
+    role="option"
+  >
+    <item
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <!---->
+      <!---->
+      
+      
+      <!---->
+       
+      <p>
+        Test
+      </p>
+      <!---->
+      <!---->
+    </item>
+     
+    <icon
+      aria-label="Remove"
+      class="flex flex-shrink-0 items-center justify-center small"
+      role="button"
+      tabindex="0"
+    >
+      <i
+        aria-hidden="true"
+        class="close"
       />
     </icon>
     <!---->
