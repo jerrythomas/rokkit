@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-// import { tick } from 'svelte'
+import { tick } from 'svelte'
 import Node from '../src/Node.svelte'
 import Item from '../src/Item.svelte'
 
@@ -86,17 +86,16 @@ describe('Node.svelte', () => {
 	})
 
 	it('should render node when path changes', async () => {
-		const { container, component } = render(Node, {
-			props: {
-				value: { text: 'A Node' },
-				path: [0],
-				using
-			}
+		const props = $state({
+			value: { text: 'A Node' },
+			path: [0],
+			using
 		})
+		const { container } = render(Node, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		// setProperties(component, { path: [1] })
-		// await tick()
-		// expect(container).toMatchSnapshot()
+		props.path = [1]
+		await tick()
+		expect(container).toMatchSnapshot()
 	})
 })
