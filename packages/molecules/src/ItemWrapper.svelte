@@ -1,12 +1,11 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
-	import { defaultFields, defaultStateIcons, getComponent, compact } from '@rokkit/core'
+	// import { createEventDispatcher } from 'svelte'
+	import { defaultFields, defaultStateIcons, getComponent, createEmitter } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 	import Item from './Item.svelte'
 
-	const dispatch = createEventDispatcher()
+	// const dispatch = createEventDispatcher()
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -17,6 +16,7 @@
 	 * @property {boolean} [selected]
 	 * @property {any} [index]
 	 * @property {any} [icons]
+	 * @event {any} onremove =
 	 */
 
 	/** @type {Props} */
@@ -28,17 +28,22 @@
 		removable = false,
 		selected = false,
 		index = null,
-		icons = defaultStateIcons.action
-	} = $props();
+		icons = defaultStateIcons.action,
+		...events
+	} = $props()
+
+	const emitter = $derived(createEmitter(events, ['remove']))
 
 	function handleClick() {
-		dispatch('remove', value)
+		console.log('clicked on remove')
+		console.log('remove', value)
+		emitter.remove(value)
 	}
 
 	let icon = $derived(icons?.remove ?? defaultStateIcons.action.remove)
 	let component = $derived(getComponent(value, fields, using))
 
-	const SvelteComponent = $derived(component);
+	const SvelteComponent = $derived(component)
 </script>
 
 <wrap-item
@@ -51,6 +56,6 @@
 		<SvelteComponent bind:value {fields} />
 	</item>
 	{#if removable}
-		<Icon name={icon} role="button" label="Remove" size="small" on:click={handleClick} />
+		<Icon name={icon} role="button" label="Remove" size="small" onclick={handleClick} />
 	{/if}
 </wrap-item>
