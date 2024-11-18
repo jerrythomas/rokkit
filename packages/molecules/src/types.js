@@ -6,4 +6,9 @@
  * @property {stroke} [stroke='currentColor']
  */
 
+/**
+ * @typedef NodeStateIcons
+ * @property {string} opened
+ * @property {string} closed
+ */
 export default {}
