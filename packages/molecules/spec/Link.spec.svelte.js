@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-// import { tick } from 'svelte'
+import { tick } from 'svelte'
 import Link from '../src/Link.svelte'
 
 describe('Link.svelte', () => {
@@ -13,7 +13,8 @@ describe('Link.svelte', () => {
 	})
 
 	it('should render object', async () => {
-		const { container, component } = render(Link, { props: { value: { text: '#', url: '#' } } })
+		const props = $state({ value: { text: '#', url: '#' } })
+		const { container } = render(Link, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -23,12 +24,10 @@ describe('Link.svelte', () => {
 		const text = container.querySelector('p')
 		expect(text.textContent).toEqual('#')
 
-		// // handle value change
-		// setProperties(component, { value: { text: 'hello', url: '/' } })
-		// await tick()
-		// text = container.querySelector('p')
-		// expect(text).toBeTruthy()
-		// expect(text.textContent).toBe('hello')
+		props.value = { text: 'hello', url: '/' }
+		await tick()
+		expect(text).toBeTruthy()
+		expect(text.textContent).toBe('hello')
 	})
 
 	it('should render icon', () => {
@@ -108,19 +107,16 @@ describe('Link.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	// it('should update when value changes', async () => {
-	// 	const { container, component } = render(Link, {
-	// 		value: {
-	// 			text: 'hello'
-	// 		}
-	// 	})
-	// 	expect(container).toBeTruthy()
-	// 	const text = container.querySelector('p')
-	// 	expect(container).toMatchSnapshot()
-	// 	expect(text.textContent).toBe('hello')
+	it('should update when value changes', async () => {
+		const props = $state({ value: { text: 'hello' } })
+		const { container, component } = render(Link, { props })
+		expect(container).toBeTruthy()
+		const text = container.querySelector('p')
+		expect(container).toMatchSnapshot()
+		expect(text.textContent).toBe('hello')
 
-	// 	setProperties(component,{ value: { text: 'world' } })
-	// 	await tick()
-	// 	expect(text.textContent).toBe('world')
-	// })
+		props.value = { text: 'world' }
+		await tick()
+		expect(text.textContent).toBe('world')
+	})
 })
