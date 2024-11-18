@@ -42,18 +42,19 @@ describe('ValidationReport.svelte', () => {
 	})
 
 	it('should render validation report with custom icons and custom class', async () => {
-		const { container, component } = render(ValidationReport, {
-			props: {
-				items,
-				class: 'custom'
-			}
+		const props = $state({
+			items,
+			class: 'custom'
+		})
+		const { container } = render(ValidationReport, {
+			props
 		})
 		const classList = container.querySelector('status-report').classList
 		expect(classList.contains('custom')).toBeTruthy()
-		// setProperties(component, { class: 'other' })
-		// await tick()
-		// classList = container.querySelector('status-report').classList
-		// expect(classList.contains('custom')).toBeFalsy()
-		// expect(classList.contains('other')).toBeTruthy()
+		props.class = 'other'
+
+		await tick()
+		expect(classList.contains('custom')).toBeFalsy()
+		expect(classList.contains('other')).toBeTruthy()
 	})
 })
