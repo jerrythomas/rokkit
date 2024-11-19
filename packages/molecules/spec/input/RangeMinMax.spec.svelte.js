@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
 import RangeMinMax from '../../src/input/RangeMinMax.svelte'
+import 'validators/mocks'
 
 describe('RangeMinMax.svelte', () => {
 	beforeEach(() => cleanup())
