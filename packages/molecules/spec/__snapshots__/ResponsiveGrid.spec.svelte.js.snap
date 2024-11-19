@@ -1,0 +1,323 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <!---->
+    <segment
+      class="absolute w-full h-full col-1"
+    >
+      <span>
+        New Content for A
+      </span>
+      <!---->
+    </segment>
+    
+    <!---->
+    <!---->
+    
+    
+    <!---->
+    <!---->
+    
+    
+    
+  </container>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
+<div>
+  <container
+    class="overflow-hidden test-class"
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <segment
+      class="col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <!---->
+    <segment
+      class="col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <!---->
+    <segment
+      class="col-3"
+    >
+      <span>
+         Content for C
+      </span>
+      <!---->
+    </segment>
+    
+    
+    
+  </container>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <segment
+      class="col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <!---->
+    <segment
+      class="col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <!---->
+    <segment
+      class="col-3"
+    >
+      <span>
+         Content for C
+      </span>
+      <!---->
+    </segment>
+    
+    
+    
+  </container>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should render a responsive grid for small devices 1`] = `
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <!---->
+    <segment
+      class="absolute w-full h-full col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    
+    <!---->
+    <!---->
+    
+    
+    <!---->
+    <!---->
+    
+    
+    
+  </container>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 1`] = `
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <!---->
+    <segment
+      class="absolute w-full h-full col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    <!---->
+    
+    
+    <!---->
+    <segment
+      class="absolute w-full h-full col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    
+    <!---->
+    <!---->
+    
+    
+    
+  </container>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 2`] = `
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <!---->
+    <segment
+      class="absolute w-full h-full col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    <!---->
+    <segment
+      class="col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <segment
+      class="absolute w-full h-full col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    <!---->
+    <segment
+      class="col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <!---->
+    <segment
+      class="col-3"
+    >
+      <span>
+         Content for C
+      </span>
+      <!---->
+    </segment>
+    
+    
+    
+  </container>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 3`] = `
+<div>
+  <container
+    class="overflow-hidden three-col"
+    tabindex="0"
+  >
+    <!---->
+    <segment
+      class="absolute w-full h-full col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    <!---->
+    <segment
+      class="col-1"
+    >
+      <span>
+         Content for A
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <segment
+      class="absolute w-full h-full col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    <!---->
+    <segment
+      class="col-2"
+    >
+      <span>
+         Content for B
+      </span>
+      <!---->
+    </segment>
+    
+    
+    <!---->
+    <!---->
+    <segment
+      class="col-3"
+    >
+      <span>
+         Content for C
+      </span>
+      <!---->
+    </segment>
+    
+    
+    
+  </container>
+  
+</div>
+`;

@@ -1,11 +1,9 @@
 <script>
-	// import { run } from 'svelte/legacy';
-
 	import { defaultFields } from '@rokkit/core'
 	import { swipeable, navigable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
-
+	import { equals } from 'ramda'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -42,7 +40,7 @@
 	}
 
 	function activeIndexFromPage(value) {
-		const index = items.findIndex((item) => item === value)
+		const index = items.findIndex((item) => equals(item, value))
 		return index > -1 ? index : 0
 	}
 
@@ -70,7 +68,7 @@
 		{@const segmentClass = 'col-' + (index + 1)}
 		{@const props = item[fields.props]}
 		{@const component = item[fields.component]}
-		{#if small && index === activeIndex}
+		{#if small && equals(index, activeIndex)}
 			{@const SvelteComponent = component}
 			<segment
 				class="absolute w-full h-full {segmentClass}"

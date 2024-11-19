@@ -2,9 +2,7 @@
 	import { Thumb, RangeTick } from '@rokkit/atoms'
 	import { generateTicks } from '@rokkit/core'
 	import { scaleLinear } from 'd3-scale'
-	/*
-   TODO: Resolve issue with ResizeObserver on clientWidth
-  */
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -73,8 +71,7 @@
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<input {name} type="hidden" bind:value />
 		<range-track class="relative grid">
-			<range-track-bar class="relative col-start-2 box-border">
-				<!-- bind:clientWidth={width} -->
+			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width}>
 			</range-track-bar>
 			<selected-bar
 				class="absolute col-start-2"

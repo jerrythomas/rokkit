@@ -1,10 +1,7 @@
 <script>
-	// import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons, getComponent, createEmitter } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 	import Item from './Item.svelte'
-
-	// const dispatch = createEventDispatcher()
 
 	/**
 	 * @typedef {Object} Props
@@ -35,8 +32,6 @@
 	const emitter = $derived(createEmitter(events, ['remove']))
 
 	function handleClick() {
-		console.log('clicked on remove')
-		console.log('remove', value)
 		emitter.remove(value)
 	}
 

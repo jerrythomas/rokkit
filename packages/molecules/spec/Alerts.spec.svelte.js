@@ -4,6 +4,7 @@ import { tick } from 'svelte'
 import Alerts from '../src/Alerts.svelte'
 import { alerts } from '@rokkit/stores'
 import { fade } from 'svelte/transition'
+import 'validators/mocks'
 
 describe('Alerts.svelte', () => {
 	const messages = [
@@ -17,7 +18,6 @@ describe('Alerts.svelte', () => {
 		alerts.clear()
 	})
 
-	// Problem with svelte animations
 	it('should render alerts', async () => {
 		const { container } = render(Alerts)
 		alerts.send(messages[0])
@@ -25,17 +25,17 @@ describe('Alerts.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	// it('should render alerts with custom entry animation', async () => {
-	// 	const { container } = render(Alerts, { props: { arrival: { animation: fade } } })
-	// 	alerts.send(messages[1], 'info')
-	// 	await tick()
-	// 	expect(container).toMatchSnapshot()
-	// })
+	it('should render alerts with custom entry animation', async () => {
+		const { container } = render(Alerts, { props: { arrival: { animation: fade } } })
+		alerts.send(messages[1], 'info')
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
 
-	// it('should render alerts with custom exit animation', async () => {
-	// 	const { container } = render(Alerts, { props: { departure: { animation: fade } } })
-	// 	alerts.send(messages[2])
-	// 	await tick()
-	// 	expect(container).toMatchSnapshot()
-	// })
+	it('should render alerts with custom exit animation', async () => {
+		const { container } = render(Alerts, { props: { departure: { animation: fade } } })
+		alerts.send(messages[2])
+		await tick()
+		expect(container).toMatchSnapshot()
+	})
 })
