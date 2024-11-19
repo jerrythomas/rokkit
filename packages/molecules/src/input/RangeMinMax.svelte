@@ -1,17 +1,10 @@
 <script>
-	import { run } from 'svelte/legacy';
-
 	import { Thumb, RangeTick } from '@rokkit/atoms'
 	import { generateTicks } from '@rokkit/core'
 	import { scaleLinear } from 'd3-scale'
-
-	
-	
-	
-	
-	
-	
-	
+	/*
+   TODO: Resolve issue with ResizeObserver on clientWidth
+  */
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -36,7 +29,7 @@
 		step = 1,
 		ticks = 10,
 		labelSkip = 0
-	} = $props();
+	} = $props()
 
 	let limits = $state([0, 0])
 	let lower = $state(min)
@@ -66,13 +59,12 @@
 
 	let tickStep = $derived(Math.max(1, Math.round((max - min) / ticks)))
 	let tickItems = $derived(generateTicks(min, max, tickStep, labelSkip + 1))
-	let steps =
-		$derived(step > 0
+	let steps = $derived(
+		step > 0
 			? Array.from({ length: 1 + (max - min) / step }, (_, i) => Math.min(min + i * step, max))
-			: [])
-	run(() => {
-		updateScale(width, min, max)
-	});
+			: []
+	)
+	$effect(() => updateScale(width, min, max))
 </script>
 
 {#if !Array.isArray(value)}
@@ -81,7 +73,9 @@
 	<input-range class="relative h-10 grid grid-rows-2 {className}">
 		<input {name} type="hidden" bind:value />
 		<range-track class="relative grid">
-			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width}></range-track-bar>
+			<range-track-bar class="relative col-start-2 box-border">
+				<!-- bind:clientWidth={width} -->
+			</range-track-bar>
 			<selected-bar
 				class="absolute col-start-2"
 				style:left="{lower}px"
