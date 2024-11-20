@@ -1,11 +1,11 @@
 import { describe, expect, it, beforeEach, afterAll, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { toHaveBeenDispatchedWith } from 'validators'
+// import { toHaveBeenCalledWith } from 'validators'
 import { tick } from 'svelte'
 
 import Select from '../src/VirtualSelect.svelte'
 
-expect.extend({ toHaveBeenDispatchedWith })
+// expect.extend({ toHaveBeenCalledWith })
 
 describe('VirtualSelect.svelte', () => {
 	let scroll = { left: 0, top: 0 }

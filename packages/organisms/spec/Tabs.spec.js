@@ -1,11 +1,11 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
-import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
+// import { getPropertyValue, toHaveBeenCalledWith } from 'validators'
 import Tabs from '../src/Tabs.svelte'
 import MockItem from './mocks/MockItem.svelte'
 
-expect.extend({ toHaveBeenDispatchedWith })
+// expect.extend({ toHaveBeenCalledWith })
 
 describe('Tabs.svelte', () => {
 	const events = ['select', 'remove', 'add']
@@ -90,7 +90,7 @@ describe('Tabs.svelte', () => {
 		await fireEvent.click(items[0])
 		await tick()
 		expect(handlers.select).toHaveBeenCalled()
-		expect(handlers.select).toHaveBeenDispatchedWith({
+		expect(handlers.select).toHaveBeenCalledWith({
 			item: 'Alpha',
 			indices: [0]
 		})
@@ -107,7 +107,7 @@ describe('Tabs.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 		expect(handlers.add).toHaveBeenCalled()
-		expect(handlers.add).toHaveBeenDispatchedWith(null)
+		expect(handlers.add).toHaveBeenCalledWith(null)
 	})
 	it('should remove tabs when remove icon is clicked', async () => {
 		const { container, component } = render(Tabs, {
@@ -120,7 +120,7 @@ describe('Tabs.svelte', () => {
 		await tick()
 		expect(container).toMatchSnapshot()
 		expect(handlers.remove).toHaveBeenCalled()
-		expect(handlers.remove).toHaveBeenDispatchedWith({
+		expect(handlers.remove).toHaveBeenCalledWith({
 			item: 'Alpha'
 		})
 	})

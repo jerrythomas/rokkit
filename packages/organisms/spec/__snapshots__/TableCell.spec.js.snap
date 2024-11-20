@@ -6,110 +6,116 @@ exports[`Table.svelte > cell > should render a cell with a custom class 1`] = `
     class="custom-class"
   >
     <cell>
+      <!---->
        
+      <!---->
+      <!---->
        
       <p>
         John Doe
       </p>
-      
+      <!---->
+      <!---->
     </cell>
   </td>
-</div>
-`;
-
-exports[`Table.svelte > cell > should render a cell with a custom component 1`] = `
-<div>
-  <td
-    class=""
-  >
-    <cell>
-       
-      <h1>
-        null
-        :
-        null
-      </h1>
-       
-      <p>
-        null
-        :
-        {"text":"John Doe","component":"custom"}
-      </p>
-       
-      <p>
-        ["fields","formatter"]
-      </p>
-    </cell>
-  </td>
+  
 </div>
 `;
 
 exports[`Table.svelte > cell > should render content 1`] = `
 <div>
-  <td
-    class=""
-  >
+  <td>
     <cell>
+      <!---->
        
+      <!---->
+      <!---->
        
       <p>
         John Doe
       </p>
-      
+      <!---->
+      <!---->
     </cell>
   </td>
+  
 </div>
 `;
 
 exports[`Table.svelte > cell > should render using a formatter 1`] = `
 <div>
-  <td
-    class=""
-  >
+  <td>
     <cell>
+      <!---->
        
+      <!---->
+      <!---->
        
       <p>
         JOHN DOE
       </p>
-      
+      <!---->
+      <!---->
     </cell>
   </td>
+  
 </div>
 `;
 
 exports[`Table.svelte > hierarchy > should render a hierarchy child 1`] = `
 <div>
-  <td
-    class=""
-  >
+  <td>
     <cell>
+      <!---->
       <span
         class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
        
+      <!---->
       <span
         class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         John Doe
       </p>
-      
+      <!---->
+      <!---->
     </cell>
   </td>
+  
 </div>
 `;
 
 exports[`Table.svelte > hierarchy > should render a hierarchy parent 1`] = `
 <div>
-  <td
-    class=""
-  >
+  <td>
     <cell>
+      <!---->
+      <!---->
        
       <icon
         aria-label="node-closed"
@@ -122,25 +128,33 @@ exports[`Table.svelte > hierarchy > should render a hierarchy parent 1`] = `
           class="node-closed"
         />
       </icon>
-      
+      <!---->
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         John Doe
       </p>
-      
+      <!---->
+      <!---->
     </cell>
   </td>
+  
 </div>
 `;
 
 exports[`Table.svelte > hierarchy > should render a hierarchy parent expanded 1`] = `
 <div>
-  <td
-    class=""
-  >
+  <td>
     <cell>
+      <!---->
+      <!---->
        
       <icon
         aria-label="node-opened"
@@ -153,15 +167,23 @@ exports[`Table.svelte > hierarchy > should render a hierarchy parent expanded 1`
           class="node-opened"
         />
       </icon>
-      
+      <!---->
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         John Doe
       </p>
-      
+      <!---->
+      <!---->
     </cell>
   </td>
+  
 </div>
 `;

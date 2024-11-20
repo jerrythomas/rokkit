@@ -2,13 +2,7 @@
 	import { equals } from 'ramda'
 	import { getComponent } from '@rokkit/core'
 
-	let {
-		items,
-		value,
-		using,
-		fields,
-		hierarchy
-	} = $props();
+	let { items = $bindable([]), value = $bindable(), using, fields, hierarchy, onchange } = $props()
 </script>
 
 {#each items as item, index}
@@ -17,6 +11,6 @@
 	{@const props = item[fields.props] || { fields }}
 	{@const SvelteComponent = component}
 	<item class="item" role="option" aria-selected={equals(value, item)} data-path={path}>
-		<SvelteComponent bind:value={item} {...props} on:change />
+		<SvelteComponent bind:value={items[index]} {...props} {onchange} />
 	</item>
 {/each}

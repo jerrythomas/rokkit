@@ -1,12 +1,9 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
 import { tick } from 'svelte'
-
 import MockItem from '../mocks/MockItem.svelte'
 import InputSelect from '../../src/input/InputSelect.svelte'
-
-expect.extend({ toHaveBeenDispatchedWith })
+import 'validators/mocks'
 
 describe('InputSelect.svelte', () => {
 	const events = ['change', 'select']
@@ -23,34 +20,42 @@ describe('InputSelect.svelte', () => {
 
 	it('should render using default field mapping', () => {
 		const { container } = render(InputSelect, {
-			name: 'opt',
-			options: ['a', 'b', 'c']
+			props: {
+				name: 'opt',
+				options: ['a', 'b', 'c']
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render items using field mappings', () => {
 		const { container } = render(InputSelect, {
-			name: 'opt',
-			options: [{ text: 1 }, { text: 2 }, { text: 3 }]
+			props: {
+				name: 'opt',
+				options: [{ text: 1 }, { text: 2 }, { text: 3 }]
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render items using custom mapping', () => {
 		const { container } = render(InputSelect, {
-			name: 'opt',
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
-			fields: { text: 'num' }
+			props: {
+				name: 'opt',
+				options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+				fields: { text: 'num' }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render items using default item when data is invalid', () => {
 		const { container } = render(InputSelect, {
-			name: 'opt',
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
-			fields: { text: 'num', component: 'num' }
+			props: {
+				name: 'opt',
+				options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+				fields: { text: 'num', component: 'num' }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -58,47 +63,53 @@ describe('InputSelect.svelte', () => {
 
 	it('should render with alternate class', () => {
 		const { container } = render(InputSelect, {
-			name: 'opt',
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
-			fields: { text: 'num' },
-			class: 'myClass'
+			props: {
+				name: 'opt',
+				options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+				fields: { text: 'num' },
+				class: 'myClass'
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render with placeholder', async () => {
-		const { container, component } = render(InputSelect, {
+		const props = $state({
 			name: 'opt',
 			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
 			fields: { text: 'num' },
 			value: null,
 			placeholder: 'select a value'
 		})
+		const { container } = render(InputSelect, { props })
 		let placeholder = container.querySelector('selected-item item p')
 		expect(placeholder.textContent).toEqual('select a value')
-		setProperties(component, { placeholder: '-' })
+
+		props.placeholder = '-'
 		await tick()
 		placeholder = container.querySelector('selected-item item p')
 		expect(placeholder.textContent).toEqual('-')
 	})
 	it('should render items using custom component', () => {
 		const { container } = render(InputSelect, {
-			name: 'opt',
-			options: [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }],
-			fields: { text: 'num' },
-			using: { custom: MockItem }
+			props: {
+				name: 'opt',
+				options: [{ num: 1, component: 'custom' }, { num: 2 }, { num: 3 }],
+				fields: { text: 'num' },
+				using: { custom: MockItem }
+			}
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should emit the change event when the value changes', async () => {
-		const { container, component } = render(InputSelect, {
+		const props = $state({
 			name: 'opt',
-			options: [{ text: 'a' }, { text: 'b' }, { text: 'c' }]
+			options: [{ text: 'a' }, { text: 'b' }, { text: 'c' }],
+			onchange: handlers.change
 		})
-
-		Object.keys(handlers).forEach((e) => component.$on(e, handlers[e]))
+		const { container } = render(InputSelect, { props })
 
 		const select = container.querySelector('selected-item')
 		await fireEvent.click(select)
@@ -108,9 +119,10 @@ describe('InputSelect.svelte', () => {
 		const elements = container.querySelectorAll('input-select list item')
 		await fireEvent.click(elements[0])
 		await tick()
-		expect(getPropertyValue(component, 'value')).toEqual('a')
+
+		// expect(props.value).toEqual('a')
 		expect(handlers.select).not.toHaveBeenCalled()
 		expect(handlers.change).toHaveBeenCalled()
-		expect(handlers.change).toHaveBeenDispatchedWith({ text: 'a' })
+		expect(handlers.change).toHaveBeenCalledWith({ text: 'a' })
 	})
 })

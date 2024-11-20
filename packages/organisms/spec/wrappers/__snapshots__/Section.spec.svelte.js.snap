@@ -3,7 +3,6 @@
 exports[`Section.svelte > should render using default props 1`] = `
 <div>
   <details
-    class=""
     open=""
   >
     <summary>
@@ -12,40 +11,45 @@ exports[`Section.svelte > should render using default props 1`] = `
      
     <field-layout
       class="vertical"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;
 
 exports[`Section.svelte > should render using props 1`] = `
 <div>
-  <details
-    class=""
-  >
+  <details>
     <summary>
       Section Title
     </summary>
      
     <field-layout
       class="vertical"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;
 
 exports[`Section.svelte > should render using props 2`] = `
 <div>
-  <details
-    class=""
-  >
+  <details>
     <summary>
       custom
     </summary>
      
     <field-layout
       class="vertical"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;
 
@@ -61,8 +65,11 @@ exports[`Section.svelte > should render using specified class 1`] = `
      
     <field-layout
       class="vertical"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;
 
@@ -78,15 +85,17 @@ exports[`Section.svelte > should render using specified class 2`] = `
      
     <field-layout
       class="vertical"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;
 
 exports[`Section.svelte > should render using specified type 1`] = `
 <div>
   <details
-    class=""
     open=""
   >
     <summary>
@@ -95,15 +104,17 @@ exports[`Section.svelte > should render using specified type 1`] = `
      
     <field-layout
       class="horizontal"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;
 
 exports[`Section.svelte > should render using specified type 2`] = `
 <div>
   <details
-    class=""
     open=""
   >
     <summary>
@@ -112,7 +123,10 @@ exports[`Section.svelte > should render using specified type 2`] = `
      
     <field-layout
       class="section"
-    />
+    >
+      <!---->
+    </field-layout>
   </details>
+  
 </div>
 `;

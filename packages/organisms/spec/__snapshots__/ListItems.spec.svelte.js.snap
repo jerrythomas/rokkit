@@ -1,0 +1,42 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ListItems.svelte > should render a list of values 1`] = `
+<div>
+  <!---->
+  <item
+    aria-selected="false"
+    class="item"
+    data-path="0"
+    role="option"
+  >
+    <span>
+      1
+    </span>
+    <!---->
+  </item>
+  <item
+    aria-selected="false"
+    class="item"
+    data-path="1"
+    role="option"
+  >
+    <span>
+      2
+    </span>
+    <!---->
+  </item>
+  <item
+    aria-selected="false"
+    class="item"
+    data-path="2"
+    role="option"
+  >
+    <span>
+      3
+    </span>
+    <!---->
+  </item>
+  
+  
+</div>
+`;

@@ -21,9 +21,13 @@ exports[`InputSelect.svelte > should emit the change event when the value change
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -36,11 +40,12 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -48,20 +53,27 @@ exports[`InputSelect.svelte > should emit the change event when the value change
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             a
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -69,13 +81,18 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             b
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -83,18 +100,28 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             c
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;
 
@@ -119,9 +146,13 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -134,9 +165,13 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;
 
@@ -161,9 +196,13 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -176,9 +215,13 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;
 
@@ -203,9 +246,13 @@ exports[`InputSelect.svelte > should render items using default item when data i
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -218,9 +265,13 @@ exports[`InputSelect.svelte > should render items using default item when data i
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;
 
@@ -245,9 +296,13 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -260,9 +315,13 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;
 
@@ -287,9 +346,13 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -302,9 +365,13 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;
 
@@ -329,9 +396,13 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -344,8 +415,12 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  <!---->
+  
 </div>
 `;

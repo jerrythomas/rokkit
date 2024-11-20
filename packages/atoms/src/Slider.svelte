@@ -1,7 +1,6 @@
 <script>
 	import { slide, fade } from 'svelte/transition'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -11,12 +10,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		class: className = 'menu',
-		top = 16,
-		offset = -top,
-		children
-	} = $props();
+	let { class: className = 'menu', top = 16, offset = -top, children } = $props()
 </script>
 
 <scroll

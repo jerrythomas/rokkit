@@ -13,34 +13,37 @@ describe('Section.svelte', () => {
 	})
 
 	it('should render using props', async () => {
-		const { container, component } = render(Section, {
+		const props = $state({
 			title: 'Section Title',
 			open: false
 		})
+		const { container } = render(Section, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { title: 'custom' })
+		props.title = 'custom'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render using specified type', async () => {
-		const { container, component } = render(Section, { type: 'horizontal' })
+		const props = $state({ type: 'horizontal' })
+		const { container } = render(Section, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { type: 'section' })
+		props.type = 'section'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render using specified class', async () => {
-		const { container, component } = render(Section, { class: 'custom-class' })
+		const props = $state({ class: 'custom-class' })
+		const { container } = render(Section, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { class: 'custom-class-2' })
+		props.class = 'custom-class-2'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

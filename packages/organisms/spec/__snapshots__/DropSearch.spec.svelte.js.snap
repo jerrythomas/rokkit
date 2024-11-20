@@ -13,6 +13,7 @@ exports[`DropSearch.svelte > should render 1`] = `
       role="option"
       tabindex="-1"
     >
+      <!---->
       <span
         class="flex flex-grow"
       >
@@ -21,6 +22,8 @@ exports[`DropSearch.svelte > should render 1`] = `
           type="text"
         />
       </span>
+      
+      <!---->
        
       <icon
         aria-label="opened"
@@ -33,11 +36,12 @@ exports[`DropSearch.svelte > should render 1`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -45,20 +49,27 @@ exports[`DropSearch.svelte > should render 1`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             1
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -66,13 +77,18 @@ exports[`DropSearch.svelte > should render 1`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             2
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -80,18 +96,27 @@ exports[`DropSearch.svelte > should render 1`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             3
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -108,6 +133,7 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
       role="option"
       tabindex="-1"
     >
+      <!---->
       <span
         class="flex flex-grow"
       >
@@ -116,6 +142,8 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
           type="text"
         />
       </span>
+      
+      <!---->
        
       <icon
         aria-label="opened"
@@ -128,11 +156,12 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -140,7 +169,9 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
@@ -150,7 +181,7 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
           <span>
             Alpha
           </span>
-           
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -161,7 +192,7 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
           <span>
             Beta
           </span>
-           
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -172,11 +203,15 @@ exports[`DropSearch.svelte > should work with custom components 1`] = `
           <span>
             Charlie
           </span>
-           
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
