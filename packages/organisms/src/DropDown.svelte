@@ -1,17 +1,10 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-	import { createEventDispatcher } from 'svelte'
-	import { defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { defaultFields, defaultStateIcons, createEmitter } from '@rokkit/core'
 	import { dismissable } from '@rokkit/actions'
 	import { Icon, Slider } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 	import List from './List.svelte'
 
-	const dispatch = createEventDispatcher()
-
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -33,23 +26,23 @@
 		value = $bindable(null),
 		title = null,
 		icon = null,
-		small = false
-	} = $props();
+		small = false,
+		...events
+	} = $props()
 
-	run(() => {
+	$effect.pre(() => {
 		using = { default: Item, ...using }
-	});
-	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 
+	let emitter = createEmitter(events, ['change'])
 	let offsetTop = $state(0)
 	let open = $state(false)
 	let icons = defaultStateIcons.selector
 
-	function handleSelect(event) {
+	function handleSelect(data) {
 		open = false
-		dispatch('change', event.detail)
+		emitter.change(data)
 	}
 </script>
 
@@ -85,7 +78,7 @@
 	</button>
 	{#if open}
 		<Slider top={offsetTop + 4}>
-			<List items={options} {fields} {using} bind:value on:select={handleSelect} tabindex="-1" />
+			<List items={options} {fields} {using} bind:value onselect={handleSelect} tabindex="-1" />
 		</Slider>
 	{/if}
 </drop-down>

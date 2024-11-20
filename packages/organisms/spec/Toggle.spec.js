@@ -1,11 +1,11 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { tick } from 'svelte'
-import { toHaveBeenDispatchedWith } from 'validators'
+// import { toHaveBeenCalledWith } from 'validators'
 // import { getSpyDetail } from '../helper'
 import Toggle from '../src/Toggle.svelte'
 
-expect.extend({ toHaveBeenDispatchedWith })
+// expect.extend({ toHaveBeenCalledWith })
 
 describe('Toggle.svelte', () => {
 	const keys = [' ', 'Enter', 'ArrowLeft', 'ArrowRight']
@@ -38,7 +38,7 @@ describe('Toggle.svelte', () => {
 		expect(text.textContent).toEqual('true')
 		// expect(handle).toHaveBeenCalled()
 		// expect(getSpyDetail(handle)).toEqual(true)
-		expect(handle).toHaveBeenDispatchedWith(true)
+		expect(handle).toHaveBeenCalledWith(true)
 
 		await fireEvent.click(toggle)
 		await tick()
@@ -46,7 +46,7 @@ describe('Toggle.svelte', () => {
 		expect(text.textContent).toEqual('false')
 		// expect(handle).toHaveBeenCalled()
 		// expect(getSpyDetail(handle)).toEqual(false)
-		expect(handle).toHaveBeenDispatchedWith(false)
+		expect(handle).toHaveBeenCalledWith(false)
 	})
 
 	it.each(keys)('should handle key [%s]', async (key) => {
@@ -61,7 +61,7 @@ describe('Toggle.svelte', () => {
 		expect(text.textContent).toEqual('true')
 		// expect(handle).toHaveBeenCalled()
 		// expect(getSpyDetail(handle)).toEqual(true)
-		expect(handle).toHaveBeenDispatchedWith(true)
+		expect(handle).toHaveBeenCalledWith(true)
 
 		await fireEvent.keyDown(toggle, { key })
 		await tick()
@@ -69,7 +69,7 @@ describe('Toggle.svelte', () => {
 		expect(text.textContent).toEqual('false')
 		// expect(handle).toHaveBeenCalled()
 		// expect(getSpyDetail(handle)).toEqual(false)
-		expect(handle).toHaveBeenDispatchedWith(false)
+		expect(handle).toHaveBeenCalledWith(false)
 	})
 
 	it('should change class', async () => {

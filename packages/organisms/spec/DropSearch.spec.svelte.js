@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import DropSearch from '../src/DropSearch.svelte'
 import { tick } from 'svelte'
 import MockItem from './mocks/MockItem.svelte'
+import 'validators/mocks'
 
 describe('DropSearch.svelte', () => {
 	beforeEach(() => cleanup())
@@ -38,14 +39,15 @@ describe('DropSearch.svelte', () => {
 
 	it('should work with custom components', async () => {
 		const options = [{ name: 'Alpha' }, { name: 'Beta' }, { name: 'Charlie' }]
-		const { container, component } = render(DropSearch, {
+		const props = $state({
 			options,
 			value: null,
 			fields: { text: 'name' }
 		})
+		const { container } = render(DropSearch, { props })
 		expect(container).toBeTruthy()
 
-		setProperties(component, { using: { default: MockItem } })
+		props.using = { default: MockItem }
 		await tick()
 		container.querySelector('input-select').focus()
 		await tick()

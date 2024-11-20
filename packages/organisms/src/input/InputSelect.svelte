@@ -1,11 +1,7 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-	import { createEventDispatcher } from 'svelte'
-	import { getValue, defaultFields } from '@rokkit/core'
+	import { getValue, defaultFields, createEmitter } from '@rokkit/core'
 	import Select from '../Select.svelte'
 
-	const dispatch = createEventDispatcher()
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} name
@@ -15,27 +11,22 @@
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
-	let {
-		name,
-		value = $bindable(null),
-		options = [],
-		fields = defaultFields,
-		...rest
-	} = $props();
+	let { name, value = $bindable(null), options = [], fields = defaultFields, ...rest } = $props()
 
 	let selected = $state()
+	let emitter = createEmitter(rest, ['change'])
 
-	function handle(event) {
-		value = getValue(event.detail, fields)
-		dispatch('change', event.detail)
+	function handle(data) {
+		value = getValue(data, fields)
+		emitter.change(data)
 	}
 
-	run(() => {
+	$effect.pre(() => {
 		if (value !== getValue(selected, fields)) {
 			selected = options.find((option) => getValue(option, fields) === value)
 		}
-	});
+	})
 </script>
 
 <input {name} type="hidden" bind:value />
-<Select name="" value={selected} {options} {fields} {...rest} on:change={handle} />
+<Select name="" value={selected} {options} {fields} {...rest} onchange={handle} />

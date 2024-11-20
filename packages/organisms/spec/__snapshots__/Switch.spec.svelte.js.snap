@@ -2,6 +2,7 @@
 
 exports[`Switch.svelte > should render default 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -19,8 +20,9 @@ exports[`Switch.svelte > should render default 1`] = `
       <indicator
         class="absolute bottom-0 left-0 right-0 top-0"
       />
+      <!---->
        
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -28,16 +30,20 @@ exports[`Switch.svelte > should render default 1`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render default 2`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -52,8 +58,9 @@ exports[`Switch.svelte > should render default 2`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
-       
+      <!---->
     </item>
     <item
       aria-selected="true"
@@ -64,16 +71,20 @@ exports[`Switch.svelte > should render default 2`] = `
       <indicator
         class="absolute bottom-0 left-0 right-0 top-0"
       />
+      <!---->
        
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render default 3`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -91,8 +102,9 @@ exports[`Switch.svelte > should render default 3`] = `
       <indicator
         class="absolute bottom-0 left-0 right-0 top-0"
       />
+      <!---->
        
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -100,16 +112,20 @@ exports[`Switch.svelte > should render default 3`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render text array 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -124,14 +140,18 @@ exports[`Switch.svelte > should render text array 1`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -139,22 +159,29 @@ exports[`Switch.svelte > should render text array 1`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render text array 2`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -169,14 +196,18 @@ exports[`Switch.svelte > should render text array 2`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -184,14 +215,18 @@ exports[`Switch.svelte > should render text array 2`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -199,22 +234,29 @@ exports[`Switch.svelte > should render text array 2`] = `
       data-path="2"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         c
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render using default field mapping 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -229,15 +271,22 @@ exports[`Switch.svelte > should render using default field mapping 1`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -245,23 +294,33 @@ exports[`Switch.svelte > should render using default field mapping 1`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render using field mappings 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -276,15 +335,22 @@ exports[`Switch.svelte > should render using field mappings 1`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -292,23 +358,33 @@ exports[`Switch.svelte > should render using field mappings 1`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should render with value 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -323,8 +399,9 @@ exports[`Switch.svelte > should render with value 1`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
-       
+      <!---->
     </item>
     <item
       aria-selected="true"
@@ -335,16 +412,20 @@ exports[`Switch.svelte > should render with value 1`] = `
       <indicator
         class="absolute bottom-0 left-0 right-0 top-0"
       />
+      <!---->
        
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should support custom icons 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -362,14 +443,18 @@ exports[`Switch.svelte > should support custom icons 1`] = `
       <indicator
         class="absolute bottom-0 left-0 right-0 top-0"
       />
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -377,22 +462,29 @@ exports[`Switch.svelte > should support custom icons 1`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should support custom icons 2`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -410,14 +502,18 @@ exports[`Switch.svelte > should support custom icons 2`] = `
       <indicator
         class="absolute bottom-0 left-0 right-0 top-0"
       />
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -425,22 +521,29 @@ exports[`Switch.svelte > should support custom icons 2`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should support editable attribute 1`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -455,14 +558,18 @@ exports[`Switch.svelte > should support editable attribute 1`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -470,22 +577,29 @@ exports[`Switch.svelte > should support editable attribute 1`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;
 
 exports[`Switch.svelte > should support editable attribute 2`] = `
 <div>
+  <!---->
   <toggle-switch
     aria-disabled="false"
     aria-label="Toggle Switch"
@@ -500,14 +614,18 @@ exports[`Switch.svelte > should support editable attribute 2`] = `
       data-path="0"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         a
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -515,16 +633,22 @@ exports[`Switch.svelte > should support editable attribute 2`] = `
       data-path="1"
       role="option"
     >
+      <!---->
        
+      <!---->
+      <!---->
+      <!---->
        
       <p>
         b
       </p>
+      <!---->
       
-      
-       
+      <!---->
     </item>
+    
   </toggle-switch>
+  
   
 </div>
 `;

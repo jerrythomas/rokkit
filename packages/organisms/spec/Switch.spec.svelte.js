@@ -11,11 +11,12 @@ describe('Switch.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 		const items = container.querySelectorAll('toggle-switch item')
-
 		expect(items.length).toBe(2)
+
 		await fireEvent.click(items[1])
 		await tick()
 		expect(container).toMatchSnapshot()
+
 		await fireEvent.click(items[0])
 		await tick()
 		expect(container).toMatchSnapshot()
@@ -26,67 +27,73 @@ describe('Switch.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 	it('should render text array', async () => {
-		const { container, component } = render(Switch, {
+		const props = $state({
 			value: null,
 			options: ['a', 'b']
 		})
+		const { container } = render(Switch, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { options: ['a', 'b', 'c'] })
+		props.options = ['a', 'b', 'c']
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 	it('should support editable attribute', () => {
-		const { container, component } = render(Switch, {
+		const props = $state({
 			value: null,
 			options: ['a', 'b']
 		})
+		const { container } = render(Switch, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { editable: true })
+		props.editable = true
 		expect(container).toMatchSnapshot()
 	})
 	it('should render using default field mapping', () => {
-		const { container } = render(Switch, {
+		const props = $state({
 			value: null,
 			options: [{ text: 'a' }, { text: 'b' }]
 		})
+		const { container } = render(Switch, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render using field mappings', () => {
-		const { container } = render(Switch, {
+		const props = $state({
 			value: null,
 			options: [{ name: 'a' }, { name: 'a' }],
 			fields: { text: 'name' }
 		})
+		const { container } = render(Switch, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 	it('should support custom class', async () => {
-		const { container, component } = render(Switch, {
+		const props = $state({
 			value: null,
 			options: ['a', 'b'],
 			class: 'custom'
 		})
+		const { container } = render(Switch, { props })
 		let wrapper = container.querySelector('toggle-switch')
 		expect(Array.from(wrapper.classList)).toContain('custom')
 
-		setProperties(component, { class: 'other' })
+		props.class = 'other'
 		await tick()
 		wrapper = container.querySelector('toggle-switch')
 		expect(Array.from(wrapper.classList)).toContain('other')
 	})
 	it('should support custom icons', async () => {
-		const { container, component } = render(Switch, {
+		const props = $state({
 			value: 'a',
 			options: ['a', 'b']
 		})
+		const { container } = render(Switch, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		setProperties(component, { icons: { remove: 'close' } })
+		props.icons = { remove: 'close' }
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

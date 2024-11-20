@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Carousel.svelte > should render using default field mapping 1`] = `
+<div>
+  <!---->
+  <p>
+    No items to display
+  </p>
+  
+  
+</div>
+`;

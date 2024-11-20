@@ -1,112 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Tabs.svelte > should emit the add event 1`] = `
-<div>
-  <tabs
-    class="flex w-full "
-    role="listbox"
-    tabindex="0"
-  >
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="0"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Alpha
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="1"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="2"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Gamma
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-     
-    <icon
-      aria-label="Add Tab"
-      class="flex flex-shrink-0 items-center justify-center small"
-      role="button"
-      tabindex="0"
-    >
-      <i
-        aria-hidden="true"
-        class="add"
-      />
-    </icon>
-  </tabs>
-</div>
-`;
-
 exports[`Tabs.svelte > should handle item value changes 1`] = `
 <div>
   <tabs
@@ -123,11 +16,14 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Alpha
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
       <icon
@@ -141,6 +37,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
           class="action-remove"
         />
       </icon>
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="true"
@@ -151,11 +48,14 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Beta
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
       <icon
@@ -169,6 +69,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
           class="action-remove"
         />
       </icon>
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -179,11 +80,14 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Gamma
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
       <icon
@@ -197,7 +101,9 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
           class="action-remove"
         />
       </icon>
+      <!---->
     </wrap-item>
+    <!---->
      
     <icon
       aria-label="Add Tab"
@@ -210,193 +116,9 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
         class="add"
       />
     </icon>
+    <!---->
   </tabs>
-</div>
-`;
-
-exports[`Tabs.svelte > should handle item value changes 2`] = `
-<div>
-  <tabs
-    class="flex w-full "
-    role="listbox"
-    tabindex="0"
-  >
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="0"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Alpha
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="1"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-    <wrap-item
-      aria-selected="true"
-      class="flex flex-row items-center tab"
-      data-path="2"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Gamma
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-     
-    <icon
-      aria-label="Add Tab"
-      class="flex flex-shrink-0 items-center justify-center small"
-      role="button"
-      tabindex="0"
-    >
-      <i
-        aria-hidden="true"
-        class="add"
-      />
-    </icon>
-  </tabs>
-</div>
-`;
-
-exports[`Tabs.svelte > should remove tabs when remove icon is clicked 1`] = `
-<div>
-  <tabs
-    class="flex w-full "
-    role="listbox"
-    tabindex="0"
-  >
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="0"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="1"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Gamma
-        </p>
-        
-      </item>
-       
-      <icon
-        aria-label="Remove"
-        class="flex flex-shrink-0 items-center justify-center small"
-        role="button"
-        tabindex="0"
-      >
-        <i
-          aria-hidden="true"
-          class="action-remove"
-        />
-      </icon>
-    </wrap-item>
-     
-    <icon
-      aria-label="Add Tab"
-      class="flex flex-shrink-0 items-center justify-center small"
-      role="button"
-      tabindex="0"
-    >
-      <i
-        aria-hidden="true"
-        class="add"
-      />
-    </icon>
-  </tabs>
+  
 </div>
 `;
 
@@ -417,10 +139,12 @@ exports[`Tabs.svelte > should render items using custom component 1`] = `
         class="flex flex-row items-center"
       >
         <span>
-          undefined
+          
         </span>
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -432,13 +156,18 @@ exports[`Tabs.svelte > should render items using custom component 1`] = `
         class="flex flex-row items-center"
       >
         <span>
-          undefined
+          
         </span>
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
+    <!---->
      
+    <!---->
   </tabs>
+  
 </div>
 `;
 
@@ -458,13 +187,17 @@ exports[`Tabs.svelte > should render text array 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Alpha
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -475,16 +208,23 @@ exports[`Tabs.svelte > should render text array 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Beta
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
+    <!---->
      
+    <!---->
   </tabs>
+  
 </div>
 `;
 
@@ -504,14 +244,21 @@ exports[`Tabs.svelte > should render using default field mapping 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           Alpha
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -522,17 +269,27 @@ exports[`Tabs.svelte > should render using default field mapping 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           Beta
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
+    <!---->
      
+    <!---->
   </tabs>
+  
 </div>
 `;
 
@@ -552,14 +309,21 @@ exports[`Tabs.svelte > should render using field mappings 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           Alpha
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -570,17 +334,27 @@ exports[`Tabs.svelte > should render using field mappings 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           Beta
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
+    <!---->
      
+    <!---->
   </tabs>
+  
 </div>
 `;
 
@@ -600,13 +374,17 @@ exports[`Tabs.svelte > should support custom icons 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Alpha
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -617,62 +395,23 @@ exports[`Tabs.svelte > should support custom icons 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Beta
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
+    <!---->
      
+    <!---->
   </tabs>
-</div>
-`;
-
-exports[`Tabs.svelte > should support custom icons 2`] = `
-<div>
-  <tabs
-    class="flex w-full "
-    role="listbox"
-    tabindex="0"
-  >
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="0"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Alpha
-        </p>
-        
-      </item>
-       
-    </wrap-item>
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="1"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-      </item>
-       
-    </wrap-item>
-     
-  </tabs>
+  
 </div>
 `;
 
@@ -692,13 +431,17 @@ exports[`Tabs.svelte > should support editable attribute 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Alpha
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
     <wrap-item
       aria-selected="false"
@@ -709,61 +452,22 @@ exports[`Tabs.svelte > should support editable attribute 1`] = `
       <item
         class="flex flex-row items-center"
       >
+        <!---->
+        <!---->
          
         <p>
           Beta
         </p>
-        
+        <!---->
+        <!---->
       </item>
        
+      <!---->
     </wrap-item>
+    <!---->
      
+    <!---->
   </tabs>
-</div>
-`;
-
-exports[`Tabs.svelte > should support editable attribute 2`] = `
-<div>
-  <tabs
-    class="flex w-full "
-    role="listbox"
-    tabindex="0"
-  >
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="0"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Alpha
-        </p>
-        
-      </item>
-       
-    </wrap-item>
-    <wrap-item
-      aria-selected="false"
-      class="flex flex-row items-center tab"
-      data-path="1"
-      role="option"
-    >
-      <item
-        class="flex flex-row items-center"
-      >
-         
-        <p>
-          Beta
-        </p>
-        
-      </item>
-       
-    </wrap-item>
-     
-  </tabs>
+  
 </div>
 `;

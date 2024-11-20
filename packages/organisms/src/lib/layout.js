@@ -8,11 +8,32 @@ import { isObject } from '@rokkit/core'
  */
 export function deriveLayoutFromValue(value, scope = '#') {
 	if (Array.isArray(value)) {
+		//eslint-disable-next-line no-use-before-define
 		return deriveArrayLayout(value, scope)
 	} else if (typeof value === 'object' && value !== null) {
+		//eslint-disable-next-line no-use-before-define
 		return deriveObjectLayout(value, scope)
 	}
 	return { type: 'vertical', elements: [{ scope }] }
+}
+
+/**
+ * Derives a layout from a given object value.
+ * @param {Object} val
+ * @param {string} scope
+ * @param {string} label
+ * @returns {import('../types').DataLayout}
+ */
+function deriveElementLayout(val, scope, label) {
+	const path = `${scope}/${label}`
+	if (isObject(val)) {
+		return {
+			title: label,
+			scope: path,
+			...deriveLayoutFromValue(val, path)
+		}
+	}
+	return { label, scope: path }
 }
 
 /**
@@ -39,23 +60,4 @@ function deriveObjectLayout(value, scope) {
 		deriveElementLayout(val, scope, label)
 	)
 	return { type: 'vertical', elements }
-}
-
-/**
- * Derives a layout from a given object value.
- * @param {Object} val
- * @param {string} scope
- * @param {string} label
- * @returns {import('../types').DataLayout}
- */
-function deriveElementLayout(val, scope, label) {
-	const path = `${scope}/${label}`
-	if (isObject(val)) {
-		return {
-			title: label,
-			scope: path,
-			...deriveLayoutFromValue(val, path)
-		}
-	}
-	return { label, scope: path }
 }

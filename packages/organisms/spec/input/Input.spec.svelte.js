@@ -3,6 +3,7 @@ import { cleanup, render } from '@testing-library/svelte'
 import { tick } from 'svelte'
 import { types } from '../../src/input/types'
 import Input from '../../src/input/Input.svelte'
+import 'validators/mocks'
 
 describe('Input.svelte', () => {
 	const names = Object.keys(types)
@@ -69,14 +70,15 @@ describe('Input.svelte', () => {
 
 	// unlikely to change, but just in case
 	it('should render different input on type change', async () => {
-		const { container, component } = render(Input, {
+		const props = $state({
 			type: 'text',
 			value: null
 		})
+		const { container } = render(Input, { props })
 		expect(container.querySelector('error')).toBeNull()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { type: 'number' })
+		props.type = 'number'
 		await tick()
 		expect(container.querySelector('error')).toBeNull()
 		expect(container).toMatchSnapshot()

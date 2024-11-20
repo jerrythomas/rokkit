@@ -1,18 +1,11 @@
 <script>
-	import { run, stopPropagation } from 'svelte/legacy';
-
-	import { defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { isNotNil, equals } from 'ramda'
+	import { defaultFields, defaultStateIcons, createEmitter } from '@rokkit/core'
 	import { Slider, Icon } from '@rokkit/atoms'
 	import { dismissable, navigable } from '@rokkit/actions'
-	import { createEventDispatcher } from 'svelte'
-	import List from './List.svelte'
-	// import ListItems from './ListItems.svelte'
 	import { Item } from '@rokkit/molecules'
+	import List from './List.svelte'
 
-	const dispatch = createEventDispatcher()
-
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -29,24 +22,26 @@
 	let {
 		class: className = '',
 		name = null,
-		options = [],
+		options = $bindable([]),
 		fields = $bindable({}),
 		using = $bindable({}),
 		value = $bindable(null),
 		placeholder = '',
-		children
-	} = $props();
+		children,
+		...events
+	} = $props()
 
 	let activeIndex = $state()
 	let open = $state(false)
 	let offsetTop = $derived(activeItem?.offsetTop + activeItem?.clientHeight ?? 0)
 	let icons = defaultStateIcons.selector
 	let activeItem = $state()
+	let emitter = createEmitter(events, ['change', 'select'])
 
 	function handleSelect() {
 		open = false
-		dispatch('select', value)
-		dispatch('change', value)
+		emitter.select(value)
+		emitter.change(value)
 	}
 	function handleNext() {
 		if (!open) {
@@ -69,17 +64,16 @@
 			}
 		}
 	}
+	function toggleOnClick(event) {
+		event.stopPropagation()
+		open = !open
+	}
 
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
-	run(() => {
 		using = { default: Item, ...using }
-	});
-	run(() => {
-		activeIndex = options.findIndex((item) => item === value)
-	});
-	
+		activeIndex = options.findIndex((item) => equals(item, value))
+	})
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -100,12 +94,12 @@
 >
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<selected-item
-		onclick={stopPropagation(() => (open = !open))}
+		onclick={toggleOnClick}
 		class="w-full flex items-center"
 		bind:this={activeItem}
 		role="option"
 		tabindex="-1"
-		aria-selected={value !== null && !open}
+		aria-selected={isNotNil(value) && !open}
 	>
 		{#if children}{@render children()}{:else}
 			<item>
@@ -128,7 +122,7 @@
 				{using}
 			/>
 		</list> -->
-			<List items={options} {fields} {using} bind:value on:select={handleSelect} tabindex="-1" />
+			<List items={options} {fields} {using} bind:value onselect={handleSelect} tabindex="-1" />
 		</Slider>
 	{/if}
 </input-select>

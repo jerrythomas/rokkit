@@ -1,16 +1,9 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-	import { createEventDispatcher } from 'svelte'
-	import { defaultFields, getComponent } from '@rokkit/core'
+	import { equals } from 'ramda'
+	import { defaultFields, getComponent, createEmitter } from '@rokkit/core'
 	import { Item } from '@rokkit/molecules'
 	import { navigator } from '@rokkit/actions'
 
-	const dispatch = createEventDispatcher()
-
-	
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -30,26 +23,25 @@
 		fields = $bindable(defaultFields),
 		using = $bindable({}),
 		compact = false,
-		disabled = false
-	} = $props();
+		disabled = false,
+		...events
+	} = $props()
 
 	let cursor = $state([])
-
+	let emitter = createEmitter(events, ['change'])
 	function handleNav(event) {
 		if (disabled) return
 		if (event.detail.node === value) return
 		value = event.detail.node
 		cursor = event.detail.path
-		dispatch('change', { item: value, indices: cursor })
+		emitter.change({ item: value, indices: cursor })
 	}
 
 	let useComponent = $derived(!options.every((item) => [false, true].includes(item)))
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
-	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 </script>
 
 {#if !Array.isArray(options) || options.length < 2}
@@ -57,8 +49,8 @@
 {:else}
 	<toggle-switch
 		class="flex items-center {className}"
-		class:is-off={options.length === 2 && value === options[0]}
-		class:is-on={options.length === 2 && value === options[1]}
+		class:is-off={options.length === 2 && equals(value, options[0])}
+		class:is-on={options.length === 2 && equals(value, options[1])}
 		class:compact
 		aria-label="Toggle Switch"
 		aria-orientation="horizontal"
@@ -76,8 +68,8 @@
 	>
 		{#each options as item, index (item)}
 			{@const component = useComponent ? getComponent(item, fields, using) : null}
-			<item class="relative" role="option" aria-selected={item === value} data-path={index}>
-				{#if item === value}
+			<item class="relative" role="option" aria-selected={equals(item, value)} data-path={index}>
+				{#if equals(item, value)}
 					<indicator class="absolute bottom-0 left-0 right-0 top-0"></indicator>
 				{/if}
 				{#if component}

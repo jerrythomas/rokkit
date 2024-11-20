@@ -13,23 +13,26 @@ describe('Wrapper.svelte', () => {
 	})
 
 	it('should render using specified type', async () => {
-		const { container, component } = render(Wrapper, { type: 'horizontal' })
+		const props = $state({ type: 'horizontal' })
+		const { container, component } = render(Wrapper, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
 		// handle type changes
-		setProperties(component, { type: 'section' })
+		props.type = 'section'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render using specified class', async () => {
-		const { container, component } = render(Wrapper, { class: 'custom-class' })
+		const props = $state({ class: 'custom-class' })
+		const { container, component } = render(Wrapper, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
 		// handle class changes
-		setProperties(component, { class: 'custom-class-2' })
+
+		props.class = 'custom-class-2'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

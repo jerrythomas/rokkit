@@ -13,7 +13,9 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
     <span
       class="flex items-center"
     >
+      <!---->
        
+      <!---->
        
       <icon
         aria-label="selector-opened"
@@ -26,18 +28,13 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </span>
-    <iframe
-      aria-hidden="true"
-      src="about:blank"
-      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-      tabindex="-1"
-    />
   </button>
    
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-    style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    style="top: 4px;"
   >
     <list
       aria-label="list"
@@ -45,20 +42,27 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
       role="listbox"
       tabindex="-1"
     >
+      <!---->
        
+      <!---->
       <item
         aria-selected="false"
         class="item"
         data-path="0"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="true"
@@ -66,13 +70,18 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
         data-path="1"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="false"
@@ -80,17 +89,25 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
         data-path="2"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       
+      <!---->
     </list>
+    <!---->
   </scroll>
+  <!---->
 </drop-down>
 `;
 
@@ -107,7 +124,9 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
     <span
       class="flex items-center"
     >
+      <!---->
        
+      <!---->
        
       <icon
         aria-label="selector-closed"
@@ -120,18 +139,13 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </span>
-    <iframe
-      aria-hidden="true"
-      src="about:blank"
-      style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-      tabindex="-1"
-    />
   </button>
    
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-    style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+    style="top: 4px;"
   >
     <list
       aria-label="list"
@@ -139,20 +153,27 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
       role="listbox"
       tabindex="-1"
     >
+      <!---->
        
+      <!---->
       <item
         aria-selected="false"
         class="item"
         data-path="0"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="true"
@@ -160,13 +181,18 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
         data-path="1"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="false"
@@ -174,17 +200,25 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
         data-path="2"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       
+      <!---->
     </list>
+    <!---->
   </scroll>
+  <!---->
 </drop-down>
 `;
 
@@ -202,7 +236,9 @@ exports[`DropDown.svelte > should render items using custom component 1`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -215,16 +251,13 @@ exports[`DropDown.svelte > should render items using custom component 1`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -242,7 +275,9 @@ exports[`DropDown.svelte > should render items using custom component 2`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -255,16 +290,13 @@ exports[`DropDown.svelte > should render items using custom component 2`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -282,7 +314,9 @@ exports[`DropDown.svelte > should render items using custom component 3`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -295,16 +329,13 @@ exports[`DropDown.svelte > should render items using custom component 3`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -322,7 +353,9 @@ exports[`DropDown.svelte > should render items using custom mapping 1`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -335,16 +368,13 @@ exports[`DropDown.svelte > should render items using custom mapping 1`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -362,7 +392,9 @@ exports[`DropDown.svelte > should render items using default component, when inv
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -375,16 +407,13 @@ exports[`DropDown.svelte > should render items using default component, when inv
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -402,7 +431,9 @@ exports[`DropDown.svelte > should render items using field mapping 1`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -415,16 +446,13 @@ exports[`DropDown.svelte > should render items using field mapping 1`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -442,7 +470,9 @@ exports[`DropDown.svelte > should render string array 1`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-opened"
@@ -455,18 +485,13 @@ exports[`DropDown.svelte > should render string array 1`] = `
             class="selector-opened"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 4px;"
     >
       <list
         aria-label="list"
@@ -474,19 +499,23 @@ exports[`DropDown.svelte > should render string array 1`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
-            a
+            One
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -494,12 +523,14 @@ exports[`DropDown.svelte > should render string array 1`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
-            b
+            Two
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -507,17 +538,23 @@ exports[`DropDown.svelte > should render string array 1`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
-            c
+            Three
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -546,7 +583,9 @@ exports[`DropDown.svelte > should render string array 2`] = `
             class="theme"
           />
         </icon>
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-opened"
@@ -559,18 +598,13 @@ exports[`DropDown.svelte > should render string array 2`] = `
             class="selector-opened"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 4px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 4px;"
     >
       <list
         aria-label="list"
@@ -578,19 +612,23 @@ exports[`DropDown.svelte > should render string array 2`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             x
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -598,12 +636,14 @@ exports[`DropDown.svelte > should render string array 2`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             y
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -611,17 +651,23 @@ exports[`DropDown.svelte > should render string array 2`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             z
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -644,12 +690,14 @@ exports[`DropDown.svelte > should render title 1`] = `
         class="theme"
       />
     </icon>
+    <!---->
      
     <p
       class="w-full flex"
     >
       Select a value
     </p>
+    <!---->
      
     <icon
       aria-label="selector-closed"
@@ -662,13 +710,8 @@ exports[`DropDown.svelte > should render title 1`] = `
         class="selector-closed"
       />
     </icon>
+    <!---->
   </span>
-  <iframe
-    aria-hidden="true"
-    src="about:blank"
-    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-    tabindex="-1"
-  />
 </button>
 `;
 
@@ -691,12 +734,14 @@ exports[`DropDown.svelte > should render title 2`] = `
         class="other"
       />
     </icon>
+    <!---->
      
     <p
       class="w-full flex"
     >
       Select a value
     </p>
+    <!---->
      
     <icon
       aria-label="selector-closed"
@@ -709,13 +754,8 @@ exports[`DropDown.svelte > should render title 2`] = `
         class="selector-closed"
       />
     </icon>
+    <!---->
   </span>
-  <iframe
-    aria-hidden="true"
-    src="about:blank"
-    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-    tabindex="-1"
-  />
 </button>
 `;
 
@@ -738,7 +778,9 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
         class="theme"
       />
     </icon>
+    <!---->
      
+    <!---->
      
     <icon
       aria-label="selector-closed"
@@ -751,13 +793,8 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
         class="selector-closed"
       />
     </icon>
+    <!---->
   </span>
-  <iframe
-    aria-hidden="true"
-    src="about:blank"
-    style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-    tabindex="-1"
-  />
 </button>
 `;
 
@@ -786,7 +823,9 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
             class="theme"
           />
         </icon>
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -799,16 +838,13 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;
 
@@ -826,7 +862,9 @@ exports[`DropDown.svelte > should toggle open state on focus change 1`] = `
       <span
         class="flex items-center"
       >
+        <!---->
          
+        <!---->
          
         <icon
           aria-label="selector-closed"
@@ -839,15 +877,12 @@ exports[`DropDown.svelte > should toggle open state on focus change 1`] = `
             class="selector-closed"
           />
         </icon>
+        <!---->
       </span>
-      <iframe
-        aria-hidden="true"
-        src="about:blank"
-        style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
     </button>
      
+    <!---->
   </drop-down>
+  
 </div>
 `;

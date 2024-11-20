@@ -36,55 +36,60 @@ describe('Category.svelte', () => {
 	})
 
 	it('should render using specified type', async () => {
+		const props = $state({ options: items, type: 'horizontal' })
 		const { container, component } = render(Category, {
 			context: new Map([['registry', registry]]),
-			props: { options: items, type: 'horizontal' }
+			props
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { type: 'section' })
+		props.type = 'section'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render using specified class', async () => {
-		const { container, component } = render(Category, {
+		const props = $state({ options: items, class: 'custom-class' })
+		const { container } = render(Category, {
 			context: new Map([['registry', registry]]),
-			props: { options: items, class: 'custom-class' }
+			props
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { class: 'custom-class-2' })
+		props.class = 'custom-class-2'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render with extra props', async () => {
-		const { container, component } = render(Category, {
+		const props = $state({ options: items, align: 'center' })
+
+		const { container } = render(Category, {
 			context: new Map([['registry', registry]]),
-			props: { options: items, align: 'center' }
+			props
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { align: 'right' })
+		props.align = 'right'
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 	it('should render with alternative navigator', async () => {
+		const props = $state({ options: items, navigator: 'Switch' })
 		registry.update((state) => {
 			state.navigators = { ...state.navigators, Switch }
 			return state
 		})
 		const { container, component } = render(Category, {
 			context: new Map([['registry', registry]]),
-			props: { options: items, navigator: 'Switch' }
+			props
 		})
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		setProperties(component, { navigator: 'tabs' })
+		props, (navigator = 'tabs')
 		await tick()
 		expect(container).toMatchSnapshot()
 	})

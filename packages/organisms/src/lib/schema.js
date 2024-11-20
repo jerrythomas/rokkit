@@ -9,6 +9,7 @@ import { typeOf } from '@rokkit/data'
 function deriveObjectProperties(data) {
 	const properties = {}
 	for (const [key, value] of Object.entries(data)) {
+		//eslint-disable-next-line no-use-before-define
 		properties[key] = deriveSchemaFromValue(value)
 	}
 	return properties

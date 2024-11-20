@@ -14,13 +14,20 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
     tabindex="-1"
   >
     <item>
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
-      
+      <!---->
+      <!---->
     </item>
+    <!---->
      
     <icon
       aria-label="opened"
@@ -33,11 +40,12 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
         class="selector-opened"
       />
     </icon>
+    <!---->
   </selected-item>
    
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    style="top: 0px;"
   >
     <list
       aria-label="list"
@@ -45,20 +53,27 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
       role="listbox"
       tabindex="-1"
     >
+      <!---->
        
+      <!---->
       <item
         aria-selected="false"
         class="item"
         data-path="0"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="true"
@@ -66,13 +81,18 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
         data-path="1"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="false"
@@ -80,17 +100,25 @@ exports[`Select.svelte > should close drop down on escape key 1`] = `
         data-path="2"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       
+      <!---->
     </list>
+    <!---->
   </scroll>
+  <!---->
 </input-select>
 `;
 
@@ -108,13 +136,20 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
     tabindex="-1"
   >
     <item>
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
-      
+      <!---->
+      <!---->
     </item>
+    <!---->
      
     <icon
       aria-label="closed"
@@ -127,11 +162,12 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
         class="selector-closed"
       />
     </icon>
+    <!---->
   </selected-item>
    
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+    style="top: 0px;"
   >
     <list
       aria-label="list"
@@ -139,20 +175,27 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
       role="listbox"
       tabindex="-1"
     >
+      <!---->
        
+      <!---->
       <item
         aria-selected="false"
         class="item"
         data-path="0"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="true"
@@ -160,13 +203,18 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
         data-path="1"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="false"
@@ -174,17 +222,25 @@ exports[`Select.svelte > should close drop down on escape key 2`] = `
         data-path="2"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       
+      <!---->
     </list>
+    <!---->
   </scroll>
+  <!---->
 </input-select>
 `;
 
@@ -203,9 +259,13 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -218,11 +278,12 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -230,20 +291,27 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             a
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -251,13 +319,18 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             b
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -265,18 +338,27 @@ exports[`Select.svelte > should emit the change event when the value changes 1`]
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             c
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -288,13 +370,20 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 1`] 
   tabindex="-1"
 >
   <item>
+    <!---->
+    <!---->
+    <!---->
     
+    
+    <!---->
      
     <p>
       b
     </p>
-    
+    <!---->
+    <!---->
   </item>
+  <!---->
    
   <icon
     aria-label="closed"
@@ -307,6 +396,7 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 1`] 
       class="selector-closed"
     />
   </icon>
+  <!---->
 </selected-item>
 `;
 
@@ -318,13 +408,20 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 2`] 
   tabindex="-1"
 >
   <item>
+    <!---->
+    <!---->
+    <!---->
     
+    
+    <!---->
      
     <p>
       c
     </p>
-    
+    <!---->
+    <!---->
   </item>
+  <!---->
    
   <icon
     aria-label="closed"
@@ -337,6 +434,7 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 2`] 
       class="selector-closed"
     />
   </icon>
+  <!---->
 </selected-item>
 `;
 
@@ -348,13 +446,20 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 3`] 
   tabindex="-1"
 >
   <item>
+    <!---->
+    <!---->
+    <!---->
     
+    
+    <!---->
      
     <p>
       b
     </p>
-    
+    <!---->
+    <!---->
   </item>
+  <!---->
    
   <icon
     aria-label="closed"
@@ -367,6 +472,7 @@ exports[`Select.svelte > should handle arrow keys for navigation and select 3`] 
       class="selector-closed"
     />
   </icon>
+  <!---->
 </selected-item>
 `;
 
@@ -378,13 +484,20 @@ exports[`Select.svelte > should handle option changes 1`] = `
   tabindex="-1"
 >
   <item>
+    <!---->
+    <!---->
+    <!---->
     
+    
+    <!---->
      
     <p>
       b
     </p>
-    
+    <!---->
+    <!---->
   </item>
+  <!---->
    
   <icon
     aria-label="closed"
@@ -397,13 +510,14 @@ exports[`Select.svelte > should handle option changes 1`] = `
       class="selector-closed"
     />
   </icon>
+  <!---->
 </selected-item>
 `;
 
 exports[`Select.svelte > should handle option changes 2`] = `
 <scroll
   class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-  style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  style="top: 0px;"
 >
   <list
     aria-label="list"
@@ -411,20 +525,27 @@ exports[`Select.svelte > should handle option changes 2`] = `
     role="listbox"
     tabindex="-1"
   >
+    <!---->
      
+    <!---->
     <item
       aria-selected="false"
       class="item"
       data-path="0"
       role="option"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         a
       </p>
-      
-       
+      <!---->
+      <!---->
     </item>
     <item
       aria-selected="true"
@@ -432,13 +553,18 @@ exports[`Select.svelte > should handle option changes 2`] = `
       data-path="1"
       role="option"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
-      
-       
+      <!---->
+      <!---->
     </item>
     <item
       aria-selected="false"
@@ -446,23 +572,30 @@ exports[`Select.svelte > should handle option changes 2`] = `
       data-path="2"
       role="option"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         c
       </p>
-      
-       
+      <!---->
+      <!---->
     </item>
     
+    <!---->
   </list>
+  <!---->
 </scroll>
 `;
 
 exports[`Select.svelte > should handle option changes 3`] = `
 <scroll
   class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-  style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+  style="top: 0px;"
 >
   <list
     aria-label="list"
@@ -470,20 +603,27 @@ exports[`Select.svelte > should handle option changes 3`] = `
     role="listbox"
     tabindex="-1"
   >
+    <!---->
      
+    <!---->
     <item
       aria-selected="false"
       class="item"
       data-path="0"
       role="option"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         a
       </p>
-      
-       
+      <!---->
+      <!---->
     </item>
     <item
       aria-selected="true"
@@ -491,16 +631,23 @@ exports[`Select.svelte > should handle option changes 3`] = `
       data-path="1"
       role="option"
     >
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
-      
-       
+      <!---->
+      <!---->
     </item>
     
+    <!---->
   </list>
+  <!---->
 </scroll>
 `;
 
@@ -518,13 +665,20 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
     tabindex="-1"
   >
     <item>
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
-      
+      <!---->
+      <!---->
     </item>
+    <!---->
      
     <icon
       aria-label="opened"
@@ -537,11 +691,12 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
         class="selector-opened"
       />
     </icon>
+    <!---->
   </selected-item>
    
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+    style="top: 0px;"
   >
     <list
       aria-label="list"
@@ -549,20 +704,27 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
       role="listbox"
       tabindex="-1"
     >
+      <!---->
        
+      <!---->
       <item
         aria-selected="false"
         class="item"
         data-path="0"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="true"
@@ -570,13 +732,18 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
         data-path="1"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="false"
@@ -584,17 +751,25 @@ exports[`Select.svelte > should open/close drop down on click and blur 1`] = `
         data-path="2"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       
+      <!---->
     </list>
+    <!---->
   </scroll>
+  <!---->
 </input-select>
 `;
 
@@ -612,13 +787,20 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
     tabindex="-1"
   >
     <item>
+      <!---->
+      <!---->
+      <!---->
       
+      
+      <!---->
        
       <p>
         b
       </p>
-      
+      <!---->
+      <!---->
     </item>
+    <!---->
      
     <icon
       aria-label="closed"
@@ -631,11 +813,12 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
         class="selector-closed"
       />
     </icon>
+    <!---->
   </selected-item>
    
   <scroll
     class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-    style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+    style="top: 0px;"
   >
     <list
       aria-label="list"
@@ -643,20 +826,27 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
       role="listbox"
       tabindex="-1"
     >
+      <!---->
        
+      <!---->
       <item
         aria-selected="false"
         class="item"
         data-path="0"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="true"
@@ -664,13 +854,18 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
         data-path="1"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       <item
         aria-selected="false"
@@ -678,17 +873,25 @@ exports[`Select.svelte > should open/close drop down on click and blur 2`] = `
         data-path="2"
         role="option"
       >
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
-         
+        <!---->
+        <!---->
       </item>
       
+      <!---->
     </list>
+    <!---->
   </scroll>
+  <!---->
 </input-select>
 `;
 
@@ -707,13 +910,20 @@ exports[`Select.svelte > should render items using custom component 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           1
         </p>
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -726,9 +936,12 @@ exports[`Select.svelte > should render items using custom component 1`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -747,13 +960,20 @@ exports[`Select.svelte > should render items using custom component 2`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           1
         </p>
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -766,11 +986,12 @@ exports[`Select.svelte > should render items using custom component 2`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -778,7 +999,9 @@ exports[`Select.svelte > should render items using custom component 2`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="true"
           class="item"
@@ -788,7 +1011,7 @@ exports[`Select.svelte > should render items using custom component 2`] = `
           <span>
             1
           </span>
-           
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -796,13 +1019,18 @@ exports[`Select.svelte > should render items using custom component 2`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             2
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -810,18 +1038,27 @@ exports[`Select.svelte > should render items using custom component 2`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             3
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -843,7 +1080,9 @@ exports[`Select.svelte > should render items using custom component 3`] = `
         <span>
           1
         </span>
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -856,11 +1095,12 @@ exports[`Select.svelte > should render items using custom component 3`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -868,7 +1108,9 @@ exports[`Select.svelte > should render items using custom component 3`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="true"
           class="item"
@@ -878,7 +1120,7 @@ exports[`Select.svelte > should render items using custom component 3`] = `
           <span>
             1
           </span>
-           
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -889,7 +1131,7 @@ exports[`Select.svelte > should render items using custom component 3`] = `
           <span>
             2
           </span>
-           
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -900,12 +1142,16 @@ exports[`Select.svelte > should render items using custom component 3`] = `
           <span>
             3
           </span>
-           
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -924,13 +1170,20 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           2
         </p>
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -943,11 +1196,12 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -955,20 +1209,27 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             1
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="true"
@@ -976,13 +1237,18 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             2
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -990,18 +1256,27 @@ exports[`Select.svelte > should render items using custom mapping 1`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             3
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -1020,13 +1295,20 @@ exports[`Select.svelte > should render items using default component, when inval
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           2
         </p>
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -1039,11 +1321,12 @@ exports[`Select.svelte > should render items using default component, when inval
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -1051,20 +1334,27 @@ exports[`Select.svelte > should render items using default component, when inval
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             1
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="true"
@@ -1072,13 +1362,18 @@ exports[`Select.svelte > should render items using default component, when inval
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             2
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1086,18 +1381,27 @@ exports[`Select.svelte > should render items using default component, when inval
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             3
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -1116,9 +1420,13 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -1131,11 +1439,12 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -1143,20 +1452,27 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             1
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1164,13 +1480,18 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             2
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1178,18 +1499,27 @@ exports[`Select.svelte > should render items using field mapping 1`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
+          <!---->
           
+          
+          <!---->
            
           <p>
             3
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -1208,9 +1538,13 @@ exports[`Select.svelte > should render string array 1`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="opened"
@@ -1223,11 +1557,12 @@ exports[`Select.svelte > should render string array 1`] = `
           class="selector-opened"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -1235,19 +1570,23 @@ exports[`Select.svelte > should render string array 1`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             a
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1255,12 +1594,14 @@ exports[`Select.svelte > should render string array 1`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             b
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1268,17 +1609,23 @@ exports[`Select.svelte > should render string array 1`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             c
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;
 
@@ -1297,12 +1644,16 @@ exports[`Select.svelte > should render string array 2`] = `
       tabindex="-1"
     >
       <item>
+        <!---->
+        <!---->
          
         <p>
           b
         </p>
-        
+        <!---->
+        <!---->
       </item>
+      <!---->
        
       <icon
         aria-label="closed"
@@ -1315,11 +1666,12 @@ exports[`Select.svelte > should render string array 2`] = `
           class="selector-closed"
         />
       </icon>
+      <!---->
     </selected-item>
      
     <scroll
       class="flex flex-col absolute w-full z-10 overflow-scroll menu"
-      style="top: 0px; animation: __svelte_3328443287_0 50ms linear 0ms 1 both, __svelte_2150010166_0 50ms linear 0ms 1 both;"
+      style="top: 0px;"
     >
       <list
         aria-label="list"
@@ -1327,19 +1679,23 @@ exports[`Select.svelte > should render string array 2`] = `
         role="listbox"
         tabindex="-1"
       >
+        <!---->
          
+        <!---->
         <item
           aria-selected="false"
           class="item"
           data-path="0"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             a
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1347,12 +1703,14 @@ exports[`Select.svelte > should render string array 2`] = `
           data-path="1"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             b
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         <item
           aria-selected="false"
@@ -1360,16 +1718,22 @@ exports[`Select.svelte > should render string array 2`] = `
           data-path="2"
           role="option"
         >
+          <!---->
+          <!---->
            
           <p>
             c
           </p>
-          
-           
+          <!---->
+          <!---->
         </item>
         
+        <!---->
       </list>
+      <!---->
     </scroll>
+    <!---->
   </input-select>
+  
 </div>
 `;

@@ -1,12 +1,12 @@
 import { describe, expect, it, beforeEach, afterAll, vi } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { toHaveBeenDispatchedWith } from 'validators'
+// import { toHaveBeenCalledWith } from 'validators'
 import { tick } from 'svelte'
 
 import VirtualList from '../src/VirtualList.svelte'
 import MockVirtualListSlot from './mocks/MockVirtualListSlot.svelte'
 
-expect.extend({ toHaveBeenDispatchedWith })
+// expect.extend({ toHaveBeenCalledWith })
 
 describe('VirtualList.svelte', () => {
 	let scroll = { left: 0, top: 0 }
@@ -89,7 +89,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[0],
 				index: 0
 			})
@@ -109,7 +109,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[4],
 				index: 4
 			})
@@ -129,7 +129,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.move).not.toHaveBeenCalled()
-			expect(handlers.select).toHaveBeenDispatchedWith({
+			expect(handlers.select).toHaveBeenCalledWith({
 				value: items[4],
 				index: 4
 			})
@@ -149,7 +149,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.move).not.toHaveBeenCalled()
-			expect(handlers.select).toHaveBeenDispatchedWith({
+			expect(handlers.select).toHaveBeenCalledWith({
 				value: items[4],
 				index: 4
 			})
@@ -169,7 +169,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[0],
 				index: 0
 			})
@@ -189,7 +189,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[9],
 				index: 9
 			})
@@ -211,7 +211,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[9],
 				index: 9
 			})
@@ -233,7 +233,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[4],
 				index: 4
 			})
@@ -254,7 +254,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.move).not.toHaveBeenCalled()
-			expect(handlers.select).toHaveBeenDispatchedWith({
+			expect(handlers.select).toHaveBeenCalledWith({
 				value: items[1],
 				index: 1
 			})
@@ -297,7 +297,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[0],
 				index: 0
 			})
@@ -318,7 +318,7 @@ describe('VirtualList.svelte', () => {
 			await tick()
 			expect(wrapper).toMatchSnapshot()
 			expect(handlers.select).not.toHaveBeenCalled()
-			expect(handlers.move).toHaveBeenDispatchedWith({
+			expect(handlers.move).toHaveBeenCalledWith({
 				value: items[4],
 				index: 4
 			})

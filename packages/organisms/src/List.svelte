@@ -1,16 +1,9 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-	import { createEventDispatcher } from 'svelte'
-	import { defaultFields } from '@rokkit/core'
+	import { createEmitter, defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { Item } from '@rokkit/molecules'
 	import ListItems from './ListItems.svelte'
 
-	const dispatch = createEventDispatcher()
-
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -34,23 +27,22 @@
 		value = $bindable(null),
 		tabindex = 0,
 		hierarchy = [],
-		children
-	} = $props();
+		children,
+		...events
+	} = $props()
 	let cursor = $state([])
 
+	let emitter = createEmitter(events, ['select'])
 	function handleNav(event) {
 		value = event.detail.node
 		cursor = event.detail.path
-
-		dispatch('select', { item: value, indices: cursor })
+		emitter.select({ item: value, indices: cursor })
 	}
-
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
-	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
+
 	let filtered = $derived(items.filter((item) => !item[fields.isDeleted]))
 </script>
 
@@ -69,5 +61,5 @@
 	{tabindex}
 >
 	{@render children?.()}
-	<ListItems items={filtered} {fields} {using} {value} {hierarchy} on:change />
+	<ListItems items={filtered} {fields} {using} {value} {hierarchy} onchange />
 </list>

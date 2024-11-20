@@ -3,9 +3,6 @@ import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { tick } from 'svelte'
 import MockItem from './mocks/MockItem.svelte'
 import List from '../src/List.svelte'
-import { getPropertyValue, toHaveBeenDispatchedWith } from 'validators'
-
-expect.extend({ toHaveBeenDispatchedWith })
 
 describe('List.svelte', () => {
 	beforeEach(() => {
@@ -84,7 +81,7 @@ describe('List.svelte', () => {
 			await fireEvent.click(item)
 			expect(getPropertyValue(component, 'value')).toEqual(selected.item)
 			expect(onSelect).toHaveBeenCalled()
-			expect(onSelect).toHaveBeenDispatchedWith(selected)
+			expect(onSelect).toHaveBeenCalledWith(selected)
 		})
 	})
 	it('should render a list of values with hierarchy', async () => {

@@ -1,10 +1,7 @@
 <script>
-	import { run } from 'svelte/legacy';
-
 	import { defaultFields, getText } from '@rokkit/core'
 	import Select from './Select.svelte'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} options
@@ -20,15 +17,15 @@
 		value = $bindable(null),
 		fields = $bindable(defaultFields),
 		...rest
-	} = $props();
+	} = $props()
 
 	let searchText = $state()
-	let searchBox = $state()
+	// let searchBox = $state()
 	let filtered = $state(options)
 
-	run(() => {
+	$effect.pre(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 
 	function applySearch(event) {
 		searchText = event.target.value
@@ -50,8 +47,8 @@
 			type="text"
 			class="w-full border-none bg-transparent p-0"
 			bind:value={searchText}
-			bind:this={searchBox}
 			onchange={applySearch}
 		/>
+		<!-- bind:this={searchBox} -->
 	</span>
 </Select>

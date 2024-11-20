@@ -1,5 +1,6 @@
 <script>
-	let { value, fields } = $props();
+	import { getText } from '@rokkit/core'
+	let { value = $bindable({}), fields } = $props()
 </script>
 
-<span>{value[fields.text]}</span>
+<span>{getText(value, fields)}</span>

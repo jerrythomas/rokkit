@@ -1,7 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-	
+	import { equals } from 'ramda'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -10,7 +8,7 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', items = [], value = $bindable() } = $props();
+	let { class: className = '', items = [], value = $bindable() } = $props()
 	let currentIndex = $state(0)
 
 	function handleKey(e, index) {
@@ -29,9 +27,9 @@
 			e.stopPropagation()
 		}
 	}
-	run(() => {
+	$effect.pre(() => {
 		value = items[currentIndex]
-	});
+	})
 </script>
 
 {#if items.length === 0}
@@ -46,7 +44,7 @@
 			{#each items as item, index}
 				<dot
 					role="radio"
-					aria-checked={currentIndex === index}
+					aria-checked={equals(currentIndex, index)}
 					aria-label={`Slide ${index + 1}`}
 					onclick={() => (currentIndex = index)}
 					onkeydown={(e) => handleKey(e, index)}

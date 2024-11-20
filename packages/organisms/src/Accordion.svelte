@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
@@ -9,7 +9,7 @@
 	import ListItems from './ListItems.svelte'
 
 	const dispatch = createEventDispatcher()
-	
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -28,15 +28,15 @@
 		using = $bindable({}),
 		autoClose = false,
 		value = $bindable(null)
-	} = $props();
+	} = $props()
 	let cursor = $state([])
 
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 
 	function handle(event) {
 		value = event.detail.node
@@ -81,7 +81,7 @@
 			class:is-selected={item === value}
 			data-path={index}
 		>
-			<Summary {fields} {using} bind:value={item} />
+			<Summary {fields} {using} bind:value={items[index]} />
 			{#if hasItems && item[fields.isOpen]}
 				<list class="flex flex-col w-full flex-shrink-0 select-none" role="listbox" tabindex="-1">
 					<ListItems

@@ -1,5 +1,4 @@
 <script>
-	import { identity } from 'ramda'
 	import { defaultFields, getIcon, isObject, getFormattedText } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
@@ -13,7 +12,6 @@
 	/** @type {Props} */
 	let { value = $bindable(), fields = defaultFields, formatter = null } = $props()
 
-	// $: isObject = typeof (value ?? '-') === 'object'
 	let text = $derived(getFormattedText(value, fields, formatter))
 </script>
 

@@ -1,39 +1,23 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Toggle.svelte > should change class 1`] = `
-<div>
-  <toggle
-    aria-checked="false"
-    aria-disabled="false"
-    aria-label="Toggle"
-    class="custom"
-    role="switch"
-    tabindex="0"
-  >
-     
-    <p>
-      false
-    </p>
-    
-  </toggle>
-</div>
-`;
-
 exports[`Toggle.svelte > should render default 1`] = `
 <div>
   <toggle
     aria-checked="false"
     aria-disabled="false"
     aria-label="Toggle"
-    class=""
     role="switch"
     tabindex="0"
   >
+    <!---->
+    <!---->
      
     <p>
       false
     </p>
-    
+    <!---->
+    <!---->
   </toggle>
+  
 </div>
 `;
