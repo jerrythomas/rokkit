@@ -1,22 +1,6 @@
 import { theme } from '@rokkit/stores'
 
 /**
- * A svelte action function that adds theme classes to the element
- *
- * @param {HTMLElement} node
- */
-export function themable(node) {
-	let previous = {}
-
-	theme.subscribe((data) => {
-		switchClass(node, data.name, previous.name)
-		switchClass(node, data.mode, previous.mode)
-		// switchPalette(node, data.palette, previous.palette)
-		previous = data
-	})
-}
-
-/**
  * Switch the class on the node
  *
  * @param {HTMLElement} node
@@ -40,3 +24,24 @@ function switchClass(node, current, previous) {
 // 		}
 // 	})
 // }
+/**
+ * A svelte action function that adds theme classes to the element
+ *
+ * @param {HTMLElement} node
+ */
+export function themable(node) {
+	let previous = {}
+
+	// $effect(() => {
+	// 	switchClass(node, theme.name, previous.name)
+	// 	switchClass(node, theme.mode, previous.mode)
+	// 	// switchPalette(node, data.palette, previous.palette)
+	// 	previous = theme
+	// })
+	theme.subscribe((data) => {
+		switchClass(node, data.name, previous.name)
+		switchClass(node, data.mode, previous.mode)
+		// switchPalette(node, data.palette, previous.palette)
+		previous = data
+	})
+}

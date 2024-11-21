@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, afterAll } from 'vitest'
 import { fireEvent } from '@testing-library/svelte'
-import { traversable } from '../../src/traversable'
+import { traversable } from '../../src/traversable.svelte'
 import { mockStore } from '../mocks/store'
 import { createTree } from '../mocks/tree'
+import { flushSync } from 'svelte'
 
 describe('traversable', () => {
 	const items = [
@@ -31,14 +32,16 @@ describe('traversable', () => {
 	const texts = Array.from(root.querySelectorAll('p'))
 
 	describe('select', () => {
-		const instance = traversable(root, { store: mockStore })
+		const config = $state({ store: mockStore })
+		const cleanup = $effect.root(() => traversable(root, config))
+		flushSync()
 
 		beforeEach(() => {
 			vi.clearAllMocks()
 			// mockStore.currentItem = vi.fn(() => ({ indexPath: [0] }))
 		})
 		afterAll(() => {
-			instance.destroy()
+			cleanup()
 		})
 
 		it('should not trigger any action', async () => {
@@ -99,14 +102,16 @@ describe('traversable', () => {
 	})
 
 	describe('multiselect', () => {
-		const instance = traversable(root, { store: mockStore, options: { multiselect: true } })
+		const config = $state({ store: mockStore, options: { multiselect: true } })
+		const cleanup = $effect.root(() => traversable(root, config))
+		flushSync()
 
 		beforeEach(() => {
 			vi.resetAllMocks()
 			mockStore.currentItem = vi.fn(() => ({ indexPath: [0] }))
 		})
 		afterAll(() => {
-			instance.destroy()
+			cleanup()
 		})
 
 		it('should not trigger any action', async () => {

@@ -1,3 +1,17 @@
+import { on } from 'svelte/events'
+
+/**
+ * Reset an event listener.
+ * @param {string} event - The event name.
+ * @param {Object} registry - The object containing the event listeners.
+ */
+function resetEvent(event, registry) {
+	if (typeof registry[event] === 'function') {
+		registry[event]()
+		delete registry[event]
+	}
+}
+
 /**
  * EventManager class to manage event listeners on an element.
  *
@@ -5,18 +19,19 @@
  * @param {Object}      handlers - An object with event names as keys and event handlers as values.
  * @returns {Object} - An object with methods to activate, reset, and update the event listeners.
  */
-export function EventManager(element, handlers = {}) {
-	let listening = false
+export function EventManager(element, handlers = {}, enabled = true) {
+	const registeredEvents = {}
+	const options = { handlers, enabled }
 
 	/**
 	 * Activate the event listeners.
 	 */
 	function activate() {
-		if (!listening) {
-			Object.entries(handlers).forEach(([event, handler]) =>
-				element.addEventListener(event, handler)
-			)
-			listening = true
+		if (options.enabled) {
+			Object.entries(options.handlers).forEach(([event, handler]) => {
+				resetEvent(event, registeredEvents)
+				registeredEvents[event] = on(element, event, handler)
+			})
 		}
 	}
 
@@ -24,12 +39,9 @@ export function EventManager(element, handlers = {}) {
 	 * Reset the event listeners.
 	 */
 	function reset() {
-		if (listening) {
-			Object.entries(handlers).forEach(([event, handler]) =>
-				element.removeEventListener(event, handler)
-			)
-			listening = false
-		}
+		Object.keys(registeredEvents).forEach((event) => {
+			resetEvent(event, registeredEvents)
+		})
 	}
 
 	/**
@@ -39,12 +51,17 @@ export function EventManager(element, handlers = {}) {
 	 * @param {boolean} enabled - Whether to enable or disable the event listeners.
 	 */
 	function update(newHandlers = handlers, enabled = true) {
-		if (listening !== enabled || handlers !== newHandlers) {
-			reset()
-			handlers = newHandlers
-			if (enabled) activate()
+		const hasChanged = handlers !== newHandlers
+
+		if (!enabled) reset()
+
+		if (hasChanged) {
+			options.handlers = newHandlers
+			options.enabled = enabled
+			activate()
 		}
 	}
 
-	return { activate, reset, update }
+	activate()
+	return { reset, update }
 }

@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest'
 import { fireEvent } from '@testing-library/svelte'
-import { traversable } from '../../src/traversable'
+import { flushSync } from 'svelte'
+import { traversable } from '../../src/traversable.svelte'
 import { mockStore } from '../mocks/store'
 import { createTree } from '../mocks/tree'
 
@@ -27,21 +28,20 @@ describe('traversable', () => {
 		const root = createTree(items)
 		document.body.appendChild(root)
 		const mockCurrentNode = root.querySelector('[data-index="0-0"]')
-		let instance = null
-		// const instance = traversable(root, { store, options: { vertical: false, horizontal: true } })
+
+		let cleanup
+
 		beforeEach(() => {
 			vi.clearAllMocks()
-			// mockStore.getEvents = vi.fn().mockReturnValue([])
 			mockStore.currentItem = vi.fn(() => ({ indexPath: [0, 0] }))
-			instance = traversable(root, {
-				store: mockStore,
-				options: { vertical: false, horizontal: true }
-			})
-		})
-		afterEach(() => {
-			if (instance) instance.destroy()
+			const config = $state({ store: mockStore, options: { vertical: false, horizontal: true } })
+			cleanup = $effect.root(() => traversable(root, config))
+			flushSync()
 		})
 
+		afterEach(() => {
+			cleanup()
+		})
 		it('should trigger expand on ArrowDown', async () => {
 			await fireEvent.keyDown(root, { key: 'ArrowDown' })
 			expect(mockStore.expand).toHaveBeenCalledWith()

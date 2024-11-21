@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
-import { pannable } from '../src/pannable'
 import { simulateMouseEvent, simulateTouchEvent } from 'validators'
+import { pannable } from '../src/pannable.svelte'
+import { flushSync } from 'svelte'
 
 describe('pannable', () => {
 	let handlers = {}
@@ -33,14 +34,16 @@ describe('pannable', () => {
 	})
 
 	it('should create a pannable node', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		expect(node.addEventListener).toHaveBeenCalledWith('mousedown', handlers.node.mousedown)
-		action.destroy()
+		cleanup()
 		expect(node.removeEventListener).toBeCalledWith('mousedown', handlers.node.mousedown)
 	})
 
 	it('should emit the panstart event', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		const event = simulateMouseEvent(10, 10)
 
 		handlers.node.mousedown(event)
@@ -52,10 +55,11 @@ describe('pannable', () => {
 		})
 		expect(window.addEventListener).toHaveBeenCalledWith('mousemove', handlers.window.mousemove)
 		expect(window.addEventListener).toHaveBeenCalledWith('mouseup', handlers.window.mouseup)
-		action.destroy()
+		cleanup()
 	})
 	it('should emit the panmove event', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		let event = simulateMouseEvent(10, 10)
 		handlers.node.mousedown(event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
@@ -73,11 +77,12 @@ describe('pannable', () => {
 		})
 
 		// )
-		action.destroy()
+		cleanup()
 	})
 
 	it('should emit the panend event', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		let event = simulateMouseEvent(10, 10)
 		handlers.node.mousedown(event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
@@ -96,21 +101,23 @@ describe('pannable', () => {
 		const mouseUpHandler = handlers.window.mouseup
 		expect(window.removeEventListener).toHaveBeenCalledWith('mousemove', mouseMoveHandler)
 		expect(window.removeEventListener).toHaveBeenCalledWith('mouseup', mouseUpHandler)
-		action.destroy()
+		cleanup()
 	})
 	it('should create a pannable node with touch event listeners', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		expect(node.addEventListener).toHaveBeenCalledWith(
 			'touchstart',
 			handlers.node.touchstart
 			// { passive: false }
 		)
-		action.destroy()
+		cleanup()
 		expect(node.removeEventListener).toBeCalledWith('touchstart', handlers.node.touchstart)
 	})
 
 	it('should emit the panstart event on touchstart', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		const event = simulateTouchEvent(10, 10)
 
 		handlers.node.touchstart(event)
@@ -126,11 +133,12 @@ describe('pannable', () => {
 			// { passive: false }
 		)
 		expect(window.addEventListener).toHaveBeenCalledWith('touchend', handlers.window.touchend)
-		action.destroy()
+		cleanup()
 	})
 
 	it('should emit the panmove event on touchmove', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		let event = simulateTouchEvent(10, 10)
 		handlers.node.touchstart(event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
@@ -147,11 +155,12 @@ describe('pannable', () => {
 			params: { detail: { dx: 5, dy: 5, x: 15, y: 15 } }
 		})
 
-		action.destroy()
+		cleanup()
 	})
 
 	it('should emit the panend event on touchend', () => {
-		const action = pannable(node)
+		const cleanup = $effect.root(() => pannable(node))
+		flushSync()
 		let event = simulateTouchEvent(10, 10)
 		handlers.node.touchstart(event)
 		expect(node.dispatchEvent).toHaveBeenCalledWith({
@@ -170,6 +179,6 @@ describe('pannable', () => {
 		const touchEndHandler = handlers.window.touchend
 		expect(window.removeEventListener).toHaveBeenCalledWith('touchmove', touchMoveHandler)
 		expect(window.removeEventListener).toHaveBeenCalledWith('touchend', touchEndHandler)
-		action.destroy()
+		cleanup()
 	})
 })

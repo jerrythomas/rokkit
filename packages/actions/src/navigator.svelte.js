@@ -8,6 +8,60 @@ import {
 	getCurrentNode
 } from './hierarchy'
 import { mapKeyboardEventsToActions } from './lib'
+import { on } from 'svelte/events'
+/**
+ * Emit a custom event on the element with the path and node as detail
+ *
+ * @param {string} event
+ * @param {HTMLElement} element
+ * @param {Array<integer>} indices
+ * @param {*} node
+ */
+function emit(event, element, indices, node) {
+	element.dispatchEvent(
+		new CustomEvent(event, {
+			detail: {
+				path: indices,
+				node
+			}
+		})
+	)
+}
+
+/**
+ * Find the parent element with data-path attribute
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement} root
+ * @returns {HTMLElement}
+ */
+export function findParentWithDataPath(element, root) {
+	if (element.hasAttribute('data-path')) return element
+	let parent = element.parentNode
+
+	while (parent && parent !== root && !parent.hasAttribute('data-path')) {
+		parent = parent.parentNode
+	}
+
+	return parent !== root ? parent : null
+}
+
+/**
+ * Move to the element with the given path
+ *
+ * @param {HTMLElement} element
+ * @param {*} path
+ * @param {*} currentNode
+ * @param {*} idPrefix
+ */
+export function moveTo(element, path, currentNode, idPrefix) {
+	const indices = indicesFromPath(path)
+	const current = element.querySelector(`#${idPrefix}${indices.join('-')}`)
+	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+
+	emit('move', element, indices, currentNode)
+}
+
 /**
  * Keyboard navigation for Lists and NestedLists. The data is either nested or not and is not
  * expected to switch from nested to simple list or vice-versa.
@@ -54,6 +108,14 @@ export function navigator(element, options) {
 			if (previousNode !== currentNode) moveTo(element, path, currentNode, idPrefix)
 		}
 	}
+
+	function toggle() {
+		const expanded = isExpanded(currentNode, path[path.length - 1].fields)
+		const event = expanded ? 'collapse' : 'expand'
+		currentNode[path[path.length - 1].fields.isOpen] = !expanded
+		emit(event, element, indicesFromPath(path), currentNode)
+	}
+
 	const select = () => {
 		if (currentNode) emit('select', element, indicesFromPath(path), currentNode)
 	}
@@ -74,12 +136,7 @@ export function navigator(element, options) {
 			toggle()
 		}
 	}
-	function toggle() {
-		const expanded = isExpanded(currentNode, path[path.length - 1].fields)
-		const event = expanded ? 'collapse' : 'expand'
-		currentNode[path[path.length - 1].fields.isOpen] = !expanded
-		emit(event, element, indicesFromPath(path), currentNode)
-	}
+
 	const handlers = { next, previous, select, collapse, expand }
 
 	update(options)
@@ -116,67 +173,24 @@ export function navigator(element, options) {
 		}
 	}
 
-	element.addEventListener('keydown', handleKeyDown)
-	element.addEventListener('click', handleClick)
+	$effect(() => {
+		const cleanupKeyDown = on(element, 'keydown', handleKeyDown)
+		const cleanupClick = on(element, 'click', handleClick)
 
-	return {
-		update,
-		destroy() {
-			element.removeEventListener('keydown', handleKeyDown)
-			element.removeEventListener('click', handleClick)
+		return () => {
+			cleanupKeyDown()
+			cleanupClick()
 		}
-	}
-}
+	})
 
-/**
- * Move to the element with the given path
- *
- * @param {HTMLElement} element
- * @param {*} path
- * @param {*} currentNode
- * @param {*} idPrefix
- */
-export function moveTo(element, path, currentNode, idPrefix) {
-	const indices = indicesFromPath(path)
-	const current = element.querySelector(`#${idPrefix}${indices.join('-')}`)
-	if (current) current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+	// element.addEventListener('keydown', handleKeyDown)
+	// element.addEventListener('click', handleClick)
 
-	emit('move', element, indices, currentNode)
-}
-
-/**
- * Find the parent element with data-path attribute
- *
- * @param {HTMLElement} element
- * @param {HTMLElement} root
- * @returns {HTMLElement}
- */
-export function findParentWithDataPath(element, root) {
-	if (element.hasAttribute('data-path')) return element
-	let parent = element.parentNode
-
-	while (parent && parent !== root && !parent.hasAttribute('data-path')) {
-		parent = parent.parentNode
-	}
-
-	return parent !== root ? parent : null
-}
-
-/**
- * Emit a custom event on the element with the path and node as detail
- *
- * @param {string} event
- * @param {HTMLElement} element
- * @param {Array<integer>} indices
- * @param {*} node
- */
-function emit(event, element, indices, node) {
-	element.dispatchEvent(
-		new CustomEvent(event, {
-			detail: {
-				path: indices,
-				node
-			}
-		})
-	)
+	// return {
+	// update,
+	// destroy() {
+	// 	element.removeEventListener('keydown', handleKeyDown)
+	// 	element.removeEventListener('click', handleClick)
+	// }
+	// }
 }
