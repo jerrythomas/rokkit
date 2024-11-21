@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { swipeable } from '../src/swipeable'
-import { toUseHandlersFor, toOnlyTrigger, simulateTouchSwipe, simulateMouseSwipe } from 'validators'
-import { getMockNode } from 'validators/mocks'
+import { toOnlyTrigger, simulateTouchSwipe, simulateMouseSwipe } from 'validators'
+import { flushSync } from 'svelte'
+import { swipeable } from '../src/swipeable.svelte'
 
-expect.extend({ toUseHandlersFor, toOnlyTrigger })
+expect.extend({ toOnlyTrigger })
 
 describe('swipable', () => {
 	const events = ['touchstart', 'touchend', 'mousedown', 'mouseup']
@@ -30,15 +30,33 @@ describe('swipable', () => {
 	})
 
 	it('should cleanup events on destroy', () => {
-		expect(swipeable).toUseHandlersFor({}, events)
-		expect(swipeable).toUseHandlersFor({ horizontal: false, vertical: true }, events)
+		const addEventSpy = vi.spyOn(node, 'addEventListener')
+		const removeEventSpy = vi.spyOn(node, 'removeEventListener')
+		const cleanup = $effect.root(() => swipeable(node))
+		flushSync()
+		events.forEach((event) => {
+			expect(addEventSpy).toHaveBeenCalledWith(event, expect.any(Function), {})
+		})
+		cleanup()
+		events.forEach((event) => {
+			expect(removeEventSpy).toHaveBeenCalledWith(event, expect.any(Function), {})
+		})
 	})
-	it.each(events)('should not register %s when disabled', (event) => {
-		expect(swipeable).not.toUseHandlersFor({ enabled: false }, event)
+	it('should not register events when disabled', () => {
+		const addEventSpy = vi.spyOn(node, 'addEventListener')
+		const removeEventSpy = vi.spyOn(node, 'removeEventListener')
+		const cleanup = $effect.root(() => swipeable(node, { enabled: false }))
+		flushSync()
+
+		expect(addEventSpy).not.toHaveBeenCalled()
+
+		cleanup()
+		expect(removeEventSpy).not.toHaveBeenCalled()
 	})
 
 	it('should dispatch swipeRight event', () => {
-		const handle = swipeable(node)
+		const cleanup = $effect.root(() => swipeable(node))
+		flushSync()
 
 		simulateTouchSwipe(node, { x: 100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeRight')
@@ -54,11 +72,12 @@ describe('swipable', () => {
 		simulateMouseSwipe(node, { x: 90, y: 10 })
 		expect(handlers.swipeRight).not.toHaveBeenCalled()
 
-		handle.destroy()
+		cleanup()
 	})
 
 	it('should dispatch swipeLeft event', () => {
-		const handle = swipeable(node)
+		const cleanup = $effect.root(() => swipeable(node))
+		flushSync()
 
 		simulateTouchSwipe(node, { x: -100, y: 10 })
 		expect(handlers).toOnlyTrigger('swipeLeft')
@@ -73,11 +92,12 @@ describe('swipable', () => {
 		simulateMouseSwipe(node, { x: -90, y: 10 })
 		expect(handlers.swipeLeft).not.toHaveBeenCalled()
 
-		handle.destroy()
+		cleanup()
 	})
 
 	it('should dispatch swipeUp event', () => {
-		const handle = swipeable(node, { vertical: true, threshold: 100 })
+		const cleanup = $effect.root(() => swipeable(node, { vertical: true, threshold: 100 }))
+		flushSync()
 
 		simulateTouchSwipe(node, { x: 10, y: -100 })
 		expect(handlers).toOnlyTrigger('swipeUp')
@@ -91,11 +111,12 @@ describe('swipable', () => {
 		simulateMouseSwipe(node, { x: 10, y: -90 })
 		expect(handlers.swipeUp).not.toHaveBeenCalled()
 
-		handle.destroy()
+		cleanup()
 	})
 
 	it('should dispatch swipeDown event', () => {
-		const handle = swipeable(node, { vertical: true, horizontal: false })
+		const cleanup = $effect.root(() => swipeable(node, { vertical: true, horizontal: false }))
+		flushSync()
 
 		simulateTouchSwipe(node, { x: 10, y: 100 })
 		expect(handlers).toOnlyTrigger('swipeDown')
@@ -111,35 +132,42 @@ describe('swipable', () => {
 		simulateMouseSwipe(node, { x: 10, y: 90 })
 		expect(handlers.swipeDown).not.toHaveBeenCalled()
 
-		handle.destroy()
+		cleanup()
 	})
 
 	it('should not dispatch events when speed is slow', () => {
-		const handle = swipeable(node, { speed: 100 })
+		const cleanup = $effect.root(() => swipeable(node, { speed: 100 }))
+		flushSync()
 
 		simulateTouchSwipe(node, { x: 1, y: 1 }, 1000)
 		Object.values(handlers).forEach((handler) => expect(handler).not.toHaveBeenCalled())
 		// expect(handlers).toOnlyTrigger('swipeRight')
 		// vi.resetAllMocks()
-		handle.destroy()
+		cleanup()
 	})
 
 	it('should switch between enabled and disabled', () => {
-		const mock = getMockNode(events)
-		const handle = swipeable(mock.node)
+		const props = $state({ enabled: true })
+		// const mock = getMockNode(events)
+		const addEventSpy = vi.spyOn(node, 'addEventListener')
+		const removeEventSpy = vi.spyOn(node, 'removeEventListener')
 
-		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+		const cleanup = $effect.root(() => swipeable(node, props))
+		flushSync()
 
-		// repeat calls should not call addEventListener again
-		handle.update({ enabled: true })
-		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+		expect(addEventSpy).toHaveBeenCalledTimes(events.length)
 
-		// disabling should remove all event listeners
-		handle.update({ enabled: false })
-		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+		props.enabled = false
+		flushSync()
+		expect(removeEventSpy).toHaveBeenCalledTimes(events.length)
+		expect(addEventSpy).toHaveBeenCalledTimes(events.length)
 
-		// repeat calls should not call removeEventListener again
-		handle.update({ enabled: false })
-		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+		props.enabled = true
+		flushSync()
+		expect(removeEventSpy).toHaveBeenCalledTimes(events.length)
+		expect(addEventSpy).toHaveBeenCalledTimes(events.length * 2)
+
+		cleanup()
+		expect(removeEventSpy).toHaveBeenCalledTimes(events.length * 2)
 	})
 })

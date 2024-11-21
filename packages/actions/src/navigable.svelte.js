@@ -1,3 +1,4 @@
+import { on } from 'svelte/events'
 import { handleAction, getKeyboardActions } from './utils'
 
 const defaultOptions = { horizontal: true, nested: false, enabled: true }
@@ -9,9 +10,6 @@ const defaultOptions = { horizontal: true, nested: false, enabled: true }
  * @returns {import('./types').SvelteActionReturn}
  */
 export function navigable(node, options) {
-	options = { ...defaultOptions, ...options }
-
-	let listening = false
 	const handlers = {
 		previous: () => node.dispatchEvent(new CustomEvent('previous')),
 		next: () => node.dispatchEvent(new CustomEvent('next')),
@@ -20,27 +18,14 @@ export function navigable(node, options) {
 		select: () => node.dispatchEvent(new CustomEvent('select'))
 	}
 
-	let actions = {} //getKeyboardActions(node, { horizontal, nested })
+	let actions = {}
 	const handleKeydown = (event) => handleAction(actions, event)
 
-	/**
-	 * Update the listeners based on the input configuration.
-	 * @param {import('./types').NavigableOptions} input
-	 */
-	function updateListeners(input) {
-		options = { ...options, ...input }
-		if (listening) node.removeEventListener('keydown', handleKeydown)
+	$effect(() => {
+		const props = { ...defaultOptions, ...options }
+		actions = getKeyboardActions(props, handlers)
+		const cleanup = on(node, 'keydown', handleKeydown)
 
-		actions = getKeyboardActions(node, input, handlers)
-		if (input.enabled) node.addEventListener('keydown', handleKeydown)
-
-		listening = input.enabled
-	}
-
-	updateListeners(options)
-
-	return {
-		update: (config) => updateListeners(config),
-		destroy: () => updateListeners({ enabled: false })
-	}
+		return () => cleanup()
+	})
 }

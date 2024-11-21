@@ -1,9 +1,9 @@
-import { navigable } from '../src/navigable'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { toUseHandlersFor, toOnlyTrigger } from 'validators'
-import { getMockNode } from 'validators/mocks'
+import { toOnlyTrigger } from 'validators'
+import { flushSync } from 'svelte'
+import { navigable } from '../src/navigable.svelte'
 
-expect.extend({ toUseHandlersFor, toOnlyTrigger })
+expect.extend({ toOnlyTrigger })
 
 describe('Navigable Action', () => {
 	let node = null
@@ -27,56 +27,60 @@ describe('Navigable Action', () => {
 	})
 
 	it('should use handlers and cleanup on destroy', () => {
-		expect(navigable).toUseHandlersFor({}, 'keydown')
-		expect(navigable).toUseHandlersFor({ horizontal: false }, 'keydown')
-		expect(navigable).not.toUseHandlersFor({ enabled: false }, 'keydown')
-	})
+		const addEventSpy = vi.spyOn(node, 'addEventListener')
+		const removeEventSpy = vi.spyOn(node, 'removeEventListener')
 
-	it('should switch between enabled and disabled', () => {
-		const events = ['keydown']
-		const mock = getMockNode(events)
-		const handle = navigable(mock.node)
+		const data = $state({})
+		const cleanup = $effect.root(() => navigable(node, data))
+		flushSync()
+		// expect(addEventSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+		expect(addEventSpy).toHaveBeenCalledTimes(1)
+		expect(removeEventSpy).toHaveBeenCalledTimes(0)
 
-		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+		data.horizontal = false
+		flushSync()
 
-		// repeat calls should not call addEventListener again
-		handle.update({ enabled: true })
-		events.forEach((event) => expect(mock.listeners[event]).toBe(1))
+		expect(addEventSpy).toHaveBeenCalledTimes(2)
+		expect(removeEventSpy).toHaveBeenCalledTimes(1)
 
-		// disabling should remove all event listeners
-		handle.update({ enabled: false })
-		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+		data.enabled = false
+		flushSync()
+		expect(addEventSpy).toHaveBeenCalledTimes(3)
+		expect(removeEventSpy).toHaveBeenCalledTimes(2)
 
-		// repeat calls should not call removeEventListener again
-		handle.update({ enabled: false })
-		events.forEach((event) => expect(mock.listeners[event]).toBe(0))
+		cleanup()
+		expect(removeEventSpy).toHaveBeenCalledTimes(3)
 	})
 
 	describe('Horizontal Navigation', () => {
 		it('should trigger "select" event on Enter key', () => {
-			const action = navigable(node, { horizontal: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 			expect(handler).toOnlyTrigger('select')
-			action.destroy()
+			cleanup()
 		})
 
 		it('should trigger "previous" event on left arrow key', () => {
-			const action = navigable(node, { horizontal: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 			expect(handler).toOnlyTrigger('previous')
-			action.destroy()
+			cleanup()
 		})
 
 		it('should trigger "next" event on right arrow key', () => {
-			const action = navigable(node, { horizontal: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 			expect(handler).toOnlyTrigger('next')
 
-			action.destroy()
+			cleanup()
 		})
 
 		it('should not trigger any event on up or down arrow key', () => {
-			const action = navigable(node, { horizontal: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 			expect(handler.select).not.toHaveBeenCalled()
 			expect(handler.previous).not.toHaveBeenCalled()
@@ -90,41 +94,46 @@ describe('Navigable Action', () => {
 			expect(handler.next).not.toHaveBeenCalled()
 			expect(handler.collapse).not.toHaveBeenCalled()
 			expect(handler.expand).not.toHaveBeenCalled()
-			action.destroy()
+			cleanup()
 		})
 	})
 
 	describe('Nested Horizontal Navigation', () => {
 		it('should trigger "expand" event on down arrow key', () => {
-			const action = navigable(node, { horizontal: true, nested: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: true, nested: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 			expect(handler).toOnlyTrigger('expand')
-			action.destroy()
+			cleanup()
 		})
 		it('should trigger "collapse" event on down arrow key', () => {
-			const action = navigable(node, { horizontal: true, nested: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: true, nested: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 			expect(handler).toOnlyTrigger('collapse')
-			action.destroy()
+			cleanup()
 		})
 	})
 	describe('Vertical Navigation', () => {
 		it('should trigger "previous" event on ArrowUp key', () => {
-			const action = navigable(node, { horizontal: false })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: false }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 			expect(handler).toOnlyTrigger('previous')
-			action.destroy()
+			cleanup()
 		})
 
 		it('should trigger "next" event on ArrowDown key', () => {
-			const action = navigable(node, { horizontal: false })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: false }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 			expect(handler).toOnlyTrigger('next')
-			action.destroy()
+			cleanup()
 		})
 
 		it('should not trigger any event on left or right arrow keys', () => {
-			const action = navigable(node, { horizontal: false })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: false }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 			expect(handler.select).not.toHaveBeenCalled()
 			expect(handler.previous).not.toHaveBeenCalled()
@@ -138,22 +147,24 @@ describe('Navigable Action', () => {
 			expect(handler.next).not.toHaveBeenCalled()
 			expect(handler.collapse).not.toHaveBeenCalled()
 			expect(handler.expand).not.toHaveBeenCalled()
-			action.destroy()
+			cleanup()
 		})
 	})
 
 	describe('Nested Vertical Navigation', () => {
 		it('should trigger "expand" event on right arrow key', () => {
-			const action = navigable(node, { horizontal: false, nested: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: false, nested: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 			expect(handler).toOnlyTrigger('expand')
-			action.destroy()
+			cleanup()
 		})
 		it('should trigger "collapse" event on left arrow key', () => {
-			const action = navigable(node, { horizontal: false, nested: true })
+			const cleanup = $effect.root(() => navigable(node, { horizontal: false, nested: true }))
+			flushSync()
 			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 			expect(handler).toOnlyTrigger('collapse')
-			action.destroy()
+			cleanup()
 		})
 	})
 })

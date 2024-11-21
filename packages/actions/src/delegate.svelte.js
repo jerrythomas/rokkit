@@ -24,12 +24,13 @@ export function delegateKeyboardEvents(
 		child.dispatchEvent(new KeyboardEvent(event.type, event))
 	}
 
-	if (child) {
-		events.forEach((event) => (handlers[event] = forwardEvent))
-		manager.update(handlers)
-	}
-
-	return {
-		destroy: () => manager.reset()
-	}
+	$effect(() => {
+		if (child) {
+			events.forEach((event) => {
+				handlers[event] = forwardEvent
+			})
+			manager.update(handlers)
+		}
+		return () => manager.reset()
+	})
 }

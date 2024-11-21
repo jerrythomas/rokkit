@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { fireEvent } from '@testing-library/svelte'
-import { traversable } from '../../src/traversable'
+import { flushSync } from 'svelte'
+import { traversable } from '../../src/traversable.svelte'
 import { mockStore } from '../mocks/store'
 import { createTree } from '../mocks/tree'
 
@@ -28,15 +29,16 @@ describe('traversable', () => {
 		document.body.appendChild(root)
 		const mockCurrentNode = root.querySelector('[data-index="0-0"]')
 
-		let instance = null
+		const config = $state({ store: mockStore })
+		const cleanup = $effect.root(() => traversable(root, config))
+		flushSync()
 
 		beforeEach(() => {
 			vi.clearAllMocks()
 			mockStore.currentItem = vi.fn(() => ({ indexPath: [0, 0] }))
-			instance = traversable(root, { store: mockStore })
 		})
-		afterEach(() => {
-			if (instance) instance.destroy()
+		afterAll(() => {
+			cleanup()
 		})
 
 		it('should trigger moveByOffset on ArrowDown', async () => {

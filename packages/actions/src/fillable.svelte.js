@@ -1,39 +1,4 @@
-/**
- * Action for filling a <del>?</del> element in html block.
- *
- * @param {HTMLElement} node
- * @param {import('./types').FillOptions} options
- * @returns
- */
-export function fillable(node, { options, current, check }) {
-	const data = { options, current, check }
-	const blanks = node.getElementsByTagName('del')
-
-	function click(event) {
-		if (event.target.innerHTML !== '?') {
-			clear(event, node)
-		}
-	}
-
-	initialize(blanks, click)
-
-	return {
-		update(input) {
-			data.options = input.options
-			data.current = input.current
-			data.check = check
-
-			fill(blanks, data.options, data.current)
-			if (data.check) validate(blanks, data)
-		},
-		destroy() {
-			Object.keys(blanks).forEach((ref) => {
-				blanks[ref].removeEventListener('click', click)
-			})
-		}
-	}
-}
-
+import { on } from 'svelte/events'
 /**
  * Initialize empty fillable element style and add listener for click
  *
@@ -41,12 +6,16 @@ export function fillable(node, { options, current, check }) {
  * @param {EventListener} click
  */
 function initialize(blanks, click) {
-	Object.keys(blanks).forEach((ref) => {
-		blanks[ref].addEventListener('click', click)
-		blanks[ref].classList.add('empty')
-		blanks[ref].name = `fill-${ref}`
-		blanks[ref]['data-index'] = ref
+	const registry = []
+	Array.from(blanks).forEach((blank, ref) => {
+		blank.innerHTML = '?'
+		blank.classList.add('empty')
+		blank.name = `fill-${ref}`
+		blank['data-index'] = ref
+		const cleanup = on(blank, 'click', click)
+		registry.push(cleanup)
 	})
+	return registry
 }
 
 /**
@@ -56,13 +25,21 @@ function initialize(blanks, click) {
  * @param {Array<import('./types.js').FillableData>} options
  * @param {*} current
  */
-function fill(blanks, options, current) {
+function fill(blanks, { options, current }, node) {
 	if (current > -1 && current < Object.keys(blanks).length) {
 		const index = options.findIndex(({ actualIndex }) => actualIndex === current)
 		if (index > -1) {
 			blanks[current].innerHTML = options[index].value
 			blanks[current].classList.remove('empty')
 			blanks[current].classList.add('filled')
+			node.dispatchEvent(
+				new CustomEvent('fill', {
+					detail: {
+						index: current,
+						value: options[index].value
+					}
+				})
+			)
 		}
 	}
 }
@@ -73,17 +50,19 @@ function fill(blanks, options, current) {
  * @param {EventListener} event
  * @param {HTMLElement} node
  */
-function clear(event, node) {
+function clear(event, node, options) {
+	const item = options.find(({ value }) => value === event.target.innerHTML)
 	event.target.innerHTML = '?'
 	event.target.classList.remove('filled')
 	event.target.classList.remove('pass')
 	event.target.classList.remove('fail')
 	event.target.classList.add('empty')
+
 	node.dispatchEvent(
 		new CustomEvent('remove', {
 			detail: {
-				index: event.target.name.split('-')[1],
-				value: event.target['data-index']
+				index: event.target['data-index'],
+				value: item.value
 			}
 		})
 	)
@@ -102,5 +81,35 @@ function validate(blanks, data) {
 			blanks[ref].classList.add(
 				data.options[index].expectedIndex === data.options[index].actualIndex ? 'pass' : 'fail'
 			)
+	})
+}
+
+/**
+ * Action for filling a <del>?</del> element in html block.
+ *
+ * @param {HTMLElement} node
+ * @param {import('./types').FillOptions} options
+ * @returns
+ */
+export function fillable(node, data) {
+	const blanks = node.getElementsByTagName('del')
+
+	function click(event) {
+		if (event.target.innerHTML !== '?') {
+			clear(event, node, data.options)
+		} else {
+			data.current = event.target['data-index']
+			fill(blanks, data, node)
+		}
+	}
+
+	$effect(() => {
+		const registry = initialize(blanks, click)
+
+		if (data.check) validate(blanks, data)
+
+		return () => {
+			registry.forEach((cleanup) => cleanup())
+		}
 	})
 }

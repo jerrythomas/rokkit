@@ -1,3 +1,4 @@
+import { on } from 'svelte/events'
 const KEYCODE_ESC = 27
 
 /**
@@ -5,29 +6,28 @@ const KEYCODE_ESC = 27
  * emits a `dismiss` event. This is useful for closing a modal or dropdown.
  *
  * @param {HTMLElement} node
- * @returns {import('./types').SvelteActionReturn}
  */
 export function dismissable(node) {
 	const handleClick = (event) => {
 		if (node && !node.contains(event.target) && !event.defaultPrevented) {
-			node.dispatchEvent(new CustomEvent('dismiss', node))
+			node.dispatchEvent(new CustomEvent('dismiss'))
 		}
 	}
+
 	const keyup = (event) => {
 		if (event.keyCode === KEYCODE_ESC || event.key === 'Escape') {
 			event.stopPropagation()
-
-			node.dispatchEvent(new CustomEvent('dismiss', node))
+			node.dispatchEvent(new CustomEvent('dismiss', { detail: node }))
 		}
 	}
 
-	document.addEventListener('click', handleClick, true)
-	document.addEventListener('keyup', keyup, true)
+	$effect(() => {
+		const cleanupClickEvent = on(document, 'click', handleClick)
+		const cleanupKeyupEvent = on(document, 'keyup', keyup)
 
-	return {
-		destroy() {
-			document.removeEventListener('click', handleClick, true)
-			document.removeEventListener('keyup', keyup, true)
+		return () => {
+			cleanupClickEvent()
+			cleanupKeyupEvent()
 		}
-	}
+	})
 }
