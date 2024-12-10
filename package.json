@@ -33,7 +33,8 @@
     "lint-staged": "^15.2.10",
     "madge": "^8.0.0",
     "prettier": "3.3.3",
-    "prettier-plugin-svelte": "^3.2.7"
+    "prettier-plugin-svelte": "^3.2.7",
+    "prettier-plugin-tailwindcss": "^0.6.9"
   },
   "lint-staged": {
     "*.{js,svelte}": "eslint --cache --fix",

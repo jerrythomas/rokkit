@@ -16,12 +16,12 @@
 @import '@rokkit/themes/rokkit.css';
 
 body {
-  @apply flex flex-col font-body bg-neutral-base text-neutral-800 font-extralight w-screen h-screen overflow-hidden;
+  @apply font-body bg-neutral-base flex h-screen w-screen flex-col overflow-hidden font-extralight text-neutral-800;
 }
 body > app {
-  @apply flex flex-col h-full w-full relative overflow-hidden;
+  @apply relative flex h-full w-full flex-col overflow-hidden;
 }
 
 input.embedded {
-  @apply w-full h-full bg-transparent border-none focus:outline-none border-box;
+  @apply border-box h-full w-full border-none bg-transparent focus:outline-none;
 }

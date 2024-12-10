@@ -42,7 +42,7 @@
 
 <node
 	id={'id-' + path.join('-')}
-	class="node min-h-5 flex flex-col cursor-pointer select-none"
+	class="node flex min-h-5 cursor-pointer select-none flex-col"
 	aria-selected={selected}
 	aria-expanded={state.label === 'collapse'}
 	role="treeitem"

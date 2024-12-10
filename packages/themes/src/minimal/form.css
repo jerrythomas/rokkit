@@ -1,10 +1,10 @@
 .minimal button {
-  @apply rounded leading-loose select-none px-4;
-  @apply bg-neutral-muted border border-neutral-muted;
+  @apply select-none rounded px-4 leading-loose;
+  @apply bg-neutral-muted border-neutral-muted border;
 }
 .minimal button icon-left,
 .minimal button icon-right {
-  @apply flex flex-col items-center justify-center h-10 aspect-square;
+  @apply flex aspect-square h-10 flex-col items-center justify-center;
 }
 .minimal button icon {
   @apply text-2xl;
@@ -14,16 +14,16 @@
   @apply bg-secondary text-white;
 }
 .minimal button p {
-  @apply px-2 flex flex-grow;
+  @apply flex flex-grow px-2;
 }
 
 .minimal button-group {
-  @apply flex justify-center rounded-sm gap-1px;
+  @apply gap-1px flex justify-center rounded-sm;
 }
 .minimal button-group button {
-  @apply border-neutral-400 border-none rounded-none;
+  @apply rounded-none border-none border-neutral-400;
   @apply bg-neutral-subtle shadow focus:outline-none;
-  @apply uppercase text-sm text-neutral-800 leading-8 px-2;
+  @apply px-2 text-sm uppercase leading-8 text-neutral-800;
 }
 .minimal button-group button:not(:last-child) {
   @apply border-r;
@@ -43,8 +43,8 @@
   @apply focus:outline-none;
 }
 .minimal input-select > selected-item {
-  @apply leading-8 gap-4 items-center pl-2 min-h-8 cursor-pointer select-none;
-  @apply border-b-2 border-b-neutral-muted;
+  @apply min-h-8 cursor-pointer select-none items-center gap-4 pl-2 leading-8;
+  @apply border-b-neutral-muted border-b-2;
   @apply focus:border-b-secondary-600;
 }
 .minimal input-select:focus > selected-item {
@@ -63,7 +63,7 @@
   @apply gap-2 leading-6;
 }
 .minimal pill > item > img {
-  @apply w-4 h-4;
+  @apply h-4 w-4;
 }
 
 .minimal pill > icon {
@@ -74,12 +74,12 @@
 }
 
 .minimal button[role='switch'] {
-  @apply rounded-full p-0 min-h-6 h-8 w-16;
-  @apply bg-neutral-subtle border border-neutral-subtle;
+  @apply h-8 min-h-6 w-16 rounded-full p-0;
+  @apply bg-neutral-subtle border-neutral-subtle border;
 }
 
 .minimal button[role='switch'] > mark {
-  @apply rounded-full w-6 h-6 bg-secondary top-0.75;
+  @apply bg-secondary top-0.75 h-6 w-6 rounded-full;
 }
 
 .minimal progress-bar value-bar {

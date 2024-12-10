@@ -18,13 +18,13 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <tick
-	class="grid grid-cols-2 cursor-pointer select-none"
+	class="grid cursor-pointer select-none grid-cols-2"
 	onclick={handleClick}
 	role="option"
 	aria-selected={selected}
 	tabindex="0"
 >
-	<tick-bar class="col-start-2 h-5px border-l"></tick-bar>
+	<tick-bar class="h-5px col-start-2 border-l"></tick-bar>
 	<p class="col-span-2 flex justify-center">
 		{label}
 	</p>

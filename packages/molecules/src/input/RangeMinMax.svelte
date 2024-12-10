@@ -68,7 +68,7 @@
 {#if !Array.isArray(value)}
 	<error>Expected value to be an array</error>
 {:else}
-	<input-range class="relative h-10 grid grid-rows-2 {className}">
+	<input-range class="relative grid h-10 grid-rows-2 {className}">
 		<input {name} type="hidden" bind:value />
 		<range-track class="relative grid">
 			<range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width}>

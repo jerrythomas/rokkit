@@ -78,7 +78,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <input-select
-	class="flex flex-col relative {className}"
+	class="relative flex flex-col {className}"
 	class:open
 	tabindex="0"
 	role="listbox"
@@ -95,7 +95,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<selected-item
 		onclick={toggleOnClick}
-		class="w-full flex items-center"
+		class="flex w-full items-center"
 		bind:this={activeItem}
 		role="option"
 		tabindex="-1"

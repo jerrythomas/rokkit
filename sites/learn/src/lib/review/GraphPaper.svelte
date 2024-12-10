@@ -1,5 +1,4 @@
 <script>
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -10,23 +9,17 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		class: className = '',
-		unit = '.5rem',
-		group = 4,
-		thickness = 0.5,
-		children
-	} = $props();
+	let { class: className = '', unit = '.5rem', group = 4, thickness = 0.5, children } = $props()
 </script>
 
 <graph-paper
-	class="flex flex-col bg-op-20 text-op-40 {className}"
+	class="bg-op-20 text-op-40 flex flex-col {className}"
 	style:--unit={unit}
 	style:--size="calc( {group} * {unit})"
 	style:--thin="{thickness}px"
 	style:--thick="{2 * thickness}px"
 >
-	<content class="min-h-full flex flex-col">
+	<content class="flex min-h-full flex-col">
 		{@render children?.()}
 	</content>
 </graph-paper>

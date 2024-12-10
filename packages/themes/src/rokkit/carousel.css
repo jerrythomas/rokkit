@@ -1,19 +1,19 @@
 carousel slide {
-  @apply items-center min-h-100 gap-3 px-12;
+  @apply min-h-100 items-center gap-3 px-12;
 }
 carousel slide > img {
-  @apply w-80 h-80 object-cover;
+  @apply h-80 w-80 object-cover;
 }
 carousel slide > p {
-  @apply text-2xl text-center;
+  @apply text-center text-2xl;
 }
 carousel dot-nav {
-  @apply flex h-4 w-full gap-2 justify-center;
+  @apply flex h-4 w-full justify-center gap-2;
 }
 carousel dot {
   /* @apply block h-4 w-4 p-0 m-0 text-xs rounded-full bg-neutral-subtle cursor-pointer focus:outline-none; */
-  @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle;
+  @apply from-neutral-subtle to-neutral-subtle bg-gradient-to-r;
 }
 carousel dot[aria-checked='true'] {
-  @apply bg-gradient-to-r from-primary to-secondary;
+  @apply from-primary to-secondary bg-gradient-to-r;
 }

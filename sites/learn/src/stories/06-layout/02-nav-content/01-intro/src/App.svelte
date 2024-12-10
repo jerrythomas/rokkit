@@ -9,10 +9,10 @@
 
 <ContentNavigator vertical>
 	{#snippet nav()}
-		<Tabs {items} bind:value  />
+		<Tabs {items} bind:value />
 	{/snippet}
 	{#snippet content()}
-		<pre  class="flex-grow">
+		<pre class="flex-grow">
 			{JSON.stringify(value)}
 		</pre>
 	{/snippet}

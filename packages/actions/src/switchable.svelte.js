@@ -21,27 +21,29 @@ function getEventHandlers(options, toggle) {
 /**
  * A switchable action that allows the user to cycle through a list of options
  *
- * @param {HTMLElement} node
+ * @param {HTMLElement} root
  * @param {Object}      data
  */
-export function switchable(node, data) {
-	const manager = EventManager(node)
-	let options = data.options
-	let index = 0
-	let value
+export function switchable(root, data) {
+	const manager = EventManager(root)
 
-	const toggle = (increment = 1) => {
-		index = (index + increment) % options.length
-		value = options[index]
-		node.dispatchEvent(new CustomEvent('change', { detail: value }))
+	const getToggle = (root, data) => {
+		const toggle = (increment = 1) => {
+			data.index = (data.index + increment) % data.options.length
+			data.value = data.options[data.index]
+			root.dispatchEvent(new CustomEvent('change', { detail: value }))
+		}
+		return toggle
 	}
 
 	$effect(() => {
-		value = data.value === null || data.value === undefined ? data.options[0] : data.value
-		options = data.options
-		index = options.indexOf(value)
+		if (data.value === null || data.value === undefined) {
+			data.value = data.options[0]
+		}
+		// options = data.options
+		data.index = options.indexOf(value)
 
-		const listeners = getEventHandlers(options, toggle)
+		const listeners = getEventHandlers(options, getToggle(root, data))
 		manager.update(listeners, !data.disabled)
 
 		return () => manager.reset()

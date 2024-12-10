@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { isEqual } from 'date-fns'
 	import { timeFormat } from 'd3-time-format'
@@ -16,18 +16,18 @@
 		// ViolinPlot,
 		ScatterPlot
 	} from '@rokkit/chart'
-	let { data = $bindable([]) } = $props();
+	let { data = $bindable([]) } = $props()
 
 	let width = 400
 	let height = 400
 	run(() => {
 		data = data.map((d) => ({ ...d, year: new Date(d.year) }))
-	});
+	})
 	let bars = $derived(data.filter((d) => isEqual(d.year, new Date('2015-01-01'))))
 </script>
 
 <main class="flex flex-col flex-wrap gap-8">
-	<card class="aspect-square flex flex-col rounded-lg p-2 shadow-lg">
+	<card class="flex aspect-square flex-col rounded-lg p-2 shadow-lg">
 		<Chart
 			{width}
 			{height}
@@ -52,7 +52,7 @@
 			<BarPlot />
 		</Chart>
 	</card>
-	<card class="aspect-square flex flex-col rounded-lg p-2 shadow-lg">
+	<card class="flex aspect-square flex-col rounded-lg p-2 shadow-lg">
 		<Chart
 			{width}
 			{height}
@@ -151,14 +151,14 @@
 		@apply bg-neutral-50;
 	}
 	:global(.chart) {
-		@apply border border-neutral-200 bg-neutral-50 text-neutral-100 rounded-lg;
+		@apply rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-100;
 	}
 	:global(.axis) {
-		@apply text-neutral-700 stroke-current;
+		@apply stroke-current text-neutral-700;
 		stroke-width: 0.5;
 	}
 	:global(.axis .label) {
-		@apply text-neutral-700 fill-current;
+		@apply fill-current text-neutral-700;
 		stroke: none;
 	}
 	:global(.axis .grid) {

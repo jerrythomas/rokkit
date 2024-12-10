@@ -6,7 +6,7 @@
 	 */
 
 	/** @type {Props} */
-	let { text = null, type = 'error' } = $props();
+	let { text = null, type = 'error' } = $props()
 </script>
 
 {#if text}

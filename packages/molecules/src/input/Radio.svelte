@@ -1,9 +1,8 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { defaultFields, defaultStateIcons, getValue, getText } from '@rokkit/core'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -28,17 +27,17 @@
 		readOnly = false,
 		textAfter = true,
 		stateIcons = defaultStateIcons.radio
-	} = $props();
+	} = $props()
 
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	let flexDirection = $derived(textAfter ? 'flex-row' : 'flex-row-reverse')
 </script>
 
 <radio-group
 	{id}
-	class="flex flex-col cursor-pointer select-none {className}"
+	class="flex cursor-pointer select-none flex-col {className}"
 	class:disabled={readOnly}
 >
 	{#each options as item}

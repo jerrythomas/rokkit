@@ -3,7 +3,8 @@
 	import { theme } from '@rokkit/stores'
 	import { Toggle } from '@rokkit/organisms'
 
-	let { darkModeIcon = defaultStateIcons.mode.dark, lightModeIcon = defaultStateIcons.mode.light } = $props();
+	let { darkModeIcon = defaultStateIcons.mode.dark, lightModeIcon = defaultStateIcons.mode.light } =
+		$props()
 	const options = [
 		{ label: 'Light Mode', value: 'light', icon: darkModeIcon },
 		{ label: 'Dark Mode', value: 'dark', icon: lightModeIcon }

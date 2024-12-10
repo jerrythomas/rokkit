@@ -1,6 +1,5 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	
 
 	/**
 	 * @typedef {Object} Props
@@ -24,12 +23,16 @@
 		tickCount = 5,
 		scale,
 		id = 'legend'
-	} = $props();
+	} = $props()
 
-	let scaleTicks = $derived(scaleLinear()
-		.range([x, x + 100])
-		.domain(scale.domain()))
-	let ticks = $derived(scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), label: d })))
+	let scaleTicks = $derived(
+		scaleLinear()
+			.range([x, x + 100])
+			.domain(scale.domain())
+	)
+	let ticks = $derived(
+		scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), label: d }))
+	)
 
 	let colors = $derived(scale.range())
 	// $: id = uniqueId('legend-')

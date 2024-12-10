@@ -17,7 +17,7 @@
 	in:slide={{ duration: 50, y: offset }}
 	out:fade={{ duration: 50 }}
 	style:top="{top}px"
-	class="flex flex-col absolute w-full z-10 overflow-scroll {className}"
+	class="absolute z-10 flex w-full flex-col overflow-scroll {className}"
 >
 	{@render children?.()}
 </scroll>

@@ -1,5 +1,5 @@
 <script>
-	import { run, stopPropagation } from 'svelte/legacy';
+	import { run, stopPropagation } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { pick, omit } from 'ramda'
@@ -9,7 +9,6 @@
 
 	const dispatch = createEventDispatcher()
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -32,7 +31,7 @@
 		multiselect = false,
 		using = $bindable({}),
 		dataFilter = () => true
-	} = $props();
+	} = $props()
 
 	let hiddenPaths = []
 	let currentItem = $state(null)
@@ -115,14 +114,14 @@
 	// $: addLevels(data)
 	run(() => {
 		using = { default: Item, ...using }
-	});
-	let visible;
+	})
+	let visible
 	run(() => {
 		visible = data.filter(dataFilter).filter(isVisible)
-	});
+	})
 	run(() => {
 		addMultiSelectColumn(multiselect, data)
-	});
+	})
 	let nestedColumn = $derived(columns.find((col) => col.path))
 </script>
 

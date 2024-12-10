@@ -1,6 +1,6 @@
 /* Alert styles */
 alert-list {
-  @apply top-12 right-8 w-80;
+  @apply right-8 top-12 w-80;
 }
 
 alert,
@@ -8,7 +8,7 @@ error,
 info,
 warning,
 success {
-  @apply px-4 py-2 border rounded select-none cursor-pointer;
+  @apply cursor-pointer select-none rounded border px-4 py-2;
 }
 
 alert.error,

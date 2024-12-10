@@ -16,22 +16,22 @@
 	$: fields = { ...defaultFields, ...fields }
 </script>
 
-<sample class="flex flex-col relative {className}">
+<sample class="relative flex flex-col {className}">
 	<h1><span class="text-neutral-600">{name}</span>: {page[fields.text]}</h1>
-	<content class="h-full w-full flex flex-row overflow-hidden">
+	<content class="flex h-full w-full flex-row overflow-hidden">
 		<section class="flex flex-grow flex-col items-center justify-center overflow-scroll p-4">
-			<wrapper class="flex flex-col h-full self-center {page.class}">
+			<wrapper class="flex h-full flex-col self-center {page.class}">
 				<svelte:component this={page.component} {...page.props} />
 			</wrapper>
 			<p>{page[fields.summary]}</p>
 		</section>
 		{#if showCode}
-			<pre class="h-full min-w-2/5 flex flex-col overflow-scroll">
+			<pre class="min-w-2/5 flex h-full flex-col overflow-scroll">
 				<CodeSnippet code={page.code} language="svelte" />
 			</pre>
 		{/if}
 		{#if page[fields.notes]}
-			<aside class="min-w-1/3 flex flex-col prose">
+			<aside class="min-w-1/3 prose flex flex-col">
 				{page[fields.notes]}
 			</aside>
 		{/if}

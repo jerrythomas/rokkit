@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	// ensure that parent has position: relative.
 	// on reaching limit remove mouse events.
@@ -26,7 +26,7 @@
 		max = $bindable(100),
 		pos = $bindable(50),
 		offset = 0
-	} = $props();
+	} = $props()
 
 	let wall = $state()
 
@@ -52,7 +52,7 @@
 	}
 	run(() => {
 		fixLimits()
-	});
+	})
 	let horizontal = $derived(!vertical)
 	let side = $derived(horizontal ? 'left' : 'top')
 </script>

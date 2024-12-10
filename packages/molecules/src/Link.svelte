@@ -2,7 +2,6 @@
 	import { defaultFields, getAttribute, getIcon, getText } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {*} value
@@ -10,7 +9,7 @@
 	 */
 
 	/** @type {Props} */
-	let { value, fields = defaultFields } = $props();
+	let { value, fields = defaultFields } = $props()
 
 	let isObject = $derived(typeof (value ?? '-') === 'object')
 	let text = $derived(getText(value, fields))

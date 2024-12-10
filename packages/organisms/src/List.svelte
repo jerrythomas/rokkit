@@ -47,7 +47,7 @@
 </script>
 
 <list
-	class="flex flex-col w-full flex-shrink-0 select-none {className}"
+	class="flex w-full flex-shrink-0 select-none flex-col {className}"
 	role="listbox"
 	aria-label={name}
 	use:navigator={{

@@ -7,7 +7,7 @@
 	 */
 
 	/** @type {Props} */
-	let { size = 10, stroke = 'currentColor' } = $props();
+	let { size = 10, stroke = 'currentColor' } = $props()
 
 	const lines = [
 		{ x1: 0, y1: 0.25 * size, x2: 0.5 * size, y2: 0.25 * size },

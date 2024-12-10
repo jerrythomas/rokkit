@@ -1,10 +1,10 @@
 container > segment {
-  @apply overflow-hidden h-full;
+  @apply h-full overflow-hidden;
 }
 
 .three-col,
 .two-col {
-  @apply grid w-full min-h-full overflow-hidden;
+  @apply grid min-h-full w-full overflow-hidden;
 }
 
 .three-col.md {
@@ -41,12 +41,12 @@ container > segment {
 }
 
 .two-col.md {
-  @apply grid-rows-1 grid-cols-2;
+  @apply grid-cols-2 grid-rows-1;
   /* grid-template-columns: repeat(2, 1fr); */
   grid-template-areas: 'c-1 c-2';
 }
 .two-col.lg {
-  @apply grid-rows-1 grid-cols-5;
+  @apply grid-cols-5 grid-rows-1;
   /* grid-template-columns: repeat(5, 1fr); */
   grid-template-areas: 'c-1 c-1 c-2 c-2 c-2';
 }

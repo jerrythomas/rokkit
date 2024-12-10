@@ -6,10 +6,9 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', children } = $props();
-	
+	let { class: className = '', children } = $props()
 </script>
 
-<scroll class="flex flex-col h-full overflow-scroll {className}">
+<scroll class="flex h-full flex-col overflow-scroll {className}">
 	{@render children?.()}
 </scroll>

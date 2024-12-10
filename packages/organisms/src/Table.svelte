@@ -1,5 +1,5 @@
 <script>
-	import { run, stopPropagation } from 'svelte/legacy';
+	import { run, stopPropagation } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { pick } from 'ramda'
@@ -11,12 +11,6 @@
 
 	const dispatch = createEventDispatcher()
 
-	
-	
-	
-	
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -45,14 +39,14 @@
 		hierarchyField = null,
 		separator = '/',
 		using = $bindable({})
-	} = $props();
+	} = $props()
 
 	/** @type {any|null} */
 	let currentItem = $state(null)
 
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 	let view = $derived(dataview(data, { columns, path: hierarchyField, separator }))
 
 	function handleItemClick(event, index) {
@@ -94,7 +88,7 @@
 
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 </script>
 
 <tree-table class={className}>

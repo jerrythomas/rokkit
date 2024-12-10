@@ -1,4 +1,4 @@
-export { defaultColors, syntaxColors, shades, defaultPalette } from './colors'
+export { defaultColors, syntaxColors, shades, defaultPalette } from './colors/index.js'
 
 /**
  * @type {import('./types).FieldMapping} Fields

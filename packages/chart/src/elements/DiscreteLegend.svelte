@@ -21,7 +21,7 @@
 		padding = 5,
 		scale,
 		tickCount = 10
-	} = $props();
+	} = $props()
 
 	let sizeWithSpace = $derived(size + space)
 	let ticks = $derived(scale.ticks.apply(scale, [tickCount]))

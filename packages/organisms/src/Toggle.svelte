@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { defaultFields } from '@rokkit/core'
 	import { switchable } from '@rokkit/actions'
@@ -7,8 +7,6 @@
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -33,7 +31,7 @@
 		tabindex = 0,
 		disabled = false,
 		minimal = false
-	} = $props();
+	} = $props()
 
 	function handle(e) {
 		value = e.detail
@@ -41,10 +39,10 @@
 	}
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 </script>
 
 <toggle

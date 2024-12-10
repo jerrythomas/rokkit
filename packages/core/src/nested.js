@@ -1,5 +1,5 @@
 import { omit } from 'ramda'
-import { defaultFields } from './constants'
+import { defaultFields } from './constants.js'
 
 /**
  * Flattens a nested list of items

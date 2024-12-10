@@ -7,7 +7,7 @@
 	 */
 
 	/** @type {Props} */
-	let { header, children, footer } = $props();
+	let { header, children, footer } = $props()
 </script>
 
 <aside class="sidebar flex flex-col">

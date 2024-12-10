@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
@@ -9,7 +9,7 @@
 	const registry = writable({})
 	setContext('registry', registry)
 
-	let { render, using = $bindable(), properties = {} } = $props();
+	let { render, using = $bindable(), properties = {} } = $props()
 
 	run(() => {
 		using = {
@@ -19,7 +19,7 @@
 			navigators: {},
 			...using
 		}
-	});
+	})
 	run(() => {
 		registry.set({
 			editors: { ...using.editors },
@@ -27,9 +27,9 @@
 			wrappers: { default: Wrapper, ...using.wrappers },
 			navigators: { default: Tabs, ...using.navigators }
 		})
-	});
+	})
 
-	const SvelteComponent = $derived(render);
+	const SvelteComponent = $derived(render)
 </script>
 
 <SvelteComponent {...properties} />

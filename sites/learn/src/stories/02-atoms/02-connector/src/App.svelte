@@ -10,7 +10,7 @@
 </script>
 
 <h2>Regular connectors</h2>
-<div class="w-60 flex gap-2 border px-4 py-2">
+<div class="flex w-60 gap-2 border px-4 py-2">
 	{#each variants as { title, props }}
 		<div class="flex flex-col items-center">
 			<h1 class="flex-start">{title}</h1>
@@ -21,7 +21,7 @@
 	{/each}
 </div>
 <h2>With RTL</h2>
-<div class="w-60 flex gap-2 border px-4 py-2">
+<div class="flex w-60 gap-2 border px-4 py-2">
 	{#each variants as { title, props }}
 		<div class="flex flex-col items-center">
 			<h1 class="flex-start">{title}</h1>

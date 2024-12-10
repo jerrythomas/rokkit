@@ -9,7 +9,7 @@
 	 */
 
 	/** @type {Props} */
-	let { size = 10, thickness = 0.5, stroke = 'currentColor' } = $props();
+	let { size = 10, thickness = 0.5, stroke = 'currentColor' } = $props()
 </script>
 
 <NamedPattern {size} {thickness} {stroke} name="curvedWave" />

@@ -10,7 +10,7 @@
 	 */
 
 	/** @type {Props} */
-	let { base = 'teal', size = 4, shade = 600 } = $props();
+	let { base = 'teal', size = 4, shade = 600 } = $props()
 
 	let grid = $derived(swatchGrid($swatch.keys.symbol.length, size, 10))
 </script>

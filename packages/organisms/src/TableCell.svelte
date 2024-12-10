@@ -1,12 +1,11 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { identity } from 'ramda'
 	import { getComponent, defaultFields } from '@rokkit/core'
 	import { Connector, Icon } from '@rokkit/atoms'
 	import { Item } from '@rokkit/molecules'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -33,14 +32,14 @@
 		isExpanded = false,
 		depth = 0,
 		path = null
-	} = $props();
+	} = $props()
 
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 	let component = $derived(getComponent(value, fields, using))
 
-	const SvelteComponent = $derived(component);
+	const SvelteComponent = $derived(component)
 </script>
 
 <td class={className}>

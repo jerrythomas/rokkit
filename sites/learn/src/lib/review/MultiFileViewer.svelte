@@ -5,7 +5,6 @@
 
 	const media = getContext('media')
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -15,16 +14,11 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		class: className = '',
-		items,
-		fields,
-		value = $bindable(null)
-	} = $props();
+	let { class: className = '', items, fields, value = $bindable(null) } = $props()
 
 	let navigator = media && $media.small ? Select : Tabs
 
-	const SvelteComponent = $derived(navigator);
+	const SvelteComponent = $derived(navigator)
 </script>
 
 <multi-file class="flex flex-col {className}">

@@ -8,10 +8,10 @@
 	 */
 
 	/** @type {Props} */
-	let { search = $bindable(''), children } = $props();
+	let { search = $bindable(''), children } = $props()
 </script>
 
-<div class="searchable h-full w-full flex flex-col overflow-hidden">
+<div class="searchable flex h-full w-full flex-col overflow-hidden">
 	<div class="quick-search flex flex-shrink-0 flex-grow flex-col px-4 py-2">
 		<input
 			type="search"

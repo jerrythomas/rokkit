@@ -1,13 +1,13 @@
 input-select,
 drop-down {
-  @apply overflow-visible cursor-pointer;
+  @apply cursor-pointer overflow-visible;
 }
 
 input-field field {
   @apply gap-1px;
 }
 input-field field icon {
-  @apply w-9 h-9 bg-neutral-subtle text-neutral-800;
+  @apply bg-neutral-subtle h-9 w-9 text-neutral-800;
 }
 
 input-field > field > input-select {
@@ -16,11 +16,11 @@ input-field > field > input-select {
 
 input-select selected-item > icon,
 drop-down > button > span > icon {
-  @apply w-9 h-full;
+  @apply h-full w-9;
 }
 input-select > selected-item,
 drop-down > button > span {
   /* @apply bg-neutral-base pl-3; */
-  @apply pl-3 min-h-9 gap-2 items-center normal-case;
+  @apply min-h-9 items-center gap-2 pl-3 normal-case;
   @apply rounded text-neutral-800;
 }

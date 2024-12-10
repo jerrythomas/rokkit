@@ -2,7 +2,6 @@
 	import { defaultStateIcons } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -11,7 +10,7 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', items, icons = defaultStateIcons.badge } = $props();
+	let { class: className = '', items, icons = defaultStateIcons.badge } = $props()
 </script>
 
 <status-report class="flex flex-col {className}">

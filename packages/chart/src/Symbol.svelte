@@ -1,7 +1,6 @@
 <script>
 	import { components } from './symbols'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [x]
@@ -23,12 +22,12 @@
 		name = 'circle',
 		using = components,
 		...rest
-	} = $props();
+	} = $props()
 
 	let component = $derived(using[name] || using.default)
 	let props = $derived(using[name] ? rest : { name, ...rest })
 
-	const SvelteComponent = $derived(component);
+	const SvelteComponent = $derived(component)
 </script>
 
 <SvelteComponent {x} {y} {size} {fill} {stroke} {...props} />

@@ -1,5 +1,4 @@
 <script>
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -9,15 +8,10 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		class: className = '',
-		vertical = false,
-		nav,
-		content
-	} = $props();
+	let { class: className = '', vertical = false, nav, content } = $props()
 </script>
 
-<nav-content class="flex w-full h-full {className}" class:flex-col={vertical}>
+<nav-content class="flex h-full w-full {className}" class:flex-col={vertical}>
 	{@render nav?.()}
 	{@render content?.()}
 </nav-content>

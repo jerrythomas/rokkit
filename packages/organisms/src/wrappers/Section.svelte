@@ -1,5 +1,4 @@
 <script>
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -16,7 +15,7 @@
 		open = $bindable(true),
 		type = 'vertical',
 		children
-	} = $props();
+	} = $props()
 </script>
 
 <details bind:open class={className}>

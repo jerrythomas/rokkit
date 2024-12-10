@@ -41,7 +41,7 @@
 
 <checkbox
 	{id}
-	class="flex items-center leading-loose cursor-pointer select-none checkbox {className}"
+	class="checkbox flex cursor-pointer select-none items-center leading-loose {className}"
 	class:disabled={readOnly}
 	role="checkbox"
 	aria-checked={state}

@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { brewer, Swatch, initCap } from '@rokkit/chart'
@@ -13,17 +13,19 @@
 	 */
 
 	/** @type {Props} */
-	let { modes = ['symbols', 'colors', 'patterns'], mode = $bindable('symbols') } = $props();
-	let status = $state(modes.reduce(
-		(acc, key) => (
-			(acc[key] = {
-				index: key === mode ? -1 : 0,
-				active: key === mode
-			}),
-			acc
-		),
-		{}
-	))
+	let { modes = ['symbols', 'colors', 'patterns'], mode = $bindable('symbols') } = $props()
+	let status = $state(
+		modes.reduce(
+			(acc, key) => (
+				(acc[key] = {
+					index: key === mode ? -1 : 0,
+					active: key === mode
+				}),
+				acc
+			),
+			{}
+		)
+	)
 	let swatches = {
 		symbols: { items: brewer().shape().brew(), type: 'symbol' },
 		colors: {
@@ -39,7 +41,6 @@
 			type: 'square'
 		}
 	}
-
 
 	function onModeChange(mode) {
 		modes.map((key) => {
@@ -59,13 +60,13 @@
 	}
 	run(() => {
 		onModeChange(mode)
-	});
+	})
 	run(() => {
 		onStatusChange(status)
-	});
+	})
 </script>
 
-<control class="flex flex-col border-gray-700 border-l bg-primary-100 p-8">
+<control class="bg-primary-100 flex flex-col border-l border-gray-700 p-8">
 	<div class="flex flex-col gap-2">
 		<p>Show All Variations for</p>
 		{#each modes as label}

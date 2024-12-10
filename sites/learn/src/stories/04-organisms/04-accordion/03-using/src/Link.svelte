@@ -2,7 +2,7 @@
 	import { defaultFields } from '@rokkit/core'
 	import { Item } from '@rokkit/ui'
 
-	let { value, fields = defaultFields } = $props();
+	let { value, fields = defaultFields } = $props()
 
 	let target = $derived(fields.target ? value[fields.target] : '')
 </script>

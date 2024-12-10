@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	// import { SwatchButton, brewer, SwatchGrid } from '@rokkit/chart'
 	import { Timer, toNested, Chart, BarPlot, colors } from '@rokkit/chart'
@@ -46,20 +46,20 @@
 	let names = $derived([...new Set(data.map((d) => d.name))])
 	run(() => {
 		names.map((name, i) => (languageColors[name] = colors[i % colors.length]))
-	});
+	})
 	let keyframes = $derived(toNested(data, 'date', 'name'))
 	let currentData = $derived(keyframes[currentKeyframe].value)
 	// $: console.log(names)
 </script>
 
-<section class="h-full flex flex-col">
+<section class="flex h-full flex-col">
 	<Timer
 		class="absolute right-8 top-4"
 		keyframeCount={keyframes.length}
 		bind:currentKeyframe
 		isEnabled={false}
 	/>
-	<content class="w-full flex flex-col flex-wrap px-8">
+	<content class="flex w-full flex-col flex-wrap px-8">
 		<h1>Experiment</h1>
 
 		<div>

@@ -1,19 +1,19 @@
 graph-paper {
-  @apply p-8 bg-neutral-50 text-neutral-300 overflow-auto;
+  @apply overflow-auto bg-neutral-50 p-8 text-neutral-300;
 }
 
 graph-paper > content {
-  @apply text-opacity-100 text-neutral-800 flex flex-col gap-5;
+  @apply flex flex-col gap-5 text-neutral-800 text-opacity-100;
 }
 graph-paper > content > p > b {
-  @apply italic text-primary;
+  @apply text-primary italic;
 }
 
 graph-paper > content > pre {
   @apply overflow-scroll;
 }
 preview {
-  @apply flex flex-col w-full h-full p-2 md:p-6 rounded-xl shadow-lg bg-gradient-to-r from-cyan to-sky;
+  @apply from-cyan to-sky flex h-full w-full flex-col rounded-xl bg-gradient-to-r p-2 shadow-lg md:p-6;
   /* @apply md:h-100; */
 }
 

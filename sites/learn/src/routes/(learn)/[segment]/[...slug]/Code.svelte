@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { Tree } from '@rokkit/ui'
 	import CodeSnippet from '$lib/CodeSnippet.svelte'
@@ -25,28 +25,28 @@
 	let hasFiles = $derived($story.files && $story.files.length > 0)
 	run(() => {
 		if (hasFiles) currentFile = $story.files[0].children[0]
-	});
+	})
 	run(() => {
 		if (currentFile && currentFile.content) {
 			code = currentFile.content
 			language = currentFile.type
 		}
-	});
+	})
 </script>
 
 {#if hasFiles}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<source-files class="h-full flex flex-col border-t border-t-neutral-inset">
+	<source-files class="border-t-neutral-inset flex h-full flex-col border-t">
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<nav
-			class="h-8 w-full flex cursor-pointer items-center bg-neutral-subtle px-4 text-sm"
+			class="bg-neutral-subtle flex h-8 w-full cursor-pointer items-center px-4 text-sm"
 			onclick={() => (active = active == 'code' ? 'files' : 'code')}
 		>
 			{[currentFile.path, currentFile.name].join('/')}
 		</nav>
-		<section class="relative h-full w-full flex flex-row-reverse overflow-auto">
+		<section class="relative flex h-full w-full flex-row-reverse overflow-auto">
 			<aside
-				class="h-full min-w-full flex flex-col border-r border-neutral-subtle lg:min-w-50"
+				class="border-neutral-subtle lg:min-w-50 flex h-full min-w-full flex-col border-r"
 				class:-translate-x-full={!filesVisible}
 			>
 				<Tree
@@ -61,7 +61,7 @@
 				<CodeSnippet
 					{code}
 					{language}
-					class="w-full h-full {filesVisible ? '' : 'absolute left-0'}"
+					class="h-full w-full {filesVisible ? '' : 'absolute left-0'}"
 				/>
 			{/if}
 		</section>

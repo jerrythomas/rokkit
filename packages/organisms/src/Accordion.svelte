@@ -57,7 +57,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <accordion
-	class="flex flex-col w-full select-none {className}"
+	class="flex w-full select-none flex-col {className}"
 	tabindex="0"
 	use:navigator={{
 		items,
@@ -83,7 +83,7 @@
 		>
 			<Summary {fields} {using} bind:value={items[index]} />
 			{#if hasItems && item[fields.isOpen]}
-				<list class="flex flex-col w-full flex-shrink-0 select-none" role="listbox" tabindex="-1">
+				<list class="flex w-full flex-shrink-0 select-none flex-col" role="listbox" tabindex="-1">
 					<ListItems
 						bind:items={item[fields.children]}
 						bind:value

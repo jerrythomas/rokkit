@@ -14,13 +14,13 @@
 	}
 </script>
 
-<aside class="h-full w-full flex flex-col border-r border-r-neutral-inset">
+<aside class="border-r-neutral-inset flex h-full w-full flex-col border-r">
 	{#if $story}
-		<nav class="box-border h-10 flex items-center gap-1 border-b border-b-neutral-inset text-sm">
+		<nav class="border-b-neutral-inset box-border flex h-10 items-center gap-1 border-b text-sm">
 			{#if !$site.sidebar}
 				<Icon
 					name="i-rokkit:menu"
-					class="border-r border-r-neutral-subtle"
+					class="border-r-neutral-subtle border-r"
 					role="button"
 					on:click={toggle}
 				/>

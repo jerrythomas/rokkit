@@ -9,7 +9,7 @@
 	import { media } from '$lib'
 	import Header from './Header.svelte'
 
-	let { data, children } = $props();
+	let { data, children } = $props()
 
 	let site = writable({
 		sidebar: $media.large,

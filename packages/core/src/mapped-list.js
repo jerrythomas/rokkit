@@ -1,5 +1,5 @@
-import { defaultFields } from './constants'
-import { isExpanded, hasChildren, getAttribute } from './mapping'
+import { defaultFields } from './constants.js'
+import { isExpanded, hasChildren, getAttribute } from './mapping.js'
 import { equals } from 'ramda'
 
 /**

@@ -1,6 +1,6 @@
 /* Global styles */
 *:focus {
-  @apply outline outline-2 outline-offset-2 outline-secondary;
+  @apply outline-secondary outline outline-2 outline-offset-2;
 }
 *[tabindex='-1']:focus {
   @apply outline-none;
@@ -8,7 +8,7 @@
 
 /* Body styles */
 body {
-  @apply flex flex-col w-screen overflow-hidden;
+  @apply flex w-screen flex-col overflow-hidden;
   /* height: var(--viewport-height, 100dvh); */
   height: 100vh;
   height: --webkit-fill-available;
@@ -18,7 +18,7 @@ body {
 
 /* Link styles */
 a {
-  @apply cursor-pointer text-primary-800 hover:text-secondary-800 visited:text-secondary-700;
+  @apply text-primary-800 hover:text-secondary-800 visited:text-secondary-700 cursor-pointer;
 }
 a:focus {
   @apply outline-none;
@@ -51,7 +51,7 @@ pre {
 
 /* plots*/
 plot {
-  @apply rounded-md bg-neutral-inset p-4;
+  @apply bg-neutral-inset rounded-md p-4;
 }
 g[aria-label='tip'] {
   --plot-background: var(--neutral-200);
@@ -68,7 +68,7 @@ error,
 info,
 warning,
 success {
-  @apply px-4 py-2 border rounded select-none cursor-pointer;
+  @apply cursor-pointer select-none rounded border px-4 py-2;
 }
 
 checkbox {
@@ -76,7 +76,7 @@ checkbox {
 }
 
 button:disabled {
-  @apply bg-neutral-muted text-neutral-500 cursor-not-allowed;
+  @apply bg-neutral-muted cursor-not-allowed text-neutral-500;
 }
 
 cell.cell-type-string {

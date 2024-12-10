@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { InputField } from '@rokkit/ui'
 	let value = $state({
@@ -19,11 +19,11 @@
 
 	run(() => {
 		display = JSON.stringify(value, null, 2)
-	});
+	})
 </script>
 
-<section class="grid grid-cols-5 overflow-hidden gap-4">
-	<div class="flex flex-col p-4 gap-2 h-full overflow-y-scroll col-span-3">
+<section class="grid grid-cols-5 gap-4 overflow-hidden">
+	<div class="col-span-3 flex h-full flex-col gap-2 overflow-y-scroll p-4">
 		<InputField name="range" type="range" min={0} max={50} ticks={10} bind:value={value.range} />
 		<InputField name="color" type="color" bind:value={value.color} />
 		<InputField name="date" type="date" bind:value={value.date} />
@@ -42,5 +42,5 @@
 		<InputField name="switch" type="switch" bind:value={value.switch} options={['a', 'b', 'c']} />
 		<InputField name="rating" type="rating" bind:value={value.rating} />
 	</div>
-	<pre class="text-xs overflow-y-scroll col-span-2 p-4">{display}</pre>
+	<pre class="col-span-2 overflow-y-scroll p-4 text-xs">{display}</pre>
 </section>

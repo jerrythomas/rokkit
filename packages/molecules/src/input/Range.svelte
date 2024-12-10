@@ -1,14 +1,8 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import RangeMinMax from './RangeMinMax.svelte'
 
-	
-	
-	
-	
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} [name]
@@ -29,13 +23,13 @@
 		step = 1,
 		ticks = 10,
 		labelSkip = 0
-	} = $props();
+	} = $props()
 
 	let bounds = $state([min, value])
 
 	run(() => {
 		value = bounds[1]
-	});
+	})
 </script>
 
 <RangeMinMax bind:value={bounds} {name} {min} {max} {step} {ticks} {labelSkip} single />

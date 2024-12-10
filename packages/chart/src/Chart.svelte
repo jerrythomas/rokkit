@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
@@ -8,7 +8,6 @@
 	let config = writable({})
 	setContext('chart', config)
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} data
@@ -47,7 +46,7 @@
 		flipCoords = false,
 		spacing = 0.1,
 		children
-	} = $props();
+	} = $props()
 
 	let margin = $derived({
 		left: marginLeft,
@@ -74,14 +73,14 @@
 				spacing
 			})
 		)
-	});
+	})
 </script>
 
 <svg
 	viewBox="0 0 {$config.width} {$config.height}"
 	width={$config.width}
 	height={$config.height}
-	class="w-full h-full chart"
+	class="chart h-full w-full"
 >
 	<rect
 		x="0"

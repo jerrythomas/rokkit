@@ -1,12 +1,12 @@
 /* Styles for 'input-range' class */
 .rokkit input-range range-track {
-  @apply h-2 mt-2 relative;
+  @apply relative mt-2 h-2;
 }
 .rokkit input-range range-track range-track-bar {
-  @apply bg-neutral-muted border box-border border-neutral-muted rounded-full;
+  @apply bg-neutral-muted border-neutral-muted box-border rounded-full border;
 }
 .rokkit input-range range-track selected-bar {
-  @apply border top-0px bottom-0px bg-gradient-to-r from-primary to-secondary border-secondary rounded-full;
+  @apply top-0px bottom-0px from-primary to-secondary border-secondary rounded-full border bg-gradient-to-r;
 }
 .rokkit input-range range-track thumb {
   @apply rounded-sm focus:outline-none;
@@ -17,7 +17,7 @@
 .rokkit .bookend range-track range-track-bar::before,
 .rokkit .bookend range-track range-track-bar::after {
   content: '';
-  @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+  @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
 }
 .rokkit .bookend range-track range-track-bar::before {
   @apply -left-1px;
@@ -40,27 +40,27 @@
 
 /* Styles for 'thumb' class */
 .rokkit thumb {
-  @apply bg-gradient-to-r from-primary to-secondary border-secondary shadow-xl border;
+  @apply from-primary to-secondary border-secondary border bg-gradient-to-r shadow-xl;
 }
 .rokkit thumb.sliding::before {
   content: '';
-  @apply absolute left-0 top-0 right-0 bottom-0 bg-secondary  opacity-30 rounded-sm;
+  @apply bg-secondary absolute bottom-0 left-0 right-0 top-0 rounded-sm opacity-30;
   transform: scale(2, 2);
 }
 
 /* Styles for 'button[role='switch']' class */
 .rokkit button[role='switch'] {
-  @apply rounded-full p-0 min-h-6 h-8 w-16;
-  @apply bg-neutral-subtle border border-neutral-subtle;
+  @apply h-8 min-h-6 w-16 rounded-full p-0;
+  @apply bg-neutral-subtle border-neutral-subtle border;
 }
 .rokkit button[role='switch'] > mark {
-  @apply rounded-full w-6 h-6 top-0.75;
-  @apply bg-gradient-to-r from-primary to-secondary;
+  @apply top-0.75 h-6 w-6 rounded-full;
+  @apply from-primary to-secondary bg-gradient-to-r;
 }
 
 /* Styles for 'rating' class */
 .rokkit rating {
-  @apply text-neutral-600 text-xl h-9 justify-center rounded focus:outline focus:outline-secondary;
+  @apply focus:outline-secondary h-9 justify-center rounded text-xl text-neutral-600 focus:outline;
 }
 .rokkit rating > icon {
   @apply w-8;
@@ -74,17 +74,17 @@
 
 /* Pill styles */
 .rokkit .pill {
-  @apply rounded-full bg-neutral-inset border-neutral-subtle border px-2 py-1 flex-grow-0;
+  @apply bg-neutral-inset border-neutral-subtle flex-grow-0 rounded-full border px-2 py-1;
 }
 .rokkit .pill > icon[role='button'] {
-  @apply rounded-full w-5 h-5 hover:bg-neutral-muted hover:text-current focus:rounded-full focus:m-0;
+  @apply hover:bg-neutral-muted h-5 w-5 rounded-full hover:text-current focus:m-0 focus:rounded-full;
 }
 
 .rokkit .pill > item {
-  @apply gap-2 leading-6 px-2;
+  @apply gap-2 px-2 leading-6;
 }
 .rokkit .pill > item > img {
-  @apply w-4 h-4;
+  @apply h-4 w-4;
 }
 
 /* Styles for 'item' class */
@@ -98,13 +98,13 @@
 /* Image and link styles */
 .rokkit item > img,
 .rokkit item > a > img {
-  @apply w-6 h-6;
+  @apply h-6 w-6;
 }
 .rokkit item > a {
   @apply gap-2;
 }
 .rokkit node item {
-  @apply px-1 gap-2;
+  @apply gap-2 px-1;
 }
 /* Crumbs styles */
 .rokkit crumbs {
@@ -115,5 +115,5 @@
 }
 
 .rokkit day-of-month[aria-selected='true'] {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 dark:text-neutral-800;
 }

@@ -1,6 +1,6 @@
 /* Input range styles */
 input-range range-track {
-  @apply h-1 mt-3 relative;
+  @apply relative mt-3 h-1;
 }
 input-range range-track range-track-bar {
   @apply bg-neutral-subtle border-neutral-muted rounded-full;
@@ -12,11 +12,11 @@ input-range range-track thumb {
   @apply rounded-full;
 }
 input-range thumb {
-  @apply -top-1.5 bg-secondary shadow-xl border border-secondary;
+  @apply bg-secondary border-secondary -top-1.5 border shadow-xl;
 }
 input-range thumb.sliding::before {
   content: '';
-  @apply absolute left-0 top-0 right-0 bottom-0 bg-secondary-400 opacity-30 rounded-full;
+  @apply bg-secondary-400 absolute bottom-0 left-0 right-0 top-0 rounded-full opacity-30;
   transform: scale(2, 2);
 }
 
@@ -24,7 +24,7 @@ input-range thumb.sliding::before {
 .bookend range-track range-track-bar::before,
 .bookend range-track range-track-bar::after {
   content: '';
-  @apply absolute w-1px rounded-full -top-2 -bottom-2 bg-gray-300;
+  @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
 }
 .bookend range-track range-track-bar::before {
   @apply -left-1px;
@@ -38,16 +38,16 @@ input-range tick {
   grid-template-rows: 7px auto;
 }
 input-range tick tick-bar {
-  @apply border-neutral-600 h-full;
+  @apply h-full border-neutral-600;
 }
 input-range tick p {
-  @apply items-top text-neutral-600 leading-tight;
+  @apply items-top leading-tight text-neutral-600;
   font-size: 8px;
 }
 
 /* Calendar styles */
 calendar {
-  @apply rounded-md overflow-hidden shadow-lg;
+  @apply overflow-hidden rounded-md shadow-lg;
 }
 calendar month-year {
   @apply bg-secondary-400 text-white;
@@ -68,7 +68,7 @@ day-of-month {
   @apply hover:bg-secondary-200 hover:rounded-full;
 }
 day-of-month[aria-selected='true'] {
-  @apply bg-secondary text-white rounded-full;
+  @apply bg-secondary rounded-full text-white;
 }
 
 /* Form styles */
@@ -85,18 +85,18 @@ selected-item item {
   @apply flex-grow;
 }
 input-field {
-  @apply w-full m-0 py-1;
+  @apply m-0 w-full py-1;
 }
 input-field input,
 input-field textarea,
 input-field select,
 input-field > field > :not(icon) {
   @apply px-3;
-  @apply flex-grow outline-none min-h-9 leading-loose;
+  @apply min-h-9 flex-grow leading-loose outline-none;
   @apply bg-neutral-subtle text-neutral-800;
 }
 input-field > label {
-  @apply uppercase text-xs;
+  @apply text-xs uppercase;
   @apply leading-loose;
 }
 input-field > label.required::after {
@@ -105,11 +105,11 @@ input-field > label.required::after {
 }
 
 radio-group label {
-  @apply uppercase cursor-pointer;
+  @apply cursor-pointer uppercase;
 }
 /* Progress bar styles */
 progress-bar {
-  @apply bg-neutral-muted border border-neutral-subtle;
+  @apply bg-neutral-muted border-neutral-subtle border;
 }
 progress-bar value-bar {
   @apply bg-primary;

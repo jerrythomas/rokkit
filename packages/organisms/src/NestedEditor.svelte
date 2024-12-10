@@ -14,13 +14,13 @@
 		schema = deriveNestedSchema(value),
 		using = {},
 		fields = {
-		text: 'key',
-		icon: 'type',
-		iconPrefix: 'type'
-	},
+			text: 'key',
+			icon: 'type',
+			iconPrefix: 'type'
+		},
 		children,
 		footer
-	} = $props();
+	} = $props()
 	let node = $state({
 		schema: null,
 		layout: null
@@ -54,13 +54,13 @@
 	let tableData = $derived(node?.layout ? [] : generateTreeTable(nodeValue ?? value, 'scope', true))
 </script>
 
-<container class="flex flex-row h-full w-full">
-	<aside class="flex h-full w-80 border-r border-r-neutral-subtle">
-		<Tree items={schema} {fields} class="w-full h-full" on:move={handleMove} />
+<container class="flex h-full w-full flex-row">
+	<aside class="border-r-neutral-subtle flex h-full w-80 border-r">
+		<Tree items={schema} {fields} class="h-full w-full" on:move={handleMove} />
 	</aside>
-	<content class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden">
+	<content class="flex h-full w-full flex-col gap-4 overflow-hidden p-8">
 		{@render children?.()}
-		<section class="flex flex-col w-full flex-grow overflow-auto">
+		<section class="flex w-full flex-grow flex-col overflow-auto">
 			{#if !nodeValue}
 				<p>Select a node to edit</p>
 				<TreeTable data={tableData} {columns} class="" />

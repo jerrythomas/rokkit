@@ -1,7 +1,7 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
+	import { createBubbler } from 'svelte/legacy'
 
-	const bubble = createBubbler();
+	const bubble = createBubbler()
 	import DataEditor from './DataEditor.svelte'
 
 	/**
@@ -14,13 +14,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		value = $bindable(),
-		schema = null,
-		layout = null,
-		using = {},
-		children
-	} = $props();
+	let { value = $bindable(), schema = null, layout = null, using = {}, children } = $props()
 </script>
 
 <form onsubmit={bubble('submit')}>

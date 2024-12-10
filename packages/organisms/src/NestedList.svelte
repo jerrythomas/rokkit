@@ -1,12 +1,10 @@
 <script>
-	import NestedList from './NestedList.svelte';
-	import { run } from 'svelte/legacy';
+	import NestedList from './NestedList.svelte'
+	import { run } from 'svelte/legacy'
 
 	import { defaultFields, defaultStateIcons, getLineTypes } from '@rokkit/core'
 	import { Node, Item } from '@rokkit/molecules'
 
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -31,28 +29,28 @@
 		rtl = false,
 		hierarchy = [],
 		icons = $bindable()
-	} = $props();
+	} = $props()
 
 	run(() => {
 		icons = { ...defaultStateIcons.node, ...icons }
-	});
+	})
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	let nodeTypes = $derived(items.map((_, index) => (index === items.length - 1 ? 'last' : 'child')))
 </script>
 
-<nested-list class="nested-list flex flex-col w-full {className}" class:rtl role="tree">
+<nested-list class="nested-list flex w-full flex-col {className}" class:rtl role="tree">
 	{#each items as item, index}
 		{@const hasChildren = fields.children in item}
 		{@const path = [...hierarchy, index]}
 		{@const connectors = getLineTypes(hasChildren, types, nodeTypes[index])}
 
 		<Node
-			bind:value={item}
+			bind:value={items[index]}
 			{fields}
 			{using}
 			types={connectors}

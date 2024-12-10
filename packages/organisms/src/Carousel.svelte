@@ -35,7 +35,7 @@
 {#if items.length === 0}
 	<p>No items to display</p>
 {:else}
-	<carousel class="flex flex-col w-full gap-3 {className}">
+	<carousel class="flex w-full flex-col gap-3 {className}">
 		<slide class="flex flex-col">
 			<img src={value.src} alt={value.alt} />
 			<p>{value.text}</p>

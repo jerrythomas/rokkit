@@ -7,7 +7,7 @@
 		<p>{color}</p>
 		<div class="flex flex-wrap gap-2">
 			{#each shades as shade}
-				<div class="w-10 h-10 rounded-md" style="background-color: var(--{color}-{shade})"></div>
+				<div class="h-10 w-10 rounded-md" style="background-color: var(--{color}-{shade})"></div>
 			{/each}
 		</div>
 	{/each}

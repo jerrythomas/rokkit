@@ -11,7 +11,7 @@
 	// }
 </script>
 
-<content class="flex h-full overflow-hidden border border-neutral-subtle">
+<content class="border-neutral-subtle flex h-full overflow-hidden border">
 	<NestedEditor bind:value {schema} />
 	<!-- <pre class="overflow-auto text-xs border-l border-neutral-subtle">{stringValue}</pre> -->
 </content>

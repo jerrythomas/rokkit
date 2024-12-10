@@ -2,16 +2,16 @@
   @apply outline-none;
 }
 .minimal tabs {
-  @apply box-border px-2 gap-2 border-b-2 border-neutral-subtle cursor-pointer select-none;
+  @apply border-neutral-subtle box-border cursor-pointer select-none gap-2 border-b-2 px-2;
 }
 .minimal tabs .tab {
-  @apply leading-8 text-base px-2;
+  @apply px-2 text-base leading-8;
 }
 .minimal tabs .tab icon[role='img'] {
-  @apply w-6 h-6;
+  @apply h-6 w-6;
 }
 .minimal tabs .tab icon[role='button'] {
-  @apply w-4 h-4;
+  @apply h-4 w-4;
 }
 .minimal tabs.is-below {
   @apply border-b-none border-t-2;
@@ -20,25 +20,25 @@
   @apply pr-4;
 }
 .minimal tabs .tab {
-  @apply flex relative gap-1 items-center;
+  @apply relative flex items-center gap-1;
 }
 .minimal tabs .tab > img {
-  @apply w-5 h-5;
+  @apply h-5 w-5;
 }
 
 .minimal tabs .tab[aria-selected='true'] {
-  @apply -mb-2px border-b-2 border-secondary-600;
+  @apply -mb-2px border-secondary-600 border-b-2;
 }
 .minimal tabs.is-below .tab {
   @apply pt-2px;
 }
 .minimal tabs.is-below .tab[aria-selected='true'] {
-  @apply mb-0 -mt-2px border-b-none border-t-2 border-b-secondary-600;
+  @apply -mt-2px border-b-none border-b-secondary-600 mb-0 border-t-2;
 }
 
 .minimal .small tabs .tab {
-  @apply text-sm leading-8 px-2;
+  @apply px-2 text-sm leading-8;
 }
 .minimal .small tabs tab > img {
-  @apply w-5 h-5;
+  @apply h-5 w-5;
 }

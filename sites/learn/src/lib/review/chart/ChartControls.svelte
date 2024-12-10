@@ -1,7 +1,7 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
-	let { data } = $props();
+	let { data } = $props()
 
 	let fields = Object.keys(data[0])
 	let plots = [
@@ -23,10 +23,10 @@
 	}
 	run(() => {
 		onPlotTypeChange(plot)
-	});
+	})
 </script>
 
-<control class="w-96 flex flex-col gap-4 border-gray-700 border-l bg-primary-100 p-8">
+<control class="bg-primary-100 flex w-96 flex-col gap-4 border-l border-gray-700 p-8">
 	<section class="flex flex-col gap-2">
 		<p class="border-accent-600 border-b leading-loose">Plot Type</p>
 		<div class="flex flex-col">
@@ -56,6 +56,6 @@
 
 <style lang="postcss">
 	select {
-		@apply leading-loose p-2 border border-primary-500 rounded-md;
+		@apply border-primary-500 rounded-md border p-2 leading-loose;
 	}
 </style>

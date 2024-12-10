@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { getContext } from 'svelte'
 	import { Icon } from '@rokkit/ui'
@@ -9,7 +9,7 @@
 	 */
 
 	/** @type {Props} */
-	let { children } = $props();
+	let { children } = $props()
 	let site = getContext('site')
 	/**
 	 * @type {HTMLElement}
@@ -28,19 +28,19 @@
 	}
 	run(() => {
 		if (sidebar) toggle($site)
-	});
+	})
 </script>
 
 <aside
 	bind:this={sidebar}
-	class="-translate-x-full absolute left-0 top-0 w-full flex flex-shrink-0 flex-col md:w-1/2 lg:w-80"
+	class="absolute left-0 top-0 flex w-full flex-shrink-0 -translate-x-full flex-col md:w-1/2 lg:w-80"
 	class:lg:relative={$site.sidebar}
 >
-	<nav class="h-10 w-full flex items-center gap-2 border-b border-b-neutral-inset">
+	<nav class="border-b-neutral-inset flex h-10 w-full items-center gap-2 border-b">
 		<Icon
 			name="i-rokkit:action-cross"
 			role="button"
-			class="border-r border-r-neutral-inset rounded-none"
+			class="border-r-neutral-inset rounded-none border-r"
 			on:click={() => ($site.sidebar = false)}
 		/>
 		<input type="search" placeholder="search" bind:value={search} class="embedded" />
@@ -50,8 +50,8 @@
 
 <style>
 	aside {
-		@apply h-full z-5 overflow-auto text-xs;
-		@apply border-r border-neutral-inset bg-neutral-base;
+		@apply z-5 h-full overflow-auto text-xs;
+		@apply border-neutral-inset bg-neutral-base border-r;
 		@apply transform ease-in-out;
 	}
 </style>

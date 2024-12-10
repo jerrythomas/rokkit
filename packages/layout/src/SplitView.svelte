@@ -12,14 +12,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		vertical = false,
-		min = 30,
-		max = 70,
-		pos = $bindable(30),
-		a,
-		b
-	} = $props();
+	let { vertical = false, min = 30, max = 70, pos = $bindable(30), a, b } = $props()
 
 	let sizes = $derived([pos, 100 - pos])
 
@@ -38,7 +31,7 @@
 	}
 </script>
 
-<div class="relative h-full w-full flex" style:--direction={direction}>
+<div class="relative flex h-full w-full" style:--direction={direction}>
 	<section style:--sizeA={sizeA} class="flex flex-shrink flex-grow select-none">
 		{@render a?.()}
 	</section>

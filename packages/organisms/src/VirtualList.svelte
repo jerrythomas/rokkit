@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, compact } from '@rokkit/core'
@@ -47,7 +47,7 @@
 		tabindex = 0,
 		gap = 1,
 		children
-	} = $props();
+	} = $props()
 
 	let height = $state(null)
 	let width = $state(null)
@@ -123,14 +123,14 @@
 	const props = horizontal ? dimensionAttributes.horizontal : dimensionAttributes.vertical
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 	let keyboardActions = $derived(getKeyboardActions(viewport, horizontal))
 	run(() => {
 		start = $bounds?.lower
-	});
+	})
 	run(() => {
 		end = $bounds?.upper
-	});
+	})
 	let sizes = $derived(elements.map((element) => element[props.offset]))
 	run(() => {
 		viewport.update({
@@ -139,20 +139,24 @@
 			sizes,
 			visibleSize: horizontal ? width : height
 		})
-	});
-	let visible = $derived(items.slice(start, end).map((data, i) => {
-		return { index: i + start, data }
-	}))
+	})
+	let visible = $derived(
+		items.slice(start, end).map((data, i) => {
+			return { index: i + start, data }
+		})
+	)
 	run(() => {
 		if ($space.visible) size = $space.visible + 'px'
-	});
+	})
 	run(() => {
 		if (root) root.scrollTo(0, $space.before)
-	});
+	})
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
-	let listStyle = $derived(horizontal ? `width: ${size};` : `height: ${size};` + getListPosition(anchor, root))
+	})
+	let listStyle = $derived(
+		horizontal ? `width: ${size};` : `height: ${size};` + getListPosition(anchor, root)
+	)
 </script>
 
 <virtual-list>
@@ -183,7 +187,7 @@
 					aria-current={current === row.index}
 					bind:this={elements[index]}
 				>
-					{#if children}{@render children({ item: row.data, })}{:else}
+					{#if children}{@render children({ item: row.data })}{:else}
 						<using.default {fields} value={row.data} />
 					{/if}
 				</virtual-list-item>

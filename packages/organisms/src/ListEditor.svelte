@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import List from './List.svelte'
 	import FieldLayout from './FieldLayout.svelte'
@@ -9,7 +9,6 @@
 	const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -30,7 +29,7 @@
 		path = [],
 		below = false,
 		children
-	} = $props();
+	} = $props()
 
 	let index = $state(0)
 	let item = $state(value[index])
@@ -42,10 +41,10 @@
 		dispatch('select', { item: value, indices: path })
 	}
 
-	let location;
+	let location
 	run(() => {
 		location = [...path, index]
-	});
+	})
 </script>
 
 <list-editor class="flex {className}">

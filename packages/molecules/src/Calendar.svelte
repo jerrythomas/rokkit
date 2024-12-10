@@ -10,7 +10,7 @@
 	 */
 
 	/** @type {Props} */
-	let { value = $bindable(new Date()), holidays = [], fixed = true } = $props();
+	let { value = $bindable(new Date()), holidays = [], fixed = true } = $props()
 
 	function handleChange(event) {
 		value = new Date(event.target.value, value.getMonth(), value.getDate())
@@ -26,8 +26,8 @@
 	let days = $derived(getCalendarDays(value, holidays, fixed))
 </script>
 
-<calendar class="mx-auto flex flex-col select-none items-center">
-	<month-year class="h-10 w-full flex flex-row items-center">
+<calendar class="mx-auto flex select-none flex-col items-center">
+	<month-year class="flex h-10 w-full flex-row items-center">
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<square
 			class="cursor-pointer select-none"
@@ -38,12 +38,12 @@
 		>
 			<icon class="chevron-left"></icon>
 		</square>
-		<span class="flex flex-grow items-center justify-center gap-1px">
+		<span class="gap-1px flex flex-grow items-center justify-center">
 			<p>{format(value, 'MMMM')}</p>
 			<input
 				type="number"
 				value={year}
-				class="w-14 flex flex-grow-0 border-none bg-transparent"
+				class="flex w-14 flex-grow-0 border-none bg-transparent"
 				onchange={handleChange}
 			/>
 		</span>
@@ -58,7 +58,7 @@
 			<icon class="chevron-right"></icon>
 		</square>
 	</month-year>
-	<cal-body class="w-full flex flex-col cursor-pointer p-1">
+	<cal-body class="flex w-full cursor-pointer flex-col p-1">
 		<days-of-week class="grid grid-cols-7">
 			{#each weekdays as day, index}
 				<p class:weekend={index % 6 === 0}>

@@ -1,13 +1,11 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
 
 	const dispatch = createEventDispatcher()
-
-	
 
 	/**
 	 * @typedef {Object} Props
@@ -25,7 +23,7 @@
 		value = $bindable(items[0]),
 		fields = $bindable({}),
 		numbers = false
-	} = $props();
+	} = $props()
 
 	const navigate = defaultStateIcons.navigate
 
@@ -50,16 +48,16 @@
 
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	run(() => {
 		updateOnChange(value, items)
-	});
+	})
 
 	// $: value = items.findIndex((x) => x === value) ? value : items[0]
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<nav-pages class="grid grid-cols-3 select-none {className}" tabindex="0">
+<nav-pages class="grid select-none grid-cols-3 {className}" tabindex="0">
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<span
 		class="flex cursor-pointer items-center"

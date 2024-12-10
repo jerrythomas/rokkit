@@ -39,7 +39,7 @@
 	}
 </script>
 
-<div class="h-full flex flex-row">
+<div class="flex h-full flex-row">
 	<content class="flex-grow px-8">
 		<h1>Plots</h1>
 		<div class="natural-light flex flex-col items-center p-4">
