@@ -1,11 +1,11 @@
 /* Styles for 'input-field' class */
 .rokkit input-field field {
-  @apply p-2px box-border border border-neutral-muted rounded;
+  @apply p-2px border-neutral-muted box-border rounded border;
 }
 .rokkit input-field input,
 .rokkit input-field textarea,
 .rokkit input-field select {
-  @apply border-0 rounded-sm;
+  @apply rounded-sm border-0;
 }
 .rokkit checkbox {
   @apply outline-none;
@@ -14,10 +14,10 @@
   @apply text-secondary-600;
 }
 .rokkit input-field field > label {
-  @apply w-full h-full flex items-center text-secondary-600 uppercase text-xs;
+  @apply text-secondary-600 flex h-full w-full items-center text-xs uppercase;
 }
 .rokkit input-field:not(.disabled) field:focus-within {
-  @apply border-neutral-base bg-gradient-to-r from-primary to-secondary;
+  @apply border-neutral-base from-primary to-secondary bg-gradient-to-r;
 }
 .rokkit input-field.disabled label {
   @apply text-neutral-500;
@@ -26,10 +26,10 @@
   @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle;
 } */
 .rokkit input-field > span {
-  @apply border-r border-neutral-muted bg-neutral-base px-1 h-full aspect-square;
+  @apply border-neutral-muted bg-neutral-base aspect-square h-full border-r px-1;
 }
 .rokkit input-field message {
-  @apply px-2 py-1 bg-neutral-base rounded;
+  @apply bg-neutral-base rounded px-2 py-1;
 }
 .rokkit input-field.fail {
   @apply bg-error rounded px-2;

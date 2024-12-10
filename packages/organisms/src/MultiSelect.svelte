@@ -1,12 +1,10 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import Select from './Select.svelte'
 	import { ItemWrapper, Item } from '@rokkit/molecules'
 	import { defaultFields } from '@rokkit/core'
 
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -27,7 +25,7 @@
 		fields = $bindable({}),
 		using = $bindable({}),
 		placeholder = ''
-	} = $props();
+	} = $props()
 
 	let available = $derived(options.filter((item) => !value.includes(item)))
 
@@ -39,10 +37,10 @@
 	}
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 </script>
 
 <Select
@@ -68,7 +66,7 @@
 			{/each}
 		</items>
 	{:else}
-		<item class="w-full flex">
+		<item class="flex w-full">
 			<using.default value={placeholder} />
 		</item>
 	{/if}

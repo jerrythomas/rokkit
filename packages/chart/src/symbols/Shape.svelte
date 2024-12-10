@@ -1,9 +1,8 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
+	import { createBubbler } from 'svelte/legacy'
 
-	const bubble = createBubbler();
+	const bubble = createBubbler()
 	import { namedShapes } from './constants'
-
 
 	/**
 	 * @typedef {Object} Props
@@ -25,7 +24,7 @@
 		stroke = 'currentColor',
 		thickness = 1,
 		name = 'circle'
-	} = $props();
+	} = $props()
 
 	let d = $derived(name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size))
 </script>

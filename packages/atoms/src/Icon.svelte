@@ -55,7 +55,7 @@
 	let large = $derived(size === 'large' || className.includes('large'))
 </script>
 
-<icon
+<rkt-icon
 	class="flex flex-shrink-0 items-center justify-center {className}"
 	class:small
 	class:medium
@@ -72,4 +72,4 @@
 	onnmouseleave={emitter.nmouseleave}
 >
 	<i class={name} aria-hidden="true"></i>
-</icon>
+</rkt-icon>

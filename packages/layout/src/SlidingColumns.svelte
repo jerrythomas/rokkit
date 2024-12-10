@@ -6,7 +6,7 @@
 	let activeIndex = $state(0)
 	let offset = $state(1)
 	let width = $state()
-	let { columns } = $props();
+	let { columns } = $props()
 
 	let numColumns = $derived(columns.length)
 
@@ -40,7 +40,7 @@
 	{#each columns as column, index}
 		{#if index === activeIndex}
 			<segment
-				class="slide w-full h-full absolute {column}"
+				class="slide absolute h-full w-full {column}"
 				in:fly={{ x: offset * width, duration: 1000, easing: cubicInOut }}
 				out:fade={{
 					x: -1 * offset * width,

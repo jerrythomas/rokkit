@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { Stepper, Range, ProgressDots } from '@rokkit/ui'
 	import ControlPanel from './ControlPanel.svelte'
@@ -23,19 +23,19 @@
 		formatString = $bindable('02'),
 		currentStage = 2,
 		currentStep = 2
-	} = $props();
+	} = $props()
 
 	let clickData = $state()
 	function handleClick(e) {
 		clickData = e.detail
 	}
 
-	let filtered;
+	let filtered
 	run(() => {
 		filtered = showLabels
 			? data.slice(0, stages)
 			: data.slice(0, stages).map((d) => ({ progress: d.progress }))
-	});
+	})
 </script>
 
 <section class="flex flex-grow flex-col p-8">

@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
-	let { count, value = -1, current = $bindable(-1) } = $props();
+	let { count, value = -1, current = $bindable(-1) } = $props()
 
 	let inprogress = $derived(current === value + 1 ? current : inprogress)
 	// $: enabled = count > 0
@@ -18,11 +18,11 @@
 	let steps = $derived(Array.from({ length: count }, (_, i) => i))
 </script>
 
-<span class="flex items-center gap-2 progress" class:empty={count === 0}>
+<span class="progress flex items-center gap-2" class:empty={count === 0}>
 	{#each steps as step}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<dot
-			class="step h-3 w-3 flex border-2 border-neutral-100 rounded-full bg-neutral-300"
+			class="step flex h-3 w-3 rounded-full border-2 border-neutral-100 bg-neutral-300"
 			onclick={handleClick}
 			data-step={step}
 			data-active={step === current}
@@ -37,7 +37,7 @@
 
 <style lang="postcss">
 	.empty {
-		@apply w-full border-b border-primary-500;
+		@apply border-primary-500 w-full border-b;
 	}
 	.step[data-clickable='true'] {
 		@apply cursor-pointer;

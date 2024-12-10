@@ -8,13 +8,7 @@
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
-	let {
-		value,
-		name = null,
-		label = null,
-		type = null,
-		...rest
-	} = $props();
+	let { value, name = null, label = null, type = null, ...rest } = $props()
 	let extraProps = $derived(rest)
 </script>
 

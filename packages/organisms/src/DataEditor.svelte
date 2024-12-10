@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
@@ -30,7 +30,7 @@
 		schema = $bindable(null),
 		layout = $bindable(null),
 		using = {}
-	} = $props();
+	} = $props()
 
 	let schemaWithLayout = $derived(getSchemaWithLayout(schema, layout))
 
@@ -44,14 +44,13 @@
 			wrappers: { default: Wrapper, ...using?.wrappers },
 			navigators: { default: Tabs, ...using?.navigators }
 		})
-	});
+	})
 	run(() => {
 		if (!schema) schema = deriveSchemaFromValue(value)
-	});
+	})
 	run(() => {
 		if (!layout) layout = deriveLayoutFromValue(value)
-	});
-	
+	})
 </script>
 
 <FieldLayout schema={schemaWithLayout} bind:value on:change={handle} />

@@ -25,7 +25,7 @@
 	let height = $derived(Math.ceil(shapes.length / columns) * (size + gap) + 4 * gap)
 </script>
 
-<div class="h-full flex flex-row">
+<div class="flex h-full flex-row">
 	<content class="flex-grow px-8">
 		<h1>Symbols</h1>
 		<svg viewBox="0 0 {width} {height}">

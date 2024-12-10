@@ -1,10 +1,9 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { defaultFields, getComponent } from '@rokkit/core'
 	import Item from './Item.svelte'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -21,14 +20,14 @@
 		separator = '/',
 		fields = $bindable(defaultFields),
 		using = $bindable({ default: Item })
-	} = $props();
+	} = $props()
 
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 </script>
 
 <crumbs class="flex {className}">

@@ -1,5 +1,4 @@
 <script>
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -9,12 +8,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		class: className = '',
-		type = 'vertical',
-		title = '',
-		children
-	} = $props();
+	let { class: className = '', type = 'vertical', title = '', children } = $props()
 </script>
 
 <field-layout class="{type} {className}" aria-label={title}>

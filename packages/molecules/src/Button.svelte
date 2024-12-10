@@ -1,10 +1,8 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
+	import { createBubbler } from 'svelte/legacy'
 
-	const bubble = createBubbler();
+	const bubble = createBubbler()
 	import { Icon } from '@rokkit/atoms'
-
-	
 
 	/**
 	 * @typedef {Object} Props
@@ -30,7 +28,7 @@
 		left,
 		children,
 		right
-	} = $props();
+	} = $props()
 
 	let isPrimary = $derived(type === 'primary')
 	let isOutlined = $derived(style === 'outlined')
@@ -50,10 +48,8 @@
 			{/if}
 		</icon-left>
 	{/if}
-	{#if children}{@render children()}{:else}
-		{#if label}
-			<p>{label}</p>
-		{/if}
+	{#if children}{@render children()}{:else if label}
+		<p>{label}</p>
 	{/if}
 	{#if rightIcon}
 		<icon-right>

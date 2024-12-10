@@ -21,17 +21,17 @@ th[data-sortable='true']:hover icon {
 }
 
 table {
-  @apply w-full text-sm text-left rtl:text-right text-neutral-700;
+  @apply w-full text-left text-sm text-neutral-700 rtl:text-right;
 }
 table > thead {
-  @apply table-header-group text-xs uppercase bg-neutral-400;
+  @apply table-header-group bg-neutral-400 text-xs uppercase;
 }
 table > caption {
-  @apply table-caption p-5 text-sm font-normal text-left rtl:text-right bg-neutral-subtle text-neutral-600;
+  @apply bg-neutral-subtle table-caption p-5 text-left text-sm font-normal text-neutral-600 rtl:text-right;
 }
 
 table > tbody > tr {
-  @apply table-row border-b border-neutral-base bg-neutral-subtle;
+  @apply border-neutral-base bg-neutral-subtle table-row border-b;
 }
 table.striped > tbody > tr:nth-child(even) {
   @apply bg-neutral-inset;
@@ -49,7 +49,7 @@ table-wrapper {
 
 td cell.cell-type-integer p,
 td cell.cell-type-number p {
-  @apply text-right w-full;
+  @apply w-full text-right;
 }
 
 td cell item {

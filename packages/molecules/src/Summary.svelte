@@ -21,7 +21,7 @@
 	const SvelteComponent = $derived(component)
 </script>
 
-<summary class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center" tabindex="-1">
+<summary class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center" tabindex="-1">
 	<SvelteComponent bind:value {fields} />
 	{#if hasItems}
 		{#if value[fields.isOpen]}

@@ -1,5 +1,5 @@
 <script>
-	let { value, fields } = $props();
+	let { value, fields } = $props()
 </script>
 
 <p>{value[fields.text]}</p>

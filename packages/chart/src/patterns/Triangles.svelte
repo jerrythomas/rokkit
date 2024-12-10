@@ -7,7 +7,7 @@
 	 */
 
 	/** @type {Props} */
-	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props();
+	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props()
 
 	const polygons = [
 		[0, 0.5 * size, 0.5 * size, size, 0, size],

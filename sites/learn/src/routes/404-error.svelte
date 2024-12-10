@@ -1,5 +1,5 @@
 <svg
-	class="m-auto w-1/2 flex"
+	class="m-auto flex w-1/2"
 	viewBox="0 0 3125 2084"
 	version="1.1"
 	xmlns="http://www.w3.org/2000/svg"

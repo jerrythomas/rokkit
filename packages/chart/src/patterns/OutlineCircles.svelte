@@ -7,7 +7,7 @@
 	 */
 
 	/** @type {Props} */
-	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props();
+	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props()
 
 	const centres = [
 		{ cx: 0, cy: 0 },

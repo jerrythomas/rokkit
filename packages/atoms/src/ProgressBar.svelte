@@ -1,5 +1,4 @@
 <script>
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -10,13 +9,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		class: className = '',
-		value = null,
-		max = null,
-		height = '1.5mm',
-		width = 10
-	} = $props();
+	let { class: className = '', value = null, max = null, height = '1.5mm', width = 10 } = $props()
 
 	let indeterminate = $derived(value === null || max === null)
 	let percentage = $derived(indeterminate ? width : value / max)

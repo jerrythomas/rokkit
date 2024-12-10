@@ -1,8 +1,8 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { Symbol } from '@rokkit/chart'
-	
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [size]
@@ -23,21 +23,23 @@
 		shapes = [],
 		shades = $bindable([]),
 		repeat = false
-	} = $props();
+	} = $props()
 
 	run(() => {
 		rows = rows ? rows : Math.ceil(shapes.length / columns)
-	});
+	})
 	let height = $derived((size + spacing) * rows)
 	let width = $derived(spacing + (size + spacing) * columns)
-	let data = $derived(shapes.map((id, index) => ({
-		id,
-		x: spacing / 2 + ((index % columns) + 0.5) * (size + spacing),
-		y: (0.5 + Math.floor(index / columns)) * (size + spacing)
-	})))
+	let data = $derived(
+		shapes.map((id, index) => ({
+			id,
+			x: spacing / 2 + ((index % columns) + 0.5) * (size + spacing),
+			y: (0.5 + Math.floor(index / columns)) * (size + spacing)
+		}))
+	)
 	run(() => {
 		shades = repeat ? shapes.map((id, index) => shades[index % shades.length]) : shades
-	});
+	})
 </script>
 
 <svg viewBox="0 0 {width} {height}">

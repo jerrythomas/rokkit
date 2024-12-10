@@ -1,13 +1,6 @@
 <script>
 	import { pannable } from '@rokkit/actions'
-	let {
-		min,
-		max,
-		cx = $bindable(),
-		steps,
-		scale,
-		value = $bindable()
-	} = $props();
+	let { min, max, cx = $bindable(), steps, scale, value = $bindable() } = $props()
 
 	function handlePanMove(event) {
 		let x = cx + event.detail.dx
@@ -50,7 +43,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <thumb
-	class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+	class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
 	style:left="{cx}px"
 	class:sliding
 	tabindex="0"

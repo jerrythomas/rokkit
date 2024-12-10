@@ -4,7 +4,6 @@
 
 	const registry = getContext('registry')
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -26,11 +25,11 @@
 		navigator = 'tabs',
 		children,
 		...rest
-	} = $props();
+	} = $props()
 
 	let component = $derived($registry.navigators[navigator] ?? $registry.navigators.default)
 
-	const SvelteComponent = $derived(component);
+	const SvelteComponent = $derived(component)
 </script>
 
 <section class={className}>

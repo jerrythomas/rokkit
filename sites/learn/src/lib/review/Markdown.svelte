@@ -15,7 +15,7 @@
 	 */
 
 	/** @type {Props} */
-	let { content = '' } = $props();
+	let { content = '' } = $props()
 	let preview = $derived(marked(content || ''))
 </script>
 

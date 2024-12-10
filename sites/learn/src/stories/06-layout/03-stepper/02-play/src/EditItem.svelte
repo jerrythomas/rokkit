@@ -1,8 +1,8 @@
 <script>
-	let { label = $bindable(), progress = $bindable(), steps } = $props();
+	let { label = $bindable(), progress = $bindable(), steps } = $props()
 </script>
 
-<div class="w-full flex flex-col gap-2 border">
+<div class="flex w-full flex-col gap-2 border">
 	{#if label}
 		<input type="text" bind:value={label} />
 	{/if}

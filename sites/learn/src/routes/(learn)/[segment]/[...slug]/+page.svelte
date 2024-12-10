@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { setContext, getContext } from 'svelte'
 	import { writable } from 'svelte/store'
@@ -41,14 +41,14 @@
 		})
 	}
 	let size = $state('md')
-	let { data } = $props();
+	let { data } = $props()
 	// $: console.log($site)
 	run(() => {
 		loadComponent(data.tutorial)
-	});
+	})
 	run(() => {
 		size = $media.large ? 'lg' : $media.medium ? 'md' : 'sm'
-	});
+	})
 	let layout = $derived($site.code === 'hidden' ? 'two-col' : 'three-col')
 </script>
 

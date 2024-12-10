@@ -71,7 +71,7 @@
 		{#if small && equals(index, activeIndex)}
 			{@const SvelteComponent = component}
 			<segment
-				class="absolute w-full h-full {segmentClass}"
+				class="absolute h-full w-full {segmentClass}"
 				out:fade={{
 					x: -1 * direction * width,
 					duration,

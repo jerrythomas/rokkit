@@ -10,12 +10,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		size = 10,
-		thickness = 0.5,
-		stroke = 'currentColor',
-		data = []
-	} = $props();
+	let { size = 10, thickness = 0.5, stroke = 'currentColor', data = [] } = $props()
 
 	let d = $derived(scaledPath(size, data))
 </script>

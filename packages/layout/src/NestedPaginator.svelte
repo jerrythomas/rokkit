@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { defaultFields, flattenNestedList } from '@rokkit/core'
 	import { Item, BreadCrumbs } from '@rokkit/molecules'
@@ -7,12 +7,7 @@
 	import { createEventDispatcher } from 'svelte'
 
 	const dispatch = createEventDispatcher()
-	let {
-		items,
-		value = $bindable(),
-		fields = $bindable(),
-		using = $bindable()
-	} = $props();
+	let { items, value = $bindable(), fields = $bindable(), using = $bindable() } = $props()
 
 	let trail = $state()
 	let flatList = $state()
@@ -51,13 +46,13 @@
 
 	run(() => {
 		flatList = flattenNestedList(items, fields)
-	});
+	})
 	run(() => {
 		fields = { ...defaultFields, ...(fields ?? {}) }
-	});
+	})
 	run(() => {
 		using = { default: Item, ...(using ?? {}) }
-	});
+	})
 </script>
 
 <pages>

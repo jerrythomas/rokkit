@@ -4,9 +4,6 @@
 
 	const dispatch = createEventDispatcher()
 
-	
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -25,7 +22,7 @@
 		sortable = false,
 		hidden = false,
 		order = $bindable('none')
-	} = $props();
+	} = $props()
 
 	const handleSort = (event) => {
 		if (!sortable) return

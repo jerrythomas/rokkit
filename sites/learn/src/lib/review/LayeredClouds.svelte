@@ -8,12 +8,7 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		width = 320,
-		height = 72,
-		layers = [],
-		seconds = 10
-	} = $props();
+	let { width = 320, height = 72, layers = [], seconds = 10 } = $props()
 </script>
 
 <svg {width} {height} viewBox="0 0 {width} {height}" style:--seconds="{seconds}s">

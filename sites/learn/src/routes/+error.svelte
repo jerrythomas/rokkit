@@ -11,7 +11,7 @@
 	<title>{$page.status}</title>
 </svelte:head>
 
-<div class="w-full flex flex-col items-center justify-center">
+<div class="flex w-full flex-col items-center justify-center">
 	{#if $page.status === 404}
 		<Error404 />
 		<a href="http://www.freepik.com">Designed by stories / Freepik</a>

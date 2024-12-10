@@ -1,4 +1,9 @@
 /**
+ * @typedef {Object.<string, Function>} EventHandlers
+ * An object where keys are event names and values are event handler functions.
+ */
+
+/**
  * Component map to be used to render the item.
  * @typedef {Object<string, import('svelte').SvelteComponent>} ComponentMap
  */

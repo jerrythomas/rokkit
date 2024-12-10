@@ -1,7 +1,7 @@
 <script>
 	import { plotter } from '../lib/plots'
 	import { compact } from '@rokkit/core'
-	
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} [data]
@@ -36,13 +36,15 @@
 		labels = {},
 		tip = true,
 		channels = null
-	} = $props();
+	} = $props()
 
-	let showLegend = $derived(compact({
-		stroke: stroke ? { legend } : null,
-		color: fill && !symbol ? { legend } : null,
-		symbol: symbol ? { legend } : null
-	}))
+	let showLegend = $derived(
+		compact({
+			stroke: stroke ? { legend } : null,
+			color: fill && !symbol ? { legend } : null,
+			symbol: symbol ? { legend } : null
+		})
+	)
 	let config = $derived({
 		data,
 		type,

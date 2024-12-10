@@ -15,7 +15,7 @@
 		fill = 'currentColor',
 		stroke = 'currentColor',
 		data = []
-	} = $props();
+	} = $props()
 
 	const polygons = data.map((points) => points.map((point) => point * size).join(', '))
 	// [

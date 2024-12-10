@@ -230,7 +230,7 @@
 }
 .markdown-body ul li::before {
   content: '';
-  @apply absolute bg-neutral-muted mt-2 -ml-5 w-1.5 h-1.5 rounded-sm;
+  @apply bg-neutral-muted absolute -ml-5 mt-2 h-1.5 w-1.5 rounded-sm;
 }
 
 .markdown-body ol {
@@ -650,7 +650,7 @@
 .markdown-body h1,
 .markdown-body h2 {
   /* padding-bottom: 0.3em; */
-  @apply border-b border-neutral-subtle mt-16;
+  @apply border-neutral-subtle mt-16 border-b;
   /* border-bottom: 1px solid #eaecef; */
 }
 
@@ -737,12 +737,12 @@
 .markdown-body table th {
   padding: 6px 13px;
   /* border: 1px solid #dfe2e5; */
-  @apply border border-neutral-base;
+  @apply border-neutral-base border;
 }
 
 .markdown-body table tr {
   /* background-color: #fff; */
-  @apply border-t border-neutral-subtle;
+  @apply border-neutral-subtle border-t;
   /* border-top: 1px solid #c6cbd1; */
 }
 
@@ -773,7 +773,7 @@
 
 .markdown-body pre {
   word-wrap: normal;
-  @apply rounded-sm border border-neutral-subtle;
+  @apply border-neutral-subtle rounded-sm border;
 }
 
 .markdown-body pre > code {

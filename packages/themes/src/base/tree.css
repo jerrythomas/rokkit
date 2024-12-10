@@ -1,9 +1,9 @@
 tree,
 nested-list {
-  @apply flex flex-col w-full text-sm;
+  @apply flex w-full flex-col text-sm;
 }
 nested-list node > div {
-  @apply px-2 h-8;
+  @apply h-8 px-2;
 }
 
 nested-list node {

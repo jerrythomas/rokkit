@@ -19,7 +19,7 @@
 		thickness = 0.5,
 		patternUnits = 'userSpaceOnUse',
 		size = 10
-	} = $props();
+	} = $props()
 </script>
 
 <pattern {id} {patternUnits} width={size} height={size}>

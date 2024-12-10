@@ -22,7 +22,7 @@
 		styles = ['', ''],
 		a,
 		b
-	} = $props();
+	} = $props()
 
 	let refs = $state({})
 
@@ -51,7 +51,8 @@
 	<div class={styles[1]} style="{dimension}: {100 - pos}%;">
 		{@render b?.()}
 	</div>
-	<span class="wall" use:pannable onpanmove={handlePanMove} style="{side}: calc({pos}% - 8px)"></span>
+	<span class="wall" use:pannable onpanmove={handlePanMove} style="{side}: calc({pos}% - 8px)"
+	></span>
 </div>
 
 <style>

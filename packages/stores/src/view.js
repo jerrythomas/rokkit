@@ -20,6 +20,42 @@ import {
 } from './view/primitives'
 
 /**
+ * Gets the current item from the view store.
+ *
+ * @param {import('svelte/store').Writable} view - the view store.
+ * @returns {Object}                               The current item.
+ */
+function getCurrentItem(view) {
+	const state = get(view)
+	const currentItem =
+		state.data.length > 0 && state.currentIndex >= 0 ? state.data[state.currentIndex] : null
+	return currentItem
+}
+
+/**
+ * Validates the index.
+ *
+ * @param {Array} data
+ * @param {Number} index
+ * @returns {Number} The validated index.
+ */
+function validatedIndex(data, index) {
+	return index < 0 || index >= data.length ? -1 : index
+}
+
+/**
+ * Gets the value of the item at the specified index.
+ *
+ * @param {Array} data
+ * @param {Number} index
+ * @returns {Object} The value of the item.
+ */
+function getValue(data, index) {
+	if (index >= 0) return data[index].value
+	return null
+}
+
+/**
  * Creates a view store with extended functionalities.
  *
  * @param {Array} items
@@ -71,40 +107,4 @@ export function createView(items, options = {}) {
 		collapseAll: () => updateView((state) => collapseAll(state)),
 		events
 	}
-}
-
-/**
- * Gets the current item from the view store.
- *
- * @param {import('svelte/store').Writable} view - the view store.
- * @returns {Object}                               The current item.
- */
-function getCurrentItem(view) {
-	const state = get(view)
-	const currentItem =
-		state.data.length > 0 && state.currentIndex >= 0 ? state.data[state.currentIndex] : null
-	return currentItem
-}
-
-/**
- * Validates the index.
- *
- * @param {Array} data
- * @param {Number} index
- * @returns {Number} The validated index.
- */
-function validatedIndex(data, index) {
-	return index < 0 || index >= data.length ? -1 : index
-}
-
-/**
- * Gets the value of the item at the specified index.
- *
- * @param {Array} data
- * @param {Number} index
- * @returns {Object} The value of the item.
- */
-function getValue(data, index) {
-	if (index >= 0) return data[index].value
-	return null
 }

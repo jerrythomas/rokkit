@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields, defaultStateIcons } from '@rokkit/core'
@@ -9,8 +9,6 @@
 
 	const dispatch = createEventDispatcher()
 
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -35,7 +33,7 @@
 		align = 'left',
 		editable = false,
 		icons = $bindable(defaultStateIcons.action)
-	} = $props();
+	} = $props()
 
 	let cursor = $state([])
 
@@ -60,14 +58,14 @@
 	}
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 	run(() => {
 		icons = { ...defaultStateIcons.action, ...icons }
-	});
+	})
 	let filtered = $derived(options.filter((item) => !item[fields.isDeleted]))
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 </script>
 
 <tabs

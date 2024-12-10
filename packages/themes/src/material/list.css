@@ -1,16 +1,16 @@
 .material accordion,
 .material list {
-  @apply rounded  gap-1px;
+  @apply gap-1px rounded;
 }
 .material list > item {
   @apply bg-neutral-subtle;
 }
 .material item {
-  @apply flex leading-10 items-center gap-2 px-3;
+  @apply flex items-center gap-2 px-3 leading-10;
 }
 .material item > img,
 .material item > a > img {
-  @apply w-4 h-4 rounded;
+  @apply h-4 w-4 rounded;
 }
 .material .tab.is-hovering {
   @apply bg-primary;
@@ -23,14 +23,14 @@
   @apply border-b-3 border-primary;
 }
 .material tabs.is-below .tab[aria-selected='true'] {
-  @apply border-b-0 border-t-3;
+  @apply border-t-3 border-b-0;
 }
 
 .material node > div {
   @apply h-7 px-2;
 }
 .material node > item {
-  @apply px-1 gap-1 bg-transparent;
+  @apply gap-1 bg-transparent px-1;
 }
 .material node > span {
   @apply w-3;
@@ -49,11 +49,11 @@
 }
 
 .material accordion .is-expanded summary {
-  @apply border-b border-neutral-muted rounded-b-none sticky top-0 z-1;
+  @apply border-neutral-muted z-1 sticky top-0 rounded-b-none border-b;
 }
 
 .material accordion .is-selected summary {
-  @apply border-b-primary border-b text-primary-600;
+  @apply border-b-primary text-primary-600 border-b;
   @apply hover:text-primary-600;
 }
 /* .material list item[aria-selected='true'] {
@@ -75,22 +75,22 @@
 }
 
 .material toggle-switch {
-  @apply min-w-12 min-h-6 rounded-full mx-auto;
-  @apply bg-neutral-subtle border border-neutral-muted;
+  @apply mx-auto min-h-6 min-w-12 rounded-full;
+  @apply bg-neutral-subtle border-neutral-muted border;
   @apply p-2px;
 }
 .material toggle-switch item {
-  @apply items-center justify-center px-3 gap-1 leading-tight;
-  @apply min-w-6 min-h-6 rounded-full cursor-pointer;
+  @apply items-center justify-center gap-1 px-3 leading-tight;
+  @apply min-h-6 min-w-6 cursor-pointer rounded-full;
 }
 
 .material toggle-switch.compact > item {
-  @apply px-0 gap-0;
+  @apply gap-0 px-0;
 }
 
 .minimal tabs .tab icon[role='img'] {
-  @apply w-6 h-6;
+  @apply h-6 w-6;
 }
 .minimal tabs .tab icon[role='button'] {
-  @apply w-4 h-4;
+  @apply h-4 w-4;
 }

@@ -48,7 +48,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <drop-down
-	class="flex relative cursor-pointer select-none dropdown {className}"
+	class="dropdown relative flex cursor-pointer select-none {className}"
 	class:open
 	aria-haspopup="true"
 	aria-controls="menu"
@@ -67,7 +67,7 @@
 				<Icon name={icon} />
 			{/if}
 			{#if !small && title}
-				<p class="w-full flex">{title}</p>
+				<p class="flex w-full">{title}</p>
 			{/if}
 			{#if open}
 				<Icon name={icons.opened} />

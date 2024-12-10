@@ -1,5 +1,4 @@
 <script>
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -8,7 +7,7 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = 'flex flex-grow w-full mx-0 h-auto', layers, seconds = 10 } = $props();
+	let { class: className = 'flex flex-grow w-full mx-0 h-auto', layers, seconds = 10 } = $props()
 </script>
 
 <svg

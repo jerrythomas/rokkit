@@ -7,7 +7,6 @@
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	const site = getContext('site')
-	
 
 	/**
 	 * @typedef {Object} Props
@@ -17,7 +16,7 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', version, menu = [] } = $props();
+	let { class: className = '', version, menu = [] } = $props()
 	const codeOptions = [
 		{ icon: 'i-app:code-visible', value: 'hidden', label: 'Hide Code' },
 		{ icon: 'i-app:code-hidden', value: 'visible', label: 'Show Code' }
@@ -34,10 +33,10 @@
 </script>
 
 <header
-	class="flex min-h-14 w-full bg-neutral-base items-center justify-between relative {className}"
+	class="bg-neutral-base relative flex min-h-14 w-full items-center justify-between {className}"
 >
 	{#if loading}
-		<ProgressBar class="absolute top-0 z-5" />
+		<ProgressBar class="z-5 absolute top-0" />
 	{/if}
 	<div class="flex items-center gap-2 px-4">
 		<a href="/" class="flex items-center">
@@ -48,7 +47,7 @@
 			{/if}
 		</a>
 		{#if !$media.small}
-			<small class="px-2 font-small">{version}</small>
+			<small class="font-small px-2">{version}</small>
 		{/if}
 	</div>
 	<settings class="flex items-center justify-end gap-3 pr-4">
@@ -56,7 +55,7 @@
 			{#each menu as item}
 				<a
 					href="/{item.slug}"
-					class="border-b-2 leading-loose active:border-secondary-700 hover:text-secondary-700"
+					class="active:border-secondary-700 hover:text-secondary-700 border-b-2 leading-loose"
 					>{item.title}</a
 				>
 			{/each}
@@ -70,7 +69,7 @@
 				name="i-logo:github"
 				label="Rokkit on Github"
 				role="button"
-				class="border border-neutral-muted rounded"
+				class="border-neutral-muted rounded border"
 			/>
 		</a>
 	</settings>

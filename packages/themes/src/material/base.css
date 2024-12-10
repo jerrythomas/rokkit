@@ -1,7 +1,7 @@
 @import '../base.css';
 
 .material icon[role='button'] {
-  @apply text-neutral-muted focus:rounded hover:text-primary focus:outline-primary focus:m-1px;
+  @apply text-neutral-muted hover:text-primary focus:outline-primary focus:m-1px focus:rounded;
 }
 .material icon.disabled[role='button'] {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;

@@ -1,5 +1,5 @@
-import { defaultThemeMapping, defaultColors, syntaxColors } from './constants'
-import { shades, defaultPalette } from './colors'
+import { defaultThemeMapping, defaultColors, syntaxColors } from './constants.js'
+import { shades, defaultPalette } from './colors/index.js'
 
 const modifiers = {
 	hsl: (value) => `hsl(${value})`,

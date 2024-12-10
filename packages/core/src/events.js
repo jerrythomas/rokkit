@@ -1,14 +1,15 @@
-import { noop } from './utils'
+import { noop } from './utils.js'
 
 /**
  * Creates an emitter object from the given properties.
- * Filters out attributes that start with 'on' and are functions,
- * and returns an object with keys that do not start with 'on' and the values are the same functions.
- * If a default event is not present in the props, it will be set to a no-op function.
  *
- * @param {Object} props - The properties object to filter.
+ * - Filters attributes that start with 'on' and are functions,
+ * - Returns an object with keys that are the event names (without the 'on' prefix)
+ * - If a default event is not present in the props, it will be set to a no-op function.
+ *
+ * @param {Object}        props    - The properties object to filter.
  * @param {Array<string>} defaults - An array of default events.
- * @returns {Object} The emitter object.
+ * @returns {import('./types.js').EventHandlers} The emitter object.
  */
 export function createEmitter(props, defaults = []) {
 	const emit = {}

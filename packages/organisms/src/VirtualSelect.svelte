@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { defaultFields, defaultStateIcons, getComponent } from '@rokkit/core'
 	import { Icon } from '@rokkit/atoms'
@@ -7,7 +7,6 @@
 	import { delegateKeyboardEvents } from '@rokkit/actions'
 	import VirtualList from './VirtualList.svelte'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} [value]
@@ -32,7 +31,7 @@
 		tabindex = 0,
 		placeholder = 'Select',
 		children
-	} = $props();
+	} = $props()
 
 	let selector = $state()
 	let open = $state(true)
@@ -41,10 +40,10 @@
 
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	run(() => {
 		using = { default: Item, ...using }
-	});
+	})
 </script>
 
 <input-select use:delegateKeyboardEvents={{ selector: 'virtual-list' }}>
@@ -58,15 +57,13 @@
 		onblur={() => (open = false)}
 		class="flex items-center"
 	>
-		{#if children}{@render children()}{:else}
-			{#if value === null}
-				<p class="placeholder">{placeholder}</p>
-			{:else}
-				{@const component = getComponent(value, fields, using)}
-				{@const props = typeof value === 'object' ? value[fields.props] || { fields } : { fields }}
-				{@const SvelteComponent = component}
-				<SvelteComponent bind:value {...props} />
-			{/if}
+		{#if children}{@render children()}{:else if value === null}
+			<p class="placeholder">{placeholder}</p>
+		{:else}
+			{@const component = getComponent(value, fields, using)}
+			{@const props = typeof value === 'object' ? value[fields.props] || { fields } : { fields }}
+			{@const SvelteComponent = component}
+			<SvelteComponent bind:value {...props} />
 		{/if}
 		{#if open}
 			<Icon name={icons.opened} label="opened" tabindex="-1" />

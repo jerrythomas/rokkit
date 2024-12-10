@@ -1,5 +1,5 @@
 <script>
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
@@ -9,10 +9,7 @@
 	import NestedList from './NestedList.svelte'
 
 	const dispatch = createEventDispatcher()
-	
-	
-	
-	
+
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -32,7 +29,7 @@
 		root = null,
 		value = $bindable(null),
 		...rest
-	} = $props();
+	} = $props()
 
 	let indices = $state([])
 
@@ -49,10 +46,10 @@
 
 	run(() => {
 		fields = { ...defaultFields, ...fields }
-	});
+	})
 	run(() => {
 		items = addRootNode(items, root, fields)
-	});
+	})
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->

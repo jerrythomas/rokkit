@@ -14,8 +14,6 @@
 		key: 'key'
 	}
 
-	
-
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} data - const icons = { opened: 'accordion-opened', closed: 'accordion-closed' }
@@ -23,7 +21,7 @@
 	 */
 
 	/** @type {Props} */
-	let { data, children } = $props();
+	let { data, children } = $props()
 	/** @type {any} */
 	let value = $state()
 	let items = $state(data.menu)
@@ -44,11 +42,11 @@
 <svelte:head>
 	<title>Learn to use Rokkit</title>
 </svelte:head>
-<main class="relative h-full w-full flex flex-grow overflow-hidden">
+<main class="relative flex h-full w-full flex-grow overflow-hidden">
 	<Sidebar>
 		<Tree {items} {fields} bind:value on:select={handleSelect} />
 	</Sidebar>
-	<content class="w-full flex flex-col relative">
+	<content class="relative flex w-full flex-col">
 		{@render children?.()}
 	</content>
 </main>

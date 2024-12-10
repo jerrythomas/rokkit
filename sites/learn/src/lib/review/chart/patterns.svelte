@@ -27,7 +27,7 @@
 	}
 </script>
 
-<div class="h-full flex flex-row">
+<div class="flex h-full flex-row">
 	<content class="flex-grow px-8">
 		<h1>Patterns</h1>
 		<Swatch items={variations} type="circle" size={60} columns={7} autoscale />

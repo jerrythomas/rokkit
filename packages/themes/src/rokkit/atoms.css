@@ -10,13 +10,13 @@
 
 /* Styles for 'icon' class */
 .rokkit icon:not([role='button']) {
-  @apply focus:outline-none text-neutral-700;
+  @apply text-neutral-700 focus:outline-none;
 }
 .rokkit icon[role='button'] {
-  @apply text-neutral-700 focus:rounded hover:text-secondary rounded-md;
+  @apply hover:text-secondary rounded-md text-neutral-700 focus:rounded;
 }
 .rokkit icon[role='button']:focus {
-  @apply outline-none bg-gradient-to-r from-primary to-secondary text-neutral-200 dark:text-neutral-800;
+  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 outline-none dark:text-neutral-800;
 }
 .rokkit icon.disabled[role='button'] {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
@@ -32,12 +32,12 @@
 }
 
 .rokkit progress-bar value-bar {
-  @apply bg-gradient-to-r from-primary to-secondary text-neutral-subtle dark:text-neutral-800;
+  @apply from-primary to-secondary text-neutral-subtle bg-gradient-to-r dark:text-neutral-800;
 }
 
 /* Styles for 'searchable' class */
 .searchable input {
-  @apply border border-neutral-subtle;
+  @apply border-neutral-subtle border;
 }
 
 .rokkit a {

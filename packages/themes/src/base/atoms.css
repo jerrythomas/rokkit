@@ -1,31 +1,32 @@
 /* Icon styles */
-icon {
-  @apply min-h-4 h-content;
+rkt-icon {
+  @apply flex flex-shrink-0 flex-grow-0 items-center justify-center;
+  @apply h-4 min-h-4 w-4;
 }
-icon[role='button'] {
-  @apply p-2 cursor-pointer aspect-square select-none focus:outline;
+rkt-icon[role='button'] {
+  @apply aspect-square cursor-pointer select-none p-2 focus:outline;
 }
-icon > i {
-  @apply text-2xl leading-6 aspect-square text-current mx-auto;
+rkt-icon > i {
+  @apply mx-auto aspect-square text-2xl leading-6 text-current;
 }
-icon.large > i {
+rkt-icon.large > i {
   @apply text-3xl;
 }
-icon.medium > i {
+rkt-icon.medium > i {
   @apply text-lg leading-5;
 }
-icon.small > i {
+rkt-icon.small > i {
   @apply leading-4;
   font-size: 1rem;
 }
-icon.large[role='button'] {
-  @apply w-12 h-12;
+rkt-icon.large[role='button'] {
+  @apply h-12 w-12;
 }
-icon.medium[role='button'] {
-  @apply w-8 h-8;
+rkt-icon.medium[role='button'] {
+  @apply h-8 w-8;
 }
-icon.small[role='button'] {
-  @apply w-6 h-6;
+rkt-icon.small[role='button'] {
+  @apply h-6 w-6;
 }
 
 /* Scroll styles */
@@ -35,7 +36,7 @@ scroll {
 
 /* Square styles */
 square {
-  @apply flex flex-col items-center justify-center h-full min-h-full aspect-square;
+  @apply flex aspect-square h-full min-h-full flex-col items-center justify-center;
 }
 /* Item styles */
 item,

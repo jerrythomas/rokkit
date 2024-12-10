@@ -2,9 +2,6 @@
 	import * as Prism from 'prismjs'
 	import 'prism-svelte'
 
-	
-	
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -13,7 +10,7 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', code, language } = $props();
+	let { class: className = '', code, language } = $props()
 
 	let parsed = $derived(Prism.highlight(code, Prism.languages[language], language))
 </script>

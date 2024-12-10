@@ -1,5 +1,5 @@
-import { defaultFields } from './constants'
-import { toString, isObject } from './utils'
+import { defaultFields } from './constants.js'
+import { toString, isObject } from './utils.js'
 
 /**
  * Get the component to be used to render the item.
@@ -11,7 +11,7 @@ import { toString, isObject } from './utils'
  */
 export function getComponent(value, fields, using) {
 	return fields.component && isObject(value)
-		? using[value[fields.component]] ?? using.default
+		? (using[value[fields.component]] ?? using.default)
 		: using.default
 }
 
@@ -50,7 +50,9 @@ function getIconFromObject(value, fields) {
  * @returns {*}
  */
 export function getValue(node, fields = defaultFields) {
-	return typeof node === 'object' && node !== null ? node[fields.value] ?? node[fields.text] : node
+	return typeof node === 'object' && node !== null
+		? (node[fields.value] ?? node[fields.text])
+		: node
 }
 
 /**

@@ -1,7 +1,6 @@
 <script>
 	import { uniq } from 'ramda'
 
-	
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [size]
@@ -10,7 +9,7 @@
 	 */
 
 	/** @type {Props} */
-	let { size = 10, patternUnits = 'userSpaceOnUse', patterns = [] } = $props();
+	let { size = 10, patternUnits = 'userSpaceOnUse', patterns = [] } = $props()
 
 	let names = $derived(uniq(patterns.map(({ id }) => id)))
 </script>

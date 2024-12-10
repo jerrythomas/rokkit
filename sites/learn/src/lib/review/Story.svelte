@@ -2,13 +2,7 @@
 	import Variant from './review/Variant.svelte'
 	import { FieldLayout } from '@rokkit/form'
 
-	let {
-		title,
-		props = $bindable(),
-		fields,
-		component,
-		variants = [{}]
-	} = $props();
+	let { title, props = $bindable(), fields, component, variants = [{}] } = $props()
 </script>
 
 <story class="grid h-full">
@@ -21,7 +15,7 @@
 			{/each}
 		</board>
 	</content>
-	<props class="min-w-80 flex flex-col bg-neutral-100 p-4">
+	<props class="flex min-w-80 flex-col bg-neutral-100 p-4">
 		<FieldLayout bind:data={props} {fields} />
 	</props>
 </story>

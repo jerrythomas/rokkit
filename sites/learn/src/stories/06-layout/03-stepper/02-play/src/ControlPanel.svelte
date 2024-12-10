@@ -17,12 +17,12 @@
 		showLabels = $bindable(false),
 		formatString = $bindable(''),
 		data
-	} = $props();
+	} = $props()
 
 	let ticks = $derived(Array.from({ length: steps }, (v, i) => (i + 1) / steps))
 </script>
 
-<aside class="h-full w-80 flex flex-shrink-0 flex-grow-0 flex-col gap-6 bg-neutral-100 p-6">
+<aside class="flex h-full w-80 flex-shrink-0 flex-grow-0 flex-col gap-6 bg-neutral-100 p-6">
 	<label for="stages">
 		Number of Stages
 		<input type="range" id="stages" bind:value={stages} min="2" max="5" />
@@ -63,7 +63,7 @@
 		@apply flex flex-col gap-2;
 	}
 	fieldset {
-		@apply flex flex-col flex-shrink w-full gap-2 min-w-0;
+		@apply flex w-full min-w-0 flex-shrink flex-col gap-2;
 	}
 	.row {
 		@apply flex-row items-center;

@@ -1,5 +1,5 @@
 <script>
-	import FieldLayout from './FieldLayout.svelte';
+	import FieldLayout from './FieldLayout.svelte'
 	import { getContext, createEventDispatcher } from 'svelte'
 	import { omit } from 'ramda'
 	import InputField from './InputField.svelte'
@@ -7,7 +7,7 @@
 	const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
-	let { value = $bindable({}), schema = {}, path = [] } = $props();
+	let { value = $bindable({}), schema = {}, path = [] } = $props()
 
 	function handle() {
 		dispatch('change', value)
@@ -27,7 +27,7 @@
 			{@const props = { ...item.props, path: elementPath }}
 			{@const nested = Array.isArray(item.elements) && item.elements.length > 0}
 			{@const component = item.component
-				? $registry.components[item.component] ?? $registry.components.default
+				? ($registry.components[item.component] ?? $registry.components.default)
 				: null}
 
 			{#if nested}
@@ -38,10 +38,7 @@
 				{/if}
 			{:else if component}
 				{@const SvelteComponent = component}
-				<SvelteComponent
-					{...item.props}
-					value={item.key ? value[item.key] : null}
-				/>
+				<SvelteComponent {...item.props} value={item.key ? value[item.key] : null} />
 			{:else}
 				{@const name = elementPath.join('.')}
 				<InputField {name} bind:value={value[item.key]} {...item.props} on:change={handle} />

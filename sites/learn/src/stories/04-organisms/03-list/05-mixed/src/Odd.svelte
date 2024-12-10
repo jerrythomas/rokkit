@@ -1,9 +1,9 @@
 <script>
-	let { value } = $props();
+	let { value } = $props()
 </script>
 
-<div class="h-32 w-full flex gap-4 py-3 font-extralight text-sm">
-	<p class="font-mono leading-tight italic">
+<div class="flex h-32 w-full gap-4 py-3 text-sm font-extralight">
+	<p class="font-mono italic leading-tight">
 		{value.description}
 	</p>
 	<img src={value.photo} class="cover w-32 rounded" alt={value.name} />

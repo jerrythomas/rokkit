@@ -12,5 +12,5 @@
   @apply max-w-2;
 }
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full rgba(0,0,0,0.5);
+  @apply rgba(0,0,0,0.5) rounded-full;
 }

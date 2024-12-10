@@ -14,26 +14,24 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		x = 0,
-		y = 0,
-		textSize = 5,
-		height = 10,
-		width = 100,
-		tickCount = 5,
-		scale
-	} = $props();
+	let { x = 0, y = 0, textSize = 5, height = 10, width = 100, tickCount = 5, scale } = $props()
 
-	let scaleTicks = $derived(scaleLinear()
-		.range([x, x + width])
-		.domain(scale.domain()))
+	let scaleTicks = $derived(
+		scaleLinear()
+			.range([x, x + width])
+			.domain(scale.domain())
+	)
 	let scalePercent = $derived(scaleLinear().range([0, 100]).domain(scale.domain()))
-	let ticks = $derived(scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), value: d })))
+	let ticks = $derived(
+		scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), value: d }))
+	)
 
-	let colors = $derived(ticks.map(({ value }) => ({
-		color: scale(value),
-		offset: `${scalePercent(value)}%`
-	})))
+	let colors = $derived(
+		ticks.map(({ value }) => ({
+			color: scale(value),
+			offset: `${scalePercent(value)}%`
+		}))
+	)
 	let id = $derived(uniqueId('legend-'))
 </script>
 

@@ -1,7 +1,7 @@
 <script>
-	import { createBubbler } from 'svelte/legacy';
+	import { createBubbler } from 'svelte/legacy'
 
-	const bubble = createBubbler();
+	const bubble = createBubbler()
 	/**
 	 * @typedef {Object} Props
 	 * @property {number} [x]
@@ -12,14 +12,7 @@
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
-	let {
-		x = 0,
-		y = 0,
-		size = 1,
-		fill = 'currentColor',
-		stroke = 'currentColor',
-		...rest
-	} = $props();
+	let { x = 0, y = 0, size = 1, fill = 'currentColor', stroke = 'currentColor', ...rest } = $props()
 
 	let r = $derived(size * 3.534)
 	let props = $derived({ rx: r * 0.1, ry: r * 0.1, ...rest })

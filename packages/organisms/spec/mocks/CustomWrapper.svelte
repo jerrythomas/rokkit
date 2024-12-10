@@ -1,5 +1,5 @@
 <script>
-	let { title, type, children } = $props();
+	let { title, type, children } = $props()
 </script>
 
 <field-layout class={type}>

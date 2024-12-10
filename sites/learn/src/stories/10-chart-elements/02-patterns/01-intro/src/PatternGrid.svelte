@@ -11,19 +11,16 @@
 	 */
 
 	/** @type {Props} */
-	let {
-		base = 'gold',
-		fill = 300,
-		stroke = 500,
-		outline = 600
-	} = $props();
+	let { base = 'gold', fill = 300, stroke = 500, outline = 600 } = $props()
 
-	let patterns = $derived($swatch.keys.pattern.map((id) => ({
-		id: `${base}-${fill}-${id}`,
-		component: $swatch.patterns[id],
-		fill: $swatch.palette[base][fill],
-		stroke: $swatch.palette[base][stroke]
-	})))
+	let patterns = $derived(
+		$swatch.keys.pattern.map((id) => ({
+			id: `${base}-${fill}-${id}`,
+			component: $swatch.patterns[id],
+			fill: $swatch.palette[base][fill],
+			stroke: $swatch.palette[base][stroke]
+		}))
+	)
 	let grid = $derived(swatchGrid(patterns.length, 30, 10))
 </script>
 

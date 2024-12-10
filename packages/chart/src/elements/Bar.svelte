@@ -24,7 +24,7 @@
 		height = 60,
 		fill,
 		spaceBetween = 5
-	} = $props();
+	} = $props()
 
 	const textHeight = 16
 	const charWidth = 12

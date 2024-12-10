@@ -20,19 +20,19 @@ th[data-sortable='true']:hover icon {
 }
 
 table {
-  @apply w-full text-sm text-left rtl:text-right text-neutral-700;
-  @apply border-separate border-spacing-x-1px;
+  @apply w-full text-left text-sm text-neutral-700 rtl:text-right;
+  @apply border-spacing-x-1px border-separate;
 }
 table > thead {
-  @apply table-header-group sticky top-0 z-10;
-  @apply text-xs uppercase bg-neutral-400;
+  @apply sticky top-0 z-10 table-header-group;
+  @apply bg-neutral-400 text-xs uppercase;
 }
 table > caption {
-  @apply table-caption p-5 text-sm font-normal text-left rtl:text-right bg-neutral-subtle text-neutral-600;
+  @apply bg-neutral-subtle table-caption p-5 text-left text-sm font-normal text-neutral-600 rtl:text-right;
 }
 
 table > tbody > tr {
-  @apply table-row border-b border-neutral-base bg-neutral-subtle;
+  @apply border-neutral-base bg-neutral-subtle table-row border-b;
 }
 table.striped > tbody > tr:nth-child(even) {
   @apply bg-neutral-inset;
