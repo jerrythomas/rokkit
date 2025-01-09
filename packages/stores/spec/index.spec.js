@@ -12,7 +12,8 @@ describe('stores', () => {
 			'verifiable',
 			'elapsed',
 			'timer',
-			'createNavigator'
+			'createNavigator',
+			'createView'
 		])
 	})
 })

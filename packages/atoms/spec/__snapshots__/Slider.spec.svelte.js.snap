@@ -3,7 +3,7 @@
 exports[`Slider.svelte > should render 1`] = `
 <div>
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll foo"
+    class="absolute z-10 flex w-full flex-col overflow-scroll foo"
     style="top: 16px;"
   >
     <!---->
@@ -15,7 +15,7 @@ exports[`Slider.svelte > should render 1`] = `
 exports[`Slider.svelte > should render 2`] = `
 <div>
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll bar"
+    class="absolute z-10 flex w-full flex-col overflow-scroll bar"
     style="top: 16px;"
   >
     <!---->
