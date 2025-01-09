@@ -15,7 +15,7 @@ describe('Connector.svelte', () => {
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
 				expect(span[0].className).toEqual(
-					'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty'
+					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty'
 				)
 				expect(span[0].children).toHaveLength(0)
 			})
@@ -27,7 +27,7 @@ describe('Connector.svelte', () => {
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
 				expect(span[0].className).toEqual(
-					'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty'
+					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty'
 				)
 				expect(container).toMatchSnapshot()
 			})
@@ -39,7 +39,7 @@ describe('Connector.svelte', () => {
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
 				expect(span[0].className).toEqual(
-					'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last'
+					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last'
 				)
 				expect(container).toMatchSnapshot()
 			})
@@ -51,7 +51,7 @@ describe('Connector.svelte', () => {
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
 				expect(span[0].className).toEqual(
-					'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child'
+					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child'
 				)
 				expect(span[0].children).toHaveLength(2)
 				expect(container).toMatchSnapshot()
@@ -65,7 +65,7 @@ describe('Connector.svelte', () => {
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
 				expect(span[0].className).toEqual(
-					'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-sibling'
+					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling'
 				)
 				expect(container).toMatchSnapshot()
 			})
@@ -78,7 +78,7 @@ describe('Connector.svelte', () => {
 
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
-			expect(span[0].className).toEqual('grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last')
+			expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last')
 			expect(container).toMatchSnapshot()
 		})
 
@@ -88,7 +88,7 @@ describe('Connector.svelte', () => {
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
 			expect(span[0].className).toEqual(
-				'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child'
+				'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child'
 			)
 			expect(container).toMatchSnapshot()
 		})
@@ -98,7 +98,7 @@ describe('Connector.svelte', () => {
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
 			expect(span[0].className).toEqual(
-				'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-sibling'
+				'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling'
 			)
 			expect(container).toMatchSnapshot()
 		})
@@ -108,7 +108,7 @@ describe('Connector.svelte', () => {
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
 			expect(span[0].className).toEqual(
-				'grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty'
+				'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty'
 			)
 			expect(container).toMatchSnapshot()
 		})

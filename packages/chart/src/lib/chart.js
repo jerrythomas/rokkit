@@ -17,6 +17,10 @@ function getScale(domain, range, padding = 0) {
 		.nice()
 }
 
+function getOriginValue(scale) {
+	return scale.ticks ? scale(Math.max(0, Math.min(...scale.domain()))) : scale.range()[0]
+}
+
 class Chart {
 	// data = []
 	// width = 512
@@ -202,10 +206,6 @@ class Chart {
 
 		return ticks
 	}
-}
-
-function getOriginValue(scale) {
-	return scale.ticks ? scale(Math.max(0, Math.min(...scale.domain()))) : scale.range()[0]
 }
 
 export function chart(data, aes) {

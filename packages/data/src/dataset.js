@@ -3,54 +3,6 @@ import { descending } from 'd3-array'
 import { pickAllowedConfig, defaultConfig, includeAll } from './constants'
 import { deriveSortableColumn } from './infer'
 import { groupDataByKeys, fillAlignedData, getAlignGenerator, aggregateData } from './rollup'
-/**
- * Dataset is a collection of data with a set of operations that can be performed on it.
- * @param {Array} data - The data to be stored in the dataset.
- * @param {Object} options - The configuration options for the dataset.
- * @returns {Object} - An object with a set of operations that can be performed on the dataset.
- */
-// eslint-disable-next-line max-lines-per-function
-export function dataset(data, options = {}) {
-	const config = { ...clone(defaultConfig), ...options }
-
-	const actions = {
-		// configuration
-		override: (props) => dataset(data, { ...config, ...pickAllowedConfig(props) }),
-		where: (condition) => dataset(data, where(config, condition)),
-		groupBy: (...fields) => dataset(data, groupBy(config, ...fields)),
-		alignBy: (...fields) => dataset(data, alignBy(config, ...fields)),
-		using: (template) => dataset(data, usingTemplate(config, template)),
-		summarize: (from, fields) => dataset(data, summarize(config, from, fields)),
-		// alter keys
-		rename: (how) => dataset(renameKeys(data, how)),
-		drop: (...fields) => dataset(dropKeys(data, ...fields)),
-		// alter rows
-		sortBy: (...fields) => dataset(sortDataBy(data, ...fields)),
-		delete: () => dataset(deleteRows(data, config.filter || includeAll)),
-		update: (value) => dataset(updateRows(data, config.filter || identity, value)),
-		fillNA: (value) => dataset(fillNA(data, value)),
-		// transform data
-		apply: (callback) => dataset(data.map(callback)),
-		rollup: () => dataset(rollup(data, config)),
-		select: (...cols) => selectKeys(data, config, ...cols),
-		// set operations
-		union: (other) => dataset(data.concat(other)),
-		minus: (other) => dataset(data.filter((d) => !other.find((x) => equals(x, d)))),
-		intersect: (other) => dataset(data.filter((d) => other.find((x) => equals(x, d)))),
-		// joins
-		innerJoin: (other, condition) => dataset(innerJoin(data, other.select(), condition)),
-		leftJoin: (other, condition) => dataset(leftJoin(data, other.select(), condition)),
-		rightJoin: (other, condition) => dataset(leftJoin(other.select(), data, condition)),
-		fullJoin: (other, condition) => dataset(fullJoin(data, other.select(), condition)),
-		crossJoin: (other) => dataset(crossJoin(data, other.select())),
-		semiJoin: (other, condition) => dataset(semiJoin(data, other.select(), condition)),
-		antiJoin: (other, condition) => dataset(antiJoin(data, other.select(), condition)),
-		nestedJoin: (other, condition) =>
-			dataset(nestedJoin(data, other.select(), condition, config.children))
-	}
-
-	return actions
-}
 
 /**
  * Adds a filter to the dataset using the provided condition. This filter is applied
@@ -425,4 +377,53 @@ export function defaultAggregator(config) {
 		mapper: omit(config.group_by),
 		reducers: [{ field: config.children, formula: identity }]
 	}
+}
+
+/**
+ * Dataset is a collection of data with a set of operations that can be performed on it.
+ * @param {Array} data - The data to be stored in the dataset.
+ * @param {Object} options - The configuration options for the dataset.
+ * @returns {Object} - An object with a set of operations that can be performed on the dataset.
+ */
+// eslint-disable-next-line max-lines-per-function
+export function dataset(data, options = {}) {
+	const config = { ...clone(defaultConfig), ...options }
+
+	const actions = {
+		// configuration
+		override: (props) => dataset(data, { ...config, ...pickAllowedConfig(props) }),
+		where: (condition) => dataset(data, where(config, condition)),
+		groupBy: (...fields) => dataset(data, groupBy(config, ...fields)),
+		alignBy: (...fields) => dataset(data, alignBy(config, ...fields)),
+		using: (template) => dataset(data, usingTemplate(config, template)),
+		summarize: (from, fields) => dataset(data, summarize(config, from, fields)),
+		// alter keys
+		rename: (how) => dataset(renameKeys(data, how)),
+		drop: (...fields) => dataset(dropKeys(data, ...fields)),
+		// alter rows
+		sortBy: (...fields) => dataset(sortDataBy(data, ...fields)),
+		delete: () => dataset(deleteRows(data, config.filter || includeAll)),
+		update: (value) => dataset(updateRows(data, config.filter || identity, value)),
+		fillNA: (value) => dataset(fillNA(data, value)),
+		// transform data
+		apply: (callback) => dataset(data.map(callback)),
+		rollup: () => dataset(rollup(data, config)),
+		select: (...cols) => selectKeys(data, config, ...cols),
+		// set operations
+		union: (other) => dataset(data.concat(other)),
+		minus: (other) => dataset(data.filter((d) => !other.find((x) => equals(x, d)))),
+		intersect: (other) => dataset(data.filter((d) => other.find((x) => equals(x, d)))),
+		// joins
+		innerJoin: (other, condition) => dataset(innerJoin(data, other.select(), condition)),
+		leftJoin: (other, condition) => dataset(leftJoin(data, other.select(), condition)),
+		rightJoin: (other, condition) => dataset(leftJoin(other.select(), data, condition)),
+		fullJoin: (other, condition) => dataset(fullJoin(data, other.select(), condition)),
+		crossJoin: (other) => dataset(crossJoin(data, other.select())),
+		semiJoin: (other, condition) => dataset(semiJoin(data, other.select(), condition)),
+		antiJoin: (other, condition) => dataset(antiJoin(data, other.select(), condition)),
+		nestedJoin: (other, condition) =>
+			dataset(nestedJoin(data, other.select(), condition, config.children))
+	}
+
+	return actions
 }

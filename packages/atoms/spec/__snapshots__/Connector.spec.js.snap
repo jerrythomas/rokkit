@@ -3,12 +3,12 @@
 exports[`Connector.svelte > When rtl is true property > should render when type is "child" 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
   >
     <!---->
     <!---->
     <i
-      class="grid row-span-2 grid-rows-2 border-r"
+      class="row-span-2 grid grid-rows-2 border-r"
     >
       <i
         class="border-b"
@@ -25,7 +25,7 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
 exports[`Connector.svelte > When rtl is true property > should render when type is "empty" 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
   >
     <!---->
     <!---->
@@ -40,7 +40,7 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
 exports[`Connector.svelte > When rtl is true property > should render when type is "last" 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
   >
     <!---->
     <i
@@ -56,7 +56,7 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
 exports[`Connector.svelte > When rtl is true property > should render when type is "sibling" 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-sibling"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
   >
     <!---->
     <!---->
@@ -74,7 +74,7 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
 exports[`Connector.svelte > given a type > when type is "child" > then it should render the correct elements 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-child"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
   >
     <!---->
     <!---->
@@ -96,7 +96,7 @@ exports[`Connector.svelte > given a type > when type is "child" > then it should
 exports[`Connector.svelte > given a type > when type is "empty" > then it should render the correct elements 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
   >
     <!---->
     <!---->
@@ -111,7 +111,7 @@ exports[`Connector.svelte > given a type > when type is "empty" > then it should
 exports[`Connector.svelte > given a type > when type is "last" > then it should render the correct elements 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
   >
     <!---->
     <i
@@ -131,7 +131,7 @@ exports[`Connector.svelte > given a type > when type is "last" > then it should 
 exports[`Connector.svelte > given a type > when type is "sibling" > then it should render the correct elements 1`] = `
 <div>
   <span
-    class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-sibling"
+    class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
   >
     <!---->
     <!---->

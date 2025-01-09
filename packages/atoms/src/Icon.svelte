@@ -55,6 +55,7 @@
 	let large = $derived(size === 'large' || className.includes('large'))
 </script>
 
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rkt-icon
 	class="flex flex-shrink-0 items-center justify-center {className}"
 	class:small

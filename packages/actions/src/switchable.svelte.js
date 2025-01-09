@@ -31,7 +31,7 @@ export function switchable(root, data) {
 		const toggle = (increment = 1) => {
 			data.index = (data.index + increment) % data.options.length
 			data.value = data.options[data.index]
-			root.dispatchEvent(new CustomEvent('change', { detail: value }))
+			root.dispatchEvent(new CustomEvent('change', { detail: data.value }))
 		}
 		return toggle
 	}
@@ -41,9 +41,9 @@ export function switchable(root, data) {
 			data.value = data.options[0]
 		}
 		// options = data.options
-		data.index = options.indexOf(value)
+		data.index = data.options.indexOf(data.value)
 
-		const listeners = getEventHandlers(options, getToggle(root, data))
+		const listeners = getEventHandlers(data.options, getToggle(root, data))
 		manager.update(listeners, !data.disabled)
 
 		return () => manager.reset()
