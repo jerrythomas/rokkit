@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { defaultIcons, stateIconsFromNames } from '../src/constants'
+import { defaultIcons, stateIconsFromNames, defaultFields } from '../src/constants'
 
 describe('Utility functions', () => {
 	it('should convert names to nested state icons object', () => {
@@ -73,6 +73,30 @@ describe('Utility functions', () => {
 				unknown: 'validity-unknown',
 				warning: 'validity-warning'
 			}
+		})
+	})
+
+	it('should have the defaultFields', () => {
+		expect(defaultFields).toEqual({
+			id: 'id',
+			url: 'url',
+			text: 'text',
+			value: 'value',
+			children: 'children',
+			icon: 'icon',
+			iconPrefix: null,
+			image: 'image',
+			component: 'component',
+			summary: 'summary',
+			notes: 'notes',
+			props: 'props',
+			target: 'target',
+			state: 'state',
+			isOpen: '_open',
+			isDeleted: '_deleted',
+			level: 'level',
+			parent: 'parent',
+			currency: 'currency'
 		})
 	})
 })
