@@ -3,13 +3,13 @@
 exports[`MultiSelect.svelte > should render items using custom component 1`] = `
 <input-select
   aria-label="test"
-  class="flex flex-col relative open"
+  class="relative flex flex-col open"
   role="listbox"
   tabindex="0"
 >
   <selected-item
     aria-selected="false"
-    class="w-full flex items-center"
+    class="flex w-full items-center"
     role="option"
     tabindex="-1"
   >
@@ -32,7 +32,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
           <!---->
         </item>
          
-        <icon
+        <rkt-icon
           aria-label="Remove"
           class="flex flex-shrink-0 items-center justify-center small"
           role="button"
@@ -42,7 +42,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
             aria-hidden="true"
             class="action-remove"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </wrap-item>
       
@@ -51,7 +51,7 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
     
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -61,17 +61,17 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
         aria-hidden="true"
         class="selector-opened"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </selected-item>
    
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
     style="top: 0px;"
   >
     <list
       aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
+      class="flex w-full flex-shrink-0 select-none flex-col list"
       role="listbox"
       tabindex="-1"
     >
@@ -123,13 +123,13 @@ exports[`MultiSelect.svelte > should render items using custom component 1`] = `
 exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 <input-select
   aria-label="test"
-  class="flex flex-col relative "
+  class="relative flex flex-col "
   role="listbox"
   tabindex="0"
 >
   <selected-item
     aria-selected="false"
-    class="w-full flex items-center"
+    class="flex w-full items-center"
     role="option"
     tabindex="-1"
   >
@@ -156,7 +156,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
           <!---->
         </item>
          
-        <icon
+        <rkt-icon
           aria-label="Remove"
           class="flex flex-shrink-0 items-center justify-center small"
           role="button"
@@ -166,7 +166,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
             aria-hidden="true"
             class="action-remove"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </wrap-item>
       
@@ -175,7 +175,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
     
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -185,7 +185,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
         aria-hidden="true"
         class="selector-closed"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </selected-item>
    
@@ -196,13 +196,13 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
 <input-select
   aria-label="test"
-  class="flex flex-col relative open"
+  class="relative flex flex-col open"
   role="listbox"
   tabindex="0"
 >
   <selected-item
     aria-selected="false"
-    class="w-full flex items-center"
+    class="flex w-full items-center"
     role="option"
     tabindex="-1"
   >
@@ -229,7 +229,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
           <!---->
         </item>
          
-        <icon
+        <rkt-icon
           aria-label="Remove"
           class="flex flex-shrink-0 items-center justify-center small"
           role="button"
@@ -239,7 +239,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
             aria-hidden="true"
             class="action-remove"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </wrap-item>
       
@@ -248,7 +248,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -258,17 +258,17 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
         aria-hidden="true"
         class="selector-opened"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </selected-item>
    
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
     style="top: 0px;"
   >
     <list
       aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
+      class="flex w-full flex-shrink-0 select-none flex-col list"
       role="listbox"
       tabindex="-1"
     >
@@ -317,13 +317,13 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
 exports[`MultiSelect.svelte > should render using field mappings 1`] = `
 <input-select
   aria-label="test"
-  class="flex flex-col relative "
+  class="relative flex flex-col "
   role="listbox"
   tabindex="0"
 >
   <selected-item
     aria-selected="false"
-    class="w-full flex items-center"
+    class="flex w-full items-center"
     role="option"
     tabindex="-1"
   >
@@ -354,7 +354,7 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
           <!---->
         </item>
          
-        <icon
+        <rkt-icon
           aria-label="Remove"
           class="flex flex-shrink-0 items-center justify-center small"
           role="button"
@@ -364,7 +364,7 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
             aria-hidden="true"
             class="action-remove"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </wrap-item>
       
@@ -373,7 +373,7 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
     
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="closed"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -383,7 +383,7 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
         aria-hidden="true"
         class="selector-closed"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </selected-item>
    
@@ -394,13 +394,13 @@ exports[`MultiSelect.svelte > should render using field mappings 1`] = `
 exports[`MultiSelect.svelte > should render using field mappings 2`] = `
 <input-select
   aria-label="test"
-  class="flex flex-col relative open"
+  class="relative flex flex-col open"
   role="listbox"
   tabindex="0"
 >
   <selected-item
     aria-selected="false"
-    class="w-full flex items-center"
+    class="flex w-full items-center"
     role="option"
     tabindex="-1"
   >
@@ -431,7 +431,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
           <!---->
         </item>
          
-        <icon
+        <rkt-icon
           aria-label="Remove"
           class="flex flex-shrink-0 items-center justify-center small"
           role="button"
@@ -441,7 +441,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
             aria-hidden="true"
             class="action-remove"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </wrap-item>
       
@@ -450,7 +450,7 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
     
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="opened"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -460,17 +460,17 @@ exports[`MultiSelect.svelte > should render using field mappings 2`] = `
         aria-hidden="true"
         class="selector-opened"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </selected-item>
    
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
     style="top: 0px;"
   >
     <list
       aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
+      class="flex w-full flex-shrink-0 select-none flex-col list"
       role="listbox"
       tabindex="-1"
     >

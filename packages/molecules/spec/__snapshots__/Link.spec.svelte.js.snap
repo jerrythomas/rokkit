@@ -21,7 +21,7 @@ exports[`Link.svelte > should render icon 1`] = `
     href="/"
   >
     <!---->
-    <icon
+    <rkt-icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -31,7 +31,7 @@ exports[`Link.svelte > should render icon 1`] = `
         aria-hidden="true"
         class="info"
       />
-    </icon>
+    </rkt-icon>
     
     <!---->
      
@@ -48,7 +48,7 @@ exports[`Link.svelte > should render icon based on state 1`] = `
 <div>
   <a>
     <!---->
-    <icon
+    <rkt-icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -58,7 +58,7 @@ exports[`Link.svelte > should render icon based on state 1`] = `
         aria-hidden="true"
         class="info"
       />
-    </icon>
+    </rkt-icon>
     
     <!---->
      
@@ -100,7 +100,7 @@ exports[`Link.svelte > should render image and icon 1`] = `
 <div>
   <a>
     <!---->
-    <icon
+    <rkt-icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -110,7 +110,7 @@ exports[`Link.svelte > should render image and icon 1`] = `
         aria-hidden="true"
         class="info"
       />
-    </icon>
+    </rkt-icon>
     
     <!---->
      
@@ -160,7 +160,7 @@ exports[`Link.svelte > should render using field mapping 1`] = `
     href="https://example.com"
   >
     <!---->
-    <icon
+    <rkt-icon
       aria-label="info"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -170,7 +170,7 @@ exports[`Link.svelte > should render using field mapping 1`] = `
         aria-hidden="true"
         class="info"
       />
-    </icon>
+    </rkt-icon>
     
     <!---->
      

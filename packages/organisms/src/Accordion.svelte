@@ -1,14 +1,13 @@
 <script>
-	import { run } from 'svelte/legacy'
-
-	import { createEventDispatcher } from 'svelte'
+	import { createEmitter } from '@rokkit/core'
+	// import { createEventDispatcher } from 'svelte'
 	import { defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { Item, Summary } from '@rokkit/molecules'
 	// import List from './List.svelte'
 	import ListItems from './ListItems.svelte'
 
-	const dispatch = createEventDispatcher()
+	// const dispatch = createEventDispatcher()
 
 	/**
 	 * @typedef {Object} Props
@@ -27,16 +26,14 @@
 		fields = $bindable({}),
 		using = $bindable({}),
 		autoClose = false,
-		value = $bindable(null)
+		value = $bindable(null),
+		...events
 	} = $props()
 	let cursor = $state([])
 
-	run(() => {
-		fields = { ...defaultFields, ...fields }
-	})
-	run(() => {
-		using = { default: Item, ...using }
-	})
+	let emitter = $derived(createEmitter(events, ['collapse', 'change', 'expand', 'click']))
+	let internalFields = $derived({ ...defaultFields, ...fields })
+	let internalUsing = $derived({ default: Item, ...using })
 
 	function handle(event) {
 		value = event.detail.node
@@ -44,14 +41,15 @@
 		if (['collapse', 'expand'].includes(event.type)) {
 			if (autoClose) {
 				items.map((x) => {
-					if (x !== value && x[fields.isOpen]) {
-						x[fields.isOpen] = false
+					if (x !== value && x[internalFields.isOpen]) {
+						x[internalFields.isOpen] = false
 					}
 				})
 			}
 			items = items
 		}
-		dispatch(event.type, event.detail)
+		emitter[event.type](event.detail)
+		// dispatch(event.type, event.detail)
 	}
 </script>
 
@@ -61,7 +59,7 @@
 	tabindex="0"
 	use:navigator={{
 		items,
-		fields,
+		fields: internalFields,
 		enabled: true,
 		indices: cursor
 	}}
@@ -71,21 +69,21 @@
 	oncollapse={handle}
 >
 	{#each items as item, index}
-		{@const hasItems = item[fields.children] && item[fields.children].length > 0}
-		{@const itemFields = { ...fields, ...(fields.fields ?? fields) }}
+		{@const hasItems = item[internalFields.children] && item[internalFields.children].length > 0}
+		{@const itemFields = { ...internalFields, ...(internalFields.fields ?? internalFields) }}
 
 		<div
 			id={'id-' + index}
 			class="flex flex-col"
-			class:is-expanded={item[fields.isOpen]}
+			class:is-expanded={item[internalFields.isOpen]}
 			class:is-selected={item === value}
 			data-path={index}
 		>
-			<Summary {fields} {using} bind:value={items[index]} />
-			{#if hasItems && item[fields.isOpen]}
+			<Summary fields={internalFields} {using} bind:value={items[index]} />
+			{#if hasItems && item[internalFields.isOpen]}
 				<list class="flex w-full flex-shrink-0 select-none flex-col" role="listbox" tabindex="-1">
 					<ListItems
-						bind:items={item[fields.children]}
+						bind:items={item[internalFields.children]}
 						bind:value
 						fields={itemFields}
 						{using}

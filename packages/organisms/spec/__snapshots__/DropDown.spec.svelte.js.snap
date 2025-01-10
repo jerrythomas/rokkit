@@ -4,7 +4,7 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
 <drop-down
   aria-controls="menu"
   aria-haspopup="true"
-  class="flex relative cursor-pointer select-none dropdown open"
+  class="dropdown relative flex cursor-pointer select-none open"
 >
   <button
     class="flex items-center"
@@ -17,7 +17,7 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
        
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="selector-opened"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -27,18 +27,18 @@ exports[`DropDown.svelte > should close drop down on escape key 1`] = `
           aria-hidden="true"
           class="selector-opened"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </span>
   </button>
    
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
     style="top: 4px;"
   >
     <list
       aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
+      class="flex w-full flex-shrink-0 select-none flex-col list"
       role="listbox"
       tabindex="-1"
     >
@@ -115,7 +115,7 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
 <drop-down
   aria-controls="menu"
   aria-haspopup="true"
-  class="flex relative cursor-pointer select-none dropdown"
+  class="dropdown relative flex cursor-pointer select-none"
 >
   <button
     class="flex items-center"
@@ -128,7 +128,7 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
        
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="selector-closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -138,18 +138,18 @@ exports[`DropDown.svelte > should close drop down on escape key 2`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </span>
   </button>
    
   <scroll
-    class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
     style="top: 4px;"
   >
     <list
       aria-label="list"
-      class="flex flex-col w-full flex-shrink-0 select-none list"
+      class="flex w-full flex-shrink-0 select-none flex-col list"
       role="listbox"
       tabindex="-1"
     >
@@ -227,7 +227,7 @@ exports[`DropDown.svelte > should render items using custom component 1`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -240,7 +240,7 @@ exports[`DropDown.svelte > should render items using custom component 1`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -250,7 +250,7 @@ exports[`DropDown.svelte > should render items using custom component 1`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -266,7 +266,7 @@ exports[`DropDown.svelte > should render items using custom component 2`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -279,7 +279,7 @@ exports[`DropDown.svelte > should render items using custom component 2`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -289,7 +289,7 @@ exports[`DropDown.svelte > should render items using custom component 2`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -305,7 +305,7 @@ exports[`DropDown.svelte > should render items using custom component 3`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -318,7 +318,7 @@ exports[`DropDown.svelte > should render items using custom component 3`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -328,7 +328,7 @@ exports[`DropDown.svelte > should render items using custom component 3`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -344,7 +344,7 @@ exports[`DropDown.svelte > should render items using custom mapping 1`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -357,7 +357,7 @@ exports[`DropDown.svelte > should render items using custom mapping 1`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -367,7 +367,7 @@ exports[`DropDown.svelte > should render items using custom mapping 1`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -383,7 +383,7 @@ exports[`DropDown.svelte > should render items using default component, when inv
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -396,7 +396,7 @@ exports[`DropDown.svelte > should render items using default component, when inv
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -406,7 +406,7 @@ exports[`DropDown.svelte > should render items using default component, when inv
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -422,7 +422,7 @@ exports[`DropDown.svelte > should render items using field mapping 1`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -435,7 +435,7 @@ exports[`DropDown.svelte > should render items using field mapping 1`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -445,7 +445,7 @@ exports[`DropDown.svelte > should render items using field mapping 1`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -461,7 +461,7 @@ exports[`DropDown.svelte > should render string array 1`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown open"
+    class="dropdown relative flex cursor-pointer select-none open"
   >
     <button
       class="flex items-center"
@@ -474,7 +474,7 @@ exports[`DropDown.svelte > should render string array 1`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-opened"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -484,18 +484,18 @@ exports[`DropDown.svelte > should render string array 1`] = `
             aria-hidden="true"
             class="selector-opened"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
      
     <scroll
-      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      class="absolute z-10 flex w-full flex-col overflow-scroll menu"
       style="top: 4px;"
     >
       <list
         aria-label="list"
-        class="flex flex-col w-full flex-shrink-0 select-none list"
+        class="flex w-full flex-shrink-0 select-none flex-col list"
         role="listbox"
         tabindex="-1"
       >
@@ -563,7 +563,7 @@ exports[`DropDown.svelte > should render string array 2`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown open"
+    class="dropdown relative flex cursor-pointer select-none open"
   >
     <button
       class="flex items-center"
@@ -572,7 +572,7 @@ exports[`DropDown.svelte > should render string array 2`] = `
       <span
         class="flex items-center"
       >
-        <icon
+        <rkt-icon
           aria-label="theme"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -582,12 +582,12 @@ exports[`DropDown.svelte > should render string array 2`] = `
             aria-hidden="true"
             class="theme"
           />
-        </icon>
+        </rkt-icon>
         <!---->
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-opened"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -597,18 +597,18 @@ exports[`DropDown.svelte > should render string array 2`] = `
             aria-hidden="true"
             class="selector-opened"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
      
     <scroll
-      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      class="absolute z-10 flex w-full flex-col overflow-scroll menu"
       style="top: 4px;"
     >
       <list
         aria-label="list"
-        class="flex flex-col w-full flex-shrink-0 select-none list"
+        class="flex w-full flex-shrink-0 select-none flex-col list"
         role="listbox"
         tabindex="-1"
       >
@@ -679,7 +679,7 @@ exports[`DropDown.svelte > should render title 1`] = `
   <span
     class="flex items-center"
   >
-    <icon
+    <rkt-icon
       aria-label="theme"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -689,17 +689,17 @@ exports[`DropDown.svelte > should render title 1`] = `
         aria-hidden="true"
         class="theme"
       />
-    </icon>
+    </rkt-icon>
     <!---->
      
     <p
-      class="w-full flex"
+      class="flex w-full"
     >
       Select a value
     </p>
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="selector-closed"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -709,7 +709,7 @@ exports[`DropDown.svelte > should render title 1`] = `
         aria-hidden="true"
         class="selector-closed"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </span>
 </button>
@@ -723,7 +723,7 @@ exports[`DropDown.svelte > should render title 2`] = `
   <span
     class="flex items-center"
   >
-    <icon
+    <rkt-icon
       aria-label="theme"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -733,17 +733,17 @@ exports[`DropDown.svelte > should render title 2`] = `
         aria-hidden="true"
         class="other"
       />
-    </icon>
+    </rkt-icon>
     <!---->
      
     <p
-      class="w-full flex"
+      class="flex w-full"
     >
       Select a value
     </p>
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="selector-closed"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -753,7 +753,7 @@ exports[`DropDown.svelte > should render title 2`] = `
         aria-hidden="true"
         class="selector-closed"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </span>
 </button>
@@ -767,7 +767,7 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
   <span
     class="flex items-center"
   >
-    <icon
+    <rkt-icon
       aria-label="theme"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -777,12 +777,12 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
         aria-hidden="true"
         class="theme"
       />
-    </icon>
+    </rkt-icon>
     <!---->
      
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="selector-closed"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -792,7 +792,7 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
         aria-hidden="true"
         class="selector-closed"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </span>
 </button>
@@ -803,7 +803,7 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -812,7 +812,7 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
       <span
         class="flex items-center"
       >
-        <icon
+        <rkt-icon
           aria-label="theme"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -822,12 +822,12 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
             aria-hidden="true"
             class="theme"
           />
-        </icon>
+        </rkt-icon>
         <!---->
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -837,7 +837,7 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>
@@ -853,7 +853,7 @@ exports[`DropDown.svelte > should toggle open state on focus change 1`] = `
   <drop-down
     aria-controls="menu"
     aria-haspopup="true"
-    class="flex relative cursor-pointer select-none dropdown "
+    class="dropdown relative flex cursor-pointer select-none "
   >
     <button
       class="flex items-center"
@@ -866,7 +866,7 @@ exports[`DropDown.svelte > should toggle open state on focus change 1`] = `
          
         <!---->
          
-        <icon
+        <rkt-icon
           aria-label="selector-closed"
           class="flex flex-shrink-0 items-center justify-center "
           role="img"
@@ -876,7 +876,7 @@ exports[`DropDown.svelte > should toggle open state on focus change 1`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </icon>
+        </rkt-icon>
         <!---->
       </span>
     </button>

@@ -1,155 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rating component > should handle mouseenter and mouseleave events 1`] = `
-<div>
-  <rating
-    class="flex cursor-pointer select-none"
-    role="radiogroup"
-    tabindex="0"
-  >
-    <!---->
-     
-    <icon
-      aria-checked="true"
-      aria-label="Rating 1 out of 5"
-      class="flex flex-shrink-0 items-center justify-center hovering"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 2 out of 5"
-      class="flex flex-shrink-0 items-center justify-center hovering"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 3 out of 5"
-      class="flex flex-shrink-0 items-center justify-center hovering"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 4 out of 5"
-      class="flex flex-shrink-0 items-center justify-center hovering"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 5 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <!---->
-  </rating>
-  
-</div>
-`;
-
-exports[`Rating component > should not handle mouseenter and mouseleave events when disabled 1`] = `
-<div>
-  <rating
-    class="flex cursor-pointer select-none disabled"
-    role="radiogroup"
-    tabindex="0"
-  >
-    <!---->
-     
-    <icon
-      aria-checked="true"
-      aria-label="Rating 1 out of 5"
-      class="flex flex-shrink-0 items-center justify-center disabled"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 2 out of 5"
-      class="flex flex-shrink-0 items-center justify-center disabled"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 3 out of 5"
-      class="flex flex-shrink-0 items-center justify-center disabled"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 4 out of 5"
-      class="flex flex-shrink-0 items-center justify-center disabled"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 5 out of 5"
-      class="flex flex-shrink-0 items-center justify-center disabled"
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <!---->
-  </rating>
-  
-</div>
-`;
-
 exports[`Rating component > should render the correct number of stars 1`] = `
 <div>
   <rating
@@ -159,7 +9,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
   >
     <!---->
      
-    <icon
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 1 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -170,8 +20,8 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 2 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -182,8 +32,8 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -194,8 +44,8 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -206,8 +56,8 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -218,89 +68,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <!---->
-  </rating>
-  
-</div>
-`;
-
-exports[`Rating component > should reset the value to zero 1`] = `
-<div>
-  <rating
-    class="flex cursor-pointer select-none"
-    role="radiogroup"
-    tabindex="0"
-  >
-    <input
-      hidden=""
-      max="5"
-      min="0"
-      name="rating"
-      type="number"
-    />
-    <!---->
-     
-    <icon
-      aria-checked="false"
-      aria-label="Rating 1 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 2 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 3 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 4 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 5 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
+    </rkt-icon>
     <!---->
   </rating>
   
@@ -316,7 +84,7 @@ exports[`Rating component > should select the correct number of stars when value
   >
     <!---->
      
-    <icon
+    <rkt-icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -327,8 +95,8 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -339,8 +107,8 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -351,8 +119,8 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="true"
       aria-label="Rating 4 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -363,8 +131,8 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       class="flex flex-shrink-0 items-center justify-center "
@@ -375,89 +143,7 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <!---->
-  </rating>
-  
-</div>
-`;
-
-exports[`Rating component > should update value on click when not disabled 1`] = `
-<div>
-  <rating
-    class="flex cursor-pointer select-none"
-    role="radiogroup"
-    tabindex="0"
-  >
-    <input
-      hidden=""
-      max="5"
-      min="0"
-      name="rating"
-      type="number"
-    />
-    <!---->
-     
-    <icon
-      aria-checked="true"
-      aria-label="Rating 1 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 2 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 3 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="true"
-      aria-label="Rating 4 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-filled"
-      />
-    </icon>
-    <icon
-      aria-checked="false"
-      aria-label="Rating 5 out of 5"
-      class="flex flex-shrink-0 items-center justify-center "
-      role="option"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="rating-empty"
-      />
-    </icon>
+    </rkt-icon>
     <!---->
   </rating>
   

@@ -36,7 +36,7 @@ Components have been separated into the following packages. Refer to the package
 To install Rokkit, use the following command:
 
 ```bash
-degit jerrythomas/rokkit/sites/quick-start my-app
+degit jerrythomas/rokkit/packages/quick-start my-app
 pnpm i
 ```
 
@@ -107,7 +107,7 @@ We hope you enjoy using Rokkit in your projects!
 ## Quickstart
 
 ```bash
-degit jerrythomas/rokkit/sites/quick-start my-app
+degit jerrythomas/rokkit/packages/quick-start my-app
 cd my-app
 pnpm i
 pnpm dev

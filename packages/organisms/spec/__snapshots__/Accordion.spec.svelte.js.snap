@@ -3,7 +3,7 @@
 exports[`Accordion.svelte > should render using default field mapping 1`] = `
 <div>
   <accordion
-    class="flex flex-col w-full select-none "
+    class="flex w-full select-none flex-col "
     tabindex="0"
   >
     

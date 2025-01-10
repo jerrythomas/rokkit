@@ -5,7 +5,7 @@ exports[`Node.svelte > should render node 1`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path=""
     id="id-"
     role="treeitem"
@@ -42,7 +42,7 @@ exports[`Node.svelte > should render node in rtl 1`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none flex-row-reverse"
+    class="node flex min-h-5 cursor-pointer select-none flex-col flex-row-reverse"
     data-path=""
     id="id-"
     role="treeitem"
@@ -79,7 +79,7 @@ exports[`Node.svelte > should render node sibling node 1`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path=""
     id="id-"
     role="treeitem"
@@ -116,7 +116,7 @@ exports[`Node.svelte > should render node when path changes 1`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"
@@ -153,7 +153,7 @@ exports[`Node.svelte > should render node when path changes 2`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="1"
     id="id-1"
     role="treeitem"
@@ -190,7 +190,7 @@ exports[`Node.svelte > should render node when selected 1`] = `
   <node
     aria-expanded="false"
     aria-selected="true"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path=""
     id="id-"
     role="treeitem"
@@ -227,7 +227,7 @@ exports[`Node.svelte > should render node with collapsed icon 1`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path=""
     id="id-"
     role="treeitem"
@@ -264,7 +264,7 @@ exports[`Node.svelte > should render node with expanded icon 1`] = `
   <node
     aria-expanded="true"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path=""
     id="id-"
     role="treeitem"
@@ -301,7 +301,7 @@ exports[`Node.svelte > should render node with path 1`] = `
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"

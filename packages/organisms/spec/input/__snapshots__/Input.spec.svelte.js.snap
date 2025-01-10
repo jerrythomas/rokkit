@@ -7,7 +7,7 @@ exports[`Input.svelte > should render "boolean" 1`] = `
   <checkbox
     aria-checked="unchecked"
     aria-disabled="false"
-    class="flex items-center leading-loose cursor-pointer select-none checkbox "
+    class="checkbox flex cursor-pointer select-none items-center leading-loose "
     role="checkbox"
     tabindex="0"
   >
@@ -34,7 +34,7 @@ exports[`Input.svelte > should render "checkbox" 1`] = `
   <checkbox
     aria-checked="unchecked"
     aria-disabled="false"
-    class="flex items-center leading-loose cursor-pointer select-none checkbox "
+    class="checkbox flex cursor-pointer select-none items-center leading-loose "
     role="checkbox"
     tabindex="0"
   >
@@ -122,13 +122,13 @@ exports[`Input.svelte > should render "enum" 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -141,7 +141,7 @@ exports[`Input.svelte > should render "enum" 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -151,7 +151,7 @@ exports[`Input.svelte > should render "enum" 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
@@ -253,7 +253,7 @@ exports[`Input.svelte > should render "radio" 1`] = `
   <!---->
   <!---->
   <radio-group
-    class="flex flex-col cursor-pointer select-none "
+    class="flex cursor-pointer select-none flex-col "
   >
     <label
       class="flex flex-row items-center gap-2"
@@ -323,7 +323,7 @@ exports[`Input.svelte > should render "range" 1`] = `
   <!---->
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="foo"
@@ -348,7 +348,7 @@ exports[`Input.svelte > should render "range" 1`] = `
       <thumb
         aria-valuemax="0"
         aria-valuemin="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -362,12 +362,12 @@ exports[`Input.svelte > should render "range" 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -378,12 +378,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -394,12 +394,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -410,12 +410,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -426,12 +426,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -442,12 +442,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -458,12 +458,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -474,12 +474,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -490,12 +490,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -506,12 +506,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -522,12 +522,12 @@ exports[`Input.svelte > should render "range" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -552,7 +552,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
   <!---->
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="foo"
@@ -576,7 +576,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -587,7 +587,7 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="100"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -601,12 +601,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -617,12 +617,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -633,12 +633,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -649,12 +649,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -665,12 +665,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -681,12 +681,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -697,12 +697,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -713,12 +713,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -729,12 +729,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -745,12 +745,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -761,12 +761,12 @@ exports[`Input.svelte > should render "range-min-max" 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -803,7 +803,7 @@ exports[`Input.svelte > should render "rating" 1`] = `
     />
     <!---->
      
-    <icon
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 1 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -814,8 +814,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 2 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -826,8 +826,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 3 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -838,8 +838,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 4 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -850,8 +850,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 5 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -862,8 +862,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 6 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -874,8 +874,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 7 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -886,8 +886,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 8 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -898,8 +898,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 9 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -910,8 +910,8 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
-    <icon
+    </rkt-icon>
+    <rkt-icon
       aria-checked="false"
       aria-label="Rating 10 out of 10"
       class="flex flex-shrink-0 items-center justify-center "
@@ -922,7 +922,7 @@ exports[`Input.svelte > should render "rating" 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </rating>
   
@@ -943,13 +943,13 @@ exports[`Input.svelte > should render "select" 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -962,7 +962,7 @@ exports[`Input.svelte > should render "select" 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -972,7 +972,7 @@ exports[`Input.svelte > should render "select" 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      

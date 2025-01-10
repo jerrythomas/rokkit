@@ -3,10 +3,10 @@
 exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
 <div>
   <calendar
-    class="mx-auto flex flex-col select-none items-center"
+    class="mx-auto flex select-none flex-col items-center"
   >
     <month-year
-      class="h-10 w-full flex flex-row items-center"
+      class="flex h-10 w-full flex-row items-center"
     >
       <square
         aria-selected="false"
@@ -20,14 +20,14 @@ exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
       </square>
        
       <span
-        class="flex flex-grow items-center justify-center gap-1px"
+        class="gap-1px flex flex-grow items-center justify-center"
       >
         <p>
           June
         </p>
          
         <input
-          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          class="flex w-14 flex-grow-0 border-none bg-transparent"
           type="number"
         />
       </span>
@@ -45,7 +45,7 @@ exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
     </month-year>
      
     <cal-body
-      class="w-full flex flex-col cursor-pointer p-1"
+      class="flex w-full cursor-pointer flex-col p-1"
     >
       <days-of-week
         class="grid grid-cols-7 svelte-1lxgadd"
@@ -372,10 +372,10 @@ exports[`Calendar.svelte > should change value when clicking on a date 1`] = `
 exports[`Calendar.svelte > should change value when year is changed 1`] = `
 <div>
   <calendar
-    class="mx-auto flex flex-col select-none items-center"
+    class="mx-auto flex select-none flex-col items-center"
   >
     <month-year
-      class="h-10 w-full flex flex-row items-center"
+      class="flex h-10 w-full flex-row items-center"
     >
       <square
         aria-selected="false"
@@ -389,14 +389,14 @@ exports[`Calendar.svelte > should change value when year is changed 1`] = `
       </square>
        
       <span
-        class="flex flex-grow items-center justify-center gap-1px"
+        class="gap-1px flex flex-grow items-center justify-center"
       >
         <p>
           June
         </p>
          
         <input
-          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          class="flex w-14 flex-grow-0 border-none bg-transparent"
           type="number"
         />
       </span>
@@ -414,7 +414,7 @@ exports[`Calendar.svelte > should change value when year is changed 1`] = `
     </month-year>
      
     <cal-body
-      class="w-full flex flex-col cursor-pointer p-1"
+      class="flex w-full cursor-pointer flex-col p-1"
     >
       <days-of-week
         class="grid grid-cols-7 svelte-1lxgadd"
@@ -741,10 +741,10 @@ exports[`Calendar.svelte > should change value when year is changed 1`] = `
 exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
 <div>
   <calendar
-    class="mx-auto flex flex-col select-none items-center"
+    class="mx-auto flex select-none flex-col items-center"
   >
     <month-year
-      class="h-10 w-full flex flex-row items-center"
+      class="flex h-10 w-full flex-row items-center"
     >
       <square
         aria-selected="false"
@@ -758,14 +758,14 @@ exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
       </square>
        
       <span
-        class="flex flex-grow items-center justify-center gap-1px"
+        class="gap-1px flex flex-grow items-center justify-center"
       >
         <p>
           June
         </p>
          
         <input
-          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          class="flex w-14 flex-grow-0 border-none bg-transparent"
           type="number"
         />
       </span>
@@ -783,7 +783,7 @@ exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
     </month-year>
      
     <cal-body
-      class="w-full flex flex-col cursor-pointer p-1"
+      class="flex w-full cursor-pointer flex-col p-1"
     >
       <days-of-week
         class="grid grid-cols-7 svelte-1lxgadd"
@@ -1110,10 +1110,10 @@ exports[`Calendar.svelte > should render a calendar for specific date 1`] = `
 exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
 <div>
   <calendar
-    class="mx-auto flex flex-col select-none items-center"
+    class="mx-auto flex select-none flex-col items-center"
   >
     <month-year
-      class="h-10 w-full flex flex-row items-center"
+      class="flex h-10 w-full flex-row items-center"
     >
       <square
         aria-selected="false"
@@ -1127,14 +1127,14 @@ exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
       </square>
        
       <span
-        class="flex flex-grow items-center justify-center gap-1px"
+        class="gap-1px flex flex-grow items-center justify-center"
       >
         <p>
           February
         </p>
          
         <input
-          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          class="flex w-14 flex-grow-0 border-none bg-transparent"
           type="number"
         />
       </span>
@@ -1152,7 +1152,7 @@ exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
     </month-year>
      
     <cal-body
-      class="w-full flex flex-col cursor-pointer p-1"
+      class="flex w-full cursor-pointer flex-col p-1"
     >
       <days-of-week
         class="grid grid-cols-7 svelte-1lxgadd"
@@ -1461,10 +1461,10 @@ exports[`Calendar.svelte > should render a calendar with holidays 1`] = `
 exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
 <div>
   <calendar
-    class="mx-auto flex flex-col select-none items-center"
+    class="mx-auto flex select-none flex-col items-center"
   >
     <month-year
-      class="h-10 w-full flex flex-row items-center"
+      class="flex h-10 w-full flex-row items-center"
     >
       <square
         aria-selected="false"
@@ -1478,14 +1478,14 @@ exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
       </square>
        
       <span
-        class="flex flex-grow items-center justify-center gap-1px"
+        class="gap-1px flex flex-grow items-center justify-center"
       >
         <p>
           June
         </p>
          
         <input
-          class="w-14 flex flex-grow-0 border-none bg-transparent"
+          class="flex w-14 flex-grow-0 border-none bg-transparent"
           type="number"
         />
       </span>
@@ -1503,7 +1503,7 @@ exports[`Calendar.svelte > should render a calendar with non fixed rows 1`] = `
     </month-year>
      
     <cal-body
-      class="w-full flex flex-col cursor-pointer p-1"
+      class="flex w-full cursor-pointer flex-col p-1"
     >
       <days-of-week
         class="grid grid-cols-7 svelte-1lxgadd"

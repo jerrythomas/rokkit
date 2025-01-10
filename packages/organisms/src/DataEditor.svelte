@@ -37,7 +37,7 @@
 	function handle() {
 		dispatch('change', value)
 	}
-	run(() => {
+	$effect(() => {
 		registry.set({
 			editors: { ...componentTypes, ...using?.editors },
 			components: { default: Item, ...using?.components },
@@ -45,10 +45,10 @@
 			navigators: { default: Tabs, ...using?.navigators }
 		})
 	})
-	run(() => {
+	$effect(() => {
 		if (!schema) schema = deriveSchemaFromValue(value)
 	})
-	run(() => {
+	$effect(() => {
 		if (!layout) layout = deriveLayoutFromValue(value)
 	})
 </script>

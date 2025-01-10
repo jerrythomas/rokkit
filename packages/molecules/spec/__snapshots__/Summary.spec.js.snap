@@ -3,7 +3,7 @@
 exports[`Summary.svelte > should render summary text 1`] = `
 <div>
   <summary
-    class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
     tabindex="-1"
   >
     <!---->
@@ -24,7 +24,7 @@ exports[`Summary.svelte > should render summary text 1`] = `
 exports[`Summary.svelte > should render summary with collapsed icon 1`] = `
 <div>
   <summary
-    class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
     tabindex="-1"
   >
     <!---->
@@ -55,7 +55,7 @@ exports[`Summary.svelte > should render summary with collapsed icon 1`] = `
 exports[`Summary.svelte > should render summary with expanded icon 1`] = `
 <div>
   <summary
-    class="w-full flex flex-shrink-0 flex-row cursor-pointer items-center"
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
     tabindex="-1"
   >
     <!---->

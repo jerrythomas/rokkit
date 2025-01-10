@@ -3,14 +3,15 @@
 exports[`ToggleThemeMode.svelte > should render the component 1`] = `
 <div>
   <toggle
-    aria-checked="true"
+    aria-checked="false"
     aria-disabled="false"
     aria-label="Toggle"
-    class=""
     role="switch"
     tabindex="0"
   >
-    <icon
+    <!---->
+    <!---->
+    <rkt-icon
       aria-label="mode-light"
       class="flex flex-shrink-0 items-center justify-center "
       role="img"
@@ -20,10 +21,13 @@ exports[`ToggleThemeMode.svelte > should render the component 1`] = `
         aria-hidden="true"
         class="mode-light"
       />
-    </icon>
+    </rkt-icon>
     
+    <!---->
      
-    
+    <!---->
+    <!---->
   </toggle>
+  
 </div>
 `;

@@ -1,7 +1,7 @@
 <script>
-	import { run, stopPropagation } from 'svelte/legacy'
+	// import { run, stopPropagation } from 'svelte/legacy'
 
-	import { createEventDispatcher } from 'svelte'
+	import { createEmitter } from '@rokkit/core'
 	import { pick } from 'ramda'
 	import { defaultFields, getComponent } from '@rokkit/core'
 	import { Connector, Icon } from '@rokkit/atoms'
@@ -9,7 +9,7 @@
 	import TableHeaderCell from './TableHeaderCell.svelte'
 	import { dataview } from '@rokkit/data'
 
-	const dispatch = createEventDispatcher()
+	// const dispatch = createEventDispatcher()
 
 	/**
 	 * @typedef {Object} Props
@@ -43,20 +43,19 @@
 
 	/** @type {any|null} */
 	let currentItem = $state(null)
-
-	run(() => {
-		using = { default: Item, ...using }
-	})
+	let emitter = $derived(createEmitter(events, ['collapse', 'change', 'expand', 'click']))
+	let internalUsing = $derived({ default: Item, ...using })
 	let view = $derived(dataview(data, { columns, path: hierarchyField, separator }))
 
 	function handleItemClick(event, index) {
 		// const { hierarchy } = get(view)
-		const item = $view.hierarchy[index]
+		const item = view.hierarchy[index]
 		if (item.isParent) toggle(index)
 		else {
 			currentItem = item
 			value = getValue(item)
-			dispatch('click', value)
+			emitter.click(value)
+			// dispatch('click', value)
 
 			if (event.metaKey) toggleSelection(event, item)
 		}
@@ -71,7 +70,8 @@
 		e.preventDefault()
 		view.select(index)
 
-		dispatch('select', $view.hierarchy.filter((i) => i._selected === 'checked').map(getValue))
+		// dispatch('select', $view.hierarchy.filter((i) => i._selected === 'checked').map(getValue))
+		emitter.select(view.hierarchy.filter((i) => i._selected === 'checked').map(getValue))
 	}
 
 	function toggle(index) {
@@ -85,10 +85,6 @@
 		const ascending = order === 'ascending'
 		view.sortBy(name, ascending)
 	}
-
-	run(() => {
-		using = { default: Item, ...using }
-	})
 </script>
 
 <tree-table class={className}>
@@ -112,7 +108,7 @@
 					<tr
 						class:cursor-pointer={!item.isParent}
 						aria-current={currentItem === item}
-						onclick={stopPropagation((e) => handleItemClick(e, index))}
+						onclick={(e) => handleItemClick(e, index)}
 					>
 						{#each $view.columns as col, colIndex}
 							{@const value = { ...pick(['icon'], col), ...item.row }}

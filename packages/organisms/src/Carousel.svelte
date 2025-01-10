@@ -27,7 +27,7 @@
 			e.stopPropagation()
 		}
 	}
-	$effect.pre(() => {
+	$effect(() => {
 		value = items[currentIndex]
 	})
 </script>

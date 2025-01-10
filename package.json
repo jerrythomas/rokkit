@@ -24,16 +24,16 @@
   "author": "Jerry Thomas<me@jerrythomas.name>",
   "license": "MIT",
   "devDependencies": {
-    "bumpp": "^9.7.1",
-    "eslint": "^9.13.0",
+    "bumpp": "^9.10.0",
+    "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-shared": "workspace:*",
     "front-matter": "^4.0.2",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
     "madge": "^8.0.0",
-    "prettier": "3.3.3",
-    "prettier-plugin-svelte": "^3.2.7",
+    "prettier": "3.4.2",
+    "prettier-plugin-svelte": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.9"
   },
   "lint-staged": {
@@ -41,6 +41,6 @@
     "*.{js,svelte,md,json}": "prettier --write"
   },
   "dependencies": {
-    "turbo": "^2.2.3"
+    "turbo": "^2.3.3"
   }
 }

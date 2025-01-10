@@ -15,7 +15,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 test"
+    class="relative grid h-10 grid-rows-2 test"
   >
     <input
       name="range"
@@ -39,7 +39,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -50,7 +50,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -64,12 +64,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -80,12 +80,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -96,12 +96,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -112,12 +112,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -128,12 +128,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -144,12 +144,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -160,12 +160,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -176,12 +176,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -192,12 +192,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -208,12 +208,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -224,12 +224,12 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -250,7 +250,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 test2"
+    class="relative grid h-10 grid-rows-2 test2"
   >
     <input
       name="range"
@@ -274,7 +274,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -285,7 +285,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -299,12 +299,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -315,12 +315,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -331,12 +331,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -347,12 +347,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -363,12 +363,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -379,12 +379,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -395,12 +395,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -411,12 +411,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -427,12 +427,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -443,12 +443,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -459,12 +459,12 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -485,7 +485,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -509,7 +509,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="30"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -520,7 +520,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="40"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -534,12 +534,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -550,12 +550,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -566,12 +566,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -582,12 +582,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -598,12 +598,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -614,12 +614,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -630,12 +630,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -646,12 +646,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -662,12 +662,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -678,12 +678,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -694,12 +694,12 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -720,7 +720,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -744,7 +744,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="20"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -755,7 +755,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="30"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -769,12 +769,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -785,12 +785,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -801,12 +801,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -817,12 +817,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -833,12 +833,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -849,12 +849,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -865,12 +865,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -881,12 +881,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -897,12 +897,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -913,12 +913,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -929,12 +929,12 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -955,7 +955,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -979,7 +979,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -990,7 +990,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1004,12 +1004,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1020,12 +1020,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1036,12 +1036,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1052,12 +1052,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1068,12 +1068,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1084,12 +1084,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1100,12 +1100,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1116,12 +1116,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1132,12 +1132,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1148,12 +1148,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1164,12 +1164,12 @@ exports[`RangeMinMax.svelte > should render 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1190,7 +1190,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -1214,7 +1214,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
         aria-valuemax="20"
         aria-valuemin="0"
         aria-valuenow="20"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 20px;"
         tabindex="0"
@@ -1225,7 +1225,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
         aria-valuemax="0"
         aria-valuemin="20"
         aria-valuenow="20"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 20px;"
         tabindex="0"
@@ -1239,12 +1239,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1255,12 +1255,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1271,12 +1271,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1287,12 +1287,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1303,12 +1303,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1319,12 +1319,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1335,12 +1335,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1351,12 +1351,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1367,12 +1367,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1383,12 +1383,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1399,12 +1399,12 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1425,7 +1425,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -1449,7 +1449,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1460,7 +1460,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1474,12 +1474,12 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1490,12 +1490,12 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1506,12 +1506,12 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1522,12 +1522,12 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1538,12 +1538,12 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1554,12 +1554,12 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1580,7 +1580,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -1604,7 +1604,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="30"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1615,7 +1615,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="40"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1629,12 +1629,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1645,12 +1645,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1661,12 +1661,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1677,12 +1677,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1693,12 +1693,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1709,12 +1709,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1725,12 +1725,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1741,12 +1741,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1757,12 +1757,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1773,12 +1773,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1789,12 +1789,12 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1815,7 +1815,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -1839,7 +1839,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="30"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1849,7 +1849,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       <thumb
         aria-valuemax="0"
         aria-valuemin="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -1863,12 +1863,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1879,12 +1879,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1895,12 +1895,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1911,12 +1911,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1927,12 +1927,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1943,12 +1943,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1959,12 +1959,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1975,12 +1975,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -1991,12 +1991,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2007,12 +2007,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2023,12 +2023,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2049,7 +2049,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -2073,7 +2073,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="20"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -2083,7 +2083,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       <thumb
         aria-valuemax="0"
         aria-valuemin="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -2097,12 +2097,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2113,12 +2113,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2129,12 +2129,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2145,12 +2145,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2161,12 +2161,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2177,12 +2177,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2193,12 +2193,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2209,12 +2209,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2225,12 +2225,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2241,12 +2241,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2257,12 +2257,12 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2283,7 +2283,7 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
 <div>
   <!---->
   <input-range
-    class="relative h-10 grid grid-rows-2 "
+    class="relative grid h-10 grid-rows-2 "
   >
     <input
       name="range"
@@ -2309,7 +2309,7 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="-top-1 absolute box-border h-4 w-4 cursor-pointer"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
         role="slider"
         style="left: 0px;"
         tabindex="0"
@@ -2323,12 +2323,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
     >
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2339,12 +2339,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2355,12 +2355,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2371,12 +2371,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2387,12 +2387,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2403,12 +2403,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2419,12 +2419,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2435,12 +2435,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2451,12 +2451,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2467,12 +2467,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p
@@ -2483,12 +2483,12 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
       </tick>
       <tick
         aria-selected="false"
-        class="grid grid-cols-2 cursor-pointer select-none"
+        class="grid cursor-pointer select-none grid-cols-2"
         role="option"
         tabindex="0"
       >
         <tick-bar
-          class="col-start-2 h-5px border-l"
+          class="h-5px col-start-2 border-l"
         />
          
         <p

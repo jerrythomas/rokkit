@@ -30,10 +30,12 @@
 		...events
 	} = $props()
 
-	$effect.pre(() => {
-		using = { default: Item, ...using }
-		fields = { ...defaultFields, ...fields }
-	})
+	// $effect.pre(() => {
+	// using = { default: Item, ...using }
+	// fields = { ...defaultFields, ...fields }
+	// })
+	let internalUsing = $derived({ default: Item, ...using })
+	let internalFields = $derived({ ...defaultFields, ...fields })
 
 	let emitter = createEmitter(events, ['change'])
 	let offsetTop = $state(0)
@@ -78,7 +80,14 @@
 	</button>
 	{#if open}
 		<Slider top={offsetTop + 4}>
-			<List items={options} {fields} {using} bind:value onselect={handleSelect} tabindex="-1" />
+			<List
+				items={options}
+				fields={internalFields}
+				using={internalUsing}
+				bind:value
+				onselect={handleSelect}
+				tabindex="-1"
+			/>
 		</Slider>
 	{/if}
 </drop-down>

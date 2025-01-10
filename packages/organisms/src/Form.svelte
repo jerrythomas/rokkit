@@ -20,7 +20,9 @@
 <form onsubmit={bubble('submit')}>
 	<DataEditor bind:value {schema} {layout} {using} />
 	<span>
-		{#if children}{@render children()}{:else}
+		{#if children}
+			{@render children()}
+		{:else}
 			<button type="submit">Submit</button>
 		{/if}
 	</span>

@@ -3,23 +3,23 @@
 exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
 <div>
   <container
-    class="flex flex-row h-full w-full"
+    class="flex h-full w-full flex-row"
   >
     <aside
-      class="flex h-full w-80 border-r border-r-neutral-subtle"
+      class="border-r-neutral-subtle flex h-full w-80 border-r"
     >
       <tree
-        class="w-full h-full"
+        class="h-full w-full"
         tabindex="0"
       >
         <nested-list
-          class="nested-list flex flex-col w-full list"
+          class="nested-list flex w-full flex-col list"
           role="tree"
         >
           <node
             aria-expanded="false"
             aria-selected="false"
-            class="node min-h-5 flex flex-col cursor-pointer select-none"
+            class="node flex min-h-5 cursor-pointer select-none flex-col"
             data-path="0"
             id="id-0"
             role="treeitem"
@@ -27,13 +27,23 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
             <div
               class="flex flex-row items-center"
             >
+              <!---->
               <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-              />
+                class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              >
+                <!---->
+                <!---->
+                
+                
+                <!---->
+              </span>
               
+              <!---->
                
               <item>
-                <icon
+                <!---->
+                <!---->
+                <rkt-icon
                   aria-label="type-object"
                   class="flex flex-shrink-0 items-center justify-center "
                   role="img"
@@ -43,26 +53,35 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                     aria-hidden="true"
                     class="type-object"
                   />
-                </icon>
+                </rkt-icon>
                 
+                <!---->
                  
-                
+                <!---->
+                <!---->
               </item>
             </div>
              
-             
+            <!---->
+            
+            <!---->
           </node>
+          
         </nested-list>
+        <!---->
       </tree>
+      <!---->
     </aside>
      
     <content
-      class="flex flex-col w-full h-full p-8 gap-4 overflow-hidden"
+      class="flex h-full w-full flex-col gap-4 overflow-hidden p-8"
     >
+      <!---->
        
       <section
-        class="flex flex-col w-full flex-grow overflow-auto"
+        class="flex w-full flex-grow flex-col overflow-auto"
       >
+        <!---->
         <p>
           No atomic attributes at this level. Select a child node to edit. Current value is below.
         </p>
@@ -81,9 +100,9 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                 <th>
                   value
                 </th>
+                
               </tr>
             </thead>
-             
             <tbody>
               <tr
                 aria-current="false"
@@ -91,22 +110,38 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
               >
                 <td>
                   <cell>
+                    <!---->
+                    <!---->
+                    <!---->
                      
+                    <!---->
                     
+                    <!---->
+                    <!---->
                      
+                    <!---->
+                    <!---->
+                    <!---->
                     
+                    
+                    <!---->
                      
                     <p>
                       a
                     </p>
-                    
-                    
+                    <!---->
+                    <!---->
+                    <!---->
                   </cell>
                 </td>
                 <td>
                   <cell>
+                    <!---->
+                    <!---->
                      
-                    <icon
+                    <!---->
+                    <!---->
+                    <rkt-icon
                       aria-label="type-integer"
                       class="flex flex-shrink-0 items-center justify-center "
                       role="img"
@@ -116,17 +151,19 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                         aria-hidden="true"
                         class="type-integer"
                       />
-                    </icon>
+                    </rkt-icon>
                     
+                    <!---->
                      
                     <p>
                       1
                     </p>
-                    
-                    
+                    <!---->
+                    <!---->
+                    <!---->
                   </cell>
                 </td>
-                 
+                
               </tr>
               <tr
                 aria-current="false"
@@ -134,22 +171,38 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
               >
                 <td>
                   <cell>
+                    <!---->
+                    <!---->
+                    <!---->
                      
+                    <!---->
                     
+                    <!---->
+                    <!---->
                      
+                    <!---->
+                    <!---->
+                    <!---->
                     
+                    
+                    <!---->
                      
                     <p>
                       b
                     </p>
-                    
-                    
+                    <!---->
+                    <!---->
+                    <!---->
                   </cell>
                 </td>
                 <td>
                   <cell>
+                    <!---->
+                    <!---->
                      
-                    <icon
+                    <!---->
+                    <!---->
+                    <rkt-icon
                       aria-label="type-integer"
                       class="flex flex-shrink-0 items-center justify-center "
                       role="img"
@@ -159,24 +212,32 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                         aria-hidden="true"
                         class="type-integer"
                       />
-                    </icon>
+                    </rkt-icon>
                     
+                    <!---->
                      
                     <p>
                       2
                     </p>
-                    
-                    
+                    <!---->
+                    <!---->
+                    <!---->
                   </cell>
                 </td>
-                 
+                
               </tr>
+              
             </tbody>
           </table>
         </tree-table>
+        <!---->
+        
+        <!---->
       </section>
        
+      <!---->
     </content>
   </container>
+  
 </div>
 `;

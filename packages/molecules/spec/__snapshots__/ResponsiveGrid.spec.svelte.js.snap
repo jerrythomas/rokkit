@@ -8,7 +8,7 @@ exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
   >
     <!---->
     <segment
-      class="absolute w-full h-full col-1"
+      class="absolute h-full w-full col-1"
     >
       <span>
         New Content for A
@@ -134,7 +134,7 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid for small devic
   >
     <!---->
     <segment
-      class="absolute w-full h-full col-1"
+      class="absolute h-full w-full col-1"
     >
       <span>
          Content for A
@@ -164,7 +164,7 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
   >
     <!---->
     <segment
-      class="absolute w-full h-full col-1"
+      class="absolute h-full w-full col-1"
     >
       <span>
          Content for A
@@ -176,7 +176,7 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
     
     <!---->
     <segment
-      class="absolute w-full h-full col-2"
+      class="absolute h-full w-full col-2"
     >
       <span>
          Content for B
@@ -202,7 +202,7 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
   >
     <!---->
     <segment
-      class="absolute w-full h-full col-1"
+      class="absolute h-full w-full col-1"
     >
       <span>
          Content for A
@@ -222,7 +222,7 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
     
     <!---->
     <segment
-      class="absolute w-full h-full col-2"
+      class="absolute h-full w-full col-2"
     >
       <span>
          Content for B
@@ -266,7 +266,7 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
   >
     <!---->
     <segment
-      class="absolute w-full h-full col-1"
+      class="absolute h-full w-full col-1"
     >
       <span>
          Content for A
@@ -286,7 +286,7 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
     
     <!---->
     <segment
-      class="absolute w-full h-full col-2"
+      class="absolute h-full w-full col-2"
     >
       <span>
          Content for B

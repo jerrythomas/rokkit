@@ -46,7 +46,7 @@ exports[`ItemWrapper.svelte > should handle change for removable property 2`] = 
       <!---->
     </item>
      
-    <icon
+    <rkt-icon
       aria-label="Remove"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -56,7 +56,7 @@ exports[`ItemWrapper.svelte > should handle change for removable property 2`] = 
         aria-hidden="true"
         class="action-remove"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </wrap-item>
   
@@ -209,7 +209,7 @@ exports[`ItemWrapper.svelte > should render removable with custom class 1`] = `
       <!---->
     </item>
      
-    <icon
+    <rkt-icon
       aria-label="Remove"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -219,7 +219,7 @@ exports[`ItemWrapper.svelte > should render removable with custom class 1`] = `
         aria-hidden="true"
         class="action-remove"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </wrap-item>
   
@@ -250,7 +250,7 @@ exports[`ItemWrapper.svelte > should render removable with custom icon 1`] = `
       <!---->
     </item>
      
-    <icon
+    <rkt-icon
       aria-label="Remove"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -260,7 +260,7 @@ exports[`ItemWrapper.svelte > should render removable with custom icon 1`] = `
         aria-hidden="true"
         class="close"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </wrap-item>
   
@@ -291,7 +291,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
       <!---->
     </item>
      
-    <icon
+    <rkt-icon
       aria-label="Remove"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -301,7 +301,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
         aria-hidden="true"
         class="action-remove"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </wrap-item>
   
@@ -332,7 +332,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
       <!---->
     </item>
      
-    <icon
+    <rkt-icon
       aria-label="Remove"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -342,7 +342,7 @@ exports[`ItemWrapper.svelte > should render removable with default icon when nul
         aria-hidden="true"
         class="close"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </wrap-item>
   
@@ -361,7 +361,7 @@ exports[`ItemWrapper.svelte > should render using field mapping 1`] = `
     >
       <!---->
       <!---->
-      <icon
+      <rkt-icon
         aria-label="info"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -371,7 +371,7 @@ exports[`ItemWrapper.svelte > should render using field mapping 1`] = `
           aria-hidden="true"
           class="info"
         />
-      </icon>
+      </rkt-icon>
       
       <!---->
        
@@ -434,7 +434,7 @@ exports[`ItemWrapper.svelte > should render with removable prop 1`] = `
       <!---->
     </item>
      
-    <icon
+    <rkt-icon
       aria-label="Remove"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -444,7 +444,7 @@ exports[`ItemWrapper.svelte > should render with removable prop 1`] = `
         aria-hidden="true"
         class="action-remove"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </wrap-item>
   

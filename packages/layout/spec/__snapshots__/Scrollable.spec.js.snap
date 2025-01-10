@@ -3,7 +3,7 @@
 exports[`Scrollable.svelte > should render 1`] = `
 <div>
   <scroll
-    class="flex flex-col h-full overflow-scroll "
+    class="flex h-full flex-col overflow-scroll "
   >
     <!---->
   </scroll>

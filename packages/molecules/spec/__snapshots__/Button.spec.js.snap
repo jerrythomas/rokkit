@@ -51,7 +51,7 @@ exports[`Button.svelte > should render a button with a label and both icons 1`] 
     <icon-left
       class="flex flex-row"
     >
-      <icon
+      <rkt-icon
         aria-label="email"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -61,7 +61,7 @@ exports[`Button.svelte > should render a button with a label and both icons 1`] 
           aria-hidden="true"
           class="email"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </icon-left>
     <!---->
@@ -74,7 +74,7 @@ exports[`Button.svelte > should render a button with a label and both icons 1`] 
     <!---->
      
     <icon-right>
-      <icon
+      <rkt-icon
         aria-label="arrow-right"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -84,7 +84,7 @@ exports[`Button.svelte > should render a button with a label and both icons 1`] 
           aria-hidden="true"
           class="arrow-right"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </icon-right>
     <!---->
@@ -102,7 +102,7 @@ exports[`Button.svelte > should render a button with a label and left icon 1`] =
     <icon-left
       class="flex flex-row"
     >
-      <icon
+      <rkt-icon
         aria-label="theme"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -112,7 +112,7 @@ exports[`Button.svelte > should render a button with a label and left icon 1`] =
           aria-hidden="true"
           class="theme"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </icon-left>
     <!---->
@@ -146,7 +146,7 @@ exports[`Button.svelte > should render a button with a label and right icon 1`] 
     <!---->
      
     <icon-right>
-      <icon
+      <rkt-icon
         aria-label="arrow-right"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -156,7 +156,7 @@ exports[`Button.svelte > should render a button with a label and right icon 1`] 
           aria-hidden="true"
           class="arrow-right"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </icon-right>
     <!---->
@@ -174,7 +174,7 @@ exports[`Button.svelte > should render a button with icon only 1`] = `
     <icon-left
       class="flex flex-row"
     >
-      <icon
+      <rkt-icon
         aria-label="colors"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -184,7 +184,7 @@ exports[`Button.svelte > should render a button with icon only 1`] = `
           aria-hidden="true"
           class="colors"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </icon-left>
     <!---->

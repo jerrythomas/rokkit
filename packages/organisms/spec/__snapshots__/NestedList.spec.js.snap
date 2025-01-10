@@ -2,20 +2,22 @@
 
 exports[`NestedList.svelte > should render empty nested list 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
-/>
+>
+  
+</nested-list>
 `;
 
 exports[`NestedList.svelte > should render nested items 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
 >
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"
@@ -23,7 +25,8 @@ exports[`NestedList.svelte > should render nested items 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="expand"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="closed"
@@ -34,25 +37,34 @@ exports[`NestedList.svelte > should render nested items 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="1"
     id="id-1"
     role="treeitem"
@@ -60,27 +72,43 @@ exports[`NestedList.svelte > should render nested items 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="2"
     id="id-2"
     role="treeitem"
@@ -88,7 +116,8 @@ exports[`NestedList.svelte > should render nested items 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="expand"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="closed"
@@ -99,33 +128,43 @@ exports[`NestedList.svelte > should render nested items 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
+  
 </nested-list>
 `;
 
 exports[`NestedList.svelte > should render open items 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
 >
   <node
     aria-expanded="true"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"
@@ -133,7 +172,8 @@ exports[`NestedList.svelte > should render open items 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="collapse"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="opened"
@@ -144,27 +184,35 @@ exports[`NestedList.svelte > should render open items 1`] = `
           aria-hidden="true"
           class="node-opened"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
+    <!---->
     <nested-list
-      class="nested-list flex flex-col w-full list"
+      class="nested-list flex w-full flex-col list"
       role="tree"
     >
       <node
         aria-expanded="false"
         aria-selected="false"
-        class="node min-h-5 flex flex-col cursor-pointer select-none"
+        class="node flex min-h-5 cursor-pointer select-none flex-col"
         data-path="0,0"
         id="id-0-0"
         role="treeitem"
@@ -172,9 +220,11 @@ exports[`NestedList.svelte > should render open items 1`] = `
         <div
           class="flex flex-row items-center"
         >
+          <!---->
           <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+            class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
           >
+            <!---->
             <i
               class="border-r"
             />
@@ -183,32 +233,51 @@ exports[`NestedList.svelte > should render open items 1`] = `
               class="border-b"
             />
             
+            <!---->
           </span>
           
+          <!---->
           <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
+            class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+          >
+            <!---->
+            <!---->
+            
+            
+            <!---->
+          </span>
           
+          <!---->
            
           <item>
+            <!---->
+            <!---->
+            <!---->
             
+            
+            <!---->
              
             <p>
               aa
             </p>
-            
+            <!---->
+            <!---->
           </item>
         </div>
          
-         
+        <!---->
+        
+        <!---->
       </node>
+      
     </nested-list>
-     
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="1"
     id="id-1"
     role="treeitem"
@@ -216,27 +285,43 @@ exports[`NestedList.svelte > should render open items 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="2"
     id="id-2"
     role="treeitem"
@@ -244,7 +329,8 @@ exports[`NestedList.svelte > should render open items 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="expand"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="closed"
@@ -255,33 +341,43 @@ exports[`NestedList.svelte > should render open items 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
+  
 </nested-list>
 `;
 
 exports[`NestedList.svelte > should render using default field mapping 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
 >
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"
@@ -289,27 +385,43 @@ exports[`NestedList.svelte > should render using default field mapping 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="1"
     id="id-1"
     role="treeitem"
@@ -317,35 +429,52 @@ exports[`NestedList.svelte > should render using default field mapping 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
+  
 </nested-list>
 `;
 
 exports[`NestedList.svelte > should render using field mappings 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
 >
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"
@@ -353,27 +482,43 @@ exports[`NestedList.svelte > should render using field mappings 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="1"
     id="id-1"
     role="treeitem"
@@ -381,35 +526,52 @@ exports[`NestedList.svelte > should render using field mappings 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
+  
 </nested-list>
 `;
 
 exports[`NestedList.svelte > should render with hierarchy 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
 >
   <node
     aria-expanded="true"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0,0"
     id="id-0-0"
     role="treeitem"
@@ -417,7 +579,8 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="collapse"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="opened"
@@ -428,27 +591,35 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
           aria-hidden="true"
           class="node-opened"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
+    <!---->
     <nested-list
-      class="nested-list flex flex-col w-full list"
+      class="nested-list flex w-full flex-col list"
       role="tree"
     >
       <node
         aria-expanded="false"
         aria-selected="false"
-        class="node min-h-5 flex flex-col cursor-pointer select-none"
+        class="node flex min-h-5 cursor-pointer select-none flex-col"
         data-path="0,0,0"
         id="id-0-0-0"
         role="treeitem"
@@ -456,9 +627,11 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
         <div
           class="flex flex-row items-center"
         >
+          <!---->
           <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
+            class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
           >
+            <!---->
             <i
               class="border-r"
             />
@@ -467,32 +640,51 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
               class="border-b"
             />
             
+            <!---->
           </span>
           
+          <!---->
           <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
+            class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+          >
+            <!---->
+            <!---->
+            
+            
+            <!---->
+          </span>
           
+          <!---->
            
           <item>
+            <!---->
+            <!---->
+            <!---->
             
+            
+            <!---->
              
             <p>
               aa
             </p>
-            
+            <!---->
+            <!---->
           </item>
         </div>
          
-         
+        <!---->
+        
+        <!---->
       </node>
+      
     </nested-list>
-     
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0,1"
     id="id-0-1"
     role="treeitem"
@@ -500,27 +692,43 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0,2"
     id="id-0-2"
     role="treeitem"
@@ -528,7 +736,8 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="expand"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="closed"
@@ -539,189 +748,43 @@ exports[`NestedList.svelte > should render with hierarchy 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
-</nested-list>
-`;
-
-exports[`NestedList.svelte > should render with hierarchy 2`] = `
-<nested-list
-  class="nested-list flex flex-col w-full list"
-  role="tree"
->
-  <node
-    aria-expanded="true"
-    aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
-    data-path="0,0,0"
-    id="id-0-0-0"
-    role="treeitem"
-  >
-    <div
-      class="flex flex-row items-center"
-    >
-      <icon
-        aria-label="collapse"
-        class="flex flex-shrink-0 items-center justify-center small w-4"
-        data-state="opened"
-        role="img"
-        tabindex="-1"
-      >
-        <i
-          aria-hidden="true"
-          class="node-opened"
-        />
-      </icon>
-      
-       
-      <item>
-        
-         
-        <p>
-          a
-        </p>
-        
-      </item>
-    </div>
-     
-    <nested-list
-      class="nested-list flex flex-col w-full list"
-      role="tree"
-    >
-      <node
-        aria-expanded="false"
-        aria-selected="false"
-        class="node min-h-5 flex flex-col cursor-pointer select-none"
-        data-path="0,0,0,0"
-        id="id-0-0-0-0"
-        role="treeitem"
-      >
-        <div
-          class="flex flex-row items-center"
-        >
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-last"
-          >
-            <i
-              class="border-r"
-            />
-             
-            <i
-              class="border-b"
-            />
-            
-          </span>
-          
-          <span
-            class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-          />
-          
-           
-          <item>
-            
-             
-            <p>
-              aa
-            </p>
-            
-          </item>
-        </div>
-         
-         
-      </node>
-    </nested-list>
-     
-  </node>
-  <node
-    aria-expanded="false"
-    aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
-    data-path="0,0,1"
-    id="id-0-0-1"
-    role="treeitem"
-  >
-    <div
-      class="flex flex-row items-center"
-    >
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
-      
-       
-      <item>
-        
-         
-        <p>
-          b
-        </p>
-        
-      </item>
-    </div>
-     
-     
-  </node>
-  <node
-    aria-expanded="false"
-    aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
-    data-path="0,0,2"
-    id="id-0-0-2"
-    role="treeitem"
-  >
-    <div
-      class="flex flex-row items-center"
-    >
-      <icon
-        aria-label="expand"
-        class="flex flex-shrink-0 items-center justify-center small w-4"
-        data-state="closed"
-        role="img"
-        tabindex="-1"
-      >
-        <i
-          aria-hidden="true"
-          class="node-closed"
-        />
-      </icon>
-      
-       
-      <item>
-        
-         
-        <p>
-          c
-        </p>
-        
-      </item>
-    </div>
-     
-     
-  </node>
+  
 </nested-list>
 `;
 
 exports[`NestedList.svelte > should support custom icons 1`] = `
 <nested-list
-  class="nested-list flex flex-col w-full list"
+  class="nested-list flex w-full flex-col list"
   role="tree"
 >
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="0"
     id="id-0"
     role="treeitem"
@@ -729,7 +792,8 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="expand"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="closed"
@@ -740,25 +804,34 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           a
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="1"
     id="id-1"
     role="treeitem"
@@ -766,27 +839,43 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
     <div
       class="flex flex-row items-center"
     >
+      <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           b
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
   <node
     aria-expanded="false"
     aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
     data-path="2"
     id="id-2"
     role="treeitem"
@@ -794,7 +883,8 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
     <div
       class="flex flex-row items-center"
     >
-      <icon
+      <!---->
+      <rkt-icon
         aria-label="expand"
         class="flex flex-shrink-0 items-center justify-center small w-4"
         data-state="closed"
@@ -805,130 +895,30 @@ exports[`NestedList.svelte > should support custom icons 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       
+      <!---->
        
       <item>
+        <!---->
+        <!---->
+        <!---->
         
+        
+        <!---->
          
         <p>
           c
         </p>
-        
+        <!---->
+        <!---->
       </item>
     </div>
      
-     
+    <!---->
+    
+    <!---->
   </node>
-</nested-list>
-`;
-
-exports[`NestedList.svelte > should support custom icons 2`] = `
-<nested-list
-  class="nested-list flex flex-col w-full list"
-  role="tree"
->
-  <node
-    aria-expanded="false"
-    aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
-    data-path="0"
-    id="id-0"
-    role="treeitem"
-  >
-    <div
-      class="flex flex-row items-center"
-    >
-      <icon
-        aria-label="expand"
-        class="flex flex-shrink-0 items-center justify-center small w-4"
-        data-state="closed"
-        role="img"
-        tabindex="-1"
-      >
-        <i
-          aria-hidden="true"
-          class="node-closed"
-        />
-      </icon>
-      
-       
-      <item>
-        
-         
-        <p>
-          a
-        </p>
-        
-      </item>
-    </div>
-     
-     
-  </node>
-  <node
-    aria-expanded="false"
-    aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
-    data-path="1"
-    id="id-1"
-    role="treeitem"
-  >
-    <div
-      class="flex flex-row items-center"
-    >
-      <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
-      />
-      
-       
-      <item>
-        
-         
-        <p>
-          b
-        </p>
-        
-      </item>
-    </div>
-     
-     
-  </node>
-  <node
-    aria-expanded="false"
-    aria-selected="false"
-    class="node min-h-5 flex flex-col cursor-pointer select-none"
-    data-path="2"
-    id="id-2"
-    role="treeitem"
-  >
-    <div
-      class="flex flex-row items-center"
-    >
-      <icon
-        aria-label="expand"
-        class="flex flex-shrink-0 items-center justify-center small w-4"
-        data-state="closed"
-        role="img"
-        tabindex="-1"
-      >
-        <i
-          aria-hidden="true"
-          class="node-closed"
-        />
-      </icon>
-      
-       
-      <item>
-        
-         
-        <p>
-          c
-        </p>
-        
-      </item>
-    </div>
-     
-     
-  </node>
+  
 </nested-list>
 `;

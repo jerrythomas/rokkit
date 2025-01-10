@@ -1,19 +1,20 @@
 <script>
 	import FieldLayout from './FieldLayout.svelte'
-	import { getContext, createEventDispatcher } from 'svelte'
+	import { getContext } from 'svelte'
 	import { omit } from 'ramda'
 	import InputField from './InputField.svelte'
-
-	const dispatch = createEventDispatcher()
+	import { createEmitter } from '@rokkit/core'
+	// const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
-	let { value = $bindable({}), schema = {}, path = [] } = $props()
+	let { value = $bindable({}), schema = {}, path = [], ...events } = $props()
 
+	let emitter = $derived(createEmitter(events, ['change']))
 	function handle() {
-		dispatch('change', value)
+		emitter.change(value)
 	}
 
-	let wrapper = $derived($registry.wrappers[schema.wrapper] ?? $registry.wrappers.default)
+	let wrapper = $derived(registry.wrappers[schema.wrapper] ?? registry.wrappers.default)
 	let wrapperProps = $derived(omit(['wrapper', 'elements', 'key'], schema))
 </script>
 
@@ -27,7 +28,7 @@
 			{@const props = { ...item.props, path: elementPath }}
 			{@const nested = Array.isArray(item.elements) && item.elements.length > 0}
 			{@const component = item.component
-				? ($registry.components[item.component] ?? $registry.components.default)
+				? (registry.components[item.component] ?? registry.components.default)
 				: null}
 
 			{#if nested}

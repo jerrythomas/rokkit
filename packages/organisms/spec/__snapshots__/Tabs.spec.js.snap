@@ -26,7 +26,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
         <!---->
       </item>
        
-      <icon
+      <rkt-icon
         aria-label="Remove"
         class="flex flex-shrink-0 items-center justify-center small"
         role="button"
@@ -36,7 +36,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
           aria-hidden="true"
           class="action-remove"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </wrap-item>
     <wrap-item
@@ -58,7 +58,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
         <!---->
       </item>
        
-      <icon
+      <rkt-icon
         aria-label="Remove"
         class="flex flex-shrink-0 items-center justify-center small"
         role="button"
@@ -68,7 +68,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
           aria-hidden="true"
           class="action-remove"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </wrap-item>
     <wrap-item
@@ -90,7 +90,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
         <!---->
       </item>
        
-      <icon
+      <rkt-icon
         aria-label="Remove"
         class="flex flex-shrink-0 items-center justify-center small"
         role="button"
@@ -100,12 +100,12 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
           aria-hidden="true"
           class="action-remove"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </wrap-item>
     <!---->
      
-    <icon
+    <rkt-icon
       aria-label="Add Tab"
       class="flex flex-shrink-0 items-center justify-center small"
       role="button"
@@ -115,7 +115,7 @@ exports[`Tabs.svelte > should handle item value changes 1`] = `
         aria-hidden="true"
         class="add"
       />
-    </icon>
+    </rkt-icon>
     <!---->
   </tabs>
   
@@ -139,7 +139,7 @@ exports[`Tabs.svelte > should render items using custom component 1`] = `
         class="flex flex-row items-center"
       >
         <span>
-          
+          Alpha
         </span>
         <!---->
       </item>
@@ -156,7 +156,7 @@ exports[`Tabs.svelte > should render items using custom component 1`] = `
         class="flex flex-row items-center"
       >
         <span>
-          
+          Beta
         </span>
         <!---->
       </item>

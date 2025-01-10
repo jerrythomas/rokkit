@@ -3,7 +3,7 @@
 exports[`ProgressDots.svelte > should render line when empty 1`] = `
 <div>
   <span
-    class="flex items-center gap-2 progress svelte-vrkqtw empty"
+    class="progress flex items-center gap-2 svelte-1qtoog4 empty"
   >
     
   </span>

@@ -3,7 +3,7 @@
 exports[`Searchable.svelte > should render 1`] = `
 <div>
   <div
-    class="searchable h-full w-full flex flex-col overflow-hidden"
+    class="searchable flex h-full w-full flex-col overflow-hidden"
   >
     <div
       class="quick-search flex flex-shrink-0 flex-grow flex-col px-4 py-2"
@@ -16,7 +16,7 @@ exports[`Searchable.svelte > should render 1`] = `
     </div>
      
     <scroll
-      class="flex flex-col h-full overflow-scroll "
+      class="flex h-full flex-col overflow-scroll "
     >
       <!---->
       

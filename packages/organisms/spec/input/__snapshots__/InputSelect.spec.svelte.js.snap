@@ -10,13 +10,13 @@ exports[`InputSelect.svelte > should emit the change event when the value change
    
   <input-select
     aria-label=""
-    class="flex flex-col relative open"
+    class="relative flex flex-col open"
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -29,7 +29,7 @@ exports[`InputSelect.svelte > should emit the change event when the value change
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="opened"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -39,17 +39,17 @@ exports[`InputSelect.svelte > should emit the change event when the value change
           aria-hidden="true"
           class="selector-opened"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
     <scroll
-      class="flex flex-col absolute w-full z-10 overflow-scroll menu"
+      class="absolute z-10 flex w-full flex-col overflow-scroll menu"
       style="top: 0px;"
     >
       <list
         aria-label="list"
-        class="flex flex-col w-full flex-shrink-0 select-none list"
+        class="flex w-full flex-shrink-0 select-none flex-col list"
         role="listbox"
         tabindex="-1"
       >
@@ -135,13 +135,13 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -154,7 +154,7 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -164,7 +164,7 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
@@ -185,13 +185,13 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -204,7 +204,7 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -214,7 +214,7 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
@@ -235,13 +235,13 @@ exports[`InputSelect.svelte > should render items using default item when data i
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -254,7 +254,7 @@ exports[`InputSelect.svelte > should render items using default item when data i
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -264,7 +264,7 @@ exports[`InputSelect.svelte > should render items using default item when data i
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
@@ -285,13 +285,13 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -304,7 +304,7 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -314,7 +314,7 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
@@ -335,13 +335,13 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative "
+    class="relative flex flex-col "
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -354,7 +354,7 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -364,7 +364,7 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      
@@ -385,13 +385,13 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
    
   <input-select
     aria-label=""
-    class="flex flex-col relative myClass"
+    class="relative flex flex-col myClass"
     role="listbox"
     tabindex="0"
   >
     <selected-item
       aria-selected="false"
-      class="w-full flex items-center"
+      class="flex w-full items-center"
       role="option"
       tabindex="-1"
     >
@@ -404,7 +404,7 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
       </item>
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="closed"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -414,7 +414,7 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
           aria-hidden="true"
           class="selector-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
     </selected-item>
      

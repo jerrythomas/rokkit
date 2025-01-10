@@ -29,7 +29,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               <!---->
               <!---->
                
-              <icon
+              <rkt-icon
                 aria-label="node-opened"
                 class="flex flex-shrink-0 items-center justify-center small cursor-pointer"
                 role="img"
@@ -39,7 +39,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
                   aria-hidden="true"
                   class="node-opened"
                 />
-              </icon>
+              </rkt-icon>
               <!---->
               <!---->
                
@@ -86,7 +86,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               <!---->
               <!---->
               <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
               >
                 <!---->
                 <!---->
@@ -98,7 +98,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
                
               <!---->
               <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
               >
                 <!---->
                 <!---->
@@ -156,7 +156,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
               <!---->
               <!---->
               <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
               >
                 <!---->
                 <!---->
@@ -168,7 +168,7 @@ exports[`TreeTable.svelte > should render using default field mapping 1`] = `
                
               <!---->
               <span
-                class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+                class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
               >
                 <!---->
                 <!---->

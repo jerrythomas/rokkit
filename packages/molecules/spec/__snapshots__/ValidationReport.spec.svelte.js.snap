@@ -8,7 +8,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <message
       class="flex gap-2 pass"
     >
-      <icon
+      <rkt-icon
         aria-label="badge-pass"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -18,7 +18,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-pass"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -28,7 +28,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <message
       class="flex gap-2 fail"
     >
-      <icon
+      <rkt-icon
         aria-label="badge-fail"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -38,7 +38,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-fail"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -48,7 +48,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <message
       class="flex gap-2 unknown"
     >
-      <icon
+      <rkt-icon
         aria-label="badge-unknown"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -58,7 +58,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-unknown"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -68,7 +68,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <message
       class="flex gap-2 warn"
     >
-      <icon
+      <rkt-icon
         aria-label="badge-warn"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -78,7 +78,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-warn"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -99,7 +99,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <message
       class="flex gap-2 pass"
     >
-      <icon
+      <rkt-icon
         aria-label="pass"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -109,7 +109,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="pass"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -119,7 +119,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <message
       class="flex gap-2 fail"
     >
-      <icon
+      <rkt-icon
         aria-label="fail"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -129,7 +129,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="fail"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -139,7 +139,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <message
       class="flex gap-2 unknown"
     >
-      <icon
+      <rkt-icon
         aria-label="unknown"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -149,7 +149,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="unknown"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>
@@ -159,7 +159,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <message
       class="flex gap-2 warn"
     >
-      <icon
+      <rkt-icon
         aria-label="warn"
         class="flex flex-shrink-0 items-center justify-center "
         role="img"
@@ -169,7 +169,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="warn"
         />
-      </icon>
+      </rkt-icon>
       <!---->
        
       <p>

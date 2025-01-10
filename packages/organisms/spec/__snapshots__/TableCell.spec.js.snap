@@ -22,6 +22,30 @@ exports[`Table.svelte > cell > should render a cell with a custom class 1`] = `
 </div>
 `;
 
+exports[`Table.svelte > cell > should render a cell with a custom component 1`] = `
+<div>
+  <td>
+    <cell>
+      <!---->
+       
+      <h1>
+        :
+      </h1>
+       
+      <p>
+        :{"text":"John Doe","component":"custom"}
+      </p>
+       
+      <p>
+        ["fields","formatter"]
+      </p>
+      <!---->
+    </cell>
+  </td>
+  
+</div>
+`;
+
 exports[`Table.svelte > cell > should render content 1`] = `
 <div>
   <td>
@@ -68,7 +92,7 @@ exports[`Table.svelte > hierarchy > should render a hierarchy child 1`] = `
     <cell>
       <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
       >
         <!---->
         <!---->
@@ -80,7 +104,7 @@ exports[`Table.svelte > hierarchy > should render a hierarchy child 1`] = `
        
       <!---->
       <span
-        class="grid grid-rows-2 grid-cols-2 h-full min-w-4 w-4 line-empty"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
       >
         <!---->
         <!---->
@@ -117,7 +141,7 @@ exports[`Table.svelte > hierarchy > should render a hierarchy parent 1`] = `
       <!---->
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="node-closed"
         class="flex flex-shrink-0 items-center justify-center small cursor-pointer"
         role="img"
@@ -127,7 +151,7 @@ exports[`Table.svelte > hierarchy > should render a hierarchy parent 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </icon>
+      </rkt-icon>
       <!---->
       <!---->
        
@@ -156,7 +180,7 @@ exports[`Table.svelte > hierarchy > should render a hierarchy parent expanded 1`
       <!---->
       <!---->
        
-      <icon
+      <rkt-icon
         aria-label="node-opened"
         class="flex flex-shrink-0 items-center justify-center small cursor-pointer"
         role="img"
@@ -166,7 +190,7 @@ exports[`Table.svelte > hierarchy > should render a hierarchy parent expanded 1`
           aria-hidden="true"
           class="node-opened"
         />
-      </icon>
+      </rkt-icon>
       <!---->
       <!---->
        

@@ -5,7 +5,7 @@ exports[`Checkbox.svelte > should apply custom class names 1`] = `
   <checkbox
     aria-checked="unchecked"
     aria-disabled="false"
-    class="flex items-center leading-loose cursor-pointer select-none checkbox custom-class"
+    class="checkbox flex cursor-pointer select-none items-center leading-loose custom-class"
     role="checkbox"
     tabindex="0"
   >
@@ -28,7 +28,7 @@ exports[`Checkbox.svelte > should render checkbox 1`] = `
   <checkbox
     aria-checked="unchecked"
     aria-disabled="false"
-    class="flex items-center leading-loose cursor-pointer select-none checkbox "
+    class="checkbox flex cursor-pointer select-none items-center leading-loose "
     role="checkbox"
     tabindex="0"
   >

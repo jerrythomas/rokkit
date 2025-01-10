@@ -3,7 +3,7 @@
 exports[`Radio.svelte > should render using object 1`] = `
 <div>
   <radio-group
-    class="flex flex-col cursor-pointer select-none "
+    class="flex cursor-pointer select-none flex-col "
   >
     <label
       class="flex flex-row-reverse items-center gap-2"
@@ -68,7 +68,7 @@ exports[`Radio.svelte > should render using object 1`] = `
 exports[`Radio.svelte > should render using string array 1`] = `
 <div>
   <radio-group
-    class="flex flex-col cursor-pointer select-none "
+    class="flex cursor-pointer select-none flex-col "
   >
     <label
       class="flex flex-row items-center gap-2"
@@ -133,7 +133,7 @@ exports[`Radio.svelte > should render using string array 1`] = `
 exports[`Radio.svelte > should render with field mapping 1`] = `
 <div>
   <radio-group
-    class="flex flex-col cursor-pointer select-none "
+    class="flex cursor-pointer select-none flex-col "
   >
     <label
       class="flex flex-row-reverse items-center gap-2"
