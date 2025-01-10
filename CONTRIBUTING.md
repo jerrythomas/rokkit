@@ -1,34 +1,17 @@
 # Contributing
 
-Rokkit is a monorepo using [pnpm workspaces](https://pnpm.io/workspaces) for easier organization.
+Arizto is a monorepo using `bun` or [pnpm workspaces](https://pnpm.io/workspaces) for easier organization.
 
 ## Packages
 
-| Package                         |
-| ------------------------------- |
-| [core](packages/core)           |
-| [data](packages/data)           |
-| [actions](packages/actions)     |
-| [stores](packages/stores)       |
-| [atoms](packages/atoms)         |
-| [molecules](packages/molecules) |
-| [organisms](packages/organisms) |
-| [layout](packages/layout)       |
-| [icons](packages/icons)         |
-| [themes](packages/themes)       |
-| [ui](packages/ui)               |
-
-## Sites
-
-| Site                             |
-| -------------------------------- |
-| [learn](sites/learn)             |
-| [quick-start](sites/quick-start) |
+- [@arizto/patterns](packages/patterns) - Pattern matchers and extractors
+- [@arizto/scanner](packages/scanner) - Scanner for searching for media content on folders
+- [@arizto/metadata](packages/metadata) - Enhance metadata using api services like TMDb, ComicVine, etc.
 
 ## Clone or Fork the Project
 
 ```sh
-git clone https://github.com/jerrythomas/rokkit.git
+git clone https://github.com/jerrythomas/arizto.git
 ```
 
 ## Install Dependencies
@@ -36,16 +19,11 @@ git clone https://github.com/jerrythomas/rokkit.git
 If you run this at the root of your project it's going to install the dependecies for every package.
 
 ```sh
-pnpm i
+bun i
 ```
 
-## Docs (Learn Site)
-
-The docs use [SvelteKit](https://kit.svelte.dev/) but you don't have to know SvelteKit to contribute. If you find a mistake you can use the GitHub UI or the web editor if you press `.` in the browser for quick edits.
+## Run Tests
 
 ```sh
-cd sites/learn
-pnpm dev
+bun test:watch
 ```
-
-This is going to start the development server for the docs at http://localhost:5173/.

@@ -1,8 +1,0 @@
-{
-	"extends": "shared-config/svelte-lib.json",
-	"include": ["src/**/*.js", "src/**/*.svelte", "spec/**/*.js"],
-	"exclude": ["src/**/*.spec.js"],
-	"compilerOptions": {
-		"outDir": "dist"
-	}
-}

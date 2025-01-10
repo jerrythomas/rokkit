@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
 // skipcq: JS-C1003 - Importing all components for verification
-import * as utilities from '../src'
+import * as functions from '../src/index.js'
 
-describe('utilities', () => {
-	it('should contain all exported utilities', () => {
-		expect(Object.keys(utilities)).toEqual([
+describe('utils', () => {
+	it('should contain all exported functions', () => {
+		expect(Object.keys(functions)).toEqual([
 			'defaultColors',
 			'syntaxColors',
 			'shades',
@@ -16,49 +16,22 @@ describe('utilities', () => {
 			'defaultThemeMapping',
 			'stateIconsFromNames',
 			'defaultStateIcons',
-			'flattenNestedList',
-			'findValueFromPath',
 			'getComponent',
 			'getIcon',
 			'getValue',
 			'getText',
-			'getFormattedText',
 			'getAttribute',
+			'getFormattedText',
 			'hasChildren',
 			'isExpanded',
 			'isNested',
-			// 'findItemByValue',
-			// 'findItemByIndexArray',
-			// 'findNearestItemBefore',
-			// 'findLastVisibleChild',
-			// 'findNearestItemAfter',
-			'mappedList',
-			'getLineTypes',
-			'generateTicks',
-			'weekdays',
-			'getCalendarDays',
+			'getClosestAncestorWithAttribute',
 			'noop',
 			'id',
 			'isObject',
 			'toString',
 			'iconShortcuts',
-			'scaledPath',
-			'shadesOf',
-			'stateColors',
-			'themeColors',
-			'contrastColors',
-			'themeRules',
-			// 'getRegex',
-			// 'parseFilters',
-			'toInitCapCase',
-			'toPascalCase',
-			'toHyphenCase',
-			'sortByParts',
-			'compareStrings',
-			'uniqueId',
-			'compact',
-			'toHexString',
-			'createEmitter'
+			'scaledPath'
 		])
 	})
 })

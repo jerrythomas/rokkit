@@ -1,8 +1,0 @@
-/* @import '../base.css'; */
-
-.minimal icon[role='button'] {
-  @apply text-neutral-muted hover:text-secondary-600 focus:outline-secondary-600 focus:m-1px focus:rounded;
-}
-.minimal icon.disabled[role='button'] {
-  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
-}

@@ -52,8 +52,10 @@ describe('mapping', () => {
 
 	describe('getIcon', () => {
 		it('should return null if icon is not defined', () => {
-			const result = getIcon(null)
-			expect(result).toEqual(null)
+			expect(getIcon(null)).toEqual(null)
+			expect(getIcon(null, {})).toEqual(null)
+			expect(getIcon('', {})).toEqual(null)
+			expect(getIcon({}, {})).toEqual(null)
 		})
 
 		it('should return icon if value is present', () => {
