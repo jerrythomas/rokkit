@@ -18,27 +18,28 @@ export function getComponent(value, fields, using) {
 /**
  * Get the icon for the item. If the icon is an object, it will use the state to determine which icon to use.
  *
- * @param {object|string}                     value
- * @param {import('./types.js').FieldMapping} fields
- * @returns {string}
- */
-export function getIcon(value, fields = defaultFields) {
-	if (fields.icon === undefined || typeof (value ?? '') !== 'object') return null
-
-	const name = getIconFromObject(value, fields)
-	return fields.iconPrefix ? [fields.iconPrefix, name].join('-') : name
-}
-
-/**
- * Get the icon for the item. If the icon is an object, it will use the state to determine which icon to use.
- *
  * @param {object}                            value
  * @param {import('./types.js').FieldMapping} fields
  * @returns {string}
  */
 function getIconFromObject(value, fields) {
+	if (!value) return null
 	if (typeof value[fields.icon] === 'object') return value[fields.icon][value[fields.state]]
 	return value[fields.icon]
+}
+
+/**
+ * Get the icon for the item. If the icon is an object, it will use the state to determine which icon to use.
+ *
+ * @param {object|string}                     value
+ * @param {import('./types.js').FieldMapping} fields
+ * @returns {string}
+ */
+export function getIcon(value, fields = defaultFields) {
+	if (fields.icon === undefined || typeof value !== 'object') return null
+
+	const name = getIconFromObject(value, fields)
+	return fields.iconPrefix ? [fields.iconPrefix, name].join('-') : name
 }
 
 /**
@@ -69,6 +70,16 @@ export function getText(node, fields = defaultFields) {
 }
 
 /**
+ * Gets the attribute from the node
+ * @param {*}      node
+ * @param {string} attr
+ * @returns {*}
+ */
+export function getAttribute(node, attr) {
+	return typeof node === 'object' && node !== null && attr !== null ? node[attr] : null
+}
+
+/**
  * Get the formatted text for the item. If the text is an object, use the field mapping to determine
  * which attribute to get currency. Use the formatter or identity function to format the text.
  *
@@ -78,21 +89,13 @@ export function getText(node, fields = defaultFields) {
  * @returns {Function}
  */
 export function getFormattedText(node, fields = defaultFields, formatter = toString) {
-	const value = isObject(node) ? node[fields.text] : node
+	const value = getText(node, fields)
 	const currency = getAttribute(node, fields.currency)
 	const formatValue = typeof formatter === 'function' ? formatter : toString
 
 	return currency ? formatValue(value, currency) : formatValue(value)
 }
-/**
- * Gets the attribute from the node
- * @param {*}      node
- * @param {string} attr
- * @returns {*}
- */
-export function getAttribute(node, attr) {
-	return typeof node === 'object' && node !== null && attr !== null ? node[attr] : null
-}
+
 /**
  * Check if the current item is a parent
  *

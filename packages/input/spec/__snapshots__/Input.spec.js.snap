@@ -1,0 +1,30 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HTML Input > should render "InputCheckbox" 1`] = `
+<div>
+  <input
+    type="checkbox"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputCheckbox" as disabled 1`] = `
+<div>
+  <input
+    disabled=""
+    type="checkbox"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputCheckbox" as readonly 1`] = `
+<div>
+  <input
+    readonly=""
+    type="checkbox"
+  />
+  
+</div>
+`;

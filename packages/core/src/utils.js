@@ -1,4 +1,17 @@
 /**
+ * Finds the closest ancestor of the given element that has the given attribute.
+ *
+ * @param {HTMLElement} element
+ * @param {string} attribute
+ * @returns {HTMLElement|null}
+ */
+export function getClosestAncestorWithAttribute(element, attribute) {
+	if (!element) return null
+	if (element.getAttribute(attribute)) return element
+	return getClosestAncestorWithAttribute(element.parentElement, attribute)
+}
+
+/**
  * A function that performs no operations.
  */
 export function noop() {

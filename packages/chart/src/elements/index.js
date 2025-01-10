@@ -1,6 +1,0 @@
-export { default as Bar } from './Bar.svelte'
-export { default as ColorRamp } from './ColorRamp.svelte'
-export { default as ContinuousLegend } from './ContinuousLegend.svelte'
-export { default as Label } from './Label.svelte'
-export { default as DefinePatterns } from './DefinePatterns.svelte'
-export { default as SymbolGrid } from './SymbolGrid.svelte'

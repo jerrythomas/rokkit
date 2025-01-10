@@ -1,7 +1,40 @@
 import { describe, it, expect } from 'vitest'
-import { noop, id, isObject, toString, iconShortcuts, scaledPath } from '../src/utils'
+import {
+	getClosestAncestorWithAttribute,
+	noop,
+	id,
+	isObject,
+	toString,
+	iconShortcuts,
+	scaledPath
+} from '../src/utils.js'
 
 describe('utils', () => {
+	describe('getClosestAncestorWithAttribute', () => {
+		it('should return null if element does not have the given attribute and is orphan', () => {
+			const element = document.createElement('div')
+			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(null)
+		})
+		it('should return the element if it has the given attribute', () => {
+			const element = document.createElement('div')
+			element.setAttribute('data-test', 'test')
+			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(element)
+		})
+		it('should return the element if it has the given attribute and is nested', () => {
+			const parent = document.createElement('div')
+			const element = document.createElement('div')
+			element.setAttribute('data-test', 'test')
+			parent.appendChild(element)
+			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(element)
+		})
+		it('should return the closest ancestor if it has the given attribute', () => {
+			const element = document.createElement('div')
+			const parent = document.createElement('div')
+			parent.setAttribute('data-test', 'test')
+			parent.appendChild(element)
+			expect(getClosestAncestorWithAttribute(element, 'data-test')).toBe(parent)
+		})
+	})
 	describe('noop', () => {
 		it('should be a function', () => {
 			expect(typeof noop).toBe('function')

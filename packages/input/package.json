@@ -1,5 +1,5 @@
 {
-  "name": "@rokkit/core",
+  "name": "@rokkit/input",
   "version": "1.0.0-next.100",
   "module": "src/index.js",
   "type": "module",
@@ -27,6 +27,6 @@
     }
   },
   "dependencies": {
-    "ramda": "^0.30.1"
+
   }
 }

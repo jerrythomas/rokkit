@@ -1,1 +1,1 @@
-pnpm test
+bun run vitest run
