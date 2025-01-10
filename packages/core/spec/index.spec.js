@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 // skipcq: JS-C1003 - Importing all components for verification
 import * as functions from '../src/index.js'
 
-describe('utils', () => {
+describe('@rokkit/core', () => {
 	it('should contain all exported functions', () => {
 		expect(Object.keys(functions)).toEqual([
 			'defaultColors',
@@ -16,22 +16,24 @@ describe('utils', () => {
 			'defaultThemeMapping',
 			'stateIconsFromNames',
 			'defaultStateIcons',
-			'getComponent',
-			'getIcon',
-			'getValue',
-			'getText',
-			'getAttribute',
-			'getFormattedText',
-			'hasChildren',
-			'isExpanded',
-			'isNested',
 			'getClosestAncestorWithAttribute',
 			'noop',
 			'id',
 			'isObject',
 			'toString',
 			'iconShortcuts',
-			'scaledPath'
+			'scaledPath',
+			'flattenNestedList',
+			'findValueFromPath',
+			'toInitCapCase',
+			'toPascalCase',
+			'toHyphenCase',
+			'compareStrings',
+			'sortByParts',
+			'uniqueId',
+			'compact',
+			'toHexString',
+			'FieldMapper'
 		])
 	})
 })

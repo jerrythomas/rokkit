@@ -241,15 +241,4 @@ describe('mapping', () => {
 			expect(isExpanded(null, fields)).toBe(false)
 		})
 	})
-
-	describe('isNested', () => {
-		it('returns true if the item is nested', () => {
-			expect(isNested([{ children: [] }], fields)).toBe(true)
-			expect(isNested(['?', { children: [] }], fields)).toBe(true)
-		})
-
-		it('returns false if the item is not nested', () => {
-			expect(isNested([], fields)).toBe(false)
-		})
-	})
 })

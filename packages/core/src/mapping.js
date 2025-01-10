@@ -39,7 +39,7 @@ export function getIcon(value, fields = defaultFields) {
 	if (fields.icon === undefined || typeof value !== 'object') return null
 
 	const name = getIconFromObject(value, fields)
-	return fields.iconPrefix ? [fields.iconPrefix, name].join('-') : name
+	return name ? [fields.iconPrefix, name].join('-').replace(/^-+/g, '') : null
 }
 
 /**
@@ -124,20 +124,6 @@ export function isExpanded(item, fields) {
 	if (!hasChildren(item, fields)) return false
 	if (fields.isOpen in item) {
 		return item[fields.isOpen]
-	}
-	return false
-}
-
-/**
- * Verify if at least one item has children
- *
- * @param {Array<*>}                       items
- * @param {import('./types').FieldMapping} fields
- * @returns {boolean}
- */
-export function isNested(items, fields) {
-	for (let i = 0; i < items.length; i++) {
-		if (hasChildren(items[i], fields)) return true
 	}
 	return false
 }

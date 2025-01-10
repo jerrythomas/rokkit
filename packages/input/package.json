@@ -11,9 +11,6 @@
     "clean": "rm -rf dist",
     "build": "pnpm clean && pnpm prepublishOnly"
   },
-  "devDependencies": {
-    "vitest": "latest"
-  },
   "files": [
     "src/**/*.js",
     "dist/**/*.d.ts"

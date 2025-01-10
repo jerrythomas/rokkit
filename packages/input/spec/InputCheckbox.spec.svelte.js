@@ -8,7 +8,7 @@ import InputCheckbox from '../src/InputCheckbox.svelte'
 describe('InputCheckbox', () => {
 	beforeEach(() => cleanup())
 
-	it('should render', async () => {
+	it('should render', () => {
 		const props = $state({ value: true })
 		const { container } = render(InputCheckbox, { props })
 		expect(container).toMatchSnapshot()
