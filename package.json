@@ -14,14 +14,17 @@
     "format": "prettier --write .",
     "lint": "eslint --fix",
     "release": "release-it",
-    "release:next": "release-it --no-git --preRelease=next --npm.tag=next"
+    "release:next": "release-it --no-git --preRelease=next --npm.tag=next",
+    "bump:next": "bumpp --preid=next --no-push"
   },
   "devDependencies": {
+    "@release-it-plugins/workspaces": "^4.2.0",
     "@release-it/conventional-changelog": "^9.0.4",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@testing-library/svelte": "^5.2.6",
     "@types/bun": "^1.1.14",
     "@vitest/coverage-v8": "^2.1.8",
+    "bumpp": "^9.10.0",
     "eslint": "^9.17.0",
     "jsdom": "^25.0.1",
     "prettier": "^3.4.2",
@@ -39,5 +42,11 @@
   ],
   "dependencies": {
     "@testing-library/user-event": "^14.5.2"
+  },
+  "release-it": {
+    "plugins": {
+      "@release-it-plugins/workspaces": true
+    },
+    "npm": false
   }
 }

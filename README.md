@@ -18,18 +18,22 @@ Rokkit provides both composable and data-driven components.
 
 Components have been separated into the following packages. Refer to the package [stories](sites/rokkit) for examples of all available UI components. View a live demo [here](https://rokkit.vercel.app/)
 
-- [@rokkit/core](packages/core)
-- [@rokkit/data](packages/data)
-- [@rokkit/actions](packages/actions)
-- [@rokkit/stores](packages/stores)
-- [@rokkit/atoms](packages/atoms)
-- [@rokkit/molecules](packages/molecules)
-- [@rokkit/organisms](packages/organisms)
-- [@rokkit/layout](packages/layout)
-- [@rokkit/chart](packages/chart)
-- [@rokkit/icons](packages/icons)
-- [@rokkit/themes](packages/themes)
-- [@rokkit/ui](packages/ui)
+> _Note:_
+> Currently being rewritten for Svelte 5. Most of the tests were broken after the upgrade from v4 to v5. A rewrite is required to resolve the issues. Minor progress has been made on the following packages. As part of rewrite, the repo has switched simplified bun/vitest monorepo from turbo.
+> [Demo](https://svelte.dev/playground/50ea32fe43b04e8e8d3ddba6f004447e?version=5.17.3)
+
+- [x] [@rokkit/core](packages/core) - partially rewritten
+- [ ] [@rokkit/data](packages/data)
+- [x] [@rokkit/actions](packages/actions) - rewrite in progress
+- [ ] [@rokkit/stores](packages/stores)
+- [x] [@rokkit/atoms](packages/atoms) - rewrite in progress
+- [ ] [@rokkit/molecules](packages/molecules)
+- [ ] [@rokkit/organisms](packages/organisms)
+- [ ] [@rokkit/layout](packages/layout)
+- [ ] [@rokkit/chart](packages/chart)
+- [ ] [@rokkit/icons](packages/icons)
+- [ ] [@rokkit/themes](packages/themes)
+- [ ] [@rokkit/ui](packages/ui)
 
 ## Installation
 
@@ -46,10 +50,10 @@ To use Rokkit in your Svelte project, simply import the desired control and use 
 
 ```svelte
 <script>
-  import { List } from '@rokkit/ui'
+  import { Toggle } from '@rokkit/atoms'
 </script>
 
-<List items={['a', 'b', 'c']} />
+<Toggle options={['a', 'b', 'c']} />
 ```
 
 ## Data-Driven Controls
