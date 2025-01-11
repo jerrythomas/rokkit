@@ -1,0 +1,96 @@
+.material rkt-accordion,
+.material rkt-list {
+  @apply gap-1px rounded;
+}
+.material rkt-list > rkt-item {
+  @apply bg-neutral-subtle;
+}
+.material rkt-item {
+  @apply flex items-center gap-2 px-3 leading-10;
+}
+.material rkt-item > img,
+.material rkt-item > a > img {
+  @apply h-4 w-4 rounded;
+}
+.material .tab.is-hovering {
+  @apply bg-primary;
+}
+
+.material rkt-tabs .tab {
+  @apply cursor-pointer;
+}
+.material rkt-tabs .tab[aria-selected='true'] {
+  @apply border-b-3 border-primary;
+}
+.material rkt-tabs.is-below .tab[aria-selected='true'] {
+  @apply border-t-3 border-b-0;
+}
+
+.material rkt-node > div {
+  @apply h-7 px-2;
+}
+.material rkt-node > rkt-item {
+  @apply gap-1 bg-transparent px-1;
+}
+.material rkt-node > span {
+  @apply w-3;
+}
+
+.material rkt-node > span > rkt-icon {
+  @apply text-sm;
+}
+
+.material rkt-nested-list:focus-within {
+  @apply outline-none;
+}
+
+.material rkt-node > span > i {
+  @apply border-transparent;
+}
+
+.material rkt-accordion .is-expanded summary {
+  @apply border-neutral-muted z-1 sticky top-0 rounded-b-none border-b;
+}
+
+.material rkt-accordion .is-selected summary {
+  @apply border-b-primary text-primary-600 border-b;
+  @apply hover:text-primary-600;
+}
+/* .material rkt-list item[aria-selected='true'] {
+  @apply bg-primary text-primary-800;
+} */
+.material rkt-node[aria-selected='true'],
+.material rkt-list rkt-item[aria-selected='true'] {
+  @apply bg-primary text-neutral-base;
+}
+.material rkt-crumbs {
+  @apply flex-grow gap-1 text-sm;
+}
+
+.material rkt-toggle rkt-item[aria-selected='true'] {
+  @apply bg-primary text-neutral-200 dark:text-neutral-800;
+}
+.material rkt-crumbs rkt-crumb.is-selected {
+  @apply text-secondary;
+}
+
+.material rkt-toggle {
+  @apply mx-auto min-h-6 min-w-12 rounded-full;
+  @apply bg-neutral-subtle border-neutral-muted border;
+  @apply p-2px;
+}
+.material rkt-toggle rkt-item {
+  @apply items-center justify-center gap-1 px-3 leading-tight;
+  @apply min-h-6 min-w-6 cursor-pointer rounded-full;
+}
+
+.material rkt-toggle.compact > rkt-item {
+  @apply gap-0 px-0;
+}
+
+.minimal rkt-tabs .tab rkt-icon[role='img'] {
+  @apply h-6 w-6;
+}
+.minimal rkt-tabs .tab rkt-icon[role='button'] {
+  @apply h-4 w-4;
+}

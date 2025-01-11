@@ -1,0 +1,315 @@
+/* rkt-list styles */
+.rokkit rkt-virtual-list-contents {
+  @apply flex flex-col;
+  @apply gap-1px bg-neutral-inset;
+}
+
+.rokkit rkt-list {
+  @apply gap-1px bg-neutral-subtle;
+}
+
+.rokkit rkt-list > rkt-item,
+.rokkit rkt-virtual-list-contents > rkt-virtual-list-item,
+.rokkit rkt-accordion div summary {
+  @apply bg-neutral-base min-h-10 px-4 leading-10 text-neutral-800;
+}
+.rokkit rkt-accordion > div > summary {
+  @apply bg-gradient from-neutral-subtle to-neutral-muted rounded pr-2;
+}
+
+/* Remove default details marker from summary */
+.rokkit rkt-accordion > div > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Nested rkt-list and Tree styles */
+.rokkit :not(accordion > div) > rkt-list {
+  @apply overflow-y-scroll rounded border border-neutral-400 shadow;
+}
+.rokkit :not(accordion > div) > rkt-list rkt-item {
+  @apply first:rounded-t last:rounded-b;
+}
+
+.rokkit rkt-accordion rkt-list rkt-item {
+  @apply gap-2 last:rounded-b;
+}
+.rokkit rkt-accordion rkt-list rkt-item > a {
+  @apply gap-2;
+}
+.rokkit rkt-accordion rkt-list {
+  @apply rounded-b;
+}
+
+.rokkit rkt-accordion .is-expanded rkt-list {
+  @apply -mt-10 rounded-t pt-10;
+}
+/* Styles for 'tabs' class */
+.rokkit tabs {
+  @apply border-neutral-muted gap-1 border-b-2 px-1;
+}
+.rokkit tabs.is-below {
+  @apply border-b-0 border-t-2;
+}
+.rokkit tabs:focus-within {
+  @apply border-secondary outline-none;
+}
+.rokkit tabs .tab {
+  @apply bg-neutral-base flex-shrink-0 cursor-pointer items-center gap-3 rounded-t px-3 leading-9;
+}
+.rokkit tabs.is-below .tab {
+  @apply rounded-b rounded-t-none;
+}
+.rokkit tabs.is-centered {
+  @apply justify-center;
+}
+.rokkit tabs .tab[aria-selected='true'] {
+  @apply bg-neutral-muted;
+}
+.rokkit tabs:focus-within .tab[aria-selected='true'] {
+  @apply from-primary to-secondary bg-gradient-to-b text-white;
+}
+.rokkit tabs.is-below:focus-within .tab[aria-selected='true'] {
+  @apply bg-gradient-to-t;
+}
+
+/* Styles for 'button' and 'button-group' classes */
+.rokkit button,
+.rokkit .button {
+  @apply bg-neutral-muted flex min-h-9 cursor-pointer items-center gap-3 rounded-full px-6 uppercase text-neutral-700;
+  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+}
+
+.rokkit button.is-primary,
+.rokkit .button.is-primary {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+.rokkit button-group {
+  @apply gap-1px m-auto flex items-center justify-center py-1;
+}
+
+.rokkit button-group button {
+  @apply flex rounded-none px-2 pt-0.5 uppercase focus:outline-none;
+}
+.rokkit button-group button:first-child {
+  @apply rounded-l-full pl-3;
+}
+.rokkit button-group button:last-child {
+  @apply rounded-r-full pr-3;
+}
+
+.rokkit button-group button.active {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+/* Input and Drop-down styles */
+.rokkit input-select,
+.rokkit drop-down > button {
+  @apply rounded;
+  /* @apply border border-neutral-muted; */
+}
+
+.rokkit drop-down > button {
+  @apply bg-neutral-base p-0;
+}
+.rokkit drop-down > button > span {
+  @apply rounded py-0;
+}
+.rokkit drop-down > button > span > * {
+  @apply h-full items-center;
+}
+
+.rokkit :not(field) > input-select {
+  @apply bg-neutral-base border-neutral-muted p-2px border;
+}
+.rokkit :not(field) > input-select > selected-item {
+  @apply bg-neutral-subtle;
+}
+.rokkit :not(field) > input-select:focus-within,
+.rokkit drop-down:focus-within > button {
+  /* @apply p-2px; */
+  @apply border-none outline-none;
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+/* .rokkit :not(field) > input-select:focus-within > selected-item,
+.rokkit drop-down:focus-within > button > span {
+  @apply bg-neutral-muted outline-none min-h-10;
+} */
+
+/* Hover and rkt-icon styles */
+/* .rokkit input-select:hover > rkt-icon,
+.rokkit drop-down:hover > rkt-icon {
+  @apply border-neutral;
+} */
+
+/* Scroll styles */
+.rokkit input-select scroll,
+.rokkit input-select rkt-virtual-list {
+  @apply my-1 rounded shadow-lg;
+}
+
+/* .rokkit input-select > selected-item > items {
+  @apply flex-grow flex-wrap gap-2;
+} */
+
+/* rkt-accordion styles */
+.rokkit rkt-accordion {
+  @apply flex-grow gap-1 overflow-y-scroll;
+}
+.rokkit rkt-accordion > div {
+  @apply relative rounded shadow;
+}
+
+/* Nested rkt-list and rkt-node styles */
+.rokkit rkt-nested-list {
+  @apply text-neutral-800;
+}
+.rokkit rkt-nested-list rkt-node > div {
+  @apply h-8 px-2;
+}
+
+/* Tree styles */
+.rokkit tree {
+  @apply rounded;
+}
+
+/* Focus styles for Nested rkt-list, Tree, and rkt-accordion */
+.rokkit rkt-nested-list,
+.rokkit rkt-nested-list:focus-within,
+.rokkit tree:focus-within {
+  @apply rounded outline-none;
+}
+
+.rokkit rkt-accordion,
+.rokkit rkt-list,
+.rokkit rkt-virtual-list-viewport {
+  @apply rounded;
+}
+
+/* Remove outline from focused elements */
+.rokkit rkt-accordion:focus-within rkt-list,
+.rokkit drop-down:focus-within rkt-list,
+.rokkit input-select:focus-within rkt-list,
+.rokkit input-select:focus-within rkt-virtual-list-viewport {
+  @apply outline-none focus:outline-none;
+}
+
+/* Focus and Hover styles for rkt-list and rkt-node */
+.rokkit rkt-list:focus {
+  @apply outline-secondary outline;
+}
+/* .rokkit rkt-list rkt-item.is-hovering, */
+/* .rokkit rkt-virtual-list rkt-item.is-hovering, */
+.rokkit rkt-list rkt-item:hover,
+.rokkit rkt-virtual-list-contents rkt-virtual-list-item:hover,
+.rokkit rkt-node > div:hover {
+  @apply bg-neutral-subtle;
+}
+
+/* Selected and Hover styles for rkt-list and rkt-node */
+.rokkit rkt-list rkt-item[aria-selected='true'] > a {
+  @apply text-white;
+}
+.rokkit rkt-virtual-list-item[aria-current='true'] {
+  @apply bg-neutral-inset text-secondary;
+}
+
+/* Expanded and Selected styles for rkt-accordion */
+.rokkit rkt-accordion .is-expanded summary {
+  @apply border-neutral-muted z-1 sticky top-0 rounded-b-none border-b;
+}
+
+.rokkit rkt-accordion [aria-selected='true'] summary {
+  @apply bg-neutral-subtle;
+}
+.rokkit rkt-accordion:focus-within [aria-selected='true'] summary {
+  @apply from-primary to-secondary bg-gradient-to-r text-white outline-none;
+}
+
+/* Border styles for rkt-accordion */
+.rokkit rkt-accordion > div {
+  @apply border-neutral-muted border;
+}
+
+/* Folder Tree styles */
+.rokkit .folder-tree {
+  @apply bg-neutral-inset h-full;
+}
+.rokkit .folder-tree rkt-nested-list {
+  @apply bg-neutral-inset h-full;
+}
+.rokkit rkt-node > div > rkt-item {
+  @apply px-1;
+}
+.rokkit rkt-node > div > span {
+  @apply flex-shrink-0;
+}
+.rokkit rkt-node > div > span > i {
+  @apply border-neutral-muted;
+}
+.rokkit rkt-node > div > rkt-icon > i {
+  @apply text-neutral-elevated;
+}
+
+/* Toggle Switch styles */
+.rokkit rkt-toggle {
+  @apply mx-auto min-w-12 rounded-full;
+  @apply bg-neutral-subtle border-neutral-muted border;
+  @apply p-2px leading-loose;
+}
+.rokkit rkt-toggle:focus-within {
+  @apply outline-secondary outline;
+}
+.rokkit rkt-toggle rkt-item {
+  @apply items-center justify-center gap-1 px-3 py-0 leading-loose;
+  @apply min-h-6 min-w-6 cursor-pointer rounded-full;
+}
+.rokkit rkt-toggle rkt-item > rkt-icon > i {
+  @apply text-lg;
+}
+
+.rokkit rkt-toggle rkt-item[aria-selected='true'] {
+  @apply from-neutral-muted to-neutral-muted bg-gradient-to-r;
+}
+
+.rokkit rkt-toggle.compact > rkt-item {
+  @apply gap-0 px-0;
+}
+.rokkit rkt-virtual-list-viewport {
+  @apply border-neutral-inset box-content border;
+}
+.rokkit rkt-virtual-list-viewport:focus-within {
+  @apply outline-none;
+}
+.rokkit rkt-virtual-list {
+  @apply p-2px border-neutral-muted rounded border from-transparent to-transparent;
+}
+.rokkit rkt-virtual-list:focus-within {
+  @apply from-primary to-secondary bg-gradient-to-r;
+}
+
+.rokkit rkt-list rkt-item[aria-selected='true'],
+.rokkit rkt-virtual-list-contents rkt-virtual-list-item[aria-selected='true'],
+.rokkit rkt-node[aria-selected='true'] > div {
+  @apply from-neutral-subtle to-neutral-subtle bg-gradient-to-r text-neutral-800;
+}
+/* Focus and Hover styles for Toggle Switch, rkt-list, Tree, and Nested rkt-list */
+.rokkit rkt-toggle:focus-within rkt-item[aria-selected='true'],
+.rokkit rkt-list:focus-within rkt-item[aria-selected='true'],
+.rokkit rkt-virtual-list-viewport:focus-within rkt-virtual-list-item[aria-selected='true'],
+.rokkit tree:focus-within rkt-node[aria-selected='true'] > div,
+.rokkit rkt-nested-list:focus-within rkt-node[aria-selected='true'] > div {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+  @apply hover:from-secondary hover:to-primary;
+}
+
+.rokkit rkt-toggle[aria-disabled='true'] {
+  @apply bg-neutral-muted cursor-not-allowed text-neutral-500;
+}
+.rokkit rkt-input-select > rkt-selected-item > rkt-items {
+  @apply flex-grow flex-wrap gap-2;
+}
+
+.rokkit rkt-container:focus-within {
+  @apply outline-none;
+}

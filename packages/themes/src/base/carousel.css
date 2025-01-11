@@ -1,0 +1,18 @@
+rkt-carousel rkt-slide {
+  @apply min-h-100 items-center gap-3 px-12;
+}
+rkt-carousel rkt-slide > img {
+  @apply h-80 w-80 object-cover;
+}
+rkt-carousel rkt-slide > p {
+  @apply text-center text-xl;
+}
+rkt-carousel rkt-dot-nav {
+  @apply flex h-4 w-full justify-center gap-2;
+}
+rkt-carousel rkt-dot {
+  @apply m-0 block h-4 w-4 cursor-pointer rounded-full p-0 focus:outline-none;
+}
+rkt-carousel rkt-dot[aria-checked='true'] {
+  @apply bg-primary;
+}

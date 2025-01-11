@@ -1,0 +1,26 @@
+rkt-input-select,
+rkt-drop-down {
+  @apply cursor-pointer overflow-visible;
+}
+
+rkt-input-field rkt-field {
+  @apply gap-1px;
+}
+rkt-input-field rkt-field rkt-icon {
+  @apply bg-neutral-subtle h-9 w-9 text-neutral-800;
+}
+
+rkt-input-field > rkt-field > rkt-input-select {
+  @apply px-0;
+}
+
+rkt-input-select rkt-selected-item > rkt-icon,
+rkt-drop-down > button > span > rkt-icon {
+  @apply h-full w-9;
+}
+rkt-input-select > rkt-selected-item,
+rkt-drop-down > button > span {
+  /* @apply bg-neutral-base pl-3; */
+  @apply min-h-9 items-center gap-2 pl-3 normal-case;
+  @apply rounded text-neutral-800;
+}

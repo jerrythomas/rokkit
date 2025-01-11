@@ -1,0 +1,44 @@
+.minimal rkt-tabs:focus {
+  @apply outline-none;
+}
+.minimal rkt-tabs {
+  @apply border-neutral-subtle box-border cursor-pointer select-none gap-2 border-b-2 px-2;
+}
+.minimal rkt-tabs .tab {
+  @apply px-2 text-base leading-8;
+}
+.minimal rkt-tabs .tab rkt-icon[role='img'] {
+  @apply h-6 w-6;
+}
+.minimal rkt-tabs .tab rkt-icon[role='button'] {
+  @apply h-4 w-4;
+}
+.minimal rkt-tabs.is-below {
+  @apply border-b-none border-t-2;
+}
+.minimal rkt-tabs > p {
+  @apply pr-4;
+}
+.minimal rkt-tabs .tab {
+  @apply relative flex items-center gap-1;
+}
+.minimal rkt-tabs .tab > img {
+  @apply h-5 w-5;
+}
+
+.minimal rkt-tabs .tab[aria-selected='true'] {
+  @apply -mb-2px border-secondary-600 border-b-2;
+}
+.minimal rkt-tabs.is-below .tab {
+  @apply pt-2px;
+}
+.minimal rkt-tabs.is-below .tab[aria-selected='true'] {
+  @apply -mt-2px border-b-none border-b-secondary-600 mb-0 border-t-2;
+}
+
+.minimal .small rkt-tabs .tab {
+  @apply px-2 text-sm leading-8;
+}
+.minimal .small rkt-tabs rkt-tab > img {
+  @apply h-5 w-5;
+}

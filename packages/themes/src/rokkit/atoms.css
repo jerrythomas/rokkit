@@ -1,0 +1,69 @@
+/* General styles */
+.rokkit {
+  @apply select-none;
+}
+
+/* Zebra styles */
+.rokkit .zebra rkt-item {
+  @apply even:bg-neutral-zebra hover:bg-neutral-50;
+}
+
+/* Styles for 'rkt-icon' class */
+.rokkit rkt-icon {
+  @apply text-neutral-700 focus:outline-none;
+}
+.rokkit button {
+  @apply hover:text-secondary rounded-md text-neutral-700 focus:rounded;
+}
+.rokkit button:focus {
+  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 outline-none dark:text-neutral-800;
+}
+.rokkit button:disabled {
+  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
+}
+
+/* Styles for input[type='number'] */
+.rokkit input[type='number'] {
+  @apply text-right;
+}
+.rokkit input[type='number']::-webkit-inner-spin-button,
+.rokkit input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.rokkit rkt-progress-bar rkt-value-bar {
+  @apply from-primary to-secondary text-neutral-subtle bg-gradient-to-r dark:text-neutral-800;
+}
+
+/* Styles for 'searchable' class */
+.searchable input {
+  @apply border-neutral-subtle border;
+}
+
+.rokkit a {
+  @apply text-primary-800 cursor-pointer underline underline-offset-4;
+  /* text-underline-offset: 0.25rem; */
+}
+.rokkit a:hover {
+  @apply text-secondary-700 cursor-pointer;
+}
+.rokkit a:visited {
+  @apply text-primary-700;
+}
+.rokkit a:focus {
+  @apply outline-none;
+}
+
+.rokkit [aria-current='true'] a {
+  @apply text-primary-100;
+}
+.rokkit [aria-current='true'] a:visited {
+  @apply text-primary-100;
+}
+.rokkit [aria-current='true'] a:hover {
+  @apply text-primary-100;
+}
+
+.rokkit.dark ::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

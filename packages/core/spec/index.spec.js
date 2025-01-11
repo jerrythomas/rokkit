@@ -33,7 +33,12 @@ describe('@rokkit/core', () => {
 			'uniqueId',
 			'compact',
 			'toHexString',
-			'FieldMapper'
+			'FieldMapper',
+			'shadesOf',
+			'stateColors',
+			'themeColors',
+			'contrastColors',
+			'themeRules'
 		])
 	})
 })

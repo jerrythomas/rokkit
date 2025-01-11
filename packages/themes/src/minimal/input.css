@@ -1,0 +1,154 @@
+/* .minimal input, */
+
+.minimal textarea,
+.minimal select,
+.minimal fieldset {
+  @apply border-neutral-muted rounded border px-2 leading-loose outline-none;
+}
+
+.minimal fieldset {
+  @apply gap-2 rounded-md p-4 pt-2;
+}
+.minimal fieldset legend {
+  @apply border-neutral-muted hover:text-primary select-none rounded-md border-l border-r px-2 leading-tight;
+}
+.minimal fieldset rkt-icon {
+  @apply text-2xl;
+}
+
+.minimal input-field {
+  @apply m-0 w-full py-1;
+}
+
+.minimal input-field field {
+  @apply border-b-1 border-neutral-muted box-border min-h-9 overflow-hidden;
+  @apply focus-within:border-b-secondary-600;
+}
+.minimal input-field:focus-within label {
+  @apply text-secondary-600;
+}
+.minimal input-field span {
+  @apply border-neutral-muted bg-neutral-base aspect-square h-full border-r px-1;
+}
+.minimal input-field input,
+.minimal input-field textarea,
+.minimal input-field select,
+.minimal input-field > field > :not(icon) {
+  @apply flex-grow border-0 bg-transparent focus:outline-none;
+}
+
+.minimal input-field label {
+  @apply text-neutral w-full text-sm uppercase leading-6;
+}
+.minimal input-field message {
+  @apply bg-neutral-base rounded px-2 py-1;
+}
+
+.minimal input-field.fail {
+  @apply bg-error rounded px-2;
+}
+
+.minimal input-range range-track {
+  @apply relative mt-3 h-1;
+}
+.minimal input-range range-track span {
+  @apply bg-neutral-subtle border-neutral-muted box-border rounded-full;
+}
+.minimal input-range range-track selected {
+  @apply -top-0px -bottom-0px border-secondary bg-secondary-600 rounded-full border;
+}
+.minimal input-range range-track thumb {
+  @apply rounded-full;
+}
+
+.minimal input-range range-ticks {
+  font-size: 6px;
+  @apply bg-primary-100;
+}
+
+.minimal .bookend range-track span::before,
+.minimal .bookend range-track span::after {
+  content: '';
+  @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
+}
+.minimal .bookend range-track span::before {
+  @apply -left-1px;
+}
+.minimal .bookend range-track span::after {
+  @apply -right-2px;
+}
+
+/* .minimal tick {
+  @apply h-6;
+} */
+.minimal tick span {
+  @apply border-neutral h-full;
+}
+.minimal tick p {
+  @apply items-top;
+  font-size: 8px;
+}
+
+.minimal thumb {
+  @apply bg-secondary border-secondary -top-1.5 border shadow-xl;
+}
+.minimal thumb.sliding::before {
+  content: '';
+  @apply bg-secondary-400 absolute bottom-0 left-0 right-0 top-0 rounded-full opacity-30;
+  transform: scale(2, 2);
+}
+
+.minimal rating {
+  @apply text-secondary-600 text-xl focus:outline-none;
+}
+.minimal rating > rkt-icon {
+  @apply w-8;
+}
+.minimal rating:focus-within rkt-icon[aria-checked='true'] {
+  @apply text-primary-600;
+}
+
+.minimal rating rkt-icon.hovering > i {
+  @apply text-secondary-600;
+}
+/* .error,
+.fail {
+	input,
+	textarea,
+	select {
+		@apply text-error border-error bg-error;
+	}
+	message {
+		@apply text-error bg-error rounded-md;
+	}
+}
+.info {
+	input,
+	textarea,
+	select {
+		@apply text-info border-info;
+	}
+	message {
+		@apply text-info bg-info rounded-md;
+	}
+}
+.warn {
+	input,
+	textarea,
+	select {
+		@apply text-warn border-warn bg-warn;
+	}
+	message {
+		@apply text-warn bg-warn rounded-md;
+	}
+}
+.pass {
+	input,
+	textarea,
+	select {
+		@apply text-pass border-pass bg-pass;
+	}
+	message {
+		@apply text-pass bg-pass rounded-md;
+	}
+} */

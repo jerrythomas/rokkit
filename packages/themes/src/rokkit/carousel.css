@@ -1,0 +1,19 @@
+rkt-carousel rkt-slide {
+  @apply min-h-100 items-center gap-3 px-12;
+}
+rkt-carousel rkt-slide > img {
+  @apply h-80 w-80 object-cover;
+}
+rkt-carousel rkt-slide > p {
+  @apply text-center text-2xl;
+}
+rkt-carousel rkt-dot-nav {
+  @apply flex h-4 w-full justify-center gap-2;
+}
+rkt-carousel rkt-dot {
+  /* @apply block h-4 w-4 p-0 m-0 text-xs rounded-full bg-neutral-subtle cursor-pointer focus:outline-none; */
+  @apply from-neutral-subtle to-neutral-subtle bg-gradient-to-r;
+}
+rkt-carousel rkt-dot[aria-checked='true'] {
+  @apply from-primary to-secondary bg-gradient-to-r;
+}
