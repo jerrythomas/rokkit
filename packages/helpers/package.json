@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/helpers",
-  "version": "1.0.0-next.103",
+  "version": "1.0.0-next.104",
   "description": "Custom matchers for vitest.",
   "publishConfig": {
     "access": "public"
