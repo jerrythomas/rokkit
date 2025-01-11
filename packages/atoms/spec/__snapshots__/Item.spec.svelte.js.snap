@@ -1,0 +1,99 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Item > should render 1`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    Hello
+  </p>
+  
+</div>
+`;
+
+exports[`Item > should render 2`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    World
+  </p>
+  
+</div>
+`;
+
+exports[`Item > should render with custom mapping 1`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    
+  </p>
+  
+</div>
+`;
+
+exports[`Item > should render with custom mapping 2`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    World
+  </p>
+  
+</div>
+`;
+
+exports[`Item > should render with custom mapping 3`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    World
+  </p>
+  
+</div>
+`;
+
+exports[`Item > should render with icon 1`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    Hello
+  </p>
+  
+</div>
+`;
+
+exports[`Item > should render with image 1`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    Hello
+  </p>
+  
+</div>
+`;

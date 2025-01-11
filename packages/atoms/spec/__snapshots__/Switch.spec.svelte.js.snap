@@ -1,0 +1,1445 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Switch > should render 1`] = `
+<rkt-switch
+  aria-disabled="false"
+  aria-label="Toggle Switch"
+  aria-orientation="horizontal"
+  class=""
+  role="listbox"
+  tabindex="0"
+>
+  <rkt-item
+    aria-selected="false"
+    class="relative"
+    data-path="0"
+    role="option"
+  >
+    <!---->
+     
+    <!---->
+  </rkt-item>
+  <rkt-item
+    aria-selected="false"
+    class="relative"
+    data-path="1"
+    role="option"
+  >
+    <!---->
+     
+    <!---->
+  </rkt-item>
+  
+</rkt-switch>
+`;
+
+exports[`Switch > should render with error for invalid options 1`] = `null`;
+
+exports[`Switch > should render with object options 1`] = `
+<rkt-switch
+  aria-disabled="false"
+  aria-label="Toggle Switch"
+  aria-orientation="horizontal"
+  class="is-off"
+  role="listbox"
+  tabindex="0"
+>
+  <rkt-item
+    aria-selected="true"
+    class="relative"
+    data-path="0"
+    role="option"
+  >
+    <rkt-indicator
+      class="absolute bottom-0 left-0 right-0 top-0"
+    />
+    <!---->
+     
+    <!---->
+  </rkt-item>
+  <rkt-item
+    aria-selected="false"
+    class="relative"
+    data-path="1"
+    role="option"
+  >
+    <!---->
+     
+    <!---->
+  </rkt-item>
+  
+</rkt-switch>
+`;
+
+exports[`Switch > should render with options 1`] = `
+<rkt-switch
+  aria-disabled="false"
+  aria-label="Toggle Switch"
+  aria-orientation="horizontal"
+  class=""
+  role="listbox"
+  tabindex="0"
+>
+  <rkt-item
+    aria-selected="false"
+    class="relative"
+    data-path="0"
+    role="option"
+  >
+    <!---->
+     
+    <!---->
+  </rkt-item>
+  <rkt-item
+    aria-selected="false"
+    class="relative"
+    data-path="1"
+    role="option"
+  >
+    <!---->
+     
+    <!---->
+  </rkt-item>
+  
+</rkt-switch>
+`;
+
+exports[`Switch > should switch options on click 1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on click 2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-on"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown   1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown   2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-on"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown   3`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowDown 1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowDown 2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-on"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowDown 3`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="2"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="2"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="2"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowRight 1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowRight 2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-on"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowRight 3`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowUp 1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="2"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowUp 2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="2"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown ArrowUp 3`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="2"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown Enter 1`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown Enter 2`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-on"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;
+
+exports[`Switch > should switch options on keydown Enter 3`] = `
+<div>
+  <!---->
+  <rkt-switch
+    aria-disabled="false"
+    aria-label="Toggle Switch"
+    aria-orientation="horizontal"
+    class="is-off"
+    role="listbox"
+    tabindex="0"
+  >
+    <rkt-item
+      aria-selected="true"
+      class="relative"
+      data-path="0"
+      role="option"
+    >
+      <rkt-indicator
+        class="absolute bottom-0 left-0 right-0 top-0"
+      />
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      
+      <!---->
+    </rkt-item>
+    <rkt-item
+      aria-selected="false"
+      class="relative"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+       
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      
+      <!---->
+    </rkt-item>
+    
+  </rkt-switch>
+  
+  
+</div>
+`;

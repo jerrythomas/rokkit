@@ -1,9 +1,10 @@
 {
-  "name": "@rokkit/input",
+  "name": "@rokkit/atoms",
   "version": "1.0.0-next.100",
-  "module": "src/index.js",
+  "description": "Atomic components are small, reusable building blocks that can be combined to create complex UI elements",
   "author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
+  "module": "src/index.js",
   "type": "module",
   "publishConfig": {
     "access": "public"

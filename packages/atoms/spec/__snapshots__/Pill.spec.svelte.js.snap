@@ -1,0 +1,134 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Pill > should render 1`] = `
+<div>
+  <rkt-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+     
+    <!---->
+  </rkt-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render with close button 1`] = `
+<div>
+  <rkt-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+     
+    <button>
+      <rkt-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rkt-icon>
+      <!---->
+    </button>
+    <!---->
+  </rkt-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render with disabled close button 1`] = `
+<div>
+  <rkt-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+     
+    <button
+      disabled=""
+    >
+      <rkt-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rkt-icon>
+      <!---->
+    </button>
+    <!---->
+  </rkt-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render with icon 1`] = `
+<div>
+  <rkt-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+     
+    <!---->
+  </rkt-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render with image 1`] = `
+<div>
+  <rkt-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+     
+    <!---->
+  </rkt-pill>
+  
+</div>
+`;

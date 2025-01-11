@@ -1,0 +1,33 @@
+{
+  "name": "@rokkit/helpers",
+  "version": "1.0.0-next.100",
+  "description": "Custom matchers for vitest.",
+  "keywords": [
+    "vitest",
+    "matchers",
+    "validators",
+    "svelte"
+  ],
+  "author": "Jerry Thomas<me@jerrythomas.name>",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./mocks": "./src/mocks/index.js",
+    "./matchers": "./src/matchers/index.js",
+    "./simulators": "./src/simulators/index.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "pnpm clean && pnpm prepublishOnly"
+  },
+  "dependencies": {
+    "@vitest/expect": "^2.1.8",
+    "ramda": "^0.30.1"
+  }
+}
