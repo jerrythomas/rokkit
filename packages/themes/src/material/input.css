@@ -1,0 +1,65 @@
+.material input {
+  @apply border-box focus:outline-none;
+}
+.material rkt-input-field {
+  @apply border-neutral-muted box-border rounded border;
+  @apply relative pb-0 leading-loose text-neutral-800;
+}
+.material rkt-input-field.empty label {
+  @apply absolute top-0 my-3.5 align-middle;
+}
+
+.material rkt-input-field input,
+.material rkt-input-field > field > :not(icon) {
+  @apply border-none bg-transparent focus:outline-none;
+}
+
+.material rkt-input-field:focus-within {
+  @apply border-primary;
+}
+
+.material rkt-input-field label,
+.material rkt-input-field:focus-within label {
+  @apply bg-neutral-base z-1 absolute block;
+  @apply -top-2 left-3 my-0 px-1 leading-tight opacity-100;
+}
+
+.material rkt-input-select {
+  @apply cursor-pointer select-none rounded;
+}
+.material rkt-input-select > selected-item {
+  @apply bg-neutral-base h-10 items-center pl-4 pr-0 normal-case;
+  @apply border-neutral-muted rounded border text-neutral-800;
+  @apply hover:bg-neutral-muted hover:border-secondary-600;
+}
+
+.material rkt-input-select:hover square-icon {
+  @apply border-neutral;
+}
+.material rkt-input-select scroll {
+  @apply mt-2 shadow-lg;
+}
+
+.material rkt-input-range range-track selected {
+  @apply bg-primary border-0;
+}
+.material rkt-input-range range-track rkt-thumb {
+  @apply bg-primary-600 -top-1.5;
+}
+.material rkt-input-range rkt-thumb.sliding::before {
+  @apply bg-primary-400;
+}
+
+.material rkt-rating {
+  @apply text-xl text-neutral-600 focus:outline-none;
+}
+.material rkt-rating > rkt-icon {
+  @apply w-8;
+}
+.material rkt-rating:focus-within rkt-icon[aria-checked='true'] {
+  @apply text-secondary;
+}
+
+.material rkt-rating rkt-icon.hovering > i {
+  @apply text-primary;
+}

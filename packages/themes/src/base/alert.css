@@ -1,0 +1,30 @@
+/* Alert styles */
+rkt-alert-list {
+  @apply right-8 top-12 w-80;
+}
+
+rkt-alert,
+rkt-error,
+rkt-info,
+rkt-warning,
+rkt-success {
+  @apply cursor-pointer select-none rounded border px-4 py-2;
+}
+
+rkt-alert.error,
+rkt-alert.danger,
+rkt-error {
+  @apply bg-error text-error-contrast border-error-muted;
+}
+rkt-alert.info,
+rkt-info {
+  @apply bg-info text-info-contrast border-info-muted;
+}
+rkt-alert.warning,
+rkt-warning {
+  @apply bg-warn text-warn-contrast border-warn-muted;
+}
+rkt-alert.success,
+rkt-success {
+  @apply bg-success text-success-contrast border-success-muted;
+}

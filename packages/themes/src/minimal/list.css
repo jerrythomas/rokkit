@@ -1,0 +1,136 @@
+.minimal rkt-item {
+  @apply flex items-center gap-1;
+}
+.minimal rkt-accordion {
+  @apply flex-grow overflow-y-scroll focus-within:outline-none;
+}
+.minimal rkt-accordion > div,
+.minimal rkt-accordion > details {
+  @apply relative;
+}
+.minimal rkt-list,
+.minimal rkt-accordion summary {
+  @apply border-l-2px border-l-neutral-muted;
+}
+.minimal :not(accordion > div) rkt-list:focus-within {
+  @apply outline-offset-3 outline-secondary-700 outline;
+}
+.minimal rkt-list > rkt-item,
+.minimal rkt-accordion summary {
+  @apply bg-neutral-base items-center px-2 leading-8 text-neutral-700;
+}
+
+.minimal rkt-item > a {
+  @apply gap-2 px-0;
+}
+
+.minimal rkt-list rkt-item:hover {
+  @apply -m-l-2px border-l-2px border-l-neutral-subtle;
+}
+.minimal rkt-accordion summary:hover {
+  @apply border-l-neutral-subtle;
+}
+.minimal rkt-list rkt-item[aria-selected='true'] {
+  @apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-neutral-subtle;
+}
+.minimal rkt-accordion .is-selected summary {
+  @apply border-l-2px border-l-secondary-600 bg-neutral-subtle;
+}
+
+.minimal rkt-accordion .is-expanded summary {
+  @apply z-1 sticky top-0;
+}
+.minimal rkt-accordion rkt-item > a {
+  @apply px-0;
+}
+.minimal rkt-item > img,
+.minimal rkt-item > a > img {
+  @apply h-6 w-6;
+}
+
+.minimal rkt-accordion .is-selected summary,
+.minimal rkt-accordion .is-selected summary > a,
+.minimal rkt-accordion rkt-item[aria-selected='true'],
+.minimal rkt-accordion rkt-item[aria-selected='true'] > a {
+  @apply text-secondary-600;
+  /* @apply hover:text-secondary; */
+}
+
+/* .minimal nested-list {
+  @apply text-sm;
+} */
+.minimal rkt-node > div {
+  @apply h-7 px-2 py-1;
+}
+.minimal rkt-node > rkt-item {
+  @apply gap-1 px-1;
+}
+.minimal rkt-node > div > span > i {
+  @apply w-3 border-none;
+}
+.minimal rkt-node > div > rkt-icon {
+  @apply text-xs text-neutral-400;
+}
+.minimal rkt-node[aria-selected='true'] > rkt-item > p {
+  @apply text-secondary-600;
+}
+.minimal rkt-node.is-selected rkt-icon {
+  @apply text-secondary-600;
+  @apply hover:text-secondary-600;
+}
+
+.minimal .small rkt-list > rkt-item,
+.minimal .small rkt-accordion summary {
+  @apply text-sm;
+}
+
+.minimal .small rkt-node > div {
+  @apply h-5 gap-1 text-sm;
+}
+.minimal .small rkt-node > div > rkt-icon {
+  @apply text-sm;
+}
+.minimal .small rkt-item > img,
+.minimal .small rkt-item > a > img {
+  @apply h-4 w-4;
+}
+.minimal .small rkt-item > a > rkt-icon {
+  @apply text-sm leading-6;
+}
+.minimal rkt-accordion.indented rkt-list > rkt-item {
+  @apply px-4;
+}
+
+.minimal .folder-tree {
+  @apply bg-neutral-inset h-full min-w-40;
+}
+
+/* .minimal rkt-node > div > i {
+  @apply border-neutral-muted;
+} */
+
+.minimal rkt-crumbs {
+  @apply flex-grow gap-1 text-sm;
+}
+.minimal rkt-crumbs rkt-crumb.is-selected {
+  @apply text-secondary;
+}
+
+.minimal rkt-toggle {
+  @apply mx-auto min-h-6 min-w-12 rounded;
+  @apply bg-neutral-subtle border-neutral-muted border;
+  @apply p-2px leading-loose;
+}
+.minimal rkt-toggle rkt-item {
+  @apply items-center justify-center gap-1 px-3;
+  @apply min-h-6 min-w-6 cursor-pointer rounded;
+}
+.minimal rkt-toggle.compact {
+  @apply rounded-full;
+}
+.minimal rkt-toggle.compact > rkt-item {
+  @apply gap-0 rounded-full px-0;
+}
+.minimal rkt-toggle rkt-item[aria-selected='true'] {
+  @apply bg-secondary text-neutral-800;
+}

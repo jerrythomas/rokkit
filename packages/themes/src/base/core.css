@@ -1,0 +1,84 @@
+/* Global styles */
+*:focus {
+  @apply outline-secondary outline outline-2 outline-offset-2;
+}
+*[tabindex='-1']:focus {
+  @apply outline-none;
+}
+
+/* Body styles */
+body {
+  @apply flex w-screen flex-col overflow-hidden;
+  /* height: var(--viewport-height, 100dvh); */
+  height: 100vh;
+  height: --webkit-fill-available;
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+/* Link styles */
+a {
+  @apply text-primary-800 hover:text-secondary-800 visited:text-secondary-700 cursor-pointer;
+}
+a:focus {
+  @apply outline-none;
+}
+/* Code styles */
+code,
+kbd,
+samp,
+pre {
+  @apply font-mono font-medium;
+}
+
+/* Disabled styles */
+.disabled {
+  @apply text-disabled;
+}
+input[disabled='true'],
+textarea[disabled='true'],
+select[disabled='true'] {
+  @apply outline-disabled;
+}
+
+/* plots*/
+rkt-plot {
+  @apply bg-neutral-inset rounded-md p-4;
+}
+g[aria-label='tip'] {
+  --plot-background: var(--neutral-200);
+}
+
+rkt-input-field input,
+rkt-input-field toggle-switch,
+rkt-drop-down {
+  @apply focus:outline-none;
+}
+
+rkt-alert,
+rkt-error,
+rkt-info,
+rkt-warning,
+rkt-success {
+  @apply cursor-pointer select-none rounded border px-4 py-2;
+}
+
+rkt-checkbox {
+  @apply gap-2;
+}
+
+button:disabled {
+  @apply bg-neutral-muted cursor-not-allowed text-neutral-500;
+}
+
+rkt-cell.cell-type-string {
+  @apply text-left;
+}
+rkt-cell.cell-type-integer rkt-itemp,
+rkt-cell.cell-type-number rkt-itemp {
+  @apply text-right;
+}
+
+rkt-cell rkt-item {
+  @apply flex w-full;
+}

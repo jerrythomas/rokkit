@@ -1,0 +1,18 @@
+rkt-tree,
+rkt-nested-list {
+  @apply flex w-full flex-col text-sm;
+}
+rkt-nested-list rkt-node > div {
+  @apply h-8 px-2;
+}
+
+rkt-nested-list rkt-node {
+  @apply flex flex-col;
+}
+
+rkt-node > div > rkt-item {
+  @apply px-1;
+}
+rkt-node > div > span {
+  @apply flex-shrink-0;
+}

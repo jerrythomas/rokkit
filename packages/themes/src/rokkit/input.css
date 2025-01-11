@@ -1,0 +1,36 @@
+/* Styles for 'rkt-input-field' class */
+.rokkit rkt-input-field rkt-field {
+  @apply p-2px border-neutral-muted box-border rounded border;
+}
+.rokkit rkt-input-field input,
+.rokkit rkt-input-field textarea,
+.rokkit rkt-input-field select {
+  @apply rounded-sm border-0;
+}
+.rokkit rkt-checkbox {
+  @apply outline-none;
+}
+.rokkit rkt-input-field > label {
+  @apply text-secondary-600;
+}
+.rokkit rkt-input-field rkt-field > label {
+  @apply text-secondary-600 flex h-full w-full items-center text-xs uppercase;
+}
+.rokkit rkt-input-field:not(.disabled) rkt-field:focus-within {
+  @apply border-neutral-base from-primary to-secondary bg-gradient-to-r;
+}
+.rokkit rkt-input-field.disabled label {
+  @apply text-neutral-500;
+}
+/* .rokkit rkt-input-field.disabled rkt-field:focus-within {
+  @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle;
+} */
+.rokkit rkt-input-field > span {
+  @apply border-neutral-muted bg-neutral-base aspect-square h-full border-r px-1;
+}
+.rokkit rkt-input-field message {
+  @apply bg-neutral-base rounded px-2 py-1;
+}
+.rokkit rkt-input-field.fail {
+  @apply bg-error rounded px-2;
+}

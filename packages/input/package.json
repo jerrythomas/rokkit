@@ -11,7 +11,8 @@
   "scripts": {
     "prepublishOnly": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "pnpm clean && pnpm prepublishOnly"
+    "build": "pnpm clean && pnpm prepublishOnly",
+    "publish": "pnpm publish --access public"
   },
   "files": [
     "src/**/*.js",

@@ -1,0 +1,22 @@
+/* progress animation */
+@keyframes pendulum {
+  from {
+    left: -50%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+/* Button and focus animation */
+@keyframes button-pop {
+  0% {
+    transform: scale(var(--btn-focus-scale, 0.95));
+  }
+  40% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

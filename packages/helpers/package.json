@@ -19,6 +19,7 @@
     "./mocks": "./src/mocks/index.js",
     "./matchers": "./src/matchers/index.js",
     "./simulators": "./src/simulators/index.js",
+    "./components": "./src/components/index.js",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./src/index.js"
@@ -27,7 +28,8 @@
   "scripts": {
     "prepublishOnly": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "pnpm clean && pnpm prepublishOnly"
+    "build": "pnpm clean && pnpm prepublishOnly",
+    "publish": "pnpm publish --access public"
   },
   "dependencies": {
     "@vitest/expect": "^2.1.8",

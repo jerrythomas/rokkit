@@ -1,0 +1,66 @@
+@mixin set-theme-colors($theme-colors, $mode, $values: null) {
+  @each $name, $color in $theme-colors {
+    $hue: hue($color);
+    $saturation: saturation($color);
+    @if $values !== null {
+      $start: if($mode === 'dark', length($values), 1);
+      $offset: if($mode === 'dark', -1, 1);
+      @for $i from 0 to length($values) - 1 {
+        $index: $start + $offset * $i;
+        $lightness: nth($values, $index);
+        $variable: '--#{$name}-#{50 + ($i) * 100}';
+        #{$variable}: hsl($hue, $saturation, $lightness);
+      }
+    } @else {
+      @for $i from 0 to 9 {
+        $lightness: if($mode === 'dark', $i * 10%, 100 - $i * 10%);
+        $variable: '--#{$name}-#{50 + ($i) * 100}';
+        #{$variable}: hsl($hue, $saturation, $lightness);
+      }
+    }
+  }
+}
+
+/* light theme syntax colors */
+@mixin light-mode-syntax-colors {
+  --code-bg: #f3f4f6;
+  --code-fill: #f3f4f6;
+  --code-normal: #333333; /*hsl(45, 7%, 45%)*/
+  --code-string: hsl(41, 37%, 45%); /*#183691 */
+  --code-number: hsl(102, 27%, 50%); /* #0086b3;*/
+  --code-atrule: var(--code-string);
+  --code-keyword: hsl(204, 58%, 45%); /* #795da3;*/
+  --code-comment: #969896; /*hsl(210, 25%, 60%)*/
+  --code-property: #63a35c;
+  --code-selector: var(--code-keyword);
+  --code-operator: hsl(19, 67%, 45%);
+  --code-function: hsl(19, 67%, 45%); /* #a71d5d; */
+
+  --code-gutter-marker: black;
+  --code-gutter-subtle: #999;
+  --code-cursor: #24292e;
+  --code-cursor-block: rgba(20, 255, 20, 0.5);
+  --code-linenumbers: rgba(27, 31, 35, 0.3);
+}
+
+/* one dark theme syntax colors */
+@mixin dark-mode-syntax-colors {
+  --code-bg: #282c34;
+  --code-fill: #282c34;
+  --code-normal: #e06c75; /*#ABB2BF;*/
+  --code-string: #98c379;
+  --code-number: #d19a66;
+  --code-atrule: #61afef;
+  --code-keyword: #c678dd;
+  --code-comment: #5c6370;
+  --code-property: #d19a66;
+  --code-selector: #e06c75;
+  --code-operator: #56b6c2;
+  --code-function: #61afef;
+
+  --code-gutter-marker: black;
+  --code-gutter-subtle: #999;
+  --code-cursor: #24292e;
+  --code-cursor-block: rgba(20, 255, 20, 0.5);
+  --code-linenumbers: rgba(27, 31, 35, 0.3);
+}
