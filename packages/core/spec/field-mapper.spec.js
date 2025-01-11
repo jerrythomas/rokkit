@@ -43,8 +43,12 @@ describe('FieldMapper', () => {
 		const fieldMapping = new FieldMapper()
 		fieldMapping.using = { default: 'defaultComponent', abc: 'Component' }
 
+		expect(fieldMapping.getComponent(null)).toEqual('defaultComponent')
 		expect(fieldMapping.getComponent({})).toEqual('defaultComponent')
 		expect(fieldMapping.getComponent({ component: 'abc' })).toEqual('Component')
+
+		fieldMapping.fields = { component: null }
+		expect(fieldMapping.getComponent({ component: 'abc' })).toEqual('defaultComponent')
 	})
 
 	it('should return an icon', () => {
@@ -64,6 +68,7 @@ describe('FieldMapper', () => {
 
 	it('should return the text', () => {
 		const fieldMapping = new FieldMapper()
+		expect(fieldMapping.getText('hello')).toEqual('hello')
 		expect(fieldMapping.getText(data)).toEqual('Item 1')
 		expect(fieldMapping.getText(data.children[0])).toEqual('Item 2')
 		expect(fieldMapping.getText(data.children[0].children[0])).toEqual('Item 3')

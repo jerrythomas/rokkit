@@ -56,6 +56,16 @@ exports[`Switch > should render with object options 1`] = `
     <!---->
      
     <!---->
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      sun
+    </p>
+    
+    <!---->
   </rkt-item>
   <rkt-item
     aria-selected="false"
@@ -65,6 +75,16 @@ exports[`Switch > should render with object options 1`] = `
   >
     <!---->
      
+    <!---->
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      moon
+    </p>
+    
     <!---->
   </rkt-item>
   
@@ -89,6 +109,16 @@ exports[`Switch > should render with options 1`] = `
     <!---->
      
     <!---->
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      a
+    </p>
+    
+    <!---->
   </rkt-item>
   <rkt-item
     aria-selected="false"
@@ -98,6 +128,16 @@ exports[`Switch > should render with options 1`] = `
   >
     <!---->
      
+    <!---->
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      b
+    </p>
+    
     <!---->
   </rkt-item>
   

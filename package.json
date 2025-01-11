@@ -13,13 +13,10 @@
     "coverage": "vitest run --coverage",
     "format": "prettier --write .",
     "lint": "eslint --fix",
-    "release": "release-it",
-    "release:next": "release-it --no-git --preRelease=next --npm.tag=next",
+    "bump": "bumpp --no-push",
     "bump:next": "bumpp --preid=next --no-push"
   },
   "devDependencies": {
-    "@release-it-plugins/workspaces": "^4.2.0",
-    "@release-it/conventional-changelog": "^9.0.4",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@testing-library/svelte": "^5.2.6",
     "@types/bun": "^1.1.14",
@@ -30,7 +27,6 @@
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
-    "release-it": "^17.11.0",
     "vite": "^6.0.6",
     "vitest": "^2.1.8"
   },
