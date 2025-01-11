@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/input",
-  "version": "1.0.0-next.102",
+  "version": "1.0.0-next.103",
   "module": "src/index.js",
   "author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
