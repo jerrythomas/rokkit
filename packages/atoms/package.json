@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/atoms",
-  "version": "1.0.0-next.100",
+  "version": "1.0.0-next.101",
   "description": "Atomic components are small, reusable building blocks that can be combined to create complex UI elements",
   "author": "Jerry Thomas <me@jerrythomas.name>",
 	"license": "MIT",
@@ -16,6 +16,7 @@
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.svelte",
     "dist/**/*.d.ts"
   ],
   "exports": {
