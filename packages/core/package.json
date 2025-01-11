@@ -1,8 +1,11 @@
 {
   "name": "@rokkit/core",
   "version": "1.0.0-next.100",
-  "module": "src/index.js",
+  "description": "Contains core utility functions and classes that can be used in various components.",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+	"license": "MIT",
   "type": "module",
+  "module": "src/index.js",
   "publishConfig": {
     "access": "public"
   },

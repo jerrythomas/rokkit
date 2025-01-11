@@ -1,0 +1,153 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HTML Input > should render "InputColor" 1`] = `
+<div>
+  <input
+    type="color"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputDate" 1`] = `
+<div>
+  <input
+    type="date"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputDateTime" 1`] = `
+<div>
+  <input
+    type="datetime-local"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputEmail" 1`] = `
+<div>
+  <input
+    type="email"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputFile" 1`] = `
+<div>
+  <input
+    type="file"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputMonth" 1`] = `
+<div>
+  <input
+    type="month"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputNumber" 1`] = `
+<div>
+  <input
+    type="number"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputNumber" with custom props 1`] = `
+<div>
+  <input
+    max="10"
+    min="3"
+    type="number"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputPassword" 1`] = `
+<div>
+  <input
+    type="password"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputRange" 1`] = `
+<div>
+  <input
+    type="range"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputSelect" 1`] = `
+<div>
+  <select>
+    <option
+      value="foo"
+    >
+      foo
+    </option>
+    <option
+      value="bar"
+    >
+      bar
+    </option>
+    <option
+      value="baz"
+    >
+      baz
+    </option>
+    
+  </select>
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputTel" 1`] = `
+<div>
+  <input
+    type="tel"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputTime" 1`] = `
+<div>
+  <input
+    type="time"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputUrl" 1`] = `
+<div>
+  <input
+    type="url"
+  />
+  
+</div>
+`;
+
+exports[`HTML Input > should render "InputWeek" 1`] = `
+<div>
+  <input
+    type="week"
+  />
+  
+</div>
+`;

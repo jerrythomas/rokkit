@@ -7,9 +7,9 @@ import {
 	getAttribute,
 	getFormattedText,
 	hasChildren,
-	isExpanded,
-	isNested
+	isExpanded
 } from './mapping'
+import { has } from 'ramda'
 
 export class FieldMapper {
 	_fields = {}
@@ -69,5 +69,13 @@ export class FieldMapper {
 
 	isNested(items) {
 		return Array.isArray(items) && items.some((item) => this.hasChildren(item))
+	}
+
+	hasImage(item) {
+		return has(item, this.fields.image)
+	}
+
+	hasIcon(item) {
+		return has(item, this.fields.icon)
 	}
 }

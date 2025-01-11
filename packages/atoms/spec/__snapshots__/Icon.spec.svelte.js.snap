@@ -1,0 +1,81 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Icon > should render 1`] = `
+<div>
+  <rkt-icon
+    aria-label="empty"
+    class=""
+    role="img"
+  >
+    <i
+      aria-hidden="true"
+      class="empty"
+    />
+  </rkt-icon>
+  
+</div>
+`;
+
+exports[`Icon > should render with props 1`] = `
+<div>
+  <rkt-icon
+    aria-label="home"
+    class=""
+    role="img"
+  >
+    <i
+      aria-hidden="true"
+      class="home"
+    />
+  </rkt-icon>
+  
+</div>
+`;
+
+exports[`Icon > should render with props 2`] = `
+<div>
+  <rkt-icon
+    aria-label="home"
+    class=""
+    role="img"
+  >
+    <i
+      aria-hidden="true"
+      class="settings"
+    />
+  </rkt-icon>
+  
+</div>
+`;
+
+exports[`Icon > should render with props 3`] = `
+<div>
+  <rkt-icon
+    aria-label="home"
+    class="small"
+    role="img"
+  >
+    <i
+      aria-hidden="true"
+      class="settings"
+    />
+  </rkt-icon>
+  
+</div>
+`;
+
+exports[`Icon > should render with props 4`] = `
+<div>
+  <rkt-icon
+    aria-label="Settings"
+    class="small"
+    role="img"
+  >
+    <i
+      aria-hidden="true"
+      class="settings"
+    />
+  </rkt-icon>
+  
+</div>
+`;

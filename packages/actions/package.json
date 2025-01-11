@@ -1,9 +1,12 @@
 {
-  "name": "@rokkit/input",
-  "version": "1.0.0-next.100",
-  "module": "src/index.js",
+  "name": "@rokkit/actions",
+  "version": "1.0.0-next.0",
+  "description": "Contains generic actions that can be used in various components.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
-	"license": "MIT",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "src/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -15,14 +18,21 @@
   },
   "files": [
     "src/**/*.js",
-    "dist/**/*.d.ts"
+    "src/**/*.svelte"
   ],
   "exports": {
     "./src": "./src",
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./src/index.js"
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
     }
+  },
+  "dependencies": {
+    "ramda": "^0.30.1"
+  },
+  "devDependencies": {
+    "@rokkit/helpers": "workspace:*"
   }
 }

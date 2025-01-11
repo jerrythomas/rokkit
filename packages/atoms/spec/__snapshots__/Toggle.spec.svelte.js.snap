@@ -1,0 +1,488 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Toggle > should render 1`] = `
+<rkt-toggle
+  class=""
+>
+  <button>
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      
+    </p>
+    <!---->
+  </button>
+</rkt-toggle>
+`;
+
+exports[`Toggle > should render with object options 1`] = `
+<button>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    sun
+  </p>
+  <!---->
+</button>
+`;
+
+exports[`Toggle > should render with options 1`] = `
+<button>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    
+  </p>
+  <!---->
+</button>
+`;
+
+exports[`Toggle > should switch options on click 1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on click 2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on click 3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown   1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown   2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown   3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown Enter 1`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown Enter 2`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown Enter 3`] = `
+<div>
+  <rkt-toggle
+    class=""
+  >
+    <button>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+    </button>
+  </rkt-toggle>
+  
+</div>
+`;
