@@ -19,7 +19,7 @@
 		class: className = '',
 		value = $bindable(),
 		options = [false, true],
-		fields = new FieldMapper(),
+		fields = new FieldMapper({}, { default: Item }),
 		compact = false,
 		disabled = false,
 		onchange = noop

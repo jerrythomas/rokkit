@@ -30,14 +30,14 @@ describe('Switch', () => {
 		expect(switchElement).toMatchSnapshot()
 	})
 	it('should render with options', () => {
-		const { container } = render(Switch, { options: ['a', 'b'] })
+		const { container } = render(Switch, { props: { options: ['a', 'b'], fields } })
 		const switchElement = container.querySelector('rkt-switch')
 		expect(switchElement).toBeTruthy()
 		expect(switchElement).toMatchSnapshot()
 	})
 
 	it('should render with object options', () => {
-		const mapper = new FieldMapper({ icon: 'text' })
+		const mapper = new FieldMapper({ icon: 'text' }, { default: Item })
 		const { container } = render(Switch, {
 			value: { text: 'sun' },
 			options: [{ text: 'sun' }, { text: 'moon' }],
