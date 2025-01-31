@@ -11,11 +11,11 @@
   "scripts": {
     "prepublishOnly": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "pnpm clean && pnpm prepublishOnly",
-    "publish": "pnpm publish --access public"
+    "build": "bun clean && bun prepublishOnly"
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.svelte",
     "dist/**/*.d.ts"
   ],
   "exports": {

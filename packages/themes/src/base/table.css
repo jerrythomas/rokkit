@@ -43,7 +43,7 @@ table > tfoot {
 table > tfoot > tr {
   @apply table-row font-semibold text-neutral-800;
 }
-rkt-tree-table,
-rkt-table {
+rk-tree-table,
+rk-table {
   @apply max-h-full overflow-y-auto;
 }

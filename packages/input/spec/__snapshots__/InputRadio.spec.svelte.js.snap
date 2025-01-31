@@ -5,6 +5,104 @@ exports[`InputRadio > should render as required 1`] = `
   <radio-group
     class=""
   >
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="radio-group"
+        required=""
+        rtl="true"
+        type="radio"
+        value="0"
+      />
+       
+      <p>
+        foo
+      </p>
+    </label>
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="radio-group"
+        required=""
+        rtl="true"
+        type="radio"
+        value="1"
+      />
+       
+      <p>
+        bar
+      </p>
+    </label>
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="radio-group"
+        required=""
+        rtl="true"
+        type="radio"
+        value="2"
+      />
+       
+      <p>
+        baz
+      </p>
+    </label>
+    
+  </radio-group>
+  
+</div>
+`;
+
+exports[`InputRadio > should render as required 2`] = `
+<div>
+  <radio-group
+    class=""
+  >
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="radio-group"
+        rtl="false"
+        type="radio"
+        value="0"
+      />
+       
+      <p>
+        foo
+      </p>
+    </label>
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="radio-group"
+        rtl="false"
+        type="radio"
+        value="1"
+      />
+       
+      <p>
+        bar
+      </p>
+    </label>
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="radio-group"
+        rtl="false"
+        type="radio"
+        value="2"
+      />
+       
+      <p>
+        baz
+      </p>
+    </label>
     
   </radio-group>
   
@@ -17,11 +115,11 @@ exports[`InputRadio > should render with object array 1`] = `
     class=""
   >
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="foo"
+        value="0"
       />
        
       <p>
@@ -29,11 +127,11 @@ exports[`InputRadio > should render with object array 1`] = `
       </p>
     </label>
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="bar"
+        value="1"
       />
        
       <p>
@@ -41,11 +139,11 @@ exports[`InputRadio > should render with object array 1`] = `
       </p>
     </label>
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="baz"
+        value="2"
       />
        
       <p>
@@ -64,11 +162,11 @@ exports[`InputRadio > should render with string options 1`] = `
     class=""
   >
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="foo"
+        value="0"
       />
        
       <p>
@@ -76,11 +174,11 @@ exports[`InputRadio > should render with string options 1`] = `
       </p>
     </label>
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="bar"
+        value="1"
       />
        
       <p>
@@ -88,58 +186,11 @@ exports[`InputRadio > should render with string options 1`] = `
       </p>
     </label>
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="baz"
-      />
-       
-      <p>
-        baz
-      </p>
-    </label>
-    
-  </radio-group>
-  
-</div>
-`;
-
-exports[`InputRadio > should render with string options 2`] = `
-<div>
-  <radio-group
-    class=""
-  >
-    <label
-      class="flex items-center gap-2 flex-row-reverse"
-    >
-      <input
-        type="radio"
-        value="foo"
-      />
-       
-      <p>
-        foo
-      </p>
-    </label>
-    <label
-      class="flex items-center gap-2 flex-row-reverse"
-    >
-      <input
-        type="radio"
-        value="bar"
-      />
-       
-      <p>
-        bar
-      </p>
-    </label>
-    <label
-      class="flex items-center gap-2 flex-row-reverse"
-    >
-      <input
-        type="radio"
-        value="baz"
+        value="2"
       />
        
       <p>
@@ -158,11 +209,11 @@ exports[`InputRadio > should render with text, value objects  1`] = `
     class=""
   >
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="1"
+        value="0"
       />
        
       <p>
@@ -170,11 +221,11 @@ exports[`InputRadio > should render with text, value objects  1`] = `
       </p>
     </label>
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="2"
+        value="1"
       />
        
       <p>
@@ -182,11 +233,11 @@ exports[`InputRadio > should render with text, value objects  1`] = `
       </p>
     </label>
     <label
-      class="flex items-center gap-2 flex-row"
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
       <input
         type="radio"
-        value="3"
+        value="2"
       />
        
       <p>

@@ -53,6 +53,11 @@ export function stateColors(name, modifier = 'none') {
 	}
 }
 
+/**
+ *
+ * @param {string} modifier
+ * @returns
+ */
 export function themeColors(modifier = 'none') {
 	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
 

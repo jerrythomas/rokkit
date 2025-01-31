@@ -1,0 +1,44 @@
+[
+  {
+    "data": [
+      {
+        "group_id": 1,
+        "id": 10,
+        "name": "Enterprise"
+      }
+    ],
+    "class": "Galaxy",
+    "group_id": 1
+  },
+  {
+    "data": [
+      {
+        "group_id": 2,
+        "id": 20,
+        "name": "D'Kyr"
+      },
+      {
+        "group_id": 2,
+        "id": 30,
+        "name": "Voyager"
+      },
+      {
+        "group_id": 2,
+        "id": 40,
+        "name": "Narada"
+      }
+    ],
+    "class": "Defiant",
+    "group_id": 2
+  },
+  {
+    "data": [],
+    "class": "Intrepid",
+    "group_id": 3
+  },
+  {
+    "data": [],
+    "class": "Ambassador",
+    "group_id": 4
+  }
+]

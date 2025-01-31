@@ -41,7 +41,7 @@ describe('Pill', () => {
 	it.each(['Delete', 'Backspace'])('should fire remove event on %s', async (key) => {
 		const props = $state({ value: 'Hello', removable: true, onremove: vi.fn() })
 		const { container } = render(Pill, { props })
-		const pill = container.querySelector('rkt-pill')
+		const pill = container.querySelector('rk-pill')
 		fireEvent.keyUp(pill, { key })
 		await tick()
 		expect(props.onremove).toHaveBeenCalledWith('Hello')

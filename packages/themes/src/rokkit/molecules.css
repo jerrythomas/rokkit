@@ -1,48 +1,48 @@
-/* Styles for ' rkt-input-range' class */
-.rokkit rkt-input-range rkt-range-track {
+/* Styles for ' rk-input-range' class */
+.rokkit rk-input-range rk-range-track {
   @apply relative mt-2 h-2;
 }
-.rokkit rkt-input-range rkt-range-track rkt-range-track-bar {
+.rokkit rk-input-range rk-range-track rk-range-track-bar {
   @apply bg-neutral-muted border-neutral-muted box-border rounded-full border;
 }
-.rokkit rkt-input-range rkt-range-track selected-bar {
+.rokkit rk-input-range rk-range-track selected-bar {
   @apply top-0px bottom-0px from-primary to-secondary border-secondary rounded-full border bg-gradient-to-r;
 }
-.rokkit rkt-input-range rkt-range-track rkt-thumb {
+.rokkit rk-input-range rk-range-track rk-thumb {
   @apply rounded-sm focus:outline-none;
 }
-/* .rokkit  rkt-input-range rkt-tick p {
+/* .rokkit  rk-input-range rk-tick p {
   @apply text-neutral-800;
 } */
-.rokkit .bookend rkt-range-track rkt-range-track-bar::before,
-.rokkit .bookend rkt-range-track rkt-range-track-bar::after {
+.rokkit .bookend rk-range-track rk-range-track-bar::before,
+.rokkit .bookend rk-range-track rk-range-track-bar::after {
   content: '';
   @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
 }
-.rokkit .bookend rkt-range-track rkt-range-track-bar::before {
+.rokkit .bookend rk-range-track rk-range-track-bar::before {
   @apply -left-1px;
 }
-.rokkit .bookend rkt-range-track rkt-range-track-bar::after {
+.rokkit .bookend rk-range-track rk-range-track-bar::after {
   @apply -right-2px;
 }
 
 /* Styles for 'tick' class */
-/* .rokkit rkt-tick {
+/* .rokkit rk-tick {
   @apply h-6;
 } */
-.rokkit rkt-tick rkt-tick-bar {
+.rokkit rk-tick rk-tick-bar {
   @apply border-neutral h-full;
 }
-.rokkit rkt-tick p {
+.rokkit rk-tick p {
   @apply items-top text-neutral-600;
   font-size: 8px;
 }
 
 /* Styles for 'thumb' class */
-.rokkit rkt-thumb {
+.rokkit rk-thumb {
   @apply from-primary to-secondary border-secondary border bg-gradient-to-r shadow-xl;
 }
-.rokkit rkt-thumb.sliding::before {
+.rokkit rk-thumb.sliding::before {
   content: '';
   @apply bg-secondary absolute bottom-0 left-0 right-0 top-0 rounded-sm opacity-30;
   transform: scale(2, 2);
@@ -53,9 +53,12 @@
   @apply h-8 min-h-6 w-16 rounded-full p-0;
   @apply bg-neutral-subtle border-neutral-subtle border;
 }
-.rokkit button[role='switch'] > rkt-mark {
+.rokkit button[role='switch'] > rk-mark {
   @apply top-0.75 h-6 w-6 rounded-full;
   @apply from-primary to-secondary bg-gradient-to-r;
+}
+.rokkit rk-toggle button {
+  @apply h-10 w-10 items-center justify-center rounded-md p-0;
 }
 
 /* Styles for 'rating' class */
@@ -80,40 +83,40 @@
   @apply hover:bg-neutral-muted h-5 w-5 rounded-full hover:text-current focus:m-0 focus:rounded-full;
 }
 
-.rokkit .pill > rkt-item {
+.rokkit .pill > rk-item {
   @apply gap-2 px-2 leading-6;
 }
-.rokkit .pill > rkt-item > img {
+.rokkit .pill > rk-item > img {
   @apply h-4 w-4;
 }
 
 /* Styles for 'item' class */
-.rokkit rkt-item {
+.rokkit rk-item {
   @apply flex flex-shrink items-center gap-1;
 }
-.rokkit rkt-item > p {
+.rokkit rk-item > p {
   @apply flex-shrink text-ellipsis;
 }
 
 /* Image and link styles */
-.rokkit rkt-item > img,
-.rokkit rkt-item > a > img {
+.rokkit rk-item > img,
+.rokkit rk-item > a > img {
   @apply h-6 w-6;
 }
-.rokkit rkt-item > a {
+.rokkit rk-item > a {
   @apply gap-2;
 }
-.rokkit node rkt-item {
+.rokkit node rk-item {
   @apply gap-2 px-1;
 }
-/* rkt-crumbs styles */
-.rokkit rkt-crumbs {
+/* rk-crumbs styles */
+.rokkit rk-crumbs {
   @apply flex-grow gap-1;
 }
-.rokkit rkt-crumbs rkt-crumb.is-selected {
+.rokkit rk-crumbs rk-crumb.is-selected {
   @apply text-secondary-700;
 }
 
-.rokkit rkt-day-of-month[aria-selected='true'] {
+.rokkit rk-day-of-month[aria-selected='true'] {
   @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 dark:text-neutral-800;
 }

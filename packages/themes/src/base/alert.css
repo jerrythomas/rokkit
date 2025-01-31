@@ -1,30 +1,30 @@
 /* Alert styles */
-rkt-alert-list {
+rk-alert-list {
   @apply right-8 top-12 w-80;
 }
 
-rkt-alert,
-rkt-error,
-rkt-info,
-rkt-warning,
-rkt-success {
+rk-alert,
+rk-error,
+rk-info,
+rk-warning,
+rk-success {
   @apply cursor-pointer select-none rounded border px-4 py-2;
 }
 
-rkt-alert.error,
-rkt-alert.danger,
-rkt-error {
+rk-alert.error,
+rk-alert.danger,
+rk-error {
   @apply bg-error text-error-contrast border-error-muted;
 }
-rkt-alert.info,
-rkt-info {
+rk-alert.info,
+rk-info {
   @apply bg-info text-info-contrast border-info-muted;
 }
-rkt-alert.warning,
-rkt-warning {
+rk-alert.warning,
+rk-warning {
   @apply bg-warn text-warn-contrast border-warn-muted;
 }
-rkt-alert.success,
-rkt-success {
+rk-alert.success,
+rk-success {
   @apply bg-success text-success-contrast border-success-muted;
 }

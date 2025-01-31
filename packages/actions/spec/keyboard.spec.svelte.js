@@ -34,36 +34,36 @@ describe('keyboard', () => {
 	})
 
 	it('should add and remove keyup handlers to document', () => {
-		const addEventListenerSpy = vi.spyOn(document, 'addEventListener')
-		const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener')
-		const removeEventOnNodeSpy = vi.spyOn(node, 'removeEventListener')
-		const addEventOnNodeSpy = vi.spyOn(node, 'addEventListener')
+		const addEventListenerSpy = vi.spyOn(node, 'addEventListener')
+		const removeEventListenerSpy = vi.spyOn(node, 'removeEventListener')
+		// const removeEventOnNodeSpy = vi.spyOn(node, 'removeEventListener')
+		// const addEventOnNodeSpy = vi.spyOn(node, 'addEventListener')
 
 		const cleanup = $effect.root(() => keyboard(node))
 		flushSync()
 
-		expect(addEventListenerSpy).toHaveBeenCalledTimes(1)
+		expect(addEventListenerSpy).toHaveBeenCalledTimes(2)
 		expect(addEventListenerSpy).toHaveBeenNthCalledWith(1, 'keyup', expect.any(Function), {})
-		expect(addEventOnNodeSpy).toHaveBeenCalledTimes(1)
-		expect(addEventOnNodeSpy).toHaveBeenNthCalledWith(1, 'click', expect.any(Function), {})
+		// expect(addEventOnNodeSpy).toHaveBeenCalledTimes(1)
+		expect(addEventListenerSpy).toHaveBeenNthCalledWith(2, 'click', expect.any(Function), {})
 
 		cleanup()
-		expect(removeEventListenerSpy).toHaveBeenCalledTimes(1)
+		expect(removeEventListenerSpy).toHaveBeenCalledTimes(2)
 		expect(removeEventListenerSpy).toHaveBeenNthCalledWith(1, 'keyup', expect.any(Function), {})
-		expect(removeEventOnNodeSpy).toHaveBeenCalledTimes(1)
-		expect(removeEventOnNodeSpy).toHaveBeenNthCalledWith(1, 'click', expect.any(Function), {})
+		// expect(removeEventOnNodeSpy).toHaveBeenCalledTimes(1)
+		expect(removeEventListenerSpy).toHaveBeenNthCalledWith(2, 'click', expect.any(Function), {})
 
 		addEventListenerSpy.mockRestore()
 		removeEventListenerSpy.mockRestore()
-		removeEventOnNodeSpy.mockRestore()
-		addEventOnNodeSpy.mockRestore()
+		// removeEventOnNodeSpy.mockRestore()
+		// addEventOnNodeSpy.mockRestore()
 	})
 
 	it('should not dispatch any event when an unmapped key is pressed', () => {
 		const cleanup = $effect.root(() => keyboard(node))
 		flushSync()
 
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: '-' }))
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: '-' }))
 		expect(spies.add).not.toHaveBeenCalled()
 		expect(spies.remove).not.toHaveBeenCalled()
 		expect(spies.submit).not.toHaveBeenCalled()
@@ -74,7 +74,7 @@ describe('keyboard', () => {
 		const cleanup = $effect.root(() => keyboard(node))
 		flushSync()
 
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }))
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }))
 		expect(spies.add).toHaveBeenDispatchedWith('a')
 		expect(spies.remove).not.toHaveBeenCalled()
 		expect(spies.submit).not.toHaveBeenCalled()
@@ -86,7 +86,7 @@ describe('keyboard', () => {
 		const cleanup = $effect.root(() => keyboard(node))
 		flushSync()
 
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Delete' }))
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: 'Delete' }))
 		expect(spies.add).not.toHaveBeenCalled()
 		expect(spies.remove).toHaveBeenDispatchedWith('Delete')
 		expect(spies.submit).not.toHaveBeenCalled()
@@ -98,7 +98,7 @@ describe('keyboard', () => {
 		const cleanup = $effect.root(() => keyboard(node))
 		flushSync()
 
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Backspace' }))
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: 'Backspace' }))
 		expect(spies.add).not.toHaveBeenCalled()
 		expect(spies.remove).toHaveBeenDispatchedWith('Backspace')
 		expect(spies.submit).not.toHaveBeenCalled()
@@ -110,7 +110,7 @@ describe('keyboard', () => {
 		const cleanup = $effect.root(() => keyboard(node))
 		flushSync()
 
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
 		expect(spies.add).not.toHaveBeenCalled()
 		expect(spies.remove).not.toHaveBeenCalled()
 		expect(spies.submit).toHaveBeenDispatchedWith('Enter')
@@ -150,6 +150,35 @@ describe('keyboard', () => {
 		expect(spies.add).not.toHaveBeenCalled()
 		expect(spies.remove).not.toHaveBeenCalled()
 		expect(spies.submit).toHaveBeenDispatchedWith('Enter')
+
+		cleanup()
+	})
+
+	it('should handle custom mapping', () => {
+		const customSpies = {
+			prev: vi.fn(),
+			next: vi.fn()
+		}
+		node.addEventListener('prev', customSpies.prev)
+		node.addEventListener('next', customSpies.next)
+
+		const cleanup = $effect.root(() => keyboard(node, { prev: ['ArrowUp'], next: ['ArrowDown'] }))
+		flushSync()
+
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+		expect(spies.add).not.toHaveBeenCalled()
+		expect(spies.remove).not.toHaveBeenCalled()
+		expect(spies.submit).not.toHaveBeenCalled()
+		expect(customSpies.next).not.toHaveBeenCalled()
+		expect(customSpies.prev).toHaveBeenDispatchedWith('ArrowUp')
+
+		vi.clearAllMocks()
+		node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+		expect(spies.add).not.toHaveBeenCalled()
+		expect(spies.remove).not.toHaveBeenCalled()
+		expect(spies.submit).not.toHaveBeenCalled()
+		expect(customSpies.prev).not.toHaveBeenCalled()
+		expect(customSpies.next).toHaveBeenDispatchedWith('ArrowDown')
 
 		cleanup()
 	})

@@ -1,0 +1,44 @@
+[
+  {
+    "date": "2020-01-01",
+    "team": "Los Angeles Lakers",
+    "score": 110,
+    "pct": 85,
+    "rank": 1
+  },
+  {
+    "date": "2020-01-01",
+    "team": "Miami Heat",
+    "score": 105,
+    "pct": 80,
+    "rank": 2
+  },
+  {
+    "date": "2020-01-01",
+    "team": "Boston Celtics",
+    "score": 112,
+    "pct": 90,
+    "rank": 3
+  },
+  {
+    "date": "2020-02-01",
+    "team": "Boston Celtics",
+    "score": 115,
+    "pct": 88,
+    "rank": 1
+  },
+  {
+    "date": "2020-02-01",
+    "team": "Houston Rockets",
+    "score": 107,
+    "pct": 81,
+    "rank": 2
+  },
+  {
+    "date": "2020-02-01",
+    "team": "Miami Heat",
+    "score": 110,
+    "pct": 84,
+    "rank": 3
+  }
+]

@@ -1,6 +1,6 @@
 <script>
-	import { FieldMapper } from '@rokkit/core'
-
+	import { FieldMapper, getItemAtIndex, getIndexForItem, noop } from '@rokkit/core'
+	import { equals } from 'ramda'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -18,19 +18,34 @@
 		mapping = new FieldMapper(),
 		options = [],
 		disabled = false,
-		rtl = false,
+		onchange = noop,
 		...rest
 	} = $props()
+
+	const handleChange = (event) => {
+		value = getItemAtIndex(options, currentIndex)
+		onchange(value)
+	}
+
+	let currentIndex = $state(null)
+
+	$effect.pre(() => {
+		currentIndex = getIndexForItem(options, value)
+	})
 </script>
 
 <radio-group class={className} class:disabled>
-	{#each options as item}
-		{@const itemValue = mapping.getValue(item)}
-		{@const label = mapping.getText(item)}
-
-		<label class="flex items-center gap-2" class:flex-row={!rtl} class:flex-row-reverse={rtl}>
-			<input type="radio" {...rest} bind:group={value} value={itemValue} {disabled} />
-			<p>{label}</p>
+	{#each options as item, index}
+		<label class="flex flex-row items-center gap-2 rtl:flex-row-reverse">
+			<input
+				type="radio"
+				{...rest}
+				bind:group={currentIndex}
+				value={index}
+				{disabled}
+				onchange={handleChange}
+			/>
+			<p>{mapping.getText(item)}</p>
 		</label>
 	{/each}
 </radio-group>

@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`convert > should exclude invalid files 1`] = `
+[
+  "chars.json",
+  "icons.json",
+  "index.d.ts",
+  "index.js",
+  "index.mjs",
+  "info.json",
+  "metadata.json",
+  "package.json",
+]
+`;
+
+exports[`convert > should exclude invalid files 2`] = `
+{
+  "icons": {},
+  "prefix": "err1",
+}
+`;
+
+exports[`convert > should import, process, and export icons correctly for b/w icons 1`] = `
+[
+  "chars.json",
+  "icons.json",
+  "index.d.ts",
+  "index.js",
+  "index.mjs",
+  "info.json",
+  "metadata.json",
+  "package.json",
+]
+`;
+
+exports[`convert > should import, process, and export icons correctly for b/w icons 2`] = `
+{
+  "icons": {
+    "alert-bell": {
+      "body": "<g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18.75 9.71v-.705C18.75 5.136 15.726 2 12 2S5.25 5.136 5.25 9.005v.705a4.4 4.4 0 01-.692 2.375L3.45 13.81c-1.011 1.575-.239 3.716 1.52 4.214a25.8 25.8 0 0014.06 0c1.759-.498 2.531-2.639 1.52-4.213l-1.108-1.725a4.4 4.4 0 01-.693-2.375Z"/><path stroke-linecap="round" d="M7.5 19c.655 1.748 2.422 3 4.5 3s3.845-1.252 4.5-3" opacity=".5"/></g>",
+      "height": 24,
+      "width": 24,
+    },
+  },
+  "prefix": "app",
+}
+`;
+
+exports[`convert > should import, process, and export icons correctly for colored icons 1`] = `
+[
+  "chars.json",
+  "icons.json",
+  "index.d.ts",
+  "index.js",
+  "index.mjs",
+  "info.json",
+  "metadata.json",
+  "package.json",
+]
+`;
+
+exports[`convert > should import, process, and export icons correctly for colored icons 2`] = `
+{
+  "icons": {
+    "authy": {
+      "body": "<g fill="none"><path fill="#F22E46" d="M24 12c0 6.628-5.372 12-12 12S0 18.628 0 12 5.372 0 12 0s12 5.372 12 12"/><path fill="#fff" d="m10.971 9.458 2.877 2.877a1.065 1.065 0 001.506-1.506l-2.877-2.877a5.38 5.38 0 00-7.546-.053l-.026.027-.027.026-.051.056a5.38 5.38 0 00.104 7.49l2.878 2.877a1.065 1.065 0 001.506-1.506l-2.877-2.877a3.246 3.246 0 01-.026-4.56 3.246 3.246 0 014.559.027"/><path fill="#F5B1B2" d="M14.685 5.627a1.063 1.063 0 000 1.505l2.877 2.878a3.247 3.247 0 01.025 4.56 3.246 3.246 0 01-4.558-.027l-2.878-2.877a1.065 1.065 0 10-1.506 1.506l2.877 2.877a5.38 5.38 0 007.49.105l.056-.052q.014-.013.026-.027l.027-.027q.027-.026.05-.055a5.38 5.38 0 00-.102-7.49L16.19 5.627a1.064 1.064 0 00-1.506 0"/></g>",
+      "height": 24,
+      "width": 24,
+    },
+  },
+  "prefix": "web",
+}
+`;

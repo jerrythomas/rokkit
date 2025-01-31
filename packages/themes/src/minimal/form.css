@@ -2,11 +2,11 @@
   @apply select-none rounded px-4 leading-loose;
   @apply bg-neutral-muted border-neutral-muted border;
 }
-.minimal button rkt-icon-left,
-.minimal button rkt-icon-right {
+.minimal button rk-icon-left,
+.minimal button rk-icon-right {
   @apply flex aspect-square h-10 flex-col items-center justify-center;
 }
-.minimal button rkt-icon {
+.minimal button rk-icon {
   @apply text-2xl;
 }
 
@@ -17,59 +17,59 @@
   @apply flex flex-grow px-2;
 }
 
-.minimal rkt-button-group {
+.minimal rk-button-group {
   @apply gap-1px flex justify-center rounded-sm;
 }
-.minimal rkt-button-group button {
+.minimal rk-button-group button {
   @apply rounded-none border-none border-neutral-400;
   @apply bg-neutral-subtle shadow focus:outline-none;
   @apply px-2 text-sm uppercase leading-8 text-neutral-800;
 }
-.minimal rkt-button-group button:not(:last-child) {
+.minimal rk-button-group button:not(:last-child) {
   @apply border-r;
 }
-.minimal rkt-button-group button.active {
+.minimal rk-button-group button.active {
   @apply bg-secondary text-white;
 }
 
-.minimal rkt-button-group button:first-child {
+.minimal rk-button-group button:first-child {
   @apply rounded-l-sm;
 }
-.minimal rkt-button-group button:last-child {
+.minimal rk-button-group button:last-child {
   @apply rounded-r-sm;
 }
 
-.minimal rkt-input-select {
+.minimal rk-input-select {
   @apply focus:outline-none;
 }
-.minimal rkt-input-select > selected-item {
+.minimal rk-input-select > selected-item {
   @apply min-h-8 cursor-pointer select-none items-center gap-4 pl-2 leading-8;
   @apply border-b-neutral-muted border-b-2;
   @apply focus:border-b-secondary-600;
 }
-.minimal rkt-input-select:focus > selected-item {
+.minimal rk-input-select:focus > selected-item {
   @apply border-b-secondary-600 text-secondary-600;
 }
-.minimal rkt-input-select:focus square-icon {
+.minimal rk-input-select:focus square-icon {
   @apply text-secondary-600;
 }
-.minimal rkt-input-select > selected-item > items {
+.minimal rk-input-select > selected-item > items {
   @apply flex-grow flex-wrap gap-2;
 }
-.minimal rkt-pill {
+.minimal rk-pill {
   @apply gap-2 rounded-full border border-neutral-400 px-2;
 }
-.minimal rkt-pill > rkt-item {
+.minimal rk-pill > rk-item {
   @apply gap-2 leading-6;
 }
-.minimal rkt-pill > rkt-item > img {
+.minimal rk-pill > rk-item > img {
   @apply h-4 w-4;
 }
 
-.minimal rkt-pill > rkt-icon {
+.minimal rk-pill > rk-icon {
   @apply text-sm;
 }
-.minimal rkt-input-select rkt-scroll {
+.minimal rk-input-select rk-scroll {
   @apply mt-1 shadow-lg;
 }
 
@@ -78,10 +78,10 @@
   @apply bg-neutral-subtle border-neutral-subtle border;
 }
 
-.minimal button[role='switch'] > rkt-mark {
+.minimal button[role='switch'] > rk-mark {
   @apply bg-secondary top-0.75 h-6 w-6 rounded-full;
 }
 
-.minimal rkt-progress-bar rkt-value-bar {
+.minimal rk-progress-bar rk-value-bar {
   @apply bg-secondary;
 }

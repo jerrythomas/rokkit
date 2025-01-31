@@ -1,46 +1,46 @@
 /* Input range styles */
-rkt-input-range rkt-range-track {
+rk-input-range rk-range-track {
   @apply relative mt-3 h-1;
 }
-rkt-input-range rkt-range-track rkt-range-track-bar {
+rk-input-range rk-range-track rk-range-track-bar {
   @apply bg-neutral-subtle border-neutral-muted rounded-full;
 }
-rkt-input-range rkt-range-track selected {
+rk-input-range rk-range-track selected {
   @apply top-0px bottom-0px;
 }
-rkt-input-range rkt-range-track rkt-thumb {
+rk-input-range rk-range-track rk-thumb {
   @apply rounded-full;
 }
-rkt-input-range rkt-thumb {
+rk-input-range rk-thumb {
   @apply bg-secondary border-secondary -top-1.5 border shadow-xl;
 }
-rkt-input-range rkt-thumb.sliding::before {
+rk-input-range rk-thumb.sliding::before {
   content: '';
   @apply bg-secondary-400 absolute bottom-0 left-0 right-0 top-0 rounded-full opacity-30;
   transform: scale(2, 2);
 }
 
 /* Bookend styles */
-.bookend rkt-range-track rkt-range-track-bar::before,
-.bookend rkt-range-track rkt-range-track-bar::after {
+.bookend rk-range-track rk-range-track-bar::before,
+.bookend rk-range-track rk-range-track-bar::after {
   content: '';
   @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
 }
-.bookend rkt-range-track rkt-range-track-bar::before {
+.bookend rk-range-track rk-range-track-bar::before {
   @apply -left-1px;
 }
-.bookend rkt-range-track rkt-range-track-bar::after {
+.bookend rk-range-track rk-range-track-bar::after {
   @apply -right-2px;
 }
 
-/* Input rkt-range tick styles */
-rkt-input-range tick {
+/* Input rk-range tick styles */
+rk-input-range tick {
   grid-template-rows: 7px auto;
 }
-rkt-input-range tick tick-bar {
+rk-input-range tick tick-bar {
   @apply h-full border-neutral-600;
 }
-rkt-input-range tick p {
+rk-input-range tick p {
   @apply items-top leading-tight text-neutral-600;
   font-size: 8px;
 }
@@ -81,46 +81,25 @@ field-layout.vertical {
 field-layout.horizontal {
   @apply flex flex-col gap-2 md:flex-row md:gap-4;
 }
-selected-item rkt-item {
+selected-item rk-item {
   @apply flex-grow;
 }
-rkt-input-field {
+rk-input-field {
   @apply m-0 w-full py-1;
 }
-rkt-input-field input,
-rkt-input-field textarea,
-rkt-input-field select,
-rkt-input-field > field > :not(icon) {
+rk-input-field input,
+rk-input-field textarea,
+rk-input-field select,
+rk-input-field > field > :not(icon) {
   @apply px-3;
   @apply min-h-9 flex-grow leading-loose outline-none;
   @apply bg-neutral-subtle text-neutral-800;
 }
-rkt-input-field > label {
+rk-input-field > label {
   @apply text-xs uppercase;
   @apply leading-loose;
 }
-rkt-input-field > label.required::after {
+rk-input-field > label.required::after {
   content: ' *';
   @apply state-danger;
-}
-
-radio-group label {
-  @apply cursor-pointer uppercase;
-}
-/* Progress bar styles */
-progress-bar {
-  @apply bg-neutral-muted border-neutral-subtle border;
-}
-progress-bar value-bar {
-  @apply bg-primary;
-}
-
-.indeterminate value-bar {
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  /* Move the bar infinitely */
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-name: pendulum;
 }

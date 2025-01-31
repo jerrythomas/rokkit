@@ -10,6 +10,7 @@ exports[`Item > should render 1`] = `
   <p>
     Hello
   </p>
+  <!---->
   
 </div>
 `;
@@ -24,6 +25,7 @@ exports[`Item > should render 2`] = `
   <p>
     World
   </p>
+  <!---->
   
 </div>
 `;
@@ -35,9 +37,7 @@ exports[`Item > should render with custom mapping 1`] = `
   
   <!---->
    
-  <p>
-    
-  </p>
+  <!---->
   
 </div>
 `;
@@ -52,6 +52,7 @@ exports[`Item > should render with custom mapping 2`] = `
   <p>
     World
   </p>
+  <!---->
   
 </div>
 `;
@@ -66,6 +67,7 @@ exports[`Item > should render with custom mapping 3`] = `
   <p>
     World
   </p>
+  <!---->
   
 </div>
 `;
@@ -73,13 +75,22 @@ exports[`Item > should render with custom mapping 3`] = `
 exports[`Item > should render with icon 1`] = `
 <div>
   <!---->
-  <!---->
-  
+  <rk-icon
+    aria-label="Hello"
+    class=""
+    role="img"
+  >
+    <i
+      aria-hidden="true"
+      class="world"
+    />
+  </rk-icon>
   <!---->
    
   <p>
     Hello
   </p>
+  <!---->
   
 </div>
 `;
@@ -88,12 +99,17 @@ exports[`Item > should render with image 1`] = `
 <div>
   <!---->
   <!---->
+  <img
+    alt="Hello"
+    src="world.png"
+  />
   
   <!---->
    
   <p>
     Hello
   </p>
+  <!---->
   
 </div>
 `;

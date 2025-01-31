@@ -1,46 +1,46 @@
-/* rkt-list styles */
-.rokkit rkt-virtual-list-contents {
+/* rk-list styles */
+.rokkit rk-virtual-list-contents {
   @apply flex flex-col;
   @apply gap-1px bg-neutral-inset;
 }
 
-.rokkit rkt-list {
+.rokkit rk-list {
   @apply gap-1px bg-neutral-subtle;
 }
 
-.rokkit rkt-list > rkt-item,
-.rokkit rkt-virtual-list-contents > rkt-virtual-list-item,
-.rokkit rkt-accordion div summary {
+.rokkit rk-list > rk-item,
+.rokkit rk-virtual-list-contents > rk-virtual-list-item,
+.rokkit rk-accordion div summary {
   @apply bg-neutral-base min-h-10 px-4 leading-10 text-neutral-800;
 }
-.rokkit rkt-accordion > div > summary {
+.rokkit rk-accordion > div > summary {
   @apply bg-gradient from-neutral-subtle to-neutral-muted rounded pr-2;
 }
 
 /* Remove default details marker from summary */
-.rokkit rkt-accordion > div > summary::-webkit-details-marker {
+.rokkit rk-accordion > div > summary::-webkit-details-marker {
   display: none;
 }
 
-/* Nested rkt-list and Tree styles */
-.rokkit :not(accordion > div) > rkt-list {
+/* Nested rk-list and Tree styles */
+.rokkit :not(accordion > div) > rk-list {
   @apply overflow-y-scroll rounded border border-neutral-400 shadow;
 }
-.rokkit :not(accordion > div) > rkt-list rkt-item {
+.rokkit :not(accordion > div) > rk-list rk-item {
   @apply first:rounded-t last:rounded-b;
 }
 
-.rokkit rkt-accordion rkt-list rkt-item {
+.rokkit rk-accordion rk-list rk-item {
   @apply gap-2 last:rounded-b;
 }
-.rokkit rkt-accordion rkt-list rkt-item > a {
+.rokkit rk-accordion rk-list rk-item > a {
   @apply gap-2;
 }
-.rokkit rkt-accordion rkt-list {
+.rokkit rk-accordion rk-list {
   @apply rounded-b;
 }
 
-.rokkit rkt-accordion .is-expanded rkt-list {
+.rokkit rk-accordion .is-expanded rk-list {
   @apply -mt-10 rounded-t pt-10;
 }
 /* Styles for 'tabs' class */
@@ -104,6 +104,7 @@
 
 /* Input and Drop-down styles */
 .rokkit input-select,
+/* .rokkit select, */
 .rokkit drop-down > button {
   @apply rounded;
   /* @apply border border-neutral-muted; */
@@ -126,6 +127,7 @@
   @apply bg-neutral-subtle;
 }
 .rokkit :not(field) > input-select:focus-within,
+.rokkit :not(field) > input-select:focus-within,
 .rokkit drop-down:focus-within > button {
   /* @apply p-2px; */
   @apply border-none outline-none;
@@ -136,15 +138,15 @@
   @apply bg-neutral-muted outline-none min-h-10;
 } */
 
-/* Hover and rkt-icon styles */
-/* .rokkit input-select:hover > rkt-icon,
-.rokkit drop-down:hover > rkt-icon {
+/* Hover and rk-icon styles */
+/* .rokkit input-select:hover > rk-icon,
+.rokkit drop-down:hover > rk-icon {
   @apply border-neutral;
 } */
 
 /* Scroll styles */
 .rokkit input-select scroll,
-.rokkit input-select rkt-virtual-list {
+.rokkit input-select rk-virtual-list {
   @apply my-1 rounded shadow-lg;
 }
 
@@ -152,19 +154,19 @@
   @apply flex-grow flex-wrap gap-2;
 } */
 
-/* rkt-accordion styles */
-.rokkit rkt-accordion {
+/* rk-accordion styles */
+.rokkit rk-accordion {
   @apply flex-grow gap-1 overflow-y-scroll;
 }
-.rokkit rkt-accordion > div {
+.rokkit rk-accordion > div {
   @apply relative rounded shadow;
 }
 
-/* Nested rkt-list and rkt-node styles */
-.rokkit rkt-nested-list {
+/* Nested rk-list and rk-node styles */
+.rokkit rk-nested-list {
   @apply text-neutral-800;
 }
-.rokkit rkt-nested-list rkt-node > div {
+.rokkit rk-nested-list rk-node > div {
   @apply h-8 px-2;
 }
 
@@ -173,61 +175,61 @@
   @apply rounded;
 }
 
-/* Focus styles for Nested rkt-list, Tree, and rkt-accordion */
-.rokkit rkt-nested-list,
-.rokkit rkt-nested-list:focus-within,
+/* Focus styles for Nested rk-list, Tree, and rk-accordion */
+.rokkit rk-nested-list,
+.rokkit rk-nested-list:focus-within,
 .rokkit tree:focus-within {
   @apply rounded outline-none;
 }
 
-.rokkit rkt-accordion,
-.rokkit rkt-list,
-.rokkit rkt-virtual-list-viewport {
+.rokkit rk-accordion,
+.rokkit rk-list,
+.rokkit rk-virtual-list-viewport {
   @apply rounded;
 }
 
 /* Remove outline from focused elements */
-.rokkit rkt-accordion:focus-within rkt-list,
-.rokkit drop-down:focus-within rkt-list,
-.rokkit input-select:focus-within rkt-list,
-.rokkit input-select:focus-within rkt-virtual-list-viewport {
+.rokkit rk-accordion:focus-within rk-list,
+.rokkit drop-down:focus-within rk-list,
+.rokkit input-select:focus-within rk-list,
+.rokkit input-select:focus-within rk-virtual-list-viewport {
   @apply outline-none focus:outline-none;
 }
 
-/* Focus and Hover styles for rkt-list and rkt-node */
-.rokkit rkt-list:focus {
+/* Focus and Hover styles for rk-list and rk-node */
+.rokkit rk-list:focus {
   @apply outline-secondary outline;
 }
-/* .rokkit rkt-list rkt-item.is-hovering, */
-/* .rokkit rkt-virtual-list rkt-item.is-hovering, */
-.rokkit rkt-list rkt-item:hover,
-.rokkit rkt-virtual-list-contents rkt-virtual-list-item:hover,
-.rokkit rkt-node > div:hover {
+/* .rokkit rk-list rk-item.is-hovering, */
+/* .rokkit rk-virtual-list rk-item.is-hovering, */
+.rokkit rk-list rk-item:hover,
+.rokkit rk-virtual-list-contents rk-virtual-list-item:hover,
+.rokkit rk-node > div:hover {
   @apply bg-neutral-subtle;
 }
 
-/* Selected and Hover styles for rkt-list and rkt-node */
-.rokkit rkt-list rkt-item[aria-selected='true'] > a {
+/* Selected and Hover styles for rk-list and rk-node */
+.rokkit rk-list rk-item[aria-selected='true'] > a {
   @apply text-white;
 }
-.rokkit rkt-virtual-list-item[aria-current='true'] {
+.rokkit rk-virtual-list-item[aria-current='true'] {
   @apply bg-neutral-inset text-secondary;
 }
 
-/* Expanded and Selected styles for rkt-accordion */
-.rokkit rkt-accordion .is-expanded summary {
+/* Expanded and Selected styles for rk-accordion */
+.rokkit rk-accordion .is-expanded summary {
   @apply border-neutral-muted z-1 sticky top-0 rounded-b-none border-b;
 }
 
-.rokkit rkt-accordion [aria-selected='true'] summary {
+.rokkit rk-accordion [aria-selected='true'] summary {
   @apply bg-neutral-subtle;
 }
-.rokkit rkt-accordion:focus-within [aria-selected='true'] summary {
+.rokkit rk-accordion:focus-within [aria-selected='true'] summary {
   @apply from-primary to-secondary bg-gradient-to-r text-white outline-none;
 }
 
-/* Border styles for rkt-accordion */
-.rokkit rkt-accordion > div {
+/* Border styles for rk-accordion */
+.rokkit rk-accordion > div {
   @apply border-neutral-muted border;
 }
 
@@ -235,81 +237,81 @@
 .rokkit .folder-tree {
   @apply bg-neutral-inset h-full;
 }
-.rokkit .folder-tree rkt-nested-list {
+.rokkit .folder-tree rk-nested-list {
   @apply bg-neutral-inset h-full;
 }
-.rokkit rkt-node > div > rkt-item {
+.rokkit rk-node > div > rk-item {
   @apply px-1;
 }
-.rokkit rkt-node > div > span {
+.rokkit rk-node > div > span {
   @apply flex-shrink-0;
 }
-.rokkit rkt-node > div > span > i {
+.rokkit rk-node > div > span > i {
   @apply border-neutral-muted;
 }
-.rokkit rkt-node > div > rkt-icon > i {
+.rokkit rk-node > div > rk-icon > i {
   @apply text-neutral-elevated;
 }
 
 /* Toggle Switch styles */
-.rokkit rkt-toggle {
+.rokkit rk-switch {
   @apply mx-auto min-w-12 rounded-full;
   @apply bg-neutral-subtle border-neutral-muted border;
   @apply p-2px leading-loose;
 }
-.rokkit rkt-toggle:focus-within {
+.rokkit rk-switch:focus-within {
   @apply outline-secondary outline;
 }
-.rokkit rkt-toggle rkt-item {
+.rokkit rk-switch rk-item {
   @apply items-center justify-center gap-1 px-3 py-0 leading-loose;
   @apply min-h-6 min-w-6 cursor-pointer rounded-full;
 }
-.rokkit rkt-toggle rkt-item > rkt-icon > i {
+.rokkit rk-switch rk-item > rk-icon > i {
   @apply text-lg;
 }
 
-.rokkit rkt-toggle rkt-item[aria-selected='true'] {
+.rokkit rk-switch rk-item[aria-selected='true'] {
   @apply from-neutral-muted to-neutral-muted bg-gradient-to-r;
 }
 
-.rokkit rkt-toggle.compact > rkt-item {
+.rokkit rk-switch.compact > rk-item {
   @apply gap-0 px-0;
 }
-.rokkit rkt-virtual-list-viewport {
+.rokkit rk-virtual-list-viewport {
   @apply border-neutral-inset box-content border;
 }
-.rokkit rkt-virtual-list-viewport:focus-within {
+.rokkit rk-virtual-list-viewport:focus-within {
   @apply outline-none;
 }
-.rokkit rkt-virtual-list {
+.rokkit rk-virtual-list {
   @apply p-2px border-neutral-muted rounded border from-transparent to-transparent;
 }
-.rokkit rkt-virtual-list:focus-within {
+.rokkit rk-virtual-list:focus-within {
   @apply from-primary to-secondary bg-gradient-to-r;
 }
 
-.rokkit rkt-list rkt-item[aria-selected='true'],
-.rokkit rkt-virtual-list-contents rkt-virtual-list-item[aria-selected='true'],
-.rokkit rkt-node[aria-selected='true'] > div {
+.rokkit rk-list rk-item[aria-selected='true'],
+.rokkit rk-virtual-list-contents rk-virtual-list-item[aria-selected='true'],
+.rokkit rk-node[aria-selected='true'] > div {
   @apply from-neutral-subtle to-neutral-subtle bg-gradient-to-r text-neutral-800;
 }
-/* Focus and Hover styles for Toggle Switch, rkt-list, Tree, and Nested rkt-list */
-.rokkit rkt-toggle:focus-within rkt-item[aria-selected='true'],
-.rokkit rkt-list:focus-within rkt-item[aria-selected='true'],
-.rokkit rkt-virtual-list-viewport:focus-within rkt-virtual-list-item[aria-selected='true'],
-.rokkit tree:focus-within rkt-node[aria-selected='true'] > div,
-.rokkit rkt-nested-list:focus-within rkt-node[aria-selected='true'] > div {
+/* Focus and Hover styles for Toggle Switch, rk-list, Tree, and Nested rk-list */
+.rokkit rk-switch:focus-within rk-item[aria-selected='true'],
+.rokkit rk-list:focus-within rk-item[aria-selected='true'],
+.rokkit rk-virtual-list-viewport:focus-within rk-virtual-list-item[aria-selected='true'],
+.rokkit tree:focus-within rk-node[aria-selected='true'] > div,
+.rokkit rk-nested-list:focus-within rk-node[aria-selected='true'] > div {
   @apply from-primary to-secondary bg-gradient-to-r text-white;
   @apply hover:from-secondary hover:to-primary;
 }
 
-.rokkit rkt-toggle[aria-disabled='true'] {
+.rokkit rk-switch[aria-disabled='true'] {
   @apply bg-neutral-muted cursor-not-allowed text-neutral-500;
 }
-.rokkit rkt-input-select > rkt-selected-item > rkt-items {
+.rokkit rk-input-select > rk-selected-item > rk-items {
   @apply flex-grow flex-wrap gap-2;
 }
 
-.rokkit rkt-container:focus-within {
+.rokkit rk-container:focus-within {
   @apply outline-none;
 }

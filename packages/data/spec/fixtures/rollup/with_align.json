@@ -1,0 +1,62 @@
+[
+  {
+    "children": [
+      {
+        "actual_flag": 1,
+        "pct": 90,
+        "rank": 3,
+        "score": 112,
+        "team": "Boston Celtics"
+      },
+      {
+        "actual_flag": 0,
+        "team": "Houston Rockets"
+      },
+      {
+        "actual_flag": 1,
+        "pct": 85,
+        "rank": 1,
+        "score": 110,
+        "team": "Los Angeles Lakers"
+      },
+      {
+        "actual_flag": 1,
+        "pct": 80,
+        "rank": 2,
+        "score": 105,
+        "team": "Miami Heat"
+      }
+    ],
+    "date": "2020-01-01"
+  },
+  {
+    "children": [
+      {
+        "actual_flag": 1,
+        "pct": 88,
+        "rank": 1,
+        "score": 115,
+        "team": "Boston Celtics"
+      },
+      {
+        "actual_flag": 1,
+        "pct": 81,
+        "rank": 2,
+        "score": 107,
+        "team": "Houston Rockets"
+      },
+      {
+        "actual_flag": 0,
+        "team": "Los Angeles Lakers"
+      },
+      {
+        "actual_flag": 1,
+        "pct": 84,
+        "rank": 3,
+        "score": 110,
+        "team": "Miami Heat"
+      }
+    ],
+    "date": "2020-02-01"
+  }
+]

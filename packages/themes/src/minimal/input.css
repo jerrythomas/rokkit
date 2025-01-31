@@ -12,7 +12,7 @@
 .minimal fieldset legend {
   @apply border-neutral-muted hover:text-primary select-none rounded-md border-l border-r px-2 leading-tight;
 }
-.minimal fieldset rkt-icon {
+.minimal fieldset rk-icon {
   @apply text-2xl;
 }
 
@@ -101,14 +101,14 @@
 .minimal rating {
   @apply text-secondary-600 text-xl focus:outline-none;
 }
-.minimal rating > rkt-icon {
+.minimal rating > rk-icon {
   @apply w-8;
 }
-.minimal rating:focus-within rkt-icon[aria-checked='true'] {
+.minimal rating:focus-within rk-icon[aria-checked='true'] {
   @apply text-primary-600;
 }
 
-.minimal rating rkt-icon.hovering > i {
+.minimal rating rk-icon.hovering > i {
   @apply text-secondary-600;
 }
 /* .error,

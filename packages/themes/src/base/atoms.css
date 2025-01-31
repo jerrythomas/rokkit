@@ -1,36 +1,36 @@
 /* Icon styles */
-rkt-icon {
+rk-icon {
   @apply flex flex-shrink-0 flex-grow-0 items-center justify-center;
   @apply h-4 min-h-4 w-4;
 }
-button > rkt-icon {
+button > rk-icon {
   @apply aspect-square cursor-pointer select-none p-2 focus:outline;
 }
-rkt-icon > i {
+rk-icon > i {
   @apply mx-auto aspect-square text-2xl leading-6 text-current;
 }
-rkt-icon.large > i {
+rk-icon.large > i {
   @apply text-3xl;
 }
-rkt-icon.medium > i {
+rk-icon.medium > i {
   @apply text-lg leading-5;
 }
-rkt-icon.small > i {
+rk-icon.small > i {
   @apply leading-4;
   font-size: 1rem;
 }
-button > rkt-icon.large {
+button > rk-icon.large {
   @apply h-12 w-12;
 }
-button > rkt-icon.medium {
+button > rk-icon.medium {
   @apply h-8 w-8;
 }
-button > rkt-icon.small {
+button > rk-icon.small {
   @apply h-6 w-6;
 }
 
 /* Scroll styles */
-rkt-scroll {
+rk-scroll {
   @apply flex flex-col overflow-y-scroll;
 }
 
@@ -39,21 +39,16 @@ square {
   @apply flex aspect-square h-full min-h-full flex-col items-center justify-center;
 }
 /* Item styles */
-rkt-item,
+rk-item,
 .item {
   @apply flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2;
 }
-rkt-item p,
-rkt-summary p {
+rk-item p,
+rk-summary p {
   @apply flex flex-grow;
 }
 
 /* Overlay styles */
-rkt-overlay {
+rk-overlay {
   @apply bg-neutral-inset bg-opacity-50;
-}
-
-/* Checkbox styles */
-rkt-checkbox {
-  @apply gap-2;
 }

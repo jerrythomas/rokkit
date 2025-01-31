@@ -6,7 +6,8 @@ import * as components from '../src/index'
 
 describe('HTML Input', () => {
 	const names = Object.keys(components).filter(
-		(name) => !['InputRadio', 'InputCheckbox', 'InputText', 'InputTextArea'].includes(name)
+		(name) =>
+			!['InputRadio', 'InputCheckbox', 'InputText', 'InputTextArea', 'InputSelect'].includes(name)
 	)
 
 	const customProps = {
@@ -27,7 +28,6 @@ describe('HTML Input', () => {
 			'InputNumber',
 			'InputPassword',
 			'InputRange',
-			'InputSelect',
 			'InputTel',
 			'InputTime',
 			'InputUrl',

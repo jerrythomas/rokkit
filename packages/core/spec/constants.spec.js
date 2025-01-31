@@ -94,6 +94,7 @@ describe('Utility functions', () => {
 			state: 'state',
 			isOpen: '_open',
 			isDeleted: '_deleted',
+			label: 'label',
 			level: 'level',
 			parent: 'parent',
 			currency: 'currency'

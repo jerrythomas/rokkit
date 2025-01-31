@@ -35,6 +35,7 @@ pre {
 .disabled {
   @apply text-disabled;
 }
+
 input[disabled='true'],
 textarea[disabled='true'],
 select[disabled='true'] {
@@ -42,28 +43,29 @@ select[disabled='true'] {
 }
 
 /* plots*/
-rkt-plot {
+rk-plot {
   @apply bg-neutral-inset rounded-md p-4;
 }
+
 g[aria-label='tip'] {
   --plot-background: var(--neutral-200);
 }
 
-rkt-input-field input,
-rkt-input-field toggle-switch,
-rkt-drop-down {
+rk-input-field input,
+rk-input-field toggle-switch,
+rk-drop-down {
   @apply focus:outline-none;
 }
 
-rkt-alert,
-rkt-error,
-rkt-info,
-rkt-warning,
-rkt-success {
+rk-alert,
+rk-error,
+rk-info,
+rk-warning,
+rk-success {
   @apply cursor-pointer select-none rounded border px-4 py-2;
 }
 
-rkt-checkbox {
+rk-checkbox {
   @apply gap-2;
 }
 
@@ -71,14 +73,18 @@ button:disabled {
   @apply bg-neutral-muted cursor-not-allowed text-neutral-500;
 }
 
-rkt-cell.cell-type-string {
+rk-cell.cell-type-string {
   @apply text-left;
 }
-rkt-cell.cell-type-integer rkt-itemp,
-rkt-cell.cell-type-number rkt-itemp {
+rk-cell.cell-type-integer rk-itemp,
+rk-cell.cell-type-number rk-itemp {
   @apply text-right;
 }
 
-rkt-cell rkt-item {
+rk-cell rk-item {
   @apply flex w-full;
+}
+
+.dark ::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }

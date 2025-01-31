@@ -1,0 +1,46 @@
+[
+  {
+    "children": [
+      {
+        "city": "Nashville",
+        "name": "Nashville International Airport"
+      }
+    ],
+    "country": "USA",
+    "state": "TN"
+  },
+  {
+    "children": [
+      {
+        "city": "London",
+        "name": "Heathrow Airport"
+      },
+      {
+        "city": "London",
+        "name": "Gatwick Airport"
+      }
+    ],
+    "country": "UK",
+    "state": "England"
+  },
+  {
+    "children": [
+      {
+        "city": "New York",
+        "name": "John F. Kennedy International Airport"
+      }
+    ],
+    "country": "USA",
+    "state": "NY"
+  },
+  {
+    "children": [
+      {
+        "city": "Los Angeles",
+        "name": "Los Angeles International Airport"
+      }
+    ],
+    "country": "USA",
+    "state": "CA"
+  }
+]

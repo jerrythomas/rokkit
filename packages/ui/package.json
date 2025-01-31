@@ -1,0 +1,34 @@
+{
+  "name": "@rokkit/ui",
+  "version": "1.0.0-next.105",
+  "module": "src/index.js",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun clean && bun prepublishOnly"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "dist/**/*.d.ts"
+  ],
+  "exports": {
+    "./src": "./src",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "@rokkit/atoms": "workspace:latest",
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/input": "workspace:latest"
+  }
+}

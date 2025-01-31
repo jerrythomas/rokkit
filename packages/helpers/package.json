@@ -1,7 +1,7 @@
 {
   "name": "@rokkit/helpers",
   "version": "1.0.0-next.105",
-  "description": "Custom matchers for vitest.",
+  "description": "Custom matchers for vitest, mocks and simulators for testing.",
   "publishConfig": {
     "access": "public"
   },
@@ -28,8 +28,7 @@
   "scripts": {
     "prepublishOnly": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "pnpm clean && pnpm prepublishOnly",
-    "publish": "pnpm publish --access public"
+    "build": "bun clean && bun prepublishOnly"
   },
   "dependencies": {
     "@vitest/expect": "^2.1.8",

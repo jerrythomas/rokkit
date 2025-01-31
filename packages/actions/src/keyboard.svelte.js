@@ -17,8 +17,8 @@ const defaultKeyMappings = {
  * @param {HTMLElement} root
  * @param {import('./types.js').KeyboardConfig} options - Custom key mappings
  */
-export function keyboard(root, options = defaultKeyMappings) {
-	const keyMappings = options || defaultKeyMappings
+export function keyboard(root, options = null) {
+	const keyMappings = options ?? defaultKeyMappings
 
 	/**
 	 * Handle keyboard events
@@ -27,8 +27,9 @@ export function keyboard(root, options = defaultKeyMappings) {
 	 */
 	const keyup = (event) => {
 		const { key } = event
-		const eventName = getEventForKey(keyMappings, key)
 
+		const eventName = getEventForKey(keyMappings, key)
+		// verify that the target is a child of the root element?
 		if (eventName) {
 			root.dispatchEvent(new CustomEvent(eventName, { detail: key }))
 		}
@@ -48,7 +49,7 @@ export function keyboard(root, options = defaultKeyMappings) {
 	}
 
 	$effect(() => {
-		const cleanupKeyupEvent = on(document, 'keyup', keyup)
+		const cleanupKeyupEvent = on(root, 'keyup', keyup)
 		const cleanupClickEvent = on(root, 'click', click)
 		return () => {
 			cleanupKeyupEvent()

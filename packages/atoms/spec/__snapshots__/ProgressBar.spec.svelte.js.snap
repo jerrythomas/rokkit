@@ -1,0 +1,85 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProgressBar.svelte > should render indeterminate progress 1`] = `
+<div>
+  <rk-progress
+    class=""
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 0%; height: 1.5mm;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render progress bar with class 1`] = `
+<div>
+  <rk-progress
+    class="my-class"
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 0%; height: 1.5mm;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render progress bar with class 2`] = `
+<div>
+  <rk-progress
+    class="my-class-2"
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 0%; height: 1.5mm;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
+<div>
+  <rk-progress
+    class=""
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 50%; height: 1.5mm;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
+<div>
+  <rk-progress
+    class=""
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      style="width: 100%; height: 1.5mm;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render progress with custom height, indicator width 1`] = `
+<div>
+  <rk-progress
+    class=""
+    style="height: 3px;"
+  >
+    <value-bar
+      style="width: 0%; height: 3px;"
+    />
+  </rk-progress>
+  
+</div>
+`;

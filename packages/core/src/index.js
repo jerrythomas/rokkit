@@ -8,6 +8,9 @@ export * from './utils.js'
 export * from './nested.js'
 // skipcq: JS-E1004 - Needed for exposing all functions
 export * from './string.js'
-export { FieldMapper } from './field-mapper.js'
 // skipcq: JS-E1004 - Needed for exposing all functions
 export * from './theme.js'
+export { FieldMapper } from './field-mapper.js'
+export { getItemAtIndex, getIndexForItem } from './mapped-items.js'
+// export const defaultMapper = new FieldMapper()
+// export { FieldMapper }
