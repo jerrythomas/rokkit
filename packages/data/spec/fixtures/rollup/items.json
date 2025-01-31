@@ -1,0 +1,38 @@
+[
+  {
+    "category": "food",
+    "name": "apple",
+    "price": 1.2,
+    "quantity": 10
+  },
+  {
+    "category": "food",
+    "name": "banana",
+    "price": 0.8,
+    "quantity": 20
+  },
+  {
+    "category": "food",
+    "name": "orange",
+    "price": 1.0,
+    "quantity": 15
+  },
+  {
+    "category": "drink",
+    "name": "coke",
+    "price": 1.5,
+    "quantity": 30
+  },
+  {
+    "category": "drink",
+    "name": "pepsi",
+    "price": 1.5,
+    "quantity": 25
+  },
+  {
+    "category": "drink",
+    "name": "sprite",
+    "price": 1.5,
+    "quantity": 20
+  }
+]

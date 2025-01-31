@@ -43,15 +43,15 @@ table > tfoot > tr {
   @apply table-row font-semibold text-neutral-800;
 }
 
-rkt-table-wrapper {
+rk-table-wrapper {
   @apply shadow-md sm:rounded-lg;
 }
 
-td rkt-cell.cell-type-integer p,
-td rkt-cell.cell-type-number p {
+td rk-cell.cell-type-integer p,
+td rk-cell.cell-type-number p {
   @apply w-full text-right;
 }
 
-td rkt-cell rkt-item {
+td rk-cell rk-item {
   @apply flex w-full;
 }

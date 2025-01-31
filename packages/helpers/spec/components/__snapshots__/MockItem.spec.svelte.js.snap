@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MockItem > should render 1`] = `
+<div>
+  Hello
+  
+</div>
+`;
+
+exports[`MockItem > should render 2`] = `
+<div>
+  World
+  
+</div>
+`;

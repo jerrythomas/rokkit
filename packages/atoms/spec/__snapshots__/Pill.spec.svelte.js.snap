@@ -2,7 +2,7 @@
 
 exports[`Pill > should render 1`] = `
 <div>
-  <rkt-pill
+  <rk-pill
     tabindex="0"
   >
     <!---->
@@ -14,16 +14,17 @@ exports[`Pill > should render 1`] = `
       Hello
     </p>
     <!---->
+    <!---->
      
     <!---->
-  </rkt-pill>
+  </rk-pill>
   
 </div>
 `;
 
 exports[`Pill > should render with close button 1`] = `
 <div>
-  <rkt-pill
+  <rk-pill
     tabindex="0"
   >
     <!---->
@@ -35,9 +36,10 @@ exports[`Pill > should render with close button 1`] = `
       Hello
     </p>
     <!---->
+    <!---->
      
     <button>
-      <rkt-icon
+      <rk-icon
         aria-label="remove"
         class=""
         role="img"
@@ -46,18 +48,18 @@ exports[`Pill > should render with close button 1`] = `
           aria-hidden="true"
           class="remove"
         />
-      </rkt-icon>
+      </rk-icon>
       <!---->
     </button>
     <!---->
-  </rkt-pill>
+  </rk-pill>
   
 </div>
 `;
 
 exports[`Pill > should render with disabled close button 1`] = `
 <div>
-  <rkt-pill
+  <rk-pill
     tabindex="0"
   >
     <!---->
@@ -69,11 +71,12 @@ exports[`Pill > should render with disabled close button 1`] = `
       Hello
     </p>
     <!---->
+    <!---->
      
     <button
       disabled=""
     >
-      <rkt-icon
+      <rk-icon
         aria-label="remove"
         class=""
         role="img"
@@ -82,43 +85,56 @@ exports[`Pill > should render with disabled close button 1`] = `
           aria-hidden="true"
           class="remove"
         />
-      </rkt-icon>
+      </rk-icon>
       <!---->
     </button>
     <!---->
-  </rkt-pill>
+  </rk-pill>
   
 </div>
 `;
 
 exports[`Pill > should render with icon 1`] = `
 <div>
-  <rkt-pill
+  <rk-pill
     tabindex="0"
   >
     <!---->
-    <!---->
-    
+    <rk-icon
+      aria-label="Hello"
+      class=""
+      role="img"
+    >
+      <i
+        aria-hidden="true"
+        class="world"
+      />
+    </rk-icon>
     <!---->
      
     <p>
       Hello
     </p>
     <!---->
+    <!---->
      
     <!---->
-  </rkt-pill>
+  </rk-pill>
   
 </div>
 `;
 
 exports[`Pill > should render with image 1`] = `
 <div>
-  <rkt-pill
+  <rk-pill
     tabindex="0"
   >
     <!---->
     <!---->
+    <img
+      alt="Hello"
+      src="world.png"
+    />
     
     <!---->
      
@@ -126,9 +142,10 @@ exports[`Pill > should render with image 1`] = `
       Hello
     </p>
     <!---->
+    <!---->
      
     <!---->
-  </rkt-pill>
+  </rk-pill>
   
 </div>
 `;

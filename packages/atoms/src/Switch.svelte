@@ -6,12 +6,12 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [class]
-	 * @property {any} value
-	 * @property {Array<any>} [options]
+	 * @property {string}      [class]
+	 * @property {any}         value
+	 * @property {Array<any>}  [options]
 	 * @property {FieldMapper} [mapping]
-	 * @property {boolean} [compact]
-	 * @property {boolean} [disabled]
+	 * @property {boolean}     [compact]
+	 * @property {boolean}     [disabled]
 	 */
 
 	/** @type {Props} */
@@ -19,7 +19,7 @@
 		class: className = '',
 		value = $bindable(),
 		options = [false, true],
-		fields = new FieldMapper({}, { default: Item }),
+		mapping = new FieldMapper({}, { default: Item }),
 		compact = false,
 		disabled = false,
 		onchange = noop
@@ -53,10 +53,10 @@
 </script>
 
 {#if !Array.isArray(options) || options.length < 2}
-	<rkt-error>Items should be an array with at least two items.</rkt-error>
+	<rk-error>Items should be an array with at least two items.</rk-error>
 {:else}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<rkt-switch
+	<rk-switch
 		class={className}
 		class:is-off={options.length === 2 && equals(value, options[0])}
 		class:is-on={options.length === 2 && equals(value, options[1])}
@@ -72,20 +72,15 @@
 		onclick={handleClick}
 	>
 		{#each options as item, index (item)}
-			{@const SvelteComponent = useComponent ? fields.getComponent(item) : null}
-			<rkt-item
-				class="relative"
-				role="option"
-				aria-selected={equals(item, value)}
-				data-path={index}
-			>
+			{@const Template = useComponent ? mapping.getComponent(item) : null}
+			<rk-item class="relative" role="option" aria-selected={equals(item, value)} data-path={index}>
 				{#if equals(item, value)}
-					<rkt-indicator class="absolute bottom-0 left-0 right-0 top-0"></rkt-indicator>
+					<rk-indicator class="absolute bottom-0 left-0 right-0 top-0"></rk-indicator>
 				{/if}
-				{#if SvelteComponent}
-					<SvelteComponent value={item} {fields} />
+				{#if Template}
+					<Template value={item} {mapping} />
 				{/if}
-			</rkt-item>
+			</rk-item>
 		{/each}
-	</rkt-switch>
+	</rk-switch>
 {/if}

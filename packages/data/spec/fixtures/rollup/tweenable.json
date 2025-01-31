@@ -1,0 +1,166 @@
+[
+  {
+    "children": [
+      {
+        "actual_flag": 0,
+        "group": "Eastern Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Boston Celtics"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Eastern Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Miami Heat"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Eastern Conference",
+        "pct": 90,
+        "score": 112,
+        "team": "Milwaukee Bucks"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Eastern Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Philadelphia 76ers"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Eastern Conference",
+        "pct": 75,
+        "score": 100,
+        "team": "Toronto Raptors"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Western Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Denver Nuggets"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Western Conference",
+        "pct": 80,
+        "score": 105,
+        "team": "Golden State Warriors"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Western Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Houston Rockets"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Western Conference",
+        "pct": 82,
+        "score": 108,
+        "team": "Los Angeles Clippers"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Western Conference",
+        "pct": 85,
+        "score": 110,
+        "team": "Los Angeles Lakers"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Western Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Utah Jazz"
+      }
+    ],
+    "date": "2020-01-01"
+  },
+  {
+    "children": [
+      {
+        "actual_flag": 1,
+        "group": "Eastern Conference",
+        "pct": 88,
+        "score": 115,
+        "team": "Boston Celtics"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Eastern Conference",
+        "pct": 84,
+        "score": 110,
+        "team": "Miami Heat"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Eastern Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Milwaukee Bucks"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Eastern Conference",
+        "pct": 79,
+        "score": 105,
+        "team": "Philadelphia 76ers"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Eastern Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Toronto Raptors"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Western Conference",
+        "pct": 86,
+        "score": 112,
+        "team": "Denver Nuggets"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Western Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Golden State Warriors"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Western Conference",
+        "pct": 81,
+        "score": 107,
+        "team": "Houston Rockets"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Western Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Los Angeles Clippers"
+      },
+      {
+        "actual_flag": 0,
+        "group": "Western Conference",
+        "pct": 0,
+        "score": 0,
+        "team": "Los Angeles Lakers"
+      },
+      {
+        "actual_flag": 1,
+        "group": "Western Conference",
+        "pct": 80,
+        "score": 106,
+        "team": "Utah Jazz"
+      }
+    ],
+    "date": "2020-02-01"
+  }
+]

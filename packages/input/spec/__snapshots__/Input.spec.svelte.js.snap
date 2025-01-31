@@ -92,30 +92,6 @@ exports[`HTML Input > should render "InputRange" 1`] = `
 </div>
 `;
 
-exports[`HTML Input > should render "InputSelect" 1`] = `
-<div>
-  <select>
-    <option
-      value="foo"
-    >
-      foo
-    </option>
-    <option
-      value="bar"
-    >
-      bar
-    </option>
-    <option
-      value="baz"
-    >
-      baz
-    </option>
-    
-  </select>
-  
-</div>
-`;
-
 exports[`HTML Input > should render "InputTel" 1`] = `
 <div>
   <input

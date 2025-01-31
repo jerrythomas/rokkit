@@ -4,22 +4,13 @@
 }
 
 /* Zebra styles */
-.rokkit .zebra rkt-item {
+.rokkit .zebra rk-item {
   @apply even:bg-neutral-zebra hover:bg-neutral-50;
 }
 
-/* Styles for 'rkt-icon' class */
-.rokkit rkt-icon {
+/* Styles for 'rk-icon' class */
+.rokkit rk-icon {
   @apply text-neutral-700 focus:outline-none;
-}
-.rokkit button {
-  @apply hover:text-secondary rounded-md text-neutral-700 focus:rounded;
-}
-.rokkit button:focus {
-  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 outline-none dark:text-neutral-800;
-}
-.rokkit button:disabled {
-  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
 }
 
 /* Styles for input[type='number'] */
@@ -31,7 +22,7 @@
   -webkit-appearance: none;
 }
 
-.rokkit rkt-progress-bar rkt-value-bar {
+.rokkit rk-progress-bar rk-value-bar {
   @apply from-primary to-secondary text-neutral-subtle bg-gradient-to-r dark:text-neutral-800;
 }
 

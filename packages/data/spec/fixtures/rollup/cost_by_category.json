@@ -1,0 +1,14 @@
+[
+  {
+    "avg_cost": 14.333333333333334,
+    "category": "food",
+    "cost_q1": 13.5,
+    "cost_q3": 15.5
+  },
+  {
+    "avg_cost": 37.5,
+    "category": "drink",
+    "cost_q1": 33.75,
+    "cost_q3": 41.25
+  }
+]

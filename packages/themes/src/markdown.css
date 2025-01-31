@@ -72,7 +72,7 @@
 }
 /* postcss-ignore */
 .markdown-body summary {
-  display: rkt-list-item;
+  display: rk-list-item;
 }
 /* postcss-ignore */
 .markdown-body a {
@@ -223,7 +223,7 @@
   margin-bottom: 0;
 }
 .markdown-body ul {
-  rkt-list-style-type: none;
+  rk-list-style-type: none;
 }
 .markdown-body ul li {
   @apply relative mb-2;
@@ -234,19 +234,19 @@
 }
 
 .markdown-body ol {
-  rkt-list-style-type: decimal;
+  rk-list-style-type: decimal;
 }
 
 .markdown-body ol ol,
 .markdown-body ul ol {
-  rkt-list-style-type: lower-roman;
+  rk-list-style-type: lower-roman;
 }
 
 .markdown-body ol ol ol,
 .markdown-body ol ul ol,
 .markdown-body ul ol ol,
 .markdown-body ul ul ol {
-  rkt-list-style-type: lower-alpha;
+  rk-list-style-type: lower-alpha;
 }
 
 .markdown-body dd {
@@ -942,7 +942,7 @@
 }
 
 .markdown-body .task-list-item {
-  rkt-list-style-type: none;
+  rk-list-style-type: none;
 }
 
 .markdown-body .task-list-item + .task-list-item {

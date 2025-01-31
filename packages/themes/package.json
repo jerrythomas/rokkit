@@ -13,8 +13,7 @@
   "scripts": {
     "prepublishOnly": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "pnpm clean && pnpm prepublishOnly",
-    "publish": "pnpm publish --access public"
+    "build": "bun clean && bun prepublishOnly"
   },
   "files": [
     "src"
@@ -33,6 +32,6 @@
     }
   },
   "dependencies": {
-    "@rokkit/core": "workspace:*"
+    "@rokkit/core": "workspace:latest"
   }
 }

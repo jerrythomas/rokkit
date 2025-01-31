@@ -1,0 +1,21 @@
+/* Progress bar styles */
+rk-progress {
+  @apply flex w-full;
+}
+
+rk-progress {
+  @apply bg-neutral-muted border-neutral-subtle border;
+}
+rk-progress value-bar {
+  @apply bg-primary;
+}
+
+.indeterminate value-bar {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  /* Move the bar infinitely */
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: pendulum;
+}

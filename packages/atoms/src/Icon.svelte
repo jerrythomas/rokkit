@@ -10,6 +10,6 @@
 	let { class: className = '', name = 'empty', label = name } = $props()
 </script>
 
-<rkt-icon class={className} aria-label={label} role="img">
+<rk-icon class={className} aria-label={label} role="img">
 	<i class={name} aria-hidden="true"></i>
-</rkt-icon>
+</rk-icon>

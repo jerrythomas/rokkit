@@ -22,7 +22,8 @@ export const defaultFields = {
 	isDeleted: '_deleted',
 	level: 'level',
 	parent: 'parent',
-	currency: 'currency'
+	currency: 'currency',
+	label: 'label'
 }
 
 export const defaultIcons = [

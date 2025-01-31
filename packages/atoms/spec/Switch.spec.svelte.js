@@ -13,7 +13,7 @@ describe('Switch', () => {
 	it('should render', () => {
 		const props = $state({ value: null })
 		const { container } = render(Switch, { props })
-		const switchElement = container.querySelector('rkt-switch')
+		const switchElement = container.querySelector('rk-switch')
 		expect(switchElement).toBeTruthy()
 		// expect(switchElement).toHaveAttribute('role', 'listbox')
 		expect(switchElement).toMatchSnapshot()
@@ -25,13 +25,13 @@ describe('Switch', () => {
 
 	it('should render with error for invalid options', () => {
 		const { container } = render(Switch, { options: ['a'] })
-		const switchElement = container.querySelector('rkt-switch')
+		const switchElement = container.querySelector('rk-switch')
 		expect(switchElement).toBeFalsy()
 		expect(switchElement).toMatchSnapshot()
 	})
 	it('should render with options', () => {
 		const { container } = render(Switch, { props: { options: ['a', 'b'], fields } })
-		const switchElement = container.querySelector('rkt-switch')
+		const switchElement = container.querySelector('rk-switch')
 		expect(switchElement).toBeTruthy()
 		expect(switchElement).toMatchSnapshot()
 	})
@@ -44,7 +44,7 @@ describe('Switch', () => {
 			fields: mapper
 		})
 
-		const switchElement = container.querySelector('rkt-switch')
+		const switchElement = container.querySelector('rk-switch')
 		expect(switchElement).toBeTruthy()
 		expect(switchElement).toMatchSnapshot()
 	})
@@ -57,7 +57,7 @@ describe('Switch', () => {
 			onchange: vi.fn()
 		})
 		const { container } = render(Switch, { props })
-		const items = container.querySelectorAll('rkt-item')
+		const items = container.querySelectorAll('rk-item')
 		expect(items.length).toBe(2)
 		fireEvent.click(items[0])
 		await tick()
@@ -81,7 +81,7 @@ describe('Switch', () => {
 			onchange: vi.fn()
 		})
 		const { container } = render(Switch, { props })
-		const switchElement = container.querySelector('rkt-switch')
+		const switchElement = container.querySelector('rk-switch')
 
 		fireEvent.keyUp(switchElement, { key })
 		await tick()
@@ -109,7 +109,7 @@ describe('Switch', () => {
 			onchange: vi.fn()
 		})
 		const { container } = render(Switch, { props })
-		const switchElement = container.querySelector('rkt-switch')
+		const switchElement = container.querySelector('rk-switch')
 
 		fireEvent.keyUp(switchElement, { key })
 		await tick()

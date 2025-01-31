@@ -41,12 +41,22 @@ describe('InputText', () => {
 			required: true
 		})
 		const { container } = render(InputText, { props })
+		expect(container).toMatchSnapshot()
 		const element = container.querySelector('input')
 		expect(element.required).toBe(true)
 
 		props.required = false
 		flushSync()
 		expect(element.required).toBe(false)
+	})
+	it('should render with additional attributes', () => {
+		const props = $state({
+			value: 'hello',
+			id: 'foo',
+			name: 'bar'
+		})
+		const { container } = render(InputText, { props })
+		expect(container).toMatchSnapshot()
 	})
 
 	it('should handle input events', async () => {

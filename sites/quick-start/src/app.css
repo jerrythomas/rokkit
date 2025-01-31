@@ -1,0 +1,28 @@
+@import '@unocss/reset/tailwind.css';
+@import '@fontsource/victor-mono';
+@import '@fontsource/victor-mono/latin.css';
+@import '@fontsource/overpass';
+@import '@fontsource/overpass/100.css';
+@import '@fontsource/overpass/200.css';
+@import '@fontsource/overpass/300.css';
+@import '@fontsource/open-sans';
+@import '@fontsource/open-sans/300.css';
+
+@import '@rokkit/themes/markdown.css';
+@import '@rokkit/themes/palette.css';
+@import '@rokkit/themes/prism.css';
+@import '@rokkit/themes/minimal.css';
+@import '@rokkit/themes/material.css';
+@import '@rokkit/themes/rokkit.css';
+
+body {
+  @apply flex h-screen w-screen flex-col overflow-hidden;
+  @apply font-body bg-neutral-base font-extralight text-neutral-800;
+}
+body > app {
+  @apply relative flex h-full w-full flex-col overflow-hidden;
+}
+
+input.embedded {
+  @apply border-box h-full w-full border-none bg-transparent focus:outline-none;
+}

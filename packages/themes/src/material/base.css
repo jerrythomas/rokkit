@@ -1,9 +1,9 @@
 @import '../base.css';
 
-.material rkt-icon[role='button'] {
+.material rk-icon[role='button'] {
   @apply text-neutral-muted hover:text-primary focus:outline-primary focus:m-1px focus:rounded;
 }
-.material rkt-icon.disabled[role='button'] {
+.material rk-icon.disabled[role='button'] {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
 }
 

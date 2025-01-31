@@ -1,25 +1,25 @@
-rkt-input-select,
-rkt-drop-down {
+rk-input-select,
+rk-drop-down {
   @apply cursor-pointer overflow-visible;
 }
 
-rkt-input-field rkt-field {
+rk-input-field rk-field {
   @apply gap-1px;
 }
-rkt-input-field rkt-field rkt-icon {
+rk-input-field rk-field rk-icon {
   @apply bg-neutral-subtle h-9 w-9 text-neutral-800;
 }
 
-rkt-input-field > rkt-field > rkt-input-select {
+rk-input-field > rk-field > rk-input-select {
   @apply px-0;
 }
 
-rkt-input-select rkt-selected-item > rkt-icon,
-rkt-drop-down > button > span > rkt-icon {
+rk-input-select rk-selected-item > rk-icon,
+rk-drop-down > button > span > rk-icon {
   @apply h-full w-9;
 }
-rkt-input-select > rkt-selected-item,
-rkt-drop-down > button > span {
+rk-input-select > rk-selected-item,
+rk-drop-down > button > span {
   /* @apply bg-neutral-base pl-3; */
   @apply min-h-9 items-center gap-2 pl-3 normal-case;
   @apply rounded text-neutral-800;

@@ -1,0 +1,73 @@
+@import '@unocss/reset/tailwind.css';
+@import '@fontsource/victor-mono';
+@import '@fontsource/victor-mono/latin.css';
+@import '@fontsource/overpass';
+@import '@fontsource/overpass/100.css';
+@import '@fontsource/overpass/200.css';
+@import '@fontsource/overpass/300.css';
+@import '@fontsource/open-sans';
+@import '@fontsource/open-sans/300.css';
+
+@import '@rokkit/themes/markdown.css';
+@import '@rokkit/themes/palette.css';
+@import '@rokkit/themes/prism.css';
+@import '@rokkit/themes/minimal.css';
+@import '@rokkit/themes/material.css';
+@import '@rokkit/themes/rokkit.css';
+
+body {
+  @apply flex h-screen w-screen flex-col overflow-hidden;
+  @apply font-body bg-neutral-base font-extralight text-neutral-800;
+}
+body > app {
+  @apply relative flex h-full w-full flex-col overflow-hidden;
+}
+
+input.embedded {
+  @apply border-box h-full w-full border-none bg-transparent focus:outline-none;
+}
+/* .rokkit button {
+  @apply hover:text-secondary rounded-md text-neutral-700;
+}
+.rokkit button:focus {
+  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 outline-none dark:text-neutral-800;
+}
+.rokkit button:disabled {
+  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
+} */
+.rokkit rk-toggle button {
+  @appbly bg-neutral-base text-neutral hover:bg-neutral-muted hover:text-primary rounded-md;
+}
+
+/* .rokkit rk-toggle > button:hover {
+  @appbly bg-neutral-muted text-primary;
+} */
+
+.rokkit a.button {
+  @apply decoration-none;
+}
+
+.rokkit .button.is-primary:hover {
+  @apply from-secondary to-primary;
+}
+
+.rokkit rk-toggle button {
+  @apply bg-neutral-base hover:bg-neutral-muted hover:text-primary rounded-md text-neutral-700;
+}
+.rokkit rk-toggle rk-icon {
+  @apply hover:text-primary-600 text-neutral-700;
+}
+
+.rokkit .square {
+  @apply border-neutral-muted p-2px bg-neutral-base rounded-md border;
+}
+.rokkit .square rk-icon {
+  @apply h-8 w-8 rounded-md md:h-10 md:w-10;
+}
+
+.rokkit .square rk-icon {
+  @apply hover:text-primary-600 hover:bg-neutral-muted text-neutral-700;
+}
+.rokkit .square:focus-within {
+  @apply ring-secondary-600 ring-2;
+}

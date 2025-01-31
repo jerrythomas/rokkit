@@ -1,0 +1,25 @@
+{
+	"name": "@rokkit/auth",
+	"description": "auth icon set in Iconify JSON format",
+	"version": "1.0.0",
+	"main": "index.js",
+	"module": "index.mjs",
+	"types": "index.d.ts",
+	"bugs": "https://github.com/jerrythomas/rokkit/issues",
+	"homepage": "https://github.com/jerrythomas/rokkit",
+	"exports": {
+		"./*": "./*",
+		".": {
+			"types": "./index.d.ts",
+			"require": "./index.js",
+			"import": "./index.mjs"
+		},
+		"./icons.json": "./icons.json"
+	},
+	"iconSet": {
+		"icons": "icons.json"
+	},
+	"dependencies": {
+		"@iconify/types": "^2.0.0"
+	}
+}
