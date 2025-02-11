@@ -1,7 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { FieldMapper } from '../src/field-mapper'
-import { defaultFields } from '../src/constants'
-import { has } from 'ramda'
 
 describe('FieldMapper', () => {
 	const data = {

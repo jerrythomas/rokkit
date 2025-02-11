@@ -8,7 +8,7 @@
   @apply p-2px border-neutral-muted box-border rounded border;
 }
 .rokkit rk-input-select {
-  @apply flex h-10 items-center px-2;
+  @apply flex h-8 items-center px-2;
 }
 .rokkit rk-input-field input,
 .rokkit rk-input-field textarea,

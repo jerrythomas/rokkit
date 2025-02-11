@@ -7,15 +7,24 @@ describe('ProgressBar.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render indeterminate progress', () => {
+		const props = $state({ value: null })
 		const { container } = render(ProgressBar)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
+		props.max = null
+		props.value = 50
+		flushSync()
+		expect(container).toMatchSnapshot()
 	})
 
-	it('should render progress with custom height, indicator width', () => {
-		const props = $state({ height: '3px', width: 50 })
+	it('should render progress with custom height', () => {
+		const props = $state({ height: '3px', value: null })
 		const { container } = render(ProgressBar, { props })
 		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+
+		props.height = '5px'
+		flushSync()
 		expect(container).toMatchSnapshot()
 	})
 

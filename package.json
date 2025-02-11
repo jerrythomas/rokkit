@@ -43,5 +43,7 @@
     "./packages/*",
     "./sites/*"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@types/ramda": "^0.30.2"
+  }
 }

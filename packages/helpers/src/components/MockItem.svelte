@@ -1,5 +1,6 @@
 <script>
-	let { value } = $props()
+	let { value = null } = $props()
+	let text = $derived(typeof value === 'object' ? value?.text : value)
 </script>
 
-{value}
+{text}

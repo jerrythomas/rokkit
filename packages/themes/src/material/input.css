@@ -28,7 +28,7 @@
   @apply cursor-pointer select-none rounded;
 }
 .material rk-input-select > selected-item {
-  @apply bg-neutral-base h-10 items-center pl-4 pr-0 normal-case;
+  @apply bg-neutral-base h-8 items-center pl-4 pr-0 normal-case;
   @apply border-neutral-muted rounded border text-neutral-800;
   @apply hover:bg-neutral-muted hover:border-secondary-600;
 }

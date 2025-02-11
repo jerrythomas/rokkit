@@ -26,7 +26,8 @@ export class KeyEventMap {
 	 * @returns {string|null} - The event name or null if no match is found.
 	 */
 	getEventForKey(key) {
-		const matchEvent = ([eventName, keys]) =>
+		// eslint-disable-next-line no-unused-vars
+		const matchEvent = ([_, keys]) =>
 			(Array.isArray(keys) && keys.includes(key)) || (keys instanceof RegExp && keys.test(key))
 
 		const event = R.find(matchEvent, R.toPairs(this.mapping))

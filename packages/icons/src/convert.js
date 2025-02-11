@@ -38,7 +38,7 @@ export function cleanAndOptimizeIcon(svg, color) {
  * @param {boolean} color True if color should be preserved
  */
 export function processIcons(iconSet, color) {
-	iconSet.forEach((name, type) => {
+	iconSet.forEach((name) => {
 		// There should not be any type other than icon
 		// if (type !== 'icon') {
 		// 	return

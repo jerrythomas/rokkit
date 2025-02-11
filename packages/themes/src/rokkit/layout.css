@@ -3,7 +3,7 @@
   @apply outline-none;
 }
 .rokkit rk-field rk-switch {
-  @apply min-h-10 items-center justify-center rounded-sm border-none px-1;
+  @apply min-h-8 items-center justify-center rounded-sm border-none px-1;
 }
 .rokkit rk-field rk-switch rk-item {
   @apply rounded-sm leading-loose;

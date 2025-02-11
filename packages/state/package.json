@@ -1,10 +1,12 @@
 {
-  "name": "@rokkit/atoms",
+  "name": "@rokkit/state",
   "version": "1.0.0-next.105",
-  "description": "Atomic components are small, reusable building blocks that can be combined to create complex UI elements",
+  "description": "Contains generic data manipulation functions that can be used in various components.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
+  "main": "index.js",
   "module": "src/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -16,18 +18,23 @@
   },
   "files": [
     "src/**/*.js",
-    "src/**/*.svelte",
-    "dist/**/*.d.ts"
+    "src/**/*.svelte"
   ],
   "exports": {
     "./src": "./src",
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./src/index.js"
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
     }
   },
   "dependencies": {
-    "ramda": "^0.30.1"
+    "@lukeed/uuid": "^2.0.1",
+    "@rokkit/core": "workspace:*",
+    "d3-array": "^3.2.4",
+    "d3-collection": "^1.0.7",
+    "ramda": "^0.30.1",
+    "svelte": "^5.10.0"
   }
 }
