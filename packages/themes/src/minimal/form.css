@@ -4,7 +4,7 @@
 }
 .minimal button rk-icon-left,
 .minimal button rk-icon-right {
-  @apply flex aspect-square h-10 flex-col items-center justify-center;
+  @apply flex aspect-square h-8 flex-col items-center justify-center;
 }
 .minimal button rk-icon {
   @apply text-2xl;

@@ -76,8 +76,8 @@ button:disabled {
 rk-cell.cell-type-string {
   @apply text-left;
 }
-rk-cell.cell-type-integer rk-itemp,
-rk-cell.cell-type-number rk-itemp {
+rk-cell.cell-type-integer rk-item p,
+rk-cell.cell-type-number rk-item p {
   @apply text-right;
 }
 

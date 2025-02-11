@@ -58,7 +58,7 @@
   @apply from-primary to-secondary bg-gradient-to-r;
 }
 .rokkit rk-toggle button {
-  @apply h-10 w-10 items-center justify-center rounded-md p-0;
+  @apply h-8 w-8 items-center justify-center rounded-md p-0;
 }
 
 /* Styles for 'rating' class */

@@ -1,0 +1,204 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Link > should render 1`] = `
+<div>
+  <a
+    class=""
+    href="#"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render 2`] = `
+<div>
+  <a
+    class=""
+    href="#"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with custom mapping 1`] = `
+<div>
+  <a
+    class=""
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <rk-icon
+      class=""
+      role="img"
+    >
+      <i
+        aria-hidden="true"
+      />
+    </rk-icon>
+    <!---->
+     
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with custom mapping 2`] = `
+<div>
+  <a
+    class=""
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <rk-icon
+      aria-label="World"
+      class=""
+      role="img"
+    >
+      <i
+        aria-hidden="true"
+        class="World"
+      />
+    </rk-icon>
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with custom mapping 3`] = `
+<div>
+  <a
+    class=""
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <rk-icon
+      aria-label="World"
+      class=""
+      role="img"
+    >
+      <i
+        aria-hidden="true"
+        class="World"
+      />
+    </rk-icon>
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with href 1`] = `
+<div>
+  <a
+    class=""
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with icon 1`] = `
+<div>
+  <a
+    class=""
+    href="#"
+  >
+    <!---->
+    <rk-icon
+      aria-label="Hello"
+      class=""
+      role="img"
+    >
+      <i
+        aria-hidden="true"
+        class="world"
+      />
+    </rk-icon>
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with image 1`] = `
+<div>
+  <a
+    class=""
+    href="#"
+  >
+    <!---->
+    <!---->
+    <img
+      alt="Hello"
+      src="world.png"
+    />
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;

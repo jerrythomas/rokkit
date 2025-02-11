@@ -1,13 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MockItem > should render 1`] = `
+exports[`MockItem > should render a string 1`] = `
 <div>
   Hello
   
 </div>
 `;
 
-exports[`MockItem > should render 2`] = `
+exports[`MockItem > should render a string 2`] = `
+<div>
+  World
+  
+</div>
+`;
+
+exports[`MockItem > should render an object 1`] = `
+<div>
+  Hello
+  
+</div>
+`;
+
+exports[`MockItem > should render an object 2`] = `
 <div>
   World
   

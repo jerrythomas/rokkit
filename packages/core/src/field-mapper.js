@@ -1,6 +1,6 @@
-import { SvelteMap } from 'svelte/reactivity'
 import { defaultFields } from './constants'
 import { isNil, has } from 'ramda'
+import { isObject } from './utils'
 
 export class FieldMapper {
 	#fields = { ...defaultFields }
@@ -42,7 +42,7 @@ export class FieldMapper {
 	getIcon(value) {
 		if (!this.hasIcon(value)) return null
 		const icon = value[this.#fields.icon]
-		if (typeof icon === 'object') return this.withPrefix(icon[value[this.#fields.state]])
+		if (isObject(icon)) return this.withPrefix(icon[value[this.#fields.state]])
 		return this.withPrefix(icon)
 	}
 	getImage(value) {

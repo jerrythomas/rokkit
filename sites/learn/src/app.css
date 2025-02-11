@@ -62,7 +62,7 @@ input.embedded {
   @apply border-neutral-muted p-2px bg-neutral-base rounded-md border;
 }
 .rokkit .square rk-icon {
-  @apply h-8 w-8 rounded-md md:h-10 md:w-10;
+  @apply h-8 w-8 rounded-md;
 }
 
 .rokkit .square rk-icon {

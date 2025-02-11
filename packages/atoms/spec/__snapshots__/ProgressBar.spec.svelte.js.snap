@@ -3,11 +3,27 @@
 exports[`ProgressBar.svelte > should render indeterminate progress 1`] = `
 <div>
   <rk-progress
-    class=""
+    class="indeterminate"
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 0%; height: 1.5mm;"
+      class="h-full"
+      style="width: 100%;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render indeterminate progress 2`] = `
+<div>
+  <rk-progress
+    class="indeterminate"
+    style="height: 1.5mm;"
+  >
+    <value-bar
+      class="h-full"
+      style="width: 100%;"
     />
   </rk-progress>
   
@@ -17,11 +33,12 @@ exports[`ProgressBar.svelte > should render indeterminate progress 1`] = `
 exports[`ProgressBar.svelte > should render progress bar with class 1`] = `
 <div>
   <rk-progress
-    class="my-class"
+    class="my-class indeterminate"
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 0%; height: 1.5mm;"
+      class="h-full"
+      style="width: 100%;"
     />
   </rk-progress>
   
@@ -31,11 +48,12 @@ exports[`ProgressBar.svelte > should render progress bar with class 1`] = `
 exports[`ProgressBar.svelte > should render progress bar with class 2`] = `
 <div>
   <rk-progress
-    class="my-class-2"
+    class="my-class-2 indeterminate"
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 0%; height: 1.5mm;"
+      class="h-full"
+      style="width: 100%;"
     />
   </rk-progress>
   
@@ -49,7 +67,8 @@ exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 50%; height: 1.5mm;"
+      class="h-full"
+      style="width: 50%;"
     />
   </rk-progress>
   
@@ -63,21 +82,38 @@ exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
     style="height: 1.5mm;"
   >
     <value-bar
-      style="width: 100%; height: 1.5mm;"
+      class="h-full"
+      style="width: 100%;"
     />
   </rk-progress>
   
 </div>
 `;
 
-exports[`ProgressBar.svelte > should render progress with custom height, indicator width 1`] = `
+exports[`ProgressBar.svelte > should render progress with custom height 1`] = `
 <div>
   <rk-progress
-    class=""
+    class="indeterminate"
     style="height: 3px;"
   >
     <value-bar
-      style="width: 0%; height: 3px;"
+      class="h-full"
+      style="width: 100%;"
+    />
+  </rk-progress>
+  
+</div>
+`;
+
+exports[`ProgressBar.svelte > should render progress with custom height 2`] = `
+<div>
+  <rk-progress
+    class="indeterminate"
+    style="height: 5px;"
+  >
+    <value-bar
+      class="h-full"
+      style="width: 100%;"
     />
   </rk-progress>
   

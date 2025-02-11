@@ -11,7 +11,7 @@
 .rokkit rk-list > rk-item,
 .rokkit rk-virtual-list-contents > rk-virtual-list-item,
 .rokkit rk-accordion div summary {
-  @apply bg-neutral-base min-h-10 px-4 leading-10 text-neutral-800;
+  @apply bg-neutral-base min-h-8 px-4 leading-10 text-neutral-800;
 }
 .rokkit rk-accordion > div > summary {
   @apply bg-gradient from-neutral-subtle to-neutral-muted rounded pr-2;
