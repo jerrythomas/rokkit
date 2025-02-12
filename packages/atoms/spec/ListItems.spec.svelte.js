@@ -1,6 +1,5 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest'
-import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { tick } from 'svelte'
+import { describe, expect, it, beforeEach } from 'vitest'
+import { cleanup, render } from '@testing-library/svelte'
 import { MockItem } from '@rokkit/helpers/components'
 import ListItems from '../src/ListItems.svelte'
 import Item from '../src/Item.svelte'

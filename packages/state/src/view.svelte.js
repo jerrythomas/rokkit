@@ -2,35 +2,35 @@ import { equals } from 'ramda'
 import { FieldMapper } from '@rokkit/core'
 import { getTree } from './view/tree'
 import {
-	getList,
-	collapse,
-	collapseAll,
-	expand,
-	expandAll,
-	moveByOffset,
-	moveTo,
-	select,
-	selectAll,
-	selectRange,
-	toggleExpansion,
-	toggleSelection,
-	unselect,
-	unselectAll,
-	invertSelection
+	getList
+	// collapse,
+	// collapseAll,
+	// expand,
+	// expandAll,
+	// moveByOffset,
+	// moveTo,
+	// select,
+	// selectAll,
+	// selectRange,
+	// toggleExpansion,
+	// toggleSelection,
+	// unselect,
+	// unselectAll,
+	// invertSelection
 } from './view/primitives'
 
-/**
- * Gets the current item from the view store.
- *
- * @param {import('svelte/store').Writable} view - the view store.
- * @returns {Object}                               The current item.
- */
-function getCurrentItem(view) {
-	const state = get(view)
-	const currentItem =
-		state.data.length > 0 && state.currentIndex >= 0 ? state.data[state.currentIndex] : null
-	return currentItem
-}
+// /**
+//  * Gets the current item from the view store.
+//  *
+//  * @param {import('svelte/store').Writable} view - the view store.
+//  * @returns {Object}                               The current item.
+//  */
+// function getCurrentItem(view) {
+// 	const state = get(view)
+// 	const currentItem =
+// 		state.data.length > 0 && state.currentIndex >= 0 ? state.data[state.currentIndex] : null
+// 	return currentItem
+// }
 
 /**
  * Validates the index.
