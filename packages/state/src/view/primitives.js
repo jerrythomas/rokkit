@@ -1,4 +1,24 @@
 import { equals, has } from 'ramda'
+
+/**
+ * Add an event to the event stack
+ * @param {Object} state
+ * @param {Object} event
+ * @param {Number} index
+ * @returns {Object} The updated state.
+ */
+export function addEvent(state, event, index = -1) {
+	// state.events = state.events ?? []
+
+	if (event === 'select') {
+		const detail = state.selectedItems.map((i) => state.data[i].value)
+		state.events.push({ type: event, detail })
+	} else if (event === 'move' || index > -1) {
+		const { value = null, indexPath = null } = index >= 0 ? state.data[index] : {}
+		state.events.push({ type: event, detail: { value, path: indexPath } })
+	}
+}
+
 /**
  * Creates a list view data store using the given items.
  *
@@ -192,6 +212,47 @@ export function selectRange(state, offset) {
 }
 
 /**
+ * Recursively update visibility for all children of the given parent
+ * based on the parent's expanded state. Stops recursion if a child's expanded
+ * state does not match the parent's state.
+ *
+ * @param {Array} children - The children of the parent to update visibility for.
+ * @param {Boolean} isVisible - Indicates whether children should be visible or hidden.
+ */
+function updateChildVisibility(children, isVisible) {
+	children.forEach((child) => {
+		// Update visibility only if child's expanded state mismatches with the desired visibility
+		if (child.isExpanded === isVisible) {
+			child.isHidden = !isVisible // Update based on parent's state
+			if (child.children) {
+				updateChildVisibility(child.children, isVisible) // Recursive call for further children
+			}
+		}
+	})
+}
+
+/**
+ * Toggles the expansion of the item at the given index.
+ *
+ * @param {Object} state
+ * @param {Number} index
+ * @param {Boolean} expand - the state
+ * @param {Boolean} events - Whether to emit event
+ * @returns {Object} The updated state.
+ */
+function toggle(state, index, events = true) {
+	const item = state.data[index]
+	item.isExpanded = !item.isExpanded
+
+	updateChildVisibility(item.children, item.isExpanded)
+	if (events) {
+		const event = item.isExpanded ? 'expand' : 'collapse'
+		addEvent(state, event, index)
+	}
+	return state
+}
+
+/**
  * Expands the item at the given index.
  *
  * @param {Object}          state      - The current state
@@ -230,28 +291,6 @@ export function collapse(state, pathIndex, emit = true) {
 
 	return state
 }
-
-/**
- * Toggles the expansion of the item at the given index.
- *
- * @param {Object} state
- * @param {Number} index
- * @param {Boolean} expand - the state
- * @param {Boolean} events - Whether to emit event
- * @returns {Object} The updated state.
- */
-function toggle(state, index, events = true) {
-	const item = state.data[index]
-	item.isExpanded = !item.isExpanded
-
-	updateChildVisibility(item.children, item.isExpanded)
-	if (events) {
-		const event = item.isExpanded ? 'expand' : 'collapse'
-		addEvent(state, event, index)
-	}
-	return state
-}
-
 /**
  * Toggles the expansion of the item at the given index.
  *
@@ -293,43 +332,4 @@ export function collapseAll(state) {
 	state.data.forEach((_, index) => collapse(state, index, false))
 	addEvent(state, 'collapse')
 	return state
-}
-
-/**
- * Recursively update visibility for all children of the given parent
- * based on the parent's expanded state. Stops recursion if a child's expanded
- * state does not match the parent's state.
- *
- * @param {Array} children - The children of the parent to update visibility for.
- * @param {Boolean} isVisible - Indicates whether children should be visible or hidden.
- */
-function updateChildVisibility(children, isVisible) {
-	children.forEach((child) => {
-		// Update visibility only if child's expanded state mismatches with the desired visibility
-		if (child.isExpanded === isVisible) {
-			child.isHidden = !isVisible // Update based on parent's state
-			if (child.children) {
-				updateChildVisibility(child.children, isVisible) // Recursive call for further children
-			}
-		}
-	})
-}
-
-/**
- * Add an event to the event stack
- * @param {Object} state
- * @param {Object} event
- * @param {Number} index
- * @returns {Object} The updated state.
- */
-export function addEvent(state, event, index = -1) {
-	// state.events = state.events ?? []
-
-	if (event === 'select') {
-		const detail = state.selectedItems.map((i) => state.data[i].value)
-		state.events.push({ type: event, detail })
-	} else if (event === 'move' || index > -1) {
-		const { value = null, indexPath = null } = index >= 0 ? state.data[index] : {}
-		state.events.push({ type: event, detail: { value, path: indexPath } })
-	}
 }
