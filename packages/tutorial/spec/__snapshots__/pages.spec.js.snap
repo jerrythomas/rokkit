@@ -1,0 +1,313 @@
+// Vitest Snapshot v1
+
+exports[`import guides > should get all guides > tree-1-App.svelte 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          alpha
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          beta
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          gamma
+        </p>
+
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`import guides > should get all guides > tree-1-README.md 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          alpha
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          beta
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          gamma
+        </p>
+
+      </item>
+    </list>
+  </div>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          charlie
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          delta
+        </p>
+
+      </item>
+    </list>
+  </div>
+  <div>
+    <h1>
+      Page 01
+    </h1>
+
+    <p>
+      Content for page 1
+    </p>
+  </div>
+</body>
+`;
+
+exports[`import guides > should get all guides > tree-2-App.svelte 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          alpha
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          beta
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          gamma
+        </p>
+
+      </item>
+    </list>
+  </div>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          charlie
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          delta
+        </p>
+
+      </item>
+    </list>
+  </div>
+</body>
+`;
+
+exports[`import guides > should get all guides > tree-2-README.md 1`] = `
+<body>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          alpha
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          beta
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          gamma
+        </p>
+
+      </item>
+    </list>
+  </div>
+  <div>
+    <list
+      class="flex flex-col w-full flex-shrink-0 select-none list"
+    >
+
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          charlie
+        </p>
+
+      </item>
+      <item
+        class="flex flex-shrink-0 flex-grow-0 min-h-8 items-center cursor-pointer w-full gap-2 select-none item"
+      >
+
+
+        <p
+          class="flex flex-grow"
+        >
+          delta
+        </p>
+
+      </item>
+    </list>
+  </div>
+  <div>
+    <h1>
+      Page 01
+    </h1>
+
+    <p>
+      Content for page 1
+    </p>
+  </div>
+  <div>
+    <h1>
+      Page 02
+    </h1>
+
+    <p>
+      Content for page 2
+    </p>
+  </div>
+</body>
+`;

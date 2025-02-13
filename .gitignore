@@ -174,8 +174,6 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
-fixtures
-
 test-results
 node_modules
 
