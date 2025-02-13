@@ -1,0 +1,22 @@
+[
+  {
+    "path": "01-introduction",
+    "name": "meta.json",
+    "type": "json"
+  },
+  {
+    "path": "02-bar/03-baz",
+    "name": "README.md",
+    "type": "md"
+  },
+  {
+    "path": "02-bar",
+    "name": "meta.json",
+    "type": "json"
+  },
+  {
+    "name": "meta.js",
+    "path": "xyz",
+    "type": "js"
+  }
+]

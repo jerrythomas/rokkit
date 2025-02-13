@@ -4,6 +4,7 @@ export default [
   {
     ignores: [
       '**/spec/error/*.js',
+      '**/spec/fixtures/**/invalid.js',
       '**/dist/**',
       '**/node_modules/**',
       '**/coverage/**',
@@ -34,6 +35,7 @@ export default [
       'no-eq-null': 'error',
       'no-implicit-coercion': 'error',
       'no-use-before-define': 'error',
+      'no-unused-vars': 'error',
       'max-lines-per-function': [
         'warn',
         {

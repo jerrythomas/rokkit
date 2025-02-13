@@ -1,0 +1,51 @@
+{
+  "intro": {
+    "sequence": 1,
+    "key": "intro",
+    "children": {
+      "overview": {
+        "sequence": 1,
+        "key": "overview",
+        "title": "Overview",
+        "path": "01-intro/01-overview",
+        "name": "README.md",
+        "route": "intro/overview",
+        "before": null,
+        "after": {
+          "preview": "/Users/Jerry/Developer/rokkit/packages/tutorial/fixtures/sample/01-intro/01-overview/src/App.svelte",
+          "files": [
+            {
+              "path": "",
+              "name": "App.svelte",
+              "type": "svelte",
+              "content": "<h1>hello</h1>\n"
+            },
+            {
+              "path": "",
+              "name": "file1.txt",
+              "type": "txt",
+              "content": "File 1 Content"
+            },
+            {
+              "path": "",
+              "name": "file2.txt",
+              "type": "txt",
+              "content": "File 2 Content"
+            }
+          ]
+        }
+      }
+    },
+    "title": "Introduction",
+    "path": "01-intro"
+  },
+  "missing": {
+    "sequence": 2,
+    "key": "missing",
+    "path": "02-missing",
+    "name": "README.md",
+    "route": "missing",
+    "before": null,
+    "after": null
+  }
+}
