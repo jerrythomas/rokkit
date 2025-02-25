@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
-import frontmatter from 'frontmatter'
 import { omit } from 'ramda'
 import { getSequenceAndKey, folderHierarchy } from './utils.js'
 import { getFiles } from './files.js'
@@ -60,7 +59,7 @@ export async function getFolder(baseFolder, folder) {
 
 	const files = await readFolderContent(folderPath)
 
-	if (files.length === 0) return null
+	// if (files.length === 0) return null
 
 	const preview = path.join(folderPath, 'App.svelte')
 	return {

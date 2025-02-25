@@ -9,7 +9,7 @@ describe('BaseMetadataReader', () => {
 	it('should throw error when read() method is not implemented', async () => {
 		class TestReader extends BaseMetadataReader {}
 		const reader = new TestReader('./some/path')
-		await expect(reader.read()).rejects.toThrow('read() method must be implemented')
+		expect(() => reader.read()).toThrow('read() method must be implemented')
 	})
 
 	it('should store filePath in constructor', () => {

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import fs from 'fs/promises'
 import { getFiles } from '../src/files'
 import path from 'path'
@@ -118,8 +118,13 @@ describe('collector', () => {
 				type: 'js'
 			})
 
-			expect(result.error.split('\n')[0]).toEqual("Expected ';', '}' or <eof>")
-			expect(console.error).toHaveBeenCalledWith("Expected ';', '}' or <eof>")
+			expect(result.error.split('\n')[0]).toEqual("Parse failure: Expected ';', '}' or <eof>")
+			expect(console.error).toHaveBeenCalledWith(
+				[
+					"Parse failure: Expected ';', '}' or <eof>",
+					`At file: ${rootFolder}/error/meta.js:2:5`
+				].join('\n')
+			)
 		})
 	})
 	describe('getFolder', () => {
