@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { getTutorials, toSortedHierarchy } from '../src/tutorial'
 import { collectTutorials } from '../src/collector'
 import path from 'path'
@@ -12,11 +12,14 @@ describe('getTutorials', () => {
 		tutorialMetadata: path.join(__dirname, '../fixtures/tutorials-metadata.json')
 	}
 	beforeAll(async () => {
-		const options = {
-			rootFolder: path.join(__dirname, '../fixtures/sample'),
-			tutorialMetadata: path.join(__dirname, '../fixtures/tutorials-metadata.json')
-		}
+		// const options = {
+		// 	rootFolder: path.join(__dirname, '../fixtures/sample'),
+		// 	tutorialMetadata: path.join(__dirname, '../fixtures/tutorials-metadata.json')
+		// }
 		await collectTutorials(options)
+	})
+	afterAll(async () => {
+		await fs.promises.unlink(options.tutorialMetadata)
 	})
 	it('should return the correct folder object', async () => {
 		const tutorials = JSON.parse(fs.readFileSync(options.tutorialMetadata))
