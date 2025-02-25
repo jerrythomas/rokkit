@@ -2,6 +2,7 @@
 	import { FieldMapper, noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
 	import { Item } from '@rokkit/atoms'
+	import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
@@ -16,7 +17,7 @@
 		class: className = '',
 		value = $bindable(null),
 		options = [false, true],
-		mapping = new FieldMapper(),
+		mapping = defaultMapping,
 		onchange = noop
 	} = $props()
 

@@ -5,7 +5,7 @@ export class DataWrapper {
 	items = $state([])
 	mapping = new FieldMapper()
 	data = $state([])
-	current = $state([])
+	current = $state(null)
 	selected = new SvelteSet()
 
 	constructor(items, mapping) {

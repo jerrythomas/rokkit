@@ -43,41 +43,41 @@ export class FieldMapper {
 
 	getComponent(value) {
 		if (this.hasComponent(value))
-			return this.#componentMap[value[this.#fields.component]] ?? this.#componentMap.default
-		return this.#componentMap.default
+			return this.componentMap[value[this.fields.component]] ?? this.componentMap.default
+		return this.componentMap.default
 	}
 
 	getIcon(value) {
 		if (!this.hasIcon(value)) return null
-		const icon = value[this.#fields.icon]
-		if (isObject(icon)) return this.withPrefix(icon[value[this.#fields.state]])
+		const icon = value[this.fields.icon]
+		if (isObject(icon)) return this.withPrefix(icon[value[this.fields.state]])
 		return this.withPrefix(icon)
 	}
 	getImage(value) {
-		return this.getAttribute(value, this.#fields.image)
+		return this.getAttribute(value, this.fields.image)
 	}
 
 	getValue(value) {
 		if (this.hasValue(value)) {
-			return value[this.#fields.value]
+			return value[this.fields.value]
 		}
 		return value
 	}
 
 	getText(value) {
 		if (this.hasText(value)) {
-			return value[this.#fields.text]
+			return value[this.fields.text]
 		}
 		return typeof value === 'object' ? null : value
 	}
 
 	getLabel(value) {
-		return this.getAttribute(value, this.#fields.label)
+		return this.getAttribute(value, this.fields.label)
 	}
 
 	getAttribute(value, attr) {
-		if (has(attr, this.#fields)) {
-			return has(this.#fields[attr], value) ? value[this.#fields[attr]] : null
+		if (has(attr, this.fields)) {
+			return has(this.fields[attr], value) ? value[this.fields[attr]] : null
 		}
 		return null
 	}
@@ -89,20 +89,20 @@ export class FieldMapper {
 		if (typeof formatter !== 'function') return text.toString()
 
 		if (this.hasCurrency(value)) {
-			return formatter(text, this.getAttribute(value, this.#fields.currency))
+			return formatter(text, this.getAttribute(value, this.fields.currency))
 		}
 		return formatter(text)
 	}
 
 	hasChildren(item) {
 		return (
-			!isNil(item) && has(this.#fields.children, item) && Array.isArray(item[this.#fields.children])
+			!isNil(item) && has(this.fields.children, item) && Array.isArray(item[this.fields.children])
 		)
 	}
 
 	isExpanded(item) {
 		if (this.hasChildren(item)) {
-			return has(this.#fields.isOpen, item) && item[this.#fields.isOpen]
+			return has(this.fields.isOpen, item) && item[this.fields.isOpen]
 		}
 		return false
 	}
@@ -112,7 +112,7 @@ export class FieldMapper {
 	}
 
 	getChildren(item) {
-		return this.hasChildren(item) ? item[this.#fields.children] : []
+		return this.hasChildren(item) ? item[this.fields.children] : []
 	}
 
 	/**
@@ -124,7 +124,7 @@ export class FieldMapper {
 	 */
 	getChildrenByPath(items, path = []) {
 		const result = path.reduce(
-			(children, index) => children?.[index]?.[this.#fields.children],
+			(children, index) => children?.[index]?.[this.fields.children],
 			items
 		)
 
@@ -142,7 +142,7 @@ export class FieldMapper {
 	getItemByPath(items, path = []) {
 		// skipcq: JS-W1042 default undefined is needed
 		const result = path.reduce(
-			(item, index, i) => (i === 0 ? items?.[index] : item?.[this.#fields.children]?.[index]),
+			(item, index, i) => (i === 0 ? items?.[index] : item?.[this.fields.children]?.[index]),
 			undefined
 		)
 

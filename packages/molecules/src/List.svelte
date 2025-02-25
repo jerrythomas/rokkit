@@ -1,7 +1,7 @@
 <script>
-	import { createEmitter, FieldMapper } from '@rokkit/core'
-	import { Item } from '@rokkit/atoms'
-	import { ListItems } from '@rokkit/ui'
+	import { createEmitter } from '@rokkit/core'
+	import { ListItems } from '@rokkit/atoms'
+	import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
@@ -20,7 +20,7 @@
 		class: className = 'list',
 		name = 'list',
 		items = $bindable([]),
-		mapping = new FieldMapper({}, { default: Item }),
+		mapping = defaultMapping,
 		value = $bindable(null),
 		tabindex = 0,
 		hierarchy = [],

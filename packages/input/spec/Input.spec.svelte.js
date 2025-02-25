@@ -1,7 +1,7 @@
 import { describe, expect, beforeEach, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
-// skipcq: JS-C1003 - Importing all components for verification
+// skipcq: JS-C1003,JS-E1007 - Importing all components for verification
 import * as components from '../src/index'
 
 describe('HTML Input', () => {
@@ -41,7 +41,7 @@ describe('HTML Input', () => {
 			...customProps[name]
 		}
 
-		const { container } = render(/* skipcq: JS-E1007 */ components[name], { props })
+		const { container } = render(components[name], { props })
 		expect(container).toMatchSnapshot()
 	})
 
@@ -52,7 +52,7 @@ describe('HTML Input', () => {
 			...customProps[name]
 		})
 
-		const { container } = render(/* skipcq: JS-E1007 */ components[name], { props })
+		const { container } = render(components[name], { props })
 		const element = container.querySelectorAll('input, textarea, select')[0]
 		expect(element.disabled).toBe(true)
 
