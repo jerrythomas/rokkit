@@ -1,4 +1,4 @@
-import { describe, expect, beforeEach, it } from 'vitest'
+import { describe, expect, beforeEach, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
 
