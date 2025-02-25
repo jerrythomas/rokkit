@@ -45,6 +45,6 @@ describe('MetadataRegistry', () => {
 		const registry = new MetadataRegistry()
 
 		expect(() => registry.register('test', null)).toThrow('Reader class is required')
-		expect(() => registry.register('test', undefined)).toThrow('Reader class is required')
+		expect(() => registry.register('test')).toThrow('Reader class is required')
 	})
 })

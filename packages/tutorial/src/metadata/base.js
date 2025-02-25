@@ -26,6 +26,7 @@ export class BaseMetadataReader {
 	 * @throws {Error} If not implemented by child class
 	 */
 	read() {
+		// skipcq: JS-0105 - abstract method not implemented
 		throw new Error('read() method must be implemented')
 	}
 }

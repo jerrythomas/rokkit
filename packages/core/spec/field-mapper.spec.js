@@ -88,6 +88,8 @@ describe('FieldMapper', () => {
 
 		it('should return an attribute', () => {
 			const fieldMapping = new FieldMapper()
+			expect(fieldMapping.getAttribute(data, 'xx')).toBeNull()
+			expect(fieldMapping.getAttribute(data, 'summary')).toBeNull()
 			expect(fieldMapping.getAttribute(data, 'id')).toEqual(1)
 			expect(fieldMapping.getAttribute(data.children[0], 'id')).toEqual(2)
 			expect(fieldMapping.getAttribute(data.children[0].children[0], 'id')).toEqual(3)
@@ -99,7 +101,7 @@ describe('FieldMapper', () => {
 
 		it('should return a formatted text', () => {
 			const fieldMapping = new FieldMapper()
-			const formatter = (text) => text && text.toUpperCase()
+			const formatter = (text) => text?.toUpperCase()
 			expect(fieldMapping.getFormattedText(data, formatter)).toEqual('ITEM 1')
 			expect(fieldMapping.getFormattedText(data.children[0], formatter)).toEqual('ITEM 2')
 

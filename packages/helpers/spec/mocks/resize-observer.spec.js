@@ -4,9 +4,9 @@ import { ResizeObserver } from '../../src/mocks/resize-observer'
 global.ResizeObserver = ResizeObserver
 
 describe('ResizeObserver', () => {
-	let resizeObserver
-	let callback
-	let element
+	let resizeObserver = null
+	let callback = null
+	let element = null
 
 	beforeEach(() => {
 		callback = vi.fn()
