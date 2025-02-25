@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import Switch from '../src/Switch.svelte'
 import { FieldMapper } from '@rokkit/core'
-import Item from '../src/Item.svelte'
+import { Item } from '@rokkit/atoms'
 import { flushSync, tick } from 'svelte'
 
 describe('Switch', () => {

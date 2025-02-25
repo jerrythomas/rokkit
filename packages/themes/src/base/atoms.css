@@ -1,13 +1,13 @@
 /* Icon styles */
 rk-icon {
   @apply flex flex-shrink-0 flex-grow-0 items-center justify-center;
-  @apply h-4 min-h-4 w-4;
+  @apply h-6 min-h-6 w-6;
 }
 button > rk-icon {
   @apply aspect-square cursor-pointer select-none p-2 focus:outline;
 }
 rk-icon > i {
-  @apply mx-auto aspect-square text-2xl leading-6 text-current;
+  @apply mx-auto aspect-square text-xl leading-6 text-current;
 }
 rk-icon.large > i {
   @apply text-3xl;
@@ -36,14 +36,18 @@ rk-scroll {
 
 /* Square styles */
 square {
-  @apply flex aspect-square h-full min-h-full flex-col items-center justify-center;
+  @apply flex aspect-square flex-col items-center justify-center;
+  /*h-full min-h-full*/
 }
 /* Item styles */
 rk-item,
+rk-list-item,
 .item {
   @apply flex flex-shrink-0 flex-grow-0 cursor-pointer select-none items-center gap-2;
 }
+
 rk-item p,
+rk-list-item p,
 rk-summary p {
   @apply flex flex-grow;
 }
