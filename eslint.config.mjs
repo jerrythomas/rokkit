@@ -4,7 +4,8 @@ export default [
   {
     ignores: [
       '**/spec/error/*.js',
-      '**/spec/fixtures/**/invalid.js',
+      '**/fixtures/error/*.js',
+      '**/fixtures/**/invalid.js',
       '**/dist/**',
       '**/node_modules/**',
       '**/coverage/**',
