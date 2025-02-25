@@ -7,12 +7,11 @@ describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
 			'Icon',
-			'Toggle',
-			'Switch',
 			'Item',
 			'Pill',
 			'ProgressBar',
 			'Separator',
+			'ListItems',
 			'InputCheckbox',
 			'InputColor',
 			'InputDate',
@@ -30,7 +29,10 @@ describe('components', () => {
 			'InputTextArea',
 			'InputTime',
 			'InputUrl',
-			'InputWeek'
+			'InputWeek',
+			'Toggle',
+			'Switch',
+			'List'
 		])
 	})
 })
