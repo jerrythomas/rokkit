@@ -12,46 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
-        pnpm-version: [9.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        bun-version: [1.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install lcov
-        run: sudo apt-get install -y lcov
-      - name: Intall pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ matrix.pnpm-version }}
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+          bun-version: ${{ matrix.bun-version }}
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
-        run: pnpm i
-        env:
-          NODE_OPTIONS: '--max_old_space_size=6144'
-      # - name: Run tests
-      #   run: pnpm test
+        run: bun install
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
         with:
-          coverageCommand: pnpm coverage:lcov
+          coverageCommand: bun run coverage
           debug: true
           coverageLocations: lcov.info:lcov
       - name: Report results to DeepSource
@@ -59,4 +35,4 @@ jobs:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
         run: |
           curl https://deepsource.io/cli | sh
-          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./lcov.info
+          ./bin/deepsource report --analyzer test-coverage --key javascript --value-file ./coverage/lcov.info

@@ -13,7 +13,8 @@ export default [
       '**/build/**',
       '**/.vercel/**',
       'packages/archive',
-      'packages/icons/lib'
+      'packages/icons/lib',
+      '**/app.d.ts'
     ]
   },
   {
@@ -49,7 +50,7 @@ export default [
       'no-return-await': 'error',
       'require-await': 'error'
     },
-    files: ['**/*.js']
+    files: ['**/*.js', '**/*.ts']
   },
   {
     files: ['**/*.spec.js', '**/*.spec.svelte.js', '**/spec/mocks/**'],
