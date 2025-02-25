@@ -5,5 +5,9 @@ tags: ['test', 'example']
 ---
 
 # Story content here
+
 This content should be ignored
+
+```
+
 ```
