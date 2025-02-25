@@ -25,8 +25,8 @@ export class BaseMetadataReader {
 	 * @returns {Promise<object>} Story metadata
 	 * @throws {Error} If not implemented by child class
 	 */
+	// skipcq: JS-0105 - abstract method not implemented
 	read() {
-		// skipcq: JS-0105 - abstract method not implemented
 		throw new Error('read() method must be implemented')
 	}
 }

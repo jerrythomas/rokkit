@@ -13,12 +13,8 @@ export class MarkdownMetadata extends BaseMetadataReader {
 	 * @throws {Error} If file cannot be read
 	 */
 	async read() {
-		try {
-			const content = await fs.readFile(this.filePath, 'utf-8')
-			const { data = {} } = frontmatter(content)
-			return data ?? {}
-		} catch (error) {
-			throw error
-		}
+		const content = await fs.readFile(this.filePath, 'utf-8')
+		const { data = {} } = frontmatter(content)
+		return data ?? {}
 	}
 }

@@ -1,4 +1,4 @@
-import { describe, expect, beforeEach, it } from 'vitest'
+import { describe, expect, beforeEach, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
 // skipcq: JS-C1003 - Importing all components for verification
@@ -41,8 +41,7 @@ describe('HTML Input', () => {
 			...customProps[name]
 		}
 
-		// skipcq: JS-E1007
-		const { container } = render(components[name], { props })
+		const { container } = render(/* skipcq: JS-E1007 */ components[name], { props })
 		expect(container).toMatchSnapshot()
 	})
 
@@ -52,8 +51,8 @@ describe('HTML Input', () => {
 			disabled: true,
 			...customProps[name]
 		})
-		// skipcq: JS-E1007
-		const { container } = render(components[name], { props })
+
+		const { container } = render(/* skipcq: JS-E1007 */ components[name], { props })
 		const element = container.querySelectorAll('input, textarea, select')[0]
 		expect(element.disabled).toBe(true)
 
