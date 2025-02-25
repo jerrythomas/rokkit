@@ -1,5 +1,5 @@
 import { defaultFields } from './constants'
-import { isNil, has, clone } from 'ramda'
+import { isNil, has } from 'ramda'
 import { isObject } from './utils'
 
 export class FieldMapper {

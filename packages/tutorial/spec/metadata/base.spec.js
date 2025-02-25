@@ -6,7 +6,7 @@ describe('BaseMetadataReader', () => {
 		expect(() => new BaseMetadataReader('./some/path')).toThrow('Cannot instantiate abstract class')
 	})
 
-	it('should throw error when read() method is not implemented', async () => {
+	it('should throw error when read() method is not implemented', () => {
 		class TestReader extends BaseMetadataReader {}
 		const reader = new TestReader('./some/path')
 		expect(() => reader.read()).toThrow('read() method must be implemented')

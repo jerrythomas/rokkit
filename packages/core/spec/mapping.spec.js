@@ -7,8 +7,8 @@ import {
 	getFormattedText,
 	getAttribute,
 	hasChildren,
-	isExpanded,
-	isNested
+	isExpanded
+	// isNested
 } from '../src/mapping'
 
 describe('mapping', () => {

@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { DataWrapper } from '../src/wrapper.svelte'
 import { SvelteSet } from 'svelte/reactivity'
-import { flushSync } from 'svelte'
 
 describe('DataWrapper', () => {
 	it('should handle reactive items', () => {
