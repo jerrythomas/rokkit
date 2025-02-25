@@ -6,8 +6,8 @@ import { JsonMetadata } from '../../src/metadata/json.js'
 import { MarkdownMetadata } from '../../src/metadata/markdown.js'
 
 describe('MetadataFactory', () => {
-	let registry
-	let factory
+	let registry = null
+	let factory = null
 
 	beforeEach(() => {
 		registry = new MetadataRegistry()

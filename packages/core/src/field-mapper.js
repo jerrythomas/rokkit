@@ -11,6 +11,10 @@ export class FieldMapper {
 		this.componentMap = componentMap
 	}
 
+	get fields() {
+		return this.#fields
+	}
+
 	set fields(fields) {
 		Object.keys(fields).forEach((key) => {
 			this.#fields[key] = fields[key]
@@ -23,6 +27,10 @@ export class FieldMapper {
 		this.hasComponent = has(this.#fields.component)
 		this.hasCurrency = has(this.#fields.currency)
 		this.withPrefix = (x) => [this.#fields.iconPrefix, x].join('-').replace(/^-+/g, '')
+	}
+
+	get componentMap() {
+		return this.#componentMap
 	}
 
 	set componentMap(components) {
@@ -68,8 +76,8 @@ export class FieldMapper {
 	}
 
 	getAttribute(value, attr) {
-		if (has(attr, value)) {
-			return value[attr]
+		if (has(attr, this.#fields)) {
+			return has(this.#fields[attr], value) ? value[this.#fields[attr]] : null
 		}
 		return null
 	}

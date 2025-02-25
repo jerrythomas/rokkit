@@ -1,4 +1,4 @@
-import * as R from 'ramda'
+import { find, toPairs } from 'ramda'
 
 /**
  * Class to manage key event mappings.
@@ -30,7 +30,7 @@ export class KeyEventMap {
 		const matchEvent = ([_, keys]) =>
 			(Array.isArray(keys) && keys.includes(key)) || (keys instanceof RegExp && keys.test(key))
 
-		const event = R.find(matchEvent, R.toPairs(this.mapping))
+		const event = find(matchEvent, toPairs(this.mapping))
 		return event ? event[0] : null
 	}
 }

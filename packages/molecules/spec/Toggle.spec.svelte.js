@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
 import Toggle from '../src/Toggle.svelte'

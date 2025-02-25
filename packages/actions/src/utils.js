@@ -1,3 +1,5 @@
+import { find, toPairs } from 'ramda'
+
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
  *
@@ -11,8 +13,6 @@ export function getClosestAncestorWithAttribute(element, attribute) {
 	return getClosestAncestorWithAttribute(element.parentElement, attribute)
 }
 
-import * as R from 'ramda'
-
 /**
  * Get the event name for a given key.
  * @param {import('./types.js').KeyboardConfig} keyMapping
@@ -24,6 +24,6 @@ export const getEventForKey = (keyMapping, key) => {
 	const matchEvent = ([eventName, keys]) =>
 		(Array.isArray(keys) && keys.includes(key)) || (keys instanceof RegExp && keys.test(key))
 
-	const event = R.find(matchEvent, R.toPairs(keyMapping))
+	const event = find(matchEvent, toPairs(keyMapping))
 	return event ? event[0] : null
 }
