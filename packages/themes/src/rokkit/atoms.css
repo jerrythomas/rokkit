@@ -4,7 +4,8 @@
 }
 
 /* Zebra styles */
-.rokkit .zebra rk-item {
+.rokkit .zebra rk-item,
+.rokkit .zebra rk-list-item {
   @apply even:bg-neutral-zebra hover:bg-neutral-50;
 }
 

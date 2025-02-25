@@ -11,6 +11,7 @@ export default [
       '**/coverage/**',
       '**/.svelte-kit/',
       '**/build/**',
+      '**/.vercel/**',
       'packages/archive',
       'packages/icons/lib'
     ]

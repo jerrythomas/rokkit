@@ -1,7 +1,6 @@
 <script>
 	import { FieldMapper } from '@rokkit/core'
-	import { Switch, Item } from '@rokkit/ui'
-	// import DropDown from './DropDown.svelte'
+	import { Item, List } from '@rokkit/ui'
 
 	let mapping = new FieldMapper({}, { default: Item })
 	let options = [
@@ -12,7 +11,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center gap-4 p-4">
-	<h1>Switch</h1>
-	<Switch bind:value {mapping} {options} />
-	<!-- <DropDown {options} bind:value></DropDown> -->
+	<h1>List</h1>
+	<!-- <Switch bind:value {mapping} {options} /> -->
+	<List items={options} bind:value {mapping}></List>
 </div>

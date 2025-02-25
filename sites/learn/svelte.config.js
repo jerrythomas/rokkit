@@ -13,8 +13,12 @@ const config = {
 		})
 	},
 
-	preprocess: [mdsvex()],
-	extensions: ['.svelte', '.svx'],
+	preprocess: [
+		mdsvex({
+			extensions: ['.md']
+		})
+	],
+	extensions: ['.svelte', '.md'],
 	vitePlugin: {
 		inspector: {
 			toggleKeyCombo: 'meta-shift',

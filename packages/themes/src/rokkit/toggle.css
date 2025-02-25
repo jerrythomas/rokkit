@@ -15,12 +15,19 @@
   @apply border-none py-0 focus-within:ring-0;
 }
 .rokkit rk-switch.minimal rk-icon > i {
-  @apply h-4;
+  @apply text-md h-4;
 }
 .rokkit rk-toggle {
-  @apply rounded-md;
+  @apply min-h-10 min-w-10 rounded-md;
 }
 
+.rokkit rk-toggle button {
+  @apply m-0 h-full w-full p-0;
+}
+
+.rokkit rk-toggle.small {
+  @apply p-2px flex aspect-square flex-col items-center justify-center;
+}
 /* .rokkit rk-toggle:focus-within button {
   @apply bg-neutral-base text-neutral hover:text-primary rounded-sm;
 } */

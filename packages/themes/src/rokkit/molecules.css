@@ -91,22 +91,27 @@
 }
 
 /* Styles for 'item' class */
-.rokkit rk-item {
+.rokkit rk-item,
+.rokkit rk-list-item {
   @apply flex flex-shrink items-center gap-1;
 }
-.rokkit rk-item > p {
+.rokkit rk-item > p,
+.rokkit rk-list-item > p {
   @apply flex-shrink text-ellipsis;
 }
 
 /* Image and link styles */
 .rokkit rk-item > img,
-.rokkit rk-item > a > img {
+.rokkit rk-item > a > img,
+.rokkit rk-list-item > img,
+.rokkit rk-list-item > a > img {
   @apply h-6 w-6;
 }
-.rokkit rk-item > a {
+.rokkit rk-item > a,
+.rokkit rk-list-item > a {
   @apply gap-2;
 }
-.rokkit node rk-item {
+.rokkit rk-node rk-item {
   @apply gap-2 px-1;
 }
 /* rk-crumbs styles */

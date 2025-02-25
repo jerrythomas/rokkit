@@ -1,3 +1,6 @@
+.rokkit rk-list-item {
+  @apply gap-2;
+}
 /* rk-list styles */
 .rokkit rk-virtual-list-contents {
   @apply flex flex-col;
@@ -8,7 +11,7 @@
   @apply gap-1px bg-neutral-subtle;
 }
 
-.rokkit rk-list > rk-item,
+.rokkit rk-list > rk-list-item,
 .rokkit rk-virtual-list-contents > rk-virtual-list-item,
 .rokkit rk-accordion div summary {
   @apply bg-neutral-base min-h-8 px-4 leading-10 text-neutral-800;
@@ -26,14 +29,14 @@
 .rokkit :not(accordion > div) > rk-list {
   @apply overflow-y-scroll rounded border border-neutral-400 shadow;
 }
-.rokkit :not(accordion > div) > rk-list rk-item {
+.rokkit :not(accordion > div) > rk-list rk-list-item {
   @apply first:rounded-t last:rounded-b;
 }
 
-.rokkit rk-accordion rk-list rk-item {
+.rokkit rk-accordion rk-list rk-list-item {
   @apply gap-2 last:rounded-b;
 }
-.rokkit rk-accordion rk-list rk-item > a {
+.rokkit rk-accordion rk-list rk-list-item > a {
   @apply gap-2;
 }
 .rokkit rk-accordion rk-list {
@@ -202,14 +205,14 @@
 }
 /* .rokkit rk-list rk-item.is-hovering, */
 /* .rokkit rk-virtual-list rk-item.is-hovering, */
-.rokkit rk-list rk-item:hover,
+.rokkit rk-list rk-list-item:hover,
 .rokkit rk-virtual-list-contents rk-virtual-list-item:hover,
 .rokkit rk-node > div:hover {
   @apply bg-neutral-subtle;
 }
 
 /* Selected and Hover styles for rk-list and rk-node */
-.rokkit rk-list rk-item[aria-selected='true'] > a {
+.rokkit rk-list rk-list-item[aria-selected='true'] > a {
   @apply text-white;
 }
 .rokkit rk-virtual-list-item[aria-current='true'] {
@@ -297,7 +300,7 @@
 }
 /* Focus and Hover styles for Toggle Switch, rk-list, Tree, and Nested rk-list */
 .rokkit rk-switch:focus-within rk-item[aria-selected='true'],
-.rokkit rk-list:focus-within rk-item[aria-selected='true'],
+.rokkit rk-list:focus-within rk-list-item[aria-selected='true'],
 .rokkit rk-virtual-list-viewport:focus-within rk-virtual-list-item[aria-selected='true'],
 .rokkit tree:focus-within rk-node[aria-selected='true'] > div,
 .rokkit rk-nested-list:focus-within rk-node[aria-selected='true'] > div {

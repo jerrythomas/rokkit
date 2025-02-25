@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
 import Toggle from '../src/Toggle.svelte'
 import { FieldMapper } from '@rokkit/core'
-import Item from '../src/Item.svelte'
+import { Item } from '@rokkit/atoms'
 
 describe('Toggle', () => {
 	const fields = new FieldMapper({ icon: 'text' }, { default: Item })
