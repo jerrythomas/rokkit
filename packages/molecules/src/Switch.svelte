@@ -1,8 +1,8 @@
 <script>
 	import { equals } from 'ramda'
-	import { FieldMapper, noop } from '@rokkit/core'
+	import { noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
-	import { Item } from '@rokkit/atoms'
+	import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
@@ -19,7 +19,7 @@
 		class: className = '',
 		value = $bindable(),
 		options = [false, true],
-		mapping = new FieldMapper({}, { default: Item }),
+		mapping = defaultMapping,
 		compact = false,
 		disabled = false,
 		onchange = noop
