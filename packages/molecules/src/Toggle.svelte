@@ -1,7 +1,7 @@
 <script>
 	import { FieldMapper, noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
-	import Item from './Item.svelte'
+	import { Item } from '@rokkit/atoms'
 
 	/**
 	 * @typedef {Object} Props

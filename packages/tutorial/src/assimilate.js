@@ -160,8 +160,8 @@ async function processTutorials(modules, sources, options) {
 /**
  * Processes the tutorials and returns the tutorials and routes.
  *
- * @param {Array} modules - The modules to process.
- * @param {Array} sources - The sources to process.
+ * @param {Record<string,Function<Promise>} modules - The modules to process.
+ * @param {Record<string,Function<Promise>} sources - The sources to process.
  * @param {Object} options - The options to use.
  * @returns {Object} - The tutorials and routes.
  */
