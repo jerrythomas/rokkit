@@ -12,7 +12,7 @@ export default defineConfig({
 			all: true,
 			reporter: ['text', 'html', 'lcov', 'json'],
 			include: ['**/src/**'],
-			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/sites/**']
+			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/sites/**', '**/fixtures/**']
 		}
 	}
 })

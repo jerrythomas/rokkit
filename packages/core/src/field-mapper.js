@@ -1,5 +1,5 @@
 import { defaultFields } from './constants'
-import { isNil, has } from 'ramda'
+import { isNil, has, clone } from 'ramda'
 import { isObject } from './utils'
 
 export class FieldMapper {
@@ -87,7 +87,9 @@ export class FieldMapper {
 	}
 
 	hasChildren(item) {
-		return has(this.#fields.children, item) && Array.isArray(item[this.#fields.children])
+		return (
+			!isNil(item) && has(this.#fields.children, item) && Array.isArray(item[this.#fields.children])
+		)
 	}
 
 	isExpanded(item) {
@@ -99,5 +101,39 @@ export class FieldMapper {
 
 	isNested(items) {
 		return Array.isArray(items) && items.some((item) => this.hasChildren(item))
+	}
+
+	/**
+	 * Finds children by an index path
+	 *
+	 * @param {Array<Object>} items
+	 * @param {Array<number>} path
+	 * @returns {Array<Object>}
+	 */
+	getChildrenByPath(items, path = []) {
+		const result = path.reduce(
+			(children, index) => children?.[index]?.[this.#fields.children],
+			items
+		)
+
+		if (result === undefined) throw new Error('Invalid path')
+		return result
+	}
+
+	/**
+	 * Finds an item by an index path
+	 *
+	 * @param {Array<Object>} items
+	 * @param {Array<number>} path
+	 * @returns {Object|null}
+	 */
+	getItemByPath(items, path = []) {
+		const result = path.reduce(
+			(item, index, i) => (i === 0 ? items?.[index] : item?.[this.#fields.children]?.[index]),
+			undefined
+		)
+
+		if (result === undefined) throw new Error('Invalid path')
+		return result
 	}
 }

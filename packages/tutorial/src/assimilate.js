@@ -42,31 +42,6 @@ export function filterMenuItems(data, labs = false) {
 }
 
 /**
- * Finds the tutorial in the flat list of tutorials.
- *
- * @param {Array} flat - The flat list of tutorials.
- * @param {string} route - The route of the tutorial.
- * @returns {Object} - The tutorial.
- */
-export function findTutorial(flat, route) {
-	const index = flat.findIndex((item) => item.route === route)
-	if (index === -1) return null
-
-	const prevIndex = findPrevIndex(flat, index)
-	const nextIndex = findNextIndex(flat, index)
-
-	const result = {
-		...flat[index],
-		previous: prevIndex >= 0 ? flat[prevIndex].route : null,
-		next: nextIndex < flat.length ? flat[nextIndex].route : null
-	}
-
-	const crumbs = generateCrumbs(flat, index)
-
-	return { ...result, crumbs }
-}
-
-/**
  * Finds the previous index in the flat list of tutorials.
  *
  * @param {Array} flat - The flat list of tutorials.
@@ -112,6 +87,31 @@ function generateCrumbs(flat, index) {
 	}
 
 	return crumbs
+}
+
+/**
+ * Finds the tutorial in the flat list of tutorials.
+ *
+ * @param {Array} flat - The flat list of tutorials.
+ * @param {string} route - The route of the tutorial.
+ * @returns {Object} - The tutorial.
+ */
+export function findTutorial(flat, route) {
+	const index = flat.findIndex((item) => item.route === route)
+	if (index === -1) return null
+
+	const prevIndex = findPrevIndex(flat, index)
+	const nextIndex = findNextIndex(flat, index)
+
+	const result = {
+		...flat[index],
+		previous: prevIndex >= 0 ? flat[prevIndex].route : null,
+		next: nextIndex < flat.length ? flat[nextIndex].route : null
+	}
+
+	const crumbs = generateCrumbs(flat, index)
+
+	return { ...result, crumbs }
 }
 
 /**

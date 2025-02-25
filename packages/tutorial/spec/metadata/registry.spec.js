@@ -2,8 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { MetadataRegistry } from '../../src/metadata/registry.js'
 import { JavaScriptMetadata } from '../../src/metadata/javascript.js'
 import { JsonMetadata } from '../../src/metadata/json.js'
-import { MarkdownMetadata } from '../../src/metadata/markdown.js'
-import { BaseMetadataReader } from '../../src/metadata/base.js'
 
 describe('MetadataRegistry', () => {
 	it('should register a metadata reader for a file type', () => {

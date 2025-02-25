@@ -12,5 +12,4 @@ export * from './string.js'
 export * from './theme.js'
 export { FieldMapper } from './field-mapper.js'
 export { getItemAtIndex, getIndexForItem } from './mapped-items.js'
-// export const defaultMapper = new FieldMapper()
-// export { FieldMapper }
+export { createEmitter } from './events.js'

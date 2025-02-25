@@ -40,7 +40,8 @@ describe('@rokkit/core', () => {
 			'themeRules',
 			'FieldMapper',
 			'getItemAtIndex',
-			'getIndexForItem'
+			'getIndexForItem',
+			'createEmitter'
 		])
 	})
 })

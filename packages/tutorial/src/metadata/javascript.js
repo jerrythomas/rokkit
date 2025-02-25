@@ -1,5 +1,4 @@
 import { BaseMetadataReader } from './base.js'
-import path from 'path'
 
 /**
  * Reads story metadata from JavaScript files

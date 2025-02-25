@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { getFiles } from '../src/files'
 import files from '../fixtures/files.json'
 import path from 'path'

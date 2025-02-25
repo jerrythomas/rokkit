@@ -25,7 +25,7 @@ export class BaseMetadataReader {
 	 * @returns {Promise<object>} Story metadata
 	 * @throws {Error} If not implemented by child class
 	 */
-	async read() {
+	read() {
 		throw new Error('read() method must be implemented')
 	}
 }
