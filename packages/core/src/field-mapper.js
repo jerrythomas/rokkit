@@ -103,6 +103,10 @@ export class FieldMapper {
 		return Array.isArray(items) && items.some((item) => this.hasChildren(item))
 	}
 
+	getChildren(item) {
+		return this.hasChildren(item) ? item[this.#fields.children] : []
+	}
+
 	/**
 	 * Finds children by an index path
 	 *
