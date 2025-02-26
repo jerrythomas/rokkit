@@ -10,8 +10,8 @@ import { removeListeners, setupListeners } from './lib'
  * @param {import('./types').Coords} coords - The previous coordinates of the event.
  */
 function handleEvent(node, event, name, coords) {
-	const x = event.clientX || event.touches[0].clientX
-	const y = event.clientY || event.touches[0].clientY
+	const x = event.clientX ?? event.touches[0].clientX
+	const y = event.clientY ?? event.touches[0].clientY
 	const detail = { x, y }
 
 	if (name === 'panmove') {
