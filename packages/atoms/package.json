@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
-    "ramda": "^0.30.1"
+    "ramda": "^0.30.1",
+    "@rokkit/actions":"workspace:latest"
   }
 }
