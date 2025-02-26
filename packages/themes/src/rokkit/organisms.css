@@ -13,17 +13,17 @@
 
 .rokkit rk-list > rk-list-item,
 .rokkit rk-virtual-list-contents > rk-virtual-list-item,
-.rokkit rk-accordion div summary {
+.rokkit rk-accordion div rk-summary {
   @apply bg-neutral-base min-h-8 px-4 leading-10 text-neutral-800;
 }
-.rokkit rk-accordion > div > summary {
+.rokkit rk-accordion > div > rk-summary {
   @apply bg-gradient from-neutral-subtle to-neutral-muted rounded pr-2;
 }
 
 /* Remove default details marker from summary */
-.rokkit rk-accordion > div > summary::-webkit-details-marker {
+/* .rokkit rk-accordion > div > rk-summary::-webkit-details-marker {
   display: none;
-}
+} */
 
 /* Nested rk-list and Tree styles */
 .rokkit :not(accordion > div) > rk-list {
@@ -220,14 +220,14 @@
 }
 
 /* Expanded and Selected styles for rk-accordion */
-.rokkit rk-accordion .is-expanded summary {
+.rokkit rk-accordion .is-expanded rk-summary {
   @apply border-neutral-muted z-1 sticky top-0 rounded-b-none border-b;
 }
 
-.rokkit rk-accordion [aria-selected='true'] summary {
+.rokkit rk-accordion [aria-selected='true'] rk-summary {
   @apply bg-neutral-subtle;
 }
-.rokkit rk-accordion:focus-within [aria-selected='true'] summary {
+.rokkit rk-accordion:focus-within [aria-selected='true'] rk-summary {
   @apply from-primary to-secondary bg-gradient-to-r text-white outline-none;
 }
 

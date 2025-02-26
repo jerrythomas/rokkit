@@ -37,7 +37,8 @@ describe('components', () => {
 			'Summary',
 			'Toggle',
 			'Switch',
-			'List'
+			'List',
+			'Accordion'
 		])
 	})
 })
