@@ -1,6 +1,17 @@
 <script>
 	import { pannable } from '@rokkit/actions'
-	let { min = 0, max = 100, cx = $bindable(), steps, scale, value = $bindable() } = $props()
+
+	/**
+	 * @typedef Props
+	 * @property {number} min     - The minimum value of the thumb.
+	 * @property {number} max     - The maximum value of the thumb.
+	 * @property {number} value   - The current value of the thumb.
+	 * @property {number} cx      - The current position of the thumb.
+	 * @property {number[]} steps - An array of steps within a range.
+	 * @property {import('d3-scale').ScaleLinear} scale - Scale mapping the thumb's position to its value.
+	 */
+	/** @type {Props} */
+	let { min = 0, max = 100, value = $bindable(), cx = $bindable(), steps = [], scale } = $props()
 
 	function handlePanMove(event) {
 		let x = cx + event.detail.dx
@@ -46,11 +57,12 @@
 		}
 	}
 	let sliding = $state(false)
+	let position = $derived(`${cx}px`)
 </script>
 
 <rk-thumb
 	class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
-	style:left="{cx}px"
+	style:left={position}
 	class:sliding
 	tabindex="0"
 	onfocus={() => (sliding = true)}
