@@ -1,2 +1,2 @@
 // skipcq: JS-E1004 - Needed for exposing all functions
-export * from './simulators/touch'
+export * from './touch'
