@@ -9,7 +9,7 @@
   @apply relative;
 }
 .minimal rk-list,
-.minimal rk-accordion summary {
+.minimal rk-accordion rk-summary {
   @apply border-l-2px border-l-neutral-muted;
 }
 .minimal :not(rk-accordion > div) rk-list:focus-within {
@@ -48,8 +48,8 @@
   @apply h-6 w-6;
 }
 
-.minimal rk-accordion .is-selected summary,
-.minimal rk-accordion .is-selected summary > a,
+.minimal rk-accordion .is-selected rk-summary,
+.minimal rk-accordion .is-selected rk-summary > a,
 .minimal rk-accordion rk-item[aria-selected='true'],
 .minimal rk-accordion rk-item[aria-selected='true'] > a {
   @apply text-secondary-600;
@@ -80,7 +80,7 @@
 }
 
 .minimal .small rk-list > rk-item,
-.minimal .small rk-accordion summary {
+.minimal .small rk-accordion rk-summary {
   @apply text-sm;
 }
 

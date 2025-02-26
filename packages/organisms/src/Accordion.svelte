@@ -64,7 +64,7 @@
 			class:is-selected={equals(item, value)}
 			data-path={index}
 		>
-			<Summary {mapping} bind:value={items[index]} />
+			<Summary {mapping} bind:value={items[index]} expanded={mapping.isExpanded(item)} />
 			{#if hasItems && mapping.isExpanded(item)}
 				<rk-list role="listbox" tabindex="-1">
 					<ListItems
