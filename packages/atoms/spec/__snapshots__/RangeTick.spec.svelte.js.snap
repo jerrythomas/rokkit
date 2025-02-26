@@ -1,0 +1,155 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RangeTick.svelte > should render as selected 1`] = `
+<div>
+  <rk-tick
+    aria-selected="true"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      10
+    </p>
+  </rk-tick>
+  
+</div>
+`;
+
+exports[`RangeTick.svelte > should render as selected 2`] = `
+<div>
+  <rk-tick
+    aria-selected="false"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      10
+    </p>
+  </rk-tick>
+  
+</div>
+`;
+
+exports[`RangeTick.svelte > should render using value 1`] = `
+<div>
+  <rk-tick
+    aria-selected="false"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      10
+    </p>
+  </rk-tick>
+  
+</div>
+`;
+
+exports[`RangeTick.svelte > should render using value 2`] = `
+<div>
+  <rk-tick
+    aria-selected="false"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      20
+    </p>
+  </rk-tick>
+  
+</div>
+`;
+
+exports[`RangeTick.svelte > should render with custom label 1`] = `
+<div>
+  <rk-tick
+    aria-selected="false"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      Custom Label
+    </p>
+  </rk-tick>
+  
+</div>
+`;
+
+exports[`RangeTick.svelte > should render with custom label 2`] = `
+<div>
+  <rk-tick
+    aria-selected="false"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      
+    </p>
+  </rk-tick>
+  
+</div>
+`;
+
+exports[`RangeTick.svelte > should render with custom label 3`] = `
+<div>
+  <rk-tick
+    aria-selected="false"
+    class="grid cursor-pointer select-none grid-cols-2"
+    role="option"
+    tabindex="0"
+  >
+    <rk-tick-bar
+      class="h-5px col-start-2 border-l"
+    />
+     
+    <p
+      class="col-span-2 flex justify-center"
+    >
+      10
+    </p>
+  </rk-tick>
+  
+</div>
+`;
