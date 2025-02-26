@@ -6,7 +6,8 @@ import {
 	isObject,
 	toString,
 	iconShortcuts,
-	scaledPath
+	scaledPath,
+	isRTL
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -114,6 +115,17 @@ describe('utils', () => {
 					['V', 1, 2]
 				])
 			).toEqual('A 0.5 0.5 0 0 0 0 0.5 V 5 10')
+		})
+	})
+
+	describe('isRTL', () => {
+		it('should return true if the document direction is rtl', () => {
+			document.dir = 'rtl'
+			expect(isRTL()).toBe(true)
+		})
+		it('should return false if the document direction is ltr', () => {
+			document.dir = 'ltr'
+			expect(isRTL()).toBe(false)
 		})
 	})
 })
