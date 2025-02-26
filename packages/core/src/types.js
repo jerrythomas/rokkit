@@ -1,4 +1,8 @@
 /**
+ * @typedef {'child' | 'last' | 'sibling' | 'empty' | 'icon'} LineType
+ */
+
+/**
  * @typedef {Object.<string, Function>} EventHandlers
  * An object where keys are event names and values are event handler functions.
  */

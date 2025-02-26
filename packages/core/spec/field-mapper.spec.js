@@ -163,6 +163,12 @@ describe('FieldMapper', () => {
 			expect(customMapping.hasChildren(altData.sub[0])).toBeTruthy()
 		})
 
+		it('should fetch children', () => {
+			expect(fieldMapping.getChildren(data)).toEqual(data.children)
+			expect(fieldMapping.getChildren(data.children[0])).toEqual(data.children[0].children)
+			expect(fieldMapping.getChildren(data.children[0].children[0])).toEqual([])
+		})
+
 		it('should identify if node is expanded', () => {
 			expect(fieldMapping.isExpanded(data)).toBeTruthy()
 			expect(fieldMapping.isExpanded(data.children[0])).toBeFalsy()
