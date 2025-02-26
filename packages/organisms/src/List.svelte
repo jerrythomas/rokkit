@@ -1,7 +1,7 @@
 <script>
 	import { createEmitter } from '@rokkit/core'
-	import { ListItems } from '@rokkit/atoms'
-	import { defaultMapping } from './constants'
+	import { ListItems } from '@rokkit/molecules'
+	import { defaultMapping } from '@rokkit/molecules/constants'
 
 	/**
 	 * @typedef {Object} Props

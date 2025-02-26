@@ -1,7 +1,7 @@
 {
-  "name": "@rokkit/molecules",
+  "name": "@rokkit/organisms",
   "version": "1.0.0-next.105",
-  "description": "Molecules are small, reusable building blocks that can be combined to create complex UI elements",
+  "description": "Organisms are larger, more complex building blocks that are composed of multiple molecules",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "module": "src/index.js",
@@ -22,7 +22,6 @@
   "exports": {
     "./src": "./src",
     "./package.json": "./package.json",
-    "./constants": "./src/constants.js",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./src/index.js"
@@ -30,7 +29,9 @@
   },
   "dependencies": {
     "ramda": "^0.30.1",
+    "@rokkit/actions": "workspace:latest",
     "@rokkit/atoms": "workspace:latest",
-    "@rokkit/core": "workspace:latest"
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/molecules": "workspace:latest"
   }
 }

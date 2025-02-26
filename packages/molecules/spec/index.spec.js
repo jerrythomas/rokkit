@@ -4,6 +4,6 @@ import * as components from '../src/index.js'
 
 describe('components', () => {
 	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual(['Icon', 'Item', 'Pill', 'ProgressBar', 'Separator'])
+		expect(Object.keys(components)).toEqual(['ListItems', 'Node', 'Summary'])
 	})
 })

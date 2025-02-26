@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Summary > should render 1`] = `
+<div>
+  <rk-summary
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+    tabindex="-1"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Item 1
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </rk-summary>
+  
+</div>
+`;

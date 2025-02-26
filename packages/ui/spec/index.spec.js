@@ -11,7 +11,6 @@ describe('components', () => {
 			'Pill',
 			'ProgressBar',
 			'Separator',
-			'ListItems',
 			'InputCheckbox',
 			'InputColor',
 			'InputDate',
@@ -30,6 +29,9 @@ describe('components', () => {
 			'InputTime',
 			'InputUrl',
 			'InputWeek',
+			'ListItems',
+			'Node',
+			'Summary',
 			'Toggle',
 			'Switch',
 			'List'

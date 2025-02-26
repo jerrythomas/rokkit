@@ -2,7 +2,7 @@
 	import { FieldMapper, noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
 	import { Item } from '@rokkit/atoms'
-	import { defaultMapping } from './constants'
+	import { defaultMapping } from '@rokkit/molecules/constants'
 
 	/**
 	 * @typedef {Object} Props

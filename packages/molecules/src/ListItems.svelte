@@ -1,12 +1,13 @@
 <script>
 	import { equals } from 'ramda'
-	import { noop, FieldMapper } from '@rokkit/core'
+	import { noop } from '@rokkit/core'
+	import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
 	 * @property {Array<Object>} items
 	 * @property {any}           value
-	 * @property {FieldMapper}   mapping
+	 * @property {import('@rokkit/core').FieldMapper}   mapping
 	 * @property {Function}      onchange
 	 */
 
@@ -15,7 +16,7 @@
 		class: classes = '',
 		items = $bindable([]),
 		value = $bindable(),
-		mapping = new FieldMapper(),
+		mapping = defaultMapping,
 		hierarchy = [],
 		onchange = noop,
 		...rest
