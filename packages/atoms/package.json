@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@rokkit/actions": "workspace:latest",
+    "@types/d3-scale": "^4.0.9",
     "d3-scale": "^4.0.2",
     "ramda": "^0.30.1"
   }
