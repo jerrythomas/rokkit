@@ -1,6 +1,5 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it, beforeEach, afterEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-
 import Connector from '../src/Connector.svelte'
 
 describe('Connector.svelte', () => {
@@ -73,6 +72,12 @@ describe('Connector.svelte', () => {
 	})
 
 	describe('When rtl is true property', () => {
+		beforeEach(() => {
+			document.dir = 'rtl'
+		})
+		afterEach(() => {
+			document.dir = 'ltr'
+		})
 		it('should render when type is "last"', () => {
 			const { container } = render(Connector, { type: 'last', rtl: true })
 
