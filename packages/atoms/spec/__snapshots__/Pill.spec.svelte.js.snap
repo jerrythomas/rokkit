@@ -1,63 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Pill > should render 1`] = `
-<div>
-  <rk-pill
-    tabindex="0"
-  >
-    <!---->
-    <!---->
-    
-    <!---->
-     
-    <p>
-      Hello
-    </p>
-    <!---->
-    <!---->
-     
-    <!---->
-  </rk-pill>
-  
-</div>
-`;
-
-exports[`Pill > should render with close button 1`] = `
-<div>
-  <rk-pill
-    tabindex="0"
-  >
-    <!---->
-    <!---->
-    
-    <!---->
-     
-    <p>
-      Hello
-    </p>
-    <!---->
-    <!---->
-     
-    <button>
-      <rk-icon
-        aria-label="remove"
-        class=""
-        role="img"
-      >
-        <i
-          aria-hidden="true"
-          class="remove"
-        />
-      </rk-icon>
-      <!---->
-    </button>
-    <!---->
-  </rk-pill>
-  
-</div>
-`;
-
-exports[`Pill > should render with disabled close button 1`] = `
+exports[`Pill > should fire remove event on Backspace 1`] = `
 <div>
   <rk-pill
     tabindex="0"
@@ -94,6 +37,229 @@ exports[`Pill > should render with disabled close button 1`] = `
 </div>
 `;
 
+exports[`Pill > should fire remove event on Backspace 2`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <button>
+      <rk-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rk-icon>
+      <!---->
+    </button>
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on Delete 1`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <button
+      disabled=""
+    >
+      <rk-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rk-icon>
+      <!---->
+    </button>
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on Delete 2`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <button>
+      <rk-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rk-icon>
+      <!---->
+    </button>
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on click 1`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <button
+      disabled=""
+    >
+      <rk-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rk-icon>
+      <!---->
+    </button>
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on click 2`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <button>
+      <rk-icon
+        aria-label="remove"
+        class=""
+        role="img"
+      >
+        <i
+          aria-hidden="true"
+          class="remove"
+        />
+      </rk-icon>
+      <!---->
+    </button>
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render 1`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render 2`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
 exports[`Pill > should render with icon 1`] = `
 <div>
   <rk-pill
@@ -124,6 +290,36 @@ exports[`Pill > should render with icon 1`] = `
 </div>
 `;
 
+exports[`Pill > should render with icon 2`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <rk-icon
+      aria-label="World"
+      class=""
+      role="img"
+    >
+      <i
+        aria-hidden="true"
+        class="hello"
+      />
+    </rk-icon>
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
 exports[`Pill > should render with image 1`] = `
 <div>
   <rk-pill
@@ -140,6 +336,32 @@ exports[`Pill > should render with image 1`] = `
      
     <p>
       Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </rk-pill>
+  
+</div>
+`;
+
+exports[`Pill > should render with image 2`] = `
+<div>
+  <rk-pill
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <img
+      alt="World"
+      src="hello.png"
+    />
+    
+    <!---->
+     
+    <p>
+      World
     </p>
     <!---->
     <!---->

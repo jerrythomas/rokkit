@@ -1,49 +1,72 @@
 import { describe, it, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
-import { tick } from 'svelte'
+import { flushSync, tick } from 'svelte'
 import Pill from '../src/Pill.svelte'
 
 describe('Pill', () => {
 	it('should render', () => {
-		const { container } = render(Pill, { value: 'Hello' })
+		const props = $state({ value: 'Hello' })
+		const { container } = render(Pill, { props })
+		expect(container).toMatchSnapshot()
+
+		props.value = 'World'
+		flushSync()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render with icon', () => {
-		const { container } = render(Pill, { value: { text: 'Hello', icon: 'world' } })
+		const props = $state({ value: { text: 'Hello', icon: 'world' } })
+		const { container } = render(Pill, { props })
+		expect(container).toMatchSnapshot()
+
+		props.value = { text: 'World', icon: 'hello' }
+		flushSync()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render with image', () => {
-		const { container } = render(Pill, { value: { text: 'Hello', image: 'world.png' } })
+		const props = $state({ value: { text: 'Hello', image: 'world.png' } })
+		const { container } = render(Pill, { props })
 		expect(container).toMatchSnapshot()
-	})
 
-	it('should render with close button', () => {
-		const { container } = render(Pill, { value: 'Hello', removable: true })
-		expect(container).toMatchSnapshot()
-	})
-
-	it('should render with disabled close button', () => {
-		const { container } = render(Pill, { value: 'Hello', removable: true, disabled: true })
+		props.value = { text: 'World', image: 'hello.png' }
+		flushSync()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should fire remove event on click', async () => {
-		const props = $state({ value: 'Hello', removable: true, onremove: vi.fn() })
+		const props = $state({ value: 'Hello', removable: true, disabled: true, onremove: vi.fn() })
 		const { container } = render(Pill, { props })
+
+		expect(container).toMatchSnapshot()
 		const closeButton = container.querySelector('button')
+
+		fireEvent.click(closeButton)
+		await tick()
+		expect(props.onremove).not.toHaveBeenCalled()
+
+		props.disabled = false
+		flushSync()
+		expect(container).toMatchSnapshot()
 		fireEvent.click(closeButton)
 		await tick()
 		expect(props.onremove).toHaveBeenCalledWith('Hello')
 	})
 
 	it.each(['Delete', 'Backspace'])('should fire remove event on %s', async (key) => {
-		const props = $state({ value: 'Hello', removable: true, onremove: vi.fn() })
+		const props = $state({ value: 'Hello', removable: true, disabled: true, onremove: vi.fn() })
 		const { container } = render(Pill, { props })
+		expect(container).toMatchSnapshot()
 		const pill = container.querySelector('rk-pill')
+
 		fireEvent.keyUp(pill, { key })
 		await tick()
+		expect(props.onremove).not.toHaveBeenCalled()
+
+		props.disabled = false
+		flushSync()
+		expect(container).toMatchSnapshot()
+		fireEvent.keyUp(pill, { key })
 		expect(props.onremove).toHaveBeenCalledWith('Hello')
 	})
 })

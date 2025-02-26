@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Thumb > should handle keyboard movement 1`] = `
+<div>
+  <rk-thumb
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="0"
+    class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+    role="slider"
+    style="left: 0px;"
+    tabindex="0"
+  />
+  
+</div>
+`;
+
+exports[`Thumb > should handle keyboard movement without steps 1`] = `
+<div>
+  <rk-thumb
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="0"
+    class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+    role="slider"
+    style="left: 0px;"
+    tabindex="0"
+  />
+  
+</div>
+`;
+
+exports[`Thumb > should handle mouse move 1`] = `
+<div>
+  <rk-thumb
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="0"
+    class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+    role="slider"
+    style="left: 0px;"
+    tabindex="0"
+  />
+  
+</div>
+`;
+
+exports[`Thumb > should handle mouse move without steps 1`] = `
+<div>
+  <rk-thumb
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="0"
+    class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+    role="slider"
+    style="left: 0px;"
+    tabindex="0"
+  />
+  
+</div>
+`;
+
+exports[`Thumb > should render correctly 1`] = `
+<div>
+  <rk-thumb
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="0"
+    class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+    role="slider"
+    style="left: 50px;"
+    tabindex="0"
+  />
+  
+</div>
+`;
