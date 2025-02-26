@@ -16,7 +16,7 @@
 
 	/** @type {Props} */
 	let {
-		class: className = '',
+		class: classes = '',
 		value = $bindable(),
 		options = [false, true],
 		mapping = defaultMapping,
@@ -57,7 +57,7 @@
 {:else}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<rk-switch
-		class={className}
+		class={classes}
 		class:is-off={options.length === 2 && equals(value, options[0])}
 		class:is-on={options.length === 2 && equals(value, options[1])}
 		class:compact

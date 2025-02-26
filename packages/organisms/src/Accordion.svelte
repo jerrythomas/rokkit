@@ -16,7 +16,7 @@
 
 	/** @type {Props} */
 	let {
-		class: className = '',
+		class: classes = '',
 		items = $bindable([]),
 		mapping = defaultMapping,
 		autoClose = false,
@@ -41,13 +41,12 @@
 			items = items
 		}
 		emitter[event.type](event.detail)
-		// dispatch(event.type, event.detail)
 	}
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rk-accordion
-	class="flex w-full select-none flex-col {className}"
+	class={classes}
 	tabindex="0"
 	onselect={handle}
 	onmove={handle}
@@ -56,9 +55,10 @@
 >
 	{#each items as item, index}
 		{@const hasItems = mapping.hasChildren(item)}
+		{@const id = 'id-' + index}
 
 		<div
-			id={'id-' + index}
+			{id}
 			class="flex flex-col"
 			class:is-expanded={mapping.isExpanded(item)}
 			class:is-selected={equals(item, value)}
@@ -66,11 +66,7 @@
 		>
 			<Summary {mapping} bind:value={items[index]} />
 			{#if hasItems && mapping.isExpanded(item)}
-				<rk-list
-					class="flex w-full flex-shrink-0 select-none flex-col"
-					role="listbox"
-					tabindex="-1"
-				>
+				<rk-list role="listbox" tabindex="-1">
 					<ListItems
 						bind:items={items[index][mapping.fields.children]}
 						bind:value

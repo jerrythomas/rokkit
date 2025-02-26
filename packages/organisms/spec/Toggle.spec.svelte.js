@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
 import Toggle from '../src/Toggle.svelte'
 import { FieldMapper } from '@rokkit/core'
@@ -9,6 +9,8 @@ describe('Toggle', () => {
 	const fields = new FieldMapper({ icon: 'text' }, { default: Item })
 	const nextKeys = ['ArrowDown', 'ArrowRight']
 	const prevKeys = ['ArrowUp', 'ArrowLeft']
+
+	beforeEach(() => cleanup())
 
 	it('should render', () => {
 		const props = $state({ value: null })

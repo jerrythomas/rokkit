@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Summary > should render 1`] = `
+exports[`Summary > should render  1`] = `
 <div>
   <rk-summary
     class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
@@ -17,6 +17,87 @@ exports[`Summary > should render 1`] = `
     <!---->
     <!---->
      
+    <!---->
+  </rk-summary>
+  
+</div>
+`;
+
+exports[`Summary > should render  2`] = `
+<div>
+  <rk-summary
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+    tabindex="-1"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Item 2
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </rk-summary>
+  
+</div>
+`;
+
+exports[`Summary > should render using expanded state 1`] = `
+<div>
+  <rk-summary
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+    tabindex="-1"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Item 1
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+    <icon
+      aria-label="collapse"
+      class="accordion-opened sm"
+    />
+    
+    <!---->
+  </rk-summary>
+  
+</div>
+`;
+
+exports[`Summary > should render using expanded state 2`] = `
+<div>
+  <rk-summary
+    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+    tabindex="-1"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Item 1
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+    <icon
+      aria-label="expand"
+      class="accordion-closed sm"
+    />
+    
     <!---->
   </rk-summary>
   

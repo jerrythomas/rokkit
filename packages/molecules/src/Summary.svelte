@@ -2,12 +2,13 @@
 	import { defaultMapping } from './constants'
 
 	/**
-	 * @typedef {Object} SummaryProps
+	 * @typedef {Object} Props
 	 * @property {string|Object} value
 	 * @property {import('@rokkit/core').FieldMapper} [mapping]
 	 * @property {boolean} [expanded]
-	 * @property {Object} using
 	 */
+
+	/** @type {Props} */
 	let { value = $bindable(), mapping = defaultMapping, expanded = false } = $props()
 
 	const Template = $derived(mapping.getComponent(value))

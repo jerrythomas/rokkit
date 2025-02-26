@@ -44,30 +44,41 @@ rk-input-range tick p {
   @apply items-top leading-tight text-neutral-600;
   font-size: 8px;
 }
-
-/* Calendar styles */
-calendar {
+/* List Styles */
+rk-list {
+  @apply flex w-full flex-shrink-0 select-none flex-col;
+}
+/* Accordion */
+rk-accordion {
+  @apply flex w-full select-none flex-col;
+}
+/* Node Styles */
+rk-node {
+  @apply flex min-h-5 cursor-pointer select-none flex-col;
+}
+/* rk-calendar styles */
+rk-calendar {
   @apply overflow-hidden rounded-md shadow-lg;
 }
-calendar month-year {
+rk-calendar month-year {
   @apply bg-secondary-400 text-white;
 }
-calendar cal-body days-of-week p,
-calendar cal-body days-of-month p {
+rk-calendar cal-body days-of-week p,
+rk-calendar cal-body days-of-month p {
   @apply h-8 w-8 text-xs;
 }
-calendar cal-body days-of-week p.weekend,
-calendar cal-body days-of-month p.weekend,
-calendar cal-body days-of-month p.holiday {
+rk-calendar cal-body days-of-week p.weekend,
+rk-calendar cal-body days-of-month p.weekend,
+rk-calendar cal-body days-of-month p.holiday {
   @apply text-primary-700;
 }
-calendar cal-body days-of-month {
+rk-calendar cal-body days-of-month {
   @apply gap-2px;
 }
-day-of-month {
+rk-day-of-month {
   @apply hover:bg-secondary-200 hover:rounded-full;
 }
-day-of-month[aria-selected='true'] {
+rk-day-of-month[aria-selected='true'] {
   @apply bg-secondary rounded-full text-white;
 }
 
