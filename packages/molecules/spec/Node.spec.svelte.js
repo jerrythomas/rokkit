@@ -16,4 +16,36 @@ describe('Node', () => {
 		flushSync()
 		expect(container).toMatchSnapshot()
 	})
+
+	it('should render as a sibling', () => {
+		const props = $state({ value: 'Item 1', types: ['sibling'], path: [0] })
+		const { container } = render(Node, props)
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+
+	it('should render having child', () => {
+		const props = $state({ value: 'Item 1', types: ['sibling', 'child'], path: [0, 0] })
+		const { container } = render(Node, props)
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+
+	it('should render as last sibling', () => {
+		const props = $state({ value: 'Item 1', types: ['last'], path: [3] })
+		const { container } = render(Node, props)
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
+
+	it('should render with icon', () => {
+		const props = $state({
+			value: 'Item 1',
+			types: ['child', 'icon'],
+			path: [0]
+		})
+		const { container } = render(Node, props)
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
+	})
 })
