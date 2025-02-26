@@ -1,8 +1,3 @@
-/* General styles */
-.rokkit {
-  @apply select-none;
-}
-
 /* Zebra styles */
 .rokkit .zebra rk-item,
 .rokkit .zebra rk-list-item {

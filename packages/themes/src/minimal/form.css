@@ -43,7 +43,7 @@
   @apply focus:outline-none;
 }
 .minimal rk-input-select > selected-item {
-  @apply min-h-8 cursor-pointer select-none items-center gap-4 pl-2 leading-8;
+  @apply min-h-8 cursor-pointer items-center gap-4 pl-2 leading-8;
   @apply border-b-neutral-muted border-b-2;
   @apply focus:border-b-secondary-600;
 }
