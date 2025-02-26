@@ -10,7 +10,13 @@
 	let validatedType = $derived(['last', 'child', 'sibling'].includes(type) ? type : 'empty')
 </script>
 
-<span class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-{validatedType}">
+<span
+	class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+	class:line-empty={validatedType === 'empty'}
+	class:line-child={validatedType === 'child'}
+	class:line-sibling={validatedType === 'sibling'}
+	class:line-last={validatedType === 'last'}
+>
 	{#if validatedType === 'last'}
 		{#if rtl}
 			<i class="border-b border-r"></i>

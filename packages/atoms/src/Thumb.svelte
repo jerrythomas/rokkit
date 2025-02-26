@@ -1,25 +1,26 @@
 <script>
 	import { pannable } from '@rokkit/actions'
-	let { min, max, cx = $bindable(), steps, scale, value = $bindable() } = $props()
+	let { min = 0, max = 100, cx = $bindable(), steps, scale, value = $bindable() } = $props()
 
 	function handlePanMove(event) {
 		let x = cx + event.detail.dx
+		let limits = [scale.invert(min), scale.invert(max)]
 
-		if (min <= x && x <= max) {
-			cx = x
-			if (steps.length > 0) {
-				const result = scale(x)
-				const index = steps.findIndex((step) => step > result)
-
-				value =
-					index === -1
-						? steps[0]
-						: result - steps[index - 1] > steps[index] - result
-							? steps[index]
-							: steps[index - 1]
-			} else {
-				value = scale(x)
+		cx = Math.min(Math.max(x, limits[0]), limits[1])
+		if (steps.length > 0) {
+			const result = scale(x)
+			let index = 0
+			let matched = false
+			while (!matched && index < steps.length - 1) {
+				if (steps[index] <= result && steps[index + 1] > result) {
+					value =
+						result - steps[index] > steps[index + 1] - result ? steps[index + 1] : steps[index]
+					matched = true
+				}
+				index++
 			}
+		} else {
+			value = scale(cx)
 		}
 	}
 	function handlePanEnd() {
@@ -29,13 +30,19 @@
 		}
 	}
 	function handleKeyDown(event) {
-		const index = steps.findIndex((step) => step === value)
-		if (event.key === 'ArrowLeft' && index > 0) {
-			value = steps[index - 1]
-			cx = scale.invert(value)
-		} else if (event.key === 'ArrowRight' && index < steps.length - 1) {
-			value = steps[index + 1]
-			cx = scale.invert(value)
+		if (steps.length === 0) {
+			const offset = (max - min) / 10
+			const step = event.key === 'ArrowLeft' ? -offset : event.key === 'ArrowRight' ? offset : 0
+			value = Math.min(Math.max(value + step, min), max)
+		} else {
+			const index = steps.findIndex((step) => step === value)
+			if (event.key === 'ArrowLeft' && index > 0) {
+				value = steps[index - 1]
+				cx = scale.invert(value)
+			} else if (event.key === 'ArrowRight' && index < steps.length - 1) {
+				value = steps[index + 1]
+				cx = scale.invert(value)
+			}
 		}
 	}
 	let sliding = $state(false)

@@ -8,7 +8,7 @@ describe('ProgressBar.svelte', () => {
 
 	it('should render indeterminate progress', () => {
 		const props = $state({ value: null })
-		const { container } = render(ProgressBar)
+		const { container } = render(ProgressBar, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 		props.max = null
@@ -30,9 +30,7 @@ describe('ProgressBar.svelte', () => {
 
 	it('should render progress bar with value', () => {
 		const props = $state({ value: 50, max: 100 })
-		const { container } = render(ProgressBar, {
-			props
-		})
+		const { container } = render(ProgressBar, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
@@ -43,9 +41,7 @@ describe('ProgressBar.svelte', () => {
 
 	it('should render progress bar with class', () => {
 		const props = $state({ class: 'my-class' })
-		const { container } = render(ProgressBar, {
-			props
-		})
+		const { container } = render(ProgressBar, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 

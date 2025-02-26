@@ -20,16 +20,21 @@
 		disabled = false,
 		onremove = noop
 	} = $props()
+
 	const keyMappings = {
 		remove: ['Delete', 'Backspace']
+	}
+
+	function handle(event) {
+		if (!disabled) onremove(value)
 	}
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-pill use:keyboard={keyMappings} onremove={() => onremove(value)} tabindex="0">
+<rk-pill use:keyboard={keyMappings} onremove={handle} tabindex="0">
 	<Item {value} {mapping}></Item>
 	{#if removable}
-		<button {disabled} onclick={() => onremove(value)}>
+		<button {disabled} onclick={handle}>
 			<Icon name="remove" />
 		</button>
 	{/if}
