@@ -29,7 +29,7 @@
 	let indexValue = $state(options.findIndex((item) => equals(mapping.getValue(item), value)))
 </script>
 
-<rk-select class="relative inline-block {classes}">
+<rk-select class={classes}>
 	<select
 		name="sources"
 		id="sources"
@@ -50,6 +50,10 @@
 </rk-select>
 
 <style lang="postcss">
+	rk-select {
+		position: relative;
+		display: inline-block;
+	}
 	rk-select > select {
 		-webkit-appearance: none;
 		-moz-appearance: none;

@@ -1,9 +1,85 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Accordion > should render 1`] = `
+exports[`Accordion > should render accordion list 1`] = `
 <div>
   <rk-accordion
-    class="flex w-full select-none flex-col "
+    class=""
+    tabindex="0"
+  >
+    <div
+      class="flex flex-col"
+      data-path="0"
+      id="id-0"
+    >
+      <rk-summary
+        class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+        tabindex="-1"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+         
+        <!---->
+        <icon
+          aria-label="expand"
+          class="accordion-closed sm"
+        />
+        
+        <!---->
+      </rk-summary>
+      <!---->
+       
+      <!---->
+    </div>
+    <div
+      class="flex flex-col"
+      data-path="1"
+      id="id-1"
+    >
+      <rk-summary
+        class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+        tabindex="-1"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 2
+        </p>
+        <!---->
+        <!---->
+         
+        <!---->
+        <icon
+          aria-label="expand"
+          class="accordion-closed sm"
+        />
+        
+        <!---->
+      </rk-summary>
+      <!---->
+       
+      <!---->
+    </div>
+    
+  </rk-accordion>
+  
+</div>
+`;
+
+exports[`Accordion > should render accordion list 2`] = `
+<div>
+  <rk-accordion
+    class="another-class"
     tabindex="0"
   >
     <div

@@ -12,7 +12,7 @@
 .minimal rk-accordion summary {
   @apply border-l-2px border-l-neutral-muted;
 }
-.minimal :not(accordion > div) rk-list:focus-within {
+.minimal :not(rk-accordion > div) rk-list:focus-within {
   @apply outline-offset-3 outline-secondary-700 outline;
 }
 .minimal rk-list > rk-item,

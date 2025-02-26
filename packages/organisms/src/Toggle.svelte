@@ -14,7 +14,7 @@
 
 	/** @type {Props} */
 	let {
-		class: className = '',
+		class: classes = '',
 		value = $bindable(null),
 		options = [false, true],
 		mapping = defaultMapping,
@@ -41,7 +41,7 @@
 	}
 </script>
 
-<rk-toggle class={className}>
+<rk-toggle class={classes}>
 	<button
 		use:keyboard={keyMappings}
 		onnext={() => toggle()}

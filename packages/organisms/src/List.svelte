@@ -17,7 +17,7 @@
 
 	/** @type {Props} */
 	let {
-		class: className = 'list',
+		class: classes = '',
 		name = 'list',
 		items = $bindable([]),
 		mapping = defaultMapping,
@@ -41,7 +41,7 @@
 </script>
 
 <rk-list
-	class="flex w-full flex-shrink-0 select-none flex-col {className}"
+	class={classes}
 	role="listbox"
 	aria-label={name}
 	onmove={handleNav}

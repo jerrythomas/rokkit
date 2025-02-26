@@ -17,6 +17,7 @@
 
 	/** @type {Props} */
 	let {
+		class: classes = '',
 		value = $bindable(),
 		mapping = defaultMapping,
 		types = [],
@@ -34,11 +35,12 @@
 	)
 
 	const Template = $derived(mapping.getComponent(value))
+	const id = $derived('id-' + path.join('-'))
 </script>
 
 <rk-node
-	id={'id-' + path.join('-')}
-	class="node flex min-h-5 cursor-pointer select-none flex-col"
+	{id}
+	class={classes}
 	aria-selected={selected}
 	aria-expanded={state.label === 'collapse'}
 	role="treeitem"
