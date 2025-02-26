@@ -5,7 +5,7 @@ import {
 	simulateTouchEvent,
 	simulateMouseSwipe,
 	simulateTouchSwipe
-} from '../src/simulators/touch'
+} from '../src/simulators'
 
 expect.extend({ toHaveBeenDispatchedWith })
 describe('events', () => {
