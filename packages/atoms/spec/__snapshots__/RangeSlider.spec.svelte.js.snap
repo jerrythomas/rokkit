@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Thumb > should handle keyboard movement 1`] = `
+exports[`RangeSlider > should handle keyboard movement 1`] = `
 <div>
   <rk-thumb
     aria-valuemax="100"
@@ -15,7 +15,7 @@ exports[`Thumb > should handle keyboard movement 1`] = `
 </div>
 `;
 
-exports[`Thumb > should handle keyboard movement without steps 1`] = `
+exports[`RangeSlider > should handle keyboard movement without steps 1`] = `
 <div>
   <rk-thumb
     aria-valuemax="100"
@@ -30,7 +30,7 @@ exports[`Thumb > should handle keyboard movement without steps 1`] = `
 </div>
 `;
 
-exports[`Thumb > should handle mouse move 1`] = `
+exports[`RangeSlider > should handle mouse move 1`] = `
 <div>
   <rk-thumb
     aria-valuemax="100"
@@ -45,7 +45,7 @@ exports[`Thumb > should handle mouse move 1`] = `
 </div>
 `;
 
-exports[`Thumb > should handle mouse move without steps 1`] = `
+exports[`RangeSlider > should handle mouse move without steps 1`] = `
 <div>
   <rk-thumb
     aria-valuemax="100"
@@ -60,7 +60,7 @@ exports[`Thumb > should handle mouse move without steps 1`] = `
 </div>
 `;
 
-exports[`Thumb > should render correctly 1`] = `
+exports[`RangeSlider > should render correctly 1`] = `
 <div>
   <rk-thumb
     aria-valuemax="100"

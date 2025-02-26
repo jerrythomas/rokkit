@@ -1,10 +1,9 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { simulateMouseEvent, simulateTouchEvent } from '@rokkit/helpers'
-import Thumb from '../src/Thumb.svelte'
+import RangeSlider from '../src/RangeSlider.svelte'
 import { scaleLinear } from 'd3-scale'
 
-describe('Thumb', () => {
+describe('RangeSlider', () => {
 	const scale = scaleLinear().domain([0, 200]).range([0, 100])
 	const steps = [0, 25, 50, 75, 100]
 
@@ -14,13 +13,13 @@ describe('Thumb', () => {
 
 	it('should render correctly', () => {
 		const props = $state({ min: 0, max: 100, cx: 50, steps, scale, value: 0 })
-		const { container } = render(Thumb, { props })
+		const { container } = render(RangeSlider, { props })
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should handle mouse move', () => {
 		const props = $state({ min: 0, max: 100, cx: 0, steps, scale, value: 0 })
-		const { container } = render(Thumb, { props })
+		const { container } = render(RangeSlider, { props })
 		expect(container).toMatchSnapshot()
 		const thumb = container.querySelector('rk-thumb')
 		fireEvent.mouseDown(thumb, { clientX: 0, clientY: 0 })
@@ -48,7 +47,7 @@ describe('Thumb', () => {
 
 	it('should handle keyboard movement', () => {
 		const props = $state({ min: 0, max: 100, cx: 0, steps, scale, value: 0 })
-		const { container } = render(Thumb, { props })
+		const { container } = render(RangeSlider, { props })
 		expect(container).toMatchSnapshot()
 		const thumb = container.querySelector('rk-thumb')
 
@@ -70,7 +69,7 @@ describe('Thumb', () => {
 
 	it('should handle mouse move without steps', () => {
 		const props = $state({ min: 0, max: 100, cx: 0, steps: [], scale, value: 0 })
-		const { container } = render(Thumb, { props })
+		const { container } = render(RangeSlider, { props })
 		expect(container).toMatchSnapshot()
 		const thumb = container.querySelector('rk-thumb')
 		fireEvent.mouseDown(thumb, { clientX: 0, clientY: 0 })
@@ -94,7 +93,7 @@ describe('Thumb', () => {
 
 	it('should handle keyboard movement without steps', () => {
 		const props = $state({ min: 0, max: 100, cx: 0, steps: [], scale, value: 0 })
-		const { container } = render(Thumb, { props })
+		const { container } = render(RangeSlider, { props })
 		expect(container).toMatchSnapshot()
 		const thumb = container.querySelector('rk-thumb')
 
