@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`List > should render 1`] = `
+<div>
+  <rk-list
+    aria-label="list"
+    class="flex w-full flex-shrink-0 select-none flex-col list"
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <!---->
+    <rk-list-item
+      aria-selected="false"
+      data-path="0"
+      role="option"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-list-item>
+    <rk-list-item
+      aria-selected="false"
+      data-path="1"
+      role="option"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 2
+      </p>
+      <!---->
+      <!---->
+    </rk-list-item>
+    
+    <!---->
+  </rk-list>
+  
+</div>
+`;

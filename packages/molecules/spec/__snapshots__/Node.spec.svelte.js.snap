@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Node > should render 1`] = `
+<div>
+  <rk-node
+    aria-expanded="false"
+    aria-selected="false"
+    class="node flex min-h-5 cursor-pointer select-none flex-col"
+    data-path=""
+    id="id-"
+    role="treeitem"
+  >
+    <div
+      class="flex flex-row items-center"
+    >
+      <!---->
+       
+      <rk-item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-item>
+    </div>
+     
+    <!---->
+  </rk-node>
+  
+</div>
+`;

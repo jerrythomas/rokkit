@@ -1,0 +1,105 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ListItems.svelte > should render a list of values 1`] = `
+<div>
+  <!---->
+  <rk-list-item
+    aria-selected="false"
+    data-path="0"
+    role="option"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      1
+    </p>
+    <!---->
+    <!---->
+  </rk-list-item>
+  <rk-list-item
+    aria-selected="false"
+    data-path="1"
+    role="option"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      2
+    </p>
+    <!---->
+    <!---->
+  </rk-list-item>
+  <rk-list-item
+    aria-selected="false"
+    data-path="2"
+    role="option"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      3
+    </p>
+    <!---->
+    <!---->
+  </rk-list-item>
+  
+  
+</div>
+`;
+
+exports[`ListItems.svelte > should render with custom component 1`] = `
+<div>
+  <!---->
+  <rk-list-item
+    aria-selected="false"
+    data-path="0"
+    role="option"
+  >
+    A
+    <!---->
+  </rk-list-item>
+  <rk-list-item
+    aria-selected="false"
+    data-path="1"
+    role="option"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      B
+    </p>
+    <!---->
+    <!---->
+  </rk-list-item>
+  <rk-list-item
+    aria-selected="false"
+    data-path="2"
+    role="option"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      C
+    </p>
+    <!---->
+    <!---->
+  </rk-list-item>
+  
+  
+</div>
+`;

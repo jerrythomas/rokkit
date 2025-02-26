@@ -2,7 +2,7 @@ import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { MockItem } from '@rokkit/helpers/components'
 import ListItems from '../src/ListItems.svelte'
-import Item from '../src/Item.svelte'
+import { Item } from '@rokkit/atoms'
 import { FieldMapper } from '@rokkit/core'
 
 describe('ListItems.svelte', () => {

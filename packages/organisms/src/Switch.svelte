@@ -2,7 +2,7 @@
 	import { equals } from 'ramda'
 	import { noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
-	import { defaultMapping } from './constants'
+	import { defaultMapping } from '@rokkit/molecules/constants'
 
 	/**
 	 * @typedef {Object} Props
