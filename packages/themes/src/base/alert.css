@@ -8,7 +8,7 @@ rk-error,
 rk-info,
 rk-warning,
 rk-success {
-  @apply cursor-pointer select-none rounded border px-4 py-2;
+  @apply cursor-pointer rounded border px-4 py-2;
 }
 
 rk-alert.error,
