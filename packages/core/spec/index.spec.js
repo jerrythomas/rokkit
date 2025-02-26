@@ -41,7 +41,8 @@ describe('@rokkit/core', () => {
 			'FieldMapper',
 			'getItemAtIndex',
 			'getIndexForItem',
-			'createEmitter'
+			'createEmitter',
+			'getLineTypes'
 		])
 	})
 })
