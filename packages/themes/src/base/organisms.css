@@ -1,3 +1,21 @@
+/* default structure */
+/*  List styles */
+rk-list {
+  @apply flex w-full flex-shrink-0 select-none flex-col;
+}
+/* Accordion */
+rk-accordion {
+  @apply flex w-full select-none flex-col;
+}
+/* Node Styles */
+rk-node {
+  @apply flex min-h-5 cursor-pointer select-none flex-col;
+}
+/* Nested List Styles */
+rk-nested-list {
+  @apply flex w-full flex-col;
+}
+
 rk-input-select,
 rk-drop-down {
   @apply cursor-pointer overflow-visible;
