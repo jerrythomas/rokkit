@@ -10,7 +10,7 @@ describe('Accordion', () => {
 	]
 	beforeEach(() => cleanup())
 
-	it('should render accordion list', () => {
+	it('should render accordion', () => {
 		const props = $state({ items })
 		const { container } = render(Accordion, props)
 		expect(container).toBeTruthy()
