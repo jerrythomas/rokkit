@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TableCell > should render a table cell 1`] = `
+<div>
+  <td
+    class="custom-class"
+  >
+    <rk-cell>
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell 2`] = `
+<div>
+  <td
+    class="another-class"
+  >
+    <rk-cell>
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;

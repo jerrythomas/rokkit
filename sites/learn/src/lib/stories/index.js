@@ -7,7 +7,7 @@ const samples = import.meta.glob('./**/src/*', {
 })
 
 const config = {
-	root: import.meta.url.replace(/\/[^/]+$/, ''),
+	root: './',
 	previewFilename: 'App.svelte',
 	readmeFilename: 'README.md',
 	metadataFilename: 'meta.json',
