@@ -1,0 +1,144 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
+<div>
+  <rk-crumbs
+    class="flex gap-1 "
+  >
+    <!---->
+    <!---->
+     
+    <rk-crumb>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Alpha
+      </p>
+      <!---->
+      <!---->
+    </rk-crumb>
+    <!---->
+    <span>
+      /
+      <!---->
+    </span>
+    <!---->
+     
+    <rk-crumb
+      class="is-selected"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Beta
+      </p>
+      <!---->
+      <!---->
+    </rk-crumb>
+    
+  </rk-crumbs>
+  
+</div>
+`;
+
+exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
+<div>
+  <rk-crumbs
+    class="flex gap-1 "
+  >
+    <!---->
+    <!---->
+     
+    <rk-crumb>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Alpha
+      </p>
+      <!---->
+      <!---->
+    </rk-crumb>
+    <!---->
+    <span>
+      &gt;
+      <!---->
+    </span>
+    <!---->
+     
+    <rk-crumb
+      class="is-selected"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Beta
+      </p>
+      <!---->
+      <!---->
+    </rk-crumb>
+    
+  </rk-crumbs>
+  
+</div>
+`;
+
+exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] = `
+<div>
+  <rk-crumbs
+    class="flex gap-1 "
+  >
+    <!---->
+    <!---->
+     
+    <rk-crumb>
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Alpha
+      </p>
+      <!---->
+      <!---->
+    </rk-crumb>
+    <!---->
+    <span>
+      <icon
+        class="icon"
+      />
+      <!---->
+    </span>
+    <!---->
+     
+    <rk-crumb
+      class="is-selected"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Beta
+      </p>
+      <!---->
+      <!---->
+    </rk-crumb>
+    
+  </rk-crumbs>
+  
+</div>
+`;

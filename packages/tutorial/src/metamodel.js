@@ -12,7 +12,6 @@ function getContentBasedOnName(item, options) {
 	if (item.name === options.metadataFilename) {
 		return { ...item.content }
 	}
-
 	if (item.name === options.readmeFilename) {
 		return { ...item.content.metadata, readme: item.content.default }
 	}
@@ -52,6 +51,7 @@ function handleItemWithPath(data, item, key) {
  */
 function handleItemWithoutPath(data, item, key) {
 	const route = item.parts.map((part) => part.key).join('/')
+
 	data[key] = {
 		...data[key],
 		...(item.readme ? { route } : {}),
@@ -190,7 +190,6 @@ export function convertFilesToFolderHierarchy(tutorials, options) {
  */
 export function generateRouteEntries(input) {
 	const output = []
-
 	Object.values(input).forEach((value) => {
 		if (value.route) {
 			output.push(value.route)

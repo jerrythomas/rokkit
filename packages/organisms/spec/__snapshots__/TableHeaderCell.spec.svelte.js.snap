@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TableHeaderCell > should render a table header 1`] = `
+<div>
+  <!---->
+  <th
+    aria-label="name"
+    class="custom-class"
+    data-sortable="false"
+    scope="col"
+  >
+    <rk-cell>
+      name 
+      <!---->
+    </rk-cell>
+  </th>
+  
+  
+</div>
+`;
+
+exports[`TableHeaderCell > should render a table header 2`] = `
+<div>
+  <!---->
+  <th
+    aria-label="name"
+    class="another-class"
+    data-sortable="false"
+    scope="col"
+  >
+    <rk-cell>
+      name 
+      <!---->
+    </rk-cell>
+  </th>
+  
+  
+</div>
+`;

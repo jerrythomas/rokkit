@@ -119,12 +119,14 @@ describe('utils', () => {
 	})
 
 	describe('isRTL', () => {
+		beforeEach(() => {
+			document.dir = 'ltr'
+		})
 		it('should return true if the document direction is rtl', () => {
 			document.dir = 'rtl'
 			expect(isRTL()).toBe(true)
 		})
 		it('should return false if the document direction is ltr', () => {
-			document.dir = 'ltr'
 			expect(isRTL()).toBe(false)
 		})
 	})

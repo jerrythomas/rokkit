@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tabs > should render simple list 1`] = `
+<div>
+  <rk-tabs
+    class="flex w-full custom-class"
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <!---->
+  </rk-tabs>
+  
+</div>
+`;
+
+exports[`Tabs > should render simple list 2`] = `
+<div>
+  <rk-tabs
+    class="flex w-full another-class"
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <!---->
+  </rk-tabs>
+  
+</div>
+`;

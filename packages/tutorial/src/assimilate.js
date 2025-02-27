@@ -197,6 +197,7 @@ export function assimilateTutorials(modules, sources, options) {
 		find: async (route, labs = false) => {
 			await ensureLoaded()
 			const flat = flattenNestedList(filterMenuItems(tutorials, labs))
+
 			return findTutorial(flat, route)
 		},
 		entries: async () => {

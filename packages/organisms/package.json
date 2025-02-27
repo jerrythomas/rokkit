@@ -22,6 +22,7 @@
   "exports": {
     "./src": "./src",
     "./package.json": "./package.json",
+    "./utils": "./src/lib/index.js",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./src/index.js"

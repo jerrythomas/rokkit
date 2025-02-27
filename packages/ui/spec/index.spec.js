@@ -35,6 +35,7 @@ describe('components', () => {
 			'ListItems',
 			'Node',
 			'Summary',
+			'BreadCrumbs',
 			'Toggle',
 			'Switch',
 			'List',
