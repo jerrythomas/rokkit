@@ -5,6 +5,13 @@ import * as components from '../src'
 
 describe('components', () => {
 	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual(['Toggle', 'Switch', 'List', 'Accordion'])
+		expect(Object.keys(components)).toEqual([
+			'Toggle',
+			'Switch',
+			'List',
+			'Accordion',
+			'NestedList',
+			'Tree'
+		])
 	})
 })

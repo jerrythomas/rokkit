@@ -38,7 +38,9 @@ describe('components', () => {
 			'Toggle',
 			'Switch',
 			'List',
-			'Accordion'
+			'Accordion',
+			'NestedList',
+			'Tree'
 		])
 	})
 })
