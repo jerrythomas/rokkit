@@ -1,0 +1,1503 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Range.svelte > should handle class changes 1`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 test"
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="0,0"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 0px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="0"
+        aria-valuenow="0"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 0px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 10;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          0
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          10
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          30
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          50
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          60
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          70
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          80
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          90
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          100
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;
+
+exports[`Range.svelte > should handle class changes 2`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 test2"
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="0,0"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 0px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="0"
+        aria-valuenow="0"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 0px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 10;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          0
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          10
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          30
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          50
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          60
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          70
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          80
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          90
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          100
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;
+
+exports[`Range.svelte > should handle value changes 1`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 "
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="0,30"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 0px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="0"
+        aria-valuenow="30"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 0px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 10;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          0
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          10
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          30
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          50
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          60
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          70
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          80
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          90
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          100
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;
+
+exports[`Range.svelte > should handle value changes 2`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 "
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="0,30"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 0px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="0"
+        aria-valuenow="30"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 0px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 10;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          0
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          10
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          30
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          50
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          60
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          70
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          80
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          90
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          100
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;
+
+exports[`Range.svelte > should render 1`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 "
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="0,0"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 0px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="0"
+        aria-valuenow="0"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 0px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 10;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          0
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          10
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          30
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          50
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          60
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          70
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          80
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          90
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          100
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;
+
+exports[`Range.svelte > should render with min, max 1`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 "
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="20,20"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 20px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="20"
+        aria-valuenow="20"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 20px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 10;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          22
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          24
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          26
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          28
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          30
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          32
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          34
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          36
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          38
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;
+
+exports[`Range.svelte > should render with ticks 1`] = `
+<div>
+  <!---->
+  <rk-input-range
+    class="relative grid h-10 grid-rows-2 "
+  >
+    <input
+      name="range"
+      type="hidden"
+      value="0,0"
+    />
+     
+    <rk-range-track
+      class="relative grid svelte-n6pm5g"
+    >
+      <rk-range-track-bar
+        class="relative col-start-2 box-border"
+      />
+       
+      <rk-selected-bar
+        class="absolute col-start-2"
+        style="left: 0px; width: 0px;"
+      />
+       
+      <!---->
+       
+      <rk-thumb
+        aria-valuemax="0"
+        aria-valuemin="0"
+        aria-valuenow="0"
+        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        role="slider"
+        style="left: 0px;"
+        tabindex="0"
+      />
+      <!---->
+    </rk-range-track>
+     
+    <rk-ticks
+      class="svelte-n6pm5g"
+      style="--count: 5;"
+    >
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          0
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          20
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          40
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          60
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          80
+        </p>
+      </rk-tick>
+      <rk-tick
+        aria-selected="false"
+        class="grid cursor-pointer select-none grid-cols-2"
+        role="option"
+        tabindex="0"
+      >
+        <rk-tick-bar
+          class="h-5px col-start-2 border-l"
+        />
+         
+        <p
+          class="col-span-2 flex justify-center"
+        >
+          100
+        </p>
+      </rk-tick>
+      
+    </rk-ticks>
+  </rk-input-range>
+  
+  
+</div>
+`;

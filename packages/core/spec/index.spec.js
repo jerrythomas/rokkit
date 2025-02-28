@@ -45,7 +45,8 @@ describe('@rokkit/core', () => {
 			'createEmitter',
 			'getLineTypes',
 			'weekdays',
-			'getCalendarDays'
+			'getCalendarDays',
+			'generateTicks'
 		])
 	})
 })

@@ -20,8 +20,10 @@ exports[`NestedList > should render nested list 1`] = `
         <!---->
         <rk-icon
           aria-label="expand"
-          class="small w-4"
+          class="w-4 small"
+          data-state="closed"
           role="img"
+          tabindex="-1"
         >
           <i
             aria-hidden="true"
@@ -187,8 +189,10 @@ exports[`NestedList > should render nested list 1`] = `
         <!---->
         <rk-icon
           aria-label="expand"
-          class="small w-4"
+          class="w-4 small"
+          data-state="closed"
           role="img"
+          tabindex="-1"
         >
           <i
             aria-hidden="true"
@@ -249,8 +253,10 @@ exports[`NestedList > should render nested list 1`] = `
             <!---->
             <rk-icon
               aria-label="expand"
-              class="small w-4"
+              class="w-4 small"
+              data-state="closed"
               role="img"
+              tabindex="-1"
             >
               <i
                 aria-hidden="true"
@@ -445,8 +451,10 @@ exports[`NestedList > should render nested list 2`] = `
         <!---->
         <rk-icon
           aria-label="expand"
-          class="small w-4"
+          class="w-4 small"
+          data-state="closed"
           role="img"
+          tabindex="-1"
         >
           <i
             aria-hidden="true"
@@ -612,8 +620,10 @@ exports[`NestedList > should render nested list 2`] = `
         <!---->
         <rk-icon
           aria-label="expand"
-          class="small w-4"
+          class="w-4 small"
+          data-state="closed"
           role="img"
+          tabindex="-1"
         >
           <i
             aria-hidden="true"
@@ -674,8 +684,10 @@ exports[`NestedList > should render nested list 2`] = `
             <!---->
             <rk-icon
               aria-label="expand"
-              class="small w-4"
+              class="w-4 small"
+              data-state="closed"
               role="img"
+              tabindex="-1"
             >
               <i
                 aria-hidden="true"
