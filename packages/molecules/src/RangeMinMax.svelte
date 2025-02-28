@@ -1,5 +1,5 @@
 <script>
-	import { Thumb, RangeTick } from '@rokkit/atoms'
+	import { RangeSlider, RangeTick } from '@rokkit/atoms'
 	import { generateTicks } from '@rokkit/core'
 	import { scaleLinear } from 'd3-scale'
 
@@ -79,9 +79,23 @@
 				style:width="{upper - lower}px"
 			></rk-selected-bar>
 			{#if !single}
-				<Thumb bind:cx={lower} bind:value={value[0]} {steps} {scale} min={limits[0]} max={upper} />
+				<RangeSlider
+					bind:cx={lower}
+					bind:value={value[0]}
+					{steps}
+					{scale}
+					min={limits[0]}
+					max={upper}
+				/>
 			{/if}
-			<Thumb bind:cx={upper} bind:value={value[1]} {steps} {scale} min={lower} max={limits[1]} />
+			<RangeSlider
+				bind:cx={upper}
+				bind:value={value[1]}
+				{steps}
+				{scale}
+				min={lower}
+				max={limits[1]}
+			/>
 		</rk-range-track>
 
 		<rk-ticks style:--count={tickItems.length - 1}>
