@@ -53,6 +53,7 @@ exports[`Link > should render with custom mapping 1`] = `
     <rk-icon
       class=""
       role="img"
+      tabindex="-1"
     >
       <i
         aria-hidden="true"
@@ -79,6 +80,7 @@ exports[`Link > should render with custom mapping 2`] = `
       aria-label="World"
       class=""
       role="img"
+      tabindex="-1"
     >
       <i
         aria-hidden="true"
@@ -109,6 +111,7 @@ exports[`Link > should render with custom mapping 3`] = `
       aria-label="World"
       class=""
       role="img"
+      tabindex="-1"
     >
       <i
         aria-hidden="true"
@@ -160,6 +163,7 @@ exports[`Link > should render with icon 1`] = `
       aria-label="Hello"
       class=""
       role="img"
+      tabindex="-1"
     >
       <i
         aria-hidden="true"
