@@ -4,6 +4,16 @@ import * as components from '../src/index.js'
 
 describe('components', () => {
 	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual(['ListItems', 'Node', 'Summary', 'BreadCrumbs'])
+		expect(Object.keys(components)).toEqual([
+			'ListItems',
+			'Node',
+			'Summary',
+			'BreadCrumbs',
+			'Rating',
+			'RangeMinMax',
+			'Range',
+			'RadioGroup',
+			'Checkbox'
+		])
 	})
 })

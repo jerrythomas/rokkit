@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Checkbox.svelte > should apply custom class names 1`] = `
+<div>
+  <rk-checkbox
+    aria-checked="unchecked"
+    aria-disabled="false"
+    class="checkbox flex cursor-pointer select-none items-center leading-loose custom-class"
+    role="checkbox"
+    tabindex="0"
+  >
+    <input
+      hidden=""
+      name="test"
+      type="checkbox"
+    />
+     
+    <icon
+      class="checkbox-unchecked"
+    />
+  </rk-checkbox>
+  
+</div>
+`;
+
+exports[`Checkbox.svelte > should render checkbox 1`] = `
+<div>
+  <rk-checkbox
+    aria-checked="unchecked"
+    aria-disabled="false"
+    class="checkbox flex cursor-pointer select-none items-center leading-loose "
+    role="checkbox"
+    tabindex="0"
+  >
+    <input
+      hidden=""
+      name="test"
+      type="checkbox"
+    />
+     
+    <icon
+      class="checkbox-unchecked"
+    />
+  </rk-checkbox>
+  
+</div>
+`;
