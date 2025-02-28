@@ -1,13 +1,12 @@
 <script>
 	import { getContext } from 'svelte'
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
-	import { page } from '$app/stores'
-	// import { media } from '$lib'
+	import { page } from '$app/state'
 	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
-	const site = getContext('site')
-	const media = getContext('media')
+	const site = getContext('site')()
+	const media = getContext('media')()
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -23,13 +22,14 @@
 	]
 
 	let loading = $state(false)
-	const handleCodeVisibility = ({ detail }) => {
-		site.update((current) => ({ ...current, code: detail.value }))
+	const handleCodeVisibility = (detail) => {
+		console.log('handleCodeVisibility', detail)
+		site.code = detail.value
 	}
 	beforeNavigate(() => (loading = true))
 	afterNavigate(() => (loading = false))
 
-	let showCodeToggle = $derived(!media.small.current && $page.url.pathname !== '/')
+	let showCodeToggle = $derived(!media.small.current && page.url.pathname !== '/')
 </script>
 
 <header
@@ -60,9 +60,9 @@
 				>
 			{/each}
 		</nav>
-		<!-- {#if showCodeToggle}
-			<Toggle options={codeOptions} on:change={handleCodeVisibility} />
-		{/if} -->
+		{#if showCodeToggle}
+			<Toggle options={codeOptions} onchange={handleCodeVisibility} />
+		{/if}
 		<ThemeSwitcher />
 		<a
 			href="https://github.com/jerrythomas/rokkit"

@@ -5,7 +5,6 @@
 	import { i18n } from '$lib/i18n'
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit'
 	import { setContext } from 'svelte'
-	import { writable } from 'svelte/store'
 	import { page } from '$app/state'
 	import { media } from '$lib/media.js'
 	import Header from './Header.svelte'
@@ -18,23 +17,24 @@
 	/** @type {Props} */
 	let { data, children } = $props()
 
-	let site = writable({
+	let site = $state({
 		sidebar: media.large.current,
 		title: data.app.name,
 		description: data.app.about,
-		code: 'hidden'
+		code: 'hidden',
+		dir: 'ltr'
 	})
 
-	setContext('site', site)
-	setContext('media', media)
+	setContext('site', () => site)
+	setContext('media', () => media)
 
 	let headerStyle = $derived(page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10')
 </script>
 
 <svelte:body />
 <svelte:head>
-	<title>{$site.title}</title>
-	<meta name="description" content={$site.description} />
+	<title>{site.title}</title>
+	<meta name="description" content={site.description} />
 </svelte:head>
 <ParaglideJS {i18n}>
 	<Header version={data.app.version} class={headerStyle}></Header>

@@ -1,6 +1,4 @@
 <script>
-	import { run } from 'svelte/legacy'
-
 	import { getContext } from 'svelte'
 	import { Icon } from '@rokkit/ui'
 	/**
@@ -10,11 +8,11 @@
 
 	/** @type {Props} */
 	let { children } = $props()
-	let site = getContext('site')
+	let site = getContext('site')()
 	/**
 	 * @type {HTMLElement}
 	 */
-	let sidebar = $state()
+	let sidebar = $state(null)
 	let search = $state('')
 
 	function toggle(site) {
@@ -26,22 +24,22 @@
 		}
 		sidebar.classList.remove('duration-200')
 	}
-	run(() => {
-		if (sidebar) toggle($site)
+	$effect(() => {
+		if (sidebar) toggle(site)
 	})
 </script>
 
 <aside
 	bind:this={sidebar}
 	class="absolute left-0 top-0 flex w-full flex-shrink-0 -translate-x-full flex-col md:w-1/2 lg:w-80"
-	class:lg:relative={$site.sidebar}
+	class:lg:relative={site.sidebar}
 >
 	<nav class="border-b-neutral-inset flex h-10 w-full items-center gap-2 border-b">
 		<Icon
 			name="i-rokkit:action-cross"
 			role="button"
 			class="border-r-neutral-inset rounded-none border-r"
-			on:click={() => ($site.sidebar = false)}
+			on:click={() => (site.sidebar = false)}
 		/>
 		<input type="search" placeholder="search" bind:value={search} class="embedded" />
 	</nav>

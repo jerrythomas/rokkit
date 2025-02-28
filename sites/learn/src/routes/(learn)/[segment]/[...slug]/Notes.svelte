@@ -1,30 +1,38 @@
 <script>
 	import { Icon, BreadCrumbs } from '@rokkit/ui'
 	import { getContext } from 'svelte'
-	import { goto } from '$app/navigation'
-	// import { page } from '$app/stores'
+	import { goto, invalidate } from '$app/navigation'
+	import { page } from '$app/state'
 	const story = getContext('tutorial')()
-	// const site = getContext('site')
+	const site = getContext('site')()
 
-	function gotoPage(route) {
-		// if (route) goto('/' + $page.params.segment + '/' + route)
+	/**
+	 *
+	 * @param {string} route
+	 */
+	async function gotoPage(route) {
+		if (route) {
+			const location = '/' + page.params.segment + '/' + route
+			await invalidate((url) => url.pathname !== location)
+			await goto(location)
+		}
 	}
-	// function toggle() {
-	// 	$site.sidebar = !$site.sidebar
-	// }
+	function toggle() {
+		site.sidebar = !site.sidebar
+	}
 </script>
 
 <aside class="border-r-neutral-inset flex h-full w-full flex-col border-r">
 	{#if story}
 		<nav class="border-b-neutral-inset box-border flex h-10 items-center gap-1 border-b text-sm">
-			<!-- {#if !site.sidebar}
+			{#if !site.sidebar}
 				<Icon
 					name="i-rokkit:menu"
 					class="border-r-neutral-subtle border-r"
 					role="button"
 					on:click={toggle}
 				/>
-			{/if} -->
+			{/if}
 			<Icon
 				name="i-rokkit:arrow-left"
 				disabled={!story.previous}
@@ -36,7 +44,7 @@
 				name="i-rokkit:arrow-right"
 				disabled={!story.next}
 				role="button"
-				onclick={() => gotoPage($story.next)}
+				onclick={() => gotoPage(story.next)}
 			/>
 		</nav>
 
