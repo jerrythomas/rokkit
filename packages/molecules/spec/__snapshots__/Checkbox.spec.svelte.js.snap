@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Checkbox.svelte > should apply custom class names 1`] = `
+exports[`CheckBox > should apply custom class names 1`] = `
 <div>
   <rk-checkbox
     aria-checked="unchecked"
@@ -23,7 +23,7 @@ exports[`Checkbox.svelte > should apply custom class names 1`] = `
 </div>
 `;
 
-exports[`Checkbox.svelte > should render checkbox 1`] = `
+exports[`CheckBox > should render checkbox 1`] = `
 <div>
   <rk-checkbox
     aria-checked="unchecked"

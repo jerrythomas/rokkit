@@ -40,7 +40,7 @@ describe('components', () => {
 			'RangeMinMax',
 			'Range',
 			'RadioGroup',
-			'Checkbox',
+			'CheckBox',
 			'Calendar',
 			'ValidationReport',
 			'Toggle',
