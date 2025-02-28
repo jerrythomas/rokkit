@@ -49,7 +49,7 @@
 	<div class="flex flex-row items-center">
 		{#each types as type}
 			{#if type === 'icon'}
-				<Icon name={state.icon} label={state.label} state={stateName} class="small w-4" />
+				<Icon name={state.icon} label={state.label} state={stateName} class="w-4" size="small" />
 			{:else}
 				<Connector {type} />
 			{/if}

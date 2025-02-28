@@ -1,0 +1,183 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ValidationReport.svelte > should render validation report 1`] = `
+<div>
+  <status-report
+    class="flex flex-col "
+  >
+    <message
+      class="flex gap-2 pass"
+    >
+      <rk-icon
+        aria-label="badge-pass"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-pass"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check passed
+      </p>
+    </message>
+    <message
+      class="flex gap-2 fail"
+    >
+      <rk-icon
+        aria-label="badge-fail"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-fail"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check failed
+      </p>
+    </message>
+    <message
+      class="flex gap-2 unknown"
+    >
+      <rk-icon
+        aria-label="badge-unknown"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-unknown"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check is unknown
+      </p>
+    </message>
+    <message
+      class="flex gap-2 warn"
+    >
+      <rk-icon
+        aria-label="badge-warn"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-warn"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check is warning
+      </p>
+    </message>
+    
+  </status-report>
+  
+</div>
+`;
+
+exports[`ValidationReport.svelte > should render validation report with custom icons 1`] = `
+<div>
+  <status-report
+    class="flex flex-col "
+  >
+    <message
+      class="flex gap-2 pass"
+    >
+      <rk-icon
+        aria-label="pass"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="pass"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check passed
+      </p>
+    </message>
+    <message
+      class="flex gap-2 fail"
+    >
+      <rk-icon
+        aria-label="fail"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="fail"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check failed
+      </p>
+    </message>
+    <message
+      class="flex gap-2 unknown"
+    >
+      <rk-icon
+        aria-label="unknown"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="unknown"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check is unknown
+      </p>
+    </message>
+    <message
+      class="flex gap-2 warn"
+    >
+      <rk-icon
+        aria-label="warn"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="warn"
+        />
+      </rk-icon>
+      <!---->
+       
+      <p>
+        This check is warning
+      </p>
+    </message>
+    
+  </status-report>
+  
+</div>
+`;
