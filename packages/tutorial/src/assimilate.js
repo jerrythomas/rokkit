@@ -75,16 +75,19 @@ function findNextIndex(flat, index) {
  * @returns {Array} - The bread crumbs for the tutorial.
  */
 function generateCrumbs(flat, index) {
-	let crumbs = [flat[index].title]
-	let level = flat[index].level
+	const crumbs = []
+	let currentLevel = flat[index].level
 
-	while (index >= 0 && level > 0) {
-		while (index >= 0 && flat[index].level >= level) index--
-		if (index >= 0) {
-			crumbs = [flat[index].title, ...crumbs]
-			level = flat[index].level
+	// Work backwards through the array
+	for (let i = index; i >= 0 && currentLevel > 0; i--) {
+		if (flat[i].level < currentLevel) {
+			crumbs.unshift(flat[i].title)
+			currentLevel = flat[i].level
 		}
 	}
+
+	// Add the current item's title
+	crumbs.push(flat[index].title)
 
 	return crumbs
 }

@@ -99,7 +99,7 @@ describe('RangeMinMax.svelte', () => {
 			flushSync()
 			expect(range.querySelectorAll(SLIDER_ELEMENT).length).toEqual(2)
 		})
-		it('should handle value changes', async () => {
+		it('should handle value changes', () => {
 			const props = $state({
 				name: 'range',
 				value: [30]

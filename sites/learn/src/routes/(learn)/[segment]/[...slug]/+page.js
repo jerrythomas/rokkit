@@ -1,6 +1,6 @@
 export const prerender = 'auto'
 
-import { error } from '@sveltejs/kit'
+// import { error } from '@sveltejs/kit'
 import { guide } from '$lib/stories'
 
 /** @type {import('./$types').PageLoad} */
