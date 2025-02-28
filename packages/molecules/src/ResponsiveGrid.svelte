@@ -1,6 +1,7 @@
 <script>
-	import { defaultFields } from '@rokkit/core'
-	import { swipeable, navigable } from '@rokkit/actions'
+	// To Do add navigable
+	import { defaultMapping } from './constants'
+	import { swipeable } from '@rokkit/actions'
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
 	import { equals } from 'ramda'
@@ -8,7 +9,7 @@
 	 * @typedef {Object} Props
 	 * @property {string} [class]
 	 * @property {any} items
-	 * @property {any} [fields]
+	 * @property {import('@rokkit/core').FieldMapper} [mapping]
 	 * @property {boolean} [small]
 	 * @property {number} [duration]
 	 * @property {any} [easing]
@@ -19,7 +20,7 @@
 	let {
 		class: className = 'three-col',
 		items,
-		fields = $bindable({}),
+		mapping = defaultMapping,
 		small = true,
 		duration = 400,
 		easing = cubicInOut,
@@ -45,7 +46,6 @@
 	}
 
 	$effect.pre(() => {
-		fields = { ...defaultFields, ...fields }
 		activeIndex = activeIndexFromPage(value)
 		// direction = Math.sign(activeIndex - previous)
 		previous = activeIndex
@@ -53,11 +53,10 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<container
+<rk-container
 	use:swipeable={{ enabled: small }}
 	onswipeLeft={handleNext}
 	onswipeRight={handlePrevious}
-	use:navigable={{ enabled: small }}
 	onprevious={handlePrevious}
 	onnext={handleNext}
 	tabindex={0}
@@ -66,11 +65,10 @@
 >
 	{#each items as item, index}
 		{@const segmentClass = 'col-' + (index + 1)}
-		{@const props = item[fields.props]}
-		{@const component = item[fields.component]}
+		{@const props = mapping.getAttribute(item, 'props')}
+		{@const Template = item[mapping.fields.component]}
 		{#if small && equals(index, activeIndex)}
-			{@const SvelteComponent = component}
-			<segment
+			<rk-segment
 				class="absolute h-full w-full {segmentClass}"
 				out:fade={{
 					x: -1 * direction * width,
@@ -79,13 +77,12 @@
 				}}
 				in:fly={{ x: direction * width, duration, easing }}
 			>
-				<SvelteComponent {...props} />
-			</segment>
+				<Template {...props} />
+			</rk-segment>
 		{:else if !small}
-			{@const SvelteComponent_1 = component}
-			<segment class={segmentClass}>
-				<SvelteComponent_1 {...props} />
-			</segment>
+			<rk-segment class={segmentClass}>
+				<Template {...props} />
+			</rk-segment>
 		{/if}
 	{/each}
-</container>
+</rk-container>

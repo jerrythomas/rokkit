@@ -10,14 +10,14 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', items, icons = defaultStateIcons.badge } = $props()
+	let { class: classes = '', items, icons = defaultStateIcons.badge } = $props()
 </script>
 
-<status-report class="flex flex-col {className}">
+<rk-status-report class={classes}>
 	{#each items as { text, status }}
-		<message class="flex gap-2 {status}">
+		<rk-message class={status}>
 			<Icon name={icons[status]} />
 			<p>{text}</p>
-		</message>
+		</rk-message>
 	{/each}
-</status-report>
+</rk-status-report>

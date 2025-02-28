@@ -14,7 +14,7 @@
 
 	/** @type {Props} */
 	let {
-		class: className = '',
+		class: classes = '',
 		id = null,
 		name,
 		value = $bindable(false),
@@ -41,7 +41,7 @@
 
 <rk-checkbox
 	{id}
-	class="checkbox flex cursor-pointer select-none items-center leading-loose {className}"
+	class={classes}
 	class:disabled={readOnly}
 	role="checkbox"
 	aria-checked={state}

@@ -2,17 +2,17 @@
 
 exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden three-col"
     tabindex="0"
   >
     <!---->
-    <segment
+    <rk-segment
       class="absolute h-full w-full col-1"
     >
       New Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     <!---->
     <!---->
@@ -23,108 +23,108 @@ exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;
 
 exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden test-class"
     tabindex="0"
   >
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-2"
     >
        Content for B
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-3"
     >
        Content for C
       <!---->
-    </segment>
+    </rk-segment>
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;
 
 exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden three-col"
     tabindex="0"
   >
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-2"
     >
        Content for B
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-3"
     >
        Content for C
       <!---->
-    </segment>
+    </rk-segment>
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;
 
 exports[`ResponsiveGrid.svelte > should render a responsive grid for small devices 1`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden three-col"
     tabindex="0"
   >
     <!---->
-    <segment
+    <rk-segment
       class="absolute h-full w-full col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     <!---->
     <!---->
@@ -135,24 +135,24 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid for small devic
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;
 
 exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 1`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden three-col"
     tabindex="0"
   >
     <!---->
-    <segment
+    <rk-segment
       class="absolute h-full w-full col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     <!---->
     <!---->
@@ -163,103 +163,103 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;
 
 exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 2`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden three-col"
     tabindex="0"
   >
     <!---->
-    <segment
+    <rk-segment
       class="absolute h-full w-full col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     <!---->
-    <segment
+    <rk-segment
       class="col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-2"
     >
        Content for B
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-3"
     >
        Content for C
       <!---->
-    </segment>
+    </rk-segment>
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;
 
 exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 3`] = `
 <div>
-  <container
+  <rk-container
     class="overflow-hidden three-col"
     tabindex="0"
   >
     <!---->
-    <segment
+    <rk-segment
       class="absolute h-full w-full col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     <!---->
-    <segment
+    <rk-segment
       class="col-1"
     >
        Content for A
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-2"
     >
        Content for B
       <!---->
-    </segment>
+    </rk-segment>
     
     
     <!---->
     <!---->
-    <segment
+    <rk-segment
       class="col-3"
     >
        Content for C
       <!---->
-    </segment>
+    </rk-segment>
     
     
     
-  </container>
+  </rk-container>
   
 </div>
 `;

@@ -11,10 +11,10 @@
 	 */
 
 	/** @type {Props} */
-	let { class: className = '', items = [], separator = '/', mapping = defaultMapping } = $props()
+	let { class: classes = '', items = [], separator = '/', mapping = defaultMapping } = $props()
 </script>
 
-<rk-crumbs class="flex gap-1 {className}">
+<rk-crumbs class={classes}>
 	{#each items as item, index}
 		{@const Component = mapping.getComponent(item)}
 		{#if index > 0}

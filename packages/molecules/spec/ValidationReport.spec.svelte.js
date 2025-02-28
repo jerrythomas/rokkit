@@ -4,6 +4,7 @@ import { tick } from 'svelte'
 import ValidationReport from '../src/ValidationReport.svelte'
 
 describe('ValidationReport.svelte', () => {
+	const ROOT_ELEMENT = 'rk-status-report'
 	const items = [
 		{
 			text: 'This check passed',
@@ -47,7 +48,7 @@ describe('ValidationReport.svelte', () => {
 			class: 'custom'
 		})
 		const { container } = render(ValidationReport, { props })
-		const classList = container.querySelector('status-report').classList
+		const classList = container.querySelector(ROOT_ELEMENT).classList
 		expect(classList.contains('custom')).toBeTruthy()
 		props.class = 'other'
 

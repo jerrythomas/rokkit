@@ -19,6 +19,21 @@ rk-nested-list {
 rk-tree {
   @apply flex h-full w-full flex-shrink-0 flex-col scroll-auto;
 }
+rk-status-report {
+  @apply flex flex-col;
+}
+rk-status-report > rk-message {
+  @apply flex gap-2;
+}
+rk-input-range {
+  @apply relative grid h-10 grid-rows-2;
+}
+rk-checkbox {
+  @apply flex cursor-pointer select-none items-center leading-loose;
+}
+rk-crumbs {
+  @apply flex gap-1;
+}
 
 rk-input-select,
 rk-drop-down {

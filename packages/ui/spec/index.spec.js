@@ -41,6 +41,8 @@ describe('components', () => {
 			'Range',
 			'RadioGroup',
 			'Checkbox',
+			'Calendar',
+			'ValidationReport',
 			'Toggle',
 			'Switch',
 			'List',

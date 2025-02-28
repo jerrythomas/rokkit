@@ -7,6 +7,7 @@ import { tick } from 'svelte'
 import ResponsiveGrid from '../src/ResponsiveGrid.svelte'
 
 describe('ResponsiveGrid.svelte', () => {
+	const ROOT_ELEMENT = 'rk-container'
 	const items = [
 		{ component: MockItem, props: { value: ' Content for A' } },
 		{ component: MockItem, props: { value: ' Content for B' } },
@@ -44,23 +45,23 @@ describe('ResponsiveGrid.svelte', () => {
 			value: items[0]
 		})
 		const { container } = render(ResponsiveGrid, { props })
-		const grid = container.querySelector('container')
+		const grid = container.querySelector(ROOT_ELEMENT)
 		await fireEvent.keyDown(grid, { key: 'ArrowRight' })
 		await tick()
 		expect(container).toMatchSnapshot()
 		await fireEvent.keyDown(grid, { key: 'ArrowLeft' })
 		await tick()
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		expect(props.value).toEqual(items[0])
 		props.small = false
 		await tick()
 		await fireEvent.keyDown(grid, { key: 'ArrowRight' })
 		await tick()
 		expect(container).toMatchSnapshot()
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		expect(props.value).toEqual(items[0])
 		await fireEvent.keyDown(grid, { key: 'ArrowLeft' })
 		await tick()
 		expect(container).toMatchSnapshot()
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		expect(props.value).toEqual(items[0])
 	})
 	it('should switch columns on swipe', async () => {
 		const props = $state({
@@ -68,36 +69,33 @@ describe('ResponsiveGrid.svelte', () => {
 			value: items[0]
 		})
 		const { container } = render(ResponsiveGrid, { props })
-		let grid = container.querySelector('container')
+		let grid = container.querySelector(ROOT_ELEMENT)
 		simulateTouchSwipe(grid, { x: -100, y: 10 })
 		await tick()
-		// expect(getPropertyValue(component, 'value')).toBe(items[1])
+		expect(props.value).toEqual(items[1])
 		simulateTouchSwipe(grid, { x: 100, y: 10 })
 		await tick()
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		expect(props.value).toEqual(items[0])
 
 		props.small = false
 
 		await tick()
-		grid = container.querySelector('container')
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		grid = container.querySelector(ROOT_ELEMENT)
+		expect(props.value).toEqual(items[0])
 		simulateTouchSwipe(grid, { x: -100, y: 10 })
 		await tick()
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		expect(props.value).toEqual(items[1])
 		simulateTouchSwipe(grid, { x: 100, y: 10 })
 		await tick()
-		// expect(getPropertyValue(component, 'value')).toBe(items[0])
+		expect(props.value).toEqual(items[0])
 	})
 
 	it('should handle prop updates', async () => {
 		const props = $state({ items })
 		const { container } = render(ResponsiveGrid, { props })
 		props.items[0].props.value = 'New Content for A'
-		// const grid = container.querySelector('container')
-		// setProperties(component, { items, class: 'test-class' })
 		await tick()
 		expect(container).toMatchSnapshot()
-		// expect(Array.from(grid.classList)).toContain('test-class')
 	})
 
 	it('should handle prop updates for large', async () => {
@@ -107,7 +105,7 @@ describe('ResponsiveGrid.svelte', () => {
 		})
 		const { container } = render(ResponsiveGrid, { props })
 		items[0].props.value = 'New Content for A'
-		const grid = container.querySelector('container')
+		const grid = container.querySelector(ROOT_ELEMENT)
 		props.class = 'test-class'
 
 		await tick()

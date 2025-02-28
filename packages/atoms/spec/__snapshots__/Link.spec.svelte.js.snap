@@ -50,15 +50,8 @@ exports[`Link > should render with custom mapping 1`] = `
     target="_blank"
   >
     <!---->
-    <rk-icon
-      class=""
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-      />
-    </rk-icon>
+    <!---->
+    
     <!---->
      
     <!---->
@@ -76,22 +69,10 @@ exports[`Link > should render with custom mapping 2`] = `
     target="_blank"
   >
     <!---->
-    <rk-icon
-      aria-label="World"
-      class=""
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="World"
-      />
-    </rk-icon>
+    <!---->
+    
     <!---->
      
-    <p>
-      World
-    </p>
     <!---->
     <!---->
   </a>
@@ -107,22 +88,10 @@ exports[`Link > should render with custom mapping 3`] = `
     target="_blank"
   >
     <!---->
-    <rk-icon
-      aria-label="World"
-      class=""
-      role="img"
-      tabindex="-1"
-    >
-      <i
-        aria-hidden="true"
-        class="World"
-      />
-    </rk-icon>
+    <!---->
+    
     <!---->
      
-    <p>
-      World
-    </p>
     <!---->
     <!---->
   </a>

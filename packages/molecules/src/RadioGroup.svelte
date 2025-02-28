@@ -1,7 +1,7 @@
 <script>
-	import { run } from 'svelte/legacy'
-
-	import { defaultFields, defaultStateIcons, getValue, getText } from '@rokkit/core'
+	import { equals } from 'ramda'
+	import { defaultStateIcons } from '@rokkit/core'
+	import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
@@ -9,7 +9,7 @@
 	 * @property {any} value
 	 * @property {any} name
 	 * @property {any} [id]
-	 * @property {any} [fields]
+	 * @property {import('@rokkit/core).FieldMapper} [mapping]
 	 * @property {any} [options]
 	 * @property {boolean} [readOnly]
 	 * @property {boolean} [textAfter]
@@ -22,16 +22,13 @@
 		value = $bindable(),
 		name,
 		id = null,
-		fields = $bindable(defaultFields),
+		mapping = $bindable(defaultMapping),
 		options = [],
 		readOnly = false,
 		textAfter = true,
 		stateIcons = defaultStateIcons.radio
 	} = $props()
 
-	run(() => {
-		fields = { ...defaultFields, ...fields }
-	})
 	let flexDirection = $derived(textAfter ? 'flex-row' : 'flex-row-reverse')
 </script>
 
@@ -41,9 +38,9 @@
 	class:disabled={readOnly}
 >
 	{#each options as item}
-		{@const itemValue = getValue(item, fields)}
-		{@const label = getText(item, fields)}
-		{@const state = itemValue === value ? 'on' : 'off'}
+		{@const itemValue = mapping.getValue(item)}
+		{@const label = mapping.getText(item)}
+		{@const state = equals(itemValue, value) ? 'on' : 'off'}
 
 		<label class="flex {flexDirection} items-center gap-2">
 			<input hidden type="radio" {name} bind:group={value} value={itemValue} {readOnly} />
