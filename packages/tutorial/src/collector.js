@@ -6,6 +6,15 @@ import { getSequenceAndKey, folderHierarchy } from './utils.js'
 import { getFiles } from './files.js'
 import { factory } from './metadata/index.js'
 
+const defaultOptions = {
+	rootFolder: './',
+	metadataFilename: 'meta.json',
+	readmeFilename: 'README.md',
+	partialFolder: 'pre',
+	solutionFolder: 'src',
+	tutorialMetadata: 'tutorials.json'
+}
+
 /**
  * Get metadata for the item based on its file type.
  * @param {string} rootFolder - The root folder containing the item.
@@ -14,21 +23,16 @@ import { factory } from './metadata/index.js'
  */
 export async function getMetadata(rootFolder, item) {
 	const filePath = path.join(rootFolder, item.path, item.name)
-
 	let metadata = {}
-	// if (item.type in extractors) {
+
 	try {
 		const reader = factory.create(filePath)
 		metadata = await reader.read()
-		// metadata = await extractors[item.type](filePath)
-		// console.log('metadata', metadata)
 	} catch (error) {
 		metadata = { error: error.message }
 		console.error(error.message)
 	}
-	// } else {
-	// 	metadata = { error: `Unknown file type [${item.type}]` }
-	// }
+
 	return metadata
 }
 
@@ -58,8 +62,6 @@ export async function getFolder(baseFolder, folder) {
 	if (!fs.existsSync(folderPath)) return null
 
 	const files = await readFolderContent(folderPath)
-
-	// if (files.length === 0) return null
 
 	const preview = path.join(folderPath, 'App.svelte')
 	return {
@@ -191,14 +193,7 @@ export function removeInvalidEntries(data, options) {
  * @returns {Promise<void>} - A promise that resolves when the tutorials have been collected and written to the metadata file.
  */
 export async function collectTutorials(options) {
-	const config = {
-		rootFolder: options.rootFolder,
-		metadataFilename: options.metadataFilename || 'meta.json',
-		readmeFilename: options.readmeFilename || 'README.md',
-		partialFolder: options.partialFolder || 'pre',
-		solutionFolder: options.solutionFolder || 'src',
-		tutorialMetadata: options.tutorialMetadata
-	}
+	const config = { ...defaultOptions, ...options }
 	const pattern = new RegExp(`(${config.metadataFilename}|${config.readmeFilename})$`)
 
 	let tutorials = await getFiles(config.rootFolder, pattern)

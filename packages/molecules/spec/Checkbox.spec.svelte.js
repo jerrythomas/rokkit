@@ -25,7 +25,7 @@ describe('Checkbox.svelte', () => {
 		expect(checkbox.getAttribute('aria-checked')).toBe('checked')
 	})
 
-	it('should apply custom class names', async () => {
+	it('should apply custom class names', () => {
 		const props = $state({
 			name: 'test',
 			class: 'custom-class'
@@ -36,7 +36,6 @@ describe('Checkbox.svelte', () => {
 		const checkbox = container.querySelector(root)
 		expect(Array.from(checkbox.classList)).toContain('custom-class')
 
-		// handle class change failing test
 		props.class = 'new-class'
 		flushSync()
 		expect(Array.from(checkbox.classList)).toContain('new-class')
