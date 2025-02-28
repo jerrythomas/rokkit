@@ -20,6 +20,12 @@
 	function toggle() {
 		site.sidebar = !site.sidebar
 	}
+
+	function getRouteURL(route) {
+		return route ? '/' + page.params.segment + '/' + route : page.url.pathname
+	}
+	let previousUrl = $derived(getRouteURL(story.previous))
+	let nextUrl = $derived(getRouteURL(story.next))
 </script>
 
 <aside class="border-r-neutral-inset flex h-full w-full flex-col border-r">
@@ -33,19 +39,13 @@
 					on:click={toggle}
 				/>
 			{/if}
-			<Icon
-				name="i-rokkit:arrow-left"
-				disabled={!story.previous}
-				role="button"
-				onclick={() => gotoPage(story.previous)}
-			/>
+			<a href={previousUrl}>
+				<Icon name="i-rokkit:arrow-left" disabled={!story.previous} />
+			</a>
 			<h1 class="w-full"><BreadCrumbs items={story.crumbs} class="text-xs" /></h1>
-			<Icon
-				name="i-rokkit:arrow-right"
-				disabled={!story.next}
-				role="button"
-				onclick={() => gotoPage(story.next)}
-			/>
+			<a href={nextUrl}>
+				<Icon name="i-rokkit:arrow-right" disabled={!story.next} } />
+			</a>
 		</nav>
 
 		{@const SvelteComponent = story.readme}
