@@ -1,7 +1,7 @@
 <script>
 	import { Rating } from '@rokkit/ui'
 
-	let value = $state()
+	let value = $state(0)
 </script>
 
 <Rating bind:value />

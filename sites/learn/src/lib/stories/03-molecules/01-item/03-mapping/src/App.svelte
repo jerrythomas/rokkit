@@ -1,11 +1,11 @@
 <script>
 	import { Item } from '@rokkit/ui'
-
+	import { FieldMapper } from '@rokkit/core'
 	let value = { name: 'A Heart Icon', symbol: 'i-rokkit:heart-filled' }
-	let fields = { text: 'name', icon: 'symbol' }
+	let mapping = new FieldMapper({ text: 'name', icon: 'symbol' })
 </script>
 
 <p class="mt-6">Field Mapping example</p>
 <item>
-	<Item {value} {fields} />
+	<Item {value} {mapping} />
 </item>

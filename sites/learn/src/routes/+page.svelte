@@ -1,9 +1,9 @@
 <script>
 	import { getContext } from 'svelte'
-	import { goto } from '$app/navigation'
-	import Button from './Button.svelte'
+	// import { goto } from '$app/navigation'
+	// import Button from './Button.svelte'
 	import Background from './Background.svelte'
-	const site = getContext('site')
+	const site = getContext('site')()
 
 	let { data } = $props()
 

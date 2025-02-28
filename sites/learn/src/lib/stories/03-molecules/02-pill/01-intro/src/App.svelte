@@ -6,7 +6,7 @@
 	function handleRemove(event) {
 		message = JSON.stringify(event.detail, null, 2)
 	}
-	let mapping = new FieldMapper({ text: title }, { default: Item })
+	let mapping = new FieldMapper({ text: 'title' }, { default: Item })
 </script>
 
 <span class="flex flex-col items-start gap-2">

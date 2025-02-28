@@ -1,7 +1,7 @@
 <script>
 	import { Range } from '@rokkit/ui'
 
-	let value = $state()
+	let value = $state(0)
 </script>
 
 <Range bind:value step={5} />
