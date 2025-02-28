@@ -43,7 +43,9 @@ describe('@rokkit/core', () => {
 			'getItemAtIndex',
 			'getIndexForItem',
 			'createEmitter',
-			'getLineTypes'
+			'getLineTypes',
+			'weekdays',
+			'getCalendarDays'
 		])
 	})
 })

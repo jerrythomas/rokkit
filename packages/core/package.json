@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "ramda": "^0.30.1"
   }
 }
