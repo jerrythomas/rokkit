@@ -2,11 +2,11 @@
 
 exports[`ValidationReport.svelte > should render validation report 1`] = `
 <div>
-  <status-report
-    class="flex flex-col "
+  <rk-status-report
+    class=""
   >
-    <message
-      class="flex gap-2 pass"
+    <rk-message
+      class="pass"
     >
       <rk-icon
         aria-label="badge-pass"
@@ -24,9 +24,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check passed
       </p>
-    </message>
-    <message
-      class="flex gap-2 fail"
+    </rk-message>
+    <rk-message
+      class="fail"
     >
       <rk-icon
         aria-label="badge-fail"
@@ -44,9 +44,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check failed
       </p>
-    </message>
-    <message
-      class="flex gap-2 unknown"
+    </rk-message>
+    <rk-message
+      class="unknown"
     >
       <rk-icon
         aria-label="badge-unknown"
@@ -64,9 +64,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check is unknown
       </p>
-    </message>
-    <message
-      class="flex gap-2 warn"
+    </rk-message>
+    <rk-message
+      class="warn"
     >
       <rk-icon
         aria-label="badge-warn"
@@ -84,20 +84,20 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check is warning
       </p>
-    </message>
+    </rk-message>
     
-  </status-report>
+  </rk-status-report>
   
 </div>
 `;
 
 exports[`ValidationReport.svelte > should render validation report with custom icons 1`] = `
 <div>
-  <status-report
-    class="flex flex-col "
+  <rk-status-report
+    class=""
   >
-    <message
-      class="flex gap-2 pass"
+    <rk-message
+      class="pass"
     >
       <rk-icon
         aria-label="pass"
@@ -115,9 +115,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check passed
       </p>
-    </message>
-    <message
-      class="flex gap-2 fail"
+    </rk-message>
+    <rk-message
+      class="fail"
     >
       <rk-icon
         aria-label="fail"
@@ -135,9 +135,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check failed
       </p>
-    </message>
-    <message
-      class="flex gap-2 unknown"
+    </rk-message>
+    <rk-message
+      class="unknown"
     >
       <rk-icon
         aria-label="unknown"
@@ -155,9 +155,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check is unknown
       </p>
-    </message>
-    <message
-      class="flex gap-2 warn"
+    </rk-message>
+    <rk-message
+      class="warn"
     >
       <rk-icon
         aria-label="warn"
@@ -175,9 +175,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check is warning
       </p>
-    </message>
+    </rk-message>
     
-  </status-report>
+  </rk-status-report>
   
 </div>
 `;

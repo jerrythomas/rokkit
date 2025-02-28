@@ -47,3 +47,197 @@ exports[`TableCell > should render a table cell 2`] = `
   
 </div>
 `;
+
+exports[`TableCell > should render a table cell as a parent 1`] = `
+<div>
+  <td>
+    <rk-cell>
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
+       
+      <rk-icon
+        aria-label="node-closed"
+        class="cursor-pointer"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-closed"
+        />
+      </rk-icon>
+      <!---->
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell as a parent 2`] = `
+<div>
+  <td>
+    <rk-cell>
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
+       
+      <rk-icon
+        aria-label="node-opened"
+        class="cursor-pointer"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-opened"
+        />
+      </rk-icon>
+      <!---->
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell as a parent 3`] = `
+<div>
+  <td>
+    <rk-cell>
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
+       
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      
+      <!---->
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell with path 1`] = `
+<div>
+  <td>
+    <rk-cell>
+      <!---->
+      <!---->
+       
+      <!---->
+      
+      <!---->
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell with path 2`] = `
+<div>
+  <td>
+    <rk-cell>
+      <!---->
+      <!---->
+       
+      <!---->
+      
+      <!---->
+      <!---->
+       
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Item 1
+      </p>
+      <!---->
+      <!---->
+    </rk-cell>
+  </td>
+  
+</div>
+`;

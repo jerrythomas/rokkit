@@ -90,6 +90,5 @@ export function scaledPath(size, x) {
   @returns {boolean}
  */
 export function isRTL() {
-	if (typeof document !== undefined) return document.dir === 'rtl'
-	return false
+	return document?.dir === 'rtl'
 }

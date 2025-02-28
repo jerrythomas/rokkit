@@ -15,7 +15,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 test"
+    class="test svelte-1jxckvw"
   >
     <input
       name="range"
@@ -24,7 +24,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -59,7 +59,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -250,7 +250,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 test2"
+    class="test2 svelte-1jxckvw"
   >
     <input
       name="range"
@@ -259,7 +259,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -294,7 +294,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -485,7 +485,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -494,7 +494,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -529,7 +529,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -720,7 +720,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -729,7 +729,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -764,7 +764,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -955,7 +955,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -964,7 +964,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -999,7 +999,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -1190,7 +1190,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -1199,7 +1199,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -1234,7 +1234,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -1425,7 +1425,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -1434,7 +1434,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -1469,7 +1469,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 5;"
     >
       <rk-tick
@@ -1580,7 +1580,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -1589,7 +1589,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -1624,7 +1624,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -1815,7 +1815,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -1824,7 +1824,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -1858,7 +1858,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -2049,7 +2049,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -2058,7 +2058,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -2092,7 +2092,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick
@@ -2283,7 +2283,7 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
 <div>
   <!---->
   <rk-input-range
-    class="relative grid h-10 grid-rows-2 "
+    class="svelte-1jxckvw"
   >
     <input
       name="range"
@@ -2292,7 +2292,7 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
     />
      
     <rk-range-track
-      class="relative grid svelte-n6pm5g"
+      class="relative grid svelte-1jxckvw"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -2318,7 +2318,7 @@ exports[`RangeMinMax.svelte > single value > should work using single mode 1`] =
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-n6pm5g"
+      class="svelte-1jxckvw"
       style="--count: 10;"
     >
       <rk-tick

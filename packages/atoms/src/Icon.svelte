@@ -24,7 +24,7 @@
 		state = null,
 		size = 'base',
 		role = 'img',
-		label = name,
+		label = null,
 		disabled = false,
 		tabindex = $bindable(0),
 		checked = $bindable(null),
@@ -59,7 +59,7 @@
 	class:large={size === 'large'}
 	class:disabled
 	{role}
-	aria-label={label}
+	aria-label={label ?? name}
 	aria-checked={ariaChecked}
 	onclick={handleClick}
 	onkeydown={(e) => e.key === 'Enter' && e.currentTarget.click()}

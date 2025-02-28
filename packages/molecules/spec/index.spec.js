@@ -13,7 +13,9 @@ describe('components', () => {
 			'RangeMinMax',
 			'Range',
 			'RadioGroup',
-			'Checkbox'
+			'Checkbox',
+			'Calendar',
+			'ValidationReport'
 		])
 	})
 })

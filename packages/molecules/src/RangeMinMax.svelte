@@ -18,7 +18,7 @@
 
 	/** @type {Props} */
 	let {
-		class: className = '',
+		class: classes = '',
 		name = null,
 		min = 0,
 		max = 100,
@@ -35,6 +35,8 @@
 	let scale = $state()
 	let width = $state()
 
+	let selectedPos = $derived(`${lower}px`)
+	let selectedWidth = $derived(`${upper - lower}px`)
 	function updateScale(width, min, max) {
 		if (width) {
 			limits = [0, width]
@@ -68,15 +70,15 @@
 {#if !Array.isArray(value)}
 	<error>Expected value to be an array</error>
 {:else}
-	<rk-input-range class="relative grid h-10 grid-rows-2 {className}">
+	<rk-input-range class={classes}>
 		<input {name} type="hidden" bind:value />
 		<rk-range-track class="relative grid">
 			<rk-range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width}>
 			</rk-range-track-bar>
 			<rk-selected-bar
 				class="absolute col-start-2"
-				style:left="{lower}px"
-				style:width="{upper - lower}px"
+				style:left={selectedPos}
+				style:width={selectedWidth}
 			></rk-selected-bar>
 			{#if !single}
 				<RangeSlider
@@ -111,7 +113,7 @@
 		grid-template-columns: 0.5rem auto 0.5rem;
 	}
 	rk-ticks {
-		@apply grid;
+		display: grid;
 		grid-gap: calc((100% - 1rem * (var(--count) + 1)) / var(--count));
 		grid-template-columns: repeat(var(--count), 1rem) 1rem;
 		grid-template-rows: 7px auto;

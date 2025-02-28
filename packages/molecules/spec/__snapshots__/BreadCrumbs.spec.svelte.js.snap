@@ -3,7 +3,7 @@
 exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
 <div>
   <rk-crumbs
-    class="flex gap-1 "
+    class=""
   >
     <!---->
     <!---->
@@ -50,7 +50,7 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
 exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
 <div>
   <rk-crumbs
-    class="flex gap-1 "
+    class=""
   >
     <!---->
     <!---->
@@ -97,7 +97,7 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
 exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] = `
 <div>
   <rk-crumbs
-    class="flex gap-1 "
+    class=""
   >
     <!---->
     <!---->
