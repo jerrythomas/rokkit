@@ -23,6 +23,7 @@ exports[`Pill > should fire remove event on Backspace 1`] = `
         aria-label="remove"
         class=""
         role="img"
+        tabindex="-1"
       >
         <i
           aria-hidden="true"
@@ -58,6 +59,7 @@ exports[`Pill > should fire remove event on Backspace 2`] = `
         aria-label="remove"
         class=""
         role="img"
+        tabindex="-1"
       >
         <i
           aria-hidden="true"
@@ -95,6 +97,7 @@ exports[`Pill > should fire remove event on Delete 1`] = `
         aria-label="remove"
         class=""
         role="img"
+        tabindex="-1"
       >
         <i
           aria-hidden="true"
@@ -130,6 +133,7 @@ exports[`Pill > should fire remove event on Delete 2`] = `
         aria-label="remove"
         class=""
         role="img"
+        tabindex="-1"
       >
         <i
           aria-hidden="true"
@@ -167,6 +171,7 @@ exports[`Pill > should fire remove event on click 1`] = `
         aria-label="remove"
         class=""
         role="img"
+        tabindex="-1"
       >
         <i
           aria-hidden="true"
@@ -202,6 +207,7 @@ exports[`Pill > should fire remove event on click 2`] = `
         aria-label="remove"
         class=""
         role="img"
+        tabindex="-1"
       >
         <i
           aria-hidden="true"
@@ -270,6 +276,7 @@ exports[`Pill > should render with icon 1`] = `
       aria-label="Hello"
       class=""
       role="img"
+      tabindex="-1"
     >
       <i
         aria-hidden="true"
@@ -300,6 +307,7 @@ exports[`Pill > should render with icon 2`] = `
       aria-label="World"
       class=""
       role="img"
+      tabindex="-1"
     >
       <i
         aria-hidden="true"
