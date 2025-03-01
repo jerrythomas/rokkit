@@ -28,6 +28,6 @@
 	{@const path = [...hierarchy, index].join(',')}
 	{@const props = mapping.getAttribute(item, 'props') || {}}
 	<rk-list-item role="option" aria-selected={equals(value, item)} data-path={path}>
-		<Template bind:value={items[index]} {mapping} {onchange} {...props} />
+		<Template value={items[index]} {mapping} {onchange} {...props} />
 	</rk-list-item>
 {/each}

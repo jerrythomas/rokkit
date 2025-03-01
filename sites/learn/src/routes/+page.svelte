@@ -7,10 +7,10 @@
 
 	let { data } = $props()
 
-	$effect(() => {
-		site.title = data.app.name ?? site.title
-		site.description = data.app.about ?? site.description
-	})
+	// $effect(() => {
+	// 	site.title = data.app.name ?? site.title
+	// 	site.description = data.app.about ?? site.description
+	// })
 </script>
 
 <main class="bg-neutral-inset relative flex h-full w-full max-w-full flex-col overflow-auto">

@@ -38,7 +38,7 @@
 		{@const connectors = getLineTypes(hasChildren, types, nodeType)}
 
 		<Node
-			bind:value={items[index]}
+			value={items[index]}
 			{mapping}
 			types={connectors}
 			path={indexPath}
