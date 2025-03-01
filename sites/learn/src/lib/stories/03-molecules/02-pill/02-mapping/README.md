@@ -8,10 +8,12 @@ Set the using property to the Status component and ItemWrapper will use this for
 
 ```svelte
 <script>
-  import Status from './Status.svelte'
+	import { Pill } from '@rokkit/ui'
+	import { FieldMapper } from '@rokkit/core'
+	import Status from './Status.svelte'
 
-  let using = { default: Status }
+	let mapping = new FieldMapper({}, { default: Status })
 </script>
 
-<ItemWrapper value="success" {using} />
+<Pill value="success" {mapping} />
 ```

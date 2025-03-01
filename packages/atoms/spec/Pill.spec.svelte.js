@@ -39,7 +39,7 @@ describe('Pill', () => {
 		const { container } = render(Pill, { props })
 
 		expect(container).toMatchSnapshot()
-		const closeButton = container.querySelector('button')
+		const closeButton = container.querySelector('rk-icon')
 
 		fireEvent.click(closeButton)
 		await tick()

@@ -2,18 +2,19 @@
 	import { Item } from '@rokkit/ui'
 
 	let avatar = {
-		text: 'John Doe',
-		image:
-			'https://unsplash.com/photos/mjRwhvqEC0U/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjgzMzU3Nzcy&force=true&w=200'
+		text: 'An image',
+		image: 'https://images.unsplash.com/photo-1734779205618-30ee0220f56f?q=80&w=100&auto=format'
 	}
 </script>
 
-<item>
+<item class="border-neutral-subtle flex items-center gap-2 rounded-md border p-2">
 	<Item value="Sample Text" />
 </item>
-<item>
-	<Item value={{ text: 'A Sun Icon', icon: 'i-rokkit:mode-light' }} />
+<item class="border-neutral-subtle flex items-center gap-2 rounded-md border p-2">
+	<Item value={{ text: 'With Icon', icon: 'i-rokkit:mode-light' }} />
 </item>
-<item>
+<item
+	class="border-neutral-subtle flex w-full flex-col gap-2 overflow-hidden rounded-md border p-2"
+>
 	<Item value={avatar} />
 </item>

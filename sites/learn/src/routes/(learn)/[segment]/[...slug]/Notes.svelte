@@ -5,7 +5,7 @@
 	import { page } from '$app/state'
 	const site = getContext('site')()
 
-	let { story } = $props()
+	let { content, crumbs, previous, next } = $props()
 	/**
 	 *
 	 * @param {string} route
@@ -22,7 +22,7 @@
 </script>
 
 <aside class="border-r-neutral-inset flex h-full w-full flex-col border-r">
-	{#if story}
+	{#if content}
 		<nav
 			class="border-b-neutral-inset box-border flex h-10 items-center gap-1 border-b px-2 text-sm"
 		>
@@ -37,21 +37,21 @@
 			<Icon
 				name="i-rokkit:arrow-left"
 				role="button"
-				onclick={() => gotoPage(story.previous)}
+				onclick={() => gotoPage(previous)}
 				class="square"
 			/>
 			<h1 class="w-full">
-				<BreadCrumbs items={story.crumbs} class="text-xs" />
+				<BreadCrumbs items={crumbs} class="text-xs" />
 			</h1>
 			<Icon
 				name="i-rokkit:arrow-right"
 				role="button"
-				onclick={() => gotoPage(story.next)}
+				onclick={() => gotoPage(next)}
 				class="square"
 			/>
 		</nav>
 
-		{@const SvelteComponent = story.readme}
+		{@const SvelteComponent = content}
 		<notes class="markdown-body h-full w-full overflow-auto p-8 font-thin">
 			<SvelteComponent />
 		</notes>

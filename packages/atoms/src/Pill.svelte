@@ -34,8 +34,6 @@
 <rk-pill use:keyboard={keyMappings} onremove={handle} tabindex="0">
 	<Item {value} {mapping}></Item>
 	{#if removable}
-		<button {disabled} onclick={handle}>
-			<Icon name="remove" />
-		</button>
+		<Icon name="action-close" {disabled} onclick={handle} role="button" aria-label="Remove" small />
 	{/if}
 </rk-pill>

@@ -39,9 +39,9 @@
 		if (!disabled) {
 			if (role === 'checkbox' || role === 'option') {
 				checked = !checked
-				emitter.change(checked)
+				emitter?.change(checked)
 			}
-			emitter.click()
+			emitter?.click()
 		}
 	}
 

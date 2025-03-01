@@ -2,6 +2,7 @@
 	import { RangeSlider, RangeTick } from '@rokkit/atoms'
 	import { generateTicks } from '@rokkit/core'
 	import { scaleLinear } from 'd3-scale'
+	import { onMount } from 'svelte'
 
 	/**
 	 * @typedef {Object} Props
@@ -37,6 +38,7 @@
 
 	let selectedPos = $derived(`${lower}px`)
 	let selectedWidth = $derived(`${upper - lower}px`)
+
 	function updateScale(width, min, max) {
 		if (width) {
 			limits = [0, width]
@@ -64,7 +66,7 @@
 			? Array.from({ length: 1 + (max - min) / step }, (_, i) => Math.min(min + i * step, max))
 			: []
 	)
-	$effect(() => updateScale(width, min, max))
+	onMount(() => updateScale(width, min, max))
 </script>
 
 {#if !Array.isArray(value)}

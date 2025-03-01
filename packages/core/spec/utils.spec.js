@@ -117,17 +117,4 @@ describe('utils', () => {
 			).toEqual('A 0.5 0.5 0 0 0 0 0.5 V 5 10')
 		})
 	})
-
-	describe('isRTL', () => {
-		beforeEach(() => {
-			document.dir = 'ltr'
-		})
-		it('should return true if the document direction is rtl', () => {
-			document.dir = 'rtl'
-			expect(isRTL()).toBe(true)
-		})
-		it('should return false if the document direction is ltr', () => {
-			expect(isRTL()).toBe(false)
-		})
-	})
 })

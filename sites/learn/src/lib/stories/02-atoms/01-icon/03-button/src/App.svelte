@@ -14,7 +14,7 @@
 			role="button"
 			label="Toggle dark mode"
 			{size}
-			on:click={handleClick}
+			onclick={handleClick}
 		/>
 	{/each}
 </span>

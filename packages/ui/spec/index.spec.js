@@ -43,6 +43,7 @@ describe('components', () => {
 			'CheckBox',
 			'Calendar',
 			'ValidationReport',
+			'ResponsiveGrid',
 			'Toggle',
 			'Switch',
 			'List',

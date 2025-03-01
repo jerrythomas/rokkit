@@ -48,6 +48,7 @@ export default defineConfig({
 		'i-rokkit:heart-outlined',
 		'i-rokkit:folder-opened',
 		'i-rokkit:folder-closed',
+		'bg-green',
 		'svelte',
 		'js',
 		'folder',

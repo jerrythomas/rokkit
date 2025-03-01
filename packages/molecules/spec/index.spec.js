@@ -15,7 +15,8 @@ describe('components', () => {
 			'RadioGroup',
 			'CheckBox',
 			'Calendar',
-			'ValidationReport'
+			'ValidationReport',
+			'ResponsiveGrid'
 		])
 	})
 })

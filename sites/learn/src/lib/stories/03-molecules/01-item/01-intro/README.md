@@ -2,7 +2,7 @@
 title: Basic Usage
 ---
 
-We will learn about the versatile `Item` component that can render various content types, including text, icon, state-based icon, or an image along with text. This component accepts a string or an object as a value and an optional `fields` prop for field mapping.
+We will learn about the versatile `Item` component that can render various content types, including text, icon, state-based icon, or an image along with text. This component accepts a string or an object as a value and an optional `mapping` prop for field mapping.
 
 ## Rendering Different Content Types
 
@@ -19,7 +19,7 @@ To render a simple text item, pass a string as the `value` prop:
 To render an icon and text, pass an object with properties icon and text as the value prop:
 
 ```svelte
-<Item value={{ text: 'A Sun Icon', icon: 'i-rokkit:mode-light-solid' }} />
+<Item value={{ text: 'With Icon', icon: 'i-rokkit:mode-light-solid' }} />
 ```
 
 ### Image and Text
@@ -28,11 +28,10 @@ To render text along with an image, provide an object containing the text and im
 
 ```svelte
 <script>
-  let value = {
-    text: 'John Doe',
-    image:
-      'https://unsplash.com/photos/mjRwhvqEC0U/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjgzMzU3Nzcy&force=true&w=200'
-  }
+  let avatar = {
+		text: 'An image',
+		image: 'https://images.unsplash.com/photo-1734779205618-30ee0220f56f?q=80&w=100&auto=format'
+	}
 </script>
 
 <Item {value} />
