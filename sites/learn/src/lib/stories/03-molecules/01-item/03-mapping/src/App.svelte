@@ -6,6 +6,6 @@
 </script>
 
 <p class="mt-6">Field Mapping example</p>
-<item>
+<item class="border-neutral-subtle flex w-full gap-2 rounded-md border p-2">
 	<Item {value} {mapping} />
 </item>

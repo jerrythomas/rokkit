@@ -1,12 +1,10 @@
 <script>
-	import { getContext } from 'svelte'
-	// const story = getContext('tutorial')()
-	let { story } = $props()
+	let { content } = $props()
 </script>
 
 <section class="flex h-full w-full flex-col gap-4 overflow-scroll p-8">
-	{#if story}
-		{@const Template = story.src.preview}
+	{#if content}
+		{@const Template = content}
 		<Template />
 	{/if}
 </section>

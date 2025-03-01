@@ -34,6 +34,12 @@ rk-checkbox {
 rk-crumbs {
   @apply flex gap-1;
 }
+rk-pill {
+  @apply py-2px flex items-center gap-2 rounded-full border px-2;
+}
+rk-pill > rk-icon {
+  @apply text-neutral-subtle hover:text-primary;
+}
 
 rk-input-select,
 rk-drop-down {

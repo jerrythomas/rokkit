@@ -19,7 +19,8 @@ This will render the dark mode icon from the Rokkit icon set. Make sure to inclu
 You can set the `aria-label` for the icon using the label property.
 
 ```svelte
-<Icon name="i-rokkit:mode-dark" label="Toggle Dark Mode" />
+<Icon name="i-rokkit:mode-dark"
+      label="Toggle Dark Mode" />
 ```
 
 ## Custom Classes
@@ -27,5 +28,6 @@ You can set the `aria-label` for the icon using the label property.
 You can set custom class for the icon using the class property.
 
 ```svelte
-<Icon name="i-rokkit:mode-dark" class="text-secondary" />
+<Icon name="i-rokkit:mode-dark"
+      class="text-secondary" />
 ```
