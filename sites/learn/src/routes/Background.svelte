@@ -1,6 +1,5 @@
 <script>
-	import { getContext } from 'svelte'
-	const media = getContext('media')
+	import { media } from '$lib/media.js'
 </script>
 
 <svg

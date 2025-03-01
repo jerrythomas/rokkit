@@ -26,7 +26,6 @@
 	})
 
 	setContext('site', () => site)
-	setContext('media', () => media)
 
 	let headerStyle = $derived(page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10')
 </script>

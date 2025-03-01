@@ -1,6 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
-	const story = getContext('tutorial')()
+	// const story = getContext('tutorial')()
+	let { story } = $props()
 </script>
 
 <section class="flex h-full w-full flex-col gap-4 overflow-scroll p-8">
