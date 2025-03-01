@@ -318,3 +318,14 @@
 .rokkit rk-container:focus-within {
   @apply outline-none;
 }
+
+.rokkit rk-pill {
+  @apply bg-neutral-muted border-neutral-muted rounded-full border px-4 text-neutral-800;
+}
+.rokkit rk-pill rk-icon {
+  @apply text-neutral-700;
+}
+
+.rokkit rk-pill rk-icon[role='button'] {
+  @apply hover:text-primary-elevated text-neutral-elevated text-sm;
+}

@@ -71,3 +71,10 @@ input.embedded {
 .rokkit .square:focus-within {
   @apply ring-secondary-600 ring-2;
 }
+
+.rokkit rk-icon > i {
+  color: inherit;
+}
+/* rk-icon.tp-500 {
+  @apply text-primary-500;
+} */

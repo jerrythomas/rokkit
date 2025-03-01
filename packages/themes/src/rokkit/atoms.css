@@ -5,9 +5,9 @@
 }
 
 /* Styles for 'rk-icon' class */
-.rokkit rk-icon {
+/* .rokkit rk-icon {
   @apply text-neutral-700 focus:outline-none;
-}
+} */
 
 /* Styles for input[type='number'] */
 .rokkit input[type='number'] {

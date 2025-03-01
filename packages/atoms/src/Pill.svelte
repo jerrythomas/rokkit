@@ -15,6 +15,7 @@
 	/** @type {Props} */
 	let {
 		value,
+		class: classes = '',
 		mapping = new FieldMapper(),
 		removable = false,
 		disabled = false,
@@ -31,9 +32,10 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-pill use:keyboard={keyMappings} onremove={handle} tabindex="0">
+<rk-pill use:keyboard={keyMappings} onremove={handle} tabindex="0" class={classes}>
 	<Item {value} {mapping}></Item>
 	{#if removable}
-		<Icon name="action-close" {disabled} onclick={handle} role="button" aria-label="Remove" small />
+		<Icon name="action-close" role="button" aria-label="Remove" {disabled} onclick={handle} small
+		></Icon>
 	{/if}
 </rk-pill>

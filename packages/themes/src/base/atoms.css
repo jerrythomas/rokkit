@@ -1,21 +1,21 @@
 /* Icon styles */
 rk-icon {
   @apply flex flex-shrink-0 flex-grow-0 items-center justify-center;
-  @apply h-6 min-h-6 w-6;
+  /* @apply h-6 min-h-6 w-6; */
 }
 button > rk-icon {
-  @apply aspect-square cursor-pointer select-none p-2 focus:outline;
+  @apply text-md aspect-square cursor-pointer select-none p-2 focus:outline;
 }
 rk-icon > i {
-  @apply mx-auto aspect-square text-xl leading-6 text-current;
+  @apply mx-auto aspect-square text-current;
 }
-rk-icon.large > i {
+rk-icon.large {
   @apply text-3xl;
 }
-rk-icon.medium > i {
+rk-icon.medium {
   @apply text-lg leading-5;
 }
-rk-icon.small > i {
+rk-icon.small {
   @apply leading-4;
   font-size: 1rem;
 }
