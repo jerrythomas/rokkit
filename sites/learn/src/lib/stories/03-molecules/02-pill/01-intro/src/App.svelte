@@ -17,7 +17,7 @@
 		removable={true}
 		onremove={handleRemove}
 	/>
-	<Pill value={{ title: 'Content with mapping' }} {mapping} />
+	<Pill value={{ title: 'Content with mapping' }} {mapping} class="px-10 text-blue-500" />
 </span>
 
 Click on the removable Removable to see the remove event details:
