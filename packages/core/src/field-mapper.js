@@ -1,5 +1,5 @@
 import { defaultFields } from './constants'
-import { isNil, has } from 'ramda'
+import { isNil, has, omit } from 'ramda'
 import { isObject } from './utils'
 
 export class FieldMapper {
@@ -7,15 +7,11 @@ export class FieldMapper {
 	#componentMap = {}
 
 	constructor(fields = defaultFields, componentMap = {}) {
-		this.fields = fields
-		this.componentMap = componentMap
+		this.#updateFields(fields)
+		this.#updateComponentMap(componentMap)
 	}
 
-	get fields() {
-		return this.#fields
-	}
-
-	set fields(fields) {
+	#updateFields(fields) {
 		Object.keys(fields).forEach((key) => {
 			this.#fields[key] = fields[key]
 		})
@@ -27,6 +23,29 @@ export class FieldMapper {
 		this.hasComponent = has(this.#fields.component)
 		this.hasCurrency = has(this.#fields.currency)
 		this.withPrefix = (x) => [this.#fields.iconPrefix, x].join('-').replace(/^-+/g, '')
+		this.excludeFlags = omit([
+			this.#fields.isDeleted,
+			this.#fields.isHidden,
+			this.#fields.isSelected,
+			this.#fields.isFiltered,
+			this.#fields.isOpen
+		])
+	}
+
+	#updateComponentMap(components) {
+		if (typeof components === 'object' && components) {
+			Object.keys(components).forEach((key) => {
+				this.#componentMap[key] = components[key]
+			})
+		}
+	}
+
+	get fields() {
+		return this.#fields
+	}
+
+	set fields(fields) {
+		this.#updateFields(fields)
 	}
 
 	get componentMap() {
@@ -34,11 +53,7 @@ export class FieldMapper {
 	}
 
 	set componentMap(components) {
-		if (typeof components === 'object' && components) {
-			Object.keys(components).forEach((key) => {
-				this.#componentMap[key] = components[key]
-			})
-		}
+		this.#updateComponentMap(components)
 	}
 
 	getComponent(value) {
@@ -96,7 +111,10 @@ export class FieldMapper {
 
 	hasChildren(item) {
 		return (
-			!isNil(item) && has(this.fields.children, item) && Array.isArray(item[this.fields.children])
+			!isNil(item) &&
+			has(this.fields.children, item) &&
+			Array.isArray(item[this.fields.children]) &&
+			item[this.fields.children].length > 0
 		)
 	}
 
@@ -107,8 +125,28 @@ export class FieldMapper {
 		return false
 	}
 
+	isHidden(item) {
+		return has(this.fields.isHidden, item) && item[this.fields.isHidden]
+	}
+
 	isNested(items) {
 		return Array.isArray(items) && items.some((item) => this.hasChildren(item))
+	}
+
+	toggleVisibility(items, visible) {
+		items.forEach((item) => {
+			item[this.fields.isHidden] = !visible
+			if (this.hasChildren(item)) {
+				this.toggleVisibility(item[this.fields.children], visible && item[this.fields.isOpen])
+			}
+		})
+	}
+
+	toggleExpansion(item) {
+		if (this.hasChildren(item)) {
+			item[this.fields.isOpen] = !item[this.fields.isOpen]
+			this.toggleVisibility(item[this.fields.children], item[this.fields.isOpen])
+		}
 	}
 
 	getChildren(item) {

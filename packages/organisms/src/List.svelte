@@ -1,7 +1,8 @@
 <script>
-	import { createEmitter } from '@rokkit/core'
-	import { ListItems } from '@rokkit/molecules'
+	import { createEmitter, noop } from '@rokkit/core'
+	// import { ListItems } from '@rokkit/molecules'
 	import { defaultMapping } from '@rokkit/molecules/constants'
+	import { listItems } from './snippets.svelte'
 
 	/**
 	 * @typedef {Object} Props
@@ -29,7 +30,7 @@
 	} = $props()
 	let cursor = $state([])
 
-	let emitter = createEmitter(events, ['select'])
+	let emitter = createEmitter(events, ['select', 'change'])
 	function handleNav(event) {
 		value = event.detail.node
 		cursor = event.detail.path
@@ -49,5 +50,6 @@
 	{tabindex}
 >
 	{@render children?.()}
-	<ListItems bind:items {mapping} {hierarchy} />
+	{@render listItems(items, mapping, value, hierarchy, emitter.change)}
+	<!-- <ListItems bind:items {mapping} {hierarchy} /> -->
 </rk-list>

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { defaultIcons, stateIconsFromNames, defaultFields } from '../src/constants'
+import { isAllSelected } from '@testing-library/user-event/dist/cjs/event/index.js'
 
 describe('Utility functions', () => {
 	it('should convert names to nested state icons object', () => {
@@ -92,12 +93,15 @@ describe('Utility functions', () => {
 			props: 'props',
 			target: 'target',
 			state: 'state',
-			isOpen: '_open',
-			isDeleted: '_deleted',
 			label: 'label',
 			level: 'level',
 			parent: 'parent',
-			currency: 'currency'
+			currency: 'currency',
+			isOpen: '_open',
+			isDeleted: '_deleted',
+			isSelected: '_selected',
+			isHidden: '_hidden',
+			isFiltered: '_filtered'
 		})
 	})
 })

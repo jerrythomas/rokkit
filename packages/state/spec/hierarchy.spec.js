@@ -12,11 +12,13 @@ describe('hierarchy', () => {
 			]
 
 			const actual = flatHierarchy(items, defaultMapping)
-			expect(actual).toEqual([
-				{ depth: 0, path: [0], selected: false, item: items[0] },
-				{ depth: 1, path: [0, 0], selected: false, item: items[0].children[0] },
-				{ depth: 0, path: [1], selected: false, item: items[1] }
-			])
+			const expected = [
+				{ depth: 0, path: [0], parent: null, item: items[0] },
+				{ depth: 1, path: [0, 0], item: items[0].children[0] },
+				{ depth: 0, path: [1], parent: null, item: items[1] }
+			]
+			expected[1].parent = expected[0]
+			expect(actual).toEqual(expected)
 		})
 
 		it('should handle empty input', () => {
@@ -28,7 +30,7 @@ describe('hierarchy', () => {
 		it('should handle items with no children', () => {
 			const items = [{ id: 1, name: 'Item 1' }]
 			const actual = flatHierarchy(items, defaultMapping)
-			expect(actual).toEqual([{ depth: 0, path: [0], selected: false, item: items[0] }])
+			expect(actual).toEqual([{ depth: 0, path: [0], parent: null, item: items[0] }])
 		})
 
 		it('should handle custom children field', () => {
@@ -38,10 +40,12 @@ describe('hierarchy', () => {
 				children: 'customChildren'
 			}
 			const actual = flatHierarchy(items, mapping)
-			expect(actual).toEqual([
-				{ depth: 0, path: [0], selected: false, item: items[0] },
-				{ depth: 1, path: [0, 0], selected: false, item: items[0].customChildren[0] }
-			])
+			const expected = [
+				{ depth: 0, path: [0], parent: null, item: items[0] },
+				{ depth: 1, path: [0, 0], item: items[0].customChildren[0] }
+			]
+			expected[1].parent = expected[0]
+			expect(actual).toEqual(expected)
 		})
 	})
 })

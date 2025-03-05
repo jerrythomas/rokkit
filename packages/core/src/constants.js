@@ -18,12 +18,16 @@ export const defaultFields = {
 	props: 'props',
 	target: 'target',
 	state: 'state',
-	isOpen: '_open',
-	isDeleted: '_deleted',
 	level: 'level',
 	parent: 'parent',
 	currency: 'currency',
-	label: 'label'
+	label: 'label',
+	/* flag fields  */
+	isSelected: '_selected',
+	isHidden: '_hidden',
+	isOpen: '_open',
+	isDeleted: '_deleted',
+	isFiltered: '_filtered'
 }
 
 export const defaultIcons = [

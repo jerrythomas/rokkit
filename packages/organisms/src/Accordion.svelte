@@ -2,7 +2,8 @@
 	import { equals } from 'ramda'
 	import { createEmitter } from '@rokkit/core'
 	import { defaultMapping } from '@rokkit/molecules/constants'
-	import { Summary, ListItems } from '@rokkit/molecules'
+	import { Summary } from '@rokkit/molecules'
+	import { listItems } from './snippets.svelte'
 
 	/**
 	 * @typedef {Object} Props
@@ -67,13 +68,14 @@
 			<Summary {mapping} bind:value={items[index]} expanded={mapping.isExpanded(item)} />
 			{#if hasItems && mapping.isExpanded(item)}
 				<rk-list role="listbox" tabindex="-1">
-					<ListItems
+					{@render listItems(items, mapping, hierarchy, onchange)}
+					<!-- <ListItems
 						bind:items={items[index][mapping.fields.children]}
 						bind:value
 						{mapping}
 						hierarchy={[index]}
 						on:change
-					/>
+					/> -->
 				</rk-list>
 			{/if}
 		</div>
