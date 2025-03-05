@@ -30,11 +30,11 @@
 			name: 'Code'
 		}
 	])
-	let page = $state(items[0])
+	let page = $state(() => items[0])
 	let layout = 'two-col' // $derived(site.code === 'hidden' ? 'two-col' : 'three-col')
 </script>
 
-<ResponsiveGrid {items} small={size == 'sm'} class="{layout} {size}" bind:value={page} />
+<ResponsiveGrid {items} small={false} class="{layout} {size}" bind:value={page} />
 <!-- {#if size == 'sm'}
 	<Switch options={items} fields={{ text: 'name' }} bind:value={page} class="my-2" />
 {/if} -->

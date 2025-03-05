@@ -160,7 +160,7 @@ describe('FieldMapper', () => {
 			const customMapping = new FieldMapper()
 			customMapping.fields = { children: 'sub' }
 			expect(customMapping.hasChildren(altData)).toBeTruthy()
-			expect(customMapping.hasChildren(altData.sub[0])).toBeTruthy()
+			expect(customMapping.hasChildren(altData.sub[0])).toBeFalsy()
 		})
 
 		it('should fetch children', () => {
@@ -204,6 +204,18 @@ describe('FieldMapper', () => {
 			expect(() => fieldMapping.getChildrenByPath(items, [2])).toThrowError('Invalid path')
 			expect(() => fieldMapping.getChildrenByPath(items, [0, 2])).toThrowError('Invalid path')
 			expect(() => fieldMapping.getChildrenByPath(noChildren, [0, 2])).toThrowError('Invalid path')
+		})
+
+		it('should toggle expanded', () => {
+			fieldMapping.toggleExpansion(items[0])
+			expect(fieldMapping.isExpanded(items[0])).toBeFalsy()
+			expect(fieldMapping.isHidden(items[0].children[0])).toBeTruthy()
+			expect(fieldMapping.isHidden(items[0].children[0].children[0])).toBeTruthy()
+
+			fieldMapping.toggleExpansion(items[0])
+			expect(fieldMapping.isExpanded(items[0])).toBeTruthy()
+			expect(fieldMapping.isHidden(items[0].children[0])).toBeFalsy()
+			expect(fieldMapping.isHidden(items[0].children[0].children[0])).toBeTruthy()
 		})
 	})
 })
