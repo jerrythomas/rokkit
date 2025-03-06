@@ -211,6 +211,9 @@ importers:
       '@rokkit/molecules':
         specifier: workspace:latest
         version: link:../molecules
+      '@rokkit/state':
+        specifier: workspace:latest
+        version: link:../state
       ramda:
         specifier: ^0.30.1
         version: 0.30.1

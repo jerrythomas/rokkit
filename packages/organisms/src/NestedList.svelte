@@ -1,9 +1,8 @@
 <script>
-	import NestedList from './NestedList.svelte'
-
 	import { defaultStateIcons, getLineTypes } from '@rokkit/core'
-	import { Node } from '@rokkit/molecules'
 	import { defaultMapping } from '@rokkit/molecules/constants'
+	import { Node } from '@rokkit/molecules'
+	import NestedList from './NestedList.svelte'
 
 	/**
 	 * @typedef {Object} Props

@@ -6,8 +6,7 @@ import {
 	isObject,
 	toString,
 	iconShortcuts,
-	scaledPath,
-	isRTL
+	scaledPath
 } from '../src/utils.js'
 
 describe('utils', () => {

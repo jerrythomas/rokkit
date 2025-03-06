@@ -33,6 +33,7 @@
     "@rokkit/actions": "workspace:latest",
     "@rokkit/atoms": "workspace:latest",
     "@rokkit/core": "workspace:latest",
-    "@rokkit/molecules": "workspace:latest"
+    "@rokkit/molecules": "workspace:latest",
+    "@rokkit/state": "workspace:latest"
   }
 }
