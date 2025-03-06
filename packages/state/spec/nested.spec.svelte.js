@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { TreeNavigator } from '../src/tree-navigator.svelte'
+import { DataWrapper } from '../src/nested.svelte'
 import { FieldMapper } from '@rokkit/core'
 import { flushSync } from 'svelte'
 
-describe('TreeNavigator', () => {
+describe('DataWrapper', () => {
 	let navigator
 	let mapper
 	const events = {
@@ -53,7 +53,7 @@ describe('TreeNavigator', () => {
 	beforeEach(() => {
 		vi.clearAllMocks()
 		mapper = new FieldMapper()
-		navigator = new TreeNavigator(testData, mapper, { events })
+		navigator = new DataWrapper(testData, mapper, { events })
 	})
 
 	describe('traversal', () => {
@@ -275,7 +275,7 @@ describe('TreeNavigator', () => {
 		})
 
 		it('should extend selection by adding or removing', () => {
-			const navigator = new TreeNavigator(testData, mapper, { events, multiselect: true })
+			const navigator = new DataWrapper(testData, mapper, { events, multiselect: true })
 
 			navigator.extendSelection([0, 0])
 			flushSync()
@@ -324,7 +324,7 @@ describe('TreeNavigator', () => {
 	})
 
 	it('should handle when current node is not set', () => {
-		const navigator = new TreeNavigator(testData, mapper, { events, multiselect: true })
+		const navigator = new DataWrapper(testData, mapper, { events, multiselect: true })
 
 		navigator.moveTo([])
 		expect(navigator.currentNode).toBeNull()

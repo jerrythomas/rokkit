@@ -1,6 +1,5 @@
 <script>
 	import { createEmitter, noop } from '@rokkit/core'
-	// import { ListItems } from '@rokkit/molecules'
 	import { defaultMapping } from '@rokkit/molecules/constants'
 	import { listItems } from './snippets.svelte'
 
@@ -36,9 +35,6 @@
 		cursor = event.detail.path
 		emitter.select({ item: value, indices: cursor })
 	}
-
-	// setContext('data', items)
-	// let filtered = $derived(items.filter((item) => !item[fields.isDeleted]))
 </script>
 
 <rk-list

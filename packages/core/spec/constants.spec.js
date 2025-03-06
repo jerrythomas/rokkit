@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { defaultIcons, stateIconsFromNames, defaultFields } from '../src/constants'
-import { isAllSelected } from '@testing-library/user-event/dist/cjs/event/index.js'
 
 describe('Utility functions', () => {
 	it('should convert names to nested state icons object', () => {

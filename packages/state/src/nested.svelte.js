@@ -3,7 +3,7 @@ import { SvelteMap } from 'svelte/reactivity'
 import { DEFAULT_EVENTS } from './constants'
 import { FieldMapper } from '@rokkit/core'
 
-export class TreeNavigator {
+export class DataWrapper {
 	#mapper = new FieldMapper()
 	#path = []
 	#events = {}
