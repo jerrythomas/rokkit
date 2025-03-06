@@ -97,5 +97,23 @@ describe('Node', () => {
 			expect(node.original.children.length).toBe(1)
 			expect(node.children[0].id).toBe(3)
 		})
+
+		it('should return false if child is not found', () => {
+			const data = {
+				id: 1,
+				children: [
+					{ id: 2, text: 'Child 1' },
+					{ id: 3, text: 'Child 2' }
+				]
+			}
+			const node = new Node(data, mapper)
+			const childToRemove = { id: 4, text: 'Child 3' }
+
+			const removed = node.removeChild(childToRemove)
+
+			expect(removed).toBe(false)
+			expect(node.children.length).toBe(2)
+			expect(node.original.children.length).toBe(2)
+		})
 	})
 })

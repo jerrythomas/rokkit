@@ -1,5 +1,5 @@
 import { has, equals } from 'ramda'
-import { SvelteSet } from 'svelte/reactivity'
+import { SvelteMap } from 'svelte/reactivity'
 import { DEFAULT_EVENTS } from './constants'
 import { FieldMapper } from '@rokkit/core'
 
@@ -11,7 +11,7 @@ export class TreeNavigator {
 	items = null
 	data = null
 	currentNode = $state(null)
-	selected = new SvelteSet()
+	selected = new SvelteMap()
 
 	constructor(items, mapper, { events, multiselect = false }) {
 		this.items = items
@@ -72,6 +72,7 @@ export class TreeNavigator {
 	}
 
 	moveTo(path) {
+		if (!path) return
 		const currentPath = Array.isArray(path) ? path : [path]
 
 		if (!equals(currentPath, this.#path)) {
@@ -128,19 +129,19 @@ export class TreeNavigator {
 	}
 
 	collapse() {
-		if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
+		// if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
 		if (!this.#mapper.isExpanded(this.currentNode)) return
-
-		this.#mapper.toggleExpansion(this.currentNode)
-		this.emit('collapse', { path: this.#path, node: this.currentNode })
+		this.toggleExpansion()
+		// this.#mapper.toggleExpansion(this.currentNode)
+		// this.emit('collapse', { path: this.#path, node: this.currentNode })
 	}
 
 	expand() {
-		if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
+		// if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
 		if (this.#mapper.isExpanded(this.currentNode)) return
-
-		this.#mapper.toggleExpansion(this.currentNode)
-		this.emit('expand', { path: this.#path, node: this.currentNode })
+		this.toggleExpansion()
+		// this.#mapper.toggleExpansion(this.currentNode)
+		// this.emit('expand', { path: this.#path, node: this.currentNode })
 	}
 
 	toggleExpansion() {
@@ -152,21 +153,46 @@ export class TreeNavigator {
 	}
 
 	select(path = null) {
-		if (path) this.moveTo(path)
+		this.moveTo(path)
 
-		if (!this.currentNode) return
-		if (!this.#multiselect) {
+		if (this.currentNode) {
 			this.selected.clear()
+			this.selected.set(this.#pathKey(), this.currentNode)
+			this.emit('select', {
+				path: this.#path,
+				node: this.currentNode,
+				selected: this.selected
+			})
 		}
-		this.selected.add(this.currentNode)
-		this.emit('select', { path: this.#path, node: this.currentNode, selected: this.selected })
 	}
 
-	deselect(path = null) {
-		if (path) this.moveTo(path)
-
+	#pathKey() {
+		return this.#path.join('-')
+	}
+	#toggleSelection() {
 		if (!this.currentNode) return
-		this.selected.delete(this.currentNode)
-		this.emit('select', { path: this.#path, node: this.currentNode, selected: this.selected })
+
+		const isSelected = this.selected.has(this.#pathKey())
+
+		if (isSelected) {
+			this.selected.delete(this.#pathKey())
+		} else {
+			this.selected.set(this.#pathKey(), this.currentNode)
+		}
+
+		this.emit('select', {
+			path: this.#path,
+			node: this.currentNode,
+			selected: this.selected
+		})
+	}
+
+	extendSelection(path = null) {
+		this.moveTo(path)
+		if (this.#multiselect) {
+			this.#toggleSelection()
+		} else {
+			this.select()
+		}
 	}
 }

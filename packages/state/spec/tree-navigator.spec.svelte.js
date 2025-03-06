@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { TreeNavigator } from '../src/tree-navigator.svelte'
 import { FieldMapper } from '@rokkit/core'
+import { flushSync } from 'svelte'
 
 describe('TreeNavigator', () => {
 	let navigator
@@ -56,12 +57,23 @@ describe('TreeNavigator', () => {
 	})
 
 	describe('traversal', () => {
-		it('should move to first node', () => {
-			// Set initial position to Item 1.2 [0, 1]
+		it('should not move if path is not provided', () => {
+			navigator.moveTo()
+			expect(events.move).not.toHaveBeenCalled()
+
 			navigator.moveTo([])
 			expect(navigator.currentNode).toBe(null)
 			expect(events.move).not.toHaveBeenCalled()
+		})
 
+		it('should handle integer in path', () => {
+			navigator.moveTo(1)
+			expect(navigator.currentNode.id).toBe(5)
+			expect(events.move).toHaveBeenCalledWith({ path: [1], node: navigator.currentNode })
+		})
+
+		it('should move to first node', () => {
+			navigator.moveTo([])
 			navigator.movePrev()
 			expect(navigator.currentNode.id).toBe(1) // Item 1
 			expect(events.move).toHaveBeenCalledWith({ path: [0], node: navigator.currentNode })
@@ -244,7 +256,7 @@ describe('TreeNavigator', () => {
 				node: navigator.currentNode,
 				selected: navigator.selected
 			})
-			expect([...navigator.selected]).toEqual([navigator.currentNode])
+			expect([...navigator.selected.values()]).toEqual([navigator.currentNode])
 		})
 
 		it('should emit move event if node changed', () => {
@@ -259,58 +271,68 @@ describe('TreeNavigator', () => {
 				node: navigator.currentNode,
 				selected: navigator.selected
 			})
-			expect([...navigator.selected]).toEqual([navigator.currentNode])
+			expect([...navigator.selected.values()]).toEqual([navigator.currentNode])
 		})
 
-		it('should select multiple', () => {
+		it('should extend selection by adding or removing', () => {
 			const navigator = new TreeNavigator(testData, mapper, { events, multiselect: true })
-			navigator.select([0, 0])
+
+			navigator.extendSelection([0, 0])
+			flushSync()
+
 			expect(navigator.currentNode.id).toBe(2)
 			expect(events.select).toHaveBeenCalledWith({
 				path: [0, 0],
 				node: navigator.currentNode,
 				selected: navigator.selected
 			})
-			expect([...navigator.selected]).toEqual([navigator.currentNode])
-			navigator.select([0, 1])
+			expect([...navigator.selected.values()].map((item) => item.id)).toEqual([2])
+
+			navigator.extendSelection([0, 1])
+			flushSync()
+
 			expect(navigator.currentNode.id).toBe(3)
 			expect(events.select).toHaveBeenCalledWith({
 				path: [0, 1],
 				node: navigator.currentNode,
 				selected: navigator.selected
 			})
-			expect([...navigator.selected].map((item) => item.id)).toEqual([2, 3])
-		})
+			expect([...navigator.selected.values()].map((item) => item.id)).toEqual([2, 3])
 
-		it('should deselect node', () => {
-			navigator.select([0, 0])
-			expect([...navigator.selected].map((item) => item.id)).toEqual([2])
-			navigator.deselect()
+			navigator.extendSelection([0, 0])
+			flushSync()
+
 			expect(navigator.currentNode.id).toBe(2)
 			expect(events.select).toHaveBeenCalledWith({
 				path: [0, 0],
 				node: navigator.currentNode,
 				selected: navigator.selected
 			})
-			expect([...navigator.selected]).toEqual([])
-		})
+			expect([...navigator.selected.values()].map((item) => item.id)).toEqual([3])
 
-		it('should deselect multiple', () => {
-			const navigator = new TreeNavigator(testData, mapper, { events, multiselect: true })
-			navigator.select([0, 0])
-			navigator.select([0, 1])
+			navigator.extendSelection([0, 1])
+			flushSync()
 
-			expect(navigator.currentNode.id).toBe(3)
-
-			expect([...navigator.selected].map((item) => item.id)).toEqual([2, 3])
-			navigator.deselect()
 			expect(navigator.currentNode.id).toBe(3)
 			expect(events.select).toHaveBeenCalledWith({
 				path: [0, 1],
 				node: navigator.currentNode,
 				selected: navigator.selected
 			})
-			expect([...navigator.selected].map((item) => item.id)).toEqual([2])
+			expect([...navigator.selected.values()].map((item) => item.id)).toEqual([])
 		})
+	})
+
+	it('should handle when current node is not set', () => {
+		const navigator = new TreeNavigator(testData, mapper, { events, multiselect: true })
+
+		navigator.moveTo([])
+		expect(navigator.currentNode).toBeNull()
+		navigator.extendSelection()
+		flushSync()
+
+		expect(navigator.currentNode).toBeNull()
+		expect(events.select).not.toHaveBeenCalled()
+		expect([...navigator.selected.values()].map((item) => item.id)).toEqual([])
 	})
 })
