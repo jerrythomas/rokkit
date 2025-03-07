@@ -22,8 +22,8 @@ describe('navigator', () => {
 		root.innerHTML = `
       <div data-path="0">Item 1
         <rk-icon data-state="closed"></rk-icon>
-        <div data-path="0,0">Child 1</div>
-        <div data-path="0,1">Child 2</div>
+        <div data-path="0-0">Child 1</div>
+        <div data-path="0-1">Child 2</div>
       </div>
       <div data-path="1">Item 2
         <rk-icon data-state="opened"></rk-icon>

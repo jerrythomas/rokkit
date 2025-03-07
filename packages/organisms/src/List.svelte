@@ -2,6 +2,8 @@
 	import { createEmitter, noop } from '@rokkit/core'
 	import { defaultMapping } from '@rokkit/molecules/constants'
 	import { listItems } from './snippets.svelte'
+	import { onMount } from 'svelte'
+	import { DataWrapper } from '@rokkit/state'
 
 	/**
 	 * @typedef {Object} Props
@@ -35,6 +37,8 @@
 		cursor = event.detail.path
 		emitter.select({ item: value, indices: cursor })
 	}
+
+	let wrapper = new DataWrapper(items, mapping, value, { events: emitter })
 </script>
 
 <rk-list
@@ -46,6 +50,6 @@
 	{tabindex}
 >
 	{@render children?.()}
-	{@render listItems(items, mapping, value, hierarchy, emitter.change)}
+	{@render listItems(wrapper.data, mapping, value, hierarchy, emitter.change)}
 	<!-- <ListItems bind:items {mapping} {hierarchy} /> -->
 </rk-list>

@@ -1,4 +1,5 @@
 <script module>
+	import { getKeyFromPath } from '@rokkit/core'
 	import { noop } from '@rokkit/core'
 	import { equals } from 'ramda'
 	export { listItems }
@@ -7,9 +8,14 @@
 {#snippet listItems(items, mapping, value, hierarchy = [], onchange = noop)}
 	{#each items as item, index}
 		{@const Template = mapping.getComponent(item)}
-		{@const path = [...hierarchy, index].join(',')}
+		{@const path = getKeyFromPath([...hierarchy, index])}
 		{@const props = mapping.getAttribute(item, 'props') || {}}
-		<rk-list-item role="option" aria-selected={equals(value, item)} data-path={path}>
+		<rk-list-item
+			role="option"
+			data-path={path}
+			aria-selected={equals(value, item)}
+			aria-current={equals(value, item)}
+		>
 			<Template bind:value={items[index]} {mapping} {onchange} {...props} />
 		</rk-list-item>
 	{/each}

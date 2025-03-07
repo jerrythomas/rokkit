@@ -83,3 +83,21 @@ export function scaledPath(size, x) {
 	if (Array.isArray(x)) return x.map((v) => scaledPath(size, v)).join(' ')
 	return typeof x === 'number' ? x * size : x
 }
+
+/**
+ * Gets a key string from path
+ * @param {string[]} path
+ * @returns {string}
+ */
+export function getKeyFromPath(path) {
+	return path.join('-')
+}
+
+/**
+ * Gets a path array from key string
+ * @param {string} key
+ * @returns {string[]}
+ */
+export function getPathFromKey(key) {
+	return key.split('-')
+}

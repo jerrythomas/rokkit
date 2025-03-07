@@ -1,5 +1,6 @@
 import { on } from 'svelte/events'
 import { getClosestAncestorWithAttribute, getEventForKey } from './utils.js'
+import { getPathFromKey } from '@rokkit/core'
 
 const Horizontal = {
 	prev: ['ArrowLeft'],
@@ -75,7 +76,7 @@ export function navigator(root, { wrapper, options }) {
 
 		if (node) {
 			const iconClicked = handleIconClick(event.target, wrapper)
-			const path = node.getAttribute('data-path').split(',')
+			const path = getPathFromKey(node.getAttribute('data-path'))
 			wrapper.select(path, event.ctrlKey || event.metaKey)
 			if (!iconClicked) wrapper.toggleExpansion()
 		}

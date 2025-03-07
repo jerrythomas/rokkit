@@ -1,36 +1,64 @@
 import { has, equals } from 'ramda'
 import { SvelteMap } from 'svelte/reactivity'
 import { DEFAULT_EVENTS } from './constants'
-import { FieldMapper } from '@rokkit/core'
+import { FieldMapper, getKeyFromPath } from '@rokkit/core'
 
 export class DataWrapper {
-	#mapper = new FieldMapper()
 	#path = []
 	#events = {}
 	#multiselect = false
+	#init = false
 	items = null
 	data = null
+	value = null
+	mapping = new FieldMapper()
 	currentNode = $state(null)
 	selected = new SvelteMap()
 
-	constructor(items, mapper, { events, multiselect = false }) {
+	constructor(items, mapper, value, { events, multiselect = false }) {
 		this.items = items
 		this.data = items
 		if (mapper) {
-			this.#mapper = mapper
+			this.mapping = mapper
 		}
-		this.#path = [0]
+
 		this.#events = { ...DEFAULT_EVENTS, ...events }
 		this.#multiselect = multiselect
-		this.currentNode = this.#mapper.getItemByPath(this.data, this.#path)
+		this.value = value
+		this.#init = true
+		this.moveTo(this.findPathToItem(value))
+		this.#init = false
+	}
+
+	/**
+	 * Finds an item in a tree structure and returns the path as array of indices
+	 * @param {*} value - The value to find
+	 * @param {number[]} parent - The current path being explored
+	 * @returns {number[]|null} - Array of indices representing path to item, or null if not found
+	 */
+	findPathToItem(value, parent = []) {
+		const children = this.mapping.getChildrenByPath(this.data, parent)
+		// Direct child check
+		const directIndex = children.findIndex((item) => equals(item, value))
+		if (directIndex !== -1) {
+			return [...parent, directIndex]
+		}
+
+		// Recursive search in children
+		return children.reduce((path, _, index) => {
+			if (path.length > 0) return path
+			if (!this.mapping.hasChildren(children[index])) return []
+
+			return this.findPathToItem(value, [...parent, index])
+		}, [])
 	}
 
 	#getLastVisibleDescendant(node, nodePath) {
-		if (!this.#mapper.hasChildren(node) || !this.#mapper.isExpanded(node)) {
+		if (!this.mapping.hasChildren(node) || !this.mapping.isExpanded(node)) {
 			return { node, path: nodePath }
 		}
 
-		const children = this.#mapper.getChildren(node)
+		const children = this.mapping.getChildren(node)
 		if (children.length === 0) {
 			return { node, path: nodePath }
 		}
@@ -43,9 +71,9 @@ export class DataWrapper {
 	#getPreviousSiblingPath() {
 		const currentIndex = this.#path[this.#path.length - 1]
 		const prevSiblingPath = [...this.#path.slice(0, -1), currentIndex - 1]
-		const prevSibling = this.#mapper.getItemByPath(this.data, prevSiblingPath)
+		const prevSibling = this.mapping.getItemByPath(this.data, prevSiblingPath)
 
-		if (this.#mapper.isExpanded(prevSibling)) {
+		if (this.mapping.isExpanded(prevSibling)) {
 			const { path } = this.#getLastVisibleDescendant(prevSibling, prevSiblingPath)
 			return path
 		} else {
@@ -57,7 +85,7 @@ export class DataWrapper {
 		const parentPath = inputPath.slice(0, -1)
 		const currentIndex = inputPath[inputPath.length - 1]
 
-		const siblings = this.#mapper.getChildrenByPath(this.data, parentPath)
+		const siblings = this.mapping.getChildrenByPath(this.data, parentPath)
 
 		if (currentIndex < siblings.length - 1) {
 			return [...parentPath, currentIndex + 1]
@@ -68,21 +96,21 @@ export class DataWrapper {
 	}
 
 	emit(type, data) {
-		if (has(type, this.#events)) this.#events[type](data)
+		if (!this.#init && has(type, this.#events)) this.#events[type](data)
 	}
 
 	moveTo(path) {
 		if (!path) return
 		const currentPath = Array.isArray(path) ? path : [path]
 
-		if (!equals(currentPath, this.#path)) {
-			this.#path = currentPath
-			if (currentPath.length === 0) {
-				this.currentNode = null
-			} else {
-				this.currentNode = this.#mapper.getItemByPath(this.data, this.#path)
-				this.emit('move', { path: this.#path, node: this.currentNode })
-			}
+		if (equals(currentPath, this.#path)) return
+
+		this.#path = currentPath
+		if (currentPath.length === 0) {
+			this.currentNode = null
+		} else {
+			this.currentNode = this.mapping.getItemByPath(this.data, this.#path)
+			this.emit('move', { path: this.#path, node: this.currentNode })
 		}
 	}
 	movePrev() {
@@ -115,7 +143,7 @@ export class DataWrapper {
 		const currentNode = this.currentNode
 
 		// If current node is expanded and has children, move to first child
-		if (this.#mapper.isExpanded(currentNode) && this.#mapper.hasChildren(currentNode)) {
+		if (this.mapping.isExpanded(currentNode) && this.mapping.hasChildren(currentNode)) {
 			this.moveTo([...this.#path, 0])
 			return
 		}
@@ -129,26 +157,20 @@ export class DataWrapper {
 	}
 
 	collapse() {
-		// if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
-		if (!this.#mapper.isExpanded(this.currentNode)) return
+		if (!this.mapping.isExpanded(this.currentNode)) return
 		this.toggleExpansion()
-		// this.#mapper.toggleExpansion(this.currentNode)
-		// this.emit('collapse', { path: this.#path, node: this.currentNode })
 	}
 
 	expand() {
-		// if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
-		if (this.#mapper.isExpanded(this.currentNode)) return
+		if (this.mapping.isExpanded(this.currentNode)) return
 		this.toggleExpansion()
-		// this.#mapper.toggleExpansion(this.currentNode)
-		// this.emit('expand', { path: this.#path, node: this.currentNode })
 	}
 
 	toggleExpansion() {
-		if (!this.currentNode || !this.#mapper.hasChildren(this.currentNode)) return
+		if (!this.currentNode || !this.mapping.hasChildren(this.currentNode)) return
 
-		const eventType = this.#mapper.isExpanded(this.currentNode) ? 'collapse' : 'expand'
-		this.#mapper.toggleExpansion(this.currentNode)
+		const eventType = this.mapping.isExpanded(this.currentNode) ? 'collapse' : 'expand'
+		this.mapping.toggleExpansion(this.currentNode)
 		this.emit(eventType, { path: this.#path, node: this.currentNode })
 	}
 
@@ -156,8 +178,9 @@ export class DataWrapper {
 		this.moveTo(path)
 
 		if (this.currentNode) {
+			this.value = this.mapping.getItemByPath(this.data, this.#path)
 			this.selected.clear()
-			this.selected.set(this.#pathKey(), this.currentNode)
+			this.selected.set(getKeyFromPath(this.#path), this.currentNode)
 			this.emit('select', {
 				path: this.#path,
 				node: this.currentNode,
@@ -166,18 +189,15 @@ export class DataWrapper {
 		}
 	}
 
-	#pathKey() {
-		return this.#path.join('-')
-	}
 	#toggleSelection() {
 		if (!this.currentNode) return
 
-		const isSelected = this.selected.has(this.#pathKey())
+		const isSelected = this.selected.has(getKeyFromPath(this.#path))
 
 		if (isSelected) {
-			this.selected.delete(this.#pathKey())
+			this.selected.delete(getKeyFromPath(this.#path))
 		} else {
-			this.selected.set(this.#pathKey(), this.currentNode)
+			this.selected.set(getKeyFromPath(this.#path), this.currentNode)
 		}
 
 		this.emit('select', {
