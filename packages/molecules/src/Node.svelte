@@ -2,6 +2,7 @@
 	import { defaultStateIcons } from '@rokkit/core'
 	import { defaultMapping } from './constants'
 	import { Icon, Connector } from '@rokkit/atoms'
+	import { getKeyFromPath } from '@rokkit/core'
 
 	/**
 	 * @typedef {Object} Props
@@ -35,7 +36,7 @@
 	)
 
 	const Template = $derived(mapping.getComponent(value))
-	const id = $derived('id-' + path.join('-'))
+	const id = $derived('id-' + getKeyFromPath(path))
 </script>
 
 <rk-node
@@ -44,7 +45,7 @@
 	aria-selected={selected}
 	aria-expanded={state.label === 'collapse'}
 	role="treeitem"
-	data-path={path.join(',')}
+	data-path={getKeyFromPath(path)}
 >
 	<div class="flex flex-row items-center">
 		{#each types as type}

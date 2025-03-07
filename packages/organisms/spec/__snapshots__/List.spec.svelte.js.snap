@@ -12,6 +12,7 @@ exports[`List > should render simple list 1`] = `
      
     <!---->
     <rk-list-item
+      aria-current="false"
       aria-selected="false"
       data-path="0"
       role="option"
@@ -28,6 +29,7 @@ exports[`List > should render simple list 1`] = `
       <!---->
     </rk-list-item>
     <rk-list-item
+      aria-current="false"
       aria-selected="false"
       data-path="1"
       role="option"
@@ -62,6 +64,7 @@ exports[`List > should render simple list 2`] = `
      
     <!---->
     <rk-list-item
+      aria-current="false"
       aria-selected="false"
       data-path="0"
       role="option"
@@ -78,6 +81,7 @@ exports[`List > should render simple list 2`] = `
       <!---->
     </rk-list-item>
     <rk-list-item
+      aria-current="false"
       aria-selected="false"
       data-path="1"
       role="option"

@@ -6,7 +6,9 @@ import {
 	isObject,
 	toString,
 	iconShortcuts,
-	scaledPath
+	scaledPath,
+	getKeyFromPath,
+	getPathFromKey
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -114,6 +116,22 @@ describe('utils', () => {
 					['V', 1, 2]
 				])
 			).toEqual('A 0.5 0.5 0 0 0 0 0.5 V 5 10')
+		})
+	})
+
+	describe('getPathFromKey', () => {
+		it('should get path from key', () => {
+			expect(getPathFromKey('a-b-c')).toEqual(['a', 'b', 'c'])
+			expect(getPathFromKey('a-b-c-d')).toEqual(['a', 'b', 'c', 'd'])
+			expect(getPathFromKey('a-b-c-d-e')).toEqual(['a', 'b', 'c', 'd', 'e'])
+		})
+	})
+
+	describe('getKeyFromPath', () => {
+		it('should get key from path', () => {
+			expect(getKeyFromPath(['a', 'b', 'c'])).toEqual('a-b-c')
+			expect(getKeyFromPath(['a', 'b', 'c', 'd'])).toEqual('a-b-c-d')
+			expect(getKeyFromPath(['a', 'b', 'c', 'd', 'e'])).toEqual('a-b-c-d-e')
 		})
 	})
 })

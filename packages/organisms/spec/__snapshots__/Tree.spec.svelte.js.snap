@@ -60,7 +60,7 @@ exports[`Tree > should render nested list 1`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="0,0"
+            data-path="0-0"
             id="id-0-0"
             role="treeitem"
           >
@@ -120,7 +120,7 @@ exports[`Tree > should render nested list 1`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="0,1"
+            data-path="0-1"
             id="id-0-1"
             role="treeitem"
           >
@@ -229,7 +229,7 @@ exports[`Tree > should render nested list 1`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="1,0"
+            data-path="1-0"
             id="id-1-0"
             role="treeitem"
           >
@@ -293,7 +293,7 @@ exports[`Tree > should render nested list 1`] = `
                 aria-expanded="false"
                 aria-selected="false"
                 class=""
-                data-path="1,0,0"
+                data-path="1-0-0"
                 id="id-1-0-0"
                 role="treeitem"
               >
@@ -370,7 +370,7 @@ exports[`Tree > should render nested list 1`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="1,1"
+            data-path="1-1"
             id="id-1-1"
             role="treeitem"
           >
@@ -497,7 +497,7 @@ exports[`Tree > should render nested list 2`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="0,0"
+            data-path="0-0"
             id="id-0-0"
             role="treeitem"
           >
@@ -557,7 +557,7 @@ exports[`Tree > should render nested list 2`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="0,1"
+            data-path="0-1"
             id="id-0-1"
             role="treeitem"
           >
@@ -666,7 +666,7 @@ exports[`Tree > should render nested list 2`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="1,0"
+            data-path="1-0"
             id="id-1-0"
             role="treeitem"
           >
@@ -730,7 +730,7 @@ exports[`Tree > should render nested list 2`] = `
                 aria-expanded="false"
                 aria-selected="false"
                 class=""
-                data-path="1,0,0"
+                data-path="1-0-0"
                 id="id-1-0-0"
                 role="treeitem"
               >
@@ -807,7 +807,7 @@ exports[`Tree > should render nested list 2`] = `
             aria-expanded="false"
             aria-selected="false"
             class=""
-            data-path="1,1"
+            data-path="1-1"
             id="id-1-1"
             role="treeitem"
           >

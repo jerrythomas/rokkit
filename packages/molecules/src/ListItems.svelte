@@ -2,6 +2,7 @@
 	import { equals } from 'ramda'
 	import { noop } from '@rokkit/core'
 	import { defaultMapping } from './constants'
+	import { getKeyFromPath } from '@rokkit/core'
 
 	/**
 	 * @typedef {Object} Props
@@ -25,7 +26,7 @@
 
 {#each items as item, index}
 	{@const Template = mapping.getComponent(item)}
-	{@const path = [...hierarchy, index].join(',')}
+	{@const path = getKeyFromPath([...hierarchy, index])}
 	{@const props = mapping.getAttribute(item, 'props') || {}}
 	<rk-list-item role="option" aria-selected={equals(value, item)} data-path={path}>
 		<Template value={items[index]} {mapping} {onchange} {...props} />

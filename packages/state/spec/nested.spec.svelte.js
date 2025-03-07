@@ -49,11 +49,12 @@ describe('DataWrapper', () => {
 			]
 		}
 	]
+	const value = testData[0]
 
 	beforeEach(() => {
 		vi.clearAllMocks()
 		mapper = new FieldMapper()
-		navigator = new DataWrapper(testData, mapper, { events })
+		navigator = new DataWrapper(testData, mapper, value, { events })
 	})
 
 	describe('traversal', () => {
@@ -275,7 +276,7 @@ describe('DataWrapper', () => {
 		})
 
 		it('should extend selection by adding or removing', () => {
-			const navigator = new DataWrapper(testData, mapper, { events, multiselect: true })
+			const navigator = new DataWrapper(testData, mapper, value, { events, multiselect: true })
 
 			navigator.extendSelection([0, 0])
 			flushSync()
@@ -324,7 +325,8 @@ describe('DataWrapper', () => {
 	})
 
 	it('should handle when current node is not set', () => {
-		const navigator = new DataWrapper(testData, mapper, { events, multiselect: true })
+		const item = $state(null)
+		const navigator = new DataWrapper(testData, mapper, item, { events, multiselect: true })
 
 		navigator.moveTo([])
 		expect(navigator.currentNode).toBeNull()

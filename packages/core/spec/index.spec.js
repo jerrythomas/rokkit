@@ -23,6 +23,8 @@ describe('@rokkit/core', () => {
 			'toString',
 			'iconShortcuts',
 			'scaledPath',
+			'getKeyFromPath',
+			'getPathFromKey',
 			'flattenNestedList',
 			'findValueFromPath',
 			'toInitCapCase',
