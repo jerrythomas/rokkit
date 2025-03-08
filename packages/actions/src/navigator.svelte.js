@@ -54,7 +54,7 @@ function handleIconClick(target, wrapper) {
  * @param {import('./types.js').NavigatorConfig} options - Custom key mappings
  */
 export function navigator(root, { wrapper, options }) {
-	const keyMappings = options.direction === 'horizontal' ? Horizontal : Vertical
+	const keyMappings = options?.direction === 'horizontal' ? Horizontal : Vertical
 	const actions = getActions(wrapper)
 
 	/**

@@ -188,7 +188,10 @@ export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, color
 	const variants = Object.keys(mapping)
 
 	const rules = variants.reduce(
-		(acc, variant) => [...acc, ...generateColorRules(variant, colors, mapping)],
+		(acc, variant) => [
+			...acc,
+			...generateColorRules(variant, { ...defaultColors, ...colors }, mapping)
+		],
 		[]
 	)
 

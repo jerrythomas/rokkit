@@ -37,12 +37,7 @@ describe('navigator', () => {
 
 	describe('keyboard navigation - vertical', () => {
 		it('should handle vertical navigation keys', () => {
-			const cleanup = $effect.root(() =>
-				navigator(root, {
-					wrapper,
-					options: { direction: 'vertical' }
-				})
-			)
+			const cleanup = $effect.root(() => navigator(root, { wrapper }))
 			flushSync()
 
 			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))

@@ -4,6 +4,7 @@
 	import { listItems } from './snippets.svelte'
 	import { onMount } from 'svelte'
 	import { DataWrapper } from '@rokkit/state'
+	import { navigator } from '@rokkit/actions'
 
 	/**
 	 * @typedef {Object} Props
@@ -41,14 +42,7 @@
 	let wrapper = new DataWrapper(items, mapping, value, { events: emitter })
 </script>
 
-<rk-list
-	class={classes}
-	role="listbox"
-	aria-label={name}
-	onmove={handleNav}
-	onselect={handleNav}
-	{tabindex}
->
+<rk-list class={classes} role="listbox" aria-label={name} use:navigator={{ wrapper }} {tabindex}>
 	{@render children?.()}
 	{@render listItems(wrapper.data, mapping, value, hierarchy, emitter.change)}
 	<!-- <ListItems bind:items {mapping} {hierarchy} /> -->
