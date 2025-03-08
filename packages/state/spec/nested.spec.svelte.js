@@ -57,6 +57,28 @@ describe('DataWrapper', () => {
 		navigator = new DataWrapper(testData, mapper, value, { events })
 	})
 
+	describe('init', () => {
+		it('should initialize with correct data', () => {
+			let navigator = new DataWrapper(testData, mapper, value, { events })
+			expect(navigator.currentNode.id).toBe(1)
+			expect(navigator.currentNode.text).toBe('Item 1')
+			expect(navigator.currentNode.children.length).toBe(2)
+
+			navigator = new DataWrapper(testData, mapper, undefined, { events })
+			expect(navigator.currentNode).toBe(null)
+
+			navigator = new DataWrapper(testData, mapper, testData[0].children[1], { events })
+			expect(navigator.currentNode.id).toBe(3)
+			expect(navigator.currentNode.text).toBe('Item 1.2')
+			expect(navigator.currentNode.children.length).toBe(1)
+
+			navigator = new DataWrapper(testData, mapper, testData[0].children[1].children[0], { events })
+			expect(navigator.currentNode.id).toBe(4)
+			expect(navigator.currentNode.text).toBe('Item 1.2.1')
+			expect(navigator.currentNode.children).toBeUndefined()
+		})
+	})
+
 	describe('traversal', () => {
 		it('should not move if path is not provided', () => {
 			navigator.moveTo()
