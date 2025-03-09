@@ -37,6 +37,6 @@
     "@inlang/paraglide-sveltekit": "^0.11.1",
     "@rokkit/icons": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
-    "@rokkit/ui": "workspace:latest"
+    "@rokkit/elements": "workspace:latest"
   }
 }

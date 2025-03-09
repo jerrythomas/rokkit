@@ -1,6 +1,6 @@
 <script>
 	import { FieldMapper } from '@rokkit/core'
-	import { Item, List, Accordion } from '@rokkit/ui'
+	import { Item, List, Accordion } from '@rokkit/elements'
 
 	// let mapping = new FieldMapper({}, { default: Item })
 	let options = [

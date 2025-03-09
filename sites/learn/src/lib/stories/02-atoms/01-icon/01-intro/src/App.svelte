@@ -1,5 +1,5 @@
 <script>
-	import { Icon } from '@rokkit/ui'
+	import { Icon } from '@rokkit/elements'
 </script>
 
 <span class="flex gap-2">

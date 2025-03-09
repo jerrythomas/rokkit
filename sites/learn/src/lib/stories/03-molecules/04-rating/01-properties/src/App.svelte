@@ -1,5 +1,5 @@
 <script>
-	import { Rating } from '@rokkit/ui'
+	import { Rating } from '@rokkit/elements'
 
 	let value = $state(0)
 </script>

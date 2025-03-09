@@ -1,7 +1,7 @@
 import { it, expect, describe } from 'vitest'
 import { flushSync } from 'svelte'
 import { themable } from '../src/themable.svelte.js'
-import { vibe } from '@rokkit/state'
+import { vibe } from '@rokkit/states'
 
 describe('themable', () => {
 	const theme = $state({
@@ -148,7 +148,7 @@ describe('themable', () => {
 			cleanup()
 		})
 
-		it('should handle storage events',()=>{
+		it('should handle storage events', () => {
 			const root = document.createElement('div')
 			const cleanup = $effect.root(() =>
 				themable(root, { theme: vibe, storageKey: 'rokkit-theme' })

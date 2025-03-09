@@ -1,6 +1,6 @@
 <script>
 	import { media } from '$lib/media'
-	import { ResponsiveGrid } from '@rokkit/ui'
+	import { ResponsiveGrid } from '@rokkit/elements'
 
 	import Preview from './Preview.svelte'
 	import Notes from './Notes.svelte'

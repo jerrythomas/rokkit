@@ -1,5 +1,5 @@
 <script>
-	import { Item } from '@rokkit/ui'
+	import { Item } from '@rokkit/elements'
 
 	let icon = { open: 'i-rokkit:folder-opened', close: 'i-rokkit:folder-closed' }
 </script>
