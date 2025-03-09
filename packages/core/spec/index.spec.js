@@ -47,8 +47,7 @@ describe('@rokkit/core', () => {
 			'getLineTypes',
 			'weekdays',
 			'getCalendarDays',
-			'generateTicks',
-			'Storage'
+			'generateTicks'
 		])
 	})
 })
