@@ -148,7 +148,7 @@ describe('themable', () => {
 			cleanup()
 		})
 
-		it('should handle storage events',()=>{
+		it('should handle storage events', () => {
 			const root = document.createElement('div')
 			const cleanup = $effect.root(() =>
 				themable(root, { theme: vibe, storageKey: 'rokkit-theme' })
