@@ -42,14 +42,15 @@ class Vibe {
 		const grouped = groupThemeRulesByMode(themeRules(this.#style, this.#colorMap, this.#colors))
 		return grouped[this.#mode]
 	})
+	#hasChanged = false
 
 	/**
 	 * Private constructor to enforce singleton pattern
 	 * @param {VibeOptions} [options={}]
 	 */
 	constructor(options = {}) {
-		this.style = options.style
 		this.mode = options.mode
+		this.style = options.style
 		this.density = options.density
 		this.colorMap = options.colorMap
 		this.colors = options.colors
@@ -110,6 +111,48 @@ class Vibe {
 
 	get palette() {
 		return this.#palette
+	}
+
+	/**
+	 * Load theme from storage
+	 * @param {string} key
+	 */
+	load(key) {
+		try {
+			const stored = localStorage.getItem(key)
+			if (stored) {
+				this.update(JSON.parse(stored))
+			}
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.warn(`Failed to load theme from storage for key "${key}"`, e.message)
+		}
+	}
+
+	/**
+	 * Save current theme to storage
+	 * @param {string} key
+	 */
+	save(key) {
+		if (!key) throw new Error('Key is required')
+
+		try {
+			const config = { style: this.#style, mode: this.#mode, density: this.#density }
+			localStorage.setItem(key, JSON.stringify(config))
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.warn(`Failed to save theme to storage for key "${key}"`, e.message)
+		}
+	}
+
+	/**
+	 * Update theme with new values
+	 * @param {Partial<Theme>} value
+	 */
+	update(value) {
+		this.style = value.style
+		this.mode = value.mode
+		this.density = value.density
 	}
 }
 
