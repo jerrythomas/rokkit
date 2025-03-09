@@ -1,5 +1,5 @@
 <script>
-	import { Pill } from '@rokkit/ui'
+	import { Pill } from '@rokkit/elements'
 	import { FieldMapper } from '@rokkit/core'
 	import Status from './Status.svelte'
 

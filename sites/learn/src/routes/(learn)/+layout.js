@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit'
 import { guide } from '$lib/stories'
 import { FieldMapper } from '@rokkit/core'
-import { Item } from '@rokkit/ui'
+import { Item } from '@rokkit/elements'
 
 /** @type {import('./$types').LayoutLoad} */
 export async function load({ params }) {

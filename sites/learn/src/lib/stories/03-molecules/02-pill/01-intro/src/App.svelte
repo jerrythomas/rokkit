@@ -1,5 +1,5 @@
 <script>
-	import { Pill, Item } from '@rokkit/ui'
+	import { Pill, Item } from '@rokkit/elements'
 	import { FieldMapper } from '@rokkit/core'
 
 	let message = $state()

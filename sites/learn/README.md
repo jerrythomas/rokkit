@@ -21,15 +21,14 @@ Components have been separated into the following packages. Refer to the package
 - [@rokkit/core](packages/core)
 - [@rokkit/data](packages/data)
 - [@rokkit/actions](packages/actions)
-- [@rokkit/stores](packages/stores)
-- [@rokkit/atoms](packages/atoms)
-- [@rokkit/molecules](packages/molecules)
-- [@rokkit/organisms](packages/organisms)
+- [@rokkit/stores](packages/states)
+- [@rokkit/stores](packages/elements)
+
 - [@rokkit/layout](packages/layout)
 - [@rokkit/chart](packages/chart)
 - [@rokkit/icons](packages/icons)
 - [@rokkit/themes](packages/themes)
-- [@rokkit/ui](packages/ui)
+- [@rokkit/elements](packages/ui)
 
 ## Installation
 
@@ -46,7 +45,7 @@ To use Rokkit in your Svelte project, simply import the desired control and use 
 
 ```svelte
 <script>
-  import { List } from '@rokkit/ui'
+  import { List } from '@rokkit/elements'
 </script>
 
 <List items={['a', 'b', 'c']} />
@@ -58,7 +57,7 @@ One of the key features of Rokkit is its data-driven controls. These controls au
 
 ```svelte
 <script>
-  import { List } from '@rokkit/ui'
+  import { List } from '@rokkit/elements'
 
   let items = ['a', 'b', 'c']
   let value
@@ -80,7 +79,7 @@ If you want to provide users the option of switching between dark theme and ligh
 ```svelte
 <script>
   import { themable } from '@rokkit/actions'
-  import { ToggleThemeMode } from '@rokkit/ui'
+  import { ToggleThemeMode } from '@rokkit/elements'
 </script>
 
 <svelte:body use:themable />

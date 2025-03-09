@@ -1,5 +1,5 @@
 <script>
-	import { Item } from '@rokkit/ui'
+	import { Item } from '@rokkit/elements'
 	import { FieldMapper } from '@rokkit/core'
 	let value = { name: 'A Heart Icon', symbol: 'i-rokkit:heart-filled' }
 	let mapping = new FieldMapper({ text: 'name', icon: 'symbol' })

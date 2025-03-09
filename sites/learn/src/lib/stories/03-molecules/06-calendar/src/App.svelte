@@ -1,5 +1,5 @@
 <script>
-	import { Calendar } from '@rokkit/ui'
+	import { Calendar } from '@rokkit/elements'
 </script>
 
 <Calendar />
