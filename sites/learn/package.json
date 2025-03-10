@@ -23,6 +23,7 @@
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "@unocss/extractor-svelte": "^65.4.0",
+    "@unocss/reset": "66.1.0-beta.3",
     "mdsvex": "^0.11.2",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
@@ -35,10 +36,14 @@
     "@fontsource/overpass": "^5.1.2",
     "@fontsource/victor-mono": "^5.1.1",
     "@inlang/paraglide-sveltekit": "^0.11.1",
-    "@rokkit/ui": "workspace:latest",
+    "@rokkit/actions": "workspace:latest",
+    "@rokkit/core": "workspace:latest",
     "@rokkit/icons": "workspace:latest",
     "@rokkit/input": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
+    "@rokkit/tutorial": "workspace:latest",
+    "@rokkit/ui": "workspace:latest",
     "@sveltejs/adapter-vercel": "^5.6.3"
   }
 }

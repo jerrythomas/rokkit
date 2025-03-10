@@ -7,6 +7,8 @@
 	import { setContext } from 'svelte'
 	import { page } from '$app/state'
 	import { media } from '$lib/media.js'
+	import { vibe } from '@rokkit/states'
+	import { themable } from '@rokkit/actions'
 	import Header from './Header.svelte'
 
 	/**
@@ -30,7 +32,7 @@
 	let headerStyle = $derived(page.url.pathname == '/' ? '' : 'border-b border-neutral-inset z-10')
 </script>
 
-<svelte:body />
+<svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />
 <svelte:head>
 	<title>{site.title}</title>
 	<meta name="description" content={site.description} />

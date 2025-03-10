@@ -3,7 +3,7 @@
 	import { createEmitter } from '@rokkit/core'
 	import { defaultMapping } from './constants'
 	import Summary from './Summary.svelte'
-	import { listItems } from './snippets.svelte'
+	// import { listItems } from './snippets.svelte'
 
 	/**
 	 * @typedef {Object} Props
@@ -45,6 +45,21 @@
 	}
 </script>
 
+{#snippet listItems(items, mapping, value, hierarchy = [], onchange = noop)}
+	{#each items as item, index}
+		{@const Template = mapping.getComponent(item)}
+		{@const path = getKeyFromPath([...hierarchy, index])}
+		{@const props = mapping.getAttribute(item, 'props') || {}}
+		<rk-list-item
+			role="option"
+			data-path={path}
+			aria-selected={equals(value, item)}
+			aria-current={equals(value, item)}
+		>
+			<Template bind:value={items[index]} {mapping} {onchange} {...props} />
+		</rk-list-item>
+	{/each}
+{/snippet}
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rk-accordion
 	class={classes}

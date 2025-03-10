@@ -25,5 +25,9 @@
       "types": "./dist/index.d.ts",
       "import": "./src/index.js"
     }
+  },
+  "dependencies": {
+    "@rokkit/core": "workspace:latest",
+    "ramda": "^0.30.1"
   }
 }

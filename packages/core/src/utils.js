@@ -99,5 +99,5 @@ export function getKeyFromPath(path) {
  * @returns {string[]}
  */
 export function getPathFromKey(key) {
-	return key.split('-')
+	return key.split('-').map(Number)
 }

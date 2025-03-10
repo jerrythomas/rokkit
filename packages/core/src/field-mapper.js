@@ -1,6 +1,6 @@
-import { defaultFields } from './constants'
+import { defaultFields } from './constants.js'
 import { isNil, has, omit } from 'ramda'
-import { isObject } from './utils'
+import { isObject } from './utils.js'
 
 export class FieldMapper {
 	#fields = { ...defaultFields }

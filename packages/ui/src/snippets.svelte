@@ -1,6 +1,5 @@
 <script module>
-	import { getKeyFromPath } from '@rokkit/core'
-	import { noop } from '@rokkit/core'
+	import { getKeyFromPath, noop } from '@rokkit/core'
 	import { equals } from 'ramda'
 	export { listItems }
 </script>

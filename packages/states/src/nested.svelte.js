@@ -4,13 +4,14 @@ import { DEFAULT_EVENTS } from './constants'
 import { FieldMapper, getKeyFromPath } from '@rokkit/core'
 
 export class DataWrapper {
+	/* @type number[] */
 	#path = []
 	#events = {}
 	#multiselect = false
 	#init = false
 	items = null
 	data = null
-	value = null
+	value = $state(null)
 	mapping = new FieldMapper()
 	currentNode = $state(null)
 	selected = new SvelteMap()
@@ -83,10 +84,9 @@ export class DataWrapper {
 
 	#getNextSiblingPath(inputPath) {
 		const parentPath = inputPath.slice(0, -1)
-		const currentIndex = inputPath[inputPath.length - 1]
+		const currentIndex = Number(inputPath[inputPath.length - 1])
 
 		const siblings = this.mapping.getChildrenByPath(this.data, parentPath)
-
 		if (currentIndex < siblings.length - 1) {
 			return [...parentPath, currentIndex + 1]
 		} else if (parentPath.length > 0) {
@@ -109,7 +109,7 @@ export class DataWrapper {
 		if (currentPath.length === 0) {
 			this.currentNode = null
 		} else {
-			this.currentNode = this.mapping.getItemByPath(this.data, this.#path)
+			this.currentNode = this.mapping.getItemByPath(this.data, currentPath)
 			this.emit('move', { path: this.#path, node: this.currentNode })
 		}
 	}

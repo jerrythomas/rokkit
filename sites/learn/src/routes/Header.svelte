@@ -27,8 +27,12 @@
 		console.log('handleCodeVisibility', detail)
 		site.code = detail.value
 	}
-	beforeNavigate(() => (loading = true))
-	afterNavigate(() => (loading = false))
+	beforeNavigate(() => {
+		loading = true
+	})
+	afterNavigate(() => {
+		loading = false
+	})
 
 	let showCodeToggle = $derived(!media.small.current && page.url.pathname !== '/')
 </script>
@@ -62,7 +66,7 @@
 			{/each}
 		</nav>
 		{#if showCodeToggle}
-			<Toggle options={codeOptions} onchange={handleCodeVisibility} />
+			<Toggle options={codeOptions} value={site.code} onchange={handleCodeVisibility} />
 		{/if}
 		<ThemeSwitcher />
 		<a

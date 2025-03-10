@@ -63,6 +63,9 @@ importers:
 
   packages/actions:
     dependencies:
+      '@rokkit/core':
+        specifier: workspace:latest
+        version: link:../core
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -171,7 +174,14 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
 
-  packages/input: {}
+  packages/input:
+    dependencies:
+      '@rokkit/core':
+        specifier: workspace:latest
+        version: link:../core
+      ramda:
+        specifier: ^0.30.1
+        version: 0.30.1
 
   packages/states:
     dependencies:
@@ -202,6 +212,9 @@ importers:
 
   packages/tutorial:
     dependencies:
+      '@rokkit/core':
+        specifier: workspace:latest
+        version: link:../core
       '@vitest/expect':
         specifier: ^2.1.8
         version: 2.1.8
@@ -223,6 +236,12 @@ importers:
       '@rokkit/states':
         specifier: workspace:latest
         version: link:../states
+      d3-scale:
+        specifier: ^4.0.2
+        version: 4.0.2
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -241,15 +260,27 @@ importers:
       '@inlang/paraglide-sveltekit':
         specifier: ^0.11.1
         version: 0.11.5(@sveltejs/kit@2.15.2(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.17.3)(vite@5.4.11(@types/node@20.12.14)))(svelte@5.17.3)(vite@5.4.11(@types/node@20.12.14)))
+      '@rokkit/actions':
+        specifier: workspace:latest
+        version: link:../../packages/actions
+      '@rokkit/core':
+        specifier: workspace:latest
+        version: link:../../packages/core
       '@rokkit/icons':
         specifier: workspace:latest
         version: link:../../packages/icons
       '@rokkit/input':
         specifier: workspace:latest
         version: link:../../packages/input
+      '@rokkit/states':
+        specifier: workspace:latest
+        version: link:../../packages/states
       '@rokkit/themes':
         specifier: workspace:latest
         version: link:../../packages/themes
+      '@rokkit/tutorial':
+        specifier: workspace:latest
+        version: link:../../packages/tutorial
       '@rokkit/ui':
         specifier: workspace:latest
         version: link:../../packages/ui
@@ -278,6 +309,9 @@ importers:
       '@unocss/extractor-svelte':
         specifier: ^65.4.0
         version: 65.4.0
+      '@unocss/reset':
+        specifier: 66.1.0-beta.3
+        version: 66.1.0-beta.3
       mdsvex:
         specifier: ^0.11.2
         version: 0.11.2(svelte@5.17.3)
@@ -1620,6 +1654,9 @@ packages:
   '@unocss/reset@65.4.0':
     resolution: {integrity: sha512-SHT5IKWbr1iZm1gswWJy+G0a/tnzIODZxjZGr64JStZn/uy7N9AVs5+Kmnlx2NyhW8VNApxTnAkl035jRejZPw==}
 
+  '@unocss/reset@66.1.0-beta.3':
+    resolution: {integrity: sha512-QV8ZWhj/4cuTGtxiqDmSZDc339cb9IJT40o9FGmOMRH20kJNlDX0OIsevOX/LsTiGgp6KTM5ORVr6QUMmiRv0w==}
+
   '@unocss/rule-utils@65.4.0':
     resolution: {integrity: sha512-Fb2IKg/wQlIBDY3rzVpDxwZ3Ho1ihcbFGEzr17ZM/N5MTrdzAA3GiXA3yzOjOboc/UnqRr2Q5JG8aACLn0lAAw==}
     engines: {node: '>=14'}
@@ -2077,6 +2114,30 @@ packages:
 
   d3-collection@1.0.7:
     resolution: {integrity: sha512-ii0/r5f4sjKNTfh84Di+DpztYwqKhEyUlKoPrzUFfeSkWxjW49xU2QzO9qrPrNkpdI0XJkfzvmTu8V2Zylln6A==}
+
+  d3-color@3.1.0:
+    resolution: {integrity: sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==}
+    engines: {node: '>=12'}
+
+  d3-format@3.1.0:
+    resolution: {integrity: sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==}
+    engines: {node: '>=12'}
+
+  d3-interpolate@3.0.1:
+    resolution: {integrity: sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==}
+    engines: {node: '>=12'}
+
+  d3-scale@4.0.2:
+    resolution: {integrity: sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==}
+    engines: {node: '>=12'}
+
+  d3-time-format@4.1.0:
+    resolution: {integrity: sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==}
+    engines: {node: '>=12'}
+
+  d3-time@3.1.0:
+    resolution: {integrity: sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==}
+    engines: {node: '>=12'}
 
   data-urls@3.0.2:
     resolution: {integrity: sha512-Jy/tj3ldjZJo63sVAvg6LHt2mHvl4V6AgRAmNDtLdm7faqtsx+aJG42rsyCo9JCoRVKwPFzKlIPx3DIibwSIaQ==}
@@ -4905,6 +4966,8 @@ snapshots:
 
   '@unocss/reset@65.4.0': {}
 
+  '@unocss/reset@66.1.0-beta.3': {}
+
   '@unocss/rule-utils@65.4.0':
     dependencies:
       '@unocss/core': 65.4.0
@@ -5441,6 +5504,30 @@ snapshots:
       internmap: 2.0.3
 
   d3-collection@1.0.7: {}
+
+  d3-color@3.1.0: {}
+
+  d3-format@3.1.0: {}
+
+  d3-interpolate@3.0.1:
+    dependencies:
+      d3-color: 3.1.0
+
+  d3-scale@4.0.2:
+    dependencies:
+      d3-array: 3.2.4
+      d3-format: 3.1.0
+      d3-interpolate: 3.0.1
+      d3-time: 3.1.0
+      d3-time-format: 4.1.0
+
+  d3-time-format@4.1.0:
+    dependencies:
+      d3-time: 3.1.0
+
+  d3-time@3.1.0:
+    dependencies:
+      d3-array: 3.2.4
 
   data-urls@3.0.2:
     dependencies:

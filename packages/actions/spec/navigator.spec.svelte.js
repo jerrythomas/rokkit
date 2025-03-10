@@ -101,7 +101,7 @@ describe('navigator', () => {
 			const item = root.querySelector('[data-path="0"]')
 			item.click()
 
-			expect(wrapper.select).toHaveBeenCalledWith(['0'], false)
+			expect(wrapper.select).toHaveBeenCalledWith([0], false)
 			expect(wrapper.toggleExpansion).toHaveBeenCalled()
 
 			cleanup()
@@ -119,7 +119,7 @@ describe('navigator', () => {
 			const icon = root.querySelector('[data-state="closed"]')
 			icon.click()
 
-			expect(wrapper.select).toHaveBeenCalledWith(['0'], false)
+			expect(wrapper.select).toHaveBeenCalledWith([0], false)
 			expect(wrapper.expand).toHaveBeenCalled()
 			expect(wrapper.toggleExpansion).not.toHaveBeenCalled()
 
@@ -138,7 +138,7 @@ describe('navigator', () => {
 			const icon = root.querySelector('[data-state="opened"]')
 			icon.click()
 
-			expect(wrapper.select).toHaveBeenCalledWith(['1'], false)
+			expect(wrapper.select).toHaveBeenCalledWith([1], false)
 			expect(wrapper.collapse).toHaveBeenCalled()
 			expect(wrapper.toggleExpansion).not.toHaveBeenCalled()
 
@@ -157,7 +157,7 @@ describe('navigator', () => {
 			const item = root.querySelector('[data-path="0"]')
 			fireEvent.click(item, { ctrlKey: true })
 
-			expect(wrapper.select).toHaveBeenCalledWith(['0'], true)
+			expect(wrapper.select).toHaveBeenCalledWith([0], true)
 
 			cleanup()
 		})

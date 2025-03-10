@@ -1,6 +1,6 @@
 <script>
 	import { FieldMapper } from '@rokkit/core'
-	import { Item, List, Accordion } from '@rokkit/ui'
+	import { Item } from '@rokkit/ui'
 
 	// let mapping = new FieldMapper({}, { default: Item })
 	let options = [
@@ -33,5 +33,5 @@
 	<h1>List</h1>
 	<!-- <Switch bind:value {mapping} {options} /> -->
 	<!-- <List items={options} bind:value {mapping}></List> -->
-	<Accordion {items} bind:value></Accordion>
+	<!-- <Accordion {items} bind:value></Accordion> -->
 </div>
