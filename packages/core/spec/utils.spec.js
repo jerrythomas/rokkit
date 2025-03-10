@@ -121,17 +121,17 @@ describe('utils', () => {
 
 	describe('getPathFromKey', () => {
 		it('should get path from key', () => {
-			expect(getPathFromKey('a-b-c')).toEqual(['a', 'b', 'c'])
-			expect(getPathFromKey('a-b-c-d')).toEqual(['a', 'b', 'c', 'd'])
-			expect(getPathFromKey('a-b-c-d-e')).toEqual(['a', 'b', 'c', 'd', 'e'])
+			expect(getPathFromKey('0-1-2')).toEqual([0, 1, 2])
+			expect(getPathFromKey('0-1-2-3')).toEqual([0, 1, 2, 3])
+			expect(getPathFromKey('0-1-2-3-4')).toEqual([0, 1, 2, 3, 4])
 		})
 	})
 
 	describe('getKeyFromPath', () => {
 		it('should get key from path', () => {
-			expect(getKeyFromPath(['a', 'b', 'c'])).toEqual('a-b-c')
-			expect(getKeyFromPath(['a', 'b', 'c', 'd'])).toEqual('a-b-c-d')
-			expect(getKeyFromPath(['a', 'b', 'c', 'd', 'e'])).toEqual('a-b-c-d-e')
+			expect(getKeyFromPath([0, 1, 2])).toEqual('0-1-2')
+			expect(getKeyFromPath([1, 2, 3, 4])).toEqual('1-2-3-4')
+			expect(getKeyFromPath([2, 3, 4, 5, 6])).toEqual('2-3-4-5-6')
 		})
 	})
 })

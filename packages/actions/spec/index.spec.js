@@ -4,6 +4,13 @@ import * as actions from '../src/index.js'
 
 describe('actions', () => {
 	it('should contain all exported actions', () => {
-		expect(Object.keys(actions)).toEqual(['keyboard', 'pannable', 'swipeable', 'navigator'])
+		expect(Object.keys(actions)).toEqual([
+			'keyboard',
+			'pannable',
+			'swipeable',
+			'navigator',
+			'themable',
+			'skinnable'
+		])
 	})
 })

@@ -29,9 +29,11 @@
     }
   },
   "dependencies": {
-    "ramda": "^0.30.1",
     "@rokkit/actions": "workspace:latest",
     "@rokkit/core": "workspace:latest",
-    "@rokkit/states": "workspace:latest"
+    "@rokkit/states": "workspace:latest",
+    "d3-scale": "^4.0.2",
+    "date-fns": "^4.1.0",
+    "ramda": "^0.30.1"
   }
 }

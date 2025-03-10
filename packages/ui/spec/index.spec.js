@@ -14,7 +14,6 @@ describe('components', () => {
 			'Connector',
 			'RangeTick',
 			'RangeSlider',
-			'ListItems',
 			'Node',
 			'Summary',
 			'BreadCrumbs',

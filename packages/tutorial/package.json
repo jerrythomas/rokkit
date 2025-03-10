@@ -29,6 +29,7 @@
   "dependencies": {
     "@vitest/expect": "^2.1.8",
     "frontmatter": "^0.0.3",
-    "ramda": "^0.30.1"
+    "ramda": "^0.30.1",
+    "@rokkit/core": "workspace:latest"
   }
 }

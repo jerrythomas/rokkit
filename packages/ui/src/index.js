@@ -9,7 +9,6 @@ export { default as Connector } from './Connector.svelte'
 export { default as RangeTick } from './RangeTick.svelte'
 export { default as RangeSlider } from './RangeSlider.svelte'
 
-export { default as ListItems } from './ListItems.svelte'
 export { default as Node } from './Node.svelte'
 export { default as Summary } from './Summary.svelte'
 export { default as BreadCrumbs } from './BreadCrumbs.svelte'

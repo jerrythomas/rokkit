@@ -211,6 +211,10 @@
   @apply bg-neutral-subtle;
 }
 
+.rokkit rk-list-item[aria-current='true'] {
+  @apply bg-neutral-subtle text-on-neutral;
+}
+
 /* Selected and Hover styles for rk-list and rk-node */
 .rokkit rk-list rk-list-item[aria-selected='true'] > a {
   @apply text-white;

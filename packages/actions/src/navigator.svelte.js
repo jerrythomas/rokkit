@@ -22,13 +22,17 @@ const Vertical = {
  * Get actions for the navigator
  *
  * @param {import('./types.js').DataWrapper} wrapper - The navigator wrapper
+ * @param {HTMLElement} root - The root element
  * @returns {import('./types.js').NavigatorActions} - The navigator actions
  */
-function getActions(wrapper) {
+function getActions(wrapper, root) {
 	const actions = {
 		prev: () => wrapper.movePrev(),
 		next: () => wrapper.moveNext(),
-		select: () => wrapper.select(),
+		select: () => {
+			wrapper.select()
+			root.dispatchEvent(new CustomEvent('activate'))
+		},
 		collapse: () => wrapper.collapse?.(),
 		expand: () => wrapper.expand?.()
 	}
@@ -55,7 +59,7 @@ function handleIconClick(target, wrapper) {
  */
 export function navigator(root, { wrapper, options }) {
 	const keyMappings = options?.direction === 'horizontal' ? Horizontal : Vertical
-	const actions = getActions(wrapper)
+	const actions = getActions(wrapper, root)
 
 	/**
 	 * Handle keyboard events
@@ -78,6 +82,7 @@ export function navigator(root, { wrapper, options }) {
 			const iconClicked = handleIconClick(event.target, wrapper)
 			const path = getPathFromKey(node.getAttribute('data-path'))
 			wrapper.select(path, event.ctrlKey || event.metaKey)
+			root.dispatchEvent(new CustomEvent('activate'))
 			if (!iconClicked) wrapper.toggleExpansion()
 		}
 	}
