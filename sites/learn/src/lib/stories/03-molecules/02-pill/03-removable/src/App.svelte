@@ -1,5 +1,5 @@
 <script>
-	import { Pill } from '@rokkit/elements'
+	import { Pill } from '@rokkit/ui'
 
 	let items = $state([
 		{ text: 'Sample Removable 1' },

@@ -3,7 +3,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
 	import { page } from '$app/state'
 	import { media } from '$lib/media.js'
-	import { Icon, ProgressBar, Toggle } from '@rokkit/elements'
+	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	const site = getContext('site')()

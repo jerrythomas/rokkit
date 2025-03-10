@@ -1,5 +1,5 @@
 <script>
-	import { Item } from '@rokkit/elements'
+	import { Item } from '@rokkit/ui'
 
 	let avatar = {
 		text: 'An image',

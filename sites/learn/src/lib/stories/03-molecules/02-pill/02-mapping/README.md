@@ -8,7 +8,7 @@ Set the using property to the Status component and ItemWrapper will use this for
 
 ```svelte
 <script>
-  import { Pill } from '@rokkit/elements'
+  import { Pill } from '@rokkit/ui'
   import { FieldMapper } from '@rokkit/core'
   import Status from './Status.svelte'
 

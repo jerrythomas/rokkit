@@ -1,9 +1,9 @@
 <script>
 	import { theme } from '$lib/theme.svelte.js'
 	import { FieldMapper } from '@rokkit/core'
-	import { Toggle } from '@rokkit/elements'
+	import { Toggle } from '@rokkit/ui'
 	import { InputSelect } from '@rokkit/input'
-	// import { Select, ToggleThemeMode } from '@rokkit/elements'
+	// import { Select, ToggleThemeMode } from '@rokkit/ui'
 
 	let options = [
 		{ icon: 'mode-dark', value: 'dark' },
