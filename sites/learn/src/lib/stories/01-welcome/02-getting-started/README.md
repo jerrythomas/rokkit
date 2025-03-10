@@ -8,10 +8,10 @@ Rokkit consists of the following libraries.
 - [@rokkit/icons](https://www.npmjs.com/package/@rokkit/icons)
 - [@rokkit/actions](https://www.npmjs.com/package/@rokkit/actions)
 - [@rokkit/states](https://www.npmjs.com/package/@rokkit/states)
-- [@rokkit/elements](https://www.npmjs.com/package/@rokkit/elements)
+- [@rokkit/ui](https://www.npmjs.com/package/@rokkit/ui)
 
 - [@rokkit/layout](https://www.npmjs.com/package/@rokkit/layout)
-- [@rokkit/elements](https://www.npmjs.com/package/@rokkit/elements)
+- [@rokkit/ui](https://www.npmjs.com/package/@rokkit/ui)
 - [@rokkit/themes](https://www.npmjs.com/package/@rokkit/themes)
 
 > You'll need to have basic familiarity with Svelte/Svelte-Kit to use Rokkit.

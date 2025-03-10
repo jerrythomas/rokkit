@@ -1,7 +1,7 @@
 <script>
 	import { equals } from 'ramda'
 	import { FieldMapper } from '@rokkit/core'
-	import { Item } from '@rokkit/elements'
+	import { Item } from '@rokkit/ui'
 	import { onMount } from 'svelte'
 
 	let { value = $bindable(), options = [], mapping = new FieldMapper() } = $props()

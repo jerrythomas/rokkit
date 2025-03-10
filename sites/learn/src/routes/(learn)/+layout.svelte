@@ -1,6 +1,6 @@
 <script>
 	import Sidebar from './Sidebar.svelte'
-	import { Tree } from '@rokkit/elements'
+	import { Tree } from '@rokkit/ui'
 
 	/**
 	 * @typedef {Object} Props

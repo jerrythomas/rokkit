@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
-	import { Icon } from '@rokkit/elements'
+	import { Icon } from '@rokkit/ui'
 	/**
 	 * @typedef {Object} Props
 	 * @property {import('svelte').Snippet} [children]

@@ -1,5 +1,5 @@
 <script>
-	import { Range } from '@rokkit/elements'
+	import { Range } from '@rokkit/ui'
 
 	let value = $state(null)
 </script>

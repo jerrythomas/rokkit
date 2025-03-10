@@ -1,5 +1,5 @@
 <script>
-	import { Icon } from '@rokkit/elements'
+	import { Icon } from '@rokkit/ui'
 
 	let count = $state(0)
 	function handleClick() {

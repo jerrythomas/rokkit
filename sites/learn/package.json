@@ -35,7 +35,7 @@
     "@fontsource/overpass": "^5.1.2",
     "@fontsource/victor-mono": "^5.1.1",
     "@inlang/paraglide-sveltekit": "^0.11.1",
-    "@rokkit/elements": "workspace:latest",
+    "@rokkit/ui": "workspace:latest",
     "@rokkit/icons": "workspace:latest",
     "@rokkit/input": "workspace:latest",
     "@rokkit/themes": "workspace:latest",

@@ -1,5 +1,5 @@
 <script>
-	import { Connector } from '@rokkit/elements'
+	import { Connector } from '@rokkit/ui'
 
 	let variants = [
 		{ title: 'last', props: { type: 'last' } },

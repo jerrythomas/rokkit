@@ -1,5 +1,5 @@
 <script>
-	import { Icon } from '@rokkit/elements'
+	import { Icon } from '@rokkit/ui'
 </script>
 
 <span class="flex items-center justify-start gap-2 py-2">
