@@ -7,12 +7,13 @@
  * @returns {any}
  */
 export function findItemInMenu(menu, url) {
+	if (!Array.isArray(menu)) return null
+
 	for (const item of menu) {
 		if (item.route && url.pathname.endsWith(item.route)) return item
-		if (item.children) {
-			const found = findItemInMenu(item.children, url)
-			if (found) return found
-		}
+		const childResult = findItemInMenu(item.children, url)
+		if (childResult) return childResult
 	}
+
 	return null
 }

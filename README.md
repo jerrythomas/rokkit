@@ -13,20 +13,17 @@ Rokkit provides both composable and data-driven components.
 - Data-driven components, make it easier to build dynamic and reactive interfaces. One of the key benefits of this approach is that it allows developers to focus on the data and logic of their application, rather than the implementation of UI elements.
 
 > Rokkit is currently under development and not feature complete yet.
+> Rokkit has been rewritten to use Svelte 5 runes
+> Some components are yet to be rewritten
 
 ## Libraries
 
-Components have been separated into the following packages. Refer to the package [stories](sites/rokkit) for examples of all available UI components. View a live demo [here](https://rokkit.vercel.app/)
+Components have been separated into the following packages. Refer to the [stories](sites/learn/lib/stories) for examples of all available UI components. View a live demo [here](https://rokkit.vercel.app/)
 
 - [@rokkit/core](packages/core)
 - [@rokkit/data](packages/data)
 - [@rokkit/actions](packages/actions)
-- [@rokkit/stores](packages/stores)
-- [@rokkit/atoms](packages/atoms)
-- [@rokkit/molecules](packages/molecules)
-- [@rokkit/organisms](packages/organisms)
-- [@rokkit/layout](packages/layout)
-- [@rokkit/chart](packages/chart)
+- [@rokkit/states](packages/states)
 - [@rokkit/icons](packages/icons)
 - [@rokkit/themes](packages/themes)
 - [@rokkit/ui](packages/ui)
@@ -47,9 +44,10 @@ To use Rokkit in your Svelte project, simply import the desired control and use 
 ```svelte
 <script>
   import { List } from '@rokkit/ui'
+  let items = $state(['a', 'b', 'c'])
 </script>
 
-<List items={['a', 'b', 'c']} />
+<List bind:items />
 ```
 
 ## Data-Driven Controls
@@ -60,11 +58,11 @@ One of the key features of Rokkit is its data-driven controls. These controls au
 <script>
   import { List } from '@rokkit/ui'
 
-  let items = ['a', 'b', 'c']
-  let value
+  let items = $state(['a', 'b', 'c'])
+  let value = $state(null)
 </script>
 
-<List {items} bind:value />
+<List bind:items bind:value />
 ```
 
 ## Themeable Controls
@@ -72,7 +70,7 @@ One of the key features of Rokkit is its data-driven controls. These controls au
 To apply a theme to your controls, simply pass a theme prop to the body element.
 
 ```svelte
-<svelte:body class="rokkit dark" />
+<svelte:body data-style="rokkit" data-mode="dark" />
 ```
 
 If you want to provide users the option of switching between dark theme and light mode or custom themes, then you can also use the `themable` action with the `ToggleThemeMode` component.
