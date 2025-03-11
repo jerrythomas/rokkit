@@ -1,18 +1,19 @@
 <script>
 	import { createEmitter } from '@rokkit/core'
-	import { defaultMapping } from './constants'
 	import { navigator } from '@rokkit/actions'
 	import { DataWrapper } from '@rokkit/states'
+	import { defaultMapping } from './constants'
 	import NestedList from './NestedList.svelte'
 
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
 	 * @property {Array<Object>} [items]
-	 * @property {import('@rokkit/core').FieldMapping} [fields]
-	 * @property {any} [using]
-	 * @property {string} [root]
+	 * @property {import('@rokkit/core').FieldMapping} [mapping]
 	 * @property {any} [value]
+	 * @property {import('./types').NodeStateIcons} icons
+	 * @property {boolean} [autoCloseSiblings=false]
+	 * @property {boolean} [multiselect=false]
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
@@ -22,33 +23,25 @@
 		mapping = defaultMapping,
 		value = $bindable(null),
 		icons = {},
+		autoCloseSiblings = false,
+		multiselect = false,
 		...events
 	} = $props()
 
-	let indices = $state([])
 	let emitter = createEmitter(events, ['select', 'move', 'collapse', 'expand'])
-	let wrapper = new DataWrapper(items, mapping, value, { events: emitter })
-	function handle(event) {
-		if (['select', 'move'].includes(event.type)) {
-			value = event.detail.node
-			indices = event.detail.path
-		}
-		if (['collapse', 'expand'].includes(event.type)) {
-			items = items
-		}
-		emitter[event.type](value)
-	}
+	let wrapper = new DataWrapper(items, mapping, value, {
+		events: emitter,
+		multiselect,
+		autoCloseSiblings
+	})
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rk-tree
-	onselect={handle}
-	onmove={handle}
-	onexpand={handle}
-	oncollapse={handle}
 	tabindex="0"
 	class={classes}
 	use:navigator={{ wrapper }}
+	onactivate={() => (value = wrapper.value)}
 >
 	<NestedList {items} {mapping} bind:value {icons} />
 </rk-tree>

@@ -1,17 +1,17 @@
 /* Styles for ' rk-switch' */
-.rokkit rk-field rk-switch:focus-within {
+[data-style='rokkit'] rk-field rk-switch:focus-within {
   @apply outline-none;
 }
-.rokkit rk-field rk-switch {
+[data-style='rokkit'] rk-field rk-switch {
   @apply min-h-8 items-center justify-center rounded-sm border-none px-1;
 }
-.rokkit rk-field rk-switch rk-item {
+[data-style='rokkit'] rk-field rk-switch rk-item {
   @apply rounded-sm leading-loose;
 }
-.rokkit rk-field rk-switch rk-item p {
+[data-style='rokkit'] rk-field rk-switch rk-item p {
   @apply justify-center;
 }
 
-.rokkit .horizontal > rk-field radio-group {
+[data-style='rokkit'] .horizontal > rk-field radio-group {
   @apply md:flex-row md:gap-4;
 }

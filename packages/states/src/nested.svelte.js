@@ -1,4 +1,4 @@
-import { has, equals } from 'ramda'
+import { has, equals, pick } from 'ramda'
 import { SvelteMap } from 'svelte/reactivity'
 import { DEFAULT_EVENTS } from './constants'
 import { FieldMapper, getKeyFromPath } from '@rokkit/core'
@@ -7,25 +7,25 @@ export class DataWrapper {
 	/* @type number[] */
 	#path = []
 	#events = {}
-	#multiselect = false
 	#init = false
+	#options = { multiselect: false, autoCloseSiblings: false }
+
 	items = null
-	data = null
+	data = $state(null)
 	value = $state(null)
 	mapping = new FieldMapper()
 	currentNode = $state(null)
 	selected = new SvelteMap()
 
-	constructor(items, mapper, value, { events, multiselect = false }) {
+	constructor(items, mapper, value, options = {}) {
 		this.items = items
 		this.data = items
-		if (mapper) {
-			this.mapping = mapper
-		}
+		if (mapper) this.mapping = mapper
 
-		this.#events = { ...DEFAULT_EVENTS, ...events }
-		this.#multiselect = multiselect
+		this.#events = { ...DEFAULT_EVENTS, ...options.events }
+		this.#options = { ...options, ...pick(['multiselect', 'autoCloseSiblings'], options) }
 		this.value = value
+
 		this.#init = true
 		this.moveTo(this.findPathToItem(value))
 		this.#init = false
@@ -166,11 +166,26 @@ export class DataWrapper {
 		this.toggleExpansion()
 	}
 
+	collapseSiblings() {
+		if (!this.#options.autoCloseSiblings || !this.mapping.isExpanded(this.currentNode)) return
+
+		const parentPath = this.#path.slice(0, -1)
+		const siblings = this.mapping.getChildrenByPath(this.data, parentPath)
+		const currentIndex = this.#path[this.#path.length - 1]
+
+		siblings.forEach((sibling, index) => {
+			if (currentIndex !== index && this.mapping.isExpanded(sibling)) {
+				this.mapping.toggleExpansion(sibling)
+			}
+		})
+	}
+
 	toggleExpansion() {
 		if (!this.currentNode || !this.mapping.hasChildren(this.currentNode)) return
 
 		const eventType = this.mapping.isExpanded(this.currentNode) ? 'collapse' : 'expand'
 		this.mapping.toggleExpansion(this.currentNode)
+		this.collapseSiblings()
 		this.emit(eventType, { path: this.#path, node: this.currentNode })
 	}
 
@@ -209,7 +224,7 @@ export class DataWrapper {
 
 	extendSelection(path = null) {
 		this.moveTo(path)
-		if (this.#multiselect) {
+		if (this.#options.multiselect) {
 			this.#toggleSelection()
 		} else {
 			this.select()

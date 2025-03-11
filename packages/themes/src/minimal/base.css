@@ -1,8 +1,8 @@
 /* @import '../base.css'; */
 
-.minimal rk-icon[role='button'] {
+[data-style='minimal'] rk-icon[role='button'] {
   @apply text-neutral-muted hover:text-secondary-600 focus:outline-secondary-600 focus:m-1px focus:rounded;
 }
-.minimal button:disabled > rk-icon {
+[data-style='minimal'] button:disabled > rk-icon {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
 }
