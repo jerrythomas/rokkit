@@ -24,7 +24,7 @@ export function navigable(node, options) {
 	$effect(() => {
 		const props = { ...defaultOptions, ...options }
 		actions = getKeyboardActions(props, handlers)
-		const cleanup = on(node, 'keydown', handleKeydown)
+		const cleanup = on(node, 'keyup', handleKeydown)
 
 		return () => cleanup()
 	})

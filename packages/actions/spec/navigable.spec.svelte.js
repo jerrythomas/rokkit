@@ -33,7 +33,7 @@ describe('Navigable Action', () => {
 		const data = $state({})
 		const cleanup = $effect.root(() => navigable(node, data))
 		flushSync()
-		// expect(addEventSpy).toHaveBeenCalledWith('keydown', expect.any(Function))
+		// expect(addEventSpy).toHaveBeenCalledWith('keyup', expect.any(Function))
 		expect(addEventSpy).toHaveBeenCalledTimes(1)
 		expect(removeEventSpy).toHaveBeenCalledTimes(0)
 
@@ -56,7 +56,7 @@ describe('Navigable Action', () => {
 		it('should trigger "select" event on Enter key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
 			expect(handler).toOnlyTrigger('select')
 			cleanup()
 		})
@@ -64,7 +64,7 @@ describe('Navigable Action', () => {
 		it('should trigger "previous" event on left arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
 			expect(handler).toOnlyTrigger('previous')
 			cleanup()
 		})
@@ -72,7 +72,7 @@ describe('Navigable Action', () => {
 		it('should trigger "next" event on right arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
 			expect(handler).toOnlyTrigger('next')
 
 			cleanup()
@@ -81,14 +81,14 @@ describe('Navigable Action', () => {
 		it('should not trigger any event on up or down arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
 			expect(handler.select).not.toHaveBeenCalled()
 			expect(handler.previous).not.toHaveBeenCalled()
 			expect(handler.next).not.toHaveBeenCalled()
 			expect(handler.collapse).not.toHaveBeenCalled()
 			expect(handler.expand).not.toHaveBeenCalled()
 
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
 			expect(handler.select).not.toHaveBeenCalled()
 			expect(handler.previous).not.toHaveBeenCalled()
 			expect(handler.next).not.toHaveBeenCalled()
@@ -102,14 +102,14 @@ describe('Navigable Action', () => {
 		it('should trigger "expand" event on down arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: true, nested: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
 			expect(handler).toOnlyTrigger('expand')
 			cleanup()
 		})
 		it('should trigger "collapse" event on down arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: true, nested: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
 			expect(handler).toOnlyTrigger('collapse')
 			cleanup()
 		})
@@ -118,7 +118,7 @@ describe('Navigable Action', () => {
 		it('should trigger "previous" event on ArrowUp key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: false }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
 			expect(handler).toOnlyTrigger('previous')
 			cleanup()
 		})
@@ -126,7 +126,7 @@ describe('Navigable Action', () => {
 		it('should trigger "next" event on ArrowDown key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: false }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
 			expect(handler).toOnlyTrigger('next')
 			cleanup()
 		})
@@ -134,14 +134,14 @@ describe('Navigable Action', () => {
 		it('should not trigger any event on left or right arrow keys', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: false }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
 			expect(handler.select).not.toHaveBeenCalled()
 			expect(handler.previous).not.toHaveBeenCalled()
 			expect(handler.next).not.toHaveBeenCalled()
 			expect(handler.collapse).not.toHaveBeenCalled()
 			expect(handler.expand).not.toHaveBeenCalled()
 
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
 			expect(handler.select).not.toHaveBeenCalled()
 			expect(handler.previous).not.toHaveBeenCalled()
 			expect(handler.next).not.toHaveBeenCalled()
@@ -155,14 +155,14 @@ describe('Navigable Action', () => {
 		it('should trigger "expand" event on right arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: false, nested: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
 			expect(handler).toOnlyTrigger('expand')
 			cleanup()
 		})
 		it('should trigger "collapse" event on left arrow key', () => {
 			const cleanup = $effect.root(() => navigable(node, { horizontal: false, nested: true }))
 			flushSync()
-			node.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
+			node.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
 			expect(handler).toOnlyTrigger('collapse')
 			cleanup()
 		})
