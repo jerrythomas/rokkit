@@ -1,30 +1,30 @@
-.[data-style='material'] field-layout.vertical {
+[data-style='material'] field-layout.vertical {
   @apply gap-5;
 }
 
-.[data-style='material'] button,
-.[data-style='material'] .button {
+[data-style='material'] button,
+[data-style='material'] .button {
   @apply bg-neutral-subtle rounded px-4 py-2 uppercase;
 }
-.[data-style='material'] button-group {
+[data-style='material'] button-group {
   @apply flex justify-center rounded-sm shadow;
 }
-.[data-style='material'] .is-primary {
+[data-style='material'] .is-primary {
   @apply bg-primary text-white;
 }
 
-.[data-style='material'] button-group > button {
+[data-style='material'] button-group > button {
   @apply rounded-none border-none border-neutral-400;
   @apply bg-neutral-subtle focus:outline-none;
   @apply text-sm uppercase text-neutral-800;
 }
-.[data-style='material'] button-group > button:not(:last-child) {
+[data-style='material'] button-group > button:not(:last-child) {
   @apply border-r;
 }
-.[data-style='material'] button-group > button.active {
+[data-style='material'] button-group > button.active {
   @apply bg-primary text-white;
 }
 
-.[data-style='material'] field > toggle-switch {
+[data-style='material'] field > toggle-switch {
   @apply mx-2 mb-2 mt-1;
 }

@@ -45,5 +45,13 @@
 
 [data-style='rokkit'] rk-select,
 [data-style='rokkit'] rk-toggle {
-  @apply p-2px border-neutral-muted box-border rounded border;
+  @apply p-2px border-neutral-subtle box-border rounded-md border;
+}
+
+[data-style='rokkit'] rk-toggle {
+  @apply aspect-square h-9 w-9;
+}
+
+[data-style='rokkit'] rk-select > select {
+  @apply bg-neutral-subtle text-on-neutral-subtle;
 }
