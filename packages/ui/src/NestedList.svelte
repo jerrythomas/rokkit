@@ -1,5 +1,6 @@
 <script>
-	import { defaultStateIcons, getLineTypes } from '@rokkit/core'
+	import { equals } from 'ramda'
+	import { defaultStateIcons, getLineTypes, getKeyFromPath } from '@rokkit/core'
 	import { defaultMapping } from './constants'
 	import Node from './Node.svelte'
 	import NestedList from './NestedList.svelte'
@@ -18,7 +19,8 @@
 	/** @type {Props} */
 	let {
 		class: classes = '',
-		items = [],
+		items = $bindable([]),
+		wrapper = $bindable(),
 		mapping = defaultMapping,
 		types = [],
 		value = $bindable(null),
@@ -35,20 +37,25 @@
 		{@const indexPath = [...hierarchy, index]}
 		{@const nodeType = index === items.length - 1 ? 'last' : 'child'}
 		{@const connectors = getLineTypes(hasChildren, types, nodeType)}
+		{@const selected = wrapper.selected.has(getKeyFromPath(indexPath))}
+		{@const expanded = mapping.isExpanded(items[index])}
 
 		<Node
 			value={items[index]}
 			{mapping}
 			types={connectors}
-			path={indexPath}
+			path={getKeyFromPath(indexPath)}
 			{stateIcons}
-			selected={value === item}
+			{selected}
+			{expanded}
+			current={equals(wrapper.currentNode, item)}
 		>
-			{#if mapping.isExpanded(item)}
+			{#if expanded}
 				<!-- <div role="treeitem" aria-selected={false}> -->
 				<NestedList
 					items={item[mapping.fields.children]}
-					bind:value
+					{value}
+					{wrapper}
 					{mapping}
 					icons={stateIcons}
 					types={connectors}

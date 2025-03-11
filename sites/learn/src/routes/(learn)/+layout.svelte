@@ -9,18 +9,19 @@
 	 */
 	/** @type {Props} */
 	let { data, children } = $props()
+	let items = $state(data.menu)
 	let value = $state(null)
-	function handleSelect(event) {
-		console.log('Selected item:', event.detail)
+	function handleSelect(data) {
+		console.log('Selected item:', data)
 	}
 </script>
 
 <svelte:head>
 	<title>Learn to use Rokkit</title>
 </svelte:head>
-<main class="relative flex h-full w-full flex-grow overflow-hidden">
+<main class="relative flex h-full w-full overflow-hidden">
 	<Sidebar>
-		<Tree items={data.menu} mapping={data.mapping} bind:value on:select={handleSelect} />
+		<Tree bind:items bind:value mapping={data.mapping} onselect={handleSelect} />
 	</Sidebar>
 	<content class="relative flex w-full flex-col">
 		{@render children?.()}

@@ -34,7 +34,7 @@
 	let emitter = $derived(createEmitter(events, ['click', 'change', 'mouseenter', 'mouseleave']))
 	function handleClick(e) {
 		e.preventDefault()
-		e.stopPropagation()
+		// e.stopPropagation()
 
 		if (!disabled) {
 			if (role === 'checkbox' || role === 'option') {

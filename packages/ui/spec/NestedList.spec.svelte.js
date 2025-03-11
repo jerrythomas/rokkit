@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { render, cleanup } from '@testing-library/svelte'
 import NestedList from '../src/NestedList.svelte'
 import { flushSync } from 'svelte'
+import { DataWrapper } from '@rokkit/states'
+import { defaultMapping } from '../src/constants'
 
 describe('NestedList', () => {
 	const items = [
@@ -15,10 +17,11 @@ describe('NestedList', () => {
 			]
 		}
 	]
+	const wrapper = new DataWrapper(items, defaultMapping)
 	beforeEach(() => cleanup())
 
 	it('should render nested list', () => {
-		const props = $state({ items })
+		const props = $state({ items, wrapper })
 		const { container } = render(NestedList, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

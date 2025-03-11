@@ -23,9 +23,10 @@
 		mapping = defaultMapping,
 		types = [],
 		stateIcons = defaultStateIcons.node,
-		selected = false,
+		selected = $bindable(false),
 		expanded = false,
-		path = [],
+		current = false,
+		path = '',
 		children
 	} = $props()
 
@@ -36,16 +37,15 @@
 	)
 
 	const Template = $derived(mapping.getComponent(value))
-	const id = $derived('id-' + getKeyFromPath(path))
 </script>
 
 <rk-node
-	{id}
 	class={classes}
+	aria-current={current}
 	aria-selected={selected}
 	aria-expanded={state.label === 'collapse'}
 	role="treeitem"
-	data-path={getKeyFromPath(path)}
+	data-path={path}
 >
 	<div class="flex flex-row items-center">
 		{#each types as type}
@@ -56,7 +56,7 @@
 			{/if}
 		{/each}
 		<rk-item>
-			<Template bind:value {mapping} />
+			<Template {value} {mapping} />
 		</rk-item>
 	</div>
 	{@render children?.()}

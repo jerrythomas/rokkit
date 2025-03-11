@@ -21,7 +21,18 @@ describe('assimilate', () => {
 			let result = filterMenuItems(data, true)
 			expect(result).toEqual(data)
 			result = filterMenuItems(data)
-			expect(result).toEqual([{ route: 'alpha', children: [{ route: 'foo' }] }])
+			expect(result).toEqual([
+				{
+					route: 'alpha',
+					isOpen: false,
+					children: [
+						{
+							isOpen: false,
+							route: 'foo'
+						}
+					]
+				}
+			])
 		})
 	})
 
@@ -245,6 +256,7 @@ describe('assimilate', () => {
 				title: 'Page 01',
 				readme: 'Notes for Foo Component',
 				route: 'intro/foo',
+				isOpen: false,
 				crumbs: ['Intro', 'Page 01'],
 				level: 1,
 				next: null,
@@ -290,6 +302,7 @@ describe('assimilate', () => {
 					key: 'intro',
 					sequence: 1,
 					title: 'Intro',
+					isOpen: false,
 					children: [
 						{
 							key: 'foo',
@@ -297,6 +310,7 @@ describe('assimilate', () => {
 							title: 'Page 01',
 							readme: 'Notes for Foo Component',
 							route: 'intro/foo',
+							isOpen: false,
 							src: {
 								files: [
 									{
@@ -333,6 +347,7 @@ describe('assimilate', () => {
 			expect(menu).toEqual([
 				{
 					key: 'intro',
+					isOpen: false,
 					sequence: 1,
 					title: 'Intro',
 					children: [
@@ -342,6 +357,7 @@ describe('assimilate', () => {
 							title: 'Page 01',
 							readme: 'Notes for Foo Component',
 							route: 'intro/foo',
+							isOpen: false,
 							src: {
 								files: [
 									{
@@ -373,7 +389,8 @@ describe('assimilate', () => {
 					key: 'experiment',
 					labs: true,
 					sequence: 2,
-					title: 'Experimental'
+					title: 'Experimental',
+					isOpen: false
 				}
 			])
 		})

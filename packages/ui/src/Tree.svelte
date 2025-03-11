@@ -8,20 +8,20 @@
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
-	 * @property {Array<Object>} [items]
-	 * @property {import('@rokkit/core').FieldMapping} [mapping]
+	 * @property {Array<any>} [items]
 	 * @property {any} [value]
-	 * @property {import('./types').NodeStateIcons} icons
+	 * @property {import('@rokkit/core').FieldMapping} [mapping]
+	 * @property {import('./types').NodeStateIcons|Object} [icons]
 	 * @property {boolean} [autoCloseSiblings=false]
 	 * @property {boolean} [multiselect=false]
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
 	let {
-		class: classes = '',
+		class: classes = 'h-full overflow-scroll flex flex-col',
 		items = $bindable([]),
-		mapping = defaultMapping,
 		value = $bindable(null),
+		mapping = defaultMapping,
 		icons = {},
 		autoCloseSiblings = false,
 		multiselect = false,
@@ -43,5 +43,5 @@
 	use:navigator={{ wrapper }}
 	onactivate={() => (value = wrapper.value)}
 >
-	<NestedList {items} {mapping} bind:value {icons} />
+	<NestedList bind:items={wrapper.data} {wrapper} {mapping} {value} {icons} />
 </rk-tree>
