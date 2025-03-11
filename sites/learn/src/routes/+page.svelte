@@ -1,16 +1,9 @@
 <script>
 	import { getContext } from 'svelte'
-	// import { goto } from '$app/navigation'
-	// import Button from './Button.svelte'
 	import Background from './Background.svelte'
 	const site = getContext('site')()
 
 	let { data } = $props()
-
-	// $effect(() => {
-	// 	site.title = data.app.name ?? site.title
-	// 	site.description = data.app.about ?? site.description
-	// })
 </script>
 
 <main class="bg-neutral-inset relative flex h-full w-full max-w-full flex-col overflow-auto">
