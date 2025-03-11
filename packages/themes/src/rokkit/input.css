@@ -1,49 +1,49 @@
 /* Styles for 'rk-input-field' class */
 
-.rokkit rk-input-select select {
+[data-style='rokkit'] rk-input-select select {
   @apply border-none;
 }
-.rokkit rk-input-field rk-field,
-.rokkit rk-input-select {
+[data-style='rokkit'] rk-input-field rk-field,
+[data-style='rokkit'] rk-input-select {
   @apply p-2px border-neutral-muted box-border rounded border;
 }
-.rokkit rk-input-select {
+[data-style='rokkit'] rk-input-select {
   @apply flex h-8 items-center px-2;
 }
-.rokkit rk-input-field input,
-.rokkit rk-input-field textarea,
-.rokkit rk-input-field select {
+[data-style='rokkit'] rk-input-field input,
+[data-style='rokkit'] rk-input-field textarea,
+[data-style='rokkit'] rk-input-field select {
   @apply rounded-sm border-0;
 }
-.rokkit rk-checkbox {
+[data-style='rokkit'] rk-checkbox {
   @apply outline-none;
 }
-.rokkit rk-input-field > label {
+[data-style='rokkit'] rk-input-field > label {
   @apply text-secondary-600;
 }
-.rokkit rk-input-field rk-field > label {
+[data-style='rokkit'] rk-input-field rk-field > label {
   @apply text-secondary-600 flex h-full w-full items-center text-xs uppercase;
 }
-.rokkit rk-input-field:not(.disabled) rk-field:focus-within {
+[data-style='rokkit'] rk-input-field:not(.disabled) rk-field:focus-within {
   @apply border-neutral-base from-primary to-secondary bg-gradient-to-r;
 }
-.rokkit rk-input-field.disabled label {
+[data-style='rokkit'] rk-input-field.disabled label {
   @apply text-neutral-500;
 }
-/* .rokkit rk-input-field.disabled rk-field:focus-within {
+/* [data-style="rokkit"] rk-input-field.disabled rk-field:focus-within {
   @apply bg-gradient-to-r from-neutral-subtle to-neutral-subtle;
 } */
-.rokkit rk-input-field > span {
+[data-style='rokkit'] rk-input-field > span {
   @apply border-neutral-muted bg-neutral-base aspect-square h-full border-r px-1;
 }
-.rokkit rk-input-field message {
+[data-style='rokkit'] rk-input-field message {
   @apply bg-neutral-base rounded px-2 py-1;
 }
-.rokkit rk-input-field.fail {
+[data-style='rokkit'] rk-input-field.fail {
   @apply bg-error rounded px-2;
 }
 
-.rokkit rk-select,
-.rokkit rk-toggle {
+[data-style='rokkit'] rk-select,
+[data-style='rokkit'] rk-toggle {
   @apply p-2px border-neutral-muted box-border rounded border;
 }

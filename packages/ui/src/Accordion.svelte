@@ -1,17 +1,18 @@
 <script>
 	import { equals } from 'ramda'
 	import { createEmitter } from '@rokkit/core'
+	import { DataWrapper } from '@rokkit/states'
+	import { navigator } from '@rokkit/actions'
 	import { defaultMapping } from './constants'
 	import Summary from './Summary.svelte'
-	// import { listItems } from './snippets.svelte'
 
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
 	 * @property {any} [items]
-	 * @property {any} [fields]
-	 * @property {any} [using]
-	 * @property {boolean} [autoClose]
+	 * @property {import('@rokkit/core').FieldMapper} [mapping]
+	 * @property {boolean} [autoCloseSiblings]
+	 * @property {boolean} [multiselect]
 	 * @property {any} [value]
 	 */
 
@@ -20,32 +21,20 @@
 		class: classes = '',
 		items = $bindable([]),
 		mapping = defaultMapping,
-		autoClose = false,
+		autoCloseSiblings = false,
+		multiselect = false,
 		value = $bindable(null),
 		...events
 	} = $props()
-	let cursor = $state([])
 
-	let emitter = $derived(createEmitter(events, ['collapse', 'change', 'expand', 'click']))
-
-	function handle(event) {
-		value = event.detail.node
-		cursor = event.detail.path
-		if (['collapse', 'expand'].includes(event.type)) {
-			if (autoClose) {
-				items.map((x) => {
-					if (x !== value && x[internalFields.isOpen]) {
-						x[internalFields.isOpen] = false
-					}
-				})
-			}
-			items = items
-		}
-		emitter[event.type](event.detail)
-	}
+	let emitter = $derived(
+		createEmitter(events, ['collapse', 'change', 'expand', 'click', 'select', 'move'])
+	)
+	let wrapper = new DataWrapper(items, mapping, value, { events, multiselect, autoCloseSiblings })
 </script>
 
-{#snippet listItems(items, mapping, value, hierarchy = [], onchange = noop)}
+{#snippet listItems(items, wrapper, hierarchy = [], onchange = noop)}
+	{@const mapping = wrapper.mapping}
 	{#each items as item, index}
 		{@const Template = mapping.getComponent(item)}
 		{@const path = getKeyFromPath([...hierarchy, index])}
@@ -53,8 +42,8 @@
 		<rk-list-item
 			role="option"
 			data-path={path}
-			aria-selected={equals(value, item)}
-			aria-current={equals(value, item)}
+			aria-selected={wrapper.selected.has(path)}
+			aria-current={equals(wrapper.currentNode, item)}
 		>
 			<Template bind:value={items[index]} {mapping} {onchange} {...props} />
 		</rk-list-item>
@@ -64,10 +53,8 @@
 <rk-accordion
 	class={classes}
 	tabindex="0"
-	onselect={handle}
-	onmove={handle}
-	onexpand={handle}
-	oncollapse={handle}
+	use:navigator={{ wrapper }}
+	onactivate={() => (value = wrapper.value)}
 >
 	{#each items as item, index}
 		{@const hasItems = mapping.hasChildren(item)}
@@ -83,14 +70,7 @@
 			<Summary {mapping} bind:value={items[index]} expanded={mapping.isExpanded(item)} />
 			{#if hasItems && mapping.isExpanded(item)}
 				<rk-list role="listbox" tabindex="-1">
-					{@render listItems(items, mapping, hierarchy, onchange)}
-					<!-- <ListItems
-						bind:items={items[index][mapping.fields.children]}
-						bind:value
-						{mapping}
-						hierarchy={[index]}
-						on:change
-					/> -->
+					{@render listItems(items, wrapper, hierarchy, onchange)}
 				</rk-list>
 			{/if}
 		</div>

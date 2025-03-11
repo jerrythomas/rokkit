@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { DataWrapper } from '../src/nested.svelte'
 import { FieldMapper } from '@rokkit/core'
 import { flushSync } from 'svelte'
+import { treeData } from './fixtures/tree'
 
 describe('DataWrapper', () => {
 	let navigator
@@ -12,43 +13,7 @@ describe('DataWrapper', () => {
 		expand: vi.fn(),
 		collapse: vi.fn()
 	}
-	const testData = [
-		{
-			id: 1,
-			text: 'Item 1',
-			_open: true,
-			children: [
-				{
-					id: 2,
-					text: 'Item 1.1',
-					_open: false,
-					children: []
-				},
-				{
-					id: 3,
-					text: 'Item 1.2',
-					_open: true,
-					children: [
-						{
-							id: 4,
-							text: 'Item 1.2.1'
-						}
-					]
-				}
-			]
-		},
-		{
-			id: 5,
-			text: 'Item 2',
-			_open: false,
-			children: [
-				{
-					id: 6,
-					text: 'Item 2.1'
-				}
-			]
-		}
-	]
+	const testData = treeData
 	const value = testData[0]
 
 	beforeEach(() => {
@@ -183,12 +148,11 @@ describe('DataWrapper', () => {
 		})
 
 		it('should not move when at last node', () => {
-			// At Item 2 [1] which is the last node
-			navigator.moveTo([1])
-			expect(navigator.currentNode.id).toBe(5)
+			navigator.moveTo([2])
+			expect(navigator.currentNode.id).toBe(7)
 			vi.clearAllMocks()
 			navigator.moveNext()
-			expect(navigator.currentNode.id).toBe(5) // Still at Item 2
+			expect(navigator.currentNode.id).toBe(7) // Still at Item 2
 			expect(events.move).not.toHaveBeenCalled()
 		})
 	})
@@ -266,6 +230,40 @@ describe('DataWrapper', () => {
 			expect(navigator.currentNode.id).toBe(2)
 			expect(events.expand).not.toHaveBeenCalled()
 			expect(events.collapse).not.toHaveBeenCalled()
+		})
+
+		it('should autoclose siblings on expansion', () => {
+			const navigator = new DataWrapper(testData, mapper, value, {
+				events,
+				autoCloseSiblings: true
+			})
+			const expandedState = (x) => x.map(({ _open }) => _open)
+
+			expect(navigator.currentNode.id).toBe(1)
+			expect(expandedState(navigator.data)).toEqual([true, false, false])
+
+			navigator.moveTo([2])
+			navigator.expand()
+
+			expect(navigator.currentNode.id).toBe(7)
+			expect(navigator.currentNode._open).toBeTruthy()
+			expect(expandedState(navigator.data)).toEqual([false, false, true])
+
+			expect(expandedState(navigator.data[2].children)).toEqual([undefined, undefined, undefined])
+			navigator.moveTo([2, 0])
+			navigator.expand()
+			expect(expandedState(navigator.data)).toEqual([false, false, true])
+			expect(expandedState(navigator.data[2].children)).toEqual([true, undefined, undefined])
+
+			navigator.moveTo([2, 1])
+			navigator.expand()
+			expect(expandedState(navigator.data)).toEqual([false, false, true])
+			expect(expandedState(navigator.data[2].children)).toEqual([false, true, undefined])
+
+			navigator.moveTo([2, 2])
+			navigator.expand()
+			expect(expandedState(navigator.data)).toEqual([false, false, true])
+			expect(expandedState(navigator.data[2].children)).toEqual([false, false, true])
 		})
 	})
 

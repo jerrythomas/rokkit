@@ -9,10 +9,10 @@
 	 * @property {string} [class]
 	 * @property {Array<any>} [items]
 	 * @property {import('@rokkit/core').FieldMapping} [mapping]
-	 * @property {any} [types]
+	 * @property {import('./types').ConnectionType[]} [types]
 	 * @property {any} [value]
-	 * @property {any} [hierarchy]
-	 * @property {any} icons
+	 * @property {number[]} [hierarchy]
+	 * @property {import('./types').NodeStateIcons} icons
 	 */
 
 	/** @type {Props} */

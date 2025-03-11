@@ -1,114 +1,114 @@
-/* .minimal input, */
+/* [data-style="minimal"] input, */
 
-.minimal textarea,
-.minimal select,
-.minimal fieldset {
+[data-style='minimal'] textarea,
+[data-style='minimal'] select,
+[data-style='minimal'] fieldset {
   @apply border-neutral-muted rounded border px-2 leading-loose outline-none;
 }
 
-.minimal fieldset {
+[data-style='minimal'] fieldset {
   @apply gap-2 rounded-md p-4 pt-2;
 }
-.minimal fieldset legend {
+[data-style='minimal'] fieldset legend {
   @apply border-neutral-muted hover:text-primary select-none rounded-md border-l border-r px-2 leading-tight;
 }
-.minimal fieldset rk-icon {
+[data-style='minimal'] fieldset rk-icon {
   @apply text-2xl;
 }
 
-.minimal input-field {
+[data-style='minimal'] input-field {
   @apply m-0 w-full py-1;
 }
 
-.minimal input-field field {
+[data-style='minimal'] input-field field {
   @apply border-b-1 border-neutral-muted box-border min-h-9 overflow-hidden;
   @apply focus-within:border-b-secondary-600;
 }
-.minimal input-field:focus-within label {
+[data-style='minimal'] input-field:focus-within label {
   @apply text-secondary-600;
 }
-.minimal input-field span {
+[data-style='minimal'] input-field span {
   @apply border-neutral-muted bg-neutral-base aspect-square h-full border-r px-1;
 }
-.minimal input-field input,
-.minimal input-field textarea,
-.minimal input-field select,
-.minimal input-field > field > :not(icon) {
+[data-style='minimal'] input-field input,
+[data-style='minimal'] input-field textarea,
+[data-style='minimal'] input-field select,
+[data-style='minimal'] input-field > field > :not(icon) {
   @apply flex-grow border-0 bg-transparent focus:outline-none;
 }
 
-.minimal input-field label {
+[data-style='minimal'] input-field label {
   @apply text-neutral w-full text-sm uppercase leading-6;
 }
-.minimal input-field message {
+[data-style='minimal'] input-field message {
   @apply bg-neutral-base rounded px-2 py-1;
 }
 
-.minimal input-field.fail {
+[data-style='minimal'] input-field.fail {
   @apply bg-error rounded px-2;
 }
 
-.minimal input-range range-track {
+[data-style='minimal'] input-range range-track {
   @apply relative mt-3 h-1;
 }
-.minimal input-range range-track span {
+[data-style='minimal'] input-range range-track span {
   @apply bg-neutral-subtle border-neutral-muted box-border rounded-full;
 }
-.minimal input-range range-track selected {
+[data-style='minimal'] input-range range-track selected {
   @apply -top-0px -bottom-0px border-secondary bg-secondary-600 rounded-full border;
 }
-.minimal input-range range-track thumb {
+[data-style='minimal'] input-range range-track thumb {
   @apply rounded-full;
 }
 
-.minimal input-range range-ticks {
+[data-style='minimal'] input-range range-ticks {
   font-size: 6px;
   @apply bg-primary-100;
 }
 
-.minimal .bookend range-track span::before,
-.minimal .bookend range-track span::after {
+[data-style='minimal'] .bookend range-track span::before,
+[data-style='minimal'] .bookend range-track span::after {
   content: '';
   @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
 }
-.minimal .bookend range-track span::before {
+[data-style='minimal'] .bookend range-track span::before {
   @apply -left-1px;
 }
-.minimal .bookend range-track span::after {
+[data-style='minimal'] .bookend range-track span::after {
   @apply -right-2px;
 }
 
-/* .minimal tick {
+/* [data-style="minimal"] tick {
   @apply h-6;
 } */
-.minimal tick span {
+[data-style='minimal'] tick span {
   @apply border-neutral h-full;
 }
-.minimal tick p {
+[data-style='minimal'] tick p {
   @apply items-top;
   font-size: 8px;
 }
 
-.minimal thumb {
+[data-style='minimal'] thumb {
   @apply bg-secondary border-secondary -top-1.5 border shadow-xl;
 }
-.minimal thumb.sliding::before {
+[data-style='minimal'] thumb.sliding::before {
   content: '';
   @apply bg-secondary-400 absolute bottom-0 left-0 right-0 top-0 rounded-full opacity-30;
   transform: scale(2, 2);
 }
 
-.minimal rating {
+[data-style='minimal'] rating {
   @apply text-secondary-600 text-xl focus:outline-none;
 }
-.minimal rating > rk-icon {
+[data-style='minimal'] rating > rk-icon {
   @apply w-8;
 }
-.minimal rating:focus-within rk-icon[aria-checked='true'] {
+[data-style='minimal'] rating:focus-within rk-icon[aria-checked='true'] {
   @apply text-primary-600;
 }
 
-.minimal rating rk-icon.hovering > i {
+[data-style='minimal'] rating rk-icon.hovering > i {
   @apply text-secondary-600;
 }
 /* .error,

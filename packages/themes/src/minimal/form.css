@@ -1,87 +1,87 @@
-.minimal button {
+[data-style='minimal'] button {
   @apply select-none rounded px-4 leading-loose;
   @apply bg-neutral-muted border-neutral-muted border;
 }
-.minimal button rk-icon-left,
-.minimal button rk-icon-right {
+[data-style='minimal'] button rk-icon-left,
+[data-style='minimal'] button rk-icon-right {
   @apply flex aspect-square h-8 flex-col items-center justify-center;
 }
-.minimal button rk-icon {
+[data-style='minimal'] button rk-icon {
   @apply text-2xl;
 }
 
-.minimal .is-primary {
+[data-style='minimal'] .is-primary {
   @apply bg-secondary text-white;
 }
-.minimal button p {
+[data-style='minimal'] button p {
   @apply flex flex-grow px-2;
 }
 
-.minimal rk-button-group {
+[data-style='minimal'] rk-button-group {
   @apply gap-1px flex justify-center rounded-sm;
 }
-.minimal rk-button-group button {
+[data-style='minimal'] rk-button-group button {
   @apply rounded-none border-none border-neutral-400;
   @apply bg-neutral-subtle shadow focus:outline-none;
   @apply px-2 text-sm uppercase leading-8 text-neutral-800;
 }
-.minimal rk-button-group button:not(:last-child) {
+[data-style='minimal'] rk-button-group button:not(:last-child) {
   @apply border-r;
 }
-.minimal rk-button-group button.active {
+[data-style='minimal'] rk-button-group button.active {
   @apply bg-secondary text-white;
 }
 
-.minimal rk-button-group button:first-child {
+[data-style='minimal'] rk-button-group button:first-child {
   @apply rounded-l-sm;
 }
-.minimal rk-button-group button:last-child {
+[data-style='minimal'] rk-button-group button:last-child {
   @apply rounded-r-sm;
 }
 
-.minimal rk-input-select {
+[data-style='minimal'] rk-input-select {
   @apply focus:outline-none;
 }
-.minimal rk-input-select > selected-item {
+[data-style='minimal'] rk-input-select > selected-item {
   @apply min-h-8 cursor-pointer items-center gap-4 pl-2 leading-8;
   @apply border-b-neutral-muted border-b-2;
   @apply focus:border-b-secondary-600;
 }
-.minimal rk-input-select:focus > selected-item {
+[data-style='minimal'] rk-input-select:focus > selected-item {
   @apply border-b-secondary-600 text-secondary-600;
 }
-.minimal rk-input-select:focus square-icon {
+[data-style='minimal'] rk-input-select:focus square-icon {
   @apply text-secondary-600;
 }
-.minimal rk-input-select > selected-item > items {
+[data-style='minimal'] rk-input-select > selected-item > items {
   @apply flex-grow flex-wrap gap-2;
 }
-.minimal rk-pill {
+[data-style='minimal'] rk-pill {
   @apply gap-2 rounded-full border border-neutral-400 px-2;
 }
-.minimal rk-pill > rk-item {
+[data-style='minimal'] rk-pill > rk-item {
   @apply gap-2 leading-6;
 }
-.minimal rk-pill > rk-item > img {
+[data-style='minimal'] rk-pill > rk-item > img {
   @apply h-4 w-4;
 }
 
-.minimal rk-pill > rk-icon {
+[data-style='minimal'] rk-pill > rk-icon {
   @apply text-sm;
 }
-.minimal rk-input-select rk-scroll {
+[data-style='minimal'] rk-input-select rk-scroll {
   @apply mt-1 shadow-lg;
 }
 
-.minimal button[role='switch'] {
+[data-style='minimal'] button[role='switch'] {
   @apply h-8 min-h-6 w-16 rounded-full p-0;
   @apply bg-neutral-subtle border-neutral-subtle border;
 }
 
-.minimal button[role='switch'] > rk-mark {
+[data-style='minimal'] button[role='switch'] > rk-mark {
   @apply bg-secondary top-0.75 h-6 w-6 rounded-full;
 }
 
-.minimal rk-progress-bar rk-value-bar {
+[data-style='minimal'] rk-progress-bar rk-value-bar {
   @apply bg-secondary;
 }

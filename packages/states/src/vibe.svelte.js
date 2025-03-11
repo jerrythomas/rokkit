@@ -12,7 +12,7 @@ import { has } from 'ramda'
  */
 function groupThemeRulesByMode(themeRules) {
 	return themeRules.reduce((acc, [name, variables]) => {
-		const mode = name.includes('mode-') ? name.split('mode-')[1] : name
+		const mode = name.includes('light') ? 'light' : 'dark'
 		return { ...acc, [mode]: variables }
 	}, {})
 }

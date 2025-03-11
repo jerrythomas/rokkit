@@ -1,12 +1,12 @@
 @import '../base.css';
 
-.material rk-icon[role='button'] {
+.[data-style='material'] rk-icon[role='button'] {
   @apply text-neutral-muted hover:text-primary focus:outline-primary focus:m-1px focus:rounded;
 }
-.material rk-icon.disabled[role='button'] {
+.[data-style='material'] rk-icon.disabled[role='button'] {
   @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
 }
 
-.material * {
+.[data-style='material'] * {
   @apply focus:outline-primary-400;
 }

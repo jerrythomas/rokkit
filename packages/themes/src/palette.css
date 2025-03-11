@@ -7,7 +7,7 @@
     @apply rokkit-mode-light;
   }
   @media (prefers-color-scheme: dark) {
-    body:not(.light) {
+    body:not([data-mode='light']) {
       @apply rokkit-mode-dark;
     }
   }
@@ -18,7 +18,7 @@
   }
 
   @media (prefers-color-scheme: light) {
-    body:not(.dark) {
+    body:not([data-mode='dark']) {
       @apply rokkit-mode-light;
     }
   }
