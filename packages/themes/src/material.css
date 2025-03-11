@@ -1,9 +1,9 @@
-@import './[data-style="material"]/base.css';
+@import './material/base.css';
 /* @import './base/tabs.css'; */
 /* @import './base/dropdown.css'; */
 /* @import './base/states.css'; */
 /* @import './base/calendar.css'; */
-@import './[data-style="material"]/input.css';
-@import './[data-style="material"]/list.css';
-@import './[data-style="material"]/form.css';
+@import './material/input.css';
+@import './material/list.css';
+@import './material/form.css';
 /* @import './base/outline.css'; */

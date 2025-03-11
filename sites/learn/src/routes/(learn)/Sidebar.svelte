@@ -31,24 +31,26 @@
 
 <aside
 	bind:this={sidebar}
-	class="absolute left-0 top-0 flex w-full flex-shrink-0 -translate-x-full flex-col md:w-1/2 lg:w-80"
+	class="lg:w-90 absolute left-0 top-0 block w-full -translate-x-full overflow-hidden md:w-1/2"
 	class:lg:relative={site.sidebar}
 >
-	<nav class="border-b-neutral-inset flex h-10 w-full items-center gap-2 border-b">
+	<nav
+		class="border-b-neutral-inset flex h-10 w-full flex-shrink-0 flex-row items-center gap-2 border-b px-2 py-0 text-sm"
+	>
 		<Icon
 			name="i-rokkit:action-cross"
 			role="button"
-			class="border-r-neutral-inset rounded-none border-r"
-			on:click={() => (site.sidebar = false)}
+			class="square rounded-none border-r border-none"
+			onclick={() => (site.sidebar = false)}
 		/>
-		<input type="search" placeholder="search" bind:value={search} class="embedded" />
+		<!-- <input type="search" placeholder="search" bind:value={search} class="embedded" /> -->
 	</nav>
 	{@render children?.()}
 </aside>
 
 <style>
 	aside {
-		@apply z-5 h-full overflow-auto text-xs;
+		@apply z-5 h-full overflow-hidden text-xs;
 		@apply border-neutral-inset bg-neutral-base border-r;
 		@apply transform ease-in-out;
 	}

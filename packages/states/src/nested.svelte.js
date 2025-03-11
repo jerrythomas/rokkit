@@ -157,6 +157,7 @@ export class DataWrapper {
 	}
 
 	collapse() {
+		// if not expanded child move to parent?
 		if (!this.mapping.isExpanded(this.currentNode)) return
 		this.toggleExpansion()
 	}

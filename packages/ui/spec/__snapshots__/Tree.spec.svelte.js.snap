@@ -3,7 +3,7 @@
 exports[`Tree > should render nested list 1`] = `
 <div>
   <rk-tree
-    class=""
+    class="h-full overflow-scroll flex flex-col"
     tabindex="0"
   >
     <rk-nested-list
@@ -11,11 +11,11 @@ exports[`Tree > should render nested list 1`] = `
       role="tree"
     >
       <rk-node
-        aria-expanded="false"
+        aria-current="false"
+        aria-expanded="true"
         aria-selected="false"
         class=""
         data-path="0"
-        id="id-0"
         role="treeitem"
       >
         <div
@@ -23,15 +23,15 @@ exports[`Tree > should render nested list 1`] = `
         >
           <!---->
           <rk-icon
-            aria-label="expand"
+            aria-label="collapse"
             class="w-4 small"
-            data-state="closed"
+            data-state="opened"
             role="img"
             tabindex="-1"
           >
             <i
               aria-hidden="true"
-              class="node-closed"
+              class="node-opened"
             />
           </rk-icon>
           
@@ -57,11 +57,11 @@ exports[`Tree > should render nested list 1`] = `
           role="tree"
         >
           <rk-node
+            aria-current="false"
             aria-expanded="false"
             aria-selected="false"
             class=""
             data-path="0-0"
-            id="id-0-0"
             role="treeitem"
           >
             <div
@@ -117,11 +117,11 @@ exports[`Tree > should render nested list 1`] = `
             <!---->
           </rk-node>
           <rk-node
+            aria-current="false"
             aria-expanded="false"
             aria-selected="false"
             class=""
             data-path="0-1"
-            id="id-0-1"
             role="treeitem"
           >
             <div
@@ -180,11 +180,11 @@ exports[`Tree > should render nested list 1`] = `
         <!---->
       </rk-node>
       <rk-node
-        aria-expanded="false"
+        aria-current="false"
+        aria-expanded="true"
         aria-selected="false"
         class=""
         data-path="1"
-        id="id-1"
         role="treeitem"
       >
         <div
@@ -192,15 +192,15 @@ exports[`Tree > should render nested list 1`] = `
         >
           <!---->
           <rk-icon
-            aria-label="expand"
+            aria-label="collapse"
             class="w-4 small"
-            data-state="closed"
+            data-state="opened"
             role="img"
             tabindex="-1"
           >
             <i
               aria-hidden="true"
-              class="node-closed"
+              class="node-opened"
             />
           </rk-icon>
           
@@ -226,11 +226,11 @@ exports[`Tree > should render nested list 1`] = `
           role="tree"
         >
           <rk-node
-            aria-expanded="false"
+            aria-current="false"
+            aria-expanded="true"
             aria-selected="false"
             class=""
             data-path="1-0"
-            id="id-1-0"
             role="treeitem"
           >
             <div
@@ -256,15 +256,15 @@ exports[`Tree > should render nested list 1`] = `
               
               <!---->
               <rk-icon
-                aria-label="expand"
+                aria-label="collapse"
                 class="w-4 small"
-                data-state="closed"
+                data-state="opened"
                 role="img"
                 tabindex="-1"
               >
                 <i
                   aria-hidden="true"
-                  class="node-closed"
+                  class="node-opened"
                 />
               </rk-icon>
               
@@ -290,11 +290,11 @@ exports[`Tree > should render nested list 1`] = `
               role="tree"
             >
               <rk-node
+                aria-current="false"
                 aria-expanded="false"
                 aria-selected="false"
                 class=""
                 data-path="1-0-0"
-                id="id-1-0-0"
                 role="treeitem"
               >
                 <div
@@ -367,11 +367,11 @@ exports[`Tree > should render nested list 1`] = `
             <!---->
           </rk-node>
           <rk-node
+            aria-current="false"
             aria-expanded="false"
             aria-selected="false"
             class=""
             data-path="1-1"
-            id="id-1-1"
             role="treeitem"
           >
             <div
@@ -448,11 +448,11 @@ exports[`Tree > should render nested list 2`] = `
       role="tree"
     >
       <rk-node
-        aria-expanded="false"
+        aria-current="false"
+        aria-expanded="true"
         aria-selected="false"
         class=""
         data-path="0"
-        id="id-0"
         role="treeitem"
       >
         <div
@@ -460,15 +460,15 @@ exports[`Tree > should render nested list 2`] = `
         >
           <!---->
           <rk-icon
-            aria-label="expand"
+            aria-label="collapse"
             class="w-4 small"
-            data-state="closed"
+            data-state="opened"
             role="img"
             tabindex="-1"
           >
             <i
               aria-hidden="true"
-              class="node-closed"
+              class="node-opened"
             />
           </rk-icon>
           
@@ -494,11 +494,11 @@ exports[`Tree > should render nested list 2`] = `
           role="tree"
         >
           <rk-node
+            aria-current="false"
             aria-expanded="false"
             aria-selected="false"
             class=""
             data-path="0-0"
-            id="id-0-0"
             role="treeitem"
           >
             <div
@@ -554,11 +554,11 @@ exports[`Tree > should render nested list 2`] = `
             <!---->
           </rk-node>
           <rk-node
+            aria-current="false"
             aria-expanded="false"
             aria-selected="false"
             class=""
             data-path="0-1"
-            id="id-0-1"
             role="treeitem"
           >
             <div
@@ -617,11 +617,11 @@ exports[`Tree > should render nested list 2`] = `
         <!---->
       </rk-node>
       <rk-node
-        aria-expanded="false"
+        aria-current="false"
+        aria-expanded="true"
         aria-selected="false"
         class=""
         data-path="1"
-        id="id-1"
         role="treeitem"
       >
         <div
@@ -629,15 +629,15 @@ exports[`Tree > should render nested list 2`] = `
         >
           <!---->
           <rk-icon
-            aria-label="expand"
+            aria-label="collapse"
             class="w-4 small"
-            data-state="closed"
+            data-state="opened"
             role="img"
             tabindex="-1"
           >
             <i
               aria-hidden="true"
-              class="node-closed"
+              class="node-opened"
             />
           </rk-icon>
           
@@ -663,11 +663,11 @@ exports[`Tree > should render nested list 2`] = `
           role="tree"
         >
           <rk-node
-            aria-expanded="false"
+            aria-current="false"
+            aria-expanded="true"
             aria-selected="false"
             class=""
             data-path="1-0"
-            id="id-1-0"
             role="treeitem"
           >
             <div
@@ -693,15 +693,15 @@ exports[`Tree > should render nested list 2`] = `
               
               <!---->
               <rk-icon
-                aria-label="expand"
+                aria-label="collapse"
                 class="w-4 small"
-                data-state="closed"
+                data-state="opened"
                 role="img"
                 tabindex="-1"
               >
                 <i
                   aria-hidden="true"
-                  class="node-closed"
+                  class="node-opened"
                 />
               </rk-icon>
               
@@ -727,11 +727,11 @@ exports[`Tree > should render nested list 2`] = `
               role="tree"
             >
               <rk-node
+                aria-current="false"
                 aria-expanded="false"
                 aria-selected="false"
                 class=""
                 data-path="1-0-0"
-                id="id-1-0-0"
                 role="treeitem"
               >
                 <div
@@ -804,11 +804,11 @@ exports[`Tree > should render nested list 2`] = `
             <!---->
           </rk-node>
           <rk-node
+            aria-current="false"
             aria-expanded="false"
             aria-selected="false"
             class=""
             data-path="1-1"
-            id="id-1-1"
             role="treeitem"
           >
             <div

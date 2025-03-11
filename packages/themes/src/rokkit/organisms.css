@@ -2,17 +2,12 @@
   @apply gap-2;
 }
 /* rk-list styles */
-[data-style='rokkit'] rk-virtual-list-contents {
-  @apply flex flex-col;
-  @apply gap-1px bg-neutral-inset;
-}
 
 [data-style='rokkit'] rk-list {
   @apply gap-1px bg-neutral-subtle;
 }
 
 [data-style='rokkit'] rk-list > rk-list-item,
-[data-style='rokkit'] rk-virtual-list-contents > rk-virtual-list-item,
 [data-style='rokkit'] rk-accordion div rk-summary {
   @apply bg-neutral-base min-h-8 px-4 leading-10 text-neutral-800;
 }
@@ -148,8 +143,7 @@
 } */
 
 /* Scroll styles */
-[data-style='rokkit'] input-select scroll,
-[data-style='rokkit'] input-select rk-virtual-list {
+[data-style='rokkit'] input-select scroll {
   @apply my-1 rounded shadow-lg;
 }
 
@@ -181,21 +175,19 @@
 /* Focus styles for Nested rk-list, Tree, and rk-accordion */
 [data-style='rokkit'] rk-nested-list,
 [data-style='rokkit'] rk-nested-list:focus-within,
-[data-style='rokkit'] tree:focus-within {
+[data-style='rokkit'] rk-tree:focus-within {
   @apply rounded outline-none;
 }
 
 [data-style='rokkit'] rk-accordion,
-[data-style='rokkit'] rk-list,
-[data-style='rokkit'] rk-virtual-list-viewport {
+[data-style='rokkit'] rk-list {
   @apply rounded;
 }
 
 /* Remove outline from focused elements */
 [data-style='rokkit'] rk-accordion:focus-within rk-list,
 [data-style='rokkit'] drop-down:focus-within rk-list,
-[data-style='rokkit'] input-select:focus-within rk-list,
-[data-style='rokkit'] input-select:focus-within rk-virtual-list-viewport {
+[data-style='rokkit'] input-select:focus-within rk-list {
   @apply outline-none focus:outline-none;
 }
 
@@ -203,24 +195,19 @@
 [data-style='rokkit'] rk-list:focus {
   @apply outline-secondary outline;
 }
-/* [data-style="rokkit"] rk-list rk-item.is-hovering, */
-/* [data-style="rokkit"] rk-virtual-list rk-item.is-hovering, */
 [data-style='rokkit'] rk-list rk-list-item:hover,
-[data-style='rokkit'] rk-virtual-list-contents rk-virtual-list-item:hover,
 [data-style='rokkit'] rk-node > div:hover {
   @apply bg-neutral-subtle;
 }
 
-[data-style='rokkit'] rk-list-item[aria-current='true'] {
-  @apply bg-neutral-subtle text-on-neutral;
+[data-style='rokkit'] rk-list-item[aria-current='true'],
+[data-style='rokkit'] rk-node[aria-current='true'] > div {
+  @apply bg-neutral-subtle text-on-neutral-subtle;
 }
 
 /* Selected and Hover styles for rk-list and rk-node */
 [data-style='rokkit'] rk-list rk-list-item[aria-selected='true'] > a {
   @apply text-white;
-}
-[data-style='rokkit'] rk-virtual-list-item[aria-current='true'] {
-  @apply bg-neutral-inset text-secondary;
 }
 
 /* Expanded and Selected styles for rk-accordion */
@@ -284,32 +271,10 @@
 [data-style='rokkit'] rk-switch.compact > rk-item {
   @apply gap-0 px-0;
 }
-[data-style='rokkit'] rk-virtual-list-viewport {
-  @apply border-neutral-inset box-content border;
-}
-[data-style='rokkit'] rk-virtual-list-viewport:focus-within {
-  @apply outline-none;
-}
-[data-style='rokkit'] rk-virtual-list {
-  @apply p-2px border-neutral-muted rounded border from-transparent to-transparent;
-}
-[data-style='rokkit'] rk-virtual-list:focus-within {
-  @apply from-primary to-secondary bg-gradient-to-r;
-}
 
-[data-style='rokkit'] rk-list rk-item[aria-selected='true'],
-[data-style='rokkit'] rk-virtual-list-contents rk-virtual-list-item[aria-selected='true'],
-[data-style='rokkit'] rk-node[aria-selected='true'] > div {
-  @apply from-neutral-subtle to-neutral-subtle bg-gradient-to-r text-neutral-800;
-}
-/* Focus and Hover styles for Toggle Switch, rk-list, Tree, and Nested rk-list */
 [data-style='rokkit'] rk-switch:focus-within rk-item[aria-selected='true'],
 [data-style='rokkit'] rk-list:focus-within rk-list-item[aria-selected='true'],
-[data-style='rokkit']
-  rk-virtual-list-viewport:focus-within
-  rk-virtual-list-item[aria-selected='true'],
-[data-style='rokkit'] tree:focus-within rk-node[aria-selected='true'] > div,
-[data-style='rokkit'] rk-nested-list:focus-within rk-node[aria-selected='true'] > div {
+[data-style='rokkit'] rk-tree:focus-within rk-node[aria-selected='true'] > div {
   @apply from-primary to-secondary bg-gradient-to-r text-white;
   @apply hover:from-secondary hover:to-primary;
 }

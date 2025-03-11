@@ -30,7 +30,7 @@ export function filterMenuItems(data, labs = false) {
 	return data
 		.map((item) => {
 			if (!labs && item.labs) return null
-
+			item.isOpen = false
 			if (item.children) {
 				item.children = filterMenuItems(item.children, labs)
 				if (item.children.length === 0) return null
