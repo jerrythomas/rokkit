@@ -81,7 +81,7 @@ describe('FieldMapper', () => {
 		it('should return the label', () => {
 			const fieldMapping = new FieldMapper()
 			expect(fieldMapping.getLabel(null)).toEqual(null)
-			expect(fieldMapping.getLabel('hello')).toEqual(null)
+			expect(fieldMapping.getLabel('hello')).toEqual('hello')
 			expect(fieldMapping.getLabel({ k: 'hello' })).toEqual(null)
 			expect(fieldMapping.getLabel({ label: 'hello' })).toEqual('hello')
 		})
