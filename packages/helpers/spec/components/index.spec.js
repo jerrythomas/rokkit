@@ -4,6 +4,6 @@ import * as components from '../../src/components/index'
 
 describe('components', () => {
 	it('should contain all exported components', () => {
-		expect(Object.keys(components)).toEqual(['MockItem'])
+		expect(Object.keys(components)).toEqual(['MockItem', 'StaticContent'])
 	})
 })
