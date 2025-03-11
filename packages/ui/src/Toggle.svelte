@@ -47,6 +47,7 @@
 		onnext={() => toggle()}
 		onprev={() => toggle(-1)}
 		onclick={() => toggle()}
+		aria-label={mapping.getLabel(value)}
 	>
 		<Item {value} {mapping} />
 	</button>

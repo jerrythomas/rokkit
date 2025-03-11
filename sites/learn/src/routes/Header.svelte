@@ -21,7 +21,7 @@
 		{ icon: 'i-app:code-visible', value: 'hidden', label: 'Hide Code' },
 		{ icon: 'i-app:code-hidden', value: 'visible', label: 'Show Code' }
 	]
-
+	let codeValue = codeOptions.find((option) => option.value === site.code)
 	let loading = $state(false)
 	const handleCodeVisibility = (detail) => {
 		console.log('handleCodeVisibility', detail)
@@ -66,16 +66,14 @@
 			{/each}
 		</nav>
 		{#if showCodeToggle}
-			<Toggle options={codeOptions} value={site.code} onchange={handleCodeVisibility} />
+			<Toggle options={codeOptions} value={codeValue} onchange={handleCodeVisibility} />
 		{/if}
 		<ThemeSwitcher />
 		<a
 			href="https://github.com/jerrythomas/rokkit"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="square button"
+			class="square"><Icon name="i-logo:github" label="Rokkit on Github" /></a
 		>
-			<Icon name="i-logo:github" label="Rokkit on Github" role="button" />
-		</a>
 	</settings>
 </header>

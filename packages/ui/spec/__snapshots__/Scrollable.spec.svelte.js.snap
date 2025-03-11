@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Scrollable.svelte > should render 1`] = `
+<div>
+  <rk-scroll
+    class="flex h-full flex-col overflow-scroll "
+  >
+    <p>
+      This is a static content component.
+    </p>
+    <!---->
+  </rk-scroll>
+  
+</div>
+`;
+
+exports[`Scrollable.svelte > should render 2`] = `
+<div>
+  <rk-scroll
+    class="flex h-full flex-col overflow-scroll custom-class"
+  >
+    <p>
+      This is a static content component.
+    </p>
+    <!---->
+  </rk-scroll>
+  
+</div>
+`;

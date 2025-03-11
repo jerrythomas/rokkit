@@ -27,3 +27,8 @@ export { default as List } from './List.svelte'
 export { default as Accordion } from './Accordion.svelte'
 export { default as NestedList } from './NestedList.svelte'
 export { default as Tree } from './Tree.svelte'
+export { default as ToggleThemeMode } from './ToggleThemeMode.svelte'
+
+export { default as Overlay } from './Overlay.svelte'
+export { default as Message } from './Message.svelte'
+export { default as SlidingColumns } from './SlidingColumns.svelte'

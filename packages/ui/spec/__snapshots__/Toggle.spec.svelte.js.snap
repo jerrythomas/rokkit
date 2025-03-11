@@ -17,7 +17,9 @@ exports[`Toggle > should render 1`] = `
 `;
 
 exports[`Toggle > should render with object options 1`] = `
-<button>
+<button
+  aria-label="sun"
+>
   <!---->
   <!---->
   
@@ -48,7 +50,9 @@ exports[`Toggle > should switch options on click 1`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -70,7 +74,9 @@ exports[`Toggle > should switch options on click 2`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="moon"
+    >
       <!---->
       <!---->
       
@@ -92,7 +98,9 @@ exports[`Toggle > should switch options on click 3`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -114,7 +122,9 @@ exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -136,7 +146,9 @@ exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="moon"
+    >
       <!---->
       <!---->
       
@@ -158,7 +170,9 @@ exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -180,7 +194,9 @@ exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="earth"
+    >
       <!---->
       <!---->
       
@@ -202,7 +218,9 @@ exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="moon"
+    >
       <!---->
       <!---->
       
@@ -224,7 +242,9 @@ exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -246,7 +266,9 @@ exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -268,7 +290,9 @@ exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="moon"
+    >
       <!---->
       <!---->
       
@@ -290,7 +314,9 @@ exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       
@@ -312,7 +338,9 @@ exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="earth"
+    >
       <!---->
       <!---->
       
@@ -334,7 +362,9 @@ exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="moon"
+    >
       <!---->
       <!---->
       
@@ -356,7 +386,9 @@ exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
   <rk-toggle
     class=""
   >
-    <button>
+    <button
+      aria-label="sun"
+    >
       <!---->
       <!---->
       

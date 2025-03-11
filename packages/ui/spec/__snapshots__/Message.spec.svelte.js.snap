@@ -1,0 +1,137 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Message.svelte > should render children 1`] = `
+<div>
+  <rk-message
+    class="info"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render children 2`] = `
+<div>
+  <rk-message
+    class="warning"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render children 3`] = `
+<div>
+  <rk-message
+    class="success"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render children 4`] = `
+<div>
+  <rk-message
+    class="info"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render empty 1`] = `
+<div>
+  <rk-message
+    class="error"
+  >
+    
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 1`] = `
+<div>
+  <rk-message
+    class="error"
+  >
+    Error
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 2`] = `
+<div>
+  <rk-message
+    class="info"
+  >
+    Info
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 3`] = `
+<div>
+  <rk-message
+    class="warning"
+  >
+    Warning
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 4`] = `
+<div>
+  <rk-message
+    class="success"
+  >
+    Success
+    <!---->
+  </rk-message>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 5`] = `
+<div>
+  <rk-message
+    class="info"
+  >
+    Info
+    <!---->
+  </rk-message>
+  
+</div>
+`;
