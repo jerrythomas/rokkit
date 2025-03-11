@@ -1,4 +1,4 @@
-import { has, equals, pick, omit } from 'ramda'
+import { has, equals, pick } from 'ramda'
 import { SvelteMap } from 'svelte/reactivity'
 import { DEFAULT_EVENTS } from './constants'
 import { FieldMapper, getKeyFromPath } from '@rokkit/core'
