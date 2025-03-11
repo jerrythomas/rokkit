@@ -1,9 +1,11 @@
 <script>
+	import { getContext } from 'svelte'
 	import { media } from '$lib/media'
 	import { ResponsiveGrid } from '@rokkit/ui'
-
 	import Preview from './Preview.svelte'
 	import Notes from './Notes.svelte'
+
+	let site = getContext('site')()
 
 	let { data } = $props()
 	let size = $derived(media.large.current ? 'lg' : media.medium.current ? 'md' : 'sm')
@@ -31,7 +33,7 @@
 		}
 	])
 	let page = $state(() => items[0])
-	let layout = 'two-col' // $derived(site.code === 'hidden' ? 'two-col' : 'three-col')
+	let layout = $derived(site.code === 'hidden' ? 'two-col' : 'three-col')
 </script>
 
 <ResponsiveGrid {items} small={false} class="{layout} {size}" bind:value={page} />

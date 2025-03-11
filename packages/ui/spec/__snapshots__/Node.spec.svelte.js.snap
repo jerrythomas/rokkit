@@ -7,6 +7,7 @@ exports[`Node > should render 1`] = `
     aria-expanded="false"
     aria-selected="false"
     class=""
+    data-depth="0"
     data-path=""
     role="treeitem"
   >
@@ -42,6 +43,7 @@ exports[`Node > should render 2`] = `
     aria-expanded="false"
     aria-selected="false"
     class="another-class"
+    data-depth="0"
     data-path=""
     role="treeitem"
   >
@@ -77,6 +79,8 @@ exports[`Node > should render as a sibling 1`] = `
     aria-expanded="false"
     aria-selected="false"
     class=""
+    data-depth="1"
+    data-path="0"
     role="treeitem"
   >
     <div
@@ -125,6 +129,8 @@ exports[`Node > should render as last sibling 1`] = `
     aria-expanded="false"
     aria-selected="false"
     class=""
+    data-depth="1"
+    data-path="3"
     role="treeitem"
   >
     <div
@@ -175,6 +181,8 @@ exports[`Node > should render having child 1`] = `
     aria-expanded="false"
     aria-selected="false"
     class=""
+    data-depth="2"
+    data-path="0-0"
     role="treeitem"
   >
     <div
@@ -241,6 +249,8 @@ exports[`Node > should render with icon 1`] = `
     aria-expanded="false"
     aria-selected="false"
     class=""
+    data-depth="1"
+    data-path="0"
     role="treeitem"
   >
     <div

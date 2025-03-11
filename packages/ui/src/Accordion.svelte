@@ -1,6 +1,6 @@
 <script>
 	import { equals } from 'ramda'
-	import { createEmitter } from '@rokkit/core'
+	import { createEmitter, noop, getKeyFromPath } from '@rokkit/core'
 	import { DataWrapper } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import { defaultMapping } from './constants'
@@ -45,7 +45,7 @@
 			aria-selected={wrapper.selected.has(path)}
 			aria-current={equals(wrapper.currentNode, item)}
 		>
-			<Template bind:value={items[index]} {mapping} {onchange} {...props} />
+			<Template bind:value={items[index]} {mapping} onchange={events.change} {...props} />
 		</rk-list-item>
 	{/each}
 {/snippet}
@@ -56,7 +56,7 @@
 	use:navigator={{ wrapper }}
 	onactivate={() => (value = wrapper.value)}
 >
-	{#each items as item, index}
+	{#each wrapper.data as item, index}
 		{@const hasItems = mapping.hasChildren(item)}
 		{@const id = 'id-' + index}
 
@@ -70,7 +70,7 @@
 			<Summary {mapping} bind:value={items[index]} expanded={mapping.isExpanded(item)} />
 			{#if hasItems && mapping.isExpanded(item)}
 				<rk-list role="listbox" tabindex="-1">
-					{@render listItems(items, wrapper, hierarchy, onchange)}
+					{@render listItems(item[mapping.fields.children], wrapper, [index], events.change)}
 				</rk-list>
 			{/if}
 		</div>

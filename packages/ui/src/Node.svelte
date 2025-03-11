@@ -26,7 +26,7 @@
 		selected = $bindable(false),
 		expanded = false,
 		current = false,
-		path = '',
+		path = [],
 		children
 	} = $props()
 
@@ -45,7 +45,8 @@
 	aria-selected={selected}
 	aria-expanded={state.label === 'collapse'}
 	role="treeitem"
-	data-path={path}
+	data-path={getKeyFromPath(path)}
+	data-depth={path.length}
 >
 	<div class="flex flex-row items-center">
 		{#each types as type}

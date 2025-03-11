@@ -69,7 +69,7 @@ export class FieldMapper {
 		return this.withPrefix(icon)
 	}
 	getImage(value) {
-		return this.getAttribute(value, this.fields.image)
+		return this.getAttribute(value, 'image')
 	}
 
 	getValue(value) {
@@ -87,7 +87,7 @@ export class FieldMapper {
 	}
 
 	getLabel(value) {
-		return this.getAttribute(value, this.fields.label) ?? this.getText(value)
+		return this.getAttribute(value, 'label') ?? this.getText(value)
 	}
 
 	getAttribute(value, attr) {
@@ -104,7 +104,7 @@ export class FieldMapper {
 		if (typeof formatter !== 'function') return text.toString()
 
 		if (this.hasCurrency(value)) {
-			return formatter(text, this.getAttribute(value, this.fields.currency))
+			return formatter(text, this.getAttribute(value, 'currency'))
 		}
 		return formatter(text)
 	}

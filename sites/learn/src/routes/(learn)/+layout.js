@@ -19,6 +19,6 @@ export async function load({ params }) {
 		{ default: Item }
 	)
 	const menu = await guide.menu(params.segment === 'labs')
-	menu[0].isOpen = true
-	return { menu, mapping }
+
+	return { menu, mapping, params }
 }

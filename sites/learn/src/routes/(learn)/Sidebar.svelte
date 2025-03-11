@@ -34,7 +34,7 @@
 	class="lg:w-90 absolute left-0 top-0 block w-full -translate-x-full overflow-hidden md:w-1/2"
 	class:lg:relative={site.sidebar}
 >
-	<nav
+	<!-- <nav
 		class="border-b-neutral-inset flex h-10 w-full flex-shrink-0 flex-row items-center gap-2 border-b px-2 py-0 text-sm"
 	>
 		<Icon
@@ -43,8 +43,8 @@
 			class="square rounded-none border-r border-none"
 			onclick={() => (site.sidebar = false)}
 		/>
-		<!-- <input type="search" placeholder="search" bind:value={search} class="embedded" /> -->
-	</nav>
+		<input type="search" placeholder="search" bind:value={search} class="embedded" />
+	</nav> -->
 	{@render children?.()}
 </aside>
 

@@ -26,7 +26,7 @@
 		onchange(options[indexValue])
 	}
 
-	let indexValue = $state(options.findIndex((item) => equals(mapping.getValue(item), value)))
+	let indexValue = $state(options.findIndex((item) => equals(item, value)))
 </script>
 
 <rk-select class={classes}>

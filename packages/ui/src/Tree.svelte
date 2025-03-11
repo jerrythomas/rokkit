@@ -25,6 +25,7 @@
 		icons = {},
 		autoCloseSiblings = false,
 		multiselect = false,
+		keys = null,
 		...events
 	} = $props()
 
@@ -32,7 +33,12 @@
 	let wrapper = new DataWrapper(items, mapping, value, {
 		events: emitter,
 		multiselect,
-		autoCloseSiblings
+		autoCloseSiblings,
+		keys
+	})
+
+	$effect(() => {
+		wrapper.moveToValue(value)
 	})
 </script>
 
@@ -43,5 +49,5 @@
 	use:navigator={{ wrapper }}
 	onactivate={() => (value = wrapper.value)}
 >
-	<NestedList bind:items={wrapper.data} {wrapper} {mapping} {value} {icons} />
+	<NestedList items={wrapper.data} {wrapper} {mapping} {value} {icons} />
 </rk-tree>
