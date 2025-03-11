@@ -87,7 +87,7 @@ export class FieldMapper {
 	}
 
 	getLabel(value) {
-		return this.getAttribute(value, this.fields.label)
+		return this.getAttribute(value, this.fields.label) ?? this.getText(value)
 	}
 
 	getAttribute(value, attr) {
