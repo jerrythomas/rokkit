@@ -156,10 +156,20 @@ export class DataWrapper {
 		}
 	}
 
+	#collapseParent() {
+		this.moveTo(this.#path.slice(0, -1))
+		if (this.mapping.isExpanded(this.currentNode)) {
+			this.toggleExpansion()
+		}
+	}
+
 	collapse() {
 		// if not expanded child move to parent?
-		if (!this.mapping.isExpanded(this.currentNode)) return
-		this.toggleExpansion()
+		if (this.mapping.isExpanded(this.currentNode)) {
+			this.toggleExpansion()
+		} else if (this.#path.length > 1) {
+			this.#collapseParent()
+		}
 	}
 
 	expand() {
