@@ -7,5 +7,5 @@
     "emitDeclarationOnly": true,
     "outDir": "./dist"
   },
-  "exclude": ["**/spec/**", "**/test/**", "dist"]
+  "exclude": ["**/spec/**", "**/test/**", "dist", "**/fixtures/**"]
 }
