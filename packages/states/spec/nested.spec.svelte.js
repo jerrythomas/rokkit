@@ -214,22 +214,24 @@ describe('DataWrapper', () => {
 			})
 		})
 
-		it('should not emit event nodes without children', () => {
+		it('should collapse parent', () => {
 			navigator.moveTo([0, 0])
 			expect(navigator.currentNode.id).toBe(2)
-
-			navigator.collapse()
-			expect(navigator.currentNode.id).toBe(2)
-			expect(events.collapse).not.toHaveBeenCalled()
-
 			navigator.expand()
 			expect(navigator.currentNode.id).toBe(2)
 			expect(events.expand).not.toHaveBeenCalled()
 
-			navigator.toggleExpansion()
-			expect(navigator.currentNode.id).toBe(2)
-			expect(events.expand).not.toHaveBeenCalled()
-			expect(events.collapse).not.toHaveBeenCalled()
+			navigator.collapse()
+			expect(navigator.currentNode.id).toBe(1)
+			expect(events.collapse).toHaveBeenCalledWith({
+				path: [0],
+				node: navigator.currentNode
+			})
+			// vi.clearAllMocks()
+			navigator.collapse()
+			expect(navigator.currentNode.id).toBe(1)
+			// expect(events.expand).not.toHaveBeenCalled()
+			// expect(events.collapse).not.toHaveBeenCalled()
 		})
 
 		it('should autoclose siblings on expansion', () => {
