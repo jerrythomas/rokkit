@@ -10,7 +10,8 @@ describe('actions', () => {
 			'swipeable',
 			'navigator',
 			'themable',
-			'skinnable'
+			'skinnable',
+			'dismissable'
 		])
 	})
 })
