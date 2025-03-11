@@ -33,7 +33,7 @@
 	<select
 		name="sources"
 		id="sources"
-		class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white"
+		class="custom-select"
 		bind:value={indexValue}
 		{...rest}
 		onchange={handleChange}

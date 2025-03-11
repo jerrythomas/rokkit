@@ -6,7 +6,7 @@ exports[`InputSelect > should render as required 1`] = `
     class="svelte-1s4y1rc"
   >
     <select
-      class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white svelte-1s4y1rc"
+      class="custom-select svelte-1s4y1rc"
       id="sources"
       name="sources"
       required=""
@@ -48,7 +48,7 @@ exports[`InputSelect > should render as required 2`] = `
     class="svelte-1s4y1rc"
   >
     <select
-      class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white svelte-1s4y1rc"
+      class="custom-select svelte-1s4y1rc"
       id="sources"
       name="sources"
       rtl="false"
@@ -89,7 +89,7 @@ exports[`InputSelect > should render with objects  1`] = `
     class="svelte-1s4y1rc"
   >
     <select
-      class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white svelte-1s4y1rc"
+      class="custom-select svelte-1s4y1rc"
       id="sources"
       name="sources"
     >
@@ -129,7 +129,7 @@ exports[`InputSelect > should render with string options 1`] = `
     class="svelte-1s4y1rc"
   >
     <select
-      class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white svelte-1s4y1rc"
+      class="custom-select svelte-1s4y1rc"
       id="sources"
       name="sources"
     >
@@ -169,7 +169,7 @@ exports[`InputSelect > should render with string options 2`] = `
     class="svelte-1s4y1rc"
   >
     <select
-      class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white svelte-1s4y1rc"
+      class="custom-select svelte-1s4y1rc"
       id="sources"
       name="sources"
     >
@@ -214,7 +214,7 @@ exports[`InputSelect > should render with text, value objects  1`] = `
     class="svelte-1s4y1rc"
   >
     <select
-      class="custom-select min-h-10 w-40 rounded bg-neutral-300 px-3 text-lg text-white svelte-1s4y1rc"
+      class="custom-select svelte-1s4y1rc"
       id="sources"
       name="sources"
     >
