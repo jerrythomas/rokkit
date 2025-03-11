@@ -1,0 +1,154 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SlidingColumns > should navigate to the next column 1`] = `
+<div>
+  <rk-container
+    class="relative grid h-full w-full overflow-hidden"
+    tabindex="0"
+  >
+    <!---->
+    
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 2"
+    >
+      Column 2
+    </rk-segment>
+    
+    <!---->
+    
+    
+  </rk-container>
+  
+</div>
+`;
+
+exports[`SlidingColumns > should navigate to the next column 2`] = `
+<div>
+  <rk-container
+    class="relative grid h-full w-full overflow-hidden"
+    tabindex="0"
+  >
+    <!---->
+    
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 2"
+    >
+      Column 2
+    </rk-segment>
+    
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 3"
+    >
+      Column 3
+    </rk-segment>
+    
+    
+  </rk-container>
+  
+</div>
+`;
+
+exports[`SlidingColumns > should navigate to the previous column 1`] = `
+<div>
+  <rk-container
+    class="relative grid h-full w-full overflow-hidden"
+    tabindex="0"
+  >
+    <!---->
+    
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 2"
+    >
+      Column 2
+    </rk-segment>
+    
+    <!---->
+    
+    
+  </rk-container>
+  
+</div>
+`;
+
+exports[`SlidingColumns > should navigate to the previous column 2`] = `
+<div>
+  <rk-container
+    class="relative grid h-full w-full overflow-hidden"
+    tabindex="0"
+  >
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 1"
+    >
+      Column 1
+    </rk-segment>
+    
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 2"
+    >
+      Column 2
+    </rk-segment>
+    
+    <!---->
+    
+    
+  </rk-container>
+  
+</div>
+`;
+
+exports[`SlidingColumns > should render correctly 1`] = `
+<div>
+  <rk-container
+    class="relative grid h-full w-full overflow-hidden"
+    tabindex="0"
+  >
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 1"
+    >
+      Column 1
+    </rk-segment>
+    
+    <!---->
+    
+    <!---->
+    
+    
+  </rk-container>
+  
+</div>
+`;
+
+exports[`SlidingColumns > should render correctly 2`] = `
+<div>
+  <rk-container
+    class="relative grid h-full w-full overflow-hidden"
+    tabindex="0"
+  >
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 1"
+    >
+      Column 1
+    </rk-segment>
+    
+    <!---->
+    <rk-segment
+      class="slide absolute h-full w-full Column 2"
+    >
+      Column 2
+    </rk-segment>
+    
+    <!---->
+    
+    
+  </rk-container>
+  
+</div>
+`;

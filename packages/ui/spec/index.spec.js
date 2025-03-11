@@ -30,7 +30,11 @@ describe('components', () => {
 			'List',
 			'Accordion',
 			'NestedList',
-			'Tree'
+			'Tree',
+			'ToggleThemeMode',
+			'Overlay',
+			'Message',
+			'SlidingColumns'
 		])
 	})
 })

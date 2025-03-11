@@ -8,7 +8,7 @@
   },
   "scripts": {
     "clean": "find . -name node_modules | xargs rm -rf",
-    "test:watch": "vitest watch",
+    "test:watch": "vitest",
     "test:ci": "vitest run",
     "coverage": "vitest run --coverage",
     "format": "prettier --write .",
