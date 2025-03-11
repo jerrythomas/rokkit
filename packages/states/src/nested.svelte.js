@@ -1,4 +1,4 @@
-import { has, equals, pick } from 'ramda'
+import { has, equals, pick, omit } from 'ramda'
 import { SvelteMap } from 'svelte/reactivity'
 import { DEFAULT_EVENTS } from './constants'
 import { FieldMapper, getKeyFromPath } from '@rokkit/core'
@@ -8,6 +8,7 @@ export class DataWrapper {
 	#path = []
 	#events = {}
 	#init = false
+	#keys = null
 	#options = { multiselect: false, autoCloseSiblings: false }
 
 	items = null
@@ -24,13 +25,35 @@ export class DataWrapper {
 
 		this.#events = { ...DEFAULT_EVENTS, ...options.events }
 		this.#options = { ...options, ...pick(['multiselect', 'autoCloseSiblings'], options) }
-		this.value = value
+		this.#keys = options.keys || null
+		this.moveToValue(value)
+	}
 
+	moveToValue(value) {
 		this.#init = true
+		this.value = value
 		this.moveTo(this.findPathToItem(value))
+		this.#expandPath(this.#path)
+
 		this.#init = false
 	}
 
+	#expandPath(path) {
+		if (!path.length) return
+		for (let i = 0; i < path.length; i++) {
+			const item = this.mapping.getItemByPath(this.data, path.slice(0, i + 1))
+			if (!this.mapping.isExpanded(item)) {
+				this.mapping.toggleExpansion(item)
+			}
+		}
+	}
+	#matchItems(a, b) {
+		if (this.#keys) {
+			return equals(pick(this.#keys, a), pick(this.#keys, b))
+		} else {
+			return equals(a, b)
+		}
+	}
 	/**
 	 * Finds an item in a tree structure and returns the path as array of indices
 	 * @param {*} value - The value to find
@@ -40,7 +63,7 @@ export class DataWrapper {
 	findPathToItem(value, parent = []) {
 		const children = this.mapping.getChildrenByPath(this.data, parent)
 		// Direct child check
-		const directIndex = children.findIndex((item) => equals(item, value))
+		const directIndex = children.findIndex((item) => this.#matchItems(item, value))
 		if (directIndex !== -1) {
 			return [...parent, directIndex]
 		}

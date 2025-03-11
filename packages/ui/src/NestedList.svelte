@@ -44,7 +44,7 @@
 			value={items[index]}
 			{mapping}
 			types={connectors}
-			path={getKeyFromPath(indexPath)}
+			path={indexPath}
 			{stateIcons}
 			{selected}
 			{expanded}
