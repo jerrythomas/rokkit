@@ -3,7 +3,7 @@
     --scroll-width: 0.5rem;
   }
   /* light theme colors */
-  .light {
+  [data-mode='light'] {
     @apply rokkit-mode-light;
   }
   @media (prefers-color-scheme: dark) {
@@ -13,7 +13,7 @@
   }
 
   /* dark theme colors */
-  .dark {
+  [data-mode='dark'] {
     @apply rokkit-mode-dark;
   }
 

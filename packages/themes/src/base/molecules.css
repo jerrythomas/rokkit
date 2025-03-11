@@ -103,3 +103,7 @@ rk-input-field > label.required::after {
   content: ' *';
   @apply state-danger;
 }
+
+rk-select > select {
+  @apply min-h-9 min-w-40 rounded px-3;
+}

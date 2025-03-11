@@ -73,7 +73,7 @@
 /* Styles for 'button' and 'button-group' classes */
 [data-style='rokkit'] button,
 [data-style='rokkit'] .button {
-  @apply bg-neutral-muted flex min-h-9 cursor-pointer items-center gap-3 rounded-full px-6 uppercase text-neutral-700;
+  @apply bg-neutral-subtle text-on-neutral-subtle flex min-h-9 cursor-pointer items-center gap-3 rounded-full px-6 uppercase;
   animation: button-pop var(--animation-btn, 0.25s) ease-out;
 }
 
@@ -81,7 +81,12 @@
 [data-style='rokkit'] .button.is-primary {
   @apply from-primary to-secondary bg-gradient-to-r text-white;
 }
-
+[data-style='rokkit'] a.square > rk-icon {
+  @apply text-on-neutral-subtle bg-neutral-subtle h-full w-full rounded-md;
+}
+[data-style='rokkit'] a.square {
+  @apply border-neutral-subtle p-2px flex h-10 w-10 items-center justify-center rounded-md border;
+}
 [data-style='rokkit'] button-group {
   @apply gap-1px m-auto flex items-center justify-center py-1;
 }
