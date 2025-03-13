@@ -5,6 +5,7 @@ import { isObject } from './utils.js'
 export class FieldMapper {
 	#fields = { ...defaultFields }
 	#componentMap = {}
+	#childMapper = null
 
 	constructor(fields = defaultFields, componentMap = {}) {
 		this.#updateFields(fields)
@@ -186,5 +187,12 @@ export class FieldMapper {
 
 		if (result === undefined) throw new Error('Invalid path')
 		return result
+	}
+
+	getChildMapping() {
+		if (!this.#childMapper) {
+			this.#childMapper = new FieldMapper(this.#fields.fields ?? this.#fields, this.#componentMap)
+		}
+		return this.#childMapper
 	}
 }
