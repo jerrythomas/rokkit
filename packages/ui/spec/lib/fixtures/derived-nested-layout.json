@@ -1,0 +1,44 @@
+{
+  "type": "vertical",
+  "elements": [
+    {
+      "scope": "#/name",
+      "label": "name"
+    },
+    {
+      "scope": "#/age",
+      "label": "age"
+    },
+    {
+      "scope": "#/verified",
+      "label": "verified"
+    },
+    {
+      "scope": "#/createdAt",
+      "label": "createdAt"
+    },
+    {
+      "scope": "#/address",
+      "title": "address",
+      "type": "vertical",
+      "elements": [
+        {
+          "scope": "#/address/street",
+          "label": "street"
+        },
+        {
+          "scope": "#/address/city",
+          "label": "city"
+        },
+        {
+          "scope": "#/address/state",
+          "label": "state"
+        },
+        {
+          "scope": "#/address/zip",
+          "label": "zip"
+        }
+      ]
+    }
+  ]
+}
