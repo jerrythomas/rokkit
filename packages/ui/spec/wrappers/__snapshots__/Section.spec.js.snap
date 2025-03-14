@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Section.svelte > should render using default props 1`] = `
+<div>
+  <details
+    open=""
+  >
+    <summary>
+      Section
+    </summary>
+     
+    <field-layout
+      class="vertical"
+    >
+      <!---->
+    </field-layout>
+  </details>
+  
+</div>
+`;
+
+exports[`Section.svelte > should render using props 1`] = `
+<div>
+  <details>
+    <summary>
+      Section Title
+    </summary>
+     
+    <field-layout
+      class="vertical"
+    >
+      <!---->
+    </field-layout>
+  </details>
+  
+</div>
+`;
+
+exports[`Section.svelte > should render using specified class 1`] = `
+<div>
+  <details
+    class="custom-class"
+    open=""
+  >
+    <summary>
+      Section
+    </summary>
+     
+    <field-layout
+      class="vertical"
+    >
+      <!---->
+    </field-layout>
+  </details>
+  
+</div>
+`;
+
+exports[`Section.svelte > should render using specified type 1`] = `
+<div>
+  <details
+    open=""
+  >
+    <summary>
+      Section
+    </summary>
+     
+    <field-layout
+      class="horizontal"
+    >
+      <!---->
+    </field-layout>
+  </details>
+  
+</div>
+`;

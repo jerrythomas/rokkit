@@ -1,0 +1,313 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputSelect.svelte > should render items using custom component 1`] = `
+<div>
+  <input
+    name="opt"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
+<div>
+  <input
+    name="opt"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render items using default item when data is invalid 1`] = `
+<div>
+  <input
+    name="opt"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render items using field mappings 1`] = `
+<div>
+  <input
+    name="opt"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render using default field mapping 1`] = `
+<div>
+  <input
+    name="opt"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render with alternate class 1`] = `
+<div>
+  <input
+    name="opt"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col myClass"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+</div>
+`;

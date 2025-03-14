@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, noop } from '@rokkit/core'
+	import { defaultFields, defaultStateIcons, noop } from '@rokkit/core'
 	import { defaultMapping } from './constants'
 	import { navigator } from '@rokkit/actions'
 	import Icon from './Icon.svelte'
@@ -21,6 +21,7 @@
 	let {
 		class: className = '',
 		options = $bindable([]),
+		fields = defaultFields,
 		mapping = defaultMapping,
 		value = $bindable(null),
 		below = false,

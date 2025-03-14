@@ -1,0 +1,999 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Form.svelte > should render a form 1`] = `
+<div>
+  <form>
+    <!---->
+    <field-layout
+      aria-label=""
+      class="vertical "
+    >
+      <!---->
+      <!---->
+      <!---->
+      <input-field
+        class="flex flex-col input-string  "
+      >
+        <label
+          for="name"
+        >
+          name
+        </label>
+        <!---->
+         
+        <field
+          aria-label="name"
+          class="flex w-full flex-row items-center"
+        >
+          <!---->
+           
+          <!---->
+           
+          <!---->
+          <input
+            id="name"
+            name="name"
+            type="text"
+          />
+          
+          <!---->
+           
+          <!---->
+        </field>
+         
+        <!---->
+      </input-field>
+      
+      
+      <!---->
+      <!---->
+      <input-field
+        class="flex flex-col input-integer  "
+      >
+        <label
+          for="age"
+        >
+          age
+        </label>
+        <!---->
+         
+        <field
+          aria-label="age"
+          class="flex w-full flex-row items-center"
+        >
+          <!---->
+           
+          <!---->
+           
+          <!---->
+          <input
+            id="age"
+            name="age"
+            type="number"
+          />
+          
+          <!---->
+           
+          <!---->
+        </field>
+         
+        <!---->
+      </input-field>
+      
+      
+      <!---->
+      <!---->
+      <!---->
+      <field-layout
+        aria-label="address"
+        class="vertical "
+      >
+        <!---->
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.street"
+          >
+            street
+          </label>
+          <!---->
+           
+          <field
+            aria-label="street"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.street"
+              name="address.street"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.city"
+          >
+            city
+          </label>
+          <!---->
+           
+          <field
+            aria-label="city"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.city"
+              name="address.city"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.state"
+          >
+            state
+          </label>
+          <!---->
+           
+          <field
+            aria-label="state"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.state"
+              name="address.state"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-integer  "
+        >
+          <label
+            for="address.zip"
+          >
+            zip
+          </label>
+          <!---->
+           
+          <field
+            aria-label="zip"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.zip"
+              name="address.zip"
+              type="number"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        
+        <!---->
+      </field-layout>
+      
+      
+      
+      
+      <!---->
+    </field-layout>
+    
+    <!---->
+     
+    <span>
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
+      <!---->
+    </span>
+  </form>
+  
+</div>
+`;
+
+exports[`Form.svelte > should render a form with layout 1`] = `
+<div>
+  <form>
+    <!---->
+    <field-layout
+      aria-label=""
+      class="vertical "
+    >
+      <!---->
+      <!---->
+      <!---->
+      <h1>
+        string:Name
+      </h1>
+       
+      <p>
+        :"John"
+      </p>
+       
+      <p>
+        []
+      </p>
+      
+      
+      <!---->
+      <!---->
+      <input-field
+        class="flex flex-col input-number  "
+      >
+        <label
+          for="age"
+        >
+          age
+        </label>
+        <!---->
+         
+        <field
+          aria-label="age"
+          class="flex w-full flex-row items-center"
+        >
+          <!---->
+           
+          <!---->
+           
+          <!---->
+          <input
+            id="age"
+            name="age"
+            type="number"
+          />
+          
+          <!---->
+           
+          <!---->
+        </field>
+         
+        <!---->
+      </input-field>
+      
+      
+      <!---->
+      <!---->
+      <!---->
+      <field-layout
+        aria-label="Address"
+        class="vertical "
+      >
+        <!---->
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.street"
+          >
+            street
+          </label>
+          <!---->
+           
+          <field
+            aria-label="street"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.street"
+              name="address.street"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.city"
+          >
+            city
+          </label>
+          <!---->
+           
+          <field
+            aria-label="city"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.city"
+              name="address.city"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.state"
+          >
+            state
+          </label>
+          <!---->
+           
+          <field
+            aria-label="state"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.state"
+              name="address.state"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-number  "
+        >
+          <label
+            for="address.zip"
+          >
+            zip
+          </label>
+          <!---->
+           
+          <field
+            aria-label="zip"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.zip"
+              name="address.zip"
+              type="number"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        
+        <!---->
+      </field-layout>
+      
+      
+      
+      
+      <!---->
+    </field-layout>
+    
+    <!---->
+     
+    <span>
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
+      <!---->
+    </span>
+  </form>
+  
+</div>
+`;
+
+exports[`Form.svelte > should render a form with schema & layout 1`] = `
+<div>
+  <form>
+    <!---->
+    <field-layout
+      aria-label=""
+      class="vertical "
+    >
+      <!---->
+      <!---->
+      <!---->
+      <h1>
+        string:Name
+      </h1>
+       
+      <p>
+        :"John"
+      </p>
+       
+      <p>
+        []
+      </p>
+      
+      
+      <!---->
+      <!---->
+      <input-field
+        class="flex flex-col input-number  "
+      >
+        <label
+          for="age"
+        >
+          age
+        </label>
+        <!---->
+         
+        <field
+          aria-label="age"
+          class="flex w-full flex-row items-center"
+        >
+          <!---->
+           
+          <!---->
+           
+          <!---->
+          <input
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          <!---->
+           
+          <!---->
+        </field>
+         
+        <!---->
+      </input-field>
+      
+      
+      <!---->
+      <!---->
+      <!---->
+      <field-layout
+        aria-label="Address"
+        class="vertical "
+      >
+        <!---->
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.street"
+          >
+            street
+          </label>
+          <!---->
+           
+          <field
+            aria-label="street"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.street"
+              name="address.street"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.city"
+          >
+            city
+          </label>
+          <!---->
+           
+          <field
+            aria-label="city"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.city"
+              name="address.city"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.state"
+          >
+            state
+          </label>
+          <!---->
+           
+          <field
+            aria-label="state"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.state"
+              name="address.state"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-number  "
+        >
+          <label
+            for="address.zip"
+          >
+            zip
+          </label>
+          <!---->
+           
+          <field
+            aria-label="zip"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.zip"
+              max="99999"
+              min="0"
+              name="address.zip"
+              type="number"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        
+        <!---->
+      </field-layout>
+      
+      
+      
+      
+      <!---->
+    </field-layout>
+    
+    <!---->
+     
+    <span>
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
+      <!---->
+    </span>
+  </form>
+  
+</div>
+`;
+
+exports[`Form.svelte > should render a form with schema 1`] = `
+<div>
+  <form>
+    <!---->
+    <field-layout
+      aria-label=""
+      class="vertical "
+    >
+      <!---->
+      <!---->
+      <!---->
+      <input-field
+        class="flex flex-col input-string  "
+      >
+        <label
+          for="name"
+        >
+          name
+        </label>
+        <!---->
+         
+        <field
+          aria-label="name"
+          class="flex w-full flex-row items-center"
+        >
+          <!---->
+           
+          <!---->
+           
+          <!---->
+          <input
+            id="name"
+            name="name"
+            type="text"
+          />
+          
+          <!---->
+           
+          <!---->
+        </field>
+         
+        <!---->
+      </input-field>
+      
+      
+      <!---->
+      <!---->
+      <input-field
+        class="flex flex-col input-number  "
+      >
+        <label
+          for="age"
+        >
+          age
+        </label>
+        <!---->
+         
+        <field
+          aria-label="age"
+          class="flex w-full flex-row items-center"
+        >
+          <!---->
+           
+          <!---->
+           
+          <!---->
+          <input
+            id="age"
+            max="100"
+            min="0"
+            name="age"
+            type="number"
+          />
+          
+          <!---->
+           
+          <!---->
+        </field>
+         
+        <!---->
+      </input-field>
+      
+      
+      <!---->
+      <!---->
+      <!---->
+      <field-layout
+        aria-label="address"
+        class="vertical "
+      >
+        <!---->
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.street"
+          >
+            street
+          </label>
+          <!---->
+           
+          <field
+            aria-label="street"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.street"
+              name="address.street"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.city"
+          >
+            city
+          </label>
+          <!---->
+           
+          <field
+            aria-label="city"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.city"
+              name="address.city"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-string  "
+        >
+          <label
+            for="address.state"
+          >
+            state
+          </label>
+          <!---->
+           
+          <field
+            aria-label="state"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.state"
+              name="address.state"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-number  "
+        >
+          <label
+            for="address.zip"
+          >
+            zip
+          </label>
+          <!---->
+           
+          <field
+            aria-label="zip"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="address.zip"
+              max="99999"
+              min="0"
+              name="address.zip"
+              type="number"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        
+        <!---->
+      </field-layout>
+      
+      
+      
+      
+      <!---->
+    </field-layout>
+    
+    <!---->
+     
+    <span>
+      <button
+        type="submit"
+      >
+        Submit
+      </button>
+      <!---->
+    </span>
+  </form>
+  
+</div>
+`;

@@ -1,7 +1,12 @@
 <script>
 	import { List } from '@rokkit/ui'
 
-	let items = $state(['Fruits', 'Vegetables', 'Nuts', 'Spices'])
+	let items = $state([
+		{ text: 'Fruits' },
+		{ text: 'Vegetables' },
+		{ text: 'Nuts' },
+		{ text: 'Spices' }
+	])
 	let value = $state(null)
 </script>
 

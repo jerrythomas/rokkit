@@ -7,7 +7,7 @@ many other components like [Accordion](/guide/accordion), Dropdown and Select co
 
 Some of the notable features of this component are:
 
-- Get started with a simple string array
+- Get started with a simple array of objects
 - Attributes like text, icon/image or url can be mapped to attributes in the data
 - Default item components like Text & Link are available, however custom components can also be used
 - It is also possible to configure a different component to be used for different items based on an

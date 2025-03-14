@@ -1,5 +1,5 @@
-import { has } from 'ramda'
-
+import { has, isNil } from 'ramda'
+import { defaultFields } from '@rokkit/core'
 /**
  * Represents an individual node within a data structure
  */
@@ -40,28 +40,28 @@ export class NodeProxy {
 	 * @param {import('./field-mapper.js').FieldMapper} mapper - Field mapper
 	 * @param {NodeProxy|null} parent - Parent node
 	 */
-	constructor(item, path, mapper, parent = null) {
+	constructor(item, path, fields, parent = null) {
 		this.original = item
 		this.path = path
 		this.depth = path.length - 1
-		this.mapping = mapper
 		this.parent = parent
+		this.fields = { ...defaultFields, ...fields }
 
 		// Set id from original data or path
-		if (has(this.mapping.fields.id, item)) {
-			this.id = String(item[this.mapping.fields.id])
+		if (has(this.fields.id, item)) {
+			this.id = String(item[this.fields.id])
 		} else {
 			this.id = this.getKey()
 		}
 
 		// Set expanded state from original data
-		if (has(this.mapping.fields.isOpen, item)) {
-			this.expanded = Boolean(item[this.mapping.fields.isOpen])
+		if (has(this.fields.isOpen, item)) {
+			this.expanded = Boolean(item[this.fields.isOpen])
 		}
 
 		// Set selected state from original data
-		if (has(this.mapping.fields.isSelected, item)) {
-			this.selected = Boolean(item[this.mapping.fields.isSelected])
+		if (has(this.fields.isSelected, item)) {
+			this.selected = Boolean(item[this.fields.isSelected])
 		}
 
 		this._refreshAllChildren(path)
@@ -74,7 +74,7 @@ export class NodeProxy {
 	 * @returns {any|null} - The attribute value or null if not found
 	 */
 	get(fieldName) {
-		const mappedField = this.mapping.fields[fieldName]
+		const mappedField = this.fields[fieldName]
 		if (!mappedField || !has(mappedField, this.original)) {
 			return null
 		}
@@ -86,7 +86,7 @@ export class NodeProxy {
 	 * @returns {string}
 	 */
 	get text() {
-		return this.mapping.getText(this.original) || ''
+		return this.get('text')
 	}
 
 	/**
@@ -94,7 +94,7 @@ export class NodeProxy {
 	 * @returns {string|null}
 	 */
 	get icon() {
-		return this.mapping.getIcon(this.original)
+		return this.get('icon')
 	}
 
 	/**
@@ -103,7 +103,10 @@ export class NodeProxy {
 	 * @returns {string}
 	 */
 	formattedText(formatter) {
-		return this.mapping.getFormattedText(this.original, formatter)
+		const text = this.get('text')
+		if (isNil(text)) return ''
+		if (typeof formatter !== 'function') return text.toString()
+		return formatter(text, this.get('currency'))
 	}
 
 	/**
@@ -113,8 +116,8 @@ export class NodeProxy {
 		this.expanded = !this.expanded
 
 		// Update original data if it has the isOpen field
-		if (has(this.mapping.fields.isOpen, this.original)) {
-			this.original[this.mapping.fields.isOpen] = this.expanded
+		if (has(this.fields.isOpen, this.original)) {
+			this.original[this.fields.isOpen] = this.expanded
 		}
 		return this
 	}
@@ -152,19 +155,20 @@ export class NodeProxy {
 	}
 
 	/**
-	 * Adds a child node proxy from an existing data item
+	 * Adds a child node proxy from an existing data item.
+	 * If index is provided, the child is inserted at that index, otherwise it is appended to the end
 	 * @param {any} childData - Child data to add (already exists in original data)
 	 * @returns {NodeProxy} - The newly created child node proxy
 	 */
-	addChild(childData, index = 0) {
+	addChild(childData, index = -1) {
 		if (this.children.length === 0) {
-			this.original[this.mapping.fields.children] = []
+			this.original[this.fields.children] = []
 		}
 		if (index < 0 || index > this.children.length) {
 			index = this.children.length
 		}
 
-		this.original[this.mapping.fields.children].splice(index, 0, childData)
+		this.original[this.fields.children].splice(index, 0, childData)
 		this._refreshAllChildren(this.path)
 	}
 
@@ -177,8 +181,8 @@ export class NodeProxy {
 		if (index < 0 || index >= this.children.length) {
 			return null
 		}
-		const child = this.original[this.mapping.fields.children][index]
-		this.original[this.mapping.fields.children].splice(index, 1)
+		const child = this.original[this.fields.children][index]
+		this.original[this.fields.children].splice(index, 1)
 		this._refreshAllChildren(this.path)
 		return child
 	}
@@ -188,10 +192,13 @@ export class NodeProxy {
 	 * @private
 	 */
 	_removeAllChildren() {
-		// Clean up all child nodes
 		this.children.forEach((child) => child.destroy())
-		// Clear the children array
 		this.children = []
+	}
+
+	_hasChildren() {
+		const childAttr = this.fields.children
+		return has(childAttr, this.original) && Array.isArray(this.original[childAttr])
 	}
 	/**
 	 * Removes all children from this node
@@ -199,14 +206,10 @@ export class NodeProxy {
 	 */
 	_refreshAllChildren(path) {
 		if (this.children.length > 0) this._removeAllChildren()
-		if (this.mapping.hasChildren(this.original)) {
-			this.original[this.mapping.fields.children].forEach((child, index) => {
-				const childNode = new NodeProxy(
-					child,
-					[...path, index],
-					this.mapping.getChildMapping(),
-					this
-				)
+		if (this._hasChildren()) {
+			const childFields = this.fields.fields ?? this.fields
+			this.original[this.fields.children].forEach((child, index) => {
+				const childNode = new NodeProxy(child, [...path, index], childFields, this)
 				this.children.push(childNode)
 			})
 		}

@@ -14,7 +14,6 @@ of the selected item.
 ## Properties
 
 - _items_ : Supply the data for the list.
-- _fields_ : Adapt to your data by customising the fields
-- _using_ : An object containing components to be used for displaying data. Uses the Text component by default.
+- _mapping_ : Adapt to your data by providing a custom field mapping. The mapping also includes an option to set the default component to be used
 - _value_ : Current selected value of the list
 - _class_ : Set custom class for style overrides
