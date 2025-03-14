@@ -1,10 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { NodeProxy } from '../src/node-proxy.svelte.js'
-import { FieldMapper } from '@rokkit/core'
+import { defaultFields } from '@rokkit/core'
 
 describe('NodeProxy', () => {
 	let data = $state([])
-	let mapper
 
 	beforeEach(() => {
 		// Sample state array with data
@@ -25,12 +24,10 @@ describe('NodeProxy', () => {
 				isOpen: false
 			}
 		]
-
-		mapper = new FieldMapper()
 	})
 
 	it('should create a node proxy with correct properties', () => {
-		const node = new NodeProxy(data[0], [0], mapper)
+		const node = new NodeProxy(data[0], [0])
 
 		expect(node.path).toEqual([0])
 		expect(node.depth).toBe(0)
@@ -43,13 +40,40 @@ describe('NodeProxy', () => {
 
 	it('should create a unique id from path when id field is not available', () => {
 		const itemWithoutId = { text: 'No ID Item' }
-		const node = new NodeProxy(itemWithoutId, [1, 2], mapper)
+		const node = new NodeProxy(itemWithoutId, [1, 2])
 
 		expect(node.id).toBe('1-2')
 	})
+	it('should handle custom mapping', () => {
+		const fields = { text: 'name', icon: 'type', id: 'key' }
+		const data = $state([
+			{ key: 'id-1', name: 'Item 1', type: 'folder', value: 'item-1' },
+			{ key: 'id-2', name: 'Item 2', type: 'file', value: 'item-2' }
+		])
+		const node = new NodeProxy(data[0], [0], fields)
+		expect(node.id).toBe('id-1')
+		expect(node.text).toBe('Item 1')
+		expect(node.icon).toBe('folder')
+		expect(node.value).toBe(data[0])
+		expect(node.fields.fields).toBeUndefined()
+
+		node.addChild({ name: 'item 1.1' })
+		expect(node.children.length).toBe(1)
+		expect(node.children[0].fields).toEqual(node.fields)
+
+		node.fields.fields = { text: 'proxy' }
+
+		node.addChild({ proxy: 'item 1.2' })
+		expect(node.children.length).toBe(2)
+		expect(node.children[0].fields).toEqual({ ...defaultFields, text: 'proxy' })
+		expect(node.children[1].fields).toEqual({ ...defaultFields, text: 'proxy' })
+
+		expect(node.children[0].get('text')).toBeNull()
+		expect(node.children[1].get('text')).toEqual('item 1.2')
+	})
 
 	it('should properly get mapped attributes', () => {
-		const node = new NodeProxy(data[0], [0], mapper)
+		const node = new NodeProxy(data[0], [0])
 
 		expect(node.text).toBe('Item 1')
 		expect(node.icon).toBe('folder')
@@ -57,7 +81,7 @@ describe('NodeProxy', () => {
 	})
 
 	it('should properly get attributes via get method', () => {
-		const node = new NodeProxy(data[0], [0], mapper)
+		const node = new NodeProxy(data[0], [0])
 
 		expect(node.get('text')).toBe('Item 1')
 		expect(node.get('icon')).toBe('folder')
@@ -66,23 +90,18 @@ describe('NodeProxy', () => {
 	})
 
 	it('should modify original data in place when value is updated', () => {
-		const node = new NodeProxy(data[0], [0], mapper)
+		const node = new NodeProxy(data[0], [0])
 
-		// Original data before update
 		expect(data[0].text).toBe('Item 1')
 
-		// Modify object property through node.value
 		node.value.text = 'Updated Item 1'
-
-		// Check if the original array was updated
 		expect(data[0].text).toBe('Updated Item 1')
 
-		// Check if node reflects the changes
 		expect(node.text).toBe('Updated Item 1')
 	})
 
 	it('should update original object when node.value is set', () => {
-		const node = new NodeProxy(data[0], [0], mapper)
+		const node = new NodeProxy(data[0], [0])
 		const newItem = { id: 1, text: 'Replaced Item', value: 'replaced' }
 
 		// Replace entire object
@@ -94,21 +113,15 @@ describe('NodeProxy', () => {
 	})
 
 	it('should detect children correctly', () => {
-		// Set up parent and child nodes
-		const parentNode = new NodeProxy(data[1], [1], mapper)
-		const childNodes = data[1].children.map(
-			(child, idx) => new NodeProxy(child, [1, idx], mapper, parentNode)
-		)
-		parentNode.children = childNodes
-
+		const parentNode = new NodeProxy(data[1], [1])
 		expect(parentNode.hasChildren()).toBe(true)
-		expect(childNodes[0].hasChildren()).toBe(false)
+		expect(parentNode.children[0].hasChildren()).toBe(false)
 		expect(parentNode.isLeaf()).toBe(false)
-		expect(childNodes[0].isLeaf()).toBe(true)
+		expect(parentNode.children[0].isLeaf()).toBe(true)
 	})
 
 	it('should toggle expanded state', () => {
-		const node = new NodeProxy(data[1], [1], mapper)
+		const node = new NodeProxy(data[1], [1])
 
 		expect(node.expanded).toBe(false)
 
@@ -120,21 +133,21 @@ describe('NodeProxy', () => {
 	})
 
 	it('should get path and key', () => {
-		const node = new NodeProxy(data[0], [2, 3, 1], mapper)
+		const node = new NodeProxy(data[0], [2, 3, 1])
 
 		expect(node.getPath()).toEqual([2, 3, 1])
 		expect(node.getKey()).toBe('2-3-1')
 	})
 
 	it('should format text using a formatter function', () => {
-		const node = new NodeProxy(data[0], [0], mapper)
+		const node = new NodeProxy(data[0], [0])
 		const formatter = (text) => text.toUpperCase()
 
 		expect(node.formattedText(formatter)).toBe('ITEM 1')
 	})
 
 	it('should update children correctly', () => {
-		const parentNode = new NodeProxy(data[1], [1], mapper)
+		const parentNode = new NodeProxy(data[1], [1])
 		expect(parentNode.children.length).toEqual(2)
 		expect(parentNode.children[0].value).toBe(data[1].children[0])
 		expect(parentNode.children[1].value).toBe(data[1].children[1])
@@ -147,7 +160,7 @@ describe('NodeProxy', () => {
 	})
 
 	it('should remove a child data correctly', () => {
-		const parentNode = new NodeProxy(data[1], [1], mapper)
+		const parentNode = new NodeProxy(data[1], [1])
 		expect(parentNode.children.length).toEqual(2)
 		let result = parentNode.removeChild(-1)
 		expect(result).toBeNull()
@@ -165,9 +178,10 @@ describe('NodeProxy', () => {
 	})
 
 	it('should add a child data correctly', () => {
-		const parentNode = new NodeProxy(data[1], [1], mapper)
+		const parentNode = new NodeProxy(data[1], [1])
 		expect(parentNode.children.length).toEqual(2)
-		parentNode.addChild({ id: 5 })
+
+		parentNode.addChild({ id: 5 }, 0)
 		expect(parentNode.children.length).toEqual(3)
 		expect(data[1].children.length).toBe(3)
 		expect(data[1].children[0]).toEqual({ id: 5 })
@@ -180,14 +194,14 @@ describe('NodeProxy', () => {
 	})
 
 	it('should match a condition on the value', () => {
-		const parentNode = new NodeProxy(data[1], [1], mapper)
+		const parentNode = new NodeProxy(data[1], [1])
 
 		expect(parentNode.match((value) => value.id === 2)).toBe(true)
 		expect(parentNode.match((value) => value.id === 5)).toBe(false)
 	})
 
 	it('should find a node matching a condition', () => {
-		const parentNode = new NodeProxy(data[1], [1], mapper)
+		const parentNode = new NodeProxy(data[1], [1])
 		expect(parentNode.find((value) => value.id === 3)).toBe(parentNode.children[0])
 		expect(parentNode.find((value) => value.id === 7)).toBeNull()
 	})

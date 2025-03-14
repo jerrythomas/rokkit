@@ -1,0 +1,115 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Select.svelte > should render string array 1`] = `
+<div>
+  <input-select
+    aria-label="test"
+    class="relative flex flex-col open"
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="opened"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <scroll
+      class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+      style="top: 0px;"
+    >
+      <rk-list
+        aria-label="list"
+        class=""
+        role="listbox"
+        tabindex="-1"
+      >
+        <!---->
+         
+        <!---->
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="0"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            a
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            b
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="2"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            c
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
+        
+        <!---->
+      </rk-list>
+      <!---->
+    </scroll>
+    <!---->
+  </input-select>
+  
+</div>
+`;

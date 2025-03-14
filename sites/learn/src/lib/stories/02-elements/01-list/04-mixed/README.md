@@ -26,15 +26,16 @@ to use these components.
   import Odd from './Odd.svelte'
   import Even from './Even.svelte'
 
-  let using = { odd: Odd, even: Even }
+  let components = { odd: Odd, even: Even }
+  let mapping = new FieldMapper(fields, components)
 </script>
 ```
 
 Notice that some of the elements do not have this attribute. In such cases, list will use the default component.
-If we wanted to used the Even component as a default we could modify the `using` attribute as shown below.
+If we wanted to used the Even component as a default we could modify the component map as shown below.
 
 ```js
-let using = { odd: Odd, default: Even }
+let mapping = new FieldMapper(fields, { default: Even, odd: Odd, even: Even })
 ```
 
-In this case also, even though the value `even` is not mapped to a component, list will use the default.
+In this case when type is not set, the default component used would be `Even`.

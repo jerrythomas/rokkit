@@ -1,0 +1,5 @@
+{
+  "category": "Data",
+  "title": "Form",
+  "description": "Form component that allows users to create a variety of forms by providing an object, schema and layout."
+}

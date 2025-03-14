@@ -1,10 +1,11 @@
 <script>
 	import { pick, omit } from 'ramda'
-	import { defaultMapping } from '@rokkit/molecules/constants'
-	import { Connector, Icon } from '@rokkit/atoms'
-	import { Item } from '@rokkit/molecules'
+	import { defaultMapping } from './constants'
+	import Connector from './Connector.svelte'
+	import Icon from './Icon.svelte'
+	import Item from './Item.svelte'
 
-	const dispatch = createEventDispatcher()
+	// const dispatch = createEventDispatcher()
 
 	/**
 	 * @typedef {Object} Props

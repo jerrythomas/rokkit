@@ -1,0 +1,90 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DropDown.svelte > should render using icon only 1`] = `
+<button
+  class="flex items-center"
+  tabindex="0"
+>
+  <span
+    class="flex items-center"
+  >
+    <rk-icon
+      aria-label="theme"
+      class=""
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="theme"
+      />
+    </rk-icon>
+    <!---->
+     
+    <!---->
+     
+    <rk-icon
+      aria-label="selector-closed"
+      class=""
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+    </rk-icon>
+    <!---->
+  </span>
+</button>
+`;
+
+exports[`DropDown.svelte > should render using icon only 2`] = `
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="dropdown relative flex cursor-pointer select-none "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
+    >
+      <span
+        class="flex items-center"
+      >
+        <rk-icon
+          aria-label="theme"
+          class=""
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="theme"
+          />
+        </rk-icon>
+        <!---->
+         
+        <!---->
+         
+        <rk-icon
+          aria-label="selector-closed"
+          class=""
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+        </rk-icon>
+        <!---->
+      </span>
+    </button>
+     
+    <!---->
+  </drop-down>
+  
+</div>
+`;

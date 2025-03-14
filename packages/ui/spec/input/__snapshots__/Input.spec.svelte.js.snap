@@ -1,0 +1,436 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Input.svelte > should render "boolean" 1`] = `
+<div>
+  <!---->
+  <rk-checkbox
+    aria-checked="unchecked"
+    aria-disabled="false"
+    class=""
+    role="checkbox"
+    tabindex="0"
+  >
+    <input
+      hidden=""
+      name="foo"
+      type="checkbox"
+    />
+     
+    <icon
+      class="checkbox-unchecked"
+    />
+  </rk-checkbox>
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "checkbox" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="checkbox"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "color" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="color"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "date" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="date"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "date-time" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="datetime-local"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "email" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="email"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "enum" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "file" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="file"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "integer" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="number"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "month" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="month"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "number" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="number"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "password" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="password"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "phone" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="tel"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "radio" 1`] = `
+<div>
+  <!---->
+  <radio-group
+    class=""
+  >
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="foo"
+        type="radio"
+        value="0"
+      />
+       
+      <p>
+        foo
+      </p>
+    </label>
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="foo"
+        type="radio"
+        value="1"
+      />
+       
+      <p>
+        bar
+      </p>
+    </label>
+    <label
+      class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
+    >
+      <input
+        name="foo"
+        type="radio"
+        value="2"
+      />
+       
+      <p>
+        baz
+      </p>
+    </label>
+    
+  </radio-group>
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "range" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="range"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "select" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="hidden"
+    value=""
+  />
+   
+  <input-select
+    aria-label=""
+    class="relative flex flex-col "
+    role="listbox"
+    tabindex="0"
+  >
+    <selected-item
+      aria-selected="false"
+      class="flex w-full items-center"
+      role="option"
+      tabindex="-1"
+    >
+      <item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
+      <!---->
+       
+      <rk-icon
+        aria-label="closed"
+        class=""
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-closed"
+        />
+      </rk-icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+  </input-select>
+  <!---->
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "string" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="text"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "tel" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="tel"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "text" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="text"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "text-area" 1`] = `
+<div>
+  <!---->
+  <textarea
+    name="foo"
+    type="week"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "time" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="time"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "url" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="url"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render "week" 1`] = `
+<div>
+  <!---->
+  <input
+    name="foo"
+    type="week"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render different input on type change 1`] = `
+<div>
+  <!---->
+  <input
+    type="text"
+  />
+  
+  
+</div>
+`;
+
+exports[`Input.svelte > should render different input on type change 2`] = `
+<div>
+  <!---->
+  <input
+    type="text"
+  />
+  
+  
+</div>
+`;
