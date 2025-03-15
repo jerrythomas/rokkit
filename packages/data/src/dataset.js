@@ -1,54 +1,18 @@
 import { equals, identity, pick, omit, clone } from 'ramda'
 import { descending } from 'd3-array'
-import { pickAllowedConfig, defaultConfig, includeAll } from './constants'
+import { pickAllowedConfig, defaultConfig } from './constants'
 import { deriveSortableColumn } from './infer'
 import { groupDataByKeys, fillAlignedData, getAlignGenerator, aggregateData } from './rollup'
-
-/**
- * Adds a filter to the dataset using the provided condition. This filter is applied
- * in subsequent operations like select, delete, and update.
- *
- * @param {Object} config      - The configuration object to be updated.
- * @param {Function} condition - The condition function to apply.
- * @returns {Object}           - The updated configuration
- */
-function where(config, condition) {
-	config.filter = condition
-	return config
-}
-/**
- * Groups the dataset by the specified columns.
- * @param {Object} config      - The configuration object to be updated.
- * @param {Object} actions     - The actions object for method chaining.
- * @param {...string} fields   - The columns to group by.
- * @returns {Object}           - The updated configurations.
- */
-function groupBy(config, ...fields) {
-	config.group_by = fields
-	return config
-}
-
-/**
- * Aligns the columns of the dataset using the provided fields.
- *
- * @param {Object} config      - The configuration object to be updated.
- * @param {...string} fields   - The fields to align.
- * @returns {Object}           - The updated configuration.
- */
-function alignBy(config, ...fields) {
-	config.align_by = fields
-	return config
-}
-/**
- * Sets the template for adding empty rows in the dataset.
- * @param {Object} config      - The configuration object to be updated.
- * @param {Object} template    - The template to use for adding empty rows.
- * @returns {Object}           - The updated configuration.
- */
-function usingTemplate(config, template) {
-	config.template = template
-	return config
-}
+import {
+	leftJoin,
+	rightJoin,
+	fullJoin,
+	innerJoin,
+	crossJoin,
+	semiJoin,
+	antiJoin,
+	nestedJoin
+} from './join'
 
 /**
  * Adds a summary field to the dataset.
@@ -69,161 +33,6 @@ function summarize(config, from, using) {
 	config.summaries.push({ mapper, reducers })
 
 	return config
-}
-
-/**
- * Joins two datasets together based on a condition. Result includes all rows from the first
- * dataset and matching rows from the second dataset. In case of multiple matches, all
- * combinations are returned. When combining the rows, the columns from the first dataset take
- * precedence.
- *
- * inner: only the rows that have a match in both datasets.
- * outer: all rows from the first dataset and matching rows from the second dataset.
- *
- * @param {Array}    first     - The first dataset to join.
- * @param {Array}    second    - The second dataset to join.
- * @param {Function} condition - The condition to join the datasets on.
- * @returns {Object}           - An object with the inner and outer join result.
- */
-function joinData(first, second, condition) {
-	let inner = []
-	const outer = []
-
-	first.forEach((f) => {
-		const matches = second.filter((s) => condition(f, s)).map((m) => ({ ...m, ...f }))
-		inner = inner.concat(matches)
-		if (matches.length === 0) outer.push(f)
-	})
-	return { inner, outer }
-}
-
-/**
- * Filters the results of the first dataset based on the condition using the second dataset.
- *
- * @param {Array}    first     - The first dataset to filter.
- * @param {Array}    second    - The second dataset to filter by.
- * @param {Function} condition - The condition to filter the first dataset by.
- * @returns {Array}            - The filtered dataset.
- */
-function antiJoin(first, second, condition) {
-	return first.filter((f) => !second.find((s) => condition(f, s)))
-}
-
-/**
- * Joins two datasets together based on a condition. Result includes all rows from the first
- * dataset and matching rows from the second dataset. In case of multiple matches, all
- * combinations are returned. When combining the rows, the columns from the first dataset take
- * precedence.
- *
- * @param {Array}    first     - The first dataset to join.
- * @param {Array}    second    - The second dataset to join.
- * @param {Function} condition - The condition to join the datasets on.
- * @returns {Array}            - The joined dataset.
- */
-function innerJoin(first, second, condition) {
-	const { inner } = joinData(first, second, condition)
-	return inner
-}
-
-/**
- * Performs a left join on two datasets based on a condition. Result includes all rows from the first
- * dataset and matching rows from the second dataset. In case of multiple matches, all combinations
- * are returned. When combining the rows, the columns from the first dataset take precedence.
- * If there is no match in the second dataset, only the row from the first dataset is returned.
- *
- * This can be used to perform a right join by swapping the datasets.
- *
- * @param {Array}    first     - The first dataset to join.
- * @param {Array}    second    - The second dataset to join.
- * @param {Function} condition - The condition to join the datasets on.
- * @returns {Array}            - The joined dataset.
- */
-function leftJoin(first, second, condition) {
-	const { inner, outer } = joinData(first, second, condition)
-	return inner.concat(outer)
-}
-
-/**
- * Performs a full join on two datasets based on a condition. Result includes all rows from both
- * datasets. In case of multiple matches, all combinations are returned. When combining the rows,
- * the columns from the first dataset take precedence. If there is no match in the second dataset,
- * only the row from the first dataset is returned. If there is no match in the first dataset, only
- * the row from the second dataset is returned.
- *
- * @param {Array}    first     - The first dataset to join.
- * @param {Array}    second    - The second dataset to join.
- * @param {Function} condition - The condition to join the datasets on.
- * @returns {Array}            - The joined dataset.
- */
-function fullJoin(first, second, condition) {
-	const { inner, outer } = joinData(first, second, condition)
-	const rightOuter = antiJoin(second, first, condition)
-	return inner.concat(outer).concat(rightOuter)
-}
-
-/**
- * Performs a cross join on two datasets. Result includes all combinations of rows from both datasets.
- *
- * @param {Array} first  - The first dataset to join.
- * @param {Array} second - The second dataset to join.
- * @returns {Array}      - The joined dataset.
- */
-function crossJoin(first, second) {
-	return first.map((f) => second.map((s) => ({ ...f, ...s }))).flat()
-}
-
-/**
- * Performs a semi join on two datasets based on a condition. Result includes all rows from the first
- * dataset that have a match in the second dataset.
- *
- * @param {Array}    first     - The first dataset to join.
- * @param {Array}    second    - The second dataset to join.
- * @param {Function} condition - The condition to join the datasets on.
- * @returns {Array}            - The joined dataset.
- */
-function semiJoin(first, second, condition) {
-	return first.filter((f) => second.find((s) => condition(f, s)))
-}
-
-/**
- * Performs a nested join on two datasets based on a condition. Result includes all rows from the first
- * dataset that have a match in the second dataset. The result is nested with the matching rows from the
- * second dataset.
- *
- * @param {Array}    first            - The first dataset to join.
- * @param {Array}    second           - The second dataset to join.
- * @param {Function} condition        - The condition to join the datasets on.
- * @param {String}   [key='children'] - The key to nest the matching rows under.
- * @returns {Array}            - The joined dataset.
- */
-function nestedJoin(first, second, condition, key = 'children') {
-	const result = first.map((f) => ({
-		...f,
-		[key]: second.filter((s) => condition(f, s))
-	}))
-	return result
-}
-
-/**
- * Drops the specified keys from the data.
- *
- * @param {Array<Object>} data - The data to drop keys from.
- * @param {Array<String>} keys - The keys to drop.
- * @returns {Array<Object>}    - The updated data with the specified keys dropped.
- */
-function dropKeys(data, ...keys) {
-	return data.map((row) => omit(keys, row))
-}
-
-/**
- * Deletes rows from the data based on the condition
- *
- * @param {Array<Object>} data      - The data to delete rows from.
- * @param {Function}      condition - The condition to delete rows on.
- * @returns {Array<Object>}         - The updated data with rows deleted based on the condition.
- */
-function deleteRows(data, condition) {
-	return data.filter((row) => !condition(row))
 }
 
 /**
@@ -379,51 +188,140 @@ function rollup(data, config) {
 	return aggregatedData
 }
 
-/**
- * Dataset is a collection of data with a set of operations that can be performed on it.
- * @param {Array} data - The data to be stored in the dataset.
- * @param {Object} options - The configuration options for the dataset.
- * @returns {Object} - An object with a set of operations that can be performed on the dataset.
- */
-// eslint-disable-next-line max-lines-per-function
-export function dataset(data, options = {}) {
-	const config = { ...clone(defaultConfig), ...options }
+export class DataSet {
+	#config = clone(defaultConfig)
+	#data = []
 
-	const actions = {
-		// configuration
-		override: (props) => dataset(data, { ...config, ...pickAllowedConfig(props) }),
-		where: (condition) => dataset(data, where(config, condition)),
-		groupBy: (...fields) => dataset(data, groupBy(config, ...fields)),
-		alignBy: (...fields) => dataset(data, alignBy(config, ...fields)),
-		using: (template) => dataset(data, usingTemplate(config, template)),
-		summarize: (from, fields) => dataset(data, summarize(config, from, fields)),
-		// alter keys
-		rename: (how) => dataset(renameKeys(data, how)),
-		drop: (...fields) => dataset(dropKeys(data, ...fields)),
-		// alter rows
-		sortBy: (...fields) => dataset(sortDataBy(data, ...fields)),
-		delete: () => dataset(deleteRows(data, config.filter || includeAll)),
-		update: (value) => dataset(updateRows(data, config.filter || identity, value)),
-		fillNA: (value) => dataset(fillNA(data, value)),
-		// transform data
-		apply: (callback) => dataset(data.map(callback)),
-		rollup: () => dataset(rollup(data, config)),
-		select: (...cols) => selectKeys(data, config, ...cols),
-		// set operations
-		union: (other) => dataset(data.concat(other)),
-		minus: (other) => dataset(data.filter((d) => !other.find((x) => equals(x, d)))),
-		intersect: (other) => dataset(data.filter((d) => other.find((x) => equals(x, d)))),
-		// joins
-		innerJoin: (other, condition) => dataset(innerJoin(data, other.select(), condition)),
-		leftJoin: (other, condition) => dataset(leftJoin(data, other.select(), condition)),
-		rightJoin: (other, condition) => dataset(leftJoin(other.select(), data, condition)),
-		fullJoin: (other, condition) => dataset(fullJoin(data, other.select(), condition)),
-		crossJoin: (other) => dataset(crossJoin(data, other.select())),
-		semiJoin: (other, condition) => dataset(semiJoin(data, other.select(), condition)),
-		antiJoin: (other, condition) => dataset(antiJoin(data, other.select(), condition)),
-		nestedJoin: (other, condition) =>
-			dataset(nestedJoin(data, other.select(), condition, config.children))
+	constructor(data) {
+		this.#data = data
+	}
+	get data() {
+		return this.#data
 	}
 
-	return actions
+	set data(values) {
+		this.#data = values
+	}
+
+	// configuration
+	set config(props = {}) {
+		this.#config = { ...this.#config, ...pickAllowedConfig(props) }
+	}
+
+	override(props) {
+		this.#config = { ...this.#config, ...pickAllowedConfig(props) }
+		return this
+	}
+
+	where(condition) {
+		this.#config.filter = condition
+		return this
+	}
+	groupBy(...fields) {
+		this.#config.group_by = fields
+		return this
+	}
+	alignBy(...fields) {
+		this.#config.align_by = fields
+		return this
+	}
+	usingTemplate(template) {
+		this.#config.template = template
+		return this
+	}
+	summarize(from, fields) {
+		this.config = summarize(this.#config, from, fields)
+		return this
+	}
+
+	rename(how) {
+		this.data = renameKeys(this.data, how)
+		return this
+	}
+	drop(...fields) {
+		const newDataSet = new DataSet(this.data.map((row) => omit(fields, row)))
+		newDataSet.config = this.config
+		return newDataSet
+	}
+	// alter rows
+	sortBy(...fields) {
+		this.data = sortDataBy(this.data, ...fields)
+		return this
+	}
+	remove() {
+		if (this.#config.filter) {
+			this.#data = this.data.filter((row) => !this.#config.filter(row))
+		} else {
+			this.#data = []
+		}
+		this.#config.filter = undefined
+		// this.data = deleteRows(this.data, this.#config.filter || includeAll)
+		return this
+	}
+	update(value) {
+		this.data = updateRows(this.data, this.#config.filter || identity, value)
+		this.#config.filter = undefined
+		return this
+	}
+	fillNA(value) {
+		this.data = fillNA(this.#data, value)
+		return this
+	}
+	// transform data
+	apply(callback) {
+		this.data = this.data.map(callback)
+		return this
+	}
+	rollup() {
+		return new DataSet(rollup(this.data, this.#config))
+	}
+	select(...cols) {
+		const result = this.#config.filter ? this.data.filter(this.#config.filter) : this.data
+		if (cols.length > 0) return result.map(pick(cols))
+		return result
+	}
+	// set operations
+	union(other) {
+		if (Array.isArray(other)) {
+			return new DataSet(this.data.concat(other))
+		}
+		return new DataSet(this.data.concat(other.data))
+	}
+	minus(other) {
+		return new DataSet(this.data.filter((d) => !other.find((x) => equals(x, d))))
+	}
+	intersect(other) {
+		return new DataSet(this.data.filter((d) => other.find((x) => equals(x, d))))
+	}
+	// joins
+	innerJoin(other, condition) {
+		return new DataSet(innerJoin(this.data, other.data, condition))
+	}
+	leftJoin(other, condition) {
+		return new DataSet(leftJoin(this.data, other.data, condition))
+	}
+	rightJoin(other, condition) {
+		return new DataSet(rightJoin(this.data, other.data, condition))
+	}
+	fullJoin(other, condition) {
+		return new DataSet(fullJoin(this.data, other.data, condition))
+	}
+	crossJoin(other) {
+		return new DataSet(crossJoin(this.data, other.data))
+	}
+	semiJoin(other, condition) {
+		return new DataSet(semiJoin(this.data, other.data, condition))
+	}
+	antiJoin(other, condition) {
+		return new DataSet(antiJoin(this.data, other.data, condition))
+	}
+	nestedJoin(other, condition) {
+		return new DataSet(nestedJoin(this.data, other.data, condition, this.#config.children))
+	}
+}
+
+export function dataset(data, options = {}) {
+	const ds = new DataSet(data)
+	ds.config = options
+	return ds
 }

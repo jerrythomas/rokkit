@@ -105,7 +105,7 @@ describe('dataset -> rollup', () => {
 		const result = dataset(fixtures.data)
 			.groupBy('date')
 			.alignBy('team')
-			.using({ score: 0, pct: 0, rank: 999 })
+			.usingTemplate({ score: 0, pct: 0, rank: 999 })
 			.rollup()
 		expect(result.select()).toEqual(fixtures.align_using)
 	})
@@ -114,7 +114,7 @@ describe('dataset -> rollup', () => {
 		function tweenable(data, by, group, template) {
 			return dataset(data)
 				.groupBy(by)
-				.using(template)
+				.usingTemplate(template)
 				.alignBy(...group)
 				.rollup()
 				.sortBy(by)
