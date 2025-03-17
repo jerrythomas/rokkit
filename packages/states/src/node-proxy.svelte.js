@@ -131,6 +131,26 @@ export class NodeProxy {
 	}
 
 	/**
+	 * Expand all children
+	 */
+	expandAll() {
+		if (this.hasChildren()) {
+			this.expanded = true
+			this.children.forEach((child) => child.expandAll())
+		}
+	}
+
+	/**
+	 * Collapse all children
+	 */
+	collapseAll() {
+		if (this.hasChildren()) {
+			this.children.forEach((child) => child.collapseAll())
+			this.expanded = false
+		}
+	}
+
+	/**
 	 * Checks if this node is a leaf node (no children)
 	 * @returns {boolean}
 	 */
@@ -196,10 +216,15 @@ export class NodeProxy {
 		this.children = []
 	}
 
+	/**
+	 * Checks if the original data has children
+	 * @private
+	 */
 	_hasChildren() {
 		const childAttr = this.fields.children
 		return has(childAttr, this.original) && Array.isArray(this.original[childAttr])
 	}
+
 	/**
 	 * Removes all children from this node
 	 * @private
@@ -225,6 +250,17 @@ export class NodeProxy {
 		// Clear references
 		this.children = []
 		this.parent = null
+	}
+
+	/**
+	 * Clear selected, focused states
+	 */
+	resetStates() {
+		this.selected = false
+		this.focused = false
+		if (this.children.length > 0) {
+			this.children.forEach((child) => child.resetStates())
+		}
 	}
 
 	/**
