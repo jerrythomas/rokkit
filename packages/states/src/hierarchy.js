@@ -32,3 +32,20 @@ export function flatHierarchy(items, mapping, parent = null) {
 
 	return data
 }
+
+/**
+ * Flattens a hierarchy of nodes into a flat array of nodes.
+ *
+ * @param {import('./node-proxy.svelte.js').NodeProxy[]} nodes - The array of nodes to flatten.
+ * @returns
+ */
+export function flatttenNodeHierarchy(nodes) {
+	const flatNodes = []
+	nodes.forEach((node) => {
+		flatNodes.push(node)
+		if (node.children.length > 0 && node.expanded) {
+			flatNodes.push(...flatttenNodeHierarchy(node.children))
+		}
+	})
+	return flatNodes
+}
