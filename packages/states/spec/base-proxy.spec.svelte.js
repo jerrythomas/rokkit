@@ -33,7 +33,7 @@ describe('BaseProxy', () => {
 	const testOptions = { multiSelect: true }
 
 	beforeEach(() => {
-		proxy = new TestProxy(testData, testFields, testOptions)
+		proxy = new TestProxy(testData, null, testFields, testOptions)
 	})
 
 	describe('constructor', () => {
@@ -48,6 +48,11 @@ describe('BaseProxy', () => {
 		it('should merge options with default options', () => {
 			expect(proxy.options.multiSelect).toBe(true)
 			expect(proxy.options.keyboardNavigation).toBe(true)
+		})
+
+		it('should set the value', () => {
+			const proxy = new TestProxy(testData, testData[1], testFields, testOptions)
+			expect(proxy.value).toEqual(testData[1])
 		})
 	})
 

@@ -17,6 +17,17 @@ describe('ListProxy', () => {
 	describe('constructor', () => {
 		it('should initialize with the provided data', () => {
 			expect(proxy.data).toEqual(testData)
+			expect(proxy.value).toBeUndefined()
+			expect(proxy.currentNode).toBeNull()
+		})
+
+		it('should initialize with the provided data and value', () => {
+			const proxy = new ListProxy(testData, testData[1])
+			expect(proxy.data).toEqual(testData)
+			expect(proxy.value).toEqual(testData[1])
+			expect(proxy.currentNode.value).toEqual(testData[1])
+			expect(proxy.currentNode.selected).toBe(true)
+			// expect(proxy.currentNode.focused).toBe(true)
 		})
 
 		it('should initialize with empty data', () => {
@@ -30,7 +41,7 @@ describe('ListProxy', () => {
 		})
 
 		it('should initialize with custom options', () => {
-			const customProxy = new ListProxy(testData, {}, { multiSelect: true })
+			const customProxy = new ListProxy(testData, null, {}, { multiSelect: true })
 			expect(customProxy.options.multiSelect).toBe(true)
 		})
 	})

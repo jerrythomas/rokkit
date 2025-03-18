@@ -1,5 +1,6 @@
 import { BaseProxy } from './base-proxy.svelte.js'
 import { NodeProxy } from './node-proxy.svelte.js'
+import { equals } from 'ramda'
 
 /**
  * Manages a hierarchical tree of nodes with selection, focus and expansion capabilities
@@ -9,16 +10,18 @@ export class NestedProxy extends BaseProxy {
 	 * Creates a new NestedProxy
 	 *
 	 * @param {any[]} data - Original hierarchical data array
+	 * @param {any} value - Initial value for the proxy
 	 * @param {Object} fields - Field mappings
 	 * @param {Object} options - Configuration options
 	 */
-	constructor(data = null, fields = {}, options = {}) {
+	constructor(data, value, fields = {}, options = {}) {
 		// Default options for tree structures
 		const defaultTreeOptions = {
 			expandedByDefault: false
 		}
 
-		super(data, fields, { ...defaultTreeOptions, ...options })
+		super(data, value, fields, { ...defaultTreeOptions, ...options })
+		this.moveToValue(value)
 		// this._refreshFlatNodes()
 	}
 
@@ -305,5 +308,21 @@ export class NestedProxy extends BaseProxy {
 		this._refreshFlatNodes()
 
 		return this
+	}
+
+	/**
+	 * Finds a node by value and makes it the current & active node
+	 *
+	 * @param {any} value
+	 * @returns
+	 */
+	moveToValue(value) {
+		if (!value || equals(this.currentNode?.value, value)) return
+
+		const path = this.findPathIndex((node) => equals(node.value, value))
+		if (path.length > 0) {
+			this.moveTo(path)
+			this.select()
+		}
 	}
 }

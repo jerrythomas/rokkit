@@ -49,7 +49,7 @@ describe('NestedProxy', () => {
 		})
 
 		it('should override default options with provided ones', () => {
-			const customProxy = new NestedProxy(testData, {}, { expandedByDefault: true })
+			const customProxy = new NestedProxy(testData, null, {}, { expandedByDefault: true })
 			expect(customProxy.options.expandedByDefault).toBe(true)
 		})
 	})

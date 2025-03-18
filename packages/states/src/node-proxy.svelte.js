@@ -5,14 +5,14 @@ import { defaultFields } from '@rokkit/core'
  */
 export class NodeProxy {
 	/** @type {any} Original data item */
-	original
+	original = $state(null)
 	/** @type {number[]} Path to this node */
 	path
 	/** @type {number} Depth in the hierarchy */
 	depth
 
 	/** @type {string} Unique identifier */
-	id
+	id = $state()
 
 	/** @type {boolean} Whether this node is expanded */
 	expanded = $state(false)
@@ -29,9 +29,7 @@ export class NodeProxy {
 	/** @type {NodeProxy[]} Child nodes */
 	children = $state([])
 
-	/** @type {import('@rokkit/core').FieldMapper} Field mapper */
-	mapping
-
+	#fields = {}
 	/**
 	 * Creates a new NodeProxy
 	 *
@@ -65,6 +63,14 @@ export class NodeProxy {
 		}
 
 		this._refreshAllChildren(path)
+	}
+
+	set fields(props) {
+		this.#fields = { ...defaultFields, ...props }
+	}
+
+	get fields() {
+		return this.#fields
 	}
 
 	/**
