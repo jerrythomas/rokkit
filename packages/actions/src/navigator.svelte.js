@@ -19,22 +19,44 @@ const Vertical = {
 }
 
 /**
+ * Dispatches an action event on the root element
+ *
+ * @param {string} eventName
+ * @param {import('./types.js').DataWrapper} wrapper
+ * @param {HTMLElement} root
+ */
+function emitAction(eventName, wrapper, root) {
+	const data = {
+		path: wrapper.currentNode?.path,
+		value: wrapper.currentNode?.value
+	}
+	if (eventName === 'select') {
+		data.selected = wrapper.selectedNodes.values().map((node) => node.value)
+	}
+	root.dispatchEvent(
+		new CustomEvent('action', {
+			eventName,
+			data
+		})
+	)
+}
+
+/**
  * Get actions for the navigator
  *
  * @param {import('./types.js').DataWrapper} wrapper - The navigator wrapper
  * @param {HTMLElement} root - The root element
  * @returns {import('./types.js').NavigatorActions} - The navigator actions
  */
-function getActions(wrapper, root) {
+function getActions(wrapper) {
 	const actions = {
 		prev: () => wrapper.movePrev(),
 		next: () => wrapper.moveNext(),
-		select: () => {
-			wrapper.select()
-			root.dispatchEvent(new CustomEvent('activate'))
-		},
-		collapse: () => wrapper.collapse?.(),
-		expand: () => wrapper.expand?.()
+		select: () => wrapper.select(),
+		extend: () => wrapper.extendSelection(),
+		collapse: () => wrapper.collapse(),
+		expand: () => wrapper.expand(),
+		toggle: () => wrapper.toggleSelection()
 	}
 	return actions
 }
@@ -49,6 +71,13 @@ function handleIconClick(target, wrapper) {
 		wrapper.collapse()
 	}
 	return ['closed', 'opened'].includes(state)
+}
+
+function performAction(actions, actionName, wrapper, root) {
+	if (actions[actionName]) {
+		const executed = actions[actionName]()
+		if (executed) emitAction(actionName, wrapper, root)
+	}
 }
 
 /**
@@ -68,11 +97,12 @@ export function navigator(root, { wrapper, options }) {
 	 */
 	const keyup = (event) => {
 		const { key } = event
+		// let result = false
 
 		const eventName = getEventForKey(keyMappings, key)
-		if (eventName) {
-			actions[eventName]()
-		}
+		performAction(actions, eventName, wrapper, root)
+		// if (eventName) result = actions[eventName]()
+		// if (result) emitAction(eventName, wrapper, root)
 	}
 
 	const click = (event) => {
@@ -81,9 +111,11 @@ export function navigator(root, { wrapper, options }) {
 		if (node) {
 			const iconClicked = handleIconClick(event.target, wrapper)
 			const path = getPathFromKey(node.getAttribute('data-path'))
-			wrapper.select(path, event.ctrlKey || event.metaKey)
+
+			let selected = wrapper.select(path, event.ctrlKey || event.metaKey)
 			root.dispatchEvent(new CustomEvent('activate'))
 			if (!iconClicked) wrapper.toggleExpansion()
+			emitAction('click', wrapper, root)
 		}
 	}
 
