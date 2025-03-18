@@ -31,7 +31,6 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <drop-down
 	class="dropdown relative flex cursor-pointer select-none {className}"
 	class:open

@@ -5,6 +5,42 @@ import { deriveSchemaFromValue } from './schema'
 import { deriveLayoutFromValue } from './layout'
 
 /**
+ * Flattens an object into a flat object
+ *
+ * @param {Object} input - The object to flatten
+ * @param {String} scope - The scope of the object
+ */
+export function flattenObject(input, scope = '#') {
+	// eslint-disable-next-line no-use-before-define
+	return flattenAttributes(input, scope).reduce(
+		// eslint-disable-next-line no-use-before-define
+		(acc, item) => ({ ...acc, ...flattenElement(item) }),
+		{
+			[scope]: {
+				type: 'object',
+				value: input,
+				scope,
+				key: scope.split('/').slice(-1)[0]
+			}
+		}
+	)
+}
+/**
+ * Flattens an object into an array of key-value pairs
+ *
+ * @param {Object} input - The object to flatten
+ * @param {String} scope - The scope of the object
+ */
+export function flattenAttributes(input, scope = '#') {
+	return Object.entries(input).map(([key, value]) => ({
+		key,
+		value,
+		type: typeOf(value),
+		scope: [scope, key].join('/')
+	}))
+}
+
+/**
  * Derives a nested schema from an object
  *
  * @param {Object} input - The object to derive the schema from
@@ -37,6 +73,7 @@ export function deriveNestedSchema(input, scope = '#') {
 	}
 
 	if (atoms.length < elements.length) {
+		// eslint-disable-next-line no-use-before-define
 		schema.children = deriveSchemaForChildren(elements, scope)
 	}
 
@@ -70,41 +107,6 @@ function deriveSchemaForChildren(elements, scope) {
 				layout: deriveLayoutFromValue(item.value.length ? item.value[0] : null)
 			}))
 	]
-}
-
-/**
- * Flattens an object into an array of key-value pairs
- *
- * @param {Object} input - The object to flatten
- * @param {String} scope - The scope of the object
- */
-export function flattenAttributes(input, scope = '#') {
-	return Object.entries(input).map(([key, value]) => ({
-		key,
-		value,
-		type: typeOf(value),
-		scope: [scope, key].join('/')
-	}))
-}
-
-/**
- * Flattens an object into a flat object
- *
- * @param {Object} input - The object to flatten
- * @param {String} scope - The scope of the object
- */
-export function flattenObject(input, scope = '#') {
-	return flattenAttributes(input, scope).reduce(
-		(acc, item) => ({ ...acc, ...flattenElement(item) }),
-		{
-			[scope]: {
-				type: 'object',
-				value: input,
-				scope,
-				key: scope.split('/').slice(-1)[0]
-			}
-		}
-	)
 }
 
 /**

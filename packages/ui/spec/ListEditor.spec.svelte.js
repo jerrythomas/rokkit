@@ -1,10 +1,10 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { cleanup, fireEvent, render } from '@testing-library/svelte'
-import { tick } from 'svelte'
+import { cleanup, render } from '@testing-library/svelte'
+// import { tick } from 'svelte'
 import Register from './mocks/Register.svelte'
 import ListEditor from '../src/ListEditor.svelte'
-import { MockItem } from '@rokkit/helpers/components'
-import MockListEditorWithSlot from './mocks/MockListEditorWithSlot.svelte'
+// import { MockItem } from '@rokkit/helpers/components'
+// import MockListEditorWithSlot from './mocks/MockListEditorWithSlot.svelte'
 
 describe('ListEditor.svelte', () => {
 	const schema = {

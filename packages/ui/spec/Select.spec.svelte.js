@@ -3,7 +3,7 @@ import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { toHaveBeenDispatchedWith } from '@rokkit/helpers/matchers'
 import { tick } from 'svelte'
 
-import { MockItem } from '@rokkit/helpers/components'
+// import { MockItem } from '@rokkit/helpers/components'
 import Select from '../src/Select.svelte'
 
 expect.extend({ toHaveBeenDispatchedWith })

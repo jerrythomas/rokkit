@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import { flushSync, tick } from 'svelte'
+import { flushSync } from 'svelte'
 import { Section } from '../../src/wrappers'
 
 describe('Section.svelte', () => {
