@@ -2,7 +2,7 @@ import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/svelte'
 import { flushSync, tick } from 'svelte'
 import MultiSelect from '../src/MultiSelect.svelte'
-import { MockItem } from '@rokkit/helpers/components'
+// import { MockItem } from '@rokkit/helpers/components'
 import '@rokkit/helpers/mocks'
 
 describe('MultiSelect.svelte', () => {

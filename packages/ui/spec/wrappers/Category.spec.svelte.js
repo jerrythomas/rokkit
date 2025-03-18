@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import { flushSync, tick } from 'svelte'
+import { flushSync } from 'svelte'
 import { Wrapper, Category } from '../../src/wrappers'
 import Switch from '../../src/Switch.svelte'
 import Item from '../../src/Item.svelte'
@@ -62,7 +62,7 @@ describe('Category.svelte', () => {
 		flushSync()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render with extra props', async () => {
+	it('should render with extra props', () => {
 		const props = $state({ options: items, align: 'center' })
 		const { container } = render(Category, {
 			context: new Map([['registry', registry]]),
@@ -75,7 +75,7 @@ describe('Category.svelte', () => {
 		flushSync()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render with alternative navigator', async () => {
+	it('should render with alternative navigator', () => {
 		registry.navigators = { ...registry.navigators, Switch }
 		const props = $state({ options: items, navigator: 'Switch' })
 		const { container } = render(Category, {

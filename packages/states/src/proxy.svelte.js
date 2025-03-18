@@ -1,13 +1,40 @@
 import { defaultFields } from '@rokkit/core'
-import { has } from 'ramda'
+import { isNil, has } from 'ramda'
 
 export class Proxy {
-	value = $state()
-	fields = $state()
+	#value = $state({})
+	#fields = $state(defaultFields)
 
 	constructor(value, fields) {
-		this.value = value
-		this.fields = { ...defaultFields, ...fields }
+		this.#value = typeof value === 'object' ? value : { text: value }
+		this.fields = fields
+	}
+
+	get fields() {
+		return this.#fields
+	}
+	set fields(value) {
+		this.#fields = { ...defaultFields, ...value }
+	}
+
+	get value() {
+		return this.#value
+	}
+
+	set value(value) {
+		if (typeof value === 'object') {
+			const removedKeys = Object.keys(this.#value).filter(
+				(key) => !Object.keys(value).includes(key)
+			)
+			Object.entries(value).forEach(([k, v]) => {
+				this.#value[k] = v
+			})
+			removedKeys.forEach((key) => {
+				delete this.#value[key]
+			})
+		} else {
+			this.#value.text = value
+		}
 	}
 
 	/**
@@ -17,14 +44,7 @@ export class Proxy {
 	 * @returns {any|null} - The attribute value or null if not found
 	 */
 	get(fieldName) {
-		if (typeof this.value === 'string' && fieldName === 'text') {
-			return this.value
-		}
-		const mappedField = this.fields[fieldName]
-		if (!mappedField || !has(mappedField, this.value)) {
-			return null
-		}
-		return this.value[mappedField]
+		return this.has(fieldName) ? this.value[this.fields[fieldName]] : null
 	}
 
 	/**
@@ -33,10 +53,7 @@ export class Proxy {
 	 * @returns boolean
 	 */
 	has(fieldName) {
-		if (typeof this.value === 'string' && fieldName === 'text') {
-			return true
-		}
 		const mappedField = this.fields[fieldName]
-		return mappedField && has(mappedField, this.value)
+		return !isNil(mappedField) && has(mappedField, this.value)
 	}
 }

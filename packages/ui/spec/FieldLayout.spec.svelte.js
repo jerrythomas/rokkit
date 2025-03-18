@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import { flushSync, tick } from 'svelte'
+import { flushSync } from 'svelte'
 import Register from './mocks/Register.svelte'
 import CustomField from './mocks/CustomField.svelte'
 import CustomWrapper from './mocks/CustomWrapper.svelte'
@@ -61,7 +61,7 @@ describe('FieldLayout.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render groups', async () => {
+	it('should render groups', () => {
 		const schema = {
 			elements: [
 				{
@@ -87,7 +87,7 @@ describe('FieldLayout.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render groups without key', async () => {
+	it('should render groups without key', () => {
 		const schema = {
 			elements: [
 				{
@@ -139,7 +139,7 @@ describe('FieldLayout.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render items using custom component', async () => {
+	it('should render items using custom component', () => {
 		const schema = {
 			elements: [
 				{

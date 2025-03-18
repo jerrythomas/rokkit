@@ -1,6 +1,6 @@
 import { describe, expect, beforeEach, it } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
-import { flushSync, tick } from 'svelte'
+import { flushSync } from 'svelte'
 import { types } from '../../src/input/types'
 import Input from '../../src/input/Input.svelte'
 

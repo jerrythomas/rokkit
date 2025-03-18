@@ -57,7 +57,6 @@
 	$: offsetTop = activeItem?.offsetTop + activeItem?.clientHeight ?? 0
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <input-select
 	class="relative flex flex-col {className}"
 	class:open

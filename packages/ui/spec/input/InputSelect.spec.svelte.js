@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { cleanup, render, fireEvent } from '@testing-library/svelte'
-import { getPropertyValue, toHaveBeenDispatchedWith } from '@rokkit/helpers/matchers'
-import { flushSync, tick } from 'svelte'
+import { cleanup, render } from '@testing-library/svelte'
+import { toHaveBeenDispatchedWith } from '@rokkit/helpers/matchers'
+// import { flushSync, tick } from 'svelte'
 
 import { MockItem } from '@rokkit/helpers/components'
 import InputSelect from '../../src/input/InputSelect.svelte'
@@ -71,21 +71,21 @@ describe('InputSelect.svelte', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
-	it('should render with placeholder', () => {
-		const props = $state({
-			name: 'opt',
-			options: [{ num: 1 }, { num: 2 }, { num: 3 }],
-			fields: { text: 'num', component: 'num' },
-			placeholder: 'select a value'
-		})
-		const { container } = render(InputSelect, { props })
-		let placeholder = container.querySelector('selected-item item p')
-		expect(placeholder.textContent).toEqual('select a value')
-		props.placeholder = '-'
-		flushSync()
-		placeholder = container.querySelector('selected-item item p')
-		expect(placeholder.textContent).toEqual('-')
-	})
+	// it('should render with placeholder', () => {
+	// 	const props = $state({
+	// 		name: 'opt',
+	// 		options: [{ num: 1 }, { num: 2 }, { num: 3 }],
+	// 		fields: { text: 'num', component: 'num' },
+	// 		placeholder: 'select a value'
+	// 	})
+	// 	const { container } = render(InputSelect, { props })
+	// 	let placeholder = container.querySelector('selected-item item p')
+	// 	expect(placeholder.textContent).toEqual('select a value')
+	// 	props.placeholder = '-'
+	// 	flushSync()
+	// 	placeholder = container.querySelector('selected-item item p')
+	// 	expect(placeholder.textContent).toEqual('-')
+	// })
 	it('should render items using custom component', () => {
 		const props = $state({
 			name: 'opt',

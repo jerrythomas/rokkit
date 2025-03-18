@@ -112,8 +112,10 @@ export function navigator(root, { wrapper, options }) {
 			const iconClicked = handleIconClick(event.target, wrapper)
 			const path = getPathFromKey(node.getAttribute('data-path'))
 
-			let selected = wrapper.select(path, event.ctrlKey || event.metaKey)
-			root.dispatchEvent(new CustomEvent('activate'))
+			const selected = wrapper.select(path, event.ctrlKey || event.metaKey)
+			if (selected) {
+				root.dispatchEvent(new CustomEvent('activate'))
+			}
 			if (!iconClicked) wrapper.toggleExpansion()
 			emitAction('click', wrapper, root)
 		}

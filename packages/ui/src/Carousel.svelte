@@ -41,7 +41,8 @@
 					on:click={() => (currentIndex = index)}
 					on:keydown={(e) => handleKey(e, index)}
 					tabindex={0}
-				/>
+				>
+				</dot>
 			{/each}
 		</dot-nav>
 	</carousel>

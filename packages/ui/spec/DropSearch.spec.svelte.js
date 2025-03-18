@@ -1,9 +1,9 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { cleanup, fireEvent, render } from '@testing-library/svelte'
+import { cleanup, render } from '@testing-library/svelte'
 
 import DropSearch from '../src/DropSearch.svelte'
 import { tick } from 'svelte'
-import { MockItem } from '@rokkit/helpers/components'
+// import { MockItem } from '@rokkit/helpers/components'
 import '@rokkit/helpers/mocks'
 
 describe('DropSearch.svelte', () => {
