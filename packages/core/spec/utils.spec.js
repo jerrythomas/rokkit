@@ -8,7 +8,8 @@ import {
 	iconShortcuts,
 	scaledPath,
 	getKeyFromPath,
-	getPathFromKey
+	getPathFromKey,
+	getSnippet
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -132,6 +133,18 @@ describe('utils', () => {
 			expect(getKeyFromPath([0, 1, 2])).toEqual('0-1-2')
 			expect(getKeyFromPath([1, 2, 3, 4])).toEqual('1-2-3-4')
 			expect(getKeyFromPath([2, 3, 4, 5, 6])).toEqual('2-3-4-5-6')
+		})
+	})
+
+	describe('getSnippet', () => {
+		const data = {
+			test: vi.fn(),
+			icon: 'not-a-function'
+		}
+		it('should get snippet', () => {
+			expect(getSnippet({}, 'test')).toBeUndefined()
+			expect(getSnippet(data, 'icon')).toBeUndefined()
+			expect(getSnippet(data, 'test')).toEqual(expect.any(Function))
 		})
 	})
 })

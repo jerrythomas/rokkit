@@ -1,3 +1,5 @@
+import { has } from 'ramda'
+
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
  *
@@ -100,4 +102,17 @@ export function getKeyFromPath(path) {
  */
 export function getPathFromKey(key) {
 	return key.split('-').map(Number)
+}
+
+/**
+ * Get snippet function from an object
+ * @param {Object} obj
+ * @param {string} key
+ * @returns {Function|undefined}
+ */
+export function getSnippet(obj, key) {
+	if (has(key, obj) && typeof obj[key] === 'function') {
+		return obj[key]
+	}
+	return undefined
 }
