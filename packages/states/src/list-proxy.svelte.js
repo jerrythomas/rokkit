@@ -1,6 +1,6 @@
 import { BaseProxy } from './base-proxy.svelte.js'
 import { NodeProxy } from './node-proxy.svelte.js'
-
+import { equals } from 'ramda'
 /**
  * Manages a flat list of nodes with selection and focus capabilities
  */
@@ -8,12 +8,14 @@ export class ListProxy extends BaseProxy {
 	/**
 	 * Creates a new ListProxy
 	 *
-	 * @param {any[]} data - Original data array
+	 * @param {Object[]} data - Original data array
+	 * @param {Object} value - active value in the list
 	 * @param {Object} fields - Field mappings
 	 * @param {Object} options - Configuration options
 	 */
-	constructor(data = null, fields = {}, options = {}) {
-		super(data, fields, options)
+	constructor(data, value, fields = {}, options = {}) {
+		super(data, value, fields, options)
+		this.moveToValue(value)
 	}
 
 	/**
@@ -164,5 +166,20 @@ export class ListProxy extends BaseProxy {
 	 */
 	getNodeAt(index) {
 		return index >= 0 && index < this.nodes.length ? this.nodes[index] : null
+	}
+	/**
+	 * Finds a node by value and makes it the current & active node
+	 *
+	 * @param {any} value
+	 * @returns
+	 */
+	moveToValue(value) {
+		if (!value || equals(this.currentNode?.value, value)) return
+
+		const path = this.findPathIndex((node) => equals(node.value, value))
+		if (path.length > 0) {
+			this.moveTo(path)
+			this.select()
+		}
 	}
 }

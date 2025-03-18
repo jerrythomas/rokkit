@@ -16,7 +16,8 @@ export class BaseProxy {
 
 	/** @type {NodeProxy|null} Currently focused node */
 	currentNode = $state(null)
-
+	/** @type {Object|null} Currently focused node */
+	value = $state(null)
 	/** @type {Map<string, NodeProxy>} Map of selected nodes by id */
 	selectedNodes = $state(new Map())
 
@@ -36,9 +37,10 @@ export class BaseProxy {
 	 * @param {Object} fields - Field mappings
 	 * @param {Object} options - Configuration options
 	 */
-	constructor(data, fields = {}, options = {}) {
+	constructor(data, value, fields = {}, options = {}) {
 		this.fields = { ...defaultFields, ...fields }
 		this.options = { ...this.options, ...options }
+		this.value = value
 
 		this.update(data)
 	}

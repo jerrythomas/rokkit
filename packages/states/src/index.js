@@ -1,3 +1,7 @@
 export { DataWrapper } from './nested.svelte'
 export { TableWrapper } from './tabular.svelte'
+export { NodeProxy } from './node-proxy.svelte'
+export { ListProxy } from './list-proxy.svelte'
+export { NestedProxy } from './nested-proxy.svelte'
+export { Proxy } from './proxy.svelte'
 export { vibe } from './vibe.svelte'
