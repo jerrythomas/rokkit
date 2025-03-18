@@ -1,22 +1,19 @@
 <script>
 	import { defaultMapping } from './constants'
-
+	import Item from './Item.svelte'
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|Object} value
-	 * @property {import('@rokkit/core').FieldMapper} [mapping]
+	 * @property {import('@rokkit/states').NodeProxy} value
 	 * @property {boolean} [expanded]
 	 */
 
 	/** @type {Props} */
-	let { value = $bindable(), mapping = defaultMapping, expanded = false } = $props()
-
-	const Template = $derived(mapping.getComponent(value))
+	let { value = $bindable(), fields, expanded = false, hasChildren = false } = $props()
 </script>
 
 <rk-summary class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center" tabindex="-1">
-	<Template bind:value {mapping} />
-	{#if mapping.hasChildren(value)}
+	<Item bind:value {fields} />
+	{#if hasChildren}
 		{#if expanded}
 			<icon class="accordion-opened sm" aria-label="collapse"></icon>
 		{:else}

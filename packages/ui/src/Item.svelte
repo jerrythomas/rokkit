@@ -1,23 +1,24 @@
 <script>
 	import Icon from './Icon.svelte'
-	import { FieldMapper } from '@rokkit/core'
-
+	import { Proxy } from '@rokkit/states'
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|Object} [value]
-	 * @property {FieldMapper}   [mapping]
+	 * @property {import('@rokkit/states').NodeProxy} [value]
 	 */
 
 	/** @type {Props} */
-	let { value, mapping = new FieldMapper() } = $props()
-	let content = $derived(mapping.getText(value))
-	let ariaLabel = $derived(mapping.getLabel(value) ?? content)
+	let { value, fields } = $props()
+	let proxy = $derived(new Proxy(value, fields))
+	let content = $derived(proxy.get('text'))
+	let ariaLabel = $derived(proxy.get('label') ?? content)
+	let icon = $derived(proxy.get('icon'))
+	let image = $derived(proxy.get('image'))
 </script>
 
-{#if mapping.hasIcon(value)}
-	<Icon name={mapping.getIcon(value)} label={ariaLabel} />
-{:else if mapping.hasImage(value)}
-	<img src={mapping.getImage(value)} alt={ariaLabel} />
+{#if icon}
+	<Icon name={icon} label={ariaLabel} />
+{:else if image}
+	<img src={image} alt={ariaLabel} />
 {/if}
 {#if content}
 	<p>{content}</p>

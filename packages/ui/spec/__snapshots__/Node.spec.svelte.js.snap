@@ -6,9 +6,8 @@ exports[`Node > should render 1`] = `
     aria-current="false"
     aria-expanded="false"
     aria-selected="false"
-    class=""
-    data-depth="0"
-    data-path=""
+    data-depth="1"
+    data-path="0"
     role="treeitem"
   >
     <div
@@ -29,8 +28,6 @@ exports[`Node > should render 1`] = `
         <!---->
       </rk-item>
     </div>
-     
-    <!---->
   </rk-node>
   
 </div>
@@ -42,9 +39,8 @@ exports[`Node > should render 2`] = `
     aria-current="false"
     aria-expanded="false"
     aria-selected="false"
-    class="another-class"
-    data-depth="0"
-    data-path=""
+    data-depth="1"
+    data-path="0"
     role="treeitem"
   >
     <div
@@ -65,8 +61,6 @@ exports[`Node > should render 2`] = `
         <!---->
       </rk-item>
     </div>
-     
-    <!---->
   </rk-node>
   
 </div>
@@ -78,7 +72,6 @@ exports[`Node > should render as a sibling 1`] = `
     aria-current="false"
     aria-expanded="false"
     aria-selected="false"
-    class=""
     data-depth="1"
     data-path="0"
     role="treeitem"
@@ -115,8 +108,6 @@ exports[`Node > should render as a sibling 1`] = `
         <!---->
       </rk-item>
     </div>
-     
-    <!---->
   </rk-node>
   
 </div>
@@ -128,7 +119,6 @@ exports[`Node > should render as last sibling 1`] = `
     aria-current="false"
     aria-expanded="false"
     aria-selected="false"
-    class=""
     data-depth="1"
     data-path="3"
     role="treeitem"
@@ -167,8 +157,6 @@ exports[`Node > should render as last sibling 1`] = `
         <!---->
       </rk-item>
     </div>
-     
-    <!---->
   </rk-node>
   
 </div>
@@ -180,7 +168,6 @@ exports[`Node > should render having child 1`] = `
     aria-current="false"
     aria-expanded="false"
     aria-selected="false"
-    class=""
     data-depth="2"
     data-path="0-0"
     role="treeitem"
@@ -229,14 +216,12 @@ exports[`Node > should render having child 1`] = `
         <!---->
          
         <p>
-          Item 1
+          Item 2
         </p>
         <!---->
         <!---->
       </rk-item>
     </div>
-     
-    <!---->
   </rk-node>
   
 </div>
@@ -248,7 +233,6 @@ exports[`Node > should render with icon 1`] = `
     aria-current="false"
     aria-expanded="false"
     aria-selected="false"
-    class=""
     data-depth="1"
     data-path="0"
     role="treeitem"
@@ -303,8 +287,6 @@ exports[`Node > should render with icon 1`] = `
         <!---->
       </rk-item>
     </div>
-     
-    <!---->
   </rk-node>
   
 </div>

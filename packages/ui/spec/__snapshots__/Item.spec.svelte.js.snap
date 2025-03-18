@@ -33,10 +33,22 @@ exports[`Item > should render 2`] = `
 exports[`Item > should render with custom mapping 1`] = `
 <div>
   <!---->
-  <!---->
-  
+  <rk-icon
+    aria-label="World"
+    class=""
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="World"
+    />
+  </rk-icon>
   <!---->
    
+  <p>
+    World
+  </p>
   <!---->
   
 </div>
@@ -45,46 +57,13 @@ exports[`Item > should render with custom mapping 1`] = `
 exports[`Item > should render with custom mapping 2`] = `
 <div>
   <!---->
-  <rk-icon
-    aria-label="World"
-    class=""
-    role="img"
-    tabindex="-1"
-  >
-    <i
-      aria-hidden="true"
-      class="World"
-    />
-  </rk-icon>
   <!---->
-   
-  <p>
-    World
-  </p>
-  <!---->
+  <img
+    src="world.png"
+  />
   
-</div>
-`;
-
-exports[`Item > should render with custom mapping 3`] = `
-<div>
-  <!---->
-  <rk-icon
-    aria-label="World"
-    class=""
-    role="img"
-    tabindex="-1"
-  >
-    <i
-      aria-hidden="true"
-      class="World"
-    />
-  </rk-icon>
   <!---->
    
-  <p>
-    World
-  </p>
   <!---->
   
 </div>

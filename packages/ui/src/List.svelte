@@ -1,18 +1,18 @@
 <script>
-	import { createEmitter, noop, getKeyFromPath } from '@rokkit/core'
-	import { equals } from 'ramda'
-	import { defaultMapping } from './constants'
-	// import { listItems } from './snippets.svelte'
-	import { onMount } from 'svelte'
-	import { DataWrapper } from '@rokkit/states'
+	import { createEmitter, noop, getKeyFromPath, getSnippet } from '@rokkit/core'
+	// import { defaultMapping } from './constants'
+	// import { DataWrapper } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import Item from './Item.svelte'
+	import { ListProxy } from '@rokkit/states'
+	import { omit } from 'ramda'
 
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
 	 * @property {string} [name]
 	 * @property {any} [items]
-	 * @property {import('@rokkit/core').FieldMapper} [mapping]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
 	 * @property {any} [value]
 	 * @property {number} [tabindex]
 	 * @property {any} [hierarchy]
@@ -25,33 +25,27 @@
 		name = 'list',
 		items = $bindable([]),
 		value = $bindable(null),
-		mapping = defaultMapping,
+		fields,
 		tabindex = 0,
 		hierarchy = [],
-		children,
+		multiSelect = false,
+		header,
+		footer,
+		empty,
 		...events
 	} = $props()
 
-	let emitter = createEmitter(events, ['select', 'change', 'move'])
-	let wrapper = new DataWrapper(items, mapping, value, { events: emitter })
-</script>
+	function handleAction(event) {
+		value = wrapper.currentNode.value
+		if (event.details.type) {
+			emitter[event.details.type](event.details.data)
+		}
+	}
 
-{#snippet listItems(items, wrapper, hierarchy = [], onchange = noop)}
-	{@const mapping = wrapper.mapping}
-	{#each items as item, index}
-		{@const Template = mapping.getComponent(item)}
-		{@const path = getKeyFromPath([...hierarchy, index])}
-		{@const props = mapping.getAttribute(item, 'props') || {}}
-		<rk-list-item
-			role="option"
-			data-path={path}
-			aria-selected={wrapper.selected.has(path)}
-			aria-current={equals(wrapper.currentNode, item)}
-		>
-			<Template bind:value={items[index]} {mapping} {onchange} {...props} />
-		</rk-list-item>
-	{/each}
-{/snippet}
+	let emitter = createEmitter(events, ['select', 'change', 'move'])
+	let extra = omit(['onselect', 'onchange', 'onmove'], events)
+	let wrapper = new ListProxy(items, value, fields, { multiSelect })
+</script>
 
 <rk-list
 	class={classes}
@@ -59,9 +53,41 @@
 	aria-label={name}
 	use:navigator={{ wrapper }}
 	{tabindex}
-	onactivate={() => (value = wrapper.value)}
+	onaction={handleAction}
 >
-	{@render children?.()}
-	{@render listItems(wrapper.data, wrapper, hierarchy, emitter.change)}
-	<!-- <ListItems bind:items {mapping} {hierarchy} /> -->
+	{#if header}
+		<rk-header>{@render header()}</rk-header>
+	{/if}
+	<rk-body>
+		{#if wrapper.nodes.length === 0}
+			<rk-list-item role="presentation">
+				{#if empty}
+					{@render empty()}
+				{:else}
+					No items found.
+				{/if}
+			</rk-list-item>
+		{:else}
+			{#each wrapper.nodes as node}
+				{@const template = getSnippet(extra, node.get('component'))}
+				{@const path = getKeyFromPath(node.path)}
+				{@const props = node.get('props') || {}}
+				<rk-list-item
+					role="option"
+					data-path={path}
+					aria-selected={node.selected}
+					aria-current={node.focused}
+				>
+					{#if template}
+						{@render template(node, props, emitter.change)}
+					{:else}
+						<Item value={node.value} fields={node.fields} />
+					{/if}
+				</rk-list-item>
+			{/each}
+		{/if}
+	</rk-body>
+	{#if footer}
+		<rk-footer>{@render footer()}</rk-footer>
+	{/if}
 </rk-list>

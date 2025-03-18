@@ -106,42 +106,46 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     >
       <!---->
        
-      <!---->
-      <rk-list-item
-        aria-current="false"
-        aria-selected="false"
-        data-path="0"
-        role="option"
-      >
+      <rk-body>
         <!---->
-        <!---->
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="0"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Two
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Three
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
         
         <!---->
-         
-        <p>
-          Two
-        </p>
-        <!---->
-        <!---->
-      </rk-list-item>
-      <rk-list-item
-        aria-current="false"
-        aria-selected="false"
-        data-path="1"
-        role="option"
-      >
-        <!---->
-        <!---->
-        
-        <!---->
-         
-        <p>
-          Three
-        </p>
-        <!---->
-        <!---->
-      </rk-list-item>
-      
+      </rk-body>
+       
       <!---->
     </rk-list>
     <!---->
@@ -216,42 +220,46 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     >
       <!---->
        
-      <!---->
-      <rk-list-item
-        aria-current="false"
-        aria-selected="false"
-        data-path="0"
-        role="option"
-      >
+      <rk-body>
         <!---->
-        <!---->
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="0"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Two
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Three
+          </p>
+          <!---->
+          <!---->
+        </rk-list-item>
         
         <!---->
-         
-        <p>
-          Two
-        </p>
-        <!---->
-        <!---->
-      </rk-list-item>
-      <rk-list-item
-        aria-current="false"
-        aria-selected="false"
-        data-path="1"
-        role="option"
-      >
-        <!---->
-        <!---->
-        
-        <!---->
-         
-        <p>
-          Three
-        </p>
-        <!---->
-        <!---->
-      </rk-list-item>
-      
+      </rk-body>
+       
       <!---->
     </rk-list>
     <!---->

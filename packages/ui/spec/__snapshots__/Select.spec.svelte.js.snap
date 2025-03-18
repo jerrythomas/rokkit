@@ -51,59 +51,63 @@ exports[`Select.svelte > should render string array 1`] = `
       >
         <!---->
          
-        <!---->
-        <rk-list-item
-          aria-current="false"
-          aria-selected="false"
-          data-path="0"
-          role="option"
-        >
+        <rk-body>
           <!---->
-          <!---->
+          <rk-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="0"
+            role="option"
+          >
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              a
+            </p>
+            <!---->
+            <!---->
+          </rk-list-item>
+          <rk-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="1"
+            role="option"
+          >
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              b
+            </p>
+            <!---->
+            <!---->
+          </rk-list-item>
+          <rk-list-item
+            aria-current="false"
+            aria-selected="false"
+            data-path="2"
+            role="option"
+          >
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              c
+            </p>
+            <!---->
+            <!---->
+          </rk-list-item>
           
           <!---->
-           
-          <p>
-            a
-          </p>
-          <!---->
-          <!---->
-        </rk-list-item>
-        <rk-list-item
-          aria-current="false"
-          aria-selected="false"
-          data-path="1"
-          role="option"
-        >
-          <!---->
-          <!---->
-          
-          <!---->
-           
-          <p>
-            b
-          </p>
-          <!---->
-          <!---->
-        </rk-list-item>
-        <rk-list-item
-          aria-current="false"
-          aria-selected="false"
-          data-path="2"
-          role="option"
-        >
-          <!---->
-          <!---->
-          
-          <!---->
-           
-          <p>
-            c
-          </p>
-          <!---->
-          <!---->
-        </rk-list-item>
-        
+        </rk-body>
+         
         <!---->
       </rk-list>
       <!---->

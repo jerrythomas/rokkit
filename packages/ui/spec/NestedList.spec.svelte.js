@@ -2,8 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { render, cleanup } from '@testing-library/svelte'
 import NestedList from '../src/NestedList.svelte'
 import { flushSync } from 'svelte'
-import { DataWrapper } from '@rokkit/states'
-import { defaultMapping } from '../src/constants'
+import { NestedProxy } from '@rokkit/states'
 
 describe('NestedList', () => {
 	const items = [
@@ -17,11 +16,12 @@ describe('NestedList', () => {
 			]
 		}
 	]
-	const wrapper = new DataWrapper(items, defaultMapping)
+
+	const proxy = new NestedProxy(items)
 	beforeEach(() => cleanup())
 
 	it('should render nested list', () => {
-		const props = $state({ items, wrapper })
+		const props = $state({ items: proxy.nodes })
 		const { container } = render(NestedList, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
