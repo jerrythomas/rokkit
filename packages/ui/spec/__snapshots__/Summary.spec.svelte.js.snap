@@ -64,12 +64,6 @@ exports[`Summary > should render using expanded state 1`] = `
     <!---->
      
     <!---->
-    <icon
-      aria-label="collapse"
-      class="accordion-opened sm"
-    />
-    
-    <!---->
   </rk-summary>
   
 </div>
@@ -92,12 +86,6 @@ exports[`Summary > should render using expanded state 2`] = `
     <!---->
     <!---->
      
-    <!---->
-    <icon
-      aria-label="expand"
-      class="accordion-closed sm"
-    />
-    
     <!---->
   </rk-summary>
   

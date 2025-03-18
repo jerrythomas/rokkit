@@ -6,10 +6,13 @@ exports[`Accordion > should render accordion 1`] = `
     class=""
     tabindex="0"
   >
+    <!---->
+     
+    <!---->
+     
     <div
       class="flex flex-col"
       data-path="0"
-      id="id-0"
     >
       <rk-summary
         class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
@@ -41,7 +44,6 @@ exports[`Accordion > should render accordion 1`] = `
     <div
       class="flex flex-col"
       data-path="1"
-      id="id-1"
     >
       <rk-summary
         class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
@@ -70,7 +72,9 @@ exports[`Accordion > should render accordion 1`] = `
        
       <!---->
     </div>
-    
+    <!---->
+     
+    <!---->
   </rk-accordion>
   
 </div>
@@ -82,10 +86,13 @@ exports[`Accordion > should render accordion 2`] = `
     class="another-class"
     tabindex="0"
   >
+    <!---->
+     
+    <!---->
+     
     <div
       class="flex flex-col"
       data-path="0"
-      id="id-0"
     >
       <rk-summary
         class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
@@ -117,7 +124,6 @@ exports[`Accordion > should render accordion 2`] = `
     <div
       class="flex flex-col"
       data-path="1"
-      id="id-1"
     >
       <rk-summary
         class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
@@ -146,7 +152,9 @@ exports[`Accordion > should render accordion 2`] = `
        
       <!---->
     </div>
-    
+    <!---->
+     
+    <!---->
   </rk-accordion>
   
 </div>

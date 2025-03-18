@@ -7,7 +7,7 @@ describe('List', () => {
 	beforeEach(() => cleanup())
 
 	it('should render simple list', () => {
-		const props = $state({ items: ['Item 1', 'Item 2'], class: 'custom-class' })
+		const props = $state({ items: [{ text: 'Item 1' }, { text: 'Item 2' }], class: 'custom-class' })
 		const { container } = render(List, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

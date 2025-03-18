@@ -1,10 +1,10 @@
 <script>
 	import { equals } from 'ramda'
 	import { createEmitter, noop, getKeyFromPath } from '@rokkit/core'
-	import { DataWrapper } from '@rokkit/states'
+	import { NestedProxy } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
-	import { defaultMapping } from './constants'
 	import Summary from './Summary.svelte'
+	import Item from './Item.svelte'
 
 	/**
 	 * @typedef {Object} Props
@@ -20,32 +20,38 @@
 	let {
 		class: classes = '',
 		items = $bindable([]),
-		mapping = defaultMapping,
+		value = $bindable(null),
+		fields,
 		autoCloseSiblings = false,
 		multiselect = false,
-		value = $bindable(null),
+		header,
+		footer,
+		empty,
 		...events
 	} = $props()
 
 	let emitter = $derived(
 		createEmitter(events, ['collapse', 'change', 'expand', 'click', 'select', 'move'])
 	)
-	let wrapper = new DataWrapper(items, mapping, value, { events, multiselect, autoCloseSiblings })
+	let wrapper = new NestedProxy(items, value, fields, { events, multiselect, autoCloseSiblings })
 </script>
 
-{#snippet listItems(items, wrapper, hierarchy = [], onchange = noop)}
-	{@const mapping = wrapper.mapping}
-	{#each items as item, index}
-		{@const Template = mapping.getComponent(item)}
-		{@const path = getKeyFromPath([...hierarchy, index])}
-		{@const props = mapping.getAttribute(item, 'props') || {}}
+{#snippet listItems(nodes, onchange = noop)}
+	{#each nodes as node, index}
+		{@const template = getSnippet(extra, node.get('component'))}
+		{@const path = getKeyFromPath(node.path)}
+		{@const props = node.get('props') || {}}
 		<rk-list-item
 			role="option"
 			data-path={path}
-			aria-selected={wrapper.selected.has(path)}
-			aria-current={equals(wrapper.currentNode, item)}
+			aria-selected={node.selected}
+			aria-current={node.focused}
 		>
-			<Template bind:value={items[index]} {mapping} onchange={events.change} {...props} />
+			{#if template}
+				{@render template(node, props, onchange)}
+			{:else}
+				<Item value={node.value} fields={node.fields} />
+			{/if}
 		</rk-list-item>
 	{/each}
 {/snippet}
@@ -56,23 +62,39 @@
 	use:navigator={{ wrapper }}
 	onactivate={() => (value = wrapper.value)}
 >
-	{#each wrapper.data as item, index}
-		{@const hasItems = mapping.hasChildren(item)}
-		{@const id = 'id-' + index}
-
+	{#if header}
+		<rk-header>{@render header()}</rk-header>
+	{/if}
+	{#if wrapper.nodes.length === 0}
+		<rk-list-item role="presentation">
+			{#if empty}
+				{@render empty()}
+			{:else}
+				No items found.
+			{/if}
+		</rk-list-item>
+	{/if}
+	{#each wrapper.nodes as node, index}
 		<div
-			{id}
 			class="flex flex-col"
-			class:is-expanded={mapping.isExpanded(item)}
-			class:is-selected={equals(item, value)}
+			class:is-expanded={node.expanded}
+			class:is-selected={node.selected}
 			data-path={index}
 		>
-			<Summary {mapping} bind:value={items[index]} expanded={mapping.isExpanded(item)} />
-			{#if hasItems && mapping.isExpanded(item)}
+			<Summary
+				bind:value={wrapper.nodes[index].value}
+				fields={node.fields}
+				expanded={node.expanded}
+				hasChildren={node.hasChildren()}
+			/>
+			{#if node.expanded}
 				<rk-list role="listbox" tabindex="-1">
-					{@render listItems(item[mapping.fields.children], wrapper, [index], events.change)}
+					{@render listItems(node.children, events.change)}
 				</rk-list>
 			{/if}
 		</div>
 	{/each}
+	{#if footer}
+		<rk-footer>{@render footer()}</rk-footer>
+	{/if}
 </rk-accordion>

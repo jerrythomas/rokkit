@@ -1,52 +1,37 @@
 <script>
-	import { defaultStateIcons, getKeyFromPath } from '@rokkit/core'
-	import { defaultMapping } from './constants'
+	import { defaultStateIcons, getKeyFromPath, getSnippet } from '@rokkit/core'
 	import Icon from './Icon.svelte'
 	import Connector from './Connector.svelte'
+	import Item from './Item.svelte'
 
 	/**
 	 * @typedef {Object} Props
 	 * @property {any} value
-	 * @property {import('@rokkit/core').FieldMapper} [mapping]
 	 * @property {any} [types]
 	 * @property {import('./types').NodeStateIcons} [stateIcons]
-	 * @property {boolean} [selected]
-	 * @property {boolean} [expanded]
-	 * @property {number[]} [path]
-	 * @property {import('svelte').Snippet} [children]
 	 */
 
 	/** @type {Props} */
-	let {
-		class: classes = '',
-		value = $bindable(),
-		mapping = defaultMapping,
-		types = [],
-		stateIcons = defaultStateIcons.node,
-		selected = $bindable(false),
-		expanded = false,
-		current = false,
-		path = [],
-		children
-	} = $props()
+	let { value = $bindable(), types = [], stateIcons = defaultStateIcons.node, ...extra } = $props()
 
 	let icons = $derived({ ...defaultStateIcons.node, ...stateIcons })
-	let stateName = $derived(expanded ? 'opened' : 'closed')
+	let stateName = $derived(value.expanded ? 'opened' : 'closed')
 	let state = $derived(
-		expanded ? { icon: icons.opened, label: 'collapse' } : { icon: icons.closed, label: 'expand' }
+		value.expanded
+			? { icon: icons.opened, label: 'collapse' }
+			: { icon: icons.closed, label: 'expand' }
 	)
 
-	const Template = $derived(mapping.getComponent(value))
+	const template = getSnippet(value.get('component'), extra)
 </script>
 
 <rk-node
-	class={classes}
-	aria-current={current}
-	aria-selected={selected}
-	aria-expanded={state.label === 'collapse'}
+	aria-current={value.focused}
+	aria-selected={value.selected}
+	aria-expanded={value.expanded}
 	role="treeitem"
-	data-path={getKeyFromPath(path)}
-	data-depth={path.length}
+	data-path={getKeyFromPath(value.path)}
+	data-depth={value.path.length}
 >
 	<div class="flex flex-row items-center">
 		{#each types as type}
@@ -57,8 +42,11 @@
 			{/if}
 		{/each}
 		<rk-item>
-			<Template {value} {mapping} />
+			{#if template}
+				{@render template(value)}
+			{:else}
+				<Item value={value.value} fields={value.fields} />
+			{/if}
 		</rk-item>
 	</div>
-	{@render children?.()}
 </rk-node>

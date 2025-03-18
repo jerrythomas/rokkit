@@ -10,42 +10,46 @@ exports[`List > should render simple list 1`] = `
   >
     <!---->
      
-    <!---->
-    <rk-list-item
-      aria-current="false"
-      aria-selected="false"
-      data-path="0"
-      role="option"
-    >
+    <rk-body>
       <!---->
-      <!---->
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 2
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
       
       <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
-    </rk-list-item>
-    <rk-list-item
-      aria-current="false"
-      aria-selected="false"
-      data-path="1"
-      role="option"
-    >
-      <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 2
-      </p>
-      <!---->
-      <!---->
-    </rk-list-item>
-    
+    </rk-body>
+     
     <!---->
   </rk-list>
   
@@ -62,42 +66,46 @@ exports[`List > should render simple list 2`] = `
   >
     <!---->
      
-    <!---->
-    <rk-list-item
-      aria-current="false"
-      aria-selected="false"
-      data-path="0"
-      role="option"
-    >
+    <rk-body>
       <!---->
-      <!---->
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 2
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
       
       <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
-    </rk-list-item>
-    <rk-list-item
-      aria-current="false"
-      aria-selected="false"
-      data-path="1"
-      role="option"
-    >
-      <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 2
-      </p>
-      <!---->
-      <!---->
-    </rk-list-item>
-    
+    </rk-body>
+     
     <!---->
   </rk-list>
   
