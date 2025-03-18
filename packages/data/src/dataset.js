@@ -125,21 +125,6 @@ function sortDataBy(data, ...fields) {
 }
 
 /**
- * Selects the specified columns from the dataset.
- *
- * @param {Array<Object>} data          - The data to select from.
- * @param {Object}        config        - The configuration object.
- * @param {Function}      config.filter - The filter function to apply to the data.
- * @param {Array<String>} cols          - The columns to select.
- * @returns {Array<Object>} The selected data.
- */
-function selectKeys(data, config, ...cols) {
-	const result = config.filter ? data.filter(config.filter) : data
-	if (cols.length > 0) return result.map(pick(cols))
-	return result
-}
-
-/**
  * Returns the default aggregator which rolls up the columns other than the group_by columns into a single object.
  *
  * @param {import('./types').Metadata} metadata - The metadata for the columns to be aggregated.
