@@ -9,6 +9,7 @@ expect.extend({ toHaveBeenDispatchedWith })
 describe('navigator', () => {
 	const root = document.createElement('div')
 	const wrapper = {
+		moveTo: vi.fn(),
 		moveNext: vi.fn(),
 		movePrev: vi.fn(),
 		select: vi.fn(),
@@ -100,9 +101,9 @@ describe('navigator', () => {
 
 			const item = root.querySelector('[data-path="0"]')
 			item.click()
-
-			expect(wrapper.select).toHaveBeenCalledWith([0], false)
-			expect(wrapper.toggleExpansion).toHaveBeenCalled()
+			expect(wrapper.moveTo).toHaveBeenCalledWith([0])
+			expect(wrapper.select).toHaveBeenCalledWith([0])
+			expect(wrapper.toggleExpansion).toHaveBeenCalledWith([0])
 
 			cleanup()
 		})
@@ -117,11 +118,11 @@ describe('navigator', () => {
 			flushSync()
 
 			const icon = root.querySelector('[data-state="closed"]')
+			wrapper.toggleExpansion.mockReturnValue(true)
 			icon.click()
-
-			expect(wrapper.select).toHaveBeenCalledWith([0], false)
-			expect(wrapper.expand).toHaveBeenCalled()
-			expect(wrapper.toggleExpansion).not.toHaveBeenCalled()
+			expect(wrapper.toggleExpansion).toHaveBeenCalledWith([0])
+			expect(wrapper.moveTo).not.toHaveBeenCalled()
+			expect(wrapper.select).not.toHaveBeenCalled()
 
 			cleanup()
 		})
@@ -136,11 +137,12 @@ describe('navigator', () => {
 			flushSync()
 
 			const icon = root.querySelector('[data-state="opened"]')
+			wrapper.toggleExpansion.mockReturnValue(true)
 			icon.click()
-
-			expect(wrapper.select).toHaveBeenCalledWith([1], false)
-			expect(wrapper.collapse).toHaveBeenCalled()
-			expect(wrapper.toggleExpansion).not.toHaveBeenCalled()
+			expect(wrapper.toggleExpansion).toHaveBeenCalledWith([1])
+			expect(wrapper.select).not.toHaveBeenCalled()
+			expect(wrapper.moveTo).not.toHaveBeenCalled()
+			expect(wrapper.collapse).not.toHaveBeenCalled()
 
 			cleanup()
 		})
@@ -157,7 +159,7 @@ describe('navigator', () => {
 			const item = root.querySelector('[data-path="0"]')
 			fireEvent.click(item, { ctrlKey: true })
 
-			expect(wrapper.select).toHaveBeenCalledWith([0], true)
+			expect(wrapper.select).toHaveBeenCalledWith([0])
 
 			cleanup()
 		})
