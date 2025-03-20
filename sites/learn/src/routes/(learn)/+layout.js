@@ -1,7 +1,5 @@
 import { error } from '@sveltejs/kit'
 import { guide } from '$lib/stories'
-import { FieldMapper } from '@rokkit/core'
-import { Item } from '@rokkit/ui'
 
 /** @type {import('./$types').LayoutLoad} */
 export async function load({ params }) {
@@ -10,15 +8,13 @@ export async function load({ params }) {
 			message: 'Page not found'
 		})
 	}
-	const mapping = new FieldMapper(
-		{
-			text: 'title',
-			isOpen: 'isOpen',
-			key: 'key'
-		},
-		{ default: Item }
-	)
+	const fields = {
+		text: 'title',
+		isOpen: 'isOpen',
+		key: 'key'
+	}
+
 	const menu = await guide.menu(params.segment === 'labs')
 
-	return { menu, mapping, params }
+	return { menu, fields, params }
 }

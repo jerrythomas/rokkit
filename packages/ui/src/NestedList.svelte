@@ -24,7 +24,7 @@
 		{@const connectors = getLineTypes(hasChildren, types, nodeType)}
 
 		<Node value={items[index]} types={connectors} {stateIcons}>
-			{#if item.expanded}
+			{#if items[index].expanded}
 				<!-- <div role="treeitem" aria-selected={false}> -->
 				<NestedList items={item.children} {value} icons={stateIcons} types={connectors} />
 				<!-- </div> -->

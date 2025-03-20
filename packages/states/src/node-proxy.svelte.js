@@ -4,13 +4,15 @@ import { defaultFields } from '@rokkit/core'
  * Represents an individual node within a data structure
  */
 export class NodeProxy {
-	/** @type {any} Original data item */
-	original = $state({})
 	/** @type {number[]} Path to this node */
 	path
 	/** @type {number} Depth in the hierarchy */
 	depth
+	/** @type {NodeProxy|null} Parent node */
+	parent = null
 
+	/** @type {any} Original data item */
+	original = $state({})
 	/** @type {string} Unique identifier */
 	id = $state()
 
@@ -23,11 +25,8 @@ export class NodeProxy {
 	/** @type {boolean} Whether this node has focus */
 	focused = $state(false)
 
-	/** @type {NodeProxy|null} Parent node */
-	parent = null
-
 	/** @type {NodeProxy[]} Child nodes */
-	children = $state([])
+	children = []
 
 	#fields = {}
 	/**

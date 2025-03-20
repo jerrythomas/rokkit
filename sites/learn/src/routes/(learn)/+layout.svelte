@@ -12,10 +12,11 @@
 	/** @type {Props} */
 	let { data, children } = $props()
 	let items = $state(data.menu)
+	let fields = $derived(data.fields)
 	let value = $derived(findItemInMenu(data.menu, page.url))
 
 	function handleSelect(detail) {
-		if (detail.node.route) goto(`/${data.params.segment}/${detail.node.route}`)
+		if (detail.value.route) goto(`/${data.params.segment}/${detail.value.route}`)
 	}
 </script>
 
@@ -24,13 +25,7 @@
 </svelte:head>
 <main class="relative flex h-full w-full overflow-hidden">
 	<Sidebar>
-		<Tree
-			bind:items
-			{value}
-			mapping={data.mapping}
-			onselect={handleSelect}
-			keys={['key', 'route']}
-		/>
+		<Tree bind:items {value} {fields} onselect={handleSelect} keys={['key', 'route']} />
 	</Sidebar>
 	<content class="relative flex w-full flex-col">
 		{@render children?.()}

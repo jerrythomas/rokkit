@@ -1,10 +1,9 @@
 <script>
 	import { createEmitter } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
-	// import { DataWrapper } from '@rokkit/states'
 	import NestedList from './NestedList.svelte'
 	import { NestedProxy } from '@rokkit/states'
-
+	import { omit, has } from 'ramda'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -33,26 +32,18 @@
 	} = $props()
 
 	let emitter = createEmitter(events, ['select', 'move', 'collapse', 'expand'])
-	let wrapper = new NestedProxy(items, fields, { autoCloseSiblings, multiselect })
-	// let wrapper = new DataWrapper(items, mapping, value, {
-	// 	events: emitter,
-	// 	multiselect,
-	// 	autoCloseSiblings,
-	// 	keys
-	// })
+	let wrapper = new NestedProxy(items, value, fields, { autoCloseSiblings, multiselect })
 
-	$effect(() => {
-		wrapper.moveToValue(value)
-	})
+	function handleAction(event) {
+		const { eventName, data } = event.detail
+		if (eventName === 'select') value = wrapper.currentNode?.value
+
+		if (has([eventName], emitter)) emitter[eventName](data)
+	}
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-tree
-	tabindex="0"
-	class={classes}
-	use:navigator={{ wrapper }}
-	onactivate={() => (value = wrapper.value)}
->
+<rk-tree tabindex="0" class={classes} use:navigator={{ wrapper }} onaction={handleAction}>
 	{#if header}
 		<rk-header>{@render header()}</rk-header>
 	{/if}

@@ -28,6 +28,8 @@ exports[`Node > should render 1`] = `
         <!---->
       </rk-item>
     </div>
+     
+    <!---->
   </rk-node>
   
 </div>
@@ -61,6 +63,8 @@ exports[`Node > should render 2`] = `
         <!---->
       </rk-item>
     </div>
+     
+    <!---->
   </rk-node>
   
 </div>
@@ -108,6 +112,8 @@ exports[`Node > should render as a sibling 1`] = `
         <!---->
       </rk-item>
     </div>
+     
+    <!---->
   </rk-node>
   
 </div>
@@ -157,6 +163,8 @@ exports[`Node > should render as last sibling 1`] = `
         <!---->
       </rk-item>
     </div>
+     
+    <!---->
   </rk-node>
   
 </div>
@@ -222,6 +230,8 @@ exports[`Node > should render having child 1`] = `
         <!---->
       </rk-item>
     </div>
+     
+    <!---->
   </rk-node>
   
 </div>
@@ -287,6 +297,8 @@ exports[`Node > should render with icon 1`] = `
         <!---->
       </rk-item>
     </div>
+     
+    <!---->
   </rk-node>
   
 </div>

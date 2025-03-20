@@ -7,7 +7,7 @@
   @apply gap-1px bg-neutral-subtle;
 }
 
-[data-style='rokkit'] rk-list > rk-list-item,
+[data-style='rokkit'] rk-list rk-list-item,
 [data-style='rokkit'] rk-accordion div rk-summary {
   @apply bg-neutral-base min-h-8 px-4 leading-10 text-neutral-800;
 }

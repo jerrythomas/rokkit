@@ -68,6 +68,7 @@ class NavigatorController {
 	 */
 	handleKeyUp(event) {
 		const { key } = event
+
 		const eventName = getEventForKey(this.keyMappings, key)
 
 		if (!eventName) return
@@ -154,6 +155,7 @@ class NavigatorController {
 			this.executeAction('select', path)
 		}
 		this.executeAction('toggle', path)
+		event.stopPropagation()
 	}
 
 	/**
@@ -225,6 +227,8 @@ class NavigatorController {
 			data.selected = Array.from(this.wrapper.selectedNodes.values()).map((node) => node.value)
 			// Normalize selection events to 'select'
 			eventName = 'select'
+		} else if (['prev', 'next'].includes(eventName)) {
+			eventName = 'move'
 		}
 
 		this.root.dispatchEvent(

@@ -12,7 +12,6 @@ describe('library', () => {
 			'leftJoin',
 			'rightJoin',
 			'fullJoin',
-			'outerJoin',
 			'crossJoin',
 			'antiJoin',
 			'semiJoin',
