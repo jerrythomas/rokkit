@@ -173,23 +173,28 @@ describe('ListProxy', () => {
 			proxy.options.multiSelect = true
 		})
 
-		it('should toggle selection of current node in multi-select mode', () => {
-			proxy.moveNext() // Move to the first item
+		it('should toggle selection a node in multi-select mode', () => {
+			proxy.moveTo(0) // Move to the first item
 			proxy.extendSelection()
-
 			expect(proxy.selectedNodes.size).toBe(1)
-
 			// Toggle selection off
 			proxy.extendSelection()
+			expect(proxy.selectedNodes.size).toBe(0)
+
+			proxy.extendSelection(1)
+			expect(proxy.selectedNodes.size).toBe(1)
+			// Toggle selection off
+			proxy.extendSelection(1)
 			expect(proxy.selectedNodes.size).toBe(0)
 		})
 
 		it('should allow multiple selections in multi-select mode', () => {
-			proxy.moveNext() // Move to the first item
-			proxy.extendSelection()
+			proxy.moveTo(0) // Move to the first item
 
-			proxy.moveNext() // Move to the second item
 			proxy.extendSelection()
+			expect(proxy.selectedNodes.size).toBe(1)
+
+			proxy.extendSelection([1])
 
 			expect(proxy.selectedNodes.size).toBe(2)
 			expect(proxy.selectedNodes.has('1')).toBe(true)
@@ -199,11 +204,12 @@ describe('ListProxy', () => {
 		it('should behave like select() in single-select mode', () => {
 			proxy.options.multiSelect = false
 
-			proxy.moveNext() // Move to the first item
+			proxy.moveTo(0) // Move to the first item
 			proxy.extendSelection()
+			expect(proxy.selectedNodes.size).toBe(1)
 
-			proxy.moveNext() // Move to the second item
-			proxy.extendSelection()
+			// proxy.moveNext() // Move to the second item
+			proxy.extendSelection([1])
 
 			expect(proxy.selectedNodes.size).toBe(1)
 			expect(proxy.selectedNodes.has('2')).toBe(true)
@@ -239,20 +245,6 @@ describe('ListProxy', () => {
 		})
 	})
 
-	describe('getNodeAt', () => {
-		it('should return a node proxy for valid index', () => {
-			const node = proxy.getNodeAt(1)
-
-			expect(node).not.toBeNull()
-			expect(node.value).toEqual(testData[1])
-		})
-
-		it('should return null for invalid index', () => {
-			const node = proxy.getNodeAt(999)
-			expect(node).toBeNull()
-		})
-	})
-
 	describe('reset', () => {
 		it('should clear selected nodes', () => {
 			proxy.moveNext()
@@ -267,6 +259,38 @@ describe('ListProxy', () => {
 			proxy.reset()
 
 			expect(proxy.currentNode).toBeNull()
+		})
+	})
+
+	describe('getNodeByPath', () => {
+		it('should return node for path', () => {
+			expect(proxy.getNodeByPath([0])).toBe(proxy.nodes[0])
+		})
+		it('should return a node proxy for valid index', () => {
+			const node = proxy.getNodeByPath(1)
+
+			expect(node).not.toBeNull()
+			expect(node.value).toEqual(testData[1])
+		})
+
+		it('should return null for invalid index', () => {
+			const node = proxy.getNodeByPath(999)
+			expect(node).toBeNull()
+		})
+	})
+
+	describe('moveToValue', () => {
+		it('should move to node with matching value', () => {
+			expect(proxy.currentNode).toBeNull()
+			expect(proxy.moveToValue(testData[0])).toBe(true)
+
+			expect(proxy.currentNode).not.toBeNull()
+			expect(proxy.currentNode.value).toEqual(testData[0])
+
+			expect(proxy.moveToValue(testData[0])).toBe(false)
+			expect(proxy.moveToValue(testData[1])).toBe(true)
+			expect(proxy.currentNode).not.toBeNull()
+			expect(proxy.currentNode.value).toEqual(testData[1])
 		})
 	})
 })

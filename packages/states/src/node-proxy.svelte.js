@@ -5,7 +5,7 @@ import { defaultFields } from '@rokkit/core'
  */
 export class NodeProxy {
 	/** @type {any} Original data item */
-	original = $state(null)
+	original = $state({})
 	/** @type {number[]} Path to this node */
 	path
 	/** @type {number} Depth in the hierarchy */
@@ -39,30 +39,24 @@ export class NodeProxy {
 	 * @param {NodeProxy|null} parent - Parent node
 	 */
 	constructor(item, path, fields, parent = null) {
-		this.original = item
+		this.original = typeof item === 'object' ? item : { text: item }
 		this.path = path
 		this.depth = path.length - 1
 		this.parent = parent
 		this.fields = { ...defaultFields, ...fields }
 
-		// Set id from original data or path
-		if (has(this.fields.id, item)) {
-			this.id = String(item[this.fields.id])
-		} else {
-			this.id = this.getKey()
-		}
+		this._init()
+	}
 
-		// Set expanded state from original data
-		if (has(this.fields.isOpen, item)) {
-			this.expanded = Boolean(item[this.fields.isOpen])
-		}
-
-		// Set selected state from original data
-		if (has(this.fields.isSelected, item)) {
-			this.selected = Boolean(item[this.fields.isSelected])
-		}
-
-		this._refreshAllChildren(path)
+	_init() {
+		this.id = has(this.fields.id, this.original)
+			? String(this.original[this.fields.id])
+			: this.path.join('-')
+		this.expanded =
+			has(this.fields.isOpen, this.original) && Boolean(this.original[this.fields.isOpen])
+		this.selected =
+			has(this.fields.isSelected, this.original) && Boolean(this.original[this.fields.isSelected])
+		this._refreshAllChildren(this.path)
 	}
 
 	set fields(props) {
@@ -170,14 +164,6 @@ export class NodeProxy {
 	 */
 	getPath() {
 		return [...this.path]
-	}
-
-	/**
-	 * Gets a string representation of the path for use as a key
-	 * @returns {string}
-	 */
-	getKey() {
-		return this.path.join('-')
 	}
 
 	/**
@@ -289,17 +275,8 @@ export class NodeProxy {
 			})
 			this._refreshAllChildren(this.path)
 		} else {
-			this.original = newValue
+			this.original.text = newValue
 		}
-	}
-
-	/**
-	 * Matches a condition on the value
-	 * @param {function} condition - The condition to match
-	 * @returns {boolean} - True if the condition is met, false otherwise
-	 */
-	match(condition) {
-		return condition(this.value)
 	}
 
 	/**
@@ -308,7 +285,7 @@ export class NodeProxy {
 	 * @returns {NodeProxy|null} - First matching node or null if no matches found
 	 */
 	find(condition) {
-		if (this.match(condition)) return this
+		if (condition(this)) return this
 		let result = null
 		for (let i = 0; i < this.children.length && !result; i++)
 			result = this.children[i].find(condition)

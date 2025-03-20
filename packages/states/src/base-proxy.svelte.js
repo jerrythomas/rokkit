@@ -69,6 +69,17 @@ export class BaseProxy {
 	}
 
 	/**
+	 * Move to a specific target (index, path, or item)
+	 *
+	 * @abstract
+	 * @param {number|number[]} target - Target to move to
+	 * @returns {boolean} - True if moved, false otherwise
+	 */
+	moveTo() {
+		throw new Error('moveTo() must be implemented by subclass')
+	}
+
+	/**
 	 * Move to the next item
 	 *
 	 * @abstract
@@ -86,37 +97,6 @@ export class BaseProxy {
 	 */
 	movePrev() {
 		throw new Error('movePrev() must be implemented by subclass')
-	}
-
-	/**
-	 * Move to a specific target (index, path, or item)
-	 *
-	 * @abstract
-	 * @param {any} target - Target to move to
-	 * @returns {boolean} - True if moved, false otherwise
-	 */
-	moveTo() {
-		throw new Error('moveTo() must be implemented by subclass')
-	}
-
-	/**
-	 * Select the current item
-	 *
-	 * @abstract
-	 * @returns {boolean} - True if selection changed, false otherwise
-	 */
-	select() {
-		throw new Error('select() must be implemented by subclass')
-	}
-
-	/**
-	 * Toggle/extend selection
-	 *
-	 * @abstract
-	 * @returns {boolean} - True if selection changed, false otherwise
-	 */
-	extendSelection() {
-		throw new Error('extendSelection() must be implemented by subclass')
 	}
 
 	/**
@@ -156,7 +136,12 @@ export class BaseProxy {
 	 * @returns {NodeProxy|null} - The found node or null
 	 */
 	find(condition) {
-		return this.nodes.find(condition) || null
+		let result = null
+		for (let i = 0; i < this.nodes.length; i++) {
+			result = this.nodes[i].find(condition)
+			if (result) return result
+		}
+		return null
 	}
 
 	/**
@@ -166,18 +151,20 @@ export class BaseProxy {
 	 * @returns {number[]} - path index of found node or empty array
 	 */
 	findPathIndex(condition) {
-		const result = this.nodes.find(condition)
+		const result = this.find(condition)
 		return result?.path ?? []
 	}
 
 	/**
 	 * Gets a node by its path
 	 *
-	 * @param {number[]} path - Path to the node
+	 * @param {number|number[]} path - Path to the node
 	 * @returns {NodeProxy|null} - The node or null if not found
 	 */
-	getNodeByPath(path) {
-		if (!path || !path.length || !this.data) return null
+	getNodeByPath(path = []) {
+		path = Array.isArray(path) ? path : [path]
+
+		if (!path.length || !this.data) return null
 		return path.reduce((currentNodes, index, depth) => {
 			// If we've hit a dead end or invalid index, return null
 			if (currentNodes === null || index < 0 || index >= currentNodes.length) {
@@ -193,5 +180,64 @@ export class BaseProxy {
 			// Otherwise, move to the next level (children)
 			return node.children
 		}, this.nodes)
+	}
+
+	/**
+	 * Selects the current node
+	 *
+	 * @param {number|number[]} [path] - The path to the node to toggle selection
+	 * @returns {boolean} - Whether the selection was successful
+	 */
+	select(path) {
+		const node = path ? this.getNodeByPath(path) : this.currentNode
+		if (!node) return false
+
+		if (!this.options.multiSelect) {
+			this.selectedNodes.forEach((node) => {
+				node.selected = false
+			})
+			this.selectedNodes.clear()
+		}
+
+		// Select the current node
+		node.selected = true
+		this.selectedNodes.set(node.id, node)
+		return true
+	}
+
+	/**
+	 * Toggles selection on the current node (for multi-select)
+	 *
+	 * @param {number|number[]} [path] - The path to the node to toggle selection
+	 * @returns {boolean} - Whether the operation was successful
+	 */
+	toggleSelection(path) {
+		const node = path ? this.getNodeByPath(path) : this.currentNode
+
+		if (!node) return false
+
+		node.selected = !node.selected
+		const nodeId = node.id
+
+		if (node.selected) {
+			this.selectedNodes.set(nodeId, node)
+		} else {
+			this.selectedNodes.delete(nodeId)
+		}
+		return true
+	}
+
+	/**
+	 * Extends selection on the current node (for multi-select)
+	 *
+	 * @param {number|number[]} [path] - The path to the node to extend selection
+	 * @returns {boolean} - Whether the operation was successful
+	 */
+	extendSelection(path) {
+		if (this.options.multiSelect) {
+			return this.toggleSelection(path)
+		} else {
+			return this.select(path)
+		}
 	}
 }
