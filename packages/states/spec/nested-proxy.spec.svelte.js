@@ -320,12 +320,15 @@ describe('NestedProxy', () => {
 		it('should behave like select in single-select mode', () => {
 			vi.spyOn(proxy, 'select')
 			proxy.options.multiSelect = false
+			expect(proxy.currentNode).toBe(null)
+
 			proxy.moveTo([0])
-			// proxy.select = vi.fn().mockReturnValue(true)
+			expect(proxy.currentNode.id).toBe('1')
 
-			const result = proxy.extendSelection()
+			expect(proxy.extendSelection()).toBe(true)
+			expect(proxy.extendSelection([1])).toBe(true)
 
-			expect(result).toBe(true)
+			expect(proxy.currentNode.id).toBe('1')
 			expect(proxy.select).toHaveBeenCalled()
 		})
 	})
@@ -337,38 +340,36 @@ describe('NestedProxy', () => {
 
 			// Move to first node and expand it
 			proxy.moveTo(0)
-			const result = proxy.expand()
-
-			expect(result).toBe(true)
+			expect(proxy.expand()).toBe(true)
 			expect(proxy.currentNode.expanded).toBe(true)
-			// Root nodes + children of first node
 			expectVisibleNodeIds(proxy, ['1', '11', '12', '2'])
+
+			expect(proxy.expand([1])).toBe(true)
+			expect(proxy.nodes[1].expanded).toBe(true)
+			// Root nodes + children of first node
+			expectVisibleNodeIds(proxy, ['1', '11', '12', '2', '21'])
 		})
 
 		it('should return false if current node is already expanded', () => {
 			proxy.moveTo(0)
-			proxy.currentNode.expanded = true
-			proxy._refreshFlatNodes()
-
-			const result = proxy.expand()
-
-			expect(result).toBe(false)
+			expect(proxy.expand()).toBe(true)
+			expect(proxy.expand()).toBe(false)
+			expect(proxy.expand([0])).toBe(false)
 		})
 
 		it('should return false if current node has no children', () => {
 			expectVisibleNodeIds(proxy, ['1', '2'])
 			// Move to a leaf node
 			proxy.moveTo([0, 0])
-			const result = proxy.expand()
-			expect(result).toBe(false)
+
+			expect(proxy.expand()).toBe(false)
 			expectVisibleNodeIds(proxy, ['1', '2'])
 		})
 
 		it('should return false if no current node', () => {
 			proxy.currentNode = null
-			const result = proxy.expand()
 
-			expect(result).toBe(false)
+			expect(proxy.expand()).toBe(false)
 			expectVisibleNodeIds(proxy, ['1', '2'])
 		})
 
@@ -379,10 +380,7 @@ describe('NestedProxy', () => {
 			expectVisibleNodeIds(proxy, ['1', '11', '12', '2'])
 
 			// Then move to child with grandchildren and expand
-			proxy.moveTo([0, 1]) // Move to Item 1.2
-			const result = proxy.expand()
-
-			expect(result).toBe(true)
+			expect(proxy.expand([0, 1])).toBe(true)
 			expectVisibleNodeIds(proxy, ['1', '11', '12', '121', '2'])
 		})
 	})
@@ -404,22 +402,19 @@ describe('NestedProxy', () => {
 		it('should return false if current node is already collapsed', () => {
 			proxy.moveTo(0)
 			expect(proxy.collapse()).toBe(false)
-			expect(proxy.collapse()).toBe(false)
+			expect(proxy.collapse([0])).toBe(false)
 		})
 
 		it('should return false if current node has no children', () => {
 			proxy.moveTo(0)
 			proxy.expand() // Expand first to see children
-			proxy.moveNext() // Move to first child
 
-			const result = proxy.collapse()
-			expect(result).toBe(false)
+			expect(proxy.collapse([1])).toBe(false)
 		})
 
 		it('should return false if no current node', () => {
 			proxy.currentNode = null
-			const result = proxy.collapse()
-			expect(result).toBe(false)
+			expect(proxy.collapse()).toBe(false)
 		})
 
 		it('should hide all nested children when collapsing a parent', () => {
@@ -440,34 +435,34 @@ describe('NestedProxy', () => {
 	})
 
 	describe('toggleExpansion', () => {
-		it('should expand a collapsed node', () => {
+		it('should expand/collapse the current node', () => {
 			proxy.moveTo(0)
 			proxy.collapse()
 
-			const result = proxy.toggleExpansion()
-
-			expect(result).toBe(true)
+			expect(proxy.toggleExpansion()).toBe(true)
 			expect(proxy.currentNode.expanded).toBe(true)
 			expectVisibleNodeIds(proxy, ['1', '11', '12', '2'])
+			expect(proxy.toggleExpansion()).toBe(true)
+			expectVisibleNodeIds(proxy, ['1', '2'])
 		})
 
-		it('should collapse an expanded node', () => {
-			proxy.moveTo(0)
+		it('should expand/collapse node by path', () => {
 			proxy.collapse()
 
-			expect(proxy.toggleExpansion()).toBe(true)
-			expect(proxy.currentNode.expanded).toBe(true)
+			expect(proxy.toggleExpansion([0])).toBe(true)
+			expect(proxy.nodes[0].expanded).toBe(true)
 			expectVisibleNodeIds(proxy, ['1', '11', '12', '2'])
 
-			expect(proxy.toggleExpansion()).toBe(true)
-			expect(proxy.currentNode.expanded).toBe(false)
+			expect(proxy.toggleExpansion([0])).toBe(true)
+			expect(proxy.nodes[0].expanded).toBe(false)
 			expectVisibleNodeIds(proxy, ['1', '2'])
 		})
 
 		it('should return false if current node has no children', () => {
 			proxy.moveTo([0, 0])
-			const result = proxy.toggleExpansion()
-			expect(result).toBe(false)
+			expect(proxy.toggleExpansion()).toBe(false)
+			proxy.moveTo([0])
+			expect(proxy.toggleExpansion([0, 0])).toBe(false)
 		})
 
 		it('should return false if no current node', () => {
@@ -526,6 +521,29 @@ describe('NestedProxy', () => {
 			proxy.reset()
 
 			expect(proxy.expandAll).toHaveBeenCalled()
+		})
+	})
+
+	describe('moveToValue', () => {
+		it('should move to the node with the given value', () => {
+			expect(proxy.currentNode).toBeNull()
+			expect(proxy.nodes[0].expanded).toBe(false)
+			expect(proxy.nodes[0].children[1].expanded).toBe(false)
+			let result = proxy.moveToValue(testData[0].children[1].children[0])
+
+			expect(result).toBe(true)
+			expect(proxy.currentNode.value).toEqual(testData[0].children[1].children[0])
+			expect(proxy.nodes[0].expanded).toBe(true)
+			expect(proxy.nodes[0].children[1].expanded).toBe(true)
+
+			result = proxy.moveToValue(testData[0].children[1].children[0])
+			expect(result).toBe(false)
+
+			result = proxy.moveToValue(testData[0])
+			expect(result).toBe(true)
+			expect(proxy.currentNode.value).toEqual(testData[0])
+			expect(proxy.nodes[0].expanded).toBe(true)
+			expect(proxy.nodes[0].children[1].expanded).toBe(true)
 		})
 	})
 })

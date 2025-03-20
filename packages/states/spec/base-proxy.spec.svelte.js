@@ -12,15 +12,6 @@ class TestProxy extends BaseProxy {
 	moveTo(target) {
 		return Boolean(target)
 	}
-	select() {
-		return true
-	}
-	extendSelection() {
-		return true
-	}
-	find(condition) {
-		return this.data && this.data.find(condition) ? { node: this.data.find(condition) } : null
-	}
 }
 
 describe('BaseProxy', () => {
@@ -108,22 +99,23 @@ describe('BaseProxy', () => {
 			expect(() => baseInstance.moveTo(1)).toThrow('moveTo() must be implemented by subclass')
 		})
 
-		it('should throw error if select is not implemented', () => {
+		it('should return false on select', () => {
 			const baseInstance = new BaseProxy([])
-			expect(() => baseInstance.select()).toThrow('select() must be implemented by subclass')
+			expect(baseInstance.select()).toBe(false)
+			expect(baseInstance.select(1)).toBe(false)
 		})
 
-		it('should throw error if extendSelection is not implemented', () => {
+		it('should return false on extendSelection', () => {
 			const baseInstance = new BaseProxy([])
-			expect(() => baseInstance.extendSelection()).toThrow(
-				'extendSelection() must be implemented by subclass'
-			)
+			expect(baseInstance.extendSelection()).toBe(false)
+			expect(baseInstance.extendSelection(1)).toBe(false)
 		})
 
-		// it('should throw error if find is not implemented', () => {
-		// 	const baseInstance = new BaseProxy([])
-		// 	expect(() => baseInstance.find(() => true)).toThrow('find() must be implemented by subclass')
-		// })
+		it('should return null on find', () => {
+			const baseInstance = new BaseProxy([])
+			expect(baseInstance.find(() => true)).toBeNull()
+			expect(baseInstance.findPathIndex(() => true)).toEqual([])
+		})
 	})
 
 	describe('expansion methods', () => {
@@ -153,16 +145,24 @@ describe('BaseProxy', () => {
 			expect(() => proxy.moveTo(0)).not.toThrow()
 		})
 
-		it('should not throw on select', () => {
-			expect(() => proxy.select()).not.toThrow()
+		it('hould use base implementation for select', () => {
+			expect(proxy.select()).toEqual(false)
 		})
 
-		it('should not throw on extendSelection', () => {
-			expect(() => proxy.extendSelection()).not.toThrow()
+		it('should use base implementation for extendSelection', () => {
+			expect(proxy.extendSelection()).toEqual(false)
 		})
 
-		it('should not throw on find', () => {
-			expect(() => proxy.find(() => true)).not.toThrow()
+		it('hould use base implementation for find', () => {
+			expect(proxy.find(() => true)).toBeNull()
+			expect(proxy.findPathIndex(() => true)).toEqual([])
+		})
+	})
+
+	describe('getNodeByPath', () => {
+		it('should return null if path is empty/invalid', () => {
+			expect(proxy.getNodeByPath([])).toBeNull()
+			expect(proxy.getNodeByPath()).toBeNull()
 		})
 	})
 })

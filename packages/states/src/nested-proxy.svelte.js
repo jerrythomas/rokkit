@@ -26,23 +26,21 @@ export class NestedProxy extends BaseProxy {
 	}
 
 	/**
-	 * Updates the proxy with new data
-	 *
-	 * @param {any[]} data - New hierarchical data to use
-	 * @returns {NestedProxy} - This proxy for method chaining
+	 * Refreshes the flatNodes
+	 * @private
 	 */
-	update(data) {
-		this.data = data || null
-		this.reset()
-
-		if (!data) {
+	_refreshFlatNodes(nodes = null) {
+		if (!nodes) {
 			this.visibleNodes = []
-			return this
+			this._refreshFlatNodes(this.nodes)
+		} else {
+			nodes.forEach((node) => {
+				this.visibleNodes.push(node)
+				if (node.hasChildren() && node.expanded) {
+					this._refreshFlatNodes(node.children)
+				}
+			})
 		}
-
-		// Create node tree and flatten visible nodes
-		this.processNodes(data)
-		return this
 	}
 
 	/**
@@ -63,21 +61,46 @@ export class NestedProxy extends BaseProxy {
 	}
 
 	/**
-	 * Refreshes the flatNodes
-	 * @private
+	 * Updates the proxy with new data
+	 *
+	 * @param {any[]} data - New hierarchical data to use
+	 * @returns {NestedProxy} - This proxy for method chaining
 	 */
-	_refreshFlatNodes(nodes = null) {
-		if (!nodes) {
+	update(data) {
+		this.data = data || null
+		this.reset()
+
+		if (!data) {
 			this.visibleNodes = []
-			this._refreshFlatNodes(this.nodes)
-		} else {
-			nodes.forEach((node) => {
-				this.visibleNodes.push(node)
-				if (node.hasChildren() && node.expanded) {
-					this._refreshFlatNodes(node.children)
-				}
-			})
+			return this
 		}
+
+		// Create node tree and flatten visible nodes
+		this.processNodes(data)
+		return this
+	}
+
+	/**
+	 * Moves focus to the specified target (index, path)
+	 *
+	 * @param {number|number[]} target - index or path to move to
+	 * @returns {boolean} - Whether the move was successful
+	 */
+	moveTo(target) {
+		const path = Array.isArray(target) ? target : [target]
+		const targetNode = this.getNodeByPath(path)
+
+		if (!targetNode) return false
+
+		// Update focus
+		if (this.currentNode) {
+			this.currentNode.focused = false
+		}
+
+		this.currentNode = targetNode
+		this.currentNode.focused = true
+
+		return true
 	}
 
 	/**
@@ -127,108 +150,18 @@ export class NestedProxy extends BaseProxy {
 	}
 
 	/**
-	 * Moves focus to the specified target (index, path, id, or node)
-	 *
-	 * @param {number|number[]|string|Object} target - Target to move to
-	 * @returns {boolean} - Whether the move was successful
-	 */
-	moveTo(target) {
-		const path = Array.isArray(target) ? target : [target]
-		const targetNode = this.getNodeByPath(path)
-
-		if (!targetNode) return false
-
-		// Ensure the node is visible (parents are expanded)
-		if (!this.ensureVisible(targetNode)) return false
-
-		// Update focus
-		if (this.currentNode) {
-			this.currentNode.focused = false
-		}
-
-		this.currentNode = targetNode
-		this.currentNode.focused = true
-
-		return true
-	}
-
-	/**
-	 * Ensures a node is visible by expanding its ancestors
-	 *
-	 * @param {NodeProxy} node - Node to make visible
-	 * @returns {boolean} - Whether the node is now visible
-	 */
-	ensureVisible(node) {
-		if (!node || !node.path || node.path.length <= 1) return true
-
-		for (let i = 1; i < node.path.length; i++) {
-			const parentNode = this.getNodeByPath(node.path.slice(0, i))
-			parentNode.expanded = true
-		}
-		return true
-	}
-
-	/**
-	 * Selects the current node
-	 *
-	 * @returns {boolean} - Whether the selection was successful
-	 */
-	select() {
-		if (!this.currentNode) return false
-		if (!this.options.multiSelect) {
-			this.selectedNodes.forEach((node) => {
-				node.selected = false
-			})
-			this.selectedNodes.clear()
-		}
-
-		// Select the current node
-		this.currentNode.selected = true
-		const nodeId = this.currentNode.id
-		this.selectedNodes.set(nodeId, this.currentNode)
-
-		return true
-	}
-
-	/**
-	 * Toggles selection on the current node (for multi-select)
-	 *
-	 * @returns {boolean} - Whether the operation was successful
-	 */
-	extendSelection() {
-		if (!this.currentNode) return false
-
-		if (this.options.multiSelect) {
-			// Toggle selection
-			this.currentNode.selected = !this.currentNode.selected
-			const nodeId = this.currentNode.id
-
-			if (nodeId) {
-				if (this.currentNode.selected) {
-					this.selectedNodes.set(nodeId, this.currentNode)
-				} else {
-					this.selectedNodes.delete(nodeId)
-				}
-			}
-		} else {
-			// In single select mode, just select the node
-			return this.select()
-		}
-
-		return true
-	}
-
-	/**
 	 * Expand the current node
 	 *
+	 * @param {number[]} [path] - The path to the node to expand
 	 * @returns {boolean} - Whether the node was expanded
 	 */
-	expand() {
-		if (!this.currentNode || !this.currentNode.hasChildren() || this.currentNode.expanded) {
+	expand(path) {
+		const node = path ? this.getNodeByPath(path) : this.currentNode
+		if (!node || !node.hasChildren() || node.expanded) {
 			return false
 		}
 
-		this.currentNode.expanded = true
+		node.expanded = true
 		this._refreshFlatNodes()
 		return true
 	}
@@ -236,14 +169,16 @@ export class NestedProxy extends BaseProxy {
 	/**
 	 * Collapse the current node
 	 *
+	 * @param {number[]} [path] - The path to the node to collapse
 	 * @returns {boolean} - Whether the node was collapsed
 	 */
-	collapse() {
-		if (!this.currentNode || !this.currentNode.hasChildren() || !this.currentNode.expanded) {
+	collapse(path) {
+		const node = path ? this.getNodeByPath(path) : this.currentNode
+		if (!node || !node.hasChildren() || !node.expanded) {
 			return false
 		}
 
-		this.currentNode.expanded = false
+		node.expanded = false
 		this._refreshFlatNodes()
 		return true
 	}
@@ -251,14 +186,17 @@ export class NestedProxy extends BaseProxy {
 	/**
 	 * Toggle expanded/collapsed state of current node
 	 *
+	 * @param {number[]} [path] - The path to the node to toggle expansion
 	 * @returns {boolean} - Whether the state changed
 	 */
-	toggleExpansion() {
-		if (!this.currentNode || !this.currentNode.hasChildren()) {
+	toggleExpansion(path) {
+		const node = path ? this.getNodeByPath(path) : this.currentNode
+
+		if (!node || !node.hasChildren()) {
 			return false
 		}
 
-		this.currentNode.expanded = !this.currentNode.expanded
+		node.expanded = !node.expanded
 		this._refreshFlatNodes()
 		return true
 	}
@@ -311,18 +249,38 @@ export class NestedProxy extends BaseProxy {
 	}
 
 	/**
+	 * Ensures a node is visible by expanding its ancestors
+	 *
+	 * @param {NodeProxy} node - Node to make visible
+	 * @returns {boolean} - Whether the node is now visible
+	 */
+	ensureVisible(node) {
+		if (!node || !node.path || node.path.length <= 1) return true
+
+		for (let i = 1; i < node.path.length; i++) {
+			const parentNode = this.getNodeByPath(node.path.slice(0, i))
+			parentNode.expanded = true
+		}
+		return true
+	}
+
+	/**
 	 * Finds a node by value and makes it the current & active node
 	 *
 	 * @param {any} value
 	 * @returns
 	 */
 	moveToValue(value) {
-		if (!value || equals(this.currentNode?.value, value)) return
+		if (!value || equals(this.currentNode?.value, value)) return false
 
-		const path = this.findPathIndex((node) => equals(node.value, value))
-		if (path.length > 0) {
-			this.moveTo(path)
+		const targetNode = this.find((node) => equals(node.value, value))
+
+		if (targetNode) {
+			this.ensureVisible(targetNode)
+			this.moveTo(targetNode.path)
 			this.select()
+			return true
 		}
+		return false
 	}
 }

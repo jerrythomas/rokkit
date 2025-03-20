@@ -133,30 +133,40 @@ describe('NodeProxy', () => {
 	})
 
 	it('should get path and key', () => {
-		const node = new NodeProxy(data[0], [2, 3, 1])
+		const node = new NodeProxy({ text: 'hello', _selected: true }, [2, 3, 1])
 
 		expect(node.getPath()).toEqual([2, 3, 1])
-		expect(node.getKey()).toBe('2-3-1')
+		expect(node.id).toBe('2-3-1')
+		expect(node.selected).toBe(true)
 	})
 
+	it('should format text using default formatter', () => {
+		const node = new NodeProxy({ text: 1 }, [0])
+		expect(node.formattedText()).toBe('1')
+
+		const nilNode = new NodeProxy(null, [])
+		expect(nilNode.formattedText()).toBe('')
+	})
 	it('should format text using a formatter function', () => {
 		const node = new NodeProxy(data[0], [0])
 		const formatter = (text) => text.toUpperCase()
 
 		expect(node.formattedText(formatter)).toBe('ITEM 1')
+
+		const nilNode = new NodeProxy(null, [])
+		expect(nilNode.formattedText(formatter)).toBe('')
 	})
 
 	it('should update children correctly', () => {
 		const parentNode = new NodeProxy(data[1], [1])
 		expect(parentNode.children.length).toEqual(2)
-		expect(parentNode.children[0].value).toBe(data[1].children[0])
-		expect(parentNode.children[1].value).toBe(data[1].children[1])
+		expect(parentNode.children[0].value).toEqual(data[1].children[0])
+		expect(parentNode.children[1].value).toEqual(data[1].children[1])
 
-		parentNode.value = { children: [{ id: '3-0', text: 'Item 3.1' }] }
-		expect(parentNode.children.length).toEqual(1)
-		expect(parentNode.children[0].value).toBe(data[1].children[0])
-		expect(data[1].children.length).toBe(1)
-		expect(data[1].children).toEqual([{ id: '3-0', text: 'Item 3.1' }])
+		parentNode.children[0].value = { children: [{ id: '3-0', text: 'Item 3.1' }] }
+		expect(parentNode.children[0].children.length).toEqual(1)
+		expect(parentNode.children[0].value).toEqual(data[1].children[0])
+		expect(data[1].children[0].children).toEqual([{ id: '3-0', text: 'Item 3.1' }])
 	})
 
 	it('should remove a child data correctly', () => {
@@ -193,16 +203,9 @@ describe('NodeProxy', () => {
 		expect(data[1].children[1]).toEqual({ id: 6, text: 'Child 3' })
 	})
 
-	it('should match a condition on the value', () => {
-		const parentNode = new NodeProxy(data[1], [1])
-
-		expect(parentNode.match((value) => value.id === 2)).toBe(true)
-		expect(parentNode.match((value) => value.id === 5)).toBe(false)
-	})
-
 	it('should find a node matching a condition', () => {
 		const parentNode = new NodeProxy(data[1], [1])
-		expect(parentNode.find((value) => value.id === 3)).toBe(parentNode.children[0])
-		expect(parentNode.find((value) => value.id === 7)).toBeNull()
+		expect(parentNode.find((node) => node.value.id === 3)).toBe(parentNode.children[0])
+		expect(parentNode.find((node) => node.value.id === 7)).toBeNull()
 	})
 })
