@@ -12,7 +12,13 @@
 	 */
 
 	/** @type {Props} */
-	let { value = $bindable(), types = [], stateIcons = defaultStateIcons.node, ...extra } = $props()
+	let {
+		value = $bindable(),
+		types = [],
+		stateIcons = defaultStateIcons.node,
+		stub,
+		...extra
+	} = $props()
 
 	let icons = $derived({ ...defaultStateIcons.node, ...stateIcons })
 	let stateName = $derived(value.expanded ? 'opened' : 'closed')
@@ -22,7 +28,7 @@
 			: { icon: icons.closed, label: 'expand' }
 	)
 
-	const template = getSnippet(value.get('component'), extra)
+	const template = getSnippet(value.get('component'), extra) ?? stub
 </script>
 
 <rk-node

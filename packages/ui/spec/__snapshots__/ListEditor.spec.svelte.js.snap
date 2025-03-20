@@ -83,7 +83,7 @@ exports[`ListEditor.svelte > should render 1`] = `
       <!---->
       <field-layout
         aria-label=""
-        class="object "
+        class=""
       >
         <!---->
         <!---->

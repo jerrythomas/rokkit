@@ -1,7 +1,7 @@
 <script>
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
-	import { componentTypes } from './types'
+	import { types } from './input/types'
 	import Wrapper from './wrappers/Wrapper.svelte'
 	import Item from './Item.svelte'
 	import Tabs from './Tabs.svelte'
@@ -15,7 +15,7 @@
 
 	let { value, schema = null, layout = null, using = {}, onchange = noop } = $props()
 
-	registry.editors = { ...componentTypes, ...using?.editors }
+	registry.editors = { ...types, ...using?.editors }
 	registry.components = { default: Item, ...using?.components }
 	registry.wrappers = { default: Wrapper, ...using?.wrappers }
 	registry.navigators = { default: Tabs, ...using?.navigators }

@@ -19,19 +19,20 @@ describe('Wrapper.svelte', () => {
 		expect(container).toMatchSnapshot()
 
 		// handle type changes
-		props.type = 'section'
+		props.type = 'vertical'
 		flushSync()
 		await tick()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render using specified class', async () => {
-		const props = $state({ class: 'custom-class' })
+		const props = $state({ class: 'custom-class', title: 'original' })
 		const { container } = render(Wrapper, { props })
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
 		props.class = 'custom-class-2'
+		props.title = 'new label'
 		flushSync()
 		await tick()
 		expect(container).toMatchSnapshot()

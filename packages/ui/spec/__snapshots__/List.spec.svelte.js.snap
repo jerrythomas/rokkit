@@ -1,5 +1,30 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`List > should render empty list 1`] = `
+<div>
+  <rk-list
+    aria-label="list"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <rk-body>
+      <!---->
+      <rk-message>
+        No items found.
+      </rk-message>
+      
+      <!---->
+    </rk-body>
+     
+    <!---->
+  </rk-list>
+  
+</div>
+`;
+
 exports[`List > should render simple list 1`] = `
 <div>
   <rk-list
@@ -108,6 +133,335 @@ exports[`List > should render simple list 2`] = `
      
     <!---->
   </rk-list>
+  
+</div>
+`;
+
+exports[`List > should render with custom components 1`] = `
+<div>
+  <!---->
+  <!---->
+   
+  <!---->
+   
+  <!---->
+   
+  <rk-list
+    aria-label="list"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <rk-body>
+      <!---->
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <p>
+          odd:Item 1
+        </p>
+        
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <p>
+          even:Item 2
+        </p>
+        
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="2"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 3
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="3"
+        role="option"
+      >
+        <!---->
+        <p>
+          odd:Item 4
+        </p>
+        
+        <!---->
+      </rk-list-item>
+      
+      <!---->
+    </rk-body>
+     
+    <!---->
+  </rk-list>
+  <!---->
+  
+</div>
+`;
+
+exports[`List > should render with custom empty 1`] = `
+<div>
+  <!---->
+  <!---->
+   
+  <!---->
+   
+  <rk-list
+    aria-label="list"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <rk-body>
+      <!---->
+      <!---->
+      <h1>
+        Custom empty message
+      </h1>
+      
+      
+      <!---->
+    </rk-body>
+     
+    <!---->
+  </rk-list>
+  <!---->
+   
+  <!---->
+  
+</div>
+`;
+
+exports[`List > should render with custom footer 1`] = `
+<div>
+  <!---->
+  <!---->
+   
+  <rk-list
+    aria-label="list"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <!---->
+     
+    <rk-body>
+      <!---->
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 2
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="2"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 3
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="3"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 4
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      
+      <!---->
+    </rk-body>
+     
+    <rk-footer>
+      <h1>
+        Custom footer
+      </h1>
+      <!---->
+    </rk-footer>
+    <!---->
+  </rk-list>
+  <!---->
+   
+  <!---->
+   
+  <!---->
+  
+</div>
+`;
+
+exports[`List > should render with custom header 1`] = `
+<div>
+  <!---->
+  <rk-list
+    aria-label="list"
+    class=""
+    role="listbox"
+    tabindex="0"
+  >
+    <rk-header>
+      <h1>
+        Custom header
+      </h1>
+      <!---->
+    </rk-header>
+    <!---->
+     
+    <rk-body>
+      <!---->
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 2
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="2"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 3
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      <rk-list-item
+        aria-current="false"
+        aria-selected="false"
+        data-path="3"
+        role="option"
+      >
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 4
+        </p>
+        <!---->
+        <!---->
+      </rk-list-item>
+      
+      <!---->
+    </rk-body>
+     
+    <!---->
+  </rk-list>
+  <!---->
+   
+  <!---->
+   
+  <!---->
+   
+  <!---->
   
 </div>
 `;

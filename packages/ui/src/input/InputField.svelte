@@ -1,9 +1,9 @@
 <script>
 	import { getContext } from 'svelte'
 	import { pick, omit } from 'ramda'
-	import Icon from './Icon.svelte'
-	import Input from './input/Input.svelte'
-	import { componentTypes } from './types'
+	import Icon from '../Icon.svelte'
+	import Input from './Input.svelte'
+	import { types } from './types'
 
 	const registry = getContext('registry')
 
@@ -24,7 +24,7 @@
 		...restProps
 	} = $props()
 
-	using = { ...componentTypes, ...registry, ...using }
+	using = { ...types, ...registry, ...using }
 	let pass = status === 'pass'
 	let fail = status === 'fail'
 	let warn = status === 'warn'

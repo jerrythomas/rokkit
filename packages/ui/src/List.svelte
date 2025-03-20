@@ -1,7 +1,5 @@
 <script>
 	import { createEmitter, noop, getKeyFromPath, getSnippet } from '@rokkit/core'
-	// import { defaultMapping } from './constants'
-	// import { DataWrapper } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Item from './Item.svelte'
 	import { ListProxy } from '@rokkit/states'
@@ -32,6 +30,7 @@
 		header,
 		footer,
 		empty,
+		stub,
 		...events
 	} = $props()
 
@@ -60,16 +59,14 @@
 	{/if}
 	<rk-body>
 		{#if wrapper.nodes.length === 0}
-			<rk-list-item role="presentation">
-				{#if empty}
-					{@render empty()}
-				{:else}
-					No items found.
-				{/if}
-			</rk-list-item>
+			{#if empty}
+				{@render empty()}
+			{:else}
+				<rk-message>No items found.</rk-message>
+			{/if}
 		{:else}
 			{#each wrapper.nodes as node}
-				{@const template = getSnippet(extra, node.get('component'))}
+				{@const template = getSnippet(extra, node.get('component')) ?? stub}
 				{@const path = getKeyFromPath(node.path)}
 				{@const props = node.get('props') || {}}
 				<rk-list-item

@@ -15,12 +15,11 @@
 		...restProps
 	} = $props()
 
-	let mapping = new FieldMapper(fields)
 	let Template = $derived(registry.navigators[navigator] ?? registry.navigators.default)
 </script>
 
 <section class={className}>
-	<Template {options} {mapping} bind:value={category} {...restProps} />
+	<Template {options} {fields} bind:value={category} {...restProps} />
 	<field-layout class={type}>
 		{@render children?.()}
 	</field-layout>

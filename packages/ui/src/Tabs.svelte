@@ -1,6 +1,6 @@
 <script>
-	import { defaultFields, defaultStateIcons, noop } from '@rokkit/core'
-	import { defaultMapping } from './constants'
+	import { defaultFields, defaultStateIcons, noop, getSnippet } from '@rokkit/core'
+	import { ListProxy } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Icon from './Icon.svelte'
 	import Item from './Item.svelte'
@@ -9,7 +9,7 @@
 	 * @typedef {Object} Props
 	 * @property {string} [class]
 	 * @property {any} [options]
-	 * @property {import('@rokkit/core').FieldMapping} [mapping]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
 	 * @property {any} [value]
 	 * @property {boolean} [below]
 	 * @property {string} [align]
@@ -21,23 +21,24 @@
 	let {
 		class: className = '',
 		options = $bindable([]),
-		fields = defaultFields,
-		mapping = defaultMapping,
 		value = $bindable(null),
+		icons = $bindable(defaultStateIcons.action),
+		fields = defaultFields,
 		below = false,
 		align = 'left',
 		editable = false,
-		icons = $bindable(defaultStateIcons.action),
 		onremove = noop,
 		onadd = noop,
-		onselect = noop
+		onselect = noop,
+		stub,
+		...extra
 	} = $props()
 
 	let cursor = $state([])
 
 	function handleRemove(event) {
 		if (typeof event.detail === Object) {
-			event.detail[mapping.fields.isDeleted] = true
+			event.detail[fields.isDeleted] = true
 		} else {
 			options = options.filter((i) => i !== event.detail)
 		}
@@ -56,6 +57,7 @@
 	}
 	let stateIcons = $derived({ ...defaultStateIcons.action, ...icons })
 	let filtered = $derived(options.filter((item) => !item[fields.isDeleted]))
+	let wrapper = new ListProxy(options, value, fields)
 </script>
 
 <rk-tabs
@@ -65,11 +67,13 @@
 	class:justify-end={align === 'right'}
 	tabindex="0"
 	role="listbox"
-	onmove={handleNav}
-	onselect={handleNav}
+	use:navigator={{ wrapper }}
+	onaction={handleNav}
+	onremove={handleRemove}
+	onadd={handleAdd}
 >
-	{#each filtered as item, index}
-		{@const Template = mapping.getComponent(item)}
+	{#each wrapper.nodes as item, index}
+		{@const Template = getSnippet(extra, item.get('component')) ?? stub}
 		<rk-tab>
 			<Template value={item} {mapping} />
 			{#if editable}
@@ -84,6 +88,6 @@
 		</rk-tab>
 	{/each}
 	{#if editable}
-		<Icon name="add" role="button" label="Add Tab" size="small" on:click={handleAdd} />
+		<Icon name="add" role="button" label="Add Tab" size="small" onclick={handleAdd} />
 	{/if}
 </rk-tabs>

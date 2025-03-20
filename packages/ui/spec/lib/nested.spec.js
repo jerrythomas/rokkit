@@ -347,34 +347,85 @@ describe('nested', () => {
 			result = generateTreeTable('')
 			expect(result).toEqual([])
 		})
-		// it('should generate a tree table for object array', () => {
-		// 	let result = generateTreeTable([
-		// 		{ scope: '#/color', value: 'red' },
-		// 		{ scope: '#/theme', value: 'ocean' }
-		// 	])
-		// 	expect(result).toEqual([
-		// 		{
-		// 			_depth: 0,
-		// 			_isExpanded: true,
-		// 			_isParent: true,
+		it('should generate a tree table for object array', () => {
+			const result = generateTreeTable([
+				{ scope: '#/color', value: 'red' },
+				{ scope: '#/theme', value: 'ocean' }
+			])
+			expect(result).toEqual([
+				{
+					_depth: 0,
+					_isExpanded: true,
+					_isParent: true,
 
-		// 			_levels: [0],
-		// 			_path: '#/color',
-		// 			scope: '#/color',
-		// 			value: 'red'
-		// 		},
-		// 		{
-		// 			_depth: 0,
-		// 			_isExpanded: true,
-		// 			_isParent: false,
+					_levels: [0],
+					_path: '#/0',
+					key: '0',
+					scope: '#/0',
+					type: 'object',
+					value: { scope: '#/color', value: 'red' }
+				},
+				{
+					_depth: 1,
+					_isExpanded: true,
+					_isParent: false,
+					_levels: [0, 0],
+					_path: '#/0/scope',
+					key: 'scope',
+					scope: '#/0/scope',
+					type: 'string',
+					value: '#/color'
+				},
+				{
+					_depth: 1,
+					_isExpanded: true,
+					_isParent: false,
+					_levels: [0, 1],
+					_path: '#/0/value',
+					key: 'value',
+					scope: '#/0/value',
+					type: 'string',
+					value: 'red'
+				},
+				{
+					_depth: 0,
+					_isExpanded: true,
+					_isParent: true,
+					_levels: [1],
+					_path: '#/1',
+					key: '1',
+					scope: '#/1',
+					type: 'object',
+					value: {
+						scope: '#/theme',
+						value: 'ocean'
+					}
+				},
+				{
+					_depth: 1,
+					_isExpanded: true,
+					_isParent: false,
 
-		// 			_levels: [1],
-		// 			_path: '#/theme',
-		// 			scope: '#/theme',
-		// 			value: 'ocean'
-		// 		}
-		// 	])
-		// })
+					_levels: [1, 0],
+					_path: '#/1/scope',
+					key: 'scope',
+					scope: '#/1/scope',
+					type: 'string',
+					value: '#/theme'
+				},
+				{
+					_depth: 1,
+					_isExpanded: true,
+					_isParent: false,
+					_levels: [1, 1],
+					_path: '#/1/value',
+					key: 'value',
+					scope: '#/1/value',
+					type: 'string',
+					value: 'ocean'
+				}
+			])
+		})
 		it('should generate a tree table for object', () => {
 			const result = generateTreeTable({
 				red: '#FF0000',
@@ -417,6 +468,48 @@ describe('nested', () => {
 					key: 'red',
 					type: 'string',
 					value: '#FF0000'
+				}
+			])
+		})
+
+		it('should use ellipsis to truncate data', () => {
+			const data = {
+				red: [1, 2]
+			}
+			const result = generateTreeTable(data, 'scope', true)
+			expect(result).toEqual([
+				{
+					_depth: 0,
+					_isExpanded: true,
+					_isParent: true,
+					_levels: [0],
+					_path: '#/red',
+					key: 'red',
+					scope: '#/red',
+					type: 'array',
+					value: '...'
+				},
+				{
+					_depth: 1,
+					_isExpanded: true,
+					_isParent: false,
+					_levels: [0, 0],
+					_path: '#/red/[0]',
+					key: '[0]',
+					scope: '#/red/[0]',
+					type: 'integer',
+					value: 1
+				},
+				{
+					_depth: 1,
+					_isExpanded: true,
+					_isParent: false,
+					_levels: [0, 1],
+					_path: '#/red/[1]',
+					key: '[1]',
+					scope: '#/red/[1]',
+					type: 'integer',
+					value: 2
 				}
 			])
 		})
