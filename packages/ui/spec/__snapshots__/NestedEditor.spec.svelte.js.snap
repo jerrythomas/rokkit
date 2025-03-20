@@ -45,14 +45,27 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                
               <rk-item>
                 <!---->
-                <!---->
-                
+                <rk-icon
+                  aria-label="object"
+                  class=""
+                  role="img"
+                  tabindex="-1"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="object"
+                  />
+                </rk-icon>
                 <!---->
                  
                 <!---->
                 <!---->
               </rk-item>
             </div>
+             
+            <!---->
+            
+            <!---->
           </rk-node>
           
         </rk-nested-list>

@@ -3,7 +3,7 @@
 	import { navigator } from '@rokkit/actions'
 	import Item from './Item.svelte'
 	import { ListProxy } from '@rokkit/states'
-	import { omit } from 'ramda'
+	import { omit, has } from 'ramda'
 
 	/**
 	 * @typedef {Object} Props
@@ -36,8 +36,9 @@
 
 	function handleAction(event) {
 		value = wrapper.currentNode.value
-		if (event.details.type) {
-			emitter[event.details.type](event.details.data)
+		console.log(event.detail)
+		if (has(event.detail.eventName, emitter)) {
+			emitter[event.detail.eventName](event.detail.data)
 		}
 	}
 

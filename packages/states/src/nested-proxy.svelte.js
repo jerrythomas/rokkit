@@ -87,8 +87,9 @@ export class NestedProxy extends BaseProxy {
 	 * @returns {boolean} - Whether the move was successful
 	 */
 	moveTo(target) {
-		const path = Array.isArray(target) ? target : [target]
-		const targetNode = this.getNodeByPath(path)
+		const targetNode = Array.isArray(target)
+			? this.find((node) => equals(node.path, target))
+			: this.visibleNodes[target]
 
 		if (!targetNode) return false
 
@@ -174,9 +175,7 @@ export class NestedProxy extends BaseProxy {
 	 */
 	collapse(path) {
 		const node = path ? this.getNodeByPath(path) : this.currentNode
-		if (!node || !node.hasChildren() || !node.expanded) {
-			return false
-		}
+		if (!node || !node.hasChildren() || !node.expanded) return false
 
 		node.expanded = false
 		this._refreshFlatNodes()
@@ -261,6 +260,7 @@ export class NestedProxy extends BaseProxy {
 			const parentNode = this.getNodeByPath(node.path.slice(0, i))
 			parentNode.expanded = true
 		}
+		this._refreshFlatNodes()
 		return true
 	}
 

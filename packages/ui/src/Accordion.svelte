@@ -1,6 +1,6 @@
 <script>
 	import { equals } from 'ramda'
-	import { createEmitter, noop, getKeyFromPath } from '@rokkit/core'
+	import { createEmitter, noop, getKeyFromPath, getSnippet } from '@rokkit/core'
 	import { NestedProxy } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Summary from './Summary.svelte'
@@ -24,10 +24,11 @@
 		fields,
 		autoCloseSiblings = false,
 		multiselect = false,
-		header,
-		footer,
-		empty,
-		item,
+		header = null,
+		footer = null,
+		empty = null,
+		stub = null,
+		extra,
 		...events
 	} = $props()
 
@@ -39,7 +40,7 @@
 
 {#snippet listItems(nodes, onchange = noop)}
 	{#each nodes as node}
-		{@const template = getSnippet(extra, node.get('component')) ?? item}
+		{@const template = getSnippet(extra, node.get('component')) ?? stub}
 		{@const path = getKeyFromPath(node.path)}
 		{@const props = node.get('props') || {}}
 		<rk-list-item

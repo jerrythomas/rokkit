@@ -1,8 +1,13 @@
 <script>
 	import { List } from '@rokkit/ui'
-	let items = $state(['Fruits', 'Vegetables', 'Nuts', 'Spices'])
+	let items = $state([
+		{ text: 'Fruits' },
+		{ text: 'Vegetables' },
+		{ text: 'Nuts' },
+		{ text: 'Spices' }
+	])
 	let value = $state(null)
 </script>
 
-<List {items} bind:value />
-<p>Selected Value: <b>{value}</b></p>
+<List bind:items bind:value />
+<p>Selected Value: <b>{value?.text}</b></p>

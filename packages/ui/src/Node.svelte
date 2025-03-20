@@ -16,7 +16,8 @@
 		value = $bindable(),
 		types = [],
 		stateIcons = defaultStateIcons.node,
-		stub,
+		stub = null,
+		children,
 		...extra
 	} = $props()
 
@@ -29,6 +30,7 @@
 	)
 
 	const template = getSnippet(value.get('component'), extra) ?? stub
+	// $inspect(value.focused, value.expanded, value.selected, value.get('text'))
 </script>
 
 <rk-node
@@ -55,4 +57,5 @@
 			{/if}
 		</rk-item>
 	</div>
+	{@render children?.()}
 </rk-node>
