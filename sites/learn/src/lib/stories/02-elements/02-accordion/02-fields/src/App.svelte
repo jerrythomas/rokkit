@@ -1,6 +1,5 @@
 <script>
-	import { Accordion, Item } from '@rokkit/ui'
-	import { FieldMapper } from '@rokkit/core'
+	import { Accordion } from '@rokkit/ui'
 	import { items } from './data.js'
 
 	const fields = {
@@ -9,10 +8,9 @@
 		image: 'photo'
 	}
 	let value = $state(null)
-	let mapping = new FieldMapper(fields, { default: Item })
 </script>
 
-<Accordion {items} {mapping} autoCloseSiblings bind:value />
+<Accordion {items} {fields} autoCloseSiblings bind:value />
 
 <p>Selected item</p>
 <pre>JSON.stringify(value, null, 2)</pre>

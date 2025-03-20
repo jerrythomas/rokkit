@@ -27,6 +27,7 @@
 		header,
 		footer,
 		empty,
+		item,
 		...events
 	} = $props()
 
@@ -37,8 +38,8 @@
 </script>
 
 {#snippet listItems(nodes, onchange = noop)}
-	{#each nodes as node, index}
-		{@const template = getSnippet(extra, node.get('component'))}
+	{#each nodes as node}
+		{@const template = getSnippet(extra, node.get('component')) ?? item}
 		{@const path = getKeyFromPath(node.path)}
 		{@const props = node.get('props') || {}}
 		<rk-list-item

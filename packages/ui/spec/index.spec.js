@@ -31,10 +31,22 @@ describe('components', () => {
 			'Accordion',
 			'NestedList',
 			'Tree',
+			'Tabs',
+			'Select',
+			'MultiSelect',
+			'DropDown',
+			'Table',
 			'ToggleThemeMode',
 			'Overlay',
 			'Message',
-			'SlidingColumns'
+			'SlidingColumns',
+			'InputField',
+			'Form',
+			'FieldLayout',
+			'DataEditor',
+			'NestedEditor',
+			'Stepper',
+			'ProgressDots'
 		])
 	})
 })

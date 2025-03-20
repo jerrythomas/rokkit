@@ -1,6 +1,5 @@
 <script>
-	import { Accordion, Item } from '@rokkit/ui'
-	import { FieldMapper } from '@rokkit/core'
+	import { Accordion } from '@rokkit/ui'
 	import { data } from './data.js'
 	import Odd from './Odd.svelte'
 	import Even from './Even.svelte'
@@ -12,7 +11,13 @@
 		image: 'photo'
 	}
 	let items = $state(data)
-	let mapping = new FieldMapper(fields, { default: Item, odd: Odd, even: Even })
 </script>
 
-<Accordion bind:items {mapping} />
+<Accordion bind:items {fields}>
+	{#snippet odd(node)}
+		<Odd value={node.value} />
+	{/snippet}
+	{#snippet even(node)}
+		<Even value={node.value} />
+	{/snippet}
+</Accordion>

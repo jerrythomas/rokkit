@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
 	import { omit } from 'ramda'
-	import InputField from './InputField.svelte'
+	import InputField from './input/InputField.svelte'
 	import FieldLayout from './FieldLayout.svelte'
 
 	// const dispatch = createEventDispatcher()

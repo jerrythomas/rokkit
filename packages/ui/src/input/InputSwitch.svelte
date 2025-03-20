@@ -1,26 +1,19 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
 	import { getValue, defaultFields } from '@rokkit/core'
 	import Switch from '../Switch.svelte'
 
-	const dispatch = createEventDispatcher()
-	export let name
-	export let value
-	export let options
-	export let fields = {}
-
-	let selected
-
-	function handle(event) {
-		value = getValue(event.detail.item, fields)
-		dispatch('change', event.detail)
+	let { name, value, options, fields, ...restProps } = $props()
+	let selected = $state(null)
+	let configFields = $derived({ ...defaultFields, ...fields })
+	function handle(data) {
+		value = getValue(data.value, configFields)
+		dispatch('change', data.value)
 	}
 
-	$: fields = { ...defaultFields, ...fields }
-	$: if (value !== getValue(selected, fields)) {
-		selected = options.find((option) => getValue(option, fields) === value)
-	}
+	$effect(() => {
+		selected = options.find((option) => getValue(option, configFields) === value)
+	})
 </script>
 
 <input {name} type="hidden" bind:value />
-<Switch value={selected} {options} {fields} {...$$restProps} on:change={handle} />
+<Switch bind:value={selected} {options} {fields} {...restProps} onchange={handle} />

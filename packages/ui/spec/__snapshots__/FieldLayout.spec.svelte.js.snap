@@ -41,7 +41,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -186,7 +186,7 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -331,7 +331,7 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -339,7 +339,7 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
     <!---->
     <field-layout
       aria-label=""
-      class="horizontal "
+      class="horizontal"
     >
       <!---->
       <!---->
@@ -473,7 +473,7 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -481,7 +481,7 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
     <!---->
     <field-layout
       aria-label=""
-      class="horizontal "
+      class="horizontal"
     >
       <!---->
       <!---->
@@ -639,7 +639,7 @@ exports[`FieldLayout.svelte > should render set of inputs 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->

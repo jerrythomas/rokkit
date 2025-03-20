@@ -5,7 +5,7 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -81,7 +81,7 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
     <!---->
     <field-layout
       aria-label="address"
-      class="vertical "
+      class="vertical"
     >
       <!---->
       <!---->
@@ -239,7 +239,7 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -296,7 +296,7 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
     <!---->
     <field-layout
       aria-label="address"
-      class="vertical "
+      class="vertical"
     >
       <!---->
       <!---->
@@ -454,7 +454,7 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -534,7 +534,7 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
     <!---->
     <field-layout
       aria-label="address"
-      class="vertical "
+      class="vertical"
     >
       <!---->
       <!---->
@@ -700,7 +700,7 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -759,7 +759,7 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
     <!---->
     <field-layout
       aria-label="Address"
-      class="vertical "
+      class="vertical"
     >
       <!---->
       <!---->
@@ -925,7 +925,7 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -986,7 +986,7 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
     <!---->
     <field-layout
       aria-label="Address"
-      class="vertical "
+      class="vertical"
     >
       <!---->
       <!---->
@@ -1154,7 +1154,7 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
   <!---->
   <field-layout
     aria-label=""
-    class="vertical "
+    class="vertical"
   >
     <!---->
     <!---->
@@ -1236,7 +1236,7 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
     <!---->
     <field-layout
       aria-label="address"
-      class="vertical "
+      class="vertical"
     >
       <!---->
       <!---->

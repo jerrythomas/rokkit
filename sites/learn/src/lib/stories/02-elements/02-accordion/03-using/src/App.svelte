@@ -1,6 +1,5 @@
 <script>
 	import { Accordion } from '@rokkit/ui'
-	import { FieldMapper } from '@rokkit/core'
 	import Link from './Link.svelte'
 	import { data } from './data.js'
 
@@ -12,7 +11,10 @@
 		url: 'source'
 	}
 	let items = $state(data)
-	let mapping = new FieldMapper(fields, { default: Link })
 </script>
 
-<Accordion bind:items {mapping} />
+<Accordion bind:items {fields}>
+	{#snippet stub(node)}
+		<Link href={node.get('url')}>{node.get('text')}</Link>
+	{/snippet}
+</Accordion>
