@@ -2,131 +2,254 @@ import { on } from 'svelte/events'
 import { getClosestAncestorWithAttribute, getEventForKey } from './utils.js'
 import { getPathFromKey } from '@rokkit/core'
 
-const Horizontal = {
-	prev: ['ArrowLeft'],
-	next: ['ArrowRight'],
-	collapse: ['ArrowUp'],
-	expand: ['ArrowDown'],
-	select: ['Enter']
-}
-
-const Vertical = {
-	prev: ['ArrowUp'],
-	next: ['ArrowDown'],
-	collapse: ['ArrowLeft'],
-	expand: ['ArrowRight'],
-	select: ['Enter']
-}
-
 /**
- * Dispatches an action event on the root element
- *
- * @param {string} eventName
- * @param {import('./types.js').DataWrapper} wrapper
- * @param {HTMLElement} root
+ * Key mappings for different navigation directions
  */
-function emitAction(eventName, wrapper, root) {
-	const data = {
-		path: wrapper.currentNode?.path,
-		value: wrapper.currentNode?.value
-	}
-	if (eventName === 'select') {
-		data.selected = wrapper.selectedNodes.values().map((node) => node.value)
-	}
-	root.dispatchEvent(
-		new CustomEvent('action', {
-			eventName,
-			data
-		})
-	)
-}
-
-/**
- * Get actions for the navigator
- *
- * @param {import('./types.js').DataWrapper} wrapper - The navigator wrapper
- * @param {HTMLElement} root - The root element
- * @returns {import('./types.js').NavigatorActions} - The navigator actions
- */
-function getActions(wrapper) {
-	const actions = {
-		prev: () => wrapper.movePrev(),
-		next: () => wrapper.moveNext(),
-		select: () => wrapper.select(),
-		extend: () => wrapper.extendSelection(),
-		collapse: () => wrapper.collapse(),
-		expand: () => wrapper.expand(),
-		toggle: () => wrapper.toggleSelection()
-	}
-	return actions
-}
-
-function handleIconClick(target, wrapper) {
-	const isIcon = target.tagName.toLowerCase() === 'rk-icon'
-	const state = isIcon ? target.getAttribute('data-state') : null
-
-	if (state === 'closed') {
-		wrapper.expand()
-	} else if (state === 'opened') {
-		wrapper.collapse()
-	}
-	return ['closed', 'opened'].includes(state)
-}
-
-function performAction(actions, actionName, wrapper, root) {
-	if (actions[actionName]) {
-		const executed = actions[actionName]()
-		if (executed) emitAction(actionName, wrapper, root)
+const KEY_MAPPINGS = {
+	horizontal: {
+		prev: ['ArrowLeft'],
+		next: ['ArrowRight'],
+		collapse: ['ArrowUp'],
+		expand: ['ArrowDown'],
+		select: ['Enter'],
+		toggle: ['Space'],
+		delete: ['Delete', 'Backspace']
+	},
+	vertical: {
+		prev: ['ArrowUp'],
+		next: ['ArrowDown'],
+		collapse: ['ArrowLeft'],
+		expand: ['ArrowRight'],
+		select: ['Enter'],
+		toggle: ['Space'],
+		delete: ['Delete', 'Backspace']
 	}
 }
 
 /**
- * Handle keyboard events
- *
- * @param {HTMLElement} root
- * @param {import('./types.js').NavigatorConfig} options - Custom key mappings
+ * Navigator class to handle keyboard and mouse navigation
+ * @class
  */
-export function navigator(root, { wrapper, options }) {
-	const keyMappings = options?.direction === 'horizontal' ? Horizontal : Vertical
-	const actions = getActions(wrapper, root)
+class NavigatorController {
+	/**
+	 * @param {HTMLElement} root - The root element
+	 * @param {Object} wrapper - The data wrapper object
+	 * @param {Object} options - Configuration options
+	 */
+	constructor(root, wrapper, options = {}) {
+		this.root = root
+		this.wrapper = wrapper
+		this.options = options
+		this.keyMappings = KEY_MAPPINGS[options?.direction || 'vertical']
+
+		this.handleKeyUp = this.handleKeyUp.bind(this)
+		this.handleClick = this.handleClick.bind(this)
+	}
+
+	/**
+	 * Initialize event listeners
+	 */
+	init() {
+		return [on(this.root, 'keyup', this.handleKeyUp), on(this.root, 'click', this.handleClick)]
+	}
+
+	/**
+	 * Check if modifier keys are pressed
+	 * @param {Event} event - The event object
+	 * @returns {boolean} - Whether modifier keys are pressed
+	 */
+	hasModifierKey(event) {
+		return event.ctrlKey || event.metaKey || event.shiftKey
+	}
 
 	/**
 	 * Handle keyboard events
-	 *
-	 * @param {KeyboardEvent} event
+	 * @param {KeyboardEvent} event - The keyboard event
 	 */
-	const keyup = (event) => {
+	handleKeyUp(event) {
 		const { key } = event
-		// let result = false
+		const eventName = getEventForKey(this.keyMappings, key)
 
-		const eventName = getEventForKey(keyMappings, key)
-		performAction(actions, eventName, wrapper, root)
-		// if (eventName) result = actions[eventName]()
-		// if (result) emitAction(eventName, wrapper, root)
-	}
+		if (!eventName) return
 
-	const click = (event) => {
-		const node = getClosestAncestorWithAttribute(event.target, 'data-path')
+		const handled = this.processKeyAction(eventName, event)
 
-		if (node) {
-			const iconClicked = handleIconClick(event.target, wrapper)
-			const path = getPathFromKey(node.getAttribute('data-path'))
-
-			const selected = wrapper.select(path, event.ctrlKey || event.metaKey)
-			if (selected) {
-				root.dispatchEvent(new CustomEvent('activate'))
-			}
-			if (!iconClicked) wrapper.toggleExpansion()
-			emitAction('click', wrapper, root)
+		if (handled) {
+			event.stopPropagation()
 		}
 	}
 
+	/**
+	 * Process a key action based on its type
+	 * @param {string} eventName - The mapped event name
+	 * @param {KeyboardEvent} event - The original keyboard event
+	 * @returns {boolean} - Whether the event was handled
+	 */
+	processKeyAction(eventName, event) {
+		const actionHandlers = {
+			prev: () => this.handleNavigationKey('prev', this.hasModifierKey(event)),
+			next: () => this.handleNavigationKey('next', this.hasModifierKey(event)),
+			expand: () => this.executeAction('expand'),
+			collapse: () => this.executeAction('collapse'),
+			select: () => this.executeAction('select'),
+			toggle: () => this.executeAction('extend'),
+			delete: () => this.executeAction('delete')
+		}
+
+		const handler = actionHandlers[eventName]
+		if (handler) {
+			return handler() !== false
+		}
+
+		return false
+	}
+
+	/**
+	 * Handle navigation key presses (arrows)
+	 * @param {string} direction - The direction to move ('prev' or 'next')
+	 * @param {boolean} hasModifier - Whether modifier keys are pressed
+	 * @returns {boolean} - Whether the action was handled
+	 */
+	handleNavigationKey(direction, hasModifier) {
+		// First move in the specified direction
+		const moved = this.executeAction(direction)
+
+		if (!moved) return false
+
+		// If modifier key is pressed and multiSelect is enabled, extend selection
+		if (hasModifier && this.wrapper.multiSelect) {
+			this.executeAction('extend')
+		} else {
+			// Otherwise just select the current item
+			this.executeAction('select')
+		}
+
+		// Always emit a move event for navigation
+		this.emitActionEvent('move')
+		return true
+	}
+
+	/**
+	 * Handle click events
+	 * @param {MouseEvent} event - The click event
+	 */
+	handleClick(event) {
+		const node = getClosestAncestorWithAttribute(event.target, 'data-path')
+
+		if (!node) return
+
+		const path = getPathFromKey(node.getAttribute('data-path'))
+		// Check if click was on a toggle icon
+		const toggleIconClicked = this.handleToggleIconClick(path, event.target)
+
+		if (toggleIconClicked) return
+
+		// Move to the clicked item
+		this.wrapper.moveTo(path)
+
+		// Handle selection based on modifier keys
+		if (this.hasModifierKey(event) && this.wrapper.multiSelect) {
+			this.executeAction('extend', path)
+		} else {
+			this.executeAction('select', path)
+		}
+		this.executeAction('toggle', path)
+	}
+
+	/**
+	 * Handle clicks on toggle icons
+	 * @param {number[]} path - The path of the item to perform the action on
+	 * @param {HTMLElement} target - The clicked element
+	 * @returns {boolean} - Whether a toggle icon was clicked and handled
+	 */
+	handleToggleIconClick(path, target) {
+		const isIcon = target.tagName.toLowerCase() === 'rk-icon'
+		const state = target.getAttribute('data-state')
+		if (!isIcon || !['closed', 'opened'].includes(state)) return false
+
+		return this.executeAction('toggle', path)
+	}
+
+	/**
+	 * Execute an action if available
+	 * @param {string} actionName - The name of the action to execute
+	 * @param {number[]} path - The path of the item to perform the action on
+	 * @returns {boolean} - Whether the action was executed
+	 */
+	executeAction(actionName, path) {
+		// Get the action function based on action name
+		const action = this.getActionFunction(actionName)
+
+		if (action) {
+			const executed = path ? action(path) : action()
+			if (executed) this.emitActionEvent(actionName)
+
+			return executed
+		}
+		return false
+	}
+
+	/**
+	 * Get the appropriate action function based on action name and conditions
+	 * @param {string} actionName - The name of the action
+	 * @returns {Function|null} - The action function or null if not available
+	 */
+	getActionFunction(actionName) {
+		// Basic navigation and selection actions always available
+		const actions = {
+			prev: () => this.wrapper.movePrev(),
+			next: () => this.wrapper.moveNext(),
+			select: (path) => this.wrapper.select(path),
+			collapse: (path) => this.wrapper.collapse(path),
+			expand: (path) => this.wrapper.expand(path),
+			toggle: (path) => this.wrapper.toggleExpansion(path),
+			extend: (path) => this.wrapper.extendSelection(path),
+			delete: () => this.wrapper.delete()
+		}
+
+		return actions[actionName] || null
+	}
+
+	/**
+	 * Emit an action event
+	 * @param {string} eventName - The name of the event to emit
+	 */
+	emitActionEvent(eventName) {
+		const data = {
+			path: this.wrapper.currentNode?.path,
+			value: this.wrapper.currentNode?.value
+		}
+
+		// For select events, include selected nodes
+		if (['select', 'extend'].includes(eventName)) {
+			data.selected = Array.from(this.wrapper.selectedNodes.values()).map((node) => node.value)
+			// Normalize selection events to 'select'
+			eventName = 'select'
+		}
+
+		this.root.dispatchEvent(
+			new CustomEvent('action', {
+				detail: {
+					eventName,
+					data
+				}
+			})
+		)
+	}
+}
+
+/**
+ * Navigator action for Svelte components
+ * @param {HTMLElement} root - The root element
+ * @param {Object} params - Parameters including wrapper and options
+ */
+export function navigator(root, { wrapper, options }) {
+	const controller = new NavigatorController(root, wrapper, options)
+
 	$effect(() => {
-		const cleanupKeyupEvent = on(root, 'keyup', keyup)
-		const cleanupClickEvent = on(root, 'click', click)
+		const cleanupFunctions = controller.init()
 		return () => {
-			cleanupKeyupEvent()
-			cleanupClickEvent()
+			cleanupFunctions.forEach((cleanup) => cleanup())
 		}
 	})
 }
