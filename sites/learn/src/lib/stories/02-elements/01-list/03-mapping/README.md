@@ -25,5 +25,4 @@ let fields = {
   text: 'name',
   image: 'photo'
 }
-let mapping = new FieldMapper(fields, { default: Item })
 ```

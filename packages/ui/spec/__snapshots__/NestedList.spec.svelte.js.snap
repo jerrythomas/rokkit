@@ -21,6 +21,7 @@ exports[`NestedList > should render nested list 1`] = `
           aria-label="collapse"
           class="w-4 small"
           data-state="opened"
+          data-tag="icon"
           role="img"
           tabindex="-1"
         >
@@ -189,6 +190,7 @@ exports[`NestedList > should render nested list 1`] = `
           aria-label="collapse"
           class="w-4 small"
           data-state="opened"
+          data-tag="icon"
           role="img"
           tabindex="-1"
         >
@@ -252,6 +254,7 @@ exports[`NestedList > should render nested list 1`] = `
               aria-label="collapse"
               class="w-4 small"
               data-state="opened"
+              data-tag="icon"
               role="img"
               tabindex="-1"
             >
@@ -448,6 +451,7 @@ exports[`NestedList > should render nested list 2`] = `
           aria-label="collapse"
           class="w-4 small"
           data-state="opened"
+          data-tag="icon"
           role="img"
           tabindex="-1"
         >
@@ -616,6 +620,7 @@ exports[`NestedList > should render nested list 2`] = `
           aria-label="collapse"
           class="w-4 small"
           data-state="opened"
+          data-tag="icon"
           role="img"
           tabindex="-1"
         >
@@ -679,6 +684,7 @@ exports[`NestedList > should render nested list 2`] = `
               aria-label="collapse"
               class="w-4 small"
               data-state="opened"
+              data-tag="icon"
               role="img"
               tabindex="-1"
             >

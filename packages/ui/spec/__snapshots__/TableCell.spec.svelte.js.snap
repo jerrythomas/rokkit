@@ -67,6 +67,7 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
       <rk-icon
         aria-label="node-closed"
         class="cursor-pointer"
+        data-tag="icon"
         role="img"
         tabindex="-1"
       >
@@ -113,6 +114,7 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
       <rk-icon
         aria-label="node-opened"
         class="cursor-pointer"
+        data-tag="icon"
         role="img"
         tabindex="-1"
       >

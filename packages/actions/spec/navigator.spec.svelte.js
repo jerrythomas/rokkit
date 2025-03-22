@@ -8,26 +8,36 @@ expect.extend({ toHaveBeenDispatchedWith })
 
 describe('navigator', () => {
 	const root = document.createElement('div')
+	const action = vi.fn()
 	const wrapper = {
+		moveFirst: vi.fn(),
+		moveLast: vi.fn(),
 		moveTo: vi.fn(),
 		moveNext: vi.fn(),
 		movePrev: vi.fn(),
 		select: vi.fn(),
 		expand: vi.fn(),
 		collapse: vi.fn(),
-		toggleExpansion: vi.fn()
+		toggleExpansion: vi.fn(),
+		extendSelection: vi.fn(),
+		activeItem: { text: 'active' },
+		selected: [{ text: 'selected' }]
 	}
 
+	const getEventsFromDetail = () => {
+		return action.mock.calls.map((call) => call[0].detail.name)
+	}
 	// Setup test DOM structure
 	beforeEach(() => {
+		root.addEventListener('action', action)
 		root.innerHTML = `
       <div data-path="0">Item 1
-        <rk-icon data-state="closed"></rk-icon>
+        <rk-icon data-tag="icon" data-state="closed"></rk-icon>
         <div data-path="0-0">Child 1</div>
         <div data-path="0-1">Child 2</div>
       </div>
       <div data-path="1">Item 2
-        <rk-icon data-state="opened"></rk-icon>
+        <rk-icon data-tag="icon" data-state="opened"></rk-icon>
       </div>
     `
 	})
@@ -35,75 +45,175 @@ describe('navigator', () => {
 	afterEach(() => {
 		vi.clearAllMocks()
 	})
+	describe('keyboard', () => {
+		describe('vertical', () => {
+			it('should handle vertical navigation keys', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
 
-	describe('keyboard navigation - vertical', () => {
-		it('should handle vertical navigation keys', () => {
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				expect(wrapper.moveNext).toHaveBeenCalled()
+				expect(action).not.toHaveBeenCalled()
+
+				wrapper.moveNext.mockReturnValue(true)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				expect(action).toHaveBeenCalledTimes(1)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				expect(wrapper.movePrev).toHaveBeenCalled()
+
+				wrapper.movePrev.mockReturnValue(true)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				expect(wrapper.movePrev).toHaveBeenCalled()
+				expect(action).toHaveBeenCalledTimes(2)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				expect(wrapper.select).toHaveBeenCalled()
+
+				wrapper.select.mockReturnValue(true)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				expect(action).toHaveBeenCalledTimes(3)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', ctrlKey: true }))
+				expect(wrapper.extendSelection).toHaveBeenCalledTimes(1)
+				expect(action).toHaveBeenCalledTimes(3)
+
+				wrapper.extendSelection.mockReturnValue(true)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', metaKey: true }))
+				expect(wrapper.extendSelection).toHaveBeenCalledTimes(2)
+				expect(action).toHaveBeenCalledTimes(4)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home' }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(1)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', ctrlKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(2)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', metaKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(3)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp', metaKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(4)
+				wrapper.moveFirst.mockReturnValue(true)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp', ctrlKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(5)
+				expect(action).toHaveBeenCalledTimes(5)
+				expect(getEventsFromDetail()).toEqual(['move', 'move', 'select', 'select', 'move'])
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End' }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(1)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', ctrlKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(2)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', metaKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(3)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown', ctrlKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(4)
+				wrapper.moveLast.mockReturnValue(true)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown', metaKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(5)
+
+				expect(action).toHaveBeenCalledTimes(6)
+				expect(getEventsFromDetail()).toEqual(['move', 'move', 'select', 'select', 'move', 'move'])
+				cleanup()
+			})
+
+			it('should include expand/collapse when nested', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper, nested: true }))
+				flushSync()
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				expect(wrapper.expand).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				expect(wrapper.collapse).toHaveBeenCalled()
+				cleanup()
+			})
+		})
+
+		describe('horizontal', () => {
+			it('should handle horizontal navigation keys', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper, horizontal: true }))
+				flushSync()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				expect(wrapper.moveNext).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				expect(wrapper.movePrev).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				expect(wrapper.select).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', ctrlKey: true }))
+				expect(wrapper.extendSelection).toHaveBeenCalledTimes(1)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', metaKey: true }))
+				expect(wrapper.extendSelection).toHaveBeenCalledTimes(2)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home' }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(1)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', ctrlKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(2)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', metaKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(3)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft', metaKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(4)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft', ctrlKey: true }))
+				expect(wrapper.moveFirst).toHaveBeenCalledTimes(5)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End' }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(1)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', ctrlKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(2)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', metaKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(3)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', ctrlKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(4)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', metaKey: true }))
+				expect(wrapper.moveLast).toHaveBeenCalledTimes(5)
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				expect(wrapper.expand).not.toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				expect(wrapper.collapse).not.toHaveBeenCalled()
+
+				cleanup()
+			})
+			it('should include expand/collapse when nested', () => {
+				const cleanup = $effect.root(() =>
+					navigator(root, { wrapper, horizontal: true, nested: true })
+				)
+				flushSync()
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				expect(wrapper.expand).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				expect(wrapper.collapse).toHaveBeenCalled()
+				cleanup()
+			})
+		})
+	})
+	describe('click handling', () => {
+		it('should handle item click', () => {
 			const cleanup = $effect.root(() => navigator(root, { wrapper }))
 			flushSync()
 
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
-			expect(wrapper.moveNext).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
-			expect(wrapper.movePrev).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
-			expect(wrapper.expand).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
-			expect(wrapper.collapse).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
-			expect(wrapper.select).toHaveBeenCalled()
-
-			cleanup()
-		})
-	})
-
-	describe('keyboard navigation - horizontal', () => {
-		it('should handle horizontal navigation keys', () => {
-			const cleanup = $effect.root(() =>
-				navigator(root, {
-					wrapper,
-					options: { direction: 'horizontal' }
-				})
-			)
-			flushSync()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
-			expect(wrapper.moveNext).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
-			expect(wrapper.movePrev).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
-			expect(wrapper.expand).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
-			expect(wrapper.collapse).toHaveBeenCalled()
-
-			root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
-			expect(wrapper.select).toHaveBeenCalled()
-
-			cleanup()
-		})
-	})
-
-	describe('click handling', () => {
-		it('should handle item click', () => {
-			const cleanup = $effect.root(() =>
-				navigator(root, {
-					wrapper,
-					options: { direction: 'vertical' }
-				})
-			)
-			flushSync()
-
 			const item = root.querySelector('[data-path="0"]')
+
+			wrapper.select.mockReturnValue(false)
 			item.click()
-			expect(wrapper.moveTo).toHaveBeenCalledWith([0])
 			expect(wrapper.select).toHaveBeenCalledWith([0])
-			expect(wrapper.toggleExpansion).toHaveBeenCalledWith([0])
+			expect(action).not.toHaveBeenCalled()
+
+			wrapper.select.mockReturnValue(true)
+			item.click()
+			expect(wrapper.select).toHaveBeenCalledWith([0])
+			expect(wrapper.select).toHaveBeenCalledTimes(2)
+			expect(action).toHaveBeenCalledTimes(2)
+			expect(action).toHaveBeenDispatchedWith({
+				name: 'select',
+				data: {
+					value: wrapper.activeItem,
+					selected: wrapper.selected
+				}
+			})
+			expect(getEventsFromDetail()).toEqual(['move', 'select'])
 
 			cleanup()
 		})
@@ -159,7 +269,8 @@ describe('navigator', () => {
 			const item = root.querySelector('[data-path="0"]')
 			fireEvent.click(item, { ctrlKey: true })
 
-			expect(wrapper.select).toHaveBeenCalledWith([0])
+			expect(wrapper.select).not.toHaveBeenCalled()
+			expect(wrapper.extendSelection).toHaveBeenCalledWith([0])
 
 			cleanup()
 		})

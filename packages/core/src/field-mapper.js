@@ -1,5 +1,5 @@
 import { defaultFields } from './constants.js'
-import { isNil, has, omit } from 'ramda'
+import { isNil, has, omit, type } from 'ramda'
 import { isObject } from './utils.js'
 
 export class FieldMapper {
@@ -39,6 +39,24 @@ export class FieldMapper {
 				this.#componentMap[key] = components[key]
 			})
 		}
+	}
+
+	/**
+	 * Gets a mapped attribute from the original item
+	 *
+	 * @param {string} fieldName - Name of the field to get
+	 * @returns {any|null} - The attribute value or null if not found
+	 */
+	get(fieldName, value) {
+		if (typeof value !== 'object' && fieldName === 'text') {
+			return value
+		}
+
+		const mappedField = this.fields[fieldName]
+		if (!mappedField || !has(mappedField, value)) {
+			return null
+		}
+		return value[mappedField]
 	}
 
 	get fields() {

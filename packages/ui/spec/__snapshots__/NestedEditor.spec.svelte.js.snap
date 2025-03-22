@@ -48,6 +48,7 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                 <rk-icon
                   aria-label="object"
                   class=""
+                  data-tag="icon"
                   role="img"
                   tabindex="-1"
                 >

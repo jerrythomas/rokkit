@@ -11,7 +11,8 @@ describe('components', () => {
 			'ListProxy',
 			'NestedProxy',
 			'Proxy',
-			'vibe'
+			'vibe',
+			'ListController'
 		])
 	})
 })

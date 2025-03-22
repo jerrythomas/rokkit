@@ -120,6 +120,7 @@ exports[`Input.svelte > should render "enum" 1`] = `
       <rk-icon
         aria-label="closed"
         class=""
+        data-tag="icon"
         role="img"
         tabindex="-1"
       >
@@ -310,6 +311,7 @@ exports[`Input.svelte > should render "select" 1`] = `
       <rk-icon
         aria-label="closed"
         class=""
+        data-tag="icon"
         role="img"
         tabindex="-1"
       >
