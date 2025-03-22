@@ -273,6 +273,7 @@ exports[`Node > should render with icon 1`] = `
         aria-label="expand"
         class="w-4 small"
         data-state="closed"
+        data-tag="icon"
         role="img"
         tabindex="-1"
       >

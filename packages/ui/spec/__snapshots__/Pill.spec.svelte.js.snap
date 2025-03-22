@@ -20,6 +20,7 @@ exports[`Pill > should fire remove event on Backspace 1`] = `
     <rk-icon
       aria-label="action-close"
       class="disabled"
+      data-tag="icon"
       role="button"
       tabindex="-1"
     >
@@ -54,6 +55,7 @@ exports[`Pill > should fire remove event on Backspace 2`] = `
     <rk-icon
       aria-label="action-close"
       class=""
+      data-tag="icon"
       role="button"
       tabindex="0"
     >
@@ -88,6 +90,7 @@ exports[`Pill > should fire remove event on Delete 1`] = `
     <rk-icon
       aria-label="action-close"
       class="disabled"
+      data-tag="icon"
       role="button"
       tabindex="-1"
     >
@@ -122,6 +125,7 @@ exports[`Pill > should fire remove event on Delete 2`] = `
     <rk-icon
       aria-label="action-close"
       class=""
+      data-tag="icon"
       role="button"
       tabindex="0"
     >
@@ -156,6 +160,7 @@ exports[`Pill > should fire remove event on click 1`] = `
     <rk-icon
       aria-label="action-close"
       class="disabled"
+      data-tag="icon"
       role="button"
       tabindex="-1"
     >
@@ -190,6 +195,7 @@ exports[`Pill > should fire remove event on click 2`] = `
     <rk-icon
       aria-label="action-close"
       class=""
+      data-tag="icon"
       role="button"
       tabindex="0"
     >
@@ -260,6 +266,7 @@ exports[`Pill > should render with icon 1`] = `
     <rk-icon
       aria-label="Hello"
       class=""
+      data-tag="icon"
       role="img"
       tabindex="-1"
     >
@@ -292,6 +299,7 @@ exports[`Pill > should render with icon 2`] = `
     <rk-icon
       aria-label="World"
       class=""
+      data-tag="icon"
       role="img"
       tabindex="-1"
     >

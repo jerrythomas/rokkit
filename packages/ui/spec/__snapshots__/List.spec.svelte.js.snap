@@ -163,10 +163,14 @@ exports[`List > should render with custom components 1`] = `
         role="option"
       >
         <!---->
-        <p>
-          odd:Item 1
-        </p>
+        <!---->
         
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
         <!---->
       </rk-list-item>
       <rk-list-item
@@ -176,10 +180,14 @@ exports[`List > should render with custom components 1`] = `
         role="option"
       >
         <!---->
-        <p>
-          even:Item 2
-        </p>
+        <!---->
         
+        <!---->
+         
+        <p>
+          Item 2
+        </p>
+        <!---->
         <!---->
       </rk-list-item>
       <rk-list-item
@@ -206,10 +214,14 @@ exports[`List > should render with custom components 1`] = `
         role="option"
       >
         <!---->
-        <p>
-          odd:Item 4
-        </p>
+        <!---->
         
+        <!---->
+         
+        <p>
+          Item 4
+        </p>
+        <!---->
         <!---->
       </rk-list-item>
       

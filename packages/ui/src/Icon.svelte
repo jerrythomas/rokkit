@@ -63,6 +63,7 @@
 	onclick={handleClick}
 	onkeydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
 	data-state={state}
+	data-tag="icon"
 	tabindex={validatedTabindex}
 	onmouseenter={emitter.mouseenter}
 	onnmouseleave={emitter.nmouseleave}

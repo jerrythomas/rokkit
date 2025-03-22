@@ -1,4 +1,5 @@
 import { find, toPairs } from 'ramda'
+import { getPathFromKey } from '@rokkit/core'
 
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
@@ -49,20 +50,137 @@ export function handleAction(actions, event) {
  * @param {import('./types').NavigableHandlers} handlers
  */
 export function getKeyboardActions(options, handlers) {
+	const { horizontal, nested } = options
 	if (!options.enabled) return {}
 
-	const movement = options.horizontal
+	const common = {
+		Enter: handlers.select,
+		' ': handlers.select
+	}
+	const movement = horizontal
 		? { ArrowLeft: handlers.previous, ArrowRight: handlers.next }
 		: { ArrowUp: handlers.previous, ArrowDown: handlers.next }
-	const change = options.nested
-		? options.horizontal
-			? { ArrowUp: handlers.collapse, ArrowDown: handlers.expand }
-			: { ArrowLeft: handlers.collapse, ArrowRight: handlers.expand }
+	const change = horizontal
+		? { ArrowUp: handlers.collapse, ArrowDown: handlers.expand }
+		: { ArrowLeft: handlers.collapse, ArrowRight: handlers.expand }
+
+	if (nested) return { ...common, ...movement, ...change }
+	return { ...common, ...movement }
+}
+
+/**
+ * Finds and returns an index path based on data-path attribute
+ *
+ * @param {MouseEvent} event
+ * @returns {number[]|null} null or index path array
+ */
+export function getPathFromEvent(event) {
+	const node = getClosestAncestorWithAttribute(event.target, 'data-path')
+	return node ? getPathFromKey(node.getAttribute('data-path')) : null
+}
+
+/**
+ * Creates a keyboard action mapping based on navigation options
+ *
+ * @param {Object} options - Navigation options
+ * @param {boolean} options.horizontal - Whether navigation is horizontal
+ * @param {boolean} options.nested - Whether navigation is nested
+ * @returns {Object} Mapping of keys to actions
+ */
+function createKeyboardActionMap(options) {
+	const { horizontal, nested } = options
+
+	// Define movement actions based on horizontal option
+	const movementActions = horizontal
+		? { ArrowLeft: 'previous', ArrowRight: 'next' }
+		: { ArrowUp: 'previous', ArrowDown: 'next' }
+
+	// Define expand/collapse actions for nested option
+	const nestedActions = nested
+		? horizontal
+			? { ArrowUp: 'collapse', ArrowDown: 'expand' }
+			: { ArrowLeft: 'collapse', ArrowRight: 'expand' }
 		: {}
-	return {
-		Enter: handlers.select,
-		' ': handlers.select,
-		...movement,
-		...change
+
+	// Common actions regardless of options
+	const commonActions = {
+		Enter: 'select',
+		' ': 'select',
+		Home: 'first',
+		End: 'last'
 	}
+
+	// Combine all possible actions
+	return {
+		...commonActions,
+		...movementActions,
+		...nestedActions
+	}
+}
+
+/**
+ * Creates a keyboard action mapping based on navigation options
+ *
+ * @param {Object} options - Navigation options
+ * @param {boolean} options.horizontal - Whether navigation is horizontal
+ * @param {boolean} options.nested - Whether navigation is nested
+ * @returns {Object} Mapping of keys to actions
+ */
+function createModifierKeyboardActionMap(options) {
+	const { horizontal } = options
+	const common = { ' ': 'extend', Home: 'first', End: 'last' }
+	const directional = horizontal
+		? { ArrowLeft: 'first', ArrowRight: 'last' }
+		: { ArrowUp: 'first', ArrowDown: 'last' }
+	return { ...common, ...directional }
+}
+/**
+ * Determines an action based on a keyboard event and navigation options
+ *
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {Object} options - Navigation options
+ * @param {boolean} options.horizontal - Whether navigation is horizontal
+ * @param {boolean} options.nested - Whether navigation is nested
+ * @returns {string|null} The determined action or null if no action matches
+ */
+export const getKeyboardAction = (event, options) => {
+	const { key, ctrlKey, metaKey } = event
+
+	// Check for modifier keys first (highest priority)
+	if (ctrlKey || metaKey) {
+		const modifierMap = createModifierKeyboardActionMap(options)
+		return modifierMap[key] || null
+	}
+
+	// Get the action map based on options
+	const actionMap = createKeyboardActionMap(options)
+
+	// Return the action or null if no matching key
+	return actionMap[key] || null
+}
+
+/**
+ * Determines an action based on a click event
+ *
+ * @param {MouseEvent} event - The click event
+ * @returns {string} The determined action
+ */
+export const getClickAction = (event) => {
+	const { ctrlKey, metaKey, target } = event
+
+	// Check for modifier keys first (highest priority)
+	if (ctrlKey || metaKey) {
+		return 'extend'
+	}
+
+	// Check if clicked on icon with collapsed/expanded state
+	if (
+		target.getAttribute('data-tag') === 'icon' &&
+		['closed', 'opened'].includes(target.getAttribute('data-state'))
+	) {
+		return 'toggle'
+	}
+
+	// Default action
+	return 'select'
 }

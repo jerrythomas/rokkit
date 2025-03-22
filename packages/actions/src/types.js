@@ -48,3 +48,16 @@
  * @property {Navigator} wrapper     - Whether the navigator is enabled
  * @property {NavigatorOptions} options   - Whether the navigator is vertical or horizontal
  */
+
+/**
+ * @typedef {Object} Controller
+ * @property {Function} moveNext
+ * @property {Function} movePrev
+ * @property {Function} moveFirst
+ * @property {Function} moveLast
+ * @property {Function} [expand]
+ * @property {Function} [collapse]
+ * @property {Function} select
+ * @property {Function} extendSelection
+ * @property {Function} [toggleExpansion]
+ */

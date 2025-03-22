@@ -1,6 +1,5 @@
 <script>
-	import { List, Item } from '@rokkit/ui'
-	import { FieldMapper } from '@rokkit/core'
+	import { List } from '@rokkit/ui'
 	import { data } from './data.js'
 
 	let fields = { text: 'name', image: 'photo' }
