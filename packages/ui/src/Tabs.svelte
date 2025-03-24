@@ -1,6 +1,6 @@
 <script>
-	import { defaultFields, defaultStateIcons, noop, getSnippet } from '@rokkit/core'
-	import { ListProxy } from '@rokkit/states'
+	import { defaultFields, defaultStateIcons, noop, getSnippet, FieldMapper } from '@rokkit/core'
+	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Icon from './Icon.svelte'
 	import Item from './Item.svelte'
@@ -34,8 +34,6 @@
 		...extra
 	} = $props()
 
-	let cursor = $state([])
-
 	function handleRemove(event) {
 		if (typeof event.detail === Object) {
 			event.detail[fields.isDeleted] = true
@@ -56,8 +54,9 @@
 		onselect({ item: value, indices: cursor })
 	}
 	let stateIcons = $derived({ ...defaultStateIcons.action, ...icons })
-	let filtered = $derived(options.filter((item) => !item[fields.isDeleted]))
-	let wrapper = new ListProxy(options, value, fields)
+	let filtered = $derived(options.filter((item) => !item[fields.deleted]))
+	let wrapper = $derived(new ListController(options, value, fields))
+	let mapper = new FieldMapper(fields)
 </script>
 
 <rk-tabs
@@ -67,15 +66,19 @@
 	class:justify-end={align === 'right'}
 	tabindex="0"
 	role="listbox"
-	use:navigator={{ wrapper }}
+	use:navigator={{ wrapper, horizontal: true }}
 	onaction={handleNav}
 	onremove={handleRemove}
 	onadd={handleAdd}
 >
-	{#each wrapper.nodes as item, index}
-		{@const Template = getSnippet(extra, item.get('component')) ?? stub}
+	{#each filtered as item, index}
+		{@const Template = getSnippet(extra, mapper.get('snippet', item), stub)}
 		<rk-tab>
-			<Template value={item} {mapping} />
+			{#if Template}
+				<Template value={item} {fields} />
+			{:else}
+				<Item value={item} {fields} />
+			{/if}
 			{#if editable}
 				<Icon
 					name="remove"

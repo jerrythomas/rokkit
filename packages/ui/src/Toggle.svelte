@@ -1,8 +1,7 @@
 <script>
-	import { FieldMapper, noop } from '@rokkit/core'
+	// import { FieldMapper, noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
 	import Item from './Item.svelte'
-	import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
@@ -17,8 +16,9 @@
 		class: classes = '',
 		value = $bindable(null),
 		options = [false, true],
-		mapping = defaultMapping,
-		onchange = noop
+		fields,
+		label = 'toggle',
+		onchange
 	} = $props()
 
 	const keyMappings = {
@@ -37,7 +37,7 @@
 		}
 
 		value = options[nextIndex]
-		onchange(value)
+		onchange?.(value)
 	}
 </script>
 
@@ -47,8 +47,8 @@
 		onnext={() => toggle()}
 		onprev={() => toggle(-1)}
 		onclick={() => toggle()}
-		aria-label={mapping.getLabel(value)}
+		aria-label={label}
 	>
-		<Item {value} {mapping} />
+		<Item {value} {fields} />
 	</button>
 </rk-toggle>

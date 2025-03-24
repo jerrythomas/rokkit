@@ -1,5 +1,6 @@
 <script>
-	import { defaultStateIcons, getKeyFromPath, getSnippet } from '@rokkit/core'
+	import { SvelteSet } from 'svelte/reactivity'
+	import { defaultStateIcons, getKeyFromPath, getSnippet, FieldMapper } from '@rokkit/core'
 	import Icon from './Icon.svelte'
 	import Connector from './Connector.svelte'
 	import Item from './Item.svelte'
@@ -13,33 +14,40 @@
 
 	/** @type {Props} */
 	let {
-		value = $bindable(),
+		value = $bindable(null),
+		fields,
 		types = [],
 		stateIcons = defaultStateIcons.node,
+		path = [],
 		stub = null,
 		children,
+		focusedKey,
+		selectedKeys = new SvelteSet(),
+		expandedKeys = new SvelteSet(),
 		...extra
 	} = $props()
 
+	const key = $derived(getKeyFromPath(path))
 	let icons = $derived({ ...defaultStateIcons.node, ...stateIcons })
-	let stateName = $derived(value.expanded ? 'opened' : 'closed')
+	let stateName = $derived(expandedKeys.has(key) ? 'opened' : 'closed')
 	let state = $derived(
-		value.expanded
+		expandedKeys.has(key)
 			? { icon: icons.opened, label: 'collapse' }
 			: { icon: icons.closed, label: 'expand' }
 	)
+	const mapper = new FieldMapper(fields)
 
-	const template = getSnippet(value.get('component'), extra) ?? stub
+	const template = getSnippet(mapper.get('component', value), extra, stub)
 	// $inspect(value.focused, value.expanded, value.selected, value.get('text'))
 </script>
 
 <rk-node
-	aria-current={value.focused}
-	aria-selected={value.selected}
-	aria-expanded={value.expanded}
+	aria-current={focusedKey === key}
+	aria-selected={selectedKeys.has(key)}
+	aria-expanded={expandedKeys.has(key)}
 	role="treeitem"
-	data-path={getKeyFromPath(value.path)}
-	data-depth={value.path.length}
+	data-path={getKeyFromPath(path)}
+	data-depth={path.length}
 >
 	<div class="flex flex-row items-center">
 		{#each types as type}
@@ -53,7 +61,7 @@
 			{#if template}
 				{@render template(value)}
 			{:else}
-				<Item value={value.value} fields={value.fields} />
+				<Item {value} {fields} />
 			{/if}
 		</rk-item>
 	</div>

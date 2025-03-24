@@ -130,6 +130,7 @@ describe('utils', () => {
 
 	describe('getKeyFromPath', () => {
 		it('should get key from path', () => {
+			expect(getKeyFromPath(0)).toEqual('0')
 			expect(getKeyFromPath([0, 1, 2])).toEqual('0-1-2')
 			expect(getKeyFromPath([1, 2, 3, 4])).toEqual('1-2-3-4')
 			expect(getKeyFromPath([2, 3, 4, 5, 6])).toEqual('2-3-4-5-6')
@@ -142,8 +143,8 @@ describe('utils', () => {
 			icon: 'not-a-function'
 		}
 		it('should get snippet', () => {
-			expect(getSnippet({}, 'test')).toBeUndefined()
-			expect(getSnippet(data, 'icon')).toBeUndefined()
+			expect(getSnippet({}, 'test')).toBeNull()
+			expect(getSnippet(data, 'icon')).toBeNull()
 			expect(getSnippet(data, 'test')).toEqual(expect.any(Function))
 		})
 	})

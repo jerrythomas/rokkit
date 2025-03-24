@@ -2,7 +2,7 @@
 	import { createEmitter } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import NestedList from './NestedList.svelte'
-	import { NestedProxy } from '@rokkit/states'
+	import { NestedController } from '@rokkit/states'
 	import { omit, has } from 'ramda'
 	/**
 	 * @typedef {Object} Props
@@ -31,8 +31,10 @@
 		...events
 	} = $props()
 
+	let selected = $state([])
+	let expanded = $state([])
 	let emitter = createEmitter(events, ['select', 'move', 'collapse', 'expand'])
-	let wrapper = new NestedProxy(items, value, fields, { autoCloseSiblings, multiselect })
+	let wrapper = new NestedController(items, value, fields, { autoCloseSiblings, multiselect })
 
 	function handleAction(event) {
 		const { eventName, data } = event.detail
@@ -47,14 +49,14 @@
 	{#if header}
 		<rk-header>{@render header()}</rk-header>
 	{/if}
-	{#if wrapper.nodes.length === 0}
+	{#if items.length === 0}
 		{#if empty}
 			{@render empty()}
 		{:else}
 			<div class="m-auto p-4 text-center text-gray-500">No data available</div>
 		{/if}
 	{/if}
-	<NestedList items={wrapper.nodes} {value} {icons} />
+	<NestedList {items} {value} {icons} {selected} {expanded} />
 	{#if footer}
 		<rk-footer>{@render footer()}</rk-footer>
 	{/if}

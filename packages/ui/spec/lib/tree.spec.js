@@ -14,7 +14,7 @@ describe('addRootNode', () => {
 		expect(addRootNode(items)).toEqual([
 			{
 				text: '/',
-				_open: true,
+				_expanded: true,
 				children: items
 			}
 		])
@@ -25,7 +25,7 @@ describe('addRootNode', () => {
 		expect(addRootNode(items, 'root')).toEqual([
 			{
 				text: 'root',
-				_open: true,
+				_expanded: true,
 				children: items
 			}
 		])
@@ -35,7 +35,7 @@ describe('addRootNode', () => {
 		const items = [{ label: 'a' }, { label: 'b' }]
 		const mapping = new FieldMapper({
 			text: 'label',
-			isOpen: 'open',
+			expanded: 'open',
 			children: 'nodes'
 		})
 		expect(addRootNode(items, 'root', mapping)).toEqual([

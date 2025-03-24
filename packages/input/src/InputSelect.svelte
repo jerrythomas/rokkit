@@ -40,7 +40,7 @@
 	>
 		{#each options as option, index}
 			<option value={index}>
-				{mapping.getText(option)}
+				{mapping.get('text', option)}
 			</option>
 		{/each}
 	</select>

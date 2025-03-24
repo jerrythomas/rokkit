@@ -1,13 +1,12 @@
 <script>
 	import { getContext } from 'svelte'
-	import { defaultFields, FieldMapper } from '@rokkit/core'
 
 	const registry = getContext('registry')
 
 	let {
 		class: className = '',
 		options = [],
-		fields = defaultFields,
+		fields,
 		navigator = 'tabs',
 		type = 'vertical',
 		category = null,
@@ -19,7 +18,9 @@
 </script>
 
 <section class={className}>
-	<Template {options} {fields} bind:value={category} {...restProps} />
+	{#if Template}
+		<Template {options} {fields} bind:value={category} {...restProps} />
+	{/if}
 	<field-layout class={type}>
 		{@render children?.()}
 	</field-layout>

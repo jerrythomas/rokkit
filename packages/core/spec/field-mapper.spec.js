@@ -24,19 +24,6 @@ describe('FieldMapper', () => {
 	}
 
 	describe('attributes', () => {
-		it('should return a component', () => {
-			const fieldMapping = new FieldMapper()
-			fieldMapping.componentMap = { default: 'defaultComponent', abc: 'Component' }
-
-			expect(fieldMapping.getComponent(null)).toEqual('defaultComponent')
-			expect(fieldMapping.getComponent({})).toEqual('defaultComponent')
-			expect(fieldMapping.getComponent({ component: 'abc' })).toEqual('Component')
-			expect(fieldMapping.getComponent({ component: null })).toEqual('defaultComponent')
-
-			fieldMapping.fields = { component: null }
-			expect(fieldMapping.getComponent({ component: 'abc' })).toEqual('defaultComponent')
-		})
-
 		it('should return an icon', () => {
 			const fieldMapping = new FieldMapper()
 
@@ -54,20 +41,21 @@ describe('FieldMapper', () => {
 
 		it('should return an image', () => {
 			const fieldMapping = new FieldMapper()
-			expect(fieldMapping.getImage(null)).toEqual(null)
-			expect(fieldMapping.getImage('x')).toEqual(null)
-			expect(fieldMapping.getImage({})).toEqual(null)
-			expect(fieldMapping.getImage({ image: null })).toEqual(null)
-			expect(fieldMapping.getImage({ image: 'x' })).toEqual('x')
+			expect(fieldMapping.get('image', null)).toEqual(null)
+			expect(fieldMapping.get('image', 'x')).toEqual(null)
+			expect(fieldMapping.get('image', {})).toEqual(null)
+			expect(fieldMapping.get('image', { image: null })).toEqual(null)
+			expect(fieldMapping.get('image', { image: 'x' })).toEqual('x')
 		})
 
 		it('should return the text', () => {
 			const fieldMapping = new FieldMapper()
-			expect(fieldMapping.getText('hello')).toEqual('hello')
-			expect(fieldMapping.getText(1)).toEqual(1)
-			expect(fieldMapping.getText(data)).toEqual('Item 1')
-			expect(fieldMapping.getText(data.children[0])).toEqual('Item 2')
-			expect(fieldMapping.getText(data.children[0].children[0])).toEqual('Item 3')
+			expect(fieldMapping.get('text', 'hello')).toEqual('hello')
+			expect(fieldMapping.get('text', 1)).toEqual(1)
+			expect(fieldMapping.get('text', data)).toEqual('Item 1')
+			expect(fieldMapping.get('text', data.children[0])).toEqual('Item 2')
+			expect(fieldMapping.get('text', data.children[0].children[0])).toEqual('Item 3')
+			expect(fieldMapping.get('text', data.children[0].children[0])).toEqual('Item 3')
 		})
 
 		it('should return the value', () => {
@@ -76,32 +64,35 @@ describe('FieldMapper', () => {
 			expect(fieldMapping.getValue(null)).toEqual(null)
 			expect(fieldMapping.getValue('hello')).toEqual('hello')
 			expect(fieldMapping.getValue({ k: 'hello' })).toEqual({ k: 'hello' })
+			expect(fieldMapping.get('value', 'hello')).toBeNull()
+			expect(fieldMapping.get('value', { k: 'hello' })).toBeNull()
 		})
 
 		it('should return the label', () => {
 			const fieldMapping = new FieldMapper()
-			expect(fieldMapping.getLabel(null)).toEqual(null)
-			expect(fieldMapping.getLabel('hello')).toEqual('hello')
-			expect(fieldMapping.getLabel({ k: 'hello' })).toEqual(null)
-			expect(fieldMapping.getLabel({ label: 'hello' })).toEqual('hello')
+			expect(fieldMapping.get('label', null)).toEqual(null)
+			expect(fieldMapping.get('label', 'hello')).toEqual(null)
+			expect(fieldMapping.get('label', { k: 'hello' })).toEqual(null)
+			expect(fieldMapping.get('label', { label: 'hello' })).toEqual('hello')
 		})
 
 		it('should return an attribute', () => {
 			const fieldMapping = new FieldMapper()
-			expect(fieldMapping.getAttribute(data, 'xx')).toBeNull()
-			expect(fieldMapping.getAttribute(data, 'summary')).toBeNull()
-			expect(fieldMapping.getAttribute(data, 'id')).toEqual(1)
-			expect(fieldMapping.getAttribute(data.children[0], 'id')).toEqual(2)
-			expect(fieldMapping.getAttribute(data.children[0].children[0], 'id')).toEqual(3)
+			expect(fieldMapping.get('xx', data)).toBeNull()
+			expect(fieldMapping.get('summary', data)).toBeNull()
+			expect(fieldMapping.get('id', data)).toEqual(1)
+			expect(fieldMapping.get('id', data.children[0], 'id')).toEqual(2)
+			expect(fieldMapping.get('id', data.children[0].children[0], 'id')).toEqual(3)
+			expect(fieldMapping.get('id', data.children[0].children[0])).toEqual(3)
 
-			expect(fieldMapping.getAttribute(null, 'id')).toEqual(null)
-			expect(fieldMapping.getAttribute('hello', 'id')).toEqual(null)
-			expect(fieldMapping.getAttribute({ k: 'hello' }, 'id')).toEqual(null)
+			expect(fieldMapping.get('id', null)).toEqual(null)
+			expect(fieldMapping.get('id', 'hello')).toEqual(null)
+			expect(fieldMapping.get('id', { k: 'hello' })).toEqual(null)
 		})
 
 		it('should return a formatted text', () => {
 			const fieldMapping = new FieldMapper()
-			const formatter = (text) => text?.toUpperCase()
+			const formatter = (text) => String(text).toUpperCase()
 			expect(fieldMapping.getFormattedText(data, formatter)).toEqual('ITEM 1')
 			expect(fieldMapping.getFormattedText(data.children[0], formatter)).toEqual('ITEM 2')
 
@@ -169,12 +160,6 @@ describe('FieldMapper', () => {
 			expect(fieldMapping.getChildren(data.children[0].children[0])).toEqual([])
 		})
 
-		it('should identify if node is expanded', () => {
-			expect(fieldMapping.isExpanded(data)).toBeTruthy()
-			expect(fieldMapping.isExpanded(data.children[0])).toBeFalsy()
-			expect(fieldMapping.isExpanded(data.children[0].children[0])).toBeFalsy()
-		})
-
 		it('should identify if node is nested', () => {
 			expect(fieldMapping.isNested(data)).toBeFalsy()
 			expect(fieldMapping.isNested(data.children)).toBeTruthy()
@@ -204,18 +189,6 @@ describe('FieldMapper', () => {
 			expect(() => fieldMapping.getChildrenByPath(items, [2])).toThrowError('Invalid path')
 			expect(() => fieldMapping.getChildrenByPath(items, [0, 2])).toThrowError('Invalid path')
 			expect(() => fieldMapping.getChildrenByPath(noChildren, [0, 2])).toThrowError('Invalid path')
-		})
-
-		it('should toggle expanded', () => {
-			fieldMapping.toggleExpansion(items[0])
-			expect(fieldMapping.isExpanded(items[0])).toBeFalsy()
-			expect(fieldMapping.isHidden(items[0].children[0])).toBeTruthy()
-			expect(fieldMapping.isHidden(items[0].children[0].children[0])).toBeTruthy()
-
-			fieldMapping.toggleExpansion(items[0])
-			expect(fieldMapping.isExpanded(items[0])).toBeTruthy()
-			expect(fieldMapping.isHidden(items[0].children[0])).toBeFalsy()
-			expect(fieldMapping.isHidden(items[0].children[0].children[0])).toBeTruthy()
 		})
 	})
 })

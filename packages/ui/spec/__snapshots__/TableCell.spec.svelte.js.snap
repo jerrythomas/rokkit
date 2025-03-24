@@ -9,15 +9,6 @@ exports[`TableCell > should render a table cell 1`] = `
       <!---->
        
       <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
     </rk-cell>
   </td>
   
@@ -32,15 +23,6 @@ exports[`TableCell > should render a table cell 2`] = `
     <rk-cell>
       <!---->
        
-      <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
       <!---->
     </rk-cell>
   </td>
@@ -80,15 +62,6 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
       <!---->
        
       <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
     </rk-cell>
   </td>
   
@@ -127,15 +100,6 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
       <!---->
        
       <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
     </rk-cell>
   </td>
   
@@ -173,15 +137,6 @@ exports[`TableCell > should render a table cell as a parent 3`] = `
       <!---->
        
       <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
     </rk-cell>
   </td>
   
@@ -201,15 +156,6 @@ exports[`TableCell > should render a table cell with path 1`] = `
       <!---->
        
       <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
-      <!---->
     </rk-cell>
   </td>
   
@@ -228,15 +174,6 @@ exports[`TableCell > should render a table cell with path 2`] = `
       <!---->
       <!---->
        
-      <!---->
-      <!---->
-      
-      <!---->
-       
-      <p>
-        Item 1
-      </p>
-      <!---->
       <!---->
     </rk-cell>
   </td>

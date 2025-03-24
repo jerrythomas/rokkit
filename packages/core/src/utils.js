@@ -1,4 +1,4 @@
-import { has } from 'ramda'
+import { has, isNil } from 'ramda'
 
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
@@ -36,7 +36,7 @@ export function id() {
  * @returns {boolean}
  */
 export function isObject(val) {
-	return typeof val === 'object' && val !== null && !(val instanceof Date)
+	return typeof val === 'object' && !isNil(val) && !(val instanceof Date)
 }
 
 /**
@@ -92,7 +92,7 @@ export function scaledPath(size, x) {
  * @returns {string}
  */
 export function getKeyFromPath(path) {
-	return path.join('-')
+	return Array.isArray(path) ? path.join('-') : [path].join('-')
 }
 
 /**
@@ -108,11 +108,12 @@ export function getPathFromKey(key) {
  * Get snippet function from an object
  * @param {Object} obj
  * @param {string} key
+ * @param {null|Function} defaultSnippet
  * @returns {Function|undefined}
  */
-export function getSnippet(obj, key) {
+export function getSnippet(obj, key, defaultSnippet = null) {
 	if (has(key, obj) && typeof obj[key] === 'function') {
 		return obj[key]
 	}
-	return undefined
+	return defaultSnippet
 }

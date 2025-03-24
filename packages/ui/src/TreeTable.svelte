@@ -134,7 +134,7 @@
 				>
 					{#each columns as col, index}
 						{@const value = { ...pick(['icon'], col), ...item }}
-						{@const SvelteComponent = mapping.getComponent(item)}
+						{@const SvelteComponent = mapping.get('component', item)}
 						<td>
 							<cell>
 								{#if multiselect && index === 0}

@@ -34,7 +34,7 @@ export function emitAction(root, controller, name, lastOnly = false) {
 			new CustomEvent('action', {
 				detail: {
 					name: event,
-					data: { value: controller.activeItem, selected: controller.selected }
+					data: { value: controller.focused, selected: controller.selected }
 				}
 			})
 		)

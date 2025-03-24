@@ -52,9 +52,9 @@ export class NodeProxy {
 			? String(this.original[this.fields.id])
 			: this.path.join('-')
 		this.expanded =
-			has(this.fields.isOpen, this.original) && Boolean(this.original[this.fields.isOpen])
+			has(this.fields.expanded, this.original) && Boolean(this.original[this.fields.expanded])
 		this.selected =
-			has(this.fields.isSelected, this.original) && Boolean(this.original[this.fields.isSelected])
+			has(this.fields.selected, this.original) && Boolean(this.original[this.fields.selected])
 		this._refreshAllChildren(this.path)
 	}
 
@@ -114,9 +114,9 @@ export class NodeProxy {
 	toggle() {
 		this.expanded = !this.expanded
 
-		// Update original data if it has the isOpen field
-		if (has(this.fields.isOpen, this.original)) {
-			this.original[this.fields.isOpen] = this.expanded
+		// Update original data if it has the expanded field
+		if (has(this.fields.expanded, this.original)) {
+			this.original[this.fields.expanded] = this.expanded
 		}
 		return this
 	}

@@ -1,127 +1,176 @@
 import { FieldMapper } from '@rokkit/core'
-import { isNil } from 'ramda'
+import { equals } from 'ramda'
+import { SvelteSet } from 'svelte/reactivity'
 
 export class ListController {
 	items = $state(null)
-	selected = $state([])
-	activeItem = $state(null)
-	mapper = new FieldMapper()
-	activeIndex = $state(-1)
-	options = $state({})
+	data = null
+	mappers = []
+	#options = $state({})
+	lookup = new Map()
+	selectedKeys = new SvelteSet()
+	#currentKey = $state(null)
+	#currentIndex = -1
+	expandedKeys = new SvelteSet()
+
+	expanded = $derived(Array.from(this.expandedKeys).map((key) => this.lookup.get(key)))
+	selected = $derived(Array.from(this.selectedKeys).map((key) => this.lookup.get(key)))
+	focused = $derived(this.lookup.get(this.#currentKey))
 
 	constructor(items, value, fields, options) {
 		this.items = items
-		this.mapper = new FieldMapper(fields)
-		this.options = { multiSelect: false, ...options }
-		this.moveToValue(value)
-	}
-
-	get isNested() {
-		return false
+		this.mappers.push(new FieldMapper(fields))
+		this.#options = { multiselect: false, ...options }
+		this.init(items, value)
 	}
 
 	/**
 	 * @private
-	 * @param {number|number[]} path
+	 * @param {Array<*>} items
+	 * @param {*} value
 	 */
-	getIndexFromPath(path) {
-		return isNil(path) && !Array.isArray(path) ? path : path[0]
+	init(items, value) {
+		items.forEach((item, index) => this.lookup.set(String(index), item))
+		this.data = items.map((item, index) => ({ key: String(index), value: item }))
+		this.moveToValue(value)
 	}
 
-	moveToValue(value) {
-		this.activeItem = value
-		if (isNil(value)) {
-			this.activeIndex = -1
-			this.selected = []
+	get isNested() {
+		return this.mappers.length > 1
+	}
+
+	get currentKey() {
+		return this.#currentKey
+	}
+
+	/**
+	 * @private
+	 * @param {*} value
+	 * @returns
+	 */
+	findByValue(value) {
+		const index = this.data.findIndex((row) => equals(row.value, value))
+		return index < 0 ? { index } : { index, ...this.data[index] }
+	}
+
+	/**
+	 * @private
+	 * @param {*} value
+	 * @returns
+	 */
+	moveToValue(value = null) {
+		const { index, key } = this.findByValue(value)
+
+		this.selectedKeys.clear()
+		if (index >= 0) {
+			this.moveToIndex(index)
+			this.selectedKeys.add(key)
 		} else {
-			this.activeIndex = this.items.indexOf(value)
-			this.selected = [value]
-			console.log(this.activeIndex)
+			this.#currentKey = null
+			this.#currentIndex = -1
 		}
+		return true
 	}
 
+	/**
+	 *
+	 * @param {string} path
+	 * @returns
+	 */
 	moveTo(path) {
-		const index = this.getIndexFromPath(path)
-
-		if (index >= 0 && index < this.items.length) {
-			this.activeIndex = index
-			this.activeItem = this.items[index]
-			return true
-		}
-		return false
-	}
-
-	movePrev() {
-		// if (this.activeIndex < 0) {
-		//   this.activeIndex = 0
-		// }
-		if (this.activeIndex > 0) {
-			this.activeIndex--
-			this.activeItem = this.items[this.activeIndex]
-			return true
-		}
-		return false
-	}
-
-	moveNext() {
-		if (this.activeIndex < this.items.length - 1) {
-			this.activeIndex++
-			this.activeItem = this.items[this.activeIndex]
-			return true
-		}
-		return false
-	}
-
-	moveFirst() {
-		this.moveTo(0)
-	}
-
-	moveLast() {
-		this.moveTo(this.items.length - 1)
+		const index = Number(path)
+		return this.moveToIndex(index)
 	}
 
 	/**
 	 * @private
 	 * @param {number} index
 	 */
-	toggleSelection(index) {
-		if (this.selected.includes(this.items[index])) {
-			this.selected = this.selected.filter((item) => item !== this.items[index])
-		} else {
-			this.selected.push(this.items[index])
+	moveToIndex(index) {
+		if (index >= 0 && index < this.data.length && this.#currentIndex !== index) {
+			this.#currentIndex = index
+			this.#currentKey = this.data[index].key
+			return true
 		}
-		return true
-	}
-
-	/**
-	 *
-	 * @param {number|number[]} path
-	 * @returns
-	 */
-	extendSelection(path) {
-		const index = isNil(path) ? this.activeIndex : this.getIndexFromPath(path)
-		if (index >= 0 && index < this.items.length) return false
-
-		if (this.options.multiselect) {
-			return this.toggleSelection(index)
-		} else {
-			return this.select(index)
-		}
-	}
-
-	/**
-	 *
-	 * @param {number|number[]} path
-	 * @returns
-	 */
-	select(path) {
-		const index = isNil(path) ? this.activeIndex : this.getIndexFromPath(path)
-		this.selected = [this.items[index]]
-		this.activeIndex = index
-		return true
-	}
-
-	toggleExpansion() {
 		return false
+	}
+
+	movePrev() {
+		if (this.#currentIndex > 0) {
+			return this.moveToIndex(this.#currentIndex - 1)
+		} else if (this.#currentIndex < 0) {
+			return this.moveLast()
+		}
+		return false
+	}
+
+	moveNext() {
+		if (this.#currentIndex < this.data.length - 1) {
+			return this.moveToIndex(this.#currentIndex + 1)
+		}
+		return false
+	}
+
+	moveFirst() {
+		return this.moveToIndex(0)
+	}
+
+	moveLast() {
+		return this.moveToIndex(this.data.length - 1)
+	}
+
+	/**
+	 * Toggles the selection.
+	 * @private
+	 * @param {string} key
+	 */
+	toggleSelection(key) {
+		if (this.selectedKeys.has(key)) {
+			this.selectedKeys.delete(key)
+		} else {
+			this.selectedKeys.add(key)
+		}
+
+		return true
+	}
+
+	/**
+	 *
+	 * @param {string} selectedKey
+	 * @returns
+	 */
+	select(selectedKey) {
+		const key = selectedKey ?? this.#currentKey
+
+		if (!this.lookup.has(key)) return false
+
+		if (this.#currentKey !== key) {
+			const { index } = this.findByValue(this.lookup.get(key))
+			this.moveToIndex(index)
+		}
+
+		if (!this.selectedKeys.has(key)) {
+			this.selectedKeys.clear()
+			this.selectedKeys.add(key)
+		}
+
+		return true
+	}
+
+	/**
+	 *
+	 * @param {string} selectedKey
+	 * @returns
+	 */
+	extendSelection(selectedKey) {
+		const key = selectedKey ?? this.#currentKey
+
+		if (!this.lookup.has(key)) return false
+
+		if (this.#options.multiselect) {
+			return this.toggleSelection(key)
+		} else {
+			return this.select(key)
+		}
 	}
 }

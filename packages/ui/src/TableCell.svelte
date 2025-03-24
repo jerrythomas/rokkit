@@ -31,7 +31,7 @@
 		path = null
 	} = $props()
 
-	const Template = $derived(mapping.getComponent(value))
+	const Template = $derived(mapping.get('component', value))
 </script>
 
 <td class={classes}>

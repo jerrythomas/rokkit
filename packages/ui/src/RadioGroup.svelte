@@ -38,8 +38,9 @@
 	class:disabled={readOnly}
 >
 	{#each options as item}
-		{@const itemValue = mapping.getValue(item)}
-		{@const label = mapping.getText(item)}
+		{@const label = mapping.get('text', item)}
+		{@const itemValue = mapping.get('value', item, label)}
+
 		{@const state = equals(itemValue, value) ? 'on' : 'off'}
 
 		<label class="flex {flexDirection} items-center gap-2">
