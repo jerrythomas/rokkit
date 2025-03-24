@@ -38,7 +38,6 @@
 	const mapper = new FieldMapper(fields)
 
 	const template = getSnippet(mapper.get('component', value), extra, stub)
-	// $inspect(value.focused, value.expanded, value.selected, value.get('text'))
 </script>
 
 <rk-node
