@@ -76,7 +76,8 @@ export function getKeyboardActions(options, handlers) {
  */
 export function getPathFromEvent(event) {
 	const node = getClosestAncestorWithAttribute(event.target, 'data-path')
-	return node ? getPathFromKey(node.getAttribute('data-path')) : null
+	return node?.getAttribute('data-path')
+	// return node ? getPathFromKey(node.getAttribute('data-path')) : null
 }
 
 /**

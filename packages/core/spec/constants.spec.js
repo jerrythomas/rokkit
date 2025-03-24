@@ -96,11 +96,10 @@ describe('Utility functions', () => {
 			level: 'level',
 			parent: 'parent',
 			currency: 'currency',
-			isOpen: '_open',
-			isDeleted: '_deleted',
-			isSelected: '_selected',
-			isHidden: '_hidden',
-			isFiltered: '_filtered'
+			expanded: '_expanded',
+			deleted: '_deleted',
+			snippet: '_snippet',
+			selected: '_selected'
 		})
 	})
 })

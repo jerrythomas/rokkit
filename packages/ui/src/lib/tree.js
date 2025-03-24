@@ -13,7 +13,7 @@ export function addRootNode(items, root = '/', mapping = defaultMapping) {
 		return [
 			{
 				[mapping.fields.text]: root,
-				[mapping.fields.isOpen]: true,
+				[mapping.fields.expanded]: true,
 				[mapping.fields.children]: items
 			}
 		]

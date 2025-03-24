@@ -20,7 +20,7 @@ describe('navigator', () => {
 		collapse: vi.fn(),
 		toggleExpansion: vi.fn(),
 		extendSelection: vi.fn(),
-		activeItem: { text: 'active' },
+		focused: { text: 'active' },
 		selected: [{ text: 'selected' }]
 	}
 
@@ -198,18 +198,18 @@ describe('navigator', () => {
 
 			wrapper.select.mockReturnValue(false)
 			item.click()
-			expect(wrapper.select).toHaveBeenCalledWith([0])
+			expect(wrapper.select).toHaveBeenCalledWith('0')
 			expect(action).not.toHaveBeenCalled()
 
 			wrapper.select.mockReturnValue(true)
 			item.click()
-			expect(wrapper.select).toHaveBeenCalledWith([0])
+			expect(wrapper.select).toHaveBeenCalledWith('0')
 			expect(wrapper.select).toHaveBeenCalledTimes(2)
 			expect(action).toHaveBeenCalledTimes(2)
 			expect(action).toHaveBeenDispatchedWith({
 				name: 'select',
 				data: {
-					value: wrapper.activeItem,
+					value: wrapper.focused,
 					selected: wrapper.selected
 				}
 			})
@@ -230,7 +230,7 @@ describe('navigator', () => {
 			const icon = root.querySelector('[data-state="closed"]')
 			wrapper.toggleExpansion.mockReturnValue(true)
 			icon.click()
-			expect(wrapper.toggleExpansion).toHaveBeenCalledWith([0])
+			expect(wrapper.toggleExpansion).toHaveBeenCalledWith('0')
 			expect(wrapper.moveTo).not.toHaveBeenCalled()
 			expect(wrapper.select).not.toHaveBeenCalled()
 
@@ -249,7 +249,7 @@ describe('navigator', () => {
 			const icon = root.querySelector('[data-state="opened"]')
 			wrapper.toggleExpansion.mockReturnValue(true)
 			icon.click()
-			expect(wrapper.toggleExpansion).toHaveBeenCalledWith([1])
+			expect(wrapper.toggleExpansion).toHaveBeenCalledWith('1')
 			expect(wrapper.select).not.toHaveBeenCalled()
 			expect(wrapper.moveTo).not.toHaveBeenCalled()
 			expect(wrapper.collapse).not.toHaveBeenCalled()
@@ -270,7 +270,7 @@ describe('navigator', () => {
 			fireEvent.click(item, { ctrlKey: true })
 
 			expect(wrapper.select).not.toHaveBeenCalled()
-			expect(wrapper.extendSelection).toHaveBeenCalledWith([0])
+			expect(wrapper.extendSelection).toHaveBeenCalledWith('0')
 
 			cleanup()
 		})

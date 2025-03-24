@@ -1,15 +1,15 @@
 import { defaultFields } from './constants.js'
-import { isNil, has, omit, type } from 'ramda'
+import { isNil, has, omit } from 'ramda'
 import { isObject } from './utils.js'
 
 export class FieldMapper {
 	#fields = { ...defaultFields }
-	#componentMap = {}
+	// #componentMap = {}
 	#childMapper = null
 
-	constructor(fields = defaultFields, componentMap = {}) {
+	constructor(fields = defaultFields) {
 		this.#updateFields(fields)
-		this.#updateComponentMap(componentMap)
+		// this.#updateComponentMap(componentMap)
 	}
 
 	#updateFields(fields) {
@@ -33,30 +33,44 @@ export class FieldMapper {
 		])
 	}
 
-	#updateComponentMap(components) {
-		if (typeof components === 'object' && components) {
-			Object.keys(components).forEach((key) => {
-				this.#componentMap[key] = components[key]
-			})
-		}
-	}
+	// #updateComponentMap(components) {
+	// 	if (typeof components === 'object' && components) {
+	// 		Object.keys(components).forEach((key) => {
+	// 			this.#componentMap[key] = components[key]
+	// 		})
+	// 	}
+	// }
 
+	getChildMapper() {
+		if (!this.#childMapper) {
+			this.#childMapper = new FieldMapper(this.fields.fields ?? this.fields)
+		}
+		return this.#childMapper
+	}
+	/**
+	 * @private
+	 */
+	prop(fieldName, value) {
+		// Early return for null/undefined value
+		if (isNil(value)) return null
+
+		// For objects, look up mapped field
+		if (typeof value === 'object') {
+			return value[this.fields[fieldName]]
+		}
+
+		// For non-objects, only honor 'text' field
+		return fieldName === 'text' ? value : null
+	}
 	/**
 	 * Gets a mapped attribute from the original item
 	 *
 	 * @param {string} fieldName - Name of the field to get
 	 * @returns {any|null} - The attribute value or null if not found
 	 */
-	get(fieldName, value) {
-		if (typeof value !== 'object' && fieldName === 'text') {
-			return value
-		}
-
-		const mappedField = this.fields[fieldName]
-		if (!mappedField || !has(mappedField, value)) {
-			return null
-		}
-		return value[mappedField]
+	get(fieldName, value, defaultValue = null) {
+		// For non-objects, only honor 'text' field
+		return this.prop(fieldName, value) ?? defaultValue
 	}
 
 	get fields() {
@@ -67,28 +81,11 @@ export class FieldMapper {
 		this.#updateFields(fields)
 	}
 
-	get componentMap() {
-		return this.#componentMap
-	}
-
-	set componentMap(components) {
-		this.#updateComponentMap(components)
-	}
-
-	getComponent(value) {
-		if (this.hasComponent(value))
-			return this.componentMap[value[this.fields.component]] ?? this.componentMap.default
-		return this.componentMap.default
-	}
-
 	getIcon(value) {
 		if (!this.hasIcon(value)) return null
 		const icon = value[this.fields.icon]
 		if (isObject(icon)) return this.withPrefix(icon[value[this.fields.state]])
 		return this.withPrefix(icon)
-	}
-	getImage(value) {
-		return this.getAttribute(value, 'image')
 	}
 
 	getValue(value) {
@@ -98,32 +95,15 @@ export class FieldMapper {
 		return value
 	}
 
-	getText(value) {
-		if (this.hasText(value)) {
-			return value[this.fields.text]
-		}
-		return typeof value === 'object' ? null : value
-	}
-
-	getLabel(value) {
-		return this.getAttribute(value, 'label') ?? this.getText(value)
-	}
-
-	getAttribute(value, attr) {
-		if (has(attr, this.fields)) {
-			return has(this.fields[attr], value) ? value[this.fields[attr]] : null
-		}
-		return null
-	}
-
 	getFormattedText(value, formatter) {
-		const text = this.getText(value)
+		const text = this.get('text', value)
+
 		if (isNil(text)) return ''
 
 		if (typeof formatter !== 'function') return text.toString()
 
 		if (this.hasCurrency(value)) {
-			return formatter(text, this.getAttribute(value, 'currency'))
+			return formatter(text, this.get('currency', value))
 		}
 		return formatter(text)
 	}
@@ -135,13 +115,6 @@ export class FieldMapper {
 			Array.isArray(item[this.fields.children]) &&
 			item[this.fields.children].length > 0
 		)
-	}
-
-	isExpanded(item) {
-		if (this.hasChildren(item)) {
-			return has(this.fields.isOpen, item) && item[this.fields.isOpen]
-		}
-		return false
 	}
 
 	isHidden(item) {
@@ -159,13 +132,6 @@ export class FieldMapper {
 				this.toggleVisibility(item[this.fields.children], visible && item[this.fields.isOpen])
 			}
 		})
-	}
-
-	toggleExpansion(item) {
-		if (this.hasChildren(item)) {
-			item[this.fields.isOpen] = !item[this.fields.isOpen]
-			this.toggleVisibility(item[this.fields.children], item[this.fields.isOpen])
-		}
 	}
 
 	getChildren(item) {

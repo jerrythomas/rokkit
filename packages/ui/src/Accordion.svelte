@@ -1,10 +1,11 @@
 <script>
 	import { equals } from 'ramda'
 	import { createEmitter, noop, getKeyFromPath, getSnippet } from '@rokkit/core'
-	import { NestedProxy } from '@rokkit/states'
+	import { NestedController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Summary from './Summary.svelte'
 	import Item from './Item.svelte'
+	import ListBody from './ListBody.svelte'
 
 	/**
 	 * @typedef {Object} Props
@@ -35,28 +36,13 @@
 	let emitter = $derived(
 		createEmitter(events, ['collapse', 'change', 'expand', 'click', 'select', 'move'])
 	)
-	let wrapper = new NestedProxy(items, value, fields, { events, multiselect, autoCloseSiblings })
+	let wrapper = new NestedController(items, value, fields, {
+		events,
+		multiselect,
+		autoCloseSiblings
+	})
 </script>
 
-{#snippet listItems(nodes, onchange = noop)}
-	{#each nodes as node}
-		{@const template = getSnippet(extra, node.get('component')) ?? stub}
-		{@const path = getKeyFromPath(node.path)}
-		{@const props = node.get('props') || {}}
-		<rk-list-item
-			role="option"
-			data-path={path}
-			aria-selected={node.selected}
-			aria-current={node.focused}
-		>
-			{#if template}
-				{@render template(node, props, onchange)}
-			{:else}
-				<Item value={node.value} fields={node.fields} />
-			{/if}
-		</rk-list-item>
-	{/each}
-{/snippet}
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rk-accordion
 	class={classes}
@@ -67,7 +53,7 @@
 	{#if header}
 		<rk-header>{@render header()}</rk-header>
 	{/if}
-	{#if wrapper.nodes.length === 0}
+	{#if items.length === 0}
 		<rk-list-item role="presentation">
 			{#if empty}
 				{@render empty()}
@@ -76,22 +62,31 @@
 			{/if}
 		</rk-list-item>
 	{/if}
-	{#each wrapper.nodes as node, index}
+	{#each items as item, index}
+		{@const key = `${index}`}
 		<div
 			class="flex flex-col"
-			class:is-expanded={node.expanded}
-			class:is-selected={node.selected}
+			class:is-expanded={wrapper.expandedKeys.has(key)}
+			class:is-selected={wrapper.selectedKeys.has(key)}
 			data-path={index}
 		>
 			<Summary
-				bind:value={wrapper.nodes[index].value}
-				fields={node.fields}
-				expanded={node.expanded}
-				hasChildren={node.hasChildren()}
+				bind:value={items[index]}
+				{fields}
+				expanded={wrapper.expandedKeys.has(key)}
+				hasChildren={wrapper.hasChildren(key)}
 			/>
-			{#if node.expanded}
+			{#if wrapper.expandedKeys.has(key)}
 				<rk-list role="listbox" tabindex="-1">
-					{@render listItems(node.children, events.change)}
+					<ListBody
+						bind:items={items[fields.children]}
+						bind:value
+						fields={fields.fields ?? fields}
+						{selected}
+						{stub}
+						onchange={emitter.change}
+						{extra}
+					/>
 				</rk-list>
 			{/if}
 		</div>

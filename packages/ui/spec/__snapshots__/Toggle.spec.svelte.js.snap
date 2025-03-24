@@ -4,7 +4,9 @@ exports[`Toggle > should render 1`] = `
 <rk-toggle
   class=""
 >
-  <button>
+  <button
+    aria-label="toggle"
+  >
     <!---->
     <!---->
     
@@ -18,7 +20,7 @@ exports[`Toggle > should render 1`] = `
 
 exports[`Toggle > should render with object options 1`] = `
 <button
-  aria-label="sun"
+  aria-label="toggle"
 >
   <!---->
   <!---->
@@ -34,7 +36,9 @@ exports[`Toggle > should render with object options 1`] = `
 `;
 
 exports[`Toggle > should render with options 1`] = `
-<button>
+<button
+  aria-label="toggle"
+>
   <!---->
   <!---->
   
@@ -51,7 +55,7 @@ exports[`Toggle > should switch options on click 1`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -75,7 +79,7 @@ exports[`Toggle > should switch options on click 2`] = `
     class=""
   >
     <button
-      aria-label="moon"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -99,7 +103,7 @@ exports[`Toggle > should switch options on click 3`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -123,7 +127,7 @@ exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -147,7 +151,7 @@ exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
     class=""
   >
     <button
-      aria-label="moon"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -171,7 +175,7 @@ exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -195,7 +199,7 @@ exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
     class=""
   >
     <button
-      aria-label="earth"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -219,7 +223,7 @@ exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
     class=""
   >
     <button
-      aria-label="moon"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -243,7 +247,7 @@ exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -267,7 +271,7 @@ exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -291,7 +295,7 @@ exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
     class=""
   >
     <button
-      aria-label="moon"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -315,7 +319,7 @@ exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -339,7 +343,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
     class=""
   >
     <button
-      aria-label="earth"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -363,7 +367,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
     class=""
   >
     <button
-      aria-label="moon"
+      aria-label="toggle"
     >
       <!---->
       <!---->
@@ -387,7 +391,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
     class=""
   >
     <button
-      aria-label="sun"
+      aria-label="toggle"
     >
       <!---->
       <!---->

@@ -12,7 +12,6 @@ export const defaultFields = {
 	icon: 'icon',
 	iconPrefix: null,
 	image: 'image',
-	component: 'component',
 	summary: 'summary',
 	notes: 'notes',
 	props: 'props',
@@ -22,12 +21,12 @@ export const defaultFields = {
 	parent: 'parent',
 	currency: 'currency',
 	label: 'label',
+	component: 'component',
+	snippet: '_snippet',
 	/* flag fields  */
-	isSelected: '_selected',
-	isHidden: '_hidden',
-	isOpen: '_open',
-	isDeleted: '_deleted',
-	isFiltered: '_filtered'
+	deleted: '_deleted',
+	expanded: '_expanded',
+	selected: '_selected'
 }
 
 export const defaultIcons = [

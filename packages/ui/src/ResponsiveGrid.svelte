@@ -65,7 +65,7 @@
 >
 	{#each items as item, index}
 		{@const segmentClass = 'col-' + (index + 1)}
-		{@const props = mapping.getAttribute(item, 'props')}
+		{@const props = mapping.get('props', item, {})}
 		{@const Template = item[mapping.fields.component]}
 		{#if small && equals(index, activeIndex)}
 			<rk-segment

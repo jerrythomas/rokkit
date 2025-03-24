@@ -2,18 +2,15 @@ export const treeData = [
 	{
 		id: 1,
 		text: 'Item 1',
-		_open: true,
 		children: [
 			{
 				id: 2,
 				text: 'Item 1.1',
-				_open: false,
 				children: []
 			},
 			{
 				id: 3,
 				text: 'Item 1.2',
-				_open: true,
 				children: [
 					{
 						id: 4,
@@ -26,7 +23,6 @@ export const treeData = [
 	{
 		id: 5,
 		text: 'Item 2',
-		_open: false,
 		children: [
 			{
 				id: 6,
@@ -37,7 +33,6 @@ export const treeData = [
 	{
 		id: 7,
 		text: 'Item 3',
-		_open: false,
 		children: [
 			{
 				id: 8,

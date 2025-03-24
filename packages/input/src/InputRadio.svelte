@@ -45,7 +45,7 @@
 				{disabled}
 				onchange={handleChange}
 			/>
-			<p>{mapping.getText(item)}</p>
+			<p>{mapping.get('text', item)}</p>
 		</label>
 	{/each}
 </radio-group>

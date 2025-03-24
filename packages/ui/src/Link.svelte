@@ -12,8 +12,8 @@
 
 	/** @type {Props} */
 	let { class: classes = '', value, mapping = new FieldMapper(), href = '#', ...rest } = $props()
-	let url = $derived(mapping.getAttribute(value, 'url') ?? href)
-	let props = $derived({ ...mapping.getAttribute(value, 'props'), ...rest })
+	let url = $derived(mapping.get('url', value, href))
+	let props = $derived({ ...mapping.get('props', value, {}), ...rest })
 </script>
 
 <a href={url} class={classes} {...props}>

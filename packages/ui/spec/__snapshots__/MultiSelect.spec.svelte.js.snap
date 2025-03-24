@@ -118,6 +118,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
         >
           <!---->
           <!---->
+          <!---->
           
           <!---->
            
@@ -125,6 +126,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
             Two
           </p>
           <!---->
+          
           <!---->
         </rk-list-item>
         <rk-list-item
@@ -135,6 +137,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
         >
           <!---->
           <!---->
+          <!---->
           
           <!---->
            
@@ -142,6 +145,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
             Three
           </p>
           <!---->
+          
           <!---->
         </rk-list-item>
         
@@ -233,6 +237,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
         >
           <!---->
           <!---->
+          <!---->
           
           <!---->
            
@@ -240,6 +245,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
             Three
           </p>
           <!---->
+          
           <!---->
         </rk-list-item>
         

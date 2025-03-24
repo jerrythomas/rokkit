@@ -1,6 +1,6 @@
 <script>
 	import { equals } from 'ramda'
-	import { noop } from '@rokkit/core'
+	import { noop, getSnippet, FieldMapper } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
 	import { defaultMapping } from './constants'
 
@@ -19,10 +19,12 @@
 		class: classes = '',
 		value = $bindable(),
 		options = [false, true],
-		mapping = defaultMapping,
+		fields,
 		compact = false,
 		disabled = false,
-		onchange = noop
+		onchange = noop,
+		stub,
+		...extra
 	} = $props()
 
 	let cursor = $state([])
@@ -50,6 +52,7 @@
 		prev: ['ArrowLeft', 'ArrowUp']
 	}
 	let useComponent = $derived(!options.every((item) => [false, true].includes(item)))
+	let mapper = new FieldMapper(fields)
 </script>
 
 {#if !Array.isArray(options) || options.length < 2}
@@ -72,13 +75,13 @@
 		onclick={handleClick}
 	>
 		{#each options as item, index (item)}
-			{@const Template = useComponent ? mapping.getComponent(item) : null}
+			{@const Template = getSnippet(extra, mapper.get('snippet', item), stub)}
 			<rk-item class="relative" role="option" aria-selected={equals(item, value)} data-path={index}>
 				{#if equals(item, value)}
 					<rk-indicator class="absolute bottom-0 left-0 right-0 top-0"></rk-indicator>
 				{/if}
 				{#if Template}
-					<Template value={item} {mapping} />
+					<Template value={item} {fields} />
 				{/if}
 			</rk-item>
 		{/each}

@@ -5,7 +5,7 @@
 
 	let {
 		items = $bindable([]),
-		value = $bindable(null),
+		value = null,
 		fields,
 		selected = [],
 		path = [],
@@ -19,7 +19,7 @@
 </script>
 
 {#each items as item, index}
-	{@const template = getSnippet(extra, fm.get('component', item)) ?? stub}
+	{@const template = getSnippet(extra, fm.get('snippet', item, stub))}
 	{@const pathKey = getKeyFromPath([...path, index])}
 	{@const props = fm.get('props', item) || {}}
 	<rk-list-item
@@ -29,10 +29,14 @@
 		aria-current={equals(item, value)}
 	>
 		<svelte:boundary>
-			{@render template(item, props, onchange)}
-			{#snippet failed()}
+			{#if template}
+				{@render template(item, props, onchange)}
+				{#snippet failed()}
+					<Item value={item} {fields} />
+				{/snippet}
+			{:else}
 				<Item value={item} {fields} />
-			{/snippet}
+			{/if}
 		</svelte:boundary>
 	</rk-list-item>
 {/each}
