@@ -56,7 +56,15 @@
 			<div class="m-auto p-4 text-center text-gray-500">No data available</div>
 		{/if}
 	{/if}
-	<NestedList {items} {value} {icons} {selected} {expanded} />
+	<NestedList
+		{items}
+		{fields}
+		{value}
+		{icons}
+		focusedKey={wrapper.currentKey}
+		selectedKeys={wrapper.selectedKeys}
+		expandedKeys={wrapper.expandedKeys}
+	/>
 	{#if footer}
 		<rk-footer>{@render footer()}</rk-footer>
 	{/if}
