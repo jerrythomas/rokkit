@@ -237,6 +237,278 @@ exports[`Node > should render having child 1`] = `
 </div>
 `;
 
+exports[`Node > should render with different states 1`] = `
+<div>
+  <rk-node
+    aria-current="false"
+    aria-expanded="false"
+    aria-selected="false"
+    data-depth="1"
+    data-path="0"
+    role="treeitem"
+  >
+    <div
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+      >
+        <!---->
+        <!---->
+        <i
+          class="col-span-1 row-span-2 border-r"
+        />
+         
+        <i
+          class="border-b"
+        />
+        
+        
+        <!---->
+      </span>
+      
+      <!---->
+      <rk-icon
+        aria-label="expand"
+        class="w-4 small"
+        data-state="closed"
+        data-tag="icon"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-closed"
+        />
+      </rk-icon>
+      
+      <!---->
+       
+      <rk-item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-item>
+    </div>
+     
+    <!---->
+  </rk-node>
+  
+</div>
+`;
+
+exports[`Node > should render with different states 2`] = `
+<div>
+  <rk-node
+    aria-current="false"
+    aria-expanded="true"
+    aria-selected="false"
+    data-depth="1"
+    data-path="0"
+    role="treeitem"
+  >
+    <div
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+      >
+        <!---->
+        <!---->
+        <i
+          class="col-span-1 row-span-2 border-r"
+        />
+         
+        <i
+          class="border-b"
+        />
+        
+        
+        <!---->
+      </span>
+      
+      <!---->
+      <rk-icon
+        aria-label="collapse"
+        class="w-4 small"
+        data-state="opened"
+        data-tag="icon"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-opened"
+        />
+      </rk-icon>
+      
+      <!---->
+       
+      <rk-item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-item>
+    </div>
+     
+    <!---->
+  </rk-node>
+  
+</div>
+`;
+
+exports[`Node > should render with different states 3`] = `
+<div>
+  <rk-node
+    aria-current="false"
+    aria-expanded="true"
+    aria-selected="true"
+    data-depth="1"
+    data-path="0"
+    role="treeitem"
+  >
+    <div
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+      >
+        <!---->
+        <!---->
+        <i
+          class="col-span-1 row-span-2 border-r"
+        />
+         
+        <i
+          class="border-b"
+        />
+        
+        
+        <!---->
+      </span>
+      
+      <!---->
+      <rk-icon
+        aria-label="collapse"
+        class="w-4 small"
+        data-state="opened"
+        data-tag="icon"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-opened"
+        />
+      </rk-icon>
+      
+      <!---->
+       
+      <rk-item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-item>
+    </div>
+     
+    <!---->
+  </rk-node>
+  
+</div>
+`;
+
+exports[`Node > should render with different states 4`] = `
+<div>
+  <rk-node
+    aria-current="true"
+    aria-expanded="true"
+    aria-selected="true"
+    data-depth="1"
+    data-path="0"
+    role="treeitem"
+  >
+    <div
+      class="flex flex-row items-center"
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+      >
+        <!---->
+        <!---->
+        <i
+          class="col-span-1 row-span-2 border-r"
+        />
+         
+        <i
+          class="border-b"
+        />
+        
+        
+        <!---->
+      </span>
+      
+      <!---->
+      <rk-icon
+        aria-label="collapse"
+        class="w-4 small"
+        data-state="opened"
+        data-tag="icon"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-opened"
+        />
+      </rk-icon>
+      
+      <!---->
+       
+      <rk-item>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Item 1
+        </p>
+        <!---->
+        <!---->
+      </rk-item>
+    </div>
+     
+    <!---->
+  </rk-node>
+  
+</div>
+`;
+
 exports[`Node > should render with icon 1`] = `
 <div>
   <rk-node

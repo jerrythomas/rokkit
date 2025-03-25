@@ -49,7 +49,10 @@ describe('@rokkit/core', () => {
 			'weekdays',
 			'getCalendarDays',
 			'generateTicks',
-			'getValue'
+			'getValue',
+			'getNestedFields',
+			'hasChildren',
+			'isExpanded'
 		])
 	})
 })

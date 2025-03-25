@@ -15,14 +15,13 @@ describe('NestedController', () => {
 
 			expect(controller.focused).toBeFalsy()
 			expect(controller.selected).toEqual([])
-			expect(controller.expanded).toEqual([])
 		})
+
 		it('should initialize with value', () => {
 			const controller = new NestedController(items, items[0].children[1].children[0])
 			expect(controller.data.length).toEqual(6)
 			expect(controller.focused).toEqual(items[0].children[1].children[0])
 			expect(controller.selected).toEqual([items[0].children[1].children[0]])
-			expect(controller.expanded).toEqual([items[0], items[0].children[1]])
 		})
 	})
 

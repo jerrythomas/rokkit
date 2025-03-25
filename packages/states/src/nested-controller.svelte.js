@@ -1,7 +1,6 @@
-import { getKeyFromPath } from '@rokkit/core'
+import { getKeyFromPath, getPathFromKey, getNestedFields } from '@rokkit/core'
 import { equals } from 'ramda'
 import { ListController } from './list-controller.svelte'
-import { getPathFromKey } from '@rokkit/core'
 
 export class NestedController extends ListController {
 	constructor(items, value, fields, options) {
@@ -13,13 +12,10 @@ export class NestedController extends ListController {
 	 * @param {Object} [value]
 	 */
 	init(items, value) {
-		this.data = []
 		this.createLookup(items)
 		if (value) {
 			this.ensureVisible(value)
 			this.moveToValue(value)
-		} else {
-			this.refresh(this.items)
 		}
 	}
 	/**
@@ -44,31 +40,7 @@ export class NestedController extends ListController {
 			}
 
 			if (fm.hasChildren(item)) {
-				if (fm.get('expanded', item)) {
-					this.expandedKeys.add(key)
-				}
 				this.createLookup(fm.get('children', item), itemPath)
-			}
-		})
-	}
-
-	/**
-	 * @private
-	 * @param {Object[]} items
-	 * @param {number[]} [path]=[]
-	 * @param {boolean}  [visible]=true
-	 */
-	refresh(items, path = [], visible = true) {
-		if (path.length === 0) this.data = []
-		const fm = this.mappers[path.length]
-		items.forEach((item, index) => {
-			const itemPath = [...path, index]
-			const key = getKeyFromPath(itemPath)
-			const expanded = this.expandedKeys.has(key)
-
-			if (visible) this.data.push({ key, value: item })
-			if (fm.hasChildren(item)) {
-				this.refresh(fm.get('children', item), itemPath, visible && expanded)
 			}
 		})
 	}
@@ -87,33 +59,42 @@ export class NestedController extends ListController {
 
 	toggleExpansion(key) {
 		if (!this.lookup.has(key)) return false
-		if (this.expandedKeys.has(key)) {
-			this.expandedKeys.delete(key)
-		} else {
-			this.expandedKeys.add(key)
-		}
-
-		this.refresh(this.items)
+		const item = this.lookup.get(key)
+		const fields = this.fieldsFor(key)
+		item[fields.expanded] = !item[this.fields.expanded]
 		return true
 	}
 
 	expand(key) {
-		if (!this.lookup.has(key)) return false
-		if (!this.expandedKeys.has(key)) {
-			this.expandedKeys.add(key)
-			this.refresh(this.items)
-		}
+		const actualKey = key ?? this.focusedKey
+		if (!this.lookup.has(actualKey)) return false
+		const item = this.lookup.get(actualKey)
+		const fields = this.fieldsFor(actualKey)
+		item[fields.expanded] = true
+
+		return true
 	}
 
 	collapse(key) {
-		if (!this.lookup.has(key)) return false
-		if (this.expandedKeys.has(key)) this.expandedKeys.delete(key)
-		this.refresh(this.items)
+		const actualKey = key ?? this.focusedKey
+		if (!this.lookup.has(actualKey)) return false
+		const item = this.lookup.get(actualKey)
+		const fields = this.fieldsFor(actualKey)
+		item[fields.expanded] = false
+		return true
 	}
 
-	hasChildren(key) {
+	/**
+	 *
+	 * @param {*} key
+	 * @returns
+	 */
+	fieldsFor(key) {
 		const path = getPathFromKey(key)
-		const fm = this.mappers[path.length - 1]
-		return fm.hasChildren(this.lookup.get(key))
+		let fields = this.fields
+		for (let i = 1; i < path.length; i++) {
+			fields = getNestedFields(fields)
+		}
+		return fields
 	}
 }

@@ -1,24 +1,25 @@
-import { FieldMapper } from '@rokkit/core'
+import { FieldMapper, defaultFields } from '@rokkit/core'
 import { equals } from 'ramda'
 import { SvelteSet } from 'svelte/reactivity'
+import { flatVisibleNodes } from './derive.svelte'
 
 export class ListController {
 	items = $state(null)
-	data = null
+	fields = defaultFields
 	mappers = []
 	#options = $state({})
 	lookup = new Map()
 	selectedKeys = new SvelteSet()
-	#currentKey = $state(null)
+	focusedKey = $state(null)
 	#currentIndex = -1
-	expandedKeys = new SvelteSet()
 
-	expanded = $derived(Array.from(this.expandedKeys).map((key) => this.lookup.get(key)))
 	selected = $derived(Array.from(this.selectedKeys).map((key) => this.lookup.get(key)))
-	focused = $derived(this.lookup.get(this.#currentKey))
+	focused = $derived(this.lookup.get(this.focusedKey))
+	data = $derived(flatVisibleNodes(this.items, this.fields))
 
 	constructor(items, value, fields, options) {
 		this.items = items
+		this.fields = { ...defaultFields, ...fields }
 		this.mappers.push(new FieldMapper(fields))
 		this.#options = { multiselect: false, ...options }
 		this.init(items, value)
@@ -31,7 +32,6 @@ export class ListController {
 	 */
 	init(items, value) {
 		items.forEach((item, index) => this.lookup.set(String(index), item))
-		this.data = items.map((item, index) => ({ key: String(index), value: item }))
 		this.moveToValue(value)
 	}
 
@@ -40,7 +40,7 @@ export class ListController {
 	}
 
 	get currentKey() {
-		return this.#currentKey
+		return this.focusedKey
 	}
 
 	/**
@@ -66,7 +66,7 @@ export class ListController {
 			this.moveToIndex(index)
 			this.selectedKeys.add(key)
 		} else {
-			this.#currentKey = null
+			this.focusedKey = null
 			this.#currentIndex = -1
 		}
 		return true
@@ -89,7 +89,7 @@ export class ListController {
 	moveToIndex(index) {
 		if (index >= 0 && index < this.data.length && this.#currentIndex !== index) {
 			this.#currentIndex = index
-			this.#currentKey = this.data[index].key
+			this.focusedKey = this.data[index].key
 			return true
 		}
 		return false
@@ -140,11 +140,11 @@ export class ListController {
 	 * @returns
 	 */
 	select(selectedKey) {
-		const key = selectedKey ?? this.#currentKey
+		const key = selectedKey ?? this.focusedKey
 
 		if (!this.lookup.has(key)) return false
 
-		if (this.#currentKey !== key) {
+		if (this.focusedKey !== key) {
 			const { index } = this.findByValue(this.lookup.get(key))
 			this.moveToIndex(index)
 		}
@@ -163,7 +163,7 @@ export class ListController {
 	 * @returns
 	 */
 	extendSelection(selectedKey) {
-		const key = selectedKey ?? this.#currentKey
+		const key = selectedKey ?? this.focusedKey
 
 		if (!this.lookup.has(key)) return false
 

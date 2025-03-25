@@ -1,5 +1,4 @@
 import { find, toPairs } from 'ramda'
-import { getPathFromKey } from '@rokkit/core'
 
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
@@ -136,6 +135,18 @@ function createModifierKeyboardActionMap(options) {
 	return { ...common, ...directional }
 }
 /**
+ * Identifies if an element is a collapsible icon
+ * @param {HTMLElement} target
+ * @returns
+ */
+function isNodeToggle(target) {
+	return (
+		target &&
+		target.getAttribute('data-tag') === 'icon' &&
+		['closed', 'opened'].includes(target.getAttribute('data-state'))
+	)
+}
+/**
  * Determines an action based on a keyboard event and navigation options
  *
  * @param {KeyboardEvent} event - The keyboard event
@@ -175,10 +186,7 @@ export const getClickAction = (event) => {
 	}
 
 	// Check if clicked on icon with collapsed/expanded state
-	if (
-		target.getAttribute('data-tag') === 'icon' &&
-		['closed', 'opened'].includes(target.getAttribute('data-state'))
-	) {
+	if (isNodeToggle(target) || isNodeToggle(target.parentElement)) {
 		return 'toggle'
 	}
 

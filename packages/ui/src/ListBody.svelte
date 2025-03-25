@@ -7,9 +7,10 @@
 		items = $bindable([]),
 		value = null,
 		fields,
-		selected = [],
 		path = [],
 		onchange = () => {},
+		selectedKeys = new SvelteSet(),
+		focusedKey = null,
 		stub = null,
 		extra
 	} = $props()
@@ -25,8 +26,8 @@
 	<rk-list-item
 		role="option"
 		data-path={pathKey}
-		aria-selected={selected.includes(item)}
-		aria-current={equals(item, value)}
+		aria-selected={selectedKeys.has(pathKey)}
+		aria-current={focusedKey === pathKey}
 	>
 		<svelte:boundary>
 			{#if template}

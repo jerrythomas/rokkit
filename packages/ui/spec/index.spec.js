@@ -29,7 +29,6 @@ describe('components', () => {
 			'Switch',
 			'List',
 			'Accordion',
-			'NestedList',
 			'Tree',
 			'Tabs',
 			'Select',

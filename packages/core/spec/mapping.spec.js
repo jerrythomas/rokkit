@@ -13,7 +13,7 @@ import {
 
 describe('mapping', () => {
 	const fields = {
-		isOpen: 'isOpen',
+		expanded: '_expanded',
 		children: 'children'
 	}
 	describe('getComponent', () => {
@@ -211,8 +211,8 @@ describe('mapping', () => {
 	describe('isExpanded', () => {
 		it('returns true if the item is expanded', () => {
 			const item = {
-				isOpen: true,
-				children: []
+				_expanded: true,
+				children: [1]
 			}
 
 			expect(isExpanded(item, fields)).toBe(true)
@@ -220,7 +220,7 @@ describe('mapping', () => {
 
 		it('returns false if the item is not expanded', () => {
 			const item = {
-				isOpen: false,
+				_expanded: false,
 				children: []
 			}
 

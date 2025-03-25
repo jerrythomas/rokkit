@@ -7,7 +7,7 @@ exports[`NestedList > should render nested list 1`] = `
   >
     <rk-node
       aria-current="false"
-      aria-expanded="false"
+      aria-expanded="true"
       aria-selected="false"
       data-depth="1"
       data-path="0"
@@ -18,16 +18,16 @@ exports[`NestedList > should render nested list 1`] = `
       >
         <!---->
         <rk-icon
-          aria-label="expand"
+          aria-label="collapse"
           class="w-4 small"
-          data-state="closed"
+          data-state="opened"
           data-tag="icon"
           role="img"
           tabindex="-1"
         >
           <i
             aria-hidden="true"
-            class="node-closed"
+            class="node-opened"
           />
         </rk-icon>
         
@@ -48,12 +48,135 @@ exports[`NestedList > should render nested list 1`] = `
       </div>
        
       <!---->
+      <rk-nested-list
+        role="tree"
+      >
+        <rk-node
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-path="0-0"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 1
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </rk-node>
+        <rk-node
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-path="0-1"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 2
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </rk-node>
+        
+      </rk-nested-list>
       
       <!---->
     </rk-node>
     <rk-node
       aria-current="false"
-      aria-expanded="false"
+      aria-expanded="true"
       aria-selected="false"
       data-depth="1"
       data-path="1"
@@ -64,16 +187,16 @@ exports[`NestedList > should render nested list 1`] = `
       >
         <!---->
         <rk-icon
-          aria-label="expand"
+          aria-label="collapse"
           class="w-4 small"
-          data-state="closed"
+          data-state="opened"
           data-tag="icon"
           role="img"
           tabindex="-1"
         >
           <i
             aria-hidden="true"
-            class="node-closed"
+            class="node-opened"
           />
         </rk-icon>
         
@@ -94,6 +217,210 @@ exports[`NestedList > should render nested list 1`] = `
       </div>
        
       <!---->
+      <rk-nested-list
+        role="tree"
+      >
+        <rk-node
+          aria-current="false"
+          aria-expanded="true"
+          aria-selected="false"
+          data-depth="2"
+          data-path="1-0"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <rk-icon
+              aria-label="collapse"
+              class="w-4 small"
+              data-state="opened"
+              data-tag="icon"
+              role="img"
+              tabindex="-1"
+            >
+              <i
+                aria-hidden="true"
+                class="node-opened"
+              />
+            </rk-icon>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 3
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          <rk-nested-list
+            role="tree"
+          >
+            <rk-node
+              aria-current="false"
+              aria-expanded="false"
+              aria-selected="false"
+              data-depth="3"
+              data-path="1-0-0"
+              role="treeitem"
+            >
+              <div
+                class="flex flex-row items-center"
+              >
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
+                >
+                  <!---->
+                  <!---->
+                  <i
+                    class="row-span-2 border-r"
+                  />
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+                >
+                  <!---->
+                  <i
+                    class="border-r"
+                  />
+                   
+                  <i
+                    class="border-b"
+                  />
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+                >
+                  <!---->
+                  <!---->
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                 
+                <rk-item>
+                  <!---->
+                  <!---->
+                  
+                  <!---->
+                   
+                  <p>
+                    Grandchild 1
+                  </p>
+                  <!---->
+                  <!---->
+                </rk-item>
+              </div>
+               
+              <!---->
+              
+              <!---->
+            </rk-node>
+            
+          </rk-nested-list>
+          
+          <!---->
+        </rk-node>
+        <rk-node
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-path="1-1"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 4
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </rk-node>
+        
+      </rk-nested-list>
       
       <!---->
     </rk-node>
@@ -110,7 +437,7 @@ exports[`NestedList > should render nested list 2`] = `
   >
     <rk-node
       aria-current="false"
-      aria-expanded="false"
+      aria-expanded="true"
       aria-selected="false"
       data-depth="1"
       data-path="0"
@@ -121,16 +448,16 @@ exports[`NestedList > should render nested list 2`] = `
       >
         <!---->
         <rk-icon
-          aria-label="expand"
+          aria-label="collapse"
           class="w-4 small"
-          data-state="closed"
+          data-state="opened"
           data-tag="icon"
           role="img"
           tabindex="-1"
         >
           <i
             aria-hidden="true"
-            class="node-closed"
+            class="node-opened"
           />
         </rk-icon>
         
@@ -151,12 +478,135 @@ exports[`NestedList > should render nested list 2`] = `
       </div>
        
       <!---->
+      <rk-nested-list
+        role="tree"
+      >
+        <rk-node
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-path="0-0"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 1
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </rk-node>
+        <rk-node
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-path="0-1"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 2
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </rk-node>
+        
+      </rk-nested-list>
       
       <!---->
     </rk-node>
     <rk-node
       aria-current="false"
-      aria-expanded="false"
+      aria-expanded="true"
       aria-selected="false"
       data-depth="1"
       data-path="1"
@@ -167,16 +617,16 @@ exports[`NestedList > should render nested list 2`] = `
       >
         <!---->
         <rk-icon
-          aria-label="expand"
+          aria-label="collapse"
           class="w-4 small"
-          data-state="closed"
+          data-state="opened"
           data-tag="icon"
           role="img"
           tabindex="-1"
         >
           <i
             aria-hidden="true"
-            class="node-closed"
+            class="node-opened"
           />
         </rk-icon>
         
@@ -197,6 +647,210 @@ exports[`NestedList > should render nested list 2`] = `
       </div>
        
       <!---->
+      <rk-nested-list
+        role="tree"
+      >
+        <rk-node
+          aria-current="false"
+          aria-expanded="true"
+          aria-selected="false"
+          data-depth="2"
+          data-path="1-0"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <rk-icon
+              aria-label="collapse"
+              class="w-4 small"
+              data-state="opened"
+              data-tag="icon"
+              role="img"
+              tabindex="-1"
+            >
+              <i
+                aria-hidden="true"
+                class="node-opened"
+              />
+            </rk-icon>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 3
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          <rk-nested-list
+            role="tree"
+          >
+            <rk-node
+              aria-current="false"
+              aria-expanded="false"
+              aria-selected="false"
+              data-depth="3"
+              data-path="1-0-0"
+              role="treeitem"
+            >
+              <div
+                class="flex flex-row items-center"
+              >
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
+                >
+                  <!---->
+                  <!---->
+                  <i
+                    class="row-span-2 border-r"
+                  />
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+                >
+                  <!---->
+                  <i
+                    class="border-r"
+                  />
+                   
+                  <i
+                    class="border-b"
+                  />
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+                >
+                  <!---->
+                  <!---->
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                 
+                <rk-item>
+                  <!---->
+                  <!---->
+                  
+                  <!---->
+                   
+                  <p>
+                    Grandchild 1
+                  </p>
+                  <!---->
+                  <!---->
+                </rk-item>
+              </div>
+               
+              <!---->
+              
+              <!---->
+            </rk-node>
+            
+          </rk-nested-list>
+          
+          <!---->
+        </rk-node>
+        <rk-node
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-path="1-1"
+          role="treeitem"
+        >
+          <div
+            class="flex flex-row items-center"
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <rk-item>
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 4
+              </p>
+              <!---->
+              <!---->
+            </rk-item>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </rk-node>
+        
+      </rk-nested-list>
       
       <!---->
     </rk-node>
