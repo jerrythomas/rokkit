@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { render, cleanup } from '@testing-library/svelte'
 import NestedList from '../src/NestedList.svelte'
 import { flushSync } from 'svelte'
+import { defaultFields } from '@rokkit/core'
 
 describe('NestedList', () => {
 	const items = $state([
@@ -19,7 +20,7 @@ describe('NestedList', () => {
 	beforeEach(() => cleanup())
 
 	it('should render nested list', () => {
-		const props = $state({ items })
+		const props = $state({ items, fields: defaultFields })
 		const { container } = render(NestedList, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()

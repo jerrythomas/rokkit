@@ -1,6 +1,13 @@
 <script>
 	import { equals } from 'ramda'
-	import { createEmitter, noop, getKeyFromPath, getSnippet } from '@rokkit/core'
+	import {
+		createEmitter,
+		noop,
+		getKeyFromPath,
+		getSnippet,
+		defaultFields,
+		hasChildren
+	} from '@rokkit/core'
 	import { NestedController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Summary from './Summary.svelte'
@@ -41,13 +48,14 @@
 		multiselect,
 		autoCloseSiblings
 	})
+	let derivedFields = $derived({ ...defaultFields, ...fields })
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <rk-accordion
 	class={classes}
 	tabindex="0"
-	use:navigator={{ wrapper }}
+	use:navigator={{ wrapper, nested: true }}
 	onactivate={() => (value = wrapper.value)}
 >
 	{#if header}
@@ -64,19 +72,20 @@
 	{/if}
 	{#each items as item, index}
 		{@const key = `${index}`}
+		{@const expanded = item[derivedFields.expanded]}
 		<div
 			class="flex flex-col"
-			class:is-expanded={wrapper.expandedKeys.has(key)}
+			class:is-expanded={expanded}
 			class:is-selected={wrapper.selectedKeys.has(key)}
 			data-path={index}
 		>
 			<Summary
 				bind:value={items[index]}
 				{fields}
-				expanded={wrapper.expandedKeys.has(key)}
-				hasChildren={wrapper.hasChildren(key)}
+				{expanded}
+				hasChildren={hasChildren(item, derivedFields)}
 			/>
-			{#if wrapper.expandedKeys.has(key)}
+			{#if expanded}
 				<rk-list role="listbox" tabindex="-1">
 					<ListBody
 						bind:items={items[fields.children]}

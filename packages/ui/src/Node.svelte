@@ -1,15 +1,22 @@
 <script>
-	import { SvelteSet } from 'svelte/reactivity'
-	import { defaultStateIcons, getKeyFromPath, getSnippet, FieldMapper } from '@rokkit/core'
+	import { defaultStateIcons, getKeyFromPath, getSnippet } from '@rokkit/core'
 	import Icon from './Icon.svelte'
 	import Connector from './Connector.svelte'
 	import Item from './Item.svelte'
 
 	/**
-	 * @typedef {Object} Props
-	 * @property {any} value
-	 * @property {any} [types]
+	 * @typedef {Object}                            Props
+	 * @property {any}                              value
+	 * @property {import('./types').FieldMapping}   fields
+	 * @property {any}                              [types]
 	 * @property {import('./types').NodeStateIcons} [stateIcons]
+	 * @property {number[]}                         [path=[]]
+	 * @property {boolean}                          [focused=false]
+	 * @property {boolean}                          [selected=false]
+	 * @property {boolean}                          [expanded=false]
+	 * @property {Function}                         [children]
+	 * @property {Function}                         [stub=null]
+	 * @property {Object<string, Function>}         [snippets={}]
 	 */
 
 	/** @type {Props} */
@@ -19,31 +26,28 @@
 		types = [],
 		stateIcons = defaultStateIcons.node,
 		path = [],
-		stub = null,
+		focused = false,
+		selected = false,
+		expanded = false,
 		children,
-		focusedKey,
-		selectedKeys = new SvelteSet(),
-		expandedKeys = new SvelteSet(),
-		...extra
+		stub = null,
+		snippets = {}
 	} = $props()
 
-	const key = $derived(getKeyFromPath(path))
+	let stateName = $derived(expanded ? 'opened' : 'closed')
 	let icons = $derived({ ...defaultStateIcons.node, ...stateIcons })
-	let stateName = $derived(expandedKeys.has(key) ? 'opened' : 'closed')
 	let state = $derived(
-		expandedKeys.has(key)
-			? { icon: icons.opened, label: 'collapse' }
-			: { icon: icons.closed, label: 'expand' }
+		expanded ? { icon: icons.opened, label: 'collapse' } : { icon: icons.closed, label: 'expand' }
 	)
-	const mapper = new FieldMapper(fields)
 
-	const template = getSnippet(mapper.get('component', value), extra, stub)
+	const template = getSnippet(value[fields.snippet], snippets, stub)
+	$inspect(template)
 </script>
 
 <rk-node
-	aria-current={focusedKey === key}
-	aria-selected={selectedKeys.has(key)}
-	aria-expanded={expandedKeys.has(key)}
+	aria-current={focused}
+	aria-selected={selected}
+	aria-expanded={expanded}
 	role="treeitem"
 	data-path={getKeyFromPath(path)}
 	data-depth={path.length}
@@ -57,11 +61,16 @@
 			{/if}
 		{/each}
 		<rk-item>
-			{#if template}
+			<svelte:boundary>
+				<!-- {#if template} -->
 				{@render template(value)}
-			{:else}
-				<Item {value} {fields} />
-			{/if}
+				{#snippet failed()}
+					<Item {value} {fields} />
+				{/snippet}
+				<!-- {:else}
+					<Item {value} {fields} />
+				{/if} -->
+			</svelte:boundary>
 		</rk-item>
 	</div>
 	{@render children?.()}

@@ -1,15 +1,13 @@
-import { defaultFields } from './constants.js'
 import { isNil, has, omit } from 'ramda'
+import { defaultFields } from './constants.js'
 import { isObject } from './utils.js'
 
 export class FieldMapper {
 	#fields = { ...defaultFields }
-	// #componentMap = {}
 	#childMapper = null
 
 	constructor(fields = defaultFields) {
 		this.#updateFields(fields)
-		// this.#updateComponentMap(componentMap)
 	}
 
 	#updateFields(fields) {
@@ -33,14 +31,6 @@ export class FieldMapper {
 		])
 	}
 
-	// #updateComponentMap(components) {
-	// 	if (typeof components === 'object' && components) {
-	// 		Object.keys(components).forEach((key) => {
-	// 			this.#componentMap[key] = components[key]
-	// 		})
-	// 	}
-	// }
-
 	getChildMapper() {
 		if (!this.#childMapper) {
 			this.#childMapper = new FieldMapper(this.fields.fields ?? this.fields)
@@ -51,17 +41,15 @@ export class FieldMapper {
 	 * @private
 	 */
 	prop(fieldName, value) {
-		// Early return for null/undefined value
 		if (isNil(value)) return null
 
-		// For objects, look up mapped field
 		if (typeof value === 'object') {
 			return value[this.fields[fieldName]]
 		}
 
-		// For non-objects, only honor 'text' field
 		return fieldName === 'text' ? value : null
 	}
+
 	/**
 	 * Gets a mapped attribute from the original item
 	 *
@@ -69,7 +57,6 @@ export class FieldMapper {
 	 * @returns {any|null} - The attribute value or null if not found
 	 */
 	get(fieldName, value, defaultValue = null) {
-		// For non-objects, only honor 'text' field
 		return this.prop(fieldName, value) ?? defaultValue
 	}
 

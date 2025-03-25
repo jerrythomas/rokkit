@@ -51,6 +51,7 @@ export function handleAction(event, handler, path) {
 	if (handler) {
 		event.preventDefault()
 		event.stopPropagation()
+
 		return handler(path)
 	}
 	return false

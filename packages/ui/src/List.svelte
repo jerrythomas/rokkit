@@ -48,7 +48,7 @@
 
 	let emitter = createEmitter(events, ['select', 'change', 'move'])
 	let extra = omit(['onselect', 'onchange', 'onmove'], events)
-	let wrapper = $derived(new ListController(items, value, fields, { multiSelect }))
+	let wrapper = new ListController(items, value, fields, { multiSelect })
 </script>
 
 <rk-list
@@ -74,7 +74,8 @@
 				bind:items
 				bind:value
 				{fields}
-				{selected}
+				selectedKeys={wrapper.selectedKeys}
+				focusedKey={wrapper.focusedKey}
 				{stub}
 				onchange={emitter.change}
 				{extra}

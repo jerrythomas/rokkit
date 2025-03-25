@@ -1,6 +1,6 @@
 import { defaultFields } from './constants.js'
 import { toString, isObject } from './utils.js'
-
+import { has } from 'ramda'
 /**
  * Get the component to be used to render the item.
  * If the component is null or undefined, it will return the default component.
@@ -104,12 +104,7 @@ export function getFormattedText(node, fields = defaultFields, formatter = toStr
  * @returns {boolean}
  */
 export function hasChildren(item, fields) {
-	return (
-		item !== null &&
-		typeof item === 'object' &&
-		fields.children in item &&
-		Array.isArray(item[fields.children])
-	)
+	return has(fields.children, item) && Array.isArray(item[fields.children])
 }
 
 /**
@@ -122,8 +117,18 @@ export function hasChildren(item, fields) {
 export function isExpanded(item, fields) {
 	if (item === null) return false
 	if (!hasChildren(item, fields)) return false
-	if (fields.isOpen in item) {
-		return item[fields.isOpen]
+	if (has(fields.expanded, item)) {
+		return item[fields.expanded]
 	}
 	return false
+}
+
+/**
+ * Fetches the fieldmapping for a child node
+ *
+ * @param {import('./types').FieldMapping} fields
+ * @returns {import('./types').FieldMapping}
+ */
+export function getNestedFields(fields) {
+	return { ...defaultFields, ...(fields.fields ?? fields) }
 }

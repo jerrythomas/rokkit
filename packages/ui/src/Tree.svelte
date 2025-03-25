@@ -1,5 +1,5 @@
 <script>
-	import { createEmitter } from '@rokkit/core'
+	import { createEmitter, defaultFields } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import NestedList from './NestedList.svelte'
 	import { NestedController } from '@rokkit/states'
@@ -13,6 +13,10 @@
 	 * @property {import('./types').NodeStateIcons|Object} [icons]
 	 * @property {boolean} [autoCloseSiblings=false]
 	 * @property {boolean} [multiselect=false]
+	 * @property {Function} [header]
+	 * @property {Function} [footer]
+	 * @property {Function} [empty]
+	 * @property {Function} [stub]
 	 */
 
 	/** @type {Props & { [key: string]: any }} */
@@ -24,28 +28,32 @@
 		icons = {},
 		autoCloseSiblings = false,
 		multiselect = false,
-		keys = null,
 		header,
 		footer,
 		empty,
+		stub,
 		...events
 	} = $props()
 
-	let selected = $state([])
-	let expanded = $state([])
-	let emitter = createEmitter(events, ['select', 'move', 'collapse', 'expand'])
+	let emitter = createEmitter(events, ['select', 'move', 'toggle'])
 	let wrapper = new NestedController(items, value, fields, { autoCloseSiblings, multiselect })
+	let snippets = omit(['onselect', 'onmove', 'ontoggle'], events)
+	let derivedFields = $derived({ ...defaultFields, ...fields })
 
 	function handleAction(event) {
-		const { eventName, data } = event.detail
-		if (eventName === 'select') value = wrapper.currentNode?.value
-
-		if (has([eventName], emitter)) emitter[eventName](data)
+		const { name, data } = event.detail
+		if (name === 'select') value = data.value
+		if (has([name], emitter)) emitter[name](data)
 	}
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-tree tabindex="0" class={classes} use:navigator={{ wrapper }} onaction={handleAction}>
+<rk-tree
+	tabindex="0"
+	class={classes}
+	use:navigator={{ wrapper, nested: true }}
+	onaction={handleAction}
+>
 	{#if header}
 		<rk-header>{@render header()}</rk-header>
 	{/if}
@@ -58,12 +66,13 @@
 	{/if}
 	<NestedList
 		{items}
-		{fields}
+		fields={derivedFields}
 		{value}
 		{icons}
 		focusedKey={wrapper.currentKey}
 		selectedKeys={wrapper.selectedKeys}
-		expandedKeys={wrapper.expandedKeys}
+		{stub}
+		{snippets}
 	/>
 	{#if footer}
 		<rk-footer>{@render footer()}</rk-footer>
