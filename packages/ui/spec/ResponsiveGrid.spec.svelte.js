@@ -17,6 +17,7 @@ describe('ResponsiveGrid.svelte', () => {
 	beforeEach(() => {
 		vi.useFakeTimers()
 		cleanup()
+		 
 		global.Touch = vi.fn().mockImplementation((input) => input)
 	})
 	afterEach(() => vi.useRealTimers())

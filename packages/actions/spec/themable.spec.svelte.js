@@ -1,4 +1,4 @@
-import { it, expect, describe } from 'vitest'
+import { it, expect, describe, vi, beforeEach, afterEach } from 'vitest'
 import { flushSync } from 'svelte'
 import { themable } from '../src/themable.svelte.js'
 import { vibe } from '@rokkit/states'

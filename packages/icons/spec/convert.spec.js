@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest'
 import { convert } from '../src/convert'
 import fs from 'fs'
 import { omit } from 'ramda'

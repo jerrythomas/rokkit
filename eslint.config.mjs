@@ -22,10 +22,34 @@ export default [
       sourceType: 'module',
       ecmaVersion: 'latest',
       globals: {
-        browser: true,
-        es6: true,
-        node: true
+        // Correctly define globals as individual entries
+        TouchEvent: 'readonly',
+        CustomEvent: 'readonly',
+        Touch: 'readonly',
+        MouseEvent: 'readonly',
+        KeyboardEvent: 'readonly',
+        Event: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+        global: 'readonly',
+        __APP_VERSION__: 'readonly'
+        // Add any other specific globals you need
+      },
+      // You can use parserOptions to specify environments
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
       }
+    },
+    // Setting environments in flat config
+    linterOptions: {
+      reportUnusedDisableDirectives: true
     },
     rules: {
       complexity: ['warn', 5],
@@ -39,6 +63,7 @@ export default [
       'no-implicit-coercion': 'error',
       'no-use-before-define': 'error',
       'no-unused-vars': 'error',
+      'no-undef': 'error',
       'max-lines-per-function': [
         'warn',
         {
