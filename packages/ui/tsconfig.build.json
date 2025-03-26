@@ -5,7 +5,8 @@
     "declaration": true,
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "allowJs": false
   },
-  "exclude": ["**/spec/**", "**/test/**", "dist", "**/fixtures/**"]
+  "exclude": ["**/spec/**/*", "**/fixtures/**/*"]
 }

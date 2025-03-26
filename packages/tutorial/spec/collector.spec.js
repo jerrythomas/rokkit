@@ -112,6 +112,8 @@ describe('collector', () => {
 			)
 		})
 		it('should return error message in case of import errors', async () => {
+			const folder = path.join(__dirname, '../fixtures/error')
+			await fs.copyFile(path.join(folder, 'meta.js.txt'), path.join(folder, 'meta.js'))
 			const result = await getMetadata(rootFolder, {
 				path: 'error',
 				name: 'meta.js',
@@ -125,6 +127,7 @@ describe('collector', () => {
 					`At file: ${rootFolder}/error/meta.js:2:5`
 				].join('\n')
 			)
+			await fs.unlink(path.join(folder, 'meta.js'))
 		})
 	})
 	describe('getFolder', () => {

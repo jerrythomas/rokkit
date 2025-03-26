@@ -104,21 +104,8 @@ export class FieldMapper {
 		)
 	}
 
-	isHidden(item) {
-		return has(this.fields.isHidden, item) && item[this.fields.isHidden]
-	}
-
 	isNested(items) {
 		return Array.isArray(items) && items.some((item) => this.hasChildren(item))
-	}
-
-	toggleVisibility(items, visible) {
-		items.forEach((item) => {
-			item[this.fields.isHidden] = !visible
-			if (this.hasChildren(item)) {
-				this.toggleVisibility(item[this.fields.children], visible && item[this.fields.isOpen])
-			}
-		})
 	}
 
 	getChildren(item) {

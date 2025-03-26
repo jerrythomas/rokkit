@@ -47,7 +47,6 @@ export class NestedController extends ListController {
 
 	ensureVisible(value) {
 		const result = this.lookup.entries().find((entry) => equals(entry[1], value))
-		if (!Array.isArray(result)) return false
 		const path = getPathFromKey(result[0])
 
 		for (let i = 1; i < path.length; i++) {
@@ -68,6 +67,7 @@ export class NestedController extends ListController {
 	expand(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
+
 		const item = this.lookup.get(actualKey)
 		const fields = this.fieldsFor(actualKey)
 		item[fields.expanded] = true
