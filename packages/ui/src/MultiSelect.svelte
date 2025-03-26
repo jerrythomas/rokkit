@@ -36,7 +36,7 @@
 >
 	{#if value.length > 0}
 		<items class="flex flex-wrap">
-			{#each value as item}
+			{#each value as item, index (index)}
 				<Item value={item} {fields} {using} removable on:remove={handleRemove} class="pill" />
 			{/each}
 		</items>

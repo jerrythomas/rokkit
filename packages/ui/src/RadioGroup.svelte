@@ -37,7 +37,7 @@
 	class="flex cursor-pointer select-none flex-col {className}"
 	class:disabled={readOnly}
 >
-	{#each options as item}
+	{#each options as item, index (index)}
 		{@const label = mapping.get('text', item)}
 		{@const itemValue = mapping.get('value', item, label)}
 

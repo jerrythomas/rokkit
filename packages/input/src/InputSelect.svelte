@@ -38,7 +38,7 @@
 		{...rest}
 		onchange={handleChange}
 	>
-		{#each options as option, index}
+		{#each options as option, index (index)}
 			<option value={index}>
 				{mapping.get('text', option)}
 			</option>

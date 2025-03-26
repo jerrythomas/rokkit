@@ -71,7 +71,7 @@
 	onremove={handleRemove}
 	onadd={handleAdd}
 >
-	{#each filtered as item, index}
+	{#each filtered as item, index (index)}
 		{@const Template = getSnippet(extra, mapper.get('snippet', item), stub)}
 		<rk-tab>
 			{#if Template}

@@ -1,0 +1,125 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
+<div>
+  <container
+    class="flex h-full w-full flex-row"
+  >
+    <aside
+      class="border-r-neutral-subtle flex h-full w-80 border-r"
+    >
+      <rk-tree
+        class="h-full w-full"
+        tabindex="0"
+      >
+        <!---->
+         
+        <!---->
+         
+        <rk-nested-list
+          role="tree"
+        >
+          <rk-node
+            aria-current="false"
+            aria-expanded="false"
+            aria-selected="false"
+            data-depth="1"
+            data-path="0"
+            role="treeitem"
+          >
+            <div
+              class="flex flex-row items-center"
+            >
+              <!---->
+              <span
+                class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              >
+                <!---->
+                <!---->
+                
+                
+                <!---->
+              </span>
+              
+              <!---->
+               
+              <rk-item>
+                <!---->
+                <rk-icon
+                  aria-label="object"
+                  class=""
+                  data-tag="icon"
+                  role="img"
+                  tabindex="-1"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="object"
+                  />
+                </rk-icon>
+                <!---->
+                 
+                <!---->
+                <!---->
+              </rk-item>
+            </div>
+             
+            <!---->
+            
+            <!---->
+          </rk-node>
+          
+        </rk-nested-list>
+        <!---->
+         
+        <!---->
+      </rk-tree>
+      <!---->
+    </aside>
+     
+    <content
+      class="flex h-full w-full flex-col gap-4 overflow-hidden p-8"
+    >
+      <!---->
+       
+      <section
+        class="flex w-full flex-grow flex-col overflow-auto"
+      >
+        <!---->
+        <p>
+          No atomic attributes at this level. Select a child node to edit. Current value is below.
+        </p>
+         
+        <rk-tree-table
+          class=""
+        >
+          <table
+            class="striped"
+          >
+            <thead>
+              <tr>
+                <th>
+                  path
+                </th>
+                <th>
+                  value
+                </th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </rk-tree-table>
+        <!---->
+        
+        <!---->
+      </section>
+       
+      <!---->
+    </content>
+  </container>
+  
+</div>
+`;

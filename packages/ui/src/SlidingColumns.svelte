@@ -34,7 +34,7 @@
 	class="relative grid h-full w-full overflow-hidden"
 	bind:clientWidth={width}
 >
-	{#each columns as column, index}
+	{#each columns as column, index (index)}
 		{#if index === activeIndex}
 			<rk-segment
 				class="slide absolute h-full w-full {column}"

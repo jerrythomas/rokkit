@@ -3,27 +3,41 @@
 	import ControlPanel from './ControlPanel.svelte'
 	import { data } from './data'
 
-	export let stages = 5
-	export let steps = 4
-	export let showLabels = true
-	export let formatString = '02'
-	export let currentStage = 2
-	export let currentStep = 2
+	let {
+		stages = 5,
+		steps = 4,
+		showLabels = true,
+		formatString = '02',
+		currentStage = 0,
+		currentStep = 0
+	} = $props()
 
-	let clickData
+	/**
+	 * @typedef {Object} ClickData
+	 * @property {number} stage
+	 * @property {number} progress
+	 * @property {number} step
+	 */
+	let clickData = {}
+
+	/**
+	 * @param {CustomEvent<ClickData>} e
+	 */
 	function handleClick(e) {
 		clickData = e.detail
 	}
 
-	$: filtered = showLabels
-		? data.slice(0, stages)
-		: data.slice(0, stages).map((d) => ({ progress: d.progress }))
+	let filtered = $derived(
+		showLabels
+			? data.slice(0, stages)
+			: data.slice(0, stages).map((d) => ({ progress: d.progress }))
+	)
 </script>
 
 <section class="flex flex-grow flex-col p-8">
 	<ProgressDots count={5} value={-1} current={-1} />
-	<Stepper data={filtered} {steps} {currentStage} {currentStep} on:click={handleClick} />
-	<div class="flex p-6" width="100px">
+	<Stepper data={filtered} {steps} {currentStage} {currentStep} onclick={handleClick} />
+	<div class="flex p-6" style:width="100px">
 		<Range />
 	</div>
 
@@ -42,4 +56,4 @@
 		</div>
 	{/if}
 </section>
-<ControlPanel bind:stages bind:steps bind:showLabels bind:data={filtered} bind:formatString />
+<ControlPanel bind:stages bind:steps bind:showLabels data={filtered} bind:formatString />

@@ -70,7 +70,7 @@
 			{/if}
 		</rk-list-item>
 	{/if}
-	{#each items as item, index}
+	{#each items as item, index (index)}
 		{@const key = `${index}`}
 		{@const expanded = item[derivedFields.expanded]}
 		<div

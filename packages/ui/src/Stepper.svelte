@@ -21,11 +21,11 @@
 </script>
 
 <div
-	class="stepper w-full flex flex-col items-center gap-3 border rounded p-8 shadow"
+	class="stepper flex w-full flex-col items-center gap-3 rounded border p-8 shadow"
 	style:--count={data.length}
 >
 	<row>
-		{#each data as { text, completed, active, steps }, stage}
+		{#each data as { text, completed, active, steps }, stage (stage)}
 			<div class="flex flex-col items-center justify-center first:col-start-2">
 				<Stage {text} {completed} {active} on:click={() => handleClick({ stage })} />
 			</div>
@@ -42,10 +42,10 @@
 		{/each}
 	</row>
 	<row>
-		{#each data as { label }, stage}
+		{#each data as { label }, stage (stage)}
 			{#if label}
 				<p
-					class="col-span-3 w-full flex justify-center font-medium leading-loose text-center text-neutral-800"
+					class="col-span-3 flex w-full justify-center text-center font-medium leading-loose text-neutral-800"
 					class:pending={stage > currentStage}
 				>
 					{label}
@@ -57,10 +57,10 @@
 
 <style lang="postcss">
 	.stepper row {
-		@apply w-full grid;
+		@apply grid w-full;
 		grid-template-columns: repeat(var(--count), 2fr 6fr 2fr);
 	}
 	.pending {
-		@apply text-neutral-500 font-light;
+		@apply font-light text-neutral-500;
 	}
 </style>

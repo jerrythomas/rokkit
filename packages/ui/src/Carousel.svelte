@@ -33,7 +33,7 @@
 			<p>{value.text}</p>
 		</slide>
 		<dot-nav role="radiogroup">
-			{#each items as item, index}
+			{#each items as item, index (index)}
 				<dot
 					role="radio"
 					aria-checked={currentIndex === index}

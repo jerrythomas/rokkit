@@ -19,7 +19,7 @@
 	})
 </script>
 
-{#each items as item, index}
+{#each items as item, index (index)}
 	{@const template = getSnippet(extra, fm.get('snippet', item, stub))}
 	{@const pathKey = getKeyFromPath([...path, index])}
 	{@const props = fm.get('props', item) || {}}
@@ -29,6 +29,7 @@
 		aria-selected={selectedKeys.has(pathKey)}
 		aria-current={focusedKey === pathKey}
 	>
+		<!-- eslint-disable-next-line -->
 		<svelte:boundary>
 			{#if template}
 				{@render template(item, props, onchange)}

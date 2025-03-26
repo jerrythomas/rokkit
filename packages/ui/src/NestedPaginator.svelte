@@ -1,6 +1,8 @@
 <script>
 	import { defaultFields, flattenNestedList } from '@rokkit/core'
-	import { Item, BreadCrumbs } from '@rokkit/molecules'
+	import Item from './Item.svelte'
+	import BreadCrumbs from './BreadCrumbs.svelte'
+	import Icon from './Icon.svelte'
 	// import { flattenNestedList } from './lib/nested'
 	import { createEventDispatcher } from 'svelte'
 
@@ -47,13 +49,15 @@
 
 	$: flatList = flattenNestedList(items, fields)
 	$: fields = { ...defaultFields, ...(fields ?? {}) }
-	$: using = { default: Item, ...(using ?? {}) }
 </script>
 
 <pages>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<icon class="arrow-left cursor-pointer" on:click={() => handleNav('previous')} />
+	<Icon
+		name="arrow-left"
+		class="cursor-pointer"
+		label="Previous"
+		onclick={() => handleNav('previous')}
+	/>
 	<BreadCrumbs items={trail} {fields} {using} />
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<icon class="arrow-right cursor-pointer" on:click={() => handleNav('next')} />
+	<Icon name="arrow-right" class="cursor-pointer" onclick={() => handleNav('next')} label="Next" />
 </pages>

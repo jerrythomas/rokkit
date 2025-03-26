@@ -23,7 +23,7 @@
 	<error> Invalid schema. Expected schema to include an 'elements' array. </error>
 {:else}
 	<Wrapper {...wrapperProps}>
-		{#each schema.elements as item}
+		{#each schema.elements as item, index (index)}
 			{@const elementPath = item.key ? [...path, item.key] : path}
 			{@const props = { ...item.props, path: elementPath }}
 			{@const nested = Array.isArray(item.elements) && item.elements.length > 0}

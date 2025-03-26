@@ -60,14 +60,14 @@
 	</month-year>
 	<cal-body class="flex w-full cursor-pointer flex-col p-1">
 		<days-of-week class="grid grid-cols-7">
-			{#each weekdays as day, index}
+			{#each weekdays as day, index (index)}
 				<p class:weekend={index % 6 === 0}>
 					{day.slice(0, 1)}
 				</p>
 			{/each}
 		</days-of-week>
 		<days-of-month class="grid grid-cols-7 grid-rows-5">
-			{#each days as { day, offset, date, weekend }}
+			{#each days as { day, offset, date, weekend } (date)}
 				{@const start = offset > 0 ? offset : 'auto'}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<day-of-month

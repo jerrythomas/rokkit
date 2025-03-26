@@ -41,7 +41,6 @@
 	)
 
 	const template = getSnippet(value[fields.snippet], snippets, stub)
-	$inspect(template)
 </script>
 
 <rk-node
@@ -53,7 +52,7 @@
 	data-depth={path.length}
 >
 	<div class="flex flex-row items-center">
-		{#each types as type}
+		{#each types as type, index (index)}
 			{#if type === 'icon'}
 				<Icon name={state.icon} label={state.label} state={stateName} class="w-4" size="small" />
 			{:else}
@@ -61,6 +60,7 @@
 			{/if}
 		{/each}
 		<rk-item>
+			<!-- eslint-disable-next-line -->
 			<svelte:boundary>
 				<!-- {#if template} -->
 				{@render template(value)}

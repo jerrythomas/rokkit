@@ -27,25 +27,25 @@ to use these components.
   import Even from './Even.svelte'
 </script>
 
-<List items={items} fields={fields} >
+<List {items} {fields}>
   {#snippet odd(node)}
-		<Odd value={node.value} />
-	{/snippet}
-	{#snippet even(node)}
-		<Even value={node.value} />
-	{/snippet}
+    <Odd value={node.value} />
+  {/snippet}
+  {#snippet even(node)}
+    <Even value={node.value} />
+  {/snippet}
 </List>
 ```
 
 If we want the `Odd` component to be used as default we can change the snippet as below.
 
 ```svelte
-<List items={items} fields={fields} >
+<List {items} {fields}>
   {#snippet stub(node)}
-		<Odd value={node.value} />
-	{/snippet}
-	{#snippet even(node)}
-		<Even value={node.value} />
-	{/snippet}
+    <Odd value={node.value} />
+  {/snippet}
+  {#snippet even(node)}
+    <Even value={node.value} />
+  {/snippet}
 </List>
 ```
