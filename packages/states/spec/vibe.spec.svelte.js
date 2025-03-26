@@ -1,8 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll, vi, beforeEach } from 'vitest'
 import { vibe } from '../src/vibe.svelte.js'
-import { themeRules } from '@rokkit/core'
+import { themeRules, defaultColors } from '@rokkit/core'
 import { flushSync } from 'svelte'
-import { defaultColors } from '@rokkit/core'
 
 describe('vibe', () => {
 	beforeAll(() => {
