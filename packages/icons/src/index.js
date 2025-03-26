@@ -12,5 +12,5 @@ function main() {
 
 const prog = sade('bundle', true)
 prog.action(() => main())
- 
+
 prog.parse(process.argv)
