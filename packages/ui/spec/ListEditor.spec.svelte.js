@@ -32,13 +32,13 @@ describe('ListEditor.svelte', () => {
 	beforeEach(() => cleanup())
 
 	it('should render', () => {
-		// const props = $state({
-		// 	Template: ListEditor,
-		// 	properties: { value: items, schema }
-		// })
-		// const { container } = render(Register, { props })
-		// expect(container).toBeTruthy()
-		// expect(container).toMatchSnapshot()
+		const props = $state({
+			Template: ListEditor,
+			properties: { value: items, schema }
+		})
+		const { container } = render(Register, { props })
+		expect(container).toBeTruthy()
+		expect(container).toMatchSnapshot()
 	})
 
 	// it('should render with path', () => {

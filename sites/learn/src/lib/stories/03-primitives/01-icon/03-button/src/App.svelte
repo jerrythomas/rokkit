@@ -8,7 +8,7 @@
 </script>
 
 <span class="flex items-center justify-start gap-2 py-2">
-	{#each ['small', 'medium', 'base', 'large'] as size}
+	{#each ['small', 'medium', 'base', 'large'] as size (size)}
 		<Icon
 			name="i-rokkit:mode-dark"
 			role="button"

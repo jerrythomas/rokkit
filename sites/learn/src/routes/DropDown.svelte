@@ -38,7 +38,7 @@
 			<item><Item {value} {mapping}></Item> </item>
 		</span>
 		<div class="custom-options">
-			{#each options as option, index}
+			{#each options as option, index (index)}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<rk-item aria-selected={equals(option, value)} data-index={index} onclick={selectOption}>

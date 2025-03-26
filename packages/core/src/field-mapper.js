@@ -150,10 +150,9 @@ export class FieldMapper {
 	 * @returns {Object|null}
 	 */
 	getItemByPath(items, path = []) {
-		// skipcq: JS-W1042 default undefined is needed
 		const result = path.reduce(
 			(item, index, i) => (i === 0 ? items?.[index] : item?.[this.fields.children]?.[index]),
-			undefined
+			/*  skipcq: JS-W1042 default undefined is needed */ undefined
 		)
 
 		if (result === undefined) throw new Error('Invalid path')

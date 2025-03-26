@@ -1,0 +1,168 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ListEditor.svelte > should render 1`] = `
+<div>
+  <!---->
+  <list-editor
+    class="flex "
+  >
+    <rk-list
+      aria-label="list"
+      class=""
+      role="listbox"
+      tabindex="0"
+    >
+      <!---->
+       
+      <rk-body>
+        <!---->
+        <rk-list-item
+          aria-current="true"
+          aria-selected="true"
+          data-path="0"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Alpha
+          </p>
+          <!---->
+          
+          <!---->
+        </rk-list-item>
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Beta
+          </p>
+          <!---->
+          
+          <!---->
+        </rk-list-item>
+        <rk-list-item
+          aria-current="false"
+          aria-selected="false"
+          data-path="2"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Charlie
+          </p>
+          <!---->
+          
+          <!---->
+        </rk-list-item>
+        
+        <!---->
+      </rk-body>
+       
+      <!---->
+    </rk-list>
+    <!---->
+     
+    <item-editor
+      class="flex"
+    >
+      <!---->
+       
+      <!---->
+      <field-layout
+        aria-label=""
+        class=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input- disabled"
+        >
+          <!---->
+           
+          <field
+            aria-label="0.id"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="0.id"
+              name="0.id"
+              readonly=""
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        <!---->
+        <!---->
+        <input-field
+          class="flex flex-col input-  "
+        >
+          <!---->
+           
+          <field
+            aria-label="0.text"
+            class="flex w-full flex-row items-center"
+          >
+            <!---->
+             
+            <!---->
+             
+            <!---->
+            <input
+              id="0.text"
+              name="0.text"
+              type="text"
+            />
+            
+            <!---->
+             
+            <!---->
+          </field>
+           
+          <!---->
+        </input-field>
+        
+        
+        
+        <!---->
+      </field-layout>
+      
+      <!---->
+    </item-editor>
+  </list-editor>
+  
+  
+</div>
+`;

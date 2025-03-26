@@ -33,13 +33,13 @@
 		<label for="data">
 			Edit data
 			<fieldset id="data">
-				{#each data as { label, progress }}
+				{#each data as { label, progress }, index (index)}
 					<EditItem bind:label bind:progress bind:steps />
 				{/each}
 			</fieldset>
 		</label>
 		<datalist id="progress-ticks">
-			{#each ticks as tick, index}
+			{#each ticks as tick, index (index)}
 				<option value={tick}>{index + 1}</option>
 			{/each}
 		</datalist>

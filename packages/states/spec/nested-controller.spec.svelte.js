@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { NestedController } from '../src/nested-controller.svelte.js'
 import { treeData } from './fixtures/tree.js'
 import { clone } from 'ramda'

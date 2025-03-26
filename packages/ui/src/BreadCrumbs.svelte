@@ -16,7 +16,7 @@
 </script>
 
 <rk-crumbs class={classes}>
-	{#each items as item, index}
+	{#each items as item, index (index)}
 		{#if index > 0}
 			<span>
 				{#if separator.length === 1}

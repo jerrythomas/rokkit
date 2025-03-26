@@ -42,7 +42,7 @@
 </script>
 
 <rk-nested-list role="tree">
-	{#each items as item, index}
+	{#each items as item, index (index)}
 		{@const nodePath = [...path, index]}
 		{@const key = getKeyFromPath(nodePath)}
 		{@const expanded = item[fields.expanded]}

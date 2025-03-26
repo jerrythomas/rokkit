@@ -16,7 +16,7 @@
 	<span></span>
 	<settings class="flex items-center justify-end gap-3 pr-4">
 		<nav class="flex gap-3 pr-3 uppercase text-neutral-900">
-			{#each sections as item}
+			{#each sections as item, index (index)}
 				<a
 					href="/{item.slug}"
 					class="active:border-secondary-700 hover:text-secondary-700 border-b-2 leading-loose"

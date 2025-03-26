@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeInstanceStatus",
+        "ec2:DescribeNetworkAcls",
+        "ec2:DescribeAccountAttributes",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeDhcpOptions",
+        "iam:ListAccountAliases",
+        "iam:ListPolicies",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "cloudwatch:DescribeAlarms",
+        "ecs:ListClusters",
+        "ecs:ListServices",
+        "ecs:DescribeServices",
+        "ecs:ListTasks",
+        "ecs:DescribeTasks",
+        "ecs:DescribeClusters",
+        "ecs:ListTaskDefinitions",
+        "ecs:DescribeTaskDefinition",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:ListTargetGroups",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeHosts",
+        "ec2:ListHosts",
+        "ec2:DescribeRegions",
+        "ec2:ListRegions",
+        "route53:GetHostedZoneCount",
+        "autoscaling:DescribeAutoScalingGroups",
+        "ec2:DescribeImages",
+        "route53:GetTrafficPolicyInstanceCount",
+        "route53:GetHostedZoneCount",
+        "route53:GetHealthCheckCount",
+        "route53domains:ListDomains",
+        "route53resolver:ListResolverEndpoints",
+        "iam:read"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

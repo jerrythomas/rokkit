@@ -28,7 +28,7 @@ jobs:
         with:
           coverageCommand: bun run coverage
           debug: true
-          coverageLocations: lcov.info:lcov
+          coverageLocations: coverage/lcov.info:lcov
       - name: Report results to DeepSource
         env:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}

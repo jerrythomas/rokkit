@@ -41,7 +41,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<nav-pages class="grid grid-cols-3 select-none {className}" tabindex="0">
+<nav-pages class="grid select-none grid-cols-3 {className}" tabindex="0">
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<span
 		class="flex cursor-pointer items-center"
@@ -59,7 +59,7 @@
 	</span>
 	<span class="flex items-center justify-center">
 		<block class="flex items-center">
-			{#each items as item, index}
+			{#each items as item, index (index)}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<pg
 					class:numbers

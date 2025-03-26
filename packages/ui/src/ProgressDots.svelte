@@ -21,7 +21,7 @@
 </script>
 
 <span class="progress flex items-center gap-2" class:empty={count === 0}>
-	{#each steps as step}
+	{#each steps as step, index (index)}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dot
 			class="step flex h-3 w-3 rounded-full border-2 border-neutral-100 bg-neutral-300"

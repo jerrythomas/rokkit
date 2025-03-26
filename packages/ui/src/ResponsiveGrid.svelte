@@ -63,7 +63,7 @@
 	class="overflow-hidden {className}"
 	bind:clientWidth={width}
 >
-	{#each items as item, index}
+	{#each items as item, index (index)}
 		{@const segmentClass = 'col-' + (index + 1)}
 		{@const props = mapping.get('props', item, {})}
 		{@const Template = item[mapping.fields.component]}

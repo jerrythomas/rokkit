@@ -14,7 +14,7 @@
 </script>
 
 <span class="flex flex-wrap gap-2">
-	{#each items as item, index}
+	{#each items as item, index (index)}
 		<Pill value={item.text} removable={true} onremove={() => handleRemove(index)} />
 	{/each}
 </span>

@@ -104,7 +104,7 @@
 		</rk-range-track>
 
 		<rk-ticks style:--count={tickItems.length - 1}>
-			{#each tickItems as { value, label }}
+			{#each tickItems as { value, label }, index (index)}
 				<RangeTick {label} {value} on:click={handleClick} />
 			{/each}
 		</rk-ticks>

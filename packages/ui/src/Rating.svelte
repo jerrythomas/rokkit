@@ -76,7 +76,7 @@
 	{#if name}
 		<input {name} hidden type="number" bind:value min={0} {max} readOnly={disabled} />
 	{/if}
-	{#each stars as selected, index}
+	{#each stars as selected, index (index)}
 		{@const stateIcon = selected ? stateIcons.filled : stateIcons.empty}
 		{@const label = [placeholder, index + 1, 'out of', max].join(' ')}
 		<Icon

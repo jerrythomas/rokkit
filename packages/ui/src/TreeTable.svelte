@@ -120,19 +120,19 @@
 	<table class:striped>
 		<thead>
 			<tr>
-				{#each columns as col}
+				{#each columns as col (col.key)}
 					<th>{col.label ?? col.key}</th>
 				{/each}
 			</tr>
 		</thead>
 		<tbody>
-			{#each visible as item, index}
+			{#each visible as item, index (index)}
 				<tr
 					class:cursor-pointer={!item._isParent}
 					aria-current={currentItem === item}
 					onclick={stopPropagation((e) => handleItemClick(e, item))}
 				>
-					{#each columns as col, index}
+					{#each columns as col, index (index)}
 						{@const value = { ...pick(['icon'], col), ...item }}
 						{@const SvelteComponent = mapping.get('component', item)}
 						<td>
@@ -147,7 +147,7 @@
 									<!-- {/if} -->
 								{:else}
 									{#if col.path}
-										{#each item._levels.slice(0, -1) as _}
+										{#each item._levels.slice(0, -1) as _, index (index)}
 											<Connector type="empty" />
 										{/each}
 										{#if item._isParent}

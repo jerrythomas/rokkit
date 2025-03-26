@@ -14,7 +14,7 @@
 </script>
 
 <rk-status-report class={classes}>
-	{#each items as { text, status }}
+	{#each items as { text, status }, index (index)}
 		<rk-message class={status}>
 			<Icon name={icons[status]} />
 			<p>{text}</p>

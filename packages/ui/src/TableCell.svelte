@@ -37,7 +37,7 @@
 <td class={classes}>
 	<rk-cell>
 		{#if path}
-			{#each levels.slice(0, -1) as _}
+			{#each levels.slice(0, -1) as level (level)}
 				<Connector type="empty" />
 			{/each}
 			{#if isParent}

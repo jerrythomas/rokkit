@@ -35,7 +35,7 @@
 </script>
 
 <radio-group class={className} class:disabled>
-	{#each options as item, index}
+	{#each options as item, index (index)}
 		<label class="flex flex-row items-center gap-2 rtl:flex-row-reverse">
 			<input
 				type="radio"
