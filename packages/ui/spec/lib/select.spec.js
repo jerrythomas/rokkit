@@ -45,6 +45,7 @@ describe('getPosition', () => {
 	})
 
 	it('should return empty string when window is not defined', () => {
+		 
 		global.window = undefined
 		const result = getListPosition(anchor, viewport)
 		expect(result).toEqual('')

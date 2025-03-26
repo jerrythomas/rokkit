@@ -10,6 +10,7 @@ function main() {
 	}
 }
 
-const prog = sade(name, true)
+const prog = sade('bundle', true)
 prog.action(() => main())
+ 
 prog.parse(process.argv)
