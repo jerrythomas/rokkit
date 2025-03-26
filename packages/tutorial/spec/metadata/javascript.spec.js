@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { JavaScriptMetadata } from '../../src/metadata/javascript.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import fs from 'fs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -20,9 +21,10 @@ describe('JavaScriptMetadata', () => {
 	})
 
 	it('should throw error when import fails to parse', async () => {
-		const reader = new JavaScriptMetadata(
-			path.join(__dirname, '../../fixtures/metadata/invalid.js')
-		)
+		const folder = path.join(__dirname, '../../fixtures/metadata')
+		fs.copyFileSync(path.join(folder, 'invalid.js.txt'), path.join(folder, 'invalid.js'))
+		const reader = new JavaScriptMetadata(path.join(folder, 'invalid.js'))
 		await expect(reader.read()).rejects.toThrow('Failed to parse')
+		fs.unlinkSync(path.join(folder, 'invalid.js'))
 	})
 })

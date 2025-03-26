@@ -34,4 +34,60 @@ describe('NestedController', () => {
 			expect(controller.focused).toEqual(items[0])
 		})
 	})
+
+	describe('expand', () => {
+		it('should expand specified path', () => {
+			const controller = new NestedController(items)
+
+			expect(controller.data.length).toEqual(3)
+			expect(controller.expand('0')).toBe(true)
+			expect(controller.data.length).toEqual(5)
+			expect(controller.expand('0')).toBe(true)
+			expect(controller.data.length).toEqual(5)
+
+			expect(controller.expand()).toBe(false)
+			expect(controller.expand('99')).toBe(false)
+
+			expect(controller.moveTo('0')).toBe(true)
+			expect(controller.focused).toEqual(items[0])
+			expect(controller.expand()).toBe(true)
+		})
+	})
+
+	describe('collapse', () => {
+		it('should collapse specified path', () => {
+			const controller = new NestedController(items)
+
+			expect(controller.data.length).toEqual(3)
+			expect(controller.expand('0')).toBe(true)
+			expect(controller.data.length).toEqual(5)
+			expect(controller.collapse('0')).toBe(true)
+			expect(controller.data.length).toEqual(3)
+
+			expect(controller.collapse()).toBe(false)
+			expect(controller.collapse('99')).toBe(false)
+
+			expect(controller.moveTo('0')).toBe(true)
+			expect(controller.focused).toEqual(items[0])
+			expect(controller.collapse()).toBe(true)
+		})
+	})
+	describe('toggleExpansion', () => {
+		it('should toggle expansion of specified path', () => {
+			const controller = new NestedController(items)
+
+			expect(controller.data.length).toEqual(3)
+			expect(controller.toggleExpansion('0')).toBe(true)
+			expect(controller.data.length).toEqual(5)
+			expect(controller.toggleExpansion('0')).toBe(true)
+			expect(controller.data.length).toEqual(3)
+
+			expect(controller.toggleExpansion()).toBe(false)
+			expect(controller.toggleExpansion('99')).toBe(false)
+
+			expect(controller.moveTo('0')).toBe(true)
+			expect(controller.focused).toEqual(items[0])
+			expect(controller.toggleExpansion()).toBe(false)
+		})
+	})
 })

@@ -17,6 +17,7 @@
     "bump": "bun run lockfile && bumpp --no-push",
     "bump:next": "bun run lockfile && bumpp --preid=next --no-push",
     "publish:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun publish' \\;",
+    "build:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun run build' \\;",
     "release": "bun run publish:all"
   },
   "devDependencies": {

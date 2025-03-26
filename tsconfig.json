@@ -18,5 +18,6 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": ["**/spec/**/*", "**/fixtures/**/*"]
 }
