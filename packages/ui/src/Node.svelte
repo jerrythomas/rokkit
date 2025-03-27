@@ -60,7 +60,6 @@
 			{/if}
 		{/each}
 		<rk-item>
-			<!-- eslint-disable-next-line -->
 			<svelte:boundary>
 				<!-- {#if template} -->
 				{@render template(value)}

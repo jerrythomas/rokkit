@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { flatVisibleNodes, deriveLookup } from '../src/derive.svelte'
+import { flatVisibleNodes, deriveLookupWithProxy } from '../src/derive.svelte'
 import { equals } from 'ramda'
 import { flushSync } from 'svelte'
 
@@ -71,116 +71,100 @@ describe('derive', () => {
 			expect(result).toEqual(1)
 		})
 	})
-	describe('deriveLookup', () => {
+	describe('deriveLookupWithProxy', () => {
 		it('should handle a string array', () => {
 			let items = $state(['A', 'B', 'C'])
-			const lookup = $derived(deriveLookup(items))
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: 'A' },
-				1: { depth: 0, value: 'B' },
-				2: { depth: 0, value: 'C' }
-			})
+			const lookup = $derived(deriveLookupWithProxy(items))
+			let result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
+			expect(result.get('0').value).toEqual({ text: 'A' })
+			expect(result.get('1').value).toEqual({ text: 'B' })
+			expect(result.get('2').value).toEqual({ text: 'C' })
 
 			items.push('D')
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: 'A' },
-				1: { depth: 0, value: 'B' },
-				2: { depth: 0, value: 'C' },
-				3: { depth: 0, value: 'D' }
-			})
+			result = $state.snapshot(lookup)
+			expect(result.get('3').value).toEqual({ text: 'D' })
 
 			items = ['B', 'C', 'D']
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: 'B' },
-				1: { depth: 0, value: 'C' },
-				2: { depth: 0, value: 'D' }
-			})
+			result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
+			expect(result.get('0').value).toEqual({ text: 'B' })
+			expect(result.get('1').value).toEqual({ text: 'C' })
+			expect(result.get('2').value).toEqual({ text: 'D' })
 		})
 
 		it('should handle an object array', () => {
 			let items = $state([{ text: 'A' }, { text: 'B' }, { text: 'C' }])
-			const lookup = $derived(deriveLookup(items))
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'A' } },
-				1: { depth: 0, value: { text: 'B' } },
-				2: { depth: 0, value: { text: 'C' } }
-			})
+			const lookup = $derived(deriveLookupWithProxy(items))
+			let result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
+			expect(result.get('0').value).toEqual({ text: 'A' })
+			expect(result.get('1').value).toEqual({ text: 'B' })
+			expect(result.get('2').value).toEqual({ text: 'C' })
 
 			items.push({ text: 'D' })
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'A' } },
-				1: { depth: 0, value: { text: 'B' } },
-				2: { depth: 0, value: { text: 'C' } },
-				3: { depth: 0, value: { text: 'D' } }
-			})
+			result = $state.snapshot(lookup)
+			expect(result.get('3').value).toEqual({ text: 'D' })
 
 			items = [{ text: 'B' }, { text: 'C' }, { text: 'D' }]
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'B' } },
-				1: { depth: 0, value: { text: 'C' } },
-				2: { depth: 0, value: { text: 'D' } }
-			})
+			result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
+			expect(result.get('0').value).toEqual({ text: 'B' })
+			expect(result.get('1').value).toEqual({ text: 'C' })
+			expect(result.get('2').value).toEqual({ text: 'D' })
 		})
 
 		it('should handle a nested array', () => {
 			const items = $state([{ text: 'A' }, { text: 'B' }, { text: 'C' }])
-			const lookup = $derived(deriveLookup(items))
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'A' } },
-				1: { depth: 0, value: { text: 'B' } },
-				2: { depth: 0, value: { text: 'C' } }
-			})
+			const lookup = $derived(deriveLookupWithProxy(items))
+			let result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
+			expect(result.get('0').value).toEqual(items[0])
+			expect(result.get('1').value).toEqual(items[1])
+			expect(result.get('2').value).toEqual(items[2])
+
 			items[0].children = [{ text: 'A1' }, { text: 'A2' }]
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'A', children: [{ text: 'A1' }, { text: 'A2' }] } },
-				'0-0': { depth: 1, value: { text: 'A1' } },
-				'0-1': { depth: 1, value: { text: 'A2' } },
-				1: { depth: 0, value: { text: 'B' } },
-				2: { depth: 0, value: { text: 'C' } }
-			})
+			result = $state.snapshot(lookup)
+
+			expect(Array.from(result.keys())).toEqual(['0', '0-0', '0-1', '1', '2'])
+			expect(result.get('0').value).toEqual(items[0])
+			expect(result.get('0-0').value).toEqual(items[0].children[0])
+			expect(result.get('0-1').value).toEqual(items[0].children[1])
 
 			items[0].children[1].children = [{ text: 'A21' }, { text: 'A22' }]
-			expect(Object.keys($state.snapshot(lookup)).sort()).toEqual([
-				'0',
-				'0-0',
-				'0-1',
-				'0-1-0',
-				'0-1-1',
-				'1',
-				'2'
-			])
+			result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '0-0', '0-1', '0-1-0', '0-1-1', '1', '2'])
+			lookup.get('0-1-0').value.selected = true
+			expect($state.snapshot(items[0].children[1].children[0])).toEqual({
+				text: 'A21',
+				selected: true
+			})
 		})
 
 		it('should handle custom fields', () => {
 			const items = $state([{ text: 'A' }, { text: 'B' }, { text: 'C' }])
 			const fields = { children: 'items', fields: { children: 'values' } }
-			const lookup = $derived(deriveLookup(items, fields))
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'A' } },
-				1: { depth: 0, value: { text: 'B' } },
-				2: { depth: 0, value: { text: 'C' } }
-			})
+			const lookup = $derived(deriveLookupWithProxy(items, fields))
+			let result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
+			expect(result.get('0').value).toEqual(items[0])
+			expect(result.get('1').value).toEqual(items[1])
+			expect(result.get('2').value).toEqual(items[2])
+
 			items[0].items = [{ text: 'A1' }, { text: 'A2' }]
-			expect($state.snapshot(lookup)).toEqual({
-				0: { depth: 0, value: { text: 'A', items: [{ text: 'A1' }, { text: 'A2' }] } },
-				'0-0': { depth: 1, value: { text: 'A1' } },
-				'0-1': { depth: 1, value: { text: 'A2' } },
-				1: { depth: 0, value: { text: 'B' } },
-				2: { depth: 0, value: { text: 'C' } }
-			})
+			result = $state.snapshot(lookup)
+
+			expect(Array.from(result.keys())).toEqual(['0', '0-0', '0-1', '1', '2'])
+			expect(result.get('0').value).toEqual(items[0])
+			expect(result.get('0-0').value).toEqual(items[0].items[0])
+			expect(result.get('0-1').value).toEqual(items[0].items[1])
 
 			items[0].items[1].values = [{ text: 'A21' }, { text: 'A22' }]
-			expect(Object.keys($state.snapshot(lookup)).sort()).toEqual([
-				'0',
-				'0-0',
-				'0-1',
-				'0-1-0',
-				'0-1-1',
-				'1',
-				'2'
-			])
+			result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual(['0', '0-0', '0-1', '0-1-0', '0-1-1', '1', '2'])
 			items[0].items[1].values[0].values = [{ text: 'A211' }, { text: 'A222' }]
-			expect(Object.keys($state.snapshot(lookup)).sort()).toEqual([
+			result = $state.snapshot(lookup)
+			expect(Array.from(result.keys())).toEqual([
 				'0',
 				'0-0',
 				'0-1',
@@ -191,10 +175,8 @@ describe('derive', () => {
 				'1',
 				'2'
 			])
-			expect($state.snapshot(lookup)['0-1-0-0'].value).toEqual(
-				items[0].items[1].values[0].values[0]
-			)
-			lookup['0-1-0-0'].value.selected = true
+			expect(result.get('0-1-0-0').value).toEqual(items[0].items[1].values[0].values[0])
+			lookup.get('0-1-0-0').value.selected = true
 			flushSync()
 			expect($state.snapshot(items[0].items[1].values[0].values[0])).toEqual({
 				text: 'A211',

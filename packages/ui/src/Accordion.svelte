@@ -14,6 +14,7 @@
 	import Item from './Item.svelte'
 	import ListBody from './ListBody.svelte'
 
+	const eventNames = ['collapse', 'change', 'expand', 'click', 'select', 'move']
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -35,16 +36,28 @@
 		header = null,
 		footer = null,
 		empty = null,
-		stub = null,
-		extra,
-		...events
+		oncollapse,
+		onexpand,
+		onchange,
+		onselect,
+		onmove,
+		...snippets
 	} = $props()
 
 	let emitter = $derived(
-		createEmitter(events, ['collapse', 'change', 'expand', 'click', 'select', 'move'])
+		createEmitter({ oncollapse, onexpand, onchange, onselect, onmove }, eventNames)
 	)
+	function handleAction(event) {
+		const { name, data } = event.detail
+
+		if (has(name, emitter)) {
+			value = data.value
+			selected = data.selected
+			emitter[name](data)
+		}
+	}
+
 	let wrapper = new NestedController(items, value, fields, {
-		events,
 		multiselect,
 		autoCloseSiblings
 	})
@@ -92,9 +105,8 @@
 						bind:value
 						fields={fields.fields ?? fields}
 						{selected}
-						{stub}
 						onchange={emitter.change}
-						{extra}
+						{snippets}
 					/>
 				</rk-list>
 			{/if}

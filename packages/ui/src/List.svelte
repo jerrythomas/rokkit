@@ -30,8 +30,10 @@
 		header,
 		footer,
 		empty,
-		stub,
-		...events
+		onselect,
+		onchange,
+		onmove,
+		...snippets
 	} = $props()
 
 	let selected = $state([])
@@ -46,8 +48,7 @@
 		}
 	}
 
-	let emitter = createEmitter(events, ['select', 'change', 'move'])
-	let extra = omit(['onselect', 'onchange', 'onmove'], events)
+	let emitter = createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
 	let wrapper = new ListController(items, value, fields, { multiSelect })
 </script>
 
@@ -76,9 +77,8 @@
 				{fields}
 				selectedKeys={wrapper.selectedKeys}
 				focusedKey={wrapper.focusedKey}
-				{stub}
 				onchange={emitter.change}
-				{extra}
+				{snippets}
 			/>
 		{/if}
 	</rk-body>
