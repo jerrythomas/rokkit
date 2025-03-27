@@ -2,12 +2,12 @@ import { defaultFields } from '@rokkit/core'
 import { isNil, has } from 'ramda'
 
 export class Proxy {
-	#value = $state({})
-	#fields = $state(defaultFields)
+	#value = null
+	#fields = null
 
 	constructor(value, fields) {
-		this.#value = typeof value === 'object' ? value : { text: value }
 		this.fields = fields
+		this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
 	}
 
 	get fields() {
@@ -41,10 +41,11 @@ export class Proxy {
 	 * Gets a mapped attribute from the original item
 	 *
 	 * @param {string} fieldName - Name of the field to get
+	 * @param {any} defaultValue - Default value to return if not found
 	 * @returns {any|null} - The attribute value or null if not found
 	 */
-	get(fieldName) {
-		return this.has(fieldName) ? this.value[this.fields[fieldName]] : null
+	get(fieldName, defaultValue = null) {
+		return this.has(fieldName) ? this.value[this.fields[fieldName]] : defaultValue
 	}
 
 	/**
@@ -55,5 +56,16 @@ export class Proxy {
 	has(fieldName) {
 		const mappedField = this.fields[fieldName]
 		return !isNil(mappedField) && has(mappedField, this.value)
+	}
+
+	/**
+	 * Identifies if the item has children
+	 */
+	get hasChildren() {
+		return (
+			typeof this.value === 'object' &&
+			Array.isArray(this.value[this.fields.children]) &&
+			this.value[this.fields.children].length > 0
+		)
 	}
 }
