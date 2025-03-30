@@ -25,8 +25,8 @@ importers:
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.0)
       '@types/bun':
-        specifier: ^1.2.6
-        version: 1.2.6
+        specifier: ^1.2.8
+        version: 1.2.8
       '@vitest/coverage-v8':
         specifier: ^3.0.9
         version: 3.0.9(vitest@3.0.9(@types/node@20.12.14)(jiti@2.4.2)(jsdom@26.0.0)(tsx@4.19.2)(yaml@2.7.0))
@@ -37,8 +37,8 @@ importers:
         specifier: ^9.23.0
         version: 9.23.0(jiti@2.4.2)
       eslint-plugin-svelte:
-        specifier: ^3.3.3
-        version: 3.3.3(eslint@9.23.0(jiti@2.4.2))(svelte@5.17.3)
+        specifier: ^3.4.0
+        version: 3.4.0(eslint@9.23.0(jiti@2.4.2))(svelte@5.17.3)
       jsdom:
         specifier: ^26.0.0
         version: 26.0.0
@@ -135,43 +135,43 @@ importers:
   packages/icons/lib/app:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/icons/lib/auth:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/icons/lib/base:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/icons/lib/components:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/icons/lib/light:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/icons/lib/solid:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/icons/lib/twotone:
     dependencies:
       '@iconify/types':
-        specifier: ^2.0.0
+        specifier: '*'
         version: 2.0.0
 
   packages/input:
@@ -233,6 +233,12 @@ importers:
       '@rokkit/core':
         specifier: workspace:latest
         version: link:../core
+      '@rokkit/data':
+        specifier: workspace:latest
+        version: link:../data
+      '@rokkit/input':
+        specifier: workspace:latest
+        version: link:../input
       '@rokkit/states':
         specifier: workspace:latest
         version: link:../states
@@ -1563,8 +1569,8 @@ packages:
   '@types/btoa-lite@1.0.2':
     resolution: {integrity: sha512-ZYbcE2x7yrvNFJiU7xJGrpF/ihpkM7zKgw8bha3LNJSesvTtUNxbpzaT7WXBIryf6jovisrxTBvymxMeLLj1Mg==}
 
-  '@types/bun@1.2.6':
-    resolution: {integrity: sha512-fY9CAmTdJH1Llx7rugB0FpgWK2RKuHCs3g2cFDYXUutIy1QGiPQxKkGY8owhfZ4MXWNfxwIbQLChgH5gDsY7vw==}
+  '@types/bun@1.2.8':
+    resolution: {integrity: sha512-t8L1RvJVUghW5V+M/fL3Thbxcs0HwNsXsnTEBEfEVqGteiJToOlZ/fyOEaR1kZsNqnu+3XA4RI/qmnX4w6+S+w==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -1940,8 +1946,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  bun-types@1.2.6:
-    resolution: {integrity: sha512-FbCKyr5KDiPULUzN/nm5oqQs9nXCHD8dVc64BArxJadCvbNzAI6lUWGh9fSJZWeDIRD38ikceBU8Kj/Uh+53oQ==}
+  bun-types@1.2.7:
+    resolution: {integrity: sha512-P4hHhk7kjF99acXqKvltyuMQ2kf/rzIw3ylEDpCxDS9Xa0X0Yp/gJu/vDCucmWpiur5qJ0lwB2bWzOXa2GlHqA==}
 
   bundle-require@5.1.0:
     resolution: {integrity: sha512-3WrrOuZiyaaZPWiEt4G3+IffISVC9HYlWueJEBWED4ZH4aIAC2PnkdnuRrR94M+w6yGWn4AglWtJtBI8YqvgoA==}
@@ -2319,8 +2325,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-plugin-svelte@3.3.3:
-    resolution: {integrity: sha512-imzGqIgWbfsb/CR14d3k3M8MiVNGet+l9mjPhvo1Rm0Nxi0rNn4/eELqyR8FWlgKBMlGkOp2kshRJm0xpxNfHQ==}
+  eslint-plugin-svelte@3.4.0:
+    resolution: {integrity: sha512-L0eX0W6M0YhIUhWRlOAaornY1lIz6xRSVKVJuiRovMM5wHUBQZmefwJRR0y+sqR0CHtJpFmxYiQbw3UaO8h5KA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.1 || ^9.0.0
@@ -3361,8 +3367,8 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
-  svelte-eslint-parser@1.1.0:
-    resolution: {integrity: sha512-JP0v/wzDXWxza6c8K9ZjKKHYfgt0KidlbWx1e9n9UV4q+o28GTkk71fR0IDZDmLUDYs3vSq0+Tm9fofDqzGe1w==}
+  svelte-eslint-parser@1.1.1:
+    resolution: {integrity: sha512-QLVGPIMDettl30qRHXU2VrPvVJKG8GsGstye7n8rFbEiu3gEARksuQg9Xu4GzubNxhGNM8stfBZkhyMbBQmjFA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       svelte: ^3.37.0 || ^4.0.0 || ^5.0.0
@@ -4798,9 +4804,9 @@ snapshots:
 
   '@types/btoa-lite@1.0.2': {}
 
-  '@types/bun@1.2.6':
+  '@types/bun@1.2.8':
     dependencies:
-      bun-types: 1.2.6
+      bun-types: 1.2.7
 
   '@types/cookie@0.6.0': {}
 
@@ -5297,7 +5303,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  bun-types@1.2.6:
+  bun-types@1.2.7:
     dependencies:
       '@types/node': 20.12.14
       '@types/ws': 8.5.13
@@ -5742,7 +5748,7 @@ snapshots:
       eslint: 9.23.0(jiti@2.4.2)
       semver: 7.7.1
 
-  eslint-plugin-svelte@3.3.3(eslint@9.23.0(jiti@2.4.2))(svelte@5.17.3):
+  eslint-plugin-svelte@3.4.0(eslint@9.23.0(jiti@2.4.2))(svelte@5.17.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@9.23.0(jiti@2.4.2))
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -5754,7 +5760,7 @@ snapshots:
       postcss-load-config: 3.1.4(postcss@8.5.3)
       postcss-safe-parser: 7.0.1(postcss@8.5.3)
       semver: 7.7.1
-      svelte-eslint-parser: 1.1.0(svelte@5.17.3)
+      svelte-eslint-parser: 1.1.1(svelte@5.17.3)
     optionalDependencies:
       svelte: 5.17.3
     transitivePeerDependencies:
@@ -6778,7 +6784,7 @@ snapshots:
     transitivePeerDependencies:
       - picomatch
 
-  svelte-eslint-parser@1.1.0(svelte@5.17.3):
+  svelte-eslint-parser@1.1.1(svelte@5.17.3):
     dependencies:
       eslint-scope: 8.3.0
       eslint-visitor-keys: 4.2.0
