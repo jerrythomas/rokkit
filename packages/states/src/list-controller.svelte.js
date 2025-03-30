@@ -1,28 +1,29 @@
 import { FieldMapper, defaultFields } from '@rokkit/core'
 import { equals } from 'ramda'
 import { SvelteSet } from 'svelte/reactivity'
-import { flatVisibleNodes } from './derive.svelte'
+import { deriveLookupWithProxy, flatVisibleNodes } from './derive.svelte'
 
 export class ListController {
 	items = $state(null)
 	fields = defaultFields
 	mappers = []
 	#options = $state({})
-	lookup = new Map()
+	// lookup = new Map()
 	selectedKeys = new SvelteSet()
 	focusedKey = $state(null)
 	#currentIndex = -1
 
-	selected = $derived(Array.from(this.selectedKeys).map((key) => this.lookup.get(key)))
-	focused = $derived(this.lookup.get(this.focusedKey))
+	selected = $derived(Array.from(this.selectedKeys).map((key) => this.lookup.get(key).value))
+	focused = $derived(this.lookup.get(this.focusedKey)?.value)
 	data = $derived(flatVisibleNodes(this.items, this.fields))
+	lookup = $derived(deriveLookupWithProxy(this.items, this.fields))
 
 	constructor(items, value, fields, options) {
 		this.items = items
 		this.fields = { ...defaultFields, ...fields }
 		this.mappers.push(new FieldMapper(fields))
 		this.#options = { multiselect: false, ...options }
-		this.init(items, value)
+		this.init(value)
 	}
 
 	/**
@@ -30,8 +31,8 @@ export class ListController {
 	 * @param {Array<*>} items
 	 * @param {*} value
 	 */
-	init(items, value) {
-		items.forEach((item, index) => this.lookup.set(String(index), item))
+	init(value) {
+		// items.forEach((item, index) => this.lookup.set(String(index), item))
 		this.moveToValue(value)
 	}
 
@@ -145,7 +146,7 @@ export class ListController {
 		if (!this.lookup.has(key)) return false
 
 		if (this.focusedKey !== key) {
-			const { index } = this.findByValue(this.lookup.get(key))
+			const { index } = this.findByValue(this.lookup.get(key).value)
 			this.moveToIndex(index)
 		}
 

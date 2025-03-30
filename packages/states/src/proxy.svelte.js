@@ -2,11 +2,13 @@ import { defaultFields } from '@rokkit/core'
 import { isNil, has } from 'ramda'
 
 export class Proxy {
+	#original = null
 	#value = null
 	#fields = null
 
 	constructor(value, fields) {
 		this.fields = fields
+		this.#original = value
 		this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
 	}
 
@@ -18,7 +20,7 @@ export class Proxy {
 	}
 
 	get value() {
-		return this.#value
+		return typeof this.#original === 'object' ? this.#value : this.#original
 	}
 
 	set value(value) {
@@ -34,6 +36,7 @@ export class Proxy {
 			})
 		} else {
 			this.#value.text = value
+			this.#original = value
 		}
 	}
 
@@ -45,7 +48,7 @@ export class Proxy {
 	 * @returns {any|null} - The attribute value or null if not found
 	 */
 	get(fieldName, defaultValue = null) {
-		return this.has(fieldName) ? this.value[this.fields[fieldName]] : defaultValue
+		return this.has(fieldName) ? this.#value[this.fields[fieldName]] : defaultValue
 	}
 
 	/**
@@ -55,7 +58,7 @@ export class Proxy {
 	 */
 	has(fieldName) {
 		const mappedField = this.fields[fieldName]
-		return !isNil(mappedField) && has(mappedField, this.value)
+		return !isNil(mappedField) && has(mappedField, this.#value)
 	}
 
 	/**
@@ -63,9 +66,19 @@ export class Proxy {
 	 */
 	get hasChildren() {
 		return (
-			typeof this.value === 'object' &&
-			Array.isArray(this.value[this.fields.children]) &&
-			this.value[this.fields.children].length > 0
+			typeof this.#original === 'object' &&
+			Array.isArray(this.#value[this.fields.children]) &&
+			this.#value[this.fields.children].length > 0
 		)
+	}
+
+	get expanded() {
+		return this.has('expanded') ? this.#value[this.fields.expanded] : false
+	}
+
+	set expanded(value) {
+		if (typeof this.#original === 'object') {
+			this.#value[this.fields.expanded] = Boolean(value)
+		}
 	}
 }

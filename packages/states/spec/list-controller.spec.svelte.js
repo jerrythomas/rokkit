@@ -19,6 +19,8 @@ describe('ListController', () => {
 		it('should initialize with string array and value', () => {
 			const items = $state(['Alpha', 'Beta', 'Gamma'])
 			const controller = new ListController(items, items[1])
+			const lookup = $state.snapshot(controller.lookup)
+			expect(Array.from(lookup.keys())).toEqual(['0', '1', '2'])
 			expect(controller.focused).toEqual(items[1])
 			expect(Array.from(controller.selected)).toEqual([items[1]])
 		})

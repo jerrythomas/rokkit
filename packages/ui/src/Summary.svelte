@@ -1,5 +1,4 @@
 <script>
-	import { defaultMapping } from './constants'
 	import Item from './Item.svelte'
 	/**
 	 * @typedef {Object} Props

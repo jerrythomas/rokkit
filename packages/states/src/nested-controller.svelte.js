@@ -3,16 +3,12 @@ import { equals } from 'ramda'
 import { ListController } from './list-controller.svelte'
 
 export class NestedController extends ListController {
-	constructor(items, value, fields, options) {
-		super(items, value, fields, options)
-	}
-
 	/**
 	 * @protected
 	 * @param {Object} [value]
 	 */
-	init(items, value) {
-		this.createLookup(items)
+	init(value) {
+		// this.createLookup(items)
 		if (value) {
 			this.ensureVisible(value)
 			this.moveToValue(value)
@@ -45,8 +41,14 @@ export class NestedController extends ListController {
 		})
 	}
 
+	/**
+	 * Mark parents as expanded so that item is visible
+	 * @param {*} value
+	 * @returns
+	 */
 	ensureVisible(value) {
-		const result = this.lookup.entries().find((entry) => equals(entry[1], value))
+		const result = this.lookup.entries().find((entry) => equals(entry[1].value, value))
+		// console.log(result)
 		const path = getPathFromKey(result[0])
 
 		for (let i = 1; i < path.length; i++) {
@@ -56,31 +58,51 @@ export class NestedController extends ListController {
 		return true
 	}
 
+	/**
+	 * Toggle expansion of item
+	 * @param {*} value
+	 * @returns
+	 */
 	toggleExpansion(key) {
 		if (!this.lookup.has(key)) return false
-		const item = this.lookup.get(key)
-		const fields = this.fieldsFor(key)
-		item[fields.expanded] = !item[this.fields.expanded]
+		const proxy = this.lookup.get(key)
+		proxy.expanded = !proxy.expanded
+		// const item = this.lookup.get(key)
+		// const fields = this.fieldsFor(key)
+		// item[fields.expanded] = !item[this.fields.expanded]
 		return true
 	}
 
+	/**
+	 * Expand item
+	 * @param {*} value
+	 * @returns
+	 */
 	expand(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
-
-		const item = this.lookup.get(actualKey)
-		const fields = this.fieldsFor(actualKey)
-		item[fields.expanded] = true
+		const proxy = this.lookup.get(actualKey)
+		proxy.expanded = true
+		// const item = this.lookup.get(actualKey)
+		// const fields = this.fieldsFor(actualKey)
+		// item[fields.expanded] = true
 
 		return true
 	}
 
+	/**
+	 * Collapse item
+	 * @param {*} value
+	 * @returns
+	 */
 	collapse(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
-		const item = this.lookup.get(actualKey)
-		const fields = this.fieldsFor(actualKey)
-		item[fields.expanded] = false
+		// const item = this.lookup.get(actualKey)
+		// const fields = this.fieldsFor(actualKey)
+		// item[fields.expanded] = false
+		const proxy = this.lookup.get(actualKey)
+		proxy.expanded = false
 		return true
 	}
 

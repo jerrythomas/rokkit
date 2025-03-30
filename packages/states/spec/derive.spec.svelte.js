@@ -77,20 +77,20 @@ describe('derive', () => {
 			const lookup = $derived(deriveLookupWithProxy(items))
 			let result = $state.snapshot(lookup)
 			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
-			expect(result.get('0').value).toEqual({ text: 'A' })
-			expect(result.get('1').value).toEqual({ text: 'B' })
-			expect(result.get('2').value).toEqual({ text: 'C' })
+			expect(result.get('0').value).toEqual('A')
+			expect(result.get('1').value).toEqual('B')
+			expect(result.get('2').value).toEqual('C')
 
 			items.push('D')
 			result = $state.snapshot(lookup)
-			expect(result.get('3').value).toEqual({ text: 'D' })
+			expect(result.get('3').value).toEqual('D')
 
 			items = ['B', 'C', 'D']
 			result = $state.snapshot(lookup)
 			expect(Array.from(result.keys())).toEqual(['0', '1', '2'])
-			expect(result.get('0').value).toEqual({ text: 'B' })
-			expect(result.get('1').value).toEqual({ text: 'C' })
-			expect(result.get('2').value).toEqual({ text: 'D' })
+			expect(result.get('0').value).toEqual('B')
+			expect(result.get('1').value).toEqual('C')
+			expect(result.get('2').value).toEqual('D')
 		})
 
 		it('should handle an object array', () => {
