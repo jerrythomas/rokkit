@@ -6,7 +6,7 @@ import { flushSync } from 'svelte'
 describe('Proxy', () => {
 	it('should create a new proxy for string', () => {
 		const proxy = new Proxy('123')
-		expect(proxy.value).toEqual({ text: '123' })
+		expect(proxy.value).toEqual('123')
 		expect(proxy.has('text')).toBe(true)
 		expect(proxy.has('value')).toBe(false)
 		expect(proxy.has('id')).toBe(false)
@@ -17,7 +17,7 @@ describe('Proxy', () => {
 
 	it('should create a new proxy for string with custom fields', () => {
 		const proxy = new Proxy('123', { text: 't' })
-		expect(proxy.value).toEqual({ t: '123' })
+		expect(proxy.value).toEqual('123')
 		expect(proxy.has('text')).toBe(true)
 		expect(proxy.has('value')).toBe(false)
 		expect(proxy.has('id')).toBe(false)
