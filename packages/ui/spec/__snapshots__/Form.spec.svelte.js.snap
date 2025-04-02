@@ -10,7 +10,6 @@ exports[`Form.svelte > should render a form 1`] = `
     >
       <!---->
       <!---->
-      <!---->
       <input-field
         class="flex flex-col input-string  "
       >
@@ -44,8 +43,6 @@ exports[`Form.svelte > should render a form 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-integer  "
@@ -80,7 +77,6 @@ exports[`Form.svelte > should render a form 1`] = `
         <!---->
       </input-field>
       
-      
       <!---->
       <!---->
       <!---->
@@ -88,7 +84,6 @@ exports[`Form.svelte > should render a form 1`] = `
         aria-label="address"
         class="vertical"
       >
-        <!---->
         <!---->
         <!---->
         <input-field
@@ -124,8 +119,6 @@ exports[`Form.svelte > should render a form 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -160,8 +153,6 @@ exports[`Form.svelte > should render a form 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -196,8 +187,6 @@ exports[`Form.svelte > should render a form 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-integer  "
@@ -231,7 +220,6 @@ exports[`Form.svelte > should render a form 1`] = `
            
           <!---->
         </input-field>
-        
         
         
         <!---->
@@ -268,7 +256,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
     >
       <!---->
       <!---->
-      <!---->
       <h1>
         string:Name
       </h1>
@@ -281,8 +268,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
         []
       </p>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -317,7 +302,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
         <!---->
       </input-field>
       
-      
       <!---->
       <!---->
       <!---->
@@ -325,7 +309,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
         aria-label="Address"
         class="vertical"
       >
-        <!---->
         <!---->
         <!---->
         <input-field
@@ -361,8 +344,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -397,8 +378,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -433,8 +412,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-number  "
@@ -468,7 +445,6 @@ exports[`Form.svelte > should render a form with layout 1`] = `
            
           <!---->
         </input-field>
-        
         
         
         <!---->
@@ -505,7 +481,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
     >
       <!---->
       <!---->
-      <!---->
       <h1>
         string:Name
       </h1>
@@ -518,8 +493,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
         []
       </p>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -556,7 +529,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
         <!---->
       </input-field>
       
-      
       <!---->
       <!---->
       <!---->
@@ -564,7 +536,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
         aria-label="Address"
         class="vertical"
       >
-        <!---->
         <!---->
         <!---->
         <input-field
@@ -600,8 +571,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -636,8 +605,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -672,8 +639,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-number  "
@@ -709,7 +674,6 @@ exports[`Form.svelte > should render a form with schema & layout 1`] = `
            
           <!---->
         </input-field>
-        
         
         
         <!---->
@@ -746,7 +710,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
     >
       <!---->
       <!---->
-      <!---->
       <input-field
         class="flex flex-col input-string  "
       >
@@ -780,8 +743,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -818,7 +779,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
         <!---->
       </input-field>
       
-      
       <!---->
       <!---->
       <!---->
@@ -826,7 +786,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
         aria-label="address"
         class="vertical"
       >
-        <!---->
         <!---->
         <!---->
         <input-field
@@ -862,8 +821,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -898,8 +855,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-string  "
@@ -934,8 +889,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-number  "
@@ -971,7 +924,6 @@ exports[`Form.svelte > should render a form with schema 1`] = `
            
           <!---->
         </input-field>
-        
         
         
         <!---->

@@ -12,8 +12,6 @@ exports[`Category.svelte > should render using default props 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -26,8 +24,6 @@ exports[`Category.svelte > should render using default props 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -39,8 +35,6 @@ exports[`Category.svelte > should render using default props 1`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -82,8 +76,6 @@ exports[`Category.svelte > should render using specified class 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -96,8 +88,6 @@ exports[`Category.svelte > should render using specified class 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -109,8 +99,6 @@ exports[`Category.svelte > should render using specified class 1`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -152,8 +140,6 @@ exports[`Category.svelte > should render using specified class 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -166,8 +152,6 @@ exports[`Category.svelte > should render using specified class 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -179,8 +163,6 @@ exports[`Category.svelte > should render using specified class 2`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -220,8 +202,6 @@ exports[`Category.svelte > should render using specified type 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -234,8 +214,6 @@ exports[`Category.svelte > should render using specified type 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -247,8 +225,6 @@ exports[`Category.svelte > should render using specified type 1`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -288,8 +264,6 @@ exports[`Category.svelte > should render using specified type 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -302,8 +276,6 @@ exports[`Category.svelte > should render using specified type 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -315,8 +287,6 @@ exports[`Category.svelte > should render using specified type 2`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -353,7 +323,6 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
       aria-disabled="false"
       aria-label="Toggle Switch"
       aria-orientation="horizontal"
-      class=""
       role="listbox"
       tabindex="0"
     >
@@ -415,8 +384,6 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -429,8 +396,6 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -442,8 +407,6 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -476,14 +439,12 @@ exports[`Category.svelte > should render with extra props 1`] = `
   <section>
     <!---->
     <rk-tabs
-      class="flex w-full justify-center"
+      class="flex w-full  justify-center"
       role="listbox"
       tabindex="0"
     >
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -497,8 +458,6 @@ exports[`Category.svelte > should render with extra props 1`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -510,8 +469,6 @@ exports[`Category.svelte > should render with extra props 1`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -551,8 +508,6 @@ exports[`Category.svelte > should render with extra props 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           one
@@ -565,8 +520,6 @@ exports[`Category.svelte > should render with extra props 2`] = `
       <rk-tab>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           two
@@ -578,8 +531,6 @@ exports[`Category.svelte > should render with extra props 2`] = `
       </rk-tab>
       <rk-tab>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>

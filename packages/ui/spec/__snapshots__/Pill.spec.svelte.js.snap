@@ -3,12 +3,9 @@
 exports[`Pill > should fire remove event on Backspace 1`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -38,12 +35,9 @@ exports[`Pill > should fire remove event on Backspace 1`] = `
 exports[`Pill > should fire remove event on Backspace 2`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -73,12 +67,9 @@ exports[`Pill > should fire remove event on Backspace 2`] = `
 exports[`Pill > should fire remove event on Delete 1`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -108,12 +99,9 @@ exports[`Pill > should fire remove event on Delete 1`] = `
 exports[`Pill > should fire remove event on Delete 2`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -143,12 +131,9 @@ exports[`Pill > should fire remove event on Delete 2`] = `
 exports[`Pill > should fire remove event on click 1`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -178,12 +163,9 @@ exports[`Pill > should fire remove event on click 1`] = `
 exports[`Pill > should fire remove event on click 2`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -213,12 +195,9 @@ exports[`Pill > should fire remove event on click 2`] = `
 exports[`Pill > should render 1`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -236,12 +215,9 @@ exports[`Pill > should render 1`] = `
 exports[`Pill > should render 2`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -259,13 +235,11 @@ exports[`Pill > should render 2`] = `
 exports[`Pill > should render with icon 1`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
     <rk-icon
       aria-label="Hello"
-      class=""
       data-tag="icon"
       role="img"
       tabindex="-1"
@@ -292,13 +266,11 @@ exports[`Pill > should render with icon 1`] = `
 exports[`Pill > should render with icon 2`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
     <!---->
     <rk-icon
       aria-label="World"
-      class=""
       data-tag="icon"
       role="img"
       tabindex="-1"
@@ -325,16 +297,13 @@ exports[`Pill > should render with icon 2`] = `
 exports[`Pill > should render with image 1`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
-    <!---->
     <!---->
     <img
       alt="Hello"
       src="world.png"
     />
-    
     <!---->
      
     <p>
@@ -352,16 +321,13 @@ exports[`Pill > should render with image 1`] = `
 exports[`Pill > should render with image 2`] = `
 <div>
   <rk-pill
-    class=""
     tabindex="0"
   >
-    <!---->
     <!---->
     <img
       alt="World"
       src="hello.png"
     />
-    
     <!---->
      
     <p>

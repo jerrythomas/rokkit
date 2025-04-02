@@ -3,7 +3,6 @@
 exports[`Accordion > should render accordion 1`] = `
 <div>
   <rk-accordion
-    class=""
     tabindex="0"
   >
     <!---->
@@ -19,8 +18,6 @@ exports[`Accordion > should render accordion 1`] = `
         tabindex="-1"
       >
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -50,8 +47,6 @@ exports[`Accordion > should render accordion 1`] = `
         tabindex="-1"
       >
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -100,8 +95,6 @@ exports[`Accordion > should render accordion 2`] = `
       >
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -130,8 +123,6 @@ exports[`Accordion > should render accordion 2`] = `
         tabindex="-1"
       >
         <!---->
-        <!---->
-        
         <!---->
          
         <p>

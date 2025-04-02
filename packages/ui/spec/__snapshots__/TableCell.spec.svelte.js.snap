@@ -39,10 +39,6 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
       >
         <!---->
-        <!---->
-        
-        
-        <!---->
       </span>
       <!---->
        
@@ -76,10 +72,6 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
       >
-        <!---->
-        <!---->
-        
-        
         <!---->
       </span>
       <!---->
@@ -115,24 +107,14 @@ exports[`TableCell > should render a table cell as a parent 3`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
       >
         <!---->
-        <!---->
-        
-        
-        <!---->
       </span>
       <!---->
        
-      <!---->
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
       >
         <!---->
-        <!---->
-        
-        
-        <!---->
       </span>
-      
       <!---->
       <!---->
        
@@ -151,8 +133,6 @@ exports[`TableCell > should render a table cell with path 1`] = `
       <!---->
        
       <!---->
-      
-      <!---->
       <!---->
        
       <!---->
@@ -169,8 +149,6 @@ exports[`TableCell > should render a table cell with path 2`] = `
       <!---->
       <!---->
        
-      <!---->
-      
       <!---->
       <!---->
        

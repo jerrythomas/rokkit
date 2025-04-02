@@ -19,8 +19,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
     >
       <!---->
       <!---->
-      
-      <!---->
        
       <p>
         One
@@ -33,7 +31,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
      
     <rk-icon
       aria-label="closed"
-      class=""
       data-tag="icon"
       role="img"
       tabindex="-1"
@@ -69,8 +66,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     >
       <!---->
       <!---->
-      
-      <!---->
        
       <p>
         One
@@ -83,7 +78,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
      
     <rk-icon
       aria-label="opened"
-      class=""
       data-tag="icon"
       role="img"
       tabindex="-1"
@@ -102,7 +96,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
   >
     <rk-list
       aria-label="list"
-      class=""
       role="listbox"
       tabindex="-1"
     >
@@ -118,8 +111,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
         >
           <!---->
           <!---->
-          <!---->
-          
           <!---->
            
           <p>
@@ -137,8 +128,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
         >
           <!---->
           <!---->
-          <!---->
-          
           <!---->
            
           <p>
@@ -179,16 +168,12 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     >
       <!---->
       <!---->
-      
-      <!---->
        
       <p>
         One
       </p>
       <!---->
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -202,7 +187,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
      
     <rk-icon
       aria-label="opened"
-      class=""
       data-tag="icon"
       role="img"
       tabindex="-1"
@@ -221,7 +205,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
   >
     <rk-list
       aria-label="list"
-      class=""
       role="listbox"
       tabindex="-1"
     >
@@ -237,8 +220,6 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
         >
           <!---->
           <!---->
-          <!---->
-          
           <!---->
            
           <p>

@@ -56,7 +56,6 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
        
       <!---->
       <!---->
-      <!---->
       <input-field
         class="flex flex-col input-text  "
       >
@@ -90,8 +89,6 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-text  "
@@ -127,13 +124,11 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
     
     
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -169,7 +164,6 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 1`] = `
        
       <!---->
     </input-field>
-    
     
     
     <!---->
@@ -201,7 +195,6 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
        
       <!---->
       <!---->
-      <!---->
       <input-field
         class="flex flex-col input-text  "
       >
@@ -235,8 +228,6 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-text  "
@@ -272,13 +263,11 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
     
     
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -314,7 +303,6 @@ exports[`FieldLayout.svelte > should render groups with custom wrapper 2`] = `
        
       <!---->
     </input-field>
-    
     
     
     <!---->
@@ -343,7 +331,6 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
     >
       <!---->
       <!---->
-      <!---->
       <input-field
         class="flex flex-col input-text  "
       >
@@ -377,8 +364,6 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-text  "
@@ -414,13 +399,11 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
     
     
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -456,7 +439,6 @@ exports[`FieldLayout.svelte > should render groups without key 1`] = `
        
       <!---->
     </input-field>
-    
     
     
     <!---->
@@ -485,7 +467,6 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
     >
       <!---->
       <!---->
-      <!---->
       <input-field
         class="flex flex-col input-text  "
       >
@@ -519,8 +500,6 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-text  "
@@ -556,13 +535,11 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
     
     
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -598,7 +575,6 @@ exports[`FieldLayout.svelte > should render groups without key 2`] = `
        
       <!---->
     </input-field>
-    
     
     
     <!---->
@@ -643,7 +619,6 @@ exports[`FieldLayout.svelte > should render set of inputs 1`] = `
   >
     <!---->
     <!---->
-    <!---->
     <input-field
       class="flex flex-col input-text  "
     >
@@ -677,8 +652,6 @@ exports[`FieldLayout.svelte > should render set of inputs 1`] = `
       <!---->
     </input-field>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -714,7 +687,6 @@ exports[`FieldLayout.svelte > should render set of inputs 1`] = `
        
       <!---->
     </input-field>
-    
     
     
     <!---->

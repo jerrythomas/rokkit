@@ -1,15 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Toggle > should render 1`] = `
-<rk-toggle
-  class=""
->
+<rk-toggle>
   <button
     aria-label="toggle"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <!---->
@@ -23,8 +19,6 @@ exports[`Toggle > should render with object options 1`] = `
   aria-label="toggle"
 >
   <!---->
-  <!---->
-  
   <!---->
    
   <p>
@@ -41,8 +35,6 @@ exports[`Toggle > should render with options 1`] = `
 >
   <!---->
   <!---->
-  
-  <!---->
    
   <!---->
   <!---->
@@ -51,15 +43,11 @@ exports[`Toggle > should render with options 1`] = `
 
 exports[`Toggle > should switch options on click 1`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -75,15 +63,11 @@ exports[`Toggle > should switch options on click 1`] = `
 
 exports[`Toggle > should switch options on click 2`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -99,15 +83,11 @@ exports[`Toggle > should switch options on click 2`] = `
 
 exports[`Toggle > should switch options on click 3`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -123,15 +103,11 @@ exports[`Toggle > should switch options on click 3`] = `
 
 exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -147,15 +123,11 @@ exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
 
 exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -171,15 +143,11 @@ exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
 
 exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -195,15 +163,11 @@ exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
 
 exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -219,15 +183,11 @@ exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
 
 exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -243,15 +203,11 @@ exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
 
 exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -267,15 +223,11 @@ exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
 
 exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -291,15 +243,11 @@ exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
 
 exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -315,15 +263,11 @@ exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
 
 exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -339,15 +283,11 @@ exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
 
 exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -363,15 +303,11 @@ exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
 
 exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>
@@ -387,15 +323,11 @@ exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
 
 exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
 <div>
-  <rk-toggle
-    class=""
-  >
+  <rk-toggle>
     <button
       aria-label="toggle"
     >
       <!---->
-      <!---->
-      
       <!---->
        
       <p>

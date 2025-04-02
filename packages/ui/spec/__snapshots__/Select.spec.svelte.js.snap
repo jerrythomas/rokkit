@@ -17,8 +17,6 @@ exports[`Select.svelte > should render string array 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -27,7 +25,6 @@ exports[`Select.svelte > should render string array 1`] = `
        
       <rk-icon
         aria-label="opened"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -46,7 +43,6 @@ exports[`Select.svelte > should render string array 1`] = `
     >
       <rk-list
         aria-label="list"
-        class=""
         role="listbox"
         tabindex="-1"
       >
@@ -62,8 +58,6 @@ exports[`Select.svelte > should render string array 1`] = `
           >
             <!---->
             <!---->
-            <!---->
-            
             <!---->
              
             <p>
@@ -82,8 +76,6 @@ exports[`Select.svelte > should render string array 1`] = `
             <!---->
             <!---->
             <!---->
-            
-            <!---->
              
             <p>
               b
@@ -100,8 +92,6 @@ exports[`Select.svelte > should render string array 1`] = `
           >
             <!---->
             <!---->
-            <!---->
-            
             <!---->
              
             <p>

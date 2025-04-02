@@ -23,8 +23,6 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -33,7 +31,6 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -76,8 +73,6 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -86,7 +81,6 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -129,8 +123,6 @@ exports[`InputSelect.svelte > should render items using default item when data i
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -139,7 +131,6 @@ exports[`InputSelect.svelte > should render items using default item when data i
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -182,8 +173,6 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -192,7 +181,6 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -235,8 +223,6 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -245,7 +231,6 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -288,8 +273,6 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -298,7 +281,6 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"

@@ -35,10 +35,6 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                 class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
               >
                 <!---->
-                <!---->
-                
-                
-                <!---->
               </span>
               
               <!---->
@@ -47,7 +43,6 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                 <!---->
                 <rk-icon
                   aria-label="object"
-                  class=""
                   data-tag="icon"
                   role="img"
                   tabindex="-1"
@@ -85,14 +80,11 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
       <section
         class="flex w-full flex-grow flex-col overflow-auto"
       >
-        <!---->
         <p>
           No atomic attributes at this level. Select a child node to edit. Current value is below.
         </p>
          
-        <rk-tree-table
-          class=""
-        >
+        <rk-tree-table>
           <table
             class="striped"
           >
@@ -113,7 +105,6 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
           </table>
         </rk-tree-table>
         <!---->
-        
         <!---->
       </section>
        

@@ -2,9 +2,7 @@
 
 exports[`InputRadio > should render as required 1`] = `
 <div>
-  <radio-group
-    class=""
-  >
+  <radio-group>
     <label
       class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
@@ -58,9 +56,7 @@ exports[`InputRadio > should render as required 1`] = `
 
 exports[`InputRadio > should render as required 2`] = `
 <div>
-  <radio-group
-    class=""
-  >
+  <radio-group>
     <label
       class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
@@ -111,9 +107,7 @@ exports[`InputRadio > should render as required 2`] = `
 
 exports[`InputRadio > should render with object array 1`] = `
 <div>
-  <radio-group
-    class=""
-  >
+  <radio-group>
     <label
       class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
@@ -158,9 +152,7 @@ exports[`InputRadio > should render with object array 1`] = `
 
 exports[`InputRadio > should render with string options 1`] = `
 <div>
-  <radio-group
-    class=""
-  >
+  <radio-group>
     <label
       class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
@@ -205,9 +197,7 @@ exports[`InputRadio > should render with string options 1`] = `
 
 exports[`InputRadio > should render with text, value objects  1`] = `
 <div>
-  <radio-group
-    class=""
-  >
+  <radio-group>
     <label
       class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >

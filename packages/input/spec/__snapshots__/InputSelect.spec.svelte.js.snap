@@ -34,7 +34,7 @@ exports[`InputSelect > should render as required 1`] = `
       class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
     >
       <i
-        class="selector-opened svelte-1s4y1rc"
+        class="selector-opened"
       />
     </span>
   </rk-select>
@@ -75,7 +75,7 @@ exports[`InputSelect > should render as required 2`] = `
       class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
     >
       <i
-        class="selector-opened svelte-1s4y1rc"
+        class="selector-opened"
       />
     </span>
   </rk-select>
@@ -115,7 +115,7 @@ exports[`InputSelect > should render with objects  1`] = `
       class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
     >
       <i
-        class="selector-opened svelte-1s4y1rc"
+        class="selector-opened"
       />
     </span>
   </rk-select>
@@ -155,7 +155,7 @@ exports[`InputSelect > should render with string options 1`] = `
       class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
     >
       <i
-        class="selector-opened svelte-1s4y1rc"
+        class="selector-opened"
       />
     </span>
   </rk-select>
@@ -200,7 +200,7 @@ exports[`InputSelect > should render with string options 2`] = `
       class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
     >
       <i
-        class="selector-opened svelte-1s4y1rc"
+        class="selector-opened"
       />
     </span>
   </rk-select>
@@ -240,7 +240,7 @@ exports[`InputSelect > should render with text, value objects  1`] = `
       class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
     >
       <i
-        class="selector-opened svelte-1s4y1rc"
+        class="selector-opened"
       />
     </span>
   </rk-select>

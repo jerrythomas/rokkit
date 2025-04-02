@@ -63,7 +63,6 @@ exports[`ProgressBar.svelte > should render progress bar with class 2`] = `
 exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
 <div>
   <rk-progress
-    class=""
     style="height: 1.5mm;"
   >
     <value-bar
@@ -78,7 +77,6 @@ exports[`ProgressBar.svelte > should render progress bar with value 1`] = `
 exports[`ProgressBar.svelte > should render progress bar with value 2`] = `
 <div>
   <rk-progress
-    class=""
     style="height: 1.5mm;"
   >
     <value-bar

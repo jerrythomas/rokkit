@@ -3,75 +3,25 @@ import {
 	defineConfig,
 	presetIcons,
 	presetTypography,
-	presetUno,
+	presetWind3,
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
 
+import { importIcons } from '@rokkit/core'
 import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
-import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 export const palette = themeRules('rokkit', { neutral: 'shark' })
 
-const components = [
-	'list',
-	'accordion',
-	'select',
-	'tree',
-	'tabs',
-	'input-text',
-	'rating',
-	'switch-button',
-	'range'
-]
+const icons = {
+	rokkit: '@rokkit/icons/ui.json',
+	app: '@rokkit/icons/app.json'
+}
 
 export default defineConfig({
 	extractors: [extractorSvelte()],
 	rules: [...palette],
-	safelist: [
-		...defaultIcons,
-		'i-rokkit:navigate-right',
-		'navigate-left',
-		...components.map((icon) => `i-component:${icon}`),
-		'text-neutral-base',
-		'text-neutral-subtle',
-		'text-neutral-muted',
-		'bg-neutral-base',
-		'bg-neutral-subtle',
-		'bg-neutral-muted',
-		'bg-neutral-inset',
-		'i-rokkit:github',
-		'i-rokkit:menu',
-		'i-rokkit:accordion-closed',
-		'i-rokkit:heart-filled',
-		'i-rokkit:heart-outlined',
-		'i-rokkit:folder-opened',
-		'i-rokkit:folder-closed',
-		'svelte',
-		'js',
-		'folder',
-		'css',
-		'type-array',
-		'type-object',
-		'type-string',
-		'type-number',
-		'type-boolean',
-		'-translate-x-full',
-		'i-app:code-visible',
-		'i-app:code-hidden'
-	],
-	shortcuts: {
-		...iconShortcuts(defaultIcons, 'i-rokkit'),
-		'type-array': 'i-component:input-array',
-		'type-object': 'i-component:input-object',
-		'type-string': 'i-component:input-text',
-		'type-number': 'i-component:input-number',
-		'type-boolean': 'i-component:checkbox',
-		'sort-descending': 'i-solar:sort-from-bottom-to-top-line-duotone',
-		'sort-ascending': 'i-solar:sort-from-top-to-bottom-line-duotone',
-		'sort-desc': 'i-solar:sort-from-bottom-to-top-line-duotone',
-		'sort-asc': 'i-solar:sort-from-top-to-bottom-line-duotone',
-		'sort-none': 'i-solar:sort-vertical-line-duotone'
-	},
+	safelist: [...defaultIcons],
+	shortcuts: iconShortcuts(defaultIcons, 'i-rokkit'),
 	theme: {
 		fontFamily: {
 			mono: ['Victor Mono', 'monospace'],
@@ -82,21 +32,12 @@ export default defineConfig({
 		colors: themeColors()
 	},
 	presets: [
-		presetUno({
+		presetWind3({
 			dark: 'class'
 		}),
 		presetTypography(),
 		presetIcons({
-			collections: {
-				rokkit: () => import('@rokkit/icons/ui.json').then((i) => i.default),
-				logo: () => import('@rokkit/icons/auth.json').then((i) => i.default),
-				component: () => import('@rokkit/icons/components.json').then((i) => i.default),
-				file: FileSystemIconLoader('./static/icons/files', (svg) =>
-					svg.replace(/black/, 'currentColor')
-				),
-				app: () => import('@rokkit/icons/app.json').then((i) => i.default),
-				solar: () => import('@iconify-json/solar/icons.json').then((i) => i.default)
-			}
+			collections: importIcons(icons)
 		})
 	],
 	transformers: [transformerDirectives(), transformerVariantGroup()]

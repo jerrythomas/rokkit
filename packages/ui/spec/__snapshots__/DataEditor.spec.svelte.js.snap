@@ -9,7 +9,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
   >
     <!---->
     <!---->
-    <!---->
     <input-field
       class="flex flex-col input-string  "
     >
@@ -41,8 +40,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
       <!---->
     </input-field>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -75,7 +72,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
       <!---->
     </input-field>
     
-    
     <!---->
     <!---->
     <!---->
@@ -83,7 +79,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
       aria-label="address"
       class="vertical"
     >
-      <!---->
       <!---->
       <!---->
       <input-field
@@ -117,8 +112,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -151,8 +144,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -185,8 +176,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -218,7 +207,6 @@ exports[`DataEditor.svelte > should handle changes 1`] = `
          
         <!---->
       </input-field>
-      
       
       
       <!---->
@@ -243,7 +231,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
   >
     <!---->
     <!---->
-    <!---->
     <h1>
       string:Name
     </h1>
@@ -256,8 +243,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
       []
     </p>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -290,7 +275,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
       <!---->
     </input-field>
     
-    
     <!---->
     <!---->
     <!---->
@@ -298,7 +282,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
       aria-label="address"
       class="vertical"
     >
-      <!---->
       <!---->
       <!---->
       <input-field
@@ -332,8 +315,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -366,8 +347,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -400,8 +379,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -435,7 +412,6 @@ exports[`DataEditor.svelte > should handle changes 2`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
@@ -456,7 +432,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
     aria-label=""
     class="vertical"
   >
-    <!---->
     <!---->
     <!---->
     <input-field
@@ -492,8 +467,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
       <!---->
     </input-field>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-integer  "
@@ -528,7 +501,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
       <!---->
     </input-field>
     
-    
     <!---->
     <!---->
     <!---->
@@ -536,7 +508,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
       aria-label="address"
       class="vertical"
     >
-      <!---->
       <!---->
       <!---->
       <input-field
@@ -572,8 +543,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -608,8 +577,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -644,8 +611,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-integer  "
@@ -681,7 +646,6 @@ exports[`DataEditor.svelte > should render an object editor 1`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
@@ -704,7 +668,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
   >
     <!---->
     <!---->
-    <!---->
     <h1>
       string:Name
     </h1>
@@ -717,8 +680,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
       []
     </p>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -753,7 +714,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
       <!---->
     </input-field>
     
-    
     <!---->
     <!---->
     <!---->
@@ -761,7 +721,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
       aria-label="Address"
       class="vertical"
     >
-      <!---->
       <!---->
       <!---->
       <input-field
@@ -797,8 +756,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -833,8 +790,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -869,8 +824,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -906,7 +859,6 @@ exports[`DataEditor.svelte > should render an object editor using layout 1`] = `
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
@@ -929,7 +881,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
   >
     <!---->
     <!---->
-    <!---->
     <h1>
       string:Name
     </h1>
@@ -942,8 +893,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
       []
     </p>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -980,7 +929,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
       <!---->
     </input-field>
     
-    
     <!---->
     <!---->
     <!---->
@@ -988,7 +936,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
       aria-label="Address"
       class="vertical"
     >
-      <!---->
       <!---->
       <!---->
       <input-field
@@ -1024,8 +971,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -1060,8 +1005,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -1096,8 +1039,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -1135,7 +1076,6 @@ exports[`DataEditor.svelte > should render an object editor using schema & layou
       </input-field>
       
       
-      
       <!---->
     </field-layout>
     
@@ -1156,7 +1096,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
     aria-label=""
     class="vertical"
   >
-    <!---->
     <!---->
     <!---->
     <input-field
@@ -1192,8 +1131,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
       <!---->
     </input-field>
     
-    
-    <!---->
     <!---->
     <input-field
       class="flex flex-col input-number  "
@@ -1230,7 +1167,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
       <!---->
     </input-field>
     
-    
     <!---->
     <!---->
     <!---->
@@ -1238,7 +1174,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
       aria-label="address"
       class="vertical"
     >
-      <!---->
       <!---->
       <!---->
       <input-field
@@ -1274,8 +1209,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -1310,8 +1243,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-string  "
@@ -1346,8 +1277,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
         <!---->
       </input-field>
       
-      
-      <!---->
       <!---->
       <input-field
         class="flex flex-col input-number  "
@@ -1383,7 +1312,6 @@ exports[`DataEditor.svelte > should render an object editor using schema 1`] = `
          
         <!---->
       </input-field>
-      
       
       
       <!---->

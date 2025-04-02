@@ -15,7 +15,7 @@ exports[`RangeMinMax.svelte > should handle class changes 1`] = `
 <div>
   <!---->
   <rk-input-range
-    class="test svelte-1jxckvw"
+    class="test"
   >
     <input
       name="range"
@@ -250,7 +250,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
 <div>
   <!---->
   <rk-input-range
-    class="test2 svelte-1jxckvw"
+    class="test2"
   >
     <input
       name="range"
@@ -484,9 +484,7 @@ exports[`RangeMinMax.svelte > should handle class changes 2`] = `
 exports[`RangeMinMax.svelte > should handle value changes 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -719,9 +717,7 @@ exports[`RangeMinMax.svelte > should handle value changes 1`] = `
 exports[`RangeMinMax.svelte > should handle value changes 2`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -954,9 +950,7 @@ exports[`RangeMinMax.svelte > should handle value changes 2`] = `
 exports[`RangeMinMax.svelte > should render 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -1189,9 +1183,7 @@ exports[`RangeMinMax.svelte > should render 1`] = `
 exports[`RangeMinMax.svelte > should render with min, max 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -1424,9 +1416,7 @@ exports[`RangeMinMax.svelte > should render with min, max 1`] = `
 exports[`RangeMinMax.svelte > should render with ticks 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -1579,9 +1569,7 @@ exports[`RangeMinMax.svelte > should render with ticks 1`] = `
 exports[`RangeMinMax.svelte > should render with value 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -1814,9 +1802,7 @@ exports[`RangeMinMax.svelte > should render with value 1`] = `
 exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -2048,9 +2034,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 1`] = `
 exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"
@@ -2282,9 +2266,7 @@ exports[`RangeMinMax.svelte > single value > should handle value changes 2`] = `
 exports[`RangeMinMax.svelte > single value > should work using single mode 1`] = `
 <div>
   <!---->
-  <rk-input-range
-    class="svelte-1jxckvw"
-  >
+  <rk-input-range>
     <input
       name="range"
       type="hidden"

@@ -15,12 +15,8 @@ exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
     </rk-segment>
     
     <!---->
-    <!---->
-    
     
     <!---->
-    <!---->
-    
     
     
   </rk-container>
@@ -35,7 +31,6 @@ exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
     tabindex="0"
   >
     <!---->
-    <!---->
     <rk-segment
       class="col-1"
     >
@@ -43,8 +38,6 @@ exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-2"
@@ -53,8 +46,6 @@ exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-3"
@@ -62,7 +53,6 @@ exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
        Content for C
       <!---->
     </rk-segment>
-    
     
     
   </rk-container>
@@ -77,7 +67,6 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
     tabindex="0"
   >
     <!---->
-    <!---->
     <rk-segment
       class="col-1"
     >
@@ -85,8 +74,6 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-2"
@@ -95,8 +82,6 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-3"
@@ -104,7 +89,6 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
        Content for C
       <!---->
     </rk-segment>
-    
     
     
   </rk-container>
@@ -127,12 +111,8 @@ exports[`ResponsiveGrid.svelte > should render a responsive grid for small devic
     </rk-segment>
     
     <!---->
-    <!---->
-    
     
     <!---->
-    <!---->
-    
     
     
   </rk-container>
@@ -155,12 +135,8 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
     </rk-segment>
     
     <!---->
-    <!---->
-    
     
     <!---->
-    <!---->
-    
     
     
   </rk-container>
@@ -181,7 +157,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
        Content for A
       <!---->
     </rk-segment>
-    <!---->
     <rk-segment
       class="col-1"
     >
@@ -189,8 +164,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-2"
@@ -199,8 +172,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-3"
@@ -208,7 +179,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
        Content for C
       <!---->
     </rk-segment>
-    
     
     
   </rk-container>
@@ -229,7 +199,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
        Content for A
       <!---->
     </rk-segment>
-    <!---->
     <rk-segment
       class="col-1"
     >
@@ -237,8 +206,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-2"
@@ -247,8 +214,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
       <!---->
     </rk-segment>
     
-    
-    <!---->
     <!---->
     <rk-segment
       class="col-3"
@@ -256,7 +221,6 @@ exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow k
        Content for C
       <!---->
     </rk-segment>
-    
     
     
   </rk-container>

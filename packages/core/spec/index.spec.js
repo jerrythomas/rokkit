@@ -26,6 +26,7 @@ describe('@rokkit/core', () => {
 			'getKeyFromPath',
 			'getPathFromKey',
 			'getSnippet',
+			'importIcons',
 			'flattenNestedList',
 			'findValueFromPath',
 			'toInitCapCase',
