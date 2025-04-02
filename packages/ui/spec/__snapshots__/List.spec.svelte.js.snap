@@ -4,7 +4,6 @@ exports[`List > should render empty list 1`] = `
 <div>
   <rk-list
     aria-label="list"
-    class=""
     role="listbox"
     tabindex="0"
   >
@@ -46,8 +45,6 @@ exports[`List > should render simple list 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -64,8 +61,6 @@ exports[`List > should render simple list 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -106,8 +101,6 @@ exports[`List > should render simple list 2`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -124,8 +117,6 @@ exports[`List > should render simple list 2`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -156,7 +147,6 @@ exports[`List > should render with custom components 1`] = `
    
   <rk-list
     aria-label="list"
-    class=""
     role="listbox"
     tabindex="0"
   >
@@ -172,8 +162,6 @@ exports[`List > should render with custom components 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -192,8 +180,6 @@ exports[`List > should render with custom components 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 2
@@ -211,8 +197,6 @@ exports[`List > should render with custom components 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 3
@@ -229,8 +213,6 @@ exports[`List > should render with custom components 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -260,7 +242,6 @@ exports[`List > should render with custom empty 1`] = `
    
   <rk-list
     aria-label="list"
-    class=""
     role="listbox"
     tabindex="0"
   >
@@ -293,7 +274,6 @@ exports[`List > should render with custom footer 1`] = `
    
   <rk-list
     aria-label="list"
-    class=""
     role="listbox"
     tabindex="0"
   >
@@ -309,8 +289,6 @@ exports[`List > should render with custom footer 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -329,8 +307,6 @@ exports[`List > should render with custom footer 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 2
@@ -348,8 +324,6 @@ exports[`List > should render with custom footer 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 3
@@ -366,8 +340,6 @@ exports[`List > should render with custom footer 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -403,7 +375,6 @@ exports[`List > should render with custom header 1`] = `
   <!---->
   <rk-list
     aria-label="list"
-    class=""
     role="listbox"
     tabindex="0"
   >
@@ -426,8 +397,6 @@ exports[`List > should render with custom header 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -444,8 +413,6 @@ exports[`List > should render with custom header 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -464,8 +431,6 @@ exports[`List > should render with custom header 1`] = `
         <!---->
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 3
@@ -482,8 +447,6 @@ exports[`List > should render with custom header 1`] = `
       >
         <!---->
         <!---->
-        <!---->
-        
         <!---->
          
         <p>

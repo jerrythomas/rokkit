@@ -18,8 +18,6 @@ exports[`Node > should render 1`] = `
       <rk-item>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -53,8 +51,6 @@ exports[`Node > should render 2`] = `
       <rk-item>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -87,13 +83,9 @@ exports[`Node > should render as a sibling 1`] = `
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
       >
-        <!---->
-        <!---->
         <i
           class="row-span-2 border-r"
         />
-        
-        
         <!---->
       </span>
       
@@ -101,8 +93,6 @@ exports[`Node > should render as a sibling 1`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -153,8 +143,6 @@ exports[`Node > should render as last sibling 1`] = `
       <rk-item>
         <!---->
         <!---->
-        
-        <!---->
          
         <p>
           Item 1
@@ -187,13 +175,9 @@ exports[`Node > should render having child 1`] = `
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
       >
-        <!---->
-        <!---->
         <i
           class="row-span-2 border-r"
         />
-        
-        
         <!---->
       </span>
       
@@ -201,7 +185,6 @@ exports[`Node > should render having child 1`] = `
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
       >
-        <!---->
         <!---->
         <i
           class="col-span-1 row-span-2 border-r"
@@ -211,7 +194,6 @@ exports[`Node > should render having child 1`] = `
           class="border-b"
         />
         
-        
         <!---->
       </span>
       
@@ -219,8 +201,6 @@ exports[`Node > should render having child 1`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -255,7 +235,6 @@ exports[`Node > should render with different states 1`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
       >
         <!---->
-        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -263,7 +242,6 @@ exports[`Node > should render with different states 1`] = `
         <i
           class="border-b"
         />
-        
         
         <!---->
       </span>
@@ -287,8 +265,6 @@ exports[`Node > should render with different states 1`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -323,7 +299,6 @@ exports[`Node > should render with different states 2`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
       >
         <!---->
-        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -331,7 +306,6 @@ exports[`Node > should render with different states 2`] = `
         <i
           class="border-b"
         />
-        
         
         <!---->
       </span>
@@ -355,8 +329,6 @@ exports[`Node > should render with different states 2`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -391,7 +363,6 @@ exports[`Node > should render with different states 3`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
       >
         <!---->
-        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -399,7 +370,6 @@ exports[`Node > should render with different states 3`] = `
         <i
           class="border-b"
         />
-        
         
         <!---->
       </span>
@@ -423,8 +393,6 @@ exports[`Node > should render with different states 3`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -459,7 +427,6 @@ exports[`Node > should render with different states 4`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
       >
         <!---->
-        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -467,7 +434,6 @@ exports[`Node > should render with different states 4`] = `
         <i
           class="border-b"
         />
-        
         
         <!---->
       </span>
@@ -491,8 +457,6 @@ exports[`Node > should render with different states 4`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>
@@ -527,7 +491,6 @@ exports[`Node > should render with icon 1`] = `
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
       >
         <!---->
-        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -535,7 +498,6 @@ exports[`Node > should render with icon 1`] = `
         <i
           class="border-b"
         />
-        
         
         <!---->
       </span>
@@ -559,8 +521,6 @@ exports[`Node > should render with icon 1`] = `
        
       <rk-item>
         <!---->
-        <!---->
-        
         <!---->
          
         <p>

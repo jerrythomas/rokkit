@@ -44,8 +44,6 @@ exports[`Tree > should render nested list 1`] = `
           <rk-item>
             <!---->
             <!---->
-            
-            <!---->
              
             <p>
               Item 1
@@ -89,8 +87,6 @@ exports[`Tree > should render nested list 1`] = `
            
           <rk-item>
             <!---->
-            <!---->
-            
             <!---->
              
             <p>
@@ -159,8 +155,6 @@ exports[`Tree > should render nested list 2`] = `
           <rk-item>
             <!---->
             <!---->
-            
-            <!---->
              
             <p>
               Item 1
@@ -204,8 +198,6 @@ exports[`Tree > should render nested list 2`] = `
            
           <rk-item>
             <!---->
-            <!---->
-            
             <!---->
              
             <p>

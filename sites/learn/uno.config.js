@@ -3,14 +3,23 @@ import {
 	defineConfig,
 	presetIcons,
 	presetTypography,
-	presetUno,
+	presetWind3,
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
 
+import { importIcons } from '@rokkit/core'
 import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
 import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 export const palette = themeRules('rokkit', { neutral: 'shark' })
+
+const icons = {
+	rokkit: '@rokkit/icons/ui.json',
+	logo: '@rokkit/icons/auth.json',
+	component: '@rokkit/icons/components.json',
+	app: '@rokkit/icons/app.json',
+	solar: '@iconify-json/solar/icons.json'
+}
 
 const components = [
 	'list',
@@ -85,20 +94,16 @@ export default defineConfig({
 		colors: themeColors()
 	},
 	presets: [
-		presetUno({
+		presetWind3({
 			dark: 'class'
 		}),
 		presetTypography(),
 		presetIcons({
 			collections: {
-				rokkit: () => import('@rokkit/icons/ui.json').then((i) => i.default),
-				logo: () => import('@rokkit/icons/auth.json').then((i) => i.default),
-				component: () => import('@rokkit/icons/components.json').then((i) => i.default),
+				...importIcons(icons),
 				file: FileSystemIconLoader('./static/icons/files', (svg) =>
 					svg.replace(/black/, 'currentColor')
-				),
-				app: () => import('@rokkit/icons/app.json').then((i) => i.default),
-				solar: () => import('@iconify-json/solar/icons.json').then((i) => i.default)
+				)
 			}
 		})
 	],

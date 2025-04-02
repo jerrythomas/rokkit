@@ -25,7 +25,6 @@ exports[`DropSearch.svelte > should render 1`] = `
        
       <rk-icon
         aria-label="opened"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -44,7 +43,6 @@ exports[`DropSearch.svelte > should render 1`] = `
     >
       <rk-list
         aria-label="list"
-        class=""
         role="listbox"
         tabindex="-1"
       >
@@ -60,8 +58,6 @@ exports[`DropSearch.svelte > should render 1`] = `
           >
             <!---->
             <!---->
-            <!---->
-            
             <!---->
              
             <p>
@@ -80,8 +76,6 @@ exports[`DropSearch.svelte > should render 1`] = `
             <!---->
             <!---->
             <!---->
-            
-            <!---->
              
             <p>
               2
@@ -98,8 +92,6 @@ exports[`DropSearch.svelte > should render 1`] = `
           >
             <!---->
             <!---->
-            <!---->
-            
             <!---->
              
             <p>

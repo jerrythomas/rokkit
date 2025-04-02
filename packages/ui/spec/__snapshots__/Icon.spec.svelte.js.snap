@@ -4,7 +4,6 @@ exports[`Icon > should call the click event when the icon is clicked 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    class=""
     data-tag="icon"
     role="button"
     tabindex="0"
@@ -23,7 +22,6 @@ exports[`Icon > should handle role=option as checkbox 1`] = `
   <rk-icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
-    class=""
     data-tag="icon"
     role="option"
     tabindex="0"
@@ -96,7 +94,6 @@ exports[`Icon > should render the icon with checkbox role 1`] = `
   <rk-icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
-    class=""
     data-tag="icon"
     role="checkbox"
     tabindex="0"
@@ -115,7 +112,6 @@ exports[`Icon > should render the icon with checkbox role with default state 1`]
   <rk-icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
-    class=""
     data-tag="icon"
     role="checkbox"
     tabindex="0"
@@ -133,7 +129,6 @@ exports[`Icon > should render the icon with the provided name and label 1`] = `
 <div>
   <rk-icon
     aria-label="Dark mode"
-    class=""
     data-tag="icon"
     role="img"
     tabindex="-1"
@@ -151,7 +146,6 @@ exports[`Icon > should render the icon with the provided name and label 2`] = `
 <div>
   <rk-icon
     aria-label="Light mode"
-    class=""
     data-tag="icon"
     role="img"
     tabindex="-1"
@@ -169,7 +163,6 @@ exports[`Icon > should render the icon with the specified role 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    class=""
     data-tag="icon"
     role="button"
     tabindex="0"
@@ -241,7 +234,6 @@ exports[`Icon > should render the icon with the specified state 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:node-opened"
-    class=""
     data-state="opened"
     data-tag="icon"
     role="img"

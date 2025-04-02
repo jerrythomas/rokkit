@@ -8,8 +8,6 @@ exports[`Summary > should render  1`] = `
   >
     <!---->
     <!---->
-    
-    <!---->
      
     <p>
       Item 1
@@ -30,8 +28,6 @@ exports[`Summary > should render  2`] = `
     tabindex="-1"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>
@@ -54,8 +50,6 @@ exports[`Summary > should render using expanded state 1`] = `
   >
     <!---->
     <!---->
-    
-    <!---->
      
     <p>
       Item 1
@@ -76,8 +70,6 @@ exports[`Summary > should render using expanded state 2`] = `
     tabindex="-1"
   >
     <!---->
-    <!---->
-    
     <!---->
      
     <p>

@@ -64,7 +64,6 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
     <rk-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -172,7 +171,6 @@ exports[`Rating component > should render the correct number of stars 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 1 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -185,7 +183,6 @@ exports[`Rating component > should render the correct number of stars 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 2 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -198,7 +195,6 @@ exports[`Rating component > should render the correct number of stars 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -211,7 +207,6 @@ exports[`Rating component > should render the correct number of stars 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -224,7 +219,6 @@ exports[`Rating component > should render the correct number of stars 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -259,7 +253,6 @@ exports[`Rating component > should reset the value to zero 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 1 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -272,7 +265,6 @@ exports[`Rating component > should reset the value to zero 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 2 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -285,7 +277,6 @@ exports[`Rating component > should reset the value to zero 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -298,7 +289,6 @@ exports[`Rating component > should reset the value to zero 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -311,7 +301,6 @@ exports[`Rating component > should reset the value to zero 1`] = `
     <rk-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -339,7 +328,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -352,7 +340,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -365,7 +352,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -378,7 +364,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -391,7 +376,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -419,7 +403,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -432,7 +415,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -445,7 +427,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -458,7 +439,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="true"
       aria-label="Rating 4 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -471,7 +451,6 @@ exports[`Rating component > should select the correct number of stars when value
     <rk-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -506,7 +485,6 @@ exports[`Rating component > should update value on click when not disabled 1`] =
     <rk-icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -519,7 +497,6 @@ exports[`Rating component > should update value on click when not disabled 1`] =
     <rk-icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -532,7 +509,6 @@ exports[`Rating component > should update value on click when not disabled 1`] =
     <rk-icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -545,7 +521,6 @@ exports[`Rating component > should update value on click when not disabled 1`] =
     <rk-icon
       aria-checked="true"
       aria-label="Rating 4 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"
@@ -558,7 +533,6 @@ exports[`Rating component > should update value on click when not disabled 1`] =
     <rk-icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
-      class=""
       data-tag="icon"
       role="option"
       tabindex="-1"

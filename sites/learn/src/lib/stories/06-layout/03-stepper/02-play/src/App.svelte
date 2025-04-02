@@ -18,7 +18,7 @@
 	 * @property {number} progress
 	 * @property {number} step
 	 */
-	let clickData = {}
+	let clickData = $state({})
 
 	/**
 	 * @param {CustomEvent<ClickData>} e

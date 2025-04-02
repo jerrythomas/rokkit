@@ -28,7 +28,6 @@ exports[`CheckBox > should render checkbox 1`] = `
   <rk-checkbox
     aria-checked="unchecked"
     aria-disabled="false"
-    class=""
     role="checkbox"
     tabindex="0"
   >

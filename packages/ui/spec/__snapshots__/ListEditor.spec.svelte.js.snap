@@ -8,7 +8,6 @@ exports[`ListEditor.svelte > should render 1`] = `
   >
     <rk-list
       aria-label="list"
-      class=""
       role="listbox"
       tabindex="0"
     >
@@ -24,8 +23,6 @@ exports[`ListEditor.svelte > should render 1`] = `
         >
           <!---->
           <!---->
-          <!---->
-          
           <!---->
            
           <p>
@@ -44,8 +41,6 @@ exports[`ListEditor.svelte > should render 1`] = `
           <!---->
           <!---->
           <!---->
-          
-          <!---->
            
           <p>
             Beta
@@ -62,8 +57,6 @@ exports[`ListEditor.svelte > should render 1`] = `
         >
           <!---->
           <!---->
-          <!---->
-          
           <!---->
            
           <p>
@@ -89,13 +82,11 @@ exports[`ListEditor.svelte > should render 1`] = `
       <!---->
       <field-layout
         aria-label=""
-        class=""
       >
         <!---->
         <!---->
-        <!---->
         <input-field
-          class="flex flex-col input- disabled"
+          class="flex flex-col input-   disabled"
         >
           <!---->
            
@@ -123,8 +114,6 @@ exports[`ListEditor.svelte > should render 1`] = `
           <!---->
         </input-field>
         
-        
-        <!---->
         <!---->
         <input-field
           class="flex flex-col input-  "
@@ -153,7 +142,6 @@ exports[`ListEditor.svelte > should render 1`] = `
            
           <!---->
         </input-field>
-        
         
         
         <!---->

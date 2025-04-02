@@ -36,8 +36,6 @@ exports[`NestedList > should render nested list 1`] = `
         <rk-item>
           <!---->
           <!---->
-          
-          <!---->
            
           <p>
             Item 1
@@ -67,7 +65,6 @@ exports[`NestedList > should render nested list 1`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
             >
               <!---->
-              <!---->
               <i
                 class="col-span-1 row-span-2 border-r"
               />
@@ -75,7 +72,6 @@ exports[`NestedList > should render nested list 1`] = `
               <i
                 class="border-b"
               />
-              
               
               <!---->
             </span>
@@ -85,18 +81,12 @@ exports[`NestedList > should render nested list 1`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
             >
               <!---->
-              <!---->
-              
-              
-              <!---->
             </span>
             
             <!---->
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -143,18 +133,12 @@ exports[`NestedList > should render nested list 1`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
             >
               <!---->
-              <!---->
-              
-              
-              <!---->
             </span>
             
             <!---->
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -205,8 +189,6 @@ exports[`NestedList > should render nested list 1`] = `
         <rk-item>
           <!---->
           <!---->
-          
-          <!---->
            
           <p>
             Item 2
@@ -236,7 +218,6 @@ exports[`NestedList > should render nested list 1`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
             >
               <!---->
-              <!---->
               <i
                 class="col-span-1 row-span-2 border-r"
               />
@@ -244,7 +225,6 @@ exports[`NestedList > should render nested list 1`] = `
               <i
                 class="border-b"
               />
-              
               
               <!---->
             </span>
@@ -268,8 +248,6 @@ exports[`NestedList > should render nested list 1`] = `
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -299,13 +277,9 @@ exports[`NestedList > should render nested list 1`] = `
                 <span
                   class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
                 >
-                  <!---->
-                  <!---->
                   <i
                     class="row-span-2 border-r"
                   />
-                  
-                  
                   <!---->
                 </span>
                 
@@ -330,18 +304,12 @@ exports[`NestedList > should render nested list 1`] = `
                   class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
                 >
                   <!---->
-                  <!---->
-                  
-                  
-                  <!---->
                 </span>
                 
                 <!---->
                  
                 <rk-item>
                   <!---->
-                  <!---->
-                  
                   <!---->
                    
                   <p>
@@ -393,18 +361,12 @@ exports[`NestedList > should render nested list 1`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
             >
               <!---->
-              <!---->
-              
-              
-              <!---->
             </span>
             
             <!---->
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -466,8 +428,6 @@ exports[`NestedList > should render nested list 2`] = `
         <rk-item>
           <!---->
           <!---->
-          
-          <!---->
            
           <p>
             Item 1
@@ -497,7 +457,6 @@ exports[`NestedList > should render nested list 2`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
             >
               <!---->
-              <!---->
               <i
                 class="col-span-1 row-span-2 border-r"
               />
@@ -505,7 +464,6 @@ exports[`NestedList > should render nested list 2`] = `
               <i
                 class="border-b"
               />
-              
               
               <!---->
             </span>
@@ -515,18 +473,12 @@ exports[`NestedList > should render nested list 2`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
             >
               <!---->
-              <!---->
-              
-              
-              <!---->
             </span>
             
             <!---->
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -573,18 +525,12 @@ exports[`NestedList > should render nested list 2`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
             >
               <!---->
-              <!---->
-              
-              
-              <!---->
             </span>
             
             <!---->
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -635,8 +581,6 @@ exports[`NestedList > should render nested list 2`] = `
         <rk-item>
           <!---->
           <!---->
-          
-          <!---->
            
           <p>
             Item 2
@@ -666,7 +610,6 @@ exports[`NestedList > should render nested list 2`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
             >
               <!---->
-              <!---->
               <i
                 class="col-span-1 row-span-2 border-r"
               />
@@ -674,7 +617,6 @@ exports[`NestedList > should render nested list 2`] = `
               <i
                 class="border-b"
               />
-              
               
               <!---->
             </span>
@@ -698,8 +640,6 @@ exports[`NestedList > should render nested list 2`] = `
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>
@@ -729,13 +669,9 @@ exports[`NestedList > should render nested list 2`] = `
                 <span
                   class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
                 >
-                  <!---->
-                  <!---->
                   <i
                     class="row-span-2 border-r"
                   />
-                  
-                  
                   <!---->
                 </span>
                 
@@ -760,18 +696,12 @@ exports[`NestedList > should render nested list 2`] = `
                   class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
                 >
                   <!---->
-                  <!---->
-                  
-                  
-                  <!---->
                 </span>
                 
                 <!---->
                  
                 <rk-item>
                   <!---->
-                  <!---->
-                  
                   <!---->
                    
                   <p>
@@ -823,18 +753,12 @@ exports[`NestedList > should render nested list 2`] = `
               class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
             >
               <!---->
-              <!---->
-              
-              
-              <!---->
             </span>
             
             <!---->
              
             <rk-item>
               <!---->
-              <!---->
-              
               <!---->
                
               <p>

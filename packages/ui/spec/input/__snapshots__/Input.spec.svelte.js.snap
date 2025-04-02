@@ -6,7 +6,6 @@ exports[`Input.svelte > should render "boolean" 1`] = `
   <rk-checkbox
     aria-checked="unchecked"
     aria-disabled="false"
-    class=""
     role="checkbox"
     tabindex="0"
   >
@@ -109,8 +108,6 @@ exports[`Input.svelte > should render "enum" 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -119,7 +116,6 @@ exports[`Input.svelte > should render "enum" 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
@@ -215,9 +211,7 @@ exports[`Input.svelte > should render "phone" 1`] = `
 exports[`Input.svelte > should render "radio" 1`] = `
 <div>
   <!---->
-  <radio-group
-    class=""
-  >
+  <radio-group>
     <label
       class="flex flex-row items-center gap-2 rtl:flex-row-reverse"
     >
@@ -300,8 +294,6 @@ exports[`Input.svelte > should render "select" 1`] = `
       <item>
         <!---->
         <!---->
-        
-        <!---->
          
         <!---->
         <!---->
@@ -310,7 +302,6 @@ exports[`Input.svelte > should render "select" 1`] = `
        
       <rk-icon
         aria-label="closed"
-        class=""
         data-tag="icon"
         role="img"
         tabindex="-1"
