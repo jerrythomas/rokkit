@@ -20,16 +20,16 @@
     "@iconify/utils": "^2.3.0",
     "@playwright/test": "^1.51.1",
     "@sveltejs/adapter-auto": "^6.0.0",
-    "@sveltejs/kit": "^2.20.3",
+    "@sveltejs/kit": "^2.20.5",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
-    "@unocss/extractor-svelte": "^66.1.0-beta.8",
-    "@unocss/reset": "66.1.0-beta.8",
+    "@unocss/extractor-svelte": "^66.1.0-beta.10",
+    "@unocss/reset": "66.1.0-beta.10",
     "mdsvex": "^0.12.3",
-    "svelte": "^5.25.6",
+    "svelte": "^5.25.12",
     "svelte-check": "^4.1.5",
-    "typescript": "^5.8.2",
-    "unocss": "^66.1.0-beta.8",
-    "vite": "^6.2.4"
+    "typescript": "^5.8.3",
+    "unocss": "^66.1.0-beta.10",
+    "vite": "^6.2.6"
   },
   "dependencies": {
     "@fontsource/open-sans": "^5.2.5",
@@ -44,6 +44,6 @@
     "@rokkit/themes": "workspace:latest",
     "@rokkit/tutorial": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
-    "@sveltejs/adapter-vercel": "^5.6.3"
+    "@sveltejs/adapter-vercel": "^5.7.0"
   }
 }

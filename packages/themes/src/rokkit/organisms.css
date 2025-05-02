@@ -85,7 +85,7 @@
   @apply text-on-neutral-subtle bg-neutral-subtle h-full w-full rounded-md;
 }
 [data-style='rokkit'] a.square {
-  @apply border-neutral-subtle p-2px flex h-10 w-10 items-center justify-center rounded-md border;
+  @apply border-neutral-subtle p-2px /*h-10 w-10*/ flex items-center justify-center rounded-md border leading-loose;
 }
 [data-style='rokkit'] button-group {
   @apply gap-1px m-auto flex items-center justify-center py-1;

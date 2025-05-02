@@ -76,11 +76,11 @@ describe('dataset', () => {
 
 	describe('set operations', () => {
 		it('should perform union operation', () => {
-			const A = [{ a: 1 }, { a: 2 }]
-			const B = [{ a: 3 }, { a: 4 }]
+			const setA = [{ a: 1 }, { a: 2 }]
+			const setB = [{ a: 3 }, { a: 4 }]
 
-			expect(dataset(A).union(B).select()).toEqual([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }])
-			expect(dataset(A).union(dataset(B)).select()).toEqual([
+			expect(dataset(setA).union(setB).select()).toEqual([{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }])
+			expect(dataset(setA).union(dataset(setB)).select()).toEqual([
 				{ a: 1 },
 				{ a: 2 },
 				{ a: 3 },

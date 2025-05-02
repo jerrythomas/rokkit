@@ -15,7 +15,6 @@
 			<h1 class="font-serif text-3xl lg:text-5xl">Build Beyond Limits</h1>
 			<h2 class="w-full text-right text-lg font-thin">Empowering your UI with Rokkit</h2>
 		</span>
-
 		<div class="flex flex-col gap-6 text-justify text-xl font-thin xl:gap-8">
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>

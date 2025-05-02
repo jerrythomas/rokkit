@@ -56,11 +56,19 @@ class Vibe {
 		this.colors = options.colors
 	}
 
+	get allowedStyles() {
+		return this.#allowedStyles
+	}
+
 	set allowedStyles(input) {
 		const styles = (Array.isArray(input) ? input : [input]).filter(Boolean)
 		if (styles.length > 0) {
 			this.#allowedStyles = styles
 		}
+	}
+
+	get colorMap() {
+		return this.#colorMap
 	}
 
 	set colorMap(value) {
@@ -71,6 +79,10 @@ class Vibe {
 			}
 			this.#colorMap = { ...defaultThemeMapping, ...value }
 		}
+	}
+
+	get colors() {
+		return this.#colors
 	}
 
 	set colors(value) {

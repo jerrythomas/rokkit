@@ -46,6 +46,6 @@ describe('importIcons', () => {
 
 	it('should handle null or undefined input by returning an empty object', () => {
 		expect(importIcons(null)).toEqual({})
-		expect(importIcons(undefined)).toEqual({})
+		expect(importIcons()).toEqual({})
 	})
 })

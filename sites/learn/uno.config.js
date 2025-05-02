@@ -69,7 +69,8 @@ export default defineConfig({
 		'type-boolean',
 		'-translate-x-full',
 		'i-app:code-visible',
-		'i-app:code-hidden'
+		'i-app:code-hidden',
+		'i-file:css'
 	],
 	shortcuts: {
 		...iconShortcuts(defaultIcons, 'i-rokkit'),
@@ -101,9 +102,13 @@ export default defineConfig({
 		presetIcons({
 			collections: {
 				...importIcons(icons),
-				file: FileSystemIconLoader('./static/icons/files', (svg) =>
-					svg.replace(/black/, 'currentColor')
-				)
+				file: () =>
+					import('./static/icons/files/icons.json', { with: { type: 'json' } }).then(
+						(i) => i.default
+					)
+				// file: FileSystemIconLoader('./static/icons/files', (svg) =>
+				// 	svg.replace(/black/, 'currentColor')
+				// )
 			}
 		})
 	],

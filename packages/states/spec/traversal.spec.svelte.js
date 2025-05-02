@@ -3,9 +3,9 @@ import { Traversal } from '../src/traversal.svelte.js'
 
 describe('Traversal', () => {
 	// Mock data provider
-	let mockDataProvider
-	let traversal
-	let mockNodes
+	let mockDataProvider = null
+	let traversal = null
+	let mockNodes = null
 
 	beforeEach(() => {
 		// Create mock data with 3 items
