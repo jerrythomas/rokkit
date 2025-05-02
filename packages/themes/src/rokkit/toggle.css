@@ -18,16 +18,16 @@
   @apply text-md h-4;
 }
 [data-style='rokkit'] rk-toggle {
-  @apply min-h-10 min-w-10 rounded-md;
+  @apply /*min-h-10 min-w-10*/ rounded-md leading-loose;
 }
 
-[data-style='rokkit'] rk-toggle button {
+/* [data-style='rokkit'] rk-toggle button {
   @apply m-0 h-full w-full p-0;
-}
+} */
 
-[data-style='rokkit'] rk-toggle.small {
+/* [data-style='rokkit'] rk-toggle.small {
   @apply p-2px flex aspect-square flex-col items-center justify-center;
-}
+} */
 /* [data-style="rokkit"] rk-toggle:focus-within button {
   @apply bg-neutral-base text-neutral hover:text-primary rounded-sm;
 } */
