@@ -5,6 +5,9 @@
 *[tabindex='-1']:focus {
   @apply outline-none;
 }
+* {
+  @apply box-border;
+}
 
 /* Body styles */
 body {

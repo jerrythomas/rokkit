@@ -23,11 +23,11 @@
 <svelte:head>
 	<title>Learn to use Rokkit</title>
 </svelte:head>
-<main class="relative flex h-full w-full overflow-hidden">
+<main class="flex h-full w-full overflow-hidden">
 	<Sidebar>
 		<Tree bind:items {value} {fields} onselect={handleSelect} keys={['key', 'route']} />
 	</Sidebar>
-	<content class="relative flex w-full flex-col">
+	<content class="flex w-full flex-col overflow-auto">
 		{@render children?.()}
 	</content>
 </main>

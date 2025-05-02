@@ -8,7 +8,7 @@
 }
 [data-style='rokkit'] rk-switch:focus-within,
 [data-style='rokkit'] rk-toggle:focus-within {
-  @apply ring-primary-500 outline-none ring-2;
+  @apply ring-primary-500 px-2 outline-none;
 }
 
 [data-style='rokkit'] rk-switch.minimal {
@@ -18,9 +18,40 @@
   @apply text-md h-4;
 }
 [data-style='rokkit'] rk-toggle {
-  @apply /*min-h-10 min-w-10*/ rounded-md leading-loose;
+  @apply border-neutral-subtle bg-neutral-subtle box-border aspect-square h-9 border;
+  @apply flex items-center justify-center rounded-md leading-loose;
 }
 
+[data-style='rokkit'] rk-toggle:focus-within,
+[data-style='rokkit'] a.button.square:focus-within {
+  @apply ring-secondary border-neutral-base border ring-2;
+}
+[data-style='rokkit'] rk-toggle:focus-within button {
+  @apply p-0;
+}
+[data-style='rokkit'] rk-toggle > button {
+  @apply p-0 outline-none;
+}
+/* [data-style='rokkit'] rk-toggle rk-icon {
+  @apply bg-neutral-base flex rounded p-0 leading-loose;
+} */
+
+[data-style='rokkit'] a.square {
+  @apply aspect-square min-h-9 min-w-9;
+}
+[data-style='rokkit'] a.button {
+  @apply p-0;
+}
+[data-style='rokkit'] rk-toggle rk-icon {
+  @apply bg-neutral-subtle h-full w-full rounded-md;
+}
+
+/* [data-style='rokkit'] rk-toggle > button {
+  @apply items-center justify-center rounded-md p-0;
+}
+[data-style='rokkit'] rk-toggle > button > rk-icon {
+  @apply aspect-square items-center justify-center;
+} */
 /* [data-style='rokkit'] rk-toggle button {
   @apply m-0 h-full w-full p-0;
 } */

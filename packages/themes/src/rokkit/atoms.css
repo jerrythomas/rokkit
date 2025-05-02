@@ -4,11 +4,6 @@
   @apply even:bg-neutral-zebra hover:bg-neutral-50;
 }
 
-/* Styles for 'rk-icon' class */
-/* [data-style="rokkit"] rk-icon {
-  @apply text-neutral-700 focus:outline-none;
-} */
-
 /* Styles for input[type='number'] */
 [data-style='rokkit'] input[type='number'] {
   @apply text-right;
@@ -23,13 +18,14 @@
 }
 
 /* Styles for 'searchable' class */
-.searchable input {
+[data-style='rokkit'] .searchable input {
   @apply border-neutral-subtle border;
 }
-
+[data-style='rokkit'] a.button {
+  @apply no-underline;
+}
 [data-style='rokkit'] a {
   @apply text-primary-800 cursor-pointer underline underline-offset-4;
-  /* text-underline-offset: 0.25rem; */
 }
 [data-style='rokkit'] a:hover {
   @apply text-secondary-700 cursor-pointer;
@@ -51,6 +47,6 @@
   @apply text-primary-100;
 }
 
-[data-style='rokkit'].dark ::-webkit-calendar-picker-indicator {
+[data-style='rokkit'] .dark ::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }

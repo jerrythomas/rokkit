@@ -10,7 +10,7 @@ import {
 
 import { importIcons } from '@rokkit/core'
 import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
-import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
+// import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
 export const palette = themeRules('rokkit', { neutral: 'shark' })
 
 const icons = {

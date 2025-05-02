@@ -41,6 +41,7 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                
               <rk-item>
                 <!---->
+                <!---->
                 <rk-icon
                   aria-label="object"
                   data-tag="icon"
@@ -55,6 +56,7 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                 <!---->
                  
                 <!---->
+                
                 <!---->
               </rk-item>
             </div>

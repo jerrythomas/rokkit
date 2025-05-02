@@ -128,7 +128,8 @@ export const importIcons = (icons) => {
 	if (!icons) return {}
 
 	return Object.entries(icons).reduce((acc, [key, value]) => {
-		acc[key] = () => import(value, { with: { type: 'json' } }).then((i) => i.default)
+		acc[key] = () =>
+			import(/* @vite-ignore */ value, { with: { type: 'json' } }).then((i) => i.default)
 		return acc
 	}, {})
 }

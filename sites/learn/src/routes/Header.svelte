@@ -23,8 +23,8 @@
 	]
 	let codeValue = codeOptions.find((option) => option.value === site.code)
 	let loading = $state(false)
+
 	const handleCodeVisibility = (detail) => {
-		console.log('handleCodeVisibility', detail)
 		site.code = detail.value
 	}
 	beforeNavigate(() => {
@@ -69,11 +69,8 @@
 			<Toggle options={codeOptions} value={codeValue} onchange={handleCodeVisibility} />
 		{/if}
 		<ThemeSwitcher />
-		<a
-			href="https://github.com/jerrythomas/rokkit"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="square"><Icon name="i-logo:github" label="Rokkit on Github" /></a
-		>
+		<a href="https://github.com/jerrythomas/rokkit" target="_blank" class="square">
+			<Icon name="i-logo:github" label="Rokkit on Github" />
+		</a>
 	</settings>
 </header>

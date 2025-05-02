@@ -57,12 +57,6 @@
   @apply top-0.75 h-6 w-6 rounded-full;
   @apply from-primary to-secondary bg-gradient-to-r;
 }
-[data-style='rokkit'] rk-toggle > button {
-  @apply items-center justify-center rounded-md p-0;
-}
-[data-style='rokkit'] rk-toggle > button > rk-icon {
-  @apply aspect-square items-center justify-center;
-}
 
 /* Styles for 'rating' class */
 [data-style='rokkit'] rating {

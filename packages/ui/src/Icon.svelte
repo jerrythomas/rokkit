@@ -33,6 +33,7 @@
 
 	let emitter = $derived(createEmitter(events, ['click', 'change', 'mouseenter', 'mouseleave']))
 	function handleClick(e) {
+		if (role === 'img') return
 		e.preventDefault()
 
 		if (!disabled) {
