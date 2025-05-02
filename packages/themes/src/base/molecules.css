@@ -105,5 +105,5 @@ rk-input-field > label.required::after {
 }
 
 rk-select > select {
-  @apply min-h-9 min-w-40 rounded px-3;
+  @apply min-w-40 rounded px-3 leading-loose;
 }

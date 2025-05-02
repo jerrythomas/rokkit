@@ -36,11 +36,13 @@ exports[`NestedList > should render nested list 1`] = `
         <rk-item>
           <!---->
           <!---->
+          <!---->
            
           <p>
             Item 1
           </p>
           <!---->
+          
           <!---->
         </rk-item>
       </div>
@@ -88,11 +90,13 @@ exports[`NestedList > should render nested list 1`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 1
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -140,11 +144,13 @@ exports[`NestedList > should render nested list 1`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 2
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -189,11 +195,13 @@ exports[`NestedList > should render nested list 1`] = `
         <rk-item>
           <!---->
           <!---->
+          <!---->
            
           <p>
             Item 2
           </p>
           <!---->
+          
           <!---->
         </rk-item>
       </div>
@@ -249,11 +257,13 @@ exports[`NestedList > should render nested list 1`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 3
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -311,11 +321,13 @@ exports[`NestedList > should render nested list 1`] = `
                 <rk-item>
                   <!---->
                   <!---->
+                  <!---->
                    
                   <p>
                     Grandchild 1
                   </p>
                   <!---->
+                  
                   <!---->
                 </rk-item>
               </div>
@@ -368,11 +380,13 @@ exports[`NestedList > should render nested list 1`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 4
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -428,11 +442,13 @@ exports[`NestedList > should render nested list 2`] = `
         <rk-item>
           <!---->
           <!---->
+          <!---->
            
           <p>
             Item 1
           </p>
           <!---->
+          
           <!---->
         </rk-item>
       </div>
@@ -480,11 +496,13 @@ exports[`NestedList > should render nested list 2`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 1
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -532,11 +550,13 @@ exports[`NestedList > should render nested list 2`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 2
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -581,11 +601,13 @@ exports[`NestedList > should render nested list 2`] = `
         <rk-item>
           <!---->
           <!---->
+          <!---->
            
           <p>
             Item 2
           </p>
           <!---->
+          
           <!---->
         </rk-item>
       </div>
@@ -641,11 +663,13 @@ exports[`NestedList > should render nested list 2`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 3
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>
@@ -703,11 +727,13 @@ exports[`NestedList > should render nested list 2`] = `
                 <rk-item>
                   <!---->
                   <!---->
+                  <!---->
                    
                   <p>
                     Grandchild 1
                   </p>
                   <!---->
+                  
                   <!---->
                 </rk-item>
               </div>
@@ -760,11 +786,13 @@ exports[`NestedList > should render nested list 2`] = `
             <rk-item>
               <!---->
               <!---->
+              <!---->
                
               <p>
                 Child 4
               </p>
               <!---->
+              
               <!---->
             </rk-item>
           </div>

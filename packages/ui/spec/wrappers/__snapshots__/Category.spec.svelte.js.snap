@@ -335,6 +335,13 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         <!---->
          
         <!---->
+        <!---->
+         
+        <p>
+          one
+        </p>
+        <!---->
+        <!---->
       </rk-item>
       <rk-item
         aria-selected="false"
@@ -345,6 +352,13 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         <!---->
          
         <!---->
+        <!---->
+         
+        <p>
+          two
+        </p>
+        <!---->
+        <!---->
       </rk-item>
       <rk-item
         aria-selected="false"
@@ -354,6 +368,13 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
       >
         <!---->
          
+        <!---->
+        <!---->
+         
+        <p>
+          three
+        </p>
+        <!---->
         <!---->
       </rk-item>
       

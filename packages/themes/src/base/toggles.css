@@ -5,7 +5,7 @@ rk-checkbox {
 
 rk-switch,
 rk-toggle {
-  @apply flex items-center gap-2;
+  @apply flex items-center;
 }
 
 rk-radio-group label {
@@ -13,9 +13,5 @@ rk-radio-group label {
 }
 
 rk-toggle {
-  @apply text-primary-700;
-}
-
-rk-toggle button {
-  @apply flex h-8 w-8 items-center justify-center rounded-sm;
+  @apply text-primary-700 flex items-center justify-center rounded-sm;
 }

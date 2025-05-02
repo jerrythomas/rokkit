@@ -4,6 +4,6 @@ import * as internal from '../../src/lib'
 
 describe('internal', () => {
 	it('should contain all internal functions', () => {
-		expect(Object.keys(internal)).toEqual(['setupListeners', 'removeListeners', 'EventManager'])
+		expect(Object.keys(internal)).toEqual(['EventManager', 'setupListeners', 'removeListeners'])
 	})
 })

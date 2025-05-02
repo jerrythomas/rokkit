@@ -31,7 +31,7 @@
 					name="i-rokkit:menu"
 					class="border-r-neutral-subtle border-r"
 					role="button"
-					on:click={toggle}
+					onclick={toggle}
 				/>
 			{/if}
 			<Icon
@@ -52,7 +52,7 @@
 		</nav>
 
 		{@const SvelteComponent = content}
-		<notes class="markdown-body h-full w-full overflow-auto p-8 font-thin">
+		<notes class="markdown-body h-full w-full overflow-scroll p-8 font-thin">
 			<SvelteComponent />
 		</notes>
 	{/if}

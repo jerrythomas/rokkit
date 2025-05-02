@@ -61,14 +61,14 @@
 		{/each}
 		<rk-item>
 			<svelte:boundary>
-				<!-- {#if template} -->
-				{@render template(value)}
-				{#snippet failed()}
+				{#if template}
+					{@render template(value)}
+					{#snippet failed()}
+						<Item {value} {fields} />
+					{/snippet}
+				{:else}
 					<Item {value} {fields} />
-				{/snippet}
-				<!-- {:else}
-					<Item {value} {fields} />
-				{/if} -->
+				{/if}
 			</svelte:boundary>
 		</rk-item>
 	</div>

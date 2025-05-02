@@ -1,8 +1,9 @@
 <script>
 	import { equals } from 'ramda'
-	import { noop, getSnippet, FieldMapper } from '@rokkit/core'
+	import { noop, FieldMapper } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
-	import { defaultMapping } from './constants'
+	import Item from './Item.svelte'
+	// import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
@@ -27,7 +28,7 @@
 		...extra
 	} = $props()
 
-	let cursor = $state([])
+	// let cursor = $state([])
 
 	function toggle(direction = 1) {
 		let nextIndex
@@ -51,8 +52,8 @@
 		next: ['ArrowRight', 'ArrowDown', ' ', 'Enter'],
 		prev: ['ArrowLeft', 'ArrowUp']
 	}
-	let useComponent = $derived(!options.every((item) => [false, true].includes(item)))
-	let mapper = new FieldMapper(fields)
+	// let useComponent = $derived(!options.every((item) => [false, true].includes(item)))
+	// let mapper = new FieldMapper(fields)
 </script>
 
 {#if !Array.isArray(options) || options.length < 2}
@@ -75,13 +76,16 @@
 		onclick={handleClick}
 	>
 		{#each options as item, index (item)}
-			{@const Template = getSnippet(extra, mapper.get('snippet', item), stub)}
+			<!-- {@const Template = getSnippet(extra, mapper.get('snippet', item), stub)} -->
 			<rk-item class="relative" role="option" aria-selected={equals(item, value)} data-path={index}>
 				{#if equals(item, value)}
 					<rk-indicator class="absolute bottom-0 left-0 right-0 top-0"></rk-indicator>
 				{/if}
-				{#if Template}
-					<Template value={item} {fields} />
+				{#if stub}
+					{@render stub(item, fields)}
+					<!-- <Template value={item} {fields} /> -->
+				{:else}
+					<Item value={item} {fields} />
 				{/if}
 			</rk-item>
 		{/each}

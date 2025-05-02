@@ -4,7 +4,7 @@ rk-icon {
   /* @apply h-6 min-h-6 w-6; */
 }
 button > rk-icon {
-  @apply text-md aspect-square cursor-pointer select-none p-2 focus:outline;
+  @apply text-md aspect-square cursor-pointer select-none;
 }
 rk-icon > i {
   @apply mx-auto aspect-square text-current;

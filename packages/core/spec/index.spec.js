@@ -5,6 +5,18 @@ import * as functions from '../src/index.js'
 describe('@rokkit/core', () => {
 	it('should contain all exported functions', () => {
 		expect(Object.keys(functions)).toEqual([
+			'FieldMapper',
+			'getItemAtIndex',
+			'getIndexForItem',
+			'createEmitter',
+			'getLineTypes',
+			'weekdays',
+			'getCalendarDays',
+			'generateTicks',
+			'getValue',
+			'getNestedFields',
+			'hasChildren',
+			'isExpanded',
 			'defaultColors',
 			'syntaxColors',
 			'shades',
@@ -41,19 +53,7 @@ describe('@rokkit/core', () => {
 			'stateColors',
 			'themeColors',
 			'contrastColors',
-			'themeRules',
-			'FieldMapper',
-			'getItemAtIndex',
-			'getIndexForItem',
-			'createEmitter',
-			'getLineTypes',
-			'weekdays',
-			'getCalendarDays',
-			'generateTicks',
-			'getValue',
-			'getNestedFields',
-			'hasChildren',
-			'isExpanded'
+			'themeRules'
 		])
 	})
 })

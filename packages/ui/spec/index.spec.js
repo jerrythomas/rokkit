@@ -6,6 +6,7 @@ import * as components from '../src'
 describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
+			'Button',
 			'Icon',
 			'Item',
 			'Pill',
