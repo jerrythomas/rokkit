@@ -6,7 +6,7 @@
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
     "outDir": "./dist",
-    "allowJs": false
+    "allowJs": true
   },
   "exclude": ["**/spec/**/*", "**/fixtures/**/*"]
 }

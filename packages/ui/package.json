@@ -10,9 +10,9 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun prepublishOnly"
   },
   "files": [
     "src/**/*.js",
@@ -26,17 +26,18 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./src/index.js",
-			"svelte": "./src/index.js"
+      "svelte": "./src/index.js"
     }
   },
   "dependencies": {
     "@rokkit/actions": "workspace:latest",
     "@rokkit/core": "workspace:latest",
-    "@rokkit/states": "workspace:latest",
     "@rokkit/data": "workspace:latest",
     "@rokkit/input": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
     "d3-scale": "^4.0.2",
     "date-fns": "^4.1.0",
-    "ramda": "^0.30.1"
+    "ramda": "^0.30.1",
+    "typescript": "^5.8.3"
   }
 }

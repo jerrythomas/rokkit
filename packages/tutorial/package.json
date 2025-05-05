@@ -22,9 +22,9 @@
     }
   },
   "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun prepublishOnly"
   },
   "dependencies": {
     "@vitest/expect": "^2.1.8",
