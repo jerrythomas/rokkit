@@ -1,6 +1,6 @@
 {
   "prefix": "base",
-  "lastModified": 1743026907,
+  "lastModified": 1746486657,
   "icons": {
     "accordion-closed": {
       "body": "<path fill=\"currentColor\" d=\"M16.5 12 9 19.5l-1.05-1.05L14.4 12 7.95 5.55 9 4.5z\"/>"
@@ -167,7 +167,7 @@
     "sort-descending": {
       "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"1.5\"><path d=\"M4 8h9\"/><path d=\"M6 13h7\" opacity=\".7\"/><path d=\"M8 18h5\" opacity=\".4\"/><path stroke-linejoin=\"round\" d=\"M17 20V4l3 4\"/></g>"
     },
-    "sort-unsorted": {
+    "sort-none": {
       "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path d=\"M16 18V6m0 0 4 4.125M16 6l-4 4.125\" opacity=\".5\"/><path d=\"M8 6v12m0 0 4-4.125M8 18l-4-4.125\"/></g>"
     },
     "state-error": {
