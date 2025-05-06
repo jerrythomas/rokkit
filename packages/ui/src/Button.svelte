@@ -1,4 +1,5 @@
 <script>
+	import Icon from './Icon.svelte'
 	/**
 	 * @typedef {Object} ButtonProps
 	 * @property {'default' | 'primary' | 'secondary' | 'tertiary'} variant - The variant of the button.
@@ -13,6 +14,7 @@
 	 */
 	/** @type {ButtonProps} */
 	let {
+		class: classes = '',
 		variant = 'default',
 		type = 'button',
 		leftIcon = null,
@@ -20,9 +22,8 @@
 		label = null,
 		children = null,
 		description = null,
-		onclick,
-		onsubmit,
-		onreset
+		disabled = false,
+		onclick
 	} = $props()
 
 	const primary = $derived(variant === 'primary')
@@ -35,10 +36,9 @@
 	class:secondary
 	class:tertiary
 	class={classes}
+	{disabled}
 	{type}
 	{onclick}
-	{onsubmit}
-	{onreset}
 	aria-label={description ?? label}
 >
 	{#if typeof leftIcon === 'string'}

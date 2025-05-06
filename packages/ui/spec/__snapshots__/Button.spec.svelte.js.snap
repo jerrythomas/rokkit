@@ -1,0 +1,304 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button > should render snippets 1`] = `
+<button
+  aria-label="Left"
+  type="button"
+>
+  <!---->
+  <svg
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm0-2a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-4-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+    />
+  </svg>
+  
+  <!---->
+   
+  Left
+  <!---->
+   
+  <!---->
+  
+  <!---->
+</button>
+`;
+
+exports[`Button > should render snippets 2`] = `
+<button
+  aria-label="Right icon"
+  type="button"
+>
+  <!---->
+  
+  <!---->
+   
+  Right icon
+  <!---->
+   
+  <!---->
+  <svg
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm0-2a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm4-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+    />
+  </svg>
+  
+  <!---->
+</button>
+`;
+
+exports[`Button > should render snippets 3`] = `
+<button
+  type="button"
+>
+  <!---->
+  
+  <!---->
+   
+  <!---->
+  <p>
+    Hello World
+  </p>
+  
+  <!---->
+   
+  <!---->
+  
+  <!---->
+</button>
+`;
+
+exports[`Button > should render with icons 1`] = `
+<div>
+  <button
+    aria-label="Click me"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with icons 2`] = `
+<div>
+  <button
+    aria-label="Click me"
+    type="button"
+  >
+    <rk-icon
+      aria-label="home"
+      data-tag="icon"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="home"
+      />
+    </rk-icon>
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with icons 3`] = `
+<div>
+  <button
+    aria-label="Click me"
+    type="button"
+  >
+    <rk-icon
+      aria-label="home"
+      data-tag="icon"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="home"
+      />
+    </rk-icon>
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <rk-icon
+      aria-label="chevron-right"
+      data-tag="icon"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="chevron-right"
+      />
+    </rk-icon>
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with icons 4`] = `
+<div>
+  <button
+    aria-label="Click me"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <rk-icon
+      aria-label="chevron-right"
+      data-tag="icon"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="chevron-right"
+      />
+    </rk-icon>
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with label 1`] = `
+<div>
+  <button
+    aria-label="Click me"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with label 2`] = `
+<div>
+  <button
+    aria-label="This is a description"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    New label
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with variant "primary" 1`] = `
+<div>
+  <button
+    aria-label="Click me"
+    class="primary"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with variant "secondary" 1`] = `
+<div>
+  <button
+    aria-label="Click me"
+    class="secondary"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
+
+exports[`Button > should render with variant "tertiary" 1`] = `
+<div>
+  <button
+    aria-label="Click me"
+    class="tertiary"
+    type="button"
+  >
+    <!---->
+    
+    <!---->
+     
+    Click me
+    <!---->
+     
+    <!---->
+    
+    <!---->
+  </button>
+  
+</div>
+`;
