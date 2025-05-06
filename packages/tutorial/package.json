@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/tutorial",
-  "version": "1.0.0-next.112",
+  "version": "1.0.0-next.113",
   "description": "Utilities for building tutorials.",
   "publishConfig": {
     "access": "public"
