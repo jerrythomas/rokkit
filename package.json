@@ -1,6 +1,6 @@
 {
   "name": "rokkit",
-  "version": "1.0.0-next.112",
+  "version": "1.0.0-next.113",
   "module": "src/index.js",
   "type": "module",
   "npm": {
