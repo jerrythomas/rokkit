@@ -16,12 +16,13 @@ exports[`Select.svelte > should render string array 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="opened"

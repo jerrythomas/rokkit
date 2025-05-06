@@ -107,12 +107,13 @@ exports[`Input.svelte > should render "enum" 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"
@@ -293,12 +294,13 @@ exports[`Input.svelte > should render "select" 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"

@@ -22,12 +22,13 @@ exports[`InputSelect.svelte > should render items using custom component 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"
@@ -72,12 +73,13 @@ exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"
@@ -122,12 +124,13 @@ exports[`InputSelect.svelte > should render items using default item when data i
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"
@@ -172,12 +175,13 @@ exports[`InputSelect.svelte > should render items using field mappings 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"
@@ -222,12 +226,13 @@ exports[`InputSelect.svelte > should render using default field mapping 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"
@@ -272,12 +277,13 @@ exports[`InputSelect.svelte > should render with alternate class 1`] = `
     >
       <item>
         <!---->
+         
+        <!---->
         <!---->
          
         <!---->
         <!---->
       </item>
-      <!---->
        
       <rk-icon
         aria-label="closed"

@@ -13,15 +13,15 @@ exports[`DropSearch.svelte > should render 1`] = `
       role="option"
       tabindex="-1"
     >
-      <span
-        class="flex flex-grow"
-      >
-        <input
-          class="w-full border-none bg-transparent p-0"
-          type="text"
-        />
-      </span>
-      <!---->
+      <item>
+        <!---->
+         
+        <!---->
+        <!---->
+         
+        <!---->
+        <!---->
+      </item>
        
       <rk-icon
         aria-label="opened"

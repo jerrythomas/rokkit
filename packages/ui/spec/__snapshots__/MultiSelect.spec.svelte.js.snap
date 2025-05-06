@@ -13,21 +13,15 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
     role="option"
     tabindex="-1"
   >
-    <!---->
-    <items
-      class="flex flex-wrap"
-    >
+    <item>
+      <!---->
+       
       <!---->
       <!---->
        
-      <p>
-        One
-      </p>
       <!---->
-      
-    </items>
-    
-    <!---->
+      <!---->
+    </item>
      
     <rk-icon
       aria-label="closed"
@@ -60,21 +54,15 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     role="option"
     tabindex="-1"
   >
-    <!---->
-    <items
-      class="flex flex-wrap"
-    >
+    <item>
+      <!---->
+       
       <!---->
       <!---->
        
-      <p>
-        One
-      </p>
       <!---->
-      
-    </items>
-    
-    <!---->
+      <!---->
+    </item>
      
     <rk-icon
       aria-label="opened"
@@ -162,28 +150,15 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     role="option"
     tabindex="-1"
   >
-    <!---->
-    <items
-      class="flex flex-wrap"
-    >
+    <item>
+      <!---->
+       
       <!---->
       <!---->
        
-      <p>
-        One
-      </p>
       <!---->
       <!---->
-      <!---->
-       
-      <p>
-        Two
-      </p>
-      <!---->
-      
-    </items>
-    
-    <!---->
+    </item>
      
     <rk-icon
       aria-label="opened"

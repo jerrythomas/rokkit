@@ -26,14 +26,14 @@
 {/snippet}
 
 {#if addheader}
-	<List {items} {header} />
+	<List bind:items {header} />
 {/if}
 {#if addfooter}
-	<List {items} {footer} />
+	<List bind:items {footer} />
 {/if}
 {#if addempty}
-	<List {items} {empty} />
+	<List bind:items {empty} />
 {/if}
 {#if mixed}
-	<List {items} {odd} {even} />
+	<List bind:items {odd} {even} />
 {/if}

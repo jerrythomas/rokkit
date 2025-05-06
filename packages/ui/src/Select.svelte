@@ -8,21 +8,22 @@
 	// import ListItems from './ListItems.svelte'
 	import Item from './Item.svelte'
 
-	let className = ''
-	export { className as class }
-	export let name = null
-	export let options = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using = {}
-	export let value = null
-	export let placeholder = ''
+	let {
+		class: className = '',
+		name = null,
+		options = $bindable([]),
+		fields,
+		using = {},
+		value = $bindable(null),
+		placeholder = '',
+		currentItem
+	} = $props()
 
-	let activeIndex
-	let open = false
-	let offsetTop
+	let activeIndex = $state(-1)
+	let open = $state(false)
+	// let offsetTop
 	let icons = defaultStateIcons.selector
-	let activeItem
+	let activeItem = $state(null)
 
 	function handleSelect() {
 		open = false
@@ -51,10 +52,10 @@
 		}
 	}
 
-	$: fields = { ...defaultFields, ...fields }
-	$: using = { default: Item, ...using }
-	$: activeIndex = options.findIndex((item) => item === value)
-	$: offsetTop = activeItem?.offsetTop + activeItem?.clientHeight ?? 0
+	// $: fields = { ...defaultFields, ...fields }
+	// $: using = { default: Item, ...using }
+	// $: activeIndex = options.findIndex((item) => item === value)
+	let offsetTop = $derived(activeItem?.offsetTop + activeItem?.clientHeight ?? 0)
 </script>
 
 <input-select
@@ -65,27 +66,28 @@
 	aria-label={name}
 	use:dismissable
 	use:navigable={{ horizontal: false, vertical: true }}
-	on:focus={() => (open = true)}
-	on:blur={() => (open = false)}
-	on:dismiss={() => (open = false)}
-	on:previous={handlePrevious}
-	on:next={handleNext}
-	on:select={handleKeySelect}
+	onfocus={() => (open = true)}
+	onblur={() => (open = false)}
+	ondismiss={() => (open = false)}
+	onprevious={handlePrevious}
+	onnext={handleNext}
+	onselect={handleKeySelect}
 >
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<selected-item
-		on:click|stopPropagation={() => (open = !open)}
+		onclick={() => (open = !open)}
 		class="flex w-full items-center"
 		bind:this={activeItem}
 		role="option"
 		tabindex="-1"
 		aria-selected={value !== null && !open}
 	>
-		<slot>
-			<item>
-				<svelte:component this={using.default} value={value ?? placeholder} {fields} />
-			</item>
-		</slot>
+		<item>
+			{#if currentItem}
+				{@render currentItem(value, fields)}
+			{/if}
+			<Item value={value ?? placeholder} {fields} />
+		</item>
 		{#if open}
 			<Icon name={icons.opened} label="opened" tabindex="-1" />
 		{:else}
@@ -102,7 +104,14 @@
 				{using}
 			/>
 		</list> -->
-			<List items={options} {fields} {using} bind:value on:select={handleSelect} tabindex="-1" />
+			<List
+				bind:items={options}
+				{fields}
+				{using}
+				bind:value
+				on:select={handleSelect}
+				tabindex="-1"
+			/>
 		</Slider>
 	{/if}
 </input-select>
