@@ -31,7 +31,9 @@ exports[`Item > should render with custom mapping 1`] = `
   <!---->
   <rk-icon
     aria-label="World"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -68,7 +70,9 @@ exports[`Item > should render with icon 1`] = `
   <!---->
   <rk-icon
     aria-label="Hello"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >

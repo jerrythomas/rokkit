@@ -26,7 +26,9 @@ exports[`Select.svelte > should render string array 1`] = `
        
       <rk-icon
         aria-label="opened"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >

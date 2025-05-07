@@ -142,7 +142,7 @@ function createModifierKeyboardActionMap(options) {
 function isNodeToggle(target) {
 	return (
 		target &&
-		target.getAttribute('data-tag') === 'icon' &&
+		target.hasAttribute('data-tag-icon') &&
 		['closed', 'opened'].includes(target.getAttribute('data-state'))
 	)
 }

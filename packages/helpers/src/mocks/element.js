@@ -81,3 +81,21 @@ export function createNestedElement(item) {
 
 	return element
 }
+
+/**
+ * Mocks teh requestSubmit function for HTMLFormElement which is not implemented by JSDOM
+ */
+export function mockFormRequestSubmit() {
+	HTMLFormElement.prototype.requestSubmit = vi.fn(function (submitter) {
+		const event = new Event('submit', {
+			bubbles: true,
+			cancelable: true
+		})
+		if (submitter) {
+			event.submitter = submitter
+		}
+		this.dispatchEvent(event)
+	})
+
+	return true
+}

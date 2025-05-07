@@ -36,7 +36,9 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
     <rk-cell>
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
       >
         <!---->
       </span>
@@ -44,8 +46,10 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
        
       <rk-icon
         aria-label="node-closed"
-        class="cursor-pointer"
-        data-tag="icon"
+        class="small cursor-pointer"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -70,7 +74,9 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
     <rk-cell>
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
       >
         <!---->
       </span>
@@ -78,8 +84,10 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
        
       <rk-icon
         aria-label="node-opened"
-        class="cursor-pointer"
-        data-tag="icon"
+        class="small cursor-pointer"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -104,14 +112,18 @@ exports[`TableCell > should render a table cell as a parent 3`] = `
     <rk-cell>
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
       >
         <!---->
       </span>
       <!---->
        
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
       >
         <!---->
       </span>

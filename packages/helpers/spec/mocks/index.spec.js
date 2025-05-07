@@ -10,7 +10,8 @@ describe('mocks', () => {
 			'elementsWithSize',
 			'mixedSizeElements',
 			'getMockNode',
-			'createNestedElement'
+			'createNestedElement',
+			'mockFormRequestSubmit'
 		])
 	})
 })

@@ -27,9 +27,11 @@ exports[`Tree > should render nested list 1`] = `
           <!---->
           <rk-icon
             aria-label="expand"
-            class="w-4 small"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
             data-state="closed"
-            data-tag="icon"
+            data-tag-icon="true"
             role="img"
             tabindex="-1"
           >
@@ -73,9 +75,11 @@ exports[`Tree > should render nested list 1`] = `
           <!---->
           <rk-icon
             aria-label="expand"
-            class="w-4 small"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
             data-state="closed"
-            data-tag="icon"
+            data-tag-icon="true"
             role="img"
             tabindex="-1"
           >
@@ -142,9 +146,11 @@ exports[`Tree > should render nested list 2`] = `
           <!---->
           <rk-icon
             aria-label="expand"
-            class="w-4 small"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
             data-state="closed"
-            data-tag="icon"
+            data-tag-icon="true"
             role="img"
             tabindex="-1"
           >
@@ -188,9 +194,11 @@ exports[`Tree > should render nested list 2`] = `
           <!---->
           <rk-icon
             aria-label="expand"
-            class="w-4 small"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
             data-state="closed"
-            data-tag="icon"
+            data-tag-icon="true"
             role="img"
             tabindex="-1"
           >

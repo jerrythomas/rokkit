@@ -32,7 +32,7 @@
 <list-editor class="flex {className}">
 	<List
 		bind:items={value}
-		value={item}
+		bind:value={item}
 		{fields}
 		using={registry.components}
 		on:select={handleSelect}

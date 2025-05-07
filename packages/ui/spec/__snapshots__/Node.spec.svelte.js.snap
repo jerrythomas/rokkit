@@ -85,7 +85,9 @@ exports[`Node > should render as a sibling 1`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-sibling=""
+        data-tag-tree-line=""
       >
         <i
           class="row-span-2 border-r"
@@ -130,7 +132,9 @@ exports[`Node > should render as last sibling 1`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-last=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -181,7 +185,9 @@ exports[`Node > should render having child 1`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-sibling=""
+        data-tag-tree-line=""
       >
         <i
           class="row-span-2 border-r"
@@ -191,7 +197,9 @@ exports[`Node > should render having child 1`] = `
       
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-child=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -242,7 +250,9 @@ exports[`Node > should render with different states 1`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-child=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -259,9 +269,11 @@ exports[`Node > should render with different states 1`] = `
       <!---->
       <rk-icon
         aria-label="expand"
-        class="w-4 small"
+        class="w-4"
+        data-disabled="false"
+        data-size="small"
         data-state="closed"
-        data-tag="icon"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -308,7 +320,9 @@ exports[`Node > should render with different states 2`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-child=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -325,9 +339,11 @@ exports[`Node > should render with different states 2`] = `
       <!---->
       <rk-icon
         aria-label="collapse"
-        class="w-4 small"
+        class="w-4"
+        data-disabled="false"
+        data-size="small"
         data-state="opened"
-        data-tag="icon"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -374,7 +390,9 @@ exports[`Node > should render with different states 3`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-child=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -391,9 +409,11 @@ exports[`Node > should render with different states 3`] = `
       <!---->
       <rk-icon
         aria-label="collapse"
-        class="w-4 small"
+        class="w-4"
+        data-disabled="false"
+        data-size="small"
         data-state="opened"
-        data-tag="icon"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -440,7 +460,9 @@ exports[`Node > should render with different states 4`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-child=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -457,9 +479,11 @@ exports[`Node > should render with different states 4`] = `
       <!---->
       <rk-icon
         aria-label="collapse"
-        class="w-4 small"
+        class="w-4"
+        data-disabled="false"
+        data-size="small"
         data-state="opened"
-        data-tag="icon"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -506,7 +530,9 @@ exports[`Node > should render with icon 1`] = `
     >
       <!---->
       <span
-        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-child=""
+        data-tag-tree-line=""
       >
         <!---->
         <i
@@ -523,9 +549,11 @@ exports[`Node > should render with icon 1`] = `
       <!---->
       <rk-icon
         aria-label="expand"
-        class="w-4 small"
+        class="w-4"
+        data-disabled="false"
+        data-size="small"
         data-state="closed"
-        data-tag="icon"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >

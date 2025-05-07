@@ -104,7 +104,9 @@ exports[`Button > should render with icons 2`] = `
   >
     <rk-icon
       aria-label="home"
-      data-tag="icon"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
       role="img"
       tabindex="-1"
     >
@@ -134,7 +136,9 @@ exports[`Button > should render with icons 3`] = `
   >
     <rk-icon
       aria-label="home"
-      data-tag="icon"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
       role="img"
       tabindex="-1"
     >
@@ -150,7 +154,9 @@ exports[`Button > should render with icons 3`] = `
      
     <rk-icon
       aria-label="chevron-right"
-      data-tag="icon"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
       role="img"
       tabindex="-1"
     >
@@ -180,7 +186,9 @@ exports[`Button > should render with icons 4`] = `
      
     <rk-icon
       aria-label="chevron-right"
-      data-tag="icon"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
       role="img"
       tabindex="-1"
     >

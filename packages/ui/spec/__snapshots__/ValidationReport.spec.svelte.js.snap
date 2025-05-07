@@ -8,7 +8,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     >
       <rk-icon
         aria-label="badge-pass"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -28,7 +30,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     >
       <rk-icon
         aria-label="badge-fail"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -48,7 +52,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     >
       <rk-icon
         aria-label="badge-unknown"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -68,7 +74,9 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     >
       <rk-icon
         aria-label="badge-warn"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -97,7 +105,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     >
       <rk-icon
         aria-label="pass"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -117,7 +127,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     >
       <rk-icon
         aria-label="fail"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -137,7 +149,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     >
       <rk-icon
         aria-label="unknown"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -157,7 +171,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     >
       <rk-icon
         aria-label="warn"
-        data-tag="icon"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
