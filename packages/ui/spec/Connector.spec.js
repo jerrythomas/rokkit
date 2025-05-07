@@ -13,9 +13,9 @@ describe('Connector.svelte', () => {
 				const { container } = render(Connector)
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
-				expect(span[0].className).toEqual(
-					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty'
-				)
+				expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+				expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+				expect(span[0].hasAttribute('data-tag-line-empty')).toBeTruthy()
 				expect(span[0].children).toHaveLength(0)
 			})
 		})
@@ -25,9 +25,9 @@ describe('Connector.svelte', () => {
 				const { container } = render(Connector, { type: 'empty' })
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
-				expect(span[0].className).toEqual(
-					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty'
-				)
+				expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+				expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+				expect(span[0].hasAttribute('data-tag-line-empty')).toBeTruthy()
 				expect(container).toMatchSnapshot()
 			})
 		})
@@ -37,9 +37,9 @@ describe('Connector.svelte', () => {
 				const { container } = render(Connector, { type: 'last' })
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
-				expect(span[0].className).toEqual(
-					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last'
-				)
+				expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+				expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+				expect(span[0].hasAttribute('data-tag-line-last')).toBeTruthy()
 				expect(container).toMatchSnapshot()
 			})
 		})
@@ -49,9 +49,9 @@ describe('Connector.svelte', () => {
 				const { container } = render(Connector, { type: 'child' })
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
-				expect(span[0].className).toEqual(
-					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child'
-				)
+				expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+				expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+				expect(span[0].hasAttribute('data-tag-line-child')).toBeTruthy()
 				expect(span[0].children).toHaveLength(2)
 				expect(container).toMatchSnapshot()
 			})
@@ -63,9 +63,9 @@ describe('Connector.svelte', () => {
 
 				const span = container.querySelectorAll('span')
 				expect(span).toHaveLength(1)
-				expect(span[0].className).toEqual(
-					'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling'
-				)
+				expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+				expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+				expect(span[0].hasAttribute('data-tag-line-sibling')).toBeTruthy()
 				expect(container).toMatchSnapshot()
 			})
 		})
@@ -83,7 +83,9 @@ describe('Connector.svelte', () => {
 
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
-			expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last')
+			expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+			expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+			expect(span[0].hasAttribute('data-tag-line-last')).toBeTruthy()
 			expect(container).toMatchSnapshot()
 		})
 
@@ -92,9 +94,9 @@ describe('Connector.svelte', () => {
 
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
-			expect(span[0].className).toEqual(
-				'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child'
-			)
+			expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+			expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+			expect(span[0].hasAttribute('data-tag-line-child')).toBeTruthy()
 			expect(container).toMatchSnapshot()
 		})
 		it('should render when type is "sibling"', () => {
@@ -102,9 +104,9 @@ describe('Connector.svelte', () => {
 
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
-			expect(span[0].className).toEqual(
-				'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling'
-			)
+			expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+			expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+			expect(span[0].hasAttribute('data-tag-line-sibling')).toBeTruthy()
 			expect(container).toMatchSnapshot()
 		})
 		it('should render when type is "empty"', () => {
@@ -112,9 +114,10 @@ describe('Connector.svelte', () => {
 
 			const span = container.querySelectorAll('span')
 			expect(span).toHaveLength(1)
-			expect(span[0].className).toEqual(
-				'grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty'
-			)
+			expect(span[0].className).toEqual('grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2')
+			expect(span[0].hasAttribute('data-tag-tree-line')).toBeTruthy()
+			expect(span[0].hasAttribute('data-tag-line-empty')).toBeTruthy()
+			expect(span[0].hasAttribute('data-tag-line-last')).toBeFalsy()
 			expect(container).toMatchSnapshot()
 		})
 	})

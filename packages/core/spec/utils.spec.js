@@ -48,7 +48,7 @@ describe('utils', () => {
 		it('should generate a random id', () => {
 			const value = id()
 			expect(typeof value).toBe('string')
-			expect(value.length).toEqual(7)
+			expect(value.split('-')[0].length).toEqual(7)
 		})
 	})
 

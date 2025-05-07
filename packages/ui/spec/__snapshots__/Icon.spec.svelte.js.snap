@@ -4,7 +4,10 @@ exports[`Icon > should call the click event when the icon is clicked 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-button="true"
+    data-tag-icon="true"
     role="button"
     tabindex="0"
   >
@@ -22,7 +25,10 @@ exports[`Icon > should handle role=option as checkbox 1`] = `
   <rk-icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-checkbox="true"
+    data-tag-icon="true"
     role="option"
     tabindex="0"
   >
@@ -39,8 +45,9 @@ exports[`Icon > should render the icon as disabled 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    class="disabled"
-    data-tag="icon"
+    data-disabled="true"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -58,7 +65,9 @@ exports[`Icon > should render the icon with a custom class 1`] = `
   <rk-icon
     aria-label="i-rokkit:mode-dark"
     class="custom-class"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -76,7 +85,9 @@ exports[`Icon > should render the icon with a custom class 2`] = `
   <rk-icon
     aria-label="i-rokkit:mode-dark"
     class="custom-class-2"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -94,7 +105,10 @@ exports[`Icon > should render the icon with checkbox role 1`] = `
   <rk-icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-checkbox="true"
+    data-tag-icon="true"
     role="checkbox"
     tabindex="0"
   >
@@ -112,7 +126,10 @@ exports[`Icon > should render the icon with checkbox role with default state 1`]
   <rk-icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-checkbox="true"
+    data-tag-icon="true"
     role="checkbox"
     tabindex="0"
   >
@@ -129,7 +146,9 @@ exports[`Icon > should render the icon with the provided name and label 1`] = `
 <div>
   <rk-icon
     aria-label="Dark mode"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -146,7 +165,9 @@ exports[`Icon > should render the icon with the provided name and label 2`] = `
 <div>
   <rk-icon
     aria-label="Light mode"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -163,7 +184,10 @@ exports[`Icon > should render the icon with the specified role 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="base"
+    data-tag-button="true"
+    data-tag-icon="true"
     role="button"
     tabindex="0"
   >
@@ -180,8 +204,9 @@ exports[`Icon > should render the icon with the specified size 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    class="small"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="small"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -198,8 +223,9 @@ exports[`Icon > should render the icon with the specified size 2`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    class="medium"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="medium"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -216,8 +242,9 @@ exports[`Icon > should render the icon with the specified size 3`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:mode-dark"
-    class="large"
-    data-tag="icon"
+    data-disabled="false"
+    data-size="large"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -234,8 +261,10 @@ exports[`Icon > should render the icon with the specified state 1`] = `
 <div>
   <rk-icon
     aria-label="i-rokkit:node-opened"
+    data-disabled="false"
+    data-size="base"
     data-state="opened"
-    data-tag="icon"
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >

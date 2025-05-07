@@ -1,5 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+/* eslint-disable no-console */
+import { describe, it, expect, beforeEach, beforeAll, vi, afterAll } from 'vitest'
 import { render, cleanup } from '@testing-library/svelte'
+import { mockFormRequestSubmit } from '@rokkit/helpers/mocks'
 import Button from '../src/Button.svelte'
 import ButtonWithSnippet from './mocks/ButtonWithSnippet.svelte'
 import ButtonInForm from './mocks/ButtonInForm.svelte'
@@ -8,10 +10,17 @@ import { flushSync } from 'svelte'
 describe('Button', () => {
 	const variants = ['primary', 'secondary', 'tertiary']
 
+	beforeAll(() => {
+		console.error = vi.fn()
+		mockFormRequestSubmit()
+	})
 	beforeEach(() => {
 		cleanup()
 	})
-
+	afterAll(() => {
+		// Restore original or delete the mock
+		vi.restoreAllMocks()
+	})
 	it('should render with label', () => {
 		const props = $state({ label: 'Click me' })
 		const { container, getByRole } = render(Button, { props })
@@ -83,9 +92,11 @@ describe('Button', () => {
 		const buttons = container.querySelectorAll('button')
 
 		buttons[0].click()
+		expect(console.error).toHaveBeenCalledOnce()
 		expect(props.onsubmit).toHaveBeenCalled()
 		expect(props.onreset).not.toHaveBeenCalled()
 		buttons[1].click()
+
 		expect(props.onreset).toHaveBeenCalled()
 		expect(props.onsubmit).toHaveBeenCalledOnce()
 	})

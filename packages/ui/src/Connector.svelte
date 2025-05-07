@@ -12,10 +12,11 @@
 
 <span
 	class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
-	class:line-empty={validatedType === 'empty'}
-	class:line-child={validatedType === 'child'}
-	class:line-sibling={validatedType === 'sibling'}
-	class:line-last={validatedType === 'last'}
+	data-tag-tree-line
+	data-tag-line-empty={validatedType === 'empty' ? '' : undefined}
+	data-tag-line-child={validatedType === 'child' ? '' : undefined}
+	data-tag-line-sibling={validatedType === 'sibling' ? '' : undefined}
+	data-tag-line-last={validatedType === 'last' ? '' : undefined}
 >
 	{#if validatedType === 'last'}
 		{#if rtl}

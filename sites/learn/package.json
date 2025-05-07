@@ -37,6 +37,7 @@
     "@fontsource/victor-mono": "^5.2.5",
     "@inlang/paraglide-sveltekit": "^0.16.1",
     "@rokkit/actions": "workspace:latest",
+    "@rokkit/bits-ui": "workspace:latest",
     "@rokkit/core": "workspace:latest",
     "@rokkit/icons": "workspace:latest",
     "@rokkit/input": "workspace:latest",
@@ -44,6 +45,7 @@
     "@rokkit/themes": "workspace:latest",
     "@rokkit/tutorial": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
-    "@sveltejs/adapter-vercel": "^5.7.0"
+    "@sveltejs/adapter-vercel": "^5.7.0",
+    "phosphor-svelte": "^3.0.1"
   }
 }

@@ -1,17 +1,25 @@
-import { defaultFields } from '@rokkit/core'
+import { defaultFields, id, toString } from '@rokkit/core'
 import { isNil, has } from 'ramda'
 
 export class Proxy {
 	#original = null
 	#value = null
 	#fields = null
+	#id = null
 
 	constructor(value, fields) {
 		this.fields = fields
 		this.#original = value
 		this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
+		this.id = typeof value === 'object' ? (this.get('id') ?? id()) : value
 	}
 
+	get id() {
+		return this.#id
+	}
+	set id(new_id) {
+		this.#id = typeof id === 'string' ? new_id : toString(new_id)
+	}
 	get fields() {
 		return this.#fields
 	}
@@ -45,9 +53,9 @@ export class Proxy {
 	 *
 	 * @param {string} fieldName - Name of the field to get
 	 * @param {any} defaultValue - Default value to return if not found
-	 * @returns {any|null} - The attribute value or null if not found
+	 * @returns {any|undefined} - The attribute value or null if not found
 	 */
-	get(fieldName, defaultValue = null) {
+	get(fieldName, defaultValue) {
 		return this.has(fieldName) ? this.#value[this.fields[fieldName]] : defaultValue
 	}
 
@@ -59,6 +67,23 @@ export class Proxy {
 	has(fieldName) {
 		const mappedField = this.fields[fieldName]
 		return !isNil(mappedField) && has(mappedField, this.#value)
+	}
+
+	/**
+	 * Gets the appropriate snippet for rendering this item:
+	 * - Uses the 'snippet' field from the current item to find the snippet key
+	 * - Finds a matching snippet in the provided collection using this key
+	 * - Falls back to the defaultSnippet if:
+	 *   - No snippet key is configured for this item
+	 *   - The configured snippet key doesn't exist in the snippets collection
+	 * @param {Object} snippets
+	 * @param {import('svelte').Snippet|undefined} defaultSnippet
+	 * @returns {import('svelte').Snippet|undefined}
+	 */
+	getSnippet(snippets, defaultSnippet) {
+		const snippetKey = this.get('snippet')
+		const snippet = has(snippetKey, snippets) ? snippets[snippetKey] : undefined
+		return snippet ?? defaultSnippet
 	}
 
 	/**

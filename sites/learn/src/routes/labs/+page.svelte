@@ -1,37 +1,29 @@
 <script>
-	import { FieldMapper } from '@rokkit/core'
-	import { Item } from '@rokkit/ui'
-
-	// let mapping = new FieldMapper({}, { default: Item })
-	let options = [
-		{ text: 'Sun', icon: 'i-rokkit:mode-light' },
-		{ text: 'Moon', icon: 'i-rokkit:mode-dark' }
-	]
-	const items = [
-		{
-			text: 'Fruits',
-			_open: true,
-			children: ['Apple', 'Orange', 'Bananna', 'Avocado']
-		},
-		{
-			text: 'Vegetables',
-			children: ['Carrot', 'Tomato', 'Lettuce']
-		},
-		{
-			text: 'Nuts',
-			children: ['Almonds', 'Walnuts', 'Pistachios']
-		},
-		{
-			text: 'Spices',
-			children: ['Cinnamon', 'Cloves', 'Turmeric']
-		}
-	]
-	let value = null
+	import { List } from '@rokkit/bits-ui'
+	import { Command } from 'bits-ui'
+	import CalendarBlank from 'phosphor-svelte/lib/CalendarBlank'
+	import CodeBlock from 'phosphor-svelte/lib/CodeBlock'
+	import Palette from 'phosphor-svelte/lib/Palette'
+	import RadioButton from 'phosphor-svelte/lib/RadioButton'
+	import Sticker from 'phosphor-svelte/lib/Sticker'
+	import Textbox from 'phosphor-svelte/lib/Textbox'
+	let items = $state([
+		{ id: '1', text: 'Introduction', href: '/', icon: Sticker },
+		{ id: '2', text: 'Delegation', icon: CodeBlock },
+		{ id: '3', text: 'Styling', icon: Palette },
+		{ id: '4', text: 'Calendar', icon: CalendarBlank },
+		{ id: '5', text: 'Radio Group', icon: RadioButton },
+		{ id: '6', text: 'Combobox', icon: Textbox }
+	])
 </script>
 
-<div class="flex flex-col items-center justify-center gap-4 p-4">
-	<h1>List</h1>
-	<!-- <Switch bind:value {mapping} {options} /> -->
-	<!-- <List items={options} bind:value {mapping}></List> -->
-	<!-- <Accordion {items} bind:value></Accordion> -->
-</div>
+<span class="w-300 mx-auto flex flex-col items-center">
+	<List {items} searchable>
+		{#snippet child(proxy)}
+			{@const Icon = proxy.get('icon')}
+
+			<Icon></Icon>
+			{proxy.get('text')}
+		{/snippet}
+	</List>
+</span>

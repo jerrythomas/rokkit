@@ -79,14 +79,14 @@ describe('Utility functions', () => {
 	it('should have the defaultFields', () => {
 		expect(defaultFields).toEqual({
 			id: 'id',
-			url: 'url',
+			href: 'href',
+			icon: 'icon',
 			text: 'text',
 			value: 'value',
+			keywords: 'keywords',
 			children: 'children',
-			icon: 'icon',
 			iconPrefix: null,
 			image: 'image',
-			component: 'component',
 			summary: 'summary',
 			notes: 'notes',
 			props: 'props',
@@ -95,10 +95,11 @@ describe('Utility functions', () => {
 			label: 'label',
 			level: 'level',
 			parent: 'parent',
+			component: 'component',
+			snippet: 'snippet',
 			currency: 'currency',
 			expanded: '_expanded',
 			deleted: '_deleted',
-			snippet: '_snippet',
 			selected: '_selected'
 		})
 	})

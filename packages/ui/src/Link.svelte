@@ -12,7 +12,7 @@
 
 	/** @type {Props} */
 	let { class: classes = '', value, mapping = new FieldMapper(), href = '#', ...rest } = $props()
-	let url = $derived(mapping.get('url', value, href))
+	let url = $derived(mapping.get('href', value, href))
 	let props = $derived({ ...mapping.get('props', value, {}), ...rest })
 </script>
 

@@ -17,7 +17,7 @@ describe('Link', () => {
 	it('should render with custom mapping', () => {
 		const mapping = new FieldMapper({ icon: 'text' })
 		const props = $state({
-			value: { url: 'http://example.com', props: { target: '_blank' } },
+			value: { href: 'http://example.com', props: { target: '_blank' } },
 			mapping
 		})
 		const { container } = render(Link, { props })

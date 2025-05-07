@@ -5,11 +5,12 @@ export { defaultColors, syntaxColors, shades, defaultPalette } from './colors/in
  */
 export const defaultFields = {
 	id: 'id',
-	url: 'url',
+	href: 'href',
+	icon: 'icon',
 	text: 'text',
 	value: 'value',
+	keywords: 'keywords',
 	children: 'children',
-	icon: 'icon',
 	iconPrefix: null,
 	image: 'image',
 	summary: 'summary',
@@ -21,8 +22,8 @@ export const defaultFields = {
 	parent: 'parent',
 	currency: 'currency',
 	label: 'label',
-	component: 'component',
-	snippet: '_snippet',
+	component: 'component', // to be deprecated in favour of snippet
+	snippet: 'snippet',
 	/* flag fields  */
 	deleted: '_deleted',
 	expanded: '_expanded',

@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest'
+/* eslint-disable no-console */
+import { describe, it, expect, vi } from 'vitest'
 import {
 	getMockNode,
 	createNestedElement,
 	elementsWithSize,
-	mixedSizeElements
+	mixedSizeElements,
+	mockFormRequestSubmit
 } from '../../src/mocks/element'
 
 describe('element', () => {
@@ -131,6 +133,41 @@ describe('element', () => {
 					expect(element.offsetWidth).toBe(10)
 				}
 			})
+		})
+	})
+
+	describe('mockFormRequestSubmit', () => {
+		it('should detect unimplemented requestSubmit before mocking', () => {
+			console.error = vi.fn()
+			// Create a form and try to use requestSubmit
+			const form = document.createElement('form')
+			form.requestSubmit()
+			expect(console.error).toHaveBeenCalled()
+			expect(console.error.mock.calls[0][0]).toContain('Not implemented')
+
+			vi.resetAllMocks()
+		})
+
+		it('should mock form requestSubmit', () => {
+			// Apply the mock
+			const mockWasApplied = mockFormRequestSubmit()
+
+			// Verify the function returns true (indicating mock was applied)
+			expect(mockWasApplied).toBe(true)
+			// eslint-disable-next-line no-undef
+			expect(vi.isMockFunction(HTMLFormElement.prototype.requestSubmit)).toBeTruthy()
+
+			// Test the mock implementation works correctly
+			const form = document.createElement('form')
+			const submitSpy = vi.fn()
+			form.addEventListener('submit', submitSpy)
+
+			form.requestSubmit()
+			expect(submitSpy).toHaveBeenCalled()
+			// eslint-disable-next-line no-undef
+			expect(HTMLFormElement.prototype.requestSubmit).toHaveBeenCalled()
+
+			vi.resetAllMocks()
 		})
 	})
 })

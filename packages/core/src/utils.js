@@ -1,5 +1,5 @@
 import { has, isNil } from 'ramda'
-
+let idCounter = 0
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
  *
@@ -26,7 +26,7 @@ export function noop() {
  * @returns {string} A random id
  */
 export function id() {
-	return Math.random().toString(36).substring(2, 9)
+	return [Math.random().toString(36).substring(2, 9), ++idCounter].join('-')
 }
 
 /**

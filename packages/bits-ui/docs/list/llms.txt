@@ -1,0 +1,469 @@
+# List Documentation
+
+A data-driven list component that supports single and multi-selection, grouping, separators, custom rendering, keyboard navigation, and various customization options.
+
+This is a documentation section that potentially contains examples, demos, and other useful information related to a specific part of Rokkit Bits UI.
+
+```svelte
+<script>
+  import { List } from '@rokkit/bits-ui';
+  
+  // Sample data
+  const contacts = [
+    { id: '1', name: 'John Doe', email: 'john@example.com', department: 'Engineering' },
+    { id: '2', name: 'Jane Smith', email: 'jane@example.com', department: 'Engineering' },
+    { id: '3', name: 'Bob Johnson', email: 'bob@example.com', department: 'Marketing' }
+  ];
+  
+  // Field mappings
+  const fields = {
+    id: 'id',
+    label: 'name',
+    description: 'email',
+    department: 'department'
+  };
+  
+  // Selected item
+  let selectedContact = null;
+</script>
+
+<List 
+  items={contacts} 
+  fields={fields}
+  bind:value={selectedContact}
+  groupBy="department"
+  separatorStyle="line"
+  showGroupHeadings={true}
+  item={({ item, selected }) => `
+    <div class="custom-item ${selected ? 'selected' : ''}">
+      <span>${item.name}</span>
+      <span class="department">${item.department}</span>
+      ${selected ? '<span class="check">✓</span>' : ''}
+    </div>
+  `}
+/>
+```
+
+## Overview
+
+The List component is a data-driven UI component built on top of bits-ui primitives that displays a collection of items with selection capabilities. It bridges the gap between headless UI primitives and data-driven development, providing a simple API for working with data collections.
+
+## Key Features
+
+- **Data-driven API**: Simply provide an array of items and field mappings.
+- **Selection modes**: Support for both single-select and multi-select modes.
+- **Grouping**: Group items by any field with customizable group headings.
+- **Separators**: Optional separators between groups with different styles.
+- **Custom rendering**: Customizable item, group, and separator rendering via snippets.
+- **Keyboard navigation**: Built-in keyboard navigation and accessibility support.
+- **Header & footer**: Optional header and footer sections.
+- **Empty states**: Customizable empty state rendering.
+- **Hierarchical data**: Support for nested data structures.
+
+## Architecture
+
+The List component is built on top of bits-ui's Command component, providing a data-focused API while leveraging the accessibility and keyboard navigation features of the underlying primitives.
+
+The component is composed of:
+- **List**: The main container that manages data binding and selection state.
+- **Groups**: When grouping is enabled, items are organized into Command.Group components.
+- **Separators**: Optional visual dividers between groups.
+
+## Structure
+
+Here's an overview of how the List component is typically structured:
+
+```svelte
+<script>
+  let selectedItem = null;
+</script>
+
+<List 
+  items={items} 
+  fields={fields} 
+  bind:value={selectedItem}
+  groupBy="category"
+  separatorStyle="line"
+  header={() => `<h2>My List</h2>`}
+  group={({ group }) => `<div>${group} Category</div>`}
+  item={({ item, selected }) => `
+    <div>Custom item rendering for ${item.name}</div>
+  `}
+  footer={() => `Selected: ${selectedItem?.name || 'None'}`}
+  empty={() => `<p>No items available</p>`}
+/>
+```
+
+## Field Mappings
+
+The List component uses field mappings to determine how to extract data from your items:
+
+```js
+const fields = {
+  id: 'id',      // Unique identifier field
+  label: 'name', // Field to display as the main label
+  description: 'description', // Optional field for description
+  department: 'department' // Field used for grouping
+}
+```
+
+This approach allows the component to work with any data structure without requiring your data to conform to a specific shape.
+
+## Grouping Items
+
+You can group items by any field using the `groupBy` prop:
+
+```svelte
+<List 
+  items={users} 
+  fields={fields} 
+  groupBy="department"
+  showGroupHeadings={true}
+/>
+```
+
+The component will automatically group items based on the values in the specified field. Group headings are shown by default, but can be hidden by setting `showGroupHeadings={false}`.
+
+### Custom Group Headings
+
+You can customize how group headings are rendered using the `group` snippet prop:
+
+```svelte
+<List
+  items={users}
+  fields={fields}
+  groupBy="department"
+  group={({ group }) => `
+    <div class="custom-group">
+      <span class="group-icon">${group[0]}</span>
+      <span>${group} Department</span>
+      <span class="count">(${getUserCount(group)})</span>
+    </div>
+  `}
+/>
+```
+
+## Separators Between Groups
+
+The List component supports three built-in separator styles and custom separators:
+
+```svelte
+<!-- No separators -->
+<List items={users} groupBy="department" separatorStyle="none" />
+
+<!-- Simple line separators -->
+<List items={users} groupBy="department" separatorStyle="line" />
+
+<!-- Full-width separators with background -->
+<List items={users} groupBy="department" separatorStyle="full" />
+
+<!-- Custom separators -->
+<List 
+  items={users} 
+  groupBy="department" 
+  separatorStyle="custom"
+  separator={({ index }) => `
+    <div class="custom-separator">
+      <span class="dot"></span>
+      <span class="line"></span>
+      <span class="dot"></span>
+    </div>
+  `}
+/>
+```
+
+Separators are only shown between groups, not before the first group or after the last group.
+
+## Selection Modes
+
+### Single Selection
+
+By default, the List component operates in single-selection mode:
+
+```svelte
+<script>
+  let selectedItem = null;
+</script>
+
+<List {items} {fields} bind:value={selectedItem} />
+```
+
+### Multiple Selection
+
+Enable multi-selection mode with the `multiSelect` prop:
+
+```svelte
+<script>
+  let selectedItems = [];
+</script>
+
+<List {items} {fields} bind:value={selectedItems} multiSelect={true} />
+```
+
+## Custom Item Rendering
+
+Use the `item` snippet prop to customize how items are rendered:
+
+```svelte
+<script>
+  function renderItem({ item, selected }) {
+    return `
+      <div class="custom-item">
+        <img src=${item.avatar} alt="" />
+        <div>
+          <strong>${item.name}</strong>
+          <p>${item.description}</p>
+        </div>
+        ${selected ? '<span class="check-icon">✓</span>' : ''}
+      </div>
+    `;
+  }
+</script>
+
+<List {items} {fields} item={renderItem} />
+```
+
+## Alternating Row Styles
+
+You can use the `even` and `odd` snippet props to provide different rendering for even and odd rows:
+
+```svelte
+<List 
+  {items} 
+  {fields}
+  even={({ item }) => `
+    <div class="even-row">${item.name}</div>
+  `}
+  odd={({ item }) => `
+    <div class="odd-row">${item.name}</div>
+  `}
+/>
+```
+
+## Header and Footer
+
+```svelte
+<List 
+  {items} 
+  {fields}
+  header={() => `
+    <div class="list-header">
+      <h3>User List</h3>
+      <div class="actions">
+        <button>Add User</button>
+      </div>
+    </div>
+  `}
+  footer={() => `
+    <div class="list-footer">
+      <button>Load More</button>
+    </div>
+  `}
+/>
+```
+
+## Empty State
+
+```svelte
+<List 
+  {items} 
+  {fields}
+  empty={() => `
+    <div class="empty-state">
+      <img src="/empty-icon.svg" alt="" />
+      <h4>No items found</h4>
+      <p>Try adjusting your search or filters.</p>
+    </div>
+  `}
+/>
+```
+
+## Event Handling
+
+The List component emits several events:
+
+```svelte
+<script>
+  function handleSelect(event) {
+    const { value, selected } = event.detail;
+    console.log('Selected item:', value);
+  }
+  
+  function handleChange(event) {
+    const { value, selected } = event.detail;
+    console.log('Selection changed:', value);
+  }
+  
+  function handleMove(event) {
+    const { key, focusedKey, selectedKeys } = event.detail;
+    console.log('Navigation:', key);
+  }
+</script>
+
+<List
+  {items}
+  {fields}
+  onselect={handleSelect}
+  onchange={handleChange}
+  onmove={handleMove}
+/>
+```
+
+## API Reference
+
+### List
+
+The main list component that renders a collection of items with selection capabilities.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `class` | `string` | Additional CSS class names to apply to the component. `Default: ''` |
+| `name` | `string` | Accessible name for the list. `Default: 'list'` |
+| `items` $bindable | `any[]` | Array of data items to display in the list. `Default: []` |
+| `value` $bindable | `any` or `any[]` | Currently selected item(s). In single-select mode this is a single object, in multi-select mode this is an array of objects. `Default: null` |
+| `fields` | `object` | Field mappings for extracting data from items. `Default: {}` |
+| `tabindex` | `number` | Tabindex for keyboard navigation. `Default: 0` |
+| `groupBy` | `string` | Field to use for grouping items. When provided, items will be grouped by the values in this field. `Default: null` |
+| `showGroupHeadings` | `boolean` | Whether to show group headings when grouping is enabled. `Default: true` |
+| `separatorStyle` | `'none' \| 'line' \| 'full' \| 'custom'` | Style of separators between groups. `Default: 'none'` |
+| `multiSelect` | `boolean` | Whether to allow selecting multiple items. `Default: false` |
+| `header` | `Snippet` | Render function for the list header. `Default: undefined` |
+| `footer` | `Snippet` | Render function for the list footer. `Default: undefined` |
+| `empty` | `Snippet` | Render function for the empty state. `Default: undefined` |
+| `group` | `Snippet` | Render function for group headings. `Default: undefined` |
+| `separator` | `Snippet` | Render function for separators between groups. `Default: undefined` |
+| `item` | `Snippet` | Render function for list items. `Default: undefined` |
+| `even` | `Snippet` | Render function for even-indexed items. `Default: undefined` |
+| `odd` | `Snippet` | Render function for odd-indexed items. `Default: undefined` |
+| `onselect` | `function` | Callback fired when an item is selected (single-select mode). `Default: undefined` |
+| `onchange` | `function` | Callback fired when selection changes (multi-select mode). `Default: undefined` |
+| `onmove` | `function` | Callback fired during keyboard navigation. `Default: undefined` |
+
+| Snippet Prop | Props | Description |
+|-------------|-------|-------------|
+| `header` | - | Content for the list header |
+| `footer` | - | Content for the list footer |
+| `empty` | - | Content for when the list is empty |
+| `group` | `{ group }` | Render function for group headings |
+| `separator` | `{ index }` | Render function for separators between groups |
+| `item` | `{ item, selected, index, node }` | Custom rendering for list items |
+| `even` | `{ item, selected, index, node }` | Custom rendering for even-indexed items |
+| `odd` | `{ item, selected, index, node }` | Custom rendering for odd-indexed items |
+
+The `node` object provides a `get` method to access item properties through field mappings, similar to how the original Rokkit List component worked.
+
+| Data Attribute | Value | Description |
+|----------------|-------|-------------|
+| `data-select-list` | `''` | Present on the list element |
+
+## Common Patterns
+
+### Filtering Items
+
+```svelte
+<script>
+  import { List } from '@rokkit/bits-ui';
+  
+  let items = [...];
+  let filteredItems = items;
+  let searchQuery = '';
+  
+  $: {
+    if (searchQuery) {
+      filteredItems = items.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    } else {
+      filteredItems = items;
+    }
+  }
+</script>
+
+<input type="search" bind:value={searchQuery} placeholder="Search..." />
+
+<List items={filteredItems} {fields} />
+```
+
+### Grouped and Filtered Items
+
+```svelte
+<script>
+  import { List } from '@rokkit/bits-ui';
+  import { groupBy } from 'ramda';
+  
+  const users = [...];
+  const fields = { id: 'id', label: 'name', description: 'email', role: 'role' };
+  
+  let searchQuery = '';
+  $: filteredUsers = searchQuery 
+    ? users.filter(user => 
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : users;
+</script>
+
+<input type="search" bind:value={searchQuery} placeholder="Search..." />
+
+<List 
+  items={filteredUsers}
+  {fields}
+  groupBy="role"
+  separatorStyle="line"
+/>
+```
+
+### Custom Group Ordering
+
+To customize the order of groups, you can pre-process your data:
+
+```svelte
+<script>
+  import { List } from '@rokkit/bits-ui';
+  
+  // Define desired group order
+  const categoryOrder = ['Important', 'Normal', 'Low'];
+  
+  // Sort items to match desired group order
+  $: sortedItems = [...items].sort((a, b) => {
+    const priorityA = categoryOrder.indexOf(a.category);
+    const priorityB = categoryOrder.indexOf(b.category);
+    return priorityA - priorityB;
+  });
+</script>
+
+<List
+  items={sortedItems}
+  {fields}
+  groupBy="category"
+/>
+```
+
+## Loading States
+
+```svelte
+<script>
+  import { List } from '@rokkit/bits-ui';
+  
+  let loading = true;
+  let items = [];
+  
+  // Fetch data
+  onMount(async () => {
+    loading = true;
+    items = await fetchData();
+    loading = false;
+  });
+</script>
+
+{#if loading}
+  <div class="loading-state">Loading items...</div>
+{:else}
+  <List {items} {fields} />
+{/if}
+```
+
+## References
+
+For more information about the underlying components, see the [bits-ui Command documentation](https://bits-ui.com/docs/components/command/llms.txt).
+
+For more information about the field mapping approach, see the [@rokkit/core FieldMapping documentation](https://rokkit.dev/docs/core/field-mapping).

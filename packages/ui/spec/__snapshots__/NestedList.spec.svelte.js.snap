@@ -19,9 +19,11 @@ exports[`NestedList > should render nested list 1`] = `
         <!---->
         <rk-icon
           aria-label="collapse"
-          class="w-4 small"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
           data-state="opened"
-          data-tag="icon"
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -64,7 +66,9 @@ exports[`NestedList > should render nested list 1`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -80,7 +84,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
             >
               <!---->
             </span>
@@ -118,7 +124,9 @@ exports[`NestedList > should render nested list 1`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -134,7 +142,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
             >
               <!---->
             </span>
@@ -178,9 +188,11 @@ exports[`NestedList > should render nested list 1`] = `
         <!---->
         <rk-icon
           aria-label="collapse"
-          class="w-4 small"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
           data-state="opened"
-          data-tag="icon"
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -223,7 +235,9 @@ exports[`NestedList > should render nested list 1`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -240,9 +254,11 @@ exports[`NestedList > should render nested list 1`] = `
             <!---->
             <rk-icon
               aria-label="collapse"
-              class="w-4 small"
+              class="w-4"
+              data-disabled="false"
+              data-size="small"
               data-state="opened"
-              data-tag="icon"
+              data-tag-icon="true"
               role="img"
               tabindex="-1"
             >
@@ -285,7 +301,9 @@ exports[`NestedList > should render nested list 1`] = `
               >
                 <!---->
                 <span
-                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-sibling=""
+                  data-tag-tree-line=""
                 >
                   <i
                     class="row-span-2 border-r"
@@ -295,7 +313,9 @@ exports[`NestedList > should render nested list 1`] = `
                 
                 <!---->
                 <span
-                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-last=""
+                  data-tag-tree-line=""
                 >
                   <!---->
                   <i
@@ -311,7 +331,9 @@ exports[`NestedList > should render nested list 1`] = `
                 
                 <!---->
                 <span
-                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-empty=""
+                  data-tag-tree-line=""
                 >
                   <!---->
                 </span>
@@ -354,7 +376,9 @@ exports[`NestedList > should render nested list 1`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -370,7 +394,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
             >
               <!---->
             </span>
@@ -425,9 +451,11 @@ exports[`NestedList > should render nested list 2`] = `
         <!---->
         <rk-icon
           aria-label="collapse"
-          class="w-4 small"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
           data-state="opened"
-          data-tag="icon"
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -470,7 +498,9 @@ exports[`NestedList > should render nested list 2`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -486,7 +516,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
             >
               <!---->
             </span>
@@ -524,7 +556,9 @@ exports[`NestedList > should render nested list 2`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -540,7 +574,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
             >
               <!---->
             </span>
@@ -584,9 +620,11 @@ exports[`NestedList > should render nested list 2`] = `
         <!---->
         <rk-icon
           aria-label="collapse"
-          class="w-4 small"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
           data-state="opened"
-          data-tag="icon"
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -629,7 +667,9 @@ exports[`NestedList > should render nested list 2`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-child"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -646,9 +686,11 @@ exports[`NestedList > should render nested list 2`] = `
             <!---->
             <rk-icon
               aria-label="collapse"
-              class="w-4 small"
+              class="w-4"
+              data-disabled="false"
+              data-size="small"
               data-state="opened"
-              data-tag="icon"
+              data-tag-icon="true"
               role="img"
               tabindex="-1"
             >
@@ -691,7 +733,9 @@ exports[`NestedList > should render nested list 2`] = `
               >
                 <!---->
                 <span
-                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-sibling"
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-sibling=""
+                  data-tag-tree-line=""
                 >
                   <i
                     class="row-span-2 border-r"
@@ -701,7 +745,9 @@ exports[`NestedList > should render nested list 2`] = `
                 
                 <!---->
                 <span
-                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-last=""
+                  data-tag-tree-line=""
                 >
                   <!---->
                   <i
@@ -717,7 +763,9 @@ exports[`NestedList > should render nested list 2`] = `
                 
                 <!---->
                 <span
-                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-empty=""
+                  data-tag-tree-line=""
                 >
                   <!---->
                 </span>
@@ -760,7 +808,9 @@ exports[`NestedList > should render nested list 2`] = `
           >
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-last"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
             >
               <!---->
               <i
@@ -776,7 +826,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
             <span
-              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2 line-empty"
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
             >
               <!---->
             </span>

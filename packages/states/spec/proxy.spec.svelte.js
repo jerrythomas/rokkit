@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { Proxy } from '../src/proxy.svelte.js'
 import { defaultFields } from '@rokkit/core'
 import { flushSync } from 'svelte'
@@ -11,6 +11,7 @@ describe('Proxy', () => {
 		expect(proxy.has('value')).toBe(false)
 		expect(proxy.has('id')).toBe(false)
 		expect(proxy.get('text')).toEqual('123')
+		expect(proxy.id).toEqual('123')
 		expect(proxy.fields).toEqual(defaultFields)
 		expect(proxy.hasChildren).toBe(false)
 	})
@@ -22,6 +23,7 @@ describe('Proxy', () => {
 		expect(proxy.has('value')).toBe(false)
 		expect(proxy.has('id')).toBe(false)
 		expect(proxy.get('text')).toEqual('123')
+		expect(proxy.id).toEqual('123')
 		expect(proxy.fields).toEqual({ ...defaultFields, text: 't' })
 		expect(proxy.hasChildren).toBe(false)
 	})
@@ -31,6 +33,7 @@ describe('Proxy', () => {
 		expect(proxy.get('id')).toBe('123')
 		expect(proxy.has('icon')).toBe(false)
 		expect(proxy.has('name')).toBe(false)
+		expect(proxy.id).toEqual('123')
 		expect(proxy.hasChildren).toBe(false)
 	})
 
@@ -39,6 +42,7 @@ describe('Proxy', () => {
 		const proxy = new Proxy(input, { text: 'name', icon: 'avatar' })
 		expect(proxy.get('text')).toEqual('John')
 		expect(proxy.get('icon')).toEqual('avatar.jpg')
+		expect(proxy.id.length > 8).toBeTruthy()
 
 		proxy.value = { name: 'Jane', avatar: 'avatar2.jpg' }
 		flushSync()
@@ -81,5 +85,29 @@ describe('Proxy', () => {
 		proxy.value = { items: [{ id: '123', name: 'John' }] }
 		flushSync()
 		expect(proxy.hasChildren).toBe(true)
+	})
+
+	it('should return a snippet', () => {
+		const fallback = vi.fn().mockReturnValue('fallback')
+		const snippets = {
+			child: vi.fn().mockReturnValue('child'),
+			other: vi.fn().mockReturnValue('other')
+		}
+		const item = $state({})
+		const proxy = new Proxy(item)
+		let snippet = proxy.getSnippet(snippets)
+		expect(snippet).toBeUndefined()
+		snippet = proxy.getSnippet(snippets, fallback)
+		expect(snippet()).toEqual('fallback')
+
+		item.snippet = 'child'
+		flushSync()
+		snippet = proxy.getSnippet(snippets, fallback)
+		expect(snippet()).toEqual('child')
+
+		item.snippet = 'other'
+		flushSync()
+		snippet = proxy.getSnippet(snippets, fallback)
+		expect(snippet()).toEqual('other')
 	})
 })

@@ -1,0 +1,38 @@
+# Rokkit Bits UI Documentation for LLMs
+
+> Rokkit Bits UI is a data-driven component library built on top of Bits UI for Svelte.
+
+This site provides documentation in a format optimized for Large Language Models, with each page available as a clean text file.
+
+## Complete Documentation
+
+- [Complete documentation](https://rokkit.bits-ui.com/docs/llms.txt): The complete Rokkit Bits UI documentation including all components, utilities, and concepts
+
+## General
+
+- [Introduction Documentation](https://rokkit.bits-ui.com/docs/introduction/llms.txt): Detailed documentation for Introduction
+- [Getting Started Documentation](https://rokkit.bits-ui.com/docs/getting-started/llms.txt): Detailed documentation for Getting Started
+- [Field Mapping Documentation](https://rokkit.bits-ui.com/docs/field-mapping/llms.txt): Detailed documentation for Field Mapping
+- [Data Binding Documentation](https://rokkit.bits-ui.com/docs/data-binding/llms.txt): Detailed documentation for Data Binding
+- [Migration Guide Documentation](https://rokkit.bits-ui.com/docs/migration-guide/llms.txt): Detailed documentation for Migration Guide
+
+## Components
+
+- [List Documentation](https://rokkit.bits-ui.com/docs/list/llms.txt): Detailed documentation for List component
+- [ListItem Documentation](https://rokkit.bits-ui.com/docs/listitem/llms.txt): Detailed documentation for ListItem component
+- [Form Documentation](https://rokkit.bits-ui.com/docs/form/llms.txt): Detailed documentation for Form component
+- [Field Documentation](https://rokkit.bits-ui.com/docs/field/llms.txt): Detailed documentation for Field component
+- [Combobox Documentation](https://rokkit.bits-ui.com/docs/combobox/llms.txt): Detailed documentation for Combobox component
+- [Modal Documentation](https://rokkit.bits-ui.com/docs/modal/llms.txt): Detailed documentation for Modal component
+- [Table Documentation](https://rokkit.bits-ui.com/docs/table/llms.txt): Detailed documentation for Table component
+
+## Utilities
+
+- [Use Field Documentation](https://rokkit.bits-ui.com/docs/utilities/use-field/llms.txt): Detailed documentation for Use Field utility
+- [Create Emitter Documentation](https://rokkit.bits-ui.com/docs/utilities/create-emitter/llms.txt): Detailed documentation for Create Emitter utility
+- [Data Controller Documentation](https://rokkit.bits-ui.com/docs/utilities/data-controller/llms.txt): Detailed documentation for Data Controller utility
+
+## Type Helpers
+
+- [Field Mapping Documentation](https://rokkit.bits-ui.com/docs/type-helpers/field-mapping/llms.txt): Detailed documentation for Field Mapping type helper
+- [Data Item Documentation](https://rokkit.bits-ui.com/docs/type-helpers/data-item/llms.txt): Detailed documentation for Data Item type helper
