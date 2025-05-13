@@ -1,0 +1,79 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree.NodeList > should render with custom content 1`] = `
+<div>
+  <tree-node-items
+    data-tree-node-items="true"
+  >
+    <!---->
+    <span>
+      Wait a minute!
+    </span>
+    
+    <!---->
+  </tree-node-items>
+  
+</div>
+`;
+
+exports[`Tree.NodeList > should render with custom content 2`] = `
+<div>
+  <tree-node-items
+    class="flex items-center justify-center p-10"
+    data-tree-node-items="true"
+  >
+    <!---->
+    <span>
+      Wait a minute!
+    </span>
+    
+    <!---->
+  </tree-node-items>
+  
+</div>
+`;
+
+exports[`Tree.NodeList > should render with custom props 1`] = `
+<div>
+  <tree-node-items
+    data-label-x=""
+    data-tree-empty="xyz"
+    data-tree-node-items="true"
+  >
+    <!---->
+    NodeList...
+    
+    <!---->
+  </tree-node-items>
+  
+</div>
+`;
+
+exports[`Tree.NodeList > should render with string content 1`] = `
+<div>
+  <tree-node-items
+    data-tree-node-items="true"
+  >
+    <!---->
+    NodeList...
+    
+    <!---->
+  </tree-node-items>
+  
+</div>
+`;
+
+exports[`Tree.NodeList > should render with string content 2`] = `
+<div>
+  <tree-node-items
+    class="flex items-center justify-center p-10"
+    data-tree-node-items="true"
+  >
+    <!---->
+    NodeList...
+    
+    <!---->
+  </tree-node-items>
+  
+</div>
+`;

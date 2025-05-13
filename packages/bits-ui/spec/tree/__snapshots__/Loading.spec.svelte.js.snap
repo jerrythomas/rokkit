@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree.Loading > should render with custom content 1`] = `
+<div>
+  <tree-loading
+    data-tree-loading="true"
+  >
+    <!---->
+    <span>
+      Wait a minute!
+    </span>
+    
+    <!---->
+  </tree-loading>
+  
+</div>
+`;
+
+exports[`Tree.Loading > should render with custom content 2`] = `
+<div>
+  <tree-loading
+    class="flex items-center justify-center p-10"
+    data-tree-loading="true"
+  >
+    <!---->
+    <span>
+      Wait a minute!
+    </span>
+    
+    <!---->
+  </tree-loading>
+  
+</div>
+`;
+
+exports[`Tree.Loading > should render with custom props 1`] = `
+<div>
+  <tree-loading
+    data-label-x=""
+    data-tree-loading="true"
+  >
+    <!---->
+    Loading...
+    
+    <!---->
+  </tree-loading>
+  
+</div>
+`;
+
+exports[`Tree.Loading > should render with string content 1`] = `
+<div>
+  <tree-loading
+    data-tree-loading="true"
+  >
+    <!---->
+    Loading...
+    
+    <!---->
+  </tree-loading>
+  
+</div>
+`;
+
+exports[`Tree.Loading > should render with string content 2`] = `
+<div>
+  <tree-loading
+    class="flex items-center justify-center p-10"
+    data-tree-loading="true"
+  >
+    <!---->
+    Loading...
+    
+    <!---->
+  </tree-loading>
+  
+</div>
+`;

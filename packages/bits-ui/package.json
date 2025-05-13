@@ -6,6 +6,9 @@
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "module": "src/index.js",
+  "npm": {
+    "publish": false
+  },
   "publishConfig": {
     "access": "public"
   },

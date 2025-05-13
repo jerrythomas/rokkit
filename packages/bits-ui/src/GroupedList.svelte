@@ -47,16 +47,16 @@
 	let itemSnippet = $derived(child ?? defaultChild)
 	let groupSnippet = $derived(groupItem ?? defaultChild)
 	let emptyMessage = $derived(empty ?? defaultEmpty)
+	let initialValue = $state(null)
 
-	// $effect.pre(() => {
-	// 	let index = -1
-	// 	for (let i = 0; i < proxyItems.length && index === -1; i++) {
-	// 		const children = proxyItems[i].get('children')
-	// 		command?.updateSelectedByGroup(1)
-	// 		index = children.findIndex((proxy) => equals(proxy.value, value))
-	// 	}
-	// 	if (index > -1) command?.updateSelectedToIndex(index)
-	// })
+	$effect.pre(() => {
+		let current = null
+		for (let i = 0; i < proxyItems.length && current === null; i++) {
+			const children = proxyItems[i].get('children')
+			current = children.find((proxy) => equals(proxy.value, value))
+			if (current) initialValue = current.id
+		}
+	})
 	function handleSelect(data) {
 		value = data
 		onSelect?.(data)
@@ -71,7 +71,7 @@
 	No results found.
 {/snippet}
 
-<Command.Root class={classNames} bind:this={command}>
+<Command.Root class={classNames} bind:this={command} value={initialValue}>
 	{#if searchable}
 		<Command.Input placeholder={searchPlaceholder} />
 	{/if}

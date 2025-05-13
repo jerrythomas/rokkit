@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree.Empty > should render with custom content 1`] = `
+<div>
+  <tree-empty
+    data-tree-empty="true"
+  >
+    <!---->
+    <span>
+      Nothing here!
+    </span>
+    
+    <!---->
+  </tree-empty>
+  
+</div>
+`;
+
+exports[`Tree.Empty > should render with custom content 2`] = `
+<div>
+  <tree-empty
+    class="flex items-center justify-center p-10"
+    data-tree-empty="true"
+  >
+    <!---->
+    <span>
+      Nothing here!
+    </span>
+    
+    <!---->
+  </tree-empty>
+  
+</div>
+`;
+
+exports[`Tree.Empty > should render with custom props 1`] = `
+<div>
+  <tree-empty
+    data-label-x=""
+    data-tree-empty="true"
+  >
+    <!---->
+    No Items.
+    
+    <!---->
+  </tree-empty>
+  
+</div>
+`;
+
+exports[`Tree.Empty > should render with string content 1`] = `
+<div>
+  <tree-empty
+    data-tree-empty="true"
+  >
+    <!---->
+    No Items.
+    
+    <!---->
+  </tree-empty>
+  
+</div>
+`;
+
+exports[`Tree.Empty > should render with string content 2`] = `
+<div>
+  <tree-empty
+    class="flex items-center justify-center p-10"
+    data-tree-empty="true"
+  >
+    <!---->
+    No Items.
+    
+    <!---->
+  </tree-empty>
+  
+</div>
+`;

@@ -1,0 +1,79 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree.Viewport > should render with custom content 1`] = `
+<div>
+  <tree-viewport
+    data-tree-viewport="true"
+  >
+    <!---->
+    <span>
+      Wait a minute!
+    </span>
+    
+    <!---->
+  </tree-viewport>
+  
+</div>
+`;
+
+exports[`Tree.Viewport > should render with custom content 2`] = `
+<div>
+  <tree-viewport
+    class="flex items-center justify-center p-10"
+    data-tree-viewport="true"
+  >
+    <!---->
+    <span>
+      Wait a minute!
+    </span>
+    
+    <!---->
+  </tree-viewport>
+  
+</div>
+`;
+
+exports[`Tree.Viewport > should render with custom props 1`] = `
+<div>
+  <tree-viewport
+    data-label-x=""
+    data-tree-empty="xyz"
+    data-tree-viewport="true"
+  >
+    <!---->
+    Viewport...
+    
+    <!---->
+  </tree-viewport>
+  
+</div>
+`;
+
+exports[`Tree.Viewport > should render with string content 1`] = `
+<div>
+  <tree-viewport
+    data-tree-viewport="true"
+  >
+    <!---->
+    Viewport...
+    
+    <!---->
+  </tree-viewport>
+  
+</div>
+`;
+
+exports[`Tree.Viewport > should render with string content 2`] = `
+<div>
+  <tree-viewport
+    class="flex items-center justify-center p-10"
+    data-tree-viewport="true"
+  >
+    <!---->
+    Viewport...
+    
+    <!---->
+  </tree-viewport>
+  
+</div>
+`;

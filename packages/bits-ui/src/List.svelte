@@ -43,11 +43,13 @@
 	let proxyItems = $derived(items.map((item) => new Proxy(item, fields)))
 	let itemSnippet = $derived(child ?? defaultChild)
 	let emptyMessage = $derived(empty ?? defaultEmpty)
+	let initialValue = $state()
 
 	$effect.pre(() => {
-		const index = proxyItems.findIndex((proxy) => equals(proxy.value, value))
-		if (index > -1) command.updateSelectedToIndex(index)
+		const current = proxyItems.find((proxy) => equals(proxy.value, value))
+		if (current) initialValue = current.id
 	})
+
 	function handleSelect(data) {
 		value = data
 		onSelect?.(data)
@@ -62,7 +64,7 @@
 	No results found.
 {/snippet}
 
-<Command.Root class={classNames} bind:this={command}>
+<Command.Root class={classNames} bind:this={command} value={initialValue}>
 	{#if searchable}
 		<Command.Input placeholder={searchPlaceholder} />
 	{/if}
