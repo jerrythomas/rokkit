@@ -13,6 +13,7 @@ describe('ListController', () => {
 			const controller = new ListController(items)
 			expect(controller.isNested).toEqual(false)
 			expect(controller.focused).toBeFalsy()
+			expect(controller.currentKey).toBeFalsy()
 			expect(Array.from(controller.selected)).toEqual([])
 		})
 
@@ -46,6 +47,7 @@ describe('ListController', () => {
 
 			expect(proxy.focused).toEqual(items[0])
 			expect(proxy.selected).toEqual([items[0]])
+			expect(proxy.currentKey).toEqual('0')
 
 			expect(proxy.moveToValue(items[0])).toBe(true)
 			expect(proxy.moveToValue(items[1])).toBe(true)
@@ -130,6 +132,10 @@ describe('ListController', () => {
 			expect(controller.select()).toBe(true)
 			expect(controller.focused).toEqual(items[1])
 			expect(controller.selected).toEqual([items[1]])
+
+			expect(controller.extendSelection('0')).toBe(true)
+			expect(controller.focused).toEqual(items[0])
+			expect(controller.selected).toEqual([items[0]])
 		})
 
 		it('should extend selection in multiselect mode', () => {

@@ -14,6 +14,15 @@ describe('Proxy', () => {
 		expect(proxy.id).toEqual('123')
 		expect(proxy.fields).toEqual(defaultFields)
 		expect(proxy.hasChildren).toBe(false)
+
+		proxy.value = '345'
+		proxy.id = 1
+		expect(proxy.value).toEqual('345')
+		expect(proxy.get('text')).toBe('345')
+		expect(proxy.id).toEqual('1')
+
+		proxy.id = '123'
+		expect(proxy.id).toEqual('123')
 	})
 
 	it('should create a new proxy for string with custom fields', () => {
@@ -26,6 +35,7 @@ describe('Proxy', () => {
 		expect(proxy.id).toEqual('123')
 		expect(proxy.fields).toEqual({ ...defaultFields, text: 't' })
 		expect(proxy.hasChildren).toBe(false)
+		expect(proxy.children).toEqual([])
 	})
 
 	it('should create proxy for object', () => {
@@ -35,6 +45,7 @@ describe('Proxy', () => {
 		expect(proxy.has('name')).toBe(false)
 		expect(proxy.id).toEqual('123')
 		expect(proxy.hasChildren).toBe(false)
+		expect(proxy.children).toEqual([])
 	})
 
 	it('should handle field mapping', () => {
@@ -54,6 +65,7 @@ describe('Proxy', () => {
 		flushSync()
 		expect(proxy.fields).toEqual({ ...defaultFields, icon: 'avatar' })
 		expect(proxy.hasChildren).toBe(false)
+		expect(proxy.children).toEqual([])
 	})
 
 	it('should handle default value', () => {
@@ -76,9 +88,13 @@ describe('Proxy', () => {
 	it('should identify if item has children', () => {
 		const proxy = new Proxy({ children: [] })
 		expect(proxy.hasChildren).toBe(false)
+		expect(proxy.children).toEqual([])
+
 		proxy.value = { children: [{ id: '123', name: 'John' }] }
 		flushSync()
 		expect(proxy.hasChildren).toBe(true)
+		expect(proxy.children.length).toEqual(1)
+		expect(proxy.children[0].value).toEqual(proxy.value.children[0])
 
 		proxy.fields = { children: 'items' }
 		expect(proxy.hasChildren).toBe(false)
@@ -86,7 +102,11 @@ describe('Proxy', () => {
 		flushSync()
 		expect(proxy.hasChildren).toBe(true)
 	})
-
+	it('should handle invalid children atribute', () => {
+		const proxy = new Proxy({ children: 'x' })
+		expect(proxy.hasChildren).toBe(false)
+		expect(proxy.children).toEqual([])
+	})
 	it('should return a snippet', () => {
 		const fallback = vi.fn().mockReturnValue('fallback')
 		const snippets = {

@@ -1,29 +1,35 @@
-import { defaultFields, id, toString } from '@rokkit/core'
+import { defaultFields, id, toString, getNestedFields } from '@rokkit/core'
 import { isNil, has } from 'ramda'
 
 export class Proxy {
 	#original = null
-	#value = null
+	#value = $state(null)
 	#fields = null
 	#id = null
-	#children = []
+
+	#children = $derived(this.#processChildren())
 
 	constructor(value, fields) {
 		this.fields = fields
 		this.#original = value
 		this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
 		this.id = typeof value === 'object' ? (this.get('id') ?? id()) : value
-		if (this.hasChildren) {
-			const children = this.#value[this.fields.children]
-			this.#children = children.map((child) => new Proxy(child, fields))
+	}
+
+	#processChildren() {
+		const children = this.#value[this.fields.children] ?? []
+		if (Array.isArray(children)) {
+			const fields = getNestedFields(this.fields)
+			return children.map((child) => new Proxy(child, fields))
 		}
+		return []
 	}
 
 	get id() {
 		return this.#id
 	}
 	set id(new_id) {
-		this.#id = typeof id === 'string' ? new_id : toString(new_id)
+		this.#id = typeof new_id === 'string' ? new_id : toString(new_id)
 	}
 	get children() {
 		return this.#children

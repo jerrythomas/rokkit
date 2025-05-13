@@ -45,10 +45,10 @@ export function deriveLookupWithProxy(items, fields = defaultFields, path = []) 
 		const proxy = new Proxy(item, fields)
 
 		lookup.set(key, proxy)
-		// console.log(key, proxy.value)
-		if (proxy.hasChildren) {
+		const children = proxy.value[proxy.fields.children] ?? []
+		if (children.length > 0) {
 			const childFields = getNestedFields(fields)
-			const childLookup = deriveLookupWithProxy(proxy.get('children'), childFields, itemPath)
+			const childLookup = deriveLookupWithProxy(children, childFields, itemPath)
 			for (const [childKey, childValue] of childLookup.entries()) {
 				lookup.set(childKey, childValue)
 			}
