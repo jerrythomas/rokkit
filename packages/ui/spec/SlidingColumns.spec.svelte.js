@@ -26,9 +26,11 @@ describe('SlidingColumns', () => {
 		const root = container.querySelector('rk-container')
 
 		expect(container).toMatchSnapshot()
+		expect(container.querySelector('rk-segment').textContent).toEqual('Column 2')
 		fireEvent.keyUp(root, { key: 'ArrowRight' })
 		await tick()
 		expect(container).toMatchSnapshot()
+		expect(container.querySelector('rk-segment').textContent).toEqual('Column 3')
 	})
 
 	it('should navigate to the previous column', async () => {

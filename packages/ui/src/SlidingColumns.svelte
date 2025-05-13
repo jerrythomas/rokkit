@@ -3,7 +3,7 @@
 	import { fly, fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
 
-	let { activeIndex = 0, columns = $bindable([]) } = $props()
+	let { activeIndex = $bindable(0), columns = $bindable([]) } = $props()
 	let width = $state()
 	let offset = $state(1)
 
@@ -20,6 +20,8 @@
 			offset = -1
 		}
 	}
+
+	let activeColumn = $derived(columns[activeIndex])
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -27,26 +29,22 @@
 	use:swipeable
 	onswipeleft={handlePrevious}
 	onswiperight={handleNext}
-	use:navigable
+	use:navigable={{ orientation: 'horizontal' }}
 	onprevious={handlePrevious}
 	onnext={handleNext}
 	tabindex={0}
 	class="relative grid h-full w-full overflow-hidden"
 	bind:clientWidth={width}
 >
-	{#each columns as column, index (index)}
-		{#if index === activeIndex}
-			<rk-segment
-				class="slide absolute h-full w-full {column}"
-				in:fly={{ x: offset * width, duration: 1000, easing: cubicInOut }}
-				out:fade={{
-					x: -1 * offset * width,
-					duration: 1000,
-					easing: cubicInOut
-				}}
-			>
-				{column}
-			</rk-segment>
-		{/if}
-	{/each}
+	<rk-segment
+		class="slide absolute h-full w-full"
+		in:fly={{ x: offset * width, duration: 1000, easing: cubicInOut }}
+		out:fade={{
+			x: -1 * offset * width,
+			duration: 1000,
+			easing: cubicInOut
+		}}
+	>
+		{activeColumn}
+	</rk-segment>
 </rk-container>

@@ -32,6 +32,7 @@ export function navigable(node, options) {
 		// Use defaultNavigationOptions from kbd.js
 		const props = { ...defaultNavigationOptions, ...options }
 		actions = getKeyboardActions(props, handlers)
+
 		const cleanup = on(node, 'keyup', handleKeydown)
 
 		return () => cleanup()
