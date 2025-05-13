@@ -1,7 +1,14 @@
 import { on } from 'svelte/events'
-import { handleAction, getKeyboardActions } from './utils'
+import { getKeyboardActions, defaultNavigationOptions } from './kbd'
 
-const defaultOptions = { horizontal: true, nested: false, enabled: true }
+// Handle keyboard events
+function handleAction(actions, event) {
+	if (event.key in actions) {
+		event.preventDefault()
+		event.stopPropagation()
+		actions[event.key]()
+	}
+}
 /**
  * A svelte action function that captures keyboard evvents and emits event for corresponding movements.
  *
@@ -22,7 +29,8 @@ export function navigable(node, options) {
 	const handleKeydown = (event) => handleAction(actions, event)
 
 	$effect(() => {
-		const props = { ...defaultOptions, ...options }
+		// Use defaultNavigationOptions from kbd.js
+		const props = { ...defaultNavigationOptions, ...options }
 		actions = getKeyboardActions(props, handlers)
 		const cleanup = on(node, 'keyup', handleKeydown)
 

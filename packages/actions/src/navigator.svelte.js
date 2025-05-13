@@ -1,8 +1,7 @@
 import { on } from 'svelte/events'
 import { omit } from 'ramda'
-import { getClickAction, getKeyboardAction, getPathFromEvent } from './utils'
-
-const defaultOptions = { horizontal: false, nested: false, enabled: true }
+import { getKeyboardAction, defaultNavigationOptions } from './kbd'
+import { getClickAction, getPathFromEvent } from './utils'
 
 const EVENT_MAP = {
 	first: ['move'],
@@ -79,7 +78,7 @@ function getHandlers(wrapper) {
  */
 export function navigator(node, options) {
 	const { wrapper } = options
-	const config = { ...defaultOptions, ...omit(['wrapper'], options) }
+	const config = { ...defaultNavigationOptions, ...omit(['wrapper'], options) }
 	const handlers = getHandlers(wrapper)
 
 	const handleKeydown = (event) => {

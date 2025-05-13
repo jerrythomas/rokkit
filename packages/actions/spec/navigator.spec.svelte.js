@@ -48,7 +48,7 @@ describe('navigator', () => {
 	describe('keyboard', () => {
 		describe('vertical', () => {
 			it('should handle vertical navigation keys', () => {
-				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'vertical' }))
 				flushSync()
 
 				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
@@ -114,8 +114,8 @@ describe('navigator', () => {
 				cleanup()
 			})
 
-			it('should include expand/collapse when nested', () => {
-				const cleanup = $effect.root(() => navigator(root, { wrapper, nested: true }))
+			it('should include expand/collapse when nested in LTR mode', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'vertical', dir: 'ltr', nested: true }))
 				flushSync()
 				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
 				expect(wrapper.expand).toHaveBeenCalled()
@@ -126,9 +126,43 @@ describe('navigator', () => {
 			})
 		})
 
+		describe('vertical RTL', () => {
+			it('should handle vertical navigation keys in RTL mode', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'vertical', dir: 'rtl' }))
+				flushSync()
+
+				// Basic navigation remains the same in RTL (up/down)
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				expect(wrapper.moveNext).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				expect(wrapper.movePrev).toHaveBeenCalled()
+
+				// Selection also remains the same
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				expect(wrapper.select).toHaveBeenCalled()
+
+				cleanup()
+			})
+
+			it('should flip expand/collapse arrow keys in RTL nested mode', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'vertical', dir: 'rtl', nested: true }))
+				flushSync()
+				
+				// In RTL, the meaning of left/right is reversed for tree operations
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				expect(wrapper.expand).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				expect(wrapper.collapse).toHaveBeenCalled()
+				
+				cleanup()
+			})
+		})
+
 		describe('horizontal', () => {
 			it('should handle horizontal navigation keys', () => {
-				const cleanup = $effect.root(() => navigator(root, { wrapper, horizontal: true }))
+				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'horizontal' }))
 				flushSync()
 
 				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
@@ -177,7 +211,7 @@ describe('navigator', () => {
 			})
 			it('should include expand/collapse when nested', () => {
 				const cleanup = $effect.root(() =>
-					navigator(root, { wrapper, horizontal: true, nested: true })
+					navigator(root, { wrapper, orientation: 'horizontal', nested: true })
 				)
 				flushSync()
 				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
@@ -185,6 +219,42 @@ describe('navigator', () => {
 
 				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
 				expect(wrapper.collapse).toHaveBeenCalled()
+				cleanup()
+			})
+		})
+		
+		describe('horizontal RTL', () => {
+			it('should reverse left/right navigation keys in horizontal RTL mode', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'horizontal', dir: 'rtl' }))
+				flushSync()
+
+				// In RTL horizontal mode, left/right arrow keys are reversed
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				expect(wrapper.movePrev).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				expect(wrapper.moveNext).toHaveBeenCalled()
+
+				// Selection remains the same
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				expect(wrapper.select).toHaveBeenCalled()
+
+				cleanup()
+			})
+			
+			it('should retain expand/collapse keys in horizontal RTL nested mode', () => {
+				const cleanup = $effect.root(() => 
+					navigator(root, { wrapper, orientation: 'horizontal', dir: 'rtl', nested: true })
+				)
+				flushSync()
+				
+				// In horizontal mode, up/down for expand/collapse is not affected by RTL
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				expect(wrapper.expand).toHaveBeenCalled()
+
+				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				expect(wrapper.collapse).toHaveBeenCalled()
+				
 				cleanup()
 			})
 		})
@@ -222,7 +292,7 @@ describe('navigator', () => {
 			const cleanup = $effect.root(() =>
 				navigator(root, {
 					wrapper,
-					options: { direction: 'vertical' }
+					orientation: 'vertical'
 				})
 			)
 			flushSync()
@@ -241,7 +311,7 @@ describe('navigator', () => {
 			const cleanup = $effect.root(() =>
 				navigator(root, {
 					wrapper,
-					options: { direction: 'vertical' }
+					orientation: 'vertical'
 				})
 			)
 			flushSync()
@@ -261,7 +331,7 @@ describe('navigator', () => {
 			const cleanup = $effect.root(() =>
 				navigator(root, {
 					wrapper,
-					options: { direction: 'vertical' }
+					orientation: 'vertical'
 				})
 			)
 			flushSync()
@@ -283,7 +353,7 @@ describe('navigator', () => {
 		const cleanup = $effect.root(() =>
 			navigator(root, {
 				wrapper,
-				options: { direction: 'vertical' }
+				orientation: 'vertical'
 			})
 		)
 		flushSync()

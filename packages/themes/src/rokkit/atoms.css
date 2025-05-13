@@ -22,7 +22,7 @@
   @apply border-neutral-subtle border;
 }
 [data-style='rokkit'] a.button {
-  @apply no-underline;
+  @apply px-4 no-underline;
 }
 [data-style='rokkit'] a {
   @apply text-primary-800 cursor-pointer underline underline-offset-4;

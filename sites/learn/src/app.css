@@ -78,3 +78,56 @@ input.embedded {
 /* rk-icon.tp-500 {
   @apply text-primary-500;
 } */
+
+[data-command-root]:focus-within {
+  @apply m-2px box-margin;
+}
+/* [data-command-root]:focus-within::before {
+  @apply ;
+} */
+[data-command-root]:focus-within::before {
+  @apply bg-secondary relative bottom-0 left-0 right-0;
+}
+[data-command-root] {
+  @apply bg-neutral-base focus flex h-full w-full cursor-pointer select-none flex-col self-start overflow-hidden rounded-md border border-none p-2;
+}
+[data-command-viewport] {
+  @apply w-full items-center justify-center text-sm text-neutral-800;
+}
+
+[data-command-input] {
+  @apply focus-override h-input placeholder:text-neutral bg-neutral-subtle border-primary inline-flex truncate rounded-full border-none px-4 text-sm leading-loose outline-none transition-colors focus:ring-0;
+}
+[data-command-input-label] {
+  @apply border-none;
+}
+[data-command-list] {
+  @apply overflow-y-auto overflow-x-hidden;
+}
+[data-command-empty] {
+  @apply flex w-full items-center justify-center pb-6 pt-8 text-neutral-800;
+}
+[data-command-item] {
+  @apply outline-hidden border-neutral-base bg-neutral-inset flex h-10 items-center gap-2 rounded-md px-3 py-2.5 text-sm text-neutral-800;
+}
+[data-command-group] {
+  @apply border-none;
+}
+[data-command-group-heading] {
+  @apply px-3 py-2 text-xs leading-loose text-neutral-600;
+}
+[data-command-group-items] {
+  @apply gap-2px flex flex-col;
+}
+a[data-command-item] {
+  @apply text-neutral-800 no-underline;
+}
+a[data-command-item]:visited {
+  @apply text-neutral-800;
+}
+[data-selected] {
+  @apply bg-neutral-subtle rounded-md;
+}
+[data-command-separator] {
+  @apply bg-neutral-inset mt-3 h-px w-full;
+}

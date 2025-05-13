@@ -79,7 +79,7 @@
 
 [data-style='rokkit'] button.is-primary,
 [data-style='rokkit'] .button.is-primary {
-  @apply from-primary to-secondary bg-gradient-to-r text-white;
+  @apply from-primary to-secondary bg-gradient-to-r px-4 text-white;
 }
 [data-style='rokkit'] a.square > rk-icon {
   @apply text-on-neutral-subtle h-full w-full;

@@ -6,12 +6,17 @@ export class Proxy {
 	#value = null
 	#fields = null
 	#id = null
+	#children = []
 
 	constructor(value, fields) {
 		this.fields = fields
 		this.#original = value
 		this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
 		this.id = typeof value === 'object' ? (this.get('id') ?? id()) : value
+		if (this.hasChildren) {
+			const children = this.#value[this.fields.children]
+			this.#children = children.map((child) => new Proxy(child, fields))
+		}
 	}
 
 	get id() {
@@ -19,6 +24,9 @@ export class Proxy {
 	}
 	set id(new_id) {
 		this.#id = typeof id === 'string' ? new_id : toString(new_id)
+	}
+	get children() {
+		return this.#children
 	}
 	get fields() {
 		return this.#fields
@@ -92,6 +100,7 @@ export class Proxy {
 	get hasChildren() {
 		return (
 			typeof this.#original === 'object' &&
+			has(this.fields.children, this.#value) &&
 			Array.isArray(this.#value[this.fields.children]) &&
 			this.#value[this.fields.children].length > 0
 		)
