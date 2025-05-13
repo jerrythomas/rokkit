@@ -11,7 +11,7 @@ import { has } from 'ramda'
  */
 export function getComponent(value, fields, using) {
 	return fields.component && isObject(value)
-		? (using[value[fields.component]] ?? using.default)
+		? using[value[fields.component]] ?? using.default
 		: using.default
 }
 
@@ -51,9 +51,7 @@ export function getIcon(value, fields = defaultFields) {
  * @returns {*}
  */
 export function getValue(node, fields = defaultFields) {
-	return typeof node === 'object' && node !== null
-		? (node[fields.value] ?? node[fields.text])
-		: node
+	return typeof node === 'object' && node !== null ? node[fields.value] ?? node[fields.text] : node
 }
 
 /**
