@@ -10,7 +10,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "bunx tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "build": "bun clean && bun prepublishOnly"
   },
