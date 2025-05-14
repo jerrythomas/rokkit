@@ -17,29 +17,29 @@ A composable tree component system for building tree/hierarchy interfaces with n
 <Tree.Root>
   <Tree.Viewport>
     <Tree.NodeList>
-      <Tree.Node>
-        <Tree.Item>
+      <Tree.Node path={[0]}>
+        <Tree.Item >
           Item 1
         </Tree.Item>
         <Tree.NodeList>
-          <Tree.Node>
+          <Tree.Node path={[0,0]}>
             <Tree.Item>
               Item 1.1
             </Tree.Item>
           </Tree.Node>
-          <Tree.Node>
+          <Tree.Node path={[0,1]}>
             <Tree.Item>
               Item 1.2
             </Tree.Item>
           </Tree.Node>
-          <Tree.Node>
+          <Tree.Node path={[0,2]}>
             <Tree.Item>
               Item 1.3
             </Tree.Item>
           </Tree.Node>
         </Tree.NodeList>
       </Tree.Node>
-      <Tree.Node>
+      <Tree.Node path={[1]}>
         <Tree.Item>
           Item 2
         </Tree.Item>

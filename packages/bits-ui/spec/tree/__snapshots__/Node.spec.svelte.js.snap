@@ -6,6 +6,10 @@ exports[`Tree.Node > should render with custom content 1`] = `
     data-tree-node="true"
   >
     <!---->
+     
+    <!---->
+     
+    <!---->
     <span>
       Wait a minute!
     </span>
@@ -22,6 +26,10 @@ exports[`Tree.Node > should render with custom content 2`] = `
     class="flex items-center justify-center p-10"
     data-tree-node="true"
   >
+    <!---->
+     
+    <!---->
+     
     <!---->
     <span>
       Wait a minute!
@@ -41,6 +49,10 @@ exports[`Tree.Node > should render with custom props 1`] = `
     data-tree-node="true"
   >
     <!---->
+     
+    <!---->
+     
+    <!---->
     Node...
     
     <!---->
@@ -54,6 +66,10 @@ exports[`Tree.Node > should render with string content 1`] = `
   <tree-node
     data-tree-node="true"
   >
+    <!---->
+     
+    <!---->
+     
     <!---->
     Node...
     
@@ -69,6 +85,10 @@ exports[`Tree.Node > should render with string content 2`] = `
     class="flex items-center justify-center p-10"
     data-tree-node="true"
   >
+    <!---->
+     
+    <!---->
+     
     <!---->
     Node...
     

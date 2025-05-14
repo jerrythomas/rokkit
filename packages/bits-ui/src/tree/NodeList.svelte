@@ -8,6 +8,6 @@
 	let { class: className = '', children, ...rest } = $props()
 </script>
 
-<tree-node-items {...rest} class={className} data-tree-node-items>
+<tree-node-list {...rest} class={className} data-tree-node-list>
 	{@render children?.()}
-</tree-node-items>
+</tree-node-list>

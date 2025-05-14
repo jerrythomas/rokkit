@@ -10,6 +10,7 @@ describe('components', () => {
 			'Viewport',
 			'Node',
 			'NodeList',
+			'Item',
 			'Line',
 			'Empty',
 			'Loading'

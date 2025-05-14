@@ -2,8 +2,8 @@
 
 exports[`Tree.Item > should render with custom content 1`] = `
 <div>
-  <tree-node-content
-    data-tree-node-content="true"
+  <tree-item
+    data-tree-item="true"
   >
     <!---->
     <span>
@@ -11,16 +11,16 @@ exports[`Tree.Item > should render with custom content 1`] = `
     </span>
     
     <!---->
-  </tree-node-content>
+  </tree-item>
   
 </div>
 `;
 
 exports[`Tree.Item > should render with custom content 2`] = `
 <div>
-  <tree-node-content
+  <tree-item
     class="flex items-center justify-center p-10"
-    data-tree-node-content="true"
+    data-tree-item="true"
   >
     <!---->
     <span>
@@ -28,52 +28,52 @@ exports[`Tree.Item > should render with custom content 2`] = `
     </span>
     
     <!---->
-  </tree-node-content>
+  </tree-item>
   
 </div>
 `;
 
 exports[`Tree.Item > should render with custom props 1`] = `
 <div>
-  <tree-node-content
+  <tree-item
     data-label-x=""
     data-tree-empty="xyz"
-    data-tree-node-content="true"
+    data-tree-item="true"
   >
     <!---->
     Item...
     
     <!---->
-  </tree-node-content>
+  </tree-item>
   
 </div>
 `;
 
 exports[`Tree.Item > should render with string content 1`] = `
 <div>
-  <tree-node-content
-    data-tree-node-content="true"
+  <tree-item
+    data-tree-item="true"
   >
     <!---->
     Item...
     
     <!---->
-  </tree-node-content>
+  </tree-item>
   
 </div>
 `;
 
 exports[`Tree.Item > should render with string content 2`] = `
 <div>
-  <tree-node-content
+  <tree-item
     class="flex items-center justify-center p-10"
-    data-tree-node-content="true"
+    data-tree-item="true"
   >
     <!---->
     Item...
     
     <!---->
-  </tree-node-content>
+  </tree-item>
   
 </div>
 `;
