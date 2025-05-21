@@ -4,7 +4,7 @@ import { isNil, has } from 'ramda'
 export class Proxy {
 	#original = null
 	#value = $state(null)
-	#fields = null
+	#fields = defaultFields
 	#id = null
 
 	#children = $derived(this.#processChildren())
@@ -17,7 +17,8 @@ export class Proxy {
 	}
 
 	#processChildren() {
-		if (!this.has('children')) return []
+		if (isNil(this.fields) || isNil(this.#value)) return []
+
 		const children = this.#value[this.fields.children] ?? []
 		if (Array.isArray(children)) {
 			const fields = getNestedFields(this.fields)
