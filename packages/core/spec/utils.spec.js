@@ -50,6 +50,12 @@ describe('utils', () => {
 			expect(typeof value).toBe('string')
 			expect(value.split('-')[0].length).toEqual(7)
 		})
+		it('should add a prefix if provided', () => {
+			const value = id('prefix')
+			expect(typeof value).toBe('string')
+			expect(value.split('-')[0]).toEqual('prefix')
+			expect(value.split('-')[1].length).toEqual(7)
+		})
 	})
 
 	describe('isObject', () => {

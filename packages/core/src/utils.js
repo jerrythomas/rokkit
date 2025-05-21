@@ -25,8 +25,10 @@ export function noop() {
  *
  * @returns {string} A random id
  */
-export function id() {
-	return [Math.random().toString(36).substring(2, 9), ++idCounter].join('-')
+export function id(prefix = '') {
+	return [prefix, Math.random().toString(36).substring(2, 9), ++idCounter]
+		.filter((x) => !isNil(x) && x !== '')
+		.join('-')
 }
 
 /**
