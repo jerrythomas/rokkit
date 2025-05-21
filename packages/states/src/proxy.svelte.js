@@ -17,6 +17,7 @@ export class Proxy {
 	}
 
 	#processChildren() {
+		if (!this.has('children')) return []
 		const children = this.#value[this.fields.children] ?? []
 		if (Array.isArray(children)) {
 			const fields = getNestedFields(this.fields)
@@ -57,7 +58,7 @@ export class Proxy {
 				delete this.#value[key]
 			})
 		} else {
-			this.#value.text = value
+			this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
 			this.#original = value
 		}
 	}

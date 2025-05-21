@@ -25,6 +25,27 @@ describe('Proxy', () => {
 		expect(proxy.id).toEqual('123')
 	})
 
+	it('should create a new proxy for null', () => {
+		const proxy = new Proxy(null)
+		expect(proxy.value).toEqual(null)
+		expect(proxy.has('text')).toBe(false)
+		expect(proxy.has('value')).toBe(false)
+		expect(proxy.has('id')).toBe(false)
+		expect(proxy.get('text')).toBeUndefined()
+		expect(proxy.id).toBeTruthy()
+		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.hasChildren).toBe(false)
+
+		proxy.value = '345'
+		proxy.id = 1
+		expect(proxy.value).toEqual('345')
+		expect(proxy.get('text')).toBe('345')
+		expect(proxy.id).toEqual('1')
+
+		proxy.id = '123'
+		expect(proxy.id).toEqual('123')
+	})
+
 	it('should create a new proxy for string with custom fields', () => {
 		const proxy = new Proxy('123', { text: 't' })
 		expect(proxy.value).toEqual('123')
