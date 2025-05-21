@@ -46,3 +46,7 @@ export { default as DataEditor } from './DataEditor.svelte'
 export { default as NestedEditor } from './NestedEditor.svelte'
 export { default as Stepper } from './Stepper.svelte'
 export { default as ProgressDots } from './ProgressDots.svelte'
+
+export { default as Card } from './Card.svelte'
+export { default as Shine } from './Shine.svelte'
+export { default as Tilt } from './Tilt.svelte'

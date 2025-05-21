@@ -46,7 +46,10 @@ describe('components', () => {
 			'DataEditor',
 			'NestedEditor',
 			'Stepper',
-			'ProgressDots'
+			'ProgressDots',
+			'Card',
+			'Shine',
+			'Tilt'
 		])
 	})
 })

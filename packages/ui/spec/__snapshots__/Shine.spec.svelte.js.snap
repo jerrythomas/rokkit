@@ -1,0 +1,178 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Shine > should render 1`] = `
+<div>
+  <svg
+    class="pointer-events-none fixed inset-0"
+    data-shine-filter=""
+  >
+    <filter
+      color-interpolation-filters="sRGB"
+      id="filter-id-1"
+    >
+      <fegaussianblur
+        in="SourceAlpha"
+        stdDeviation="1"
+      />
+      <fespecularlighting
+        lighting-color="var(--primary-500)"
+        result="light-source"
+        specularConstant="0.75"
+        specularExponent="120"
+        surfaceScale="2"
+      >
+        <fepointlight
+          x="0"
+          y="0"
+          z="300"
+        />
+      </fespecularlighting>
+      <fecomposite
+        in="light-source"
+        in2="SourceAlpha"
+        operator="in"
+        result="reflections"
+      />
+      <fecomposite
+        in="SourceGraphic"
+        in2="reflections"
+        k1="0"
+        k2="1"
+        k3="1"
+        k4="0"
+        operator="arithmetic"
+      />
+    </filter>
+  </svg>
+   
+  <div
+    class="inline-block"
+    data-shine-root="true"
+    style="filter: url(#filter-id-1);"
+  >
+    <span>
+      Content box
+    </span>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Shine > should render 2`] = `
+<div>
+  <svg
+    class="pointer-events-none fixed inset-0"
+    data-shine-filter=""
+  >
+    <filter
+      color-interpolation-filters="sRGB"
+      id="filter-id-1"
+    >
+      <fegaussianblur
+        in="SourceAlpha"
+        stdDeviation="1"
+      />
+      <fespecularlighting
+        lighting-color="#666666"
+        result="light-source"
+        specularConstant="0.75"
+        specularExponent="120"
+        surfaceScale="2"
+      >
+        <fepointlight
+          x="0"
+          y="0"
+          z="300"
+        />
+      </fespecularlighting>
+      <fecomposite
+        in="light-source"
+        in2="SourceAlpha"
+        operator="in"
+        result="reflections"
+      />
+      <fecomposite
+        in="SourceGraphic"
+        in2="reflections"
+        k1="0"
+        k2="1"
+        k3="1"
+        k4="0"
+        operator="arithmetic"
+      />
+    </filter>
+  </svg>
+   
+  <div
+    class="inline-block"
+    data-shine-root="true"
+    style="filter: url(#filter-id-1);"
+  >
+    <span>
+      Content box
+    </span>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Shine > should render 3`] = `
+<div>
+  <svg
+    class="pointer-events-none fixed inset-0"
+    data-shine-filter=""
+  >
+    <filter
+      color-interpolation-filters="sRGB"
+      id="filter-id-1"
+    >
+      <fegaussianblur
+        in="SourceAlpha"
+        stdDeviation="1"
+      />
+      <fespecularlighting
+        lighting-color="#666666"
+        result="light-source"
+        specularConstant="0.75"
+        specularExponent="120"
+        surfaceScale="2"
+      >
+        <fepointlight
+          x="0"
+          y="0"
+          z="100"
+        />
+      </fespecularlighting>
+      <fecomposite
+        in="light-source"
+        in2="SourceAlpha"
+        operator="in"
+        result="reflections"
+      />
+      <fecomposite
+        in="SourceGraphic"
+        in2="reflections"
+        k1="0"
+        k2="1"
+        k3="1"
+        k4="0"
+        operator="arithmetic"
+      />
+    </filter>
+  </svg>
+   
+  <div
+    class="inline-block"
+    data-shine-root="true"
+    style="filter: url(#filter-id-1);"
+  >
+    <span>
+      Content box
+    </span>
+    <!---->
+  </div>
+  
+</div>
+`;

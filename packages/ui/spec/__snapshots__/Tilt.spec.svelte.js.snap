@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tilt > should render 1`] = `
+<div>
+  <div
+    class="[perspective:var(--perspective)] [&>*]:[transform:rotateX(var(--rotateX))_rotateY(var(--rotateY))] [&>*]:brightness-[var(--brightness)]"
+    data-tilt-root=""
+    style="--perspective: 600px; --rotateX: 0deg; --rotateY: 0deg; --brightness: 1;"
+  >
+    <span>
+      Content box
+    </span>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Tilt > should render 2`] = `
+<div>
+  <div
+    class="[perspective:var(--perspective)] [&>*]:[transform:rotateX(var(--rotateX))_rotateY(var(--rotateY))] [&>*]:brightness-[var(--brightness)]"
+    data-tilt-root=""
+    style="--perspective: 600px; --rotateX: 0deg; --rotateY: 0deg; --brightness: 1;"
+  >
+    <span>
+      Content box
+    </span>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Tilt > should render 3`] = `
+<div>
+  <div
+    class="[perspective:var(--perspective)] [&>*]:[transform:rotateX(var(--rotateX))_rotateY(var(--rotateY))] [&>*]:brightness-[var(--brightness)]"
+    data-tilt-root=""
+    style="--perspective: 600px; --rotateX: 0deg; --rotateY: 0deg; --brightness: 1;"
+  >
+    <span>
+      Content box
+    </span>
+    <!---->
+  </div>
+  
+</div>
+`;
