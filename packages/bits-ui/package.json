@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/bits-ui",
-  "version": "1.0.0-next.114",
+  "version": "1.0.0-next.115",
   "type": "module",
   "description": "Data-driven UI components based on bits-ui",
   "author": "Jerry Thomas <me@jerrythomas.name>",
