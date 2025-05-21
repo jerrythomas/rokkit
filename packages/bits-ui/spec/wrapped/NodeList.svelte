@@ -1,5 +1,4 @@
 <script>
-	import NodeList from '../../src/tree/NodeList.svelte'
 	let { option = 1, class: classNames = '', ...rest } = $props()
 </script>
 

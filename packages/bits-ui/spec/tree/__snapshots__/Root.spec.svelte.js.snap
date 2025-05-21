@@ -3,6 +3,7 @@
 exports[`Tree.Root > should render with custom content 1`] = `
 <div>
   <tree-root
+    data-orientation="vertical"
     data-tree-root="true"
   >
     <!---->
@@ -20,6 +21,7 @@ exports[`Tree.Root > should render with custom content 2`] = `
 <div>
   <tree-root
     class="flex items-center justify-center p-10"
+    data-orientation="vertical"
     data-tree-root="true"
   >
     <!---->
@@ -37,6 +39,7 @@ exports[`Tree.Root > should render with custom props 1`] = `
 <div>
   <tree-root
     data-label-x=""
+    data-orientation="vertical"
     data-tree-empty="xyz"
     data-tree-root="true"
   >
@@ -52,6 +55,7 @@ exports[`Tree.Root > should render with custom props 1`] = `
 exports[`Tree.Root > should render with string content 1`] = `
 <div>
   <tree-root
+    data-orientation="vertical"
     data-tree-root="true"
   >
     <!---->
@@ -67,6 +71,7 @@ exports[`Tree.Root > should render with string content 2`] = `
 <div>
   <tree-root
     class="flex items-center justify-center p-10"
+    data-orientation="vertical"
     data-tree-root="true"
   >
     <!---->

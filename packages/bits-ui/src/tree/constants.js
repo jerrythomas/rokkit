@@ -10,6 +10,7 @@ export const TREE_VALUE_ATTR = 'data-value'
 export const TREE_LINE_ATTR = 'data-tree-line'
 export const TREE_LINE_TYPE_ATTR = 'data-tree-line-type'
 export const TREE_PATH_ATTR = 'data-path'
+export const TREE_PATH_KEY = 'tree-data-path'
 
 // Export symbols for context
 export const TREE_CTX = Symbol('tree')
