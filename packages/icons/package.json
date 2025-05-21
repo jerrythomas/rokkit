@@ -40,6 +40,7 @@
     "./components.json": "./lib/components.json",
     "./auth.json": "./lib/auth.json",
     "./app.json": "./lib/app.json",
-    ".": "./lib/base.json"
+    ".": "./lib/base.json",
+    "./utils":"./src/convert.js"
   }
 }

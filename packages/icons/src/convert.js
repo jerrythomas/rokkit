@@ -7,7 +7,14 @@ import {
 	exportJSONPackage
 } from '@iconify/tools'
 import fs from 'fs'
+import { pick } from 'ramda'
+import pkg from '../package.json' with { type: 'json' }
 
+const PACKAGE_INFO = {
+	namespace: '@rokkit',
+	version: pkg.version,
+	homepage: 'https://github.com/jerrythomas/rokkit'
+}
 /**
  * Clean up and optimise SVG icon
  *
@@ -39,20 +46,8 @@ export function cleanAndOptimizeIcon(svg, color) {
  */
 export function processIcons(iconSet, color) {
 	iconSet.forEach((name) => {
-		// There should not be any type other than icon
-		// if (type !== 'icon') {
-		// 	return
-		// }
-
 		const svg = iconSet.toSVG(name)
-		// Since we are processing from within the list, there is no need to check for invalid icons
-		// if (!svg) {
-		// 	// Invalid icon
-		// 	iconSet.remove(name)
-		// 	return
-		// }
 
-		// Clean up and optimise icons
 		try {
 			cleanAndOptimizeIcon(svg, color)
 		} catch (err) {
@@ -62,11 +57,28 @@ export function processIcons(iconSet, color) {
 			return
 		}
 
-		// Update icon
 		iconSet.fromSVG(name, svg)
 	})
 }
 
+/**
+ * Convert individual icons into a json bundle
+ *
+ * @param {string} folder Folder with icons
+ * @param {string} prefix Prefix for icon set
+ * @param {boolean} color True if color should be preserved
+ */
+export async function bundle(folder, prefix, color = false, location = '.') {
+	const iconSet = await importDirectory(folder, { prefix })
+
+	// Validate, clean up, fix palette and optimise
+	processIcons(iconSet, color)
+
+	// Export
+	const collection = JSON.stringify(iconSet.export(), null, 2)
+	fs.writeFileSync(`${location}/${prefix}.json`, collection, 'utf8')
+	return iconSet
+}
 /**
  * Convert icons
  *
@@ -76,22 +88,21 @@ export function processIcons(iconSet, color) {
  */
 export async function convert(folder, prefix, color = false) {
 	// Import icons
-	const iconSet = await importDirectory(folder, { prefix })
+	// const iconSet = await importDirectory(folder, { prefix })
 
-	// Validate, clean up, fix palette and optimise
-	processIcons(iconSet, color)
+	// // Validate, clean up, fix palette and optimise
+	// processIcons(iconSet, color)
 
-	// Export
-	const collection = JSON.stringify(iconSet.export(), null, 2)
-	fs.writeFileSync(`./lib/${prefix}.json`, collection, 'utf8')
+	// // Export
+	// const collection = JSON.stringify(iconSet.export(), null, 2)
+	// fs.writeFileSync(`./lib/${prefix}.json`, collection, 'utf8')
+	const iconSet = await bundle(folder, prefix, color, './lib')
 	const target = `./lib/${iconSet.prefix}`
 	await exportJSONPackage(iconSet, {
 		target,
 		package: {
-			name: `@rokkit/${iconSet.prefix}`,
-			version: '1.0.0',
-			bugs: 'https://github.com/jerrythomas/rokkit/issues',
-			homepage: 'https://github.com/jerrythomas/rokkit'
+			name: `${PACKAGE_INFO.namespace}/${iconSet.prefix}`,
+			...pick(['version', 'homepage'], PACKAGE_INFO)
 		},
 		cleanup: true
 	})
