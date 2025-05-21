@@ -9,7 +9,7 @@
 	import Sticker from 'phosphor-svelte/lib/Sticker'
 	import Textbox from 'phosphor-svelte/lib/Textbox'
 	let items = $state([
-		{ id: '1', text: 'Introduction', href: '/', icon: Sticker },
+		{ id: '1', text: 'hello', href: '/', icon: Sticker },
 		{ id: '2', text: 'Delegation', icon: CodeBlock },
 		{ id: '3', text: 'Styling', icon: Palette },
 		{ id: '4', text: 'Calendar', icon: CalendarBlank },
@@ -19,23 +19,25 @@
 	let nested = $state([
 		{
 			id: '0',
-			text: 'Suggestions',
+			title: 'Suggestions',
 			children: [
-				{ id: '1', text: 'Introduction', href: '/', icon: Sticker },
-				{ id: '2', text: 'Delegation', icon: CodeBlock },
-				{ id: '3', text: 'Styling', icon: Palette },
-				{ id: '4', text: 'Calendar', icon: CalendarBlank }
+				{ id: '1', title: 'hello', href: '/', icon: Sticker },
+				{ id: '2', title: 'Delegation', icon: CodeBlock },
+				{ id: '3', title: 'Styling', icon: Palette },
+				{ id: '4', title: 'Calendar', icon: CalendarBlank }
 			]
 		},
 		{
 			id: '30',
-			text: 'Components',
+			title: 'Components',
 			children: [
-				{ id: '5', text: 'Radio Group', icon: RadioButton },
-				{ id: '6', text: 'Combobox', icon: Textbox }
+				{ id: '5', title: 'Radio Group', icon: RadioButton },
+				{ id: '6', title: 'Combobox', icon: Textbox }
 			]
 		}
 	])
+
+	let fields = { text: 'title' }
 </script>
 
 <!-- <span class="items-center gap-10 overflow-auto px-20">
@@ -52,7 +54,7 @@
 		{#snippet child(proxy)}
 			{@const Icon = proxy.get('icon')}
 			<Icon></Icon>
-			{proxy.get('text')}
+			{proxy.value.title}
 		{/snippet}
 	</GroupedList>
 </DemoWrapper>
