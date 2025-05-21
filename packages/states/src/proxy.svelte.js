@@ -66,7 +66,7 @@ export class Proxy {
 	 * Gets a mapped attribute from the original item
 	 *
 	 * @param {string} fieldName - Name of the field to get
-	 * @param {any} defaultValue - Default value to return if not found
+	 * @param {any}   [defaultValue] - Default value to return if not found
 	 * @returns {any|undefined} - The attribute value or null if not found
 	 */
 	get(fieldName, defaultValue) {
@@ -91,7 +91,7 @@ export class Proxy {
 	 *   - No snippet key is configured for this item
 	 *   - The configured snippet key doesn't exist in the snippets collection
 	 * @param {Object} snippets
-	 * @param {import('svelte').Snippet|undefined} defaultSnippet
+	 * @param {import('svelte').Snippet|undefined} [defaultSnippet]
 	 * @returns {import('svelte').Snippet|undefined}
 	 */
 	getSnippet(snippets, defaultSnippet) {
