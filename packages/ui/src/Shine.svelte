@@ -3,7 +3,7 @@
 	// import { clsx } from 'clsx'
 
 	let {
-		color = 'var(--primary-500)',
+		color = 'rgb(var(--primary-500))',
 		radius = 300,
 		/** Depth of effect */
 		depth = 1,

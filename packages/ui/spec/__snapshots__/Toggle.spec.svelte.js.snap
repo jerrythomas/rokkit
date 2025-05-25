@@ -1,7 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Toggle > should render 1`] = `
-<rk-toggle>
+<div
+  data-disabled="false"
+  data-toggle-root=""
+>
   <button
     aria-label="toggle"
   >
@@ -11,7 +14,7 @@ exports[`Toggle > should render 1`] = `
     <!---->
     <!---->
   </button>
-</rk-toggle>
+</div>
 `;
 
 exports[`Toggle > should render with object options 1`] = `
@@ -43,7 +46,10 @@ exports[`Toggle > should render with options 1`] = `
 
 exports[`Toggle > should switch options on click 1`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -56,14 +62,17 @@ exports[`Toggle > should switch options on click 1`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on click 2`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -76,14 +85,17 @@ exports[`Toggle > should switch options on click 2`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on click 3`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -96,14 +108,17 @@ exports[`Toggle > should switch options on click 3`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -116,14 +131,17 @@ exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -136,14 +154,17 @@ exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -156,14 +177,17 @@ exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -176,14 +200,17 @@ exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -196,14 +223,17 @@ exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -216,14 +246,17 @@ exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -236,14 +269,17 @@ exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -256,14 +292,17 @@ exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -276,14 +315,17 @@ exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -296,14 +338,17 @@ exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -316,14 +361,17 @@ exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;
 
 exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
 <div>
-  <rk-toggle>
+  <div
+    data-disabled="false"
+    data-toggle-root=""
+  >
     <button
       aria-label="toggle"
     >
@@ -336,7 +384,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
       <!---->
       <!---->
     </button>
-  </rk-toggle>
+  </div>
   
 </div>
 `;

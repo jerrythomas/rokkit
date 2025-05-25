@@ -1,13 +1,13 @@
 <script>
-	// import { FieldMapper, noop } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
 	import Item from './Item.svelte'
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {any}        value
-	 * @property {string}     [class]
-	 * @property {Array<any>} [options]
+	 * @property {any}         value
+	 * @property {string}      [class]
+	 * @property {boolean}     [disabled] = false
+	 * @property {Array<any>}  [options]
 	 * @property {FieldMapper} [mapping]
 	 */
 
@@ -17,6 +17,7 @@
 		value = $bindable(null),
 		options = [false, true],
 		fields,
+		disabled = false,
 		label = 'toggle',
 		onchange
 	} = $props()
@@ -27,6 +28,8 @@
 	}
 
 	function toggle(direction = 1) {
+		if (disabled) return
+
 		let nextIndex
 		const index = options.indexOf(value)
 
@@ -41,7 +44,7 @@
 	}
 </script>
 
-<rk-toggle class={classes}>
+<div data-toggle-root data-disabled={disabled} class={classes}>
 	<button
 		use:keyboard={keyMappings}
 		onnext={() => toggle()}
@@ -51,4 +54,4 @@
 	>
 		<Item {value} {fields} />
 	</button>
-</rk-toggle>
+</div>

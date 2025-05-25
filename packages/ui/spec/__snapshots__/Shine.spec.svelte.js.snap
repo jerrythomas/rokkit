@@ -15,7 +15,7 @@ exports[`Shine > should render 1`] = `
         stdDeviation="1"
       />
       <fespecularlighting
-        lighting-color="var(--primary-500)"
+        lighting-color="rgb(var(--primary-500))"
         result="light-source"
         specularConstant="0.75"
         specularExponent="120"

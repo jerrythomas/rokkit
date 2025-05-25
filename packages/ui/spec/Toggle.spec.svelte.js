@@ -6,6 +6,7 @@ import { FieldMapper } from '@rokkit/core'
 import Item from '../src/Item.svelte'
 
 describe('Toggle', () => {
+	const ROOT_SELECTOR = '[data-toggle-root]'
 	const fields = new FieldMapper({ icon: 'text' }, { default: Item })
 	const nextKeys = ['ArrowDown', 'ArrowRight']
 	const prevKeys = ['ArrowUp', 'ArrowLeft']
@@ -15,7 +16,7 @@ describe('Toggle', () => {
 	it('should render', () => {
 		const props = $state({ value: null })
 		const { container } = render(Toggle, { props })
-		const toggleButton = container.querySelector('rk-toggle')
+		const toggleButton = container.querySelector(ROOT_SELECTOR)
 		expect(toggleButton).toBeTruthy()
 		expect(toggleButton).toMatchSnapshot()
 
@@ -30,7 +31,7 @@ describe('Toggle', () => {
 
 	it('should render with options', () => {
 		const { container } = render(Toggle, { options: ['a', 'b'] })
-		const toggleButton = container.querySelector('rk-toggle > button')
+		const toggleButton = container.querySelector(`${ROOT_SELECTOR} > button`)
 		expect(toggleButton).toBeTruthy()
 		expect(toggleButton).toMatchSnapshot()
 	})
@@ -43,7 +44,7 @@ describe('Toggle', () => {
 			fields: mapper
 		})
 
-		const toggleButton = container.querySelector('rk-toggle > button')
+		const toggleButton = container.querySelector(`${ROOT_SELECTOR} > button`)
 		expect(toggleButton).toBeTruthy()
 		expect(toggleButton).toMatchSnapshot()
 	})
@@ -56,7 +57,7 @@ describe('Toggle', () => {
 			onchange: vi.fn()
 		})
 		const { container } = render(Toggle, { props })
-		const button = container.querySelector('rk-toggle > button')
+		const button = container.querySelector(`${ROOT_SELECTOR} > button`)
 
 		fireEvent.click(button)
 		await tick()
@@ -87,7 +88,7 @@ describe('Toggle', () => {
 			onchange: vi.fn()
 		})
 		const { container } = render(Toggle, { props })
-		const toggleButton = container.querySelector('rk-toggle > button')
+		const toggleButton = container.querySelector(`${ROOT_SELECTOR} > button`)
 
 		fireEvent.keyUp(toggleButton, { key })
 		await tick()
@@ -115,7 +116,7 @@ describe('Toggle', () => {
 			onchange: vi.fn()
 		})
 		const { container } = render(Toggle, { props })
-		const toggleButton = container.querySelector('rk-toggle > button')
+		const toggleButton = container.querySelector(`${ROOT_SELECTOR} > button`)
 
 		fireEvent.keyUp(toggleButton, { key })
 		await tick()
