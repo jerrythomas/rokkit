@@ -1,7 +1,7 @@
 {
   "name": "quick-start",
   "private": true,
-  "version": "1.0.0-next.118",
+  "version": "1.0.0-next.119",
   "type": "module",
   "npm": {
     "publish": false
