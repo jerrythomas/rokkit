@@ -1,10 +1,11 @@
 import { defaultThemeMapping, defaultColors, syntaxColors } from './constants.js'
 import { shades, defaultPalette } from './colors/index.js'
+import { hex2rgb } from './utils'
 
 const modifiers = {
-	hsl: (value) => `hsl(${value})`,
-	rgb: (value) => `rgb(${value})`,
-	none: (value) => value
+	hsl: (value) => `hsl(${value} / <alpha-value>)`,
+	rgb: (value) => `rgb(${value} / <alpha-value>)`
+	// rgb: (value) => value
 }
 
 /**
@@ -14,8 +15,8 @@ const modifiers = {
  * @param {string} modifier
  * @returns
  */
-export function shadesOf(name, modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
+export function shadesOf(name, modifier = 'rgb') {
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.rgb
 
 	return shades.reduce(
 		(result, shade) => ({
@@ -44,8 +45,8 @@ export function shadesOf(name, modifier = 'none') {
  * @param {string} modifier
  * @returns {object}
  */
-export function stateColors(name, modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
+export function stateColors(name, modifier = 'rgb') {
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.rgb
 	return {
 		DEFAULT: fn(`var(--${name}-500)`),
 		light: fn(`var(--${name}-200)`),
@@ -58,8 +59,8 @@ export function stateColors(name, modifier = 'none') {
  * @param {string} modifier
  * @returns
  */
-export function themeColors(modifier = 'none') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.none
+export function themeColors(modifier = 'rgb') {
+	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.rgb
 
 	const states = ['info', 'danger', 'warning', 'success', 'error']
 	const variants = ['neutral', 'primary', 'secondary', 'accent']
@@ -129,12 +130,12 @@ function generateColorRules(variant, colors, mapping) {
 	return shades.flatMap((shade, index) => [
 		{
 			key: `--${variant}-${shade}`,
-			value: colors[mapping[variant]][shade],
+			value: hex2rgb(colors[mapping[variant]][shade]),
 			mode: 'light'
 		},
 		{
 			key: `--${variant}-${shade}`,
-			value: colors[mapping[variant]][shades[shades.length - index - 1]],
+			value: hex2rgb(colors[mapping[variant]][shades[shades.length - index - 1]]),
 			mode: 'dark'
 		}
 	])

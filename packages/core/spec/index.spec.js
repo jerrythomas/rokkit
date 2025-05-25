@@ -39,6 +39,7 @@ describe('@rokkit/core', () => {
 			'getPathFromKey',
 			'getSnippet',
 			'importIcons',
+			'hex2rgb',
 			'flattenNestedList',
 			'findValueFromPath',
 			'toInitCapCase',
