@@ -9,6 +9,8 @@ import {
 } from '@iconify/tools'
 import fs from 'fs'
 import path from 'path'
+import { pick } from 'ramda'
+import './types'
 /**
  * Clean up and optimise SVG icon
  *
@@ -58,10 +60,7 @@ export function processIcons(iconSet, color) {
  * Convert individual icons into a json bundle
  *
  * @param {string} folder Folder with icons
- * @param {object} options Options for bundling
- * @param {string} options.prefix Prefix for icon set
- * @param {boolean} [options.color=false] True if color should be preserved
- * @param {string} [options.target='.'] Target directory for output
+ * @param {import('./types').IconBuilderOptions} options Options for conversion
  * @returns {Promise<object>} The generated icon set
  */
 export async function bundle(folder, options) {
@@ -88,14 +87,27 @@ export async function bundle(folder, options) {
 }
 
 /**
+ *
+ * @param {*} options
+ * @returns
+ */
+function extractPackageInfo(options) {
+	const namespace = options.package?.namespace
+	// Create package info with sensible defaults
+	return {
+		// Use prefix as package name if no namespace provided
+		name: [namespace, options.prefix].filter(Boolean).join('/'),
+		// Default version is 1.0.0
+		version: options.package?.version || '1.0.0',
+		// Homepage is optional
+		...pick(['homepage'], options.package ?? {})
+	}
+}
+/**
  * Convert icons to an iconify package
  *
  * @param {string} folder Folder with icons
- * @param {object} options Options for conversion
- * @param {string} options.prefix Prefix for icon set
- * @param {boolean} [options.color=false] True if color should be preserved
- * @param {string} [options.target='.'] Target directory for output
- * @param {object} [options.package] Package information
+ * @param {import('./types').IconBuilderOptions} options Options for conversion
  * @returns {Promise<object>} The generated icon set
  */
 export async function convert(folder, options) {
@@ -108,23 +120,11 @@ export async function convert(folder, options) {
 		fs.mkdirSync(targetDir, { recursive: true })
 	}
 
-	// Create package info with sensible defaults
-	const packageInfo = {
-		// Use prefix as package name if no namespace provided
-		name: options.package?.namespace
-			? `${options.package.namespace}/${options.prefix}`
-			: options.prefix,
-		// Default version is 1.0.0
-		version: options.package?.version || '1.0.0',
-		// Homepage is optional
-		...(options.package?.homepage && { homepage: options.package.homepage })
-	}
-
 	// Export as iconify package
 	const packageTarget = path.join(targetDir, iconSet.prefix)
 	await exportJSONPackage(iconSet, {
 		target: packageTarget,
-		package: packageInfo,
+		package: extractPackageInfo(options),
 		cleanup: true
 	})
 
@@ -169,5 +169,43 @@ export function getFolderNames(dir) {
 	} catch (err) {
 		console.error(`Error reading directory: ${err.message}`)
 		return []
+	}
+}
+
+/**
+ * Converts a folder of icons into an icon bundle
+ * @param {string[]} folders
+ * @param {import('./types').IconBuilderOptions} config
+ * @param {import('./types').FolderOptions}      opts
+ */
+export function bundleFolders(folders, config, opts) {
+	for (const folder of folders) {
+		const folderPath = path.join(opts.input, folder)
+		const folderConfig = config.bundles?.[folder] || {}
+
+		bundle(folderPath, {
+			target: opts.output,
+			color: folderConfig.color || false,
+			prefix: folder
+		})
+	}
+}
+/**
+ * Converts a folder of icons into an icon bundle
+ * @param {string[]}                             folders
+ * @param {import('./types').IconBuilderOptions} config
+ * @param {import('./types').FolderOptions}      opts
+ */
+export function convertFolders(folders, config, opts) {
+	for (const folder of folders) {
+		const folderPath = path.join(opts.input, folder)
+		const folderConfig = config.bundles[folder] || {}
+
+		convert(folderPath, {
+			target: opts.output,
+			color: folderConfig.color || false,
+			prefix: folder,
+			package: config.package || {}
+		})
 	}
 }

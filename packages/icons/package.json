@@ -1,33 +1,7 @@
 {
   "name": "@rokkit/icons",
   "version": "1.0.0-next.119",
-  "description": "A minimal icon set for use in applications.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
-  "license": "MIT",
-  "type": "module",
-  "scripts": {
-    "format": "prettier --write .",
-    "lint": "eslint --fix .",
-    "build": "node src/index.js && pnpm format",
-    "latest": "pnpm upgrade --latest",
-    "release": "pnpm publish --access public"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@mdi/svg": "^7.4.47"
-  },
-  "devDependencies": {
-    "@iconify/tools": "4.0.6",
-    "@iconify/types": "^2.0.0",
-    "iconify": "^1.4.0"
-  },
-  "files": [
-    "lib/**/*",
-    "README.md",
-    "package.json"
-  ],
   "exports": {
     "./package.json": "./package.json",
     "./ui.json": "./lib/base.json",
@@ -38,6 +12,27 @@
     "./auth.json": "./lib/auth.json",
     "./app.json": "./lib/app.json",
     ".": "./lib/base.json",
-    "./utils":"./src/convert.js"
-  }
+    "./utils": "./src/convert.js"
+  },
+  "description": "A minimal icon set for use in applications.",
+  "files": [
+    "lib/**/*",
+    "README.md",
+    "package.json"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@rokkit/cli":"link:@rokkit/cli"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "build": "rokkit-cli build",
+    "latest": "pnpm upgrade --latest",
+    "release": "pnpm publish --access public"
+  },
+  "type": "module"
 }
