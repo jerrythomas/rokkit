@@ -98,7 +98,7 @@ bun add @rokkit/ui
 
 ```svelte
 <script>
-  import { Button, Icon, Card } from '@rokkit/ui';
+  import { Button, Icon, Card } from '@rokkit/ui'
 </script>
 
 <Card>

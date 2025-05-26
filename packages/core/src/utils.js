@@ -1,6 +1,6 @@
 import { has, isNil } from 'ramda'
 import { URL } from 'url'
-import { DATA_IMAGE_REGEX } from './constrants'
+import { DATA_IMAGE_REGEX } from './constants'
 
 let idCounter = 0
 /**

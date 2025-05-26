@@ -165,7 +165,7 @@ describe('utils', () => {
 			expect(getImage('data:image/png;base64,iVBORw0KGgoAAAAN...')).toEqual(
 				'data:image/png;base64,iVBORw0KGgoAAAAN...'
 			)
-			expect(getImage('i-app:iconify').toEqual(null))
+			expect(getImage('i-app:iconify')).toEqual(null)
 		})
 	})
 })

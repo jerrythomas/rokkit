@@ -1,9 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import {
-	getClosestAncestorWithAttribute,
-	getEventForKey,
-	getClickAction
-} from '../src/utils.js'
+import { getClosestAncestorWithAttribute, getEventForKey, getClickAction } from '../src/utils.js'
 
 describe('utils', () => {
 	describe('getClosestAncestorWithAttribute', () => {
