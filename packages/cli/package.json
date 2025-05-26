@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/cli",
-  "version": "1.0.0-next.119",
+  "version": "1.0.0-next.120",
   "description": "Command line utilities for icon bundling and conversion.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
