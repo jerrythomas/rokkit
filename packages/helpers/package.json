@@ -14,6 +14,13 @@
   "author": "Jerry Thomas<me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
+  ],
   "exports": {
     "./package.json": "./package.json",
     "./mocks": "./src/mocks/index.js",

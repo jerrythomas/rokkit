@@ -5,7 +5,6 @@
   "description": "Data-driven UI components based on bits-ui",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
-  "module": "src/index.js",
   "npm": {
     "publish": false
   },
@@ -20,7 +19,9 @@
   "files": [
     "src/**/*.js",
     "src/**/*.svelte",
-    "dist/**/*.d.ts"
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
   ],
   "exports": {
     "./package.json": "./package.json",

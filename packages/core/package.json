@@ -5,7 +5,6 @@
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "type": "module",
-  "module": "src/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +16,9 @@
   "files": [
     "src/**/*.js",
     "src/**/*.json",
-    "dist/**/*.d.ts"
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
   ],
   "exports": {
     "./src": "./src",

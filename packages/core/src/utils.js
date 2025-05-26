@@ -1,4 +1,7 @@
 import { has, isNil } from 'ramda'
+import { URL } from 'url'
+import { DATA_IMAGE_REGEX } from './constrants'
+
 let idCounter = 0
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
@@ -144,4 +147,45 @@ export const importIcons = (icons) => {
 export function hex2rgb(hex) {
 	const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16))
 	return `${r} ${g} ${b}`
+}
+
+/**
+ * Checks if a string is a valid image URL
+ *
+ * @param {string} str - The string to check
+ * @returns {boolean} - Returns true if the string is an image URL
+ */
+function isImageUrl(str) {
+	// Check if the string is a URL
+	try {
+		const url = new URL(str)
+
+		// Check common image extensions
+		const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff']
+		const path = url.pathname.toLowerCase()
+
+		if (imageExtensions.some((ext) => path.endsWith(ext))) {
+			return true
+		}
+
+		return false
+		// eslint-disable-next-line no-unused-vars
+	} catch (e) {
+		// Not a valid URL
+		return false
+	}
+}
+/**
+ * A utility function that detects if a string is an image URL or image data (base64)
+ *
+ * @param {string} str - The string to check
+ * @returns {string|null} - Returns the original string if it's an image URL or image data, otherwise null
+ */
+export function getImage(str) {
+	if (DATA_IMAGE_REGEX.test(str)) return str
+	// Check if it's a URL
+
+	if (isImageUrl(str)) return str
+
+	return null
 }

@@ -1,0 +1,16 @@
+{
+  "package": {
+    "namespace": "@rokkit",
+    "version": "1.0.0-test",
+    "homepage": "https://github.com/jerrythomas/rokkit"
+  },
+  "app": {
+    "color": false
+  },
+  "web": {
+    "color": true
+  },
+  "err1": {
+    "color": false
+  }
+}

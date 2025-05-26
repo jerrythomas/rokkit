@@ -1,0 +1,16 @@
+{
+  "package": {
+    "namespace": "@custom",
+    "version": "2.0.0",
+    "homepage": "https://custom-site.com/icons"
+  },
+  "app": {
+    "color": true
+  },
+  "web": {
+    "color": false
+  },
+  "err1": {
+    "color": true
+  }
+}

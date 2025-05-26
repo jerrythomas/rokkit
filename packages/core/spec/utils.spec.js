@@ -9,7 +9,8 @@ import {
 	scaledPath,
 	getKeyFromPath,
 	getPathFromKey,
-	getSnippet
+	getSnippet,
+	getImage
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -152,6 +153,19 @@ describe('utils', () => {
 			expect(getSnippet({}, 'test')).toBeNull()
 			expect(getSnippet(data, 'icon')).toBeNull()
 			expect(getSnippet(data, 'test')).toEqual(expect.any(Function))
+		})
+	})
+
+	describe('getImage', () => {
+		it('should identify url as image', () => {
+			expect(getImage('https://example.com/image.jpg')).toEqual('https://example.com/image.jpg')
+			expect(getImage('https://example.com/image.txt')).toEqual(null)
+		})
+		it('should identify base 64 data as image', () => {
+			expect(getImage('data:image/png;base64,iVBORw0KGgoAAAAN...')).toEqual(
+				'data:image/png;base64,iVBORw0KGgoAAAAN...'
+			)
+			expect(getImage('i-app:iconify').toEqual(null))
 		})
 	})
 })

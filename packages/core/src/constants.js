@@ -1,5 +1,5 @@
 export { defaultColors, syntaxColors, shades, defaultPalette } from './colors/index.js'
-
+export const DATA_IMAGE_REGEX = /^data:image\/(jpeg|png|gif|bmp|webp|svg\+xml)/i
 /**
  * @type {import('./types).FieldMapping} Fields
  */

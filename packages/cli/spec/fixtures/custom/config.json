@@ -1,0 +1,16 @@
+{
+  "package": {
+    "namespace": "@custom",
+    "version": "2.0.0",
+    "homepage": "https://github.com/custom/icons"
+  },
+  "test": {
+    "color": false
+  },
+  "icons": {
+    "color": true
+  },
+  "custom": {
+    "color": true
+  }
+}
