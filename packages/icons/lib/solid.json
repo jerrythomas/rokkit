@@ -1,6 +1,6 @@
 {
   "prefix": "solid",
-  "lastModified": 1748289407,
+  "lastModified": 1748362533,
   "icons": {
     "action-add": {
       "body": "<path fill=\"currentColor\" d=\"M12 2a10 10 0 100 20 10 10 0 000-20m3 11h-2v2a1 1 0 01-2 0v-2H9a1 1 0 010-2h2V9a1 1 0 012 0v2h2a1 1 0 010 2\"/>"

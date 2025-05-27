@@ -25,12 +25,12 @@
     "access": "public"
   },
   "devDependencies": {
-    "@rokkit/cli":"link:@rokkit/cli"
+    "@rokkit/cli": "link:@rokkit/cli"
   },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --fix .",
-    "build": "rokkit-cli build",
+    "build": "rokkit-cli build && bun format",
     "latest": "pnpm upgrade --latest",
     "release": "pnpm publish --access public"
   },

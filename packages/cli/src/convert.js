@@ -10,7 +10,7 @@ import {
 import fs from 'fs'
 import path from 'path'
 import { pick } from 'ramda'
-import './types'
+import './types.js'
 /**
  * Clean up and optimise SVG icon
  *
