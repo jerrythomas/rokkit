@@ -24,7 +24,7 @@
 	 * @property {Function}                 [onselect]   - Callback when item is selected
 	 */
 
-	/** @type {Props} */
+	/** @type {ListProps} */
 	let {
 		class: classNames = '',
 		items = $bindable([]),
@@ -34,14 +34,14 @@
 		searchable = false,
 		child,
 		empty,
-		onSelect
+		onselect
 	} = $props()
 
-	/** @type {Command.Root} */
-	let command = null
+	// /** @type {Command.Root} */
+	// let command = null
 	/** @type {Proxy[]} */
 	let proxyItems = $derived(items.map((item) => new Proxy(item, fields)))
-	let itemSnippet = $derived(child ?? defaultChild)
+	let childSnippet = $derived(child ?? defaultChild)
 	let emptyMessage = $derived(empty ?? defaultEmpty)
 	let initialValue = $state()
 
@@ -52,7 +52,7 @@
 
 	function handleSelect(data) {
 		value = data
-		onSelect?.(data)
+		onselect?.(data)
 	}
 </script>
 
@@ -82,11 +82,11 @@
 						{keywords}
 						onSelect={() => handleSelect(item.value)}
 					>
-						{@render itemSnippet(item)}
+						{@render childSnippet(item)}
 					</Command.LinkItem>
 				{:else}
 					<Command.Item value={item.id} {keywords} onSelect={() => handleSelect(item.value)}>
-						{@render itemSnippet(item)}
+						{@render childSnippet(item)}
 					</Command.Item>
 				{/if}
 			{/each}

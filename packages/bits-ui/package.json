@@ -6,7 +6,7 @@
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "npm": {
-    "publish": false
+    "publish": true
   },
   "publishConfig": {
     "access": "public"
