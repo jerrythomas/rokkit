@@ -170,8 +170,7 @@ function createThemeVariant(name, mode, colors, extraColors) {
 		`${name}-mode-${mode}`,
 		{
 			...colors,
-			...extraColors,
-			'--plot-background': 'var(--neutral-200)'
+			...extraColors
 		}
 	]
 }
