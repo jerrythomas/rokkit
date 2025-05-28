@@ -4,32 +4,32 @@
     "": {
       "name": "rokkit",
       "dependencies": {
-        "@types/ramda": "latest",
+        "@types/ramda": "^0.30.2",
       },
       "devDependencies": {
-        "@sveltejs/vite-plugin-svelte": "latest",
-        "@testing-library/svelte": "latest",
-        "@testing-library/user-event": "latest",
-        "@types/bun": "latest",
-        "@vitest/coverage-v8": "latest",
-        "bumpp": "latest",
-        "eslint": "latest",
-        "eslint-plugin-svelte": "latest",
-        "jsdom": "latest",
-        "prettier": "latest",
-        "prettier-plugin-svelte": "latest",
-        "prettier-plugin-tailwindcss": "latest",
-        "rimraf": "latest",
-        "vite": "latest",
-        "vitest": "latest",
+        "@sveltejs/vite-plugin-svelte": "^5.0.3",
+        "@testing-library/svelte": "^5.2.8",
+        "@testing-library/user-event": "^14.6.1",
+        "@types/bun": "^1.2.14",
+        "@vitest/coverage-v8": "^3.1.4",
+        "bumpp": "^10.1.1",
+        "eslint": "^9.27.0",
+        "eslint-plugin-svelte": "^3.9.0",
+        "jsdom": "^26.1.0",
+        "prettier": "^3.5.3",
+        "prettier-plugin-svelte": "^3.4.0",
+        "prettier-plugin-tailwindcss": "^0.6.11",
+        "rimraf": "^6.0.1",
+        "vite": "^6.3.5",
+        "vitest": "^3.1.4",
       },
       "peerDependencies": {
-        "typescript": "latest",
+        "typescript": "^5.8.3",
       },
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.30.1",
@@ -41,7 +41,7 @@
     },
     "packages/bits-ui": {
       "name": "@rokkit/bits-ui",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/states": "workspace:latest",
@@ -49,9 +49,26 @@
         "ramda": "^0.30.1",
       },
     },
+    "packages/chart": {
+      "name": "@rokkit/chart",
+      "version": "1.0.0-next.120",
+      "dependencies": {
+        "@rokkit/core": "workspace:latest",
+        "@rokkit/data": "workspace:latest",
+        "@rokkit/states": "workspace:latest",
+        "bits-ui": "^1.4.6",
+        "d3-array": "^3.2.4",
+        "d3-axis": "^3.0.0",
+        "d3-scale": "^4.0.2",
+        "d3-scale-chromatic": "^3.1.0",
+        "d3-selection": "^3.0.0",
+        "d3-transition": "^3.0.1",
+        "ramda": "^0.30.1",
+      },
+    },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "bin": {
         "rokkit-cli": "src/index.js",
       },
@@ -69,7 +86,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "date-fns": "^4.1.0",
         "ramda": "^0.30.1",
@@ -77,7 +94,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -89,7 +106,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@vitest/expect": "^2.1.8",
         "ramda": "^0.30.1",
@@ -97,14 +114,14 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "devDependencies": {
         "@rokkit/cli": "link:@rokkit/cli",
       },
     },
     "packages/input": {
       "name": "@rokkit/input",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.30.1",
@@ -112,7 +129,7 @@
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -124,14 +141,14 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
       },
     },
     "packages/tutorial": {
       "name": "@rokkit/tutorial",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@vitest/expect": "^2.1.8",
@@ -141,7 +158,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@rokkit/actions": "workspace:latest",
         "@rokkit/core": "workspace:latest",
@@ -156,7 +173,7 @@
     },
     "sites/learn": {
       "name": "@rokkit/learn",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.5",
         "@fontsource/overpass": "^5.2.5",
@@ -193,7 +210,7 @@
     },
     "sites/quick-start": {
       "name": "quick-start",
-      "version": "1.0.0-next.119",
+      "version": "1.0.0-next.120",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.5",
         "@fontsource/overpass": "^5.2.5",
@@ -478,6 +495,8 @@
     "@rokkit/actions": ["@rokkit/actions@workspace:packages/actions"],
 
     "@rokkit/bits-ui": ["@rokkit/bits-ui@workspace:packages/bits-ui"],
+
+    "@rokkit/chart": ["@rokkit/chart@workspace:packages/chart"],
 
     "@rokkit/cli": ["@rokkit/cli@workspace:packages/cli"],
 
@@ -839,9 +858,15 @@
 
     "d3-array": ["d3-array@3.2.4", "", { "dependencies": { "internmap": "1 - 2" } }, "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg=="],
 
+    "d3-axis": ["d3-axis@3.0.0", "", {}, "sha512-IH5tgjV4jE/GhHkRV0HiVYPDtvfjHQlQfJHs0usq7M30XcSBvOotpmH1IgkcXsO/5gEQZD43B//fc7SRT5S+xw=="],
+
     "d3-collection": ["d3-collection@1.0.7", "", {}, "sha512-ii0/r5f4sjKNTfh84Di+DpztYwqKhEyUlKoPrzUFfeSkWxjW49xU2QzO9qrPrNkpdI0XJkfzvmTu8V2Zylln6A=="],
 
     "d3-color": ["d3-color@3.1.0", "", {}, "sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA=="],
+
+    "d3-dispatch": ["d3-dispatch@3.0.1", "", {}, "sha512-rzUyPU/S7rwUflMyLc1ETDeBj0NRuHKKAcvukozwhshr6g6c5d8zh4c2gQjY2bZ0dXeGLWc1PF174P2tVvKhfg=="],
+
+    "d3-ease": ["d3-ease@3.0.1", "", {}, "sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w=="],
 
     "d3-format": ["d3-format@3.1.0", "", {}, "sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA=="],
 
@@ -849,9 +874,17 @@
 
     "d3-scale": ["d3-scale@4.0.2", "", { "dependencies": { "d3-array": "2.10.0 - 3", "d3-format": "1 - 3", "d3-interpolate": "1.2.0 - 3", "d3-time": "2.1.1 - 3", "d3-time-format": "2 - 4" } }, "sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ=="],
 
+    "d3-scale-chromatic": ["d3-scale-chromatic@3.1.0", "", { "dependencies": { "d3-color": "1 - 3", "d3-interpolate": "1 - 3" } }, "sha512-A3s5PWiZ9YCXFye1o246KoscMWqf8BsD9eRiJ3He7C9OBaxKhAd5TFCdEx/7VbKtxxTsu//1mMJFrEt572cEyQ=="],
+
+    "d3-selection": ["d3-selection@3.0.0", "", {}, "sha512-fmTRWbNMmsmWq6xJV8D19U/gw/bwrHfNXxrIN+HfZgnzqTHp9jOmKMhsTUjXOJnZOdZY9Q28y4yebKzqDKlxlQ=="],
+
     "d3-time": ["d3-time@3.1.0", "", { "dependencies": { "d3-array": "2 - 3" } }, "sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q=="],
 
     "d3-time-format": ["d3-time-format@4.1.0", "", { "dependencies": { "d3-time": "1 - 3" } }, "sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg=="],
+
+    "d3-timer": ["d3-timer@3.0.1", "", {}, "sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA=="],
+
+    "d3-transition": ["d3-transition@3.0.1", "", { "dependencies": { "d3-color": "1 - 3", "d3-dispatch": "1 - 3", "d3-ease": "1 - 3", "d3-interpolate": "1 - 3", "d3-timer": "1 - 3" }, "peerDependencies": { "d3-selection": "2 - 3" } }, "sha512-ApKvfjsSR6tg06xrL434C0WydLr7JewBB3V+/39RMHsaXTOG0zmt/OAXeng5M5LBm0ojmxJrpomQVZ1aPvBL4w=="],
 
     "data-urls": ["data-urls@5.0.0", "", { "dependencies": { "whatwg-mimetype": "^4.0.0", "whatwg-url": "^14.0.0" } }, "sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg=="],
 

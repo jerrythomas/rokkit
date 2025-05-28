@@ -12,7 +12,7 @@
 	 * @property {boolean} [disabled]
 	 */
 
-	/** @type {Props} */
+	/** @type {ListProps} */
 	let {
 		value,
 		class: classes = '',

@@ -51,7 +51,7 @@ rk-plot {
 }
 
 g[aria-label='tip'] {
-  --plot-background: var(--neutral-200);
+  --plot-background: rgb(var(--neutral-200));
 }
 
 rk-input-field input,
