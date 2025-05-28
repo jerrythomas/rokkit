@@ -1,0 +1,47 @@
+{
+  "name": "@rokkit/chart",
+  "version": "1.0.0-next.120",
+  "type": "module",
+  "description": "Data-driven chart components",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "npm": {
+    "publish": false
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun prepublishOnly"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/data": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
+    "bits-ui": "^1.4.6",
+    "d3-array": "^3.2.4",
+    "d3-axis": "^3.0.0",
+    "d3-scale": "^4.0.2",
+    "d3-scale-chromatic": "^3.1.0",
+    "d3-selection": "^3.0.0",
+    "d3-transition": "^3.0.1",
+    "ramda": "^0.30.1"
+  }
+}

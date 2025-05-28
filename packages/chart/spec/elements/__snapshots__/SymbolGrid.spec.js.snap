@@ -1,0 +1,134 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`SymbolGrid.svelte > should render a grid of symbols 1`] = `
+<div>
+  <svg
+    viewBox="0 0 16 12"
+  >
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(2,2)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(6,2)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(10,2)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(14,2)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(2,6)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(6,6)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(10,6)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(14,6)"
+    />
+    
+    <!---->
+    <path
+      d="M 18 0 A 18 18 0 4 4 -18 0 A 18 18 0 4 4 18 0"
+      fill="#11b8aa"
+      fill-rule="evenodd"
+      role="button"
+      stroke="#11b8aa"
+      stroke-width="1"
+      tabindex="0"
+      transform="translate(2,10)"
+    />
+    
+    <!---->
+    <rect
+      fill="#11b8aa"
+      height="28.272"
+      role="button"
+      rx="1.4136"
+      ry="1.4136"
+      stroke="#11b8aa"
+      tabindex="0"
+      width="28.272"
+      x="-8.136"
+      y="-4.135999999999999"
+    />
+    
+    
+  </svg>
+  
+</div>
+`;

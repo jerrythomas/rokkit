@@ -1,0 +1,5 @@
+export { default as Root } from './Root.svelte'
+export { default as Axis } from './Axis.svelte'
+export { default as Bar } from './Bar.svelte'
+export { default as Legend } from './Legend.svelte'
+export { default as Grid } from './Grid.svelte'

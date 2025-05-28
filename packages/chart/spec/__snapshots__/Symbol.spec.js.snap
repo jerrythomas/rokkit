@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Symbol.svelte > should render default circle. 1`] = `
+<div>
+  <!---->
+  <path
+    d="M 45 0 A 45 45 0 10 10 -45 0 A 45 45 0 10 10 45 0"
+    fill="currentColor"
+    fill-rule="evenodd"
+    role="button"
+    stroke="currentColor"
+    stroke-width="1"
+    tabindex="0"
+    transform="translate(0,0)"
+  />
+  
+  
+</div>
+`;
+
+exports[`Symbol.svelte > should render symbol provided 1`] = `
+<div>
+  <!---->
+  <path
+    d="M 45 0 A 45 45 0 10 10 -45 0 A 45 45 0 10 10 45 0"
+    fill="currentColor"
+    fill-rule="evenodd"
+    role="button"
+    stroke="currentColor"
+    stroke-width="1"
+    tabindex="0"
+    transform="translate(0,0)"
+  />
+  
+  
+</div>
+`;
+
+exports[`Symbol.svelte > should render using path when component is not provided 1`] = `
+<div>
+  <!---->
+  <path
+    d="M 45 0 A 45 45 0 10 10 -45 0 A 45 45 0 10 10 45 0"
+    fill="currentColor"
+    fill-rule="evenodd"
+    role="button"
+    stroke="currentColor"
+    stroke-width="1"
+    tabindex="0"
+    transform="translate(0,0)"
+  />
+  
+  
+</div>
+`;
