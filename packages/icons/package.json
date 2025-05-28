@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/icons",
-  "version": "1.0.0-next.120",
+  "version": "1.0.0-next.121",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "exports": {
     "./package.json": "./package.json",
