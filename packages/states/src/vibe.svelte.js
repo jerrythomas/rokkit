@@ -42,7 +42,6 @@ class Vibe {
 		const grouped = groupThemeRulesByMode(themeRules(this.#style, this.#colorMap, this.#colors))
 		return grouped[this.#mode]
 	})
-	#hasChanged = false
 
 	/**
 	 * Private constructor to enforce singleton pattern

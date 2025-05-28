@@ -1,0 +1,249 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputSelect > should render as required 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="sources"
+      required=""
+      rtl="true"
+    >
+      <option
+        value="0"
+      >
+        foo
+      </option>
+      <option
+        value="1"
+      >
+        bar
+      </option>
+      <option
+        value="2"
+      >
+        baz
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect > should render as required 2`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="sources"
+      rtl="false"
+    >
+      <option
+        value="0"
+      >
+        foo
+      </option>
+      <option
+        value="1"
+      >
+        bar
+      </option>
+      <option
+        value="2"
+      >
+        baz
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect > should render with objects  1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="sources"
+    >
+      <option
+        value="0"
+      >
+        foo
+      </option>
+      <option
+        value="1"
+      >
+        bar
+      </option>
+      <option
+        value="2"
+      >
+        baz
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect > should render with string options 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="sources"
+    >
+      <option
+        value="0"
+      >
+        foo
+      </option>
+      <option
+        value="1"
+      >
+        bar
+      </option>
+      <option
+        value="2"
+      >
+        baz
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect > should render with string options 2`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="sources"
+    >
+      <option
+        value="0"
+      >
+        foo
+      </option>
+      <option
+        value="1"
+      >
+        bar
+      </option>
+      <option
+        value="2"
+      >
+        baz
+      </option>
+      <option
+        value="3"
+      >
+        qux
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect > should render with text, value objects  1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="sources"
+    >
+      <option
+        value="0"
+      >
+        foo
+      </option>
+      <option
+        value="1"
+      >
+        bar
+      </option>
+      <option
+        value="2"
+      >
+        baz
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;

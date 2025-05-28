@@ -2,7 +2,7 @@
 	import { vibe } from '@rokkit/states'
 	// import { FieldMapper } from '@rokkit/core'
 	import { ToggleThemeMode } from '@rokkit/ui'
-	import { InputSelect } from '@rokkit/input'
+	import { InputSelect } from '@rokkit/forms'
 	// import { Select, ToggleThemeMode } from '@rokkit/ui'
 
 	// let options = [

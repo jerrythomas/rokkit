@@ -16,30 +16,30 @@ The chart package provides a set of composable components that can be combined t
 
 ```svelte
 <script>
-   import { Plot } from '@rokkit/chart'
-   import { dataset } from '@rokkit/data'
-   
-   // Sample data
-   const sampleData = [
-     { model: 'Model A', name: 'Product 1', category: 'Electronics', count: 45 },
-     { model: 'Model B', name: 'Product 2', category: 'Clothing', count: 32 },
-     { model: 'Model C', name: 'Product 3', category: 'Electronics', count: 62 },
-     // More data...
-   ]
-   
-   // Use the dataset class to process the data
-   let data = dataset(sampleData)
-     .groupBy('model')
-     .summarize('name', { count: values => values.length })
-     .rollup()
+  import { Plot } from '@rokkit/chart'
+  import { dataset } from '@rokkit/data'
+
+  // Sample data
+  const sampleData = [
+    { model: 'Model A', name: 'Product 1', category: 'Electronics', count: 45 },
+    { model: 'Model B', name: 'Product 2', category: 'Clothing', count: 32 },
+    { model: 'Model C', name: 'Product 3', category: 'Electronics', count: 62 }
+    // More data...
+  ]
+
+  // Use the dataset class to process the data
+  let data = dataset(sampleData)
+    .groupBy('model')
+    .summarize('name', { count: (values) => values.length })
+    .rollup()
 </script>
 
 <Plot.Root {data} width={600} height={400} margin={{ top: 20, right: 30, bottom: 40, left: 50 }}>
-   <Plot.Grid direction="y" />
-   <Plot.Axis type="x" field="model" label="Model" />
-   <Plot.Axis type="y" field="count" label="Count" />
-   <Plot.Bar x="model" y="count" fill="category" />
-   <Plot.Legend title="Categories" />
+  <Plot.Grid direction="y" />
+  <Plot.Axis type="x" field="model" label="Model" />
+  <Plot.Axis type="y" field="count" label="Count" />
+  <Plot.Bar x="model" y="count" fill="category" />
+  <Plot.Legend title="Categories" />
 </Plot.Root>
 ```
 
@@ -50,6 +50,7 @@ The chart package provides a set of composable components that can be combined t
 The container component for all charts.
 
 **Props:**
+
 - `data` - The dataset to visualize (array or dataset object)
 - `width` - Width of the chart in pixels (default: 600)
 - `height` - Height of the chart in pixels (default: 400)
@@ -63,6 +64,7 @@ The container component for all charts.
 Renders an axis for the chart.
 
 **Props:**
+
 - `type` - Type of axis ('x' or 'y')
 - `field` - Data field to use for this axis
 - `label` - Axis label text
@@ -75,6 +77,7 @@ Renders an axis for the chart.
 Renders a bar chart.
 
 **Props:**
+
 - `x` - Field to use for x-axis values
 - `y` - Field to use for y-axis values
 - `fill` - Field to use for coloring the bars (optional)
@@ -88,6 +91,7 @@ Renders a bar chart.
 Renders grid lines for the chart.
 
 **Props:**
+
 - `direction` - Direction of grid lines ('x', 'y', or 'both') (default: 'both')
 - `xTicks` - Number of ticks for x-axis grid (optional)
 - `yTicks` - Number of ticks for y-axis grid (optional)
@@ -100,6 +104,7 @@ Renders grid lines for the chart.
 Renders a legend for the chart.
 
 **Props:**
+
 - `title` - Title for the legend (optional)
 - `align` - Alignment of the legend ('left', 'right', 'center') (default: 'right')
 - `verticalAlign` - Vertical position of the legend ('top', 'bottom') (default: 'top')
@@ -113,23 +118,26 @@ The chart components work seamlessly with the `@rokkit/data` package, allowing f
 
 ```svelte
 <script>
-   import { Plot } from '@rokkit/chart'
-   import { dataset } from '@rokkit/data'
-   
-   let input = [
-     // Your raw data here
-   ]
-   
-   $: processedData = dataset(input)
-     .groupBy('category')
-     .summarize('name', { count: values => values.length, total: values => values.reduce((a, b) => a + b, 0) })
-     .rollup()
+  import { Plot } from '@rokkit/chart'
+  import { dataset } from '@rokkit/data'
+
+  let input = [
+    // Your raw data here
+  ]
+
+  $: processedData = dataset(input)
+    .groupBy('category')
+    .summarize('name', {
+      count: (values) => values.length,
+      total: (values) => values.reduce((a, b) => a + b, 0)
+    })
+    .rollup()
 </script>
 
 <Plot.Root data={processedData} fill="category">
-   <Plot.Axis type="x" field="category" />
-   <Plot.Axis type="y" field="count" />
-   <Plot.Bar x="category" y="count" />
+  <Plot.Axis type="x" field="category" />
+  <Plot.Axis type="y" field="count" />
+  <Plot.Bar x="category" y="count" />
 </Plot.Root>
 ```
 

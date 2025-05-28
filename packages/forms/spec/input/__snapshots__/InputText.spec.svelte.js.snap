@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputText > should render as required 1`] = `
+<div>
+  <input
+    required=""
+    type="text"
+  />
+  
+</div>
+`;
+
+exports[`InputText > should render with additional attributes 1`] = `
+<div>
+  <input
+    id="foo"
+    name="bar"
+    type="text"
+  />
+  
+</div>
+`;

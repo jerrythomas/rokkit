@@ -9,11 +9,11 @@
 		{ label: labels[0], value: 'light', icon: icons.light },
 		{ label: labels[1], value: 'dark', icon: icons.dark }
 	])
-	let value = $state(options.find((x) => x.value === vibe.mode))
+	let value = $derived(options.find((x) => x.value === vibe.mode))
 
 	function update(e) {
 		vibe.mode = e.value
 	}
 </script>
 
-<Toggle bind:value {options} onchange={update} />
+<Toggle {value} {options} onchange={update} />

@@ -113,7 +113,7 @@ bun add @rokkit/ui
 - @rokkit/actions
 - @rokkit/core
 - @rokkit/data
-- @rokkit/input
+- @rokkit/forms
 - @rokkit/states
 - d3-scale
 - date-fns

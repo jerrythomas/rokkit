@@ -1,0 +1,60 @@
+<script>
+	import { getItemAtIndex, getIndexForItem, noop } from '@rokkit/core'
+	import { Proxy as RokProxy } from '@rokkit/states'
+	// import { equals } from 'ramda'
+	/**
+	 * @typedef {Object} InputRadioProps
+	 * @property {string} [class]
+	 * @property {any} value
+	 * @property {Object} [fields]
+	 * @property {any} [options]
+	 * @property {boolean} [disabled]
+	 * @property {boolean} [flip]
+	 * @property {Function} onchange
+	 * @property {Function} onfocus
+	 * @property {Function} onblur
+	 */
+
+	/** @type {InputRadioProps & { [key: string]: any }} */
+	let {
+		class: className = '',
+		value = $bindable(),
+		fields,
+		options = [],
+		disabled = false,
+		onchange = noop,
+		onfocus,
+		onblur,
+		...rest
+	} = $props()
+
+	const handleChange = () => {
+		value = getItemAtIndex(options, currentIndex)
+		onchange?.(value)
+	}
+
+	let currentIndex = $derived(getIndexForItem(options, value))
+
+	// $effect.pre(() => {
+	// 	currentIndex = getIndexForItem(options, value)
+	// })
+</script>
+
+<radio-group class={className} class:disabled>
+	{#each options as item, index (index)}
+		{@const proxy = new RokProxy(item, fields)}
+		<label class="flex flex-row items-center gap-2 rtl:flex-row-reverse">
+			<input
+				type="radio"
+				{...rest}
+				bind:group={currentIndex}
+				value={index}
+				{disabled}
+				onchange={handleChange}
+				{onfocus}
+				{onblur}
+			/>
+			<p>{proxy.get('text')}</p>
+		</label>
+	{/each}
+</radio-group>

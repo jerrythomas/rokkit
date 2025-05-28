@@ -1,0 +1,242 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputSelect.svelte > should render items using custom component 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="opt"
+      using="[object Object]"
+    >
+      <option
+        value="0"
+      >
+        1
+      </option>
+      <option
+        value="1"
+      >
+        2
+      </option>
+      <option
+        value="2"
+      >
+        3
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render items using custom mapping 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="opt"
+    >
+      <option
+        value="0"
+      >
+        1
+      </option>
+      <option
+        value="1"
+      >
+        2
+      </option>
+      <option
+        value="2"
+      >
+        3
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render items using default item when data is invalid 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="opt"
+    >
+      <option
+        value="0"
+      >
+        1
+      </option>
+      <option
+        value="1"
+      >
+        2
+      </option>
+      <option
+        value="2"
+      >
+        3
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render items using field mappings 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="opt"
+    >
+      <option
+        value="0"
+      >
+        1
+      </option>
+      <option
+        value="1"
+      >
+        2
+      </option>
+      <option
+        value="2"
+      >
+        3
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render using default field mapping 1`] = `
+<div>
+  <rk-select
+    class="svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="opt"
+    >
+      <option
+        value="0"
+      >
+        a
+      </option>
+      <option
+        value="1"
+      >
+        b
+      </option>
+      <option
+        value="2"
+      >
+        c
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;
+
+exports[`InputSelect.svelte > should render with alternate class 1`] = `
+<div>
+  <rk-select
+    class="myClass svelte-1s4y1rc"
+  >
+    <select
+      class="custom-select svelte-1s4y1rc"
+      id="sources"
+      name="opt"
+    >
+      <option
+        value="0"
+      >
+        1
+      </option>
+      <option
+        value="1"
+      >
+        2
+      </option>
+      <option
+        value="2"
+      >
+        3
+      </option>
+      
+    </select>
+     
+    <span
+      class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center"
+    >
+      <i
+        class="selector-opened"
+      />
+    </span>
+  </rk-select>
+  
+</div>
+`;

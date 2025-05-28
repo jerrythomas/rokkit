@@ -39,11 +39,6 @@ export { default as Overlay } from './Overlay.svelte'
 export { default as Message } from './Message.svelte'
 export { default as SlidingColumns } from './SlidingColumns.svelte'
 
-export { default as InputField } from './input/InputField.svelte'
-export { default as Form } from './Form.svelte'
-export { default as FieldLayout } from './FieldLayout.svelte'
-export { default as DataEditor } from './DataEditor.svelte'
-export { default as NestedEditor } from './NestedEditor.svelte'
 export { default as Stepper } from './Stepper.svelte'
 export { default as ProgressDots } from './ProgressDots.svelte'
 

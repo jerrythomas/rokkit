@@ -8,6 +8,7 @@
 - E2E tests should follow the page object pattern
 
 ## Svelte 5
+
 {{[Svelte & Svelte Kit Distilled](https://svelte-llm.khromov.se/svelte-complete-distilled)}}
 {{[svelte 5 documentation](https://svelte.dev/docs/svelte/llms.txt)}}
 
@@ -20,21 +21,18 @@ Runes are special functions that replace reactivity declarations from Svelte 4.
 ```svelte
 <script>
   // State
-  let count = $state(0);
+  let count = $state(0)
 
   // Derived values
-  let doubled = $derived(count * 2);
+  let doubled = $derived(count * 2)
 
   // Props
-  let {
-    name = 'world',
-    value = $bindable(null)
-  } = $props();
+  let { name = 'world', value = $bindable(null) } = $props()
 
   // Effects
   $effect(() => {
-    console.log(`Count changed to ${count}`);
-  });
+    console.log(`Count changed to ${count}`)
+  })
 </script>
 ```
 
@@ -42,8 +40,9 @@ Runes are special functions that replace reactivity declarations from Svelte 4.
 
 ```svelte
 <script>
-  let items = ['one','two', 'three']
+  let items = ['one', 'two', 'three']
 </script>
+
 <!-- a header snippet -->
 {#snippet header()}
   <h1>Custom header</h1>
@@ -51,7 +50,7 @@ Runes are special functions that replace reactivity declarations from Svelte 4.
 
 <!-- a snippet with parameters -->
 {#snippet item(item, selected)}
-  <div class:selected={selected}>
+  <div class:selected>
     {item.name}
   </div>
 {/snippet}
@@ -63,7 +62,7 @@ Runes are special functions that replace reactivity declarations from Svelte 4.
 
 ```svelte
 <script>
-  let { header, item } = $props();
+  let { header, item } = $props()
 </script>
 
 <div class="header">
@@ -81,7 +80,7 @@ To pass a snippet to another component:
 
 ```svelte
 <script>
-  let { header } = $props();
+  let { header } = $props()
 </script>
 
 {#if header}
@@ -93,8 +92,9 @@ To pass a snippet to another component:
 
 ```svelte
 <script>
-   import  ChildComponent from './ChildComponent.svelte'
+  import ChildComponent from './ChildComponent.svelte'
 </script>
+
 {#snippet header()}
   <h1>Custom Header</h1>
 {/snippet}
@@ -106,14 +106,16 @@ To pass a snippet to another component:
 
 ```svelte
 <script>
-   import  ChildComponent from './ChildComponent.svelte'
+  import ChildComponent from './ChildComponent.svelte'
 </script>
+
 <ChildComponent>
   {#snippet header()}
     <h1>Custom Header</h1>
   {/snippet}
 </ChildComponent>
 ```
+
 Both of these options work in a similar way
 
 ### Important: What NOT to do
@@ -122,10 +124,7 @@ Do not confuse snippets with React-style JSX or string templates:
 
 ```svelte
 <!-- ❌ INCORRECT - Using arrow functions returning strings -->
-<List
-  header={() => `<h1>My List</h1>`}
-  item={({ item }) => `<div>${item.name}</div>`}
-/>
+<List header={() => `<h1>My List</h1>`} item={({ item }) => `<div>${item.name}</div>`} />
 
 <!-- ✅ CORRECT - Using properly defined snippets -->
 <!-- snippets are defined in the html section not in scripts block -->
@@ -134,7 +133,7 @@ Do not confuse snippets with React-style JSX or string templates:
 {/snippet}
 
 {#snippet itemTemplate(item, selected)}
-  <div class:selected={selected}>
+  <div class:selected>
     {item.name}
   </div>
 {/snippet}
