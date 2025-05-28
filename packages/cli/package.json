@@ -5,6 +5,7 @@
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
   "bin": {
+    "@rokkit/cli": "src/index.js",
     "rokkit-cli": "src/index.js"
   },
   "type": "module",
