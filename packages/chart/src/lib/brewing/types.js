@@ -50,7 +50,7 @@
  * @property {number} x - X position
  * @property {number} y - Y position
  * @property {number} width - Width of the bar
- * @property {number} height - Height of the bar 
+ * @property {number} height - Height of the bar
  * @property {string} color - Color of the bar
  */
 
@@ -70,4 +70,4 @@
  * @property {string} transform - SVG transform attribute value
  */
 
-export {};
+export {}

@@ -16,11 +16,10 @@ First, carefully review the following guidelines:
 {{[SVELTE_5_GUIDELINES](./guidelines/svelte.md)}}
 </svelte_5_guidelines>
 
-
-
 Now, follow these instructions to implement Svelte 5 components and structure the project:
 
 1. Component Implementation:
+
    - Use Svelte 5 runes mode for all component code.
    - Implement state management using $state, $derived, and $effect runes.
    - Use $props() for component properties.
@@ -29,20 +28,24 @@ Now, follow these instructions to implement Svelte 5 components and structure th
    - Consider reduced motion in your implementations.
 
 2. Project Structure:
+
    - Use SvelteKit for the application structure.
    - Organize your project following the provided directory structure.
    - Use .svelte.js extension for files using runes in the source code.
    - Use .spec.svelte.js extension for test files using runes.
 
 3. Styling:
+
    - Use UnoCSS for all styling in the project.
 
 4. Testing:
+
    - Implement unit tests using vitest.
    - Implement end-to-end (e2e) tests using Playwright.
    - Follow the page object pattern for e2e tests.
 
 5. Event Handling:
+
    - Treat event handlers as properties in Svelte 5.
    - Use onclick instead of on:click for event binding.
    - Pass callback props to components instead of using event forwarding.
@@ -54,6 +57,7 @@ Now, follow these instructions to implement Svelte 5 components and structure th
 When implementing components or structuring the project, provide your code inside <code> tags. For explanations or comments, use <explanation> tags.
 
 Your final output should include:
+
 1. A brief overview of the implemented components or project structure.
 2. The actual implementation or structure in <code> tags.
 3. Explanations for your choices in <explanation> tags.
