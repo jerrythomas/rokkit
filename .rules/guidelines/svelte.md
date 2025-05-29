@@ -8,6 +8,7 @@
 - E2E tests should follow the page object pattern
 
 ## Svelte 5
+
 {{[Svelte & Svelte Kit Distilled](https://svelte-llm.khromov.se/svelte-complete-distilled)}}
 {{[svelte 5 documentation](https://svelte.dev/docs/svelte/llms.txt)}}
 
@@ -114,6 +115,7 @@ To pass a snippet to another component:
   {/snippet}
 </ChildComponent>
 ```
+
 Both of these options work in a similar way
 
 ### Important: What NOT to do
