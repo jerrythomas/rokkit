@@ -1,5 +1,5 @@
 <script>
-	import { NestedEditor } from '@rokkit/ui'
+	import { NestedEditor } from '@rokkit/forms'
 	import { schema } from './schema.js'
 	import { data } from './data.js'
 

@@ -14,7 +14,7 @@
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
 @import '@rokkit/themes/rokkit.css';
-
+@import './theme/input.css';
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
   @apply font-body bg-neutral-base font-extralight text-neutral-800;
