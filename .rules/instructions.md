@@ -76,6 +76,18 @@ Provide progress updates and explain technical decisions.
 - Commit frequently with clear messages
 - Test everything before committing
 
+## Progress Tracking
+
+**CRITICAL**: As you make changes to components or architecture, you MUST update `.rules/project/progress.md` to reflect:
+
+- Component status changes (🔄 In Progress, ✅ Complete, etc.)
+- Implementation decisions made
+- Technical challenges encountered
+- Quality gate completions
+- Any deviations from planned approach
+
+This keeps the project tracking accurate and helps maintain context for future development sessions.
+
 ## Project Rules Structure
 
 ```
