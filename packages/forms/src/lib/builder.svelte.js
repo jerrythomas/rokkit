@@ -3,11 +3,20 @@ import { deriveLayoutFromValue } from './layout.js'
 
 /**
  * @typedef {Object} FormElement
- * @property {string} label - Display label for the element
- * @property {string} scope - Data path/scope for the element
- * @property {string} type - Input type (text, number, range, etc.)
- * @property {any} value - Current value
- * @property {Object} [constraints] - Min/max values, options, etc.
+ * @property {string} scope - JSON Pointer path (e.g., '#/email', '#/user/name')
+ * @property {string} type - Input type (text, number, range, checkbox, select, etc.)
+ * @property {any} value - Current value from data
+ * @property {boolean} override - Whether to use custom child snippet (from layout)
+ * @property {Object} props - Merged properties from schema + layout + validation
+ * @property {string} [props.label] - Display label (from layout)
+ * @property {string} [props.description] - Help text (from layout)
+ * @property {string} [props.placeholder] - Placeholder text (from layout)
+ * @property {boolean} [props.required] - Required flag (from schema)
+ * @property {number} [props.min] - Minimum value (from schema)
+ * @property {number} [props.max] - Maximum value (from schema)
+ * @property {Object} [props.message] - Validation message object
+ * @property {string} [props.message.state] - Message state: 'error', 'warning', 'info', 'success'
+ * @property {string} [props.message.text] - Message text content
  */
 
 /**
@@ -22,6 +31,9 @@ export class FormBuilder {
 
 	/** @type {Object} */
 	#layout = $state({})
+
+	/** @type {Object} */
+	#validation = $state({})
 
 	/** @type {FormElement[]} */
 	elements = $derived(this.#buildElements())
@@ -72,6 +84,22 @@ export class FormBuilder {
 	 */
 	set layout(value) {
 		this.#layout = value
+	}
+
+	/**
+	 * Get the current validation state
+	 * @returns {Object} Current validation object
+	 */
+	get validation() {
+		return this.#validation
+	}
+
+	/**
+	 * Set validation messages for fields
+	 * @param {Object} value - Validation object with field paths as keys
+	 */
+	set validation(value) {
+		this.#validation = value
 	}
 
 	/**
@@ -154,7 +182,7 @@ export class FormBuilder {
 	 * @returns {FormElement|null} Form element or null
 	 */
 	#buildElement(layoutElement) {
-		const { label, scope, title } = layoutElement
+		const { label, scope, title, override = false, ...layoutProps } = layoutElement
 
 		if (!scope) return null
 
@@ -163,20 +191,14 @@ export class FormBuilder {
 		const value = this.getValue(fieldPath)
 		const fieldSchema = this.#getFieldSchema(fieldPath)
 
-		// Determine input type based on schema and constraints
+		// Determine input type based on schema
 		let type = 'text'
-		let constraints = {}
 
 		if (fieldSchema) {
 			switch (fieldSchema.type) {
 				case 'number':
 				case 'integer':
 					type = fieldSchema.min !== undefined && fieldSchema.max !== undefined ? 'range' : 'number'
-					constraints = {
-						min: fieldSchema.min || fieldSchema.minimum,
-						max: fieldSchema.max || fieldSchema.maximum,
-						step: fieldSchema.type === 'integer' ? 1 : 0.1
-					}
 					break
 				case 'boolean':
 					type = 'checkbox'
@@ -184,7 +206,6 @@ export class FormBuilder {
 				case 'string':
 					if (fieldSchema.enum) {
 						type = 'select'
-						constraints.options = fieldSchema.enum
 					} else {
 						type = 'text'
 					}
@@ -192,12 +213,15 @@ export class FormBuilder {
 			}
 		}
 
+		// Compose props from schema, layout, and validation
+		const props = this.#composeProps(layoutElement, fieldSchema, fieldPath)
+
 		return {
-			label: label || title || fieldPath,
-			scope: fieldPath,
+			scope, // Keep original JSON Pointer format
 			type,
 			value,
-			constraints
+			override,
+			props
 		}
 	}
 
@@ -225,11 +249,94 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Compose properties from schema, layout, and validation
+	 * @private
+	 * @param {Object} layoutElement - Layout element
+	 * @param {Object} fieldSchema - Field schema
+	 * @param {string} fieldPath - Field path for validation lookup
+	 * @returns {Object} Composed props object
+	 */
+	#composeProps(layoutElement, fieldSchema, fieldPath) {
+		const { label, title, description, placeholder, override, scope, ...layoutProps } =
+			layoutElement
+
+		const props = {
+			// Layout properties (allow arbitrary custom properties)
+			label: label || title || fieldPath,
+			description,
+			placeholder,
+			...layoutProps,
+
+			// Schema properties
+			...(fieldSchema && this.#extractSchemaProps(fieldSchema)),
+
+			// Validation properties
+			message: this.#validation[fieldPath] || null
+		}
+
+		return props
+	}
+
+	/**
+	 * Extract relevant properties from field schema
+	 * @private
+	 * @param {Object} fieldSchema - Field schema
+	 * @returns {Object} Schema properties for input
+	 */
+	#extractSchemaProps(fieldSchema) {
+		const props = {}
+
+		// Validation properties
+		if (fieldSchema.required) props.required = true
+		if (fieldSchema.pattern) props.pattern = fieldSchema.pattern
+
+		// Constraints (support both JSON Schema and simplified formats)
+		if (fieldSchema.min !== undefined) props.min = fieldSchema.min
+		if (fieldSchema.max !== undefined) props.max = fieldSchema.max
+		if (fieldSchema.minimum !== undefined) props.min = fieldSchema.minimum
+		if (fieldSchema.maximum !== undefined) props.max = fieldSchema.maximum
+		if (fieldSchema.minLength !== undefined) props.minLength = fieldSchema.minLength
+		if (fieldSchema.maxLength !== undefined) props.maxLength = fieldSchema.maxLength
+		if (fieldSchema.step !== undefined) props.step = fieldSchema.step
+
+		// Type-specific properties
+		if (fieldSchema.enum) props.options = fieldSchema.enum
+		if (fieldSchema.type === 'integer') props.step = props.step || 1
+		if (fieldSchema.type === 'number' && !props.step) props.step = 0.1
+
+		return props
+	}
+
+	/**
+	 * Set validation message for a specific field
+	 * @param {string} fieldPath - Field path (without '#/' prefix)
+	 * @param {Object|null} message - Validation message object or null to clear
+	 * @param {string} message.state - Message state: 'error', 'warning', 'info', 'success'
+	 * @param {string} message.text - Message text content
+	 */
+	setFieldValidation(fieldPath, message) {
+		if (message) {
+			this.#validation = { ...this.#validation, [fieldPath]: message }
+		} else {
+			const { [fieldPath]: removed, ...rest } = this.#validation
+			this.#validation = rest
+		}
+	}
+
+	/**
+	 * Clear all validation messages
+	 */
+	clearValidation() {
+		this.#validation = {}
+	}
+
+	/**
 	 * Reset form to initial state
 	 */
 	reset() {
 		this.#data = {}
 		this.#schema = {}
 		this.#layout = {}
+		this.#validation = {}
 	}
 }

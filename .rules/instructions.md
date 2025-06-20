@@ -6,6 +6,7 @@ Follow these practices for effective collaboration and quality code.
 - Review available folders and files within `.rules/`
 - Only reference folders that are present in the project
 - Connect to MCP endpoints only if `.rules/mcp/` exists
+- Understand the monorepo structure (packages vs sites)
 - Confirm understanding before proceeding
 
 ## Development Process
@@ -75,6 +76,37 @@ Provide progress updates and explain technical decisions.
 - Make one logical change at a time
 - Commit frequently with clear messages
 - Test everything before committing
+
+## Monorepo Structure & Guidelines
+
+### Project Structure
+This is a monorepo with the following structure:
+- `packages/` - Library packages (e.g., @rokkit/forms, @rokkit/ui, @rokkit/core)
+- `sites/` - Demo sites and documentation (e.g., sites/learn)
+- `apps/` - Applications (if present)
+
+### Library Development (`packages/`)
+- Create reusable components and utilities
+- Follow semantic versioning
+- Include comprehensive TypeScript definitions
+- Provide clear API documentation
+- Test thoroughly before publishing
+
+### Demo Development (`sites/`)
+- Use library packages as dependencies
+- Create progressive examples showing feature evolution
+- Follow established styling patterns
+- Include educational documentation
+
+### Styling Guidelines
+- Use UnoCSS utility classes throughout
+- Follow neutral color palette: `neutral-50`, `neutral-100`, etc.
+- Use semantic colors: `primary-`, `secondary-`, `accent-`, `error-`, `warning-`, `success-`
+- Maintain dark mode support with `dark:` prefix
+- Structure: `bg-neutral-50 dark:bg-neutral-900`
+- Text: `text-neutral-900 dark:text-white`
+- Borders: `border-neutral-200 dark:border-neutral-700`
+- Interactive states: `hover:`, `focus:`, `active:` variants
 
 ## Progress Tracking
 

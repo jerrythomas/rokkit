@@ -45,27 +45,31 @@ const form = new FormBuilder(data, customSchema, customLayout)
 // Universal Input.svelte wrapper
 <Input {type} bind:value {...props} />
 
-// Props contain complete context: // - label, description, message, messageType // - schema
-constraints (min, max, required, pattern) // - layout properties (className, placeholder, disabled)
+// Props contain complete context:
+// - label, description, message object { state, text }
+// - schema constraints (min, max, required, pattern)
+// - layout properties (className, placeholder, disabled, custom properties)
 // - event handlers (onchange, onfocus, onblur)
 ```
 
 ### 2. Clean Snippet Interface
 
 ```svelte
-{#snippet defaultInput(type, value, props)}
+{#snippet defaultInput(element)}
   <label>
-    {props.label}
-    <Input {type} bind:value {...props} />
-    {#if props.message}
-      <div class="message message-{props.messageType}">{props.message}</div>
+    {element.props.label}
+    <Input type={element.type} bind:value={element.value} {...element.props} />
+    {#if element.props.message}
+      <div class="message message-{element.props.message.state}">
+        {element.props.message.text}
+      </div>
     {/if}
   </label>
 {/snippet}
 
-{#snippet customChild(type, value, props)}
-  <!-- Complete control with all context available in props -->
-  <MyCustomInput {type} bind:value {...props} />
+{#snippet child(element)}
+  <!-- Complete control with all context available in element -->
+  <MyCustomInput type={element.type} bind:value={element.value} {...element.props} />
 {/snippet}
 ```
 
@@ -76,40 +80,53 @@ constraints (min, max, required, pattern) // - layout properties (className, pla
 - **Switch**: Inline layout with label
 - **Custom**: Complete override through child snippet
 
-### 4. Comprehensive Message System
+### 4. Separate Validation State Management
 
 ```javascript
-const messageTypes = {
-  error: 'Validation failures, required field missing',
-  warning: 'Potential issues, format suggestions',
-  info: 'Helpful hints, character counts, examples',
-  success: 'Confirmation messages, validation passed'
+// Validation messages structure
+const message = {
+  state: 'error',  // 'error', 'warning', 'info', 'success'
+  text: 'This field is required'
 }
+
+// Validation state managed separately from data/schema/layout
+builder.setFieldValidation('email', {
+  state: 'error',
+  text: 'Please enter a valid email address'
+})
+
+// Clear validation for a field
+builder.setFieldValidation('email', null)
 ```
 
-### 5. Property Composition Power
+### 5. Flexible Property Composition
 
 ```javascript
-// All context available in props object
-const props = {
-  // Display
-  label: 'Email Address',
-  description: "We'll never share your email",
+// Element structure with composed props
+const element = {
+  scope: '#/email',
+  type: 'email',
+  value: 'user@example.com',
+  override: false,
+  props: {
+    // From layout
+    label: 'Email Address',
+    description: "We'll never share your email",
+    placeholder: 'Enter your email',
+    className: 'custom-input',
+    customProperty: 'any-value',  // Arbitrary properties supported
 
-  // Message system
-  message: 'Please enter a valid email',
-  messageType: 'error',
+    // From schema
+    required: true,
+    pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$',
+    maxLength: 100,
 
-  // Events
-  onchange: handleChange,
-
-  // Schema constraints
-  required: true,
-  pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$',
-
-  // Layout
-  placeholder: 'user@example.com',
-  className: 'custom-input'
+    // From validation state
+    message: {
+      state: 'error',
+      text: 'Please enter a valid email address'
+    }
+  }
 }
 ```
 
@@ -120,24 +137,29 @@ const props = {
 - [x] Three-parameter constructor: `new FormBuilder(data, schema, layout)`
 - [x] Schema property standardization (`min`/`max` + `minimum`/`maximum`)
 - [x] Basic input type support with clean HTML implementation
+- [x] **Completed**: Updated FormBuilder with separate validation state
+- [x] Property composition system (schema + layout + validation → props)
+- [x] Flexible arbitrary property support from layout
 - [ ] **Current Goal**: Create Input.svelte wrapper with universal input support
-- [ ] Add `label`, `description`, `message`, `messageType` properties
+- [ ] Add `label`, `description`, `message` object properties
 - [ ] Implement type-aware rendering (checkbox, switch, standard layouts)
-- [ ] Integrate message state management with type-based styling
+- [ ] Integrate FormRenderer with user-action triggered validation
 
 ### Phase 2: Snippet-Based Rendering System
 
 - [ ] Create `defaultInput` snippet with type-aware layouts
 - [ ] Implement custom `child` snippet support for complete override
-- [ ] Property composition system (schema + layout + message properties)
-- [ ] Snippet selection logic (`defaultInput` vs custom `child`)
+- [ ] FormRenderer with snippet selection logic (defaultInput vs child based on override flag)
 - [ ] Replace current HTML rendering with snippet system
+- [ ] Element-based snippet interface with scope, type, value, override, props
 
 ### Phase 3: Validation & Message Integration
 
-- [ ] Schema-based validation rule integration
+- [x] **Completed**: Separate validation state in FormBuilder with dedicated methods
+- [x] **Completed**: Validation utility with schema-based rules and message objects
+- [ ] FormRenderer integration with user-action triggered validation
 - [ ] Real-time validation triggers (change, blur, submit)
-- [ ] Inline message display with messageType styling
+- [ ] Inline message display with state-based styling
 - [ ] Custom validation function support
 - [ ] Accessibility compliance with ARIA live regions
 
@@ -159,7 +181,7 @@ const props = {
 
 ### User Experience
 
-- **Rich feedback**: Error, warning, info, success message types
+- **Rich feedback**: Message objects with state (error, warning, info, success) and text
 - **Accessible**: Proper ARIA attributes and live regions
 - **Responsive**: Type-aware layouts that work on all devices
 - **Performance**: Fast rendering and minimal re-renders
@@ -177,6 +199,22 @@ const props = {
 - **[Feature Tracking](./features.md)** - Current status, milestones, and implementation roadmap
 - **API Reference** - Component interfaces and property specifications (coming soon)
 - **Examples & Tutorials** - Practical usage patterns and customization guides (coming soon)
+
+## Current Implementation Status
+
+### ✅ Recently Completed
+
+- **Separate validation state**: Independent validation management in FormBuilder
+- **Property composition**: Schema + layout + validation merged into element props
+- **Flexible property support**: Arbitrary layout properties passed through to components
+- **Validation utility**: Schema-based validation with message object structure
+- **Element structure**: Updated with scope, type, value, override, props pattern
+
+### 🚧 In Progress
+
+- **FormRenderer enhancement**: Snippet-based rendering with defaultInput and child snippets
+- **Input.svelte wrapper**: Universal input component supporting all types
+- **User-action validation**: Integration between FormRenderer and validation triggers
 
 ## Future Vision
 

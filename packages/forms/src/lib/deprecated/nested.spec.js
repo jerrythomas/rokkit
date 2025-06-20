@@ -1,11 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import {
-	deriveNestedSchema,
-	flattenElement,
-	generateTreeTable,
-	generateIndex
-} from '../../src/lib/nested'
+import { deriveNestedSchema, flattenElement, generateTreeTable, generateIndex } from './nested'
 
 describe('nested', () => {
 	describe('flattenElement', () => {

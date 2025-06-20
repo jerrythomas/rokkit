@@ -1,121 +1,144 @@
 <script>
-	// Props using Svelte 5 runes
-	let { elements = [], onUpdate = null } = $props()
-
 	/**
-	 * Handle field value changes
-	 * @param {string} scope - Field scope/path
-	 * @param {any} value - New value
+	 * FormRenderer component with snippet-based rendering
+	 * Handles defaultInput and custom child snippet selection based on override flag
 	 */
-	function handleChange(scope, value) {
-		onUpdate?.(scope, value)
+
+	import Input from './Input.svelte'
+
+	let {
+		// FormBuilder binding
+		builder,
+
+		// Direct props (alternative to builder)
+		data = $bindable(),
+		schema = {},
+		layout = {},
+
+		// Event handlers
+		onupdate = undefined,
+		onvalidate = undefined,
+
+		// Styling
+		className = '',
+
+		// Custom snippet
+		child,
+
+		// Pass through any other props
+		...props
+	} = $props()
+
+	// Use builder if provided, otherwise create derived elements
+	let elements = $derived(() => {
+		if (builder) {
+			return builder.elements
+		}
+		// TODO: Create elements from data/schema/layout if no builder provided
+		return []
+	})
+
+	// Handle field value changes
+	function handleFieldChange(element, newValue) {
+		const fieldPath = element.scope.replace(/^#\//, '')
+
+		if (builder) {
+			// Update through FormBuilder
+			builder.updateField(fieldPath, newValue)
+		} else {
+			// Update data directly
+			updateNestedValue(data, fieldPath, newValue)
+		}
+
+		// Call onupdate callback if provided
+		if (onupdate) {
+			const currentData = builder ? builder.data : data
+			onupdate(currentData)
+		}
+
+		// Trigger validation if handler provided
+		if (onvalidate) {
+			onvalidate(fieldPath, newValue)
+		}
 	}
 
-	/**
-	 * Handle range input changes (convert to number)
-	 * @param {string} scope - Field scope/path
-	 * @param {Event} event - Input event
-	 */
-	function handleRangeChange(scope, event) {
-		const value = Number(event.target.value)
-		handleChange(scope, value)
+	// Helper function to update nested object values
+	function updateNestedValue(obj, path, value) {
+		const keys = path.split('/')
+		let current = obj
+
+		for (let i = 0; i < keys.length - 1; i++) {
+			if (!(keys[i] in current)) {
+				current[keys[i]] = {}
+			}
+			current = current[keys[i]]
+		}
+
+		current[keys[keys.length - 1]] = value
 	}
 
-	/**
-	 * Handle number input changes (convert to number)
-	 * @param {string} scope - Field scope/path
-	 * @param {Event} event - Input event
-	 */
-	function handleNumberChange(scope, event) {
-		const value = Number(event.target.value)
-		handleChange(scope, value)
+	// Handle focus events for validation
+	function handleFieldFocus(element) {
+		// Could trigger validation on focus if needed
 	}
 
-	/**
-	 * Handle checkbox changes
-	 * @param {string} scope - Field scope/path
-	 * @param {Event} event - Input event
-	 */
-	function handleCheckboxChange(scope, event) {
-		const value = event.target.checked
-		handleChange(scope, value)
-	}
-
-	/**
-	 * Handle text input changes
-	 * @param {string} scope - Field scope/path
-	 * @param {Event} event - Input event
-	 */
-	function handleTextChange(scope, event) {
-		const value = event.target.value
-		handleChange(scope, value)
+	// Handle blur events for validation
+	function handleFieldBlur(element) {
+		if (onvalidate) {
+			const fieldPath = element.scope.replace(/^#\//, '')
+			const currentValue = element.value
+			onvalidate(fieldPath, currentValue, 'blur')
+		}
 	}
 </script>
 
-<div class="space-y-4">
+<!-- Form container -->
+<div class="form-renderer {className}" {...props}>
 	{#each elements as element (element.scope)}
-		<div class="form-element">
-			{#if element.type === 'range'}
-				<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					{element.label}: {element.value}
-					<input
-						type="range"
-						value={element.value}
-						min={element.constraints?.min}
-						max={element.constraints?.max}
-						step={element.constraints?.step}
-						oninput={(e) => handleRangeChange(element.scope, e)}
-						class="mt-1 h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 dark:bg-neutral-700"
-					/>
-				</label>
-			{:else if element.type === 'number'}
-				<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					{element.label}
-					<input
-						type="number"
-						value={element.value}
-						min={element.constraints?.min}
-						max={element.constraints?.max}
-						step={element.constraints?.step}
-						oninput={(e) => handleNumberChange(element.scope, e)}
-						class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
-					/>
-				</label>
-			{:else if element.type === 'checkbox'}
-				<label class="flex items-center text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					<input
-						type="checkbox"
-						checked={element.value}
-						onchange={(e) => handleCheckboxChange(element.scope, e)}
-						class="text-primary-600 focus:ring-primary-500 mr-2 h-4 w-4 rounded border-neutral-300 dark:border-neutral-600"
-					/>
-					{element.label}
-				</label>
-			{:else if element.type === 'select'}
-				<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					{element.label}
-					<select
-						value={element.value}
-						onchange={(e) => handleTextChange(element.scope, e)}
-						class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
-					>
-						{#each element.constraints?.options || [] as option}
-							<option value={option}>{option}</option>
-						{/each}
-					</select>
-				</label>
-			{:else}
-				<!-- Default text input -->
-				<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-					{element.label}
-					<input
-						type="text"
-						value={element.value || ''}
-						oninput={(e) => handleTextChange(element.scope, e)}
-						class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
-					/>
-				</label>
-			{/if}
-		</div>
+		{#if element.override && child}
+			<!-- Use custom child snippet for overridden elements -->
+			{@render child(element)}
+		{:else}
+			<!-- Use default input snippet -->
+			{@render defaultInput(element)}
+		{/if}
 	{/each}
 </div>
+
+<!-- Default input snippet -->
+{#snippet defaultInput(element)}
+	<div class="form-field" data-scope={element.scope}>
+		<Input
+			type={element.type}
+			bind:value={element.value}
+			onchange={(newValue) => handleFieldChange(element, newValue)}
+			onfocus={() => handleFieldFocus(element)}
+			onblur={() => handleFieldBlur(element)}
+			{...element.props}
+		/>
+	</div>
+{/snippet}
+
+<style>
+	.form-renderer {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.form-field {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.form-field[data-scope] {
+		/* Scope-specific styling can be added here */
+	}
+
+	/* Responsive layout */
+	@media (min-width: 768px) {
+		.form-renderer {
+			gap: 1.5rem;
+		}
+	}
+</style>

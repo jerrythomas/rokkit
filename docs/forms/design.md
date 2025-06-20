@@ -6,10 +6,11 @@ The FormBuilder system follows a layered architecture with clear separation of c
 
 ### Data Layer
 
-- **FormBuilder class**: Core reactive state management
+- **FormBuilder class**: Core reactive state management with separate validation state
 - **Schema derivation**: Automatic schema generation from data
 - **Layout derivation**: Automatic layout generation from data
 - **Field updates**: Immutable data updates with reactivity
+- **Validation state**: Separate validation messages triggered by user actions
 
 ### Presentation Layer
 
@@ -34,6 +35,7 @@ The FormBuilder system follows a layered architecture with clear separation of c
 - Optional schema and layout parameters
 - Automatic derivation when not provided
 - Clear parameter order: data first, then overrides
+- Separate validation state management with dedicated methods
 
 ### Schema Property Mapping
 
@@ -45,9 +47,10 @@ The FormBuilder system follows a layered architecture with clear separation of c
 ### Enhanced Input Component System
 
 - **Wrapper Input.svelte**: Universal input wrapper supporting all types
-- **Enhanced properties**: label, description, message, messageType (error, warning, info, success), validation state
+- **Enhanced properties**: label, description, message object with state and text, validation integration
 - **Layout-aware rendering**: Type-specific label positioning and structure
-- **Validation integration**: Built-in message display with type-based styling and state management
+- **Flexible property composition**: Schema + layout + validation merged into props object
+- **Arbitrary property support**: Custom layout properties passed through to components
 - **Accessibility support**: Proper ARIA attributes and form associations
 
 ### Snippet-Based Rendering
@@ -106,11 +109,12 @@ The FormBuilder system follows a layered architecture with clear separation of c
 
 1. User interacts with enhanced input component
 2. Component emits onchange event with new value
-3. FormRenderer triggers validation (if configured)
-4. FormRenderer calls onUpdate callback with validated data
-5. FormBuilder updates internal data state and message state
-6. Reactive system triggers element regeneration with updated messages
-7. UI updates automatically with new values and message feedback
+3. FormRenderer updates FormBuilder data state
+4. FormRenderer triggers validation based on user action (change, blur, submit)
+5. Validation utility returns validation messages
+6. FormBuilder validation state updated via `setFieldValidation()`
+7. Reactive system triggers element regeneration with updated validation messages
+8. UI updates automatically with new values and validation feedback
 
 ### Customization Flow
 
@@ -155,11 +159,12 @@ const props = {
 
 ### Validation System
 
-- **Schema-based validation**: Rules defined in field schema
-- **Real-time feedback**: Validation on change, blur, or submit
-- **Message display**: Inline messages with type-based styling (error, warning, info, success)
-- **Message state management**: Comprehensive messageType system for all feedback types
-- **Custom validation functions**: Support for complex validation logic
+- **Separate validation state**: Independent from data/schema/layout state
+- **User-action triggered**: Validation called by FormRenderer based on user interactions
+- **Schema-based validation**: Rules defined in field schema with validation utility
+- **Message object structure**: `{ state: 'error|warning|info|success', text: 'Message content' }`
+- **Flexible property handling**: Arbitrary layout properties passed through to components
+- **Custom validation functions**: Support for complex validation logic via validation utility
 - **Accessibility compliance**: Proper message announcement and form associations with ARIA live regions
 
 ### Layout and Rendering Variations
@@ -190,19 +195,20 @@ const props = {
 ### State Management
 
 - **Svelte 5 runes**: Reactive state with $state, $derived, $effect
-- **Private properties**: Internal state with public getters/setters
-- **Immutable updates**: Data changes trigger validation and re-rendering
-- **Derived validation**: Computed validation state from data and rules
-- **Message state tracking**: Per-field message content and type (error, warning, info, success)
+- **Private properties**: Internal state with public getters/setters for data, schema, layout, validation
+- **Immutable updates**: Data changes trigger element regeneration
+- **Separate validation state**: Independent validation messages managed via dedicated methods
+- **User-action triggered validation**: Validation state updated by FormRenderer based on user interactions
+- **Property composition**: Schema + layout + validation merged in buildElements process
 
 ### Component Patterns
 
-- **Snippet interfaces**: Clean `(type, value, props)` signature where props contains all context
-- **Property composition**: Schema + layout + message state merged into single props object
-- **Event handling**: Standard `onchange` with validation triggers passed through props
+- **Snippet interfaces**: Clean `(element)` signature where element contains scope, type, value, override, props
+- **Property composition**: Schema + layout + validation merged into single props object in FormBuilder
+- **Flexible property handling**: Arbitrary layout properties passed through without validation
 - **Layout awareness**: Type-specific rendering patterns (checkbox, switch, standard)
-- **Optional chaining**: Safe access to nested properties through props object
-- **Props spreading**: Easy attribute mapping with `{...props}` pattern
+- **Validation separation**: Validation state managed independently from element generation
+- **Props spreading**: Easy attribute mapping with `{...element.props}` pattern
 
 ### Testing Strategy
 

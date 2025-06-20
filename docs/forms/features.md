@@ -43,10 +43,14 @@
 
 #### Enhanced Input Component Architecture
 
+- [x] Update FormBuilder element structure with scope, type, value, override, props
+- [x] Implement separate validation state management in FormBuilder
+- [x] Add property composition logic (schema + layout + validation → props)
+- [x] Support arbitrary layout properties with flexible handling
 - [ ] Create Input.svelte wrapper with universal input support
-- [ ] Add label, description, message, messageType properties to all inputs
+- [ ] Add label, description, message object properties to all inputs
 - [ ] Implement type-aware rendering (checkbox right-label, switch inline, standard top-label)
-- [ ] Integrate message state management with type-based styling (error, warning, info, success)
+- [ ] Integrate validation utility with FormRenderer user actions
 - [ ] Add accessibility support with proper ARIA attributes and live regions
 
 #### Schema Property Standardization
@@ -55,6 +59,8 @@
 - [x] Direct mapping to HTML input attributes
 - [x] Backward compatibility with JSON Schema
 - [x] Update constraint handling logic
+- [x] Property composition system in FormBuilder
+- [x] Flexible arbitrary property support from layout
 
 ### 🎯 Planned Features
 
@@ -84,10 +90,13 @@
 
 #### Validation & Message System
 
-- [ ] Schema-based validation rule definition
+- [x] Separate validation state in FormBuilder
+- [x] Validation utility with schema-based rules
+- [x] Message object structure: `{ state: 'error|warning|info|success', text: 'Message content' }`
+- [x] Field-level validation methods: `setFieldValidation()`, `clearValidation()`
+- [ ] FormRenderer integration with user-action triggered validation
 - [ ] Real-time validation feedback (change, blur, submit)
-- [ ] Inline message display with messageType styling (error, warning, info, success)
-- [ ] Message state management with comprehensive messageType system
+- [ ] Inline message display with state-based styling
 - [ ] Custom validation function support
 - [ ] Accessibility compliance for message announcement with ARIA live regions
 
@@ -148,10 +157,14 @@
 
 **Goal**: Create universal Input.svelte wrapper with message system
 
+- [x] Updated FormBuilder with separate validation state
+- [x] Property composition system (schema + layout + validation → props)
+- [x] Flexible arbitrary property support
+- [x] Validation utility with message object structure
 - [ ] Input.svelte wrapper supporting all input types
-- [ ] Enhanced properties: label, description, message, messageType
+- [ ] Enhanced properties: label, description, message object
 - [ ] Type-aware rendering (checkbox, switch, standard layouts)
-- [ ] Message state management with type-based styling (error, warning, info, success)
+- [ ] FormRenderer integration with validation triggers
 - [ ] Accessibility support with ARIA attributes and live regions
 
 ### Milestone 3: Snippet-Based Rendering System
@@ -188,11 +201,13 @@
 ### Unit Tests
 
 - [ ] Enhanced Input.svelte wrapper functionality
-- [ ] Property composition logic (schema + layout + message state)
-- [ ] Snippet selection and rendering logic
-- [ ] Message state management with messageType system
+- [ ] Property composition logic (schema + layout + validation → props)
+- [ ] Snippet selection and rendering logic (defaultInput vs child)
+- [ ] Separate validation state management and field methods
+- [ ] Validation utility functions and message object structure
 - [ ] Type-aware layout rendering
 - [ ] Custom snippet handling and override patterns
+- [ ] Arbitrary property handling and flexible composition
 
 ### Integration Tests
 
@@ -203,11 +218,12 @@
 
 ### Component Tests
 
-- [ ] FormRenderer snippet selection and rendering
+- [ ] FormRenderer snippet selection and rendering (defaultInput vs child)
 - [ ] Enhanced Input component integration
-- [ ] Message event propagation and state updates with messageType
-- [ ] Property composition and spreading
-- [ ] Custom snippet override functionality
+- [ ] User-action triggered validation flow
+- [ ] Property composition and spreading with arbitrary properties
+- [ ] Custom snippet override functionality with element structure
+- [ ] Validation state updates and message object handling
 - [ ] Accessibility compliance testing with ARIA live regions
 
 ## Documentation Tasks
@@ -215,11 +231,13 @@
 ### API Documentation
 
 - [ ] Enhanced Input.svelte wrapper API
-- [ ] Property composition system documentation
-- [ ] Snippet creation and customization guide
-- [ ] Message system integration guide with messageType
+- [ ] Property composition system documentation (schema + layout + validation)
+- [ ] Snippet creation and customization guide (defaultInput vs child)
+- [ ] Validation system integration guide with message objects
 - [ ] Type-aware rendering patterns
 - [ ] Custom snippet development examples
+- [ ] Arbitrary property handling and flexible layout properties
+- [ ] Validation utility API and usage patterns
 
 ### Design Documentation
 

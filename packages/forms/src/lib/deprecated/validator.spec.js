@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-	verifiable,
-	getPatternValidator,
-	getRangeValidator,
-	getTypeValidator
-} from '../../src/lib/validator'
+import { verifiable, getPatternValidator, getRangeValidator, getTypeValidator } from './validator'
 import { get } from 'svelte/store'
 
 describe('validator', () => {

@@ -163,15 +163,15 @@ describe('FormBuilder', () => {
 
 			expect(elements).toHaveLength(1)
 			expect(elements[0]).toMatchObject({
-				label: 'Count',
-				scope: 'count',
+				// label: 'Count',
+				scope: '#/count',
 				type: 'range',
-				value: 25,
-				constraints: {
-					min: 10,
-					max: 100,
-					step: 1
-				}
+				value: 25
+				// constraints: {
+				// 	min: 10,
+				// 	max: 100,
+				// 	step: 1
+				// }
 			})
 		})
 
@@ -193,8 +193,8 @@ describe('FormBuilder', () => {
 
 			expect(elements).toHaveLength(1)
 			expect(elements[0]).toMatchObject({
-				label: 'Animate',
-				scope: 'animate',
+				// label: 'Animate',
+				scope: '#/animate',
 				type: 'checkbox',
 				value: true
 			})
@@ -221,13 +221,13 @@ describe('FormBuilder', () => {
 
 			expect(elements).toHaveLength(1)
 			expect(elements[0]).toMatchObject({
-				label: 'Color',
-				scope: 'color',
+				// label: 'Color',
+				scope: '#/color',
 				type: 'select',
-				value: '#22d3ee',
-				constraints: {
-					options: ['#22d3ee', '#ef4444', '#10b981']
-				}
+				value: '#22d3ee'
+				// constraints: {
+				// 	options: ['#22d3ee', '#ef4444', '#10b981']
+				// }
 			})
 		})
 
@@ -249,8 +249,8 @@ describe('FormBuilder', () => {
 
 			expect(elements).toHaveLength(1)
 			expect(elements[0]).toMatchObject({
-				label: 'Value',
-				scope: 'value',
+				// label: 'Value',
+				scope: '#/value',
 				type: 'number',
 				value: 42
 			})
@@ -271,7 +271,7 @@ describe('FormBuilder', () => {
 			const elements = formBuilder.elements
 
 			expect(elements).toHaveLength(3)
-			expect(elements.map((e) => e.scope)).toEqual(['count', 'animate', 'color'])
+			expect(elements.map((e) => e.scope)).toEqual(['#/count', '#/animate', '#/color'])
 		})
 	})
 

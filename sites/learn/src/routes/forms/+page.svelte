@@ -1,197 +1,247 @@
-<script>
-	import { onMount } from 'svelte'
-	import { FormBuilder, FormRenderer } from '@rokkit/forms'
-	import { basicDemo, schemaDemo, layoutDemo } from './config.js'
+<script lang="ts">
+	import { page } from '$app/stores'
+	import { goto } from '$app/navigation'
 
-	let mounted = $state(false)
+	let currentSection = 'inputs'
 
-	// Form builders for each demo
-	let basicFormBuilder = $state(new FormBuilder(basicDemo.data, basicDemo.schema, basicDemo.layout))
-	let schemaFormBuilder = $state(
-		new FormBuilder(schemaDemo.data, schemaDemo.schema, schemaDemo.layout)
-	)
-	let layoutFormBuilder = $state(
-		new FormBuilder(layoutDemo.data, layoutDemo.schema, layoutDemo.layout)
-	)
+	const sections = [
+		{
+			id: 'inputs',
+			title: '1. Input Components',
+			description: 'Explore different input types and their properties',
+			icon: '📝'
+		},
+		{
+			id: 'builder',
+			title: '2. FormBuilder',
+			description: 'Create forms from data with automatic schema derivation',
+			icon: '🏗️'
+		},
+		{
+			id: 'renderer',
+			title: '3. FormRenderer',
+			description: 'Render forms with snippet-based customization',
+			icon: '📄'
+		},
+		{
+			id: 'validation',
+			title: '4. Validation',
+			description: 'Add validation with real-time feedback',
+			icon: '✅'
+		},
+		{
+			id: 'advanced',
+			title: '5. Advanced Features',
+			description: 'Custom snippets, nested forms, and complex layouts',
+			icon: '⚙️'
+		}
+	]
 
-	// onMount(() => {
-	// 	mounted = true
-
-	// 	// Initialize form builders
-	// 	basicFormBuilder =
-	// 	schemaFormBuilder =
-	// 	layoutFormBuilder =
-	// })
-
-	// Handle form updates
-	function handleBasicUpdate(scope, value) {
-		basicFormBuilder?.updateField(scope, value)
-	}
-
-	function handleSchemaUpdate(scope, value) {
-		schemaFormBuilder?.updateField(scope, value)
-	}
-
-	function handleLayoutUpdate(scope, value) {
-		layoutFormBuilder?.updateField(scope, value)
+	/**
+	 * @param {string} sectionId
+	 */
+	function navigateToSection(sectionId) {
+		currentSection = sectionId
+		goto(`/forms/${sectionId}`)
 	}
 </script>
 
 <svelte:head>
-	<title>FormBuilder Demo - FizzBot</title>
-	<meta name="description" content="Dynamic form generation with FormBuilder class" />
+	<title>Forms Tutorial - Progressive Enhancement | Rokkit</title>
+	<meta
+		name="description"
+		content="Learn forms development from basic inputs to advanced form builders"
+	/>
 </svelte:head>
 
-<!-- {#if mounted} -->
-<div class="min-h-screen overflow-y-auto bg-neutral-50 py-8 dark:bg-neutral-900">
-	<div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-		<!-- Header -->
-		<div class="mb-8">
-			<h1 class="text-3xl font-bold text-neutral-900 dark:text-white">FormBuilder Demo</h1>
-			<p class="mt-2 text-neutral-600 dark:text-neutral-400">
-				Dynamic form generation from data structures using schema and layout derivation
-			</p>
-		</div>
-
-		<!-- Form Examples Grid -->
-		<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-			<!-- Example 1: Basic Data-Driven Form -->
-			<div class="rounded-lg bg-neutral-100 p-6 shadow-lg dark:bg-neutral-800">
-				<h3 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
-					1. Basic Data-Driven Form
-				</h3>
-				<p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-					Automatically derives schema and layout from data object. Uses range inputs for numbers.
-				</p>
-
-				{#if basicFormBuilder}
-					<FormRenderer elements={basicFormBuilder.elements} onUpdate={handleBasicUpdate} />
-
-					<div class="mt-4 rounded bg-neutral-100 p-3 dark:bg-neutral-700">
-						<h4 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
-							Current Data:
-						</h4>
-						<pre class="text-xs text-neutral-600 dark:text-neutral-400">{JSON.stringify(
-								basicFormBuilder.data,
-								null,
-								2
-							)}</pre>
-					</div>
-				{/if}
-			</div>
-
-			<!-- Example 2: Custom Schema -->
-			<div class="rounded-lg bg-neutral-100 p-6 shadow-lg dark:bg-neutral-800">
-				<h3 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
-					2. Custom Schema with Constraints
-				</h3>
-				<p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-					Uses custom schema with min/max values. Shows how constraints affect form controls.
-				</p>
-
-				{#if schemaFormBuilder}
-					<FormRenderer elements={schemaFormBuilder.elements} onUpdate={handleSchemaUpdate} />
-
-					<div class="mt-4 rounded bg-neutral-100 p-3 dark:bg-neutral-700">
-						<h4 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Schema:</h4>
-						<pre class="text-xs text-neutral-600 dark:text-neutral-400">{JSON.stringify(
-								schemaDemo.schema,
-								null,
-								2
-							)}</pre>
-					</div>
-				{/if}
-			</div>
-
-			<!-- Example 3: Custom Layout -->
-			<div class="rounded-lg bg-neutral-100 p-6 shadow-lg dark:bg-neutral-800">
-				<h3 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
-					3. Custom Layout & Controls
-				</h3>
-				<p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-					Custom layout with different input types: numbers, checkbox, and select dropdown.
-				</p>
-
-				{#if layoutFormBuilder}
-					<FormRenderer elements={layoutFormBuilder.elements} onUpdate={handleLayoutUpdate} />
-
-					<div class="mt-4 rounded bg-neutral-100 p-3 dark:bg-neutral-700">
-						<h4 class="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Layout:</h4>
-						<pre class="text-xs text-neutral-600 dark:text-neutral-400">{JSON.stringify(
-								layoutDemo.layout,
-								null,
-								2
-							)}</pre>
-					</div>
-
-					<div class="bg-secondary-50 dark:bg-secondary-900/20 mt-4 rounded p-3">
-						<h4 class="text-secondary-700 dark:text-secondary-300 mb-2 text-sm font-medium">
-							Live Data:
-						</h4>
-						<pre class="text-secondary-600 text-xs">{JSON.stringify(
-								layoutFormBuilder.data,
-								null,
-								2
-							)}</pre>
-					</div>
-				{/if}
+<div class="bg-neutral-50 dark:bg-neutral-900">
+	<!-- Header -->
+	<header class="border-b border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800">
+		<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+			<div class="flex items-center justify-between">
+				<div>
+					<h1 class="text-3xl font-bold text-neutral-900 dark:text-white">Forms Tutorial</h1>
+					<p class="mt-2 text-neutral-600 dark:text-neutral-400">
+						Progressive enhancement from basic inputs to advanced form builders
+					</p>
+				</div>
+				<div class="hidden sm:flex sm:items-center sm:space-x-4">
+					<span class="text-sm text-neutral-500 dark:text-neutral-400">
+						Built with @rokkit/forms
+					</span>
+				</div>
 			</div>
 		</div>
+	</header>
 
-		<!-- Features -->
-		<div
-			class="from-secondary-100 to-secondary-200 mt-12 rounded-lg bg-gradient-to-r p-8 dark:from-neutral-800 dark:to-neutral-700"
-		>
-			<h2 class="mb-6 text-xl font-semibold text-neutral-900 dark:text-white">
-				FormBuilder Features
-			</h2>
+	<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+		<div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
+			<!-- Sidebar Navigation -->
+			<aside class="lg:col-span-1">
+				<nav class="sticky top-8">
+					<h2 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
+						Tutorial Sections
+					</h2>
+					<ul class="space-y-2">
+						{#each sections as section, index (section.id)}
+							<li>
+								<button
+									onclick={() => navigateToSection(section.id)}
+									class="w-full rounded-lg p-4 text-left transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+									class:bg-primary-50={currentSection === section.id}
+									class:border-primary-200={currentSection === section.id}
+									class:border={currentSection === section.id}
+									class:dark:bg-primary-900={currentSection === section.id}
+									class:dark:opacity-20={currentSection === section.id}
+									class:dark:border-primary-700={currentSection === section.id}
+								>
+									<div class="flex items-start space-x-3">
+										<div class="flex-shrink-0">
+											<div class="text-primary-600 dark:text-primary-400 text-xl">
+												{section.icon}
+											</div>
+										</div>
+										<div class="min-w-0 flex-1">
+											<h3 class="text-sm font-medium text-neutral-900 dark:text-white">
+												{section.title}
+											</h3>
+											<p class="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
+												{section.description}
+											</p>
+										</div>
+									</div>
+								</button>
+							</li>
+						{/each}
+					</ul>
 
-			<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-				<div>
-					<h3 class="mb-2 font-medium text-neutral-900 dark:text-white">🧠 Smart Derivation</h3>
-					<p class="text-sm text-neutral-700">
-						Automatically derives schema and layout from data structure
-					</p>
+					<!-- Progress Indicator -->
+					<div class="mt-8 rounded-lg bg-neutral-100 p-4 dark:bg-neutral-800">
+						<h3 class="mb-2 text-sm font-medium text-neutral-900 dark:text-white">Progress</h3>
+						<div class="space-y-2">
+							{#each sections as section, index (section.id)}
+								<div class="flex items-center space-x-2">
+									<div
+										class="h-2 w-2 rounded-full"
+										class:bg-primary-500={index === 0}
+										class:bg-neutral-300={index > 0}
+										class:dark:bg-neutral-600={index > 0}
+									></div>
+									<span class="text-xs text-neutral-600 dark:text-neutral-400">
+										{section.title}
+									</span>
+								</div>
+							{/each}
+						</div>
+					</div>
+				</nav>
+			</aside>
+
+			<!-- Main Content -->
+			<main class="lg:col-span-3">
+				<div class="rounded-lg bg-white p-8 shadow-sm dark:bg-neutral-800">
+					<!-- Welcome Content -->
+					<div class="text-center">
+						<div
+							class="bg-primary-100 dark:bg-primary-900 mx-auto mb-6 h-24 w-24 rounded-full p-6 dark:opacity-20"
+						>
+							<div class="text-primary-600 dark:text-primary-400 text-4xl">📝</div>
+						</div>
+
+						<h2 class="mb-4 text-2xl font-bold text-neutral-900 dark:text-white">
+							Welcome to the Forms Tutorial
+						</h2>
+
+						<p class="mb-8 text-neutral-600 dark:text-neutral-400">
+							This tutorial will guide you through building forms with the Rokkit Forms system, from
+							basic input components to advanced form builders with validation and custom rendering.
+						</p>
+
+						<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+							<!-- Quick Start -->
+							<div class="rounded-lg border border-neutral-200 p-6 dark:border-neutral-700">
+								<div class="text-primary-600 dark:text-primary-400 mb-4">
+									<div class="text-2xl">🚀</div>
+								</div>
+								<h3 class="mb-2 text-lg font-semibold text-neutral-900 dark:text-white">
+									Quick Start
+								</h3>
+								<p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+									Jump right into building forms with our step-by-step guide.
+								</p>
+								<button
+									onclick={() => navigateToSection('inputs')}
+									class="bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+								>
+									Start Tutorial
+									<span class="ml-2">→</span>
+								</button>
+							</div>
+
+							<!-- Key Features -->
+							<div class="rounded-lg border border-neutral-200 p-6 dark:border-neutral-700">
+								<div class="text-primary-600 dark:text-primary-400 mb-4">
+									<div class="text-2xl">🛠️</div>
+								</div>
+								<h3 class="mb-2 text-lg font-semibold text-neutral-900 dark:text-white">
+									Key Features
+								</h3>
+								<ul class="space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
+									<li>• Universal Input components</li>
+									<li>• Automatic schema derivation</li>
+									<li>• Snippet-based rendering</li>
+									<li>• Real-time validation</li>
+									<li>• Custom form layouts</li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- Learning Path -->
+						<div class="mt-8 rounded-lg bg-neutral-50 p-6 dark:bg-neutral-700/50">
+							<h3 class="mb-4 text-lg font-semibold text-neutral-900 dark:text-white">
+								Learning Path
+							</h3>
+							<div class="grid grid-cols-1 gap-4 sm:grid-cols-5">
+								{#each sections as section, index (section.id)}
+									<div class="flex flex-col items-center text-center">
+										<div
+											class="mb-2 flex h-10 w-10 items-center justify-center rounded-full"
+											class:bg-primary-100={index === 0}
+											class:text-primary-600={index === 0}
+											class:dark:bg-primary-900={index === 0}
+											class:dark:opacity-20={index === 0}
+											class:dark:text-primary-400={index === 0}
+											class:bg-neutral-200={index > 0}
+											class:text-neutral-500={index > 0}
+											class:dark:bg-neutral-600={index > 0}
+											class:dark:text-neutral-400={index > 0}
+										>
+											{section.icon}
+										</div>
+										<span class="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+											{section.title.split(' ')[0]}
+										</span>
+										{#if index < sections.length - 1}
+											<div
+												class="mt-2 h-px w-full bg-neutral-200 sm:hidden dark:bg-neutral-600"
+											></div>
+										{/if}
+									</div>
+									{#if index < sections.length - 1}
+										<div
+											class="hidden h-px bg-neutral-200 sm:block sm:self-center dark:bg-neutral-600"
+										></div>
+									{/if}
+								{/each}
+							</div>
+						</div>
+					</div>
 				</div>
-
-				<div>
-					<h3 class="mb-2 font-medium text-neutral-900 dark:text-white">🎛️ Multiple Input Types</h3>
-					<p class="text-sm text-neutral-700">
-						Range sliders, number inputs, checkboxes, selects, and text fields
-					</p>
-				</div>
-
-				<div>
-					<h3 class="mb-2 font-medium text-neutral-900 dark:text-white">📏 Constraint Support</h3>
-					<p class="text-sm text-neutral-700">
-						Min/max values, enums, and type validation from schema
-					</p>
-				</div>
-
-				<div>
-					<h3 class="mb-2 font-medium text-neutral-900 dark:text-white">🔄 Reactive Updates</h3>
-					<p class="text-sm text-neutral-700">Real-time form updates with Svelte 5 reactivity</p>
-				</div>
-
-				<div>
-					<h3 class="mb-2 font-medium text-neutral-900 dark:text-white">🎨 Custom Layouts</h3>
-					<p class="text-sm text-neutral-700">
-						Override default layout with custom field arrangements
-					</p>
-				</div>
-
-				<div>
-					<h3 class="mb-2 font-medium text-neutral-900 dark:text-white">📦 Reusable Class</h3>
-					<p class="text-sm text-neutral-700">
-						Framework-agnostic class design following AnimatedOrbs pattern
-					</p>
-				</div>
-			</div>
+			</main>
 		</div>
 	</div>
 </div>
-<!-- {:else}
-	<div class="flex h-screen w-screen items-center justify-center bg-neutral-50 dark:bg-neutral-900">
-		<div class="text-neutral-600 ">Loading FormBuilder Demo...</div>
-	</div>
-{/if} -->
+
+<style>
+	/* Custom icon classes can be added here if needed */
+</style>

@@ -1,8 +1,8 @@
 import { omit, pick } from 'ramda'
 import { isObject } from '@rokkit/core'
 import { typeOf } from '@rokkit/data'
-import { deriveSchemaFromValue } from './schema'
-import { deriveLayoutFromValue } from './layout'
+import { deriveSchemaFromValue } from '../schema'
+import { deriveLayoutFromValue } from '../layout'
 
 /**
  * Flattens an object into a flat object

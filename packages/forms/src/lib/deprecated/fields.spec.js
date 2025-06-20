@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { deriveSchemaFromValue } from '../../src/lib/schema'
-import { deriveLayoutFromValue } from '../../src/lib/layout'
+import { deriveSchemaFromValue } from '../schema'
+import { deriveLayoutFromValue } from '../layout'
 
-import { findAttributeByPath, getSchemaWithLayout } from '../../src/lib/fields'
+import { findAttributeByPath, getSchemaWithLayout } from './fields'
 
 import inputLayout from './fixtures/input-layout.json'
 import inputSchema from './fixtures/input-schema.json'

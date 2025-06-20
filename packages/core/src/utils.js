@@ -1,5 +1,4 @@
 import { has, isNil } from 'ramda'
-import { URL } from 'url'
 import { DATA_IMAGE_REGEX } from './constants'
 
 let idCounter = 0
@@ -156,23 +155,31 @@ export function hex2rgb(hex) {
  * @returns {boolean} - Returns true if the string is an image URL
  */
 function isImageUrl(str) {
-	// Check if the string is a URL
+	// Check if the string looks like a URL
 	try {
-		const url = new URL(str)
+		// Use browser-native URL constructor or fallback to regex
+		const url = typeof URL !== 'undefined' ? new URL(str) : null
 
-		// Check common image extensions
-		const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff']
-		const path = url.pathname.toLowerCase()
+		if (url) {
+			// Check common image extensions
+			const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff']
+			const path = url.pathname.toLowerCase()
 
-		if (imageExtensions.some((ext) => path.endsWith(ext))) {
-			return true
+			if (imageExtensions.some((ext) => path.endsWith(ext))) {
+				return true
+			}
+		} else {
+			// Fallback regex-based URL validation for image extensions
+			const urlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff)(\?.*)?$/i
+			return urlRegex.test(str)
 		}
 
 		return false
 		// eslint-disable-next-line no-unused-vars
 	} catch (e) {
-		// Not a valid URL
-		return false
+		// Fallback regex-based validation
+		const urlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff)(\?.*)?$/i
+		return urlRegex.test(str)
 	}
 }
 /**
