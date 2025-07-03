@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { bundleFolders, convertFolders, readConfigFile, getFolderNames } from '../src/convert.js'
-import path from 'path'
 
 // Mock the modules
 vi.mock('../src/convert.js', () => ({

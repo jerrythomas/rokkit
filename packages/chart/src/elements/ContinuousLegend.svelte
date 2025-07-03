@@ -27,7 +27,7 @@
 	</linearGradient>
 </defs>
 <rect {x} y={y + height} {width} {height} fill="url(#{id})" />
-{#each ticks as { x, label }}
+{#each ticks as { x, label }, index (index)}
 	<line x1={x} y1={y + (2 * height) / 3} x2={x} y2={y + height * 2} />
 	<text {x} y={y + height / 2} font-size={textSize}>{label}</text>
 {/each}

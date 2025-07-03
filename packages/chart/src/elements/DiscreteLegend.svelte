@@ -12,7 +12,7 @@
 	$: ticks = scale.ticks.apply(scale, [tickCount])
 </script>
 
-{#each ticks as tick, i}
+{#each ticks as tick, i (i)}
 	<text x={x + padding + i * sizeWithSpace + size / 2} y={y + size / 2} font-size={textSize}
 		>{tick}</text
 	>

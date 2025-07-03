@@ -14,6 +14,6 @@
 	].map((x) => ({ ...x, r: 0.08 * size }))
 </script>
 
-{#each data as { cx, cy, r }}
+{#each data as { cx, cy, r }, index (index)}
 	<circle {cx} {cy} {r} {fill} />
 {/each}

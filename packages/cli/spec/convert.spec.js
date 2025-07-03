@@ -103,7 +103,7 @@ describe('convert module', () => {
 
 		it('should handle errors in SVG files', async () => {
 			// Given an error folder with both valid and invalid SVGs
-			const errorSpy = vi.spyOn(console, 'error')
+			// const errorSpy = vi.spyOn(console, 'error')
 
 			// Skip the bundle test if the valid-icon.svg doesn't exist
 			// if (!fs.existsSync(path.join(srcDir, 'err1', 'valid-icon.svg'))) {

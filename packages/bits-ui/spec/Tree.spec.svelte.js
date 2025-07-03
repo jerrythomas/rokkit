@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, fireEvent, cleanup } from '@testing-library/svelte'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { render, cleanup } from '@testing-library/svelte'
 import ComposedTree from './wrapped/ComposedTree.svelte'
 
 describe('Tree', () => {

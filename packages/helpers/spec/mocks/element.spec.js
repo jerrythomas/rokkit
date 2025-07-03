@@ -154,7 +154,7 @@ describe('element', () => {
 
 			// Verify the function returns true (indicating mock was applied)
 			expect(mockWasApplied).toBe(true)
-			// eslint-disable-next-line no-undef
+			 
 			expect(vi.isMockFunction(HTMLFormElement.prototype.requestSubmit)).toBeTruthy()
 
 			// Test the mock implementation works correctly
@@ -164,7 +164,7 @@ describe('element', () => {
 
 			form.requestSubmit()
 			expect(submitSpy).toHaveBeenCalled()
-			// eslint-disable-next-line no-undef
+			 
 			expect(HTMLFormElement.prototype.requestSubmit).toHaveBeenCalled()
 
 			vi.resetAllMocks()

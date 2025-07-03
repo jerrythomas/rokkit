@@ -58,14 +58,14 @@
 		{/if}
 
 		<!-- Legend items -->
-		{#each legendData.items as item}
+		{#each legendData.items as item, index (index)}
 			{@const attrs = createLegendItemAttributes(item)}
 			{@const isSelected = selectedItems.includes(item.value)}
 			<g
 				{...attrs}
 				class="legend-item"
 				class:selected={isSelected}
-				on:click={() => toggleItem(item)}
+				onclick={() => toggleItem(item)}
 			>
 				<!-- Shape: circle or rect -->
 				{#if item.shape === 'circle'}

@@ -10,6 +10,6 @@
 	]
 </script>
 
-{#each polygons as points}
+{#each polygons as points, index (index)}
 	<polygon points={points.join(', ')} {fill} {stroke} stroke-width="0" />
 {/each}

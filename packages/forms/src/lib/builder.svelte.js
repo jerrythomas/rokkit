@@ -1,5 +1,6 @@
 import { deriveSchemaFromValue } from './schema.js'
 import { deriveLayoutFromValue } from './layout.js'
+import { omit } from 'ramda'
 
 /**
  * @typedef {Object} FormElement
@@ -182,7 +183,7 @@ export class FormBuilder {
 	 * @returns {FormElement|null} Form element or null
 	 */
 	#buildElement(layoutElement) {
-		const { label, scope, title, override = false, ...layoutProps } = layoutElement
+		const { scope, override = false } = layoutElement
 
 		if (!scope) return null
 
@@ -257,8 +258,7 @@ export class FormBuilder {
 	 * @returns {Object} Composed props object
 	 */
 	#composeProps(layoutElement, fieldSchema, fieldPath) {
-		const { label, title, description, placeholder, override, scope, ...layoutProps } =
-			layoutElement
+		const { label, title, description, placeholder, ...layoutProps } = layoutElement
 
 		const props = {
 			// Layout properties (allow arbitrary custom properties)
@@ -318,8 +318,7 @@ export class FormBuilder {
 		if (message) {
 			this.#validation = { ...this.#validation, [fieldPath]: message }
 		} else {
-			const { [fieldPath]: removed, ...rest } = this.#validation
-			this.#validation = rest
+			this.#validation = omit([fieldPath], this.#validation)
 		}
 	}
 

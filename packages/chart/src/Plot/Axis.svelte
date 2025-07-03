@@ -47,7 +47,7 @@
 		/>
 
 		<!-- Ticks -->
-		{#each axisData.ticks as tick}
+		{#each axisData.ticks as tick, index (index)}
 			{@const attrs = createTickAttributes(tick, type)}
 			<g {...attrs}>
 				<line

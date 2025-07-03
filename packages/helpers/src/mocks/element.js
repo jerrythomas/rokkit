@@ -86,7 +86,7 @@ export function createNestedElement(item) {
  * Mocks the requestSubmit function for HTMLFormElement which is not implemented by JSDOM
  */
 export function mockFormRequestSubmit() {
-	// eslint-disable-next-line no-undef
+	 
 	HTMLFormElement.prototype.requestSubmit = vi.fn(function (submitter) {
 		const event = new Event('submit', {
 			bubbles: true,

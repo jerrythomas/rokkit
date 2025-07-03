@@ -13,7 +13,7 @@
 	<error> Patterns should be an array and should have unique names for each pattern </error>
 {:else if patterns.length > 0}
 	<defs>
-		{#each patterns as { id, component, fill, stroke }}
+		{#each patterns as { id, component, fill, stroke }, index (index)}
 			<pattern {id} {patternUnits} width={size} height={size}>
 				<svelte:component this={component} {size} {fill} {stroke} />
 			</pattern>

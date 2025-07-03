@@ -1,17 +1,6 @@
 import { writable } from 'svelte/store'
 import { omit } from 'ramda'
 
-const TYPE_VALIDATORS = {
-	string: (input) => typeof input === 'string',
-	number: (input) => input !== null && !isNaN(input),
-	email: getPatternValidator(/^[^@]+@[^@]+\.[^@]+$/),
-	url: getPatternValidator(/^(https?:\/\/\S+)$/),
-	color: getPatternValidator(/^#[0-9a-fA-F]{6}$/),
-	date: (input) => input !== null && !isNaN(new Date(input).getTime()),
-	array: (input) => Array.isArray(input),
-	object: (input) => input !== null && typeof input === 'object' && !Array.isArray(input)
-}
-
 /**
  * Get a validator function that takes a regex expression and returns a validation function
  *
@@ -26,6 +15,17 @@ export function getPatternValidator(pattern) {
 	} else {
 		throw new Error('Invalid pattern')
 	}
+}
+
+const TYPE_VALIDATORS = {
+	string: (input) => typeof input === 'string',
+	number: (input) => input !== null && !isNaN(input),
+	email: getPatternValidator(/^[^@]+@[^@]+\.[^@]+$/),
+	url: getPatternValidator(/^(https?:\/\/\S+)$/),
+	color: getPatternValidator(/^#[0-9a-fA-F]{6}$/),
+	date: (input) => input !== null && !isNaN(new Date(input).getTime()),
+	array: (input) => Array.isArray(input),
+	object: (input) => input !== null && typeof input === 'object' && !Array.isArray(input)
 }
 
 /**

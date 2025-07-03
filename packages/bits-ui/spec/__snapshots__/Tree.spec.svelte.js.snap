@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree > composition > should render 1`] = `
+<div>
+  <tree-root
+    data-orientation="vertical"
+    data-tree-root="true"
+  >
+    <!---->
+    
+    <!---->
+  </tree-root>
+  
+</div>
+`;

@@ -31,7 +31,7 @@
 
 <g class="chart-grid" data-plot-grid={direction}>
 	{#if direction === 'x' || direction === 'both'}
-		{#each gridData.xLines as line}
+		{#each gridData.xLines as line, index (index)}
 			<line
 				data-plot-grid-line="x"
 				x1={line.x1}
@@ -46,7 +46,7 @@
 	{/if}
 
 	{#if direction === 'y' || direction === 'both'}
-		{#each gridData.yLines as line}
+		{#each gridData.yLines as line, index (index)}
 			<line
 				data-plot-grid-line="y"
 				x1={line.x1}

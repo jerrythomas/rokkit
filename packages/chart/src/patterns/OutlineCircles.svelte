@@ -10,6 +10,6 @@
 	$: r = 0.5 * size
 </script>
 
-{#each centres as { cx, cy }}
+{#each centres as { cx, cy }, index (index)}
 	<circle {cx} {cy} {r} {fill} {stroke} />
 {/each}

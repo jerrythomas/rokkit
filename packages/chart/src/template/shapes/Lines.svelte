@@ -12,6 +12,6 @@
 	}))
 </script>
 
-{#each lines as line}
+{#each lines as line, index (index)}
 	<line {...line} {stroke} stroke-width={thickness} stroke-linecap="round" />
 {/each}

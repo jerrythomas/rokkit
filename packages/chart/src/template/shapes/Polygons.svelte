@@ -13,6 +13,6 @@
 	// ]
 </script>
 
-{#each polygons as points}
+{#each polygons as points, index (index)}
 	<polygon {points} {fill} {stroke} stroke-width={thickness} />
 {/each}

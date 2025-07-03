@@ -1,6 +1,10 @@
 import { min, max } from 'd3-array'
 import { scaleBand, scaleLinear, scaleTime } from 'd3-scale'
 
+function getOriginValue(scale) {
+	return scale.ticks ? scale(Math.max(0, Math.min(...scale.domain()))) : scale.range()[0]
+}
+
 function getScale(domain, range, padding = 0) {
 	if (domain.some(isNaN)) {
 		return scaleBand().domain(domain).range(range).padding(padding)
@@ -202,10 +206,6 @@ class Chart {
 
 		return ticks
 	}
-}
-
-function getOriginValue(scale) {
-	return scale.ticks ? scale(Math.max(0, Math.min(...scale.domain()))) : scale.range()[0]
 }
 
 export function chart(data, aes) {

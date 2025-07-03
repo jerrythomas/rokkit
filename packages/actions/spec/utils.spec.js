@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { getClosestAncestorWithAttribute, getEventForKey, getClickAction } from '../src/utils.js'
 
 describe('utils', () => {

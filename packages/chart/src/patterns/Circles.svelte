@@ -13,6 +13,6 @@
 	}))
 </script>
 
-{#each data as { cx, cy, r }}
+{#each data as { cx, cy, r }, index (index)}
 	<circle {cx} {cy} {r} {fill} {stroke} />
 {/each}

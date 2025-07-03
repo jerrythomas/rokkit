@@ -1,4 +1,4 @@
-import { scaleBand } from 'd3-scale'
+// import { scaleBand } from 'd3-scale'
 
 import {} from './types.js'
 

@@ -9,7 +9,6 @@
 	$: props = { rx: r * 0.1, ry: r * 0.1, ...$$restProps }
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <rect
 	x={x - r}
 	y={y - r}

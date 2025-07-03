@@ -10,7 +10,7 @@
 </script>
 
 <svg viewBox="0 0 {grid.width} {grid.height}">
-	{#each grid.data as { x, y, r }, index}
+	{#each grid.data as { x, y, r }, index (index)}
 		<Symbol
 			{x}
 			{y}

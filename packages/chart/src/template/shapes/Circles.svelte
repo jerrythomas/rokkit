@@ -11,6 +11,6 @@
 	}))
 </script>
 
-{#each circles as { cx, cy, r }}
+{#each circles as { cx, cy, r }, index (index)}
 	<circle {cx} {cy} {r} {fill} {stroke} />
 {/each}

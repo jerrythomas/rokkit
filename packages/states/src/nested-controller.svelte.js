@@ -1,4 +1,4 @@
-import { getKeyFromPath, getPathFromKey, getNestedFields } from '@rokkit/core'
+import { getKeyFromPath, getPathFromKey } from '@rokkit/core'
 import { equals } from 'ramda'
 import { ListController } from './list-controller.svelte'
 

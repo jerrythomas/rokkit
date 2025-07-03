@@ -99,7 +99,7 @@
 						onchange={(e) => handleTextChange(element.scope, e)}
 						class="focus:border-primary-500 focus:ring-primary-500 mt-1 block w-full rounded-md border border-neutral-300 px-3 py-2 shadow-sm focus:outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-white"
 					>
-						{#each element.constraints?.options || [] as option}
+						{#each element.constraints?.options || [] as option, index (index)}
 							<option value={option}>{option}</option>
 						{/each}
 					</select>

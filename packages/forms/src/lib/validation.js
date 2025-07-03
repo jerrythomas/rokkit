@@ -10,38 +10,13 @@
  */
 
 /**
- * Validate a single field value against its schema
- * @param {any} value - Field value to validate
- * @param {Object} fieldSchema - Field schema definition
- * @param {string} [fieldLabel] - Field label for error messages
- * @returns {ValidationMessage|null} Validation message or null if valid
+ * Helper function to check if a value is empty
+ * @private
+ * @param {any} value - Value to check
+ * @returns {boolean} True if empty
  */
-export function validateField(value, fieldSchema, fieldLabel = 'Field') {
-	if (!fieldSchema) return null
-
-	// Required field validation
-	if (fieldSchema.required && isEmpty(value)) {
-		return {
-			state: 'error',
-			text: `${fieldLabel} is required`
-		}
-	}
-
-	// Skip other validations if field is empty and not required
-	if (isEmpty(value)) return null
-
-	// Type-specific validations
-	switch (fieldSchema.type) {
-		case 'string':
-			return validateString(value, fieldSchema, fieldLabel)
-		case 'number':
-		case 'integer':
-			return validateNumber(value, fieldSchema, fieldLabel)
-		case 'boolean':
-			return validateBoolean(value, fieldSchema, fieldLabel)
-		default:
-			return null
-	}
+function isEmpty(value) {
+	return value === undefined || value === null || value === ''
 }
 
 /**
@@ -165,35 +140,6 @@ function validateBoolean(value, schema, label) {
 }
 
 /**
- * Validate all fields in a data object
- * @param {Object} data - Data object to validate
- * @param {Object} schema - Schema object with properties
- * @param {Object} layout - Layout object with element definitions
- * @returns {Object} Validation results keyed by field path
- */
-export function validateAll(data, schema, layout) {
-	const validationResults = {}
-
-	if (!layout.elements || !schema.properties) return validationResults
-
-	for (const element of layout.elements) {
-		if (!element.scope) continue
-
-		const fieldPath = element.scope.replace(/^#\//, '')
-		const fieldSchema = getFieldSchema(fieldPath, schema)
-		const fieldLabel = element.label || element.title || fieldPath
-		const value = getValueByPath(data, fieldPath)
-
-		const result = validateField(value, fieldSchema, fieldLabel)
-		if (result) {
-			validationResults[fieldPath] = result
-		}
-	}
-
-	return validationResults
-}
-
-/**
  * Create validation messages for informational purposes
  * @param {string} fieldPath - Field path
  * @param {string} state - Message state ('info', 'warning', 'success')
@@ -215,16 +161,6 @@ export const patterns = {
 	url: /^https?:\/\/[^\s/$.?#].[^\s]*$/,
 	zipCode: /^\d{5}(-\d{4})?$/,
 	creditCard: /^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$/
-}
-
-/**
- * Helper function to check if a value is empty
- * @private
- * @param {any} value - Value to check
- * @returns {boolean} True if empty
- */
-function isEmpty(value) {
-	return value === undefined || value === null || value === ''
 }
 
 /**
@@ -271,4 +207,67 @@ function getValueByPath(data, path) {
 	}
 
 	return current
+}
+
+/**
+ * Validate a single field value against its schema
+ * @param {any} value - Field value to validate
+ * @param {Object} fieldSchema - Field schema definition
+ * @param {string} [fieldLabel] - Field label for error messages
+ * @returns {ValidationMessage|null} Validation message or null if valid
+ */
+export function validateField(value, fieldSchema, fieldLabel = 'Field') {
+	if (!fieldSchema) return null
+
+	// Required field validation
+	if (fieldSchema.required && isEmpty(value)) {
+		return {
+			state: 'error',
+			text: `${fieldLabel} is required`
+		}
+	}
+
+	// Skip other validations if field is empty and not required
+	if (isEmpty(value)) return null
+
+	// Type-specific validations
+	switch (fieldSchema.type) {
+		case 'string':
+			return validateString(value, fieldSchema, fieldLabel)
+		case 'number':
+		case 'integer':
+			return validateNumber(value, fieldSchema, fieldLabel)
+		case 'boolean':
+			return validateBoolean(value, fieldSchema, fieldLabel)
+		default:
+			return null
+	}
+}
+/**
+ * Validate all fields in a data object
+ * @param {Object} data - Data object to validate
+ * @param {Object} schema - Schema object with properties
+ * @param {Object} layout - Layout object with element definitions
+ * @returns {Object} Validation results keyed by field path
+ */
+export function validateAll(data, schema, layout) {
+	const validationResults = {}
+
+	if (!layout.elements || !schema.properties) return validationResults
+
+	for (const element of layout.elements) {
+		if (!element.scope) continue
+
+		const fieldPath = element.scope.replace(/^#\//, '')
+		const fieldSchema = getFieldSchema(fieldPath, schema)
+		const fieldLabel = element.label || element.title || fieldPath
+		const value = getValueByPath(data, fieldPath)
+
+		const result = validateField(value, fieldSchema, fieldLabel)
+		if (result) {
+			validationResults[fieldPath] = result
+		}
+	}
+
+	return validationResults
 }

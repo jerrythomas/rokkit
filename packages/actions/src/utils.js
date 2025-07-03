@@ -1,11 +1,11 @@
 import { find, toPairs } from 'ramda'
 
-const defaultNavigationOptions = {
-	orientation: 'vertical',
-	dir: 'ltr',
-	nested: false,
-	enabled: true
-}
+// const defaultNavigationOptions = {
+// 	orientation: 'vertical',
+// 	dir: 'ltr',
+// 	nested: false,
+// 	enabled: true
+// }
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
  *
