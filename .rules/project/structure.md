@@ -20,6 +20,33 @@ rokkit/
 └── .rules/            # Project guidelines and rules
 ```
 
+## Package Mapping
+
+This repository contains the following packages with their corresponding folder locations:
+
+| Package Name | Folder Location | Description |
+|--------------|-----------------|-------------|
+| `@rokkit/actions` | `packages/actions/` | Action utilities and helpers |
+| `@rokkit/bits-ui` | `packages/bits-ui/` | Data-driven UI components based on bits-ui |
+| `@rokkit/chart` | `packages/chart/` | Chart and visualization components |
+| `@rokkit/cli` | `packages/cli/` | Command line interface tools |
+| `@rokkit/core` | `packages/core/` | Core utilities and shared code |
+| `@rokkit/data` | `packages/data/` | Data manipulation utilities |
+| `@rokkit/forms` | `packages/forms/` | Form builder system |
+| `@rokkit/helpers` | `packages/helpers/` | Helper functions and utilities |
+| `@rokkit/icons` | `packages/icons/` | Icon components and utilities |
+| `@rokkit/states` | `packages/states/` | State management utilities |
+| `@rokkit/themes` | `packages/themes/` | Theme and styling utilities |
+| `@rokkit/tutorial` | `packages/tutorial/` | Tutorial and learning components |
+| `@rokkit/ui` | `packages/ui/` | UI component library |
+
+### Key Package Dependencies
+- `@rokkit/core` - Can be used by any package (foundational utilities)
+- `@rokkit/states` - Used by UI packages for data management
+- `@rokkit/bits-ui` - Provides data-driven wrappers for bits-ui components
+- `@rokkit/ui` - Higher-level UI components built on foundation packages
+- `@rokkit/forms` - Form system depending on ui and bits-ui packages
+
 ## Package Development (`packages/`)
 
 ### Purpose

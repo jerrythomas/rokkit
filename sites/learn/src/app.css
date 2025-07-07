@@ -88,6 +88,9 @@ input.embedded {
 [data-command-root]:focus-within::before {
   @apply bg-secondary relative bottom-0 left-0 right-0;
 }
+[data-command-group] {
+  @apply w-full;
+}
 [data-command-root] {
   @apply bg-neutral-base focus flex h-full w-full cursor-pointer select-none flex-col self-start overflow-hidden rounded-md border border-none p-2;
 }
@@ -104,11 +107,14 @@ input.embedded {
 [data-command-list] {
   @apply overflow-y-auto overflow-x-hidden;
 }
+[data-command-viewport] {
+  @apply gap-2px flex flex-col;
+}
 [data-command-empty] {
   @apply flex w-full items-center justify-center pb-6 pt-8 text-neutral-800;
 }
 [data-command-item] {
-  @apply outline-hidden border-neutral-base bg-neutral-inset flex h-10 items-center gap-2 rounded-md px-3 py-2.5 text-sm text-neutral-800;
+  @apply outline-hidden border-neutral-base bg-neutral-inset flex min-h-10 w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm text-neutral-800;
 }
 [data-command-group] {
   @apply border-none;

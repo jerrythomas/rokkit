@@ -94,6 +94,7 @@ This is a monorepo with the following structure:
 
 ### Demo Development (`sites/`)
 - Use library packages as dependencies
+- Use components from the packages (ex. @rokkit/ui) for the demo. Any custom components in the site should build on top of the library components.
 - Create progressive examples showing feature evolution
 - Follow established styling patterns
 - Include educational documentation
