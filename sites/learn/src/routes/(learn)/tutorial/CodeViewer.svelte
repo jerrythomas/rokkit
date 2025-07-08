@@ -1,5 +1,6 @@
 <script>
 	import { highlightCode } from '$lib/shiki.js'
+	import { vibe } from '@rokkit/states'
 
 	/**
 	 * Escape HTML characters for safe display
@@ -42,42 +43,19 @@
 
 	let isCodeVisible = $state(showCode)
 	let copySuccess = $state(false)
-	// let highlightedCode = $state('')
-	let isHighlighting = $state(false)
-	let codeError = $state('')
-	let highlightedCode = $derived(highlightCode(code, { lang: 'svelte' }))
+
+	let highlightedCode = $derived(
+		highlightCode(code, {
+			lang: 'svelte',
+			theme: vibe.mode == 'dark' ? 'github-dark' : 'github-light'
+		})
+	)
 	/**
 	 * Toggle code visibility and highlight code if needed
 	 */
 	async function toggleCode() {
 		isCodeVisible = !isCodeVisible
 		ontoggle?.({ showCode: isCodeVisible })
-
-		// Highlight code when showing for the first time
-		if (isCodeVisible && !highlightedCode && code) {
-			await highlightCodeAsync()
-		}
-	}
-
-	/**
-	 * Highlight code using Shiki
-	 */
-	async function highlightCodeAsync() {
-		if (!code || isHighlighting) return
-
-		isHighlighting = true
-		codeError = ''
-
-		try {
-			highlightedCode = await highlightCode(code, { lang: 'svelte' })
-		} catch (error) {
-			console.error('Failed to highlight code:', error)
-			codeError = `Syntax highlighting failed: ${error.message}`
-			// Fallback to plain text without syntax highlighting
-			highlightedCode = `<pre class="overflow-x-auto text-sm text-neutral-900 dark:text-neutral-100 bg-neutral-50 dark:bg-neutral-800 rounded p-4"><code>${escapeHtml(code)}</code></pre>`
-		} finally {
-			isHighlighting = false
-		}
 	}
 
 	/**
@@ -126,7 +104,7 @@
 
 		<!-- Controls -->
 		<div
-			class="border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-700 dark:bg-neutral-800"
+			class="border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-700 dark:bg-neutral-200"
 		>
 			<div class="flex items-center justify-between">
 				<button
@@ -192,29 +170,27 @@
 
 	<!-- Code Display -->
 	{#if isCodeVisible && code}
-		<div
-			class="rounded-lg border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800"
-		>
+		<div class="rounded-lg bg-neutral-100 dark:border-neutral-700">
 			<div class="border-b border-neutral-200 bg-neutral-100 px-4 py-2 dark:border-neutral-700">
 				<div class="flex items-center justify-between">
-					<span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">App.svelte</span>
+					<span class="text-sm font-medium text-neutral-700">App.svelte</span>
 					<span class="text-xs text-neutral-500 dark:text-neutral-400"
 						>{code.split('\n').length} lines</span
 					>
 				</div>
 			</div>
-			<div class="p-4">
-				{#await highlightedCode}
-					<!-- Content displayed while the promise is pending (loading state) -->
-					<p>Loading...</p>
-				{:then value}
-					<!-- Content displayed when the promise resolves successfully -->
-					{@html value}
-				{:catch error}
-					<!-- Content displayed if the promise is rejected (error state) -->
-					<p style="color: red;">Error: {error.message}</p>
-				{/await}
-			</div>
+			<!-- <div class="bg-neutral-50 p-4 dark:bg-neutral-200"> -->
+			{#await highlightedCode}
+				<!-- Content displayed while the promise is pending (loading state) -->
+				<p>Loading...</p>
+			{:then value}
+				<!-- Content displayed when the promise resolves successfully -->
+				{@html value}
+			{:catch error}
+				<!-- Content displayed if the promise is rejected (error state) -->
+				<p style="color: red;">Error: {error.message}</p>
+			{/await}
+			<!-- </div> -->
 		</div>
 	{/if}
 </div>

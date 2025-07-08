@@ -76,28 +76,7 @@ export async function highlightCode(code, options = {}) {
 
 		return hl.codeToHtml(code, {
 			lang,
-			theme,
-			transformers: [
-				{
-					pre(node) {
-						node.properties.class = [
-							...(node.properties.class || []),
-							'overflow-x-auto',
-							'!bg-transparent',
-							'!p-0',
-							'm-0'
-						]
-					},
-					code(node) {
-						node.properties.class = [
-							...(node.properties.class || []),
-							'block',
-							'text-sm',
-							'leading-relaxed'
-						]
-					}
-				}
-			]
+			theme
 		})
 	} catch (error) {
 		throw new Error(`Failed to highlight code: ${error.message}`)

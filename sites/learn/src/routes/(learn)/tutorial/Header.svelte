@@ -11,7 +11,7 @@
 </script>
 
 <header
-	class="border-b border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+	class="border-b border-neutral-200 bg-neutral-100 dark:border-neutral-100 dark:bg-neutral-100"
 >
 	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<div>

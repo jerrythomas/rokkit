@@ -34,7 +34,7 @@ const components = [
 ]
 
 export default defineConfig({
-	darkMode: 'attribute',
+	// darkMode: 'attribute',
 	extractors: [extractorSvelte()],
 	rules: [...palette],
 
@@ -96,18 +96,10 @@ export default defineConfig({
 		},
 		colors: themeColors()
 	},
-	variants: [
-		(matcher) => {
-			if (!matcher.startsWith('dark:')) return matcher
-			return {
-				matcher: matcher.slice(5),
-				selector: (s) => `[data-mode="dark"] ${s}`
-			}
-		}
-	],
+
 	presets: [
 		presetWind3({
-			dark: 'class'
+			dark: 'attribute'
 		}),
 		presetTypography(),
 		presetIcons({
@@ -122,6 +114,15 @@ export default defineConfig({
 				// )
 			}
 		})
+	],
+	variants: [
+		(matcher) => {
+			if (!matcher.startsWith('dark:')) return matcher
+			return {
+				matcher: matcher.slice(5),
+				selector: (s) => `[data-mode="dark"] ${s}`
+			}
+		}
 	],
 	transformers: [transformerDirectives(), transformerVariantGroup()]
 })
