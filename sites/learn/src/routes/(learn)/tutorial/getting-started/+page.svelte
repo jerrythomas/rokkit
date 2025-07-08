@@ -158,7 +158,7 @@
 						class="rounded bg-neutral-200 px-2 py-1 text-sm dark:bg-neutral-700">+page.svelte</code
 					> file:
 				</p>
-				<div class="mb-4 rounded-md bg-neutral-900 p-4 dark:bg-neutral-800">
+				<div class="mb-4 rounded-md bg-neutral-900 dark:bg-neutral-800">
 					<code class="text-sm">
 						<div class="text-blue-400">&lt;script&gt;</div>
 						<div class="ml-4 text-yellow-300">import</div>

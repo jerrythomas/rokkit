@@ -1,13 +1,36 @@
 <script>
+	import { onMount } from 'svelte'
 	import { List } from '@rokkit/ui'
+	import CodeViewer from '../CodeViewer.svelte'
+	import { loadDemo } from '../demo-loader.js'
 
+	// Demo data for CodeViewer
+	let demoComponent = $state(null)
+	let demoCode = $state('')
+	let demoLoading = $state(true)
+	let demoError = $state('')
+
+	// Fallback demo data
 	let items = $state([
 		{ text: 'Fruits' },
 		{ text: 'Vegetables' },
 		{ text: 'Nuts' },
 		{ text: 'Spices' }
 	])
-	let value = $state(null)
+	let value = $state(/** @type {any} */ (null))
+
+	onMount(async () => {
+		try {
+			const demo = await loadDemo('introduction')
+			demoComponent = demo.component
+			demoCode = demo.code
+		} catch (error) {
+			console.error('Failed to load demo:', error)
+			demoError = error.message
+		} finally {
+			demoLoading = false
+		}
+	})
 </script>
 
 <svelte:head>
@@ -18,7 +41,7 @@
 	/>
 </svelte:head>
 
-<div class="space-y-8">
+<div class="w-full space-y-8">
 	<!-- Header -->
 	<header class="border-b border-neutral-200 pb-8 dark:border-neutral-700">
 		<div class="flex items-center space-x-3">
@@ -44,39 +67,18 @@
 				stunning user interfaces with unmatched ease and flexibility.
 			</p>
 
-			<div class="mb-6 rounded-lg bg-neutral-50 p-6 dark:bg-neutral-800">
+			<div class="mb-6 rounded-lg bg-neutral-50 dark:bg-neutral-800">
 				<h3 class="mb-4 text-xl font-semibold text-neutral-900 dark:text-white">
 					The library includes:
 				</h3>
-				<ul class="grid grid-cols-1 gap-2 md:grid-cols-2">
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Data-Driven Components</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Form Elements & Generators</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Grouped Components</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Composable components</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Actions</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Stores</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Useful Utility Functions</span>
-					</li>
+				<ul class="marker:text-primary-500 list-disc">
+					<li>Data-Driven Components</li>
+					<li>Form Elements & Generators</li>
+					<li>Grouped Components</li>
+					<li>Composable components</li>
+					<li>Actions</li>
+					<li>Stores</li>
+					<li>Useful Utility Functions</li>
 				</ul>
 			</div>
 
@@ -95,18 +97,73 @@
 				components work:
 			</p>
 
-			<div
-				class="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
-			>
-				<div class="mb-4">
-					<List bind:items bind:value />
+			{#if demoLoading}
+				<div
+					class="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
+				>
+					<div class="text-center text-neutral-500 dark:text-neutral-400">
+						Loading interactive demo...
+					</div>
 				</div>
-				<p class="text-sm text-neutral-600 dark:text-neutral-400">
-					Selected Value: <strong class="text-neutral-900 dark:text-white"
-						>{value?.text || 'None'}</strong
+			{:else if demoError}
+				<div
+					class="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20"
+				>
+					<div class="mb-3 flex items-center">
+						<svg
+							class="mr-2 h-5 w-5 text-red-600 dark:text-red-400"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 18.5c-.77.833.192 2.5 1.732 2.5z"
+							></path>
+						</svg>
+						<span class="font-medium text-red-900 dark:text-red-100">Demo Loading Failed</span>
+					</div>
+					<p class="mb-4 text-sm text-red-700 dark:text-red-300">{demoError}</p>
+					<div class="text-sm text-red-600 dark:text-red-400">Showing fallback demo instead:</div>
+					<div
+						class="mt-4 rounded-lg border border-red-300 bg-white p-4 dark:border-red-700 dark:bg-neutral-900"
 					>
-				</p>
-			</div>
+						<div class="mb-4">
+							<List bind:items bind:value />
+						</div>
+						<p class="text-sm text-neutral-600 dark:text-neutral-400">
+							Selected Value: <strong class="text-neutral-900 dark:text-white"
+								>{value?.text || 'None'}</strong
+							>
+						</p>
+					</div>
+				</div>
+			{:else if demoComponent}
+				<CodeViewer
+					component={demoComponent}
+					code={demoCode}
+					title="Interactive List Demo"
+					description="A data-driven List component with field mapping and custom rendering"
+					ontoggle={(event) => console.log('Code toggled:', event.showCode)}
+					oncopy={(event) => console.log('Code copied:', event.code.length + ' characters')}
+				/>
+			{:else}
+				<!-- Fallback to simple inline demo -->
+				<div
+					class="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
+				>
+					<div class="mb-4">
+						<List bind:items bind:value />
+					</div>
+					<p class="text-sm text-neutral-600 dark:text-neutral-400">
+						Selected Value: <strong class="text-neutral-900 dark:text-white"
+							>{value?.text || 'None'}</strong
+						>
+					</p>
+				</div>
+			{/if}
 		</section>
 
 		<!-- Why Rokkit -->
@@ -118,29 +175,25 @@
 			</p>
 
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-				<div
-					class="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20"
-				>
-					<h3 class="mb-3 font-semibold text-red-900 dark:text-red-100">Common Challenges</h3>
-					<ul class="space-y-2 text-sm text-red-800 dark:text-red-200">
-						<li>• Converting API data to component-compatible formats</li>
-						<li>• Additional coding effort for composable components</li>
-						<li>• Theme misalignment with existing libraries</li>
-						<li>• Inconsistent iconography across components</li>
-						<li>• Limited component extensibility</li>
+				<div class="border-primary-200 rounded-lg border p-6">
+					<h3 class="mb-3 font-semibold">Common Challenges</h3>
+					<ul class="marker:text-primary-500 space-y-2 text-sm">
+						<li>Converting API data to component-compatible formats</li>
+						<li>Additional coding effort for composable components</li>
+						<li>Theme misalignment with existing libraries</li>
+						<li>Inconsistent iconography across components</li>
+						<li>Limited component extensibility</li>
 					</ul>
 				</div>
 
-				<div
-					class="rounded-lg border border-green-200 bg-green-50 p-6 dark:border-green-800 dark:bg-green-900/20"
-				>
-					<h3 class="mb-3 font-semibold text-green-900 dark:text-green-100">Rokkit Solutions</h3>
-					<ul class="space-y-2 text-sm text-green-800 dark:text-green-200">
-						<li>• Efficient data transformation out of the box</li>
-						<li>• Improved component reusability</li>
-						<li>• Flexible library integration with theming</li>
-						<li>• Unified iconography system</li>
-						<li>• Adaptable components designed for extensibility</li>
+				<div class="border-primary-200 rounded-lg border p-6">
+					<h3 class="mb-3 font-semibold">Rokkit Solutions</h3>
+					<ul class="marker:text-primary-500 space-y-2 text-sm">
+						<li>Efficient data transformation out of the box</li>
+						<li>Improved component reusability</li>
+						<li>Flexible library integration with theming</li>
+						<li>Unified iconography system</li>
+						<li>Adaptable components designed for extensibility</li>
 					</ul>
 				</div>
 			</div>

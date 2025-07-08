@@ -34,8 +34,10 @@ const components = [
 ]
 
 export default defineConfig({
+	darkMode: 'attribute',
 	extractors: [extractorSvelte()],
 	rules: [...palette],
+
 	safelist: [
 		...defaultIcons,
 		'i-rokkit:navigate-right',
@@ -94,6 +96,15 @@ export default defineConfig({
 		},
 		colors: themeColors()
 	},
+	variants: [
+		(matcher) => {
+			if (!matcher.startsWith('dark:')) return matcher
+			return {
+				matcher: matcher.slice(5),
+				selector: (s) => `[data-mode="dark"] ${s}`
+			}
+		}
+	],
 	presets: [
 		presetWind3({
 			dark: 'class'

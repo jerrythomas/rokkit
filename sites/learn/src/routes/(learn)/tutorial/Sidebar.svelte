@@ -23,7 +23,7 @@
 	let { sections, fields, currentSection, onNavigate } = $props()
 </script>
 
-<nav class="h-full">
+<nav class="flex flex-1">
 	<GroupedList items={sections} {fields} onSelect={onNavigate}>
 		{#snippet child(proxy)}
 			<div class="flex w-full flex-col">

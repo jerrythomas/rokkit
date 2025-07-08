@@ -26,26 +26,19 @@
 	/>
 </svelte:head>
 
-<div class="flex h-full flex-col bg-neutral-50 dark:bg-neutral-900">
-	<Header title={currentGroup.title} description={currentGroup.description} />
-
-	<div class="flex h-full w-full max-w-7xl flex-1 overflow-hidden">
-		<div class="grid h-full w-full grid-cols-1 lg:grid-cols-4">
-			<div class="h-full overflow-y-auto lg:col-span-1">
-				<Sidebar
-					sections={data.sections}
-					fields={data.fields}
-					{currentSection}
-					onNavigate={navigateToSection}
-				/>
-			</div>
-
-			<!-- Main Content -->
-			<main class="h-full overflow-y-auto py-8 lg:col-span-3">
-				<div class="w-full rounded-lg p-4 shadow-sm">
-					{@render children()}
-				</div>
-			</main>
-		</div>
+<Header title={currentGroup.title} description={currentGroup.description} />
+<div class="grid w-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-4">
+	<div class=" overflow-y-auto lg:col-span-1">
+		<Sidebar
+			sections={data.sections}
+			fields={data.fields}
+			{currentSection}
+			onNavigate={navigateToSection}
+		/>
 	</div>
+
+	<!-- Main Content -->
+	<main class="h-full overflow-y-auto p-8 lg:col-span-3">
+		{@render children()}
+	</main>
 </div>

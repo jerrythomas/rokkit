@@ -1,0 +1,23 @@
+.shiki-container .shiki {
+  background: transparent !important;
+  font-family: 'Victor Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.shiki-container pre {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+}
+
+.shiki-container code {
+  display: block;
+  padding: 0;
+  background: transparent !important;
+}
+
+/* Dark mode support for fallback */
+.dark .shiki-container .shiki {
+  color-scheme: dark;
+}
