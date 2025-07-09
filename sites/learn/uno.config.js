@@ -4,6 +4,7 @@ import {
 	presetIcons,
 	presetTypography,
 	presetMini,
+	presetWind4,
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
@@ -38,6 +39,8 @@ export default defineConfig({
 	safelist: [...defaultIcons, ...components],
 	shortcuts: [
 		...semanticShortcuts('neutral'),
+		...semanticShortcuts('primary'),
+		...semanticShortcuts('secondary'),
 		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit'))
 	],
 	theme: {
@@ -47,6 +50,7 @@ export default defineConfig({
 			sans: ['Overpass', 'ui-serif', 'sans-serif'],
 			body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
 		},
+
 		colors: {
 			primary: colors.orange,
 			neutral: colors.stone,
@@ -60,7 +64,7 @@ export default defineConfig({
 	},
 
 	presets: [
-		presetMini({
+		presetWind4({
 			dark: {
 				light: '[data-mode="light"]',
 				dark: '[data-mode="dark"]'

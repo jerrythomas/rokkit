@@ -1,0 +1,41 @@
+/* Global styles */
+*:focus {
+  @apply outline-secondary outline outline-2 outline-offset-2;
+}
+*[tabindex='-1']:focus {
+  @apply outline-none;
+}
+* {
+  @apply box-border;
+}
+
+/* Icon styles */
+[data-tag-icon] {
+  @apply flex flex-shrink-0 flex-grow-0 items-center justify-center;
+  /* @apply h-6 min-h-6 w-6; */
+}
+/* button > [data-tag-icon] {
+  @apply text-md aspect-square cursor-pointer select-none;
+} */
+[data-tag-icon] > i {
+  @apply mx-auto aspect-square text-current;
+}
+[data-tag-icon].large {
+  @apply text-3xl;
+}
+[data-tag-icon].medium {
+  @apply text-lg leading-5;
+}
+[data-tag-icon].small {
+  @apply leading-4;
+  font-size: 1rem;
+}
+button > [data-tag-icon].large {
+  @apply h-12 w-12;
+}
+button > [data-tag-icon].medium {
+  @apply h-8 w-8;
+}
+button > [data-tag-icon].small {
+  @apply h-6 w-6;
+}

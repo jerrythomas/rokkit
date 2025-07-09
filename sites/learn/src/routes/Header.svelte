@@ -69,7 +69,7 @@
 			<Toggle options={codeOptions} value={codeValue} onchange={handleCodeVisibility} />
 		{/if}
 		<ThemeSwitcher />
-		<a href="https://github.com/jerrythomas/rokkit" target="_blank" class="square">
+		<a href="https://github.com/jerrythomas/rokkit" target="_blank" class="square button">
 			<Icon name="i-logo:github" label="Rokkit on Github" />
 		</a>
 	</settings>

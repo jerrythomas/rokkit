@@ -8,14 +8,16 @@
 @import '@fontsource/open-sans';
 @import '@fontsource/open-sans/300.css';
 
-@import '@rokkit/themes/markdown.css';
+/* @import '@rokkit/themes/markdown.css'; */
 /* @import '@rokkit/themes/palette.css'; */
 /* @import '@rokkit/themes/prism.css'; */
-@import '@rokkit/themes/minimal.css';
-@import '@rokkit/themes/material.css';
-@import '@rokkit/themes/rokkit.css';
+/* @import '@rokkit/themes/minimal.css'; */
+/* @import '@rokkit/themes/material.css'; */
+/* @import '@rokkit/themes/rokkit.css'; */
+@import './theme/base.css';
 @import './theme/input.css';
 @import './theme/shiki.css';
+@import './theme/list.css';
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
@@ -25,115 +27,6 @@ body > app {
   @apply relative flex h-screen w-full flex-col overflow-hidden;
 }
 
-input.embedded {
+/* input.embedded {
   @apply border-box h-full w-full border-none bg-transparent focus:outline-none;
-}
-/* [data-style="rokkit"] button {
-  @apply hover:text-secondary rounded-md text-neutral-700;
-}
-[data-style="rokkit"] button:focus {
-  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 outline-none dark:text-neutral-800;
-}
-[data-style="rokkit"] button:disabled {
-  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
 } */
-[data-style='rokkit'] rk-toggle button {
-  @appbly bg-neutral-50 text-neutral dark:bg-neutral-950 dark:hover:bg-neutral-600 hover:bg-neutral-300 hover:text-primary rounded-md;
-}
-
-/* [data-style="rokkit"] rk-toggle > button:hover {
-  @appbly bg-neutral-muted text-primary;
-} */
-
-[data-style='rokkit'] a.button {
-  @apply decoration-none;
-}
-
-[data-style='rokkit'] .button.is-primary:hover {
-  @apply from-secondary to-primary;
-}
-
-[data-style='rokkit'] rk-toggle button {
-  @apply hover:text-primary rounded-md bg-neutral-50 text-neutral-700 hover:bg-neutral-300 dark:bg-neutral-950 dark:text-neutral-200 dark:hover:bg-neutral-600;
-}
-[data-style='rokkit'] rk-toggle rk-icon {
-  @apply hover:text-primary-600 dark:hover:text-primary-300 text-neutral-700 dark:text-neutral-200;
-}
-
-[data-style='rokkit'] .square {
-  @apply p-2px rounded-md border border-neutral-300 bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-950;
-}
-[data-style='rokkit'] .square rk-icon {
-  @apply h-8 w-8 rounded-md;
-}
-
-[data-style='rokkit'] .square rk-icon {
-  @apply hover:text-primary-600 dark:hover:text-primary-300 text-neutral-700 hover:bg-neutral-300 dark:bg-neutral-600 dark:text-neutral-200;
-}
-[data-style='rokkit'] .square:focus-within {
-  @apply ring-secondary-600 dark:ring-secondary-300 ring-2;
-}
-
-[data-style='rokkit'] rk-icon > i {
-  color: inherit;
-}
-/* rk-icon.tp-500 {
-  @apply text-primary-500;
-} */
-
-[data-command-root]:focus-within {
-  @apply m-2px box-margin;
-}
-[data-command-root]:focus-within::before {
-  @apply bg-secondary relative bottom-0 left-0 right-0;
-}
-[data-command-group] {
-  @apply w-full;
-}
-[data-command-root] {
-  @apply focus bg-neutral-inset flex w-full flex-1 cursor-pointer select-none flex-col self-start overflow-hidden rounded-md border border-none;
-}
-[data-command-list] {
-  @apply overflow-y-auto overflow-x-hidden;
-}
-[data-command-viewport] {
-  @apply w-full items-center justify-center text-sm text-neutral-900 dark:text-neutral-100;
-}
-
-[data-command-input] {
-  @apply focus-override h-input placeholder:text-neutral border-primary inline-flex truncate rounded-full border-none bg-neutral-200 px-4 text-sm leading-loose outline-none transition-colors focus:ring-0 dark:bg-neutral-800;
-}
-[data-command-input-label] {
-  @apply border-none;
-}
-
-[data-command-viewport] {
-  @apply gap-2px flex flex-col;
-}
-[data-command-empty] {
-  @apply flex w-full items-center justify-center pb-6 pt-8 text-neutral-800 dark:text-neutral-100;
-}
-[data-command-item] {
-  @apply outline-hidden bg-neutral-inset text-neutral-contrast flex min-h-8 w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm;
-}
-[data-command-group] {
-  @apply border-none;
-}
-[data-command-group-heading] {
-  @apply text-neutral-elevated px-3 py-2 text-xs leading-loose;
-}
-[data-command-group-items] {
-  @apply gap-2px flex flex-col;
-}
-a[data-command-item] {
-  @apply text-neutral-contrast no-underline;
-}
-a[data-command-item]:visited {
-  @apply text-neutral-contrast;
-}
-[data-selected] {
-  @apply bg-neutral-subtle rounded-md;
-}
-[data-command-separator] {
-  @apply bg-neutral-inset mt-3 h-px w-full;
-}

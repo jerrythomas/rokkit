@@ -9,7 +9,7 @@
 </script>
 
 <main
-	class="bg-neutral-inset text-neutral-overlay relative flex h-full w-full max-w-full flex-col overflow-auto"
+	class="bg-neutral-subtle text-neutral-overlay relative flex h-full w-full max-w-full flex-col overflow-auto p-4"
 >
 	<Background />
 	<div
@@ -23,7 +23,12 @@
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>
 			<span class="flex text-xl">
-				<a class="button is-primary" href="/tutorial/introduction"> Get Started </a>
+				<a
+					class="button is-primary bg-gradient-to-r from-orange-400 to-orange-600"
+					href="/tutorial/introduction"
+				>
+					Get Started
+				</a>
 			</span>
 		</div>
 	</div>
