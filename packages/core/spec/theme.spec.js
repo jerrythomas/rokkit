@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { shadesOf, stateColors, themeColors, contrastColors, themeRules } from '../src/theme'
+import {
+	shadesOf,
+	stateColors,
+	themeColors,
+	contrastColors,
+	themeRules,
+	semanticShortcuts
+} from '../src/theme'
 import contrast from './fixtures/contrast.json'
 describe('theme', () => {
 	const palettes = ['primary', 'secondary', 'other']
@@ -472,5 +479,33 @@ describe('theme', () => {
 			expect(result[1][0]).toEqual('zinc-mode-dark')
 			expect(result[1][1]).toEqual(zincDark)
 		})
+	})
+})
+
+describe('semanticShortcuts', () => {
+	// it('should generate shortcuts for primary color', () => {
+	// 	const shortcuts = semanticShortcuts('primary')
+	// 	expect(shortcuts).toContainEqual([
+	// 		/^(.+):bg-primary-base$/,
+	// 		([, variant]) => `${variant}:bg-primary-50 ${variant}:dark:bg-primary-950`
+	// 	])
+	// 	expect(shortcuts).toContainEqual(['bg-primary-base', 'bg-primary-50 dark:bg-primary-950'])
+	// })
+
+	it('should generate shortcuts for secondary color', () => {
+		const shortcuts = semanticShortcuts('secondary')
+		expect(shortcuts.length).toBe(9 * 2 * 3)
+		expect(shortcuts[0]).toEqual([/^(.+):bg-secondary-base$/, expect.any(Function)])
+		expect(shortcuts[1]).toEqual(['bg-secondary-base', 'bg-secondary-50 dark:bg-secondary-950'])
+		expect(shortcuts[2]).toEqual([/^(.+):border-secondary-base$/, expect.any(Function)])
+		expect(shortcuts[3]).toEqual([
+			'border-secondary-base',
+			'border-secondary-50 dark:border-secondary-950'
+		])
+		expect(shortcuts[4]).toEqual([/^(.+):text-secondary-base$/, expect.any(Function)])
+		expect(shortcuts[5]).toEqual([
+			'text-secondary-base',
+			'text-secondary-50 dark:text-secondary-950'
+		])
 	})
 })

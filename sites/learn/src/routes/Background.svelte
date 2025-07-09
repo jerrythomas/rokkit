@@ -10,7 +10,7 @@
 >
 	<path
 		d="M1648.5 1352C1220.5 994.5 1934 521 1525.5 167.5C1117 -186 0 274 0 274V0H3072V983.5C3072 983.5 2044.5 1682.77 1648.5 1352Z"
-		class="text-neutral-base fill-current"
+		class="fill-current text-neutral-100 dark:text-neutral-900"
 	/>
 	{#if !media.small.current}
 		<g data-name="rocket">

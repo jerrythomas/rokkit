@@ -3,15 +3,13 @@ import {
 	defineConfig,
 	presetIcons,
 	presetTypography,
-	presetWind3,
+	presetMini,
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
-
-import { importIcons } from '@rokkit/core'
-import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
-// import { FileSystemIconLoader } from '@iconify/utils/lib/loader/node-loaders'
-export const palette = themeRules('rokkit', { neutral: 'shark' })
+import { colors } from '@unocss/preset-mini/colors'
+import { importIcons, semanticShortcuts } from '@rokkit/core'
+import { iconShortcuts, defaultIcons } from '@rokkit/themes'
 
 const icons = {
 	rokkit: '@rokkit/icons/ui.json',
@@ -31,62 +29,17 @@ const components = [
 	'rating',
 	'switch-button',
 	'range'
-]
+].map((icon) => `i-component:${icon}`)
 
 export default defineConfig({
-	// darkMode: 'attribute',
+	darkMode: 'attribute',
 	extractors: [extractorSvelte()],
-	rules: [...palette],
-
-	safelist: [
-		...defaultIcons,
-		'i-rokkit:navigate-right',
-		'navigate-left',
-		...components.map((icon) => `i-component:${icon}`),
-		'text-neutral-base',
-		'text-neutral-subtle',
-		'text-neutral-muted',
-		'text-primary',
-		'text-primary-muted',
-		'bg-neutral-base',
-		'bg-neutral-subtle',
-		'bg-neutral-muted',
-		'bg-neutral-inset',
-		'i-rokkit:github',
-		'i-rokkit:menu',
-		'i-rokkit:accordion-closed',
-		'i-rokkit:heart-filled',
-		'i-rokkit:heart-outlined',
-		'i-rokkit:folder-opened',
-		'i-rokkit:folder-closed',
-		'bg-green',
-		'svelte',
-		'js',
-		'folder',
-		'css',
-		'type-array',
-		'type-object',
-		'type-string',
-		'type-number',
-		'type-boolean',
-		'-translate-x-full',
-		'i-app:code-visible',
-		'i-app:code-hidden',
-		'i-file:css'
+	// rules: [...palette],
+	safelist: [...defaultIcons, ...components],
+	shortcuts: [
+		...semanticShortcuts('neutral'),
+		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit'))
 	],
-	shortcuts: {
-		...iconShortcuts(defaultIcons, 'i-rokkit'),
-		'type-array': 'i-component:input-array',
-		'type-object': 'i-component:input-object',
-		'type-string': 'i-component:input-text',
-		'type-number': 'i-component:input-number',
-		'type-boolean': 'i-component:checkbox',
-		'sort-descending': 'i-solar:sort-from-bottom-to-top-line-duotone',
-		'sort-ascending': 'i-solar:sort-from-top-to-bottom-line-duotone',
-		'sort-desc': 'i-solar:sort-from-bottom-to-top-line-duotone',
-		'sort-asc': 'i-solar:sort-from-top-to-bottom-line-duotone',
-		'sort-none': 'i-solar:sort-vertical-line-duotone'
-	},
 	theme: {
 		fontFamily: {
 			mono: ['Victor Mono', 'monospace'],
@@ -94,12 +47,24 @@ export default defineConfig({
 			sans: ['Overpass', 'ui-serif', 'sans-serif'],
 			body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
 		},
-		colors: themeColors()
+		colors: {
+			primary: colors.orange,
+			neutral: colors.stone,
+			secondary: colors.pink,
+			accent: colors.blue,
+			error: colors.red,
+			warning: colors.yellow,
+			success: colors.green,
+			info: colors.sky
+		}
 	},
 
 	presets: [
-		presetWind3({
-			dark: 'attribute'
+		presetMini({
+			dark: {
+				light: '[data-mode="light"]',
+				dark: '[data-mode="dark"]'
+			}
 		}),
 		presetTypography(),
 		presetIcons({
@@ -109,20 +74,8 @@ export default defineConfig({
 					import('./static/icons/files/icons.json', { with: { type: 'json' } }).then(
 						(i) => i.default
 					)
-				// file: FileSystemIconLoader('./static/icons/files', (svg) =>
-				// 	svg.replace(/black/, 'currentColor')
-				// )
 			}
 		})
-	],
-	variants: [
-		(matcher) => {
-			if (!matcher.startsWith('dark:')) return matcher
-			return {
-				matcher: matcher.slice(5),
-				selector: (s) => `[data-mode="dark"] ${s}`
-			}
-		}
 	],
 	transformers: [transformerDirectives(), transformerVariantGroup()]
 })

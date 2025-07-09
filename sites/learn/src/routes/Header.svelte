@@ -38,7 +38,7 @@
 </script>
 
 <header
-	class="bg-neutral-base relative flex min-h-14 w-full items-center justify-between {className}"
+	class="bg-neutral-inset text-neutral-overlay relative flex min-h-14 w-full items-center justify-between {className}"
 >
 	{#if loading}
 		<ProgressBar class="z-5 absolute top-0" />
@@ -56,7 +56,7 @@
 		{/if}
 	</div>
 	<settings class="flex items-center justify-end gap-3 pr-4">
-		<nav class="flex gap-3 pr-3 uppercase text-neutral-900">
+		<nav class="flex gap-3 pr-3 uppercase">
 			{#each menu as item, index (index)}
 				<a
 					href="/{item.slug}"

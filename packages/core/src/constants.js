@@ -102,6 +102,18 @@ export const defaultThemeMapping = {
 	info: 'cyan'
 }
 
+export const TONE_MAP = {
+	base: 50,
+	inset: 100,
+	subtle: 200,
+	muted: 300,
+	raised: 400,
+	elevated: 600,
+	floating: 700,
+	contrast: 800,
+	overlay: 900
+}
+
 /**
  * Generate a state icon mapping from a list of icon names
  *

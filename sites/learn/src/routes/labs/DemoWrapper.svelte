@@ -3,9 +3,7 @@
 </script>
 
 <figure class="inset-ring inset-ring-neutral-50 flex flex-col gap-1 rounded-xl bg-neutral-50 p-1">
-	<div
-		class="not-prose bg-neutral-inset outline-neutral-base overflow-auto rounded-lg p-8 outline dark:bg-gray-950/50"
-	>
+	<div class="not-prose bg-neutral-muted overflow-auto rounded-lg p-8 outline">
 		{@render children?.()}
 	</div>
 	<div>

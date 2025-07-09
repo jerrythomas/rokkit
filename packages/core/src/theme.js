@@ -1,4 +1,4 @@
-import { defaultThemeMapping, defaultColors, syntaxColors } from './constants.js'
+import { defaultThemeMapping, defaultColors, syntaxColors, TONE_MAP } from './constants.js'
 import { shades, defaultPalette } from './colors/index.js'
 import { hex2rgb } from './utils'
 
@@ -202,4 +202,37 @@ export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, color
 	const darkTheme = createThemeVariant(name, 'dark', darkRules, syntaxColors['one-dark'].dark)
 
 	return [lightTheme, darkTheme]
+}
+
+/**
+ * Generates UnoCSS shortcut definitions for semantic tones with bg, border, text.
+ * @param {string} name - Color name (e.g., 'primary')
+ * @returns {Array} Array of shortcut definitions
+ */
+export function semanticShortcuts(name) {
+	const prefixes = ['bg', 'border', 'text']
+	const shortcuts = []
+
+	for (const [toneName, lightValue] of Object.entries(TONE_MAP)) {
+		const darkValue = 1000 - lightValue
+
+		for (const prefix of prefixes) {
+			// Variant-prefixed regex (e.g., hover:bg-primary-base)
+			const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}$`)
+			shortcuts.push([
+				variantPattern,
+				([, variant]) =>
+					`${variant}:${prefix}-${name}-${lightValue} ${variant}:dark:${prefix}-${name}-${darkValue}`
+			])
+
+			// Exact static shortcut (e.g., bg-primary-base)
+			const exactPattern = `${prefix}-${name}-${toneName}`
+			shortcuts.push([
+				exactPattern,
+				`${prefix}-${name}-${lightValue} dark:${prefix}-${name}-${darkValue}`
+			])
+		}
+	}
+
+	return shortcuts
 }

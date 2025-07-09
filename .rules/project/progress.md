@@ -42,6 +42,14 @@
 | 4. Validation | 📋 Planned | Real-time validation and message handling | `/forms/validation` |
 | 5. Advanced Features | 📋 Planned | Custom snippets and complex layouts | `/forms/advanced` |
 
+### Shared Components
+| Component | Status | Description | Location |
+|-----------|--------|-------------|----------|
+| CodeViewer | ✅ Complete | Demo component with source code display and copy functionality | `tutorial/CodeViewer.svelte` |
+| Demo Loader | ✅ Complete | Utility for loading demo components and source code | `tutorial/demo-loader.js` |
+| Source Code API | ✅ Complete | API endpoint for serving demo source files securely | `/api/source-code` |
+| Syntax Highlighting | ✅ Complete | Shiki.js integration for code highlighting | `$lib/shiki.js` |
+
 ### Component Migration Status (Background Task)
 
 ### Selection Components
@@ -79,6 +87,14 @@
 | Pill | ✅ Complete | Wrapper component |
 
 ## Implementation Priorities
+
+### Tutorial System (Recently Completed)
+1. **CodeViewer Component** - ✅ Complete - Reusable component for demo display with source code viewing
+2. **Demo Structure** - ✅ Complete - Standardized src/App.svelte pattern for maintainable demos
+3. **Source Code Loading** - ✅ Complete - API endpoint and fallback strategies for code display
+4. **Copy Functionality** - ✅ Complete - One-click code copying with user feedback
+5. **Error Handling** - ✅ Complete - Proper error display instead of hardcoded fallbacks
+6. **Code Highlighting** - ✅ Complete - Shiki.js integration for syntax highlighting
 
 ### Forms System (Active)
 1. **FormRenderer Tutorial** (`/forms/renderer`) - Complete snippet-based rendering examples
@@ -150,6 +166,16 @@ All components must meet:
 - **URL Structure**: Clean slug-based URLs (`/forms/inputs`, `/forms/builder`) instead of numbered prefixes
 - **Browser Compatibility**: Fixed URL constructor issues for cross-environment compatibility
 
+### Tutorial System Decisions
+- **Demo Structure**: Standardized `src/App.svelte` pattern for maintainable tutorial demos
+- **Source Code Loading**: Multi-strategy approach (API endpoint, raw imports, error on failure)
+- **Component Separation**: CodeViewer as shared component, demo-loader as utility module
+- **Security**: Path validation and file type restrictions for source code API
+- **User Experience**: Toggle code view, copy functionality, loading states
+- **Error Handling**: Show clear error messages instead of hardcoded fallback code
+- **Syntax Highlighting**: Shiki.js integration with fallback to plain text
+- **Code Safety**: Proper HTML escaping and error boundaries
+
 ### Architecture Decisions (Background)
 - **Field Mapping Priority**: Preserve existing field mapping system over bits-ui native patterns
 - **Wrapper Strategy**: Use bits-ui as foundation but wrap with Rokkit API layer
@@ -165,6 +191,14 @@ All components must meet:
 
 ## LLM Development Notes
 
+### When Working on Tutorial System
+1. **Use CodeViewer for demos** - Replace hardcoded examples with CodeViewer components
+2. **Follow demo structure** - Create `src/App.svelte` files for reusable, testable demos
+3. **Show errors clearly** - Display error messages instead of hardcoded fallback code
+4. **Handle loading states** - Show loading indicators while demos are being imported
+5. **Security considerations** - Only allow source code access within tutorial directories
+6. **Proper error handling** - Use try/catch blocks and show meaningful error messages
+
 ### When Working on Forms System
 1. **Maintain separate validation state** - validation should be user-action triggered, not automatic
 2. **Preserve element structure** - scope, type, value, override, props pattern is critical
@@ -178,6 +212,15 @@ All components must meet:
 3. **Snippet support required** - users expect to customize rendering via snippets
 4. **Accessibility is non-negotiable** - keyboard navigation and ARIA support mandatory
 5. **Performance matters** - test with realistic datasets (100-1000+ items)
+
+### Tutorial System Patterns
+- Demo structure: `tutorial/{section}/{topic}/src/App.svelte`
+- CodeViewer usage: `<CodeViewer component={demoComponent} code={demoCode} title="..." description="..." />`
+- Demo loading: `const demo = await loadDemo('section/topic')`
+- Error handling: Use `demoError` state to show clear error messages
+- API endpoint: `/api/source-code?path=src/routes/(learn)/tutorial/...`
+- Code highlighting: Automatic syntax highlighting with Shiki.js
+- Error boundaries: Proper try/catch blocks and HTML escaping
 
 ### Forms System Patterns
 - FormBuilder constructor: `new FormBuilder(data, schema?, layout?)`

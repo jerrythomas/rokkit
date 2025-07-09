@@ -14,7 +14,7 @@
 }
 
 [data-style='rokkit'] rk-progress-bar rk-value-bar {
-  @apply from-primary to-secondary text-neutral-subtle bg-gradient-to-r dark:text-neutral-800;
+  @apply from-primary-500 to-secondary-500 bg-gradient-to-r text-neutral-100 dark:text-neutral-800;
 }
 
 /* Styles for 'searchable' class */

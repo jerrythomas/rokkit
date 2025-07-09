@@ -10,9 +10,7 @@
 	let { title, description, breadcrumbs } = $props()
 </script>
 
-<header
-	class="border-b border-neutral-200 bg-neutral-100 dark:border-neutral-100 dark:bg-neutral-100"
->
+<header class="border-neutral-subtle bg-neutral-inset">
 	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<div>
 			{#if breadcrumbs && breadcrumbs.length > 0}

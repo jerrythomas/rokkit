@@ -40,18 +40,6 @@
 	let fields = { text: 'title' }
 </script>
 
-<div class="bg-white/20">White</div>
-<div class="bg-primary/20">Primary</div>
-<div class="bg-secondary">Red</div>
-<!-- <span class="items-center gap-10 overflow-auto px-20">
-	<List {items} searchable>
-		{#snippet child(proxy)}
-			{@const Icon = proxy.get('icon')}
-			<Icon></Icon>
-			{proxy.get('text')}
-		{/snippet}
-	</List>
-</span> -->
 <DemoWrapper>
 	<GroupedList showSeparator="true" items={nested} searchable>
 		{#snippet child(proxy)}

@@ -27,6 +27,7 @@ describe('@rokkit/core', () => {
 			'defaultOptions',
 			'defaultKeyMap',
 			'defaultThemeMapping',
+			'TONE_MAP',
 			'stateIconsFromNames',
 			'defaultStateIcons',
 			'getClosestAncestorWithAttribute',
@@ -56,7 +57,8 @@ describe('@rokkit/core', () => {
 			'stateColors',
 			'themeColors',
 			'contrastColors',
-			'themeRules'
+			'themeRules',
+			'semanticShortcuts'
 		])
 	})
 })

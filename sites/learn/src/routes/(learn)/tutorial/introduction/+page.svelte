@@ -43,12 +43,12 @@
 
 <div class="w-full space-y-8">
 	<!-- Header -->
-	<header class="border-b border-neutral-200 pb-8 dark:border-neutral-700">
+	<header class="border-neutral-subtle border-b pb-8">
 		<div class="flex items-center space-x-3">
 			<div class="text-4xl">👋</div>
 			<div>
-				<h1 class="text-4xl font-bold text-neutral-900 dark:text-white">Welcome to Rokkit!</h1>
-				<p class="mt-2 text-xl text-neutral-600 dark:text-neutral-400">
+				<h1 class="text-neutral-overlay text-4xl font-bold">Welcome to Rokkit!</h1>
+				<p class="text-neutral-elevated mt-2 text-xl">
 					This will teach you everything you need to know to simplify your workflow of building
 					data-driven web applications.
 				</p>
@@ -57,10 +57,10 @@
 	</header>
 
 	<!-- Main Content -->
-	<div class="prose prose-neutral dark:prose-invert max-w-none">
+	<div class="prose bg-neutral-inset max-w-none">
 		<section class="mb-12">
-			<h2 class="mb-6 text-3xl font-bold text-neutral-900 dark:text-white">What is Rokkit?</h2>
-			<p class="mb-4 text-lg text-neutral-700 dark:text-neutral-300">
+			<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">What is Rokkit?</h2>
+			<p class="text-neutral-floating mb-4 text-lg">
 				Rokkit is a cutting-edge Svelte UI library designed to simplify the way we create
 				data-driven applications. With its intuitive design and an extensive collection of actions,
 				stores, utility functions, and composable components, Rokkit empowers developers to create
