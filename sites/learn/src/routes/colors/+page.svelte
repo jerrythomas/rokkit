@@ -66,4 +66,8 @@
 	<div class="h-6 w-6 bg-red-950">&nbsp;</div>
 </div>
 
-<div data-command-root>hello</div>
+<div
+	class="flex items-center justify-center bg-gradient-to-r from-orange-400 to-pink-600 text-white"
+>
+	hello
+</div>

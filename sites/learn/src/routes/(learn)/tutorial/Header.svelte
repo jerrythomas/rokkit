@@ -10,8 +10,8 @@
 	let { title, description, breadcrumbs } = $props()
 </script>
 
-<header class="border-neutral-subtle bg-neutral-inset">
-	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+<header class="border-neutral-subtle bg-neutral-subtle">
+	<div class="max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<div>
 			{#if breadcrumbs && breadcrumbs.length > 0}
 				<nav class="mb-2 flex" aria-label="Breadcrumb">

@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
-	import { page } from '$app/state'
+	// import { page } from '$app/state'
 	import { media } from '$lib/media.js'
 	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
@@ -17,24 +17,14 @@
 
 	/** @type {Props} */
 	let { class: className = '', version, menu = [] } = $props()
-	const codeOptions = [
-		{ icon: 'i-app:code-visible', value: 'hidden', label: 'Hide Code' },
-		{ icon: 'i-app:code-hidden', value: 'visible', label: 'Show Code' }
-	]
-	let codeValue = codeOptions.find((option) => option.value === site.code)
 	let loading = $state(false)
 
-	const handleCodeVisibility = (detail) => {
-		site.code = detail.value
-	}
 	beforeNavigate(() => {
 		loading = true
 	})
 	afterNavigate(() => {
 		loading = false
 	})
-
-	let showCodeToggle = $derived(!media.small.current && page.url.pathname !== '/')
 </script>
 
 <header
@@ -65,9 +55,6 @@
 				>
 			{/each}
 		</nav>
-		{#if showCodeToggle}
-			<Toggle options={codeOptions} value={codeValue} onchange={handleCodeVisibility} />
-		{/if}
 		<ThemeSwitcher />
 		<a href="https://github.com/jerrythomas/rokkit" target="_blank" class="square button">
 			<Icon name="i-logo:github" label="Rokkit on Github" />

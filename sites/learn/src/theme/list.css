@@ -8,7 +8,7 @@
   @apply w-full;
 }
 [data-command-root] {
-  @apply focus bg-neutral-inset flex w-full flex-1 cursor-pointer select-none flex-col self-start overflow-hidden rounded-md border border-none;
+  @apply focus bg-neutral-inset flex w-full flex-1 cursor-pointer select-none flex-col self-start overflow-hidden rounded-md border border-none px-2;
 }
 [data-command-list] {
   @apply overflow-y-auto overflow-x-hidden;
@@ -31,8 +31,12 @@
   @apply text-neutral-contrast flex w-full items-center justify-center pb-6 pt-8;
 }
 [data-command-item] {
-  @apply outline-hidden bg-neutral-inset text-neutral-contrast flex min-h-8 w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm;
+  @apply bg-neutral-inset text-neutral-contrast flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm;
 }
+[data-item-wrapper] {
+  @apply clip-content first:rounded-t-md last:rounded-b-md;
+}
+
 [data-command-group] {
   @apply border-none;
 }

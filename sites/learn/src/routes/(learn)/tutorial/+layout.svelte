@@ -27,8 +27,8 @@
 </svelte:head>
 
 <Header title={currentGroup.title} description={currentGroup.description} />
-<div class="grid w-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-4">
-	<div class=" overflow-y-auto lg:col-span-1">
+<div class="bg-neutral-inset grid w-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-4">
+	<div class="border-neutral-subtle overflow-y-auto border-r lg:col-span-1">
 		<Sidebar
 			sections={data.sections}
 			fields={data.fields}

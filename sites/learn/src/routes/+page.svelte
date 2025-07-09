@@ -23,12 +23,7 @@
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>
 			<span class="flex text-xl">
-				<a
-					class="button is-primary bg-gradient-to-r from-orange-400 to-orange-600"
-					href="/tutorial/introduction"
-				>
-					Get Started
-				</a>
+				<a class="button is-primary" href="/tutorial/introduction"> Get Started </a>
 			</span>
 		</div>
 	</div>

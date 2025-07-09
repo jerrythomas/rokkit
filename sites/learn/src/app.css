@@ -21,7 +21,7 @@
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
-  @apply font-body dark bg-neutral-100 bg-neutral-900 font-extralight text-neutral-800 dark:text-neutral-200;
+  @apply font-body bg-neutral-inset text-neutral-floating dark font-extralight;
 }
 body > app {
   @apply relative flex h-screen w-full flex-col overflow-hidden;

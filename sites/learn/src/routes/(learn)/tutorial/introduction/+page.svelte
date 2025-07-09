@@ -57,20 +57,18 @@
 	</header>
 
 	<!-- Main Content -->
-	<div class="prose bg-neutral-inset max-w-none">
+	<div class="prose text-neutral-elevated max-w-none">
 		<section class="mb-12">
 			<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">What is Rokkit?</h2>
 			<p class="text-neutral-floating mb-4 text-lg">
-				Rokkit is a cutting-edge Svelte UI library designed to simplify the way we create
-				data-driven applications. With its intuitive design and an extensive collection of actions,
-				stores, utility functions, and composable components, Rokkit empowers developers to create
-				stunning user interfaces with unmatched ease and flexibility.
+				Rokkit is a Svelte UI library designed to simplify the way we create data-driven
+				applications. With its intuitive design and an extensive collection of actions, stores,
+				utility functions, and composable components, Rokkit empowers developers to create stunning
+				user interfaces with unmatched ease and flexibility.
 			</p>
 
-			<div class="mb-6 rounded-lg bg-neutral-50 dark:bg-neutral-800">
-				<h3 class="mb-4 text-xl font-semibold text-neutral-900 dark:text-white">
-					The library includes:
-				</h3>
+			<div class="text-neutral-elevated mb-6 rounded-lg">
+				<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">The library includes:</h3>
 				<ul class="marker:text-primary-500 list-disc">
 					<li>Data-Driven Components</li>
 					<li>Form Elements & Generators</li>
@@ -82,7 +80,7 @@
 				</ul>
 			</div>
 
-			<p class="text-lg text-neutral-700 dark:text-neutral-300">
+			<p class="text-lg">
 				At the heart of Rokkit's design is a commitment to consistency and ease of use. We wanted to
 				make it easier to use components and extend them if needed to achieve the application
 				objectives.
@@ -91,31 +89,20 @@
 
 		<!-- Interactive Demo -->
 		<section class="mb-12">
-			<h3 class="mb-6 text-2xl font-bold text-neutral-900 dark:text-white">Try it yourself</h3>
-			<p class="mb-4 text-neutral-700 dark:text-neutral-300">
+			<h3 class="mb-6 text-2xl font-bold">Try it yourself</h3>
+			<p class="mb-4">
 				Here's a simple example of a Rokkit List component. Click on any item to see how data-driven
 				components work:
 			</p>
 
 			{#if demoLoading}
-				<div
-					class="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
-				>
-					<div class="text-center text-neutral-500 dark:text-neutral-400">
-						Loading interactive demo...
-					</div>
+				<div class="border-neutral-subtle rounded-lg border p-6">
+					<div class="text-center">Loading interactive demo...</div>
 				</div>
 			{:else if demoError}
-				<div
-					class="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20"
-				>
+				<div class="rounded-lg border border-red-200 p-6 dark:border-red-800 dark:bg-red-900/20">
 					<div class="mb-3 flex items-center">
-						<svg
-							class="mr-2 h-5 w-5 text-red-600 dark:text-red-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
+						<svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"
@@ -123,20 +110,16 @@
 								d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 18.5c-.77.833.192 2.5 1.732 2.5z"
 							></path>
 						</svg>
-						<span class="font-medium text-red-900 dark:text-red-100">Demo Loading Failed</span>
+						<span class="font-medium">Demo Loading Failed</span>
 					</div>
-					<p class="mb-4 text-sm text-red-700 dark:text-red-300">{demoError}</p>
-					<div class="text-sm text-red-600 dark:text-red-400">Showing fallback demo instead:</div>
-					<div
-						class="mt-4 rounded-lg border border-red-300 bg-white p-4 dark:border-red-700 dark:bg-neutral-900"
-					>
+					<p class="mb-4 text-sm">{demoError}</p>
+					<div class="text-sm">Showing fallback demo instead:</div>
+					<div class="mt-4 rounded-lg border border-red-300 p-4 dark:border-red-700">
 						<div class="mb-4">
 							<List bind:items bind:value />
 						</div>
-						<p class="text-sm text-neutral-600 dark:text-neutral-400">
-							Selected Value: <strong class="text-neutral-900 dark:text-white"
-								>{value?.text || 'None'}</strong
-							>
+						<p class="text-sm">
+							Selected Value: <strong>{value?.text || 'None'}</strong>
 						</p>
 					</div>
 				</div>
@@ -151,16 +134,12 @@
 				/>
 			{:else}
 				<!-- Fallback to simple inline demo -->
-				<div
-					class="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
-				>
+				<div class="border-neutral-subtle rounded-lg border p-6">
 					<div class="mb-4">
 						<List bind:items bind:value />
 					</div>
-					<p class="text-sm text-neutral-600 dark:text-neutral-400">
-						Selected Value: <strong class="text-neutral-900 dark:text-white"
-							>{value?.text || 'None'}</strong
-						>
+					<p class="text-sm">
+						Selected Value: <strong>{value?.text || 'None'}</strong>
 					</p>
 				</div>
 			{/if}
@@ -262,7 +241,7 @@
 		</section>
 
 		<!-- Next Steps -->
-		<section class="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-6">
+		<section class="rounded-lg p-6">
 			<h3 class="text-primary-900 dark:text-primary-100 mb-3 text-xl font-semibold">
 				Ready to get started?
 			</h3>

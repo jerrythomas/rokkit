@@ -1,14 +1,7 @@
 <script>
 	import { vibe } from '@rokkit/states'
-	// import { FieldMapper } from '@rokkit/core'
 	import { ToggleThemeMode } from '@rokkit/ui'
-	import { InputSelect } from '@rokkit/forms'
-	// import { Select, ToggleThemeMode } from '@rokkit/ui'
-
-	// let options = [
-	// 	{ icon: 'mode-dark', value: 'dark' },
-	// 	{ icon: 'mode-light', value: 'light' }
-	// ]
+	// import { InputSelect } from '@rokkit/forms'
 	let {
 		themes = $bindable([
 			{ text: 'Rokkit', value: 'rokkit' },
@@ -17,12 +10,12 @@
 		])
 	} = $props()
 
-	let currentTheme = $state(themes.find(({ value }) => value === vibe.style))
-	function handleThemeChange(d) {
-		vibe.style = d.value
-	}
+	// let currentTheme = $state(themes.find(({ value }) => value === vibe.style))
+	// function handleThemeChange(d) {
+	// 	vibe.style = d.value
+	// }
 </script>
 
-<InputSelect options={themes} bind:value={currentTheme} onchange={handleThemeChange}></InputSelect>
-<!-- <Toggle value={currentIcon} {options} onchange={handleModeChange}></Toggle> -->
+<!-- <InputSelect options={themes} bind:value={currentTheme} onchange={handleThemeChange}></InputSelect> -->
+
 <ToggleThemeMode />

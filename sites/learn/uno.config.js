@@ -3,8 +3,7 @@ import {
 	defineConfig,
 	presetIcons,
 	presetTypography,
-	presetMini,
-	presetWind4,
+	presetWind3,
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
@@ -50,7 +49,6 @@ export default defineConfig({
 			sans: ['Overpass', 'ui-serif', 'sans-serif'],
 			body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
 		},
-
 		colors: {
 			primary: colors.orange,
 			neutral: colors.stone,
@@ -64,7 +62,7 @@ export default defineConfig({
 	},
 
 	presets: [
-		presetWind4({
+		presetWind3({
 			dark: {
 				light: '[data-mode="light"]',
 				dark: '[data-mode="dark"]'

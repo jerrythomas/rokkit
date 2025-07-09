@@ -70,5 +70,5 @@ select {
 
 button.is-primary,
 .button.is-primary {
-  @apply text-neutral-overlay flex items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-500 px-4;
+  @apply from-primary-raised to-secondary-raised text-neutral-overlay flex items-center rounded-full bg-gradient-to-r px-4;
 }
