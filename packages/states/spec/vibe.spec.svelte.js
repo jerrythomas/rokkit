@@ -15,14 +15,14 @@ describe('vibe', () => {
 		expect(vibe.style).toEqual('rokkit')
 		expect(vibe.mode).toEqual('dark')
 		expect(vibe.density).toEqual('comfortable')
-		expect(vibe.palette).toEqual(themeRules(vibe.style)[1][1])
+		expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
 	})
 
 	describe('style', () => {
 		it('should validate style updates', () => {
 			vibe.style = 'minimal'
 			expect(vibe.style).toEqual('minimal')
-			expect(vibe.palette).toEqual(themeRules(vibe.style)[1][1])
+			expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
 			vibe.style = 'unknown'
 			expect(vibe.style).toEqual('minimal')
 		})
@@ -42,6 +42,7 @@ describe('vibe', () => {
 	it('should validate mode updates', () => {
 		vibe.mode = 'light'
 		expect(vibe.mode).toEqual('light')
+		// expect(vibe.palette).toBeUndefined()
 		expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
 		vibe.mode = 'unknown'
 		expect(vibe.mode).toEqual('light')
@@ -62,6 +63,7 @@ describe('vibe', () => {
 		expect(() => (vibe.colorMap = { primary: 'ambrosia' })).toThrow(
 			'Did you forget to define "ambrosia"?'
 		)
+
 		expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
 		expect(Object.keys(vibe.colors).length).toEqual(22)
 		vibe.colors = { ambrosia: defaultColors.amber }

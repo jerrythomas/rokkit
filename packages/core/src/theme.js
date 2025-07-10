@@ -5,7 +5,6 @@ import { hex2rgb } from './utils'
 const modifiers = {
 	hsl: (value) => `hsl(${value} / <alpha-value>)`,
 	rgb: (value) => `rgb(${value} / <alpha-value>)`
-	// rgb: (value) => value
 }
 
 /**
@@ -24,16 +23,7 @@ export function shadesOf(name, modifier = 'rgb') {
 			[shade]: fn(`var(--${name}-${shade})`)
 		}),
 		{
-			DEFAULT: fn(`var(--${name}-500)`),
-			base: fn(`var(--${name}-50)`),
-			inset: fn(`var(--${name}-100)`),
-			subtle: fn(`var(--${name}-200)`),
-			muted: fn(`var(--${name}-300)`),
-			raised: fn(`var(--${name}-400)`),
-			elevated: fn(`var(--${name}-600)`),
-			floating: fn(`var(--${name}-700)`),
-			contrast: fn(`var(--${name}-800)`),
-			overlay: fn(`var(--${name}-900)`)
+			DEFAULT: fn(`var(--${name}-500)`)
 		}
 	)
 }
@@ -60,7 +50,7 @@ export function stateColors(name, modifier = 'rgb') {
  * @returns
  */
 export function themeColors(modifier = 'rgb') {
-	const fn = modifier in modifiers ? modifiers[modifier] : modifiers.rgb
+	// const fn = modifier in modifiers ? modifiers[modifier] : modifiers.rgb
 
 	const states = ['info', 'danger', 'warning', 'success', 'error']
 	const variants = ['neutral', 'primary', 'secondary', 'accent']
@@ -72,11 +62,6 @@ export function themeColors(modifier = 'rgb') {
 		(acc, variant) => ({ ...acc, [variant]: shadesOf(variant, modifier) }),
 		colors
 	)
-	colors.neutral = {
-		...colors.neutral,
-		// contrast: fn(`var(--neutral-800)`),
-		zebra: fn('var(--neutral-zebra)')
-	}
 
 	return colors
 }
@@ -86,17 +71,16 @@ export function themeColors(modifier = 'rgb') {
  * Each object represents a CSS custom property (variable) with its value set based on a provided condition.
  *
  * @param {string}                   variant        - The name of the theme variant (e.g., 'primary', 'secondary').
- * @param {'light' | 'dark'}         mode           - The theme mode for which the mappings are being created.
+ being created.
  * @param {function(number): string} valueCondition - A function that takes a shade value and returns the color value
  *                                                    based on the condition appropriate for light or dark mode.
  * @returns {{import('./types'}.ShadeMapping[]>} An array of objects, where each object contains key, value, and mode
  *                                              properties corresponding to  a CSS custom property definition.
  */
-function createShadeMappings(variant, mode, valueCondition) {
+function createShadeMappings(variant, valueCondition) {
 	return shades.map((shade) => ({
 		key: `--on-${variant}-${shade}`,
-		value: valueCondition(shade),
-		mode
+		value: valueCondition(shade)
 	}))
 }
 
@@ -111,10 +95,7 @@ function createShadeMappings(variant, mode, valueCondition) {
  */
 export function contrastColors(light = '#ffffff', dark = '#000000', palette = defaultPalette) {
 	const colors = palette
-		.flatMap((variant) => [
-			createShadeMappings(variant, 'light', (shade) => (shade < 500 ? dark : light)),
-			createShadeMappings(variant, 'dark', (shade) => (shade > 500 ? dark : light))
-		])
+		.flatMap((variant) => [createShadeMappings(variant, (shade) => (shade < 500 ? dark : light))])
 		.reduce((acc, item) => [...acc, ...item], [])
 	return colors
 }
@@ -127,32 +108,12 @@ export function contrastColors(light = '#ffffff', dark = '#000000', palette = de
  * @returns {import('./types').ShadeMappings} An array containing the color rules for both light and dark modes.
  */
 function generateColorRules(variant, colors, mapping) {
-	return shades.flatMap((shade, index) => [
+	return shades.flatMap((shade) => [
 		{
 			key: `--${variant}-${shade}`,
-			value: hex2rgb(colors[mapping[variant]][shade]),
-			mode: 'light'
-		},
-		{
-			key: `--${variant}-${shade}`,
-			value: hex2rgb(colors[mapping[variant]][shades[shades.length - index - 1]]),
-			mode: 'dark'
+			value: hex2rgb(colors[mapping[variant]][shade])
 		}
 	])
-}
-
-/**
- * Filters the rules for a specific mode and transforms them into an object mapping
- * CSS variable names to their values.
- *
- * @param {Array<Object>} rules - The array of rules to filter and transform.
- * @param {'light' | 'dark'} mode - The mode to filter by.
- * @returns {Object} An object containing the rules specific to the provided mode.
- */
-function filterRulesByMode(rules, mode) {
-	return rules
-		.filter((rule) => rule.mode === mode)
-		.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 }
 
 /**
@@ -167,7 +128,7 @@ function filterRulesByMode(rules, mode) {
  */
 function createThemeVariant(name, mode, colors, extraColors) {
 	return [
-		`${name}-mode-${mode}`,
+		`${name}-${mode}`,
 		{
 			...colors,
 			...extraColors
@@ -186,22 +147,13 @@ function createThemeVariant(name, mode, colors, extraColors) {
 export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, colors = defaultColors) {
 	mapping = { ...defaultThemeMapping, ...mapping }
 	const variants = Object.keys(mapping)
+	const rules = variants
+		.flatMap((variant) => generateColorRules(variant, { ...defaultColors, ...colors }, mapping))
+		.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {})
 
-	const rules = variants.reduce(
-		(acc, variant) => [
-			...acc,
-			...generateColorRules(variant, { ...defaultColors, ...colors }, mapping)
-		],
-		[]
-	)
+	const lightTheme = createThemeVariant(name, 'colors', rules)
 
-	const lightRules = filterRulesByMode(rules, 'light')
-	const darkRules = filterRulesByMode(rules, 'dark')
-
-	const lightTheme = createThemeVariant(name, 'light', lightRules, syntaxColors['one-dark'].light)
-	const darkTheme = createThemeVariant(name, 'dark', darkRules, syntaxColors['one-dark'].dark)
-
-	return [lightTheme, darkTheme]
+	return [lightTheme]
 }
 
 /**

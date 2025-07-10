@@ -6,18 +6,6 @@ import { DEFAULT_STYLES, VALID_DENSITIES, VALID_MODES } from './constants'
 import { has } from 'ramda'
 
 /**
- * Transforms theme rules array into an object grouped by mode
- * @param {Array<[string, Object.<string, string>]>} themeRules
- * @returns {Object.<string, Object.<string, string>>}
- */
-function groupThemeRulesByMode(themeRules) {
-	return themeRules.reduce((acc, [name, variables]) => {
-		const mode = name.includes('light') ? 'light' : 'dark'
-		return { ...acc, [mode]: variables }
-	}, {})
-}
-
-/**
  * Checks if a value is allowed based on a list of allowed values and the current value
  * @param {string} value
  * @param {string[]} allowed
@@ -38,10 +26,7 @@ class Vibe {
 	#colors = $state(defaultColors)
 	#density = $state('comfortable')
 	#colorMap = $state(defaultThemeMapping)
-	#palette = $derived.by(() => {
-		const grouped = groupThemeRulesByMode(themeRules(this.#style, this.#colorMap, this.#colors))
-		return grouped[this.#mode]
-	})
+	#palette = $derived.by(() => themeRules(this.#style, this.#colorMap, this.#colors)[0][1])
 
 	/**
 	 * Private constructor to enforce singleton pattern
