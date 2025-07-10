@@ -6,3 +6,5 @@
 export { default as List } from './List.svelte'
 export { default as GroupedList } from './GroupedList.svelte'
 export { default as Switch } from './Switch.svelte'
+export { default as Tab } from './Tab.svelte'
+export { default as TabGroup } from './TabGroup.svelte'

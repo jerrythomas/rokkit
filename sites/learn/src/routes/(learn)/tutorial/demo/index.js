@@ -1,0 +1,5 @@
+export { default as DemoRoot } from './DemoRoot.svelte'
+export { default as DemoComponent } from './DemoComponent.svelte'
+export { default as DemoCode } from './DemoCode.svelte'
+export { default as DemoError } from './DemoError.svelte'
+export { default as DemoLoading } from './DemoLoading.svelte'

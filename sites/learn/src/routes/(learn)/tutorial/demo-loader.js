@@ -7,9 +7,19 @@
 import { preloadHighlighter } from '$lib/shiki.js'
 
 /**
+ * @typedef {Object} DemoFile
+ * @property {string} id - Unique identifier for the file
+ * @property {string} name - Display name of the file
+ * @property {string} language - Programming language for syntax highlighting
+ * @property {string} content - File content
+ * @property {string} [icon] - Optional icon for the file
+ */
+
+/**
  * @typedef {Object} DemoData
  * @property {any} component - The imported Svelte component
  * @property {string} code - The source code as a string
+ * @property {DemoFile[]} files - Array of files for multi-file demos
  * @property {string} [title] - Optional demo title
  * @property {string} [description] - Optional demo description
  */
@@ -73,6 +83,77 @@ async function loadSourceCode(filePath) {
 }
 
 /**
+ * Get file language from extension
+ * @param {string} filename - The filename
+ * @returns {string} Programming language
+ */
+function getLanguageFromFilename(filename) {
+	const ext = filename.split('.').pop()?.toLowerCase()
+	switch (ext) {
+		case 'svelte':
+			return 'svelte'
+		case 'js':
+		case 'mjs':
+			return 'javascript'
+		case 'ts':
+			return 'typescript'
+		case 'css':
+			return 'css'
+		case 'html':
+			return 'html'
+		case 'json':
+			return 'json'
+		case 'md':
+			return 'markdown'
+		case 'yaml':
+		case 'yml':
+			return 'yaml'
+		default:
+			return 'text'
+	}
+}
+
+/**
+ * Load all files from a demo directory
+ * @param {string} demoPath - Path to the demo folder
+ * @returns {Promise<DemoFile[]>} Promise resolving to array of files
+ */
+async function loadDemoFiles(demoPath) {
+	const files = []
+	const basePath = `src/routes/(learn)/tutorial/${demoPath}/src`
+
+	// Common file patterns to try
+	const filePatterns = [
+		'App.svelte',
+		'counter.js',
+		'utils.js',
+		'types.ts',
+		'styles.css',
+		'README.md',
+		'package.json'
+	]
+
+	for (const filename of filePatterns) {
+		try {
+			const filePath = `${basePath}/${filename}`
+			const content = await loadSourceCode(filePath)
+			if (content) {
+				files.push({
+					id: filename.replace(/[^a-zA-Z0-9]/g, '').toLowerCase(),
+					name: filename,
+					language: getLanguageFromFilename(filename),
+					content: content.trim()
+				})
+			}
+		} catch (error) {
+			// Ignore missing files - they're optional
+		}
+	}
+
+	return files
+}
+
+/**
  * Internal function to load demo data
  * @param {string} demoPath - Path to the demo folder
  * @returns {Promise<DemoData>} Promise resolving to demo data
@@ -95,13 +176,21 @@ async function loadDemoInternal(demoPath) {
 		componentError = error
 	}
 
-	// Try to load the source code
+	// Try to load the main source code
 	let code = ''
 	try {
 		const filePath = `src/routes/(learn)/tutorial/${demoPath}/src/App.svelte`
 		code = await loadSourceCode(filePath)
 	} catch (error) {
 		codeError = error
+	}
+
+	// Try to load all files for multi-file support
+	let files = []
+	try {
+		files = await loadDemoFiles(demoPath)
+	} catch (error) {
+		console.warn(`Failed to load demo files for ${demoPath}:`, error.message)
 	}
 
 	// If both component and code failed, throw an error
@@ -124,6 +213,7 @@ async function loadDemoInternal(demoPath) {
 	return {
 		component,
 		code,
+		files,
 		title: extractTitleFromPath(demoPath),
 		description: ''
 	}

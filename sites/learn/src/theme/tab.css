@@ -1,0 +1,88 @@
+/* Tab Component Styles */
+
+/* Tab Root Container */
+[data-tabs-root] {
+  @apply w-full space-y-2;
+}
+
+/* Tab List - Header Container */
+[data-tabs-list],
+[data-tab-list] {
+  @apply bg-neutral-base space-x-2;
+}
+
+/* Individual Tab Items */
+[data-tabs-trigger] {
+  @apply text-neutral-floating border-b-2 border-transparent px-4 py-2;
+  @apply cursor-pointer select-none transition-all duration-200;
+  @apply hover:bg-neutral-base/50;
+  @apply data-[selected=true]:border-accent-base data-[selected=true]:bg-accent-base/10;
+  @apply data-[selected=true]:text-accent-overlay;
+}
+
+/* Tab Add Button */
+[data-tab-add] {
+  @apply text-neutral-floating px-4 py-2;
+  @apply cursor-pointer select-none transition-colors;
+  @apply hover:text-neutral-overlay hover:bg-neutral-base/50;
+}
+
+/* Tab Remove Button */
+[data-tab-remove] {
+  @apply text-neutral-floating hover:text-error-base ml-2;
+  @apply transition-colors;
+}
+
+/* Tab Content Area */
+[data-tab-content] {
+  @apply bg-neutral-base flex;
+}
+
+/* Default Tab Content */
+[data-tab-content-default] {
+  @apply text-neutral-overlay p-4;
+}
+
+/* Content Placeholder */
+[data-tab-content-placeholder] {
+  @apply text-neutral-floating p-4 text-center;
+}
+
+/* Empty State */
+[data-tab-empty] {
+  @apply text-neutral-floating bg-neutral-subtle flex flex-1 items-center justify-center p-4;
+}
+
+[data-tab-empty-container] {
+  @apply w-full;
+}
+
+/* Tab Item Focus States */
+[data-tab-item]:focus {
+  @apply ring-accent-base outline-none ring-2 ring-offset-2;
+}
+
+/* Tab Item Disabled State */
+[data-tab-item][data-disabled] {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* Tab Item Active State Enhancement */
+[data-tab-item][data-selected='true'] {
+  @apply font-medium;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  [data-tab-item] {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  [data-tab-add] {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  [data-tab-content-default] {
+    @apply p-3;
+  }
+}

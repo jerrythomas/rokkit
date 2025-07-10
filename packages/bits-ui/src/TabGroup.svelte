@@ -1,5 +1,7 @@
 <script>
 	import { Tabs } from 'bits-ui'
+	import { equals } from 'ramda'
+	import { Proxy } from '@rokkit/states'
 
 	/**
 	 * @typedef {Object} TabGroupProps
@@ -26,12 +28,10 @@
 		if (activeOption) initialValue = activeOption.id
 	})
 
-	function handleChange() {
-		activeOption = tabOptions.find((proxy) => equals(proxy.id, initialValue))
+	function handleChange(newValue) {
+		activeOption = tabOptions.find((proxy) => equals(proxy.id, newValue))
 		value = activeOption?.value
 		onchange?.(value)
-		// value = data
-		// onSelect?.(data)
 	}
 </script>
 
@@ -39,7 +39,7 @@
 	{item.get('text')}
 {/snippet}
 
-<Tabs.Root onValueChange={handleChange} bind:value={initialValue}>
+<Tabs.Root onValueChange={handleChange} value={initialValue}>
 	<Tabs.List>
 		{#each tabOptions as tab (tab.id)}
 			<Tabs.Trigger value={tab.id}>
@@ -47,11 +47,7 @@
 			</Tabs.Trigger>
 		{/each}
 	</Tabs.List>
-
-	<!-- {#each tabOptions as tab (tab.id)} -->
-	<Tabs.Content>
-		{@render children()}
-		<!-- <ComparisonCharts {logs} groupBy={tab.value} {m} /> -->
-	</Tabs.Content>
-	<!-- {/each} -->
+	<div data-tabs-content>
+		{@render children?.()}
+	</div>
 </Tabs.Root>
