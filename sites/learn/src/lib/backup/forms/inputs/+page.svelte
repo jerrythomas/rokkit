@@ -1,26 +1,5 @@
 <script>
-	import { onMount } from 'svelte'
-	import CodeViewer from '../../CodeViewer.svelte'
-	import { loadDemo } from '../../demo-loader.js'
-
-	// Demo data for CodeViewer
-	let demoComponent = $state(null)
-	let demoCode = $state('')
-	let demoLoading = $state(true)
-	let demoError = $state('')
-
-	onMount(async () => {
-		try {
-			const demo = await loadDemo('forms/inputs')
-			demoComponent = demo.component
-			demoCode = demo.code
-		} catch (error) {
-			console.error('Failed to load demo:', error)
-			demoError = error.message
-		} finally {
-			demoLoading = false
-		}
-	})
+	import { StoryRoot } from '$lib/components/Story'
 </script>
 
 <svelte:head>
@@ -102,54 +81,14 @@
 				consistent behavior.
 			</p>
 
-			{#if demoLoading}
-				<div
-					class="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900"
-				>
-					<div class="text-center text-neutral-500 dark:text-neutral-400">
-						Loading interactive demo...
-					</div>
-				</div>
-			{:else if demoError}
-				<div
-					class="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20"
-				>
-					<div class="mb-3 flex items-center">
-						<svg
-							class="mr-2 h-5 w-5 text-red-600 dark:text-red-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 18.5c-.77.833.192 2.5 1.732 2.5z"
-							></path>
-						</svg>
-						<span class="font-medium text-red-900 dark:text-red-100">Demo Loading Failed</span>
-					</div>
-					<p class="text-sm text-red-700 dark:text-red-300">{demoError}</p>
-				</div>
-			{:else if demoComponent}
-				<CodeViewer
-					component={demoComponent}
-					code={demoCode}
-					title="Issue Tracker Form"
-					description="A practical example using List, Select, and MultiSelect components with field mapping"
-					ontoggle={(event) => console.log('Code toggled:', event.showCode)}
-					oncopy={(event) => console.log('Code copied:', event.code.length + ' characters')}
-				/>
-			{:else}
-				<div
-					class="rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-700 dark:bg-neutral-800"
-				>
-					<div class="text-center text-neutral-500 dark:text-neutral-400">
-						No demo component available
-					</div>
-				</div>
-			{/if}
+			<StoryRoot
+				slug="forms/inputs"
+				title="Issue Tracker Form"
+				description="A practical example using List, Select, and MultiSelect components with field mapping"
+				ontoggle={(event) => console.log('Code toggled:', event.showCode)}
+				oncopy={(event) =>
+					console.log('Code copied:', event.code?.length || event.content?.length, 'characters')}
+			/>
 		</section>
 
 		<!-- Component Details -->

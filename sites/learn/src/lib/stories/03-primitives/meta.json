@@ -1,3 +1,8 @@
 {
-  "title": "Primitives"
+  "title": "Primitives",
+  "description": "Basic building blocks for creating custom components",
+  "icon": "🧩",
+  "category": "Components",
+  "tags": ["primitives", "building-blocks", "icon", "item", "pill"],
+  "experimental": false
 }

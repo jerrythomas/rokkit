@@ -1,0 +1,8 @@
+{
+  "title": "Layout Components",
+  "description": "Components for organizing and structuring application layouts",
+  "icon": "📐",
+  "category": "Components",
+  "tags": ["layout", "grid", "navigation", "stepper"],
+  "experimental": false
+}

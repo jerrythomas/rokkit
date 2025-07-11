@@ -4,7 +4,7 @@
 	let items = $state([])
 
 	function reset() {
-		items = [
+		;[
 			{
 				text: 'Fruits',
 				image: '/examples/fruits.jpg'
@@ -21,8 +21,9 @@
 				text: 'Spices',
 				image: '/examples/spices.jpg'
 			}
-		]
+		].forEach((item) => items.push(item))
 	}
+
 	function clear() {
 		items = []
 		value = null

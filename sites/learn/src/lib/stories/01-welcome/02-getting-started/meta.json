@@ -1,0 +1,8 @@
+{
+  "title": "Getting Started",
+  "description": "Set up your first Rokkit project and start building data-driven applications",
+  "icon": "🚀",
+  "category": "Getting Started",
+  "tags": ["setup", "installation", "quick-start", "project"],
+  "experimental": false
+}

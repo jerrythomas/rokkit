@@ -17,6 +17,9 @@
 		{@const Component = component}
 		<Component />
 	{:else}
-		<div class="text-neutral-floating">No component provided</div>
+		<div class="text-neutral-floating p-4 border border-dashed border-neutral-300 rounded text-center">
+			<p>Component loading in progress...</p>
+			<p class="text-sm mt-1">If this persists, check console for errors</p>
+		</div>
 	{/if}
 </div>

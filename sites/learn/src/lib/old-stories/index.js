@@ -1,10 +1,6 @@
 import { assimilateTutorials } from '@rokkit/tutorial'
 
-const modules = import.meta.glob([
-	'./**/src/App.svelte',
-	'./**/meta.json',
-	'./**/README.svelte'
-])
+const modules = import.meta.glob('./**/{App.svelte,meta.json,README.svelte}')
 const samples = import.meta.glob('./**/src/*', {
 	query: '?raw',
 	import: 'default'

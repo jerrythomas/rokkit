@@ -1,0 +1,8 @@
+{
+  "title": "Utilities",
+  "description": "Helper components for validation, layout, and visual aids",
+  "icon": "🔧",
+  "category": "Components",
+  "tags": ["utilities", "helpers", "validation", "connector"],
+  "experimental": false
+}

@@ -68,8 +68,6 @@
 				slug="introduction"
 				title="Interactive List Demo"
 				description="A data-driven List component with field mapping and custom rendering"
-				ontoggle={(event) => console.log('Code toggled:', event.showCode)}
-				oncopy={(event) => console.log('Code copied:', event.code.length + ' characters')}
 			/>
 		</section>
 

@@ -1,0 +1,8 @@
+{
+  "title": "Theming",
+  "description": "Customize colors, themes, and visual appearance",
+  "icon": "🎨",
+  "category": "Customization",
+  "tags": ["theming", "colors", "styling", "appearance"],
+  "experimental": false
+}

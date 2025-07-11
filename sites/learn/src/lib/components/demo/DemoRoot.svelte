@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte'
-	import { loadDemo } from '../demo-loader.js'
+	import { loadDemo } from '../Story/loader.js'
 	import DemoComponent from './DemoComponent.svelte'
 	import DemoCode from './DemoCode.svelte'
 	import DemoError from './DemoError.svelte'

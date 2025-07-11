@@ -63,7 +63,7 @@
 		</p>
 
 		<StoryRoot
-			slug="introduction"
+			slug="welcome/introduction"
 			title="Introduction Story"
 			description="Auto-loaded story from slug with component and code"
 			ontoggle={handleStoryToggle}

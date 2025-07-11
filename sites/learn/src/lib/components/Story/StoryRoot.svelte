@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte'
-	import { loadDemo } from '../../../routes/(learn)/tutorial/demo-loader.js'
+	import { loadStory } from './loader.js'
 	import StoryComponent from './StoryComponent.svelte'
 	import StoryCode from './StoryCode.svelte'
 	import StoryError from './StoryError.svelte'
@@ -41,13 +41,13 @@
 
 	onMount(async () => {
 		try {
-			const story = await loadDemo(slug)
+			const story = await loadStory(slug)
 			storyComponent = story.component
 			storyCode = story.code
 			storyFiles = story.files || []
 		} catch (err) {
 			console.error('Failed to load story:', err)
-			error = err.message
+			error = err.message || 'Unknown error loading story'
 		} finally {
 			loading = false
 		}
@@ -122,10 +122,6 @@
 						</span>
 						{isCodeVisible ? 'Hide Code' : 'Show Code'}
 					</button>
-
-					{#if isCodeVisible && (storyCode || storyFiles.length > 0)}
-						<StoryCode files={storyFiles} code={storyCode} oncopy={handleCopy} showCopyButton />
-					{/if}
 				</div>
 			</div>
 		</div>
