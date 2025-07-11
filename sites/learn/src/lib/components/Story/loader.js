@@ -5,7 +5,7 @@
  */
 
 import { preloadHighlighter } from '../../shiki.js'
-import { guide } from '../../stories/index.js'
+// import { guide } from '../../stories/index.js' // Temporarily disabled for stability
 
 /**
  * Language mapping dictionary for file extensions
@@ -115,20 +115,9 @@ export async function loadStory(storyPath) {
  * @param {string} slug - Clean slug like "welcome/introduction"
  * @returns {Promise<string>} Mapped path like "01-welcome/01-introduction"
  */
-async function mapSlugToStoryPath(slug) {
-	try {
-		// Try to get mappings from the guide system
-		await guide.assimilate()
-		const mappings = guide.slugMappings()
-
-		if (mappings && mappings[slug]) {
-			return mappings[slug]
-		}
-	} catch (error) {
-		console.warn('Could not get mappings from guide system:', error.message)
-	}
-
-	// Fallback to hardcoded mapping if guide system fails
+function mapSlugToStoryPath(slug) {
+	// For now, just use the hardcoded mapping to get things working
+	// We'll enhance this with the guide system once it's stable
 	const fallbackMapping = {
 		'welcome/introduction': '01-welcome/01-introduction',
 		'welcome/getting-started': '01-welcome/02-getting-started',
@@ -153,41 +142,60 @@ async function loadStoryFromGuide(storyPath) {
 	let files = []
 	let code = ''
 
+	// Use the direct mapping approach 
+	const mappedPath = mapSlugToStoryPath(storyPath)
+
 	try {
-		// Use the guide system to find the actual story path from the clean slug
-		const storyInfo = await guide.findBySlug(storyPath)
-		if (!storyInfo) {
-			throw new Error(`Story not found for slug: ${storyPath}`)
-		}
-
-		// Get the actual path with numeric prefixes from the story info
-		const actualPath = storyInfo.route
-
-		// Build the import path for the component
-		const componentPath = `../../stories/${actualPath}/src/App.svelte`
-		const sourcePath = `../../stories/${actualPath}/src/App.svelte?raw`
-
-		// Dynamic imports using the resolved path
-		const directModule = await import(/* @vite-ignore */ componentPath)
-		component = directModule.default
-
-		const sourceModule = await import(/* @vite-ignore */ sourcePath)
-		code = sourceModule.default
-	} catch (error) {
-		console.error(`Failed to load story using guide system: ${error.message}`)
-
-		// Fallback to direct mapping for backward compatibility
-		const mappedPath = await mapSlugToStoryPath(storyPath)
-
-		try {
-			const directModule = await import(`../../stories/${mappedPath}/src/App.svelte`)
+		// Direct component imports with specific paths
+		if (mappedPath === '01-welcome/01-introduction') {
+			const directModule = await import('../../stories/01-welcome/01-introduction/src/App.svelte')
 			component = directModule.default
-			const sourceModule = await import(`../../stories/${mappedPath}/src/App.svelte?raw`)
+			const sourceModule = await import('../../stories/01-welcome/01-introduction/src/App.svelte?raw')
 			code = sourceModule.default
-		} catch (fallbackError) {
-			console.error(`Fallback also failed: ${fallbackError.message}`)
-			throw new Error(`Could not load story for ${storyPath}`)
+		} else if (mappedPath === '01-welcome/02-getting-started') {
+			const directModule = await import('../../stories/01-welcome/02-getting-started/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/01-welcome/02-getting-started/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '02-elements/01-list') {
+			const directModule = await import('../../stories/02-elements/01-list/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/02-elements/01-list/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '02-elements/01-list/01-intro') {
+			const directModule = await import('../../stories/02-elements/01-list/01-intro/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/02-elements/01-list/01-intro/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '02-elements/01-list/02-snippets') {
+			const directModule = await import('../../stories/02-elements/01-list/02-snippets/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/02-elements/01-list/02-snippets/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '02-elements/01-list/03-mapping') {
+			const directModule = await import('../../stories/02-elements/01-list/03-mapping/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/02-elements/01-list/03-mapping/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '02-elements/01-list/04-mixed') {
+			const directModule = await import('../../stories/02-elements/01-list/04-mixed/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/02-elements/01-list/04-mixed/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '03-primitives/01-icon') {
+			const directModule = await import('../../stories/03-primitives/01-icon/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/03-primitives/01-icon/src/App.svelte?raw')
+			code = sourceModule.default
 		}
+		
+		if (!component) {
+			throw new Error(`No direct import available for ${mappedPath}`)
+		}
+		
+	} catch (error) {
+		console.error(`Failed to load component: ${error.message}`)
+		throw error
 	}
 
 	// Create proper file structure for code display
