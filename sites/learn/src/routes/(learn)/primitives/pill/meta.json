@@ -1,0 +1,8 @@
+{
+  "title": "Pill",
+  "description": "Removable item wrappers and tags",
+  "icon": "💊",
+  "category": "Primitives",
+  "tags": ["pill", "removable", "tags", "wrappers"],
+  "experimental": false
+}

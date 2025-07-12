@@ -1,0 +1,8 @@
+{
+  "title": "Accordion",
+  "description": "Collapsible content sections",
+  "icon": "🪗",
+  "category": "Elements",
+  "tags": ["accordion", "collapsible", "content", "sections"],
+  "experimental": false
+}

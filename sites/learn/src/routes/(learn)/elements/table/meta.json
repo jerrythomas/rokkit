@@ -1,0 +1,8 @@
+{
+  "title": "Table",
+  "description": "Display tabular data with sorting and hierarchy",
+  "icon": "📊",
+  "category": "Elements",
+  "tags": ["table", "tabular", "data", "sorting", "hierarchy"],
+  "experimental": false
+}

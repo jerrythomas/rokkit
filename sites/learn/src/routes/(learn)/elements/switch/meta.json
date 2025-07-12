@@ -1,0 +1,8 @@
+{
+  "title": "Switch",
+  "description": "Toggle between multiple options",
+  "icon": "🔀",
+  "category": "Elements",
+  "tags": ["switch", "toggle", "multiple", "options"],
+  "experimental": false
+}

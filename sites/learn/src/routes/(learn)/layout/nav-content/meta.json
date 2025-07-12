@@ -1,0 +1,8 @@
+{
+  "title": "NavContent",
+  "description": "Navigation and content layout patterns",
+  "icon": "🧭",
+  "category": "Layout",
+  "tags": ["navigation", "content", "layout", "patterns"],
+  "experimental": false
+}

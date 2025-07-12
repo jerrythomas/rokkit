@@ -1,0 +1,8 @@
+{
+  "title": "Tree",
+  "description": "Hierarchical data navigation",
+  "icon": "🌳",
+  "category": "Elements",
+  "tags": ["tree", "hierarchical", "data", "navigation"],
+  "experimental": false
+}

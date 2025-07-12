@@ -18,17 +18,19 @@
   @apply text-md aspect-square cursor-pointer select-none;
 } */
 [data-tag-icon] > i {
-  @apply mx-auto aspect-square text-current;
+  @apply f mx-auto aspect-square text-current;
 }
-[data-tag-icon].large {
-  @apply text-3xl;
+[data-tag-icon][data-size='large'] > i,
+[data-tag-icon][data-size='lg'] > i {
+  @apply text-2xl;
 }
-[data-tag-icon].medium {
+[data-tag-icon][data-size='medium'] > i,
+[data-tag-icon][data-size='md'] > i {
   @apply text-lg leading-5;
 }
-[data-tag-icon].small {
-  @apply leading-4;
-  font-size: 1rem;
+[data-tag-icon][data-size='small'] > i,
+[data-tag-icon][data-size='sm'] > i {
+  @apply text-sm leading-4;
 }
 button > [data-tag-icon].large {
   @apply h-12 w-12;

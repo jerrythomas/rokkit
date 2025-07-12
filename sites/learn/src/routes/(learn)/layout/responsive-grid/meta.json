@@ -1,0 +1,8 @@
+{
+  "title": "ResponsiveGrid",
+  "description": "Flexible grid layouts that adapt to screen size",
+  "icon": "📐",
+  "category": "Layout",
+  "tags": ["grid", "responsive", "layout", "flexible", "screen"],
+  "experimental": false
+}

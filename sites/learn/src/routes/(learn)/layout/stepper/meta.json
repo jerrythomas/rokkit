@@ -1,0 +1,8 @@
+{
+  "title": "Stepper",
+  "description": "Multi-step process navigation",
+  "icon": "👣",
+  "category": "Layout",
+  "tags": ["stepper", "multi-step", "process", "navigation"],
+  "experimental": false
+}

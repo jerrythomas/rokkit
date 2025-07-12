@@ -1,4 +1,3 @@
-export { default as StoryRoot } from './StoryRoot.svelte'
 export { default as StoryComponent } from './StoryComponent.svelte'
 export { default as StoryCode } from './StoryCode.svelte'
 export { default as StoryError } from './StoryError.svelte'

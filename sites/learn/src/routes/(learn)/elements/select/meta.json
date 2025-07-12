@@ -1,0 +1,8 @@
+{
+  "title": "Select",
+  "description": "Choose single values from dropdown lists",
+  "icon": "🔽",
+  "category": "Elements",
+  "tags": ["select", "dropdown", "single", "values", "lists"],
+  "experimental": false
+}

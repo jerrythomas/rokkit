@@ -1,8 +1,0 @@
-{
-  "title": "Elements",
-  "description": "Core UI components like Lists, Tabs, and Tables",
-  "icon": "📋",
-  "category": "Components",
-  "tags": ["components", "ui", "elements", "list", "table", "tabs"],
-  "experimental": false
-}

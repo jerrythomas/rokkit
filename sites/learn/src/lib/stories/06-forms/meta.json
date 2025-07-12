@@ -1,8 +1,0 @@
-{
-  "title": "Forms",
-  "description": "Form building, validation, and advanced form features",
-  "icon": "📝",
-  "category": "Components",
-  "tags": ["forms", "inputs", "validation", "builder", "renderer"],
-  "experimental": false
-}

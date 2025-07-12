@@ -1,0 +1,8 @@
+{
+  "title": "Item",
+  "description": "Flexible content renderer for text, icons, and images",
+  "icon": "🧩",
+  "category": "Primitives",
+  "tags": ["item", "content", "renderer", "text", "icons", "images"],
+  "experimental": false
+}

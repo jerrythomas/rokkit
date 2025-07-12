@@ -1,0 +1,8 @@
+{
+  "title": "DropDown",
+  "description": "Context menus and action lists",
+  "icon": "⬇️",
+  "category": "Elements",
+  "tags": ["dropdown", "context", "menus", "actions"],
+  "experimental": false
+}

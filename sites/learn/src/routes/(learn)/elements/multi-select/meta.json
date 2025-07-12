@@ -1,0 +1,8 @@
+{
+  "title": "MultiSelect",
+  "description": "Choose multiple values from lists",
+  "icon": "☑️",
+  "category": "Elements",
+  "tags": ["multiselect", "multiple", "values", "lists", "selection"],
+  "experimental": false
+}
