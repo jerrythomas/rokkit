@@ -126,7 +126,8 @@ function mapSlugToStoryPath(slug) {
 		'elements/list/snippets': '02-elements/01-list/02-snippets',
 		'elements/list/mapping': '02-elements/01-list/03-mapping',
 		'elements/list/mixed': '02-elements/01-list/04-mixed',
-		'primitives/icon': '03-primitives/01-icon'
+		'primitives/icon': '03-primitives/01-icon',
+		'forms/inputs': '04-forms/01-inputs'
 	}
 
 	return fallbackMapping[slug] || slug
@@ -186,6 +187,11 @@ async function loadStoryFromGuide(storyPath) {
 			const directModule = await import('../../stories/03-primitives/01-icon/src/App.svelte')
 			component = directModule.default
 			const sourceModule = await import('../../stories/03-primitives/01-icon/src/App.svelte?raw')
+			code = sourceModule.default
+		} else if (mappedPath === '04-forms/01-inputs') {
+			const directModule = await import('../../stories/04-forms/01-inputs/src/App.svelte')
+			component = directModule.default
+			const sourceModule = await import('../../stories/04-forms/01-inputs/src/App.svelte?raw')
 			code = sourceModule.default
 		}
 		
