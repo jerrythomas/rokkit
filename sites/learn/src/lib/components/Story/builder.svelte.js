@@ -42,6 +42,8 @@ export class StoryBuilder {
 
 	// Helper methods for common access patterns
 	getExample(name) {
+		// const { files, App } = this.#processed?[name]
+		// console.log(files)
 		return this.#processed?.[name]
 	}
 

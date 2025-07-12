@@ -1,6 +1,6 @@
 <script>
-	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { StoryViewer, Code } from '$lib/components/Story'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <svelte:head>
@@ -39,11 +39,7 @@
 				To render a basic ItemWrapper component, pass a string as the `value` prop:
 			</p>
 
-			{#await stories}
-				<p>Loading...</p>
-			{:then groupedStories}
-				<StoryViewer {...groupedStories.intro} />
-			{/await}
+			<StoryViewer {...storyBuilder.getExample('intro')} />
 		</div>
 
 		<div class="bg-neutral-subtle rounded-lg p-6 mb-6">
@@ -51,24 +47,15 @@
 			<div class="space-y-4">
 				<div class="bg-neutral-elevated rounded-md p-4">
 					<h4 class="mb-2 font-semibold">Simple Content</h4>
-					<code class="text-sm">
-						<div class="text-blue-400">&lt;ItemWrapper value="Sample Content" /&gt;</div>
-					</code>
+					<Code {...storyBuilder.getFragment(0)} />
 				</div>
 				<div class="bg-neutral-elevated rounded-md p-4">
 					<h4 class="mb-2 font-semibold">Removable Pill</h4>
-					<code class="text-sm">
-						<div class="text-blue-400">&lt;ItemWrapper value="Removable" removable={'{true}'} on:remove={'{handleRemove}'} /&gt;</div>
-					</code>
+					<Code {...storyBuilder.getFragment(1)} />
 				</div>
 				<div class="bg-neutral-elevated rounded-md p-4">
 					<h4 class="mb-2 font-semibold">With Icon</h4>
-					<code class="text-sm">
-						<div class="text-blue-400">&lt;ItemWrapper</div>
-						<div class="text-blue-400 ml-4">value={'{'}{'{'} text: 'With icon', icon: 'i-rokkit:heart-filled' {'}'}{'}'}  </div>
-						<div class="text-blue-400 ml-4">removable={'{true}'}</div>
-						<div class="text-blue-400">/&gt;</div>
-					</code>
+					<Code {...storyBuilder.getFragment(2)} />
 				</div>
 			</div>
 		</div>
@@ -81,27 +68,11 @@
 			You can also use a custom component for the content of the ItemWrapper. In this example, we will create a custom Status component, which takes a status string and shows color and text for the status.
 		</p>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.mapping} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('mapping')} />
 
 		<div class="bg-neutral-subtle rounded-lg p-6 mt-6">
 			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Custom Component Implementation:</h3>
-			<div class="bg-neutral-elevated rounded-md p-4">
-				<code class="text-sm">
-					<div class="text-blue-400">&lt;script&gt;</div>
-					<div class="ml-4">import {'{'} Pill {'}'} from '@rokkit/ui'</div>
-					<div class="ml-4">import {'{'} FieldMapper {'}'} from '@rokkit/core'</div>
-					<div class="ml-4">import Status from './Status.svelte'</div>
-					<div></div>
-					<div class="ml-4">let mapping = new FieldMapper({'{'}{'}'}, {'{'} default: Status {'}'})</div>
-					<div class="text-blue-400">&lt;/script&gt;</div>
-					<div></div>
-					<div class="text-blue-400">&lt;Pill value="success" {'{mapping}'} /&gt;</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(3)} />
 			<p class="text-neutral-floating mt-2 text-sm">
 				Set the using property to the Status component and ItemWrapper will use this for the content.
 			</p>
@@ -115,38 +86,11 @@
 			To create a removable ItemWrapper, set the `removable` prop to `true`. This will add a remove icon to the ItemWrapper, and when clicked, it will emit a `remove` event that you can handle to perform the actual remove action:
 		</p>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.removable} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('removable')} />
 
 		<div class="bg-neutral-subtle rounded-lg p-6 mt-6">
 			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Removable Implementation:</h3>
-			<div class="bg-neutral-elevated rounded-md p-4">
-				<code class="text-sm">
-					<div class="text-blue-400">&lt;script&gt;</div>
-					<div class="ml-4">let items = [</div>
-					<div class="ml-8">{'{'} text: 'Sample Removable 1' {'}'},</div>
-					<div class="ml-8">{'{'} text: 'Sample Removable 2' {'}'},</div>
-					<div class="ml-8">{'{'} text: 'Sample Removable 3' {'}'}</div>
-					<div class="ml-4">]</div>
-					<div></div>
-					<div class="ml-4">function handleRemove(index) {'{'}</div>
-					<div class="ml-8">items.splice(index, 1)</div>
-					<div class="ml-8">items = [...items]</div>
-					<div class="ml-4">{'}'}</div>
-					<div class="text-blue-400">&lt;/script&gt;</div>
-					<div></div>
-					<div class="text-blue-400">{'{#each items as item, index}'}</div>
-					<div class="ml-4 text-blue-400">&lt;ItemWrapper</div>
-					<div class="ml-8 text-blue-400">value={'{item.text}'}</div>
-					<div class="ml-8 text-blue-400">removable={'{true}'}</div>
-					<div class="ml-8 text-blue-400">on:remove={'{() => handleRemove(index)}'}</div>
-					<div class="ml-4 text-blue-400">/&gt;</div>
-					<div class="text-blue-400">{'{/each}'}</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(4)} />
 			<p class="text-neutral-floating mt-2 text-sm">
 				The ItemWrapper component provides a flexible and customizable way to display removable elements in your application. By utilizing the Item component's features, you can create various appearances to suit your specific use cases.
 			</p>

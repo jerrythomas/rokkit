@@ -1,0 +1,1 @@
+<Item value={{ text: 'With Icon', icon: 'i-rokkit:mode-light-solid' }} />

@@ -1,0 +1,1 @@
+<ItemWrapper value="Removable" removable={true} on:remove={handleRemove} />

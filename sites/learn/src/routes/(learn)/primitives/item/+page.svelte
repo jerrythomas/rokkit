@@ -1,6 +1,6 @@
 <script>
-	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { StoryViewer, Code } from '$lib/components/Story'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <svelte:head>
@@ -39,11 +39,7 @@
 				To render different types of content, pass various data structures to the `value` prop:
 			</p>
 
-			{#await stories}
-				<p>Loading...</p>
-			{:then groupedStories}
-				<StoryViewer {...groupedStories.intro} />
-			{/await}
+			<StoryViewer {...storyBuilder.getExample('intro')} />
 		</div>
 
 		<div class="bg-neutral-subtle rounded-lg p-6 mb-6">
@@ -51,21 +47,15 @@
 			<div class="space-y-4">
 				<div class="bg-neutral-elevated rounded-md p-4">
 					<h4 class="mb-2 font-semibold">Simple Text</h4>
-					<code class="text-sm">
-						<div class="text-blue-400">&lt;Item value="Sample Text" /&gt;</div>
-					</code>
+					<Code {...storyBuilder.getFragment(0)} />
 				</div>
 				<div class="bg-neutral-elevated rounded-md p-4">
 					<h4 class="mb-2 font-semibold">Icon and Text</h4>
-					<code class="text-sm">
-						<div class="text-blue-400">&lt;Item value={'{'}{'{'} text: 'With Icon', icon: 'i-rokkit:mode-light-solid' {'}'}{'}'}  /&gt;</div>
-					</code>
+					<Code {...storyBuilder.getFragment(1)} />
 				</div>
 				<div class="bg-neutral-elevated rounded-md p-4">
 					<h4 class="mb-2 font-semibold">Image and Text</h4>
-					<code class="text-sm">
-						<div class="text-blue-400">&lt;Item value={'{'}{'{'} text: 'An image', image: 'https://...jpg' {'}'}{'}'}  /&gt;</div>
-					</code>
+					<Code {...storyBuilder.getFragment(2)} />
 				</div>
 			</div>
 			<p class="text-neutral-floating mt-4 text-sm">
@@ -81,27 +71,11 @@
 			To render text with a state-based icon, pass an object that includes the text, icon, and state fields:
 		</p>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.state} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('state')} />
 
 		<div class="bg-neutral-subtle rounded-lg p-6 mt-6">
 			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">State-based Icon Implementation:</h3>
-			<div class="bg-neutral-elevated rounded-md p-4">
-				<code class="text-sm">
-					<div class="text-blue-400">&lt;script&gt;</div>
-					<div class="ml-4">let value = {'{'}</div>
-					<div class="ml-8">text: 'Folder',</div>
-					<div class="ml-8">icon: {'{'} open: 'i-rokkit:folder-opened', close: 'i-rokkit:folder-closed' {'}'},</div>
-					<div class="ml-8">state: 'open'</div>
-					<div class="ml-4">{'}'}</div>
-					<div class="text-blue-400">&lt;/script&gt;</div>
-					<div></div>
-					<div class="text-blue-400">&lt;Item {'{value}'} /&gt;</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(3)} />
 			<p class="text-neutral-floating mt-2 text-sm">
 				The icon will automatically switch based on the state value, choosing between the 'open' and 'close' icons.
 			</p>
@@ -115,30 +89,11 @@
 			The Item component allows you to provide field mappings using the `fields` prop. These mappings enable you to customize the attributes it uses to the content from the provided value.
 		</p>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.mapping} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('mapping')} />
 
 		<div class="bg-neutral-subtle rounded-lg p-6 mt-6">
 			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Field Mapping Example:</h3>
-			<div class="bg-neutral-elevated rounded-md p-4">
-				<code class="text-sm">
-					<div class="text-blue-400">&lt;script&gt;</div>
-					<div class="ml-4">let value = {'{'}</div>
-					<div class="ml-8">name: 'A Heart Icon',</div>
-					<div class="ml-8">symbol: 'i-rokkit:heart-filled'</div>
-					<div class="ml-4">{'}'}</div>
-					<div class="ml-4">let fields = {'{'}</div>
-					<div class="ml-8">text: 'name',</div>
-					<div class="ml-8">icon: 'symbol'</div>
-					<div class="ml-4">{'}'}</div>
-					<div class="text-blue-400">&lt;/script&gt;</div>
-					<div></div>
-					<div class="text-blue-400">&lt;Item {'{value}'} {'{fields}'} /&gt;</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(4)} />
 			<p class="text-neutral-floating mt-2 text-sm">
 				The flexibility of field mapping and the ability to render various combinations of text, icons, and images make this component the default item renderer for many of the data-driven components.
 			</p>
