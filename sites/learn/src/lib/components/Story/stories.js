@@ -74,7 +74,10 @@ export async function fetchStories(sources, modules) {
 	const stories = {}
 
 	Object.entries(files).forEach(([group, files]) => {
-		stories[group] = { files, App: components[group][0].content }
+		stories[group] = { files }
+		if (components[group]) {
+			stories[group].App = components[group][0].content
+		}
 	})
 	return stories
 }

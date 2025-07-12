@@ -1,14 +1,11 @@
 <script>
-	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { StoryViewer, Code } from '$lib/components/Story'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <svelte:head>
 	<title>Icon - Primitives | Learn Rokkit</title>
-	<meta
-		name="description"
-		content="Display icons with customizable sizes and styles"
-	/>
+	<meta name="description" content="Display icons with customizable sizes and styles" />
 </svelte:head>
 
 <div class="w-full space-y-8">
@@ -29,34 +26,111 @@
 	<section>
 		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Introduction</h2>
 		<p class="text-neutral-floating mb-4 text-lg">
-			The Icon component provides a consistent way to display icons throughout your application
-			with support for different icon libraries and customizable styling.
+			The Icon component in our library is designed to be easy to use and customizable, allowing you
+			to include icons in your application with minimal effort. In this tutorial, we will learn how
+			to use the Icon component and explore its customization options.
 		</p>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.example} />
-		{/await}
+		<!-- Basic Usage Demo -->
+		<div class="mb-8">
+			<h3 class="mb-4 text-2xl font-bold">Basic Usage</h3>
+			<p class="mb-4">
+				To use the Icon component, simply import it and provide the `name` prop, which should
+				correspond to the name of the icon you want to display:
+			</p>
+
+			<StoryViewer {...storyBuilder.getExample('intro')} />
+		</div>
+
+		<div class="bg-neutral-subtle mb-6 rounded-lg p-6">
+			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Basic Implementation:</h3>
+
+			<Code {...storyBuilder.getFragment(0)} />
+
+			<p class="text-neutral-floating mt-2 text-sm">
+				This will render the dark mode icon from the Rokkit icon set. Make sure to include the
+				appropriate icon set in your project.
+			</p>
+		</div>
 	</section>
 
-	<!-- Usage -->
-	<section>
-		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Usage</h2>
-		<p class="text-neutral-floating mb-4">
-			Icons can be used with different libraries and icon sets. The component automatically handles
-			sizing and styling based on your theme configuration.
+	<!-- Custom Sizes -->
+	<section class="mb-12">
+		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Custom Sizes</h2>
+		<p class="text-neutral-floating mb-4 text-lg">
+			You can easily customize the size of the icon using the `size` prop. The available sizes are
+			`small`, `medium`, `large`, and `base` (default):
 		</p>
+		<StoryViewer {...storyBuilder.getExample('size')} />
 
-		<div class="rounded-md bg-neutral-elevated p-4">
-			<code class="text-sm">
-				<div class="text-blue-400">&lt;script&gt;</div>
-				<div class="ml-4 text-yellow-300">import</div>
-				<div class="ml-4">{'{ Icon }'} <span class="text-yellow-300">from</span> <span class="text-green-400">'@rokkit/ui'</span></div>
-				<div class="text-blue-400">&lt;/script&gt;</div>
-				<div></div>
-				<div class="text-blue-400">&lt;Icon name="star" size="lg" /&gt;</div>
-			</code>
+		<div class="bg-neutral-subtle mt-6 rounded-lg p-6">
+			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Size Options:</h3>
+			<Code {...storyBuilder.getFragment(1)} />
+		</div>
+	</section>
+
+	<!-- Interactive Icons -->
+	<section class="mb-12">
+		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Interactive Icons</h2>
+		<p class="text-neutral-floating mb-4 text-lg">
+			By default, the role is set to `img`, but you can change it to `button` to use it as a button.
+			You can also add click event handlers to make icons interactive.
+		</p>
+		<StoryViewer {...storyBuilder.getExample('button')} />
+
+		<div class="mt-6 space-y-6">
+			<div class="border-neutral-subtle rounded-lg border p-6">
+				<h3 class="mb-4 text-lg font-semibold">Button Role</h3>
+
+				<Code {...storyBuilder.getFragment(2)} />
+			</div>
+
+			<div class="border-neutral-subtle rounded-lg border p-6">
+				<h3 class="mb-4 text-lg font-semibold">With Event Handler</h3>
+
+				<Code {...storyBuilder.getFragment(3)} />
+
+				<p class="text-neutral-floating mt-2 text-sm">
+					The `click` event will be triggered not only when the button is clicked, but also when it
+					is focused and the user presses the `Enter` key.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Properties -->
+	<section class="mb-12">
+		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Properties</h2>
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<div class="border-neutral-subtle rounded-lg border p-6">
+				<h3 class="mb-4 text-lg font-semibold">Core Properties</h3>
+				<ul class="space-y-3 text-sm">
+					<li><strong>name</strong>: Icon name (required)</li>
+					<li><strong>size</strong>: Icon size ('small', 'medium', 'large', 'base')</li>
+					<li><strong>role</strong>: ARIA role ('img', 'button')</li>
+					<li><strong>label</strong>: Accessibility label</li>
+				</ul>
+			</div>
+
+			<div class="border-neutral-subtle rounded-lg border p-6">
+				<h3 class="mb-4 text-lg font-semibold">Styling</h3>
+				<ul class="space-y-3 text-sm">
+					<li><strong>class</strong>: Custom CSS classes</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="border-amber-subtle bg-amber-inset mt-6 rounded-lg border p-6">
+			<div class="flex items-start space-x-3">
+				<div class="text-2xl">♿</div>
+				<div>
+					<h3 class="text-amber-overlay mb-2 text-lg font-semibold">Accessibility</h3>
+					<p class="text-amber-floating">
+						You can set the `aria-label` for the icon using the label property to improve
+						accessibility for screen readers.
+					</p>
+				</div>
+			</div>
 		</div>
 	</section>
 
@@ -72,6 +146,13 @@
 				class="bg-primary-overlay hover:bg-primary-hover focus:ring-primary-subtle inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
 			>
 				Item Component
+				<span class="ml-2">→</span>
+			</a>
+			<a
+				href="/tutorial/primitives/pill"
+				class="bg-primary-overlay hover:bg-primary-hover focus:ring-primary-subtle inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+			>
+				Pill Component
 				<span class="ml-2">→</span>
 			</a>
 		</div>
