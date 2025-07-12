@@ -39,24 +39,24 @@ function getLanguage(file) {
  */
 export async function fetchImports(sources) {
 	const files = await Promise.all(
-		Object.entries(sources)
-			.map(async ([file, content]) => ({
-				file,
-				group: file.split('/').slice(-2)[0],
-				name: file.split('/').pop(),
-				language: getLanguage(file),
-				content: await content()
-			}))
-			.filter((file) => file.group !== '.')
+		Object.entries(sources).map(async ([file, content]) => ({
+			file,
+			group: file.split('/').slice(-2)[0],
+			name: file.split('/').pop(),
+			language: getLanguage(file),
+			content: await content()
+		}))
 	)
 
-	const groups = files.reduce(
-		(acc, file) => ({
-			...acc,
-			[file.group]: [...(acc[file.group] || []), omit(['group'], file)]
-		}),
-		{}
-	)
+	const groups = files
+		.filter((file) => file.group !== '.')
+		.reduce(
+			(acc, file) => ({
+				...acc,
+				[file.group]: [...(acc[file.group] || []), omit(['group'], file)]
+			}),
+			{}
+		)
 
 	return groups
 }
