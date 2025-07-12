@@ -1,3 +1,4 @@
+// const metadata = import.meta.glob('./*/**/meta.json')
 /**
  * Tutorial sections organized for GroupedList component
  * Comprehensive tutorial structure covering all Rokkit components and concepts
@@ -14,14 +15,14 @@ export const sections = [
 				title: 'Introduction',
 				description: 'Learn what Rokkit is and why it exists',
 				icon: '👋',
-				slug: 'tutorial/welcome/introduction'
+				slug: 'welcome/introduction'
 			},
 			{
 				id: 'getting-started',
 				title: 'Getting Started',
 				description: 'Set up your first Rokkit project',
 				icon: '🚀',
-				slug: 'tutorial/welcome/getting-started'
+				slug: 'welcome/getting-started'
 			}
 		]
 	},
@@ -35,63 +36,63 @@ export const sections = [
 				title: 'List',
 				description: 'Display and select from collections of items',
 				icon: '📋',
-				slug: 'tutorial/elements/list'
+				slug: 'elements/list'
 			},
 			{
 				id: 'tabs',
 				title: 'Tabs',
 				description: 'Navigate between different content sections',
 				icon: '📑',
-				slug: 'tutorial/elements/tabs'
+				slug: 'elements/tabs'
 			},
 			{
 				id: 'accordion',
 				title: 'Accordion',
 				description: 'Collapsible content sections',
 				icon: '🪗',
-				slug: 'tutorial/elements/accordion'
+				slug: 'elements/accordion'
 			},
 			{
 				id: 'tree',
 				title: 'Tree',
 				description: 'Hierarchical data navigation',
 				icon: '🌳',
-				slug: 'tutorial/elements/tree'
+				slug: 'elements/tree'
 			},
 			{
 				id: 'switch',
 				title: 'Switch',
 				description: 'Toggle between multiple options',
 				icon: '🔀',
-				slug: 'tutorial/elements/switch'
+				slug: 'elements/switch'
 			},
 			{
 				id: 'select',
 				title: 'Select',
 				description: 'Choose single values from dropdown lists',
 				icon: '🔽',
-				slug: 'tutorial/elements/select'
+				slug: 'elements/select'
 			},
 			{
 				id: 'multi-select',
 				title: 'MultiSelect',
 				description: 'Choose multiple values from lists',
 				icon: '☑️',
-				slug: 'tutorial/elements/multi-select'
+				slug: 'elements/multi-select'
 			},
 			{
 				id: 'drop-down',
 				title: 'DropDown',
 				description: 'Context menus and action lists',
 				icon: '⬇️',
-				slug: 'tutorial/elements/drop-down'
+				slug: 'elements/drop-down'
 			},
 			{
 				id: 'table',
 				title: 'Table',
 				description: 'Display tabular data with sorting and hierarchy',
 				icon: '📊',
-				slug: 'tutorial/elements/table'
+				slug: 'elements/table'
 			}
 		]
 	},
@@ -105,21 +106,21 @@ export const sections = [
 				title: 'Icon',
 				description: 'Display icons with customizable sizes and styles',
 				icon: '🎨',
-				slug: 'tutorial/primitives/icon'
+				slug: 'primitives/icon'
 			},
 			{
 				id: 'item',
 				title: 'Item',
 				description: 'Flexible content renderer for text, icons, and images',
 				icon: '🧩',
-				slug: 'tutorial/primitives/item'
+				slug: 'primitives/item'
 			},
 			{
 				id: 'pill',
 				title: 'Pill',
 				description: 'Removable item wrappers and tags',
 				icon: '💊',
-				slug: 'tutorial/primitives/pill'
+				slug: 'primitives/pill'
 			}
 		]
 	},
@@ -133,14 +134,14 @@ export const sections = [
 				title: 'ValidationReport',
 				description: 'Display validation results and status',
 				icon: '✅',
-				slug: 'tutorial/utilities/validation-report'
+				slug: 'utilities/validation-report'
 			},
 			{
 				id: 'connector',
 				title: 'Connector',
 				description: 'Visual connectors for tree and nested layouts',
 				icon: '🔗',
-				slug: 'tutorial/utilities/connector'
+				slug: 'utilities/connector'
 			}
 		]
 	},
@@ -154,21 +155,21 @@ export const sections = [
 				title: 'ResponsiveGrid',
 				description: 'Flexible grid layouts that adapt to screen size',
 				icon: '📐',
-				slug: 'tutorial/layout/responsive-grid'
+				slug: 'layout/responsive-grid'
 			},
 			{
 				id: 'nav-content',
 				title: 'NavContent',
 				description: 'Navigation and content layout patterns',
 				icon: '🧭',
-				slug: 'tutorial/layout/nav-content'
+				slug: 'layout/nav-content'
 			},
 			{
 				id: 'stepper',
 				title: 'Stepper',
 				description: 'Multi-step process navigation',
 				icon: '👣',
-				slug: 'tutorial/layout/stepper'
+				slug: 'layout/stepper'
 			}
 		]
 	},
@@ -182,35 +183,35 @@ export const sections = [
 				title: 'Input Components',
 				description: 'Explore different input types and their properties',
 				icon: '📝',
-				slug: 'tutorial/forms/inputs'
+				slug: 'forms/inputs'
 			},
 			{
 				id: 'builder',
 				title: 'FormBuilder',
 				description: 'Create forms from data with automatic schema derivation',
 				icon: '🏗️',
-				slug: 'tutorial/forms/builder'
+				slug: 'forms/builder'
 			},
 			{
 				id: 'renderer',
 				title: 'FormRenderer',
 				description: 'Render forms with snippet-based customization',
 				icon: '📄',
-				slug: 'tutorial/forms/renderer'
+				slug: 'forms/renderer'
 			},
 			{
 				id: 'validation',
 				title: 'Validation',
 				description: 'Add validation with real-time feedback',
 				icon: '✅',
-				slug: 'tutorial/forms/validation'
+				slug: 'forms/validation'
 			},
 			{
 				id: 'advanced',
 				title: 'Advanced Features',
 				description: 'Custom snippets, nested forms, and complex layouts',
 				icon: '⚙️',
-				slug: 'tutorial/forms/advanced'
+				slug: 'forms/advanced'
 			}
 		]
 	},
@@ -224,7 +225,7 @@ export const sections = [
 				title: 'Colors',
 				description: 'Color palette and theming system',
 				icon: '🎨',
-				slug: 'tutorial/theming/colors'
+				slug: 'theming/colors'
 			}
 		]
 	}

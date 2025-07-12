@@ -18,6 +18,7 @@
 @import './theme/input.css';
 @import './theme/shiki.css';
 @import './theme/list.css';
+@import './theme/tab.css';
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;

@@ -2,20 +2,20 @@
 
 /* Tab Root Container */
 [data-tabs-root] {
-  @apply w-full space-y-2;
+  @apply flex w-full flex-col gap-0;
 }
 
 /* Tab List - Header Container */
 [data-tabs-list],
 [data-tab-list] {
-  @apply bg-neutral-base space-x-2;
+  @apply space-x-2;
 }
 
 /* Individual Tab Items */
 [data-tabs-trigger] {
   @apply text-neutral-floating border-b-2 border-transparent px-4 py-2;
   @apply cursor-pointer select-none transition-all duration-200;
-  @apply hover:bg-neutral-base/50;
+  @apply hover:bg-neutral-base/50 hover:text-secondary-elevated;
   @apply data-[selected=true]:border-accent-base data-[selected=true]:bg-accent-base/10;
   @apply data-[selected=true]:text-accent-overlay;
 }
@@ -35,7 +35,10 @@
 
 /* Tab Content Area */
 [data-tab-content] {
-  @apply bg-neutral-base flex;
+  @apply flex;
+}
+[data-tab-content] > pre.shiki {
+  @apply my-0 py-0;
 }
 
 /* Default Tab Content */

@@ -16,8 +16,3 @@
   padding: 0;
   background: transparent !important;
 }
-
-/* Dark mode support for fallback */
-.dark .shiki-container .shiki {
-  color-scheme: dark;
-}
