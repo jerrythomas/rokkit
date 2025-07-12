@@ -14,14 +14,14 @@ export const sections = [
 				title: 'Introduction',
 				description: 'Learn what Rokkit is and why it exists',
 				icon: '👋',
-				slug: 'tutorial/introduction'
+				slug: 'tutorial/welcome/introduction'
 			},
 			{
 				id: 'getting-started',
 				title: 'Getting Started',
 				description: 'Set up your first Rokkit project',
 				icon: '🚀',
-				slug: 'tutorial/getting-started'
+				slug: 'tutorial/welcome/getting-started'
 			}
 		]
 	},
