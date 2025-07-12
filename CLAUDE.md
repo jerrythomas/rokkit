@@ -218,6 +218,93 @@ const fields = {
 }
 ```
 
+## StoryBuilder System
+
+The learn site uses a `StoryBuilder` class for managing interactive examples and code fragments in tutorials. This provides a clean, reactive API for story management.
+
+### Basic Usage
+
+**stories.js**
+```javascript
+import { StoryBuilder } from '$lib/components/Story/builder.svelte.js'
+
+const modules = import.meta.glob('./*/**/App.svelte', { import: 'default' })
+const sources = import.meta.glob('./*/**/*', { query: '?raw', import: 'default' })
+
+export const storyBuilder = new StoryBuilder(sources, modules)
+```
+
+**+page.svelte**
+```svelte
+<script>
+  import { StoryViewer, Code } from '$lib/components/Story'
+  import { storyBuilder } from './stories.js'
+</script>
+
+<!-- Interactive Examples -->
+<StoryViewer {...storyBuilder.getExample('intro')} />
+
+<!-- Code Fragments -->
+<Code {...storyBuilder.getFragment(0)} />
+```
+
+### API Reference
+
+**Properties:**
+- `storyBuilder.loading` - Reactive loading state
+- `storyBuilder.error` - Error state if story loading fails
+- `storyBuilder.examples` - All processed examples
+- `storyBuilder.fragments` - Processed fragment files
+
+**Methods:**
+- `getExample(name)` - Get specific example by name
+- `getFragment(index)` - Get specific fragment by index
+- `hasExample(name)` - Check if example exists
+- `hasFragment(index)` - Check if fragment exists
+
+### Folder Structure
+
+```
+component/
+├── +page.svelte (tutorial content)
+├── stories.js (StoryBuilder instance)
+├── fragments/ (code examples for syntax highlighting)
+│   ├── 01-basic.svelte
+│   ├── 02-advanced.svelte
+│   └── ...
+├── intro/ (interactive examples)
+│   └── App.svelte
+├── mapping/
+│   └── App.svelte
+└── meta.json
+```
+
+### Code Fragments
+
+Create fragments for reusable code examples with syntax highlighting:
+
+```svelte
+<!-- fragments/01-basic.svelte -->
+<Component value="example" />
+```
+
+Access in templates:
+```svelte
+<Code {...storyBuilder.getFragment(0)} />
+```
+
+### Benefits
+
+- **Reactive**: Automatic updates when data loads
+- **Clean Templates**: No `#await` blocks needed
+- **Type Safety**: Helper methods with existence checks
+- **Performance**: Single async operation per page
+- **Maintainable**: Code fragments in separate files
+
+### Testing
+
+The StoryBuilder includes comprehensive test coverage and works in both runtime and test environments by detecting availability of Svelte's `$state` rune.
+
 ## Reference Files
 
 Study these files for implementation patterns:

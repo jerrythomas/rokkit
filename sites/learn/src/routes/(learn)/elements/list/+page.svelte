@@ -1,6 +1,6 @@
 <script>
-	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { StoryViewer, Code } from '$lib/components/Story'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <svelte:head>
@@ -35,7 +35,7 @@
 
 		<div class="text-neutral-elevated mb-6 rounded-lg">
 			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Notable features:</h3>
-			<ul class="marker:text-primary-500 space-y-2 list-disc pl-6">
+			<ul class="marker:text-primary-500 list-disc space-y-2 pl-6">
 				<li>Get started with a simple array of objects</li>
 				<li>Attributes like text, icon/image or url can be mapped to attributes in the data</li>
 				<li>
@@ -43,8 +43,8 @@
 					be used
 				</li>
 				<li>
-					It is also possible to configure a different component to be used for different items based
-					on an attribute in the data
+					It is also possible to configure a different component to be used for different items
+					based on an attribute in the data
 				</li>
 				<li>Keyboard navigation support for arrow keys and enter key</li>
 				<li>Supports multiple selection</li>
@@ -60,11 +60,7 @@
 				see how selection works:
 			</p>
 
-			{#await stories}
-				<p>Loading...</p>
-			{:then groupedStories}
-				<StoryViewer {...groupedStories.intro} />
-			{/await}
+			<StoryViewer {...storyBuilder.getExample('intro')} />
 		</div>
 	</section>
 
@@ -80,14 +76,10 @@
 			item in the list to see the data of the selected item.
 		</p>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.snippets} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('snippets')} />
 
 		<!-- Properties Documentation -->
-		<div class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
+		<div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div class="border-neutral-subtle rounded-lg border p-6">
 				<h3 class="mb-4 text-lg font-semibold">Properties</h3>
 				<ul class="space-y-2 text-sm">
@@ -101,13 +93,15 @@
 				<h3 class="mb-4 text-lg font-semibold">Events</h3>
 				<ul class="space-y-2 text-sm">
 					<li><strong>select</strong>: Triggered when an item is selected</li>
-					<li><strong>move</strong>: Triggered when the current item changes (example navigating)</li>
+					<li>
+						<strong>move</strong>: Triggered when the current item changes (example navigating)
+					</li>
 				</ul>
 			</div>
 		</div>
 
 		<!-- Snippets Documentation -->
-		<div class="border-neutral-subtle rounded-lg border p-6 mt-6">
+		<div class="border-neutral-subtle mt-6 rounded-lg border p-6">
 			<h3 class="mb-4 text-lg font-semibold">Available Snippets</h3>
 			<ul class="space-y-2 text-sm">
 				<li><strong>header</strong>: Add a custom header, say a search box to the list</li>
@@ -129,35 +123,17 @@
 
 		<div class="mb-6 space-y-4">
 			<p>A snippet of one of the items is below:</p>
-			<div class="rounded-md bg-neutral-900 p-4 dark:bg-neutral-800">
-				<code class="text-sm text-green-400">
-					<div>{'{'}</div>
-					<div class="ml-4">"name": "Fruits",</div>
-					<div class="ml-4">"photo": "/examples/fruits.jpg"</div>
-					<div>{'}'}</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(0)} />
 
 			<p>
 				In this we want to show `name` and the `photo` attributes as the text and image
 				respectively. To do this we can configure fields as below:
 			</p>
 
-			<div class="rounded-md bg-neutral-900 p-4 dark:bg-neutral-800">
-				<code class="text-sm text-green-400">
-					<div><span class="text-yellow-300">let</span> fields = {'{'}</div>
-					<div class="ml-4">text: <span class="text-green-400">'name'</span>,</div>
-					<div class="ml-4">image: <span class="text-green-400">'photo'</span></div>
-					<div>{'}'}</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(1)} />
 		</div>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.mapping} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('mapping')} />
 	</section>
 
 	<!-- Advanced Usage -->
@@ -181,60 +157,24 @@
 				to identify the component to be used:
 			</p>
 
-			<div class="rounded-md bg-neutral-900 p-4 dark:bg-neutral-800">
-				<code class="text-sm text-green-400">
-					<div><span class="text-yellow-300">let</span> fields = {'{ component: \'type\' }'}</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(2)} />
 
 			<p>
 				Now that we have mapped the `component` attribute, let's create two custom components and
 				tell list to use these components:
 			</p>
 
-			<div class="rounded-md bg-neutral-900 p-4 dark:bg-neutral-800">
-				<code class="text-sm">
-					<div class="text-blue-400">&lt;script&gt;</div>
-					<div class="ml-4 text-yellow-300">import</div>
-					<div class="ml-4">Odd <span class="text-yellow-300">from</span> <span class="text-green-400">'./Odd.svelte'</span></div>
-					<div class="ml-4 text-yellow-300">import</div>
-					<div class="ml-4">Even <span class="text-yellow-300">from</span> <span class="text-green-400">'./Even.svelte'</span></div>
-					<div class="text-blue-400">&lt;/script&gt;</div>
-					<div></div>
-					<div class="text-blue-400">&lt;List {'{items}'} {'{fields}'}&gt;</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">#snippet</span> <span class="text-yellow-300">odd</span>(node){'}'}</div>
-					<div class="ml-8">&lt;<span class="text-blue-400">Odd</span> value={'{node.value}'} /&gt;</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">/snippet</span>{'}'}</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">#snippet</span> <span class="text-yellow-300">even</span>(node){'}'}</div>
-					<div class="ml-8">&lt;<span class="text-blue-400">Even</span> value={'{node.value}'} /&gt;</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">/snippet</span>{'}'}</div>
-					<div class="text-blue-400">&lt;/List&gt;</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(3)} />
 
 			<p>
-				If we want the `Odd` component to be used as default we can change the snippet to use `stub`:
+				If we want the `Odd` component to be used as default we can change the snippet to use
+				`stub`:
 			</p>
 
-			<div class="rounded-md bg-neutral-900 p-4 dark:bg-neutral-800">
-				<code class="text-sm">
-					<div class="text-blue-400">&lt;List {'{items}'} {'{fields}'}&gt;</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">#snippet</span> <span class="text-yellow-300">stub</span>(node){'}'}</div>
-					<div class="ml-8">&lt;<span class="text-blue-400">Odd</span> value={'{node.value}'} /&gt;</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">/snippet</span>{'}'}</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">#snippet</span> <span class="text-yellow-300">even</span>(node){'}'}</div>
-					<div class="ml-8">&lt;<span class="text-blue-400">Even</span> value={'{node.value}'} /&gt;</div>
-					<div class="ml-4">{'{'}<span class="text-purple-400">/snippet</span>{'}'}</div>
-					<div class="text-blue-400">&lt;/List&gt;</div>
-				</code>
-			</div>
+			<Code {...storyBuilder.getFragment(4)} />
 		</div>
 
-		{#await stories}
-			<p>Loading...</p>
-		{:then groupedStories}
-			<StoryViewer {...groupedStories.mixed} />
-		{/await}
+		<StoryViewer {...storyBuilder.getExample('mixed')} />
 	</section>
 
 	<!-- Next Steps -->

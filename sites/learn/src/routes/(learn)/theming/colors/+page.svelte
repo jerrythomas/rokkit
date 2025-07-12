@@ -1,6 +1,6 @@
 <script>
 	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <svelte:head>
@@ -78,11 +78,7 @@
 		<!-- Interactive Demo -->
 		<div class="mb-8">
 			<h3 class="mb-4 text-2xl font-bold">Color Palette Preview</h3>
-			{#await stories}
-				<p>Loading...</p>
-			{:then groupedStories}
-				<StoryViewer {...groupedStories.example} />
-			{/await}
+			<StoryViewer {...storyBuilder.getExample('example')} />
 		</div>
 	</section>
 

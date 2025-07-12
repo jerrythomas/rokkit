@@ -1,6 +1,6 @@
 <script>
 	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <svelte:head>
@@ -80,11 +80,7 @@
 				consistent behavior.
 			</p>
 
-			{#await stories}
-				<p>Loading...</p>
-			{:then groupedStories}
-				<StoryViewer {...groupedStories.example} />
-			{/await}
+			<StoryViewer {...storyBuilder.getExample('example')} />
 		</section>
 
 		<!-- Component Details -->

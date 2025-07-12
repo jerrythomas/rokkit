@@ -1,6 +1,6 @@
 <script>
 	import { StoryViewer } from '$lib/components/Story'
-	import { stories } from './stories.js'
+	import { storyBuilder } from './stories.js'
 </script>
 
 <div class="w-full space-y-8">
@@ -57,11 +57,7 @@
 				components work:
 			</p>
 
-			{#await stories}
-				<p>Loading...</p>
-			{:then groupedStories}
-				<StoryViewer {...groupedStories.example} />
-			{/await}
+			<StoryViewer {...storyBuilder.getExample('example')} />
 		</section>
 
 		<!-- Why Rokkit -->

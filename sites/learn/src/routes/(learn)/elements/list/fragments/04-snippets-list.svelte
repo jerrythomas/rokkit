@@ -1,0 +1,13 @@
+<script>
+  import Odd from './Odd.svelte'
+  import Even from './Even.svelte'
+</script>
+
+<List {items} {fields}>
+  {#snippet odd(node)}
+    <Odd value={node.value} />
+  {/snippet}
+  {#snippet even(node)}
+    <Even value={node.value} />
+  {/snippet}
+</List>
