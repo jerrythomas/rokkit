@@ -1,0 +1,5 @@
+/* CSS Variable format: */
+--{color}-{shade}
+
+/* Example: */
+background-color: var(--primary-500);

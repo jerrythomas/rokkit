@@ -3,7 +3,10 @@ import { omit } from 'ramda'
 const LANGUAGE_MAP = {
 	js: 'javascript',
 	ts: 'typescript',
-	md: 'markdown'
+	md: 'markdown',
+	sh: 'bash',
+	bash: 'bash',
+	shell: 'shell'
 }
 
 /**

@@ -1,0 +1,193 @@
+/* Article styles for consistent documentation/content pages */
+[data-article-root] {
+  @apply w-full max-w-none space-y-8;
+}
+[data-article-root] header {
+  @apply border-neutral-subtle border-b;
+}
+/* Typography hierarchy */
+[data-article-root] h1 {
+  @apply text-neutral-overlay mb-6 mt-0 text-3xl font-bold;
+}
+
+[data-article-root] h2 {
+  @apply text-neutral-overlay border-neutral-subtle mb-6 mt-12 border-b pb-4 text-2xl font-bold;
+}
+
+[data-article-root] h3 {
+  @apply text-neutral-overlay mb-4 text-xl font-bold;
+}
+
+[data-article-root] h4 {
+  @apply text-neutral-overlay mb-4 text-lg font-semibold;
+}
+
+[data-article-root] h5 {
+  @apply text-neutral-overlay mb-3 text-lg font-semibold;
+}
+
+[data-article-root] h6 {
+  @apply text-neutral-overlay mb-3 text-base font-semibold;
+}
+
+/* Paragraphs and text */
+[data-article-root] p {
+  @apply text-neutral-floating text-md mb-4 leading-relaxed;
+}
+
+/* Lists */
+[data-article-root] ul {
+  @apply mb-6 pl-6;
+}
+
+[data-article-root] ol {
+  @apply mb-6 pl-6;
+}
+
+[data-article-root] li {
+  @apply text-neutral-floating mb-2 text-lg leading-relaxed;
+}
+
+[data-article-root] ul li {
+  @apply relative;
+  list-style: none;
+}
+
+[data-article-root] ul li::before {
+  content: '';
+  @apply bg-primary-500 absolute -ml-4 mt-3 h-1.5 w-1.5 rounded-full;
+}
+
+[data-article-root] ol li {
+  list-style: decimal;
+}
+
+/* Sections */
+[data-article-root] section {
+  @apply space-y-6;
+}
+[data-article-root] section[data-card-cta] {
+  @apply bg-neutral-subtle rounded-xl p-6;
+}
+[data-article-root] section > [data-content-block] {
+  @apply border-neutral-muted rounded-lg border px-6;
+}
+
+[data-article-root] section:last-child {
+  @apply mb-0;
+}
+[data-article-root] section > span {
+  @apply flex gap-3;
+}
+/* Links */
+[data-article-root] a {
+  @apply text-primary-500 hover:text-primary-600 transition-colors hover:underline;
+}
+
+/* Code */
+[data-article-root] code {
+  @apply rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-sm text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100;
+}
+
+[data-article-root] pre {
+  @apply mb-6 overflow-x-auto rounded-lg border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800;
+}
+
+[data-article-root] pre code {
+  @apply bg-transparent p-0 text-sm;
+}
+
+/* Blockquotes */
+[data-article-root] blockquote {
+  @apply border-primary-200 mb-6 border-l-4 pl-4 italic text-neutral-600 dark:text-neutral-400;
+}
+
+/* Tables */
+[data-article-root] table {
+  @apply mb-6 w-full border-collapse;
+}
+
+[data-article-root] th {
+  @apply border border-neutral-200 bg-neutral-100 px-4 py-2 text-left font-semibold dark:border-neutral-700 dark:bg-neutral-800;
+}
+
+[data-article-root] td {
+  @apply border border-neutral-200 px-4 py-2 dark:border-neutral-700;
+}
+
+/* Horizontal rules */
+[data-article-root] hr {
+  @apply my-8 border-0 border-t border-neutral-200 dark:border-neutral-700;
+}
+
+/* Images */
+[data-article-root] img {
+  @apply mb-6 h-auto max-w-full rounded-lg;
+}
+
+/* Special content blocks */
+[data-article-root] .grid {
+  @apply mb-6 gap-6;
+}
+
+[data-article-root] .rounded-lg {
+  @apply border border-neutral-200 dark:border-neutral-700;
+}
+
+/* Interactive elements */
+/* [data-article-root] .bg-primary-overlay {
+  @apply bg-primary-500 hover:bg-primary-600 focus:bg-primary-600;
+}
+
+[data-article-root] .text-primary-overlay {
+  @apply text-primary-500;
+}
+
+[data-article-root] .text-primary-floating {
+  @apply text-primary-600;
+}
+
+[data-article-root] .border-primary-subtle {
+  @apply border-primary-200 dark:border-primary-700;
+}
+
+[data-article-root] .border-neutral-subtle {
+  @apply border-neutral-200 dark:border-neutral-700;
+} */
+
+/* Focus states for accessibility */
+[data-article-root] a:focus,
+[data-article-root] button:focus {
+  @apply outline-primary-500 outline-2 outline-offset-2;
+}
+[data-article-root] [data-card] {
+  @apply border-neutral-subtle bg-neutral-subtle rounded-lg border p-4;
+}
+[data-article-root] [data-card] p {
+  @apply m-0;
+}
+
+[data-article-root] h1 > span,
+[data-article-root] h2 > span,
+[data-article-root] h3 > span {
+  @apply mr-4;
+}
+[data-article-root] h4 > span {
+  @apply mr-2;
+}
+
+/* Print styles */
+@media print {
+  [data-article-root] {
+    @apply text-black;
+  }
+
+  [data-article-root] a {
+    @apply text-black no-underline;
+  }
+
+  [data-article-root] a::after {
+    content: ' (' attr(href) ')';
+    @apply text-sm text-gray-600;
+  }
+}

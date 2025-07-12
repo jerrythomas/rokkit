@@ -14,6 +14,7 @@
 /* @import '@rokkit/themes/minimal.css'; */
 /* @import '@rokkit/themes/material.css'; */
 /* @import '@rokkit/themes/rokkit.css'; */
+@import './theme/article.css';
 @import './theme/base.css';
 @import './theme/input.css';
 @import './theme/shiki.css';

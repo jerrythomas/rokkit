@@ -11,18 +11,11 @@
 	/>
 </svelte:head>
 
-<div class="w-full space-y-8">
+<article data-article-root>
 	<!-- Header -->
-	<header class="border-neutral-subtle border-b pb-8">
-		<div class="flex items-center space-x-3">
-			<div class="text-4xl">📝</div>
-			<div>
-				<h1 class="text-neutral-overlay text-4xl font-bold">Input Components</h1>
-				<p class="text-neutral-elevated mt-2 text-xl">
-					Explore different input types and their properties
-				</p>
-			</div>
-		</div>
+	<header>
+		<h1><span>📝</span> Input Components</h1>
+		<p>Explore different input types and their properties</p>
 		<div class="mt-4">
 			<span class="bg-primary-inset text-primary-overlay rounded-full px-3 py-1 text-sm font-medium">
 				Forms
@@ -31,17 +24,17 @@
 	</header>
 
 	<!-- Main Content -->
-	<div class="prose text-neutral-elevated max-w-none">
+	<div>
 		<section class="mb-12">
-			<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Overview</h2>
-			<p class="text-neutral-floating mb-4 text-lg">
+			<h2>Overview</h2>
+			<p>
 				Rokkit provides a comprehensive set of input components that work seamlessly with different
 				data types and structures. These components use field mapping to adapt to your data format,
 				making them highly flexible and reusable.
 			</p>
 
-			<div class="bg-neutral-subtle mb-6 rounded-lg p-6">
-				<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Key Features:</h3>
+			<div data-card>
+				<h3>Key Features:</h3>
 				<ul class="grid grid-cols-1 gap-2 md:grid-cols-2">
 					<li class="flex items-center space-x-2">
 						<span class="text-primary-500">•</span>
@@ -73,8 +66,8 @@
 
 		<!-- Interactive Demo -->
 		<section class="mb-12">
-			<h3 class="text-neutral-overlay mb-6 text-2xl font-bold">Interactive Demo</h3>
-			<p class="text-neutral-floating mb-4">
+			<h3>Interactive Demo</h3>
+			<p>
 				This demo shows how different input components work together in a form. Notice how field
 				mapping allows each component to work with different data structures while maintaining
 				consistent behavior.
@@ -85,14 +78,14 @@
 
 		<!-- Component Details -->
 		<section class="mb-12">
-			<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Component Details</h2>
+			<h2>Component Details</h2>
 
 			<div class="space-y-6">
-				<div class="border-neutral-subtle rounded-lg border p-6">
-					<h3 class="text-primary-overlay mb-3 text-lg font-semibold">
+				<div data-content-block>
+					<h3>
 						🗂️ List Component
 					</h3>
-					<p class="text-neutral-floating mb-3">
+					<p>
 						Perfect for single-selection scenarios where you want to show all options visually. Uses
 						field mapping to display text and icons from your data.
 					</p>
@@ -101,11 +94,11 @@
 					</div>
 				</div>
 
-				<div class="border-neutral-subtle rounded-lg border p-6">
-					<h3 class="text-primary-overlay mb-3 text-lg font-semibold">
+				<div data-content-block>
+					<h3>
 						📋 Select Component
 					</h3>
-					<p class="text-neutral-floating mb-3">
+					<p>
 						Ideal for dropdown selections with rich content. Can display additional description text
 						and supports search functionality.
 					</p>
@@ -115,11 +108,11 @@
 					</div>
 				</div>
 
-				<div class="border-neutral-subtle rounded-lg border p-6">
-					<h3 class="text-primary-overlay mb-3 text-lg font-semibold">
+				<div data-content-block>
+					<h3>
 						☑️ MultiSelect Component
 					</h3>
-					<p class="text-neutral-floating mb-3">
+					<p>
 						Enables multiple selections with a clean, tag-based interface. Perfect for categories,
 						tags, or team member assignments.
 					</p>
@@ -132,14 +125,14 @@
 
 		<!-- Best Practices -->
 		<section class="mb-12">
-			<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Best Practices</h2>
+			<h2>Best Practices</h2>
 
 			<div class="space-y-4">
 				<div class="flex items-start space-x-3">
 					<div class="mt-1 text-green-500">✅</div>
 					<div>
-						<strong class="text-neutral-overlay">Use descriptive field mappings:</strong>
-						<p class="text-neutral-floating">
+						<strong>Use descriptive field mappings:</strong>
+						<p>
 							Map your data fields to component properties in a way that makes sense for your use
 							case.
 						</p>
@@ -149,8 +142,8 @@
 				<div class="flex items-start space-x-3">
 					<div class="mt-1 text-green-500">✅</div>
 					<div>
-						<strong class="text-neutral-overlay">Provide meaningful labels:</strong>
-						<p class="text-neutral-floating">
+						<strong>Provide meaningful labels:</strong>
+						<p>
 							Always include proper labels for accessibility and user experience.
 						</p>
 					</div>
@@ -159,8 +152,8 @@
 				<div class="flex items-start space-x-3">
 					<div class="mt-1 text-green-500">✅</div>
 					<div>
-						<strong class="text-neutral-overlay">Use reactive state:</strong>
-						<p class="text-neutral-floating">
+						<strong>Use reactive state:</strong>
+						<p>
 							Take advantage of Svelte's reactive state management for real-time updates.
 						</p>
 					</div>
@@ -169,8 +162,8 @@
 				<div class="flex items-start space-x-3">
 					<div class="mt-1 text-red-500">❌</div>
 					<div>
-						<strong class="text-neutral-overlay">Don't hardcode field names:</strong>
-						<p class="text-neutral-floating">
+						<strong>Don't hardcode field names:</strong>
+						<p>
 							Use field mapping instead of assuming specific property names in your data.
 						</p>
 					</div>
@@ -179,35 +172,29 @@
 		</section>
 
 		<!-- What's Next -->
-		<section class="bg-primary-inset rounded-lg p-6">
-			<h3 class="text-primary-overlay mb-3 text-xl font-semibold">What's Next?</h3>
-			<p class="text-primary-floating mb-6">
+		<section data-card-cta>
+			<h3>What's Next?</h3>
+			<p>
 				Now that you understand how input components work, explore more advanced form features:
 			</p>
 
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-				<a
-					href="/tutorial/forms/builder"
-					class="border-primary-subtle bg-neutral-base rounded-lg border p-4 transition-shadow hover:shadow-md"
-				>
+				<a href="/tutorial/forms/builder" class="button is-primary">
 					<div class="mb-2 text-2xl">🏗️</div>
-					<h4 class="text-primary-overlay font-semibold">FormBuilder</h4>
-					<p class="text-primary-floating text-sm">
+					<h4>FormBuilder</h4>
+					<p>
 						Generate forms automatically from data schemas
 					</p>
 				</a>
 
-				<a
-					href="/tutorial/forms/validation"
-					class="border-primary-subtle bg-neutral-base rounded-lg border p-4 transition-shadow hover:shadow-md"
-				>
+				<a href="/tutorial/forms/validation" class="button is-primary">
 					<div class="mb-2 text-2xl">✅</div>
-					<h4 class="text-primary-overlay font-semibold">Validation</h4>
-					<p class="text-primary-floating text-sm">
+					<h4>Validation</h4>
+					<p>
 						Add real-time validation to your forms
 					</p>
 				</a>
 			</div>
 		</section>
 	</div>
-</div>
+</article>

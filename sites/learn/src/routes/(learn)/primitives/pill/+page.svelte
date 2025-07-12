@@ -11,14 +11,13 @@
 	/>
 </svelte:head>
 
-<div class="w-full space-y-8">
+<article data-article-root>
 	<!-- Header -->
-	<header class="border-neutral-subtle border-b pb-8">
+	<header>
 		<div class="flex items-center space-x-3">
-			<div class="text-4xl">💊</div>
 			<div>
-				<h1 class="text-neutral-overlay text-4xl font-bold">Pill Component</h1>
-				<p class="text-neutral-elevated mt-2 text-xl">
+				<h1><span>💊</span>Pill Component</h1>
+				<p>
 					Removable item wrappers and tags with customizable content
 				</p>
 			</div>
@@ -27,34 +26,34 @@
 
 	<!-- Introduction -->
 	<section>
-		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Introduction</h2>
-		<p class="text-neutral-floating mb-4 text-lg">
+		<h2>Introduction</h2>
+		<p>
 			The ItemWrapper component wraps the Item component and provides an optional remove functionality. This component can be used for displaying tags, selected items from a list, or other scenarios where a removable visual element is required. You can get all the features of the Item component in the ItemWrapper component. In addition, you can also use a custom component for the content.
 		</p>
 
 		<!-- Basic Usage Demo -->
 		<div class="mb-8">
-			<h3 class="mb-4 text-2xl font-bold">Basic Usage</h3>
-			<p class="mb-4">
+			<h3>Basic Usage</h3>
+			<p>
 				To render a basic ItemWrapper component, pass a string as the `value` prop:
 			</p>
 
 			<StoryViewer {...storyBuilder.getExample('intro')} />
 		</div>
 
-		<div class="bg-neutral-subtle rounded-lg p-6 mb-6">
-			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Basic Implementation:</h3>
+		<div data-card>
+			<h3>Basic Implementation:</h3>
 			<div class="space-y-4">
-				<div class="bg-neutral-elevated rounded-md p-4">
-					<h4 class="mb-2 font-semibold">Simple Content</h4>
+				<div data-content-block>
+					<h4>Simple Content</h4>
 					<Code {...storyBuilder.getFragment(0)} />
 				</div>
-				<div class="bg-neutral-elevated rounded-md p-4">
-					<h4 class="mb-2 font-semibold">Removable Pill</h4>
+				<div data-content-block>
+					<h4>Removable Pill</h4>
 					<Code {...storyBuilder.getFragment(1)} />
 				</div>
-				<div class="bg-neutral-elevated rounded-md p-4">
-					<h4 class="mb-2 font-semibold">With Icon</h4>
+				<div data-content-block>
+					<h4>With Icon</h4>
 					<Code {...storyBuilder.getFragment(2)} />
 				</div>
 			</div>
@@ -63,17 +62,17 @@
 
 	<!-- Custom Component -->
 	<section class="mb-12">
-		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Custom Component</h2>
-		<p class="text-neutral-floating mb-4 text-lg">
+		<h2>Custom Component</h2>
+		<p>
 			You can also use a custom component for the content of the ItemWrapper. In this example, we will create a custom Status component, which takes a status string and shows color and text for the status.
 		</p>
 
 		<StoryViewer {...storyBuilder.getExample('mapping')} />
 
-		<div class="bg-neutral-subtle rounded-lg p-6 mt-6">
-			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Custom Component Implementation:</h3>
+		<div data-card>
+			<h3>Custom Component Implementation:</h3>
 			<Code {...storyBuilder.getFragment(3)} />
-			<p class="text-neutral-floating mt-2 text-sm">
+			<p>
 				Set the using property to the Status component and ItemWrapper will use this for the content.
 			</p>
 		</div>
@@ -81,17 +80,17 @@
 
 	<!-- Removable -->
 	<section class="mb-12">
-		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Removable Pills</h2>
-		<p class="text-neutral-floating mb-4 text-lg">
+		<h2>Removable Pills</h2>
+		<p>
 			To create a removable ItemWrapper, set the `removable` prop to `true`. This will add a remove icon to the ItemWrapper, and when clicked, it will emit a `remove` event that you can handle to perform the actual remove action:
 		</p>
 
 		<StoryViewer {...storyBuilder.getExample('removable')} />
 
-		<div class="bg-neutral-subtle rounded-lg p-6 mt-6">
-			<h3 class="text-neutral-overlay mb-4 text-xl font-semibold">Removable Implementation:</h3>
+		<div data-card>
+			<h3>Removable Implementation:</h3>
 			<Code {...storyBuilder.getFragment(4)} />
-			<p class="text-neutral-floating mt-2 text-sm">
+			<p>
 				The ItemWrapper component provides a flexible and customizable way to display removable elements in your application. By utilizing the Item component's features, you can create various appearances to suit your specific use cases.
 			</p>
 		</div>
@@ -99,10 +98,10 @@
 
 	<!-- Properties -->
 	<section class="mb-12">
-		<h2 class="text-neutral-overlay mb-6 text-3xl font-bold">Properties</h2>
+		<h2>Properties</h2>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-			<div class="border-neutral-subtle rounded-lg border p-6">
-				<h3 class="mb-4 text-lg font-semibold">Core Properties</h3>
+			<div data-card>
+				<h3>Core Properties</h3>
 				<ul class="space-y-3 text-sm">
 					<li><strong>value</strong>: String or object with content data (required)</li>
 					<li><strong>fields</strong>: Field mapping object for custom data structures</li>
@@ -111,20 +110,20 @@
 				</ul>
 			</div>
 
-			<div class="border-neutral-subtle rounded-lg border p-6">
-				<h3 class="mb-4 text-lg font-semibold">Events</h3>
+			<div data-card>
+				<h3>Events</h3>
 				<ul class="space-y-3 text-sm">
 					<li><strong>remove</strong>: Fired when remove button is clicked</li>
 				</ul>
 			</div>
 		</div>
 
-		<div class="border-green-subtle bg-green-inset rounded-lg border p-6 mt-6">
+		<div data-content-block>
 			<div class="flex items-start space-x-3">
 				<div class="text-2xl">🎯</div>
 				<div>
-					<h3 class="text-green-overlay mb-2 text-lg font-semibold">Use Cases</h3>
-					<p class="text-green-floating">
+					<h3>Use Cases</h3>
+					<p>
 						Perfect for tags, selected filters, user selections, or any scenario where you need removable visual elements with rich content display capabilities.
 					</p>
 				</div>
@@ -133,26 +132,26 @@
 	</section>
 
 	<!-- Next Steps -->
-	<section class="bg-primary-inset rounded-lg p-6">
-		<h3 class="text-primary-overlay mb-3 text-xl font-semibold">Continue learning</h3>
-		<p class="text-primary-floating mb-4">
+	<section data-card-cta>
+		<h3>Continue learning</h3>
+		<p>
 			Pill components are often used in combination with selection components and forms.
 		</p>
 		<div class="flex flex-wrap gap-3">
 			<a
 				href="/tutorial/elements/list"
-				class="bg-primary-overlay hover:bg-primary-hover focus:ring-primary-subtle inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+				class="button is-primary"
 			>
 				List Component
 				<span class="ml-2">→</span>
 			</a>
 			<a
 				href="/tutorial/elements/tags"
-				class="bg-primary-overlay hover:bg-primary-hover focus:ring-primary-subtle inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+				class="button is-primary"
 			>
 				Tags Component
 				<span class="ml-2">→</span>
 			</a>
 		</div>
 	</section>
-</div>
+</article>

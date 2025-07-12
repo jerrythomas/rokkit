@@ -11,9 +11,7 @@ let isInitializing = false
  * Initialize Shiki highlighter
  */
 async function initializeHighlighter() {
-	if (highlighter) {
-		return highlighter
-	}
+	if (highlighter) return highlighter
 
 	if (isInitializing) {
 		while (isInitializing) {
@@ -27,7 +25,7 @@ async function initializeHighlighter() {
 	try {
 		highlighter = await createHighlighter({
 			themes: ['github-light', 'github-dark'],
-			langs: ['svelte', 'javascript', 'typescript', 'css', 'html', 'json']
+			langs: ['svelte', 'javascript', 'typescript', 'css', 'html', 'json', 'bash', 'shell']
 		})
 
 		isInitializing = false
@@ -39,31 +37,14 @@ async function initializeHighlighter() {
 }
 
 /**
- * Detect language from filename
+ * Highlight code using Shiki
+ *
+ * @param {string} code - The code to highlight
+ * @param {object} options - Options for highlighting
+ * @param {string} options.lang - The language to highlight
+ * @param {string} options.theme - The theme to use for highlighting
+ * @returns {Promise<string>} - The highlighted code as HTML
  */
-function detectLanguage(filename = '') {
-	const ext = filename.split('.').pop()
-	const langMap = {
-		svelte: 'svelte',
-		ts: 'typescript',
-		css: 'css',
-		html: 'html',
-		json: 'json'
-	}
-	return langMap[ext] || 'javascript'
-}
-
-/**
- * Escape HTML characters
- */
-function escapeHtml(text) {
-	return text
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-}
-
 export async function highlightCode(code, options = {}) {
 	if (!code || typeof code !== 'string') {
 		throw new Error('Invalid code provided for highlighting')
@@ -71,8 +52,8 @@ export async function highlightCode(code, options = {}) {
 
 	try {
 		const hl = await initializeHighlighter()
-		const lang = options.lang || detectLanguage('App.svelte')
-		const theme = options.theme || 'github-light'
+		const lang = options.lang
+		const theme = options.theme
 
 		return hl.codeToHtml(code, {
 			lang,
