@@ -126,6 +126,12 @@ function mapSlugToStoryPath(slug) {
 		'elements/list/snippets': '02-elements/01-list/02-snippets',
 		'elements/list/mapping': '02-elements/01-list/03-mapping',
 		'elements/list/mixed': '02-elements/01-list/04-mixed',
+		'elements/tabs': '02-elements/02-tabs',
+		'elements/tabs/intro': '02-elements/02-tabs/01-intro',
+		'elements/tabs/orientation': '02-elements/02-tabs/02-orientation',
+		'elements/tabs/object': '02-elements/02-tabs/03-object',
+		'elements/tabs/fields': '02-elements/02-tabs/04-fields',
+		'elements/tabs/using': '02-elements/02-tabs/05-using',
 		'primitives/icon': '03-primitives/01-icon',
 		'forms/inputs': '04-forms/01-inputs'
 	}
