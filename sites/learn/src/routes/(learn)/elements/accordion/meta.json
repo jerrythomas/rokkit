@@ -1,8 +1,5 @@
 {
+  "category": "Selection",
   "title": "Accordion",
-  "description": "Collapsible content sections",
-  "icon": "🪗",
-  "category": "Elements",
-  "tags": ["accordion", "collapsible", "content", "sections"],
-  "experimental": false
+  "description": "A collection of items that can be expanded and collapsed."
 }

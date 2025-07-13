@@ -1,8 +1,5 @@
 {
+  "category": "Selection",
   "title": "MultiSelect",
-  "description": "Choose multiple values from lists",
-  "icon": "☑️",
-  "category": "Elements",
-  "tags": ["multiselect", "multiple", "values", "lists", "selection"],
-  "experimental": false
+  "description": "Input component that allows users to choose multiple values from a list of options."
 }

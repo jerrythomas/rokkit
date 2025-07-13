@@ -1,8 +1,5 @@
 {
-  "title": "Advanced Form Features",
-  "description": "Custom snippets, nested forms, and complex layouts",
-  "category": "forms",
-  "difficulty": "intermediate",
-  "tags": ["forms", "coming-soon"],
-  "order": 5
+  "title": "Advanced Features",
+  "description": "Remote integration, custom snippets, and complex form patterns",
+  "category": "forms"
 }

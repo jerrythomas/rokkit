@@ -1,4 +1,9 @@
-// const metadata = import.meta.glob('./*/**/meta.json')
+import { fetchImports } from '$lib/components/Story/stories.js'
+const metadata = import.meta.glob('./*/**/meta.json')
+export async function getSections(metadata) {
+	const data = await fetchImports(metadata)
+	// convert this grouped data into the sections structure below.
+}
 /**
  * Tutorial sections organized for GroupedList component
  * Comprehensive tutorial structure covering all Rokkit components and concepts
@@ -174,10 +179,66 @@ export const sections = [
 		]
 	},
 	{
+		id: 'input',
+		title: 'Input Components',
+		description: 'Form input components for user interaction',
+		children: [
+			{
+				id: 'range',
+				title: 'Range',
+				description: 'Slider input for numeric ranges',
+				icon: '🎚️',
+				slug: 'input/range'
+			},
+			{
+				id: 'rating',
+				title: 'Rating',
+				description: 'Star rating input component',
+				icon: '⭐',
+				slug: 'input/rating'
+			},
+			{
+				id: 'calendar',
+				title: 'Calendar',
+				description: 'Date selection with calendar interface',
+				icon: '📅',
+				slug: 'input/calendar'
+			},
+			{
+				id: 'inputfield',
+				title: 'InputField',
+				description: 'Text input with validation and labeling',
+				icon: '📝',
+				slug: 'input/inputfield'
+			}
+		]
+	},
+	{
+		id: 'templates',
+		title: 'Templates',
+		description: 'Pre-built templates for common application patterns',
+		children: [
+			{
+				id: 'editor',
+				title: 'Editor Template',
+				description: 'Content editing interface template',
+				icon: '✏️',
+				slug: 'templates/editor'
+			}
+		]
+	},
+	{
 		id: 'forms',
 		title: 'Forms',
-		description: 'Form building, validation, and advanced form features',
+		description: 'Comprehensive form building with progressive enhancement',
 		children: [
+			{
+				id: 'overview',
+				title: 'Forms Overview',
+				description: 'Introduction to forms and progressive enhancement',
+				icon: '📋',
+				slug: 'forms/overview'
+			},
 			{
 				id: 'inputs',
 				title: 'Input Components',
@@ -186,18 +247,18 @@ export const sections = [
 				slug: 'forms/inputs'
 			},
 			{
-				id: 'builder',
-				title: 'FormBuilder',
-				description: 'Create forms from data with automatic schema derivation',
-				icon: '🏗️',
-				slug: 'forms/builder'
+				id: 'schema',
+				title: 'Schema',
+				description: 'Define form structure and validation with schemas',
+				icon: '📐',
+				slug: 'forms/schema'
 			},
 			{
-				id: 'renderer',
-				title: 'FormRenderer',
-				description: 'Render forms with snippet-based customization',
-				icon: '📄',
-				slug: 'forms/renderer'
+				id: 'layout',
+				title: 'Layout',
+				description: 'Control form layout with rows, columns, and groups',
+				icon: '📐',
+				slug: 'forms/layout'
 			},
 			{
 				id: 'validation',
@@ -209,9 +270,58 @@ export const sections = [
 			{
 				id: 'advanced',
 				title: 'Advanced Features',
-				description: 'Custom snippets, nested forms, and complex layouts',
+				description: 'Remote integration, custom snippets, and complex patterns',
 				icon: '⚙️',
 				slug: 'forms/advanced'
+			},
+			{
+				id: 'builder',
+				title: 'FormBuilder',
+				description: 'Create forms from data with automatic schema derivation',
+				icon: '🏗️',
+				slug: 'forms/builder'
+			}
+		]
+	},
+	{
+		id: 'chart-elements',
+		title: 'Chart Elements',
+		description: 'Building blocks for data visualization and charting',
+		children: [
+			{
+				id: 'palette',
+				title: 'Palette',
+				description: 'Color palette utilities for charts',
+				icon: '🎨',
+				slug: 'chart-elements/palette'
+			},
+			{
+				id: 'patterns',
+				title: 'Patterns',
+				description: 'Visual patterns for enhanced chart accessibility',
+				icon: '📐',
+				slug: 'chart-elements/patterns'
+			},
+			{
+				id: 'symbols',
+				title: 'Symbols',
+				description: 'Chart symbols for data point visualization',
+				icon: '◆',
+				slug: 'chart-elements/symbols'
+			}
+		]
+	},
+	{
+		id: 'charts',
+		title: 'Charts',
+		description: 'Complete charting components for data visualization',
+		children: [
+			{
+				id: 'plot',
+				title: 'Plot',
+				description: 'Comprehensive charting component using Observable Plot',
+				icon: '📊',
+				slug: 'charts/plot'
 			}
 		]
 	},

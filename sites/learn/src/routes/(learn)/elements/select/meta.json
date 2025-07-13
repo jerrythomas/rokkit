@@ -1,8 +1,5 @@
 {
+  "category": "Selection",
   "title": "Select",
-  "description": "Choose single values from dropdown lists",
-  "icon": "🔽",
-  "category": "Elements",
-  "tags": ["select", "dropdown", "single", "values", "lists"],
-  "experimental": false
+  "description": "Input component that allows users to choose one value from a list of options."
 }
