@@ -44,18 +44,22 @@ exports[`Select.svelte > should render string array 1`] = `
       class="absolute z-10 flex w-full flex-col overflow-scroll menu"
       style="top: 0px;"
     >
-      <rk-list
+      <div
         aria-label="list"
+        data-list=""
         role="listbox"
         tabindex="-1"
       >
         <!---->
          
-        <rk-body>
+        <div
+          data-list-body=""
+        >
           <!---->
-          <rk-list-item
+          <div
             aria-current="false"
             aria-selected="false"
+            data-list-item=""
             data-path="0"
             role="option"
           >
@@ -69,10 +73,11 @@ exports[`Select.svelte > should render string array 1`] = `
             <!---->
             
             <!---->
-          </rk-list-item>
-          <rk-list-item
+          </div>
+          <div
             aria-current="false"
             aria-selected="false"
+            data-list-item=""
             data-path="1"
             role="option"
           >
@@ -86,10 +91,11 @@ exports[`Select.svelte > should render string array 1`] = `
             <!---->
             
             <!---->
-          </rk-list-item>
-          <rk-list-item
+          </div>
+          <div
             aria-current="false"
             aria-selected="false"
+            data-list-item=""
             data-path="2"
             role="option"
           >
@@ -103,13 +109,13 @@ exports[`Select.svelte > should render string array 1`] = `
             <!---->
             
             <!---->
-          </rk-list-item>
+          </div>
           
           <!---->
-        </rk-body>
+        </div>
          
         <!---->
-      </rk-list>
+      </div>
       <!---->
     </scroll>
     <!---->

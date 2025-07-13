@@ -34,7 +34,7 @@ describe('List', () => {
 		const { container } = render(CustomList, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		const element = container.querySelector('rk-header')
+		const element = container.querySelector('[data-list-header]')
 		expect(element.textContent).toEqual('Custom header')
 	})
 
@@ -43,7 +43,7 @@ describe('List', () => {
 		const { container } = render(CustomList, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		const element = container.querySelector('rk-footer')
+		const element = container.querySelector('[data-list-footer]')
 		expect(element.textContent).toEqual('Custom footer')
 	})
 	it('should render with custom empty', () => {

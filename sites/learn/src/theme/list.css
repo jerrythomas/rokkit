@@ -58,3 +58,20 @@ a[data-command-item]:visited {
 [data-command-separator] {
   @apply bg-neutral-inset mt-3 h-px w-full;
 }
+
+[data-list] {
+  @apply rounded-md;
+}
+[data-list-item] {
+  @apply flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm leading-loose;
+}
+[data-list-item] img {
+  @apply m-0 aspect-square h-6 w-6 rounded-full object-cover;
+}
+[data-list-item][aria-selected='true'] {
+  @apply from-primary-raised to-secondary-raised text-neutral-overlay bg-gradient-to-r;
+}
+
+[data-list-item] p {
+  @apply m-0 flex h-full flex-1 items-center p-0 text-lg;
+}

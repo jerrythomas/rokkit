@@ -7,194 +7,146 @@
 	<title>Input Components - Forms | Learn Rokkit</title>
 	<meta
 		name="description"
-		content="Explore different input types and their properties"
+		content="Explore different input types and their properties in Rokkit forms"
 	/>
 </svelte:head>
 
 <article data-article-root>
 	<!-- Header -->
 	<header>
-		<h1><span>📝</span> Input Components</h1>
+		<h1><span>📝</span>Input Components</h1>
 		<p>Explore different input types and their properties</p>
-		<div class="mt-4">
-			<span class="bg-primary-inset text-primary-overlay rounded-full px-3 py-1 text-sm font-medium">
-				Forms
-			</span>
-		</div>
 	</header>
 
-	<!-- Main Content -->
-	<div>
-		<section class="mb-12">
-			<h2>Overview</h2>
-			<p>
-				Rokkit provides a comprehensive set of input components that work seamlessly with different
-				data types and structures. These components use field mapping to adapt to your data format,
-				making them highly flexible and reusable.
-			</p>
+	<!-- Overview -->
+	<section>
+		<h2>Overview</h2>
+		<p>
+			Rokkit provides a comprehensive set of input components that work seamlessly with different
+			data types and structures. These components use field mapping to adapt to your data format,
+			making them highly flexible and reusable.
+		</p>
+
+		<h3>Key Features:</h3>
+		<ul>
+			<li>Field mapping for flexible data binding</li>
+			<li>Reactive state management</li>
+			<li>Built-in validation support</li>
+			<li>Accessibility features</li>
+			<li>Custom rendering with snippets</li>
+			<li>Dark mode support</li>
+		</ul>
+	</section>
+
+	<!-- Interactive Demo -->
+	<section>
+		<h2>Interactive Demo</h2>
+		<p>
+			This demo shows how different input components work together in a form. Notice how field
+			mapping allows each component to work with different data structures while maintaining
+			consistent behavior.
+		</p>
+
+		<StoryViewer {...storyBuilder.getExample('example')} />
+	</section>
+
+	<!-- Component Details -->
+	<section>
+		<h2>Component Details</h2>
+
+		<div class="space-y-6">
+			<div data-card>
+				<h4><span>🗂️</span> List Component</h4>
+				<p>
+					Perfect for single-selection scenarios where you want to show all options visually. Uses
+					field mapping to display text and icons from your data.
+				</p>
+				<p><strong>Field Mapping:</strong> <code>{"{ text: 'text', icon: 'icon' }"}</code></p>
+			</div>
 
 			<div data-card>
-				<h3>Key Features:</h3>
-				<ul class="grid grid-cols-1 gap-2 md:grid-cols-2">
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Field mapping for flexible data binding</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Reactive state management</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Built-in validation support</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Accessibility features</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Custom rendering with snippets</span>
-					</li>
-					<li class="flex items-center space-x-2">
-						<span class="text-primary-500">•</span>
-						<span>Dark mode support</span>
-					</li>
-				</ul>
+				<h4><span>📋</span> Select Component</h4>
+				<p>
+					Ideal for dropdown selections with rich content. Can display additional description text
+					and supports search functionality.
+				</p>
+				<p><strong>Field Mapping:</strong> <code>{"{ text: 'label', description: 'description' }"}</code></p>
 			</div>
-		</section>
 
-		<!-- Interactive Demo -->
-		<section class="mb-12">
-			<h3>Interactive Demo</h3>
-			<p>
-				This demo shows how different input components work together in a form. Notice how field
-				mapping allows each component to work with different data structures while maintaining
-				consistent behavior.
-			</p>
+			<div data-card>
+				<h4><span>☑️</span> MultiSelect Component</h4>
+				<p>
+					Enables multiple selections with a clean, tag-based interface. Perfect for categories,
+					tags, or team member assignments.
+				</p>
+				<p><strong>Field Mapping:</strong> <code>{"{ text: 'name', id: 'id' }"}</code></p>
+			</div>
+		</div>
+	</section>
 
-			<StoryViewer {...storyBuilder.getExample('example')} />
-		</section>
+	<!-- Best Practices -->
+	<section>
+		<h2>Best Practices</h2>
 
-		<!-- Component Details -->
-		<section class="mb-12">
-			<h2>Component Details</h2>
-
-			<div class="space-y-6">
-				<div data-content-block>
-					<h3>
-						🗂️ List Component
-					</h3>
+		<div class="space-y-4">
+			<div class="flex items-start space-x-3">
+				<div class="mt-1 text-green-500">✅</div>
+				<div>
+					<h4>Use descriptive field mappings</h4>
 					<p>
-						Perfect for single-selection scenarios where you want to show all options visually. Uses
-						field mapping to display text and icons from your data.
+						Map your data fields to component properties in a way that makes sense for your use
+						case.
 					</p>
-					<div class="text-neutral-floating text-sm">
-						<strong>Field Mapping:</strong> <code>{"{ text: 'text', icon: 'icon' }"}</code>
-					</div>
-				</div>
-
-				<div data-content-block>
-					<h3>
-						📋 Select Component
-					</h3>
-					<p>
-						Ideal for dropdown selections with rich content. Can display additional description text
-						and supports search functionality.
-					</p>
-					<div class="text-neutral-floating text-sm">
-						<strong>Field Mapping:</strong>
-						<code>{"{ text: 'label', description: 'description' }"}</code>
-					</div>
-				</div>
-
-				<div data-content-block>
-					<h3>
-						☑️ MultiSelect Component
-					</h3>
-					<p>
-						Enables multiple selections with a clean, tag-based interface. Perfect for categories,
-						tags, or team member assignments.
-					</p>
-					<div class="text-neutral-floating text-sm">
-						<strong>Field Mapping:</strong> <code>{"{ text: 'name', id: 'id' }"}</code>
-					</div>
 				</div>
 			</div>
-		</section>
 
-		<!-- Best Practices -->
-		<section class="mb-12">
-			<h2>Best Practices</h2>
-
-			<div class="space-y-4">
-				<div class="flex items-start space-x-3">
-					<div class="mt-1 text-green-500">✅</div>
-					<div>
-						<strong>Use descriptive field mappings:</strong>
-						<p>
-							Map your data fields to component properties in a way that makes sense for your use
-							case.
-						</p>
-					</div>
-				</div>
-
-				<div class="flex items-start space-x-3">
-					<div class="mt-1 text-green-500">✅</div>
-					<div>
-						<strong>Provide meaningful labels:</strong>
-						<p>
-							Always include proper labels for accessibility and user experience.
-						</p>
-					</div>
-				</div>
-
-				<div class="flex items-start space-x-3">
-					<div class="mt-1 text-green-500">✅</div>
-					<div>
-						<strong>Use reactive state:</strong>
-						<p>
-							Take advantage of Svelte's reactive state management for real-time updates.
-						</p>
-					</div>
-				</div>
-
-				<div class="flex items-start space-x-3">
-					<div class="mt-1 text-red-500">❌</div>
-					<div>
-						<strong>Don't hardcode field names:</strong>
-						<p>
-							Use field mapping instead of assuming specific property names in your data.
-						</p>
-					</div>
+			<div class="flex items-start space-x-3">
+				<div class="mt-1 text-green-500">✅</div>
+				<div>
+					<h4>Provide meaningful labels</h4>
+					<p>
+						Always include proper labels for accessibility and user experience.
+					</p>
 				</div>
 			</div>
-		</section>
 
-		<!-- What's Next -->
-		<section data-card-cta>
-			<h3>What's Next?</h3>
-			<p>
-				Now that you understand how input components work, explore more advanced form features:
-			</p>
-
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-				<a href="/tutorial/forms/builder" class="button is-primary">
-					<div class="mb-2 text-2xl">🏗️</div>
-					<h4>FormBuilder</h4>
+			<div class="flex items-start space-x-3">
+				<div class="mt-1 text-green-500">✅</div>
+				<div>
+					<h4>Use reactive state</h4>
 					<p>
-						Generate forms automatically from data schemas
+						Take advantage of Svelte's reactive state management for real-time updates.
 					</p>
-				</a>
-
-				<a href="/tutorial/forms/validation" class="button is-primary">
-					<div class="mb-2 text-2xl">✅</div>
-					<h4>Validation</h4>
-					<p>
-						Add real-time validation to your forms
-					</p>
-				</a>
+				</div>
 			</div>
-		</section>
-	</div>
+
+			<div class="flex items-start space-x-3">
+				<div class="mt-1 text-red-500">❌</div>
+				<div>
+					<h4>Don't hardcode field names</h4>
+					<p>
+						Use field mapping instead of assuming specific property names in your data.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Next Steps -->
+	<section data-card-cta>
+		<h3>Ready for more?</h3>
+		<p>
+			Now that you understand input components, explore form building, validation, and advanced features.
+		</p>
+		<span>
+			<a href="/tutorial/forms/builder" class="button is-primary">
+				FormBuilder
+				<span class="ml-2">→</span>
+			</a>
+			<a href="/tutorial/forms/validation" class="button is-primary">
+				Validation
+				<span class="ml-2">→</span>
+			</a>
+		</span>
+	</section>
 </article>

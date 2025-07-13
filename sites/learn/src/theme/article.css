@@ -85,9 +85,12 @@
 }
 
 /* Code */
-[data-article-root] code {
-  @apply rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-sm text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100;
+[data-article-root] pre {
+  @apply font-mono;
 }
+/* [data-article-root] code {
+  @apply rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-sm text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100;
+} */
 
 [data-article-root] pre {
   @apply mb-6 overflow-x-auto rounded-lg border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800;

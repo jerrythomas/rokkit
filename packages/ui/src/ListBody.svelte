@@ -22,7 +22,8 @@
 	{@const template = getSnippet(snippets, fm.get('snippet', item, 'stub'))}
 	{@const pathKey = getKeyFromPath([...path, index])}
 	{@const props = fm.get('props', item) || {}}
-	<rk-list-item
+	<div
+		data-list-item
 		role="option"
 		data-path={pathKey}
 		aria-selected={selectedKeys.has(pathKey)}
@@ -38,5 +39,5 @@
 				<Item value={item} {fields} />
 			{/if}
 		</svelte:boundary>
-	</rk-list-item>
+	</div>
 {/each}

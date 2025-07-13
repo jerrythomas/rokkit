@@ -52,7 +52,8 @@
 	let wrapper = new ListController(items, value, fields, { multiSelect })
 </script>
 
-<rk-list
+<div
+	data-list
 	class={classes}
 	role="listbox"
 	aria-label={name}
@@ -61,14 +62,14 @@
 	onaction={handleAction}
 >
 	{#if header}
-		<rk-header>{@render header()}</rk-header>
+		<div data-list-header>{@render header()}</div>
 	{/if}
-	<rk-body>
+	<div data-list-body>
 		{#if items.length === 0}
 			{#if empty}
 				{@render empty()}
 			{:else}
-				<rk-message>No items found.</rk-message>
+				<p>No items found.</p>
 			{/if}
 		{:else}
 			<ListBody
@@ -81,8 +82,8 @@
 				{snippets}
 			/>
 		{/if}
-	</rk-body>
+	</div>
 	{#if footer}
-		<rk-footer>{@render footer()}</rk-footer>
+		<div data-list-footer>{@render footer()}</div>
 	{/if}
-</rk-list>
+</div>
