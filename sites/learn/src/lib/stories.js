@@ -1,3 +1,4 @@
+import { omit } from 'ramda'
 const LANGUAGE_MAP = {
 	js: 'javascript',
 	ts: 'typescript',
@@ -6,11 +7,44 @@ const LANGUAGE_MAP = {
 	bash: 'bash',
 	shell: 'shell'
 }
+
+/**
+ * @typedef {Object} SourceFile
+ * @property {string} file     - The file path.
+ * @property {string} [group]  - The group name.
+ * @property {string} name     - The file name.
+ * @property {string} language - The language of the file.
+ * @property {string} content  - The content of the file.
+ */
+
+/**
+ * @typedef {Object} ModuleFile
+ * @property {string} file     - The file path.
+ * @property {string} [group]  - The group name.
+ * @property {string} name     - The file name.
+ * @property {string} language - The language of the file.
+ * @property {Object} content  - The content of the file.
+ */
+
+/** @typedef {SourceFile|ModuleFile} File */
+
+/**
+ * @typedef {Object} Metadata
+ * @property {string}     title
+ * @property {string}     description
+ * @property {string}     category
+ * @property {string[]}   tags
+ * @property {number}     depth
+ * @property {number}     order
+ * @property {Metadata[]} [children]
+ */
+
 /**
  * @typedef {Object} Story
- * @property {CodeFile[]} files     - Array of files.
- * @property {SvelteComponent} App  - The preview component.
+ * @property {File[]}                           files   - Array of files.
+ * @property {import('svelte').SvelteComponent} [App]     - The preview component.
  */
+
 /**
  * Returns the language of a file based on its extension.
  *
@@ -25,7 +59,7 @@ function getLanguage(file) {
  * Fetches the content of the sources.
  *
  * @param {Object} sources - The modules to fetch the content from.
- * @returns {Promise<Array>} - The content of the modules.
+ * @returns {Promise<File[]>} - The content of the modules.
  */
 export async function fetchImports(sources) {
 	const files = await Promise.all(
@@ -53,15 +87,16 @@ export function getSlug(file) {
 
 /**
  * Converts the input content into a group by catgeory
- * @returns {<Array>} Array of section objects
+ * @param {ModuleFile[]} metadata - The metadata to convert.
+ * @returns {Metadata[]} Array of section objects
  */
 export function getSections(metadata) {
-	// const metadata = await fetchImports(componentMetadata)
+	/** @type Object<string, Metadata> */
 	const sections = {}
 
 	metadata.forEach(({ content, file, group }) => {
 		const item = {
-			category: group,
+			category: group ?? '',
 			...content,
 			slug: getSlug(file),
 			depth: file.split('/').length - 2
@@ -84,10 +119,49 @@ export function getSections(metadata) {
 
 	// console.log(sections)
 	return Object.values(sections).sort((a, b) => a.order - b.order)
-
-	return sections
 }
 
+/**
+ *
+ * @param {File[]} files
+ * @returns
+ */
+export function groupFiles(files) {
+	const groups = files
+		.filter((file) => file.group !== '.')
+		.reduce(
+			(acc, file) => ({
+				...acc,
+				[file.group]: [...(acc[file.group] || []), omit(['group'], file)]
+			}),
+			{}
+		)
+
+	return groups
+}
+
+/**
+ * Fetches the stories.
+ *
+ * @param {Object} sources - The sources to fetch the content from.
+ * @param {Object} modules - The modules to fetch the content from.
+ * @returns {Promise<Object<string, Story>>} - The stories.
+ */
+export async function fetchStories(sources, modules) {
+	const components = groupFiles(await fetchImports(modules))
+	const files = groupFiles(await fetchImports(sources))
+
+	/** @type {Object<string, Story>} */
+	const stories = {}
+
+	Object.entries(files).forEach(([group, files]) => {
+		stories[group] = { files }
+		if (components[group]) {
+			stories[group].App = components[group][0].content
+		}
+	})
+	return stories
+}
 /**
  * Get all individual sections flattened from groups
  * @returns {Array} Array of all tutorial sections

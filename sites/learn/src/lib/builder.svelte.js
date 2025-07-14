@@ -20,7 +20,6 @@ export class StoryBuilder {
 		} catch (err) {
 			this.#error = err
 			this.#loading = false
-			console.error('Error processing stories:', err)
 		}
 	}
 

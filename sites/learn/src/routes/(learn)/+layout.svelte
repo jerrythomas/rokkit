@@ -2,7 +2,7 @@
 	import { page } from '$app/state'
 	import Header from './Header.svelte'
 	import Sidebar from './Sidebar.svelte'
-	import { findSection } from './sections.js'
+	import { findSection } from '$lib/stories.js'
 
 	let { data, children } = $props()
 	let sections = $derived(data.sections)

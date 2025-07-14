@@ -1,4 +1,6 @@
-import { getSections, metadataList, fetchImports } from './sections.js'
+import { getSections, fetchImports } from '$lib/stories.js'
+const metadataList = import.meta.glob('./*/**/meta.json', { import: 'default' })
+
 /**
  * Layout load function that provides sections data to all child routes
  * @returns {Object} Layout data including sections and field mappings
