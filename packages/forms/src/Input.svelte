@@ -7,7 +7,8 @@
 		InputEmail,
 		InputPassword,
 		InputTel,
-		InputText
+		InputText,
+		InputSelect
 	} from '@rokkit/forms'
 	let {
 		type = 'text',
@@ -28,7 +29,8 @@
 		email: '',
 		password: '',
 		tel: '',
-		textarea: ''
+		textarea: '',
+		select: null
 	}
 
 	// Set default value if none provided
@@ -54,6 +56,8 @@
 		<InputPassword bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />
 	{:else if type === 'tel'}
 		<InputTel bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />
+	{:else if type === 'select'}
+		<InputSelect bind:value {onchange} {onfocus} {onblur} {...restProps} />
 	{:else}
 		<!-- Default to text input -->
 		<InputText bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />

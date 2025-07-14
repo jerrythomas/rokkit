@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { deriveSchemaFromValue } from '../schema'
-import { deriveLayoutFromValue } from '../layout'
-
-import { findAttributeByPath, getSchemaWithLayout } from './fields'
+import { deriveSchemaFromValue } from './schema.js'
+import { deriveLayoutFromValue } from './layout.js'
+import { findAttributeByPath, getSchemaWithLayout } from './fields.js'
 
 import inputLayout from './fixtures/input-layout.json'
 import inputSchema from './fixtures/input-schema.json'
@@ -10,6 +9,7 @@ import resultWithGeneratedSchema from './fixtures/result-with-generated-schema.j
 import resultWithGeneratedLayout from './fixtures/result-with-generated-layout.json'
 import combinedSchemaLayout from './fixtures/combined-schema-layout.json'
 import resultWithOnlyData from './fixtures/result-with-only-data.json'
+
 describe('fields', () => {
 	describe('findAttributeByPath', () => {
 		it('should find attribute from path', () => {

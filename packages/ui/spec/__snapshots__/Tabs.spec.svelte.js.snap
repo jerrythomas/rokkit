@@ -1,31 +1,1110 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Tabs > should render simple list 1`] = `
+exports[`Tabs > should render empty tabs 1`] = `
 <div>
-  <rk-tabs
-    class="flex w-full custom-class"
-    role="listbox"
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
     tabindex="0"
   >
-    <!---->
+    <div
+      data-tab-list=""
+    >
+      <!---->
+       
+      <!---->
+    </div>
      
-    <!---->
-  </rk-tabs>
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-empty=""
+      >
+        No tabs available.
+        <!---->
+      </div>
+      <!---->
+    </div>
+  </div>
   
 </div>
 `;
 
-exports[`Tabs > should render simple list 2`] = `
+exports[`Tabs > should render simple tabs with string array 1`] = `
 <div>
-  <rk-tabs
-    class="flex w-full another-class"
-    role="listbox"
+  <div
+    aria-label="tabs"
+    class="custom-class"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
     tabindex="0"
   >
-    <!---->
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-Tab 1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-Tab 2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-Tab 3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
      
-    <!---->
-  </rk-tabs>
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render simple tabs with string array 2`] = `
+<div>
+  <div
+    aria-label="tabs"
+    class="another-class"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-Tab 1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-Tab 2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-Tab 3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render tabs with object array 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    class="custom-class"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with custom content snippet 1`] = `
+<div>
+  <!---->
+  <!---->
+   
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  <!---->
+   
+  <!---->
+   
+  <!---->
+  
+</div>
+`;
+
+exports[`Tabs > should render with custom empty state 1`] = `
+<div>
+  <!---->
+  <!---->
+   
+  <!---->
+   
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-empty=""
+      >
+        <div
+          class="custom-empty-state"
+        >
+          Custom empty state - No tabs available here!
+        </div>
+        <!---->
+      </div>
+      <!---->
+    </div>
+  </div>
+  <!---->
+   
+  <!---->
+  
+</div>
+`;
+
+exports[`Tabs > should render with custom header snippet 1`] = `
+<div>
+  <!---->
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        <div
+          class="custom-tab-header"
+        >
+          Custom: Tab 1
+        </div>
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        <div
+          class="custom-tab-header"
+        >
+          Custom: Tab 2
+        </div>
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        <div
+          class="custom-tab-header"
+        >
+          Custom: Tab 3
+        </div>
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        <div
+          class="custom-tab-header"
+        >
+          Custom: Tab 4
+        </div>
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  <!---->
+   
+  <!---->
+   
+  <!---->
+   
+  <!---->
+  
+</div>
+`;
+
+exports[`Tabs > should render with different alignments 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="center"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with different positions 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="after"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with editable tabs 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <button
+          aria-label="Remove tab"
+          data-tab-remove=""
+          type="button"
+        >
+          ×
+        </button>
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <button
+          aria-label="Remove tab"
+          data-tab-remove=""
+          type="button"
+        >
+          ×
+        </button>
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <button
+          aria-label="Remove tab"
+          data-tab-remove=""
+          type="button"
+        >
+          ×
+        </button>
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <button
+          aria-label="Remove tab"
+          data-tab-remove=""
+          type="button"
+        >
+          ×
+        </button>
+        <!---->
+      </div>
+      <!---->
+       
+      <button
+        aria-label="Add tab"
+        data-tab-add=""
+        type="button"
+      >
+        +
+      </button>
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with field mapping 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        First
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Second
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with horizontal orientation 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with selected value 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="horizontal"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="true"
+        class="selected"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        aria-labelledby="tab-tab2"
+        id="tab-panel-tab2"
+      >
+        <div
+          data-tab-content-default=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`Tabs > should render with vertical orientation 1`] = `
+<div>
+  <div
+    aria-label="tabs"
+    data-tab-align="start"
+    data-tab-orientation="vertical"
+    data-tab-position="before"
+    data-tab-root=""
+    role="tablist"
+    tabindex="0"
+  >
+    <div
+      data-tab-list=""
+    >
+      <div
+        aria-controls="tab-panel-tab1"
+        aria-selected="false"
+        data-path="0"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 1
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab2"
+        aria-selected="false"
+        data-path="1"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 2
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab3"
+        aria-selected="false"
+        data-path="2"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 3
+        <!---->
+         
+        <!---->
+      </div>
+      <div
+        aria-controls="tab-panel-tab4"
+        aria-selected="false"
+        data-path="3"
+        data-tab-item=""
+        role="tab"
+      >
+        Tab 4
+        <!---->
+         
+        <!---->
+      </div>
+      <!---->
+       
+      <!---->
+    </div>
+     
+    <div
+      data-tab-content=""
+      role="tabpanel"
+    >
+      <div
+        data-tab-content-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      <!---->
+    </div>
+  </div>
   
 </div>
 `;

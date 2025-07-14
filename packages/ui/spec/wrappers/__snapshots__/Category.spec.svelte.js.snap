@@ -4,51 +4,36 @@ exports[`Category.svelte > should render using default props 1`] = `
 <div>
   <section>
     <!---->
-    <rk-tabs
-      class="flex w-full "
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="start"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -68,51 +53,36 @@ exports[`Category.svelte > should render using specified class 1`] = `
     class="custom-class"
   >
     <!---->
-    <rk-tabs
-      class="flex w-full "
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="start"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -132,51 +102,36 @@ exports[`Category.svelte > should render using specified class 2`] = `
     class="custom-class-2"
   >
     <!---->
-    <rk-tabs
-      class="flex w-full "
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="start"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -194,51 +149,36 @@ exports[`Category.svelte > should render using specified type 1`] = `
 <div>
   <section>
     <!---->
-    <rk-tabs
-      class="flex w-full "
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="start"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -256,51 +196,36 @@ exports[`Category.svelte > should render using specified type 2`] = `
 <div>
   <section>
     <!---->
-    <rk-tabs
-      class="flex w-full "
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="start"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -397,51 +322,36 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
 <div>
   <section>
     <!---->
-    <rk-tabs
-      class="flex w-full "
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="start"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -459,51 +369,36 @@ exports[`Category.svelte > should render with extra props 1`] = `
 <div>
   <section>
     <!---->
-    <rk-tabs
-      class="flex w-full  justify-center"
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="center"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      
@@ -521,51 +416,36 @@ exports[`Category.svelte > should render with extra props 2`] = `
 <div>
   <section>
     <!---->
-    <rk-tabs
-      class="flex w-full justify-end"
-      role="listbox"
+    <div
+      aria-label="tabs"
+      data-tab-align="right"
+      data-tab-orientation="horizontal"
+      data-tab-position="before"
+      data-tab-root=""
+      role="tablist"
       tabindex="0"
     >
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          one
-        </p>
-        <!---->
+      <div
+        data-tab-list=""
+      >
         <!---->
          
         <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          two
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <rk-tab>
-        <!---->
-        <!---->
-         
-        <p>
-          three
-        </p>
-        <!---->
-        <!---->
-         
-        <!---->
-      </rk-tab>
-      <!---->
+      </div>
        
-      <!---->
-    </rk-tabs>
+      <div
+        data-tab-content=""
+        role="tabpanel"
+      >
+        <div
+          data-tab-empty=""
+        >
+          No tabs available.
+          <!---->
+        </div>
+        <!---->
+      </div>
+    </div>
     
     <!---->
      

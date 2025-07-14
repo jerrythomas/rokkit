@@ -2,6 +2,35 @@ import { on } from 'svelte/events'
 import { omit } from 'ramda'
 import { getKeyboardAction, defaultNavigationOptions } from './kbd'
 import { getClickAction, getPathFromEvent } from './utils'
+import { getKeyFromPath } from '@rokkit/core'
+
+/**
+ * Scrolls the focused element into view if it exists
+ * @param {HTMLElement} container - The container element with the navigator action
+ * @param {*} wrapper - The controller/wrapper with focusedKey
+ */
+function scrollFocusedIntoView(container, wrapper) {
+	let focusedElement = null
+
+	// Use focusedKey if available (most reliable)
+	if (wrapper.focusedKey) {
+		focusedElement = container.querySelector(`[data-path="${wrapper.focusedKey}"]`)
+	}
+	
+	// Fallback: find by aria-current
+	if (!focusedElement) {
+		focusedElement = container.querySelector('[aria-current="true"]')
+	}
+	
+	// Scroll into view if element found
+	if (focusedElement) {
+		focusedElement.scrollIntoView({ 
+			behavior: 'smooth', 
+			block: 'nearest',
+			inline: 'nearest'
+		})
+	}
+}
 
 const EVENT_MAP = {
 	first: ['move'],
@@ -84,7 +113,14 @@ export function navigator(node, options) {
 	const handleKeydown = (event) => {
 		const action = getKeyboardAction(event, config)
 		const handled = handleAction(event, handlers[action])
-		if (handled) emitAction(node, options.wrapper, action, true)
+		if (handled) {
+			emitAction(node, options.wrapper, action, true)
+			// Scroll focused element into view for navigation actions
+			if (['first', 'last', 'previous', 'next'].includes(action)) {
+				// Use a small delay to ensure DOM updates are processed
+				setTimeout(() => scrollFocusedIntoView(node, options.wrapper), 0)
+			}
+		}
 	}
 
 	const handleClick = (event) => {

@@ -44,6 +44,10 @@ export class ListController {
 		return this.focusedKey
 	}
 
+	get currentIndex() {
+		return this.#currentIndex
+	}
+
 	/**
 	 * @private
 	 * @param {*} value

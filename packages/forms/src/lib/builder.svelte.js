@@ -1,5 +1,6 @@
 import { deriveSchemaFromValue } from './schema.js'
 import { deriveLayoutFromValue } from './layout.js'
+import { getSchemaWithLayout } from './fields.js'
 import { omit } from 'ramda'
 
 /**
@@ -68,7 +69,7 @@ export class FormBuilder {
 	 * @param {Object} value - New schema object
 	 */
 	set schema(value) {
-		this.#schema = value
+		this.#schema = value ?? deriveSchemaFromValue(this.#data)
 	}
 
 	/**
@@ -84,7 +85,7 @@ export class FormBuilder {
 	 * @param {Object} value - New layout object
 	 */
 	set layout(value) {
-		this.#layout = value
+		this.#layout = value ?? deriveLayoutFromValue(this.#data)
 	}
 
 	/**
@@ -111,8 +112,8 @@ export class FormBuilder {
 	 */
 	constructor(data = {}, schema = null, layout = null) {
 		this.#data = data
-		this.#schema = schema || deriveSchemaFromValue(data)
-		this.#layout = layout || deriveLayoutFromValue(data)
+		this.schema = schema
+		this.layout = layout
 	}
 
 	/**
@@ -144,6 +145,8 @@ export class FormBuilder {
 	 * @returns {any} Field value
 	 */
 	getValue(path) {
+		if (!path) return undefined
+		
 		const keys = path.split('/')
 		let current = this.#data
 		for (const key of keys) {
@@ -157,16 +160,41 @@ export class FormBuilder {
 	}
 
 	/**
-	 * Build form elements from schema and layout
+	 * Build form elements from schema and layout using getSchemaWithLayout
 	 * @private
 	 * @returns {FormElement[]} Array of form elements
 	 */
 	#buildElements() {
+		if (!this.#schema || !this.#layout || !this.#layout.elements) {
+			return []
+		}
+
+		try {
+			// Use getSchemaWithLayout to combine schema and layout
+			const combined = getSchemaWithLayout(this.#schema, this.#layout)
+			
+			// Convert combined elements to FormElement format
+			return combined.elements
+				.map(element => this.#convertToFormElement(element))
+				.filter(element => element !== null)
+		} catch (error) {
+			// If getSchemaWithLayout fails, fall back to basic element creation
+			console.warn('Failed to build elements:', error)
+			return this.#buildBasicElements()
+		}
+	}
+
+	/**
+	 * Build basic form elements when getSchemaWithLayout fails
+	 * @private
+	 * @returns {FormElement[]} Array of form elements
+	 */
+	#buildBasicElements() {
 		const elements = []
 
 		if (this.#layout.elements) {
-			for (const element of this.#layout.elements) {
-				const formElement = this.#buildElement(element)
+			for (const layoutElement of this.#layout.elements) {
+				const formElement = this.#buildBasicElement(layoutElement)
 				if (formElement) {
 					elements.push(formElement)
 				}
@@ -177,48 +205,32 @@ export class FormBuilder {
 	}
 
 	/**
-	 * Build a single form element
+	 * Build a basic form element from layout only
 	 * @private
 	 * @param {Object} layoutElement - Layout element definition
 	 * @returns {FormElement|null} Form element or null
 	 */
-	#buildElement(layoutElement) {
-		const { scope, override = false } = layoutElement
+	#buildBasicElement(layoutElement) {
+		const { scope, label, override = false, ...layoutProps } = layoutElement
 
 		if (!scope) return null
 
 		// Extract field name from scope (remove leading '#/')
 		const fieldPath = scope.replace(/^#\//, '')
 		const value = this.getValue(fieldPath)
-		const fieldSchema = this.#getFieldSchema(fieldPath)
 
-		// Determine input type based on schema
+		// Default type is text when no schema is available
 		let type = 'text'
 
-		if (fieldSchema) {
-			switch (fieldSchema.type) {
-				case 'number':
-				case 'integer':
-					type = fieldSchema.min !== undefined && fieldSchema.max !== undefined ? 'range' : 'number'
-					break
-				case 'boolean':
-					type = 'checkbox'
-					break
-				case 'string':
-					if (fieldSchema.enum) {
-						type = 'select'
-					} else {
-						type = 'text'
-					}
-					break
-			}
+		// Basic props
+		const props = {
+			label: label || fieldPath,
+			...layoutProps,
+			message: this.#validation[fieldPath] || null
 		}
 
-		// Compose props from schema, layout, and validation
-		const props = this.#composeProps(layoutElement, fieldSchema, fieldPath)
-
 		return {
-			scope, // Keep original JSON Pointer format
+			scope,
 			type,
 			value,
 			override,
@@ -227,85 +239,91 @@ export class FormBuilder {
 	}
 
 	/**
-	 * Get schema for a specific field path
+	 * Convert a combined schema/layout element to FormElement format
 	 * @private
-	 * @param {string} fieldPath - Field path
-	 * @returns {Object|null} Field schema
+	 * @param {Object} element - Combined element from getSchemaWithLayout
+	 * @param {string} parentPath - Parent path for nested elements
+	 * @returns {FormElement} Form element
 	 */
-	#getFieldSchema(fieldPath) {
-		if (!this.#schema.properties) return null
+	#convertToFormElement(element, parentPath = '') {
+		const { key, props } = element
+		
+		// Skip elements without a key
+		if (!key) {
+			return null
+		}
+		
+		// Create scope in JSON Pointer format
+		const fieldPath = parentPath ? `${parentPath}/${key}` : key
+		const scope = `#/${fieldPath}`
+		const value = this.getValue(fieldPath)
 
-		const keys = fieldPath.split('/')
-		let current = this.#schema.properties
-
-		for (const key of keys) {
-			if (current && current[key]) {
-				current = current[key]
-			} else {
-				return null
+		// Handle nested elements (arrays and objects)
+		if (element.elements) {
+			// This is a nested structure, process children
+			const nestedElements = element.elements.map(child => 
+				this.#convertToFormElement(child, fieldPath)
+			)
+			
+			return {
+				scope,
+				type: 'group',
+				value,
+				override: element.override || false,
+				props: {
+					...props,
+					elements: nestedElements,
+					message: this.#validation[fieldPath] || null
+				}
 			}
 		}
 
-		return current
-	}
-
-	/**
-	 * Compose properties from schema, layout, and validation
-	 * @private
-	 * @param {Object} layoutElement - Layout element
-	 * @param {Object} fieldSchema - Field schema
-	 * @param {string} fieldPath - Field path for validation lookup
-	 * @returns {Object} Composed props object
-	 */
-	#composeProps(layoutElement, fieldSchema, fieldPath) {
-		const { label, title, description, placeholder, ...layoutProps } = layoutElement
-
-		const props = {
-			// Layout properties (allow arbitrary custom properties)
-			label: label || title || fieldPath,
-			description,
-			placeholder,
-			...layoutProps,
-
-			// Schema properties
-			...(fieldSchema && this.#extractSchemaProps(fieldSchema)),
-
-			// Validation properties
-			message: this.#validation[fieldPath] || null
+		// Determine input type based on schema type
+		let type = 'text'
+		if (props.type) {
+			switch (props.type) {
+				case 'number':
+				case 'integer':
+					type = props.min !== undefined && props.max !== undefined ? 'range' : 'number'
+					break
+				case 'boolean':
+					type = 'checkbox'
+					break
+				case 'string':
+					if (props.enum) {
+						type = 'select'
+						// Map enum values to options format expected by select inputs
+						if (Array.isArray(props.enum)) {
+							props.options = props.enum.map(val => ({ value: val, label: val }))
+						}
+					} else {
+						type = 'text'
+					}
+					break
+				case 'array':
+					type = 'array'
+					break
+			}
 		}
 
-		return props
+		// Add validation message if exists
+		const validationMessage = this.#validation[fieldPath] || null
+
+		// Compose final props
+		const finalProps = {
+			...props,
+			message: validationMessage
+		}
+
+		return {
+			scope,
+			type,
+			value,
+			override: element.override || false,
+			props: finalProps
+		}
 	}
 
-	/**
-	 * Extract relevant properties from field schema
-	 * @private
-	 * @param {Object} fieldSchema - Field schema
-	 * @returns {Object} Schema properties for input
-	 */
-	#extractSchemaProps(fieldSchema) {
-		const props = {}
-
-		// Validation properties
-		if (fieldSchema.required) props.required = true
-		if (fieldSchema.pattern) props.pattern = fieldSchema.pattern
-
-		// Constraints (support both JSON Schema and simplified formats)
-		if (fieldSchema.min !== undefined) props.min = fieldSchema.min
-		if (fieldSchema.max !== undefined) props.max = fieldSchema.max
-		if (fieldSchema.minimum !== undefined) props.min = fieldSchema.minimum
-		if (fieldSchema.maximum !== undefined) props.max = fieldSchema.maximum
-		if (fieldSchema.minLength !== undefined) props.minLength = fieldSchema.minLength
-		if (fieldSchema.maxLength !== undefined) props.maxLength = fieldSchema.maxLength
-		if (fieldSchema.step !== undefined) props.step = fieldSchema.step
-
-		// Type-specific properties
-		if (fieldSchema.enum) props.options = fieldSchema.enum
-		if (fieldSchema.type === 'integer') props.step = props.step || 1
-		if (fieldSchema.type === 'number' && !props.step) props.step = 0.1
-
-		return props
-	}
 
 	/**
 	 * Set validation message for a specific field

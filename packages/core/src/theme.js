@@ -162,7 +162,7 @@ export function themeRules(name = 'rokkit', mapping = defaultThemeMapping, color
  * @returns {Array} Array of shortcut definitions
  */
 export function semanticShortcuts(name) {
-	const prefixes = ['bg', 'border', 'text', 'ring', 'outline', 'from', 'to']
+	const prefixes = ['bg', 'border', 'text', 'ring', 'outline', 'from', 'to', 'divide']
 	const shortcuts = []
 
 	for (const [toneName, lightValue] of Object.entries(TONE_MAP)) {

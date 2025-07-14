@@ -5,10 +5,11 @@
 	 */
 
 	import Input from './Input.svelte'
+	import { FormBuilder } from './lib/builder.svelte.js'
 
 	let {
 		// FormBuilder binding
-		builder,
+		builder = undefined,
 
 		// Direct props (alternative to builder)
 		data = $bindable(),
@@ -29,22 +30,24 @@
 		...props
 	} = $props()
 
-	// Use builder if provided, otherwise create derived elements
-	let elements = $derived(() => {
+	// Use provided builder or create one from data/schema/layout
+	let formBuilder = $derived(() => {
 		if (builder) {
-			return builder.elements
+			return builder
 		}
-		// TODO: Create elements from data/schema/layout if no builder provided
-		return []
+		return new FormBuilder(data, schema, layout)
 	})
+	
+	// Get elements from the builder
+	let elements = $derived(() => formBuilder?.elements ?? [])
 
 	// Handle field value changes
 	function handleFieldChange(element, newValue) {
 		const fieldPath = element.scope.replace(/^#\//, '')
 
-		if (builder) {
+		if (formBuilder) {
 			// Update through FormBuilder
-			builder.updateField(fieldPath, newValue)
+			formBuilder.updateField(fieldPath, newValue)
 		} else {
 			// Update data directly
 			updateNestedValue(data, fieldPath, newValue)
@@ -52,7 +55,7 @@
 
 		// Call onupdate callback if provided
 		if (onupdate) {
-			const currentData = builder ? builder.data : data
+			const currentData = formBuilder ? formBuilder.data : data
 			onupdate(currentData)
 		}
 
@@ -93,52 +96,28 @@
 </script>
 
 <!-- Form container -->
-<div class="form-renderer {className}" {...props}>
+<div data-form-root class={className} {...props}>
 	{#each elements as element (element.scope)}
-		{#if element.override && child}
-			<!-- Use custom child snippet for overridden elements -->
-			{@render child(element)}
-		{:else}
-			<!-- Use default input snippet -->
-			{@render defaultInput(element)}
-		{/if}
+		<div data-form-field data-scope={element.scope}>
+			{#if element.override && child}
+				<!-- Use custom child snippet for overridden elements -->
+				{@render child(element)}
+			{:else}
+				<!-- Use default input snippet -->
+				{@render defaultInput(element)}
+			{/if}
+		</div>
 	{/each}
 </div>
 
 <!-- Default input snippet -->
 {#snippet defaultInput(element)}
-	<div class="form-field" data-scope={element.scope}>
-		<Input
-			type={element.type}
-			bind:value={element.value}
-			onchange={(newValue) => handleFieldChange(element, newValue)}
-			onfocus={() => handleFieldFocus(element)}
-			onblur={() => handleFieldBlur(element)}
-			{...element.props}
-		/>
-	</div>
+	<Input
+		type={element.type}
+		bind:value={element.value}
+		onchange={(newValue) => handleFieldChange(element, newValue)}
+		onfocus={() => handleFieldFocus(element)}
+		onblur={() => handleFieldBlur(element)}
+		{...element.props}
+	/>
 {/snippet}
-
-<style>
-	.form-renderer {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	.form-field {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.form-field[data-scope] {
-		/* Scope-specific styling can be added here */
-	}
-
-	/* Responsive layout */
-	@media (min-width: 768px) {
-		.form-renderer {
-			gap: 1.5rem;
-		}
-	}
-</style>
