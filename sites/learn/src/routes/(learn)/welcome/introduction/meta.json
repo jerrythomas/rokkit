@@ -2,7 +2,8 @@
   "title": "Introduction",
   "description": "Learn what Rokkit is and why it exists",
   "icon": "👋",
-  "category": "Getting Started",
+  "category": "welcome",
+  "order": 1,
   "tags": ["introduction", "overview", "basics", "data-driven", "components"],
   "experimental": false
 }

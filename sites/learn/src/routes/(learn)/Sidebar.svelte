@@ -20,11 +20,11 @@
 	 */
 
 	/** @type {SidebarProps} */
-	let { sections, fields, currentSection, onNavigate } = $props()
+	let { sections, fields } = $props()
 </script>
 
 <nav class="flex w-full flex-1">
-	<GroupedList items={sections} {fields} onSelect={onNavigate}>
+	<GroupedList items={sections} {fields}>
 		{#snippet child(proxy)}
 			<div class="flex w-full flex-col">
 				<div class="flex items-center gap-3">

@@ -1,12 +1,14 @@
-import { sections, fields } from './sections.js'
-
+import { getSections, metadataList, fetchImports } from './sections.js'
 /**
  * Layout load function that provides sections data to all child routes
  * @returns {Object} Layout data including sections and field mappings
  */
-export function load() {
+export async function load() {
+	const importedItems = await fetchImports(metadataList)
+	const sections = getSections(importedItems)
+
 	return {
 		sections,
-		fields
+		fields: { text: 'title', href: 'slug' }
 	}
 }
