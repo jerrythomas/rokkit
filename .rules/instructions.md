@@ -80,12 +80,15 @@ Provide progress updates and explain technical decisions.
 ## Monorepo Structure & Guidelines
 
 ### Project Structure
+
 This is a monorepo with the following structure:
+
 - `packages/` - Library packages (e.g., @rokkit/forms, @rokkit/ui, @rokkit/core)
 - `sites/` - Demo sites and documentation (e.g., sites/learn)
 - `apps/` - Applications (if present)
 
 ### Library Development (`packages/`)
+
 - Create reusable components and utilities
 - Follow semantic versioning
 - Include comprehensive TypeScript definitions
@@ -93,6 +96,7 @@ This is a monorepo with the following structure:
 - Test thoroughly before publishing
 
 ### Demo Development (`sites/`)
+
 - Use library packages as dependencies
 - Use components from the packages (ex. @rokkit/ui) for the demo. Any custom components in the site should build on top of the library components.
 - Create progressive examples showing feature evolution
@@ -100,6 +104,7 @@ This is a monorepo with the following structure:
 - Include educational documentation
 
 ### Styling Guidelines
+
 - Use UnoCSS utility classes throughout
 - Follow neutral color palette: `neutral-50`, `neutral-100`, etc.
 - Use semantic colors: `primary-`, `secondary-`, `accent-`, `error-`, `warning-`, `success-`

@@ -17,6 +17,7 @@ tutorial/
 ```
 
 **Example `src/App.svelte`:**
+
 ```svelte
 <script>
 	import { List } from '@rokkit/ui'
@@ -42,6 +43,7 @@ tutorial/
 ### 2. Use CodeViewer in Your Tutorial Page
 
 **Example `+page.svelte`:**
+
 ```svelte
 <script>
 	import { onMount } from 'svelte'
@@ -68,7 +70,7 @@ tutorial/
 
 <div class="space-y-8">
 	<h1>My Tutorial Section</h1>
-	
+
 	{#if loading}
 		<div>Loading demo...</div>
 	{:else}

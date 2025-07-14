@@ -19,6 +19,7 @@ The Story system consists of five main components:
 The main component that handles loading stories from slugs and orchestrates the entire story display.
 
 **Props:**
+
 - `slug` (string, required) - The story slug to load (e.g., "introduction")
 - `title` (string, optional) - Optional title for the story
 - `description` (string, optional) - Optional description for the story
@@ -28,6 +29,7 @@ The main component that handles loading stories from slugs and orchestrates the 
 - `oncopy` (function, optional) - Callback when code is copied
 
 **Usage:**
+
 ```svelte
 <script>
   import { StoryRoot } from '$lib/components/Story'
@@ -47,10 +49,12 @@ The main component that handles loading stories from slugs and orchestrates the 
 Renders an interactive Svelte component within the story container.
 
 **Props:**
+
 - `component` (any, required) - The Svelte component to render
 - `class` (string, optional) - Additional CSS classes
 
 **Usage:**
+
 ```svelte
 <script>
   import { StoryComponent } from '$lib/components/Story'
@@ -65,6 +69,7 @@ Renders an interactive Svelte component within the story container.
 Displays syntax-highlighted code with support for single files or multiple files using tabs.
 
 **Props:**
+
 - `code` (string|StoryCodeFile[], optional) - The source code to display or array of files
 - `files` (StoryCodeFile[], optional) - Array of files (alternative to code)
 - `showCopyButton` (boolean, optional) - Whether to show just the copy button (default: false)
@@ -74,17 +79,19 @@ Displays syntax-highlighted code with support for single files or multiple files
 - `oncopy` (function, optional) - Callback when code is copied
 
 **StoryCodeFile Interface:**
+
 ```typescript
 interface StoryCodeFile {
-  id: string;           // Unique identifier for the file
-  name: string;         // Display name of the file
-  language: string;     // Programming language for syntax highlighting
-  content: string;      // File content
-  icon?: string;        // Optional icon for the file
+  id: string // Unique identifier for the file
+  name: string // Display name of the file
+  language: string // Programming language for syntax highlighting
+  content: string // File content
+  icon?: string // Optional icon for the file
 }
 ```
 
 **Usage:**
+
 ```svelte
 <script>
   import { StoryCode } from '$lib/components/Story'
@@ -123,10 +130,12 @@ interface StoryCodeFile {
 Displays error messages with consistent styling and branding.
 
 **Props:**
+
 - `error` (string, required) - The error message to display
 - `class` (string, optional) - Additional CSS classes
 
 **Usage:**
+
 ```svelte
 <script>
   import { StoryError } from '$lib/components/Story'
@@ -140,10 +149,12 @@ Displays error messages with consistent styling and branding.
 Displays a loading state with spinner and customizable message.
 
 **Props:**
+
 - `message` (string, optional) - Custom loading message (default: "Loading story...")
 - `class` (string, optional) - Additional CSS classes
 
 **Usage:**
+
 ```svelte
 <script>
   import { StoryLoading } from '$lib/components/Story'
@@ -186,7 +197,9 @@ Each story's main component should be in `src/App.svelte` and can include additi
 The Story system supports multiple files per story through the enhanced `StoryCode` component and `FileTabs` integration:
 
 ### File Structure
+
 For multi-file stories, place all files in the `src/` directory:
+
 ```
 story-name/
 └── src/
@@ -197,7 +210,9 @@ story-name/
 ```
 
 ### File Icons
+
 The system automatically assigns icons based on file extensions:
+
 - `.svelte` → 🔷
 - `.js`, `.mjs` → 🟨
 - `.ts` → 🔵
@@ -217,6 +232,7 @@ Custom icons can be provided via the `icon` property in the file object.
 4. Use the story in your tutorial page with `<StoryRoot slug="section/story-name" />`
 
 **Example story structure:**
+
 ```
 tutorial/elements/button/
 └── src/
@@ -226,15 +242,16 @@ tutorial/elements/button/
 ```
 
 **Example story component:**
+
 ```svelte
 <script>
   import { Button } from '@rokkit/ui'
   import { variants } from './button-variants.js'
   import './button-styles.css'
-  
+
   let selectedVariant = $state('primary')
   let clickCount = $state(0)
-  
+
   function handleClick() {
     clickCount++
   }
@@ -253,7 +270,7 @@ tutorial/elements/button/
       </label>
     {/each}
   </div>
-  
+
   <Button
     class={selectedVariant}
     onclick={handleClick}
@@ -278,7 +295,7 @@ tutorial/elements/button/
 The Story system uses semantic color shortcuts for consistent theming:
 
 - `text-neutral-overlay` - Primary text color
-- `text-neutral-floating` - Secondary text color  
+- `text-neutral-floating` - Secondary text color
 - `text-neutral-elevated` - Tertiary text color
 - `bg-neutral-base` - Base background color
 - `bg-neutral-subtle` - Subtle background color
@@ -292,6 +309,7 @@ The Story system uses semantic color shortcuts for consistent theming:
 If you're migrating from the old Demo components:
 
 **Old:**
+
 ```svelte
 <script>
   import { DemoRoot } from '../demo'
@@ -305,6 +323,7 @@ If you're migrating from the old Demo components:
 ```
 
 **New:**
+
 ```svelte
 <script>
   import { StoryRoot } from '$lib/components/Story'
@@ -320,10 +339,11 @@ If you're migrating from the old Demo components:
 ## Advanced Usage
 
 ### Custom File Handling
+
 ```svelte
 <script>
   import { StoryCode } from '$lib/components/Story'
-  
+
   let files = [
     {
       id: 'config',
@@ -339,12 +359,13 @@ If you're migrating from the old Demo components:
 ```
 
 ### Programmatic Control
+
 ```svelte
 <script>
   import { StoryRoot } from '$lib/components/Story'
-  
+
   let showCode = $state(false)
-  
+
   function toggleCode() {
     showCode = !showCode
   }

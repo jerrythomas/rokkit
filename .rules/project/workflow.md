@@ -3,6 +3,7 @@
 ## CRITICAL: Progress Tracking Requirement
 
 **MUST UPDATE** `.rules/project/progress.md` after any changes to:
+
 - Component status (🔄 In Progress, ✅ Complete, etc.)
 - Implementation decisions made
 - Technical challenges encountered
@@ -14,6 +15,7 @@ This maintains project continuity between development sessions.
 ## Component Development Standards
 
 ### File Structure Convention
+
 ```
 packages/ui/src/components/ComponentName/
 ├── ComponentName.svelte          # Main component implementation
@@ -23,6 +25,7 @@ packages/ui/src/components/ComponentName/
 ```
 
 ### Tutorial Structure Convention
+
 ```
 sites/learn/src/lib/stories/component-name/
 ├── 01-intro/
@@ -36,9 +39,11 @@ sites/learn/src/lib/stories/component-name/
 ## Component API Standards
 
 ### Required Props Pattern
+
 All data-driven components MUST follow this pattern:
+
 ```svelte
-let { 
+let {
   items = [],                    # Data array
   value = $bindable(),          # Selected value(s) - bindable
   fields = {},                  # Field mapping object
@@ -47,6 +52,7 @@ let {
 ```
 
 ### Data Handling Pattern
+
 ```svelte
 import { Proxy } from '@rokkit/states'
 
@@ -55,11 +61,12 @@ let proxyItems = $derived(items.map(item => new Proxy(item, fields)))
 
 // Access data through proxy methods
 proxyItem.get('text')    # Get field value
-proxyItem.has('href')    # Check field existence  
+proxyItem.has('href')    # Check field existence
 proxyItem.id             # Auto-generated ID
 ```
 
 ### Snippet Support Pattern
+
 ```svelte
 let { children } = $props()
 
@@ -77,6 +84,7 @@ let itemSnippet = $derived(children?.item ?? defaultItem)
 ## Implementation Requirements
 
 ### Component Structure Standards
+
 1. **No internal styling** - components must be completely unstyled
 2. **Data attributes only** - use `data-component-element` pattern for styling hooks
 3. **Proxy system** - use `@rokkit/states` Proxy for all data access
@@ -84,13 +92,16 @@ let itemSnippet = $derived(children?.item ?? defaultItem)
 5. **Accessibility** - proper ARIA attributes and keyboard navigation
 
 ### bits-ui Integration Pattern
+
 - Use bits-ui components as foundation when available
 - Wrap with Rokkit API layer (items, fields, value props)
 - Preserve bits-ui data attributes for theming
 - See `packages/bits-ui/src/List.svelte` for reference implementation
 
 ### Custom Component Pattern
+
 For components without bits-ui equivalent:
+
 - Follow same data attribute naming as bits-ui
 - Implement full accessibility support
 - Use established keyboard navigation patterns
@@ -99,6 +110,7 @@ For components without bits-ui equivalent:
 ## Quality Requirements
 
 ### Before Component is Complete
+
 - [ ] Follows standard prop pattern (items, value, fields)
 - [ ] Uses Proxy system for data access
 - [ ] Supports snippet customization
@@ -111,6 +123,7 @@ For components without bits-ui equivalent:
 - [ ] **Progress document updated**
 
 ### Testing Requirements
+
 - Field mapping functionality (custom fields work)
 - Data attribute presence and correctness
 - Accessibility attributes and behavior
@@ -122,6 +135,7 @@ For components without bits-ui equivalent:
 ### Before Starting Any Component Work
 
 **MUST Provide Feature Breakdown:**
+
 - Complete technical description
 - List all files to be created/modified
 - Integration points with existing components
@@ -129,6 +143,7 @@ For components without bits-ui equivalent:
 - Reference implementations to study
 
 **Example Breakdown:**
+
 ```
 Component: TreeSelect
 
@@ -165,12 +180,14 @@ Reference: Tree component + Select patterns
 ### During Development
 
 **Incremental Changes:**
+
 - Work on one file at a time
 - Test each change before proceeding
 - Update progress document after significant changes
 - Follow conventional commit patterns if committing
 
 **Conventional Commit Format:**
+
 ```
 feat(ui): add TreeSelect component with keyboard navigation
 fix(ui): resolve focus management in Tree component
@@ -191,6 +208,7 @@ docs(stories): update TreeSelect tutorial examples
 9. **Update progress tracking** with current status
 
 ### Integration Priorities
+
 - **Proxy over FieldMapper** - use @rokkit/states for data access
 - **bits-ui where possible** - leverage for accessibility and behavior
 - **Data attributes over classes** - use for theming hooks
@@ -200,11 +218,13 @@ docs(stories): update TreeSelect tutorial examples
 ## Reference Resources
 
 ### Study These Files
+
 - `packages/bits-ui/src/List.svelte` - bits-ui integration pattern
 - `sites/learn/src/lib/stories/02-elements/01-list/` - tutorial structure
 - Existing component tests for testing patterns
 
 ### Follow These Patterns
+
 - `.rules/architecture/patterns.md` - component implementation patterns
 - `.rules/references/external.md` - integration requirements
 - `.rules/project/progress.md` - current component status
@@ -222,6 +242,7 @@ docs(stories): update TreeSelect tutorial examples
 ## Success Criteria
 
 A component is considered complete when:
+
 - All quality requirements are met
 - Tutorial examples demonstrate key features
 - Tests verify functionality and accessibility

@@ -11,6 +11,7 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 **Principle**: Components automatically understand and adapt to data structures.
 
 **Implementation**:
+
 ```svelte
 <!-- Data shapes the component, not vice versa -->
 <List items={users} fields={{ text: 'fullName', image: 'avatar' }} />
@@ -18,6 +19,7 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 ```
 
 **Benefits**:
+
 - Eliminates data transformation layers
 - Reduces boilerplate code
 - Enables rapid prototyping
@@ -28,6 +30,7 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 **Principle**: Every component should be extensible without modification.
 
 **Implementation**:
+
 ```svelte
 <!-- Custom rendering through snippets -->
 <List {items}>
@@ -38,6 +41,7 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 ```
 
 **Benefits**:
+
 - No need to fork components
 - Maintains upgrade path
 - Enables design system integration
@@ -48,12 +52,14 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 **Principle**: Similar components should behave similarly.
 
 **Standard Props Pattern**:
+
 - `items` / `options`: Data array
 - `value`: Current selection(s)
 - `fields`: Field mapping configuration
 - `using`: Component override system
 
 **Standard Events Pattern**:
+
 - `select`: Item selection
 - `change`: Value changes
 - `move`: Navigation/focus changes
@@ -63,6 +69,7 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 **Principle**: Start simple, add complexity as needed.
 
 **Levels of Usage**:
+
 1. **Basic**: `<List items={stringArray} />`
 2. **Mapped**: `<List items={objects} fields={mapping} />`
 3. **Custom**: `<List items={objects} {fields} {using} />`
@@ -73,6 +80,7 @@ Rokkit is built on the principle that **data should drive the interface**, not t
 **Principle**: Components should be accessible without additional configuration.
 
 **Implementation**:
+
 - ARIA attributes automatically applied
 - Keyboard navigation built-in
 - Screen reader support included
@@ -86,11 +94,11 @@ All selection components follow this structure:
 
 ```typescript
 interface SelectionComponent {
-  items: T[]                    // Data array
-  value: T | T[] | null        // Selected item(s)
-  fields: FieldMapping         // Data mapping
-  using: ComponentMap          // Custom components
-  multiple?: boolean           // Multi-selection
+  items: T[] // Data array
+  value: T | T[] | null // Selected item(s)
+  fields: FieldMapping // Data mapping
+  using: ComponentMap // Custom components
+  multiple?: boolean // Multi-selection
 }
 ```
 
@@ -102,10 +110,10 @@ Components dealing with nested data:
 
 ```typescript
 interface HierarchicalComponent {
-  items: TreeNode<T>[]         // Nested data
-  value: T | null              // Selected item
-  fields: NestedFieldMapping   // Nested mapping
-  autoClose?: boolean          // Behavior control
+  items: TreeNode<T>[] // Nested data
+  value: T | null // Selected item
+  fields: NestedFieldMapping // Nested mapping
+  autoClose?: boolean // Behavior control
 }
 ```
 
@@ -117,10 +125,10 @@ Form input components:
 
 ```typescript
 interface InputComponent {
-  value: T                     // Current value
-  placeholder?: string         // Hint text
-  disabled?: boolean          // State control
-  required?: boolean          // Validation
+  value: T // Current value
+  placeholder?: string // Hint text
+  disabled?: boolean // State control
+  required?: boolean // Validation
 }
 ```
 
@@ -144,15 +152,16 @@ const defaultFields = {
 
 // Custom mapping
 const customFields = {
-  text: 'name',        // Map 'name' to text display
-  image: 'avatar',     // Map 'avatar' to image display
-  children: 'items'    // Map 'items' to nested children
+  text: 'name', // Map 'name' to text display
+  image: 'avatar', // Map 'avatar' to image display
+  children: 'items' // Map 'items' to nested children
 }
 ```
 
 ### Advanced Mapping Features
 
 **Nested Field Access**:
+
 ```javascript
 const fields = {
   text: 'user.profile.displayName',
@@ -161,6 +170,7 @@ const fields = {
 ```
 
 **Dynamic Field Selection**:
+
 ```javascript
 const fields = {
   text: (item) => `${item.firstName} ${item.lastName}`,
@@ -177,7 +187,7 @@ The `using` property allows complete component replacement:
 ```svelte
 <script>
   import CustomItem from './CustomItem.svelte'
-  
+
   const using = {
     default: CustomItem,  // Default component
     special: SpecialItem  // Component for items with type='special'
@@ -222,7 +232,7 @@ Components use Svelte's reactive binding system:
 Components emit standard events for integration:
 
 ```svelte
-<List 
+<List
   {items}
   onselect={(e) => handleSelection(e.detail)}
   onchange={(e) => updateValue(e.detail)}
