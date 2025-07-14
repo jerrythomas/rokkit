@@ -98,7 +98,7 @@ const items = [
 	}
 ]
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ params }) {
+export function load() {
 	return {
 		schema,
 		layout,

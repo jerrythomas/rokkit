@@ -39,7 +39,7 @@ export class FormBuilder {
 
 	/** @type {FormElement[]} */
 	elements = $derived(this.#buildElements())
-
+	combined = $derived(getSchemaWithLayout(this.schema, this.layout))
 	/**
 	 * Get the current data
 	 * @returns {Object} Current data object
@@ -146,7 +146,7 @@ export class FormBuilder {
 	 */
 	getValue(path) {
 		if (!path) return undefined
-		
+
 		const keys = path.split('/')
 		let current = this.#data
 		for (const key of keys) {
@@ -165,18 +165,17 @@ export class FormBuilder {
 	 * @returns {FormElement[]} Array of form elements
 	 */
 	#buildElements() {
-		if (!this.#schema || !this.#layout || !this.#layout.elements) {
-			return []
-		}
+		// if (!this.#schema || !this.#layout || !this.#layout.elements) {
+		// 	return []
+		// }
 
 		try {
 			// Use getSchemaWithLayout to combine schema and layout
-			const combined = getSchemaWithLayout(this.#schema, this.#layout)
-			
+			// const combined = getSchemaWithLayout(this.#schema, this.#layout)
 			// Convert combined elements to FormElement format
-			return combined.elements
-				.map(element => this.#convertToFormElement(element))
-				.filter(element => element !== null)
+			return this.combined.elements
+				.map((element) => this.#convertToFormElement(element))
+				.filter((element) => element !== null)
 		} catch (error) {
 			// If getSchemaWithLayout fails, fall back to basic element creation
 			console.warn('Failed to build elements:', error)
@@ -220,18 +219,19 @@ export class FormBuilder {
 		const value = this.getValue(fieldPath)
 
 		// Default type is text when no schema is available
-		let type = 'text'
+		const type = 'text'
 
 		// Basic props
 		const props = {
 			label: label || fieldPath,
 			...layoutProps,
-			message: this.#validation[fieldPath] || null
+			message: this.#validation[fieldPath] || null,
+			type
 		}
 
 		return {
 			scope,
-			type,
+			// type,
 			value,
 			override,
 			props
@@ -247,12 +247,12 @@ export class FormBuilder {
 	 */
 	#convertToFormElement(element, parentPath = '') {
 		const { key, props } = element
-		
+
 		// Skip elements without a key
 		if (!key) {
 			return null
 		}
-		
+
 		// Create scope in JSON Pointer format
 		const fieldPath = parentPath ? `${parentPath}/${key}` : key
 		const scope = `#/${fieldPath}`
@@ -261,10 +261,10 @@ export class FormBuilder {
 		// Handle nested elements (arrays and objects)
 		if (element.elements) {
 			// This is a nested structure, process children
-			const nestedElements = element.elements.map(child => 
+			const nestedElements = element.elements.map((child) =>
 				this.#convertToFormElement(child, fieldPath)
 			)
-			
+
 			return {
 				scope,
 				type: 'group',
@@ -294,7 +294,7 @@ export class FormBuilder {
 						type = 'select'
 						// Map enum values to options format expected by select inputs
 						if (Array.isArray(props.enum)) {
-							props.options = props.enum.map(val => ({ value: val, label: val }))
+							props.options = props.enum //.map((val) => ({ value: val, label: val }))
 						}
 					} else {
 						type = 'text'
@@ -312,18 +312,18 @@ export class FormBuilder {
 		// Compose final props
 		const finalProps = {
 			...props,
+			type,
 			message: validationMessage
 		}
 
 		return {
 			scope,
-			type,
+			// type,
 			value,
 			override: element.override || false,
 			props: finalProps
 		}
 	}
-
 
 	/**
 	 * Set validation message for a specific field
@@ -352,8 +352,8 @@ export class FormBuilder {
 	 */
 	reset() {
 		this.#data = {}
-		this.#schema = {}
-		this.#layout = {}
+		// this.#schema = {}
+		// this.#layout = {}
 		this.#validation = {}
 	}
 }

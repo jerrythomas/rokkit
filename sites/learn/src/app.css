@@ -21,6 +21,7 @@
 @import './theme/shiki.css';
 @import './theme/list.css';
 @import './theme/tab.css';
+@import './theme/forms.css';
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;

@@ -1,1 +1,1 @@
-let fields = { component: 'type' }
+const fields = { component: 'type' }

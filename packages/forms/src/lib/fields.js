@@ -112,7 +112,8 @@ function combineNestedElementsWithSchema(element, attribute, schema) {
  */
 export function getSchemaWithLayout(schema, layout) {
 	const combined = omit(['elements'], layout)
-	combined.elements = layout.elements.map((element) => combineElementWithSchema(element, schema))
+	combined.elements =
+		layout.elements?.map((element) => combineElementWithSchema(element, schema)) ?? []
 
 	return combined
 }

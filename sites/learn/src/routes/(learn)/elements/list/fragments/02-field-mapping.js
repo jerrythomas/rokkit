@@ -1,4 +1,4 @@
-let fields = {
+const fields = {
   text: 'name',
   image: 'photo'
 }

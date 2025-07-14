@@ -1,6 +1,6 @@
 <script>
-	import { noop, defaultStateIcons } from '@rokkit/core'
-	import { Proxy as RokProxy } from '@rokkit/states'
+	import { defaultStateIcons } from '@rokkit/core'
+	import { Proxy } from '@rokkit/states'
 	import { equals } from 'ramda'
 
 	/**
@@ -20,51 +20,48 @@
 		fields,
 		options = [],
 		icons = defaultStateIcons['selector'],
-		onchange = noop,
+		onchange,
 		onfocus,
 		onblur,
 		...rest
 	} = $props()
 
-	const handleChange = (event) => {
+	let focused = $state(false)
+	let icon = $derived(focused ? icons['opened'] : icons['closed'])
+	let indexValue = $state(options.findIndex((item) => equals(item, value)))
+	let proxiedOptions = $derived(options.map((option) => new Proxy(option, fields)))
+
+	function handleChange(event) {
 		value = options[indexValue]
-		onchange(options[indexValue])
+		onchange?.(options[indexValue])
 	}
 
-	let indexValue = $state(options.findIndex((item) => equals(item, value)))
+	function handleFocus(event) {
+		focused = true
+		onfocus?.(event)
+	}
+
+	function handleBlur(event) {
+		focused = false
+		onblur?.(event)
+	}
 </script>
 
-<rk-select class={classes}>
+<div data-input-select class={classes}>
 	<select
-		name="sources"
-		id="sources"
-		class="custom-select"
 		bind:value={indexValue}
 		{...rest}
 		onchange={handleChange}
-		{onfocus}
-		{onblur}
+		onfocus={handleFocus}
+		onblur={handleBlur}
 	>
-		{#each options as option, index (index)}
-			{@const proxy = new RokProxy(option, fields)}
-			<option value={index}>
-				{proxy.get('text')}
+		{#each proxiedOptions as option, index (index)}
+			<option value={index} aria-current={equals(option.value, value)}>
+				{option.get('text')}
 			</option>
 		{/each}
 	</select>
-	<span class="pointer-events-none absolute right-2 top-0 flex min-h-full items-center">
-		<i class={icons['opened']}></i>
+	<span>
+		<i class={icon}></i>
 	</span>
-</rk-select>
-
-<style lang="postcss">
-	rk-select {
-		position: relative;
-		display: inline-block;
-	}
-	rk-select > select {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-	}
-</style>
+</div>

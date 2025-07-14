@@ -31,5 +31,5 @@ function validatePassword(password) {
 }
 
 // Usage in component
-let password = ''
+const password = ''
 $: validationItems = validatePassword(password)

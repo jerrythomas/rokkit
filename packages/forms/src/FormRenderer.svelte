@@ -4,17 +4,16 @@
 	 * Handles defaultInput and custom child snippet selection based on override flag
 	 */
 
-	import Input from './Input.svelte'
+	import InputField from './InputField.svelte'
 	import { FormBuilder } from './lib/builder.svelte.js'
 
 	let {
 		// FormBuilder binding
-		builder = undefined,
 
 		// Direct props (alternative to builder)
 		data = $bindable(),
-		schema = {},
-		layout = {},
+		schema = null,
+		layout = null,
 
 		// Event handlers
 		onupdate = undefined,
@@ -31,15 +30,9 @@
 	} = $props()
 
 	// Use provided builder or create one from data/schema/layout
-	let formBuilder = $derived(() => {
-		if (builder) {
-			return builder
-		}
-		return new FormBuilder(data, schema, layout)
-	})
-	
+	let formBuilder = $derived(new FormBuilder(data, schema, layout))
 	// Get elements from the builder
-	let elements = $derived(() => formBuilder?.elements ?? [])
+	let elements = $derived(() => formBuilder.elements)
 
 	// Handle field value changes
 	function handleFieldChange(element, newValue) {
@@ -95,15 +88,19 @@
 	}
 </script>
 
+<pre>
+  <!-- {JSON.stringify(formBuilder.elements[0], null, 2)} -->
+</pre>
 <!-- Form container -->
 <div data-form-root class={className} {...props}>
-	{#each elements as element (element.scope)}
+	<!-- <div data-form-field data-scope={formBuilder.elements[0].scope}>
+		{@render defaultInput(formBuilder.elements[0])}
+	</div> -->
+	{#each formBuilder.elements as element, index (index)}
 		<div data-form-field data-scope={element.scope}>
 			{#if element.override && child}
-				<!-- Use custom child snippet for overridden elements -->
 				{@render child(element)}
 			{:else}
-				<!-- Use default input snippet -->
 				{@render defaultInput(element)}
 			{/if}
 		</div>
@@ -112,12 +109,13 @@
 
 <!-- Default input snippet -->
 {#snippet defaultInput(element)}
-	<Input
+	<InputField
+		name={element.scope}
 		type={element.type}
-		bind:value={element.value}
+		value={element.value}
+		{...element.props}
 		onchange={(newValue) => handleFieldChange(element, newValue)}
 		onfocus={() => handleFieldFocus(element)}
 		onblur={() => handleFieldBlur(element)}
-		{...element.props}
 	/>
 {/snippet}

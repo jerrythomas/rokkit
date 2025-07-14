@@ -2,7 +2,6 @@ import { on } from 'svelte/events'
 import { omit } from 'ramda'
 import { getKeyboardAction, defaultNavigationOptions } from './kbd'
 import { getClickAction, getPathFromEvent } from './utils'
-import { getKeyFromPath } from '@rokkit/core'
 
 /**
  * Scrolls the focused element into view if it exists

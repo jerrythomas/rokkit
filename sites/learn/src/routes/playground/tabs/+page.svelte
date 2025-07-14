@@ -5,15 +5,15 @@
 	import { goto } from '$app/navigation'
 
 	let { data } = $props()
-	let { schema, layout, items } = data
+	let { schema, layout } = data
 
 	// Configuration state - need this to be reactive for updates
 	let config = $state({ ...data.config })
-
-	let selectedTab = $state(items[0])
+	let items = $state([...data.items])
+	let selectedTab = $state(data.items[0])
 
 	// Create form builder
-	let formBuilder = $derived(new FormBuilder(config, schema, layout))
+	// let formBuilder = $derived(new FormBuilder(config, schema, layout))
 
 	// Handle form configuration changes
 	function handleConfigUpdate(newData) {
@@ -61,7 +61,7 @@
 	</div>
 
 	<!-- Main content with responsive layout -->
-	<div data-panel-body class="flex flex-1 flex-col gap-6 overflow-auto p-8 lg:flex-row">
+	<div data-panel-body class="flex flex-1 flex-col gap-6 overflow-hidden p-8 lg:flex-row">
 		<!-- Preview Panel -->
 		<div
 			data-panel-preview
@@ -100,10 +100,10 @@
 		<!-- Configuration Panel -->
 		<div
 			data-panel-config
-			class="bg-neutral-inset border-neutral-subtle w-full min-w-[300px] rounded-lg border p-6 lg:w-1/5"
+			class="bg-neutral-inset border-neutral-subtle w-full min-w-[300px] overflow-auto rounded-lg border p-6 lg:w-1/5"
 		>
 			<h2 class="text-neutral-overlay mb-4 text-xl font-semibold">Configuration</h2>
-			<FormRenderer builder={formBuilder} onupdate={handleConfigUpdate} />
+			<FormRenderer onupdate={handleConfigUpdate} data={config} {schema} {layout} />
 		</div>
 	</div>
 </div>
