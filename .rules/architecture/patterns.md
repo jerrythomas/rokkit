@@ -10,7 +10,7 @@ Every Rokkit component follows this structural pattern:
 <script>
   import { FieldMapper } from '@rokkit/core'
   import { createEventDispatcher } from 'svelte'
-  
+
   // Props with defaults
   let {
     items = [],
@@ -20,14 +20,14 @@ Every Rokkit component follows this structural pattern:
     class: className = '',
     ...restProps
   } = $props()
-  
+
   // Internal state
   let mapping = $derived(new FieldMapper(fields, using))
   let processedItems = $derived(items.map(item => mapping.wrap(item)))
-  
+
   // Event dispatcher
   const dispatch = createEventDispatcher()
-  
+
   // Event handlers
   function handleSelection(item) {
     value = item
@@ -46,10 +46,12 @@ Every Rokkit component follows this structural pattern:
 ### Props Pattern Standardization
 
 **Required Props**:
+
 - `items`: Data array for selection components
 - `value`: Current selection (bindable)
 
 **Optional Props**:
+
 - `fields`: Field mapping object
 - `using`: Component override object
 - `class`: CSS class string
@@ -57,6 +59,7 @@ Every Rokkit component follows this structural pattern:
 - `placeholder`: Hint text
 
 **Component-Specific Props**:
+
 - Selection: `multiple`, `clearable`
 - Hierarchical: `autoClose`, `expandAll`
 - Input: `min`, `max`, `step`
@@ -84,11 +87,11 @@ class ComponentLogic {
   constructor(fields, using) {
     this.mapping = new FieldMapper(fields, using)
   }
-  
+
   processItems(items) {
-    return items.map(item => this.mapping.wrap(item))
+    return items.map((item) => this.mapping.wrap(item))
   }
-  
+
   renderItem(wrappedItem) {
     const Component = this.mapping.getComponent(wrappedItem)
     return { Component, props: this.mapping.getProps(wrappedItem) }
@@ -103,7 +106,7 @@ class ComponentLogic {
 ```svelte
 <script>
   import { SelectionManager } from '@rokkit/core'
-  
+
   let {
     items = [],
     value = $bindable(),
@@ -111,10 +114,10 @@ class ComponentLogic {
     fields = {},
     using = {}
   } = $props()
-  
+
   let selection = $derived(new SelectionManager(items, { multiple }))
   let mapping = $derived(new FieldMapper(fields, using))
-  
+
   function handleItemClick(item) {
     if (multiple) {
       value = selection.toggle(item, value)
@@ -122,7 +125,7 @@ class ComponentLogic {
       value = selection.select(item)
     }
   }
-  
+
   function handleKeyDown(event, item) {
     switch (event.key) {
       case 'Enter':
@@ -163,7 +166,7 @@ class ComponentLogic {
 <script>
   // Multi-selection specific logic
   let selectedItems = $derived(Array.isArray(value) ? value : [])
-  
+
   function toggleSelection(item) {
     const isSelected = selectedItems.includes(item)
     if (isSelected) {
@@ -172,11 +175,11 @@ class ComponentLogic {
       value = [...selectedItems, item]
     }
   }
-  
+
   function selectAll() {
     value = [...items]
   }
-  
+
   function clearAll() {
     value = []
   }
@@ -190,17 +193,17 @@ class ComponentLogic {
 ```svelte
 <script>
   import { TreeNode } from '@rokkit/core'
-  
+
   let {
     items = [],
     value = $bindable(),
     fields = {},
     autoClose = false
   } = $props()
-  
+
   let treeNodes = $derived(items.map(item => new TreeNode(item, fields)))
   let expandedNodes = $state(new Set())
-  
+
   function toggleExpansion(node) {
     if (expandedNodes.has(node.id)) {
       expandedNodes.delete(node.id)
@@ -212,7 +215,7 @@ class ComponentLogic {
     }
     expandedNodes = expandedNodes // Trigger reactivity
   }
-  
+
   function selectNode(node) {
     value = node.value
     dispatch('select', { value: node.value, path: node.path })
@@ -229,11 +232,11 @@ class ComponentLogic {
         {@render expandIcon(expandedNodes.has(node.id))}
       </button>
     {/if}
-    
+
     <div onclick={() => selectNode(node)}>
       {@render nodeContent(node)}
     </div>
-    
+
     {#if node.hasChildren && expandedNodes.has(node.id)}
       <div class="tree-children">
         {#each node.children as child (child.id)}
@@ -253,7 +256,7 @@ class ComponentLogic {
 ```svelte
 <script>
   import { InputValidator } from '@rokkit/core'
-  
+
   let {
     value = $bindable(),
     name,
@@ -263,27 +266,27 @@ class ComponentLogic {
     validation = {},
     disabled = false
   } = $props()
-  
+
   let validator = $derived(new InputValidator(validation))
   let errors = $state([])
   let touched = $state(false)
-  
+
   function handleInput(event) {
     value = event.target.value
     if (touched) {
       validateValue()
     }
   }
-  
+
   function handleBlur() {
     touched = true
     validateValue()
   }
-  
+
   function validateValue() {
     errors = validator.validate(value)
   }
-  
+
   $effect(() => {
     if (required && !value) {
       errors = ['This field is required']
@@ -295,7 +298,7 @@ class ComponentLogic {
   {#if label}
     <label for={name}>{label}</label>
   {/if}
-  
+
   <input
     id={name}
     {name}
@@ -308,7 +311,7 @@ class ComponentLogic {
     oninput={handleInput}
     onblur={handleBlur}
   />
-  
+
   {#if errors.length > 0}
     <div id="{name}-error" class="error-message">
       {errors[0]}
@@ -351,11 +354,11 @@ class ComponentLogic {
 ```svelte
 <script>
   import { createId, trapFocus } from '@rokkit/core'
-  
+
   let componentId = createId()
   let focusedIndex = $state(0)
   let containerRef = $state()
-  
+
   function handleKeyboard(event) {
     switch (event.key) {
       case 'ArrowDown':
@@ -379,7 +382,7 @@ class ComponentLogic {
         break
     }
   }
-  
+
   $effect(() => {
     if (containerRef) {
       trapFocus(containerRef)
@@ -415,20 +418,20 @@ class ComponentLogic {
 ```svelte
 <script>
   import { VirtualList } from '@rokkit/core'
-  
+
   let {
     items = [],
     itemHeight = 40,
     visibleCount = 10,
     threshold = 100
   } = $props()
-  
+
   // Use virtual scrolling for large datasets
   let useVirtual = $derived(items.length > threshold)
   let virtualList = $derived(
     useVirtual ? new VirtualList(items, { itemHeight, visibleCount }) : null
   )
-  
+
   let visibleItems = $derived(
     useVirtual ? virtualList.getVisibleItems() : items
   )
@@ -467,29 +470,29 @@ describe('Component', () => {
     { id: 1, name: 'Item 1' },
     { id: 2, name: 'Item 2' }
   ]
-  
+
   test('renders items correctly', () => {
     const { getByText } = render(Component, {
       props: { items: mockItems }
     })
-    
+
     expect(getByText('Item 1')).toBeInTheDocument()
     expect(getByText('Item 2')).toBeInTheDocument()
   })
-  
+
   test('handles selection', async () => {
     let selectedValue
     const { getByText } = render(Component, {
-      props: { 
+      props: {
         items: mockItems,
         value: selectedValue
       }
     })
-    
+
     await fireEvent.click(getByText('Item 1'))
     expect(selectedValue).toBe(mockItems[0])
   })
-  
+
   test('supports field mapping', () => {
     const customItems = [{ title: 'Custom Item' }]
     const { getByText } = render(Component, {
@@ -498,20 +501,20 @@ describe('Component', () => {
         fields: { text: 'title' }
       }
     })
-    
+
     expect(getByText('Custom Item')).toBeInTheDocument()
   })
-  
+
   test('keyboard navigation works', async () => {
     const { container } = render(Component, {
       props: { items: mockItems }
     })
-    
+
     const listbox = container.querySelector('[role="listbox"]')
-    
+
     await fireEvent.keyDown(listbox, { key: 'ArrowDown' })
     // Test focus movement
-    
+
     await fireEvent.keyDown(listbox, { key: 'Enter' })
     // Test selection
   })
@@ -522,10 +525,10 @@ describe('Component', () => {
 
 ### Component API Documentation
 
-```typescript
+````typescript
 /**
  * Flexible list component for displaying and selecting items
- * 
+ *
  * @example
  * ```svelte
  * <List items={users} fields={{ text: 'name' }} bind:value />
@@ -534,19 +537,19 @@ describe('Component', () => {
 interface ListProps<T = any> {
   /** Array of items to display */
   items: T[]
-  
+
   /** Currently selected item */
   value?: T | null
-  
+
   /** Field mapping configuration */
   fields?: FieldMapping
-  
+
   /** Custom component overrides */
   using?: ComponentMap
-  
+
   /** Enable multiple selection */
   multiple?: boolean
-  
+
   /** Additional CSS classes */
   class?: string
 }
@@ -554,25 +557,25 @@ interface ListProps<T = any> {
 interface ListEvents<T = any> {
   /** Fired when an item is selected */
   select: CustomEvent<{ value: T }>
-  
+
   /** Fired when selection changes */
   change: CustomEvent<{ value: T | T[] }>
-  
+
   /** Fired when focus moves between items */
-  move: CustomEvent<{ index: number, value: T }>
+  move: CustomEvent<{ index: number; value: T }>
 }
 
 interface ListSlots {
   /** Custom header content */
   header: {}
-  
-  /** Custom footer content */  
+
+  /** Custom footer content */
   footer: {}
-  
+
   /** Empty state content */
   empty: {}
-  
+
   /** Custom item renderer */
   stub: { node: WrappedNode }
 }
-```
+````

@@ -85,7 +85,7 @@ const form = new FormBuilder(data, customSchema, customLayout)
 ```javascript
 // Validation messages structure
 const message = {
-  state: 'error',  // 'error', 'warning', 'info', 'success'
+  state: 'error', // 'error', 'warning', 'info', 'success'
   text: 'This field is required'
 }
 
@@ -114,7 +114,7 @@ const element = {
     description: "We'll never share your email",
     placeholder: 'Enter your email',
     className: 'custom-input',
-    customProperty: 'any-value',  // Arbitrary properties supported
+    customProperty: 'any-value', // Arbitrary properties supported
 
     // From schema
     required: true,

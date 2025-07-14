@@ -7,6 +7,7 @@ Rokkit UI is a data-driven, composable, and themeable UI library for Svelte, des
 ## 🚀 Core Features
 
 ### 1. **Data-First Design**
+
 - **Description:** Rokkit components adapt to your data structure, not the other way around.
 - **Benefits:**
   - Eliminates the need for data transformation layers.
@@ -14,6 +15,7 @@ Rokkit UI is a data-driven, composable, and themeable UI library for Svelte, des
   - Enables rapid prototyping and seamless API integration.
 
 ### 2. **Composable & Extensible**
+
 - **Description:** Every component is designed for extension and composition.
 - **Benefits:**
   - Customize rendering and override behaviors without forking.
@@ -21,6 +23,7 @@ Rokkit UI is a data-driven, composable, and themeable UI library for Svelte, des
   - Supports complex and advanced use cases.
 
 ### 3. **Consistent & Predictable APIs**
+
 - **Description:** All controls follow a unified pattern for props and events.
 - **Benefits:**
   - Easy to learn and use.
@@ -28,6 +31,7 @@ Rokkit UI is a data-driven, composable, and themeable UI library for Svelte, des
   - Standardized props (`items`, `value`, `fields`, `using`) and events (`select`, `change`, `move`).
 
 ### 4. **Responsive & Themeable**
+
 - **Description:** Built-in support for dark mode, semantic color palettes, and responsive layouts.
 - **Benefits:**
   - Uses UnoCSS utility classes for modern, consistent styling.
@@ -35,6 +39,7 @@ Rokkit UI is a data-driven, composable, and themeable UI library for Svelte, des
   - Easily switch between light and dark modes.
 
 ### 5. **Accessible by Default**
+
 - **Description:** Accessibility is built in from the start.
 - **Benefits:**
   - ARIA attributes automatically applied.
@@ -42,6 +47,7 @@ Rokkit UI is a data-driven, composable, and themeable UI library for Svelte, des
   - Focus management handled for you.
 
 ### 6. **Progressive Enhancement**
+
 - **Description:** Start simple and add complexity as needed.
 - **Benefits:**
   - Use basic components out of the box.
