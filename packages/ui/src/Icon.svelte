@@ -54,7 +54,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-icon
+<icon
 	bind:this={ref}
 	data-tag-icon
 	data-state={state}
@@ -72,5 +72,9 @@
 	onmouseenter={emitter.mouseenter}
 	onnmouseleave={emitter.nmouseleave}
 >
-	<i class={name} aria-hidden="true"></i>
-</rk-icon>
+	{#if name.length <= 2}
+		<span>{name}</span>
+	{:else}
+		<i class={name} aria-hidden="true"></i>
+	{/if}
+</icon>

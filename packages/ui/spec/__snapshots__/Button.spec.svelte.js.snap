@@ -102,11 +102,11 @@ exports[`Button > should render with icons 2`] = `
     aria-label="Click me"
     type="button"
   >
-    <rk-icon
+    <icon
       aria-label="home"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -114,7 +114,8 @@ exports[`Button > should render with icons 2`] = `
         aria-hidden="true"
         class="home"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
      
     Click me
@@ -134,11 +135,11 @@ exports[`Button > should render with icons 3`] = `
     aria-label="Click me"
     type="button"
   >
-    <rk-icon
+    <icon
       aria-label="home"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -146,17 +147,18 @@ exports[`Button > should render with icons 3`] = `
         aria-hidden="true"
         class="home"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
      
     Click me
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="chevron-right"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -164,7 +166,8 @@ exports[`Button > should render with icons 3`] = `
         aria-hidden="true"
         class="chevron-right"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </button>
   
@@ -184,11 +187,11 @@ exports[`Button > should render with icons 4`] = `
     Click me
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="chevron-right"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -196,7 +199,8 @@ exports[`Button > should render with icons 4`] = `
         aria-hidden="true"
         class="chevron-right"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </button>
   

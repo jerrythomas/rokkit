@@ -2,31 +2,17 @@
 	// Placeholder for breadcrumbs tutorial
 </script>
 
-<svelte:head>
-	<title>BreadCrumbs - Elements | Learn Rokkit</title>
-	<meta name="description" content="Navigation breadcrumb component for hierarchical navigation" />
-</svelte:head>
-
-<article data-article-root>
-	<!-- Header -->
-	<header>
-		<h1><span>🍞</span>BreadCrumbs</h1>
-		<p>Navigation breadcrumb component for hierarchical navigation</p>
-	</header>
-
-	<!-- Coming Soon Notice -->
-	<section>
-		<div data-card>
+<article data-article-root><div data-card>
 			<div class="text-center">
 				<div class="text-6xl mb-4">🚧</div>
-				<h2>Content Coming Soon</h2>
+				<h1>Content Coming Soon</h1>
 				<p>
 					This tutorial section is currently being developed. It will cover the BreadCrumbs component,
 					hierarchical navigation patterns, and breadcrumb customization.
 				</p>
 			</div>
 
-			<h3>What you'll learn:</h3>
+			<h1>What you'll learn:</h1>
 			<ul>
 				<li>Setting up navigation breadcrumbs</li>
 				<li>Hierarchical path display</li>
@@ -36,11 +22,10 @@
 				<li>Accessibility features</li>
 			</ul>
 		</div>
-	</section>
-
-	<!-- Next Steps -->
+	
+<!-- Next Steps -->
 	<section data-card-cta>
-		<h3>Continue Learning</h3>
+		<h2>Continue Learning</h2>
 		<p>
 			While BreadCrumbs content is being developed, explore other navigation components.
 		</p>
@@ -52,5 +37,5 @@
 				Tree →
 			</a>
 		</span>
-	</section>
+	
 </article>

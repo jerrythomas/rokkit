@@ -6,7 +6,7 @@
 
 	let { data, children } = $props()
 	let sections = $derived(data.sections)
-	let { title, description } = $derived(findSection(sections, page.url.pathname))
+	let { title, description, icon = '?' } = $derived(findSection(sections, page.url.pathname))
 </script>
 
 <svelte:head>
@@ -14,7 +14,7 @@
 	<meta name="tutorial" content={description} />
 </svelte:head>
 
-<Header {title} {description} />
+<Header {title} {description} {icon} />
 <div class="bg-neutral-inset grid w-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-4">
 	<div class="border-neutral-subtle overflow-y-auto border-r lg:col-span-1">
 		<Sidebar {sections} fields={data.fields} />

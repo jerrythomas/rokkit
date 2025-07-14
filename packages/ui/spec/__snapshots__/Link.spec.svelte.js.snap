@@ -109,11 +109,11 @@ exports[`Link > should render with icon 1`] = `
     href="#"
   >
     <!---->
-    <rk-icon
+    <icon
       aria-label="Hello"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -121,7 +121,8 @@ exports[`Link > should render with icon 1`] = `
         aria-hidden="true"
         class="world"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
      
     <p>

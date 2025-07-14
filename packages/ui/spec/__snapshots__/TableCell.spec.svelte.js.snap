@@ -44,12 +44,12 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
       </span>
       <!---->
        
-      <rk-icon
+      <icon
         aria-label="node-closed"
         class="small cursor-pointer"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -57,7 +57,8 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
       <!---->
        
@@ -82,12 +83,12 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
       </span>
       <!---->
        
-      <rk-icon
+      <icon
         aria-label="node-opened"
         class="small cursor-pointer"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -95,7 +96,8 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
           aria-hidden="true"
           class="node-opened"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
       <!---->
        

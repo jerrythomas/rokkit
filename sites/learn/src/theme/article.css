@@ -7,7 +7,8 @@
 }
 /* Typography hierarchy */
 [data-article-root] h1 {
-  @apply text-neutral-overlay mb-6 mt-0 text-3xl font-bold;
+  @apply text-neutral-overlay mb-6 mt-0 text-3xl font-bold leading-loose;
+  @apply border-neutral-muted border-b;
 }
 
 [data-article-root] h2 {
@@ -72,7 +73,15 @@
 [data-article-root] section > [data-content-block] {
   @apply border-neutral-muted rounded-lg border px-6;
 }
-
+[data-card-cta] {
+  @apply border-neutral-muted space-y-4 rounded-lg border px-6;
+}
+[data-card-cta] > h2 {
+  @apply m-0 border-none leading-tight;
+}
+[data-card-cta] > p {
+  @apply m-0;
+}
 [data-article-root] section:last-child {
   @apply mb-0;
 }
@@ -177,6 +186,9 @@
 }
 [data-article-root] h4 > span {
   @apply mr-2;
+}
+[data-type-info] {
+  @apply bg-info-subtle rounded-md p-8;
 }
 
 /* Print styles */

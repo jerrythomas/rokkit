@@ -40,6 +40,7 @@ export default defineConfig({
 		...semanticShortcuts('neutral'),
 		...semanticShortcuts('primary'),
 		...semanticShortcuts('secondary'),
+		...semanticShortcuts('info'),
 		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit'))
 	],
 	theme: {

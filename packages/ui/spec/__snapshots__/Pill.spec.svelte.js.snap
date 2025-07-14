@@ -14,12 +14,12 @@ exports[`Pill > should fire remove event on Backspace 1`] = `
     <!---->
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="action-close"
       data-disabled="true"
       data-size="base"
       data-tag-button="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="button"
       tabindex="-1"
     >
@@ -27,7 +27,8 @@ exports[`Pill > should fire remove event on Backspace 1`] = `
         aria-hidden="true"
         class="action-close"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-pill>
   
@@ -48,12 +49,12 @@ exports[`Pill > should fire remove event on Backspace 2`] = `
     <!---->
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="action-close"
       data-disabled="false"
       data-size="base"
       data-tag-button="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="button"
       tabindex="0"
     >
@@ -61,7 +62,8 @@ exports[`Pill > should fire remove event on Backspace 2`] = `
         aria-hidden="true"
         class="action-close"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-pill>
   
@@ -82,12 +84,12 @@ exports[`Pill > should fire remove event on Delete 1`] = `
     <!---->
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="action-close"
       data-disabled="true"
       data-size="base"
       data-tag-button="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="button"
       tabindex="-1"
     >
@@ -95,7 +97,8 @@ exports[`Pill > should fire remove event on Delete 1`] = `
         aria-hidden="true"
         class="action-close"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-pill>
   
@@ -116,12 +119,12 @@ exports[`Pill > should fire remove event on Delete 2`] = `
     <!---->
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="action-close"
       data-disabled="false"
       data-size="base"
       data-tag-button="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="button"
       tabindex="0"
     >
@@ -129,7 +132,8 @@ exports[`Pill > should fire remove event on Delete 2`] = `
         aria-hidden="true"
         class="action-close"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-pill>
   
@@ -150,12 +154,12 @@ exports[`Pill > should fire remove event on click 1`] = `
     <!---->
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="action-close"
       data-disabled="true"
       data-size="base"
       data-tag-button="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="button"
       tabindex="-1"
     >
@@ -163,7 +167,8 @@ exports[`Pill > should fire remove event on click 1`] = `
         aria-hidden="true"
         class="action-close"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-pill>
   
@@ -184,12 +189,12 @@ exports[`Pill > should fire remove event on click 2`] = `
     <!---->
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="action-close"
       data-disabled="false"
       data-size="base"
       data-tag-button="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="button"
       tabindex="0"
     >
@@ -197,7 +202,8 @@ exports[`Pill > should fire remove event on click 2`] = `
         aria-hidden="true"
         class="action-close"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-pill>
   
@@ -250,11 +256,11 @@ exports[`Pill > should render with icon 1`] = `
     tabindex="0"
   >
     <!---->
-    <rk-icon
+    <icon
       aria-label="Hello"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -262,7 +268,8 @@ exports[`Pill > should render with icon 1`] = `
         aria-hidden="true"
         class="world"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
      
     <p>
@@ -283,11 +290,11 @@ exports[`Pill > should render with icon 2`] = `
     tabindex="0"
   >
     <!---->
-    <rk-icon
+    <icon
       aria-label="World"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -295,7 +302,8 @@ exports[`Pill > should render with icon 2`] = `
         aria-hidden="true"
         class="hello"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
      
     <p>

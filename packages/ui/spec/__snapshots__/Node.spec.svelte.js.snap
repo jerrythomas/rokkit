@@ -267,13 +267,13 @@ exports[`Node > should render with different states 1`] = `
       </span>
       
       <!---->
-      <rk-icon
+      <icon
         aria-label="expand"
         class="w-4"
         data-disabled="false"
         data-size="small"
         data-state="closed"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -281,7 +281,8 @@ exports[`Node > should render with different states 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       
       <!---->
        
@@ -337,13 +338,13 @@ exports[`Node > should render with different states 2`] = `
       </span>
       
       <!---->
-      <rk-icon
+      <icon
         aria-label="collapse"
         class="w-4"
         data-disabled="false"
         data-size="small"
         data-state="opened"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -351,7 +352,8 @@ exports[`Node > should render with different states 2`] = `
           aria-hidden="true"
           class="node-opened"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       
       <!---->
        
@@ -407,13 +409,13 @@ exports[`Node > should render with different states 3`] = `
       </span>
       
       <!---->
-      <rk-icon
+      <icon
         aria-label="collapse"
         class="w-4"
         data-disabled="false"
         data-size="small"
         data-state="opened"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -421,7 +423,8 @@ exports[`Node > should render with different states 3`] = `
           aria-hidden="true"
           class="node-opened"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       
       <!---->
        
@@ -477,13 +480,13 @@ exports[`Node > should render with different states 4`] = `
       </span>
       
       <!---->
-      <rk-icon
+      <icon
         aria-label="collapse"
         class="w-4"
         data-disabled="false"
         data-size="small"
         data-state="opened"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -491,7 +494,8 @@ exports[`Node > should render with different states 4`] = `
           aria-hidden="true"
           class="node-opened"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       
       <!---->
        
@@ -547,13 +551,13 @@ exports[`Node > should render with icon 1`] = `
       </span>
       
       <!---->
-      <rk-icon
+      <icon
         aria-label="expand"
         class="w-4"
         data-disabled="false"
         data-size="small"
         data-state="closed"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -561,7 +565,8 @@ exports[`Node > should render with icon 1`] = `
           aria-hidden="true"
           class="node-closed"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       
       <!---->
        

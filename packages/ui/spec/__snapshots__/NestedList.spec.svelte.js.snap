@@ -17,13 +17,13 @@ exports[`NestedList > should render nested list 1`] = `
         class="flex flex-row items-center"
       >
         <!---->
-        <rk-icon
+        <icon
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon="true"
+          data-tag-icon=""
           role="img"
           tabindex="-1"
         >
@@ -31,7 +31,8 @@ exports[`NestedList > should render nested list 1`] = `
             aria-hidden="true"
             class="node-opened"
           />
-        </rk-icon>
+          <!---->
+        </icon>
         
         <!---->
          
@@ -186,13 +187,13 @@ exports[`NestedList > should render nested list 1`] = `
         class="flex flex-row items-center"
       >
         <!---->
-        <rk-icon
+        <icon
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon="true"
+          data-tag-icon=""
           role="img"
           tabindex="-1"
         >
@@ -200,7 +201,8 @@ exports[`NestedList > should render nested list 1`] = `
             aria-hidden="true"
             class="node-opened"
           />
-        </rk-icon>
+          <!---->
+        </icon>
         
         <!---->
          
@@ -252,13 +254,13 @@ exports[`NestedList > should render nested list 1`] = `
             </span>
             
             <!---->
-            <rk-icon
+            <icon
               aria-label="collapse"
               class="w-4"
               data-disabled="false"
               data-size="small"
               data-state="opened"
-              data-tag-icon="true"
+              data-tag-icon=""
               role="img"
               tabindex="-1"
             >
@@ -266,7 +268,8 @@ exports[`NestedList > should render nested list 1`] = `
                 aria-hidden="true"
                 class="node-opened"
               />
-            </rk-icon>
+              <!---->
+            </icon>
             
             <!---->
              
@@ -449,13 +452,13 @@ exports[`NestedList > should render nested list 2`] = `
         class="flex flex-row items-center"
       >
         <!---->
-        <rk-icon
+        <icon
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon="true"
+          data-tag-icon=""
           role="img"
           tabindex="-1"
         >
@@ -463,7 +466,8 @@ exports[`NestedList > should render nested list 2`] = `
             aria-hidden="true"
             class="node-opened"
           />
-        </rk-icon>
+          <!---->
+        </icon>
         
         <!---->
          
@@ -618,13 +622,13 @@ exports[`NestedList > should render nested list 2`] = `
         class="flex flex-row items-center"
       >
         <!---->
-        <rk-icon
+        <icon
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon="true"
+          data-tag-icon=""
           role="img"
           tabindex="-1"
         >
@@ -632,7 +636,8 @@ exports[`NestedList > should render nested list 2`] = `
             aria-hidden="true"
             class="node-opened"
           />
-        </rk-icon>
+          <!---->
+        </icon>
         
         <!---->
          
@@ -684,13 +689,13 @@ exports[`NestedList > should render nested list 2`] = `
             </span>
             
             <!---->
-            <rk-icon
+            <icon
               aria-label="collapse"
               class="w-4"
               data-disabled="false"
               data-size="small"
               data-state="opened"
-              data-tag-icon="true"
+              data-tag-icon=""
               role="img"
               tabindex="-1"
             >
@@ -698,7 +703,8 @@ exports[`NestedList > should render nested list 2`] = `
                 aria-hidden="true"
                 class="node-opened"
               />
-            </rk-icon>
+              <!---->
+            </icon>
             
             <!---->
              

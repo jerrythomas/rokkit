@@ -6,11 +6,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <rk-message
       class="pass"
     >
-      <rk-icon
+      <icon
         aria-label="badge-pass"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -18,7 +18,8 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-pass"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -28,11 +29,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <rk-message
       class="fail"
     >
-      <rk-icon
+      <icon
         aria-label="badge-fail"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -40,7 +41,8 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-fail"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -50,11 +52,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <rk-message
       class="unknown"
     >
-      <rk-icon
+      <icon
         aria-label="badge-unknown"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -62,7 +64,8 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-unknown"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -72,11 +75,11 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
     <rk-message
       class="warn"
     >
-      <rk-icon
+      <icon
         aria-label="badge-warn"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -84,7 +87,8 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
           aria-hidden="true"
           class="badge-warn"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -103,11 +107,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <rk-message
       class="pass"
     >
-      <rk-icon
+      <icon
         aria-label="pass"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -115,7 +119,8 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="pass"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -125,11 +130,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <rk-message
       class="fail"
     >
-      <rk-icon
+      <icon
         aria-label="fail"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -137,7 +142,8 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="fail"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -147,11 +153,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <rk-message
       class="unknown"
     >
-      <rk-icon
+      <icon
         aria-label="unknown"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -159,7 +165,8 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="unknown"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>
@@ -169,11 +176,11 @@ exports[`ValidationReport.svelte > should render validation report with custom i
     <rk-message
       class="warn"
     >
-      <rk-icon
+      <icon
         aria-label="warn"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -181,7 +188,8 @@ exports[`ValidationReport.svelte > should render validation report with custom i
           aria-hidden="true"
           class="warn"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
        
       <p>

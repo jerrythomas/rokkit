@@ -2,12 +2,12 @@
 
 exports[`Icon > should call the click event when the icon is clicked 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
     data-tag-button="true"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="button"
     tabindex="0"
   >
@@ -15,20 +15,21 @@ exports[`Icon > should call the click event when the icon is clicked 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should handle role=option as checkbox 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
     data-tag-checkbox="true"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="option"
     tabindex="0"
   >
@@ -36,18 +37,19 @@ exports[`Icon > should handle role=option as checkbox 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon as disabled 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     data-disabled="true"
     data-size="base"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -55,19 +57,20 @@ exports[`Icon > should render the icon as disabled 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with a custom class 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     class="custom-class"
     data-disabled="false"
     data-size="base"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -75,19 +78,20 @@ exports[`Icon > should render the icon with a custom class 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with a custom class 2`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     class="custom-class-2"
     data-disabled="false"
     data-size="base"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -95,20 +99,21 @@ exports[`Icon > should render the icon with a custom class 2`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with checkbox role 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
     data-tag-checkbox="true"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="checkbox"
     tabindex="0"
   >
@@ -116,20 +121,21 @@ exports[`Icon > should render the icon with checkbox role 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with checkbox role with default state 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
     data-tag-checkbox="true"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="checkbox"
     tabindex="0"
   >
@@ -137,18 +143,19 @@ exports[`Icon > should render the icon with checkbox role with default state 1`]
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the provided name and label 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="Dark mode"
     data-disabled="false"
     data-size="base"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -156,18 +163,19 @@ exports[`Icon > should render the icon with the provided name and label 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the provided name and label 2`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="Light mode"
     data-disabled="false"
     data-size="base"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -175,19 +183,20 @@ exports[`Icon > should render the icon with the provided name and label 2`] = `
       aria-hidden="true"
       class="i-rokkit:mode-light"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the specified role 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
     data-tag-button="true"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="button"
     tabindex="0"
   >
@@ -195,18 +204,19 @@ exports[`Icon > should render the icon with the specified role 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the specified size 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="small"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -214,18 +224,19 @@ exports[`Icon > should render the icon with the specified size 1`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the specified size 2`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="medium"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -233,18 +244,19 @@ exports[`Icon > should render the icon with the specified size 2`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the specified size 3`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="large"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -252,19 +264,20 @@ exports[`Icon > should render the icon with the specified size 3`] = `
       aria-hidden="true"
       class="i-rokkit:mode-dark"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;
 
 exports[`Icon > should render the icon with the specified state 1`] = `
 <div>
-  <rk-icon
+  <icon
     aria-label="i-rokkit:node-opened"
     data-disabled="false"
     data-size="base"
     data-state="opened"
-    data-tag-icon="true"
+    data-tag-icon=""
     role="img"
     tabindex="-1"
   >
@@ -272,7 +285,8 @@ exports[`Icon > should render the icon with the specified state 1`] = `
       aria-hidden="true"
       class="i-rokkit:node-opened"
     />
-  </rk-icon>
+    <!---->
+  </icon>
   
 </div>
 `;

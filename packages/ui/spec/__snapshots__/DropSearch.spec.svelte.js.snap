@@ -23,11 +23,11 @@ exports[`DropSearch.svelte > should render 1`] = `
         <!---->
       </item>
        
-      <rk-icon
+      <icon
         aria-label="opened"
         data-disabled="false"
         data-size="base"
-        data-tag-icon="true"
+        data-tag-icon=""
         role="img"
         tabindex="-1"
       >
@@ -35,7 +35,8 @@ exports[`DropSearch.svelte > should render 1`] = `
           aria-hidden="true"
           class="selector-opened"
         />
-      </rk-icon>
+        <!---->
+      </icon>
       <!---->
     </selected-item>
      

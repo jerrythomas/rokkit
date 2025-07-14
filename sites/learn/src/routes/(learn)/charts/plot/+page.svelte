@@ -3,35 +3,12 @@
 	import { storyBuilder } from './stories.js'
 </script>
 
-<svelte:head>
-	<title>Plot - Charts | Learn Rokkit</title>
-	<meta
-		name="description"
-		content="Comprehensive charting component using Observable Plot for data visualization"
-	/>
-</svelte:head>
-
-<article data-article-root>
-	<!-- Header -->
-	<header>
-		<div class="flex items-center space-x-3">
-			<div>
-				<h1><span>📊</span>Plot Component</h1>
-				<p>
-					Comprehensive charting component using Observable Plot for data visualization
-				</p>
-			</div>
-		</div>
-	</header>
-
-	<!-- Introduction -->
-	<section>
-		<h2>Introduction</h2>
+<article data-article-root><h1>Introduction</h1>
 		<p>
 			The Plot component is a Svelte wrapper around the <a href="https://github.com/observablehq/plot" target="_blank" rel="noopener noreferrer">@observablehq/plot</a> library, providing an easy and efficient way to create interactive and customizable plots in your Svelte applications. It combines the power of Observable Plot's grammar of graphics with Rokkit's data-first design philosophy.
 		</p>
 
-		<h3>Key Features:</h3>
+		<h1>Key Features:</h1>
 		<ul>
 			<li>Built on Observable Plot's proven grammar of graphics</li>
 			<li>Automatic data binding and reactive updates</li>
@@ -41,27 +18,23 @@
 			<li>Performance optimized for large datasets</li>
 		</ul>
 
-		<h3>Interactive Demo</h3>
+		<h1>Interactive Demo</h1>
 		<p>
 			Explore the Plot component with real data and interactive controls:
 		</p>
 
 		<StoryViewer {...storyBuilder.getExample('intro')} />
-	</section>
-
-	<!-- Basic Usage -->
-	<section>
-		<h2>Basic Usage</h2>
+<h1>Basic Usage</h1>
 		<p>
 			The Plot component follows Rokkit's consistent API patterns, making it easy to create charts from your data with minimal configuration.
 		</p>
 
 		<Code {...storyBuilder.getFragment(0)} />
 
-		<h3>Core Properties</h3>
+		<h1>Core Properties</h1>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Data & Mapping</h4>
+				<h1>Data & Mapping</h1>
 				<ul>
 					<li><strong>data</strong>: Array of data objects</li>
 					<li><strong>x, y</strong>: Column names for axes</li>
@@ -71,7 +44,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Presentation</h4>
+				<h1>Presentation</h1>
 				<ul>
 					<li><strong>labels</strong>: Axis and title labels</li>
 					<li><strong>legend</strong>: Show/hide legend</li>
@@ -93,21 +66,17 @@
 			<li><code>legend</code> enables the legend display</li>
 			<li><code>labels</code> provides custom axis labels</li>
 		</ul>
-	</section>
-
-	<!-- Chart Types -->
-	<section>
-		<h2>Chart Types</h2>
+<h1>Chart Types</h1>
 		<p>
 			The Plot component supports a wide variety of chart types through different property combinations. Observable Plot's grammar of graphics allows for flexible chart construction.
 		</p>
 
 		<Code {...storyBuilder.getFragment(1)} />
 
-		<h3>Chart Type Guide</h3>
+		<h1>Chart Type Guide</h1>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Point-Based Charts</h4>
+				<h1>Point-Based Charts</h1>
 				<ul>
 					<li><strong>Scatter Plot</strong>: x, y, stroke, symbol properties</li>
 					<li><strong>Bubble Chart</strong>: Add size encoding for third dimension</li>
@@ -116,7 +85,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Line & Area Charts</h4>
+				<h1>Line & Area Charts</h1>
 				<ul>
 					<li><strong>Line Chart</strong>: Connected points over continuous x</li>
 					<li><strong>Area Chart</strong>: Filled regions below lines</li>
@@ -125,7 +94,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Bar & Column Charts</h4>
+				<h1>Bar & Column Charts</h1>
 				<ul>
 					<li><strong>Bar Chart</strong>: Categorical comparisons</li>
 					<li><strong>Stacked Bar</strong>: Part-to-whole relationships</li>
@@ -134,7 +103,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Specialized Charts</h4>
+				<h1>Specialized Charts</h1>
 				<ul>
 					<li><strong>Histogram</strong>: Distribution visualization</li>
 					<li><strong>Box Plot</strong>: Statistical summaries</li>
@@ -142,18 +111,14 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- Advanced Customization -->
-	<section>
-		<h2>Advanced Customization</h2>
+<h1>Advanced Customization</h1>
 		<p>
 			For complex visualizations, the Plot component supports advanced customization through the <code>options</code> property, which passes configuration directly to Observable Plot.
 		</p>
 
 		<Code {...storyBuilder.getFragment(2)} />
 
-		<h3>Customization Options</h3>
+		<h1>Customization Options</h1>
 		<ul>
 			<li><strong>Layout</strong>: Margins, padding, dimensions, grid lines</li>
 			<li><strong>Scales</strong>: Custom domains, ranges, and transformations</li>
@@ -162,16 +127,12 @@
 			<li><strong>Annotations</strong>: Reference lines, text labels, shapes</li>
 			<li><strong>Faceting</strong>: Small multiples and subplot arrangements</li>
 		</ul>
-	</section>
-
-	<!-- Data Preparation -->
-	<section>
-		<h2>Data Preparation</h2>
+<h1>Data Preparation</h1>
 		<p>
 			The Plot component works best with clean, well-structured data. Follow these guidelines for optimal chart performance and clarity.
 		</p>
 
-		<h3>Data Structure Best Practices</h3>
+		<h1>Data Structure Best Practices</h1>
 		<ul>
 			<li><strong>Tidy Data</strong>: Each row represents one observation</li>
 			<li><strong>Consistent Types</strong>: Ensure numeric columns are numbers, not strings</li>
@@ -181,7 +142,7 @@
 			<li><strong>Performance</strong>: Consider data aggregation for large datasets</li>
 		</ul>
 
-		<h3>Data Transformation</h3>
+		<h1>Data Transformation</h1>
 		<p>
 			Transform your data before passing it to the Plot component to ensure optimal visualization:
 		</p>
@@ -192,18 +153,14 @@
 			<li>Create categorical labels from numeric codes</li>
 			<li>Normalize or scale data when comparing different units</li>
 		</ul>
-	</section>
-
-	<!-- Integration -->
-	<section>
-		<h2>Observable Plot Integration</h2>
+<h1>Observable Plot Integration</h1>
 		<p>
 			The Plot component provides a Svelte-friendly interface to Observable Plot while preserving access to its full feature set. This integration offers the best of both worlds: Svelte's reactivity and Plot's powerful visualization grammar.
 		</p>
 
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Rokkit Benefits</h4>
+				<h1>Rokkit Benefits</h1>
 				<ul>
 					<li>Automatic reactive updates</li>
 					<li>Consistent API with other Rokkit components</li>
@@ -213,7 +170,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Observable Plot Power</h4>
+				<h1>Observable Plot Power</h1>
 				<ul>
 					<li>Grammar of graphics approach</li>
 					<li>Extensive chart type support</li>
@@ -223,21 +180,17 @@
 			</div>
 		</div>
 
-		<h3>When to Use Plot vs. Custom Charts</h3>
+		<h1>When to Use Plot vs. Custom Charts</h1>
 		<ul>
 			<li><strong>Use Plot for</strong>: Standard statistical charts, exploratory analysis, rapid prototyping</li>
 			<li><strong>Use Custom Charts for</strong>: Specialized visualizations, brand-specific designs, unique interactions</li>
 		</ul>
-	</section>
-
-	<!-- Performance -->
-	<section>
-		<h2>Performance Considerations</h2>
+<h1>Performance Considerations</h1>
 		<p>
 			The Plot component is optimized for performance, but large datasets and complex visualizations require careful consideration of rendering strategies.
 		</p>
 
-		<h3>Optimization Strategies</h3>
+		<h1>Optimization Strategies</h1>
 		<ul>
 			<li><strong>Data Sampling</strong>: Use representative samples for exploration</li>
 			<li><strong>Aggregation</strong>: Pre-aggregate data for summary views</li>
@@ -246,11 +199,10 @@
 			<li><strong>Debouncing</strong>: Limit update frequency for interactive filters</li>
 			<li><strong>Canvas Rendering</strong>: Use canvas marks for thousands of points</li>
 		</ul>
-	</section>
-
-	<!-- Next Steps -->
+	
+<!-- Next Steps -->
 	<section data-card-cta>
-		<h3>Ready for more?</h3>
+		<h2>Ready for more?</h2>
 		<p>
 			Now that you understand the Plot component, explore chart elements like symbols and patterns, or learn about other visualization components in the Rokkit ecosystem.
 		</p>
@@ -264,5 +216,5 @@
 				<span class="ml-2">→</span>
 			</a>
 		</span>
-	</section>
+	
 </article>

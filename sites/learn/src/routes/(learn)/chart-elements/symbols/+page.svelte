@@ -3,35 +3,12 @@
 	import { storyBuilder } from './stories.js'
 </script>
 
-<svelte:head>
-	<title>Symbols - Chart Elements | Learn Rokkit</title>
-	<meta
-		name="description"
-		content="Chart symbols for data point visualization and scatter plots"
-	/>
-</svelte:head>
-
-<article data-article-root>
-	<!-- Header -->
-	<header>
-		<div class="flex items-center space-x-3">
-			<div>
-				<h1><span>◆</span>Symbol System</h1>
-				<p>
-					Chart symbols for data point visualization and scatter plots
-				</p>
-			</div>
-		</div>
-	</header>
-
-	<!-- Introduction -->
-	<section>
-		<h2>Introduction</h2>
+<article data-article-root><h1>Introduction</h1>
 		<p>
 			Symbols are graphical representations used in charts to convey data points, categories, or other information visually. They provide a way to represent data in a concise and easily understandable manner. In charting, symbols can take various forms such as circles, squares, triangles, or custom shapes, and they can be customized with attributes like size, fill color, and stroke color to enhance their visual appeal and convey additional information.
 		</p>
 
-		<h3>Key Features:</h3>
+		<h1>Key Features:</h1>
 		<ul>
 			<li>Comprehensive library of built-in symbol shapes</li>
 			<li>Customizable size, color, and stroke properties</li>
@@ -41,27 +18,23 @@
 			<li>Extensible system for custom symbol creation</li>
 		</ul>
 
-		<h3>Symbol Library</h3>
+		<h1>Symbol Library</h1>
 		<p>
 			Explore the available symbol types and interactive customization options:
 		</p>
 
 		<StoryViewer {...storyBuilder.getExample('intro')} />
-	</section>
-
-	<!-- Symbol Component -->
-	<section>
-		<h2>Symbol Component</h2>
+<h1>Symbol Component</h1>
 		<p>
 			The Symbol component is a versatile tool used in charting libraries to generate and render symbols at specified coordinates on a chart. It supports creating multiple shapes with comprehensive customization options.
 		</p>
 
 		<Code {...storyBuilder.getFragment(0)} />
 
-		<h3>Component Properties</h3>
+		<h1>Component Properties</h1>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Position & Size</h4>
+				<h1>Position & Size</h1>
 				<ul>
 					<li><strong>x</strong>: X-coordinate position</li>
 					<li><strong>y</strong>: Y-coordinate position</li>
@@ -71,7 +44,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Appearance</h4>
+				<h1>Appearance</h1>
 				<ul>
 					<li><strong>fill</strong>: Interior color</li>
 					<li><strong>stroke</strong>: Border color</li>
@@ -80,39 +53,31 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- Data Points -->
-	<section>
-		<h2>Data Point Visualization</h2>
+<h1>Data Point Visualization</h1>
 		<p>
 			Symbols excel at representing data points in scatter plots, line charts, and other visualizations where individual data values need distinct markers. Different symbol shapes can encode categorical information while colors represent continuous variables.
 		</p>
 
 		<Code {...storyBuilder.getFragment(1)} />
 
-		<h3>Encoding Strategies</h3>
+		<h1>Encoding Strategies</h1>
 		<ul>
 			<li><strong>Shape</strong>: Use different symbols for categorical data (circle, square, triangle)</li>
 			<li><strong>Size</strong>: Encode quantitative values through symbol size</li>
 			<li><strong>Color</strong>: Represent continuous variables or additional categories</li>
 			<li><strong>Opacity</strong>: Show confidence levels or data quality</li>
 		</ul>
-	</section>
-
-	<!-- Advanced Usage -->
-	<section>
-		<h2>Advanced Customization</h2>
+<h1>Advanced Customization</h1>
 		<p>
 			Beyond basic properties, symbols support advanced customization for complex data visualization scenarios, including dynamic theming, conditional styling, and performance optimization.
 		</p>
 
 		<Code {...storyBuilder.getFragment(2)} />
 
-		<h3>Advanced Features</h3>
+		<h1>Advanced Features</h1>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Dynamic Properties</h4>
+				<h1>Dynamic Properties</h1>
 				<ul>
 					<li>Size based on data values</li>
 					<li>Color mapping to continuous scales</li>
@@ -122,7 +87,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Theme Integration</h4>
+				<h1>Theme Integration</h1>
 				<ul>
 					<li>Consistent color palette application</li>
 					<li>Brand-specific symbol sets</li>
@@ -131,16 +96,12 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- Symbol Types -->
-	<section>
-		<h2>Available Symbol Types</h2>
+<h1>Available Symbol Types</h1>
 		<p>
 			The Rokkit Chart library provides a comprehensive set of symbol types, each optimized for different visualization contexts and data relationships.
 		</p>
 
-		<h3>Geometric Symbols</h3>
+		<h1>Geometric Symbols</h1>
 		<ul>
 			<li><strong>circle</strong>: Universal data point marker, highest visual priority</li>
 			<li><strong>square</strong>: Categorical data, good contrast with circles</li>
@@ -148,23 +109,19 @@
 			<li><strong>diamond</strong>: High-importance data points, outliers</li>
 		</ul>
 
-		<h3>Specialized Symbols</h3>
+		<h1>Specialized Symbols</h1>
 		<ul>
 			<li><strong>cross</strong>: Intersections, reference points, or negative values</li>
 			<li><strong>star</strong>: Featured data, achievements, or ratings</li>
 			<li><strong>plus</strong>: Additions, growth, or positive changes</li>
 			<li><strong>arrow</strong>: Directional data, trends, or flows</li>
 		</ul>
-	</section>
-
-	<!-- Best Practices -->
-	<section>
-		<h2>Design Best Practices</h2>
+<h1>Design Best Practices</h1>
 		<p>
 			Follow these guidelines to create effective and accessible symbol-based visualizations that communicate data clearly and efficiently.
 		</p>
 
-		<h3>Visual Guidelines</h3>
+		<h1>Visual Guidelines</h1>
 		<ul>
 			<li>Use consistent symbol sizes for data of equal importance</li>
 			<li>Maintain sufficient contrast between symbols and backgrounds</li>
@@ -174,23 +131,19 @@
 			<li>Provide legends that clearly identify symbol meanings</li>
 		</ul>
 
-		<h3>Performance Considerations</h3>
+		<h1>Performance Considerations</h1>
 		<ul>
 			<li>Optimize symbol complexity for large datasets</li>
 			<li>Use symbol clustering for dense scatter plots</li>
 			<li>Consider canvas rendering for thousands of symbols</li>
 			<li>Implement level-of-detail for interactive zooming</li>
 		</ul>
-	</section>
-
-	<!-- Custom Symbols -->
-	<section>
-		<h2>Custom Symbol Development</h2>
+<h1>Custom Symbol Development</h1>
 		<p>
 			Developers can extend the symbol library with custom designs that match specific brand requirements or domain-specific visualization needs.
 		</p>
 
-		<h3>Customization Options</h3>
+		<h1>Customization Options</h1>
 		<ul>
 			<li>SVG-based custom symbol definitions</li>
 			<li>Brand-specific shape libraries</li>
@@ -199,11 +152,10 @@
 			<li>Animated symbols for time-series data</li>
 			<li>Interactive symbols with hover and click behaviors</li>
 		</ul>
-	</section>
-
-	<!-- Next Steps -->
+	
+<!-- Next Steps -->
 	<section data-card-cta>
-		<h3>Ready for more?</h3>
+		<h2>Ready for more?</h2>
 		<p>
 			Now that you understand symbols, explore the complete charting system with the Plot component, or learn about color palettes and patterns for comprehensive data visualization.
 		</p>
@@ -217,5 +169,5 @@
 				<span class="ml-2">→</span>
 			</a>
 		</span>
-	</section>
+	
 </article>

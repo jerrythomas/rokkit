@@ -3,35 +3,12 @@
 	import { storyBuilder } from './stories.js'
 </script>
 
-<svelte:head>
-	<title>Validation - Forms | Learn Rokkit</title>
-	<meta
-		name="description"
-		content="Add validation with real-time feedback to Rokkit forms"
-	/>
-</svelte:head>
-
-<article data-article-root>
-	<!-- Header -->
-	<header>
-		<div class="flex items-center space-x-3">
-			<div>
-				<h1><span>✅</span>Form Validation</h1>
-				<p>
-					Add validation with real-time feedback
-				</p>
-			</div>
-		</div>
-	</header>
-
-	<!-- Introduction -->
-	<section>
-		<h2>Introduction</h2>
+<article data-article-root><h1>Introduction</h1>
 		<p>
 			Form validation is essential for ensuring data quality and providing immediate feedback to users. Rokkit forms provide comprehensive validation support with real-time feedback, custom validation rules, and accessible error messaging.
 		</p>
 
-		<h3>Key Features:</h3>
+		<h1>Key Features:</h1>
 		<ul>
 			<li>Real-time validation as users type or change fields</li>
 			<li>Multiple validation rules per field</li>
@@ -41,27 +18,23 @@
 			<li>Asynchronous validation for server-side checks</li>
 		</ul>
 
-		<h3>Validation Example</h3>
+		<h1>Validation Example</h1>
 		<p>
 			Here's how validation works with real-time feedback and error messaging:
 		</p>
 
 		<StoryViewer {...storyBuilder.getExample('validation')} />
-	</section>
-
-	<!-- Validation Rules -->
-	<section>
-		<h2>Validation Rules</h2>
+<h1>Validation Rules</h1>
 		<p>
 			Define validation rules in your form schema to ensure data meets your requirements. Rules are evaluated in real-time as users interact with form fields.
 		</p>
 
 		<Code {...storyBuilder.getFragment(0)} />
 
-		<h3>Built-in Validators</h3>
+		<h1>Built-in Validators</h1>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Basic Validation</h4>
+				<h1>Basic Validation</h1>
 				<ul>
 					<li><strong>required</strong>: Field must have a value</li>
 					<li><strong>minLength/maxLength</strong>: String length constraints</li>
@@ -71,7 +44,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Type-Specific</h4>
+				<h1>Type-Specific</h1>
 				<ul>
 					<li><strong>email</strong>: Valid email address format</li>
 					<li><strong>url</strong>: Valid URL format</li>
@@ -80,16 +53,12 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- Custom Validation -->
-	<section>
-		<h2>Custom Validation Functions</h2>
+<h1>Custom Validation Functions</h1>
 		<p>
 			Create custom validation logic for complex business rules and domain-specific requirements that built-in validators can't handle.
 		</p>
 
-		<h3>Custom Validator Examples</h3>
+		<h1>Custom Validator Examples</h1>
 		<ul>
 			<li><strong>Password strength</strong>: Complex password requirements</li>
 			<li><strong>Credit card</strong>: Card number format and checksum validation</li>
@@ -98,7 +67,7 @@
 			<li><strong>Async validation</strong>: Server-side validation checks</li>
 		</ul>
 
-		<h3>Validation Function Structure</h3>
+		<h1>Validation Function Structure</h1>
 		<p>Custom validators receive the field value and return validation results:</p>
 		<ul>
 			<li>Return <code>true</code> or <code>undefined</code> for valid values</li>
@@ -106,19 +75,15 @@
 			<li>Return <code>Promise</code> for asynchronous validation</li>
 			<li>Access other field values for cross-field validation</li>
 		</ul>
-	</section>
-
-	<!-- Real-time Feedback -->
-	<section>
-		<h2>Real-time Validation Feedback</h2>
+<h1>Real-time Validation Feedback</h1>
 		<p>
 			Validation feedback appears immediately as users interact with form fields, providing instant guidance and reducing form submission errors.
 		</p>
 
-		<h3>Validation Timing</h3>
+		<h1>Validation Timing</h1>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Trigger Events</h4>
+				<h1>Trigger Events</h1>
 				<ul>
 					<li><strong>onBlur</strong>: When user leaves a field</li>
 					<li><strong>onChange</strong>: As user types or changes value</li>
@@ -128,7 +93,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Visual States</h4>
+				<h1>Visual States</h1>
 				<ul>
 					<li><strong>Valid</strong>: Green indicators and checkmarks</li>
 					<li><strong>Invalid</strong>: Red indicators and error messages</li>
@@ -137,16 +102,12 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- Error Messages -->
-	<section>
-		<h2>Error Messaging</h2>
+<h1>Error Messaging</h1>
 		<p>
 			Clear, helpful error messages guide users to fix validation issues quickly and effectively.
 		</p>
 
-		<h3>Message Best Practices</h3>
+		<h1>Message Best Practices</h1>
 		<ul>
 			<li><strong>Specific</strong>: Clearly explain what's wrong and how to fix it</li>
 			<li><strong>Positive</strong>: Focus on what users should do, not what they did wrong</li>
@@ -155,7 +116,7 @@
 			<li><strong>Actionable</strong>: Give users clear next steps</li>
 		</ul>
 
-		<h3>Accessibility Features</h3>
+		<h1>Accessibility Features</h1>
 		<ul>
 			<li>ARIA attributes link errors to form fields</li>
 			<li>Screen reader friendly error announcements</li>
@@ -163,16 +124,12 @@
 			<li>High contrast error styling</li>
 			<li>Focus management for error correction</li>
 		</ul>
-	</section>
-
-	<!-- Asynchronous Validation -->
-	<section>
-		<h2>Asynchronous Validation</h2>
+<h1>Asynchronous Validation</h1>
 		<p>
 			Perform server-side validation checks without disrupting the user experience through asynchronous validation functions.
 		</p>
 
-		<h3>Async Validation Use Cases</h3>
+		<h1>Async Validation Use Cases</h1>
 		<ul>
 			<li><strong>Username availability</strong>: Check if username is already taken</li>
 			<li><strong>Email uniqueness</strong>: Verify email isn't already registered</li>
@@ -181,7 +138,7 @@
 			<li><strong>Third-party services</strong>: Address validation, tax ID verification</li>
 		</ul>
 
-		<h3>Implementation Considerations</h3>
+		<h1>Implementation Considerations</h1>
 		<ul>
 			<li>Debounce validation requests to avoid excessive API calls</li>
 			<li>Show loading indicators during validation</li>
@@ -189,16 +146,12 @@
 			<li>Cache validation results when appropriate</li>
 			<li>Provide fallback validation for offline scenarios</li>
 		</ul>
-	</section>
-
-	<!-- Performance -->
-	<section>
-		<h2>Validation Performance</h2>
+<h1>Validation Performance</h1>
 		<p>
 			Optimize validation performance to ensure smooth user experience even with complex validation rules and large forms.
 		</p>
 
-		<h3>Optimization Strategies</h3>
+		<h1>Optimization Strategies</h1>
 		<ul>
 			<li><strong>Debouncing</strong>: Delay validation until user stops typing</li>
 			<li><strong>Memoization</strong>: Cache validation results for repeated values</li>
@@ -206,11 +159,10 @@
 			<li><strong>Prioritization</strong>: Run fast validations before slow ones</li>
 			<li><strong>Cancellation</strong>: Cancel pending validations when no longer needed</li>
 		</ul>
-	</section>
-
-	<!-- Next Steps -->
+	
+<!-- Next Steps -->
 	<section data-card-cta>
-		<h3>Ready for more?</h3>
+		<h2>Ready for more?</h2>
 		<p>
 			Now that you understand form validation, explore advanced form features, form layout options, or learn about input components.
 		</p>
@@ -224,5 +176,5 @@
 				<span class="ml-2">→</span>
 			</a>
 		</span>
-	</section>
+	
 </article>

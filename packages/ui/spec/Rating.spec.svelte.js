@@ -5,7 +5,7 @@ import Rating from '../src/Rating.svelte'
 
 describe('Rating component', () => {
 	const ROOT = 'rk-rating'
-	const ICON = 'rk-icon'
+	const ICON = '[data-tag-icon]'
 
 	function getSelectedStars(container) {
 		const stars = container.querySelectorAll(ICON)

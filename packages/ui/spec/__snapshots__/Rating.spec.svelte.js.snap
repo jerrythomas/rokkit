@@ -9,14 +9,14 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
   >
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
       class="hovering"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -24,15 +24,16 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
       class="hovering"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -40,15 +41,16 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
       class="hovering"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -56,15 +58,16 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
       class="hovering"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -72,14 +75,15 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -87,7 +91,8 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   
@@ -103,13 +108,13 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
   >
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -117,14 +122,15 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -132,14 +138,15 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -147,14 +154,15 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -162,14 +170,15 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -177,7 +186,8 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   
@@ -193,13 +203,13 @@ exports[`Rating component > should render the correct number of stars 1`] = `
   >
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="false"
       aria-label="Rating 1 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -207,14 +217,15 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 2 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -222,14 +233,15 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -237,14 +249,15 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -252,14 +265,15 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -267,7 +281,8 @@ exports[`Rating component > should render the correct number of stars 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   
@@ -290,13 +305,13 @@ exports[`Rating component > should reset the value to zero 1`] = `
     />
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="false"
       aria-label="Rating 1 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -304,14 +319,15 @@ exports[`Rating component > should reset the value to zero 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 2 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -319,14 +335,15 @@ exports[`Rating component > should reset the value to zero 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 3 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -334,14 +351,15 @@ exports[`Rating component > should reset the value to zero 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -349,14 +367,15 @@ exports[`Rating component > should reset the value to zero 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -364,7 +383,8 @@ exports[`Rating component > should reset the value to zero 1`] = `
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   
@@ -380,13 +400,13 @@ exports[`Rating component > should select the correct number of stars when value
   >
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -394,14 +414,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -409,14 +430,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -424,14 +446,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 4 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -439,14 +462,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -454,7 +478,8 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   
@@ -470,13 +495,13 @@ exports[`Rating component > should select the correct number of stars when value
   >
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -484,14 +509,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -499,14 +525,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -514,14 +541,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 4 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -529,14 +557,15 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -544,7 +573,8 @@ exports[`Rating component > should select the correct number of stars when value
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   
@@ -567,13 +597,13 @@ exports[`Rating component > should update value on click when not disabled 1`] =
     />
     <!---->
      
-    <rk-icon
+    <icon
       aria-checked="true"
       aria-label="Rating 1 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -581,14 +611,15 @@ exports[`Rating component > should update value on click when not disabled 1`] =
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 2 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -596,14 +627,15 @@ exports[`Rating component > should update value on click when not disabled 1`] =
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 3 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -611,14 +643,15 @@ exports[`Rating component > should update value on click when not disabled 1`] =
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="true"
       aria-label="Rating 4 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -626,14 +659,15 @@ exports[`Rating component > should update value on click when not disabled 1`] =
         aria-hidden="true"
         class="rating-filled"
       />
-    </rk-icon>
-    <rk-icon
+      <!---->
+    </icon>
+    <icon
       aria-checked="false"
       aria-label="Rating 5 out of 5"
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="option"
       tabindex="-1"
     >
@@ -641,7 +675,8 @@ exports[`Rating component > should update value on click when not disabled 1`] =
         aria-hidden="true"
         class="rating-empty"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </rk-rating>
   

@@ -25,13 +25,13 @@ exports[`Tree > should render nested list 1`] = `
           class="flex flex-row items-center"
         >
           <!---->
-          <rk-icon
+          <icon
             aria-label="expand"
             class="w-4"
             data-disabled="false"
             data-size="small"
             data-state="closed"
-            data-tag-icon="true"
+            data-tag-icon=""
             role="img"
             tabindex="-1"
           >
@@ -39,7 +39,8 @@ exports[`Tree > should render nested list 1`] = `
               aria-hidden="true"
               class="node-closed"
             />
-          </rk-icon>
+            <!---->
+          </icon>
           
           <!---->
            
@@ -73,13 +74,13 @@ exports[`Tree > should render nested list 1`] = `
           class="flex flex-row items-center"
         >
           <!---->
-          <rk-icon
+          <icon
             aria-label="expand"
             class="w-4"
             data-disabled="false"
             data-size="small"
             data-state="closed"
-            data-tag-icon="true"
+            data-tag-icon=""
             role="img"
             tabindex="-1"
           >
@@ -87,7 +88,8 @@ exports[`Tree > should render nested list 1`] = `
               aria-hidden="true"
               class="node-closed"
             />
-          </rk-icon>
+            <!---->
+          </icon>
           
           <!---->
            
@@ -144,13 +146,13 @@ exports[`Tree > should render nested list 2`] = `
           class="flex flex-row items-center"
         >
           <!---->
-          <rk-icon
+          <icon
             aria-label="expand"
             class="w-4"
             data-disabled="false"
             data-size="small"
             data-state="closed"
-            data-tag-icon="true"
+            data-tag-icon=""
             role="img"
             tabindex="-1"
           >
@@ -158,7 +160,8 @@ exports[`Tree > should render nested list 2`] = `
               aria-hidden="true"
               class="node-closed"
             />
-          </rk-icon>
+            <!---->
+          </icon>
           
           <!---->
            
@@ -192,13 +195,13 @@ exports[`Tree > should render nested list 2`] = `
           class="flex flex-row items-center"
         >
           <!---->
-          <rk-icon
+          <icon
             aria-label="expand"
             class="w-4"
             data-disabled="false"
             data-size="small"
             data-state="closed"
-            data-tag-icon="true"
+            data-tag-icon=""
             role="img"
             tabindex="-1"
           >
@@ -206,7 +209,8 @@ exports[`Tree > should render nested list 2`] = `
               aria-hidden="true"
               class="node-closed"
             />
-          </rk-icon>
+            <!---->
+          </icon>
           
           <!---->
            

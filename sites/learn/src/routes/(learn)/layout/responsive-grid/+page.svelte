@@ -3,35 +3,12 @@
 	import { storyBuilder } from './stories.js'
 </script>
 
-<svelte:head>
-	<title>ResponsiveGrid - Layout | Learn Rokkit</title>
-	<meta
-		name="description"
-		content="Flexible grid layouts that adapt to screen size"
-	/>
-</svelte:head>
-
-<article data-article-root>
-	<!-- Header -->
-	<header>
-		<div class="flex items-center space-x-3">
-			<div>
-				<h1><span>📐</span>ResponsiveGrid Component</h1>
-				<p>
-					Flexible grid layouts that adapt to screen size
-				</p>
-			</div>
-		</div>
-	</header>
-
-	<!-- Introduction -->
-	<section>
-		<h2>Introduction</h2>
+<article data-article-root><h1>Introduction</h1>
 		<p>
 			A generic responsive layout component that renders different columns using components provided via the `items` property. The ResponsiveGrid automatically adapts to different screen sizes and provides flexible layout options.
 		</p>
 
-		<h3>Notable features:</h3>
+		<h1>Notable features:</h1>
 		<ul>
 			<li>Responsive grid layouts that adapt to screen breakpoints</li>
 			<li>Component-based grid items with flexible props</li>
@@ -41,24 +18,20 @@
 			<li>Value binding for selected grid items</li>
 		</ul>
 
-		<h3>Basic Example</h3>
+		<h1>Basic Example</h1>
 		<p>
 			Here's an example of a ResponsiveGrid with interactive size switching. Use the size toggle to see how the grid adapts:
 		</p>
 
 		<StoryViewer {...storyBuilder.getExample('introduction')} />
-	</section>
-
-	<!-- Properties -->
-	<section>
-		<h2>Properties</h2>
+<h1>Properties</h1>
 		<p>
 			The ResponsiveGrid component provides comprehensive properties for flexible layout control.
 		</p>
 
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Core Properties</h4>
+				<h1>Core Properties</h1>
 				<ul>
 					<li><strong>items</strong>: Array of component configurations to render</li>
 					<li><strong>value</strong>: Currently selected grid item (bindable)</li>
@@ -68,7 +41,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Item Configuration</h4>
+				<h1>Item Configuration</h1>
 				<ul>
 					<li><strong>component</strong>: Svelte component to render</li>
 					<li><strong>name</strong>: Display name for the item</li>
@@ -79,11 +52,7 @@
 
 		<p>Basic grid configuration:</p>
 		<Code {...storyBuilder.getFragment(0)} />
-	</section>
-
-	<!-- Custom Classes -->
-	<section>
-		<h2>Custom CSS Classes</h2>
+<h1>Custom CSS Classes</h1>
 		<p>
 			You can customize the grid layout using CSS classes to control columns, rows, and responsive behavior.
 		</p>
@@ -93,7 +62,7 @@
 		<p>Example CSS for responsive grid layouts:</p>
 		<Code {...storyBuilder.getFragment(1)} />
 
-		<h3>Responsive Patterns</h3>
+		<h1>Responsive Patterns</h1>
 		<p>
 			The ResponsiveGrid works well with CSS Grid utilities to create adaptive layouts:
 		</p>
@@ -102,18 +71,14 @@
 			<li><strong>Medium screens</strong>: Vertical stack (1 column, multiple rows)</li>
 			<li><strong>Large screens</strong>: Multi-column grid (2x2, 3x3, etc.)</li>
 		</ul>
-	</section>
-
-	<!-- Use Cases -->
-	<section>
-		<h2>Use Cases</h2>
+<h1>Use Cases</h1>
 		<p>
 			The ResponsiveGrid is perfect for various layout scenarios where you need flexible, adaptive interfaces.
 		</p>
 
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<div data-card>
-				<h4>Dashboard Layouts</h4>
+				<h1>Dashboard Layouts</h1>
 				<ul>
 					<li>Widget-based dashboards</li>
 					<li>Chart and metric displays</li>
@@ -123,7 +88,7 @@
 			</div>
 
 			<div data-card>
-				<h4>Content Layouts</h4>
+				<h1>Content Layouts</h1>
 				<ul>
 					<li>Image galleries</li>
 					<li>Product showcases</li>
@@ -132,11 +97,10 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- Next Steps -->
+	
+<!-- Next Steps -->
 	<section data-card-cta>
-		<h3>Ready for more?</h3>
+		<h2>Ready for more?</h2>
 		<p>
 			Now that you understand how the ResponsiveGrid works, explore other layout components like NavContent and Stepper, or learn about data-driven components.
 		</p>
@@ -150,5 +114,5 @@
 				<span class="ml-2">→</span>
 			</a>
 		</span>
-	</section>
+	
 </article>

@@ -8,11 +8,11 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
   <span
     class="flex items-center"
   >
-    <rk-icon
+    <icon
       aria-label="theme"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -20,16 +20,17 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
         aria-hidden="true"
         class="theme"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
      
     <!---->
      
-    <rk-icon
+    <icon
       aria-label="selector-closed"
       data-disabled="false"
       data-size="base"
-      data-tag-icon="true"
+      data-tag-icon=""
       role="img"
       tabindex="-1"
     >
@@ -37,7 +38,8 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
         aria-hidden="true"
         class="selector-closed"
       />
-    </rk-icon>
+      <!---->
+    </icon>
     <!---->
   </span>
 </button>
@@ -57,11 +59,11 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
       <span
         class="flex items-center"
       >
-        <rk-icon
+        <icon
           aria-label="theme"
           data-disabled="false"
           data-size="base"
-          data-tag-icon="true"
+          data-tag-icon=""
           role="img"
           tabindex="-1"
         >
@@ -69,16 +71,17 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
             aria-hidden="true"
             class="theme"
           />
-        </rk-icon>
+          <!---->
+        </icon>
         <!---->
          
         <!---->
          
-        <rk-icon
+        <icon
           aria-label="selector-closed"
           data-disabled="false"
           data-size="base"
-          data-tag-icon="true"
+          data-tag-icon=""
           role="img"
           tabindex="-1"
         >
@@ -86,7 +89,8 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
             aria-hidden="true"
             class="selector-closed"
           />
-        </rk-icon>
+          <!---->
+        </icon>
         <!---->
       </span>
     </button>
