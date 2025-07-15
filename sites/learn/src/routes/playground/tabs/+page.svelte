@@ -1,8 +1,7 @@
 <script>
 	import { Tabs } from '@rokkit/ui'
-	import { Button } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
-	import { goto } from '$app/navigation'
+	import { equals } from 'ramda'
 
 	let { data } = $props()
 	let { schema, layout } = data
@@ -12,9 +11,6 @@
 	let items = $state([...data.items])
 	let selectedTab = $state(data.items[0])
 
-	// Create form builder
-	// let formBuilder = $derived(new FormBuilder(config, schema, layout))
-
 	// Handle form configuration changes
 	function handleConfigUpdate(newData) {
 		config = { ...newData }
@@ -22,9 +18,9 @@
 
 	// Handle adding new tabs when editable
 	function handleAddTab() {
-		const newTabNumber = items.length + 1
+		const newTabNumber = Math.max(...items.map((item) => item.number)) + 1
 		const newTab = {
-			id: `tab${newTabNumber}`,
+			number: newTabNumber,
 			label: `Tab ${newTabNumber}`,
 			content: `Content for tab ${newTabNumber}`
 		}
@@ -33,27 +29,20 @@
 
 	// Handle removing tabs when editable
 	function handleRemoveTab(tab) {
-		items = items.filter((item) => item.id !== tab.id)
+		items = items.filter((item) => !equals(item, tab))
 		// Reset selection if removed tab was selected
-		if (selectedTab?.id === tab.id) {
+		if (equals(selectedTab, tab)) {
 			selectedTab = items[0] || null
 		}
 	}
 </script>
 
-<!-- <div data-panel-root class="divide-neutral-inset flex w-full divide-x overflow-hidden"> -->
 <!-- Main content with responsive layout -->
 <div data-panel-body class=" flex w-full flex-col gap-6 p-8 lg:flex-row">
 	<!-- Preview Panel -->
 	<div data-panel-preview class="bg-neutral-inset flex flex-1 flex-col rounded-lg lg:basis-4/5">
 		<h2 class="text-neutral-overlay mb-4 text-xl font-semibold">Live Preview</h2>
 
-		<!-- Scrollable content area -->
-		<!-- <div
-			data-panel-content
-			class="bg-neutral-base border-neutral-subtle flex flex-1 overflow-auto rounded-lg border p-6"
-			style="max-height: 70vh;"
-		> -->
 		<Tabs
 			{items}
 			bind:value={selectedTab}

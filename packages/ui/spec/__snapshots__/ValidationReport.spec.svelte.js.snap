@@ -10,7 +10,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
         aria-label="badge-pass"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -33,7 +33,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
         aria-label="badge-fail"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -56,7 +56,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
         aria-label="badge-unknown"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -79,7 +79,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
         aria-label="badge-warn"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -111,7 +111,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
         aria-label="pass"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -134,7 +134,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
         aria-label="fail"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -157,7 +157,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
         aria-label="unknown"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -180,7 +180,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
         aria-label="warn"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >

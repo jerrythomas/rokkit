@@ -44,7 +44,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
+
 		const tabRoot = container.querySelector('[data-tab-root]')
 		expect(tabRoot.getAttribute('data-tab-orientation')).toBe('horizontal')
 	})
@@ -54,7 +54,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
+
 		const tabRoot = container.querySelector('[data-tab-root]')
 		expect(tabRoot.getAttribute('data-tab-orientation')).toBe('vertical')
 	})
@@ -64,7 +64,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
+
 		const tabRoot = container.querySelector('[data-tab-root]')
 		expect(tabRoot.getAttribute('data-tab-position')).toBe('after')
 	})
@@ -74,7 +74,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
+
 		const tabRoot = container.querySelector('[data-tab-root]')
 		expect(tabRoot.getAttribute('data-tab-align')).toBe('center')
 	})
@@ -84,7 +84,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
+
 		const selectedTab = container.querySelector('[aria-selected="true"]')
 		expect(selectedTab).toBeTruthy()
 	})
@@ -94,11 +94,11 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
-		const removeButtons = container.querySelectorAll('[data-tab-remove]')
+
+		const removeButtons = container.querySelectorAll('[data-icon-remove]')
 		expect(removeButtons).toHaveLength(items.length)
-		
-		const addButton = container.querySelector('[data-tab-add]')
+
+		const addButton = container.querySelector('[data-icon-add]')
 		expect(addButton).toBeTruthy()
 	})
 
@@ -107,8 +107,8 @@ describe('Tabs', () => {
 			{ label: 'First', body: 'First content', key: '1' },
 			{ label: 'Second', body: 'Second content', key: '2' }
 		]
-		const props = $state({ 
-			items: mappedItems, 
+		const props = $state({
+			items: mappedItems,
 			fields: { text: 'label', content: 'body', id: 'key' }
 		})
 		const { container } = render(Tabs, props)
@@ -135,7 +135,7 @@ describe('Tabs', () => {
 		const { container } = render(CustomTabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
-		
+
 		const emptyState = container.querySelector('[data-tab-empty]')
 		expect(emptyState.textContent).toContain('Custom empty state')
 	})
@@ -144,7 +144,7 @@ describe('Tabs', () => {
 		const props = $state({ items, tabindex: 5 })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
-		
+
 		const tabRoot = container.querySelector('[data-tab-root]')
 		expect(tabRoot.getAttribute('tabindex')).toBe('5')
 	})
@@ -153,20 +153,20 @@ describe('Tabs', () => {
 		const props = $state({ items, name: 'navigation-tabs' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
-		
+
 		const tabRoot = container.querySelector('[data-tab-root]')
 		expect(tabRoot.getAttribute('aria-label')).toBe('navigation-tabs')
 	})
 
 	it('should render placeholder when no tab is selected', () => {
-		const props = $state({ 
-			items, 
+		const props = $state({
+			items,
 			value: null,
 			placeholder: 'Please select a tab to view content'
 		})
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
-		
+
 		const placeholder = container.querySelector('[data-tab-content-placeholder]')
 		expect(placeholder.textContent).toBe('Please select a tab to view content')
 	})
@@ -174,33 +174,35 @@ describe('Tabs', () => {
 	it('should render with role attributes for accessibility', () => {
 		const props = $state({ items })
 		const { container } = render(Tabs, props)
-		
+
 		const tabList = container.querySelector('[role="tablist"]')
 		expect(tabList).toBeTruthy()
-		
+
 		const tabs = container.querySelectorAll('[role="tab"]')
 		expect(tabs).toHaveLength(items.length)
-		
+
 		const tabPanel = container.querySelector('[role="tabpanel"]')
 		expect(tabPanel).toBeTruthy()
 	})
 
 	it('should handle tab switching', () => {
 		let selectedValue = null
-		const props = $state({ 
-			items, 
+		const props = $state({
+			items,
 			value: selectedValue,
-			onselect: (value) => { selectedValue = value }
+			onselect: (value) => {
+				selectedValue = value
+			}
 		})
 		const { container } = render(Tabs, props)
-		
+
 		// Initially no tab should be selected
 		expect(selectedValue).toBeNull()
-		
+
 		// Simulate tab selection by updating value
 		props.value = items[0]
 		flushSync()
-		
+
 		const selectedTab = container.querySelector('[aria-selected="true"]')
 		expect(selectedTab).toBeTruthy()
 	})

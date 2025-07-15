@@ -41,3 +41,7 @@ button > [data-tag-icon].medium {
 button > [data-tag-icon].small {
   @apply h-6 w-6;
 }
+
+[data-story-root] {
+  @apply space-y-8;
+}

@@ -1,5 +1,4 @@
 <script>
-	import { createEmitter } from '@rokkit/core'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -29,10 +28,13 @@
 		disabled = false,
 		tabindex = $bindable(0),
 		checked = $bindable(null),
-		...events
+		onclick,
+		onchange,
+		onmouseenter,
+		onmouseleave,
+		...restProps
 	} = $props()
 
-	let emitter = $derived(createEmitter(events, ['click', 'change', 'mouseenter', 'mouseleave']))
 	function handleClick(e) {
 		if (role === 'img') return
 		e.preventDefault()
@@ -40,9 +42,9 @@
 		if (!disabled) {
 			if (isCheckbox) {
 				checked = !checked
-				emitter?.change(checked)
+				onchange?.(checked)
 			}
-			emitter?.click()
+			onclick?.()
 		}
 	}
 
@@ -69,8 +71,9 @@
 	onclick={handleClick}
 	onkeydown={(e) => e.key === 'Enter' && e.currentTarget.click()}
 	tabindex={validatedTabindex}
-	onmouseenter={emitter.mouseenter}
-	onnmouseleave={emitter.nmouseleave}
+	{onmouseenter}
+	{onmouseleave}
+	{...restProps}
 >
 	{#if name.length <= 2}
 		<span>{name}</span>

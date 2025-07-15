@@ -52,7 +52,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-Tab 1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -64,7 +64,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-Tab 2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -76,7 +76,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-Tab 3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -124,7 +124,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-Tab 1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -136,7 +136,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-Tab 2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -148,7 +148,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-Tab 3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -196,7 +196,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -208,7 +208,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -220,7 +220,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -232,7 +232,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -282,7 +282,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -294,7 +294,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -306,7 +306,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -318,7 +318,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -419,7 +419,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -435,7 +435,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -451,7 +451,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -467,7 +467,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -525,7 +525,7 @@ exports[`Tabs > should render with different alignments 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -537,7 +537,7 @@ exports[`Tabs > should render with different alignments 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -549,7 +549,7 @@ exports[`Tabs > should render with different alignments 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -561,7 +561,7 @@ exports[`Tabs > should render with different alignments 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -608,7 +608,7 @@ exports[`Tabs > should render with different positions 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -620,7 +620,7 @@ exports[`Tabs > should render with different positions 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -632,7 +632,7 @@ exports[`Tabs > should render with different positions 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -644,7 +644,7 @@ exports[`Tabs > should render with different positions 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -691,7 +691,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -700,17 +700,26 @@ exports[`Tabs > should render with editable tabs 1`] = `
         Tab 1
         <!---->
          
-        <button
-          aria-label="Remove tab"
-          data-tab-remove=""
-          type="button"
+        <icon
+          aria-label="action-close"
+          data-disabled="false"
+          data-icon-remove="true"
+          data-size="base"
+          data-tag-button="true"
+          data-tag-icon="true"
+          role="button"
+          tabindex="0"
         >
-          ×
-        </button>
+          <i
+            aria-hidden="true"
+            class="action-close"
+          />
+          <!---->
+        </icon>
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -719,17 +728,26 @@ exports[`Tabs > should render with editable tabs 1`] = `
         Tab 2
         <!---->
          
-        <button
-          aria-label="Remove tab"
-          data-tab-remove=""
-          type="button"
+        <icon
+          aria-label="action-close"
+          data-disabled="false"
+          data-icon-remove="true"
+          data-size="base"
+          data-tag-button="true"
+          data-tag-icon="true"
+          role="button"
+          tabindex="0"
         >
-          ×
-        </button>
+          <i
+            aria-hidden="true"
+            class="action-close"
+          />
+          <!---->
+        </icon>
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -738,17 +756,26 @@ exports[`Tabs > should render with editable tabs 1`] = `
         Tab 3
         <!---->
          
-        <button
-          aria-label="Remove tab"
-          data-tab-remove=""
-          type="button"
+        <icon
+          aria-label="action-close"
+          data-disabled="false"
+          data-icon-remove="true"
+          data-size="base"
+          data-tag-button="true"
+          data-tag-icon="true"
+          role="button"
+          tabindex="0"
         >
-          ×
-        </button>
+          <i
+            aria-hidden="true"
+            class="action-close"
+          />
+          <!---->
+        </icon>
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -757,24 +784,42 @@ exports[`Tabs > should render with editable tabs 1`] = `
         Tab 4
         <!---->
          
-        <button
-          aria-label="Remove tab"
-          data-tab-remove=""
-          type="button"
+        <icon
+          aria-label="action-close"
+          data-disabled="false"
+          data-icon-remove="true"
+          data-size="base"
+          data-tag-button="true"
+          data-tag-icon="true"
+          role="button"
+          tabindex="0"
         >
-          ×
-        </button>
+          <i
+            aria-hidden="true"
+            class="action-close"
+          />
+          <!---->
+        </icon>
         <!---->
       </div>
       <!---->
        
-      <button
-        aria-label="Add tab"
-        data-tab-add=""
-        type="button"
+      <icon
+        aria-label="action-add"
+        data-disabled="false"
+        data-icon-add="true"
+        data-size="base"
+        data-tag-button="true"
+        data-tag-icon="true"
+        role="button"
+        tabindex="0"
       >
-        +
-      </button>
+        <i
+          aria-hidden="true"
+          class="action-add"
+        />
+        <!---->
+      </icon>
       <!---->
     </div>
      
@@ -809,7 +854,7 @@ exports[`Tabs > should render with field mapping 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -821,7 +866,7 @@ exports[`Tabs > should render with field mapping 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -868,7 +913,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -880,7 +925,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -892,7 +937,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -904,7 +949,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -951,7 +996,7 @@ exports[`Tabs > should render with selected value 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -963,9 +1008,9 @@ exports[`Tabs > should render with selected value 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="true"
-        class="selected"
+        class="selected focused"
         data-path="1"
         data-tab-item=""
         role="tab"
@@ -976,7 +1021,7 @@ exports[`Tabs > should render with selected value 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -988,7 +1033,7 @@ exports[`Tabs > should render with selected value 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""
@@ -1008,17 +1053,13 @@ exports[`Tabs > should render with selected value 1`] = `
       data-tab-content=""
       role="tabpanel"
     >
+      <!---->
       <div
-        aria-labelledby="tab-tab2"
-        id="tab-panel-tab2"
+        data-tab-content-default=""
       >
-        <div
-          data-tab-content-default=""
-        >
-          
-        </div>
-        <!---->
+        
       </div>
+      
       <!---->
     </div>
   </div>
@@ -1041,7 +1082,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
       data-tab-list=""
     >
       <div
-        aria-controls="tab-panel-tab1"
+        aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tab-item=""
@@ -1053,7 +1094,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab2"
+        aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tab-item=""
@@ -1065,7 +1106,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab3"
+        aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tab-item=""
@@ -1077,7 +1118,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
         <!---->
       </div>
       <div
-        aria-controls="tab-panel-tab4"
+        aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tab-item=""

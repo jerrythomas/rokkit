@@ -16,7 +16,7 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -33,7 +33,7 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -50,7 +50,7 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -67,7 +67,7 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -83,7 +83,7 @@ exports[`Rating component > should handle mouseenter and mouseleave events 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -114,7 +114,7 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -130,7 +130,7 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -146,7 +146,7 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -162,7 +162,7 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -178,7 +178,7 @@ exports[`Rating component > should not handle mouseenter and mouseleave events w
       data-disabled="true"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -209,7 +209,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -225,7 +225,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -241,7 +241,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -257,7 +257,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -273,7 +273,7 @@ exports[`Rating component > should render the correct number of stars 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -311,7 +311,7 @@ exports[`Rating component > should reset the value to zero 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -327,7 +327,7 @@ exports[`Rating component > should reset the value to zero 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -343,7 +343,7 @@ exports[`Rating component > should reset the value to zero 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -359,7 +359,7 @@ exports[`Rating component > should reset the value to zero 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -375,7 +375,7 @@ exports[`Rating component > should reset the value to zero 1`] = `
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -406,7 +406,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -422,7 +422,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -438,7 +438,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -454,7 +454,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -470,7 +470,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -501,7 +501,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -517,7 +517,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -533,7 +533,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -549,7 +549,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -565,7 +565,7 @@ exports[`Rating component > should select the correct number of stars when value
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -603,7 +603,7 @@ exports[`Rating component > should update value on click when not disabled 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -619,7 +619,7 @@ exports[`Rating component > should update value on click when not disabled 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -635,7 +635,7 @@ exports[`Rating component > should update value on click when not disabled 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -651,7 +651,7 @@ exports[`Rating component > should update value on click when not disabled 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >
@@ -667,7 +667,7 @@ exports[`Rating component > should update value on click when not disabled 1`] =
       data-disabled="false"
       data-size="base"
       data-tag-checkbox="true"
-      data-tag-icon=""
+      data-tag-icon="true"
       role="option"
       tabindex="-1"
     >

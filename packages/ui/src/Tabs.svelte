@@ -1,9 +1,10 @@
 <script>
-	import { createEmitter, getKeyFromPath } from '@rokkit/core'
+	import { createEmitter, getKeyFromPath, defaultStateIcons } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
 	import { ListController } from '@rokkit/states'
 	import { Proxy } from '@rokkit/states'
-	import { has, equals } from 'ramda'
+	import { has, equals, pick } from 'ramda'
+	import Icon from './Icon.svelte'
 
 	/**
 	 * @typedef {Object} FieldMapping
@@ -52,6 +53,7 @@
 		children,
 		empty,
 		placeholder = 'Select a tab to view its content.',
+		icons,
 		onselect,
 		onchange,
 		onmove,
@@ -83,9 +85,12 @@
 	function handleRemove(item) {
 		onremove?.(item)
 	}
-
+	let tabIcons = $derived({ ...pick(['add', 'close'], defaultStateIcons.action), ...icons })
 	let emitter = createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
-	let wrapper = new ListController(items, value, fields, { multiSelect: false })
+	let wrapper = new ListController(items, value, fields)
+	$effect(() => {
+		wrapper.update(items)
+	})
 </script>
 
 {#snippet defaultChild(item)}
@@ -115,40 +120,32 @@
 	onaction={handleAction}
 >
 	<div data-tab-list>
-		{#each proxyItems as item, index (item.id)}
+		{#each proxyItems as item, index (index)}
+			{@const key = getKeyFromPath([index])}
 			{@const isSelected = equals(item.value, value)}
-			{@const isFocused = wrapper.focusedKey === item.id}
-			<div 
+			{@const isFocused = wrapper.focusedKey === key}
+			<div
 				data-tab-item
 				data-path={getKeyFromPath([index])}
 				role="tab"
 				aria-selected={isSelected}
-				aria-controls="tab-panel-{item.id}"
+				aria-controls="tab-panel-{index}"
 				class:selected={isSelected}
 				class:focused={isFocused}
 			>
 				{@render childSnippet(item)}
 				{#if editable}
-					<button 
-						data-tab-remove 
-						onclick={() => handleRemove(item)} 
-						aria-label="Remove tab"
-						type="button"
-					>
-						×
-					</button>
+					<Icon
+						data-icon-remove
+						name={tabIcons.close}
+						role="button"
+						onclick={() => handleRemove(item.value)}
+					/>
 				{/if}
 			</div>
 		{/each}
 		{#if editable}
-			<button 
-				data-tab-add 
-				onclick={handleAdd} 
-				aria-label="Add tab"
-				type="button"
-			>
-				+
-			</button>
+			<Icon data-icon-add name={tabIcons.add} role="button" onclick={handleAdd} />
 		{/if}
 	</div>
 
@@ -159,9 +156,7 @@
 				{@render emptyMessage()}
 			</div>
 		{:else if activeItem}
-			<div id="tab-panel-{activeItem.id}" aria-labelledby="tab-{activeItem.id}">
-				{@render childrenSnippet(activeItem)}
-			</div>
+			{@render childrenSnippet(activeItem)}
 		{:else}
 			<div data-tab-content-placeholder>
 				{placeholder}

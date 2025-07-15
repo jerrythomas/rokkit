@@ -38,6 +38,7 @@ export const defaultIcons = [
 	'action-clear',
 	'action-search',
 	'action-close',
+	'action-copy',
 	'node-opened',
 	'node-closed',
 	'selector-opened',
@@ -71,7 +72,15 @@ export const defaultIcons = [
 	'validity-failed',
 	'validity-passed',
 	'validity-unknown',
-	'validity-warning'
+	'validity-warning',
+	'alert-clear',
+	'alert-unread',
+	'align-horizontal-left',
+	'align-horizontal-right',
+	'align-horizontal-center',
+	'align-vertical-top',
+	'align-vertical-bottom',
+	'align-vertical-middle'
 ]
 
 export const defaultOptions = {
@@ -113,6 +122,16 @@ export const TONE_MAP = {
 	contrast: 800,
 	overlay: 900
 }
+/**
+ * Splits an icon name into its group and key components.
+ * @param {string} name - The icon name to split.
+ * @returns {{ group: string, key: string, value: string }} An object containing the group, key, and value of the icon name.
+ */
+function splitIconName(name) {
+	const parts = name.split('-')
+	const group = parts.slice(0, parts.length - 1).join('-')
+	return { group, key: parts[parts.length - 1], value: name }
+}
 
 /**
  * Generate a state icon mapping from a list of icon names
@@ -121,15 +140,13 @@ export const TONE_MAP = {
  * @returns {import('./types').StateIcons}
  */
 export function stateIconsFromNames(icons) {
-	return icons
-		.map((k) => [...k.split('-')])
-		.reduce(
-			(acc, parts) => ({
-				...acc,
-				[parts[0]]: { ...acc[parts[0]], [parts[1]]: parts.join('-') }
-			}),
-			{}
-		)
+	return icons.map(splitIconName).reduce(
+		(acc, { group, key, value }) => ({
+			...acc,
+			[group]: { ...acc[group], [key]: value }
+		}),
+		{}
+	)
 }
 
 export const defaultStateIcons = stateIconsFromNames(defaultIcons)

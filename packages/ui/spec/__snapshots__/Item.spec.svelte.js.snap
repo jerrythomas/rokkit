@@ -33,7 +33,7 @@ exports[`Item > should render with custom mapping 1`] = `
     aria-label="World"
     data-disabled="false"
     data-size="base"
-    data-tag-icon=""
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >
@@ -73,7 +73,7 @@ exports[`Item > should render with icon 1`] = `
     aria-label="Hello"
     data-disabled="false"
     data-size="base"
-    data-tag-icon=""
+    data-tag-icon="true"
     role="img"
     tabindex="-1"
   >

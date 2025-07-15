@@ -23,7 +23,7 @@ exports[`NestedList > should render nested list 1`] = `
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon=""
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -193,7 +193,7 @@ exports[`NestedList > should render nested list 1`] = `
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon=""
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -260,7 +260,7 @@ exports[`NestedList > should render nested list 1`] = `
               data-disabled="false"
               data-size="small"
               data-state="opened"
-              data-tag-icon=""
+              data-tag-icon="true"
               role="img"
               tabindex="-1"
             >
@@ -458,7 +458,7 @@ exports[`NestedList > should render nested list 2`] = `
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon=""
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -628,7 +628,7 @@ exports[`NestedList > should render nested list 2`] = `
           data-disabled="false"
           data-size="small"
           data-state="opened"
-          data-tag-icon=""
+          data-tag-icon="true"
           role="img"
           tabindex="-1"
         >
@@ -695,7 +695,7 @@ exports[`NestedList > should render nested list 2`] = `
               data-disabled="false"
               data-size="small"
               data-state="opened"
-              data-tag-icon=""
+              data-tag-icon="true"
               role="img"
               tabindex="-1"
             >

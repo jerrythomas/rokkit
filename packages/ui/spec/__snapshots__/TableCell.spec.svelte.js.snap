@@ -49,7 +49,7 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
         class="small cursor-pointer"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -88,7 +88,7 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
         class="small cursor-pointer"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >

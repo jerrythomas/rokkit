@@ -26,7 +26,7 @@
 }
 
 [data-tab-root] [data-tab-content] {
-  @apply border-neutral-muted bg-neutral-subtle rounded-md border-2;
+  @apply border-neutral-muted bg-neutral-subtle rounded-md border-2 p-4;
 }
 
 /* Tab List - Orientation */
@@ -82,7 +82,7 @@
 [data-tab-item] {
   @apply text-neutral-floating px-4 py-2;
   @apply cursor-pointer select-none transition-all duration-200;
-  @apply bg-neutral-subtle;
+  @apply bg-neutral-subtle flex items-center gap-2;
 }
 
 /* Tab Items - Vertical Orientation */
@@ -181,14 +181,13 @@
 [data-tab-item][data-selected='true'] {
   @apply font-medium;
 }
-
+[data-tab-list] [data-icon-add],
+[data-tab-list] [data-icon-remove] {
+  @apply focus:text-primary focus:outline-none;
+}
 /* Responsive Adjustments */
 @media (max-width: 640px) {
   [data-tab-item] {
-    @apply px-3 py-1.5 text-sm;
-  }
-
-  [data-tab-add] {
     @apply px-3 py-1.5 text-sm;
   }
 

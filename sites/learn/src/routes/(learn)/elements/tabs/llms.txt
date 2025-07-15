@@ -1,0 +1,179 @@
+# Tabs Component Documentation
+
+Data-driven, accessible Tabs component for Svelte 5.
+
+## Why Tabs?
+
+### Data-First Design
+"Components automatically understand and adapt to data structures without requiring data transformation."
+
+### Flexible Layout Options
+- Horizontal and vertical orientations
+- Configurable tab bar positioning (before/after)
+- Alignment control (start/center/end)
+
+### Developer Experience
+- Full TypeScript support
+- Runes-based reactivity
+- Keyboard navigation with ListController
+- Custom snippets for advanced rendering
+
+### Accessibility Features
+- WAI-ARIA compliant
+- Full keyboard navigation
+- Screen reader support
+- Semantic HTML structure
+
+## Component API
+
+### Props
+- `items: any[]` - Array of tab items (strings or objects)
+- `value: any` - Selected tab value (bindable)
+- `fields: FieldMapping` - Field mappings for data extraction
+- `orientation: 'horizontal' | 'vertical'` - Layout direction
+- `position: 'before' | 'after'` - Tab bar position relative to content
+- `align: 'start' | 'center' | 'end'` - Tab alignment within bar
+- `editable: boolean` - Enable add/remove functionality
+- `placeholder: string` - Text shown when no tab selected
+- `tabindex: number` - Tab index for keyboard navigation
+- `name: string` - Name for accessibility (aria-label)
+
+### Events
+- `onselect: (data) => void` - Fired when tab is selected
+- `onchange: (data) => void` - Fired when selected tab changes
+- `onmove: (data) => void` - Fired when focus moves between tabs
+- `onadd: () => void` - Fired when add button clicked (editable mode)
+- `onremove: (item) => void` - Fired when tab is removed (editable mode)
+
+### Snippets
+- `child: (item) => void` - Custom tab header rendering
+- `empty: () => void` - Empty state when no tabs available
+
+Note: Content between the component tags renders as tab content (like default slot in Svelte 4).
+
+## Usage Examples
+
+### Basic String Array
+```svelte
+<script>
+  import { Tabs } from '@rokkit/ui'
+  
+  let items = ['Fruits', 'Vegetables', 'Nuts']
+  let value = $state(items[0])
+</script>
+
+<Tabs {items} bind:value>
+  <div class="p-4">
+    <h3>Selected: {value}</h3>
+    <p>Content for {value}</p>
+  </div>
+</Tabs>
+```
+
+### Object Array with Field Mapping
+```svelte
+<script>
+  import { Tabs } from '@rokkit/ui'
+  
+  let items = [
+    { id: 1, name: 'Dashboard', content: 'Analytics overview' },
+    { id: 2, name: 'Users', content: 'User management' }
+  ]
+  let value = $state(items[0])
+</script>
+
+<Tabs {items} bind:value fields={{ text: 'name' }}>
+  <div class="p-4">
+    <h3>{value.name}</h3>
+    <p>{value.content}</p>
+  </div>
+</Tabs>
+```
+
+### Vertical Layout with Custom Snippets
+```svelte
+<Tabs {items} bind:value orientation="vertical">
+  {#snippet child(item)}
+    <div class="flex items-center gap-2">
+      <span>{item.get('emoji')}</span>
+      <span>{item.get('text')}</span>
+    </div>
+  {/snippet}
+  
+  <div class="p-4">
+    <h3>{value.text}</h3>
+    <p>{value.description}</p>
+  </div>
+</Tabs>
+```
+
+### Editable Tabs
+```svelte
+<Tabs 
+  {items} 
+  bind:value 
+  editable={true}
+  placeholder="Add your first tab"
+  onadd={handleAddTab}
+  onremove={handleRemoveTab}
+>
+  <!-- Content renders here -->
+</Tabs>
+```
+
+## Data Attributes for Styling
+
+### Container Attributes
+- `data-tab-root` - Root container
+- `data-tab-orientation` - Orientation value
+- `data-tab-position` - Position value
+- `data-tab-align` - Alignment value
+
+### Element Attributes
+- `data-tab-list` - Tab bar container
+- `data-tab-item` - Individual tab button
+- `data-tab-content` - Content container
+- `data-tab-add` - Add button (editable mode)
+- `data-tab-remove` - Remove button (editable mode)
+
+## Field Mapping
+
+The `fields` prop allows adaptation to any data structure:
+
+```javascript
+const fields = {
+  text: 'name',        // Map 'name' to tab label
+  content: 'body',     // Map 'body' to tab content
+  image: 'thumbnail'   // Map 'thumbnail' to tab image
+}
+```
+
+## Best Practices
+
+### UX Guidelines
+- Keep tab labels concise and descriptive
+- Use 5-7 tabs maximum for optimal usability
+- Provide clear visual feedback for active states
+- Consider vertical layout for navigation-heavy interfaces
+
+### Technical Tips
+- Use field mapping to adapt to your data structure
+- Implement proper error handling for dynamic content
+- Test keyboard navigation thoroughly
+- Consider lazy loading for heavy tab content
+
+## Community
+
+Part of the Rokkit UI library ecosystem.
+
+Contributions welcome:
+- [GitHub Repository](https://github.com/jerrythomas/rokkit)
+- [Documentation](https://rokkit.dev)
+
+## Acknowledgments
+
+Built with modern Svelte 5 features:
+- Runes for reactivity
+- Snippets for customization
+- Actions for behaviors
+- TypeScript for type safety

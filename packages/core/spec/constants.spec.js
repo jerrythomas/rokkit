@@ -14,8 +14,23 @@ describe('Utility functions', () => {
 				remove: 'action-remove',
 				add: 'action-add',
 				clear: 'action-clear',
-				search: 'action-search',
-				close: 'action-close'
+				close: 'action-close',
+				copy: 'action-copy',
+				search: 'action-search'
+			},
+			alert: {
+				clear: 'alert-clear',
+				unread: 'alert-unread'
+			},
+			'align-horizontal': {
+				center: 'align-horizontal-center',
+				left: 'align-horizontal-left',
+				right: 'align-horizontal-right'
+			},
+			'align-vertical': {
+				bottom: 'align-vertical-bottom',
+				middle: 'align-vertical-middle',
+				top: 'align-vertical-top'
 			},
 			node: {
 				opened: 'node-opened',

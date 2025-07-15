@@ -273,7 +273,7 @@ exports[`Node > should render with different states 1`] = `
         data-disabled="false"
         data-size="small"
         data-state="closed"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -344,7 +344,7 @@ exports[`Node > should render with different states 2`] = `
         data-disabled="false"
         data-size="small"
         data-state="opened"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -415,7 +415,7 @@ exports[`Node > should render with different states 3`] = `
         data-disabled="false"
         data-size="small"
         data-state="opened"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -486,7 +486,7 @@ exports[`Node > should render with different states 4`] = `
         data-disabled="false"
         data-size="small"
         data-state="opened"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >
@@ -557,7 +557,7 @@ exports[`Node > should render with icon 1`] = `
         data-disabled="false"
         data-size="small"
         data-state="closed"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >

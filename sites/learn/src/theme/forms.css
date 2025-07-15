@@ -28,9 +28,7 @@
 [data-field-type='checkbox'] > [data-field] > [data-input-root] {
   @apply flex-0 flex-row;
 }
-[data-input-root] > input:not(type='checkbox') {
-  @apply w-full;
-}
+
 [data-field-root] {
   @apply flex flex-col gap-2;
 }
@@ -65,6 +63,7 @@
 [data-input-root] input:not([type='checkbox']) {
   @apply bg-neutral-base border-neutral-muted m-0 w-full rounded-md border px-3 py-1 leading-loose;
 }
+
 [data-form-root] {
   @apply bg-neutral-subtle rounded-md p-6;
 }

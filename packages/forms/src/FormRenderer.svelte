@@ -88,9 +88,6 @@
 	}
 </script>
 
-<pre>
-  <!-- {JSON.stringify(formBuilder.elements[0], null, 2)} -->
-</pre>
 <!-- Form container -->
 <div data-form-root class={className} {...props}>
 	<!-- <div data-form-field data-scope={formBuilder.elements[0].scope}>

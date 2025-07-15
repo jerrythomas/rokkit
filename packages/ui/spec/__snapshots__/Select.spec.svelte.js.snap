@@ -28,7 +28,7 @@ exports[`Select.svelte > should render string array 1`] = `
         aria-label="opened"
         data-disabled="false"
         data-size="base"
-        data-tag-icon=""
+        data-tag-icon="true"
         role="img"
         tabindex="-1"
       >

@@ -178,4 +178,8 @@ export class ListController {
 			return this.select(key)
 		}
 	}
+
+	update(items) {
+		this.items = items
+	}
 }

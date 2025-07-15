@@ -76,23 +76,23 @@ const config = {
 }
 const items = [
 	{
-		id: 'tab1',
+		number: 1,
 		label: 'First Tab',
 		content:
 			'This is the content of the first tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 	},
 	{
-		id: 'tab2',
+		number: 2,
 		label: 'Second Tab',
 		content: 'Content for the second tab goes here. Sed do eiusmod tempor incididunt ut labore.'
 	},
 	{
-		id: 'tab3',
+		number: 3,
 		label: 'Third Tab',
 		content: 'The third tab contains this information. Ut enim ad minim veniam, quis nostrud.'
 	},
 	{
-		id: 'tab4',
+		number: 4,
 		label: 'Fourth Tab',
 		content: 'Fourth tab content is displayed here. Excepteur sint occaecat cupidatat non proident.'
 	}

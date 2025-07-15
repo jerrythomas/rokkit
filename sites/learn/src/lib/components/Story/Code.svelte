@@ -1,13 +1,15 @@
 <script>
 	import { highlightCode } from '$lib/shiki.js'
 	import { vibe } from '@rokkit/states'
+	import CopyToClipboard from './CopyToClipboard.svelte'
 
 	let { content, language } = $props()
 	let theme = $derived(vibe.mode == 'dark' ? 'github-dark' : 'github-light')
 	let highlightedCode = $derived(highlightCode(content, { lang: language, theme }))
 </script>
 
-<div class="overflow-x-auto" data-code-root>
+<div data-code-root>
+	<CopyToClipboard {content} floating={true} />
 	{#await highlightedCode}
 		<div class="text-neutral-floating p-4">Highlighting code...</div>
 	{:then code}
