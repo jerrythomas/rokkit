@@ -26,12 +26,12 @@
 }
 
 [data-tab-root] [data-tab-content] {
-  @apply border-neutral-muted rounded-md border-2;
+  @apply border-neutral-muted bg-neutral-subtle rounded-md border-2;
 }
 
 /* Tab List - Orientation */
 [data-tab-orientation='horizontal'] > [data-tab-list] {
-  @apply border-neutral-muted flex-row space-x-2 space-y-0 border-0 px-2;
+  @apply border-neutral-muted flex-row space-x-2 space-y-0 border-0 px-4;
 }
 /* [data-tab-orientation='horizontal'][data-tab-position='before'] > [data-tab-list] {
   @apply rounded-t-md border-b-2;
@@ -41,7 +41,7 @@
 } */
 
 [data-tab-orientation='vertical'] > [data-tab-list] {
-  @apply border-neutral-muted min-w-fit flex-col space-x-0 space-y-2 border-0 py-1;
+  @apply border-neutral-muted min-w-fit flex-col space-x-0 space-y-2 border-0 py-4;
 }
 
 /* [data-tab-orientation='vertical'][data-tab-position='before'] > [data-tab-list] {
@@ -117,20 +117,10 @@
 [data-tab-root]:focus-within {
   @apply outline-none;
 }
-[data-tab-root]:focus-within > [data-tab-content] {
+[data-tab-root]:focus-within > [data-tab-content],
+[data-tab-root][data-tab-orientation='vertical']:focus-within > [data-tab-content] {
   @apply border-secondary-muted;
 }
-[data-tab-root]:focus-within [data-tab-list] {
-  @apply border-secondary-muted;
-}
-[data-tab-root]:focus-within [data-tab-content] {
-  @apply border-secondary-muted;
-}
-/* Tab Items - Vertical Selected State */
-/* [data-tab-root][data-tab-orientation='vertical'] [data-tab-item].selected,
-[data-tab-root][data-tab-orientation='vertical'] [data-tab-item][aria-selected='true'] {
-  @apply border-r-accent-base border-b-transparent;
-} */
 
 /* Tab Add Button */
 [data-tab-add] {
