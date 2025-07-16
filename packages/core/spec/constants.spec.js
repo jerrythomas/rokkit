@@ -16,6 +16,7 @@ describe('Utility functions', () => {
 				clear: 'action-clear',
 				close: 'action-close',
 				copy: 'action-copy',
+				copysuccess: 'action-copysuccess',
 				search: 'action-search'
 			},
 			alert: {

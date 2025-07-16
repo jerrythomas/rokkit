@@ -41,7 +41,13 @@ export default defineConfig({
 		...semanticShortcuts('primary'),
 		...semanticShortcuts('secondary'),
 		...semanticShortcuts('info'),
-		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit'))
+		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit')),
+		['text-on-primary', 'text-neutral-50'],
+		['text-on-secondary', 'text-neutral-50'],
+		['text-on-info', 'text-neutral-50'],
+		['text-on-success', 'text-neutral-50'],
+		['text-on-warning', 'text-neutral-50'],
+		['text-on-error', 'text-neutral-50']
 	],
 	theme: {
 		fontFamily: {

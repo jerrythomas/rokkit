@@ -1,0 +1,7 @@
+[data-style='rokkit'] [data-list-item][aria-selected='true'] {
+  @apply from-primary-z4 to-secondary-z4 text-neutral-z10 bg-gradient-to-r;
+}
+
+[data-style='rokkit'] [data-list-item][aria-selected='true'] {
+  @apply from-primary to-secondary on-primary bg-gradient-to-r;
+}

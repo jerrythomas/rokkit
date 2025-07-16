@@ -17,19 +17,19 @@
   background: transparent !important;
 } */
 
-[data-tab-root].no-padding [data-tab-content] {
-  padding: 0;
+[data-tabs-root].no-padding [data-tabs-content] {
+  @apply p-0;
 }
 [data-code-root] {
   @apply min-h-100 relative flex w-full overflow-hidden;
 }
 [data-code-root] > pre.shiki {
-  @apply bg-neutral-inset absolute inset-0 m-0 border-0;
+  @apply bg-neutral-z2 absolute inset-0 m-0 border-0;
 }
 [data-code-root] pre code {
   @apply w-full bg-transparent p-0;
 }
 
 /* pre.shiki.github-dark {
-  @apply bg-neutral-inset absolute inset-0 border-0;
+  @apply bg-neutral-z2 absolute inset-0 border-0;
 } */

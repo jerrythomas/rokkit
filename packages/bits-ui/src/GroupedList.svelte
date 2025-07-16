@@ -34,6 +34,7 @@
 		searchPlaceholder = 'Search for something...',
 		searchable = false,
 		showSeparator = false,
+		disablePointerSelection = true,
 		child,
 		empty,
 		groupItem,
@@ -47,19 +48,22 @@
 	let itemSnippet = $derived(child ?? defaultChild)
 	let groupSnippet = $derived(groupItem ?? defaultChild)
 	let emptyMessage = $derived(empty ?? defaultEmpty)
-	let initialValue = $state(null)
+	let currentValue = $state(null)
 
 	$effect.pre(() => {
 		let current = null
 		for (let i = 0; i < proxyItems.length && current === null; i++) {
 			const children = proxyItems[i].get('children')
 			current = children.find((proxy) => equals(proxy.value, value))
-			if (current) initialValue = current.id
+			if (current) currentValue = current.id
 		}
+		console.log('Selected item:', currentValue)
 	})
-	function handleSelect(data) {
-		value = data
-		onSelect?.(data)
+	function handleSelect(item) {
+		currentValue = item.id
+		value = item.value
+		console.log('Selected item:', currentValue)
+		onSelect?.(value)
 	}
 </script>
 
@@ -71,7 +75,12 @@
 	No results found.
 {/snippet}
 
-<Command.Root class={classNames} bind:this={command} value={initialValue}>
+<Command.Root
+	class={classNames}
+	bind:this={command}
+	bind:value={currentValue}
+	{disablePointerSelection}
+>
 	{#if searchable}
 		<Command.Input placeholder={searchPlaceholder} />
 	{/if}
@@ -93,15 +102,21 @@
 							{@const keywords = item.get('keywords') ?? [item.get('text')]}
 							{#if item.has('href')}
 								<Command.LinkItem
+									data-current={item.id === currentValue}
 									href={item.get('href')}
 									value={item.id}
 									{keywords}
-									onSelect={() => handleSelect(item.value)}
+									onSelect={() => handleSelect(item)}
 								>
 									{@render itemSnippet(item)}
 								</Command.LinkItem>
 							{:else}
-								<Command.Item value={item.id} {keywords} onSelect={() => handleSelect(item.value)}>
+								<Command.Item
+									data-current={item.id === currentValue}
+									value={item.id}
+									{keywords}
+									onSelect={() => handleSelect(item)}
+								>
 									{@render itemSnippet(item)}
 								</Command.Item>
 							{/if}

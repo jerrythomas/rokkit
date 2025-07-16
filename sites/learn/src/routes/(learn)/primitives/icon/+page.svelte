@@ -80,7 +80,7 @@
 		</div>
 	</div>
 
-	<div data-content-block class="border-amber-subtle bg-amber-inset">
+	<div data-content-block class="border-amber-z2 bg-amber-z1">
 		<div class="flex items-start space-x-3">
 			<div class="text-2xl">♿</div>
 			<div>

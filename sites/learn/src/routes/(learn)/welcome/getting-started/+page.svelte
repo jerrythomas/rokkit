@@ -56,7 +56,7 @@
 
 	<h3>
 		<span
-			class="bg-primary-inset text-primary-overlay mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+			class="bg-primary-z1 text-primary-z8 mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
 			>1</span
 		>
 		Add UnoCSS to your SvelteKit project
@@ -77,7 +77,7 @@
 
 	<h3>
 		<span
-			class="bg-primary-inset text-primary-overlay mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+			class="bg-primary-z1 text-primary-z8 mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
 			>2</span
 		>
 		Clone the Quick Start Template
@@ -89,7 +89,7 @@
 
 	<h3>
 		<span
-			class="bg-primary-inset text-primary-overlay mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+			class="bg-primary-z1 text-primary-z8 mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
 			>3</span
 		>
 		Try Your First Component
@@ -113,7 +113,7 @@
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			<a
 				href="/elements/list"
-				class="bg-neutral-base border-primary-subtle rounded-lg border p-4 transition-shadow hover:shadow-md"
+				class="bg-neutral-base border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
 			>
 				<div class="mb-2 text-2xl">📋</div>
 				<h4>Elements</h4>
@@ -122,7 +122,7 @@
 
 			<a
 				href="/primitives/icon"
-				class="bg-neutral-base border-primary-subtle rounded-lg border p-4 transition-shadow hover:shadow-md"
+				class="bg-neutral-base border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
 			>
 				<div class="mb-2 text-2xl">🧩</div>
 				<h4>Primitives</h4>
@@ -131,7 +131,7 @@
 
 			<a
 				href="/forms/inputs"
-				class="bg-neutral-base border-primary-subtle rounded-lg border p-4 transition-shadow hover:shadow-md"
+				class="bg-neutral-base border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
 			>
 				<div class="mb-2 text-2xl">📝</div>
 				<h4>Forms</h4>

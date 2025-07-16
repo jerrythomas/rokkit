@@ -18,6 +18,7 @@
 		options = [false, true],
 		fields,
 		disabled = false,
+		square = false,
 		label = 'toggle',
 		onchange
 	} = $props()
@@ -44,7 +45,7 @@
 	}
 </script>
 
-<div data-toggle-root data-disabled={disabled} class={classes}>
+<div data-toggle-root data-disabled={disabled} data-square={square} class={classes}>
 	<button
 		use:keyboard={keyMappings}
 		onnext={() => toggle()}

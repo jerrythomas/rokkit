@@ -1,7 +1,7 @@
 <script>
 	import { Tabs } from '@rokkit/ui'
 	import Controls from './Controls.svelte'
-	
+
 	let items = ['Fruits', 'Vegetables', 'Nuts', 'Spices']
 	let value = $state(items[0])
 	let properties = $state([
@@ -13,16 +13,16 @@
 
 <Controls bind:properties />
 
-<Tabs 
-	{items} 
-	bind:value 
+<Tabs
+	{items}
+	bind:value
 	orientation={properties[0].value}
 	position={properties[1].value}
 	align={properties[2].value}
 >
-	<div class="p-6 space-y-3">
+	<div class="space-y-3 p-6">
 		<h3 class="text-lg font-semibold">Selected: {value}</h3>
-		<p class="text-neutral-floating">
+		<p class="text-neutral-z7">
 			{#if value === 'Fruits'}
 				🍎 Fresh apples, bananas, and seasonal berries
 			{:else if value === 'Vegetables'}

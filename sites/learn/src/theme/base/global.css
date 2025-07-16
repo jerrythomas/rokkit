@@ -1,0 +1,10 @@
+/* Global styles */
+*:focus {
+  @apply outline-secondary outline outline-2 outline-offset-2;
+}
+*[tabindex='-1']:focus {
+  @apply outline-none;
+}
+* {
+  @apply box-border;
+}

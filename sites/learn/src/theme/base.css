@@ -1,46 +1,14 @@
-/* Global styles */
-*:focus {
-  @apply outline-secondary outline outline-2 outline-offset-2;
-}
-*[tabindex='-1']:focus {
-  @apply outline-none;
-}
-* {
-  @apply box-border;
-}
-
-/* Icon styles */
-[data-tag-icon] {
-  @apply flex flex-shrink-0 flex-grow-0 items-center justify-center;
-  /* @apply h-6 min-h-6 w-6; */
-}
-/* button > [data-tag-icon] {
-  @apply text-md aspect-square cursor-pointer select-none;
-} */
-[data-tag-icon] > i {
-  @apply f mx-auto aspect-square text-current;
-}
-[data-tag-icon][data-size='large'] > i,
-[data-tag-icon][data-size='lg'] > i {
-  @apply text-2xl;
-}
-[data-tag-icon][data-size='medium'] > i,
-[data-tag-icon][data-size='md'] > i {
-  @apply text-lg leading-5;
-}
-[data-tag-icon][data-size='small'] > i,
-[data-tag-icon][data-size='sm'] > i {
-  @apply text-sm leading-4;
-}
-button > [data-tag-icon].large {
-  @apply h-12 w-12;
-}
-button > [data-tag-icon].medium {
-  @apply h-8 w-8;
-}
-button > [data-tag-icon].small {
-  @apply h-6 w-6;
-}
+@import './base/global.css';
+@import './base/icon.css';
+@import './base/input.css';
+@import './base/button.css';
+@import './base/global.css';
+@import './base/typography.css';
+@import './base/shiki.css';
+@import './base/forms.css';
+@import './base/tab.css';
+@import './base/list.css';
+@import './base/article.css';
 
 [data-story-root] {
   @apply space-y-8;

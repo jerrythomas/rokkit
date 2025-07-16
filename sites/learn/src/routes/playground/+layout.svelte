@@ -15,6 +15,6 @@
 
 <style>
 	[data-playground-root] > header {
-		@apply border-neutral-subtle bg-neutral-subtle space-y-2 border-b px-6 py-8;
+		@apply border-neutral-z2 bg-neutral-z2 space-y-2 border-b px-6 py-8;
 	}
 </style>

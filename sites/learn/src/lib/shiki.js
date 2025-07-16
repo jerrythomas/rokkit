@@ -55,10 +55,12 @@ export async function highlightCode(code, options = {}) {
 		const lang = options.lang
 		const theme = options.theme
 
-		return hl.codeToHtml(code, {
-			lang,
-			theme
-		})
+		return hl
+			.codeToHtml(code, {
+				lang,
+				theme
+			})
+			.replace(/(<pre[^>]+) style=".*?"/, '$1')
 	} catch (error) {
 		throw new Error(`Failed to highlight code: ${error.message}`)
 	}

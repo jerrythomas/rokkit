@@ -57,22 +57,22 @@
 	<h1>Customization</h1>
 	<p>
 		The Rokkit library allows users to customize the palette by calling the <code
-			class="bg-neutral-elevated rounded px-2 py-1">themeRules(themename, mapping, colors)</code
+			class="bg-neutral-z6 rounded px-2 py-1">themeRules(themename, mapping, colors)</code
 		> function.
 	</p>
 
 	<h1>Function Parameters</h1>
 	<ul class="space-y-3">
 		<li>
-			<strong class="text-primary-overlay">themename</strong>: Name of the theme to be customized
+			<strong class="text-primary-z8">themename</strong>: Name of the theme to be customized
 		</li>
 		<li>
-			<strong class="text-primary-overlay">mapping</strong>: A map that provides overrides for
-			specific colors in the palette
+			<strong class="text-primary-z8">mapping</strong>: A map that provides overrides for specific
+			colors in the palette
 		</li>
 		<li>
-			<strong class="text-primary-overlay">colors</strong>: An object containing standard defaults
-			for all palette colors
+			<strong class="text-primary-z8">colors</strong>: An object containing standard defaults for
+			all palette colors
 		</li>
 	</ul>
 
@@ -81,10 +81,10 @@
 
 	<h1>Integration</h1>
 	<p>
-		You can include the call to the <code class="bg-neutral-elevated rounded px-1">themeRules</code>
+		You can include the call to the <code class="bg-neutral-z6 rounded px-1">themeRules</code>
 		function in your
-		<code class="bg-neutral-elevated rounded px-1">uno.config.js</code> in the rules section to apply
-		the custom theme to your application.
+		<code class="bg-neutral-z6 rounded px-1">uno.config.js</code> in the rules section to apply the custom
+		theme to your application.
 	</p>
 
 	<!-- Next Steps -->

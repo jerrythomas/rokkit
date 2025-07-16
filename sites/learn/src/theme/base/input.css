@@ -1,0 +1,36 @@
+/* Custom range slider styling */
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: rgba(var(--primary-500));
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: rgba(var(--primary-500));
+  cursor: pointer;
+  border: none;
+}
+
+/* Autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--neutral-200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+select {
+  @apply bg-neutral-z4 text-neutral-z8 hover:text-primary-z6 flex min-h-10 min-w-10 rounded-md px-4;
+}

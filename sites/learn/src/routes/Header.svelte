@@ -28,7 +28,7 @@
 </script>
 
 <header
-	class="bg-neutral-inset text-neutral-overlay relative flex min-h-14 w-full items-center justify-between {className}"
+	class="bg-neutral-z1 text-neutral-z8 relative flex min-h-14 w-full items-center justify-between {className}"
 >
 	{#if loading}
 		<ProgressBar class="z-5 absolute top-0" />
@@ -56,7 +56,7 @@
 			{/each}
 		</nav>
 		<ThemeSwitcher />
-		<a href="https://github.com/jerrythomas/rokkit" target="_blank" class="square button">
+		<a href="https://github.com/jerrythomas/rokkit" target="_blank" data-button-root>
 			<Icon name="i-logo:github" label="Rokkit on Github" />
 		</a>
 	</settings>

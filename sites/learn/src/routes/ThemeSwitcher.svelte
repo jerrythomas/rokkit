@@ -18,4 +18,4 @@
 
 <!-- <InputSelect options={themes} bind:value={currentTheme} onchange={handleThemeChange}></InputSelect> -->
 
-<ToggleThemeMode />
+<ToggleThemeMode square />

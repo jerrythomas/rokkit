@@ -7,30 +7,34 @@
 </script>
 
 <div class="space-y-6">
-	<div class="bg-neutral-subtle rounded-lg p-4">
-		<h3 class="font-semibold mb-2">Field Mapping Configuration</h3>
+	<div class="bg-neutral-z2 rounded-lg p-4">
+		<h3 class="mb-2 font-semibold">Field Mapping Configuration</h3>
 		<pre class="text-sm"><code>{JSON.stringify(fields, null, 2)}</code></pre>
 	</div>
 
 	<Tabs items={options} {fields} bind:value>
-		<div class="p-6 space-y-4">
+		<div class="space-y-4 p-6">
 			{#if value}
 				<div class="flex items-center gap-4">
-					<img src={value.photo} alt={value.name} class="w-16 h-16 object-cover rounded-lg" />
+					<img src={value.photo} alt={value.name} class="h-16 w-16 rounded-lg object-cover" />
 					<div>
 						<h3 class="text-lg font-semibold">{value.name}</h3>
-						<p class="text-neutral-floating text-sm">
-							Photo by <a href={value.artist} target="_blank" class="underline hover:text-neutral-overlay">photographer</a>
+						<p class="text-neutral-z7 text-sm">
+							Photo by <a
+								href={value.artist}
+								target="_blank"
+								class="hover:text-neutral-z8 underline">photographer</a
+							>
 						</p>
 					</div>
 				</div>
-				
-				<div class="bg-neutral-subtle rounded-lg p-4">
-					<h4 class="font-semibold mb-2">Selected Value</h4>
+
+				<div class="bg-neutral-z2 rounded-lg p-4">
+					<h4 class="mb-2 font-semibold">Selected Value</h4>
 					<pre class="text-sm">{JSON.stringify(value, null, 2)}</pre>
 				</div>
 			{:else}
-				<p class="text-neutral-floating">Select a tab to see the mapped field values</p>
+				<p class="text-neutral-z7">Select a tab to see the mapped field values</p>
 			{/if}
 		</div>
 	</Tabs>

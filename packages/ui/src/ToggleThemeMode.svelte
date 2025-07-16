@@ -3,7 +3,11 @@
 	import { vibe } from '@rokkit/states'
 	import Toggle from './Toggle.svelte'
 
-	let { icons = defaultStateIcons.mode, labels = ['Light Mode', 'Dark Mode'] } = $props()
+	let {
+		icons = defaultStateIcons.mode,
+		labels = ['Light Mode', 'Dark Mode'],
+		square = false
+	} = $props()
 
 	const options = $state([
 		{ label: labels[0], value: 'light', icon: icons.light },
@@ -16,4 +20,4 @@
 	}
 </script>
 
-<Toggle {value} {options} onchange={update} />
+<Toggle {value} {options} onchange={update} {square} />

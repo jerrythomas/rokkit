@@ -4,7 +4,7 @@
 	let { properties } = $props()
 </script>
 
-<aside class="bg-neutral-subtle mb-6 flex justify-center gap-4 py-2">
+<aside class="bg-neutral-z2 mb-6 flex justify-center gap-4 py-2">
 	{#each properties as opt, index (index)}
 		<div class="flex items-center gap-2 px-2">
 			<p>{opt.label}</p>

@@ -3,6 +3,9 @@
 exports[`Button > should render snippets 1`] = `
 <button
   aria-label="Left"
+  data-button-root=""
+  data-disabled="false"
+  data-variant="default"
   type="button"
 >
   <!---->
@@ -30,6 +33,9 @@ exports[`Button > should render snippets 1`] = `
 exports[`Button > should render snippets 2`] = `
 <button
   aria-label="Right icon"
+  data-button-root=""
+  data-disabled="false"
+  data-variant="default"
   type="button"
 >
   <!---->
@@ -56,6 +62,9 @@ exports[`Button > should render snippets 2`] = `
 
 exports[`Button > should render snippets 3`] = `
 <button
+  data-button-root=""
+  data-disabled="false"
+  data-variant="default"
   type="button"
 >
   <!---->
@@ -79,6 +88,9 @@ exports[`Button > should render with icons 1`] = `
 <div>
   <button
     aria-label="Click me"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="default"
     type="button"
   >
     <!---->
@@ -100,6 +112,9 @@ exports[`Button > should render with icons 2`] = `
 <div>
   <button
     aria-label="Click me"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="default"
     type="button"
   >
     <icon
@@ -133,6 +148,9 @@ exports[`Button > should render with icons 3`] = `
 <div>
   <button
     aria-label="Click me"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="default"
     type="button"
   >
     <icon
@@ -178,6 +196,9 @@ exports[`Button > should render with icons 4`] = `
 <div>
   <button
     aria-label="Click me"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="default"
     type="button"
   >
     <!---->
@@ -211,6 +232,9 @@ exports[`Button > should render with label 1`] = `
 <div>
   <button
     aria-label="Click me"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="default"
     type="button"
   >
     <!---->
@@ -232,6 +256,9 @@ exports[`Button > should render with label 2`] = `
 <div>
   <button
     aria-label="This is a description"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="default"
     type="button"
   >
     <!---->
@@ -253,7 +280,9 @@ exports[`Button > should render with variant "primary" 1`] = `
 <div>
   <button
     aria-label="Click me"
-    class="primary"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="primary"
     type="button"
   >
     <!---->
@@ -275,7 +304,9 @@ exports[`Button > should render with variant "secondary" 1`] = `
 <div>
   <button
     aria-label="Click me"
-    class="secondary"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="secondary"
     type="button"
   >
     <!---->
@@ -297,7 +328,9 @@ exports[`Button > should render with variant "tertiary" 1`] = `
 <div>
   <button
     aria-label="Click me"
-    class="tertiary"
+    data-button-root=""
+    data-disabled="false"
+    data-variant="tertiary"
     type="button"
   >
     <!---->

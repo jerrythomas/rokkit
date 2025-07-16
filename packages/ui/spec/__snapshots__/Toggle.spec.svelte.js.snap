@@ -3,6 +3,7 @@
 exports[`Toggle > should render 1`] = `
 <div
   data-disabled="false"
+  data-square="false"
   data-toggle-root=""
 >
   <button
@@ -48,6 +49,7 @@ exports[`Toggle > should switch options on click 1`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -71,6 +73,7 @@ exports[`Toggle > should switch options on click 2`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -94,6 +97,7 @@ exports[`Toggle > should switch options on click 3`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -117,6 +121,7 @@ exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -140,6 +145,7 @@ exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -163,6 +169,7 @@ exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -186,6 +193,7 @@ exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -209,6 +217,7 @@ exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -232,6 +241,7 @@ exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -255,6 +265,7 @@ exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -278,6 +289,7 @@ exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -301,6 +313,7 @@ exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -324,6 +337,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -347,6 +361,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button
@@ -370,6 +385,7 @@ exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
 <div>
   <div
     data-disabled="false"
+    data-square="false"
     data-toggle-root=""
   >
     <button

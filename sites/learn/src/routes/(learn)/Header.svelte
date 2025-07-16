@@ -12,7 +12,7 @@
 	let { icon, title, description, breadcrumbs } = $props()
 </script>
 
-<header class="border-neutral-subtle bg-neutral-subtle">
+<header class="border-neutral-z2 bg-neutral-z2">
 	<div class="max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 		<div>
 			{#if breadcrumbs && breadcrumbs.length > 0}

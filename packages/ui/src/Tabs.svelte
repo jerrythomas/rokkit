@@ -108,10 +108,10 @@
 {/snippet}
 
 <div
-	data-tab-root
-	data-tab-orientation={orientation}
-	data-tab-position={position}
-	data-tab-align={align}
+	data-tabs-root
+	data-orientation={orientation}
+	data-position={position}
+	data-align={align}
 	class={classes}
 	role="tablist"
 	aria-label={name}
@@ -119,13 +119,13 @@
 	{tabindex}
 	onaction={handleAction}
 >
-	<div data-tab-list>
+	<div data-tabs-list>
 		{#each proxyItems as item, index (index)}
 			{@const key = getKeyFromPath([index])}
 			{@const isSelected = equals(item.value, value)}
 			{@const isFocused = wrapper.focusedKey === key}
 			<div
-				data-tab-item
+				data-tabs-trigger
 				data-path={getKeyFromPath([index])}
 				role="tab"
 				aria-selected={isSelected}
@@ -150,15 +150,15 @@
 	</div>
 
 	<!-- Tab Content -->
-	<div data-tab-content role="tabpanel">
+	<div data-tabs-content role="tabpanel">
 		{#if proxyItems.length === 0}
-			<div data-tab-empty>
+			<div data-empty>
 				{@render emptyMessage()}
 			</div>
 		{:else if activeItem}
 			{@render childrenSnippet(activeItem)}
 		{:else}
-			<div data-tab-content-placeholder>
+			<div data-placeholder>
 				{placeholder}
 			</div>
 		{/if}

@@ -5,6 +5,7 @@ import { flushSync } from 'svelte'
 import CustomTabs from './mocks/CustomTabs.svelte'
 
 describe('Tabs', () => {
+	const rootSelector = '[data-tabs-root]'
 	const items = [
 		{ text: 'Tab 1', content: 'Content 1', id: 'tab1' },
 		{ text: 'Tab 2', content: 'Content 2', id: 'tab2' },
@@ -45,8 +46,8 @@ describe('Tabs', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		const tabRoot = container.querySelector('[data-tab-root]')
-		expect(tabRoot.getAttribute('data-tab-orientation')).toBe('horizontal')
+		const tabRoot = container.querySelector(rootSelector)
+		expect(tabRoot.getAttribute('data-orientation')).toBe('horizontal')
 	})
 
 	it('should render with vertical orientation', () => {
@@ -55,8 +56,8 @@ describe('Tabs', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		const tabRoot = container.querySelector('[data-tab-root]')
-		expect(tabRoot.getAttribute('data-tab-orientation')).toBe('vertical')
+		const tabRoot = container.querySelector(rootSelector)
+		expect(tabRoot.getAttribute('data-orientation')).toBe('vertical')
 	})
 
 	it('should render with different positions', () => {
@@ -65,8 +66,8 @@ describe('Tabs', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		const tabRoot = container.querySelector('[data-tab-root]')
-		expect(tabRoot.getAttribute('data-tab-position')).toBe('after')
+		const tabRoot = container.querySelector(rootSelector)
+		expect(tabRoot.getAttribute('data-position')).toBe('after')
 	})
 
 	it('should render with different alignments', () => {
@@ -75,8 +76,8 @@ describe('Tabs', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		const tabRoot = container.querySelector('[data-tab-root]')
-		expect(tabRoot.getAttribute('data-tab-align')).toBe('center')
+		const tabRoot = container.querySelector(rootSelector)
+		expect(tabRoot.getAttribute('data-align')).toBe('center')
 	})
 
 	it('should render with selected value', () => {
@@ -136,7 +137,7 @@ describe('Tabs', () => {
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		const emptyState = container.querySelector('[data-tab-empty]')
+		const emptyState = container.querySelector('[data-empty]')
 		expect(emptyState.textContent).toContain('Custom empty state')
 	})
 
@@ -145,7 +146,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 
-		const tabRoot = container.querySelector('[data-tab-root]')
+		const tabRoot = container.querySelector(rootSelector)
 		expect(tabRoot.getAttribute('tabindex')).toBe('5')
 	})
 
@@ -154,7 +155,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 
-		const tabRoot = container.querySelector('[data-tab-root]')
+		const tabRoot = container.querySelector(rootSelector)
 		expect(tabRoot.getAttribute('aria-label')).toBe('navigation-tabs')
 	})
 
@@ -167,7 +168,7 @@ describe('Tabs', () => {
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 
-		const placeholder = container.querySelector('[data-tab-content-placeholder]')
+		const placeholder = container.querySelector('[data-placeholder]')
 		expect(placeholder.textContent).toBe('Please select a tab to view content')
 	})
 

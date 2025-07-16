@@ -78,7 +78,7 @@
 			</div>
 		</Tabs>
 	</div>
-	<div class="bg-neutral-subtle w-full md:w-[40ch]">
+	<div class="bg-neutral-z2 w-full md:w-[40ch]">
 		<h3 class="mb-0 mt-6 px-6">Configuration</h3>
 		<FormRenderer data={config} {schema} {layout} onupdate={handleConfigUpdate} class="pt-0" />
 	</div>

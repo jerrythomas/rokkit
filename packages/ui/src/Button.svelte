@@ -25,16 +25,12 @@
 		disabled = false,
 		onclick
 	} = $props()
-
-	const primary = $derived(variant === 'primary')
-	const secondary = $derived(variant === 'secondary')
-	const tertiary = $derived(variant === 'tertiary')
 </script>
 
 <button
-	class:primary
-	class:secondary
-	class:tertiary
+	data-button-root
+	data-variant={variant}
+	data-disabled={disabled}
 	class={classes}
 	{disabled}
 	{type}

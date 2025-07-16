@@ -61,9 +61,9 @@
 } */
 
 [data-input-root] input:not([type='checkbox']) {
-  @apply bg-neutral-base border-neutral-muted m-0 w-full rounded-md border px-3 py-1 leading-loose;
+  @apply bg-neutral-z1 border-neutral-z4 m-0 w-full rounded-md border px-3 py-1 leading-loose;
 }
 
 [data-form-root] {
-  @apply bg-neutral-subtle rounded-md p-6;
+  @apply bg-neutral-z3 rounded-md p-6;
 }

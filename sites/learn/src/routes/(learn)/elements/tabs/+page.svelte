@@ -82,96 +82,85 @@
 	<p>Complete reference of all available properties:</p>
 
 	<div class="overflow-x-auto">
-		<table class="border-neutral-subtle w-full border-collapse border">
-			<thead class="bg-neutral-subtle">
+		<table class="border-neutral-z2 w-full border-collapse border">
+			<thead class="bg-neutral-z2">
 				<tr>
-					<th class="border-neutral-subtle border p-3 text-left">Property</th>
-					<th class="border-neutral-subtle border p-3 text-left">Type</th>
-					<th class="border-neutral-subtle border p-3 text-left">Default</th>
-					<th class="border-neutral-subtle border p-3 text-left">Description</th>
+					<th class="border-neutral-z2 border p-3 text-left">Property</th>
+					<th class="border-neutral-z2 border p-3 text-left">Type</th>
+					<th class="border-neutral-z2 border p-3 text-left">Default</th>
+					<th class="border-neutral-z2 border p-3 text-left">Description</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">items</td>
-					<td class="border-neutral-subtle border p-3 text-sm">any[]</td>
-					<td class="border-neutral-subtle border p-3 text-sm">[]</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">items</td>
+					<td class="border-neutral-z2 border p-3 text-sm">any[]</td>
+					<td class="border-neutral-z2 border p-3 text-sm">[]</td>
+					<td class="border-neutral-z2 border p-3 text-sm"
 						>Array of tab items (strings or objects)</td
 					>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">value</td>
-					<td class="border-neutral-subtle border p-3 text-sm">any</td>
-					<td class="border-neutral-subtle border p-3 text-sm">null</td>
-					<td class="border-neutral-subtle border p-3 text-sm">Selected tab value (bindable)</td>
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">value</td>
+					<td class="border-neutral-z2 border p-3 text-sm">any</td>
+					<td class="border-neutral-z2 border p-3 text-sm">null</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Selected tab value (bindable)</td>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">fields</td>
-					<td class="border-neutral-subtle border p-3 text-sm">FieldMapping</td>
-					<td class="border-neutral-subtle border p-3 text-sm"></td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Field mappings for data extraction</td
-					>
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">fields</td>
+					<td class="border-neutral-z2 border p-3 text-sm">FieldMapping</td>
+					<td class="border-neutral-z2 border p-3 text-sm"></td>
+					<td class="border-neutral-z2 border p-3 text-sm">Field mappings for data extraction</td>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">orientation</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'horizontal' | 'vertical'</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'horizontal'</td>
-					<td class="border-neutral-subtle border p-3 text-sm">Layout direction of the tab bar</td>
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">orientation</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'horizontal' | 'vertical'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'horizontal'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Layout direction of the tab bar</td>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">position</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'before' | 'after'</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'before'</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">position</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'before' | 'after'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'before'</td>
+					<td class="border-neutral-z2 border p-3 text-sm"
 						>Position of tab bar relative to content</td
 					>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">align</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'start' | 'center' | 'end'</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'start'</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Alignment of tabs within the tab bar</td
-					>
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">align</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'start' | 'center' | 'end'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'start'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Alignment of tabs within the tab bar</td>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">editable</td>
-					<td class="border-neutral-subtle border p-3 text-sm">boolean</td>
-					<td class="border-neutral-subtle border p-3 text-sm">false</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Enable add/remove tab functionality</td
-					>
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">editable</td>
+					<td class="border-neutral-z2 border p-3 text-sm">boolean</td>
+					<td class="border-neutral-z2 border p-3 text-sm">false</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Enable add/remove tab functionality</td>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">placeholder</td>
-					<td class="border-neutral-subtle border p-3 text-sm">string</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'Select a tab...'</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Text shown when no tab is selected</td
-					>
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">placeholder</td>
+					<td class="border-neutral-z2 border p-3 text-sm">string</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'Select a tab...'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Text shown when no tab is selected</td>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">tabindex</td>
-					<td class="border-neutral-subtle border p-3 text-sm">number</td>
-					<td class="border-neutral-subtle border p-3 text-sm">0</td>
-					<td class="border-neutral-subtle border p-3 text-sm">Tab index for keyboard navigation</td
-					>
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">tabindex</td>
+					<td class="border-neutral-z2 border p-3 text-sm">number</td>
+					<td class="border-neutral-z2 border p-3 text-sm">0</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Tab index for keyboard navigation</td>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">name</td>
-					<td class="border-neutral-subtle border p-3 text-sm">string</td>
-					<td class="border-neutral-subtle border p-3 text-sm">'tabs'</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Name for accessibility (aria-label)</td
-					>
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">name</td>
+					<td class="border-neutral-z2 border p-3 text-sm">string</td>
+					<td class="border-neutral-z2 border p-3 text-sm">'tabs'</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Name for accessibility (aria-label)</td>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">class</td>
-					<td class="border-neutral-subtle border p-3 text-sm">string</td>
-					<td class="border-neutral-subtle border p-3 text-sm">''</td>
-					<td class="border-neutral-subtle border p-3 text-sm">Additional CSS class names</td>
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">class</td>
+					<td class="border-neutral-z2 border p-3 text-sm">string</td>
+					<td class="border-neutral-z2 border p-3 text-sm">''</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Additional CSS class names</td>
 				</tr>
 			</tbody>
 		</table>
@@ -182,51 +171,41 @@
 	<p>Available event handlers for user interactions:</p>
 
 	<div class="overflow-x-auto">
-		<table class="border-neutral-subtle w-full border-collapse border">
-			<thead class="bg-neutral-subtle">
+		<table class="border-neutral-z2 w-full border-collapse border">
+			<thead class="bg-neutral-z2">
 				<tr>
-					<th class="border-neutral-subtle border p-3 text-left">Event</th>
-					<th class="border-neutral-subtle border p-3 text-left">Parameters</th>
-					<th class="border-neutral-subtle border p-3 text-left">Description</th>
+					<th class="border-neutral-z2 border p-3 text-left">Event</th>
+					<th class="border-neutral-z2 border p-3 text-left">Parameters</th>
+					<th class="border-neutral-z2 border p-3 text-left">Description</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">onselect</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>(data: &#123;value, selected&#125;)</td
-					>
-					<td class="border-neutral-subtle border p-3 text-sm">Fired when a tab is selected</td>
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">onselect</td>
+					<td class="border-neutral-z2 border p-3 text-sm">(data: &#123;value, selected&#125;)</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Fired when a tab is selected</td>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">onchange</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>(data: &#123;value, selected&#125;)</td
-					>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Fired when the selected tab changes</td
-					>
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">onchange</td>
+					<td class="border-neutral-z2 border p-3 text-sm">(data: &#123;value, selected&#125;)</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Fired when the selected tab changes</td>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">onmove</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>(data: &#123;value, selected&#125;)</td
-					>
-					<td class="border-neutral-subtle border p-3 text-sm"
-						>Fired when focus moves between tabs</td
-					>
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">onmove</td>
+					<td class="border-neutral-z2 border p-3 text-sm">(data: &#123;value, selected&#125;)</td>
+					<td class="border-neutral-z2 border p-3 text-sm">Fired when focus moves between tabs</td>
 				</tr>
-				<tr class="bg-neutral-subtle/50">
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">onadd</td>
-					<td class="border-neutral-subtle border p-3 text-sm">()</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
+				<tr class="bg-neutral-z2/50">
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">onadd</td>
+					<td class="border-neutral-z2 border p-3 text-sm">()</td>
+					<td class="border-neutral-z2 border p-3 text-sm"
 						>Fired when add button is clicked (editable mode)</td
 					>
 				</tr>
 				<tr>
-					<td class="border-neutral-subtle border p-3 font-mono text-sm">onremove</td>
-					<td class="border-neutral-subtle border p-3 text-sm">(item: any)</td>
-					<td class="border-neutral-subtle border p-3 text-sm"
+					<td class="border-neutral-z2 border p-3 font-mono text-sm">onremove</td>
+					<td class="border-neutral-z2 border p-3 text-sm">(item: any)</td>
+					<td class="border-neutral-z2 border p-3 text-sm"
 						>Fired when a tab is removed (editable mode)</td
 					>
 				</tr>

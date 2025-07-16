@@ -4,15 +4,15 @@ exports[`Tabs > should render empty tabs 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <!---->
        
@@ -20,11 +20,11 @@ exports[`Tabs > should render empty tabs 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-empty=""
+        data-empty=""
       >
         No tabs available.
         <!---->
@@ -41,21 +41,21 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
   <div
     aria-label="tabs"
     class="custom-class"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -67,7 +67,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -79,7 +79,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -93,11 +93,11 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -113,21 +113,21 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
   <div
     aria-label="tabs"
     class="another-class"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -139,7 +139,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -151,7 +151,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -165,11 +165,11 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -185,21 +185,21 @@ exports[`Tabs > should render tabs with object array 1`] = `
   <div
     aria-label="tabs"
     class="custom-class"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -211,7 +211,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -223,7 +223,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -235,7 +235,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -249,11 +249,11 @@ exports[`Tabs > should render tabs with object array 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -271,21 +271,21 @@ exports[`Tabs > should render with custom content snippet 1`] = `
    
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -297,7 +297,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -309,7 +309,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -321,7 +321,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -335,11 +335,11 @@ exports[`Tabs > should render with custom content snippet 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -364,15 +364,15 @@ exports[`Tabs > should render with custom empty state 1`] = `
    
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <!---->
        
@@ -380,11 +380,11 @@ exports[`Tabs > should render with custom empty state 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-empty=""
+        data-empty=""
       >
         <div
           class="custom-empty-state"
@@ -408,21 +408,21 @@ exports[`Tabs > should render with custom header snippet 1`] = `
   <!---->
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         <div
@@ -438,7 +438,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         <div
@@ -454,7 +454,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         <div
@@ -470,7 +470,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         <div
@@ -488,11 +488,11 @@ exports[`Tabs > should render with custom header snippet 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -514,21 +514,21 @@ exports[`Tabs > should render with different alignments 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="center"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="center"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -540,7 +540,7 @@ exports[`Tabs > should render with different alignments 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -552,7 +552,7 @@ exports[`Tabs > should render with different alignments 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -564,7 +564,7 @@ exports[`Tabs > should render with different alignments 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -578,11 +578,11 @@ exports[`Tabs > should render with different alignments 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -597,21 +597,21 @@ exports[`Tabs > should render with different positions 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="after"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="after"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -623,7 +623,7 @@ exports[`Tabs > should render with different positions 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -635,7 +635,7 @@ exports[`Tabs > should render with different positions 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -647,7 +647,7 @@ exports[`Tabs > should render with different positions 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -661,11 +661,11 @@ exports[`Tabs > should render with different positions 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -680,21 +680,21 @@ exports[`Tabs > should render with editable tabs 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -722,7 +722,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -750,7 +750,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -778,7 +778,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -824,11 +824,11 @@ exports[`Tabs > should render with editable tabs 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -843,21 +843,21 @@ exports[`Tabs > should render with field mapping 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         First
@@ -869,7 +869,7 @@ exports[`Tabs > should render with field mapping 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Second
@@ -883,11 +883,11 @@ exports[`Tabs > should render with field mapping 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -902,21 +902,21 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -928,7 +928,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -940,7 +940,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -952,7 +952,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -966,11 +966,11 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>
@@ -985,21 +985,21 @@ exports[`Tabs > should render with selected value 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="horizontal"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="horizontal"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -1012,7 +1012,7 @@ exports[`Tabs > should render with selected value 1`] = `
         aria-selected="true"
         class="selected focused"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -1024,7 +1024,7 @@ exports[`Tabs > should render with selected value 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -1036,7 +1036,7 @@ exports[`Tabs > should render with selected value 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -1050,7 +1050,7 @@ exports[`Tabs > should render with selected value 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <!---->
@@ -1071,21 +1071,21 @@ exports[`Tabs > should render with vertical orientation 1`] = `
 <div>
   <div
     aria-label="tabs"
-    data-tab-align="start"
-    data-tab-orientation="vertical"
-    data-tab-position="before"
-    data-tab-root=""
+    data-align="start"
+    data-orientation="vertical"
+    data-position="before"
+    data-tabs-root=""
     role="tablist"
     tabindex="0"
   >
     <div
-      data-tab-list=""
+      data-tabs-list=""
     >
       <div
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 1
@@ -1097,7 +1097,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 2
@@ -1109,7 +1109,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 3
@@ -1121,7 +1121,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
-        data-tab-item=""
+        data-tabs-trigger=""
         role="tab"
       >
         Tab 4
@@ -1135,11 +1135,11 @@ exports[`Tabs > should render with vertical orientation 1`] = `
     </div>
      
     <div
-      data-tab-content=""
+      data-tabs-content=""
       role="tabpanel"
     >
       <div
-        data-tab-content-placeholder=""
+        data-placeholder=""
       >
         Select a tab to view its content.
       </div>

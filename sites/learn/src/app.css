@@ -8,20 +8,13 @@
 @import '@fontsource/open-sans';
 @import '@fontsource/open-sans/300.css';
 
-/* @import '@rokkit/themes/markdown.css'; */
 /* @import '@rokkit/themes/palette.css'; */
 /* @import '@rokkit/themes/prism.css'; */
 /* @import '@rokkit/themes/minimal.css'; */
 /* @import '@rokkit/themes/material.css'; */
 /* @import '@rokkit/themes/rokkit.css'; */
-@import './theme/typography.css';
-@import './theme/article.css';
 @import './theme/base.css';
-@import './theme/input.css';
-@import './theme/shiki.css';
-@import './theme/list.css';
-@import './theme/tab.css';
-@import './theme/forms.css';
+@import './theme/rokkit.css';
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
@@ -33,6 +26,3 @@ app {
 main {
   @apply flex-1;
 }
-/* input.embedded {
-  @apply border-box h-full w-full border-none bg-transparent focus:outline-none;
-} */

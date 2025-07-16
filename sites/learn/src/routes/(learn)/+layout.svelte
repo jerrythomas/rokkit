@@ -15,8 +15,8 @@
 </svelte:head>
 
 <Header {title} {description} {icon} />
-<div class="bg-neutral-inset grid w-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-4">
-	<div class="border-neutral-subtle overflow-y-auto border-r lg:col-span-1">
+<div class="bg-neutral-z1 grid w-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-4">
+	<div class="border-neutral-z2 overflow-y-auto border-r lg:col-span-1">
 		<Sidebar {sections} fields={data.fields} />
 	</div>
 

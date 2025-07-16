@@ -1,5 +1,7 @@
 <script>
-	let { content, floating = false, class: className = '' } = $props()
+	import { defaultStateIcons } from '@rokkit/core'
+	import { Icon, Button } from '@rokkit/ui'
+	let { content, class: className = 'absolute right-2 top-2 z-10', title = 'Copy code' } = $props()
 	let copySuccess = $state(false)
 
 	async function copyToClipboard() {
@@ -15,28 +17,10 @@
 	}
 </script>
 
-<button
-	onclick={copyToClipboard}
-	class="text-neutral-floating hover:text-neutral-overlay flex items-center justify-center transition-colors {className}"
-	class:absolute={floating}
-	class:top-2={floating}
-	class:right-2={floating}
-	class:z-10={floating}
-	title="Copy code"
->
+<Button onclick={copyToClipboard} class={className} {title}>
 	{#if copySuccess}
-		<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
-			></path>
-		</svg>
+		<Icon name={defaultStateIcons.action.copysuccess} />
 	{:else}
-		<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 002 2z"
-			></path>
-		</svg>
+		<Icon name={defaultStateIcons.action.copy} />
 	{/if}
-</button>
+</Button>

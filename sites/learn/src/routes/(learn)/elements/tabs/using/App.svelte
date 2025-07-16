@@ -8,9 +8,9 @@
 </script>
 
 <div class="space-y-6">
-	<div class="bg-neutral-subtle rounded-lg p-4">
-		<h3 class="font-semibold mb-2">Using Custom Snippets</h3>
-		<p class="text-sm text-neutral-floating">
+	<div class="bg-neutral-z2 rounded-lg p-4">
+		<h3 class="mb-2 font-semibold">Using Custom Snippets</h3>
+		<p class="text-neutral-z7 text-sm">
 			This example shows how to use custom snippets to render tab headers with images and text.
 		</p>
 	</div>
@@ -22,25 +22,29 @@
 				<span>{item.get('text')}</span>
 			</div>
 		{/snippet}
-		
-		<div class="p-6 space-y-4">
+
+		<div class="space-y-4 p-6">
 			{#if value}
 				<div class="flex items-center gap-4">
-					<img src={value.photo} alt={value.name} class="w-16 h-16 object-cover rounded-lg" />
+					<img src={value.photo} alt={value.name} class="h-16 w-16 rounded-lg object-cover" />
 					<div>
 						<h3 class="text-lg font-semibold">{value.name}</h3>
-						<p class="text-neutral-floating text-sm">
-							Photo by <a href={value.artist} target={value.target} class="underline hover:text-neutral-overlay">photographer</a>
+						<p class="text-neutral-z7 text-sm">
+							Photo by <a
+								href={value.artist}
+								target={value.target}
+								class="hover:text-neutral-z8 underline">photographer</a
+							>
 						</p>
 					</div>
 				</div>
-				
-				<div class="bg-neutral-subtle rounded-lg p-4">
-					<h4 class="font-semibold mb-2">Selected Value</h4>
+
+				<div class="bg-neutral-z2 rounded-lg p-4">
+					<h4 class="mb-2 font-semibold">Selected Value</h4>
 					<pre class="text-sm">{JSON.stringify(value, null, 2)}</pre>
 				</div>
 			{:else}
-				<p class="text-neutral-floating">Select a tab to see the custom rendering</p>
+				<p class="text-neutral-z7">Select a tab to see the custom rendering</p>
 			{/if}
 		</div>
 	</Tabs>

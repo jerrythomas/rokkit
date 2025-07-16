@@ -1,0 +1,159 @@
+/* Tab Component Styles */
+
+/* Tab Root Container */
+[data-tabs-root] {
+  @apply flex w-full flex-col gap-1;
+}
+
+/* Root Container - Orientation & Position */
+[data-tabs-root][data-orientation='horizontal'][data-position='after'] {
+  @apply flex-col-reverse;
+}
+
+[data-tabs-root][data-orientation='vertical'] {
+  @apply divide-neutral-z4 flex-row;
+}
+
+[data-tabs-root][data-orientation='vertical'][data-position='after'] {
+  @apply flex-row-reverse;
+}
+
+/* Tab List - Header Container */
+[data-tabs-list] {
+  @apply text-md flex;
+}
+[data-tabs-root] [data-tabs-content] {
+  @apply border-neutral-z4 bg-neutral-z3 rounded-md border-2 p-4;
+}
+
+/* Tab List - Orientation */
+[data-orientation='horizontal'] > [data-tabs-list] {
+  @apply border-neutral-z4 flex-row space-x-1 space-y-0 border-0;
+}
+
+[data-orientation='vertical'] > [data-tabs-list] {
+  @apply border-neutral-z4 min-w-fit flex-col space-x-0 space-y-1 border-0;
+}
+
+/* Tab List - Alignment */
+[data-align='start'] > [data-tabs-list] {
+  @apply justify-start;
+}
+
+[data-align='center'] > [data-tabs-list] {
+  @apply justify-center;
+}
+
+[data-align='end'] > [data-tabs-list] {
+  @apply justify-end;
+}
+
+/* Individual Tab Items */
+[data-tabs-trigger] {
+  @apply text-neutral-z7 rounded px-4 py-2;
+  @apply cursor-pointer select-none transition-all duration-200;
+  @apply bg-neutral-z3 flex items-center gap-2 focus:outline-none;
+}
+
+/* Tab Items - Selected States */
+[data-tabs-root] [data-tabs-trigger][aria-selected='true'] {
+  @apply from-neutral-z4 to-neutral-z4 text-neutral-z7;
+}
+[data-tabs-root]:focus-within [data-tabs-trigger][aria-selected='true'] {
+  @apply from-primary-z4 to-secondary-z4 text-neutral-z7;
+}
+
+[data-orientation='horizontal'][data-position='before'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-b;
+}
+[data-orientation='horizontal'][data-position='after'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-t;
+}
+[data-orientation='vertical'][data-position='before'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-r;
+}
+[data-orientation='vertical'][data-position='after'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-l;
+}
+
+[data-tabs-root]:focus-within {
+  @apply outline-none;
+}
+[data-tabs-root]:focus-within > [data-tabs-content],
+[data-tabs-root][data-orientation='vertical']:focus-within > [data-tabs-content] {
+  @apply border-secondary-z4;
+}
+
+/* Tab Add Button */
+/* [data-tabs-add] {
+  @apply text-neutral-z7 px-4 py-2;
+  @apply cursor-pointer select-none transition-colors;
+  @apply hover:text-neutral-z10 hover:bg-neutral-z1/50;
+} */
+
+/* Tab Remove Button */
+/* [data-tabs-remove] {
+  @apply text-neutral-z7 hover:text-error-z1 ml-2;
+  @apply transition-colors;
+} */
+
+/* Tab Content Area */
+[data-tabs-content] {
+  @apply flex flex-1;
+}
+
+/* Tab Content - Vertical Orientation */
+[data-tabs-root][data-orientation='vertical'] [data-tabs-content] {
+  @apply flex-1;
+}
+[data-tabs-content] > pre.shiki {
+  @apply my-0 py-0;
+}
+
+/* Default Tab Content */
+[data-tabs-content] {
+  @apply text-neutral-z10 p-4;
+}
+
+/* Content Placeholder */
+[data-placeholder] {
+  @apply text-neutral-z7 p-4 text-center;
+}
+
+/* Empty State */
+[data-empty] {
+  @apply text-neutral-z7 bg-neutral-z3 flex flex-1 items-center justify-center p-4;
+}
+
+/* [data-tabs-empty-container] {
+  @apply w-full;
+} */
+
+/* Tab Item Focus States */
+/* [data-tabs-trigger]:focus {
+  @apply ring-accent-z1 outline-none ring-2 ring-offset-2;
+} */
+
+/* Tab Item Disabled State */
+[data-tabs-trigger][data-disabled] {
+  @apply cursor-not-allowed opacity-50;
+}
+
+/* Tab Item Active State Enhancement */
+[data-tabs-trigger][data-selected='true'] {
+  @apply font-medium;
+}
+[data-tabs-list] [data-icon-add],
+[data-tabs-list] [data-icon-remove] {
+  @apply focus:text-neutral-z10 focus:bg-primary text-xl focus:outline-none;
+}
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  [data-tabs-trigger] {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  [data-tabs-content-default] {
+    @apply p-3;
+  }
+}

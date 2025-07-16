@@ -39,6 +39,7 @@ export const defaultIcons = [
 	'action-search',
 	'action-close',
 	'action-copy',
+	'action-copysuccess',
 	'node-opened',
 	'node-closed',
 	'selector-opened',
@@ -112,15 +113,25 @@ export const defaultThemeMapping = {
 }
 
 export const TONE_MAP = {
-	base: 50,
-	inset: 100,
-	subtle: 200,
-	muted: 300,
-	raised: 400,
-	elevated: 600,
-	floating: 700,
-	contrast: 800,
-	overlay: 900
+	z1: 50,
+	z2: 100,
+	z3: 200,
+	z4: 300,
+	z5: 500,
+	z6: 600,
+	z7: 700,
+	z8: 800,
+	z9: 900,
+	z10: 950
+	// base: 50,
+	// inset: 100,
+	// subtle: 200,
+	// muted: 300,
+	// raised: 400,
+	// elevated: 600,
+	// floating: 700,
+	// contrast: 800,
+	// overlay: 900
 }
 /**
  * Splits an icon name into its group and key components.

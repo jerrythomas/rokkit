@@ -6,15 +6,15 @@ exports[`Category.svelte > should render using default props 1`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="start"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="start"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -22,11 +22,11 @@ exports[`Category.svelte > should render using default props 1`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -55,15 +55,15 @@ exports[`Category.svelte > should render using specified class 1`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="start"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="start"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -71,11 +71,11 @@ exports[`Category.svelte > should render using specified class 1`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -104,15 +104,15 @@ exports[`Category.svelte > should render using specified class 2`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="start"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="start"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -120,11 +120,11 @@ exports[`Category.svelte > should render using specified class 2`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -151,15 +151,15 @@ exports[`Category.svelte > should render using specified type 1`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="start"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="start"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -167,11 +167,11 @@ exports[`Category.svelte > should render using specified type 1`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -198,15 +198,15 @@ exports[`Category.svelte > should render using specified type 2`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="start"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="start"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -214,11 +214,11 @@ exports[`Category.svelte > should render using specified type 2`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -324,15 +324,15 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="start"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="start"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -340,11 +340,11 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -371,15 +371,15 @@ exports[`Category.svelte > should render with extra props 1`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="center"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="center"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -387,11 +387,11 @@ exports[`Category.svelte > should render with extra props 1`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->
@@ -418,15 +418,15 @@ exports[`Category.svelte > should render with extra props 2`] = `
     <!---->
     <div
       aria-label="tabs"
-      data-tab-align="right"
-      data-tab-orientation="horizontal"
-      data-tab-position="before"
-      data-tab-root=""
+      data-align="right"
+      data-orientation="horizontal"
+      data-position="before"
+      data-tabs-root=""
       role="tablist"
       tabindex="0"
     >
       <div
-        data-tab-list=""
+        data-tabs-list=""
       >
         <!---->
          
@@ -434,11 +434,11 @@ exports[`Category.svelte > should render with extra props 2`] = `
       </div>
        
       <div
-        data-tab-content=""
+        data-tabs-content=""
         role="tabpanel"
       >
         <div
-          data-tab-empty=""
+          data-empty=""
         >
           No tabs available.
           <!---->

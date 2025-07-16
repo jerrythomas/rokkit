@@ -23,15 +23,15 @@
 	let { sections, fields } = $props()
 </script>
 
-<nav class="flex w-full flex-1">
+<nav class="flex w-full flex-1" data-sidebar>
 	<GroupedList items={sections} {fields}>
 		{#snippet child(proxy)}
 			<div class="flex w-full flex-col">
 				<div class="flex items-center gap-3">
-					<div class="text-primary-600 dark:text-primary-400 text-xl">
+					<div class="text-xl">
 						{proxy.get('icon')}
 					</div>
-					<h3 class="text-neutral-overlay text-sm font-medium">
+					<h3 class="text-sm font-medium">
 						{proxy.get('text')}
 					</h3>
 				</div>

@@ -283,18 +283,15 @@ describe('theme', () => {
 describe('semanticShortcuts', () => {
 	it('should generate shortcuts for secondary color', () => {
 		const shortcuts = semanticShortcuts('secondary')
-		expect(shortcuts.length).toBe(9 * 2 * 8)
-		expect(shortcuts[0]).toEqual([/^(.+):bg-secondary-base$/, expect.any(Function)])
-		expect(shortcuts[1]).toEqual(['bg-secondary-base', 'bg-secondary-50 dark:bg-secondary-950'])
-		expect(shortcuts[2]).toEqual([/^(.+):border-secondary-base$/, expect.any(Function)])
+		expect(shortcuts.length).toBe(10 * 2 * 8)
+		expect(shortcuts[0]).toEqual([/^(.+):bg-secondary-z1$/, expect.any(Function)])
+		expect(shortcuts[1]).toEqual(['bg-secondary-z1', 'bg-secondary-50 dark:bg-secondary-950'])
+		expect(shortcuts[2]).toEqual([/^(.+):border-secondary-z1$/, expect.any(Function)])
 		expect(shortcuts[3]).toEqual([
-			'border-secondary-base',
+			'border-secondary-z1',
 			'border-secondary-50 dark:border-secondary-950'
 		])
-		expect(shortcuts[4]).toEqual([/^(.+):text-secondary-base$/, expect.any(Function)])
-		expect(shortcuts[5]).toEqual([
-			'text-secondary-base',
-			'text-secondary-50 dark:text-secondary-950'
-		])
+		expect(shortcuts[4]).toEqual([/^(.+):text-secondary-z1$/, expect.any(Function)])
+		expect(shortcuts[5]).toEqual(['text-secondary-z1', 'text-secondary-50 dark:text-secondary-950'])
 	})
 })
