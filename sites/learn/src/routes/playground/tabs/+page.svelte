@@ -41,7 +41,7 @@
 </script>
 
 <!-- Main content with responsive layout -->
-<div data-panel-body class=" flex w-full flex-col gap-6 p-8 lg:flex-row">
+<div data-panel-body class="bg-neutral-z1 flex w-full flex-col gap-6 p-8 lg:flex-row">
 	<!-- Preview Panel -->
 	<div data-panel-preview class="bg-neutral-z1 flex flex-1 flex-col rounded-lg lg:basis-4/5">
 		<h2 class="text-neutral-z8 mb-4 text-xl font-semibold">Live Preview</h2>

@@ -43,7 +43,7 @@
 		name = 'tabs',
 		items = $bindable([]),
 		fields = {},
-		value = $bindable(null),
+		value = $bindable(),
 		orientation = 'horizontal',
 		align = 'start',
 		position = 'before',

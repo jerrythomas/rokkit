@@ -67,3 +67,7 @@
 [data-form-root] {
   @apply bg-neutral-z3 rounded-md p-6;
 }
+
+[data-form-root] label {
+  @apply text-neutral-z7;
+}
