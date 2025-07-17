@@ -1,0 +1,107 @@
+/* Tab Component Styles - Colors & Spacing */
+
+/* Tab Root Container */
+[data-tabs-root] {
+  @apply gap-1;
+}
+
+/* Root Container - Orientation & Position */
+[data-tabs-root][data-orientation='vertical'] {
+  @apply divide-neutral-z4;
+}
+
+/* Tab List - Header Container */
+[data-tabs-list] {
+  @apply text-md;
+}
+[data-tabs-root] [data-tabs-content] {
+  @apply border-neutral-z4 bg-neutral-z3 rounded-md border-2 p-4;
+}
+
+/* Tab List - Orientation */
+[data-orientation='horizontal'] > [data-tabs-list] {
+  @apply border-neutral-z4 border-0;
+}
+
+[data-orientation='vertical'] > [data-tabs-list] {
+  @apply border-neutral-z4 border-0;
+}
+
+/* Individual Tab Items */
+[data-tabs-trigger] {
+  @apply text-neutral-z7 rounded px-4 py-2;
+  @apply bg-neutral-z3 gap-2 focus:outline-none;
+}
+
+/* Tab Items - Selected States */
+[data-tabs-root] [data-tabs-trigger][aria-selected='true'] {
+  @apply from-neutral-z4 to-neutral-z4 text-neutral-z7;
+}
+[data-tabs-root]:focus-within [data-tabs-trigger][aria-selected='true'] {
+  @apply from-primary-z5 to-secondary-z5 text-on-primary;
+}
+
+/* Tab Items - Gradient Colors */
+[data-orientation='horizontal'][data-position='before'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-b;
+}
+[data-orientation='horizontal'][data-position='after'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-t;
+}
+[data-orientation='vertical'][data-position='before'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-r;
+}
+[data-orientation='vertical'][data-position='after'] [data-tabs-trigger][aria-selected='true'] {
+  @apply bg-gradient-to-l;
+}
+
+[data-tabs-root]:focus-within {
+  @apply outline-none;
+}
+[data-tabs-root]:focus-within > [data-tabs-content],
+[data-tabs-root][data-orientation='vertical']:focus-within > [data-tabs-content] {
+  @apply border-secondary;
+}
+
+[data-tabs-content] > pre.shiki {
+  @apply my-0 py-0;
+}
+
+/* Default Tab Content */
+[data-tabs-content] {
+  @apply text-neutral-z10 p-4;
+}
+
+/* Content Placeholder */
+[data-placeholder] {
+  @apply text-neutral-z7 p-4;
+}
+
+/* Empty State */
+[data-empty] {
+  @apply text-neutral-z7 bg-neutral-z3 p-4;
+}
+
+/* [data-tabs-empty-container] {
+  @apply w-full;
+} */
+
+/* Tab Item Focus States */
+/* [data-tabs-trigger]:focus {
+  @apply ring-accent-z1 outline-none ring-2 ring-offset-2;
+} */
+
+[data-tabs-list] [data-icon-add],
+[data-tabs-list] [data-icon-remove] {
+  @apply focus:text-neutral-z10 focus:bg-primary text-xl focus:outline-none;
+}
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  [data-tabs-trigger] {
+    @apply px-3 py-1.5;
+  }
+
+  [data-tabs-content-default] {
+    @apply p-3;
+  }
+}

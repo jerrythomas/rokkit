@@ -1,0 +1,154 @@
+/* Article styles - Colors & Spacing */
+
+[data-article-root] {
+  @apply space-y-8;
+}
+
+[data-article-root] header {
+  @apply border-neutral-z3 border-b;
+}
+
+/* Typography hierarchy - Colors & Spacing */
+[data-article-root] h1 {
+  @apply text-neutral-z10 text-3xl font-bold;
+  @apply border-neutral-z4 border-b;
+}
+
+[data-article-root] h2 {
+  @apply text-neutral-z10 border-neutral-z3 border-b text-2xl font-bold;
+}
+
+[data-article-root] h3 {
+  @apply text-neutral-z10 text-xl font-bold;
+}
+
+[data-article-root] h4 {
+  @apply text-neutral-z10 text-lg font-semibold;
+}
+
+[data-article-root] h5 {
+  @apply text-neutral-z10 text-lg font-semibold;
+}
+
+[data-article-root] h6 {
+  @apply text-neutral-z10 text-z1 font-semibold;
+}
+
+/* Paragraphs and text - Colors & Spacing */
+[data-article-root] p {
+  @apply text-neutral-z7 text-md;
+}
+
+/* Lists - Colors & Spacing */
+[data-article-root] li {
+  @apply text-neutral-z7 text-lg;
+}
+
+[data-article-root] ul li::before {
+  @apply bg-primary-500;
+}
+
+/* Sections - Colors & Spacing */
+[data-article-root] section[data-card-cta] {
+  @apply bg-neutral-z3 rounded-xl p-6;
+}
+
+[data-article-root] section > [data-content-block] {
+  @apply border-neutral-z4 rounded-lg border px-6;
+}
+
+[data-card-cta] {
+  @apply border-neutral-z4 space-y-4 rounded-lg border px-6;
+}
+/* Links - Colors & Spacing */
+[data-article-root] a {
+  @apply text-primary-500 hover:text-primary-600 transition-colors hover:underline;
+}
+
+/* Code - Colors & Spacing */
+[data-article-root] pre {
+  @apply font-mono rounded-lg border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800;
+}
+
+[data-article-root] pre code {
+  @apply bg-transparent text-sm;
+}
+
+/* Blockquotes - Colors & Spacing */
+[data-article-root] blockquote {
+  @apply border-primary-200 border-l-4 text-neutral-600 dark:text-neutral-400;
+}
+
+/* Tables - Colors & Spacing */
+[data-article-root] th {
+  @apply border border-neutral-200 bg-neutral-100 font-semibold dark:border-neutral-700 dark:bg-neutral-800;
+}
+
+[data-article-root] td {
+  @apply border border-neutral-200 dark:border-neutral-700;
+}
+
+/* Horizontal rules - Colors & Spacing */
+[data-article-root] hr {
+  @apply border-neutral-200 dark:border-neutral-700;
+}
+
+/* Images - Colors & Spacing */
+[data-article-root] img {
+  @apply rounded-lg;
+}
+
+/* Special content blocks - Colors & Spacing */
+[data-article-root] .rounded-lg {
+  @apply border border-neutral-200 dark:border-neutral-700;
+}
+
+/* Interactive elements */
+/* [data-article-root] .bg-primary-z10 {
+  @apply bg-primary-500 hover:bg-primary-600 focus:bg-primary-600;
+}
+
+[data-article-root] .text-primary-z10 {
+  @apply text-primary-500;
+}
+
+[data-article-root] .text-primary-z7 {
+  @apply text-primary-600;
+}
+
+[data-article-root] .border-primary-z3 {
+  @apply border-primary-200 dark:border-primary-700;
+}
+
+[data-article-root] .border-neutral-z3 {
+  @apply border-neutral-200 dark:border-neutral-700;
+} */
+
+/* Focus states for accessibility - Colors & Spacing */
+[data-article-root] a:focus,
+[data-article-root] button:focus {
+  @apply outline-primary-500;
+}
+
+[data-article-root] [data-card] {
+  @apply border-neutral-z3 bg-neutral-z3 rounded-lg border p-4;
+}
+
+[data-type-info] {
+  @apply bg-info-z3 rounded-md p-8;
+}
+
+/* Print styles - Colors & Spacing */
+@media print {
+  [data-article-root] {
+    @apply text-black;
+  }
+
+  [data-article-root] a {
+    @apply text-black;
+  }
+
+  [data-article-root] a::after {
+    @apply text-sm text-gray-600;
+  }
+}

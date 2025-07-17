@@ -6,9 +6,9 @@
 @import './base/typography.css';
 @import './base/shiki.css';
 @import './base/forms.css';
-@import './base/tab.css';
 @import './base/list.css';
 @import './base/article.css';
+@import './base/tab.css';
 
 [data-story-root] {
   @apply space-y-8;
