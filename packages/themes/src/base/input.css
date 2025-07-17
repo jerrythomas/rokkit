@@ -1,40 +1,3 @@
-/* Custom range slider styling */
-input[type='range']::-webkit-slider-thumb {
-  appearance: none;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  background: rgba(var(--primary-500));
-  cursor: pointer;
-}
-
-input[type='range']::-moz-range-thumb {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  background: rgba(var(--primary-500));
-  cursor: pointer;
-  border: none;
-}
-
-/* Autofill styles */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--neutral-200);
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-select {
-  @apply bg-neutral-z4 text-neutral-z8 hover:text-primary-z6 flex min-h-10 min-w-10 rounded-md px-4;
-}
-
 /* Layout Styles for InputField (base/input.css)
    - Only structure, spacing, sizing, flex, and layout-related properties
    - No colors, gradients, or theme tokens here
@@ -43,7 +6,8 @@ select {
 
 /* Root container: vertical stack, spacing, border radius, border width */
 [data-field-root] {
-  @apply box-border flex flex-col;
+  @apply flex flex-col gap-1 p-2 rounded-md border;
+  box-sizing: border-box;
 }
 
 /* Disabled state: layout only (theme handles color/cursor) */
@@ -59,18 +23,13 @@ select {
 /* Label: spacing and font size */
 [data-field-root] > label,
 [data-field] > label {
-  @apply mb-1 block text-xs leading-tight;
+  @apply mb-1 text-xs leading-tight;
+  display: block;
 }
 
-[data-field-type='number'] input,
-[data-field-type='integer'] input,
-[data-field-type='date'] input,
-[data-field-type='time'] input {
-  @apply text-right;
-}
 /* Input wrapper: horizontal layout for input and icon */
 [data-field] {
-  @apply flex min-h-8 items-center gap-2;
+  @apply flex items-center gap-2 min-h-8;
 }
 
 /* Icon inside input: size and alignment */
@@ -82,7 +41,8 @@ select {
 [data-field] input,
 [data-field] textarea,
 [data-field] select {
-  @apply min-w-0 flex-1;
+  @apply flex-1 min-w-0;
+  box-sizing: border-box;
 }
 
 /* Description below input */
@@ -98,8 +58,8 @@ select {
 /* Switch/checkbox label: inline with input */
 [data-field-type='switch'] > label,
 [data-field-type='checkbox'] > label {
-  /* @apply ml-2 inline-block; */
-  @apply flex items-center gap-2 leading-loose;
+  @apply ml-2;
+  display: inline-block;
 }
 
 /* Responsive adjustments */
@@ -108,10 +68,10 @@ select {
     @apply p-1;
   }
   [data-field] {
-    @apply min-h-7 gap-1;
+    @apply gap-1 min-h-7;
   }
   [data-description],
   [data-message] {
-    @apply text-sm;
+    @apply text-[11px];
   }
 }

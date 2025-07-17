@@ -1,24 +1,53 @@
-/* [data-style='rokkit'] [data-button-root] [data-tag-icon] {
-  @apply text-neutral-z8 hover:text-secondary-z4;
-} */
+/* Theme Styles for InputField (rokkit/input.css)
+   - Only colors, gradients, border colors, and theme tokens
+   - Uses data-attribute selectors, not tag or class names
+*/
 
-/* [data-style='rokkit'] [data-button-root] {
-  @apply hover:text-secondary-z9 text-neutral-z9 decoration-none flex items-center gap-2 rounded-md;
-} */
-/* [data-style='rokkit'] [data-button-root]:focus {
-  @apply from-primary to-secondary text-neutral-z9 bg-gradient-to-r outline-none;
-} */
-[data-style='rokkit'] [data-button-root]:disabled {
-  @apply text-neutral-z3 cursor-not-allowed;
+/* Pill/gradient border for inputs using [data-input-root] */
+[data-input-root] {
+  @apply bg-neutral-z4 flex items-center rounded-md p-[1px] transition-all;
+}
+[data-field-type='checkbox'] [data-field] {
+  @apply flex items-center leading-loose;
+}
+[data-input-root]:focus-within {
+  @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
+}
+[data-input-root] input,
+[data-input-root] textarea {
+  @apply bg-neutral-z3 rounded-full border-none outline-none transition-all;
 }
 
-/* [data-style='rokkit'] data-square,
-[data-style='rokkit'] data-square > button {
-  @apply bg-neutral-z2 flex min-h-10 min-w-10 items-center justify-center rounded-md;
-} */
-/* [data-style='rokkit'] [data-button-root]:focus-within {
-  @apply ring-secondary-z6 ring-2;
-} */
-[data-style='rokkit'] [data-primary] {
-  @apply from-primary-z5 to-secondary-z5 text-on-primary rounded-full bg-gradient-to-r px-4 py-1;
+/* Standard input field root (non-pill) */
+[data-field-root] {
+  @apply text-neutral-z9 gap-1 rounded-md p-2 transition-all;
+}
+
+/* Disabled state: muted colors, cursor */
+[data-field-root][data-field-disabled] [data-input-root] {
+  @apply bg-neutral-z3 text-neutral-z6 cursor-not-allowed;
+}
+[data-input-root][data-field-disabled] > label {
+  @apply text-neutral-z6;
+}
+
+/* Error state: error color, background */
+[data-field-root][data-field-state='fail'] [data-input-root] {
+  @apply bg-error/10 text-error;
+}
+
+/* Label: inherit text color (default) */
+[data-field-root] > label,
+[data-field] > label {
+  /* No color utility, inherit from parent */
+}
+
+/* Standard input/textarea/select inside [data-field-root] */
+[data-field] input:not([type='checkbox'], [type='radio']),
+[data-field] textarea,
+[data-field] select {
+  @apply bg-neutral-z3 text-neutral-z9 min-h-10 w-full rounded-md border-none px-3 transition-all focus:outline-none;
+}
+[data-field] textarea {
+  @apply resize-vertical min-h-20 py-2;
 }

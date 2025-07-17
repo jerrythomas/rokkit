@@ -1,8 +1,8 @@
 # Rokkit Development Progress
 
-## Current Phase: Forms System Development & Tutorial Implementation
+## Current Phase: Forms System Development, Tutorial Implementation & Input Styles Migration
 
-**Status**: Active Development - Forms system architecture implemented, progressive tutorial creation in progress
+**Status**: Active Development - Forms system architecture implemented, progressive tutorial creation in progress, input styles migration for InputField complete (see guidelines/styles.md, input.css)
 
 ## Foundation Status (✅ Completed)
 - [x] Svelte 5 migration with runes system
@@ -106,6 +106,11 @@
 2. **Select** - Tests field mapping complexity with bits-ui integration
 3. **Tree** - Custom implementation reference for components without bits-ui equivalents
 
+### Input Styles Migration (In Progress)
+| Task | Status | Notes |
+|------|--------|-------|
+| Input styles migration to theme/layout split | ✅ Complete | InputField styles refactored: theme/layout split, data-attribute selectors, guidelines added |
+
 ### Integration Strategy
 - **bits-ui Components**: Wrap with Rokkit API layer maintaining field mapping
 - **Custom Components**: Build with accessibility patterns inspired by bits-ui
@@ -155,6 +160,14 @@ All components must meet:
 - [ ] TypeScript types accurate and complete
 
 ### Technical Decisions Made
+
+### InputField Styles Migration (May 2024)
+- Migrated all InputField component styles to new theme/layout split:
+  - Theme styles (colors, gradients, border colors, error/disabled states) moved to `packages/themes/src/rokkit/input.css`
+  - Layout styles (spacing, flex, structure, sizing) moved to `packages/themes/src/base/input.css`
+- All selectors now use `[data-*]` attributes (e.g., `[data-field-root]`, `[data-message]`) instead of `rk-` tags
+- Added `.rules/guidelines/styles.md` with detailed rules for theme/layout separation and data-attribute usage
+- Updated this progress file to track and document the migration
 
 ### Forms System Decisions
 - **Separate Validation State**: Independent validation management from data/schema/layout

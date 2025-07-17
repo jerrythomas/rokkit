@@ -82,19 +82,17 @@
   @apply text-neutral-z7 bg-neutral-z3 p-4;
 }
 
-/* [data-tabs-empty-container] {
-  @apply w-full;
-} */
-
-/* Tab Item Focus States */
-/* [data-tabs-trigger]:focus {
-  @apply ring-accent-z1 outline-none ring-2 ring-offset-2;
-} */
-
 [data-tabs-list] [data-icon-add],
 [data-tabs-list] [data-icon-remove] {
-  @apply focus:text-neutral-z10 focus:bg-primary text-xl focus:outline-none;
+  @apply text-xl focus:outline-none;
 }
+[data-tabs-list] [data-icon-remove] {
+  @apply focus:text-neutral-z3 hover:text-neutral-z9;
+}
+[data-tabs-list] [data-icon-add] {
+  @apply focus:text-secondary-z6 hover:text-secondary-z7;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 640px) {
   [data-tabs-trigger] {

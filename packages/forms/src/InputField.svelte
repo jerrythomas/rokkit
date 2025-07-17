@@ -6,7 +6,7 @@
 	let {
 		class: className,
 		name,
-		value,
+		value = $bindable(),
 		type,
 		required,
 		status,
