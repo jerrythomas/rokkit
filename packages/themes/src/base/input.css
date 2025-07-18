@@ -6,8 +6,7 @@
 
 /* Root container: vertical stack, spacing, border radius, border width */
 [data-field-root] {
-  @apply flex flex-col gap-1 p-2 rounded-md border;
-  box-sizing: border-box;
+  @apply box-border flex flex-col gap-1 rounded-md border p-2;
 }
 
 /* Disabled state: layout only (theme handles color/cursor) */
@@ -29,7 +28,7 @@
 
 /* Input wrapper: horizontal layout for input and icon */
 [data-field] {
-  @apply flex items-center gap-2 min-h-8;
+  @apply flex min-h-8 items-center gap-2;
 }
 
 /* Icon inside input: size and alignment */
@@ -41,8 +40,7 @@
 [data-field] input,
 [data-field] textarea,
 [data-field] select {
-  @apply flex-1 min-w-0;
-  box-sizing: border-box;
+  @apply box-border min-w-0 flex-1;
 }
 
 /* Description below input */
@@ -54,12 +52,16 @@
 [data-message] {
   @apply mt-1 text-xs leading-snug;
 }
+[data-field-root] > [data-field] {
+  @apply flex flex-col gap-2;
+}
 
-/* Switch/checkbox label: inline with input */
-[data-field-type='switch'] > label,
-[data-field-type='checkbox'] > label {
-  @apply ml-2;
-  display: inline-block;
+/* Checkbox and switch inline with input */
+[data-field-root][data-field-type='switch'] > [data-field] {
+  @applyf flex-row items-center;
+}
+[data-field-root][data-field-type='checkbox'] > [data-field] {
+  @applyf flex-row-reverse items-center;
 }
 
 /* Responsive adjustments */
@@ -68,7 +70,7 @@
     @apply p-1;
   }
   [data-field] {
-    @apply gap-1 min-h-7;
+    @apply min-h-7 gap-1;
   }
   [data-description],
   [data-message] {

@@ -33,26 +33,18 @@
 	data-field-root
 	{...rootProps}
 	class={className}
-	data-field-disabled={disabled}
 	data-field-state={status}
-	data-field-empty={isNil(value)}
-	data-field-required={required}
 	data-field-type={type}
+	data-field-required={required}
+	data-field-disabled={disabled}
+	data-field-empty={isNil(value)}
+	data-has-icon={!isNil(icon)}
 >
-	{#if label && !nolabel && !['switch', 'checkbox'].includes(type)}
-		<label for={name}>{label}</label>
-	{/if}
 	<div data-field aria-label={description ?? label ?? name}>
-		{#if icon}
-			<Icon name={icon} />
-		{/if}
-		{#if type === 'switch'}
+		{#if label && !nolabel}
 			<label for={name}>{label}</label>
 		{/if}
-		<Input id={name} bind:value {type} {...properties} {onchange} />
-		{#if type === 'checkbox'}
-			<label for={name}>{label}</label>
-		{/if}
+		<Input id={name} bind:value {type} {...properties} {onchange} {icon} />
 	</div>
 	{#if description}
 		<div data-description>{description}</div>

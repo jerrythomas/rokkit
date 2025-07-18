@@ -3,7 +3,7 @@
    - Uses data-attribute selectors, not tag or class names
 */
 
-/* Pill/gradient border for inputs using [data-input-root] */
+/* Gradient border for inputs using [data-input-root] */
 [data-input-root] {
   @apply bg-neutral-z4 flex items-center rounded-md p-[1px] transition-all;
 }
@@ -15,7 +15,12 @@
 }
 [data-input-root] input,
 [data-input-root] textarea {
-  @apply bg-neutral-z3 rounded-full border-none outline-none transition-all;
+  @apply bg-neutral-z3 border-none outline-none transition-all;
+}
+
+[data-input-root] input::placeholder,
+[data-input-root] textarea::placeholder {
+  @apply text-neutral-z5;
 }
 
 /* Standard input field root (non-pill) */
@@ -36,18 +41,51 @@
   @apply bg-error/10 text-error;
 }
 
-/* Label: inherit text color (default) */
-[data-field-root] > label,
-[data-field] > label {
-  /* No color utility, inherit from parent */
-}
-
 /* Standard input/textarea/select inside [data-field-root] */
 [data-field] input:not([type='checkbox'], [type='radio']),
 [data-field] textarea,
 [data-field] select {
-  @apply bg-neutral-z3 text-neutral-z9 min-h-10 w-full rounded-md border-none px-3 transition-all focus:outline-none;
+  @apply bg-neutral-z2 text-neutral-z8 rounded-md border-none px-3 py-1 focus:outline-none;
 }
+/* min-h-10 w-full */
+/* [data-input-root] input:not([type='checkbox']) {
+  @apply bg-neutral-z1 border-neutral-z4 m-0 w-full rounded-md border px-3 py-1 ;
+} */
 [data-field] textarea {
   @apply resize-vertical min-h-20 py-2;
+}
+[data-field] input[type='checkbox'] {
+  @apply rounded-sm;
+}
+
+[data-form-root] {
+  @apply bg-neutral-z3 rounded-md p-6;
+}
+
+[data-form-root] label {
+  @apply text-neutral-z7;
+}
+
+[data-description],
+[data-message] {
+  @apply text-neutral-z6;
+}
+[data-message] {
+  @apply rounded-md px-2 py-1;
+}
+
+[data-field-state='success'] [data-message] {
+  @apply bg-success/10 text-success;
+}
+
+[data-field-state='warning'] [data-message] {
+  @apply bg-warning/10 text-warning;
+}
+
+[data-field-state='info'] [data-message] {
+  @apply bg-info/10 text-info;
+}
+
+[data-field-state='error'] [data-message] {
+  @apply bg-error/10 text-error;
 }

@@ -32,7 +32,40 @@ select:-webkit-autofill:focus {
 }
 
 select {
-  @apply bg-neutral-z4 text-neutral-z8 hover:text-primary-z6 flex min-h-10 min-w-10 rounded-md px-4;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  @apply flex min-h-10 min-w-10 rounded-md px-4;
+  /* @apply bg-neutral-z4 text-neutral-z8 hover:text-primary-z6 */
+}
+[data-input-select] > select {
+  @apply w-full pr-2;
+}
+[data-input-select] {
+  @apply relative inline-block w-full;
+}
+[data-input-select] select {
+  @apply flex flex-1;
+}
+[data-input-select] > span {
+  @apply pointer-events-none absolute bottom-0 right-2 top-0 flex items-center;
+}
+
+/* form styles */
+[data-form-root],
+[data-form-field] {
+  @apply flex flex-col gap-2;
+}
+
+[data-form-field] [data-field-label] {
+  @apply flex flex-col gap-2;
+}
+[data-form-field] [data-field-label] > span {
+  @aplly leading-loose w-full;
+}
+
+[data-description] {
+  @apply text-xs text-neutral-500;
 }
 
 /* Layout Styles for InputField (base/input.css)
@@ -56,50 +89,56 @@ select {
   /* No layout changes needed for error in base */
 }
 
-/* Label: spacing and font size */
-[data-field-root] > label,
-[data-field] > label {
-  @apply mb-1 block text-xs leading-tight;
+[data-field-root] > [data-field] {
+  @apply flex flex-col gap-2;
 }
 
+/* Checkbox and switch inline with input */
+[data-field-type='switch'] > [data-field] {
+  @apply flex-row items-center;
+}
+[data-field-type='checkbox'] > [data-field] {
+  @apply flex-row-reverse items-center;
+}
+
+/* Label: spacing and font size */
+[data-field] > label {
+  @apply flex-1;
+}
+
+/* text alignment */
 [data-field-type='number'] input,
 [data-field-type='integer'] input,
 [data-field-type='date'] input,
 [data-field-type='time'] input {
   @apply text-right;
 }
-/* Input wrapper: horizontal layout for input and icon */
-[data-field] {
-  @apply flex min-h-8 items-center gap-2;
-}
-
-/* Icon inside input: size and alignment */
-[data-field] [data-icon] {
-  @apply h-5 w-5 flex-shrink-0;
-}
 
 /* Input element: fill available width, spacing */
 [data-field] input,
 [data-field] textarea,
 [data-field] select {
-  @apply min-w-0 flex-1;
+  @apply m-0 min-w-0 flex-1 leading-loose transition-all;
+}
+
+/* Input wrapper: horizontal layout for input and icon */
+[data-input-root] {
+  @apply flex flex-row items-center;
+}
+
+/* Icon inside input: size and alignment */
+[data-input-root] [data-icon] {
+  @apply aspect-square min-h-full flex-shrink-0;
 }
 
 /* Description below input */
 [data-description] {
-  @apply mt-1 text-xs leading-snug;
+  @apply text-xs leading-snug;
 }
 
 /* Message below input (validation, info, etc.) */
 [data-message] {
-  @apply mt-1 text-xs leading-snug;
-}
-
-/* Switch/checkbox label: inline with input */
-[data-field-type='switch'] > label,
-[data-field-type='checkbox'] > label {
-  /* @apply ml-2 inline-block; */
-  @apply flex items-center gap-2 leading-loose;
+  @apply text-xs leading-snug;
 }
 
 /* Responsive adjustments */

@@ -38,7 +38,7 @@
   @apply from-neutral-z4 to-neutral-z4 text-neutral-z7;
 }
 [data-tabs-root]:focus-within [data-tabs-trigger][aria-selected='true'] {
-  @apply from-primary-z5 to-secondary-z5 text-on-primary;
+  @apply from-primary-500 to-secondary-500 text-on-primary;
 }
 
 /* Tab Items - Gradient Colors */
@@ -84,13 +84,11 @@
 
 [data-tabs-list] [data-icon-add],
 [data-tabs-list] [data-icon-remove] {
-  @apply text-xl focus:outline-none;
+  @apply focus:text-secondary-z5 hover:text-secondary-z7 text-neutral-z5 text-xl focus:outline-none;
 }
-[data-tabs-list] [data-icon-remove] {
-  @apply focus:text-neutral-z3 hover:text-neutral-z9;
-}
-[data-tabs-list] [data-icon-add] {
-  @apply focus:text-secondary-z6 hover:text-secondary-z7;
+
+[data-tabs-list]:focus-within [aria-selected='true'] [data-icon-remove] {
+  @apply focus:text-primary-900 text-neutral-300 hover:text-neutral-800;
 }
 
 /* Responsive Adjustments */

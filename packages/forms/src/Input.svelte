@@ -1,4 +1,5 @@
 <script>
+	import { Icon } from '@rokkit/ui'
 	import {
 		InputNumber,
 		InputCheckbox,
@@ -17,6 +18,7 @@
 		oninput = null,
 		onfocus = null,
 		onblur = null,
+		icon = null,
 		...restProps
 	} = $props()
 
@@ -40,6 +42,9 @@
 </script>
 
 <div data-input-root>
+	{#if icon}
+		<Icon name={icon} />
+	{/if}
 	{#if type === 'number'}
 		<InputNumber bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />
 	{:else if type === 'integer'}
