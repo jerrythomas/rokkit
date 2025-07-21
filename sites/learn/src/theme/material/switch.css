@@ -1,0 +1,68 @@
+/* Material Theme - Switch/Toggle Component Styles (Semantic, Data-Attribute Pattern) */
+
+/* Switch Root */
+[data-style='material'] [data-switch-root] {
+  @apply bg-neutral-z3 border-neutral-z4 flex min-h-8 min-w-16 items-center justify-center rounded-full border-2 p-1 shadow-sm transition-all;
+}
+
+/* Switch Track */
+[data-style='material'] [data-switch-track] {
+  @apply bg-neutral-z3 flex h-8 w-full items-center rounded-full transition-all;
+}
+
+/* Switch Thumb */
+[data-style='material'] [data-switch-mark] {
+  @apply bg-primary-500 flex h-6 w-6 items-center justify-center rounded-full shadow transition-all;
+}
+
+/* Switch Checked State */
+[data-style='material'] [data-switch-root][aria-checked='true'],
+[data-style='material'] [data-switch-track][aria-checked='true'] {
+  @apply bg-primary-500 border-primary-500;
+}
+[data-style='material'] [data-switch-mark][aria-checked='true'] {
+  @apply bg-secondary-500;
+}
+
+/* Switch Disabled State */
+[data-style='material'] [data-switch-root][aria-disabled='true'],
+[data-style='material'] [data-switch-track][aria-disabled='true'] {
+  @apply bg-neutral-z4 border-neutral-z4 cursor-not-allowed opacity-60;
+}
+[data-style='material'] [data-switch-mark][aria-disabled='true'] {
+  @apply bg-neutral-z6;
+}
+
+/* Switch Label */
+[data-style='material'] [data-switch-label] {
+  @apply text-neutral-z8 ml-3 cursor-pointer select-none text-base font-medium;
+}
+
+/* Switch Focus State */
+[data-style='material'] [data-switch-root]:focus-within,
+[data-style='material'] [data-switch-track]:focus-within {
+  @apply ring-primary-500 outline-none ring-2 ring-offset-2;
+}
+
+/* Compact Variant */
+[data-style='material'] [data-switch-root].compact,
+[data-style='material'] [data-switch-track].compact {
+  @apply min-h-6 min-w-12 p-0;
+}
+[data-style='material'] [data-switch-mark].compact {
+  @apply h-4 w-4;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  [data-style='material'] [data-switch-root],
+  [data-style='material'] [data-switch-track] {
+    @apply min-h-6 min-w-12;
+  }
+  [data-style='material'] [data-switch-mark] {
+    @apply h-4 w-4;
+  }
+  [data-style='material'] [data-switch-label] {
+    @apply ml-2 text-sm;
+  }
+}

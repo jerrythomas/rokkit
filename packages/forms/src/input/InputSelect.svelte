@@ -20,6 +20,7 @@
 		fields,
 		options = [],
 		icons = defaultStateIcons['selector'],
+		placeholder = null,
 		onchange,
 		onfocus,
 		onblur,
@@ -55,6 +56,9 @@
 		onfocus={handleFocus}
 		onblur={handleBlur}
 	>
+		{#if placeholder}
+			<option value="" disabled selected>{placeholder}</option>
+		{/if}
 		{#each proxiedOptions as option, index (index)}
 			<option value={index} aria-current={equals(option.value, value)}>
 				{option.get('text')}

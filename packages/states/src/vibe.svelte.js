@@ -26,7 +26,7 @@ class Vibe {
 	#colors = $state(defaultColors)
 	#density = $state('comfortable')
 	#colorMap = $state(defaultThemeMapping)
-	#palette = $derived.by(() => themeRules(this.#style, this.#colorMap, this.#colors)[0][1])
+	#palette = $derived.by(() => themeRules(this.#colorMap, this.#colors))
 
 	/**
 	 * Private constructor to enforce singleton pattern

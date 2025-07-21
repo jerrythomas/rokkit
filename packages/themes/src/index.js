@@ -1,3 +1,2 @@
-export { iconShortcuts, themeColors, themeRules } from '@rokkit/core'
-// skipcq: JS-E1004 - Needed for exposing all constants
-export * from './constants.js'
+export { iconShortcuts, Theme } from '@rokkit/core'
+export { defaultStateIcons, defaultIcons } from '@rokkit/core'

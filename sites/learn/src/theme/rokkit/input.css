@@ -13,16 +13,26 @@
 [data-input-root]:focus-within {
   @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
 }
-[data-input-root] input,
+/* [data-input-root] input,
 [data-input-root] textarea {
   @apply bg-neutral-z3 border-none outline-none transition-all;
-}
+} */
 
 [data-input-root] input::placeholder,
 [data-input-root] textarea::placeholder {
   @apply text-neutral-z5;
 }
 
+[data-input-root][data-field-disabled] > label {
+  @apply text-neutral-z6;
+}
+
+/* Standard input/textarea/select inside [data-field-root] */
+[data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-input-root] textarea,
+[data-input-root] select {
+  @apply bg-neutral-z2 text-neutral-z8 rounded-md border-none px-3 py-1 focus:outline-none;
+}
 /* Standard input field root (non-pill) */
 [data-field-root] {
   @apply text-neutral-z9 gap-1 rounded-md p-2 transition-all;
@@ -32,30 +42,21 @@
 [data-field-root][data-field-disabled] [data-input-root] {
   @apply bg-neutral-z3 text-neutral-z6 cursor-not-allowed;
 }
-[data-input-root][data-field-disabled] > label {
-  @apply text-neutral-z6;
-}
 
-/* Error state: error color, background */
-[data-field-root][data-field-state='fail'] [data-input-root] {
-  @apply bg-error/10 text-error;
+[data-field-type='color'] [data-input-root] {
+  @apply overflow-hidden;
 }
-
-/* Standard input/textarea/select inside [data-field-root] */
-[data-field] input:not([type='checkbox'], [type='radio']),
-[data-field] textarea,
-[data-field] select {
-  @apply bg-neutral-z2 text-neutral-z8 rounded-md border-none px-3 py-1 focus:outline-none;
+[data-field-type='color'] input[type='color'] {
+  @apply bg-neutral-z2 flex min-h-11 flex-1 rounded-md focus:outline-none;
 }
-/* min-h-10 w-full */
-/* [data-input-root] input:not([type='checkbox']) {
-  @apply bg-neutral-z1 border-neutral-z4 m-0 w-full rounded-md border px-3 py-1 ;
-} */
+[data-field-type='checkbox'] [data-input-root] {
+  @apply p-1px bg-transparent;
+}
 [data-field] textarea {
   @apply resize-vertical min-h-20 py-2;
 }
 [data-field] input[type='checkbox'] {
-  @apply rounded-sm;
+  @apply rounded-xs;
 }
 
 [data-form-root] {
@@ -75,17 +76,22 @@
 }
 
 [data-field-state='success'] [data-message] {
-  @apply bg-success/10 text-success;
+  @apply bg-success text-success opacity-10;
 }
 
 [data-field-state='warning'] [data-message] {
-  @apply bg-warning/10 text-warning;
+  @apply bg-warning text-warning opacity-10;
 }
 
 [data-field-state='info'] [data-message] {
-  @apply bg-info/10 text-info;
+  @apply bg-info text-info opacity-10;
 }
 
 [data-field-state='error'] [data-message] {
-  @apply bg-error/10 text-error;
+  @apply bg-error text-error opacity-10;
+}
+
+/* Error state: error color, background */
+[data-field-root][data-field-state='fail'] [data-input-root] {
+  @apply bg-error text-error opacity-10;
 }

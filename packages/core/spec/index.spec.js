@@ -54,11 +54,9 @@ describe('@rokkit/core', () => {
 			'compact',
 			'toHexString',
 			'shadesOf',
-			'stateColors',
-			'themeColors',
-			'contrastColors',
 			'themeRules',
-			'semanticShortcuts'
+			'semanticShortcuts',
+			'Theme'
 		])
 	})
 })

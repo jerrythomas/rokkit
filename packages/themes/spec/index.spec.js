@@ -6,12 +6,9 @@ describe('utilities', () => {
 	it('should contain all exported utilities', () => {
 		expect(Object.keys(utilities)).toEqual([
 			'iconShortcuts',
-			'themeColors',
-			'themeRules',
+			'Theme',
 			'defaultStateIcons',
-			'defaultIcons',
-			'defaultThemeColors',
-			'palettes'
+			'defaultIcons'
 		])
 	})
 })

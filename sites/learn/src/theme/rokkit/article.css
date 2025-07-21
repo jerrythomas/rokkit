@@ -12,13 +12,23 @@
 [data-article-root] h1 {
   @apply text-neutral-z10 text-3xl font-bold;
   border-bottom: 1px solid;
-  border-image: linear-gradient(to right, theme('colors.primary.500'), theme('colors.secondary.500')) 1;
+  border-image: linear-gradient(
+      to right,
+      theme('colors.primary.500'),
+      theme('colors.secondary.500')
+    )
+    1;
 }
 
 [data-article-root] h2 {
   @apply text-neutral-z10 text-2xl font-bold;
   border-bottom: 1px solid;
-  border-image: linear-gradient(to right, theme('colors.primary.500'), theme('colors.secondary.500')) 1;
+  border-image: linear-gradient(
+      to right,
+      theme('colors.primary.500'),
+      theme('colors.secondary.500')
+    )
+    1;
 }
 
 [data-article-root] h3 {
@@ -70,7 +80,7 @@
 
 /* Code - Colors & Spacing */
 [data-article-root] pre {
-  @apply font-mono rounded-lg border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800;
+  @apply rounded-lg border border-neutral-200 bg-neutral-100 p-4 font-mono dark:border-neutral-700 dark:bg-neutral-800;
 }
 
 [data-article-root] pre code {

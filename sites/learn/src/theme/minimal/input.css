@@ -1,0 +1,87 @@
+/* Minimal Theme - Input Component Styles (Semantic, Data-Attribute Pattern) */
+
+/* Input Field Root */
+[data-style='minimal'] [data-input-root] {
+  @apply bg-neutral-z3 border-neutral-z4 rounded-md border-2 p-2 transition-all;
+}
+[data-style='minimal'] [data-input-root]:focus-within {
+  @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
+}
+
+/* Input, Textarea, Select inside Input Root */
+[data-style='minimal'] [data-input-root] input,
+[data-style='minimal'] [data-input-root] textarea,
+[data-style='minimal'] [data-input-root] select {
+  @apply bg-neutral-z3 text-neutral-z9 min-h-10 w-full rounded-md border-none px-3 py-2 outline-none transition-all;
+}
+[data-style='minimal'] [data-input-root] textarea {
+  @apply resize-vertical min-h-20;
+}
+
+/* Disabled State */
+[data-style='minimal'] [data-input-root][data-field-disabled] {
+  @apply bg-neutral-muted border-neutral-muted text-neutral-500;
+}
+[data-style='minimal'] [data-input-root][data-field-disabled] input,
+[data-style='minimal'] [data-input-root][data-field-disabled] textarea,
+[data-style='minimal'] [data-input-root][data-field-disabled] select {
+  @apply bg-neutral-muted cursor-not-allowed text-neutral-500;
+}
+
+/* Error State */
+[data-style='minimal'] [data-input-root][data-field-state='fail'] {
+  @apply bg-error border-error text-error opacity-10;
+}
+[data-style='minimal'] [data-input-root][data-field-state='fail'] input,
+[data-style='minimal'] [data-input-root][data-field-state='fail'] textarea,
+[data-style='minimal'] [data-input-root][data-field-state='fail'] select {
+  @apply text-error;
+}
+
+/* Label */
+[data-style='minimal'] [data-input-root] > label,
+[data-style='minimal'] [data-field] > label {
+  @apply text-neutral-z8 w-full text-sm uppercase leading-6;
+}
+
+/* Message */
+[data-style='minimal'] [data-message] {
+  @apply bg-neutral-z3 text-error rounded px-2 py-1;
+}
+
+/* Description */
+[data-style='minimal'] [data-description] {
+  @apply text-neutral-z7 mt-1 text-xs;
+}
+
+/* Focused Label */
+[data-style='minimal'] [data-input-root]:focus-within > label {
+  @apply text-secondary-600;
+}
+
+/* Fail State Message */
+[data-style='minimal'] [data-input-root].fail [data-message] {
+  @apply bg-error text-error rounded px-2;
+}
+
+/* Pill Variant */
+[data-style='minimal'] [data-input-root].pill {
+  @apply rounded-full;
+}
+[data-style='minimal'] [data-input-root].pill input,
+[data-style='minimal'] [data-input-root].pill textarea,
+[data-style='minimal'] [data-input-root].pill select {
+  @apply rounded-full;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  [data-style='minimal'] [data-input-root] input,
+  [data-style='minimal'] [data-input-root] textarea,
+  [data-style='minimal'] [data-input-root] select {
+    @apply px-2 py-1 text-sm;
+  }
+  [data-style='minimal'] [data-input-root] textarea {
+    @apply min-h-12;
+  }
+}

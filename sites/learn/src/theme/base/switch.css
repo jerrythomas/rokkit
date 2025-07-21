@@ -1,0 +1,47 @@
+/* Base Layout Styles for Switch/Toggle Components */
+
+/* Switch Root */
+[data-switch-root],
+[data-toggle-root] {
+  @apply flex items-center;
+}
+
+/* Toggle Button */
+[data-toggle-root] {
+  @apply flex items-center justify-center rounded-md;
+}
+
+/* Switch/Toggle Input */
+[data-switch-root] input[type='checkbox'],
+[data-toggle-root] input[type='checkbox'] {
+  @apply cursor-pointer;
+}
+
+/* Switch/Toggle Label */
+[data-switch-label] {
+  @apply cursor-pointer select-none;
+}
+
+/* Switch/Toggle Focus State */
+[data-switch-root]:focus-within,
+[data-toggle-root]:focus-within {
+  @apply outline-secondary outline outline-2 outline-offset-2;
+}
+
+/* Compact Variant */
+[data-switch-root].compact,
+[data-toggle-root].compact {
+  @apply rounded-full;
+}
+
+/* Compact Variant - Inner */
+[data-switch-root].compact [data-switch-label],
+[data-toggle-root].compact [data-toggle-label] {
+  @apply gap-0 rounded-full px-0;
+}
+
+/* Disabled State */
+[data-switch-root][data-disabled],
+[data-toggle-root][data-disabled] {
+  @apply cursor-not-allowed opacity-50;
+}

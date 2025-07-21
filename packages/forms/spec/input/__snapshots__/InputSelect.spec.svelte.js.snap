@@ -9,6 +9,7 @@ exports[`InputSelect > should render as required 1`] = `
       required=""
       rtl="true"
     >
+      <!---->
       <option
         aria-current="false"
         value="0"
@@ -27,7 +28,7 @@ exports[`InputSelect > should render as required 1`] = `
       >
         baz
       </option>
-      
+      <!---->
     </select>
      
     <span>
@@ -48,6 +49,7 @@ exports[`InputSelect > should render as required 2`] = `
     <select
       rtl="false"
     >
+      <!---->
       <option
         aria-current="false"
         value="0"
@@ -66,7 +68,7 @@ exports[`InputSelect > should render as required 2`] = `
       >
         baz
       </option>
-      
+      <!---->
     </select>
      
     <span>
@@ -85,6 +87,7 @@ exports[`InputSelect > should render with objects  1`] = `
     data-input-select=""
   >
     <select>
+      <!---->
       <option
         aria-current="false"
         value="0"
@@ -103,7 +106,7 @@ exports[`InputSelect > should render with objects  1`] = `
       >
         baz
       </option>
-      
+      <!---->
     </select>
      
     <span>
@@ -122,6 +125,7 @@ exports[`InputSelect > should render with string options 1`] = `
     data-input-select=""
   >
     <select>
+      <!---->
       <option
         aria-current="true"
         value="0"
@@ -140,7 +144,7 @@ exports[`InputSelect > should render with string options 1`] = `
       >
         baz
       </option>
-      
+      <!---->
     </select>
      
     <span>
@@ -159,6 +163,7 @@ exports[`InputSelect > should render with string options 2`] = `
     data-input-select=""
   >
     <select>
+      <!---->
       <option
         aria-current="false"
         value="0"
@@ -183,7 +188,7 @@ exports[`InputSelect > should render with string options 2`] = `
       >
         qux
       </option>
-      
+      <!---->
     </select>
      
     <span>
@@ -202,6 +207,7 @@ exports[`InputSelect > should render with text, value objects  1`] = `
     data-input-select=""
   >
     <select>
+      <!---->
       <option
         aria-current="false"
         value="0"
@@ -220,7 +226,7 @@ exports[`InputSelect > should render with text, value objects  1`] = `
       >
         baz
       </option>
-      
+      <!---->
     </select>
      
     <span>

@@ -12,7 +12,8 @@
 		{ type: 'url', label: 'URL', placeholder: 'https://example.com' },
 		{ type: 'date', label: 'Date' },
 		{ type: 'time', label: 'Time' },
-		{ type: 'checkbox', label: 'Checkbox' },
+		{ type: 'color', label: 'Color' },
+		{ type: 'checkbox', label: 'Checkbox', variant: 'custom' },
 		{ type: 'switch', label: 'Switch' },
 		{ type: 'textarea', label: 'Textarea', placeholder: 'Multiline text...' }
 	]
@@ -34,10 +35,10 @@
 	}
 
 	function handleChange(type, event) {
-		values[type] =
-			event?.target?.type === 'checkbox' || event?.target?.type === 'switch'
-				? event.target.checked
-				: event.target.value
+		// values[type] =
+		// 	event?.target?.type === 'checkbox' || event?.target?.type === 'switch'
+		// 		? event.target.checked
+		// 		: event.target.value
 		// Example: show error for empty required fields
 		if (['text', 'email', 'password', 'number'].includes(type) && !values[type]) {
 			messages[type] = 'This field is required.'
@@ -52,14 +53,15 @@
 	<p class="text-neutral-z7 mb-8">
 		Test Rokkit theme and layout styles for all supported input types below.
 	</p>
-
-	<div class="bg-neutral-z2 grid grid-cols-1 gap-8 rounded-md p-4 md:grid-cols-2">
+	<div class="bg-neutral-z3 grid grid-cols-1 gap-8 rounded-md p-4 md:grid-cols-2">
 		{#each inputTypes as input, idx (idx)}
 			<div class=" flex flex-col gap-2">
+				<!-- {#if input.type !== 'checkbox'} -->
 				<InputField
 					name={input.type}
 					type={input.type}
 					label={input.label}
+					variant={input.variant}
 					description={getDescription(input)}
 					placeholder={input.placeholder}
 					bind:value={values[input.type]}
@@ -68,6 +70,7 @@
 					on:change={(e) => handleChange(input.type, e)}
 					class="w-full"
 				/>
+				<!-- {/if} -->
 			</div>
 		{/each}
 	</div>

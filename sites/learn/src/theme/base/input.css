@@ -16,6 +16,12 @@ input[type='range']::-moz-range-thumb {
   cursor: pointer;
   border: none;
 }
+input[type='color'] {
+  appearance: none; /* remove native OS styling (varies by browser) */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+}
 
 /* Autofill styles */
 input:-webkit-autofill,
@@ -114,16 +120,20 @@ select {
   @apply text-right;
 }
 
-/* Input element: fill available width, spacing */
-[data-field] input,
-[data-field] textarea,
-[data-field] select {
-  @apply m-0 min-w-0 flex-1 leading-loose transition-all;
+input[type='color'] {
+  @apply p-0;
 }
 
 /* Input wrapper: horizontal layout for input and icon */
 [data-input-root] {
   @apply flex flex-row items-center;
+}
+
+/* Input element: fill available width, spacing */
+[data-input-root] input,
+[data-input-root] textarea,
+[data-input-root] select {
+  @apply m-0 min-w-0 flex-1 leading-loose transition-all;
 }
 
 /* Icon inside input: size and alignment */
@@ -139,6 +149,9 @@ select {
 /* Message below input (validation, info, etc.) */
 [data-message] {
   @apply text-xs leading-snug;
+}
+[data-checkbox-root] > [data-checkbox-icon] {
+  @apply aspect-square min-h-full flex-shrink-0 text-2xl focus:outline-none;
 }
 
 /* Responsive adjustments */

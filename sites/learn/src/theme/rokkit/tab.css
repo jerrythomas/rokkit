@@ -35,7 +35,7 @@
 
 /* Tab Items - Selected States */
 [data-tabs-root] [data-tabs-trigger][aria-selected='true'] {
-  @apply from-neutral-z4 to-neutral-z4 text-neutral-z7;
+  @apply from-neutral-z5 to-neutral-z5 text-neutral-z9;
 }
 [data-tabs-root]:focus-within [data-tabs-trigger][aria-selected='true'] {
   @apply from-primary-500 to-secondary-500 text-on-primary;

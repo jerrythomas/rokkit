@@ -7,10 +7,11 @@ import {
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
-import { colors } from '@unocss/preset-mini/colors'
-import { importIcons, semanticShortcuts } from '@rokkit/core'
-import { iconShortcuts, defaultIcons } from '@rokkit/themes'
 
+import { importIcons, shades, defaultPalette } from '@rokkit/core'
+import { iconShortcuts, defaultIcons, Theme } from '@rokkit/themes'
+const mapping = { neutral: 'shark' }
+const theme = new Theme()
 const icons = {
 	rokkit: '@rokkit/icons/ui.json',
 	logo: '@rokkit/icons/auth.json',
@@ -31,16 +32,42 @@ const components = [
 	'range'
 ].map((icon) => `i-component:${icon}`)
 
+const themeConfig = {
+	dark: {
+		light: '[data-mode="light"]',
+		dark: '[data-mode="dark"]'
+	}
+}
 export default defineConfig({
 	darkMode: 'attribute',
 	extractors: [extractorSvelte()],
-	// rules: [...palette],
-	safelist: [...defaultIcons, ...components],
+	// rules: [],
+	safelist: [
+		...defaultIcons,
+		...components,
+		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
+		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`))
+	],
 	shortcuts: [
-		...semanticShortcuts('neutral'),
-		...semanticShortcuts('primary'),
-		...semanticShortcuts('secondary'),
-		...semanticShortcuts('info'),
+		['skin-default', theme.getPalette(mapping)],
+		['skin-vibrant', theme.getPalette({ primary: 'blue', secondary: 'purple' })],
+		[
+			'skin-seaweed',
+			theme.getPalette({
+				primary: 'sky',
+				secondary: 'green',
+				accent: 'blue',
+				danger: 'rose',
+				success: 'lime',
+				neutral: 'zinc',
+				warning: 'amber',
+				info: 'indigo'
+			})
+		],
+		...theme.getShortcuts('neutral'),
+		...theme.getShortcuts('primary'),
+		...theme.getShortcuts('secondary'),
+		...theme.getShortcuts('info'),
 		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit')),
 		['text-on-primary', 'text-neutral-50'],
 		['text-on-secondary', 'text-neutral-50'],
@@ -56,25 +83,11 @@ export default defineConfig({
 			sans: ['Overpass', 'ui-serif', 'sans-serif'],
 			body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
 		},
-		colors: {
-			primary: colors.orange,
-			neutral: colors.stone,
-			secondary: colors.pink,
-			accent: colors.blue,
-			error: colors.red,
-			warning: colors.yellow,
-			success: colors.green,
-			info: colors.sky
-		}
+		colors: theme.getColorRules(mapping)
 	},
 
 	presets: [
-		presetWind3({
-			dark: {
-				light: '[data-mode="light"]',
-				dark: '[data-mode="dark"]'
-			}
-		}),
+		presetWind3(themeConfig),
 		presetTypography(),
 		presetIcons({
 			collections: {

@@ -1,282 +1,286 @@
 import { describe, it, expect } from 'vitest'
-import {
-	shadesOf,
-	stateColors,
-	themeColors,
-	contrastColors,
-	themeRules,
-	semanticShortcuts
-} from '../src/theme'
-import contrast from './fixtures/contrast.json'
-describe('theme', () => {
-	const palettes = ['primary', 'secondary', 'other']
+import { shadesOf, themeRules, semanticShortcuts, Theme } from '../src/theme'
 
-	describe('shadesOf', () => {
-		it.each(palettes)('should generate shades without a modifier', (name) => {
-			const result = shadesOf(name)
-			expect(result).toEqual({
-				50: `rgb(var(--${name}-50) / <alpha-value>)`,
-				100: `rgb(var(--${name}-100) / <alpha-value>)`,
-				200: `rgb(var(--${name}-200) / <alpha-value>)`,
-				300: `rgb(var(--${name}-300) / <alpha-value>)`,
-				400: `rgb(var(--${name}-400) / <alpha-value>)`,
-				500: `rgb(var(--${name}-500) / <alpha-value>)`,
-				600: `rgb(var(--${name}-600) / <alpha-value>)`,
-				700: `rgb(var(--${name}-700) / <alpha-value>)`,
-				800: `rgb(var(--${name}-800) / <alpha-value>)`,
-				900: `rgb(var(--${name}-900) / <alpha-value>)`,
-				950: `rgb(var(--${name}-950) / <alpha-value>)`,
-				DEFAULT: `rgb(var(--${name}-500) / <alpha-value>)`
-			})
-		})
+const palettes = ['primary', 'secondary', 'other']
 
-		it.each(palettes)('should generate shades using hsl modifier', (name) => {
-			const result = shadesOf(name, 'hsl')
-			expect(result).toEqual({
-				50: `hsl(var(--${name}-50) / <alpha-value>)`,
-				100: `hsl(var(--${name}-100) / <alpha-value>)`,
-				200: `hsl(var(--${name}-200) / <alpha-value>)`,
-				300: `hsl(var(--${name}-300) / <alpha-value>)`,
-				400: `hsl(var(--${name}-400) / <alpha-value>)`,
-				500: `hsl(var(--${name}-500) / <alpha-value>)`,
-				600: `hsl(var(--${name}-600) / <alpha-value>)`,
-				700: `hsl(var(--${name}-700) / <alpha-value>)`,
-				800: `hsl(var(--${name}-800) / <alpha-value>)`,
-				900: `hsl(var(--${name}-900) / <alpha-value>)`,
-				950: `hsl(var(--${name}-950) / <alpha-value>)`,
-				DEFAULT: `hsl(var(--${name}-500) / <alpha-value>)`
-			})
+describe('Theme class', () => {
+	it('should set and get colors using public API only', () => {
+		const theme = new Theme()
+		const colors = { primary: { 500: 'rgb(1,2,3)' }, secondary: { 500: 'rgb(4,5,6)' } }
+		theme.colors = colors
+		expect(theme.colors.primary[500]).toBe('rgb(1,2,3)')
+		expect(theme.colors.secondary[500]).toBe('rgb(4,5,6)')
+	})
+
+	it('should set and get mapping using public API only', () => {
+		const theme = new Theme()
+		const mapping = { primary: 'red', secondary: 'blue' }
+		theme.mapping = mapping
+		expect(theme.mapping.primary).toBe('red')
+		expect(theme.mapping.secondary).toBe('blue')
+	})
+
+	it('should get palette with default and custom mapping', () => {
+		const theme = new Theme()
+		const paletteDefault = theme.getPalette()
+		expect(typeof paletteDefault).toBe('object')
+		expect(Object.keys(paletteDefault).length).toBeGreaterThan(0)
+
+		const customMapping = { primary: 'red', secondary: 'blue' }
+		const paletteCustom = theme.getPalette(customMapping)
+		expect(typeof paletteCustom).toBe('object')
+		expect(Object.keys(paletteCustom).length).toBeGreaterThan(0)
+		expect(paletteCustom['--color-accent']).toEqual('#38bdf8')
+	})
+
+	it('should get semantic shortcuts', () => {
+		const theme = new Theme()
+		const shortcuts = theme.getShortcuts('secondary')
+		expect(Array.isArray(shortcuts)).toBe(true)
+		expect(shortcuts.length).toBeGreaterThan(0)
+	})
+
+	it('should get colors using shadesOf', () => {
+		const theme = new Theme()
+		const colors = theme.getColorRules()
+		expect(colors).toHaveProperty('primary')
+		expect(colors.primary).toHaveProperty('500')
+		expect(colors).toHaveProperty('secondary')
+		expect(colors.secondary).toHaveProperty('500')
+		expect(colors.primary).toEqual({
+			1: 'var(--color-primary-1)',
+			100: 'var(--color-primary-100)',
+			2: 'var(--color-primary-2)',
+			200: 'var(--color-primary-200)',
+			3: 'var(--color-primary-3)',
+			300: 'var(--color-primary-300)',
+			4: 'var(--color-primary-4)',
+			400: 'var(--color-primary-400)',
+			5: 'var(--color-primary-5)',
+			50: 'var(--color-primary-50)',
+			500: 'var(--color-primary-500)',
+			6: 'var(--color-primary-6)',
+			600: 'var(--color-primary-600)',
+			7: 'var(--color-primary-7)',
+			700: 'var(--color-primary-700)',
+			8: 'var(--color-primary-8)',
+			800: 'var(--color-primary-800)',
+			9: 'var(--color-primary-9)',
+			900: 'var(--color-primary-900)',
+			950: 'var(--color-primary-950)',
+			DEFAULT: 'var(--color-primary)'
 		})
-		it.each(palettes)('should generate shades using rgb modifier', (name) => {
-			const result = shadesOf(name, 'rgb')
-			expect(result).toEqual({
-				50: `rgb(var(--${name}-50) / <alpha-value>)`,
-				100: `rgb(var(--${name}-100) / <alpha-value>)`,
-				200: `rgb(var(--${name}-200) / <alpha-value>)`,
-				300: `rgb(var(--${name}-300) / <alpha-value>)`,
-				400: `rgb(var(--${name}-400) / <alpha-value>)`,
-				500: `rgb(var(--${name}-500) / <alpha-value>)`,
-				600: `rgb(var(--${name}-600) / <alpha-value>)`,
-				700: `rgb(var(--${name}-700) / <alpha-value>)`,
-				800: `rgb(var(--${name}-800) / <alpha-value>)`,
-				900: `rgb(var(--${name}-900) / <alpha-value>)`,
-				950: `rgb(var(--${name}-950) / <alpha-value>)`,
-				DEFAULT: `rgb(var(--${name}-500) / <alpha-value>)`
-			})
-		})
-		it.each(palettes)('should generate shades with invalid modifier', (name) => {
-			const result = shadesOf(name, 'invalid')
-			expect(result).toEqual({
-				50: `rgb(var(--${name}-50) / <alpha-value>)`,
-				100: `rgb(var(--${name}-100) / <alpha-value>)`,
-				200: `rgb(var(--${name}-200) / <alpha-value>)`,
-				300: `rgb(var(--${name}-300) / <alpha-value>)`,
-				400: `rgb(var(--${name}-400) / <alpha-value>)`,
-				500: `rgb(var(--${name}-500) / <alpha-value>)`,
-				600: `rgb(var(--${name}-600) / <alpha-value>)`,
-				700: `rgb(var(--${name}-700) / <alpha-value>)`,
-				800: `rgb(var(--${name}-800) / <alpha-value>)`,
-				900: `rgb(var(--${name}-900) / <alpha-value>)`,
-				950: `rgb(var(--${name}-950) / <alpha-value>)`,
-				DEFAULT: `rgb(var(--${name}-500) / <alpha-value>)`
-			})
+	})
+})
+
+describe('shadesOf', () => {
+	it.each(palettes)('should generate shades using rgb modifier', (name) => {
+		const result = shadesOf(name, 'rgb')
+		expect(result).toEqual({
+			50: `rgb(var(--color-${name}-50) / <alpha-value>)`,
+			100: `rgb(var(--color-${name}-100) / <alpha-value>)`,
+			200: `rgb(var(--color-${name}-200) / <alpha-value>)`,
+			300: `rgb(var(--color-${name}-300) / <alpha-value>)`,
+			400: `rgb(var(--color-${name}-400) / <alpha-value>)`,
+			500: `rgb(var(--color-${name}-500) / <alpha-value>)`,
+			600: `rgb(var(--color-${name}-600) / <alpha-value>)`,
+			700: `rgb(var(--color-${name}-700) / <alpha-value>)`,
+			800: `rgb(var(--color-${name}-800) / <alpha-value>)`,
+			900: `rgb(var(--color-${name}-900) / <alpha-value>)`,
+			950: `rgb(var(--color-${name}-950) / <alpha-value>)`,
+			DEFAULT: `rgb(var(--color-${name}-500) / <alpha-value>)`
 		})
 	})
 
-	describe('stateColors', () => {
-		it.each(['info', 'error', 'warn', 'pass'])(
-			'should generate shades for states using names',
-			(name) => {
-				const result = stateColors(name, 'hsl')
-				expect(result).toEqual({
-					DEFAULT: `hsl(var(--${name}-500) / <alpha-value>)`,
-					light: `hsl(var(--${name}-200) / <alpha-value>)`,
-					dark: `hsl(var(--${name}-700) / <alpha-value>)`
-				})
-			}
-		)
-	})
-
-	describe('themeColors', () => {
-		it('should generate theme color palette', () => {
-			const result = themeColors('hsl')
-			const palette = {
-				accent: shadesOf('accent', 'hsl'),
-				primary: shadesOf('primary', 'hsl'),
-				secondary: shadesOf('secondary', 'hsl'),
-				neutral: shadesOf('neutral', 'hsl'),
-				info: stateColors('info', 'hsl'),
-				error: stateColors('error', 'hsl'),
-				danger: stateColors('danger', 'hsl'),
-				warning: stateColors('warning', 'hsl'),
-				success: stateColors('success', 'hsl')
-			}
-
-			expect(result).toEqual(palette)
-		})
-		it.each([null, 'invalid'])('should handle invalid/missing modifier', (modifier) => {
-			const result = modifier ? themeColors(modifier) : themeColors()
-			const palette = {
-				accent: shadesOf('accent'),
-				primary: shadesOf('primary'),
-				secondary: shadesOf('secondary'),
-				neutral: shadesOf('neutral'),
-				info: stateColors('info'),
-				error: stateColors('error'),
-				danger: stateColors('danger'),
-				warning: stateColors('warning'),
-				success: stateColors('success')
-			}
-
-			expect(result).toEqual(palette)
+	it.each(palettes)('should generate shades using hsl modifier', (name) => {
+		const result = shadesOf(name, 'hsl')
+		expect(result).toEqual({
+			50: `hsl(var(--color-${name}-50) / <alpha-value>)`,
+			100: `hsl(var(--color-${name}-100) / <alpha-value>)`,
+			200: `hsl(var(--color-${name}-200) / <alpha-value>)`,
+			300: `hsl(var(--color-${name}-300) / <alpha-value>)`,
+			400: `hsl(var(--color-${name}-400) / <alpha-value>)`,
+			500: `hsl(var(--color-${name}-500) / <alpha-value>)`,
+			600: `hsl(var(--color-${name}-600) / <alpha-value>)`,
+			700: `hsl(var(--color-${name}-700) / <alpha-value>)`,
+			800: `hsl(var(--color-${name}-800) / <alpha-value>)`,
+			900: `hsl(var(--color-${name}-900) / <alpha-value>)`,
+			950: `hsl(var(--color-${name}-950) / <alpha-value>)`,
+			DEFAULT: `hsl(var(--color-${name}-500) / <alpha-value>)`
 		})
 	})
-
-	describe('contrastColors', () => {
-		it('should generate contrast colors', () => {
-			const result = contrastColors('#ffffff', '#000000')
-			expect(result).toEqual(contrast)
+	it.each(palettes)('should generate shades using rgb modifier', (name) => {
+		const result = shadesOf(name, 'rgb')
+		expect(result).toEqual({
+			50: `rgb(var(--color-${name}-50) / <alpha-value>)`,
+			100: `rgb(var(--color-${name}-100) / <alpha-value>)`,
+			200: `rgb(var(--color-${name}-200) / <alpha-value>)`,
+			300: `rgb(var(--color-${name}-300) / <alpha-value>)`,
+			400: `rgb(var(--color-${name}-400) / <alpha-value>)`,
+			500: `rgb(var(--color-${name}-500) / <alpha-value>)`,
+			600: `rgb(var(--color-${name}-600) / <alpha-value>)`,
+			700: `rgb(var(--color-${name}-700) / <alpha-value>)`,
+			800: `rgb(var(--color-${name}-800) / <alpha-value>)`,
+			900: `rgb(var(--color-${name}-900) / <alpha-value>)`,
+			950: `rgb(var(--color-${name}-950) / <alpha-value>)`,
+			DEFAULT: `rgb(var(--color-${name}-500) / <alpha-value>)`
 		})
 	})
-
-	describe('themeRules', () => {
-		const lightModeRules = [
-			'rokkit-colors',
-			{
-				'--danger-100': '254 226 226',
-				'--danger-200': '254 202 202',
-				'--danger-300': '252 165 165',
-				'--danger-400': '248 113 113',
-				'--danger-50': '254 242 242',
-				'--danger-500': '239 68 68',
-				'--danger-600': '220 38 38',
-				'--danger-700': '185 28 28',
-				'--danger-800': '153 27 27',
-				'--danger-900': '127 29 29',
-				'--danger-950': '69 10 10',
-				'--error-100': '254 226 226',
-				'--error-200': '254 202 202',
-				'--error-300': '252 165 165',
-				'--error-400': '248 113 113',
-				'--error-50': '254 242 242',
-				'--error-500': '239 68 68',
-				'--error-600': '220 38 38',
-				'--error-700': '185 28 28',
-				'--error-800': '153 27 27',
-				'--error-900': '127 29 29',
-				'--error-950': '69 10 10',
-				'--info-100': '207 250 254',
-				'--info-200': '165 243 252',
-				'--info-300': '103 232 249',
-				'--info-400': '34 211 238',
-				'--info-50': '236 254 255',
-				'--info-500': '6 182 212',
-				'--info-600': '8 145 178',
-				'--info-700': '14 116 144',
-				'--info-800': '21 94 117',
-				'--info-900': '22 78 99',
-				'--info-950': '8 51 68',
-				'--neutral-100': '241 245 249',
-				'--neutral-200': '226 232 240',
-				'--neutral-300': '203 213 224',
-				'--neutral-400': '148 163 184',
-				'--neutral-50': '248 250 252',
-				'--neutral-500': '100 116 139',
-				'--neutral-600': '71 85 105',
-				'--neutral-700': '51 65 85',
-				'--neutral-800': '30 41 59',
-				'--neutral-900': '15 23 42',
-				'--neutral-950': '2 6 23',
-				'--primary-100': '255 237 213',
-				'--primary-200': '254 215 170',
-				'--primary-300': '253 186 116',
-				'--primary-400': '251 146 60',
-				'--primary-50': '255 247 237',
-				'--primary-500': '249 115 22',
-				'--primary-600': '234 88 12',
-				'--primary-700': '194 65 12',
-				'--primary-800': '154 52 18',
-				'--primary-900': '124 45 18',
-				'--primary-950': '67 20 7',
-				'--secondary-100': '252 231 243',
-				'--secondary-200': '251 207 232',
-				'--secondary-300': '249 168 212',
-				'--secondary-400': '244 114 182',
-				'--secondary-50': '253 242 248',
-				'--secondary-500': '236 72 153',
-				'--secondary-600': '219 39 119',
-				'--secondary-700': '190 24 93',
-				'--secondary-800': '157 23 77',
-				'--secondary-900': '131 24 67',
-				'--secondary-950': '80 7 36',
-				'--success-100': '220 252 231',
-				'--success-200': '187 247 208',
-				'--success-300': '134 239 172',
-				'--success-400': '74 222 128',
-				'--success-50': '240 253 244',
-				'--success-500': '34 197 94',
-				'--success-600': '22 163 74',
-				'--success-700': '21 128 61',
-				'--success-800': '22 101 52',
-				'--success-900': '20 83 45',
-				'--success-950': '5 46 22',
-				'--warning-100': '254 249 195',
-				'--warning-200': '254 240 138',
-				'--warning-300': '253 224 71',
-				'--warning-400': '250 204 21',
-				'--warning-50': '254 252 232',
-				'--warning-500': '234 179 8',
-				'--warning-600': '202 138 4',
-				'--warning-700': '161 98 7',
-				'--warning-800': '133 77 14',
-				'--warning-900': '113 63 18',
-				'--warning-950': '66 32 6',
-				'--accent-100': '224 242 254',
-				'--accent-200': '186 230 253',
-				'--accent-300': '125 211 252',
-				'--accent-400': '56 189 248',
-				'--accent-50': '240 249 255',
-				'--accent-500': '14 165 233',
-				'--accent-600': '2 132 199',
-				'--accent-700': '3 105 161',
-				'--accent-800': '7 89 133',
-				'--accent-900': '12 74 110',
-				'--accent-950': '8 47 73'
-			}
-		]
-
-		it('should generate theme rules', () => {
-			const result = themeRules()
-
-			expect(result[0]).toEqual(lightModeRules)
+	it.each(palettes)('should generate shades with invalid modifier', (name) => {
+		const result = shadesOf(name, 'invalid')
+		expect(result).toEqual({
+			100: `var(--color-${name}-100)`,
+			200: `var(--color-${name}-200)`,
+			300: `var(--color-${name}-300)`,
+			400: `var(--color-${name}-400)`,
+			50: `var(--color-${name}-50)`,
+			500: `var(--color-${name}-500)`,
+			600: `var(--color-${name}-600)`,
+			700: `var(--color-${name}-700)`,
+			800: `var(--color-${name}-800)`,
+			900: `var(--color-${name}-900)`,
+			950: `var(--color-${name}-950)`,
+			DEFAULT: `var(--color-${name}-500)`
 		})
+	})
+})
 
-		it('should generate theme rules with alternative name', () => {
-			const result = themeRules('orange')
+describe('themeRules', () => {
+	const paletteRules = {
+		'--color-accent': '#38bdf8',
+		'--color-accent-100': '#e0f2fe',
+		'--color-accent-200': '#bae6fd',
+		'--color-accent-300': '#7dd3fc',
+		'--color-accent-400': '#38bdf8',
+		'--color-accent-50': '#f0f9ff',
+		'--color-accent-500': '#0ea5e9',
+		'--color-accent-600': '#0284c7',
+		'--color-accent-700': '#0369a1',
+		'--color-accent-800': '#075985',
+		'--color-accent-900': '#0c4a6e',
+		'--color-accent-950': '#082f49',
+		'--color-danger': '#f87171',
+		'--color-danger-100': '#fee2e2',
+		'--color-danger-200': '#fecaca',
+		'--color-danger-300': '#fca5a5',
+		'--color-danger-400': '#f87171',
+		'--color-danger-50': '#fef2f2',
+		'--color-danger-500': '#ef4444',
+		'--color-danger-600': '#dc2626',
+		'--color-danger-700': '#b91c1c',
+		'--color-danger-800': '#991b1b',
+		'--color-danger-900': '#7f1d1d',
+		'--color-danger-950': '#450a0a',
+		'--color-error': '#f87171',
+		'--color-error-100': '#fee2e2',
+		'--color-error-200': '#fecaca',
+		'--color-error-300': '#fca5a5',
+		'--color-error-400': '#f87171',
+		'--color-error-50': '#fef2f2',
+		'--color-error-500': '#ef4444',
+		'--color-error-600': '#dc2626',
+		'--color-error-700': '#b91c1c',
+		'--color-error-800': '#991b1b',
+		'--color-error-900': '#7f1d1d',
+		'--color-error-950': '#450a0a',
+		'--color-info': '#22d3ee',
+		'--color-info-100': '#cffafe',
+		'--color-info-200': '#a5f3fc',
+		'--color-info-300': '#67e8f9',
+		'--color-info-400': '#22d3ee',
+		'--color-info-50': '#ecfeff',
+		'--color-info-500': '#06b6d4',
+		'--color-info-600': '#0891b2',
+		'--color-info-700': '#0e7490',
+		'--color-info-800': '#155e75',
+		'--color-info-900': '#164e63',
+		'--color-info-950': '#083344',
+		'--color-neutral': '#94a3b8',
+		'--color-neutral-100': '#f1f5f9',
+		'--color-neutral-200': '#e2e8f0',
+		'--color-neutral-300': '#cbd5e1',
+		'--color-neutral-400': '#94a3b8',
+		'--color-neutral-50': '#f8fafc',
+		'--color-neutral-500': '#64748b',
+		'--color-neutral-600': '#475569',
+		'--color-neutral-700': '#334155',
+		'--color-neutral-800': '#1e293b',
+		'--color-neutral-900': '#0f172a',
+		'--color-neutral-950': '#020617',
+		'--color-primary': '#fb923c',
+		'--color-primary-100': '#ffedd5',
+		'--color-primary-200': '#fed7aa',
+		'--color-primary-300': '#fdba74',
+		'--color-primary-400': '#fb923c',
+		'--color-primary-50': '#fff7ed',
+		'--color-primary-500': '#f97316',
+		'--color-primary-600': '#ea580c',
+		'--color-primary-700': '#c2410c',
+		'--color-primary-800': '#9a3412',
+		'--color-primary-900': '#7c2d12',
+		'--color-primary-950': '#431407',
+		'--color-secondary': '#f472b6',
+		'--color-secondary-100': '#fce7f3',
+		'--color-secondary-200': '#fbcfe8',
+		'--color-secondary-300': '#f9a8d4',
+		'--color-secondary-400': '#f472b6',
+		'--color-secondary-50': '#fdf2f8',
+		'--color-secondary-500': '#ec4899',
+		'--color-secondary-600': '#db2777',
+		'--color-secondary-700': '#be185d',
+		'--color-secondary-800': '#9d174d',
+		'--color-secondary-900': '#831843',
+		'--color-secondary-950': '#500724',
+		'--color-success': '#4ade80',
+		'--color-success-100': '#dcfce7',
+		'--color-success-200': '#bbf7d0',
+		'--color-success-300': '#86efac',
+		'--color-success-400': '#4ade80',
+		'--color-success-50': '#f0fdf4',
+		'--color-success-500': '#22c55e',
+		'--color-success-600': '#16a34a',
+		'--color-success-700': '#15803d',
+		'--color-success-800': '#166534',
+		'--color-success-900': '#14532d',
+		'--color-success-950': '#052e16',
+		'--color-warning': '#facc15',
+		'--color-warning-100': '#fef9c3',
+		'--color-warning-200': '#fef08a',
+		'--color-warning-300': '#fde047',
+		'--color-warning-400': '#facc15',
+		'--color-warning-50': '#fefce8',
+		'--color-warning-500': '#eab308',
+		'--color-warning-600': '#ca8a04',
+		'--color-warning-700': '#a16207',
+		'--color-warning-800': '#854d0e',
+		'--color-warning-900': '#713f12',
+		'--color-warning-950': '#422006'
+	}
 
-			expect(result[0][0]).toEqual('orange-colors')
-			expect(result[0][1]).toEqual(lightModeRules[1])
-		})
+	it('should generate theme rules', () => {
+		const result = themeRules()
+		expect(result).toEqual(paletteRules)
+	})
 
-		it('should generate theme rules with alternative mapping', () => {
-			const result = themeRules('zinc', { neutral: 'zinc' })
-			const zincLight = {
-				...lightModeRules[1],
-				'--neutral-100': '244 244 245',
-				'--neutral-200': '228 228 231',
-				'--neutral-300': '212 212 216',
-				'--neutral-400': '161 161 170',
-				'--neutral-50': '250 250 250',
-				'--neutral-500': '113 113 122',
-				'--neutral-600': '82 82 91',
-				'--neutral-700': '63 63 70',
-				'--neutral-800': '39 39 42',
-				'--neutral-900': '24 24 27',
-				'--neutral-950': '0 0 0'
-			}
+	it('should generate theme rules with alternative mapping', () => {
+		const result = themeRules({ neutral: 'zinc' })
+		const zincLight = {
+			...paletteRules,
+			'--color-neutral': '#a1a1aa',
+			'--color-neutral-100': '#f4f4f5',
+			'--color-neutral-200': '#e4e4e7',
+			'--color-neutral-300': '#d4d4d8',
+			'--color-neutral-400': '#a1a1aa',
+			'--color-neutral-50': '#fafafa',
+			'--color-neutral-500': '#71717a',
+			'--color-neutral-600': '#52525b',
+			'--color-neutral-700': '#3f3f46',
+			'--color-neutral-800': '#27272a',
+			'--color-neutral-900': '#18181b',
+			'--color-neutral-950': '#09090b'
+		}
 
-			expect(result).toEqual([['zinc-colors', zincLight]])
-		})
+		expect(result).toEqual(zincLight)
 	})
 })
 

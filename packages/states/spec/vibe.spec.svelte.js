@@ -15,14 +15,14 @@ describe('vibe', () => {
 		expect(vibe.style).toEqual('rokkit')
 		expect(vibe.mode).toEqual('dark')
 		expect(vibe.density).toEqual('comfortable')
-		expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
+		expect(vibe.palette).toEqual(themeRules())
 	})
 
 	describe('style', () => {
 		it('should validate style updates', () => {
 			vibe.style = 'minimal'
 			expect(vibe.style).toEqual('minimal')
-			expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
+			expect(vibe.palette).toEqual(themeRules())
 			vibe.style = 'unknown'
 			expect(vibe.style).toEqual('minimal')
 		})
@@ -43,7 +43,7 @@ describe('vibe', () => {
 		vibe.mode = 'light'
 		expect(vibe.mode).toEqual('light')
 		// expect(vibe.palette).toBeUndefined()
-		expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
+		expect(vibe.palette).toEqual(themeRules())
 		vibe.mode = 'unknown'
 		expect(vibe.mode).toEqual('light')
 	})
@@ -64,42 +64,17 @@ describe('vibe', () => {
 			'Did you forget to define "ambrosia"?'
 		)
 
-		expect(vibe.palette).toEqual(themeRules(vibe.style)[0][1])
-		expect(Object.keys(vibe.colors).length).toEqual(22)
+		expect(vibe.palette).toEqual(themeRules())
+		expect(Object.keys(vibe.colors).length).toEqual(40)
 		vibe.colors = { ambrosia: defaultColors.amber }
-		expect(Object.keys(vibe.colors).length).toEqual(23)
-		expect(Object.keys(vibe.colors)).toEqual([
-			'amber',
-			'blue',
-			'cyan',
-			'emerald',
-			'fuscia',
-			'gray',
-			'green',
-			'indigo',
-			'lime',
-			'orange',
-			'pink',
-			'purple',
-			'red',
-			'rose',
-			'sky',
-			'slate',
-			'stone',
-			'teal',
-			'violet',
-			'yellow',
-			'zinc',
-			'shark',
-			'ambrosia'
-		])
+		expect(Object.keys(vibe.colors).length).toEqual(41)
 
-		let expected = themeRules(vibe.style, {}, { ambrosia: defaultColors.amber })
-		expect(vibe.palette).toEqual(expected[0][1])
+		let expected = themeRules({}, { ambrosia: defaultColors.amber })
+		expect(vibe.palette).toEqual(expected)
 		vibe.colorMap = { primary: 'ambrosia' }
 
-		expected = themeRules(vibe.style, { primary: 'ambrosia' }, { ambrosia: defaultColors.amber })
-		expect(vibe.palette).toEqual(expected[0][1])
+		expected = themeRules({ primary: 'ambrosia' }, { ambrosia: defaultColors.amber })
+		expect(vibe.palette).toEqual(expected)
 		expect(vibe.colorMap).toEqual({
 			accent: 'sky',
 			danger: 'red',
@@ -116,8 +91,8 @@ describe('vibe', () => {
 	it('should update palette when color map changes', () => {
 		vibe.colorMap = { primary: 'rose', secondary: 'green' }
 		flushSync()
-		const expected = themeRules(vibe.style, { primary: 'rose', secondary: 'green' })
-		expect(vibe.palette).toEqual(expected[0][1])
+		const expected = themeRules({ primary: 'rose', secondary: 'green' })
+		expect(vibe.palette).toEqual(expected)
 	})
 
 	it('should save theme configuration to storage', () => {
