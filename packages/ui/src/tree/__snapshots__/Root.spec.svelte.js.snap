@@ -1,0 +1,122 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree Root Component > renders empty state when items are empty 1`] = `
+<div>
+  <div
+    class="h-full overflow-scroll flex flex-col"
+    data-tree-root=""
+    tabindex="0"
+  >
+    <!---->
+     
+    <!---->
+    <div
+      class="m-auto p-4 text-center text-gray-500"
+      data-tree-empty=""
+    >
+      No data available
+    </div>
+    
+    <!---->
+     
+    <div
+      data-tree-list=""
+      role="group"
+    >
+      
+    </div>
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Tree Root Component > renders tree root with items 1`] = `
+<div
+  class="h-full overflow-scroll flex flex-col"
+  data-tree-root=""
+  tabindex="0"
+>
+  <!---->
+   
+  <!---->
+   
+  <div
+    data-tree-list=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="0"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+         
+        <p>
+          Node 1
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="1"
+      data-tree-leaf="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+         
+        <p>
+          Node 2
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    
+  </div>
+  <!---->
+   
+  <!---->
+</div>
+`;
