@@ -30,6 +30,7 @@ exports[`Item > should render with custom mapping 1`] = `
 <div>
   <!---->
   <icon
+    aria-checked="false"
     aria-label="World"
     data-disabled="false"
     data-size="base"
@@ -70,6 +71,7 @@ exports[`Item > should render with icon 1`] = `
 <div>
   <!---->
   <icon
+    aria-checked="false"
     aria-label="Hello"
     data-disabled="false"
     data-size="base"

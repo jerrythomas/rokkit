@@ -24,6 +24,7 @@ exports[`DropSearch.svelte > should render 1`] = `
       </item>
        
       <icon
+        aria-checked="false"
         aria-label="opened"
         data-disabled="false"
         data-size="base"

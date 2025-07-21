@@ -1,17 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Switch > should render 1`] = `
-<rk-switch
+<div
   aria-disabled="false"
   aria-label="Toggle Switch"
   aria-orientation="horizontal"
+  data-switch-compact="false"
+  data-switch-off="false"
+  data-switch-on="false"
+  data-switch-root=""
   role="listbox"
   tabindex="0"
 >
-  <rk-item
+  <div
     aria-selected="false"
     class="relative"
     data-path="0"
+    data-switch-item=""
     role="option"
   >
     <!---->
@@ -21,11 +26,12 @@ exports[`Switch > should render 1`] = `
      
     <!---->
     <!---->
-  </rk-item>
-  <rk-item
+  </div>
+  <div
     aria-selected="false"
     class="relative"
     data-path="1"
+    data-switch-item=""
     role="option"
   >
     <!---->
@@ -38,30 +44,35 @@ exports[`Switch > should render 1`] = `
     </p>
     <!---->
     <!---->
-  </rk-item>
+  </div>
   
-</rk-switch>
+</div>
 `;
 
 exports[`Switch > should render with error for invalid options 1`] = `null`;
 
 exports[`Switch > should render with object options 1`] = `
-<rk-switch
+<div
   aria-disabled="false"
   aria-label="Toggle Switch"
   aria-orientation="horizontal"
-  class="is-off"
+  data-switch-compact="false"
+  data-switch-off="true"
+  data-switch-on="false"
+  data-switch-root=""
   role="listbox"
   tabindex="0"
 >
-  <rk-item
+  <div
     aria-selected="true"
     class="relative"
     data-path="0"
+    data-switch-item=""
     role="option"
   >
-    <rk-indicator
+    <div
       class="absolute bottom-0 left-0 right-0 top-0"
+      data-switch-mark=""
     />
     <!---->
      
@@ -73,11 +84,12 @@ exports[`Switch > should render with object options 1`] = `
     </p>
     <!---->
     <!---->
-  </rk-item>
-  <rk-item
+  </div>
+  <div
     aria-selected="false"
     class="relative"
     data-path="1"
+    data-switch-item=""
     role="option"
   >
     <!---->
@@ -90,23 +102,28 @@ exports[`Switch > should render with object options 1`] = `
     </p>
     <!---->
     <!---->
-  </rk-item>
+  </div>
   
-</rk-switch>
+</div>
 `;
 
 exports[`Switch > should render with options 1`] = `
-<rk-switch
+<div
   aria-disabled="false"
   aria-label="Toggle Switch"
   aria-orientation="horizontal"
+  data-switch-compact="false"
+  data-switch-off="false"
+  data-switch-on="false"
+  data-switch-root=""
   role="listbox"
   tabindex="0"
 >
-  <rk-item
+  <div
     aria-selected="false"
     class="relative"
     data-path="0"
+    data-switch-item=""
     role="option"
   >
     <!---->
@@ -119,11 +136,12 @@ exports[`Switch > should render with options 1`] = `
     </p>
     <!---->
     <!---->
-  </rk-item>
-  <rk-item
+  </div>
+  <div
     aria-selected="false"
     class="relative"
     data-path="1"
+    data-switch-item=""
     role="option"
   >
     <!---->
@@ -136,30 +154,35 @@ exports[`Switch > should render with options 1`] = `
     </p>
     <!---->
     <!---->
-  </rk-item>
+  </div>
   
-</rk-switch>
+</div>
 `;
 
 exports[`Switch > should switch options on click 1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -171,11 +194,12 @@ exports[`Switch > should switch options on click 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -188,9 +212,9 @@ exports[`Switch > should switch options on click 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -199,18 +223,22 @@ exports[`Switch > should switch options on click 1`] = `
 exports[`Switch > should switch options on click 2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-on"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="true"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -223,15 +251,17 @@ exports[`Switch > should switch options on click 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -243,9 +273,9 @@ exports[`Switch > should switch options on click 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -254,22 +284,27 @@ exports[`Switch > should switch options on click 2`] = `
 exports[`Switch > should switch options on keydown   1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -281,11 +316,12 @@ exports[`Switch > should switch options on keydown   1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -298,9 +334,9 @@ exports[`Switch > should switch options on keydown   1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -309,18 +345,22 @@ exports[`Switch > should switch options on keydown   1`] = `
 exports[`Switch > should switch options on keydown   2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-on"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="true"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -333,15 +373,17 @@ exports[`Switch > should switch options on keydown   2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -353,9 +395,9 @@ exports[`Switch > should switch options on keydown   2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -364,22 +406,27 @@ exports[`Switch > should switch options on keydown   2`] = `
 exports[`Switch > should switch options on keydown   3`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -391,11 +438,12 @@ exports[`Switch > should switch options on keydown   3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -408,9 +456,9 @@ exports[`Switch > should switch options on keydown   3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -419,22 +467,27 @@ exports[`Switch > should switch options on keydown   3`] = `
 exports[`Switch > should switch options on keydown ArrowDown 1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -446,11 +499,12 @@ exports[`Switch > should switch options on keydown ArrowDown 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -463,9 +517,9 @@ exports[`Switch > should switch options on keydown ArrowDown 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -474,18 +528,22 @@ exports[`Switch > should switch options on keydown ArrowDown 1`] = `
 exports[`Switch > should switch options on keydown ArrowDown 2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-on"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="true"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -498,15 +556,17 @@ exports[`Switch > should switch options on keydown ArrowDown 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -518,9 +578,9 @@ exports[`Switch > should switch options on keydown ArrowDown 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -529,22 +589,27 @@ exports[`Switch > should switch options on keydown ArrowDown 2`] = `
 exports[`Switch > should switch options on keydown ArrowDown 3`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -556,11 +621,12 @@ exports[`Switch > should switch options on keydown ArrowDown 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -573,9 +639,9 @@ exports[`Switch > should switch options on keydown ArrowDown 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -584,17 +650,22 @@ exports[`Switch > should switch options on keydown ArrowDown 3`] = `
 exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -607,11 +678,12 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -624,15 +696,17 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="2"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -644,9 +718,9 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -655,17 +729,22 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
 exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -678,15 +757,17 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -698,11 +779,12 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="2"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -715,9 +797,9 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -726,21 +808,27 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
 exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -752,11 +840,12 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -769,11 +858,12 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="2"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -786,9 +876,9 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -797,22 +887,27 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
 exports[`Switch > should switch options on keydown ArrowRight 1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -824,11 +919,12 @@ exports[`Switch > should switch options on keydown ArrowRight 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -841,9 +937,9 @@ exports[`Switch > should switch options on keydown ArrowRight 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -852,18 +948,22 @@ exports[`Switch > should switch options on keydown ArrowRight 1`] = `
 exports[`Switch > should switch options on keydown ArrowRight 2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-on"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="true"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -876,15 +976,17 @@ exports[`Switch > should switch options on keydown ArrowRight 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -896,9 +998,9 @@ exports[`Switch > should switch options on keydown ArrowRight 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -907,22 +1009,27 @@ exports[`Switch > should switch options on keydown ArrowRight 2`] = `
 exports[`Switch > should switch options on keydown ArrowRight 3`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -934,11 +1041,12 @@ exports[`Switch > should switch options on keydown ArrowRight 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -951,9 +1059,9 @@ exports[`Switch > should switch options on keydown ArrowRight 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -962,17 +1070,22 @@ exports[`Switch > should switch options on keydown ArrowRight 3`] = `
 exports[`Switch > should switch options on keydown ArrowUp 1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -985,11 +1098,12 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1002,15 +1116,17 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="2"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -1022,9 +1138,9 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -1033,17 +1149,22 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
 exports[`Switch > should switch options on keydown ArrowUp 2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1056,15 +1177,17 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -1076,11 +1199,12 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="2"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1093,9 +1217,9 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -1104,21 +1228,27 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
 exports[`Switch > should switch options on keydown ArrowUp 3`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -1130,11 +1260,12 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1147,11 +1278,12 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="2"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1164,9 +1296,9 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -1175,22 +1307,27 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
 exports[`Switch > should switch options on keydown Enter 1`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -1202,11 +1339,12 @@ exports[`Switch > should switch options on keydown Enter 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1219,9 +1357,9 @@ exports[`Switch > should switch options on keydown Enter 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -1230,18 +1368,22 @@ exports[`Switch > should switch options on keydown Enter 1`] = `
 exports[`Switch > should switch options on keydown Enter 2`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-on"
+    data-switch-compact="false"
+    data-switch-off="false"
+    data-switch-on="true"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="false"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1254,15 +1396,17 @@ exports[`Switch > should switch options on keydown Enter 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="true"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -1274,9 +1418,9 @@ exports[`Switch > should switch options on keydown Enter 2`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>
@@ -1285,22 +1429,27 @@ exports[`Switch > should switch options on keydown Enter 2`] = `
 exports[`Switch > should switch options on keydown Enter 3`] = `
 <div>
   <!---->
-  <rk-switch
+  <div
     aria-disabled="false"
     aria-label="Toggle Switch"
     aria-orientation="horizontal"
-    class="is-off"
+    data-switch-compact="false"
+    data-switch-off="true"
+    data-switch-on="false"
+    data-switch-root=""
     role="listbox"
     tabindex="0"
   >
-    <rk-item
+    <div
       aria-selected="true"
       class="relative"
       data-path="0"
+      data-switch-item=""
       role="option"
     >
-      <rk-indicator
+      <div
         class="absolute bottom-0 left-0 right-0 top-0"
+        data-switch-mark=""
       />
       <!---->
        
@@ -1312,11 +1461,12 @@ exports[`Switch > should switch options on keydown Enter 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
-    <rk-item
+    </div>
+    <div
       aria-selected="false"
       class="relative"
       data-path="1"
+      data-switch-item=""
       role="option"
     >
       <!---->
@@ -1329,9 +1479,9 @@ exports[`Switch > should switch options on keydown Enter 3`] = `
       </p>
       <!---->
       <!---->
-    </rk-item>
+    </div>
     
-  </rk-switch>
+  </div>
   
   
 </div>

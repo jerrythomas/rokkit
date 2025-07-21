@@ -57,7 +57,7 @@ describe('Pill', () => {
 		const props = $state({ value: 'Hello', removable: true, disabled: true, onremove: vi.fn() })
 		const { container } = render(Pill, { props })
 		expect(container).toMatchSnapshot()
-		const pill = container.querySelector('rk-pill')
+		const pill = container.querySelector('[data-pill-root]')
 
 		fireEvent.keyUp(pill, { key })
 		await tick()

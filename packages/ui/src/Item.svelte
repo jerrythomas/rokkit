@@ -7,12 +7,12 @@
 	 */
 
 	/** @type {Props} */
-	let { value, fields } = $props()
-	let proxy = $derived(new Proxy(value, fields))
-	let content = $derived(proxy.get('text'))
-	let ariaLabel = $derived(proxy.get('label') ?? content)
-	let icon = $derived(proxy.get('icon'))
-	let image = $derived(proxy.get('image'))
+	let { value, fields, proxy = null } = $props()
+	let proxyItem = $derived(proxy ?? new Proxy(value, fields))
+	let content = $derived(proxyItem.get('text'))
+	let ariaLabel = $derived(proxyItem.get('label') ?? content)
+	let icon = $derived(proxyItem.get('icon'))
+	let image = $derived(proxyItem.get('image'))
 </script>
 
 {#if icon}

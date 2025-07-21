@@ -52,9 +52,6 @@
 		}
 	}
 
-	// $: fields = { ...defaultFields, ...fields }
-	// $: using = { default: Item, ...using }
-	// $: activeIndex = options.findIndex((item) => item === value)
 	let offsetTop = $derived(activeItem?.offsetTop + activeItem?.clientHeight ?? 0)
 </script>
 

@@ -3,6 +3,7 @@
 exports[`Icon > should call the click event when the icon is clicked 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
@@ -46,6 +47,7 @@ exports[`Icon > should handle role=option as checkbox 1`] = `
 exports[`Icon > should render the icon as disabled 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="true"
     data-size="base"
@@ -66,6 +68,7 @@ exports[`Icon > should render the icon as disabled 1`] = `
 exports[`Icon > should render the icon with a custom class 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     class="custom-class"
     data-disabled="false"
@@ -87,6 +90,7 @@ exports[`Icon > should render the icon with a custom class 1`] = `
 exports[`Icon > should render the icon with a custom class 2`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     class="custom-class-2"
     data-disabled="false"
@@ -130,7 +134,6 @@ exports[`Icon > should render the icon with checkbox role 1`] = `
 exports[`Icon > should render the icon with checkbox role with default state 1`] = `
 <div>
   <icon
-    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
@@ -152,6 +155,7 @@ exports[`Icon > should render the icon with checkbox role with default state 1`]
 exports[`Icon > should render the icon with the provided name and label 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="Dark mode"
     data-disabled="false"
     data-size="base"
@@ -172,6 +176,7 @@ exports[`Icon > should render the icon with the provided name and label 1`] = `
 exports[`Icon > should render the icon with the provided name and label 2`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="Light mode"
     data-disabled="false"
     data-size="base"
@@ -192,6 +197,7 @@ exports[`Icon > should render the icon with the provided name and label 2`] = `
 exports[`Icon > should render the icon with the specified role 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="base"
@@ -213,6 +219,7 @@ exports[`Icon > should render the icon with the specified role 1`] = `
 exports[`Icon > should render the icon with the specified size 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="small"
@@ -233,6 +240,7 @@ exports[`Icon > should render the icon with the specified size 1`] = `
 exports[`Icon > should render the icon with the specified size 2`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="medium"
@@ -253,6 +261,7 @@ exports[`Icon > should render the icon with the specified size 2`] = `
 exports[`Icon > should render the icon with the specified size 3`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:mode-dark"
     data-disabled="false"
     data-size="large"
@@ -273,6 +282,7 @@ exports[`Icon > should render the icon with the specified size 3`] = `
 exports[`Icon > should render the icon with the specified state 1`] = `
 <div>
   <icon
+    aria-checked="false"
     aria-label="i-rokkit:node-opened"
     data-disabled="false"
     data-size="base"

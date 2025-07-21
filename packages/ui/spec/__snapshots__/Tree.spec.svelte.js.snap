@@ -26,6 +26,7 @@ exports[`Tree > should render nested list 1`] = `
         >
           <!---->
           <icon
+            aria-checked="false"
             aria-label="expand"
             class="w-4"
             data-disabled="false"
@@ -75,6 +76,7 @@ exports[`Tree > should render nested list 1`] = `
         >
           <!---->
           <icon
+            aria-checked="false"
             aria-label="expand"
             class="w-4"
             data-disabled="false"
@@ -147,6 +149,7 @@ exports[`Tree > should render nested list 2`] = `
         >
           <!---->
           <icon
+            aria-checked="false"
             aria-label="expand"
             class="w-4"
             data-disabled="false"
@@ -196,6 +199,7 @@ exports[`Tree > should render nested list 2`] = `
         >
           <!---->
           <icon
+            aria-checked="false"
             aria-label="expand"
             class="w-4"
             data-disabled="false"

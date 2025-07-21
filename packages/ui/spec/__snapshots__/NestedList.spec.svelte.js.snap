@@ -18,6 +18,7 @@ exports[`NestedList > should render nested list 1`] = `
       >
         <!---->
         <icon
+          aria-checked="false"
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
@@ -188,6 +189,7 @@ exports[`NestedList > should render nested list 1`] = `
       >
         <!---->
         <icon
+          aria-checked="false"
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
@@ -255,6 +257,7 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
             <icon
+              aria-checked="false"
               aria-label="collapse"
               class="w-4"
               data-disabled="false"
@@ -453,6 +456,7 @@ exports[`NestedList > should render nested list 2`] = `
       >
         <!---->
         <icon
+          aria-checked="false"
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
@@ -623,6 +627,7 @@ exports[`NestedList > should render nested list 2`] = `
       >
         <!---->
         <icon
+          aria-checked="false"
           aria-label="collapse"
           class="w-4"
           data-disabled="false"
@@ -690,6 +695,7 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
             <icon
+              aria-checked="false"
               aria-label="collapse"
               class="w-4"
               data-disabled="false"

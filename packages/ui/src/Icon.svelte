@@ -27,7 +27,7 @@
 		label = null,
 		disabled = false,
 		tabindex = $bindable(0),
-		checked = $bindable(null),
+		checked = $bindable(),
 		onclick,
 		onchange,
 		onmouseenter,
@@ -41,7 +41,7 @@
 
 		if (!disabled) {
 			if (isCheckbox) {
-				checked = !checked
+				checked = !Boolean(checked)
 				onchange?.(checked)
 			}
 			onclick?.()
@@ -50,9 +50,7 @@
 
 	let isCheckbox = $derived(role === 'checkbox' || role === 'option')
 	let validatedTabindex = $derived(role === 'img' || disabled ? -1 : tabindex)
-	let ariaChecked = $derived(
-		['checkbox', 'option'].includes(role) ? (checked !== null ? checked : false) : null
-	)
+	let ariaChecked = $derived(['checkbox', 'option'].includes(role) && checked)
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->

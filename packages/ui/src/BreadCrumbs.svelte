@@ -1,7 +1,7 @@
 <script>
-	import { getSnippet } from '@rokkit/core'
 	import Item from './Item.svelte'
-
+	import Icon from './Icon.svelte'
+	import { Proxy } from '@rokkit/states'
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
@@ -12,26 +12,21 @@
 	 */
 
 	/** @type {Props} */
-	let { class: classes = '', items = [], separator = '/', fields, crumb } = $props()
+	let { class: classes = '', items = [], separator = '/', fields, child } = $props()
+	let childSnippet = $derived(child ? child : defaultChild)
 </script>
 
-<rk-crumbs class={classes}>
+{#snippet defaultChild(proxy)}
+	<Item {proxy} />
+{/snippet}
+<div data-crumb-root class={classes}>
 	{#each items as item, index (index)}
+		{@const proxy = new Proxy(item, fields)}
 		{#if index > 0}
-			<span>
-				{#if separator.length === 1}
-					{separator}
-				{:else}
-					<icon class={separator}></icon>
-				{/if}
-			</span>
+			<Icon name={separator} data-crumb-separator></Icon>
 		{/if}
-		<rk-crumb class:is-selected={index === items.length - 1}>
-			{#if crumb}
-				{@render crumb(item, fields)}
-			{:else}
-				<Item value={item} {fields} />
-			{/if}
-		</rk-crumb>
+		<div data-crumb-item class:is-selected={index === items.length - 1}>
+			{@render childSnippet?.(proxy)}
+		</div>
 	{/each}
-</rk-crumbs>
+</div>

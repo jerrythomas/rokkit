@@ -110,6 +110,7 @@ exports[`Link > should render with icon 1`] = `
   >
     <!---->
     <icon
+      aria-checked="false"
       aria-label="Hello"
       data-disabled="false"
       data-size="base"

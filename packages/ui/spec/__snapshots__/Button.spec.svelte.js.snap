@@ -118,6 +118,7 @@ exports[`Button > should render with icons 2`] = `
     type="button"
   >
     <icon
+      aria-checked="false"
       aria-label="home"
       data-disabled="false"
       data-size="base"
@@ -154,6 +155,7 @@ exports[`Button > should render with icons 3`] = `
     type="button"
   >
     <icon
+      aria-checked="false"
       aria-label="home"
       data-disabled="false"
       data-size="base"
@@ -173,6 +175,7 @@ exports[`Button > should render with icons 3`] = `
     <!---->
      
     <icon
+      aria-checked="false"
       aria-label="chevron-right"
       data-disabled="false"
       data-size="base"
@@ -209,6 +212,7 @@ exports[`Button > should render with icons 4`] = `
     <!---->
      
     <icon
+      aria-checked="false"
       aria-label="chevron-right"
       data-disabled="false"
       data-size="base"

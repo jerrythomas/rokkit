@@ -32,10 +32,10 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-pill use:keyboard={keyMappings} onremove={handle} tabindex="0" class={classes}>
+<div data-pill-root use:keyboard={keyMappings} onremove={handle} tabindex="0" class={classes}>
 	<Item {value} {mapping}></Item>
 	{#if removable}
 		<Icon name="action-close" role="button" aria-label="Remove" {disabled} onclick={handle} small
 		></Icon>
 	{/if}
-</rk-pill>
+</div>

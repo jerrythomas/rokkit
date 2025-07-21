@@ -701,6 +701,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         <!---->
          
         <icon
+          aria-checked="false"
           aria-label="action-close"
           data-disabled="false"
           data-icon-remove="true"
@@ -729,6 +730,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         <!---->
          
         <icon
+          aria-checked="false"
           aria-label="action-close"
           data-disabled="false"
           data-icon-remove="true"
@@ -757,6 +759,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         <!---->
          
         <icon
+          aria-checked="false"
           aria-label="action-close"
           data-disabled="false"
           data-icon-remove="true"
@@ -785,6 +788,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
         <!---->
          
         <icon
+          aria-checked="false"
           aria-label="action-close"
           data-disabled="false"
           data-icon-remove="true"
@@ -805,6 +809,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
       <!---->
        
       <icon
+        aria-checked="false"
         aria-label="action-add"
         data-disabled="false"
         data-icon-add="true"

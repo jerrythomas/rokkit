@@ -244,17 +244,22 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
   <section>
     <!---->
     <!---->
-    <rk-switch
+    <div
       aria-disabled="false"
       aria-label="Toggle Switch"
       aria-orientation="horizontal"
+      data-switch-compact="false"
+      data-switch-off="false"
+      data-switch-on="false"
+      data-switch-root=""
       role="listbox"
       tabindex="0"
     >
-      <rk-item
+      <div
         aria-selected="false"
         class="relative"
         data-path="0"
+        data-switch-item=""
         role="option"
       >
         <!---->
@@ -267,11 +272,12 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         </p>
         <!---->
         <!---->
-      </rk-item>
-      <rk-item
+      </div>
+      <div
         aria-selected="false"
         class="relative"
         data-path="1"
+        data-switch-item=""
         role="option"
       >
         <!---->
@@ -284,11 +290,12 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         </p>
         <!---->
         <!---->
-      </rk-item>
-      <rk-item
+      </div>
+      <div
         aria-selected="false"
         class="relative"
         data-path="2"
+        data-switch-item=""
         role="option"
       >
         <!---->
@@ -301,9 +308,9 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         </p>
         <!---->
         <!---->
-      </rk-item>
+      </div>
       
-    </rk-switch>
+    </div>
     
     
     <!---->

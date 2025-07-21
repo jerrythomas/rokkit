@@ -7,6 +7,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       class="pass"
     >
       <icon
+        aria-checked="false"
         aria-label="badge-pass"
         data-disabled="false"
         data-size="base"
@@ -30,6 +31,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       class="fail"
     >
       <icon
+        aria-checked="false"
         aria-label="badge-fail"
         data-disabled="false"
         data-size="base"
@@ -53,6 +55,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       class="unknown"
     >
       <icon
+        aria-checked="false"
         aria-label="badge-unknown"
         data-disabled="false"
         data-size="base"
@@ -76,6 +79,7 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       class="warn"
     >
       <icon
+        aria-checked="false"
         aria-label="badge-warn"
         data-disabled="false"
         data-size="base"
@@ -108,6 +112,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       class="pass"
     >
       <icon
+        aria-checked="false"
         aria-label="pass"
         data-disabled="false"
         data-size="base"
@@ -131,6 +136,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       class="fail"
     >
       <icon
+        aria-checked="false"
         aria-label="fail"
         data-disabled="false"
         data-size="base"
@@ -154,6 +160,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       class="unknown"
     >
       <icon
+        aria-checked="false"
         aria-label="unknown"
         data-disabled="false"
         data-size="base"
@@ -177,6 +184,7 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       class="warn"
     >
       <icon
+        aria-checked="false"
         aria-label="warn"
         data-disabled="false"
         data-size="base"

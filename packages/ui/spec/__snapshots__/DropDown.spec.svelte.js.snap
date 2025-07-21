@@ -9,6 +9,7 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
     class="flex items-center"
   >
     <icon
+      aria-checked="false"
       aria-label="theme"
       data-disabled="false"
       data-size="base"
@@ -27,6 +28,7 @@ exports[`DropDown.svelte > should render using icon only 1`] = `
     <!---->
      
     <icon
+      aria-checked="false"
       aria-label="selector-closed"
       data-disabled="false"
       data-size="base"
@@ -60,6 +62,7 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
         class="flex items-center"
       >
         <icon
+          aria-checked="false"
           aria-label="theme"
           data-disabled="false"
           data-size="base"
@@ -78,6 +81,7 @@ exports[`DropDown.svelte > should render using icon only 2`] = `
         <!---->
          
         <icon
+          aria-checked="false"
           aria-label="selector-closed"
           data-disabled="false"
           data-size="base"

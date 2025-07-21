@@ -1,35 +1,37 @@
 <script>
 	import { equals } from 'ramda'
-	import { noop, FieldMapper } from '@rokkit/core'
 	import { keyboard } from '@rokkit/actions'
+	import { Proxy } from '@rokkit/states'
 	import Item from './Item.svelte'
-	// import { defaultMapping } from './constants'
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string}      [class]
-	 * @property {any}         value
-	 * @property {Array<any>}  [options]
-	 * @property {FieldMapper} [mapping]
-	 * @property {boolean}     [compact]
-	 * @property {boolean}     [disabled]
+	 * @property {string}                              [class]
+	 * @property {any}                                 value
+	 * @property {import('@rokkit/core').FieldMapping} fields
+	 * @property {Array<any>}                          [options]
+	 * @property {boolean}                             [compact]
+	 * @property {boolean}                             [disabled]
 	 */
 
 	/** @type {Props} */
 	let {
 		class: classes = '',
 		value = $bindable(),
+		description = 'Toggle Switch',
 		options = [false, true],
 		fields,
 		compact = false,
 		disabled = false,
-		onchange = noop,
-		stub,
+		onchange,
+		child,
 		...extra
 	} = $props()
 
-	// let cursor = $state([])
-
+	/**
+	 * Toggles the value of the switch
+	 * @param {number}  direction - The direction to toggle the switch
+	 */
 	function toggle(direction = 1) {
 		let nextIndex
 		const index = options.indexOf(value)
@@ -43,6 +45,10 @@
 		onchange(value)
 	}
 
+	/**
+	 *
+	 * @param event
+	 */
 	function handleClick(event) {
 		const index = event.target.closest('[data-path]').dataset.path
 		value = options[index]
@@ -52,20 +58,25 @@
 		next: ['ArrowRight', 'ArrowDown', ' ', 'Enter'],
 		prev: ['ArrowLeft', 'ArrowUp']
 	}
-	// let useComponent = $derived(!options.every((item) => [false, true].includes(item)))
-	// let mapper = new FieldMapper(fields)
+
+	let childSnippet = $derived(child ? child : defaultChild)
 </script>
 
+{#snippet defaultChild(proxy)}
+	<Item {proxy} />
+{/snippet}
+
 {#if !Array.isArray(options) || options.length < 2}
-	<rk-error>Items should be an array with at least two items.</rk-error>
+	<div data-error>Items should be an array with at least two items.</div>
 {:else}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<rk-switch
+	<div
 		class={classes}
-		class:is-off={options.length === 2 && equals(value, options[0])}
-		class:is-on={options.length === 2 && equals(value, options[1])}
-		class:compact
-		aria-label="Toggle Switch"
+		data-switch-root
+		data-switch-off={options.length === 2 && equals(value, options[0])}
+		data-switch-on={options.length === 2 && equals(value, options[1])}
+		data-switch-compact={compact}
+		aria-label={description}
 		aria-orientation="horizontal"
 		aria-disabled={disabled}
 		tabindex="0"
@@ -75,19 +86,21 @@
 		onprev={() => toggle(-1)}
 		onclick={handleClick}
 	>
-		{#each options as item, index (item)}
-			<!-- {@const Template = getSnippet(extra, mapper.get('snippet', item), stub)} -->
-			<rk-item class="relative" role="option" aria-selected={equals(item, value)} data-path={index}>
+		{#each options as item, index (index)}
+			{@const proxy = new Proxy(item, fields)}
+			<div
+				data-switch-item
+				class="relative"
+				role="option"
+				aria-selected={equals(item, value)}
+				data-path={index}
+			>
 				{#if equals(item, value)}
-					<rk-indicator class="absolute bottom-0 left-0 right-0 top-0"></rk-indicator>
+					<div data-switch-mark class="absolute bottom-0 left-0 right-0 top-0"></div>
 				{/if}
-				{#if stub}
-					{@render stub(item, fields)}
-					<!-- <Template value={item} {fields} /> -->
-				{:else}
-					<Item value={item} {fields} />
-				{/if}
-			</rk-item>
+
+				{@render childSnippet?.(proxy)}
+			</div>
 		{/each}
-	</rk-switch>
+	</div>
 {/if}

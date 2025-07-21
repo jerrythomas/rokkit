@@ -24,6 +24,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
     </item>
      
     <icon
+      aria-checked="false"
       aria-label="closed"
       data-disabled="false"
       data-size="base"
@@ -68,6 +69,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     </item>
      
     <icon
+      aria-checked="false"
       aria-label="opened"
       data-disabled="false"
       data-size="base"
@@ -172,6 +174,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     </item>
      
     <icon
+      aria-checked="false"
       aria-label="opened"
       data-disabled="false"
       data-size="base"

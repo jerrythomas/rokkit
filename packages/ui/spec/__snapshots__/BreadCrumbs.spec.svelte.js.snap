@@ -2,11 +2,15 @@
 
 exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
 <div>
-  <rk-crumbs>
+  <div
+    data-crumb-root=""
+  >
     <!---->
     <!---->
      
-    <rk-crumb>
+    <div
+      data-crumb-item=""
+    >
       <!---->
       <!---->
        
@@ -15,16 +19,28 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-crumb>
+    </div>
     <!---->
-    <span>
-      /
+    <icon
+      aria-checked="false"
+      aria-label="/"
+      data-crumb-separator="true"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <span>
+        /
+      </span>
       <!---->
-    </span>
+    </icon>
     <!---->
      
-    <rk-crumb
+    <div
       class="is-selected"
+      data-crumb-item=""
     >
       <!---->
       <!---->
@@ -34,20 +50,24 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-crumb>
+    </div>
     
-  </rk-crumbs>
+  </div>
   
 </div>
 `;
 
 exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
 <div>
-  <rk-crumbs>
+  <div
+    data-crumb-root=""
+  >
     <!---->
     <!---->
      
-    <rk-crumb>
+    <div
+      data-crumb-item=""
+    >
       <!---->
       <!---->
        
@@ -56,16 +76,28 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-crumb>
+    </div>
     <!---->
-    <span>
-      &gt;
+    <icon
+      aria-checked="false"
+      aria-label=">"
+      data-crumb-separator="true"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <span>
+        &gt;
+      </span>
       <!---->
-    </span>
+    </icon>
     <!---->
      
-    <rk-crumb
+    <div
       class="is-selected"
+      data-crumb-item=""
     >
       <!---->
       <!---->
@@ -75,20 +107,24 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
       </p>
       <!---->
       <!---->
-    </rk-crumb>
+    </div>
     
-  </rk-crumbs>
+  </div>
   
 </div>
 `;
 
 exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] = `
 <div>
-  <rk-crumbs>
+  <div
+    data-crumb-root=""
+  >
     <!---->
     <!---->
      
-    <rk-crumb>
+    <div
+      data-crumb-item=""
+    >
       <!---->
       <!---->
        
@@ -97,18 +133,29 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] 
       </p>
       <!---->
       <!---->
-    </rk-crumb>
+    </div>
     <!---->
-    <span>
-      <icon
+    <icon
+      aria-checked="false"
+      aria-label="icon"
+      data-crumb-separator="true"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
         class="icon"
       />
       <!---->
-    </span>
+    </icon>
     <!---->
      
-    <rk-crumb
+    <div
       class="is-selected"
+      data-crumb-item=""
     >
       <!---->
       <!---->
@@ -118,9 +165,9 @@ exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] 
       </p>
       <!---->
       <!---->
-    </rk-crumb>
+    </div>
     
-  </rk-crumbs>
+  </div>
   
 </div>
 `;
