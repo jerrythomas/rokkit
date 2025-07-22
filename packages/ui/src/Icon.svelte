@@ -20,7 +20,7 @@
 	let {
 		ref = $bindable(),
 		class: classes = '',
-		name,
+		name = '?',
 		state = null,
 		size = 'base',
 		role = 'img',
