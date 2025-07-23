@@ -1,7 +1,7 @@
 {
   "title": "List",
   "description": "Data-driven list component with field mapping and customization",
-  "icon": "📋",
+  "icon": "i-component:list",
   "category": "elements",
   "sequence": 10,
   "tags": ["list", "data-driven", "selection", "field-mapping", "customize"],

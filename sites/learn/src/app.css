@@ -23,6 +23,7 @@ body {
 app {
   @apply bg-neutral-inset text-neutral-floating relative flex flex-1 flex-col overflow-hidden;
 }
+
 main {
   @apply flex-1;
 }
@@ -30,3 +31,10 @@ main {
 [data-playground-root] > header {
   @apply border-neutral-z2 bg-neutral-z2 space-y-2 border-b px-6 py-8;
 }
+
+/* [data-sidebar-icon] {
+  @apply text-neutral-z7 text-2xl;
+} */
+/* [data-selected] [data-sidebar-icon] {
+  @apply text-secondary-z7;
+} */

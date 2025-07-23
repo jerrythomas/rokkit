@@ -51,7 +51,7 @@
 	>
 		{#each features as feature, index (index)}
 			<Card
-				class="bg-neutral/10 flex flex-col items-center gap-2 rounded-xl px-8 py-4"
+				class="bg-neutral-z3 flex flex-col items-center gap-2 rounded-xl px-8 py-4"
 				value={feature}
 				fields={{ title: 'title', description: 'description' }}
 			>

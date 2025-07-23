@@ -1,5 +1,6 @@
 {
   "category": "elements",
   "title": "Accordion",
+  "icon": "i-component:accordion",
   "description": "A collection of items that can be expanded and collapsed."
 }

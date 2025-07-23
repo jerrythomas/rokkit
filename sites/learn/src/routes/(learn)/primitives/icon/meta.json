@@ -1,7 +1,7 @@
 {
   "title": "Icon",
   "description": "Display icons with customizable sizes and styles",
-  "icon": "🎨",
+  "icon": "i-component:icon",
   "category": "Primitives",
   "tags": ["icon", "ui", "graphics", "display"],
   "experimental": false

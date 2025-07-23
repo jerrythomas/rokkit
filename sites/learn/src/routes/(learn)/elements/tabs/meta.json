@@ -1,7 +1,7 @@
 {
   "title": "Tabs",
-  "description": "Navigate between different content sections",
-  "icon": "📑",
+  "description": "Navigate between different content sections with flexible layouts and interactive controls",
+  "icon": "i-component:tabs",
   "category": "Elements",
   "tags": ["tabs", "navigation", "content", "sections", "selection"],
   "experimental": false

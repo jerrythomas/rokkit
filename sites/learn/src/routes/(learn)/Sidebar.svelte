@@ -1,5 +1,6 @@
 <script>
 	import { GroupedList } from '@rokkit/bits-ui'
+	import { Icon } from '@rokkit/ui'
 
 	/**
 	 * @typedef {Object} Section
@@ -23,18 +24,14 @@
 	let { sections, fields } = $props()
 </script>
 
-<nav class="flex w-full flex-1" data-sidebar>
+<nav class="flex w-full flex-1 pb-8" data-sidebar>
 	<GroupedList items={sections} {fields}>
 		{#snippet child(proxy)}
-			<div class="flex w-full flex-col">
-				<div class="flex items-center gap-3">
-					<div class="text-xl">
-						{proxy.get('icon')}
-					</div>
-					<h3 class="text-sm font-medium">
-						{proxy.get('text')}
-					</h3>
-				</div>
+			<div class="flex items-center gap-3">
+				<Icon name={proxy.get('icon')} data-sidebar-icon />
+				<h3 class="text-sm font-medium">
+					{proxy.get('text')}
+				</h3>
 			</div>
 		{/snippet}
 	</GroupedList>

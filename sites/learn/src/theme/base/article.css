@@ -6,7 +6,7 @@
 
 /* Typography hierarchy - Layout */
 [data-article-root] h1 {
-  @apply mb-6 mt-0 pb-2 leading-loose;
+  @apply mb-6 mt-0 flex items-center gap-3 pb-2 leading-loose;
 }
 
 [data-article-root] h2 {
@@ -142,6 +142,10 @@
 
 [data-card-cta] > p {
   @apply m-0;
+}
+
+[data-article-root] h1 > [data-tag-icon] {
+  @apply text-secondary-z7 text-5xl;
 }
 
 /* Print styles - Layout */

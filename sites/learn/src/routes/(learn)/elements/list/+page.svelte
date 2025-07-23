@@ -4,10 +4,7 @@
 </script>
 
 <article data-article-root>
-	<h1><span>📋</span>List Component</h1>
-	<p>Data-driven list component with field mapping and customization</p>
-
-	<h2>Introduction</h2>
+	<h1>Introduction</h1>
 	<p>
 		Lists are useful for displaying information and selection. This is a flexible component with
 		pointer and keyboard navigation support.

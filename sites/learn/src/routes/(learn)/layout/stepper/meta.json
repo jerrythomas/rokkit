@@ -1,7 +1,7 @@
 {
   "title": "Stepper",
   "description": "Multi-step process navigation",
-  "icon": "👣",
+  "icon": "i-component:stepper",
   "category": "Layout",
   "tags": ["stepper", "multi-step", "process", "navigation"],
   "experimental": false

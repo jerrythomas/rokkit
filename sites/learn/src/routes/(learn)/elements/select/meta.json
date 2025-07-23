@@ -1,5 +1,6 @@
 {
   "category": "elements",
   "title": "Select",
+  "icon": "i-component:select",
   "description": "Input component that allows users to choose one value from a list of options."
 }

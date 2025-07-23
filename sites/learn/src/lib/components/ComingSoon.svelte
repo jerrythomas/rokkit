@@ -1,4 +1,5 @@
 <script>
+	import { Icon } from '@rokkit/ui'
 	/**
 	 * Simple "Coming Soon" component for tutorial sections
 	 * @typedef {Object} ComingSoonProps
@@ -12,7 +13,9 @@
 
 <article data-article-root>
 	<section data-card>
-		<h1 class="text-neutral-overlay mb-2 text-3xl font-bold"><span>{icon}</span>{title}</h1>
+		<h1 class="text-neutral-overlay mb-2 text-3xl font-bold">
+			<Icon name={icon}></Icon>{title}
+		</h1>
 		<p class="text-neutral-floating mb-6 text-lg">{description}</p>
 
 		<p class="text-neutral-elevated italic">

@@ -21,15 +21,34 @@ const icons = {
 }
 
 const components = [
-	'list',
 	'accordion',
-	'select',
-	'tree',
-	'tabs',
+	'button',
+	'card',
+	'calendar',
+	'carousel',
+	'checkbox',
+	'combobox',
+	'crumbs',
+	'dropdown',
+	'icon',
 	'input-text',
-	'rating',
-	'switch-button',
-	'range'
+	'item',
+	'list',
+	'message',
+	'palette',
+	'pill',
+	'progress',
+	'range',
+	'multiselect',
+	'select',
+	'stepper',
+	'switch',
+	'tabs',
+	'table',
+	'tree',
+	'radio',
+	'range',
+	'rating'
 ].map((icon) => `i-component:${icon}`)
 
 const themeConfig = {
@@ -46,7 +65,10 @@ export default defineConfig({
 		...defaultIcons,
 		...components,
 		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
-		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`))
+		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`)),
+		'i-solar:calendar-bold-duotone',
+		'i-solar:sidebar-bold-duotone',
+		'i-solar:rocket-bold-duotone'
 	],
 	shortcuts: [
 		['skin-default', theme.getPalette(mapping)],

@@ -4,10 +4,7 @@
 </script>
 
 <article data-article-root>
-	<h1><span>📑</span>Tabs Component</h1>
-	<p>Navigate between different content sections with flexible layouts and interactive controls</p>
-
-	<h2>Overview</h2>
+	<h1>Overview</h1>
 	<p>
 		The Tabs component is a highly extensible and versatile UI element that simplifies navigation
 		within your application. Like other Rokkit components, Tabs follows the data-first design
