@@ -12,7 +12,7 @@ This document defines the conventions for separating theme and layout styles, an
 
 - **Purpose:** Control colors, gradients, shadows, border colors, and other visual tokens that define the "look and feel" of a theme.
 - **Location:** `packages/themes/src/rokkit/`
-- **Examples:** 
+- **Examples:**
   - Background and text colors
   - Gradients
   - Border colors
