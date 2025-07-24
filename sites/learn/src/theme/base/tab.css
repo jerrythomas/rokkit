@@ -51,7 +51,6 @@
   @apply flex items-center;
 }
 
-
 /* Tab Content Area */
 [data-tabs-content] {
   @apply flex flex-1;

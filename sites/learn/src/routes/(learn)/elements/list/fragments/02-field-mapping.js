@@ -1,4 +1,4 @@
 const fields = {
-  text: 'name',
-  image: 'photo'
+	text: 'name',
+	image: 'photo'
 }

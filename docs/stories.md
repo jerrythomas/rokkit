@@ -85,6 +85,7 @@ Each story's main component should be in `src/App.svelte` and can include additi
 ## Why a Separate System?
 
 The Story System is intentionally kept separate from the core Rokkit library to:
+
 - Avoid adding runtime or bundle size overhead to production apps.
 - Allow rapid iteration and improvement of documentation tools.
 - Provide a focused, best-in-class learning experience for Rokkit users.
@@ -109,6 +110,6 @@ The Story System is intentionally kept separate from the core Rokkit library to:
 
 ## Licensing
 
-For licensing and language model usage, see [llms.txt](../sites/learn/src/routes/(learn)/welcome/introduction/llms.txt).
+For licensing and language model usage, see [llms.txt](<../sites/learn/src/routes/(learn)/welcome/introduction/llms.txt>).
 
 ---

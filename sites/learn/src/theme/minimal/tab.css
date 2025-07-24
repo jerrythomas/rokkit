@@ -46,7 +46,9 @@
 [data-style='minimal'] [data-tabs-root][data-position='after'] [data-tabs-trigger] {
   @apply pt-0.5;
 }
-[data-style='minimal'] [data-tabs-root][data-position='after'] [data-tabs-trigger][aria-selected='true'] {
+[data-style='minimal']
+  [data-tabs-root][data-position='after']
+  [data-tabs-trigger][aria-selected='true'] {
   @apply -mt-0.5 border-b-0 border-secondary-z6 mb-0 border-t-2;
 }
 

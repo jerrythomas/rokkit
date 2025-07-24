@@ -1,4 +1,3 @@
-
 `getVariableMap(colors.orange)` generates the css variables below.
 
 ```json
@@ -17,7 +16,9 @@
     "--color-primary-950": "#172554";
 }
 ```
+
 and `getColorMap('primary')` generates the following object
+
 ```js
 {
      "500": 'var(--color-primary-500)',
@@ -33,32 +34,29 @@ and `getColorMap('primary')` generates the following object
 Using `shorcuts` configuration in unocss.config.js I am able to change the colors using `bg-primary-500` styles.
 
 Unocss config.
+
 ```js
-shortcuts=  [
-		['skin-orange', getVariableMap(colors.orange)],
-		['skin-green', getVariableMap(colors.green)]
-],
-colors = {
-   primary: getColorMap('primary')
-}
+;((shortcuts = [
+  ['skin-orange', getVariableMap(colors.orange)],
+  ['skin-green', getVariableMap(colors.green)]
+]),
+  (colors = {
+    primary: getColorMap('primary')
+  }))
 ```
 
 The html and css are below.
 
 ```html
 <section data-skin="orange">
-  <div class="bg-primary-500 text-white p-4 rounded-md">
-    This is an orange section.
-  </div>
+  <div class="bg-primary-500 text-white p-4 rounded-md">This is an orange section.</div>
   <div class="bg-primary-500/20 text-white p-4 rounded-md">
     This is an orange section with opacity.
   </div>
 </section>
 
 <section data-skin="green">
-  <div class="bg-primary-500 text-white p-4 rounded-md">
-    This is an orange section.
-  </div>
+  <div class="bg-primary-500 text-white p-4 rounded-md">This is an orange section.</div>
   <div class="bg-primary-500/20 text-white p-4 rounded-md">
     This is an orange section with opacity.
   </div>
@@ -66,10 +64,10 @@ The html and css are below.
 ```
 
 ```css
-[data-skin="orange"]{
+[data-skin='orange'] {
   @apply skin-orange;
 }
-[data-skin="green"]{
+[data-skin='green'] {
   @apply skin-green;
 }
 ```
@@ -78,11 +76,7 @@ I am able to get the `bg-primary-500` style to work with the css variables as co
 
 I needed to use the variables to switch the primary and secondary colors in the system, and I want to continue using the `bg-primary-500` or `bg-primary-500/20` css styles.
 
-
-
-
-
 ['theme-colors', theme.getPalette(mapping)],
-		['vibrant', theme.getPalette({ primary: 'blue', secondary: 'purple' })],
+['vibrant', theme.getPalette({ primary: 'blue', secondary: 'purple' })],
 
 I was able to generate custom rules using the approach below
