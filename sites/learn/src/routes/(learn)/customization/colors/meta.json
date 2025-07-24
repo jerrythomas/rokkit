@@ -1,0 +1,18 @@
+{
+  "title": "Color System",
+  "description": "Learn how to use Rokkit UI's semantic color system, palette configuration, and adaptive theming for light and dark modes.",
+  "icon": "i-component:palette",
+  "category": "customization",
+  "order": 2,
+  "tags": [
+    "colors",
+    "palette",
+    "semantic",
+    "theming",
+    "light-mode",
+    "dark-mode",
+    "skins",
+    "shortcuts"
+  ],
+  "experimental": false
+}

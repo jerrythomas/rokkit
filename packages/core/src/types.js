@@ -121,4 +121,40 @@
  * @property {boolean} weekend - Indicates if the day is on the weekend.
  */
 
+/**
+ * @typedef {Object} ColorPalette
+ * @property {string} 50 - The color for the 50 shade.
+ * @property {string} 100 - The color for the 100 shade.
+ * @property {string} 200 - The color for the 200 shade.
+ * @property {string} 300 - The color for the 300 shade.
+ * @property {string} 400 - The color for the 400 shade.
+ * @property {string} 500 - The color for the 500 shade.
+ * @property {string} 600 - The color for the 600 shade.
+ * @property {string} 700 - The color for the 700 shade.
+ * @property {string} 800 - The color for the 800 shade.
+ * @property {string} 900 - The color for the 900 shade.
+ * @property {string} 950 - The color for the 950 shade.
+ */
+
+/**
+ * @typedef {Object<string,ColorPalette>} ColorCollection
+ */
+
+/**
+ * @typedef {Object} ColorMapping
+ * @property {string} [primary]   - The primary color.
+ * @property {string} [secondary] - The secondary color.
+ * @property {string} [tertiary]  - The tertiary color.
+ * @property {string} [neutral]   - The neutral color.
+ * @property {string} [info]      - The info color.
+ * @property {string} [success]   - The success color.
+ * @property {string} [warning]   - The warning color.
+ * @property {string} [error]     - The error color.
+ */
+
+/**
+ * @typedef {Object} ColorTheme
+ * @property {ColorMapping} [mapping] - The color mapping.
+ * @property {ColorCollection} [colors] - The color collection.
+ */
 export default {}

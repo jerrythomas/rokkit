@@ -11,6 +11,7 @@
 [data-command-root] [data-command-viewport] {
   @apply bg-neutral-z1 rounded-md;
 }
+
 [data-command-root]:focus-within [data-list-item][aria-selected='true'] {
   @apply from-primary to-secondary on-primary bg-gradient-to-r;
 }
@@ -35,6 +36,10 @@
 [data-command-group] {
   @apply text-md border-none;
 }
+[data-command-group-items] {
+  @apply bg-neutral-z2 gap-1px rounded-md p-2;
+}
+
 [data-command-group-heading] {
   @apply text-neutral-z6 px-3 py-2 text-xs uppercase leading-loose;
 }
@@ -44,13 +49,13 @@
 [data-command-separator] {
   @apply bg-neutral-z2 mt-3;
 }
-[data-list] {
+/* [data-list] {
   @apply gap-1px rounded-md;
-}
-[data-list-item],
+} */
+/* [data-list-item],
 [data-command-item] {
   @apply bg-neutral-z2 rounded-md px-3 py-2 text-sm leading-loose;
-}
+} */
 [data-list-item] img {
   @apply rounded-full;
 }

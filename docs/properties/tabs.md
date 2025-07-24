@@ -10,7 +10,7 @@
 - `position`: the position of the tabs (before/after). optional default before
 - `align`: the alignment of the tabs (start, center, end). optional default start
 - `editable`: an optional boolean indicating whether the tabs can be removed/added. default false
-- `icons`: an optional object with icons for remove, add.
+- `icons`: an optional object with custom icons for remove, add.
 
 ## Structure
 

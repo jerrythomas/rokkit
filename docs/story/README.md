@@ -1,6 +1,6 @@
 # Rokkit Story System
 
-The Rokkit Story System is a modular set of utilities and components designed to power interactive demos and code examples throughout the Rokkit documentation and learning site. It is **not part of the core Rokkit runtime library**—instead, it serves as a developer education and demonstration tool to help you explore and understand Rokkit’s capabilities.
+The Rokkit Story System is a modular set of utilities and components designed to power interactive demos and code examples throughout the Rokkit documentation and learning site. It serves as a developer education and demonstration tool to help you explore and understand Rokkit’s capabilities.
 
 ---
 

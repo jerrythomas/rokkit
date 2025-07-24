@@ -41,6 +41,7 @@ const components = [
 	'range',
 	'multiselect',
 	'select',
+	'settings',
 	'stepper',
 	'switch',
 	'tabs',

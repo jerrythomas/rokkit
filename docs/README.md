@@ -1,8 +1,6 @@
-# Rokkit Learn Story System
+# Rokkit
 
 Rokkit UI is a data-driven, headless component library for Svelte that empowers you to build high-quality, accessible, and beautiful user interfaces—without sacrificing creative control or developer velocity.
-
-The Story system is a modular component library for creating interactive code demonstrations in the Rokkit Learn site. It replaces the previous CodeViewer component with a more flexible, reusable system that supports multiple files and better organization.
 
 ---
 
@@ -76,7 +74,7 @@ Accessibility is not an afterthought in Rokkit. All interactive components are W
 
 The Story system powers interactive demos and code examples for Rokkit documentation. It is not part of the runtime library, but helps you learn and explore Rokkit’s capabilities.
 
-See [docs/stories.md](./stories.md) for details on the Story system.
+See [docs/stories](./stories/README.md) for details on the Story system.
 
 ---
 

@@ -1,0 +1,9 @@
+{
+  "title": "Icon Customization",
+  "description": "Learn how to customize icons globally and per component in Rokkit UI. This section covers icon mapping, UnoCSS integration, and best practices for consistent icon usage.",
+  "icon": "i-component:icon",
+  "category": "customization",
+  "order": 3,
+  "tags": ["icons", "customization", "unoCSS", "mapping", "components", "branding"],
+  "experimental": false
+}

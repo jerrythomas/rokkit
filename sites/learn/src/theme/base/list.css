@@ -44,7 +44,7 @@
   @apply px-3 py-2 uppercase;
 }
 [data-command-group-items] {
-  @apply gap-2px flex flex-col;
+  @apply flex flex-col;
 }
 a[data-command-item] {
   @apply no-underline;

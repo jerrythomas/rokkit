@@ -1,6 +1,6 @@
 import { defaultThemeMapping, defaultColors, TONE_MAP } from './constants.js'
 import { shades } from './colors/index.js'
-import { hex2rgb } from './utils'
+// import { hex2rgb } from './utils'
 
 const modifiers = {
 	hsl: (value) => `hsl(${value} / <alpha-value>)`,
@@ -104,6 +104,10 @@ export class Theme {
 	#colors
 	#mapping
 
+	/**
+	 *
+	 * @param {import('./types.js').ColorTheme} param0
+	 */
 	constructor({ colors = defaultColors, mapping = defaultThemeMapping } = {}) {
 		this.#colors = { ...defaultColors, ...colors }
 		this.#mapping = { ...defaultThemeMapping, ...mapping }
