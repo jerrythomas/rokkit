@@ -97,6 +97,7 @@ export function getSections(metadata) {
 	metadata.forEach(({ content, file, group }) => {
 		const item = {
 			category: group ?? '',
+			order: 99,
 			...content,
 			slug: getSlug(file),
 			depth: file.split('/').length - 2
@@ -114,10 +115,9 @@ export function getSections(metadata) {
 		} else {
 			sections[category].children.push(item)
 		}
-		sections[category].children.sort((a, b) => a.order - b.order)
+		sections[category].children = sections[category].children.sort((a, b) => a.order - b.order)
 	})
 
-	// console.log(sections)
 	return Object.values(sections).sort((a, b) => a.order - b.order)
 }
 

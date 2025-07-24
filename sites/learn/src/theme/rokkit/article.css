@@ -10,7 +10,7 @@
 
 /* Typography hierarchy - Colors & Spacing */
 [data-article-root] h1 {
-  @apply text-neutral-z10 text-3xl font-bold;
+  @apply text-neutral-z7 text-5xl font-bold;
   border-bottom: 1px solid;
   border-image: linear-gradient(
       to right,
@@ -21,8 +21,8 @@
 }
 
 [data-article-root] h2 {
-  @apply text-neutral-z10 text-2xl font-bold;
-  border-bottom: 1px solid;
+  @apply text-neutral-z7 text-2xl font-bold;
+  border-bottom: 0.5px solid;
   border-image: linear-gradient(
       to right,
       theme('colors.primary.500'),
@@ -32,19 +32,19 @@
 }
 
 [data-article-root] h3 {
-  @apply text-neutral-z10 text-xl font-bold;
+  @apply text-neutral-z7 text-xl font-bold;
 }
 
 [data-article-root] h4 {
-  @apply text-neutral-z10 text-lg font-semibold;
+  @apply text-neutral-z7 text-lg font-semibold;
 }
 
 [data-article-root] h5 {
-  @apply text-neutral-z10 text-lg font-semibold;
+  @apply text-neutral-z7 text-lg font-semibold;
 }
 
 [data-article-root] h6 {
-  @apply text-neutral-z10 text-z1 font-semibold;
+  @apply text-neutral-z7 text-z1 font-semibold;
 }
 
 /* Paragraphs and text - Colors & Spacing */
@@ -54,7 +54,7 @@
 
 /* Lists - Colors & Spacing */
 [data-article-root] li {
-  @apply text-neutral-z7 text-lg;
+  @apply text-neutral-z7 text-base;
 }
 
 [data-article-root] ul li::before {
@@ -115,27 +115,6 @@
 [data-article-root] .rounded-lg {
   @apply border border-neutral-200 dark:border-neutral-700;
 }
-
-/* Interactive elements */
-/* [data-article-root] .bg-primary-z10 {
-  @apply bg-primary-500 hover:bg-primary-600 focus:bg-primary-600;
-}
-
-[data-article-root] .text-primary-z10 {
-  @apply text-primary-500;
-}
-
-[data-article-root] .text-primary-z7 {
-  @apply text-primary-600;
-}
-
-[data-article-root] .border-primary-z3 {
-  @apply border-primary-200 dark:border-primary-700;
-}
-
-[data-article-root] .border-neutral-z3 {
-  @apply border-neutral-200 dark:border-neutral-700;
-} */
 
 /* Focus states for accessibility - Colors & Spacing */
 [data-article-root] a:focus,

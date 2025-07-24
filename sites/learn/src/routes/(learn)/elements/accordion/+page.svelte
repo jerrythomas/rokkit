@@ -4,13 +4,13 @@
 </script>
 
 <article data-article-root>
-	<h1>Introduction</h1>
+	<h1>Overview</h1>
 	<p>
 		An accordion consists of multiple sections, each section contains a heading and content. Users
 		can click on the headings to expand or collapse a section revealing the content within.
 	</p>
 
-	<h1>Notable features:</h1>
+	<h2>Notable features:</h2>
 	<ul>
 		<li>Get started with a nested object array using sane defaults</li>
 		<li>Attributes like text, icon, image or url can be mapped to data attributes</li>
@@ -22,14 +22,14 @@
 		<li>Keyboard navigation and accessibility support</li>
 	</ul>
 
-	<h1>Basic Example</h1>
+	<h2>Basic Example</h2>
 	<p>
 		Here's a simple example of an Accordion component with nested data. Click on sections to
 		expand/collapse them:
 	</p>
 
 	<StoryViewer {...storyBuilder.getExample('intro')} />
-	<h1>Properties</h1>
+	<h2>Properties</h2>
 	<p>
 		The Accordion component provides several properties to customize its behavior and adapt to your
 		data structure.
@@ -38,7 +38,7 @@
 	<!-- Properties Documentation -->
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 		<div data-card>
-			<h1>Core Properties</h1>
+			<h2>Core Properties</h2>
 			<ul>
 				<li><strong>items</strong>: Supply the nested data for the accordion</li>
 				<li><strong>value</strong>: Current selected value of the accordion (bindable)</li>
@@ -50,7 +50,7 @@
 		</div>
 
 		<div data-card>
-			<h1>Customization</h1>
+			<h2>Customization</h2>
 			<ul>
 				<li><strong>using</strong>: Object containing components for displaying data</li>
 				<li><strong>class</strong>: Custom CSS classes for styling</li>
@@ -60,7 +60,7 @@
 
 	<p>Here's the basic usage with nested data:</p>
 	<Code {...storyBuilder.getFragment(0)} />
-	<h1>Field Mapping</h1>
+	<h2>Field Mapping</h2>
 	<p>
 		The accordion displays content using the Text component, expecting `text` attributes and
 		optional `icon` or `image` attributes. However, API data may not match this structure. Use the
@@ -77,13 +77,13 @@
 	<p>Example of mapping custom field names:</p>
 	<Code {...storyBuilder.getFragment(1)} />
 
-	<h1>Nested Field Mapping</h1>
+	<h2>Nested Field Mapping</h2>
 	<p>
 		The accordion supports nested field mapping for complex data structures. You can map both the
 		outer section fields and the inner content fields:
 	</p>
 	<Code {...storyBuilder.getFragment(2)} />
-	<h1>Custom Components</h1>
+	<h2>Custom Components</h2>
 	<p>
 		You can use custom components to render accordion content. This allows for rich content display
 		with images, links, and interactive elements.
@@ -93,7 +93,7 @@
 
 	<p>Configure custom components using the `using` property:</p>
 	<Code {...storyBuilder.getFragment(3)} />
-	<h1>Mixed Components</h1>
+	<h2>Mixed Components</h2>
 	<p>
 		For advanced use cases, you can configure different components for different items based on data
 		attributes. This enables rich, varied content within a single accordion.

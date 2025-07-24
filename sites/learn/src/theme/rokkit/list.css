@@ -55,7 +55,7 @@
   @apply rounded-full;
 }
 [data-list-item] p {
-  @apply text-lg;
+  @apply py-0 text-lg;
 }
 [data-list-item][aria-selected='true'] {
   @apply bg-neutral-z3 rounded-md;

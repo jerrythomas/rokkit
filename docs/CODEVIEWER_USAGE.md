@@ -1,5 +1,7 @@
 # CodeViewer Usage Example
 
+Rokkit UI is a data-driven, headless component library for Svelte that empowers you to build high-quality, accessible, and beautiful user interfaces—without sacrificing creative control or developer velocity.
+
 This document shows how to use the new CodeViewer component to create maintainable tutorial demos.
 
 ## Quick Start
@@ -84,11 +86,23 @@ tutorial/
 
 ## Benefits
 
-✅ **Separation of Concerns**: Demo code is separate from tutorial content
-✅ **Easy Maintenance**: Update demo by editing `src/App.svelte` only
-✅ **Code Viewing**: Users can see and copy the exact source code
-✅ **Reusable**: Same demo can be used across multiple tutorials
-✅ **Testable**: Demo components can be tested independently
+- **Data-Driven:** Components adapt to your data, not the other way around. No more writing adapters or mappers for every API response.
+- **Developer-Focused:** Rokkit is designed to let you focus on your application's functionality, not on learning a new design system or fighting with component APIs.
+- **Unstyled by Default:** Bring your own styles, or use one of the included themes. Rokkit provides semantic `data-*` attributes for easy theming.
+- **Extensible:** Override, customize, and compose components as needed. Use snippets and field mapping for total flexibility.
+- **Separation of Concerns:** Demo code is separate from tutorial content.
+- **Easy Maintenance:** Update demos by editing `src/App.svelte` only.
+- **Code Viewing:** Users can see and copy the exact source code.
+- **Reusable:** Same demo can be used across multiple tutorials.
+- **Testable:** Demo components can be tested independently.
+
+---
+
+### Acknowledgements
+
+- **Bits UI** — Inspired the data-attribute pattern and composable architecture. Rokkit uses Bits UI under the hood for some components.
+- **UnoCSS** — For utility-first styling and theme support.
+- **Iconify** — For the icon system.
 
 ## File Structure
 

@@ -35,7 +35,7 @@
 
 	<StoryViewer {...storyBuilder.getExample('intro')} />
 
-	<h1>Object Array</h1>
+	<h2>Object Array</h2>
 	<p>Here's another example which uses an array of objects with more complex data.</p>
 	<p>
 		List expects `text` attribute on each item. Optionally an `image` or `icon` attributes can be
@@ -69,7 +69,7 @@
 
 	<!-- Snippets Documentation -->
 	<div data-card>
-		<h2>Available Snippets</h2>
+		<h3>Available Snippets</h3>
 		<ul>
 			<li><strong>header</strong>: Add a custom header, say a search box to the list</li>
 			<li><strong>footer</strong>: Add a custom footer, say a toolbar to the list</li>
@@ -78,7 +78,7 @@
 		</ul>
 	</div>
 
-	<h1>Field Mapping</h1>
+	<h2>Field Mapping</h2>
 	<p>
 		The List component is flexible and can adapt to your data structure. Instead of altering your
 		attributes to conform to the List's structure, you can use the `fields` property to specify
@@ -97,7 +97,7 @@
 
 	<StoryViewer {...storyBuilder.getExample('mapping')} />
 
-	<h1>Advanced Usage</h1>
+	<h2>Advanced Usage</h2>
 	<p>
 		Sometimes, we may want to use different views for different items. This can be achieved by
 		setting both fields and using properties.

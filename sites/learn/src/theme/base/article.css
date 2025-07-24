@@ -1,16 +1,16 @@
 /* Article styles - Base Layout */
 
 [data-article-root] {
-  @apply w-full max-w-none;
+  @apply md:w-200 w-full md:mx-auto md:my-10;
 }
 
 /* Typography hierarchy - Layout */
 [data-article-root] h1 {
-  @apply mb-6 mt-0 flex items-center gap-3 pb-2 leading-loose;
+  @apply mb-6 mt-0 flex items-center gap-3 py-4;
 }
 
 [data-article-root] h2 {
-  @apply mb-6 mt-12 pb-2 leading-loose;
+  @apply mb-6 mt-12 py-3 leading-loose;
 }
 
 [data-article-root] h3 {
@@ -30,7 +30,7 @@
 }
 
 /* Paragraphs and text - Layout */
-[data-article-root] p {
+[data-article-root] > p {
   @apply mb-4 leading-relaxed;
 }
 
@@ -108,7 +108,7 @@
 
 /* Images - Layout */
 [data-article-root] img {
-  @apply mb-6 h-auto max-w-full;
+  @apply h-auto max-w-full;
 }
 
 /* Special content blocks - Layout */

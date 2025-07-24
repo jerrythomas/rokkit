@@ -3,7 +3,7 @@
   "description": "Data-driven list component with field mapping and customization",
   "icon": "i-component:list",
   "category": "elements",
-  "sequence": 10,
+  "order": 1,
   "tags": ["list", "data-driven", "selection", "field-mapping", "customize"],
   "experimental": false
 }
