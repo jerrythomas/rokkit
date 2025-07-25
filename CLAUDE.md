@@ -171,21 +171,21 @@ The project enforces strict code quality through ESLint:
 - **Neutral Colors**: `neutral-50` through `neutral-900`
 - **Semantic Colors**: `primary-`, `secondary-`, `accent-`, `error-`, `warning-`, `success-`
 - **Dark Mode**: Always include `dark:` variants.
-- **Semantic Shortcuts**: Use semantic shortcuts (ex bg-neutral-subtle instead of bg-neutral-200 dark:bg-neutral-800)
+- **Semantic Shortcuts**: Use semantic shortcuts (ex bg-surface-z2 instead of bg-surface-200 dark:bg-surface-800)
 - **Interactive States**: Use `hover:`, `focus:`, `active:` variants
 
 ### Color Patterns
 ```css
 /* Backgrounds */
-bg-neutral-base        /* Page backgrounds */
-bg-neutral-inset       /* Card backgrounds */
+bg-surface-z2        /* Page backgrounds */
+bg-surface-z1       /* Card backgrounds */
 
 /* Text */
-text-neutral-overlay         /* Primary text */
-text-neutral-floating   /* Secondary text */
+text-surface-z6        /* Primary text */
+text-surface-z6   /* Secondary text */
 
 /* Borders */
-border-neutral-subtle    /* Standard borders */
+border-surface-z2    /* Standard borders */
 ```
 
 ## Workspace Dependencies

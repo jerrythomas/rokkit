@@ -11,8 +11,8 @@ rk-carousel rk-dot-nav {
   @apply flex h-4 w-full justify-center gap-2;
 }
 rk-carousel rk-dot {
-  /* @apply block h-4 w-4 p-0 m-0 text-xs rounded-full bg-neutral-subtle cursor-pointer focus:outline-none; */
-  @apply from-neutral-subtle to-neutral-subtle bg-gradient-to-r;
+  /* @apply block h-4 w-4 p-0 m-0 text-xs rounded-full bg-surface-z2 cursor-pointer focus:outline-none; */
+  @apply from-surface-z2 to-surface-z2 bg-gradient-to-r;
 }
 rk-carousel rk-dot[aria-checked='true'] {
   @apply from-primary to-secondary bg-gradient-to-r;

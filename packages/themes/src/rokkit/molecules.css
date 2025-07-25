@@ -3,7 +3,7 @@
   @apply relative mt-2 h-2;
 }
 [data-style='rokkit'] rk-input-range rk-range-track rk-range-track-bar {
-  @apply bg-neutral-muted border-neutral-muted box-border rounded-full border;
+  @apply bg-surface-z3 border-surface-z3 box-border rounded-full border;
 }
 [data-style='rokkit'] rk-input-range rk-range-track selected-bar {
   @apply top-0px bottom-0px from-primary to-secondary border-secondary rounded-full border bg-gradient-to-r;
@@ -12,7 +12,7 @@
   @apply rounded-sm focus:outline-none;
 }
 /* [data-style="rokkit"]  rk-input-range rk-tick p {
-  @apply text-neutral-800;
+  @apply text-surface-800;
 } */
 [data-style='rokkit'] .bookend rk-range-track rk-range-track-bar::before,
 [data-style='rokkit'] .bookend rk-range-track rk-range-track-bar::after {
@@ -31,10 +31,10 @@
   @apply h-6;
 } */
 [data-style='rokkit'] rk-tick rk-tick-bar {
-  @apply border-neutral h-full;
+  @apply border-surface h-full;
 }
 [data-style='rokkit'] rk-tick p {
-  @apply items-top text-neutral-600;
+  @apply items-top text-surface-600;
   font-size: 8px;
 }
 
@@ -51,7 +51,7 @@
 /* Styles for 'button[role='switch']' class */
 [data-style='rokkit'] button[role='switch'] {
   @apply h-8 min-h-6 w-16 rounded-full p-0;
-  @apply bg-neutral-subtle border-neutral-subtle border;
+  @apply bg-surface-z2 border-surface-z2 border;
 }
 [data-style='rokkit'] button[role='switch'] > rk-mark {
   @apply top-0.75 h-6 w-6 rounded-full;
@@ -60,7 +60,7 @@
 
 /* Styles for 'rating' class */
 [data-style='rokkit'] rating {
-  @apply focus:outline-secondary h-9 justify-center rounded text-xl text-neutral-600 focus:outline;
+  @apply focus:outline-secondary text-surface-600 h-9 justify-center rounded text-xl focus:outline;
 }
 [data-style='rokkit'] rating > icon {
   @apply w-8;
@@ -74,10 +74,10 @@
 
 /* Pill styles */
 [data-style='rokkit'] .pill {
-  @apply bg-neutral-inset border-neutral-subtle flex-grow-0 rounded-full border px-2 py-1;
+  @apply bg-surface-z0 border-surface-z2 flex-grow-0 rounded-full border px-2 py-1;
 }
 [data-style='rokkit'] .pill > icon[role='button'] {
-  @apply hover:bg-neutral-muted h-5 w-5 rounded-full hover:text-current focus:m-0 focus:rounded-full;
+  @apply hover:bg-surface-z3 h-5 w-5 rounded-full hover:text-current focus:m-0 focus:rounded-full;
 }
 
 [data-style='rokkit'] .pill > rk-item {
@@ -120,5 +120,5 @@
 }
 
 [data-style='rokkit'] rk-day-of-month[aria-selected='true'] {
-  @apply from-primary to-secondary bg-gradient-to-r text-neutral-200 dark:text-neutral-800;
+  @apply from-primary to-secondary text-surface-200 dark:text-surface-800 bg-gradient-to-r;
 }

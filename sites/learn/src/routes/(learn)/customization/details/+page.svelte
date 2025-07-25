@@ -18,7 +18,7 @@
 		</li>
 		<li>
 			<strong>getShortcuts(role)</strong>: Generates semantic color shortcuts for a given role
-			(e.g., <code>'neutral'</code>, <code>'primary'</code>).
+			(e.g., <code>'surface'</code>, <code>'primary'</code>).
 		</li>
 		<li>
 			<strong>getColorRules(mapping)</strong>: Returns the full color rule set for UnoCSS’s theme

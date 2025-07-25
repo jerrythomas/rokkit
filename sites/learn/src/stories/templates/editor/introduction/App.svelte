@@ -1,6 +1,6 @@
 <script>
 	import { NestedEditor } from '@rokkit/forms'
-	
+
 	const schema = [
 		{
 			key: 'tenant',
@@ -96,6 +96,6 @@
 	})
 </script>
 
-<div class="border-neutral-subtle flex h-96 overflow-hidden border rounded-lg">
+<div class="border-surface-z2 flex h-96 overflow-hidden rounded-lg border">
 	<NestedEditor bind:value {schema} />
 </div>

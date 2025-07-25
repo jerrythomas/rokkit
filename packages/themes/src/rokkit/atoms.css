@@ -1,7 +1,7 @@
 /* Zebra styles */
 [data-style='rokkit'] .zebra rk-item,
 [data-style='rokkit'] .zebra rk-list-item {
-  @apply even:bg-neutral-zebra hover:bg-neutral-50;
+  @apply even:bg-surface-zebra hover:bg-surface-50;
 }
 
 /* Styles for input[type='number'] */
@@ -14,12 +14,12 @@
 }
 
 [data-style='rokkit'] rk-progress-bar rk-value-bar {
-  @apply from-primary-500 to-secondary-500 bg-gradient-to-r text-neutral-100 dark:text-neutral-800;
+  @apply from-primary-500 to-secondary-500 text-surface-100 dark:text-surface-800 bg-gradient-to-r;
 }
 
 /* Styles for 'searchable' class */
 [data-style='rokkit'] .searchable input {
-  @apply border-neutral-subtle border;
+  @apply border-surface-z2 border;
 }
 [data-style='rokkit'] a.button {
   @apply px-4 no-underline;

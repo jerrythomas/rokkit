@@ -12,11 +12,11 @@
 	let { message = 'Loading story...', class: className = '' } = $props()
 </script>
 
-<div class="story-loading border-neutral-subtle bg-neutral-base rounded-lg border p-6 {className}">
+<div class="story-loading border-surface-z2 bg-surface-z2 rounded-lg border p-6 {className}">
 	<div class="flex items-center justify-center space-x-3">
 		<div class="animate-spin">
 			<svg
-				class="text-neutral-floating h-5 w-5"
+				class="text-surface-floating h-5 w-5"
 				fill="none"
 				stroke="currentColor"
 				viewBox="0 0 24 24"
@@ -29,6 +29,6 @@
 				></path>
 			</svg>
 		</div>
-		<span class="text-neutral-floating text-sm">{message}</span>
+		<span class="text-surface-floating text-sm">{message}</span>
 	</div>
 </div>

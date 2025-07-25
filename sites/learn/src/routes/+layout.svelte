@@ -29,7 +29,7 @@
 
 	setContext('site', () => site)
 
-	let headerStyle = $derived(page.url.pathname == '/' ? '' : 'border-b border-neutral-z1 z-10')
+	let headerStyle = $derived(page.url.pathname == '/' ? '' : 'border-b border-surface-z1 z-10')
 </script>
 
 <svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />

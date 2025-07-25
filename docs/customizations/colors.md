@@ -6,9 +6,9 @@ Rokkit’s color system is designed for semantic clarity, flexibility, and easy 
 
 ## Semantic Color System: z1–z10
 
-Instead of traditional shortcuts like `bg-neutral-base` or `bg-neutral-inset`, Rokkit now uses a numbered scale for each color role:
+Instead of traditional shortcuts like `bg-surface-300` or `bg-surface-100`, Rokkit now uses a numbered scale for each color role:
 
-- `bg-neutral-z1` through `bg-neutral-z10`
+- `bg-surface-z0` through `bg-surface-z10`
 - `bg-primary-z1` through `bg-primary-z10`
 - ...and so on for secondary, success, warning, error, info, etc.
 
@@ -18,16 +18,16 @@ Each `z` value maps to a specific shade in your palette. For example, for neutra
 
 | Shortcut         | Light Mode         | Dark Mode         |
 |------------------|-------------------|-------------------|
-| bg-neutral-z1    | bg-neutral-50     | bg-neutral-950    |
-| bg-neutral-z2    | bg-neutral-100    | bg-neutral-900    |
-| bg-neutral-z3    | bg-neutral-200    | bg-neutral-800    |
-| bg-neutral-z4    | bg-neutral-300    | bg-neutral-700    |
-| bg-neutral-z5    | bg-neutral-500    | bg-neutral-600    |
-| bg-neutral-z6    | bg-neutral-600    | bg-neutral-500    |
-| bg-neutral-z7    | bg-neutral-700    | bg-neutral-300    |
-| bg-neutral-z8    | bg-neutral-800    | bg-neutral-200    |
-| bg-neutral-z9    | bg-neutral-900    | bg-neutral-100    |
-| bg-neutral-z10   | bg-neutral-950    | bg-neutral-50     |
+| bg-surface-z1    | bg-surface-50     | bg-surface-950    |
+| bg-surface-z2    | bg-surface-100    | bg-surface-900    |
+| bg-surface-z3    | bg-surface-200    | bg-surface-800    |
+| bg-surface-z4    | bg-surface-300    | bg-surface-700    |
+| bg-surface-z5    | bg-surface-500    | bg-surface-600    |
+| bg-surface-z6    | bg-surface-600    | bg-surface-500    |
+| bg-surface-z7    | bg-surface-700    | bg-surface-300    |
+| bg-surface-z8    | bg-surface-800    | bg-surface-200    |
+| bg-surface-z9    | bg-surface-900    | bg-surface-100    |
+| bg-surface-z10   | bg-surface-950    | bg-surface-50     |
 
 This mapping ensures that your UI adapts seamlessly between light and dark modes, with the lowest index (`z1`) always representing the lightest shade in light mode and the darkest in dark mode, and vice versa for `z10`.
 
@@ -35,7 +35,7 @@ This mapping ensures that your UI adapts seamlessly between light and dark modes
 
 ## How to Define Semantic Color Shortcuts
 
-**Recommended:**  
+**Recommended:**
 Use the helper function from your theme system, as shown in `uno.config.js`:
 
 ```js
@@ -48,19 +48,19 @@ shortcuts: [
 ]
 ```
 
-This automatically generates all the semantic shortcuts (`bg-neutral-z1`, `bg-neutral-z2`, ..., `bg-neutral-z10`) according to your palette and tone mapping.
+This automatically generates all the semantic shortcuts (`bg-surface-z1`, `bg-surface-z2`, ..., `bg-surface-z10`) according to your palette and tone mapping.
 
 ---
 
 ## Usage Example
 
 ```svelte
-<div class="bg-neutral-z1 text-neutral-z10">
+<div class="bg-surface-z1 text-surface-z10">
   <p>This uses the lightest neutral background and darkest neutral text in light mode.</p>
 </div>
 ```
 
-Switching to dark mode (e.g., by setting `[data-mode="dark"]` on your root element) will automatically invert the mapping, so `bg-neutral-z1` becomes the darkest shade.
+Switching to dark mode (e.g., by setting `[data-mode="dark"]` on your root element) will automatically invert the mapping, so `bg-surface-z1` becomes the darkest shade.
 
 ---
 
@@ -74,8 +74,8 @@ You can use the z-indexed scale for any semantic color role:
 - `bg-warning-z1` ... `bg-warning-z10`
 - `bg-error-z1` ... `bg-error-z10`
 - `bg-info-z1` ... `bg-info-z10`
-- `text-neutral-z1` ... `text-neutral-z10`
-- `border-neutral-z1` ... `border-neutral-z10`
+- `text-surface-z1` ... `text-surface-z10`
+- `border-surface-z1` ... `border-surface-z10`
 - ...and so on
 
 This system applies to backgrounds, text, borders, and any other CSS property that supports color.

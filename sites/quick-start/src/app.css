@@ -17,7 +17,7 @@
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
-  @apply font-body bg-neutral-base font-extralight text-neutral-800;
+  @apply font-body bg-surface-z2 text-surface-800 font-extralight;
 }
 body > app {
   @apply relative flex h-full w-full flex-col overflow-hidden;

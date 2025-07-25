@@ -4,7 +4,7 @@
 
 [data-style='material'] button,
 [data-style='material'] .button {
-  @apply bg-neutral-subtle rounded px-4 py-2 uppercase;
+  @apply bg-surface-z2 rounded px-4 py-2 uppercase;
 }
 [data-style='material'] button-group {
   @apply flex justify-center rounded-sm shadow;
@@ -14,9 +14,9 @@
 }
 
 [data-style='material'] button-group > button {
-  @apply rounded-none border-none border-neutral-400;
-  @apply bg-neutral-subtle focus:outline-none;
-  @apply text-sm uppercase text-neutral-800;
+  @apply border-surface-400 rounded-none border-none;
+  @apply bg-surface-z2 focus:outline-none;
+  @apply text-surface-800 text-sm uppercase;
 }
 [data-style='material'] button-group > button:not(:last-child) {
   @apply border-r;

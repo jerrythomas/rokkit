@@ -47,12 +47,10 @@
 	let assigneeFields = $state({ text: 'name', description: 'role', icon: 'avatar' })
 </script>
 
-<div class="space-y-8 max-w-2xl mx-auto">
+<div class="mx-auto max-w-2xl space-y-8">
 	<div class="text-center">
-		<h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
-			Issue Tracker Form
-		</h2>
-		<p class="text-neutral-600 dark:text-neutral-400">
+		<h2 class="text-surface-900 mb-2 text-2xl font-bold dark:text-white">Issue Tracker Form</h2>
+		<p class="text-surface-600 dark:text-surface-400">
 			Explore different input components with field mapping and data binding
 		</p>
 	</div>
@@ -60,7 +58,7 @@
 	<div class="space-y-6">
 		<!-- Category Selection (List) -->
 		<div class="space-y-2">
-			<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+			<label class="text-surface-700 dark:text-surface-300 block text-sm font-medium">
 				Issue Category
 			</label>
 			<List
@@ -73,7 +71,7 @@
 
 		<!-- Priority Selection (Select) -->
 		<div class="space-y-2">
-			<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+			<label class="text-surface-700 dark:text-surface-300 block text-sm font-medium">
 				Priority Level
 			</label>
 			<Select
@@ -86,9 +84,7 @@
 
 		<!-- Tags (MultiSelect) -->
 		<div class="space-y-2">
-			<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-				Tags
-			</label>
+			<label class="text-surface-700 dark:text-surface-300 block text-sm font-medium"> Tags </label>
 			<MultiSelect
 				items={availableTags}
 				bind:value={formData.tags}
@@ -99,7 +95,7 @@
 
 		<!-- Assignees (MultiSelect with custom rendering) -->
 		<div class="space-y-2">
-			<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+			<label class="text-surface-700 dark:text-surface-300 block text-sm font-medium">
 				Assign to Team Members
 			</label>
 			<MultiSelect
@@ -112,49 +108,51 @@
 	</div>
 
 	<!-- Form Summary -->
-	<div class="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6">
-		<h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
-			Form Summary
-		</h3>
+	<div class="bg-surface-50 dark:bg-surface-800 rounded-lg p-6">
+		<h3 class="text-surface-900 mb-4 text-lg font-semibold dark:text-white">Form Summary</h3>
 
 		<div class="space-y-3 text-sm">
 			<div class="flex items-center justify-between">
-				<span class="text-neutral-600 dark:text-neutral-400">Category:</span>
-				<span class="font-medium text-neutral-900 dark:text-white">
-					{formData.category ? `${formData.category.icon} ${formData.category.text}` : 'Not selected'}
+				<span class="text-surface-600 dark:text-surface-400">Category:</span>
+				<span class="text-surface-900 font-medium dark:text-white">
+					{formData.category
+						? `${formData.category.icon} ${formData.category.text}`
+						: 'Not selected'}
 				</span>
 			</div>
 
 			<div class="flex items-center justify-between">
-				<span class="text-neutral-600 dark:text-neutral-400">Priority:</span>
-				<span class="font-medium text-neutral-900 dark:text-white">
+				<span class="text-surface-600 dark:text-surface-400">Priority:</span>
+				<span class="text-surface-900 font-medium dark:text-white">
 					{formData.priority?.label || 'Not selected'}
 				</span>
 			</div>
 
 			<div class="flex items-start justify-between">
-				<span class="text-neutral-600 dark:text-neutral-400">Tags:</span>
-				<div class="flex flex-wrap gap-1 max-w-xs">
+				<span class="text-surface-600 dark:text-surface-400">Tags:</span>
+				<div class="flex max-w-xs flex-wrap gap-1">
 					{#each formData.tags as tag}
-						<span class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded text-xs">
+						<span
+							class="bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded px-2 py-1 text-xs"
+						>
 							{tag.name}
 						</span>
 					{:else}
-						<span class="font-medium text-neutral-900 dark:text-white">None selected</span>
+						<span class="font-medium text-surface-900 dark:text-white">None selected</span>
 					{/each}
 				</div>
 			</div>
 
 			<div class="flex items-start justify-between">
-				<span class="text-neutral-600 dark:text-neutral-400">Assignees:</span>
-				<div class="space-y-1 max-w-xs">
+				<span class="text-surface-600 dark:text-surface-400">Assignees:</span>
+				<div class="max-w-xs space-y-1">
 					{#each formData.assignees as assignee}
 						<div class="flex items-center space-x-2 text-xs">
 							<span>{assignee.avatar}</span>
-							<span class="font-medium text-neutral-900 dark:text-white">{assignee.name}</span>
+							<span class="text-surface-900 font-medium dark:text-white">{assignee.name}</span>
 						</div>
 					{:else}
-						<span class="font-medium text-neutral-900 dark:text-white">None assigned</span>
+						<span class="font-medium text-surface-900 dark:text-white">None assigned</span>
 					{/each}
 				</div>
 			</div>

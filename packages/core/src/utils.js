@@ -145,7 +145,7 @@ export const importIcons = (icons) => {
  */
 export function hex2rgb(hex) {
 	const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16))
-	return `${r} ${g} ${b}`
+	return `${r},${g},${b}`
 }
 
 /**

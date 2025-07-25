@@ -31,8 +31,8 @@ import { SvelteSet } from 'svelte/reactivity'
  * @property {string} onSecondary
  * @property {string} accent
  * @property {string} onAccent
- * @property {string} neutral
- * @property {string} onNeutral
+ * @property {string} surface
+ * @property {string} onsurface
  * @property {string} error
  * @property {string} onError
  * @property {string} warning

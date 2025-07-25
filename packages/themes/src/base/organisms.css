@@ -47,7 +47,7 @@ rk-input-field rk-field {
   @apply gap-1px;
 }
 rk-input-field rk-field rk-icon {
-  @apply bg-neutral-subtle h-9 w-9 text-neutral-800;
+  @apply bg-surface-z2 text-surface-800 h-9 w-9;
 }
 
 rk-input-field > rk-field > rk-input-select {
@@ -60,7 +60,7 @@ rk-drop-down > button > span > rk-icon {
 }
 rk-input-select > rk-selected-item,
 rk-drop-down > button > span {
-  /* @apply bg-neutral-base pl-3; */
+  /* @apply bg-surface-z1 pl-3; */
   @apply min-h-9 items-center gap-2 pl-3 normal-case;
-  @apply rounded text-neutral-800;
+  @apply text-surface-800 rounded;
 }

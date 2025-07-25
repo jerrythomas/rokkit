@@ -2,7 +2,7 @@
 
 /* Tab Root Container */
 [data-style='minimal'] [data-tabs-root] {
-  @apply border-neutral-z4 box-border cursor-pointer select-none gap-2 border-b-2 px-2;
+  @apply border-surface-z4 box-border cursor-pointer select-none gap-2 border-b-2 px-2;
 }
 
 /* Tab Root Focus State */
@@ -22,7 +22,7 @@
 
 /* Tab List - Tab Items */
 [data-style='minimal'] [data-tabs-trigger] {
-  @apply relative flex items-center gap-1 px-2 text-base leading-8;
+  @apply text-z2 relative flex items-center gap-1 px-2 leading-8;
   @apply cursor-pointer select-none transition-all duration-200;
 }
 
@@ -39,15 +39,17 @@
 
 /* Tab Item Selected State */
 [data-style='minimal'] [data-tabs-trigger][aria-selected='true'] {
-  @apply -mb-0.5 border-secondary-z6 border-b-2 font-medium;
+  @apply border-secondary-z6 -mb-0.5 border-b-2 font-medium;
 }
 
 /* Tab Item - Below Variant */
 [data-style='minimal'] [data-tabs-root][data-position='after'] [data-tabs-trigger] {
   @apply pt-0.5;
 }
-[data-style='minimal'] [data-tabs-root][data-position='after'] [data-tabs-trigger][aria-selected='true'] {
-  @apply -mt-0.5 border-b-0 border-secondary-z6 mb-0 border-t-2;
+[data-style='minimal']
+  [data-tabs-root][data-position='after']
+  [data-tabs-trigger][aria-selected='true'] {
+  @apply border-secondary-z6 -mt-0.5 mb-0 border-b-0 border-t-2;
 }
 
 /* Tab List - Small Variant */

@@ -44,7 +44,8 @@ describe('components', () => {
 			'ProgressDots',
 			'Card',
 			'Shine',
-			'Tilt'
+			'Tilt',
+			'GraphPaper'
 		])
 	})
 })

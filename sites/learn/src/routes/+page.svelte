@@ -9,7 +9,7 @@
 </script>
 
 <main
-	class="bg-neutral-z2 text-neutral-z8 relative flex h-full w-full max-w-full flex-col overflow-auto p-4"
+	class="bg-surface-z2 text-surface-z8 relative flex h-full w-full max-w-full flex-col overflow-auto p-4"
 >
 	<Background />
 	<div

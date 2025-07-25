@@ -145,17 +145,17 @@
 	</div>
 {:else if codeFiles.length === 1}
 	<!-- Single file Code Display -->
-	<div class="story-code bg-neutral-subtle rounded-lg {className}">
-		<div class="border-neutral-floating bg-neutral-elevated border-b px-4 py-2">
+	<div class="story-code bg-surface-z2 rounded-lg {className}">
+		<div class="border-surface-floating bg-surface-elevated border-b px-4 py-2">
 			<div class="flex items-center justify-between">
-				<span class="text-neutral-overlay text-sm font-medium">{codeFiles[0].name}</span>
+				<span class="text-surface-overlay text-sm font-medium">{codeFiles[0].name}</span>
 				<div class="flex items-center space-x-3">
-					<span class="text-neutral-floating text-xs">
+					<span class="text-surface-floating text-xs">
 						{codeFiles[0].content.split('\n').length} lines
 					</span>
 					<button
 						onclick={() => copyFileContent(codeFiles[0])}
-						class="text-neutral-floating hover:text-neutral-overlay transition-colors"
+						class="text-surface-floating hover:text-surface-overlay transition-colors"
 						title="Copy code"
 					>
 						{#if copySuccess}
@@ -183,7 +183,7 @@
 		</div>
 		<div class="overflow-x-auto">
 			{#await highlightCode( codeFiles[0].content, { lang: codeFiles[0].language, theme: vibe.mode === 'dark' ? 'github-dark' : 'github-light' } )}
-				<div class="text-neutral-floating p-4">Highlighting code...</div>
+				<div class="text-surface-floating p-4">Highlighting code...</div>
 			{:then value}
 				{@html value}
 			{:catch error}
@@ -193,17 +193,17 @@
 	</div>
 {:else}
 	<!-- Single file fallback -->
-	<div class="story-code bg-neutral-subtle rounded-lg {className}">
-		<div class="border-neutral-floating bg-neutral-elevated border-b px-4 py-2">
+	<div class="story-code bg-surface-z2 rounded-lg {className}">
+		<div class="border-surface-floating bg-surface-elevated border-b px-4 py-2">
 			<div class="flex items-center justify-between">
-				<span class="text-neutral-overlay text-sm font-medium">{filename}</span>
+				<span class="text-surface-overlay text-sm font-medium">{filename}</span>
 				<div class="flex items-center space-x-3">
-					<span class="text-neutral-floating text-xs"
+					<span class="text-surface-floating text-xs"
 						>{typeof code === 'string' ? code.split('\n').length : 0} lines</span
 					>
 					<button
 						onclick={copyCode}
-						class="text-neutral-floating hover:text-neutral-overlay transition-colors"
+						class="text-surface-floating hover:text-surface-overlay transition-colors"
 						title="Copy code"
 					>
 						{#if copySuccess}
@@ -231,7 +231,7 @@
 		</div>
 		<div class="overflow-x-auto">
 			{#await highlightedCode}
-				<div class="text-neutral-floating p-4">Highlighting code...</div>
+				<div class="text-surface-floating p-4">Highlighting code...</div>
 			{:then value}
 				{@html value}
 			{:catch error}

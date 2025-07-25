@@ -101,7 +101,7 @@ export const defaultKeyMap = {
 }
 
 export const defaultThemeMapping = {
-	neutral: 'slate',
+	surface: 'slate',
 	primary: 'orange',
 	secondary: 'pink',
 	accent: 'sky',
@@ -113,10 +113,11 @@ export const defaultThemeMapping = {
 }
 
 export const TONE_MAP = {
-	z1: 50,
-	z2: 100,
-	z3: 200,
-	z4: 300,
+	z0: 50,
+	z1: 100,
+	z2: 200,
+	z3: 300,
+	z4: 400,
 	z5: 500,
 	z6: 600,
 	z7: 700,

@@ -42,7 +42,7 @@
 	</p>
 	<p>
 		<strong>How does it work?</strong> Each semantic color role (like <code>primary</code>,
-		<code>info</code>, <code>neutral</code>, etc.) is mapped to a color name (such as
+		<code>info</code>, <code>surface</code>, etc.) is mapped to a color name (such as
 		<code>blue</code>, <code>cyan</code>, <code>stone</code>, etc.). You can override this mapping
 		to use any built-in color, or provide your own custom color set and map roles to those. You do
 		<em>not</em> need to provide a full color set—any colors or mappings you provide will be merged with
@@ -64,37 +64,37 @@
 
 	<h2>Semantic Color System</h2>
 	<p>
-		Instead of hardcoded color values, use semantic shortcuts like <code>bg-neutral-z1</code>
-		through <code>bg-neutral-z10</code> (and similarly for primary, secondary, etc.). These map to palette
+		Instead of hardcoded color values, use semantic shortcuts like <code>bg-surface-z1</code>
+		through <code>bg-surface-z10</code> (and similarly for primary, secondary, etc.). These map to palette
 		shades and automatically adapt between light and dark modes.
 	</p>
-	<table class="border-neutral-z4 my-6 w-full rounded border">
+	<table class="border-surface-z4 my-6 w-full rounded border">
 		<thead>
-			<tr class="bg-neutral-z2 text-neutral-z10">
+			<tr class="bg-surface-z2 text-surface-z10">
 				<th class="px-3 py-2 text-left">Shortcut</th>
 				<th class="px-3 py-2 text-left">Light Mode</th>
 				<th class="px-3 py-2 text-left">Dark Mode</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr><td class="px-3 py-1">bg-neutral-z1</td><td>bg-neutral-50</td><td>bg-neutral-950</td></tr>
-			<tr><td class="px-3 py-1">bg-neutral-z2</td><td>bg-neutral-100</td><td>bg-neutral-900</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z1</td><td>bg-surface-50</td><td>bg-surface-950</td></tr>
+			<tr><td class="px-3 py-1">bg-surface-z2</td><td>bg-surface-100</td><td>bg-surface-900</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z3</td><td>bg-neutral-200</td><td>bg-neutral-800</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z3</td><td>bg-surface-200</td><td>bg-surface-800</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z4</td><td>bg-neutral-300</td><td>bg-neutral-700</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z4</td><td>bg-surface-300</td><td>bg-surface-700</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z5</td><td>bg-neutral-500</td><td>bg-neutral-600</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z5</td><td>bg-surface-500</td><td>bg-surface-600</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z6</td><td>bg-neutral-600</td><td>bg-neutral-500</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z6</td><td>bg-surface-600</td><td>bg-surface-500</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z7</td><td>bg-neutral-700</td><td>bg-neutral-300</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z7</td><td>bg-surface-700</td><td>bg-surface-300</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z8</td><td>bg-neutral-800</td><td>bg-neutral-200</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z8</td><td>bg-surface-800</td><td>bg-surface-200</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z9</td><td>bg-neutral-900</td><td>bg-neutral-100</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z9</td><td>bg-surface-900</td><td>bg-surface-100</td></tr
 			>
-			<tr><td class="px-3 py-1">bg-neutral-z10</td><td>bg-neutral-950</td><td>bg-neutral-50</td></tr
+			<tr><td class="px-3 py-1">bg-surface-z10</td><td>bg-surface-950</td><td>bg-surface-50</td></tr
 			>
 		</tbody>
 	</table>
@@ -107,14 +107,14 @@
 	<Code {...storyBuilder.getFragment(3)} />
 
 	<p>
-		This will generate classes like <code>bg-neutral-z1</code>, <code>text-primary-z10</code>,
+		This will generate classes like <code>bg-surface-z1</code>, <code>text-primary-z10</code>,
 		<code>border-info-z4</code>, and more, all mapped to your palette and adaptive to dark mode.
 	</p>
 
 	<h3>Usage Example</h3>
 	<Code {...storyBuilder.getFragment(4)} />
 
-	<p class="text-neutral-z8 mt-2 text-sm">
+	<p class="text-surface-z8 mt-2 text-sm">
 		Switching to dark mode (e.g., <code>[data-mode="dark"]</code> on your root element) will automatically
 		invert the mapping.
 	</p>

@@ -5,7 +5,7 @@
 
 /* Gradient border for inputs using [data-input-root] */
 [data-input-root] {
-  @apply bg-neutral-z4 flex items-center rounded-md p-[1px] transition-all;
+  @apply bg-surface-z4 flex items-center rounded-md p-[1px] transition-all;
 }
 [data-field-type='checkbox'] [data-field] {
   @apply flex items-center leading-loose;
@@ -15,39 +15,39 @@
 }
 /* [data-input-root] input,
 [data-input-root] textarea {
-  @apply bg-neutral-z3 border-none outline-none transition-all;
+  @apply bg-surface-z3 border-none outline-none transition-all;
 } */
 
 [data-input-root] input::placeholder,
 [data-input-root] textarea::placeholder {
-  @apply text-neutral-z5;
+  @apply text-surface-z5;
 }
 
 [data-input-root][data-field-disabled] > label {
-  @apply text-neutral-z6;
+  @apply text-surface-z6;
 }
 
 /* Standard input/textarea/select inside [data-field-root] */
 [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
 [data-input-root] textarea,
 [data-input-root] select {
-  @apply bg-neutral-z2 text-neutral-z8 rounded-md border-none px-3 py-1 focus:outline-none;
+  @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 py-1 focus:outline-none;
 }
 /* Standard input field root (non-pill) */
 [data-field-root] {
-  @apply text-neutral-z9 gap-1 rounded-md p-2 transition-all;
+  @apply text-surface-z9 gap-1 rounded-md p-2 transition-all;
 }
 
 /* Disabled state: muted colors, cursor */
 [data-field-root][data-field-disabled] [data-input-root] {
-  @apply bg-neutral-z3 text-neutral-z6 cursor-not-allowed;
+  @apply bg-surface-z3 text-surface-z6 cursor-not-allowed;
 }
 
 [data-field-type='color'] [data-input-root] {
   @apply overflow-hidden;
 }
 [data-field-type='color'] input[type='color'] {
-  @apply bg-neutral-z2 flex min-h-11 flex-1 rounded-md focus:outline-none;
+  @apply bg-surface-z2 flex min-h-11 flex-1 rounded-md focus:outline-none;
 }
 [data-field-type='checkbox'] [data-input-root] {
   @apply p-1px bg-transparent;
@@ -60,16 +60,16 @@
 }
 
 [data-form-root] {
-  @apply bg-neutral-z3 rounded-md p-6;
+  @apply bg-surface-z3 rounded-md p-6;
 }
 
 [data-form-root] label {
-  @apply text-neutral-z7;
+  @apply text-surface-z7;
 }
 
 [data-description],
 [data-message] {
-  @apply text-neutral-z6;
+  @apply text-surface-z6;
 }
 [data-message] {
   @apply rounded-md px-2 py-1;

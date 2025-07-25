@@ -7,12 +7,12 @@
 	}
 </script>
 
-<item class="border-neutral-z2 flex items-center gap-2 rounded-md border p-2">
+<item class="border-surface-z2 flex items-center gap-2 rounded-md border p-2">
 	<Item value="Sample Text" />
 </item>
-<item class="border-neutral-z2 flex items-center gap-2 rounded-md border p-2">
+<item class="border-surface-z2 flex items-center gap-2 rounded-md border p-2">
 	<Item value={{ text: 'With Icon', icon: 'i-rokkit:mode-light' }} />
 </item>
-<item class="border-neutral-z2 flex w-full flex-col gap-2 overflow-hidden rounded-md border p-2">
+<item class="border-surface-z2 flex w-full flex-col gap-2 overflow-hidden rounded-md border p-2">
 	<Item value={avatar} />
 </item>

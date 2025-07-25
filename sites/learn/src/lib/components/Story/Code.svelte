@@ -11,7 +11,7 @@
 <div data-code-root>
 	<CopyToClipboard {content} floating={true} />
 	{#await highlightedCode}
-		<div class="text-neutral-floating p-4">Highlighting code...</div>
+		<div class="text-surface-floating p-4">Highlighting code...</div>
 	{:then code}
 		<!-- eslint-disable svelte/no-at-html-tags -->
 		{@html code}

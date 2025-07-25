@@ -24,7 +24,7 @@
 .markdown-body h5 .octicon-link,
 .markdown-body h6 .octicon-link {
   /* color: #1b1f23; */
-  @apply text-neutral;
+  @apply text-surface;
   vertical-align: middle;
   visibility: hidden;
 }
@@ -230,7 +230,7 @@
 }
 .markdown-body ul li::before {
   content: '';
-  @apply bg-neutral-muted absolute -ml-5 mt-2 h-1.5 w-1.5 rounded-sm;
+  @apply bg-surface-z3 absolute -ml-5 mt-2 h-1.5 w-1.5 rounded-sm;
 }
 
 .markdown-body ol {
@@ -650,7 +650,7 @@
 .markdown-body h1,
 .markdown-body h2 {
   /* padding-bottom: 0.3em; */
-  @apply border-neutral-subtle mt-16 border-b;
+  @apply border-surface-z2 mt-16 border-b;
   /* border-bottom: 1px solid #eaecef; */
 }
 
@@ -677,7 +677,7 @@
 
 .markdown-body h6 {
   font-size: 0.85em;
-  @apply text-neutral;
+  @apply text-surface;
   /* color: #6a737d; */
 }
 
@@ -737,17 +737,17 @@
 .markdown-body table th {
   padding: 6px 13px;
   /* border: 1px solid #dfe2e5; */
-  @apply border-neutral-base border;
+  @apply border-surface-z1 border;
 }
 
 .markdown-body table tr {
   /* background-color: #fff; */
-  @apply border-neutral-subtle border-t;
+  @apply border-surface-z2 border-t;
   /* border-top: 1px solid #c6cbd1; */
 }
 
 .markdown-body table tr:nth-child(2n) {
-  @apply bg-neutral-zebra;
+  @apply bg-surface-zebra;
   /* background-color: #f6f8fa; */
 }
 
@@ -773,7 +773,7 @@
 
 .markdown-body pre {
   word-wrap: normal;
-  @apply border-neutral-subtle rounded-sm border;
+  @apply border-surface-z2 rounded-sm border;
 }
 
 .markdown-body pre > code {

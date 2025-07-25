@@ -48,7 +48,7 @@
 </script>
 
 <container class="flex h-full w-full flex-row">
-	<aside class="border-r-neutral-subtle flex h-full w-80 border-r">
+	<aside class="border-r-surface-z2 flex h-full w-80 border-r">
 		<Tree items={schema} {fields} class="h-full w-full" on:move={handleMove} />
 	</aside>
 	<content class="flex h-full w-full flex-col gap-4 overflow-hidden p-8">

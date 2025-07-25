@@ -2,12 +2,12 @@
 
 /* Switch Root */
 [data-style='material'] [data-switch-root] {
-  @apply bg-neutral-z3 border-neutral-z4 flex min-h-8 min-w-16 items-center justify-center rounded-full border-2 p-1 shadow-sm transition-all;
+  @apply bg-surface-z3 border-surface-z4 flex min-h-8 min-w-16 items-center justify-center rounded-full border-2 p-1 shadow-sm transition-all;
 }
 
 /* Switch Track */
 [data-style='material'] [data-switch-track] {
-  @apply bg-neutral-z3 flex h-8 w-full items-center rounded-full transition-all;
+  @apply bg-surface-z3 flex h-8 w-full items-center rounded-full transition-all;
 }
 
 /* Switch Thumb */
@@ -27,15 +27,15 @@
 /* Switch Disabled State */
 [data-style='material'] [data-switch-root][aria-disabled='true'],
 [data-style='material'] [data-switch-track][aria-disabled='true'] {
-  @apply bg-neutral-z4 border-neutral-z4 cursor-not-allowed opacity-60;
+  @apply bg-surface-z4 border-surface-z4 cursor-not-allowed opacity-60;
 }
 [data-style='material'] [data-switch-mark][aria-disabled='true'] {
-  @apply bg-neutral-z6;
+  @apply bg-surface-z6;
 }
 
 /* Switch Label */
 [data-style='material'] [data-switch-label] {
-  @apply text-neutral-z8 ml-3 cursor-pointer select-none text-base font-medium;
+  @apply text-surface-z8 text-z2 ml-3 cursor-pointer select-none font-medium;
 }
 
 /* Switch Focus State */

@@ -28,7 +28,7 @@
 </script>
 
 <header
-	class="bg-neutral-z1 text-neutral-z8 relative flex min-h-14 w-full items-center justify-between {className}"
+	class="bg-surface-z1 text-surface-z8 relative flex min-h-14 w-full items-center justify-between {className}"
 >
 	{#if loading}
 		<ProgressBar class="z-5 absolute top-0" />

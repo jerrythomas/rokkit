@@ -1,6 +1,6 @@
 import { defaultThemeMapping, defaultColors, TONE_MAP } from './constants.js'
 import { shades } from './colors/index.js'
-// import { hex2rgb } from './utils'
+import { hex2rgb } from './utils'
 
 const modifiers = {
 	hsl: (value) => `hsl(${value} / <alpha-value>)`,
@@ -41,7 +41,7 @@ function generateColorRules(variant, colors, mapping) {
 	return ['DEFAULT', ...shades].flatMap((shade) => [
 		{
 			key: shade === 'DEFAULT' ? `--color-${variant}` : `--color-${variant}-${shade}`,
-			value: colors[mapping[variant]][`${shade}`]
+			value: hex2rgb(colors[mapping[variant]][`${shade}`])
 		}
 	])
 }
@@ -78,11 +78,18 @@ export function semanticShortcuts(name) {
 
 		for (const prefix of prefixes) {
 			// Variant-prefixed regex (e.g., hover:bg-primary-base)
-			const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}$`)
+			const variantPattern = new RegExp(`^(.+):${prefix}-${name}-${toneName}(\/\\d+)?$`)
 			shortcuts.push([
 				variantPattern,
-				([, variant]) =>
-					`${variant}:${prefix}-${name}-${lightValue} ${variant}:dark:${prefix}-${name}-${darkValue}`
+				([, variant, end]) =>
+					`${variant}:${prefix}-${name}-${lightValue}${end || ''} ${variant}:dark:${prefix}-${name}-${darkValue}${end || ''}`
+			])
+
+			const opacityPattern = new RegExp(`${prefix}-${name}-${toneName}(\/\\d+)?$`)
+			shortcuts.push([
+				opacityPattern,
+				([, end]) =>
+					`${prefix}-${name}-${lightValue}${end || ''} dark:${prefix}-${name}-${darkValue}${end || ''}`
 			])
 
 			// Exact static shortcut (e.g., bg-primary-base)
@@ -131,7 +138,10 @@ export class Theme {
 		return Object.keys(color).reduce(
 			(acc, key) => ({
 				...acc,
-				[key]: key === 'DEFAULT' ? `var(--color-${variant})` : `var(--color-${variant}-${key})`
+				[key]:
+					key === 'DEFAULT'
+						? `rgba(var(--color-${variant}),<alpha-value>)`
+						: `rgba(var(--color-${variant}-${key}),<alpha-value>)`
 			}),
 			{}
 		)

@@ -1,7 +1,7 @@
 [data-toggle-root],
 [data-button-root] {
   @apply flex min-h-10 min-w-10 items-center gap-2 rounded-md;
-  @apply bg-neutral-z4 text-neutral-z8 hover:text-secondary;
+  @apply bg-surface-z4 text-surface-z8 hover:text-secondary;
 }
 [data-toggle-root] [data-tag-icon],
 [data-button-root] [data-tag-icon] {

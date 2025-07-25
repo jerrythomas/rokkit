@@ -9,17 +9,17 @@ import { defineConfig } from 'unocss'
 import { Theme, iconShortcuts, defaultIcons } from '@rokkit/themes'
 
 const theme = new Theme({
-  mapping: {
-    primary: 'orange',
-    neutral: 'shark'
-  }
+	mapping: {
+		primary: 'orange',
+		surface: 'shark'
+	}
 })
 
 export default defineConfig({
-  theme: theme.getColorRules(),
-  shortcuts: [
-    ...theme.getShortcuts('primary'),
-    ...theme.getShortcuts('neutral'),
-    ...Object.entries(iconShortcuts(defaultIcons, 'i-myicons'))
-  ]
+	theme: theme.getColorRules(),
+	shortcuts: [
+		...theme.getShortcuts('primary'),
+		...theme.getShortcuts('surface'),
+		...Object.entries(iconShortcuts(defaultIcons, 'i-myicons'))
+	]
 })

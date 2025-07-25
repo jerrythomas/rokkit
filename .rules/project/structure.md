@@ -125,21 +125,21 @@ sites/learn/
 ### Color Patterns
 ```css
 /* Backgrounds */
-bg-neutral-50 dark:bg-neutral-900        /* Page backgrounds */
-bg-neutral-100 dark:bg-neutral-800       /* Card backgrounds */
-bg-neutral-200 dark:bg-neutral-700       /* Subtle backgrounds */
+bg-surface-50 dark:bg-surface-900        /* Page backgrounds */
+bg-surface-100 dark:bg-surface-800       /* Card backgrounds */
+bg-surface-200 dark:bg-surface-700       /* Subtle backgrounds */
 
 /* Text */
-text-neutral-900 dark:text-white         /* Primary text */
-text-neutral-700 dark:text-neutral-300   /* Secondary text */
-text-neutral-600 dark:text-neutral-400   /* Muted text */
+text-surface-900 dark:text-white         /* Primary text */
+text-surface-700 dark:text-surface-300   /* Secondary text */
+text-surface-600 dark:text-surface-400   /* Muted text */
 
 /* Borders */
-border-neutral-200 dark:border-neutral-700    /* Standard borders */
-border-neutral-300 dark:border-neutral-600    /* Emphasized borders */
+border-surface-200 dark:border-surface-700    /* Standard borders */
+border-surface-300 dark:border-surface-600    /* Emphasized borders */
 
 /* Interactive Elements */
-hover:bg-neutral-100 dark:hover:bg-neutral-800
+hover:bg-surface-100 dark:hover:bg-surface-800
 focus:ring-2 focus:ring-primary-500
 ```
 

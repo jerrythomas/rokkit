@@ -9,8 +9,8 @@ import { Theme } from '@rokkit/themes'
 
 // Define your palette mapping
 const mapping = {
-  primary: 'orange',
-  neutral: 'shark'
+	primary: 'orange',
+	surface: 'shark'
 }
 
 // Create a Theme instance
@@ -20,12 +20,12 @@ const theme = new Theme({ mapping })
 const palette = theme.getPalette(mapping)
 
 // Get semantic color shortcuts for a role
-const neutralShortcuts = theme.getShortcuts('neutral')
+const surfaceShortcuts = theme.getShortcuts('surface')
 
 // Get the full color rule set for UnoCSS theme config
 const colorRules = theme.getColorRules(mapping)
 
 // Example usage:
 console.log('Palette:', palette)
-console.log('Neutral Shortcuts:', neutralShortcuts)
+console.log('surface Shortcuts:', surfaceShortcuts)
 console.log('Color Rules:', colorRules)

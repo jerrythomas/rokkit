@@ -13,7 +13,7 @@
 	<div data-card>
 		<h1>Available Colors:</h1>
 		<ul class="grid grid-cols-2 gap-2 md:grid-cols-4">
-			<li>Neutral</li>
+			<li>surface</li>
 			<li>Primary</li>
 			<li>Secondary</li>
 			<li>Accent</li>
@@ -57,7 +57,7 @@
 	<h1>Customization</h1>
 	<p>
 		The Rokkit library allows users to customize the palette by calling the <code
-			class="bg-neutral-z6 rounded px-2 py-1">themeRules(themename, mapping, colors)</code
+			class="bg-surface-z6 rounded px-2 py-1">themeRules(themename, mapping, colors)</code
 		> function.
 	</p>
 
@@ -81,9 +81,9 @@
 
 	<h1>Integration</h1>
 	<p>
-		You can include the call to the <code class="bg-neutral-z6 rounded px-1">themeRules</code>
+		You can include the call to the <code class="bg-surface-z6 rounded px-1">themeRules</code>
 		function in your
-		<code class="bg-neutral-z6 rounded px-1">uno.config.js</code> in the rules section to apply the custom
+		<code class="bg-surface-z6 rounded px-1">uno.config.js</code> in the rules section to apply the custom
 		theme to your application.
 	</p>
 

@@ -9,5 +9,5 @@
 		<Icon name="i-rokkit:rating-filled" size="md" />
 		<Icon name="i-rokkit:rating-filled" size="lg" />
 	</div>
-	<p class="text-sm text-neutral-600 dark:text-neutral-400">Icons at different sizes</p>
+	<p class="text-surface-600 dark:text-surface-400 text-sm">Icons at different sizes</p>
 </div>

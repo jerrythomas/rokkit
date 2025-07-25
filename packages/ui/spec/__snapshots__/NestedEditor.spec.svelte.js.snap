@@ -6,16 +6,16 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
     class="flex h-full w-full flex-row"
   >
     <aside
-      class="border-r-neutral-subtle flex h-full w-80 border-r"
+      class="border-r-surface-z2 flex h-full w-80 border-r"
     >
       <rk-tree
         class="h-full w-full"
         tabindex="0"
       >
         <!---->
-         
+
         <!---->
-         
+
         <rk-nested-list
           role="tree"
         >
@@ -38,9 +38,9 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
               >
                 <!---->
               </span>
-              
+
               <!---->
-               
+
               <rk-item>
                 <!---->
                 <!---->
@@ -58,38 +58,38 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                   />
                 </rk-icon>
                 <!---->
-                 
+
                 <!---->
-                
+
                 <!---->
               </rk-item>
             </div>
-             
+
             <!---->
-            
+
             <!---->
           </rk-node>
-          
+
         </rk-nested-list>
         <!---->
-         
+
         <!---->
       </rk-tree>
       <!---->
     </aside>
-     
+
     <content
       class="flex h-full w-full flex-col gap-4 overflow-hidden p-8"
     >
       <!---->
-       
+
       <section
         class="flex w-full flex-grow flex-col overflow-auto"
       >
         <p>
           No atomic attributes at this level. Select a child node to edit. Current value is below.
         </p>
-         
+
         <rk-tree-table>
           <table
             class="striped"
@@ -102,21 +102,21 @@ exports[`NestedEditor.svelte > should render using default field mapping 1`] = `
                 <th>
                   value
                 </th>
-                
+
               </tr>
             </thead>
             <tbody>
-              
+
             </tbody>
           </table>
         </rk-tree-table>
         <!---->
         <!---->
       </section>
-       
+
       <!---->
     </content>
   </container>
-  
+
 </div>
 `;

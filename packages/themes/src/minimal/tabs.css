@@ -2,10 +2,10 @@
   @apply outline-none;
 }
 [data-style='minimal'] rk-tabs {
-  @apply border-neutral-subtle box-border cursor-pointer select-none gap-2 border-b-2 px-2;
+  @apply border-surface-z2 box-border cursor-pointer select-none gap-2 border-b-2 px-2;
 }
 [data-style='minimal'] rk-tabs .tab {
-  @apply px-2 text-base leading-8;
+  @apply text-z2 px-2 leading-8;
 }
 [data-style='minimal'] rk-tabs .tab rk-icon[role='img'] {
   @apply h-6 w-6;

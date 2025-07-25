@@ -1,6 +1,6 @@
 [data-style='minimal'] button {
   @apply select-none rounded px-4 leading-loose;
-  @apply bg-neutral-muted border-neutral-muted border;
+  @apply bg-surface-z3 border-surface-z3 border;
 }
 [data-style='minimal'] button rk-icon-left,
 [data-style='minimal'] button rk-icon-right {
@@ -21,9 +21,9 @@
   @apply gap-1px flex justify-center rounded-sm;
 }
 [data-style='minimal'] rk-button-group button {
-  @apply rounded-none border-none border-neutral-400;
-  @apply bg-neutral-subtle shadow focus:outline-none;
-  @apply px-2 text-sm uppercase leading-8 text-neutral-800;
+  @apply border-surface-400 rounded-none border-none;
+  @apply bg-surface-z2 shadow focus:outline-none;
+  @apply text-surface-800 px-2 text-sm uppercase leading-8;
 }
 [data-style='minimal'] rk-button-group button:not(:last-child) {
   @apply border-r;
@@ -44,7 +44,7 @@
 }
 [data-style='minimal'] rk-input-select > selected-item {
   @apply min-h-8 cursor-pointer items-center gap-4 pl-2 leading-8;
-  @apply border-b-neutral-muted border-b-2;
+  @apply border-b-surface-z3 border-b-2;
   @apply focus:border-b-secondary-600;
 }
 [data-style='minimal'] rk-input-select:focus > selected-item {
@@ -57,7 +57,7 @@
   @apply flex-grow flex-wrap gap-2;
 }
 [data-style='minimal'] rk-pill {
-  @apply gap-2 rounded-full border border-neutral-400 px-2;
+  @apply border-surface-400 gap-2 rounded-full border px-2;
 }
 [data-style='minimal'] rk-pill > rk-item {
   @apply gap-2 leading-6;
@@ -75,7 +75,7 @@
 
 [data-style='minimal'] button[role='switch'] {
   @apply h-8 min-h-6 w-16 rounded-full p-0;
-  @apply bg-neutral-subtle border-neutral-subtle border;
+  @apply bg-surface-z2 border-surface-z2 border;
 }
 
 [data-style='minimal'] button[role='switch'] > rk-mark {

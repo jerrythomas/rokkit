@@ -51,7 +51,7 @@
 	>
 		{#each features as feature, index (index)}
 			<Card
-				class="bg-neutral-z3 flex flex-col items-center gap-2 rounded-xl px-8 py-4"
+				class="bg-surface-z3 flex flex-col items-center gap-2 rounded-xl px-8 py-4"
 				value={feature}
 				fields={{ title: 'title', description: 'description' }}
 			>
@@ -60,7 +60,7 @@
 						<i class={proxy.get('icon')}></i>
 					</span>
 					<h3 class="text-md font-semibold leading-loose">{proxy.get('title')}</h3>
-					<p class="text-justify text-base text-sm text-neutral-600 dark:text-neutral-300">
+					<p class="text-surface-600 dark:text-surface-300 text-z2 text-justify text-sm">
 						{proxy.get('description')}
 					</p>
 				{/snippet}

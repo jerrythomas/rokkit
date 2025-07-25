@@ -62,12 +62,12 @@ export default defineConfig({
     ...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit')),
 
     // Text color shortcuts for contrast
-    ['text-on-primary', 'text-neutral-50'],
-    ['text-on-secondary', 'text-neutral-50'],
-    ['text-on-info', 'text-neutral-50'],
-    ['text-on-success', 'text-neutral-50'],
-    ['text-on-warning', 'text-neutral-50'],
-    ['text-on-error', 'text-neutral-50']
+    ['text-on-primary', 'text-surface-50'],
+    ['text-on-secondary', 'text-surface-50'],
+    ['text-on-info', 'text-surface-50'],
+    ['text-on-success', 'text-surface-50'],
+    ['text-on-warning', 'text-surface-50'],
+    ['text-on-error', 'text-surface-50']
   ],
   theme: {
     colors: theme.getColorRules({ neutral: 'shark' }),

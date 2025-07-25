@@ -10,14 +10,14 @@
 }
 [data-style='minimal'] rk-list,
 [data-style='minimal'] rk-accordion rk-summary {
-  @apply border-l-2px border-l-neutral-muted;
+  @apply border-l-2px border-l-surface-z3;
 }
 [data-style='minimal'] :not(rk-accordion > div) rk-list:focus-within {
   @apply outline-offset-3 outline-secondary-700 outline;
 }
 [data-style='minimal'] rk-list > rk-item,
 [data-style='minimal'] rk-accordion summary {
-  @apply bg-neutral-base items-center px-2 leading-8 text-neutral-700;
+  @apply bg-surface-z1 text-surface-700 items-center px-2 leading-8;
 }
 
 [data-style='minimal'] rk-item > a {
@@ -25,16 +25,16 @@
 }
 
 [data-style='minimal'] rk-list rk-item:hover {
-  @apply -m-l-2px border-l-2px border-l-neutral-subtle;
+  @apply -m-l-2px border-l-2px border-l-surface-z2;
 }
 [data-style='minimal'] rk-accordion summary:hover {
-  @apply border-l-neutral-subtle;
+  @apply border-l-surface-z2;
 }
 [data-style='minimal'] rk-list rk-item[aria-selected='true'] {
-  @apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-neutral-subtle;
+  @apply -m-l-2px border-l-2px border-l-secondary-600 text-secondary-600 bg-surface-z2;
 }
 [data-style='minimal'] rk-accordion .is-selected summary {
-  @apply border-l-2px border-l-secondary-600 bg-neutral-subtle;
+  @apply border-l-2px border-l-secondary-600 bg-surface-z2;
 }
 
 [data-style='minimal'] rk-accordion .is-expanded summary {
@@ -69,7 +69,7 @@
   @apply w-3 border-none;
 }
 [data-style='minimal'] rk-node > div > rk-icon {
-  @apply text-xs text-neutral-400;
+  @apply text-surface-400 text-xs;
 }
 [data-style='minimal'] rk-node[aria-selected='true'] > rk-item > p {
   @apply text-secondary-600;
@@ -102,11 +102,11 @@
 }
 
 [data-style='minimal'] .folder-tree {
-  @apply bg-neutral-inset h-full min-w-40;
+  @apply bg-surface-z0 h-full min-w-40;
 }
 
 /* [data-style="minimal"] rk-node > div > i {
-  @apply border-neutral-muted;
+  @apply border-surface-z3;
 } */
 
 [data-style='minimal'] rk-crumbs {
@@ -118,7 +118,7 @@
 
 [data-style='minimal'] rk-switch {
   @apply mx-auto min-h-6 min-w-12 rounded;
-  @apply bg-neutral-subtle border-neutral-muted border;
+  @apply bg-surface-z2 border-surface-z3 border;
   @apply p-2px leading-loose;
 }
 [data-style='minimal'] rk-switch rk-item {
@@ -132,5 +132,5 @@
   @apply gap-0 rounded-full px-0;
 }
 [data-style='minimal'] rk-switch rk-item[aria-selected='true'] {
-  @apply bg-secondary text-neutral-800;
+  @apply bg-secondary text-surface-800;
 }

@@ -113,7 +113,7 @@
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			<a
 				href="/elements/list"
-				class="bg-neutral-base border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
+				class="bg-surface-z2 border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
 			>
 				<div class="mb-2 text-2xl">📋</div>
 				<h4>Elements</h4>
@@ -122,7 +122,7 @@
 
 			<a
 				href="/primitives/icon"
-				class="bg-neutral-base border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
+				class="bg-surface-z2 border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
 			>
 				<div class="mb-2 text-2xl">🧩</div>
 				<h4>Primitives</h4>
@@ -131,7 +131,7 @@
 
 			<a
 				href="/forms/inputs"
-				class="bg-neutral-base border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
+				class="bg-surface-z2 border-primary-z2 rounded-lg border p-4 transition-shadow hover:shadow-md"
 			>
 				<div class="mb-2 text-2xl">📝</div>
 				<h4>Forms</h4>

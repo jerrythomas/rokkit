@@ -1,6 +1,6 @@
 const mapping = {
 	primary: 'orange',
-	neutral: 'shark'
+	surface: 'shark'
 }
 
 // Usage with Theme:

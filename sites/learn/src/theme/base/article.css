@@ -90,11 +90,11 @@
 
 /* Tables - Layout */
 [data-article-root] table {
-  @apply text-neutral-z6 mb-6 w-full border-collapse;
+  @apply text-surface-z6 mb-6 w-full border-collapse;
 }
 
 [data-article-root] th {
-  @apply text-neutral-z8 px-4 py-2 text-left;
+  @apply text-surface-z8 px-4 py-2 text-left;
 }
 
 [data-article-root] td {

@@ -31,17 +31,17 @@
 
 <List bind:items bind:value>
 	{#snippet header()}
-		<div class="bg-neutral-z2 text-on-neutral-z2 border-neutral-z3 border-b p-2 italic">
+		<div class="bg-surface-z2 text-on-surface-z2 border-surface-z3 border-b p-2 italic">
 			List of fruits
 		</div>
 	{/snippet}
 	{#snippet empty()}
-		<div class="bg-neutral-z2 text-on-neutral-z2 min-h-30 flex items-center justify-center italic">
+		<div class="bg-surface-z2 text-on-surface-z2 min-h-30 flex items-center justify-center italic">
 			No items. Press the reset button
 		</div>
 	{/snippet}
 	{#snippet footer()}
-		<span class="border-neutral-z3 flex justify-center gap-2 border-t py-2">
+		<span class="border-surface-z3 flex justify-center gap-2 border-t py-2">
 			<button onclick={clear}>Clear</button>
 			<button onclick={reset}>Reset</button>
 		</span>

@@ -50,10 +50,10 @@
 
 <div class="input-playground flex flex-col gap-8 p-8">
 	<h1 class="mb-4 text-2xl font-bold">InputField Theme Playground</h1>
-	<p class="text-neutral-z7 mb-8">
+	<p class="text-surface-z7 mb-8">
 		Test Rokkit theme and layout styles for all supported input types below.
 	</p>
-	<div class="bg-neutral-z3 grid grid-cols-1 gap-8 rounded-md p-4 md:grid-cols-2">
+	<div class="bg-surface-z3 grid grid-cols-1 gap-8 rounded-md p-4 md:grid-cols-2">
 		{#each inputTypes as input, idx (idx)}
 			<div class=" flex flex-col gap-2">
 				<!-- {#if input.type !== 'checkbox'} -->

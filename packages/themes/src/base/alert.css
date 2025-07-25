@@ -14,17 +14,17 @@ rk-success {
 rk-alert.error,
 rk-alert.danger,
 rk-error {
-  @apply bg-error text-error-contrast border-error-muted;
+  @apply bg-error text-error-z7 border-error-z3;
 }
 rk-alert.info,
 rk-info {
-  @apply bg-info text-info-contrast border-info-muted;
+  @apply bg-info text-info-z7 border-info-z3;
 }
 rk-alert.warning,
 rk-warning {
-  @apply bg-warn text-warn-contrast border-warn-muted;
+  @apply bg-warn text-warn-z7 border-warn-z3;
 }
 rk-alert.success,
 rk-success {
-  @apply bg-success text-success-contrast border-success-muted;
+  @apply bg-success text-success-z7 border-success-z3;
 }

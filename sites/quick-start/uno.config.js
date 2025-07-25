@@ -10,7 +10,7 @@ import {
 
 import { importIcons } from '@rokkit/core'
 import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
-export const palette = themeRules('rokkit', { neutral: 'shark' })
+export const palette = themeRules('rokkit', { surface: 'shark' })
 
 const icons = {
 	rokkit: '@rokkit/icons/ui.json',

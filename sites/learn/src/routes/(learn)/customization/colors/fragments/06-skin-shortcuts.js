@@ -1,5 +1,5 @@
 shortcuts: [
-	['skin-default', theme.getPalette({ primary: 'orange', neutral: 'shark' })],
+	['skin-default', theme.getPalette({ primary: 'orange', surface: 'shark' })],
 	['skin-vibrant', theme.getPalette({ primary: 'blue', secondary: 'purple' })],
 	[
 		'skin-seaweed',
@@ -9,7 +9,7 @@ shortcuts: [
 			accent: 'blue',
 			danger: 'rose',
 			success: 'lime',
-			neutral: 'zinc',
+			surface: 'zinc',
 			warning: 'amber',
 			info: 'indigo'
 		})

@@ -18,10 +18,10 @@
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
-  @apply font-body bg-neutral-inset text-neutral-floating font-extralight;
+  @apply font-body bg-surface-z1 text-surface-floating font-extralight;
 }
 app {
-  @apply bg-neutral-inset text-neutral-floating relative flex flex-1 flex-col overflow-hidden;
+  @apply bg-surface-z1 text-surface-floating relative flex flex-1 flex-col overflow-hidden;
 }
 
 main {
@@ -29,11 +29,11 @@ main {
 }
 
 [data-playground-root] > header {
-  @apply border-neutral-z2 bg-neutral-z2 space-y-2 border-b px-6 py-8;
+  @apply border-surface-z2 bg-surface-z2 space-y-2 border-b px-6 py-8;
 }
 
 /* [data-sidebar-icon] {
-  @apply text-neutral-z7 text-2xl;
+  @apply text-surface-z7 text-2xl;
 } */
 /* [data-selected] [data-sidebar-icon] {
   @apply text-secondary-z7;

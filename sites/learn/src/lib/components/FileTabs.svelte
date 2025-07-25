@@ -88,27 +88,27 @@
 
 <div class="file-tabs {className}">
 	{#if files.length === 0}
-		<div class="border-neutral-subtle bg-neutral-base rounded-lg border p-6 text-center">
-			<p class="text-neutral-floating">No files to display</p>
+		<div class="border-surface-z2 bg-surface-z2 rounded-lg border p-6 text-center">
+			<p class="text-surface-floating">No files to display</p>
 		</div>
 	{:else if files.length === 1}
 		<!-- Single file - no tabs needed -->
-		<div class="border-neutral-subtle bg-neutral-base rounded-lg border">
+		<div class="border-surface-z2 bg-surface-z2 rounded-lg border">
 			{#if showFileInfo}
-				<div class="border-neutral-subtle bg-neutral-elevated border-b px-4 py-2">
+				<div class="border-surface-z2 bg-surface-elevated border-b px-4 py-2">
 					<div class="flex items-center justify-between">
 						<div class="flex items-center space-x-2">
 							<span class="text-sm">{getFileIcon(files[0])}</span>
-							<span class="text-neutral-overlay text-sm font-medium">{files[0].name}</span>
+							<span class="text-surface-overlay text-sm font-medium">{files[0].name}</span>
 						</div>
 						<div class="flex items-center space-x-3">
-							<span class="text-neutral-floating text-xs">
+							<span class="text-surface-floating text-xs">
 								{files[0].content.split('\n').length} lines
 							</span>
 							{#if showCopyButton}
 								<button
 									onclick={() => copyFileContent(files[0])}
-									class="text-neutral-floating hover:text-neutral-overlay transition-colors"
+									class="text-surface-floating hover:text-surface-overlay transition-colors"
 									title="Copy code"
 								>
 									{#if copySuccess[files[0].id]}
@@ -139,7 +139,7 @@
 
 			<div class="overflow-x-auto">
 				{#await highlightCode( files[0].content, { lang: files[0].language, theme: vibe.mode === 'dark' ? 'github-dark' : 'github-light' } )}
-					<div class="text-neutral-floating p-4">Highlighting code...</div>
+					<div class="text-surface-floating p-4">Highlighting code...</div>
 				{:then value}
 					{@html value}
 				{:catch error}
@@ -149,14 +149,14 @@
 		</div>
 	{:else}
 		<!-- Multiple files - show tabs -->
-		<div class="border-neutral-subtle bg-neutral-base rounded-lg border">
+		<div class="border-surface-z2 bg-surface-z2 rounded-lg border">
 			<Tabs.Root value={selectedFile} onValueChange={handleFileSelect}>
 				<!-- Tab List -->
-				<Tabs.List class="border-neutral-subtle bg-neutral-elevated flex overflow-x-auto border-b">
+				<Tabs.List class="border-surface-z2 bg-surface-elevated flex overflow-x-auto border-b">
 					{#each files as file (file.id)}
 						<Tabs.Trigger
 							value={file.id}
-							class="text-neutral-floating hover:text-neutral-overlay hover:bg-neutral-subtle data-[state=active]:text-neutral-overlay data-[state=active]:bg-neutral-base data-[state=active]:border-primary-overlay flex items-center space-x-2 whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors data-[state=active]:border-b-2"
+							class="text-surface-floating hover:text-surface-overlay hover:bg-surface-z2 data-[state=active]:text-surface-overlay data-[state=active]:bg-surface-z2 data-[state=active]:border-primary-overlay flex items-center space-x-2 whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors data-[state=active]:border-b-2"
 						>
 							<span class="text-xs">{getFileIcon(file)}</span>
 							<span>{file.name}</span>
@@ -169,20 +169,20 @@
 					<Tabs.Content value={file.id} class="p-0">
 						{#if showFileInfo}
 							<!-- File Header -->
-							<div class="border-neutral-subtle bg-neutral-elevated border-b px-4 py-2">
+							<div class="border-surface-z2 bg-surface-elevated border-b px-4 py-2">
 								<div class="flex items-center justify-between">
 									<div class="flex items-center space-x-2">
 										<span class="text-sm">{getFileIcon(file)}</span>
-										<span class="text-neutral-overlay text-sm font-medium">{file.name}</span>
+										<span class="text-surface-overlay text-sm font-medium">{file.name}</span>
 									</div>
 									<div class="flex items-center space-x-3">
-										<span class="text-neutral-floating text-xs">
+										<span class="text-surface-floating text-xs">
 											{file.content.split('\n').length} lines
 										</span>
 										{#if showCopyButton}
 											<button
 												onclick={() => copyFileContent(file)}
-												class="text-neutral-floating hover:text-neutral-overlay transition-colors"
+												class="text-surface-floating hover:text-surface-overlay transition-colors"
 												title="Copy code"
 											>
 												{#if copySuccess[file.id]}
@@ -225,7 +225,7 @@
 						<div class="overflow-x-auto">
 							{#if file.id === selectedFile}
 								{#await highlightedCode}
-									<div class="text-neutral-floating p-4">Highlighting code...</div>
+									<div class="text-surface-floating p-4">Highlighting code...</div>
 								{:then value}
 									{@html value}
 								{:catch error}

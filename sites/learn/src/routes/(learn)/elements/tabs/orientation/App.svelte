@@ -22,7 +22,7 @@
 >
 	<div class="space-y-3 p-6">
 		<h3 class="text-lg font-semibold">Selected: {value}</h3>
-		<p class="text-neutral-z7">
+		<p class="text-surface-z7">
 			{#if value === 'Fruits'}
 				🍎 Fresh apples, bananas, and seasonal berries
 			{:else if value === 'Vegetables'}

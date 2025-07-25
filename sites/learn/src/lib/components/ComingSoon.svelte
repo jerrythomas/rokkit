@@ -13,12 +13,12 @@
 
 <article data-article-root>
 	<section data-card>
-		<h1 class="text-neutral-overlay mb-2 text-3xl font-bold">
+		<h1 class="text-surface-overlay mb-2 text-3xl font-bold">
 			<Icon name={icon}></Icon>{title}
 		</h1>
-		<p class="text-neutral-floating mb-6 text-lg">{description}</p>
+		<p class="text-surface-floating mb-6 text-lg">{description}</p>
 
-		<p class="text-neutral-elevated italic">
+		<p class="text-surface-elevated italic">
 			This tutorial section is coming soon. The documentation and interactive examples will be
 			available in a future update.
 		</p>

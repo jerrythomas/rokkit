@@ -4,7 +4,7 @@ rk-progress {
 }
 
 rk-progress {
-  @apply border border-neutral-100 bg-neutral-200 dark:border-neutral-800 dark:bg-neutral-900;
+  @apply border-surface-100 bg-surface-200 dark:border-surface-800 dark:bg-surface-900 border;
 }
 rk-progress value-bar {
   @apply bg-primary;

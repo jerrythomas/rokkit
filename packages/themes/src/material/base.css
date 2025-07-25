@@ -1,10 +1,10 @@
 @import '../base.css';
 
 [data-style='material'] rk-icon[role='button'] {
-  @apply text-neutral-muted hover:text-primary focus:outline-primary focus:m-1px focus:rounded;
+  @apply text-surface-z3 hover:text-primary focus:outline-primary focus:m-1px focus:rounded;
 }
 [data-style='material'] rk-icon.disabled[role='button'] {
-  @apply text-neutral-subtle hover:text-neutral-subtle cursor-not-allowed;
+  @apply text-surface-z2 hover:text-surface-z2 cursor-not-allowed;
 }
 
 [data-style='material'] * {

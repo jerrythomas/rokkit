@@ -24,7 +24,7 @@
 	{#each steps as step, index (index)}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dot
-			class="step flex h-3 w-3 rounded-full border-2 border-neutral-100 bg-neutral-300"
+			class="step border-surface-100 bg-surface-300 flex h-3 w-3 rounded-full border-2"
 			on:click={handleClick}
 			data-step={step}
 			data-active={step === current}

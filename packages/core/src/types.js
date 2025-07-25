@@ -145,7 +145,7 @@
  * @property {string} [primary]   - The primary color.
  * @property {string} [secondary] - The secondary color.
  * @property {string} [tertiary]  - The tertiary color.
- * @property {string} [neutral]   - The neutral color.
+ * @property {string} [surface]   - The surface color.
  * @property {string} [info]      - The info color.
  * @property {string} [success]   - The success color.
  * @property {string} [warning]   - The warning color.

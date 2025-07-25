@@ -104,9 +104,9 @@ This is a monorepo with the following structure:
 - Follow neutral color palette: `neutral-50`, `neutral-100`, etc.
 - Use semantic colors: `primary-`, `secondary-`, `accent-`, `error-`, `warning-`, `success-`
 - Maintain dark mode support with `dark:` prefix
-- Structure: `bg-neutral-50 dark:bg-neutral-900`
-- Text: `text-neutral-900 dark:text-white`
-- Borders: `border-neutral-200 dark:border-neutral-700`
+- Structure: `bg-surface-50 dark:bg-surface-900`
+- Text: `text-surface-900 dark:text-white`
+- Borders: `border-surface-200 dark:border-surface-700`
 - Interactive states: `hover:`, `focus:`, `active:` variants
 
 ## Progress Tracking

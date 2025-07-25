@@ -3,7 +3,7 @@ rk-input-range rk-range-track {
   @apply relative mt-3 h-1;
 }
 rk-input-range rk-range-track rk-range-track-bar {
-  @apply bg-neutral-subtle border-neutral-muted rounded-full;
+  @apply bg-surface-z2 border-surface-z3 rounded-full;
 }
 rk-input-range rk-range-track selected {
   @apply top-0px bottom-0px;
@@ -38,10 +38,10 @@ rk-input-range tick {
   grid-template-rows: 7px auto;
 }
 rk-input-range tick tick-bar {
-  @apply h-full border-neutral-600;
+  @apply border-surface-600 h-full;
 }
 rk-input-range tick p {
-  @apply items-top leading-tight text-neutral-600;
+  @apply items-top text-surface-600 leading-tight;
   font-size: 8px;
 }
 
@@ -93,7 +93,7 @@ rk-input-field select,
 rk-input-field > field > :not(icon) {
   @apply px-3;
   @apply min-h-9 flex-grow leading-loose outline-none;
-  @apply bg-neutral-subtle text-neutral-800;
+  @apply bg-surface-z2 text-surface-800;
 }
 rk-input-field > label {
   @apply text-xs uppercase;

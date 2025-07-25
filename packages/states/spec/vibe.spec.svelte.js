@@ -80,7 +80,7 @@ describe('vibe', () => {
 			danger: 'red',
 			error: 'red',
 			info: 'cyan',
-			neutral: 'slate',
+			surface: 'slate',
 			primary: 'ambrosia',
 			secondary: 'pink',
 			success: 'green',

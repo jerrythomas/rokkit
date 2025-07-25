@@ -33,11 +33,11 @@
 				<img src={value.image} alt={value.text} class="h-16 w-16 rounded-lg object-cover" />
 				<div>
 					<h3 class="text-lg font-semibold">{value.text}</h3>
-					<p class="text-neutral-z7 text-sm">{value.content}</p>
+					<p class="text-surface-z7 text-sm">{value.content}</p>
 				</div>
 			</div>
 		{:else}
-			<p class="text-neutral-z7">Select a tab to see the content</p>
+			<p class="text-surface-z7">Select a tab to see the content</p>
 		{/if}
 	</div>
 </Tabs>

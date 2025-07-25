@@ -21,10 +21,10 @@
   @apply p-0;
 }
 [data-code-root] {
-  @apply max-h-100 bg-neutral-z2 relative flex h-fit w-full flex-col overflow-hidden rounded-md;
+  @apply max-h-100 bg-surface-z2 relative flex h-fit w-full flex-col overflow-hidden rounded-md;
 }
 [data-code-root] > pre.shiki {
-  @apply bg-neutral-z2 m-0 h-fit border-none focus:outline-none;
+  @apply bg-surface-z2 m-0 h-fit border-none focus:outline-none;
 }
 [data-code-root] pre code {
   @apply w-full bg-transparent p-0;

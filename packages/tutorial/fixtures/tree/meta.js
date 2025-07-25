@@ -1,3 +1,3 @@
 export default {
-	neutral: 'yellow-orange'
+	surface: 'yellow-orange'
 }

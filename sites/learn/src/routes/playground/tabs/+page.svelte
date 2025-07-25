@@ -41,10 +41,10 @@
 </script>
 
 <!-- Main content with responsive layout -->
-<div data-panel-body class="bg-neutral-z1 flex w-full flex-col gap-6 p-8 lg:flex-row">
+<div data-panel-body class="bg-surface-z1 flex w-full flex-col gap-6 p-8 lg:flex-row">
 	<!-- Preview Panel -->
-	<div data-panel-preview class="bg-neutral-z1 flex flex-1 flex-col rounded-lg lg:basis-4/5">
-		<h2 class="text-neutral-z8 mb-4 text-xl font-semibold">Live Preview</h2>
+	<div data-panel-preview class="bg-surface-z1 flex flex-1 flex-col rounded-lg lg:basis-4/5">
+		<h2 class="text-surface-z8 mb-4 text-xl font-semibold">Live Preview</h2>
 
 		<Tabs
 			options={items}
@@ -59,7 +59,7 @@
 			onremove={handleRemoveTab}
 			class="flex-1"
 		>
-			<div data-panel-info class="text-neutral-z7 space-y-1 overflow-auto p-6 text-sm">
+			<div data-panel-info class="text-surface-z7 space-y-1 overflow-auto p-6 text-sm">
 				<p>Content for the selected tab is displayed here</p>
 				<p><strong>Selected Tab:</strong> {selectedTab?.label || 'None'}</p>
 				<p><strong>Total Tabs:</strong> {items.length}</p>
@@ -75,7 +75,7 @@
 
 	<!-- Configuration Panel -->
 	<div data-panel-config class="flex w-full min-w-[40ch] flex-col gap-4 rounded-lg py-2 lg:w-1/5">
-		<h2 class="text-neutral-z8 text-xl font-semibold">Configuration</h2>
+		<h2 class="text-surface-z8 text-xl font-semibold">Configuration</h2>
 		<FormRenderer onupdate={handleConfigUpdate} data={config} {schema} {layout} />
 	</div>
 </div>

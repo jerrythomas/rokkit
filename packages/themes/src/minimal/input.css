@@ -3,14 +3,14 @@
 [data-style='minimal'] textarea,
 [data-style='minimal'] select,
 [data-style='minimal'] fieldset {
-  @apply border-neutral-muted rounded border px-2 leading-loose outline-none;
+  @apply border-surface-z3 rounded border px-2 leading-loose outline-none;
 }
 
 [data-style='minimal'] fieldset {
   @apply gap-2 rounded-md p-4 pt-2;
 }
 [data-style='minimal'] fieldset legend {
-  @apply border-neutral-muted hover:text-primary select-none rounded-md border-l border-r px-2 leading-tight;
+  @apply border-surface-z3 hover:text-primary select-none rounded-md border-l border-r px-2 leading-tight;
 }
 [data-style='minimal'] fieldset rk-icon {
   @apply text-2xl;
@@ -21,14 +21,14 @@
 }
 
 [data-style='minimal'] input-field field {
-  @apply border-b-1 border-neutral-muted box-border min-h-9 overflow-hidden;
+  @apply border-b-1 border-surface-z3 box-border min-h-9 overflow-hidden;
   @apply focus-within:border-b-secondary-600;
 }
 [data-style='minimal'] input-field:focus-within label {
   @apply text-secondary-600;
 }
 [data-style='minimal'] input-field span {
-  @apply border-neutral-muted bg-neutral-base aspect-square h-full border-r px-1;
+  @apply border-surface-z3 bg-surface-z1 aspect-square h-full border-r px-1;
 }
 [data-style='minimal'] input-field input,
 [data-style='minimal'] input-field textarea,
@@ -38,10 +38,10 @@
 }
 
 [data-style='minimal'] input-field label {
-  @apply text-neutral w-full text-sm uppercase leading-6;
+  @apply text-surface w-full text-sm uppercase leading-6;
 }
 [data-style='minimal'] input-field message {
-  @apply bg-neutral-base rounded px-2 py-1;
+  @apply bg-surface-z1 rounded px-2 py-1;
 }
 
 [data-style='minimal'] input-field.fail {
@@ -52,7 +52,7 @@
   @apply relative mt-3 h-1;
 }
 [data-style='minimal'] input-range range-track span {
-  @apply bg-neutral-subtle border-neutral-muted box-border rounded-full;
+  @apply bg-surface-z2 border-surface-z3 box-border rounded-full;
 }
 [data-style='minimal'] input-range range-track selected {
   @apply -top-0px -bottom-0px border-secondary bg-secondary-600 rounded-full border;
@@ -82,7 +82,7 @@
   @apply h-6;
 } */
 [data-style='minimal'] tick span {
-  @apply border-neutral h-full;
+  @apply border-surface h-full;
 }
 [data-style='minimal'] tick p {
   @apply items-top;

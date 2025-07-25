@@ -21,26 +21,26 @@ th[data-sortable='true']:hover icon {
 }
 
 table {
-  @apply w-full text-left text-sm text-neutral-700 rtl:text-right;
+  @apply text-surface-700 w-full text-left text-sm rtl:text-right;
 }
 table > thead {
-  @apply table-header-group bg-neutral-400 text-xs uppercase;
+  @apply bg-surface-400 table-header-group text-xs uppercase;
 }
 table > caption {
-  @apply bg-neutral-subtle table-caption p-5 text-left text-sm font-normal text-neutral-600 rtl:text-right;
+  @apply bg-surface-z2 text-surface-600 table-caption p-5 text-left text-sm font-normal rtl:text-right;
 }
 
 table > tbody > tr {
-  @apply border-neutral-base bg-neutral-subtle table-row border-b;
+  @apply border-surface-z1 bg-surface-z2 table-row border-b;
 }
 table.striped > tbody > tr:nth-child(even) {
-  @apply bg-neutral-inset;
+  @apply bg-surface-z0;
 }
 table > tfoot {
   @apply table-footer-group;
 }
 table > tfoot > tr {
-  @apply table-row font-semibold text-neutral-800;
+  @apply text-surface-800 table-row font-semibold;
 }
 
 rk-table-wrapper {

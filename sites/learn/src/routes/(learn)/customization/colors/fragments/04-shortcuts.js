@@ -3,7 +3,7 @@ import { Theme } from '@rokkit/themes'
 
 const theme = new Theme({
 	mapping: {
-		neutral: 'stone',
+		surface: 'stone',
 		primary: 'blue',
 		secondary: 'green'
 	}
@@ -11,7 +11,7 @@ const theme = new Theme({
 
 export default defineConfig({
 	shortcuts: [
-		...theme.getShortcuts('neutral'),
+		...theme.getShortcuts('surface'),
 		...theme.getShortcuts('primary'),
 		...theme.getShortcuts('secondary'),
 		...theme.getShortcuts('info')

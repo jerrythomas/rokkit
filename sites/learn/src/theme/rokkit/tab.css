@@ -7,7 +7,7 @@
 
 /* Root Container - Orientation & Position */
 [data-tabs-root][data-orientation='vertical'] {
-  @apply divide-neutral-z4;
+  @apply divide-surface-z4;
 }
 
 /* Tab List - Header Container */
@@ -15,27 +15,27 @@
   @apply text-md;
 }
 [data-tabs-root] [data-tabs-content] {
-  @apply border-neutral-z4 bg-neutral-z3 rounded-md border-2 p-4;
+  @apply border-surface-z4 bg-surface-z3 rounded-md border-2 p-4;
 }
 
 /* Tab List - Orientation */
 [data-orientation='horizontal'] > [data-tabs-list] {
-  @apply border-neutral-z4 border-0;
+  @apply border-surface-z4 border-0;
 }
 
 [data-orientation='vertical'] > [data-tabs-list] {
-  @apply border-neutral-z4 border-0;
+  @apply border-surface-z4 border-0;
 }
 
 /* Individual Tab Items */
 [data-tabs-trigger] {
-  @apply text-neutral-z7 rounded px-4 py-2;
-  @apply bg-neutral-z3 gap-2 focus:outline-none;
+  @apply text-surface-z7 rounded px-4 py-2;
+  @apply bg-surface-z3 gap-2 focus:outline-none;
 }
 
 /* Tab Items - Selected States */
 [data-tabs-root] [data-tabs-trigger][aria-selected='true'] {
-  @apply from-neutral-z5 to-neutral-z5 text-neutral-z9;
+  @apply from-surface-z5 to-surface-z5 text-surface-z9;
 }
 [data-tabs-root]:focus-within [data-tabs-trigger][aria-selected='true'] {
   @apply from-primary-500 to-secondary-500 text-on-primary;
@@ -69,26 +69,26 @@
 
 /* Default Tab Content */
 [data-tabs-content] {
-  @apply text-neutral-z10 p-4;
+  @apply text-surface-z10 p-4;
 }
 
 /* Content Placeholder */
 [data-placeholder] {
-  @apply text-neutral-z7 p-4;
+  @apply text-surface-z7 p-4;
 }
 
 /* Empty State */
 [data-empty] {
-  @apply text-neutral-z7 bg-neutral-z3 p-4;
+  @apply text-surface-z7 bg-surface-z3 p-4;
 }
 
 [data-tabs-list] [data-icon-add],
 [data-tabs-list] [data-icon-remove] {
-  @apply focus:text-secondary-z5 hover:text-secondary-z7 text-neutral-z5 text-xl focus:outline-none;
+  @apply focus:text-secondary-z5 hover:text-secondary-z7 text-surface-z5 text-xl focus:outline-none;
 }
 
 [data-tabs-list]:focus-within [aria-selected='true'] [data-icon-remove] {
-  @apply focus:text-primary-900 text-neutral-300 hover:text-neutral-800;
+  @apply focus:text-primary-900 text-surface-300 hover:text-surface-800;
 }
 
 /* Responsive Adjustments */

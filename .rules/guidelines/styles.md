@@ -12,7 +12,7 @@ This document defines the conventions for separating theme and layout styles, an
 
 - **Purpose:** Control colors, gradients, shadows, border colors, and other visual tokens that define the "look and feel" of a theme.
 - **Location:** `packages/themes/src/rokkit/`
-- **Examples:** 
+- **Examples:**
   - Background and text colors
   - Gradients
   - Border colors
@@ -73,10 +73,10 @@ This document defines the conventions for separating theme and layout styles, an
 ```css
 [data-style='rokkit'] [data-field-root] {
   /* Theme-specific: colors, gradients, border color */
-  @apply bg-neutral-base border-neutral-muted text-neutral-900;
+  @apply bg-surface-z2 border-surface-z3 text-surface-z8;
 }
 [data-style='rokkit'] [data-field-root][data-field-disabled] {
-  @apply bg-neutral-muted text-neutral-500 cursor-not-allowed;
+  @apply bg-surface-z3 text-surface-z5 cursor-not-allowed;
 }
 [data-style='rokkit'] [data-field-root][data-field-state='fail'] {
   @apply bg-error border-error text-error;

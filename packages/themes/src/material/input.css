@@ -2,8 +2,8 @@
   @apply border-box focus:outline-none;
 }
 [data-style='material'] rk-input-field {
-  @apply border-neutral-muted box-border rounded border;
-  @apply relative pb-0 leading-loose text-neutral-800;
+  @apply border-surface-z3 box-border rounded border;
+  @apply text-surface-800 relative pb-0 leading-loose;
 }
 [data-style='material'] rk-input-field.empty label {
   @apply absolute top-0 my-3.5 align-middle;
@@ -20,7 +20,7 @@
 
 [data-style='material'] rk-input-field label,
 [data-style='material'] rk-input-field:focus-within label {
-  @apply bg-neutral-base z-1 absolute block;
+  @apply bg-surface-z1 z-1 absolute block;
   @apply -top-2 left-3 my-0 px-1 leading-tight opacity-100;
 }
 
@@ -28,13 +28,13 @@
   @apply cursor-pointer select-none rounded;
 }
 [data-style='material'] rk-input-select > selected-item {
-  @apply bg-neutral-base h-8 items-center pl-4 pr-0 normal-case;
-  @apply border-neutral-muted rounded border text-neutral-800;
-  @apply hover:bg-neutral-muted hover:border-secondary-600;
+  @apply bg-surface-z1 h-8 items-center pl-4 pr-0 normal-case;
+  @apply border-surface-z3 text-surface-800 rounded border;
+  @apply hover:bg-surface-z3 hover:border-secondary-600;
 }
 
 [data-style='material'] rk-input-select:hover square-icon {
-  @apply border-neutral;
+  @apply border-surface;
 }
 [data-style='material'] rk-input-select scroll {
   @apply mt-2 shadow-lg;
@@ -51,7 +51,7 @@
 }
 
 [data-style='material'] rk-rating {
-  @apply text-xl text-neutral-600 focus:outline-none;
+  @apply text-surface-600 text-xl focus:outline-none;
 }
 [data-style='material'] rk-rating > rk-icon {
   @apply w-8;

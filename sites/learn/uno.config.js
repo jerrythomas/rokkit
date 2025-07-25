@@ -10,7 +10,7 @@ import {
 
 import { importIcons, shades, defaultPalette } from '@rokkit/core'
 import { iconShortcuts, defaultIcons, Theme } from '@rokkit/themes'
-const mapping = { neutral: 'shark' }
+const mapping = { surface: 'shark' }
 const theme = new Theme()
 const icons = {
 	rokkit: '@rokkit/icons/ui.json',
@@ -81,23 +81,26 @@ export default defineConfig({
 				secondary: 'green',
 				accent: 'blue',
 				danger: 'rose',
+				error: 'rose',
 				success: 'lime',
-				neutral: 'zinc',
+				surface: 'zinc',
 				warning: 'amber',
 				info: 'indigo'
 			})
 		],
-		...theme.getShortcuts('neutral'),
+		...theme.getShortcuts('surface'),
 		...theme.getShortcuts('primary'),
 		...theme.getShortcuts('secondary'),
+		...theme.getShortcuts('accent'),
 		...theme.getShortcuts('info'),
 		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit')),
-		['text-on-primary', 'text-neutral-50'],
-		['text-on-secondary', 'text-neutral-50'],
-		['text-on-info', 'text-neutral-50'],
-		['text-on-success', 'text-neutral-50'],
-		['text-on-warning', 'text-neutral-50'],
-		['text-on-error', 'text-neutral-50']
+		['text-on-primary', 'text-surface-50'],
+		['text-on-secondary', 'text-surface-50'],
+		['text-on-info', 'text-surface-50'],
+		['text-on-success', 'text-surface-50'],
+		['text-on-warning', 'text-surface-50'],
+		['text-on-error', 'text-surface-50'],
+		['text-on-surface', 'text-surface-50']
 	],
 	theme: {
 		fontFamily: {
