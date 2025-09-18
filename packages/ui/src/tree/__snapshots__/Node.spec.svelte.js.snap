@@ -22,6 +22,8 @@ exports[`Node.svelte > renders node with label 1`] = `
       <!---->
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         Root Node
@@ -58,6 +60,8 @@ exports[`Node.svelte > sets aria attributes correctly 1`] = `
     >
       <!---->
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -96,6 +100,8 @@ exports[`Node.svelte > sets data-tree-branch for branch node 1`] = `
       <!---->
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         Branch Node
@@ -132,6 +138,8 @@ exports[`Node.svelte > sets data-tree-leaf for leaf node 1`] = `
     >
       <!---->
       <!---->
+      <!---->
+      
       <!---->
        
       <p>

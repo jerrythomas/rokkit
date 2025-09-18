@@ -7,10 +7,18 @@ exports[`Tabs > should render empty tabs 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <div
+      data-tabs-empty=""
+    >
+      No tabs available.
+      <!---->
+    </div>
+    <!---->
+     
     <div
       data-tabs-list=""
     >
@@ -19,18 +27,7 @@ exports[`Tabs > should render empty tabs 1`] = `
       <!---->
     </div>
      
-    <div
-      data-tabs-content=""
-      role="tabpanel"
-    >
-      <div
-        data-empty=""
-      >
-        No tabs available.
-        <!---->
-      </div>
-      <!---->
-    </div>
+    <!---->
   </div>
   
 </div>
@@ -44,65 +41,112 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -116,65 +160,112 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -188,77 +279,140 @@ exports[`Tabs > should render tabs with object array 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -274,77 +428,141 @@ exports[`Tabs > should render with custom content snippet 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
+    items=""
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   <!---->
    
@@ -367,10 +585,23 @@ exports[`Tabs > should render with custom empty state 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
+    items=""
     role="tablist"
     tabindex="0"
   >
+    <div
+      data-tabs-empty=""
+    >
+      <div
+        class="custom-empty-state"
+      >
+        Custom empty state - No tabs available here!
+      </div>
+      <!---->
+    </div>
+    <!---->
+     
     <div
       data-tabs-list=""
     >
@@ -379,22 +610,7 @@ exports[`Tabs > should render with custom empty state 1`] = `
       <!---->
     </div>
      
-    <div
-      data-tabs-content=""
-      role="tabpanel"
-    >
-      <div
-        data-empty=""
-      >
-        <div
-          class="custom-empty-state"
-        >
-          Custom empty state - No tabs available here!
-        </div>
-        <!---->
-      </div>
-      <!---->
-    </div>
+    <!---->
   </div>
   <!---->
    
@@ -411,93 +627,141 @@ exports[`Tabs > should render with custom header snippet 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
+    items=""
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
-        <div
-          class="custom-tab-header"
-        >
-          Custom: Tab 1
-        </div>
+        Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
-        <div
-          class="custom-tab-header"
-        >
-          Custom: Tab 2
-        </div>
+        Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
-        <div
-          class="custom-tab-header"
-        >
-          Custom: Tab 3
-        </div>
+        Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
-        <div
-          class="custom-tab-header"
-        >
-          Custom: Tab 4
-        </div>
+        Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   <!---->
    
@@ -517,77 +781,140 @@ exports[`Tabs > should render with different alignments 1`] = `
     data-align="center"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -600,77 +927,140 @@ exports[`Tabs > should render with different positions 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="after"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -683,19 +1073,30 @@ exports[`Tabs > should render with editable tabs 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
@@ -718,13 +1119,15 @@ exports[`Tabs > should render with editable tabs 1`] = `
           <!---->
         </icon>
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
@@ -747,13 +1150,15 @@ exports[`Tabs > should render with editable tabs 1`] = `
           <!---->
         </icon>
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
@@ -776,13 +1181,15 @@ exports[`Tabs > should render with editable tabs 1`] = `
           <!---->
         </icon>
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
@@ -805,7 +1212,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
           <!---->
         </icon>
         <!---->
-      </div>
+      </button>
       <!---->
        
       <icon
@@ -829,16 +1236,62 @@ exports[`Tabs > should render with editable tabs 1`] = `
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -851,53 +1304,84 @@ exports[`Tabs > should render with field mapping 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         First
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Second
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        First content
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        Second content
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -910,77 +1394,140 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -993,80 +1540,135 @@ exports[`Tabs > should render with selected value 1`] = `
     data-align="start"
     data-orientation="horizontal"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="true"
         class="selected focused"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
-      <!---->
       <div
-        data-tab-content-default=""
+        data-tabs-content=""
       >
         
       </div>
-      
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>
@@ -1079,77 +1681,140 @@ exports[`Tabs > should render with vertical orientation 1`] = `
     data-align="start"
     data-orientation="vertical"
     data-position="before"
-    data-tabs-root=""
+    data-tabs-root="true"
     role="tablist"
     tabindex="0"
   >
+    <!---->
+    <div
+      data-tabs-placeholder=""
+    >
+      Select a tab to view its content.
+    </div>
+    
+    <!---->
+     
     <div
       data-tabs-list=""
     >
-      <div
+      <button
         aria-controls="tab-panel-0"
         aria-selected="false"
         data-path="0"
         data-tabs-trigger=""
+        id="tab-0"
         role="tab"
+        tabindex="0"
       >
         Tab 1
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-1"
         aria-selected="false"
         data-path="1"
         data-tabs-trigger=""
+        id="tab-1"
         role="tab"
+        tabindex="0"
       >
         Tab 2
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-2"
         aria-selected="false"
         data-path="2"
         data-tabs-trigger=""
+        id="tab-2"
         role="tab"
+        tabindex="0"
       >
         Tab 3
         <!---->
          
         <!---->
-      </div>
-      <div
+      </button>
+      <button
         aria-controls="tab-panel-3"
         aria-selected="false"
         data-path="3"
         data-tabs-trigger=""
+        id="tab-3"
         role="tab"
+        tabindex="0"
       >
         Tab 4
         <!---->
          
         <!---->
-      </div>
+      </button>
       <!---->
        
       <!---->
     </div>
      
     <div
-      data-tabs-content=""
+      aria-labelledby="tab-0"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-0"
       role="tabpanel"
     >
       <div
-        data-placeholder=""
+        data-tabs-content=""
       >
-        Select a tab to view its content.
+        
       </div>
       <!---->
     </div>
+    <div
+      aria-labelledby="tab-1"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-1"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-2"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-2"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <div
+      aria-labelledby="tab-3"
+      class="hidden"
+      data-tabs-panel=""
+      id="tab-panel-3"
+      role="tabpanel"
+    >
+      <div
+        data-tabs-content=""
+      >
+        
+      </div>
+      <!---->
+    </div>
+    <!---->
   </div>
   
 </div>

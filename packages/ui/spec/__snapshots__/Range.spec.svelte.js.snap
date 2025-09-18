@@ -13,7 +13,7 @@ exports[`Range.svelte > should handle class changes 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -39,7 +39,7 @@ exports[`Range.svelte > should handle class changes 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 10;"
     >
       <rk-tick
@@ -239,7 +239,7 @@ exports[`Range.svelte > should handle class changes 2`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -265,7 +265,7 @@ exports[`Range.svelte > should handle class changes 2`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 10;"
     >
       <rk-tick
@@ -463,7 +463,7 @@ exports[`Range.svelte > should handle value changes 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -489,7 +489,7 @@ exports[`Range.svelte > should handle value changes 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 10;"
     >
       <rk-tick
@@ -687,7 +687,7 @@ exports[`Range.svelte > should handle value changes 2`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -713,7 +713,7 @@ exports[`Range.svelte > should handle value changes 2`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 10;"
     >
       <rk-tick
@@ -911,7 +911,7 @@ exports[`Range.svelte > should render 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -937,7 +937,7 @@ exports[`Range.svelte > should render 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 10;"
     >
       <rk-tick
@@ -1135,7 +1135,7 @@ exports[`Range.svelte > should render with min, max 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -1161,7 +1161,7 @@ exports[`Range.svelte > should render with min, max 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 10;"
     >
       <rk-tick
@@ -1359,7 +1359,7 @@ exports[`Range.svelte > should render with ticks 1`] = `
     />
      
     <rk-range-track
-      class="relative grid svelte-1jxckvw"
+      class="relative grid svelte-uj4j6v"
     >
       <rk-range-track-bar
         class="relative col-start-2 box-border"
@@ -1385,7 +1385,7 @@ exports[`Range.svelte > should render with ticks 1`] = `
     </rk-range-track>
      
     <rk-ticks
-      class="svelte-1jxckvw"
+      class="svelte-uj4j6v"
       style="--count: 5;"
     >
       <rk-tick

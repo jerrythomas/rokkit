@@ -3,7 +3,7 @@
 	/**
 	 * @typedef {Object} Props
 	 * @property {import('@rokkit/states').NodeProxy} value
-	 * @property {boolean} [expanded]
+	 * @property {Boolean} [expanded]
 	 */
 
 	/** @type {Props} */

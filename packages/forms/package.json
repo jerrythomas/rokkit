@@ -32,7 +32,7 @@
     "@rokkit/states": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
     "@rokkit/bits-ui": "workspace:latest",
-    "ramda": "^0.30.1",
+    "ramda": "^0.31.3",
     "valibot": "^1.1.0"
   }
 }

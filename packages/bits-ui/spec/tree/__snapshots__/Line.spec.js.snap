@@ -8,6 +8,7 @@ exports[`Line.svelte > When rtl is true property > should render when type is "c
     data-tree-line-type="child"
   >
     <!---->
+    <!---->
     <i
       class="row-span-2 grid grid-rows-2 border-r"
     >
@@ -15,6 +16,7 @@ exports[`Line.svelte > When rtl is true property > should render when type is "c
         class="border-b"
       />
     </i>
+    
     
     <!---->
   </tree-line>
@@ -29,6 +31,10 @@ exports[`Line.svelte > When rtl is true property > should render when type is "e
     data-tree-line="true"
     data-tree-line-type="empty"
   >
+    <!---->
+    <!---->
+    
+    
     <!---->
   </tree-line>
   
@@ -60,9 +66,13 @@ exports[`Line.svelte > When rtl is true property > should render when type is "s
     data-tree-line="true"
     data-tree-line-type="sibling"
   >
+    <!---->
+    <!---->
     <i
       class="row-span-2 border-r"
     />
+    
+    
     <!---->
   </tree-line>
   
@@ -77,6 +87,7 @@ exports[`Line.svelte > given a type > when type is "child" > then it should rend
     data-tree-line-type="child"
   >
     <!---->
+    <!---->
     <i
       class="col-span-1 row-span-2 border-r"
     />
@@ -84,6 +95,7 @@ exports[`Line.svelte > given a type > when type is "child" > then it should rend
     <i
       class="border-b"
     />
+    
     
     <!---->
   </tree-line>
@@ -98,6 +110,10 @@ exports[`Line.svelte > given a type > when type is "empty" > then it should rend
     data-tree-line="true"
     data-tree-line-type="empty"
   >
+    <!---->
+    <!---->
+    
+    
     <!---->
   </tree-line>
   
@@ -133,9 +149,13 @@ exports[`Line.svelte > given a type > when type is "sibling" > then it should re
     data-tree-line="true"
     data-tree-line-type="sibling"
   >
+    <!---->
+    <!---->
     <i
       class="row-span-2 border-r"
     />
+    
+    
     <!---->
   </tree-line>
   

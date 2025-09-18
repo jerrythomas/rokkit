@@ -21,7 +21,9 @@ exports[`Button > should render snippets 1`] = `
   
   <!---->
    
+  <!---->
   Left
+  
   <!---->
    
   <!---->
@@ -42,7 +44,9 @@ exports[`Button > should render snippets 2`] = `
   
   <!---->
    
+  <!---->
   Right icon
+  
   <!---->
    
   <!---->
@@ -97,7 +101,9 @@ exports[`Button > should render with icons 1`] = `
     
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <!---->
@@ -134,7 +140,9 @@ exports[`Button > should render with icons 2`] = `
     </icon>
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <!---->
@@ -171,7 +179,9 @@ exports[`Button > should render with icons 3`] = `
     </icon>
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <icon
@@ -208,7 +218,9 @@ exports[`Button > should render with icons 4`] = `
     
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <icon
@@ -245,7 +257,9 @@ exports[`Button > should render with label 1`] = `
     
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <!---->
@@ -269,7 +283,9 @@ exports[`Button > should render with label 2`] = `
     
     <!---->
      
+    <!---->
     New label
+    
     <!---->
      
     <!---->
@@ -293,7 +309,9 @@ exports[`Button > should render with variant "primary" 1`] = `
     
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <!---->
@@ -317,7 +335,9 @@ exports[`Button > should render with variant "secondary" 1`] = `
     
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <!---->
@@ -341,7 +361,9 @@ exports[`Button > should render with variant "tertiary" 1`] = `
     
     <!---->
      
+    <!---->
     Click me
+    
     <!---->
      
     <!---->

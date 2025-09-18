@@ -6,7 +6,7 @@ import CustomTabs from './mocks/CustomTabs.svelte'
 
 describe('Tabs', () => {
 	const rootSelector = '[data-tabs-root]'
-	const items = [
+	const options = [
 		{ text: 'Tab 1', content: 'Content 1', id: 'tab1' },
 		{ text: 'Tab 2', content: 'Content 2', id: 'tab2' },
 		{ text: 'Tab 3', content: 'Content 3', id: 'tab3' },
@@ -16,14 +16,14 @@ describe('Tabs', () => {
 	beforeEach(() => cleanup())
 
 	it('should render empty tabs', () => {
-		const props = $state({ items: [] })
+		const props = $state({ options: [] })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render simple tabs with string array', () => {
-		const props = $state({ items: ['Tab 1', 'Tab 2', 'Tab 3'], class: 'custom-class' })
+		const props = $state({ options: ['Tab 1', 'Tab 2', 'Tab 3'], class: 'custom-class' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -34,14 +34,14 @@ describe('Tabs', () => {
 	})
 
 	it('should render tabs with object array', () => {
-		const props = $state({ items, class: 'custom-class' })
+		const props = $state({ options, class: 'custom-class' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render with horizontal orientation', () => {
-		const props = $state({ items, orientation: 'horizontal' })
+		const props = $state({ options, orientation: 'horizontal' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -51,7 +51,7 @@ describe('Tabs', () => {
 	})
 
 	it('should render with vertical orientation', () => {
-		const props = $state({ items, orientation: 'vertical' })
+		const props = $state({ options, orientation: 'vertical' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -61,7 +61,7 @@ describe('Tabs', () => {
 	})
 
 	it('should render with different positions', () => {
-		const props = $state({ items, position: 'after' })
+		const props = $state({ options, position: 'after' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -71,7 +71,7 @@ describe('Tabs', () => {
 	})
 
 	it('should render with different alignments', () => {
-		const props = $state({ items, align: 'center' })
+		const props = $state({ options, align: 'center' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -81,7 +81,7 @@ describe('Tabs', () => {
 	})
 
 	it('should render with selected value', () => {
-		const props = $state({ items, value: items[1] })
+		const props = $state({ options, value: options[1] })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
@@ -91,13 +91,13 @@ describe('Tabs', () => {
 	})
 
 	it('should render with editable tabs', () => {
-		const props = $state({ items, editable: true })
+		const props = $state({ options, editable: true })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
 		const removeButtons = container.querySelectorAll('[data-icon-remove]')
-		expect(removeButtons).toHaveLength(items.length)
+		expect(removeButtons).toHaveLength(options.length)
 
 		const addButton = container.querySelector('[data-icon-add]')
 		expect(addButton).toBeTruthy()
@@ -109,7 +109,7 @@ describe('Tabs', () => {
 			{ label: 'Second', body: 'Second content', key: '2' }
 		]
 		const props = $state({
-			items: mappedItems,
+			options: mappedItems,
 			fields: { text: 'label', content: 'body', id: 'key' }
 		})
 		const { container } = render(Tabs, props)
@@ -118,31 +118,31 @@ describe('Tabs', () => {
 	})
 
 	it('should render with custom header snippet', () => {
-		const props = $state({ items, addheader: true })
+		const props = $state({ options, addheader: true })
 		const { container } = render(CustomTabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render with custom content snippet', () => {
-		const props = $state({ items, addcontent: true })
+		const props = $state({ options: options, addcontent: true })
 		const { container } = render(CustomTabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 	})
 
 	it('should render with custom empty state', () => {
-		const props = $state({ items: [], addempty: true })
+		const props = $state({ options: [], addempty: true })
 		const { container } = render(CustomTabs, props)
 		expect(container).toBeTruthy()
 		expect(container).toMatchSnapshot()
 
-		const emptyState = container.querySelector('[data-empty]')
+		const emptyState = container.querySelector('[data-tabs-empty]')
 		expect(emptyState.textContent).toContain('Custom empty state')
 	})
 
 	it('should handle tabindex', () => {
-		const props = $state({ items, tabindex: 5 })
+		const props = $state({ options: options, tabindex: 5 })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 
@@ -151,7 +151,7 @@ describe('Tabs', () => {
 	})
 
 	it('should handle name for accessibility', () => {
-		const props = $state({ items, name: 'navigation-tabs' })
+		const props = $state({ options: options, name: 'navigation-tabs' })
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 
@@ -161,26 +161,26 @@ describe('Tabs', () => {
 
 	it('should render placeholder when no tab is selected', () => {
 		const props = $state({
-			items,
+			options: options,
 			value: null,
 			placeholder: 'Please select a tab to view content'
 		})
 		const { container } = render(Tabs, props)
 		expect(container).toBeTruthy()
 
-		const placeholder = container.querySelector('[data-placeholder]')
+		const placeholder = container.querySelector('[data-tabs-placeholder]')
 		expect(placeholder.textContent).toBe('Please select a tab to view content')
 	})
 
 	it('should render with role attributes for accessibility', () => {
-		const props = $state({ items })
+		const props = $state({ options: options })
 		const { container } = render(Tabs, props)
 
 		const tabList = container.querySelector('[role="tablist"]')
 		expect(tabList).toBeTruthy()
 
 		const tabs = container.querySelectorAll('[role="tab"]')
-		expect(tabs).toHaveLength(items.length)
+		expect(tabs).toHaveLength(options.length)
 
 		const tabPanel = container.querySelector('[role="tabpanel"]')
 		expect(tabPanel).toBeTruthy()
@@ -189,7 +189,7 @@ describe('Tabs', () => {
 	it('should handle tab switching', () => {
 		let selectedValue = null
 		const props = $state({
-			items,
+			options: options,
 			value: selectedValue,
 			onselect: (value) => {
 				selectedValue = value
@@ -201,7 +201,7 @@ describe('Tabs', () => {
 		expect(selectedValue).toBeNull()
 
 		// Simulate tab selection by updating value
-		props.value = items[0]
+		props.value = options[0]
 		flushSync()
 
 		const selectedTab = container.querySelector('[aria-selected="true"]')

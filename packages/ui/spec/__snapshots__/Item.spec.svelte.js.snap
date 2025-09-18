@@ -4,6 +4,8 @@ exports[`Item > should render 1`] = `
 <div>
   <!---->
   <!---->
+  
+  <!---->
    
   <p>
     Hello
@@ -16,6 +18,8 @@ exports[`Item > should render 1`] = `
 exports[`Item > should render 2`] = `
 <div>
   <!---->
+  <!---->
+  
   <!---->
    
   <p>
@@ -57,9 +61,11 @@ exports[`Item > should render with custom mapping 1`] = `
 exports[`Item > should render with custom mapping 2`] = `
 <div>
   <!---->
+  <!---->
   <img
     src="world.png"
   />
+  
   <!---->
    
   <!---->
@@ -98,10 +104,12 @@ exports[`Item > should render with icon 1`] = `
 exports[`Item > should render with image 1`] = `
 <div>
   <!---->
+  <!---->
   <img
     alt="Hello"
     src="world.png"
   />
+  
   <!---->
    
   <p>

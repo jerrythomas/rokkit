@@ -51,18 +51,17 @@
   @apply flex items-center;
 }
 
-
 /* Tab Content Area */
-[data-tabs-content] {
+[data-tabs-panel] {
   @apply flex flex-1;
 }
 
 /* Tab Content - Vertical Orientation */
-[data-tabs-root][data-orientation='vertical'] [data-tabs-content] {
+[data-tabs-root][data-orientation='vertical'] [data-tabs-panel] {
   @apply flex-1;
 }
 
-[data-tabs-content] > pre.shiki {
+[data-tabs-panel] > pre.shiki {
   @apply my-0 py-0;
 }
 
@@ -72,7 +71,7 @@
 }
 
 /* Empty State */
-[data-empty] {
+[data-tabs-empty] {
   @apply flex flex-1 items-center justify-center;
 }
 

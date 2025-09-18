@@ -24,14 +24,14 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
     y="10"
   />
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="0"
     x2="0"
     y1="6.666666666666667"
     y2="20"
   />
   <text
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     font-size="5"
     x="0"
     y="5"
@@ -39,14 +39,14 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
     0
   </text>
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="20"
     x2="20"
     y1="6.666666666666667"
     y2="20"
   />
   <text
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     font-size="5"
     x="20"
     y="5"
@@ -54,14 +54,14 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
     0.2
   </text>
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="40"
     x2="40"
     y1="6.666666666666667"
     y2="20"
   />
   <text
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     font-size="5"
     x="40"
     y="5"
@@ -69,14 +69,14 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
     0.4
   </text>
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="60"
     x2="60"
     y1="6.666666666666667"
     y2="20"
   />
   <text
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     font-size="5"
     x="60"
     y="5"
@@ -84,14 +84,14 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
     0.6
   </text>
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="80"
     x2="80"
     y1="6.666666666666667"
     y2="20"
   />
   <text
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     font-size="5"
     x="80"
     y="5"
@@ -99,14 +99,14 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
     0.8
   </text>
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="100"
     x2="100"
     y1="6.666666666666667"
     y2="20"
   />
   <text
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     font-size="5"
     x="100"
     y="5"
@@ -115,7 +115,7 @@ exports[`ContinuousLegend.svelte > should render 1`] = `
   </text>
   <!---->
   <line
-    class="svelte-rzinxm"
+    class="svelte-9h8viw"
     x1="0"
     x2="100"
     y1="20"

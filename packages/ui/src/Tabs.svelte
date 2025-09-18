@@ -18,7 +18,7 @@
 	 * @typedef {Object} TabProps
 	 * @property {string}                   [class]       - Additional CSS class names
 	 * @property {string}                   [name]        - Name for accessibility
-	 * @property {any[]}                    [items]       - Array of tab items to display
+	 * @property {any[]}                    [options]       - Array of tab options to display
 	 * @property {FieldMapping}             [fields]      - Field mappings for extracting data
 	 * @property {'horizontal'|'vertical'}  [orientation] - Orientation of the tab bar
 	 * @property {'before' | 'after' }      [position]    - Position of the tab bar
@@ -27,8 +27,8 @@
 	 * @property {number}                   [tabindex]    - Tab index for keyboard navigation
 	 * @property {boolean}                  [editable]    - Whether tabs can be added/removed
 	 * @property {string}                   [placeholder] - Placeholder text for input field
-	 * @property {import('svelte').Snippet} [child]       - Snippet for rendering tab headers
-	 * @property {import('svelte').Snippet} [children]    - Snippet for rendering tab content
+	 * @property {import('svelte').Snippet} [tabItem]       - Snippet for rendering tab headers
+	 * @property {import('svelte').Snippet} [tabPanel]    - Snippet for rendering tab content
 	 * @property {import('svelte').Snippet} [empty]       - Snippet for rendering empty state
 	 * @property {Function}                 [onselect]    - Callback when tab is selected
 	 * @property {Function}                 [onchange]    - Callback when tab changes
@@ -41,7 +41,7 @@
 	let {
 		class: classes = '',
 		name = 'tabs',
-		items = $bindable([]),
+		options = $bindable([]),
 		fields = {},
 		value = $bindable(),
 		orientation = 'horizontal',
@@ -49,8 +49,8 @@
 		position = 'before',
 		tabindex = 0,
 		editable = false,
-		child,
-		children,
+		tabItem,
+		tabPanel,
 		empty,
 		placeholder = 'Select a tab to view its content.',
 		icons,
@@ -59,15 +59,15 @@
 		onmove,
 		onadd,
 		onremove,
-		...snippets
+		...restProps
 	} = $props()
 
 	/** @type {Proxy[]} */
-	let proxyItems = $derived(items.map((item) => new Proxy(item, fields)))
-	let childSnippet = $derived(child ?? defaultChild)
-	let childrenSnippet = $derived(children ?? defaultChildren)
+	let proxyItems = $derived(options.map((item) => new Proxy(item, fields)))
+	let tabItemSnippet = $derived(tabItem ?? defaultItem)
+	let tabPanelSnippet = $derived(tabPanel ?? defaultPanel)
 	let emptyMessage = $derived(empty ?? defaultEmpty)
-	let activeItem = $derived(proxyItems.find((proxy) => equals(proxy.value, value)))
+	// let activeItem = $derived(proxyItems.find((proxy) => equals(proxy.value, value)))
 
 	function handleAction(event) {
 		const { name, data } = event.detail
@@ -87,18 +87,17 @@
 	}
 	let tabIcons = $derived({ ...pick(['add', 'close'], defaultStateIcons.action), ...icons })
 	let emitter = createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
-	let wrapper = new ListController(items, value, fields)
-	$effect(() => {
-		wrapper.update(items)
-	})
+	let wrapper = new ListController(options, value, fields)
+
+	$effect(() => wrapper.update(options))
 </script>
 
-{#snippet defaultChild(item)}
+{#snippet defaultItem(item)}
 	{item.get('text') || item.get('label') || item.get('name')}
 {/snippet}
 
-{#snippet defaultChildren(item)}
-	<div data-tab-content-default>
+{#snippet defaultPanel(item)}
+	<div data-tabs-content>
 		{item.get('content')}
 	</div>
 {/snippet}
@@ -108,6 +107,7 @@
 {/snippet}
 
 <div
+	{...restProps}
 	data-tabs-root
 	data-orientation={orientation}
 	data-position={position}
@@ -119,12 +119,21 @@
 	{tabindex}
 	onaction={handleAction}
 >
+	{#if proxyItems.length === 0}
+		<div data-tabs-empty>
+			{@render emptyMessage()}
+		</div>
+	{:else if wrapper.focusedKey === null}
+		<div data-tabs-placeholder>
+			{placeholder}
+		</div>
+	{/if}
 	<div data-tabs-list>
 		{#each proxyItems as item, index (index)}
 			{@const key = getKeyFromPath([index])}
 			{@const isSelected = equals(item.value, value)}
 			{@const isFocused = wrapper.focusedKey === key}
-			<div
+			<button
 				data-tabs-trigger
 				data-path={getKeyFromPath([index])}
 				role="tab"
@@ -132,8 +141,10 @@
 				aria-controls="tab-panel-{index}"
 				class:selected={isSelected}
 				class:focused={isFocused}
+				tabindex="0"
+				id={`tab-${index}`}
 			>
-				{@render childSnippet(item)}
+				{@render tabItemSnippet(item)}
 				{#if editable}
 					<Icon
 						data-icon-remove
@@ -142,25 +153,23 @@
 						onclick={() => handleRemove(item.value)}
 					/>
 				{/if}
-			</div>
+			</button>
 		{/each}
 		{#if editable}
 			<Icon data-icon-add name={tabIcons.add} role="button" onclick={handleAdd} />
 		{/if}
 	</div>
 
-	<!-- Tab Content -->
-	<div data-tabs-content role="tabpanel">
-		{#if proxyItems.length === 0}
-			<div data-empty>
-				{@render emptyMessage()}
-			</div>
-		{:else if activeItem}
-			{@render childrenSnippet(activeItem)}
-		{:else}
-			<div data-placeholder>
-				{placeholder}
-			</div>
-		{/if}
-	</div>
+	<!-- Tab Panels -->
+	{#each proxyItems as item, index (index)}
+		<div
+			data-tabs-panel
+			role="tabpanel"
+			id="tab-panel-{index}"
+			aria-labelledby="tab-{index}"
+			class:hidden={!equals(item.value, value)}
+		>
+			{@render tabPanelSnippet(item)}
+		</div>
+	{/each}
 </div>

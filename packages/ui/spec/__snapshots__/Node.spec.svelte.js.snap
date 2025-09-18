@@ -19,6 +19,8 @@ exports[`Node > should render 1`] = `
         <!---->
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           Item 1
@@ -53,6 +55,8 @@ exports[`Node > should render 2`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -89,9 +93,13 @@ exports[`Node > should render as a sibling 1`] = `
         data-tag-line-sibling=""
         data-tag-tree-line=""
       >
+        <!---->
+        <!---->
         <i
           class="row-span-2 border-r"
         />
+        
+        
         <!---->
       </span>
       
@@ -100,6 +108,8 @@ exports[`Node > should render as a sibling 1`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -154,6 +164,8 @@ exports[`Node > should render as last sibling 1`] = `
         <!---->
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           Item 1
@@ -189,9 +201,13 @@ exports[`Node > should render having child 1`] = `
         data-tag-line-sibling=""
         data-tag-tree-line=""
       >
+        <!---->
+        <!---->
         <i
           class="row-span-2 border-r"
         />
+        
+        
         <!---->
       </span>
       
@@ -202,6 +218,7 @@ exports[`Node > should render having child 1`] = `
         data-tag-tree-line=""
       >
         <!---->
+        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -209,6 +226,7 @@ exports[`Node > should render having child 1`] = `
         <i
           class="border-b"
         />
+        
         
         <!---->
       </span>
@@ -218,6 +236,8 @@ exports[`Node > should render having child 1`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -255,6 +275,7 @@ exports[`Node > should render with different states 1`] = `
         data-tag-tree-line=""
       >
         <!---->
+        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -262,6 +283,7 @@ exports[`Node > should render with different states 1`] = `
         <i
           class="border-b"
         />
+        
         
         <!---->
       </span>
@@ -290,6 +312,8 @@ exports[`Node > should render with different states 1`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -327,6 +351,7 @@ exports[`Node > should render with different states 2`] = `
         data-tag-tree-line=""
       >
         <!---->
+        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -334,6 +359,7 @@ exports[`Node > should render with different states 2`] = `
         <i
           class="border-b"
         />
+        
         
         <!---->
       </span>
@@ -362,6 +388,8 @@ exports[`Node > should render with different states 2`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -399,6 +427,7 @@ exports[`Node > should render with different states 3`] = `
         data-tag-tree-line=""
       >
         <!---->
+        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -406,6 +435,7 @@ exports[`Node > should render with different states 3`] = `
         <i
           class="border-b"
         />
+        
         
         <!---->
       </span>
@@ -434,6 +464,8 @@ exports[`Node > should render with different states 3`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -471,6 +503,7 @@ exports[`Node > should render with different states 4`] = `
         data-tag-tree-line=""
       >
         <!---->
+        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -478,6 +511,7 @@ exports[`Node > should render with different states 4`] = `
         <i
           class="border-b"
         />
+        
         
         <!---->
       </span>
@@ -506,6 +540,8 @@ exports[`Node > should render with different states 4`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -543,6 +579,7 @@ exports[`Node > should render with icon 1`] = `
         data-tag-tree-line=""
       >
         <!---->
+        <!---->
         <i
           class="col-span-1 row-span-2 border-r"
         />
@@ -550,6 +587,7 @@ exports[`Node > should render with icon 1`] = `
         <i
           class="border-b"
         />
+        
         
         <!---->
       </span>
@@ -578,6 +616,8 @@ exports[`Node > should render with icon 1`] = `
       <rk-item>
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>

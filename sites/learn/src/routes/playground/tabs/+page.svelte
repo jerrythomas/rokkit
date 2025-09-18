@@ -59,16 +59,18 @@
 			onremove={handleRemoveTab}
 			class="flex-1"
 		>
-			<div data-panel-info class="text-surface-z7 space-y-1 overflow-auto p-6 text-sm">
-				<p>Content for the selected tab is displayed here</p>
-				<p><strong>Selected Tab:</strong> {selectedTab?.label || 'None'}</p>
-				<p><strong>Total Tabs:</strong> {items.length}</p>
+			{#snippet tabPanel(item)}
+				<div data-panel-info class="text-surface-z7 space-y-1 overflow-auto p-6 text-sm">
+					<p>Content for the selected tab is displayed here</p>
+					<p><strong>Selected Tab:</strong> {item?.label || 'None'}</p>
+					<p><strong>Total Tabs:</strong> {items.length}</p>
 
-				<div class="mt-8 space-y-4">
-					<h3 class="font-semibold">Tab Content:</h3>
-					<p>{selectedTab?.content || 'No content available'}</p>
+					<div class="mt-8 space-y-4">
+						<h3 class="font-semibold">Tab Content:</h3>
+						<p>{item?.content || 'No content available'}</p>
+					</div>
 				</div>
-			</div>
+			{/snippet}
 		</Tabs>
 		<!-- </div> -->
 	</div>

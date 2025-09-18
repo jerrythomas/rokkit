@@ -8,6 +8,7 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
     data-tag-tree-line=""
   >
     <!---->
+    <!---->
     <i
       class="row-span-2 grid grid-rows-2 border-r"
     >
@@ -15,6 +16,7 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
         class="border-b"
       />
     </i>
+    
     
     <!---->
   </span>
@@ -29,6 +31,10 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
     data-tag-line-empty=""
     data-tag-tree-line=""
   >
+    <!---->
+    <!---->
+    
+    
     <!---->
   </span>
   
@@ -60,9 +66,13 @@ exports[`Connector.svelte > When rtl is true property > should render when type 
     data-tag-line-sibling=""
     data-tag-tree-line=""
   >
+    <!---->
+    <!---->
     <i
       class="row-span-2 border-r"
     />
+    
+    
     <!---->
   </span>
   
@@ -77,6 +87,7 @@ exports[`Connector.svelte > given a type > when type is "child" > then it should
     data-tag-tree-line=""
   >
     <!---->
+    <!---->
     <i
       class="col-span-1 row-span-2 border-r"
     />
@@ -84,6 +95,7 @@ exports[`Connector.svelte > given a type > when type is "child" > then it should
     <i
       class="border-b"
     />
+    
     
     <!---->
   </span>
@@ -98,6 +110,10 @@ exports[`Connector.svelte > given a type > when type is "empty" > then it should
     data-tag-line-empty=""
     data-tag-tree-line=""
   >
+    <!---->
+    <!---->
+    
+    
     <!---->
   </span>
   
@@ -133,9 +149,13 @@ exports[`Connector.svelte > given a type > when type is "sibling" > then it shou
     data-tag-line-sibling=""
     data-tag-tree-line=""
   >
+    <!---->
+    <!---->
     <i
       class="row-span-2 border-r"
     />
+    
+    
     <!---->
   </span>
   

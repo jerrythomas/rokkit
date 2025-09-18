@@ -19,6 +19,8 @@ exports[`Select.svelte > should render string array 1`] = `
          
         <!---->
         <!---->
+        
+        <!---->
          
         <!---->
         <!---->
@@ -68,6 +70,8 @@ exports[`Select.svelte > should render string array 1`] = `
             <!---->
             <!---->
             <!---->
+            
+            <!---->
              
             <p>
               a
@@ -86,6 +90,8 @@ exports[`Select.svelte > should render string array 1`] = `
             <!---->
             <!---->
             <!---->
+            
+            <!---->
              
             <p>
               b
@@ -103,6 +109,8 @@ exports[`Select.svelte > should render string array 1`] = `
           >
             <!---->
             <!---->
+            <!---->
+            
             <!---->
              
             <p>

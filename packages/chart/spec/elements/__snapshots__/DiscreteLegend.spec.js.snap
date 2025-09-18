@@ -4,7 +4,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
 <div>
   <!---->
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="10"
     y="5"
@@ -12,7 +12,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0"
     height="10"
     rx="1"
@@ -22,7 +22,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="22"
     y="5"
@@ -30,7 +30,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.1
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.1"
     height="10"
     rx="1"
@@ -40,7 +40,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="34"
     y="5"
@@ -48,7 +48,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.2
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.2"
     height="10"
     rx="1"
@@ -58,7 +58,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="46"
     y="5"
@@ -66,7 +66,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.3
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.3"
     height="10"
     rx="1"
@@ -76,7 +76,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="58"
     y="5"
@@ -84,7 +84,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.4
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.4"
     height="10"
     rx="1"
@@ -94,7 +94,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="70"
     y="5"
@@ -102,7 +102,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.5
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.5"
     height="10"
     rx="1"
@@ -112,7 +112,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="82"
     y="5"
@@ -120,7 +120,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.6
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.6"
     height="10"
     rx="1"
@@ -130,7 +130,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="94"
     y="5"
@@ -138,7 +138,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.7
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.7"
     height="10"
     rx="1"
@@ -148,7 +148,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="106"
     y="5"
@@ -156,7 +156,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.8
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.8"
     height="10"
     rx="1"
@@ -166,7 +166,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="118"
     y="5"
@@ -174,7 +174,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     0.9
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="0.9"
     height="10"
     rx="1"
@@ -184,7 +184,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     y="10"
   />
   <text
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     font-size="5"
     x="130"
     y="5"
@@ -192,7 +192,7 @@ exports[`DiscreteLegend.svelte > should render 1`] = `
     1
   </text>
   <rect
-    class="svelte-133vv1u"
+    class="svelte-1whe6uw"
     fill="1"
     height="10"
     rx="1"

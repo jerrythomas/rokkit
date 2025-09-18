@@ -9,30 +9,112 @@ exports[`Category.svelte > should render using default props 1`] = `
       data-align="start"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -58,30 +140,112 @@ exports[`Category.svelte > should render using specified class 1`] = `
       data-align="start"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -107,30 +271,112 @@ exports[`Category.svelte > should render using specified class 2`] = `
       data-align="start"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -154,30 +400,112 @@ exports[`Category.svelte > should render using specified type 1`] = `
       data-align="start"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -201,30 +529,112 @@ exports[`Category.svelte > should render using specified type 2`] = `
       data-align="start"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -266,6 +676,8 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
          
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           one
@@ -284,6 +696,8 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
          
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           two
@@ -301,6 +715,8 @@ exports[`Category.svelte > should render with alternative navigator 1`] = `
         <!---->
          
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -334,30 +750,112 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       data-align="start"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -381,30 +879,112 @@ exports[`Category.svelte > should render with extra props 1`] = `
       data-align="center"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->
@@ -428,30 +1008,112 @@ exports[`Category.svelte > should render with extra props 2`] = `
       data-align="right"
       data-orientation="horizontal"
       data-position="before"
-      data-tabs-root=""
+      data-tabs-root="true"
       role="tablist"
       tabindex="0"
     >
+      <!---->
+      <div
+        data-tabs-placeholder=""
+      >
+        Select a tab to view its content.
+      </div>
+      
+      <!---->
+       
       <div
         data-tabs-list=""
       >
+        <button
+          aria-controls="tab-panel-0"
+          aria-selected="false"
+          data-path="0"
+          data-tabs-trigger=""
+          id="tab-0"
+          role="tab"
+          tabindex="0"
+        >
+          one
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-1"
+          aria-selected="false"
+          data-path="1"
+          data-tabs-trigger=""
+          id="tab-1"
+          role="tab"
+          tabindex="0"
+        >
+          two
+          <!---->
+           
+          <!---->
+        </button>
+        <button
+          aria-controls="tab-panel-2"
+          aria-selected="false"
+          data-path="2"
+          data-tabs-trigger=""
+          id="tab-2"
+          role="tab"
+          tabindex="0"
+        >
+          three
+          <!---->
+           
+          <!---->
+        </button>
         <!---->
          
         <!---->
       </div>
        
       <div
-        data-tabs-content=""
+        aria-labelledby="tab-0"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-0"
         role="tabpanel"
       >
         <div
-          data-empty=""
+          data-tabs-content=""
         >
-          No tabs available.
-          <!---->
+          
         </div>
         <!---->
       </div>
+      <div
+        aria-labelledby="tab-1"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-1"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <div
+        aria-labelledby="tab-2"
+        class="hidden"
+        data-tabs-panel=""
+        id="tab-panel-2"
+        role="tabpanel"
+      >
+        <div
+          data-tabs-content=""
+        >
+          
+        </div>
+        <!---->
+      </div>
+      <!---->
     </div>
     
     <!---->

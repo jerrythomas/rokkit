@@ -8,6 +8,8 @@ exports[`Pill > should fire remove event on Backspace 1`] = `
   >
     <!---->
     <!---->
+    
+    <!---->
      
     <p>
       Hello
@@ -45,6 +47,8 @@ exports[`Pill > should fire remove event on Backspace 2`] = `
     tabindex="0"
   >
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -84,6 +88,8 @@ exports[`Pill > should fire remove event on Delete 1`] = `
   >
     <!---->
     <!---->
+    
+    <!---->
      
     <p>
       Hello
@@ -121,6 +127,8 @@ exports[`Pill > should fire remove event on Delete 2`] = `
     tabindex="0"
   >
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -160,6 +168,8 @@ exports[`Pill > should fire remove event on click 1`] = `
   >
     <!---->
     <!---->
+    
+    <!---->
      
     <p>
       Hello
@@ -197,6 +207,8 @@ exports[`Pill > should fire remove event on click 2`] = `
     tabindex="0"
   >
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -236,6 +248,8 @@ exports[`Pill > should render 1`] = `
   >
     <!---->
     <!---->
+    
+    <!---->
      
     <p>
       Hello
@@ -256,6 +270,8 @@ exports[`Pill > should render 2`] = `
     tabindex="0"
   >
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -349,10 +365,12 @@ exports[`Pill > should render with image 1`] = `
     tabindex="0"
   >
     <!---->
+    <!---->
     <img
       alt="Hello"
       src="world.png"
     />
+    
     <!---->
      
     <p>
@@ -374,10 +392,12 @@ exports[`Pill > should render with image 2`] = `
     tabindex="0"
   >
     <!---->
+    <!---->
     <img
       alt="World"
       src="hello.png"
     />
+    
     <!---->
      
     <p>

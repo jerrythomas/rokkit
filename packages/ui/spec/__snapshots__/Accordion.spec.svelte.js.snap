@@ -19,6 +19,8 @@ exports[`Accordion > should render accordion 1`] = `
       >
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           Item 1
@@ -47,6 +49,8 @@ exports[`Accordion > should render accordion 1`] = `
         tabindex="-1"
       >
         <!---->
+        <!---->
+        
         <!---->
          
         <p>
@@ -95,6 +99,8 @@ exports[`Accordion > should render accordion 2`] = `
       >
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           Item 1
@@ -123,6 +129,8 @@ exports[`Accordion > should render accordion 2`] = `
         tabindex="-1"
       >
         <!---->
+        <!---->
+        
         <!---->
          
         <p>

@@ -67,6 +67,8 @@ exports[`Tree Root Component > renders tree root with items 1`] = `
         <!---->
         <!---->
         <!---->
+        
+        <!---->
          
         <p>
           Node 1
@@ -99,6 +101,8 @@ exports[`Tree Root Component > renders tree root with items 1`] = `
       >
         <!---->
         <!---->
+        <!---->
+        
         <!---->
          
         <p>

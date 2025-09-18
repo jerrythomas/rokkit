@@ -3,6 +3,8 @@
 exports[`DefinePatterns.svelte > should be empty when patterns are not provided. 1`] = `
 <div>
   <!---->
+  <!---->
+  
   
   
 </div>

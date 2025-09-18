@@ -34,7 +34,7 @@
     "@rokkit/core": "workspace:*",
     "d3-array": "^3.2.4",
     "d3-collection": "^1.0.7",
-    "ramda": "^0.30.1",
-    "svelte": "^5.10.0"
+    "ramda": "^0.31.3",
+    "svelte": "^5.39.2"
   }
 }

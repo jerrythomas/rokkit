@@ -1,6 +1,6 @@
 <script>
 	import { Proxy } from '@rokkit/states'
-	let { class: classNames = '', value = $bindable(), fields, child, onClick } = $props()
+	let { class: classNames = '', value = $bindable(), fields, child, children, onClick } = $props()
 
 	const proxy = $state(new Proxy(value, fields))
 	const childSnippet = $derived(child ?? defaultChild)
@@ -36,6 +36,10 @@
 		tabindex="-1"
 		class={classNames}
 	>
-		{@render childSnippet(proxy)}
+		{#if children}
+			{@render children()}
+		{:else}
+			{@render childSnippet(proxy)}
+		{/if}
 	</div>
 {/if}

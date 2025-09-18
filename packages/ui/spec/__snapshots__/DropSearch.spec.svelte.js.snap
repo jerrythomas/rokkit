@@ -18,6 +18,8 @@ exports[`DropSearch.svelte > should render 1`] = `
          
         <!---->
         <!---->
+        
+        <!---->
          
         <!---->
         <!---->
@@ -67,6 +69,8 @@ exports[`DropSearch.svelte > should render 1`] = `
             <!---->
             <!---->
             <!---->
+            
+            <!---->
              
             <p>
               1
@@ -85,6 +89,8 @@ exports[`DropSearch.svelte > should render 1`] = `
             <!---->
             <!---->
             <!---->
+            
+            <!---->
              
             <p>
               2
@@ -102,6 +108,8 @@ exports[`DropSearch.svelte > should render 1`] = `
           >
             <!---->
             <!---->
+            <!---->
+            
             <!---->
              
             <p>

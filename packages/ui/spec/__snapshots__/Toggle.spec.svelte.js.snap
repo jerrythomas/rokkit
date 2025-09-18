@@ -11,6 +11,8 @@ exports[`Toggle > should render 1`] = `
   >
     <!---->
     <!---->
+    
+    <!---->
      
     <!---->
     <!---->
@@ -23,6 +25,8 @@ exports[`Toggle > should render with object options 1`] = `
   aria-label="toggle"
 >
   <!---->
+  <!---->
+  
   <!---->
    
   <p>
@@ -38,6 +42,8 @@ exports[`Toggle > should render with options 1`] = `
   aria-label="toggle"
 >
   <!---->
+  <!---->
+  
   <!---->
    
   <!---->
@@ -56,6 +62,8 @@ exports[`Toggle > should switch options on click 1`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -81,6 +89,8 @@ exports[`Toggle > should switch options on click 2`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -104,6 +114,8 @@ exports[`Toggle > should switch options on click 3`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -129,6 +141,8 @@ exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -152,6 +166,8 @@ exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -177,6 +193,8 @@ exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -200,6 +218,8 @@ exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -225,6 +245,8 @@ exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -248,6 +270,8 @@ exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -273,6 +297,8 @@ exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -296,6 +322,8 @@ exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -321,6 +349,8 @@ exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -344,6 +374,8 @@ exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -369,6 +401,8 @@ exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
     >
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -392,6 +426,8 @@ exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
       aria-label="toggle"
     >
       <!---->
+      <!---->
+      
       <!---->
        
       <p>

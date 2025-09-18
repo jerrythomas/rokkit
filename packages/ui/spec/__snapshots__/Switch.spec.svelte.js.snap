@@ -23,6 +23,8 @@ exports[`Switch > should render 1`] = `
      
     <!---->
     <!---->
+    
+    <!---->
      
     <!---->
     <!---->
@@ -37,6 +39,8 @@ exports[`Switch > should render 1`] = `
     <!---->
      
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -78,6 +82,8 @@ exports[`Switch > should render with object options 1`] = `
      
     <!---->
     <!---->
+    
+    <!---->
      
     <p>
       sun
@@ -95,6 +101,8 @@ exports[`Switch > should render with object options 1`] = `
     <!---->
      
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -130,6 +138,8 @@ exports[`Switch > should render with options 1`] = `
      
     <!---->
     <!---->
+    
+    <!---->
      
     <p>
       a
@@ -147,6 +157,8 @@ exports[`Switch > should render with options 1`] = `
     <!---->
      
     <!---->
+    <!---->
+    
     <!---->
      
     <p>
@@ -188,6 +200,8 @@ exports[`Switch > should switch options on click 1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -205,6 +219,8 @@ exports[`Switch > should switch options on click 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -245,6 +261,8 @@ exports[`Switch > should switch options on click 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -266,6 +284,8 @@ exports[`Switch > should switch options on click 2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -310,6 +330,8 @@ exports[`Switch > should switch options on keydown   1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -327,6 +349,8 @@ exports[`Switch > should switch options on keydown   1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -367,6 +391,8 @@ exports[`Switch > should switch options on keydown   2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -388,6 +414,8 @@ exports[`Switch > should switch options on keydown   2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -432,6 +460,8 @@ exports[`Switch > should switch options on keydown   3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -449,6 +479,8 @@ exports[`Switch > should switch options on keydown   3`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -493,6 +525,8 @@ exports[`Switch > should switch options on keydown ArrowDown 1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -510,6 +544,8 @@ exports[`Switch > should switch options on keydown ArrowDown 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -550,6 +586,8 @@ exports[`Switch > should switch options on keydown ArrowDown 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -571,6 +609,8 @@ exports[`Switch > should switch options on keydown ArrowDown 2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -615,6 +655,8 @@ exports[`Switch > should switch options on keydown ArrowDown 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -632,6 +674,8 @@ exports[`Switch > should switch options on keydown ArrowDown 3`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -672,6 +716,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -689,6 +735,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -711,6 +759,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -751,6 +801,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -773,6 +825,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -790,6 +844,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -834,6 +890,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -852,6 +910,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -869,6 +929,8 @@ exports[`Switch > should switch options on keydown ArrowLeft 3`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -913,6 +975,8 @@ exports[`Switch > should switch options on keydown ArrowRight 1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -930,6 +994,8 @@ exports[`Switch > should switch options on keydown ArrowRight 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -970,6 +1036,8 @@ exports[`Switch > should switch options on keydown ArrowRight 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -991,6 +1059,8 @@ exports[`Switch > should switch options on keydown ArrowRight 2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1035,6 +1105,8 @@ exports[`Switch > should switch options on keydown ArrowRight 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1052,6 +1124,8 @@ exports[`Switch > should switch options on keydown ArrowRight 3`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1092,6 +1166,8 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1109,6 +1185,8 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1131,6 +1209,8 @@ exports[`Switch > should switch options on keydown ArrowUp 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1171,6 +1251,8 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1193,6 +1275,8 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -1210,6 +1294,8 @@ exports[`Switch > should switch options on keydown ArrowUp 2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1254,6 +1340,8 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1272,6 +1360,8 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         moon
@@ -1289,6 +1379,8 @@ exports[`Switch > should switch options on keydown ArrowUp 3`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1333,6 +1425,8 @@ exports[`Switch > should switch options on keydown Enter 1`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1350,6 +1444,8 @@ exports[`Switch > should switch options on keydown Enter 1`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1390,6 +1486,8 @@ exports[`Switch > should switch options on keydown Enter 2`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1411,6 +1509,8 @@ exports[`Switch > should switch options on keydown Enter 2`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
@@ -1455,6 +1555,8 @@ exports[`Switch > should switch options on keydown Enter 3`] = `
        
       <!---->
       <!---->
+      
+      <!---->
        
       <p>
         sun
@@ -1472,6 +1574,8 @@ exports[`Switch > should switch options on keydown Enter 3`] = `
       <!---->
        
       <!---->
+      <!---->
+      
       <!---->
        
       <p>
