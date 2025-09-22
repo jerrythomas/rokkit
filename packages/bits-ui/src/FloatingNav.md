@@ -59,25 +59,25 @@ A floating navigation component that uses `List.svelte` to render navigation ite
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `class` | `string` | `''` | Additional CSS class names |
-| `items` | `NavigationItem[]` | `[]` | Array of navigation items |
-| `activeSection` | `string` | `''` | Currently active section ID (bindable) |
-| `isExpanded` | `boolean` | `false` | Whether the nav is expanded (bindable) |
-| `isPinned` | `boolean` | `false` | Whether the nav is pinned open (bindable) |
-| `position` | `'left' \| 'right'` | `'right'` | Position of the nav |
-| `icons` | `Object` | `undefined` | Custom icon overrides |
-| `onNavigate` | `Function` | `undefined` | Callback when navigation item is clicked |
+| Prop            | Type                | Default     | Description                               |
+| --------------- | ------------------- | ----------- | ----------------------------------------- |
+| `class`         | `string`            | `''`        | Additional CSS class names                |
+| `items`         | `NavigationItem[]`  | `[]`        | Array of navigation items                 |
+| `activeSection` | `string`            | `''`        | Currently active section ID (bindable)    |
+| `isExpanded`    | `boolean`           | `false`     | Whether the nav is expanded (bindable)    |
+| `isPinned`      | `boolean`           | `false`     | Whether the nav is pinned open (bindable) |
+| `position`      | `'left' \| 'right'` | `'right'`   | Position of the nav                       |
+| `icons`         | `Object`            | `undefined` | Custom icon overrides                     |
+| `onNavigate`    | `Function`          | `undefined` | Callback when navigation item is clicked  |
 
 ## NavigationItem Interface
 
 ```typescript
 interface NavigationItem {
-  id: string              // Unique identifier for the navigation item
-  label: string           // Display text for the navigation item
-  href: string            // URL or anchor link for the navigation item
-  icon?: string           // Optional icon name (from defaultStateIcons)
+  id: string // Unique identifier for the navigation item
+  label: string // Display text for the navigation item
+  href: string // URL or anchor link for the navigation item
+  icon?: string // Optional icon name (from defaultStateIcons)
 }
 ```
 

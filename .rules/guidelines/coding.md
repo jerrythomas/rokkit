@@ -30,8 +30,6 @@ Guidelines for Approaching Code Tasks
 - **Optimize only after functionality is correct** and only where necessary
 - **Consider maintenance implications** of the implementation
 
-
-
 ## Rationale
 
 This structured approach prevents several common issues:

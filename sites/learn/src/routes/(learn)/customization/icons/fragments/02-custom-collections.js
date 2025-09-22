@@ -6,19 +6,17 @@
  */
 
 const icons = {
-  rokkit: '@rokkit/icons/ui.json',
-  logo: '@rokkit/icons/auth.json',
-  component: '@rokkit/icons/components.json',
-  app: '@rokkit/icons/app.json',
-  solar: '@iconify-json/solar/icons.json'
+	rokkit: '@rokkit/icons/ui.json',
+	logo: '@rokkit/icons/auth.json',
+	component: '@rokkit/icons/components.json',
+	app: '@rokkit/icons/app.json',
+	solar: '@iconify-json/solar/icons.json'
 }
 
 presetIcons({
-  collections: {
-    ...importIcons(icons),
-    file: () =>
-      import('./static/icons/files/icons.json', { with: { type: 'json' } }).then(
-        (i) => i.default
-      )
-  }
+	collections: {
+		...importIcons(icons),
+		file: () =>
+			import('./static/icons/files/icons.json', { with: { type: 'json' } }).then((i) => i.default)
+	}
 })

@@ -7,11 +7,13 @@ Build a flexible, powerful form system that combines the simplicity of automatic
 ## Architectural Philosophy
 
 ### Clean Separation of Concerns
+
 - **Data Layer**: FormBuilder class manages state and reactivity
 - **Presentation Layer**: Snippet-based rendering with flexible layouts
 - **Integration Layer**: Unified property composition and event handling
 
 ### Progressive Enhancement
+
 - **Default behavior**: Automatic schema and layout derivation
 - **Schema override**: Custom validation rules and constraints
 - **Layout override**: Custom styling and arrangement
@@ -20,6 +22,7 @@ Build a flexible, powerful form system that combines the simplicity of automatic
 ## Core Design Principles
 
 ### 1. Simple Constructor Pattern
+
 ```javascript
 // Automatic derivation
 const form = new FormBuilder(data)
@@ -32,6 +35,7 @@ const form = new FormBuilder(data, customSchema, customLayout)
 ```
 
 ### 2. Enhanced Input Component Architecture
+
 ```svelte
 // Universal Input.svelte wrapper
 <Input {type} bind:value {...props} />
@@ -44,6 +48,7 @@ const form = new FormBuilder(data, customSchema, customLayout)
 ```
 
 ### 3. Clean Snippet Interface
+
 ```svelte
 {#snippet defaultInput(type, value, props)}
   <label>
@@ -62,24 +67,27 @@ const form = new FormBuilder(data, customSchema, customLayout)
 ```
 
 ### 4. Type-Aware Layout System
+
 - **Standard**: Label above input (text, number, email, etc.)
 - **Checkbox**: Checkbox first, label on the right
 - **Switch**: Inline layout with label
 - **Custom**: Complete override through child snippet
 
 ### 5. Comprehensive Message System
+
 ```javascript
 const messageTypes = {
-  error: "Validation failures, required field missing",
-  warning: "Potential issues, format suggestions",
-  info: "Helpful hints, character counts, examples",
-  success: "Confirmation messages, validation passed"
+  error: 'Validation failures, required field missing',
+  warning: 'Potential issues, format suggestions',
+  info: 'Helpful hints, character counts, examples',
+  success: 'Confirmation messages, validation passed'
 }
 ```
 
 ## Implementation Goals
 
 ### Phase 1: Enhanced Input Architecture ✅ Foundation
+
 - [x] Three-parameter constructor: `new FormBuilder(data, schema, layout)`
 - [x] Schema property standardization (`min`/`max` + `minimum`/`maximum`)
 - [x] Basic input type support with clean HTML implementation
@@ -89,6 +97,7 @@ const messageTypes = {
 - [ ] Integrate message state management with type-based styling
 
 ### Phase 2: Snippet-Based Rendering System
+
 - [ ] Create `defaultInput` snippet with type-aware layouts
 - [ ] Implement custom `child` snippet support for complete override
 - [ ] Property composition system (schema + layout + message properties)
@@ -96,6 +105,7 @@ const messageTypes = {
 - [ ] Replace current HTML rendering with snippet system
 
 ### Phase 3: Validation & Message Integration
+
 - [ ] Schema-based validation rule integration
 - [ ] Real-time validation triggers (change, blur, submit)
 - [ ] Inline message display with messageType styling
@@ -103,6 +113,7 @@ const messageTypes = {
 - [ ] Accessibility compliance with ARIA live regions
 
 ### Phase 4: Advanced Customization & Extension
+
 - [ ] Advanced custom snippet patterns
 - [ ] Theme integration across all rendering modes
 - [ ] Extension documentation and examples
@@ -111,17 +122,19 @@ const messageTypes = {
 ## Key Benefits
 
 ### For Simple Use Cases
+
 ```javascript
 // Just works - automatic everything
 const form = new FormBuilder({
-  name: "",
-  email: "",
+  name: '',
+  email: '',
   age: 0,
   subscribe: false
 })
 ```
 
 ### For Custom Requirements
+
 ```svelte
 {#snippet customEmailInput(type, value, props)}
   <div class="custom-email-wrapper">
@@ -138,45 +151,49 @@ const form = new FormBuilder({
 ```
 
 ### Property Composition Power
+
 ```javascript
 // All context available in props object
 const props = {
   // Display
-  label: "Email Address",
+  label: 'Email Address',
   description: "We'll never share your email",
 
   // Message system
-  message: "Please enter a valid email",
-  messageType: "error",
+  message: 'Please enter a valid email',
+  messageType: 'error',
 
   // Events
   onchange: handleChange,
 
   // Schema constraints
   required: true,
-  pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$",
+  pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$',
 
   // Layout
-  placeholder: "user@example.com",
-  className: "custom-input"
+  placeholder: 'user@example.com',
+  className: 'custom-input'
 }
 ```
 
 ## Success Criteria
 
 ### Developer Experience
+
 - **Intuitive API**: Simple constructor, clear property names
 - **Progressive complexity**: Start simple, add complexity as needed
 - **Consistent patterns**: Same signature across all snippets
 - **Complete control**: Custom snippets for any requirement
 
 ### User Experience
+
 - **Rich feedback**: Error, warning, info, success message types
 - **Accessible**: Proper ARIA attributes and live regions
 - **Responsive**: Type-aware layouts that work on all devices
 - **Performance**: Fast rendering and minimal re-renders
 
 ### Technical Excellence
+
 - **Clean architecture**: Clear separation of concerns
 - **Extensible**: Easy to add new input types and behaviors
 - **Testable**: Unit, integration, and component test support
@@ -185,6 +202,7 @@ const props = {
 ## Future Vision
 
 ### Advanced Input Types
+
 - Date/time pickers with Input.svelte wrapper
 - Multi-select components with enhanced properties
 - File upload with validation and progress
@@ -192,6 +210,7 @@ const props = {
 - Color pickers with proper label positioning
 
 ### Enterprise Features
+
 - Form templates and reusable schemas
 - Advanced validation with custom functions
 - Conditional field display and dynamic layouts
@@ -199,6 +218,7 @@ const props = {
 - Internationalization and accessibility compliance
 
 ### Developer Ecosystem
+
 - VS Code snippets for common patterns
 - Storybook integration for component documentation
 - TypeScript definitions for full type safety
