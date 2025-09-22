@@ -155,31 +155,33 @@ export function hex2rgb(hex) {
  * @returns {boolean} - Returns true if the string is an image URL
  */
 function isImageUrl(str) {
+	// Fallback regex-based validation
+	const fallbackValidation = () => {
+		const urlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff)(\?.*)?$/i
+		return urlRegex.test(str)
+	}
+
 	// Check if the string looks like a URL
 	try {
-		// Use browser-native URL constructor or fallback to regex
-		const url = typeof URL !== 'undefined' ? new URL(str) : null
-
-		if (url) {
+		// Use browser-native URL constructor if available
+		if (typeof URL !== 'undefined') {
+			const url = new URL(str)
+			// Only accept HTTP/HTTPS protocols
+			if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+				return false
+			}
 			// Check common image extensions
 			const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff']
 			const path = url.pathname.toLowerCase()
-
-			if (imageExtensions.some((ext) => path.endsWith(ext))) {
-				return true
-			}
-		} else {
-			// Fallback regex-based URL validation for image extensions
-			const urlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff)(\?.*)?$/i
-			return urlRegex.test(str)
+			return imageExtensions.some((ext) => path.endsWith(ext))
 		}
 
-		return false
+		// Fallback if URL constructor is not available
+		return fallbackValidation()
 		// eslint-disable-next-line no-unused-vars
 	} catch (e) {
-		// Fallback regex-based validation
-		const urlRegex = /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff)(\?.*)?$/i
-		return urlRegex.test(str)
+		// Fallback if URL constructor fails
+		return fallbackValidation()
 	}
 }
 /**

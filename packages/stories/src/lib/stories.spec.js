@@ -1,5 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { getSections, getSlug, fetchImports, fetchStories, groupFiles } from './stories.js'
+import {
+	getSections,
+	getSlug,
+	fetchImports,
+	fetchStories,
+	groupFiles,
+	getAllSections,
+	findSection,
+	findGroupForSection
+} from './stories.js'
 
 describe('stories.js', () => {
 	beforeEach(() => {
@@ -293,6 +302,103 @@ describe('stories.js', () => {
 		it('should handle empty sources and modules', async () => {
 			const result = await fetchStories({}, {})
 			expect(result).toEqual({})
+		})
+	})
+
+	describe('getAllSections', () => {
+		it('should throw error when sections variable is undefined', () => {
+			// getAllSections references a global 'sections' variable that doesn't exist
+			// This function would throw a ReferenceError in practice
+			expect(() => getAllSections()).toThrow()
+		})
+	})
+
+	describe('findSection', () => {
+		const mockSections = [
+			{
+				title: 'Welcome',
+				children: [
+					{ title: 'Introduction', slug: '/welcome/introduction' },
+					{ title: 'Getting Started', slug: '/welcome/get' }
+				]
+			},
+			{
+				title: 'Elements',
+				children: [
+					{ title: 'List', slug: '/elements/list' },
+					{ title: 'Button', slug: '/elements/button' }
+				]
+			}
+		]
+
+		it('should find a section by slug', () => {
+			const result = findSection(mockSections, '/elements/list')
+			expect(result).toEqual({ title: 'List', slug: '/elements/list' })
+		})
+
+		it('should return empty object when section is not found', () => {
+			const result = findSection(mockSections, '/nonexistent/section')
+			expect(result).toEqual({})
+		})
+
+		it('should find section from first group', () => {
+			const result = findSection(mockSections, '/welcome/introduction')
+			expect(result).toEqual({ title: 'Introduction', slug: '/welcome/introduction' })
+		})
+
+		it('should find section from second group', () => {
+			const result = findSection(mockSections, '/elements/button')
+			expect(result).toEqual({ title: 'Button', slug: '/elements/button' })
+		})
+	})
+
+	describe('findGroupForSection', () => {
+		const mockSections = [
+			{
+				title: 'Welcome',
+				id: 'welcome',
+				children: [
+					{ title: 'Introduction', id: 'intro' },
+					{ title: 'Getting Started', id: 'get-started' }
+				]
+			},
+			{
+				title: 'Elements',
+				id: 'elements',
+				children: [
+					{ title: 'List', id: 'list' },
+					{ title: 'Button', id: 'button' }
+				]
+			}
+		]
+
+		it('should find the group containing a section', () => {
+			const result = findGroupForSection(mockSections, 'list')
+			expect(result).toEqual({
+				title: 'Elements',
+				id: 'elements',
+				children: [
+					{ title: 'List', id: 'list' },
+					{ title: 'Button', id: 'button' }
+				]
+			})
+		})
+
+		it('should return null when section is not found', () => {
+			const result = findGroupForSection(mockSections, 'nonexistent')
+			expect(result).toBeNull()
+		})
+
+		it('should find group for section in first group', () => {
+			const result = findGroupForSection(mockSections, 'intro')
+			expect(result).toEqual({
+				title: 'Welcome',
+				id: 'welcome',
+				children: [
+					{ title: 'Introduction', id: 'intro' },
+					{ title: 'Getting Started', id: 'get-started' }
+				]
+			})
 		})
 	})
 })

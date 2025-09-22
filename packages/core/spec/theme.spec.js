@@ -301,4 +301,47 @@ describe('semanticShortcuts', () => {
 		expect(shortcuts[7]).toEqual([/text-secondary-z0(\/\d+)?$/, expect.any(Function)])
 		expect(shortcuts[8]).toEqual(['text-secondary-z0', 'text-secondary-50 dark:text-secondary-950'])
 	})
+
+	it('should execute variant pattern callback function (line 85)', () => {
+		const shortcuts = semanticShortcuts('primary')
+
+		// Find the variant pattern shortcut (first regex shortcut)
+		const variantShortcut = shortcuts.find(
+			([pattern]) => pattern instanceof RegExp && pattern.source.includes('(.+)')
+		)
+
+		expect(variantShortcut).toBeDefined()
+		const [, callback] = variantShortcut
+
+		// Test the callback function with matched groups
+		const result = callback(['hover:bg-primary-z0', 'hover', undefined])
+		expect(result).toBe('hover:bg-primary-50 hover:dark:bg-primary-950')
+
+		// Test with opacity
+		const resultWithOpacity = callback(['hover:bg-primary-z0/50', 'hover', '/50'])
+		expect(resultWithOpacity).toBe('hover:bg-primary-50/50 hover:dark:bg-primary-950/50')
+	})
+
+	it('should execute opacity pattern callback function (line 92)', () => {
+		const shortcuts = semanticShortcuts('primary')
+
+		// Find the opacity pattern shortcut (second regex shortcut without variant group)
+		const opacityShortcut = shortcuts.find(
+			([pattern]) =>
+				pattern instanceof RegExp &&
+				!pattern.source.includes('(.+)') &&
+				pattern.source.includes('(\\/')
+		)
+
+		expect(opacityShortcut).toBeDefined()
+		const [, callback] = opacityShortcut
+
+		// Test the callback function
+		const result = callback(['bg-primary-z0', undefined])
+		expect(result).toBe('bg-primary-50 dark:bg-primary-950')
+
+		// Test with opacity
+		const resultWithOpacity = callback(['bg-primary-z0/75', '/75'])
+		expect(resultWithOpacity).toBe('bg-primary-50/75 dark:bg-primary-950/75')
+	})
 })

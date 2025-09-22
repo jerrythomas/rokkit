@@ -151,4 +151,90 @@ describe('Proxy', () => {
 		snippet = proxy.getSnippet(snippets, fallback)
 		expect(snippet()).toEqual('other')
 	})
+
+	it('should handle expanded property getter and setter', () => {
+		// Test with object that has expanded field
+		const item = $state({ id: '123', name: 'John', _expanded: true })
+		const proxy = new Proxy(item, { expanded: '_expanded' })
+
+		// Test getter when field exists
+		expect(proxy.expanded).toBe(true)
+
+		// Test getter when field doesn't exist (should return false)
+		const itemWithoutExpanded = $state({ id: '456', name: 'Jane' })
+		const proxyWithoutExpanded = new Proxy(itemWithoutExpanded)
+		expect(proxyWithoutExpanded.expanded).toBe(false)
+
+		// Test setter with object
+		proxy.expanded = false
+		flushSync()
+		expect(proxy.expanded).toBe(false)
+		expect(item._expanded).toBe(false)
+
+		proxy.expanded = 'truthy'
+		flushSync()
+		expect(proxy.expanded).toBe(true)
+		expect(item._expanded).toBe(true)
+
+		// Test setter with non-object (should not throw)
+		const stringProxy = new Proxy('test string')
+		stringProxy.expanded = true // Should not crash or modify anything
+		expect(stringProxy.expanded).toBe(false) // Should still return false since it's not an object
+	})
+
+	it('should handle expanded property with default fields', () => {
+		// Test with object using default expanded field mapping
+		const item = $state({ id: '123', name: 'John', _expanded: true })
+		const proxy = new Proxy(item) // Using default fields
+
+		// Test getter with default field mapping
+		expect(proxy.expanded).toBe(true)
+
+		// Test setter with default field mapping
+		proxy.expanded = false
+		flushSync()
+		expect(proxy.expanded).toBe(false)
+		expect(item._expanded).toBe(false)
+
+		// Test with object that doesn't have the expanded field
+		const itemNoExpanded = $state({ id: '456', name: 'Jane' })
+		const proxyNoExpanded = new Proxy(itemNoExpanded)
+		expect(proxyNoExpanded.expanded).toBe(false)
+
+		// Setting expanded should create the field
+		proxyNoExpanded.expanded = true
+		flushSync()
+		expect(proxyNoExpanded.expanded).toBe(true)
+		expect(itemNoExpanded._expanded).toBe(true)
+	})
+
+	it('should handle edge cases in processChildren', () => {
+		// Test with null value to trigger isNil(this.#value) condition
+		const proxy = new Proxy(null)
+		expect(proxy.children).toEqual([])
+		expect(proxy.hasChildren).toBe(false)
+
+		// Test with undefined to ensure we cover the condition
+		const proxy2 = new Proxy(undefined)
+		expect(proxy2.children).toEqual([])
+		expect(proxy2.hasChildren).toBe(false)
+	})
+
+	it('should handle fields being set to null or undefined', () => {
+		// Test that setting fields to null/undefined still works due to spread operator
+		const item = $state({ children: [{ id: '1', name: 'child' }] })
+		const proxy = new Proxy(item)
+
+		// Setting fields to null results in defaultFields due to spread operator
+		proxy.fields = null
+		flushSync()
+		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.children.length).toBe(1) // Children are processed normally
+
+		// Setting fields to undefined also results in defaultFields
+		proxy.fields = undefined
+		flushSync()
+		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.children.length).toBe(1) // Children are processed normally
+	})
 })

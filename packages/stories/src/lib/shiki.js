@@ -73,3 +73,16 @@ export async function preloadHighlighter() {
 		console.warn('Failed to preload syntax highlighter:', error.message)
 	}
 }
+
+/**
+ * Reset highlighter state - for testing only
+ * @internal
+ * @throws {Error} If called outside of test environment
+ */
+export function resetForTesting() {
+	if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
+		throw new Error('resetForTesting should only be called in test environment')
+	}
+	highlighter = null
+	isInitializing = false
+}

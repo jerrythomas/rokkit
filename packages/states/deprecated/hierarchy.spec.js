@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { flatHierarchy } from '../src/hierarchy'
+import { flatHierarchy } from './hierarchy'
 import { FieldMapper } from '@rokkit/core'
 
 describe('hierarchy', () => {

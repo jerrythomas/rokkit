@@ -1,7 +1,4 @@
 export { TableWrapper } from './tabular.svelte.js'
-// export { NodeProxy } from './node-proxy.svelte'
-// export { ListProxy } from './list-proxy.svelte'
-// export { NestedProxy } from './nested-proxy.svelte'
 export { Proxy } from './proxy.svelte.js'
 export { vibe } from './vibe.svelte.js'
 export { ListController } from './list-controller.svelte.js'

@@ -10,7 +10,9 @@ import {
 	getKeyFromPath,
 	getPathFromKey,
 	getSnippet,
-	getImage
+	getImage,
+	importIcons,
+	hex2rgb
 } from '../src/utils.js'
 
 describe('utils', () => {
@@ -159,13 +161,112 @@ describe('utils', () => {
 	describe('getImage', () => {
 		it('should identify url as image', () => {
 			expect(getImage('https://example.com/image.jpg')).toEqual('https://example.com/image.jpg')
+			expect(getImage('https://example.com/image.png')).toEqual('https://example.com/image.png')
+			expect(getImage('https://example.com/image.gif')).toEqual('https://example.com/image.gif')
+			expect(getImage('https://example.com/image.webp')).toEqual('https://example.com/image.webp')
+			expect(getImage('https://example.com/image.svg')).toEqual('https://example.com/image.svg')
 			expect(getImage('https://example.com/image.txt')).toEqual(null)
+			expect(getImage('https://example.com/file.pdf')).toEqual(null)
 		})
+
+		it('should handle URLs with query parameters', () => {
+			expect(getImage('https://example.com/image.jpg?v=123')).toEqual(
+				'https://example.com/image.jpg?v=123'
+			)
+			expect(getImage('https://example.com/image.png?size=large&format=png')).toEqual(
+				'https://example.com/image.png?size=large&format=png'
+			)
+		})
+
 		it('should identify base 64 data as image', () => {
 			expect(getImage('data:image/png;base64,iVBORw0KGgoAAAAN...')).toEqual(
 				'data:image/png;base64,iVBORw0KGgoAAAAN...'
 			)
+			expect(getImage('data:image/jpeg;base64,/9j/4AAQSkZJRg...')).toEqual(
+				'data:image/jpeg;base64,/9j/4AAQSkZJRg...'
+			)
 			expect(getImage('i-app:iconify')).toEqual(null)
+			expect(getImage('not-an-image')).toEqual(null)
+		})
+
+		it('should handle invalid URLs gracefully', () => {
+			expect(getImage('not-a-url')).toEqual(null)
+			expect(getImage('ftp://example.com/image.jpg')).toEqual(null)
+			expect(getImage('http://')).toEqual(null)
+			expect(getImage('')).toEqual(null)
+		})
+
+		it('should test URL constructor fallback when URL is unavailable', () => {
+			// Mock URL being undefined to test fallback regex path
+			const originalURL = global.URL
+			global.URL = undefined
+
+			expect(getImage('https://example.com/image.jpg')).toEqual('https://example.com/image.jpg')
+			expect(getImage('https://example.com/image.txt')).toEqual(null)
+			expect(getImage('https://example.com/image.png?v=1')).toEqual(
+				'https://example.com/image.png?v=1'
+			)
+
+			// Restore original URL
+			global.URL = originalURL
+		})
+
+		it('should handle URL constructor throwing errors', () => {
+			// Mock URL constructor to throw an error to test catch block
+			const originalURL = global.URL
+			global.URL = class {
+				constructor() {
+					throw new Error('Invalid URL')
+				}
+			}
+
+			expect(getImage('https://example.com/image.jpg')).toEqual('https://example.com/image.jpg')
+			expect(getImage('https://example.com/image.txt')).toEqual(null)
+
+			// Restore original URL
+			global.URL = originalURL
+		})
+	})
+
+	describe('importIcons', () => {
+		it('should return empty object when icons is null or undefined', () => {
+			expect(importIcons(null)).toEqual({})
+			expect(importIcons(undefined)).toEqual({})
+		})
+
+		it('should create import functions for each icon collection', () => {
+			const icons = {
+				heroicons: '/path/to/heroicons.json',
+				feather: '/path/to/feather.json'
+			}
+
+			const result = importIcons(icons)
+
+			expect(result).toHaveProperty('heroicons')
+			expect(result).toHaveProperty('feather')
+			expect(typeof result.heroicons).toBe('function')
+			expect(typeof result.feather).toBe('function')
+		})
+	})
+
+	describe('hex2rgb', () => {
+		it('should convert hex color to rgb format', () => {
+			expect(hex2rgb('#ff0000')).toBe('255,0,0')
+			expect(hex2rgb('#00ff00')).toBe('0,255,0')
+			expect(hex2rgb('#0000ff')).toBe('0,0,255')
+			expect(hex2rgb('#ffffff')).toBe('255,255,255')
+			expect(hex2rgb('#000000')).toBe('0,0,0')
+		})
+
+		it('should handle hex colors without hash', () => {
+			expect(hex2rgb('ff0000')).toBe('255,0,0')
+			expect(hex2rgb('00ff00')).toBe('0,255,0')
+			expect(hex2rgb('0000ff')).toBe('0,0,255')
+		})
+
+		it('should handle mixed case hex colors', () => {
+			expect(hex2rgb('#FF0000')).toBe('255,0,0')
+			expect(hex2rgb('#AbCdEf')).toBe('171,205,239')
 		})
 	})
 })

@@ -154,7 +154,7 @@ describe('element', () => {
 
 			// Verify the function returns true (indicating mock was applied)
 			expect(mockWasApplied).toBe(true)
-			 
+
 			expect(vi.isMockFunction(HTMLFormElement.prototype.requestSubmit)).toBeTruthy()
 
 			// Test the mock implementation works correctly
@@ -164,8 +164,33 @@ describe('element', () => {
 
 			form.requestSubmit()
 			expect(submitSpy).toHaveBeenCalled()
-			 
+
 			expect(HTMLFormElement.prototype.requestSubmit).toHaveBeenCalled()
+
+			vi.resetAllMocks()
+		})
+
+		it('should mock form requestSubmit with submitter element', () => {
+			// Apply the mock
+			mockFormRequestSubmit()
+
+			// Create form and submitter button
+			const form = document.createElement('form')
+			const submitter = document.createElement('button')
+			submitter.type = 'submit'
+			submitter.name = 'action'
+			submitter.value = 'save'
+
+			const submitSpy = vi.fn()
+			form.addEventListener('submit', submitSpy)
+
+			// Call requestSubmit with submitter parameter to cover lines 96-97
+			form.requestSubmit(submitter)
+
+			expect(submitSpy).toHaveBeenCalled()
+			// Verify the submitter was set on the event
+			const event = submitSpy.mock.calls[0][0]
+			expect(event.submitter).toBe(submitter)
 
 			vi.resetAllMocks()
 		})

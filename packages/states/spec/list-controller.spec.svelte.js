@@ -14,6 +14,7 @@ describe('ListController', () => {
 			expect(controller.isNested).toEqual(false)
 			expect(controller.focused).toBeFalsy()
 			expect(controller.currentKey).toBeFalsy()
+			expect(controller.currentIndex).toEqual(-1)
 			expect(Array.from(controller.selected)).toEqual([])
 		})
 
@@ -48,6 +49,7 @@ describe('ListController', () => {
 			expect(proxy.focused).toEqual(items[0])
 			expect(proxy.selected).toEqual([items[0]])
 			expect(proxy.currentKey).toEqual('0')
+			expect(proxy.currentIndex).toEqual(0)
 
 			expect(proxy.moveToValue(items[0])).toBe(true)
 			expect(proxy.moveToValue(items[1])).toBe(true)
