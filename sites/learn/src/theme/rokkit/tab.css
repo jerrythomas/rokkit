@@ -30,7 +30,10 @@
 /* Individual Tab Items */
 [data-tabs-trigger] {
   @apply text-surface-z7 rounded px-4 py-2;
-  @apply bg-surface-z3 gap-2 focus:outline-none;
+  @apply bg-surface-z3 gap-2;
+}
+[data-tabs-list] > [data-tabs-trigger] {
+  @apply focus:outline-none;
 }
 
 /* Tab Items - Selected States */

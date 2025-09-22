@@ -6,6 +6,8 @@
 	let fields = { text: 'name', icon: 'language' }
 </script>
 
-<Tabs items={files} {fields} bind:value={current} class="no-padding">
-	<Code content={current?.content} language={current?.language} />
+<Tabs options={files} {fields} bind:value={current} class="no-padding">
+	{#snippet tabPanel(item)}
+		<Code content={item.value.content} language={item.value.language} />
+	{/snippet}
 </Tabs>

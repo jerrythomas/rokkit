@@ -74,7 +74,7 @@ exports[`Category.svelte > should render using default props 1`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -88,7 +88,7 @@ exports[`Category.svelte > should render using default props 1`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -102,7 +102,7 @@ exports[`Category.svelte > should render using default props 1`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -205,7 +205,7 @@ exports[`Category.svelte > should render using specified class 1`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -219,7 +219,7 @@ exports[`Category.svelte > should render using specified class 1`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -233,7 +233,7 @@ exports[`Category.svelte > should render using specified class 1`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -336,7 +336,7 @@ exports[`Category.svelte > should render using specified class 2`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -350,7 +350,7 @@ exports[`Category.svelte > should render using specified class 2`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -364,7 +364,7 @@ exports[`Category.svelte > should render using specified class 2`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -465,7 +465,7 @@ exports[`Category.svelte > should render using specified type 1`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -479,7 +479,7 @@ exports[`Category.svelte > should render using specified type 1`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -493,7 +493,7 @@ exports[`Category.svelte > should render using specified type 1`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -594,7 +594,7 @@ exports[`Category.svelte > should render using specified type 2`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -608,7 +608,7 @@ exports[`Category.svelte > should render using specified type 2`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -622,7 +622,7 @@ exports[`Category.svelte > should render using specified type 2`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -815,7 +815,7 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -829,7 +829,7 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -843,7 +843,7 @@ exports[`Category.svelte > should render with alternative navigator 2`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -944,7 +944,7 @@ exports[`Category.svelte > should render with extra props 1`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -958,7 +958,7 @@ exports[`Category.svelte > should render with extra props 1`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -972,7 +972,7 @@ exports[`Category.svelte > should render with extra props 1`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"
@@ -1073,7 +1073,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
        
       <div
         aria-labelledby="tab-0"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-0"
         role="tabpanel"
@@ -1087,7 +1087,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
       </div>
       <div
         aria-labelledby="tab-1"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-1"
         role="tabpanel"
@@ -1101,7 +1101,7 @@ exports[`Category.svelte > should render with extra props 2`] = `
       </div>
       <div
         aria-labelledby="tab-2"
-        class="hidden"
+        data-panel-active="false"
         data-tabs-panel=""
         id="tab-panel-2"
         role="tabpanel"

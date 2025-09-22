@@ -46,11 +46,6 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -106,7 +101,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -120,7 +115,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -134,7 +129,7 @@ exports[`Tabs > should render simple tabs with string array 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -165,11 +160,6 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -225,7 +215,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -239,7 +229,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -253,7 +243,7 @@ exports[`Tabs > should render simple tabs with string array 2`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -284,11 +274,6 @@ exports[`Tabs > should render tabs with object array 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -358,7 +343,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -372,7 +357,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -386,7 +371,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -400,7 +385,7 @@ exports[`Tabs > should render tabs with object array 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -434,11 +419,6 @@ exports[`Tabs > should render with custom content snippet 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -508,7 +488,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -522,7 +502,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -536,7 +516,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -550,7 +530,7 @@ exports[`Tabs > should render with custom content snippet 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -633,11 +613,6 @@ exports[`Tabs > should render with custom header snippet 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -707,7 +682,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -721,7 +696,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -735,7 +710,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -749,7 +724,7 @@ exports[`Tabs > should render with custom header snippet 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -786,11 +761,6 @@ exports[`Tabs > should render with different alignments 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -860,7 +830,7 @@ exports[`Tabs > should render with different alignments 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -874,7 +844,7 @@ exports[`Tabs > should render with different alignments 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -888,7 +858,7 @@ exports[`Tabs > should render with different alignments 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -902,7 +872,7 @@ exports[`Tabs > should render with different alignments 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -932,11 +902,6 @@ exports[`Tabs > should render with different positions 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -1006,7 +971,7 @@ exports[`Tabs > should render with different positions 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -1020,7 +985,7 @@ exports[`Tabs > should render with different positions 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -1034,7 +999,7 @@ exports[`Tabs > should render with different positions 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -1048,7 +1013,7 @@ exports[`Tabs > should render with different positions 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -1078,11 +1043,6 @@ exports[`Tabs > should render with editable tabs 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -1237,7 +1197,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -1251,7 +1211,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -1265,7 +1225,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -1279,7 +1239,7 @@ exports[`Tabs > should render with editable tabs 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -1309,11 +1269,6 @@ exports[`Tabs > should render with field mapping 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -1355,7 +1310,7 @@ exports[`Tabs > should render with field mapping 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -1369,7 +1324,7 @@ exports[`Tabs > should render with field mapping 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -1399,11 +1354,6 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -1473,7 +1423,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -1487,7 +1437,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -1501,7 +1451,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -1515,7 +1465,7 @@ exports[`Tabs > should render with horizontal orientation 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -1615,7 +1565,7 @@ exports[`Tabs > should render with selected value 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -1629,6 +1579,7 @@ exports[`Tabs > should render with selected value 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
+      data-panel-active="true"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -1642,7 +1593,7 @@ exports[`Tabs > should render with selected value 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -1656,7 +1607,7 @@ exports[`Tabs > should render with selected value 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"
@@ -1686,11 +1637,6 @@ exports[`Tabs > should render with vertical orientation 1`] = `
     tabindex="0"
   >
     <!---->
-    <div
-      data-tabs-placeholder=""
-    >
-      Select a tab to view its content.
-    </div>
     
     <!---->
      
@@ -1760,7 +1706,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
      
     <div
       aria-labelledby="tab-0"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-0"
       role="tabpanel"
@@ -1774,7 +1720,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
     </div>
     <div
       aria-labelledby="tab-1"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-1"
       role="tabpanel"
@@ -1788,7 +1734,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
     </div>
     <div
       aria-labelledby="tab-2"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-2"
       role="tabpanel"
@@ -1802,7 +1748,7 @@ exports[`Tabs > should render with vertical orientation 1`] = `
     </div>
     <div
       aria-labelledby="tab-3"
-      class="hidden"
+      data-panel-active="false"
       data-tabs-panel=""
       id="tab-panel-3"
       role="tabpanel"

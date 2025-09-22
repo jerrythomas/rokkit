@@ -2,13 +2,13 @@
 	import { Tabs } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 
-	let items = [
+	let options = [
 		{ text: 'Design', description: 'Create beautiful interfaces with our component library' },
 		{ text: 'Develop', description: 'Build robust applications with modern web technologies' },
 		{ text: 'Deploy', description: 'Ship your applications to production with confidence' }
 	]
 
-	let value = $state(items[0])
+	let value = $state(options[0])
 	let config = $state({
 		orientation: 'horizontal',
 		position: 'before',
@@ -66,16 +66,18 @@
 	<div data-card class="flex-1 px-8">
 		<h3>Live Preview</h3>
 		<Tabs
-			{items}
+			{options}
 			bind:value
 			orientation={config.orientation}
 			position={config.position}
 			align={config.align}
 		>
-			<div>
-				<h4>Selected: {value.text}</h4>
-				<p>{value.description}</p>
-			</div>
+			{#snippet tabPanel(item)}
+				<div>
+					<h4>Selected: {item.value.text}</h4>
+					<p>{item.value.description}</p>
+				</div>
+			{/snippet}
 		</Tabs>
 	</div>
 	<div class="bg-surface-z2 w-full md:w-[40ch]">

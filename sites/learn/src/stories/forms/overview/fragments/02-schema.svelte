@@ -1,3 +1,4 @@
+<script>
 const schema = {
   type: 'object',
   properties: {
@@ -6,5 +7,5 @@ const schema = {
     age: { type: 'number', min: 18, max: 99 }
   }
 }
-
+</script>
 <Form bind:value {schema} />

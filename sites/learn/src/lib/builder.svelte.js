@@ -1,9 +1,15 @@
 import { fetchStories } from './stories.js'
+/**
+ * @typedef {Object} Example
+ * @property {Object[]} files
+ * @property {import('svelte').SvelteComponent} App
+ */
 
 export class StoryBuilder {
 	#modules
 	#sources
-	#processed = $state(null)
+	/** @type {Record<string, Example>} */
+	#processed = $state({})
 	#loading = $state(true)
 	#error = $state(null)
 
@@ -40,6 +46,11 @@ export class StoryBuilder {
 	}
 
 	// Helper methods for common access patterns
+	/**
+	 *
+	 * @param {string} name
+	 * @returns {Example}
+	 */
 	getExample(name) {
 		return this.#processed?.[name]
 	}

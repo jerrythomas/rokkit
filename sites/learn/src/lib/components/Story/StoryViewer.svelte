@@ -5,7 +5,7 @@
 </script>
 
 <div data-story-root>
-	<div data-story-preview>
+	<div data-story-preview class="text-surface-z8">
 		{#if App}
 			<App />
 		{:else}

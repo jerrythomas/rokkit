@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { sveltekit } from '@sveltejs/kit/vite'
 import unocss from 'unocss/vite'
-import { paraglide } from '@inlang/paraglide-sveltekit/vite'
+import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { defineConfig } from 'vite'
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
@@ -9,9 +9,10 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
 export default defineConfig({
 	plugins: [
 		unocss(),
-		paraglide({
+		paraglideVitePlugin({
 			project: './project.inlang',
-			outdir: './src/lib/paraglide'
+			outdir: './src/lib/paraglide',
+			strategy: ['url', 'cookie', 'baseLocale']
 		}),
 		sveltekit()
 	],

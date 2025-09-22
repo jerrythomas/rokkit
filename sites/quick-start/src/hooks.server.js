@@ -1,5 +1,18 @@
-import { i18n } from '$lib/i18n'
+import { paraglideMiddleware } from '$lib/paraglide/server'
+import { getLangDir } from 'rtl-detect'
+
 /** @type {import('@sveltejs/kit').Handle} */
-const handleParaglide = i18n.handle()
+const handleParaglide = ({ event, resolve }) =>
+	paraglideMiddleware(event.request, ({ request, locale }) => {
+		event.request = request
+
+		return resolve(event, {
+			transformPageChunk: ({ html }) =>
+				html
+					.replace('%paraglide.lang%', locale)
+					.replace('%paraglide.textDirection%', getLangDir(locale))
+		})
+	})
+
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = handleParaglide

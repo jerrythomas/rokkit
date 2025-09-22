@@ -1,7 +1,7 @@
 <script>
 	import { Tabs } from '@rokkit/ui'
 
-	let items = [
+	let options = [
 		{
 			id: 'dashboard',
 			label: 'Dashboard',
@@ -28,21 +28,23 @@
 		}
 	]
 	let fields = { text: 'label', icon: 'emoji' }
-	let value = $state(items[0])
+	let value = $state(options[0])
 </script>
 
-<Tabs {items} bind:value {fields}>
+<Tabs {options} bind:value {fields}>
 	{#snippet child(item)}
 		<span>{item.get('icon')}</span>
 		<span>{item.get('label')}</span>
 	{/snippet}
 
-	<div data-card>
-		<div>
-			<span>{value.emoji}</span>
-			<h3>{value.label}</h3>
-			<p>{value.info}</p>
+	{#snippet tabPanel(item)}
+		<div data-card>
+			<div>
+				<span>{item.value.emoji}</span>
+				<h3>{item.value.label}</h3>
+				<p>{item.value.info}</p>
+			</div>
+			<p>{item.value.detail}</p>
 		</div>
-		<p>{value.detail}</p>
-	</div>
+	{/snippet}
 </Tabs>

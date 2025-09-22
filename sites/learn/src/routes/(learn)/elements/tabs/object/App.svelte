@@ -2,7 +2,7 @@
 	import { Tabs } from '@rokkit/ui'
 
 	let value = $state()
-	let items = [
+	let options = [
 		{
 			text: 'Fruits',
 			content: 'Fresh seasonal fruits including apples, bananas, and berries.',
@@ -26,18 +26,21 @@
 	]
 </script>
 
-<Tabs {items} bind:value fields={{ text: 'text', content: 'content' }}>
+<Tabs {options} bind:value fields={{ text: 'text', content: 'content' }}>
 	<div class="space-y-4 p-6">
-		{#if value}
+		{#snippet tabPanel(item)}
 			<div class="flex items-center gap-4">
-				<img src={value.image} alt={value.text} class="h-16 w-16 rounded-lg object-cover" />
+				<img
+					src={item.value.image}
+					alt={item.value.text}
+					class="h-16 w-16 rounded-lg object-cover"
+				/>
 				<div>
-					<h3 class="text-lg font-semibold">{value.text}</h3>
-					<p class="text-surface-z7 text-sm">{value.content}</p>
+					<h3 class="text-lg font-semibold">{item.value.text}</h3>
+					<p class="text-surface-z7 text-sm">{item.value.content}</p>
 				</div>
 			</div>
-		{:else}
-			<p class="text-surface-z7">Select a tab to see the content</p>
-		{/if}
+		{/snippet}
+		<!-- <p class="text-surface-z7">Select a tab to see the content</p> -->
 	</div>
 </Tabs>

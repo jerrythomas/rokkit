@@ -84,6 +84,9 @@
 [data-tabs-trigger][data-selected='true'] {
   @apply font-medium;
 }
+[data-tabs-panel][data-panel-active='false'] {
+  @apply hidden;
+}
 
 /* Responsive Adjustments */
 @media (max-width: 640px) {

@@ -67,7 +67,6 @@
 	let tabItemSnippet = $derived(tabItem ?? defaultItem)
 	let tabPanelSnippet = $derived(tabPanel ?? defaultPanel)
 	let emptyMessage = $derived(empty ?? defaultEmpty)
-	// let activeItem = $derived(proxyItems.find((proxy) => equals(proxy.value, value)))
 
 	function handleAction(event) {
 		const { name, data } = event.detail
@@ -123,7 +122,7 @@
 		<div data-tabs-empty>
 			{@render emptyMessage()}
 		</div>
-	{:else if wrapper.focusedKey === null}
+	{:else if wrapper.focusedKey === null && value === null}
 		<div data-tabs-placeholder>
 			{placeholder}
 		</div>
@@ -162,12 +161,14 @@
 
 	<!-- Tab Panels -->
 	{#each proxyItems as item, index (index)}
+		{@const isVisible = equals(item.value, value)}
+
 		<div
 			data-tabs-panel
 			role="tabpanel"
 			id="tab-panel-{index}"
 			aria-labelledby="tab-{index}"
-			class:hidden={!equals(item.value, value)}
+			data-panel-active={isVisible}
 		>
 			{@render tabPanelSnippet(item)}
 		</div>

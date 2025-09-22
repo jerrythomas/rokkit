@@ -61,7 +61,7 @@ const themeConfig = {
 export default defineConfig({
 	darkMode: 'attribute',
 	extractors: [extractorSvelte()],
-	// rules: [],
+	rules: [['hidden', { display: 'none' }]],
 	safelist: [
 		...defaultIcons,
 		...components,
