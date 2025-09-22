@@ -16,18 +16,18 @@ Instead of traditional shortcuts like `bg-surface-300` or `bg-surface-100`, Rokk
 
 Each `z` value maps to a specific shade in your palette. For example, for neutral colors:
 
-| Shortcut         | Light Mode         | Dark Mode         |
-|------------------|-------------------|-------------------|
-| bg-surface-z1    | bg-surface-50     | bg-surface-950    |
-| bg-surface-z2    | bg-surface-100    | bg-surface-900    |
-| bg-surface-z3    | bg-surface-200    | bg-surface-800    |
-| bg-surface-z4    | bg-surface-300    | bg-surface-700    |
-| bg-surface-z5    | bg-surface-500    | bg-surface-600    |
-| bg-surface-z6    | bg-surface-600    | bg-surface-500    |
-| bg-surface-z7    | bg-surface-700    | bg-surface-300    |
-| bg-surface-z8    | bg-surface-800    | bg-surface-200    |
-| bg-surface-z9    | bg-surface-900    | bg-surface-100    |
-| bg-surface-z10   | bg-surface-950    | bg-surface-50     |
+| Shortcut       | Light Mode     | Dark Mode      |
+| -------------- | -------------- | -------------- |
+| bg-surface-z1  | bg-surface-50  | bg-surface-950 |
+| bg-surface-z2  | bg-surface-100 | bg-surface-900 |
+| bg-surface-z3  | bg-surface-200 | bg-surface-800 |
+| bg-surface-z4  | bg-surface-300 | bg-surface-700 |
+| bg-surface-z5  | bg-surface-500 | bg-surface-600 |
+| bg-surface-z6  | bg-surface-600 | bg-surface-500 |
+| bg-surface-z7  | bg-surface-700 | bg-surface-300 |
+| bg-surface-z8  | bg-surface-800 | bg-surface-200 |
+| bg-surface-z9  | bg-surface-900 | bg-surface-100 |
+| bg-surface-z10 | bg-surface-950 | bg-surface-50  |
 
 This mapping ensures that your UI adapts seamlessly between light and dark modes, with the lowest index (`z1`) always representing the lightest shade in light mode and the darkest in dark mode, and vice versa for `z10`.
 
@@ -43,7 +43,7 @@ shortcuts: [
   ...theme.getShortcuts('neutral'),
   ...theme.getShortcuts('primary'),
   ...theme.getShortcuts('secondary'),
-  ...theme.getShortcuts('info'),
+  ...theme.getShortcuts('info')
   // etc.
 ]
 ```

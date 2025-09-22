@@ -21,7 +21,7 @@ import { iconShortcuts, defaultIcons } from '@rokkit/themes'
 
 export default defineConfig({
   shortcuts: [
-    ...Object.entries(iconShortcuts(defaultIcons, 'i-myicons')),
+    ...Object.entries(iconShortcuts(defaultIcons, 'i-myicons'))
     // other shortcuts...
   ]
 })
@@ -68,9 +68,7 @@ presetIcons({
   collections: {
     ...importIcons(icons),
     file: () =>
-      import('./static/icons/files/icons.json', { with: { type: 'json' } }).then(
-        (i) => i.default
-      )
+      import('./static/icons/files/icons.json', { with: { type: 'json' } }).then((i) => i.default)
   }
 })
 ```
