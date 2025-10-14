@@ -13,7 +13,7 @@ export class Proxy {
 		this.fields = fields
 		this.#original = value
 		this.#value = typeof value === 'object' ? value : { [this.fields.text]: value }
-		this.id = typeof value === 'object' ? (this.get('id') ?? id()) : value
+		this.id = typeof value === 'object' ? this.get('id') ?? id() : value
 	}
 
 	#processChildren() {
