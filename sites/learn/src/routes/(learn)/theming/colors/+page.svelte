@@ -13,7 +13,7 @@
 	<div data-card>
 		<h1>Available Colors:</h1>
 		<ul class="grid grid-cols-2 gap-2 md:grid-cols-4">
-			<li>surface</li>
+			<li>Surface</li>
 			<li>Primary</li>
 			<li>Secondary</li>
 			<li>Accent</li>
