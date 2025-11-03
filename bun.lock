@@ -29,7 +29,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.31.3",
@@ -41,7 +41,7 @@
     },
     "packages/bits-ui": {
       "name": "@rokkit/bits-ui",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/states": "workspace:latest",
@@ -51,7 +51,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -68,7 +68,7 @@
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "bin": {
         "@rokkit/cli": "src/index.js",
         "rokkit-cli": "src/index.js",
@@ -87,7 +87,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "date-fns": "^4.1.0",
         "ramda": "^0.31.3",
@@ -95,7 +95,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -107,7 +107,7 @@
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/bits-ui": "workspace:latest",
         "@rokkit/core": "workspace:latest",
@@ -119,7 +119,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@vitest/expect": "^3.2.4",
         "ramda": "^0.31.3",
@@ -127,14 +127,14 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "devDependencies": {
         "@rokkit/cli": "workspace:latest",
       },
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -146,7 +146,7 @@
     },
     "packages/stories": {
       "name": "@rokkit/stories",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@vitest/expect": "^3.2.4",
@@ -156,14 +156,14 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
       },
     },
     "packages/tutorial": {
       "name": "@rokkit/tutorial",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@vitest/expect": "^3.2.4",
@@ -173,7 +173,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@rokkit/actions": "workspace:latest",
         "@rokkit/core": "workspace:latest",
@@ -188,7 +188,7 @@
     },
     "sites/learn": {
       "name": "@rokkit/learn",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.7",
         "@fontsource/overpass": "^5.2.8",
@@ -228,7 +228,7 @@
     },
     "sites/quick-start": {
       "name": "quick-start",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.5",
         "@fontsource/overpass": "^5.2.5",
@@ -257,7 +257,7 @@
     },
     "sites/sample": {
       "name": "sample",
-      "version": "1.0.0-next.123",
+      "version": "1.0.0-next.124",
       "devDependencies": {
         "@inlang/paraglide-js": "^2.0.0",
         "@sveltejs/adapter-auto": "^6.0.0",
