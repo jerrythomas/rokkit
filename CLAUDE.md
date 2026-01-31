@@ -49,7 +49,7 @@ The project is organized as a Bun workspace monorepo with the following structur
   - `@rokkit/forms`: Form-related components
   - `@rokkit/themes`: CSS themes and styling
   - `@rokkit/icons`: Icon libraries
-  - `@rokkit/bits-ui`: Data-driven wrappers for bits-ui components (migrating to use bits-ui under the hoods)
+  - `@rokkit/composables`: Composable UI primitives built on bits-ui
   - `@rokkit/tutorial`: Tutorial system
   - `@rokkit/chart`: Chart components
   - `@rokkit/cli`: Command-line tools
@@ -141,11 +141,11 @@ let proxyItems = $derived(items.map(item => new Proxy(item, fields)))
 4. **Snippet support** - allow user customization via snippets
 5. **Accessibility** - proper ARIA attributes and keyboard navigation
 
-### bits-ui Integration
+### Composables Integration
 - Use bits-ui components as foundation when available
 - Wrap with Rokkit API layer (items, fields, value props)
 - Preserve bits-ui data attributes for theming
-- See `packages/bits-ui/src/List.svelte` for reference
+- See `packages/composables/src/List.svelte` for reference
 
 ## Code Quality Rules
 
@@ -308,7 +308,7 @@ The StoryBuilder includes comprehensive test coverage and works in both runtime 
 ## Reference Files
 
 Study these files for implementation patterns:
-- `packages/bits-ui/src/List.svelte` - bits-ui integration pattern
+- `packages/composables/src/List.svelte` - composables integration pattern
 - `sites/learn/src/lib/stories/02-elements/01-list/` - tutorial structure
 - `.rules/architecture/patterns.md` - component implementation patterns
 - `.rules/project/progress.md` - current component status

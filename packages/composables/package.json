@@ -1,25 +1,29 @@
 {
-  "name": "@rokkit/forms",
+  "name": "@rokkit/composables",
   "version": "1.0.0-next.125",
-  "module": "src/index.js",
+  "type": "module",
+  "description": "Composable UI components built on bits-ui",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
-  "type": "module",
+  "npm": {
+    "publish": true
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+    "build": "bun prepublishOnly"
   },
   "files": [
     "src/**/*.js",
     "src/**/*.svelte",
-    "dist/**/*.d.ts"
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
   ],
   "exports": {
-    "./src": "./src",
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
@@ -30,9 +34,7 @@
   "dependencies": {
     "@rokkit/core": "workspace:latest",
     "@rokkit/states": "workspace:latest",
-    "@rokkit/ui": "workspace:latest",
-    "@rokkit/composables": "workspace:latest",
-    "ramda": "^0.31.3",
-    "valibot": "^1.1.0"
+    "bits-ui": "^2.10.0",
+    "ramda": "^0.31.3"
   }
 }

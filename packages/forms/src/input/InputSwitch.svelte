@@ -1,6 +1,6 @@
 <script>
 	import { getValue, defaultFields } from '@rokkit/core'
-	import Switch from '@rokkit/bits-ui'
+	import Switch from '@rokkit/composables'
 
 	/**
 	 * @typedef {Object} InputSwitchProps

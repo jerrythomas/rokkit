@@ -1,6 +1,6 @@
 <script>
 	import { Tabs } from '@rokkit/ui'
-	// import { TabGroup as Tabs } from '@rokkit/bits-ui'
+	// import { TabGroup as Tabs } from '@rokkit/composables'
 	import { FormRenderer } from '@rokkit/forms'
 	import { equals } from 'ramda'
 

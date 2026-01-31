@@ -1,5 +1,5 @@
 <script>
-	import { GroupedList } from '@rokkit/bits-ui'
+	import { GroupedList } from '@rokkit/composables'
 	import { Icon } from '@rokkit/ui'
 
 	/**

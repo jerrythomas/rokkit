@@ -27,7 +27,7 @@ This repository contains the following packages with their corresponding folder 
 | Package Name | Folder Location | Description |
 |--------------|-----------------|-------------|
 | `@rokkit/actions` | `packages/actions/` | Action utilities and helpers |
-| `@rokkit/bits-ui` | `packages/bits-ui/` | Data-driven UI components based on bits-ui |
+| `@rokkit/composables` | `packages/composables/` | Composable UI primitives built on bits-ui |
 | `@rokkit/chart` | `packages/chart/` | Chart and visualization components |
 | `@rokkit/cli` | `packages/cli/` | Command line interface tools |
 | `@rokkit/core` | `packages/core/` | Core utilities and shared code |
@@ -43,9 +43,9 @@ This repository contains the following packages with their corresponding folder 
 ### Key Package Dependencies
 - `@rokkit/core` - Can be used by any package (foundational utilities)
 - `@rokkit/states` - Used by UI packages for data management
-- `@rokkit/bits-ui` - Provides data-driven wrappers for bits-ui components
+- `@rokkit/composables` - Provides composable primitives built on bits-ui
 - `@rokkit/ui` - Higher-level UI components built on foundation packages
-- `@rokkit/forms` - Form system depending on ui and bits-ui packages
+- `@rokkit/forms` - Form system depending on ui and composables packages
 
 ## Package Development (`packages/`)
 
