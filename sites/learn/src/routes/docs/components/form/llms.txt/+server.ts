@@ -239,6 +239,9 @@ const form = new FormBuilder(data, customSchema)
 // Create with full control
 const form = new FormBuilder(data, customSchema, customLayout)
 
+// Create with lookups for dynamic options
+const form = new FormBuilder(data, customSchema, customLayout, lookupConfigs)
+
 // Access form state
 form.data      // Current form data
 form.schema    // Form schema
@@ -251,6 +254,223 @@ form.setFieldValue('email', 'new@example.com')
 // Validation
 form.setFieldValidation('email', { state: 'error', text: 'Invalid email' })
 form.clearValidation('email')
+
+// Lookup management
+form.hasLookup('country')           // Check if field has lookup
+form.getLookupState('country')      // Get { options, loading, error }
+await form.initializeLookups()      // Initialize all lookups
+\`\`\`
+
+## Dynamic Lookups
+
+Lookups enable async data fetching for select/dropdown fields with caching and field dependencies.
+
+### Basic Lookup
+
+\`\`\`javascript
+import { FormBuilder } from '@rokkit/forms'
+
+const lookups = {
+  country: {
+    fetch: async () => {
+      const response = await fetch('/api/countries')
+      return response.json()
+    },
+    fields: { value: 'code', text: 'name' }
+  }
+}
+
+const form = new FormBuilder(data, schema, layout, lookups)
+await form.initializeLookups()
+\`\`\`
+
+### Dependent Lookups
+
+Lookups can depend on other field values, automatically refetching when dependencies change:
+
+\`\`\`javascript
+const lookups = {
+  country: {
+    fetch: async () => {
+      const response = await fetch('/api/countries')
+      return response.json()
+    },
+    fields: { value: 'code', text: 'name' }
+  },
+
+  // City options depend on selected country
+  city: {
+    dependsOn: ['country'],
+    fetch: async (deps) => {
+      if (!deps.country) return []
+      const response = await fetch(\`/api/countries/\${deps.country}/cities\`)
+      return response.json()
+    },
+    fields: { value: 'id', text: 'name' }
+  },
+
+  // District depends on both country and city
+  district: {
+    dependsOn: ['country', 'city'],
+    fetch: async (deps) => {
+      if (!deps.country || !deps.city) return []
+      const response = await fetch(
+        \`/api/countries/\${deps.country}/cities/\${deps.city}/districts\`
+      )
+      return response.json()
+    }
+  }
+}
+\`\`\`
+
+### Lookup Configuration
+
+| Property | Type | Description |
+|----------|------|-------------|
+| \`fetch\` | \`function\` | Async function returning options array |
+| \`dependsOn\` | \`string[]\` | Field keys this lookup depends on |
+| \`fields\` | \`object\` | Field mapping for options |
+| \`cacheKey\` | \`function\` | Custom cache key generator |
+| \`ttl\` | \`number\` | Cache time-to-live in ms |
+
+### Lookup State
+
+Access lookup state for UI feedback:
+
+\`\`\`svelte
+<script>
+  const form = new FormBuilder(data, schema, layout, lookups)
+
+  // Get reactive lookup state
+  const countryLookup = form.getLookupState('country')
+  // Returns: { options: [], loading: true, error: null }
+</script>
+
+{#if countryLookup.loading}
+  <p>Loading countries...</p>
+{:else if countryLookup.error}
+  <p class="error">{countryLookup.error}</p>
+{:else}
+  <Select options={countryLookup.options} />
+{/if}
+\`\`\`
+
+### Using createLookup Directly
+
+For standalone lookup management outside FormBuilder:
+
+\`\`\`javascript
+import { createLookup, createLookupManager } from '@rokkit/forms'
+
+// Single lookup
+const countryLookup = createLookup({
+  fetch: async () => {
+    const res = await fetch('/api/countries')
+    return res.json()
+  },
+  fields: { value: 'code', text: 'name' }
+})
+
+// Access state
+countryLookup.options    // Current options array
+countryLookup.loading    // Loading state
+countryLookup.error      // Error message if failed
+
+// Fetch data
+await countryLookup.fetch()
+
+// Cache management
+countryLookup.clearCache()
+countryLookup.reset()
+\`\`\`
+
+### Lookup Manager
+
+For managing multiple related lookups:
+
+\`\`\`javascript
+import { createLookupManager } from '@rokkit/forms'
+
+const manager = createLookupManager({
+  country: {
+    fetch: async () => fetchCountries()
+  },
+  city: {
+    dependsOn: ['country'],
+    fetch: async (deps) => fetchCities(deps.country)
+  }
+})
+
+// Get specific lookup
+const cityLookup = manager.getLookup('city')
+
+// Check if lookup exists
+manager.hasLookup('country')  // true
+
+// Handle field changes (triggers dependent lookups)
+manager.handleFieldChange('country', 'US')
+
+// Initialize all lookups
+await manager.initialize()
+
+// Clear all caches
+manager.clearAllCaches()
+\`\`\`
+
+### Complete Lookup Example
+
+\`\`\`svelte
+<script>
+  import { Form } from '@rokkit/ui'
+  import { FormBuilder } from '@rokkit/forms'
+
+  const schema = {
+    type: 'object',
+    properties: {
+      country: { type: 'enum', required: true },
+      city: { type: 'enum', required: true },
+      address: { type: 'string' }
+    }
+  }
+
+  const layout = {
+    type: 'vertical',
+    elements: [
+      { scope: '#/country', label: 'Country' },
+      { scope: '#/city', label: 'City' },
+      { scope: '#/address', label: 'Address' }
+    ]
+  }
+
+  const lookups = {
+    country: {
+      fetch: async () => {
+        const res = await fetch('/api/countries')
+        return res.json()
+      },
+      fields: { value: 'code', text: 'name' }
+    },
+    city: {
+      dependsOn: ['country'],
+      fetch: async (deps) => {
+        if (!deps.country) return []
+        const res = await fetch(\`/api/countries/\${deps.country}/cities\`)
+        return res.json()
+      },
+      fields: { value: 'id', text: 'name' }
+    }
+  }
+
+  let value = $state({ country: '', city: '', address: '' })
+  const form = new FormBuilder(value, schema, layout, lookups)
+
+  // Initialize lookups on mount
+  $effect(() => {
+    form.initializeLookups()
+  })
+</script>
+
+<Form bind:value {schema} {layout} />
 \`\`\`
 
 ## FormRenderer Component
@@ -322,6 +542,9 @@ import { Form } from '@rokkit/ui'
 // Low-level building blocks
 import { FormBuilder, FormRenderer } from '@rokkit/forms'
 import { InputField, Input } from '@rokkit/forms'
+
+// Lookup utilities
+import { createLookup, createLookupManager } from '@rokkit/forms'
 \`\`\`
 `
 

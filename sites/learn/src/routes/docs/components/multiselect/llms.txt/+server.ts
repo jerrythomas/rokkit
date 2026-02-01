@@ -62,6 +62,13 @@ MultiSelect adapts to your data structure through field mapping:
 | \`placeholder\` | \`string\` | \`''\` | Text when no items selected |
 | \`name\` | \`string\` | \`null\` | Form input name |
 | \`class\` | \`string\` | \`''\` | CSS class names |
+| \`open\` | \`boolean\` | \`false\` | Dropdown open state (use \`bind:open\`) |
+| \`disabled\` | \`boolean\` | \`false\` | Disables the multiselect |
+| \`direction\` | \`'up' \\| 'down' \\| 'auto'\` | \`'auto'\` | Dropdown opening direction |
+| \`searchable\` | \`boolean\` | \`false\` | Enables search/filter input |
+| \`searchText\` | \`string\` | \`''\` | Current search text (use \`bind:searchText\`) |
+| \`searchPlaceholder\` | \`string\` | \`'Search...'\` | Placeholder for search input |
+| \`filterFn\` | \`function\` | \`undefined\` | Custom filter function |
 
 ## Field Mapping
 
@@ -146,6 +153,86 @@ available = options.filter((item) => !value.includes(item))
 
 This ensures users can only select each item once.
 
+## Searchable MultiSelect
+
+Enable search/filter functionality for large option lists:
+
+### Basic Searchable
+
+\`\`\`svelte
+<script>
+  import { MultiSelect } from '@rokkit/ui'
+
+  const allSkills = [
+    { id: 'js', name: 'JavaScript' },
+    { id: 'ts', name: 'TypeScript' },
+    { id: 'py', name: 'Python' },
+    { id: 'go', name: 'Go' },
+    { id: 'rust', name: 'Rust' },
+    { id: 'java', name: 'Java' },
+    { id: 'csharp', name: 'C#' },
+    { id: 'cpp', name: 'C++' }
+  ]
+
+  let selectedSkills = $state([])
+</script>
+
+<MultiSelect
+  options={allSkills}
+  fields={{ text: 'name', value: 'id' }}
+  bind:value={selectedSkills}
+  searchable
+  searchPlaceholder="Search skills..."
+  placeholder="Select skills"
+/>
+\`\`\`
+
+### Custom Filter Function
+
+\`\`\`svelte
+<script>
+  import { MultiSelect } from '@rokkit/ui'
+
+  const employees = [
+    { id: 1, name: 'Alice Smith', dept: 'Engineering' },
+    { id: 2, name: 'Bob Jones', dept: 'Marketing' },
+    { id: 3, name: 'Charlie Brown', dept: 'Engineering' }
+  ]
+
+  // Search by name or department
+  function customFilter(item, searchText) {
+    const search = searchText.toLowerCase()
+    return item.name.toLowerCase().includes(search) ||
+           item.dept.toLowerCase().includes(search)
+  }
+
+  let team = $state([])
+</script>
+
+<MultiSelect
+  options={employees}
+  fields={{ text: 'name', value: 'id' }}
+  bind:value={team}
+  searchable
+  filterFn={customFilter}
+/>
+\`\`\`
+
+## Dropdown Direction
+
+Control which direction the dropdown opens:
+
+\`\`\`svelte
+<!-- Auto-detect best direction (default) -->
+<MultiSelect {options} direction="auto" />
+
+<!-- Always open upward -->
+<MultiSelect {options} direction="up" />
+
+<!-- Always open downward -->
+<MultiSelect {options} direction="down" />
+\`\`\`
+
 ## Data Attributes for Styling
 
 | Element | Selector | Description |
@@ -216,6 +303,13 @@ interface MultiSelectProps {
   placeholder?: string
   name?: string
   class?: string
+  open?: boolean
+  disabled?: boolean
+  direction?: 'up' | 'down' | 'auto'
+  searchable?: boolean
+  searchText?: string
+  searchPlaceholder?: string
+  filterFn?: (item: any, searchText: string, fields: FieldMapping) => boolean
 }
 
 interface FieldMapping {
@@ -356,6 +450,7 @@ interface FieldMapping {
 ## Related Components
 
 - **Select** - Single selection dropdown
+- **SearchFilter** - Standalone search/filter for List or Tree components
 - **List** - Base list component with selection
 - **CheckBox** - Individual boolean toggle
 - **Item** - Used for pill rendering

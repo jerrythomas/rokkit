@@ -45,6 +45,8 @@ describe('components', () => {
 			'ProgressDots',
 			'Card',
 			'Panel',
+			'FloatingActions',
+			'FloatingAction',
 			'Shine',
 			'Tilt',
 			'GraphPaper'

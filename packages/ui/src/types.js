@@ -155,6 +155,63 @@
  * @property {import('svelte').Snippet} [children] - Default slot (used as body if body not provided)
  */
 
+/**
+ * Position options for FloatingActions
+ * @typedef {'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'} FloatingPosition
+ */
+
+/**
+ * FloatingActions container component props
+ * @typedef {Object} FloatingActionsProps
+ * @property {string} [class] - CSS class names
+ * @property {FloatingPosition} [position] - Position on screen (default: 'bottom-right')
+ * @property {boolean} [open] - Whether the menu is expanded (bindable)
+ * @property {import('svelte').Snippet} [children] - Action buttons
+ * @property {import('svelte').Snippet<[boolean]>} [trigger] - Custom trigger button content (receives open state)
+ */
+
+/**
+ * FloatingAction button component props
+ * @typedef {Object} FloatingActionProps
+ * @property {string} [class] - CSS class names
+ * @property {string} [icon] - Icon name
+ * @property {string} [label] - Accessible label and tooltip
+ * @property {boolean} [disabled] - Whether button is disabled
+ * @property {() => void} [onclick] - Click handler
+ * @property {import('svelte').Snippet} [children] - Custom button content
+ */
+
+/**
+ * TreeTable column definition
+ * @typedef {Object} TreeTableColumn
+ * @property {string} field - Field name in data (alias: key)
+ * @property {string} [key] - Field name in data (alias: field)
+ * @property {string} [label] - Column header label
+ * @property {string} [width] - Column width (CSS value)
+ * @property {boolean} [hierarchy] - Whether this column defines the hierarchy path
+ * @property {boolean} [path] - Alias for hierarchy
+ * @property {string} [separator] - Path separator for hierarchy column (default: '/')
+ * @property {(value: any, row: any) => string} [format] - Value formatter function
+ */
+
+/**
+ * TreeTable component props
+ * @typedef {Object} TreeTableProps
+ * @property {string} [class] - CSS class names
+ * @property {any[]} [data] - Flat array of row data
+ * @property {TreeTableColumn[]} [columns] - Column definitions
+ * @property {FieldMapping} [fields] - Field mapping configuration
+ * @property {any} [value] - Currently selected row (bindable)
+ * @property {any[]} [selected] - Selected rows for multi-select (bindable)
+ * @property {boolean} [multiSelect] - Enable multi-row selection
+ * @property {boolean} [striped] - Enable striped rows
+ * @property {boolean} [expanded] - Initial expansion state (default: true)
+ * @property {(row: any) => void} [onselect] - Row selection callback
+ * @property {(row: any) => void} [onchange] - Value change callback
+ * @property {(row: any) => void} [onexpand] - Row expand callback
+ * @property {(row: any) => void} [oncollapse] - Row collapse callback
+ */
+
 // ============================================
 // Existing types (preserved from original)
 // ============================================

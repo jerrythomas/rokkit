@@ -1,6 +1,7 @@
 import { deriveSchemaFromValue } from './schema.js'
 import { deriveLayoutFromValue } from './layout.js'
 import { getSchemaWithLayout } from './fields.js'
+import { createLookupManager } from './lookup.svelte.js'
 import { omit } from 'ramda'
 
 /**
@@ -36,6 +37,12 @@ export class FormBuilder {
 
 	/** @type {Object} */
 	#validation = $state({})
+
+	/** @type {Object<string, import('./lookup.svelte.js').LookupConfig>} */
+	#lookupConfigs = $state({})
+
+	/** @type {ReturnType<typeof createLookupManager>|null} */
+	#lookupManager = $state(null)
 
 	/** @type {FormElement[]} */
 	elements = $derived(this.#buildElements())
@@ -109,19 +116,78 @@ export class FormBuilder {
 	 * @param {Object} [data={}] - Initial data object
 	 * @param {Object|null} [schema=null] - Optional schema override
 	 * @param {Object|null} [layout=null] - Optional layout override
+	 * @param {Object<string, import('./lookup.svelte.js').LookupConfig>} [lookups={}] - Lookup configurations
 	 */
-	constructor(data = {}, schema = null, layout = null) {
+	constructor(data = {}, schema = null, layout = null, lookups = {}) {
 		this.#data = data
 		this.schema = schema
 		this.layout = layout
+		this.#lookupConfigs = lookups
+		if (Object.keys(lookups).length > 0) {
+			this.#lookupManager = createLookupManager(lookups)
+		}
+	}
+
+	/**
+	 * Get the lookup manager
+	 * @returns {ReturnType<typeof createLookupManager>|null}
+	 */
+	get lookupManager() {
+		return this.#lookupManager
+	}
+
+	/**
+	 * Configure lookups for the form
+	 * @param {Object<string, import('./lookup.svelte.js').LookupConfig>} lookups - Lookup configurations
+	 */
+	setLookups(lookups) {
+		this.#lookupConfigs = lookups
+		this.#lookupManager = createLookupManager(lookups)
+	}
+
+	/**
+	 * Get lookup state for a field
+	 * @param {string} fieldPath - Field path
+	 * @returns {{ options: any[], loading: boolean, error: string|null, fields: Object }|null}
+	 */
+	getLookupState(fieldPath) {
+		if (!this.#lookupManager) return null
+		const lookup = this.#lookupManager.getLookup(fieldPath)
+		if (!lookup) return null
+		return {
+			options: lookup.options,
+			loading: lookup.loading,
+			error: lookup.error,
+			fields: lookup.fields
+		}
+	}
+
+	/**
+	 * Check if a field has a lookup configured
+	 * @param {string} fieldPath - Field path
+	 * @returns {boolean}
+	 */
+	hasLookup(fieldPath) {
+		return this.#lookupManager?.hasLookup(fieldPath) ?? false
+	}
+
+	/**
+	 * Initialize all lookups
+	 * @returns {Promise<void>}
+	 */
+	async initializeLookups() {
+		if (this.#lookupManager) {
+			await this.#lookupManager.initialize(this.#data)
+		}
 	}
 
 	/**
 	 * Update a specific field value
 	 * @param {string} path - Field path (e.g., 'count', 'settings/distance')
 	 * @param {any} value - New value
+	 * @param {boolean} [triggerLookups=true] - Whether to trigger dependent lookups
 	 */
-	updateField(path, value) {
+	updateField(path, value, triggerLookups = true) {
 		// Simple path handling for now - can be enhanced for nested objects
 		const keys = path.split('/')
 		if (keys.length === 1) {
@@ -136,6 +202,11 @@ export class FormBuilder {
 			}
 			current[keys[keys.length - 1]] = value
 			this.#data = updatedData
+		}
+
+		// Trigger dependent lookups if configured
+		if (triggerLookups && this.#lookupManager) {
+			this.#lookupManager.handleFieldChange(path, this.#data)
 		}
 	}
 

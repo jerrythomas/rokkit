@@ -5,22 +5,28 @@
 
 	/**
 	 * @typedef {Object} InputSelectProps
-	 * @property {any}           value
-	 * @property {Object}        fields
-	 * @property {Array<Object>} options
-	 * @property {Function}      onchange
-	 * @property {Function}      onfocus
-	 * @property {Function}      onblur
+	 * @property {any} value - Selected value (bindable)
+	 * @property {Object} [fields] - Field mapping for options
+	 * @property {Array<Object>} [options] - Static options array
+	 * @property {boolean} [loading] - Whether options are loading
+	 * @property {string|null} [error] - Error message if loading failed
+	 * @property {string} [placeholder] - Placeholder text
+	 * @property {Function} [onchange] - Change callback
+	 * @property {Function} [onfocus] - Focus callback
+	 * @property {Function} [onblur] - Blur callback
 	 */
 
 	/** @type {InputSelectProps & { [key: string]: any }} */
 	let {
 		class: classes = '',
 		value = $bindable(),
-		fields,
+		fields = {},
 		options = [],
+		loading = false,
+		error = null,
 		icons = defaultStateIcons['selector'],
 		placeholder = null,
+		disabled = false,
 		onchange,
 		onfocus,
 		onblur,
@@ -29,12 +35,19 @@
 
 	let focused = $state(false)
 	let icon = $derived(focused ? icons['opened'] : icons['closed'])
-	let indexValue = $state(options.findIndex((item) => equals(item, value)))
+	let indexValue = $state(-1)
 	let proxiedOptions = $derived(options.map((option) => new Proxy(option, fields)))
 
+	// Sync indexValue when value or options change
+	$effect(() => {
+		indexValue = options.findIndex((item) => equals(item, value))
+	})
+
 	function handleChange(event) {
-		value = options[indexValue]
-		onchange?.(options[indexValue])
+		if (indexValue >= 0 && indexValue < options.length) {
+			value = options[indexValue]
+			onchange?.(options[indexValue])
+		}
 	}
 
 	function handleFocus(event) {
@@ -46,18 +59,31 @@
 		focused = false
 		onblur?.(event)
 	}
+
+	let isDisabled = $derived(disabled || loading)
+	let placeholderText = $derived.by(() => {
+		if (loading) return 'Loading...'
+		if (error) return 'Error loading options'
+		return placeholder
+	})
 </script>
 
-<div data-input-select class={classes}>
+<div
+	data-input-select
+	class={classes}
+	data-loading={loading || undefined}
+	data-error={error || undefined}
+>
 	<select
 		bind:value={indexValue}
+		disabled={isDisabled}
 		{...rest}
 		onchange={handleChange}
 		onfocus={handleFocus}
 		onblur={handleBlur}
 	>
-		{#if placeholder}
-			<option value="" disabled selected>{placeholder}</option>
+		{#if placeholderText}
+			<option value={-1} disabled selected={indexValue === -1}>{placeholderText}</option>
 		{/if}
 		{#each proxiedOptions as option, index (index)}
 			<option value={index} aria-current={equals(option.value, value)}>
@@ -65,7 +91,11 @@
 			</option>
 		{/each}
 	</select>
-	<span>
-		<i class={icon}></i>
+	<span data-input-select-icon>
+		{#if loading}
+			<i class="loading-spinner"></i>
+		{:else}
+			<i class={icon}></i>
+		{/if}
 	</span>
 </div>

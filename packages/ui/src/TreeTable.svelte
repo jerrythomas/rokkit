@@ -1,171 +1,202 @@
 <script>
-	import { pick, omit } from 'ramda'
-	import { defaultMapping } from './constants'
-	import Connector from './Connector.svelte'
+	import { FieldMapper, createEmitter } from '@rokkit/core'
 	import Icon from './Icon.svelte'
 	import Item from './Item.svelte'
+	import Connector from './Connector.svelte'
 
-	// const dispatch = createEventDispatcher()
-
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} [class]
-	 * @property {any} [data]
-	 * @property {any} [columns]
-	 * @property {boolean} [striped]
-	 * @property {any} [value]
-	 * @property {boolean} [multiselect]
-	 * @property {any} [using]
-	 * @property {any} [dataFilter]
-	 */
-
-	/** @type {Props} */
+	/** @type {import('./types.js').TreeTableProps} */
 	let {
 		class: className = '',
 		data = [],
-		columns = $bindable([]),
-		striped = true,
+		columns = [],
+		fields = {},
 		value = $bindable(null),
-		multiselect = false,
-		using = $bindable({}),
-		dataFilter = () => true
+		selected = $bindable([]),
+		multiSelect = false,
+		striped = true,
+		expanded = $bindable(true),
+		onselect,
+		onchange,
+		onexpand,
+		oncollapse
 	} = $props()
 
-	let hiddenPaths = []
-	let currentItem = $state(null)
+	let fm = $derived(new FieldMapper(fields))
+	let emitter = createEmitter({ onselect, onchange, onexpand, oncollapse }, [
+		'select',
+		'change',
+		'expand',
+		'collapse'
+	])
 
-	function handleItemClick(event, item) {
-		if (item._isParent) toggle(item)
-		else {
-			currentItem = item
-			value = getValue(item)
-			dispatch('click', value)
+	// Find the hierarchy column (column with path: true or hierarchy: true)
+	let hierarchyColumn = $derived(columns.find((col) => col.hierarchy || col.path))
+	let hierarchyKey = $derived(hierarchyColumn?.field || hierarchyColumn?.key || null)
+	let separator = $derived(hierarchyColumn?.separator || '/')
 
-			if (event.metaKey) toggleSelection(event, item)
+	// Build hierarchy from flat data
+	let processedData = $derived.by(() => {
+		if (!hierarchyKey || !data.length) {
+			return data.map((row, index) => ({
+				row,
+				depth: 0,
+				isParent: false,
+				isExpanded: false,
+				isHidden: false,
+				path: String(index),
+				value: row[hierarchyKey] || ''
+			}))
 		}
-	}
-	function getValue(item) {
-		return omit(['_levels', '_isParent', '_isExpanded', '_depth', '_path', '_selected'], item)
-	}
 
-	function toggleSelection(e, item) {
-		e.stopPropagation()
-		e.preventDefault()
-		if (item._selected !== 'checked') item._selected = 'checked'
-		else item._selected = 'unchecked'
+		// Sort data by path to ensure parents come before children
+		const sorted = [...data].sort((a, b) => {
+			const pathA = a[hierarchyKey] || ''
+			const pathB = b[hierarchyKey] || ''
+			return pathA.localeCompare(pathB)
+		})
 
-		if (item._isParent) {
-			data
-				.filter((i) => i[nestedColumn.key].startsWith(item[nestedColumn.key] + '/'))
-				.forEach((i) => (i._selected = item._selected))
-		} else {
-			const parents = data.filter(
-				(i) => item[nestedColumn.key].startsWith(i[nestedColumn.key] + '/') && i._isParent
-			)
-			parents.map((p) => {
-				const children = data.filter((i) =>
-					i[nestedColumn.key].startsWith(p[nestedColumn.key] + '/')
-				)
-				const selectedChildren = children.filter((i) => i._selected === 'checked')
+		// Build hierarchy nodes
+		const nodes = sorted.map((row) => {
+			const pathValue = row[hierarchyKey] || ''
+			const parts = pathValue.split(separator).filter((p) => p.length > 0)
+			const depth = parts.length - 1
+			const value = parts.length > 0 ? parts[parts.length - 1] : ''
 
-				if (selectedChildren.length === children.length) p._selected = 'checked'
-				else if (selectedChildren.length === 0) p._selected = 'unchecked'
-				else p._selected = 'unknown'
-			})
-		}
-		visible = [...data.filter(dataFilter).filter(isVisible)]
-		dispatch('select', data.filter((i) => i._selected === 'checked').map(getValue))
-	}
-
-	function toggle(item) {
-		if (nestedColumn === undefined) return
-
-		const parentPath = item[nestedColumn.key] + '/'
-		if (item._isParent) {
-			item._isExpanded = !item._isExpanded
-			if (item._isExpanded) {
-				hiddenPaths = [...hiddenPaths.filter((i) => i !== parentPath)]
-			} else {
-				hiddenPaths = [...hiddenPaths, parentPath]
+			return {
+				row,
+				depth: Math.max(0, depth),
+				path: pathValue,
+				value,
+				isParent: false,
+				isExpanded: expanded,
+				isHidden: false,
+				children: [],
+				parent: null
 			}
-			visible = [...data.filter(dataFilter).filter(isVisible)]
+		})
+
+		// Determine parent/child relationships
+		nodes.forEach((node) => {
+			const parentPath = node.path.split(separator).slice(0, -1).join(separator)
+			if (parentPath) {
+				const parent = nodes.find((n) => n.path === parentPath)
+				if (parent) {
+					parent.isParent = true
+					parent.children.push(node)
+					node.parent = parent
+				}
+			}
+		})
+
+		// Set initial visibility based on expansion state
+		const updateVisibility = (node) => {
+			if (node.parent) {
+				node.isHidden = node.parent.isHidden || !node.parent.isExpanded
+			}
+			node.children.forEach(updateVisibility)
 		}
-	}
+		nodes.filter((n) => !n.parent).forEach(updateVisibility)
 
-	function isVisible(item) {
-		if (hiddenPaths.length === 0) return true
-		return !hiddenPaths.some((i) => item[nestedColumn.key].startsWith(i))
-	}
-
-	function addMultiSelectColumn(multiselect, data) {
-		if (multiselect) {
-			if (columns.some((col) => col.key === '_selected')) return
-			columns = [{ key: '_selected', label: '', width: '3rem' }, ...columns]
-			data.forEach((item) => {
-				item._selected = 'unchecked'
-			})
-		} else {
-			columns = [...columns.filter((col) => col.key !== '_selected')]
-		}
-	}
-
-	let visible = $derived(() => data.filter(dataFilter).filter(isVisible))
-	let nestedColumn = $derived(columns.find((col) => col.path))
-	$effect(() => {
-		addMultiSelectColumn(multiselect, data)
+		return nodes
 	})
+
+	// Visible rows (not hidden)
+	let visibleData = $derived(processedData.filter((node) => !node.isHidden))
+
+	function toggleExpansion(node) {
+		if (!node.isParent) return
+
+		node.isExpanded = !node.isExpanded
+
+		// Update children visibility
+		const updateChildVisibility = (n) => {
+			n.children.forEach((child) => {
+				child.isHidden = n.isHidden || !n.isExpanded
+				updateChildVisibility(child)
+			})
+		}
+		updateChildVisibility(node)
+
+		if (node.isExpanded) {
+			emitter.expand(node.row)
+		} else {
+			emitter.collapse(node.row)
+		}
+	}
+
+	function handleRowClick(node) {
+		if (node.isParent) {
+			toggleExpansion(node)
+		} else {
+			value = node.row
+			emitter.select(node.row)
+			emitter.change(node.row)
+		}
+	}
+
+	function getColumnValue(row, col) {
+		const key = col.field || col.key
+		return row[key]
+	}
 </script>
 
-<rk-tree-table class={className}>
+<div data-tree-table class={className}>
 	<table class:striped>
 		<thead>
 			<tr>
-				{#each columns as col (col.key)}
-					<th>{col.label ?? col.key}</th>
+				{#each columns as col (col.field || col.key)}
+					<th data-column={col.field || col.key} style:width={col.width}>
+						{col.label ?? col.field ?? col.key}
+					</th>
 				{/each}
 			</tr>
 		</thead>
 		<tbody>
-			{#each visible as item, index (index)}
+			{#each visibleData as node, rowIndex (node.path || rowIndex)}
+				{@const isSelected = value === node.row || selected.includes(node.row)}
 				<tr
-					class:cursor-pointer={!item._isParent}
-					aria-current={currentItem === item}
-					onclick={stopPropagation((e) => handleItemClick(e, item))}
+					data-row
+					data-depth={node.depth}
+					aria-selected={isSelected}
+					aria-expanded={node.isParent ? node.isExpanded : undefined}
+					onclick={() => handleRowClick(node)}
 				>
-					{#each columns as col, index (index)}
-						{@const value = { ...pick(['icon'], col), ...item }}
-						{@const SvelteComponent = mapping.get('component', item)}
-						<td>
-							<cell>
-								{#if multiselect && index === 0}
-									<!-- {#if !item._isParent} -->
-									<Icon
-										name={'checkbox-' + item._selected}
-										class="small cursor-pointer"
-										on:click={(e) => toggleSelection(e, item)}
-									/>
-									<!-- {/if} -->
-								{:else}
-									{#if col.path}
-										{#each item._levels.slice(0, -1) as _, index (index)}
-											<Connector type="empty" />
-										{/each}
-										{#if item._isParent}
-											<Icon
-												name={item._isExpanded ? 'node-opened' : 'node-closed'}
-												class="small cursor-pointer"
-											/>
-										{:else if item._depth > 0}
-											<Connector type="empty" />
-										{/if}
+					{#each columns as col, colIndex (col.field || col.key)}
+						{@const cellValue = getColumnValue(node.row, col)}
+						{@const isHierarchyCol = col === hierarchyColumn}
+						<td data-column={col.field || col.key}>
+							<div data-cell>
+								{#if isHierarchyCol}
+									<!-- Indentation for hierarchy -->
+									{#each Array(node.depth) as _, i (i)}
+										<span data-indent></span>
+									{/each}
+
+									<!-- Expand/collapse icon for parents -->
+									{#if node.isParent}
+										<Icon
+											name={node.isExpanded ? 'node-opened' : 'node-closed'}
+											label={node.isExpanded ? 'Collapse' : 'Expand'}
+										/>
+									{:else if node.depth > 0}
+										<span data-indent></span>
 									{/if}
-									<SvelteComponent {value} {mapping} />
+
+									<!-- Cell value -->
+									<span data-cell-value>{node.value || cellValue}</span>
+								{:else}
+									<!-- Regular cell -->
+									{#if col.format}
+										<span data-cell-value>{col.format(cellValue, node.row)}</span>
+									{:else}
+										<span data-cell-value>{cellValue ?? ''}</span>
+									{/if}
 								{/if}
-							</cell>
+							</div>
 						</td>
 					{/each}
 				</tr>
 			{/each}
 		</tbody>
 	</table>
-</rk-tree-table>
+</div>

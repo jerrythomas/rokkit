@@ -31,10 +31,13 @@ exports[`InputSelect > should render as required 1`] = `
       <!---->
     </select>
      
-    <span>
+    <span
+      data-input-select-icon=""
+    >
       <i
         class="selector-closed"
       />
+      <!---->
     </span>
   </div>
   
@@ -71,10 +74,13 @@ exports[`InputSelect > should render as required 2`] = `
       <!---->
     </select>
      
-    <span>
+    <span
+      data-input-select-icon=""
+    >
       <i
         class="selector-closed"
       />
+      <!---->
     </span>
   </div>
   
@@ -109,10 +115,13 @@ exports[`InputSelect > should render with objects  1`] = `
       <!---->
     </select>
      
-    <span>
+    <span
+      data-input-select-icon=""
+    >
       <i
         class="selector-closed"
       />
+      <!---->
     </span>
   </div>
   
@@ -147,10 +156,13 @@ exports[`InputSelect > should render with string options 1`] = `
       <!---->
     </select>
      
-    <span>
+    <span
+      data-input-select-icon=""
+    >
       <i
         class="selector-closed"
       />
+      <!---->
     </span>
   </div>
   
@@ -191,10 +203,13 @@ exports[`InputSelect > should render with string options 2`] = `
       <!---->
     </select>
      
-    <span>
+    <span
+      data-input-select-icon=""
+    >
       <i
         class="selector-opened"
       />
+      <!---->
     </span>
   </div>
   
@@ -229,10 +244,13 @@ exports[`InputSelect > should render with text, value objects  1`] = `
       <!---->
     </select>
      
-    <span>
+    <span
+      data-input-select-icon=""
+    >
       <i
         class="selector-closed"
       />
+      <!---->
     </span>
   </div>
   

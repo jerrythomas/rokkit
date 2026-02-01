@@ -45,6 +45,8 @@ export { default as ProgressDots } from './ProgressDots.svelte'
 
 export { default as Card } from './Card.svelte'
 export { default as Panel } from './Panel.svelte'
+export { default as FloatingActions } from './FloatingActions.svelte'
+export { default as FloatingAction } from './FloatingAction.svelte'
 export { default as Shine } from './Shine.svelte'
 export { default as Tilt } from './Tilt.svelte'
 export { default as GraphPaper } from './GraphPaper.svelte'
