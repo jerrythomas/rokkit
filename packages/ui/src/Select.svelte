@@ -1,113 +1,135 @@
 <script>
-	import { defaultFields, defaultStateIcons } from '@rokkit/core'
+	import { defaultStateIcons, createEmitter } from '@rokkit/core'
 	import Slider from './Slider.svelte'
 	import Icon from './Icon.svelte'
 	import { dismissable, navigable } from '@rokkit/actions'
-
 	import List from './List.svelte'
-	// import ListItems from './ListItems.svelte'
 	import Item from './Item.svelte'
 
+	/** @type {import('./types.js').SelectProps} */
 	let {
 		class: className = '',
-		name = null,
+		name = 'select',
 		options = $bindable([]),
-		fields,
-		using = {},
+		fields = {},
 		value = $bindable(null),
 		placeholder = '',
-		currentItem
+		tabindex = 0,
+		disabled = false,
+		open = $bindable(false),
+		direction = 'down',
+		currentItem,
+		onselect,
+		onchange
 	} = $props()
 
-	let activeIndex = $state(-1)
-	let open = $state(false)
-	// let offsetTop
 	let icons = defaultStateIcons.selector
 	let activeItem = $state(null)
+	let emitter = createEmitter({ onchange, onselect }, ['select', 'change'])
 
-	function handleSelect() {
+	function handleSelect(selectedValue) {
+		value = selectedValue
 		open = false
-		dispatch('select', value)
-		dispatch('change', value)
+		emitter.select(value)
+		emitter.change(value)
 	}
+
+	function handleListSelect(event) {
+		handleSelect(event.detail?.value ?? event.detail)
+	}
+
 	function handleNext() {
 		if (!open) {
 			open = true
-		} else if (activeIndex < options.length - 1) {
-			value = options[activeIndex + 1]
+		} else {
+			const currentIndex = options.findIndex((opt) => opt === value)
+			if (currentIndex < options.length - 1) {
+				value = options[currentIndex + 1]
+			}
 		}
 	}
+
 	function handlePrevious() {
 		if (!open) {
 			open = true
-		} else if (activeIndex > 0) {
-			value = options[activeIndex - 1]
-		}
-	}
-	function handleKeySelect() {
-		if (open) {
-			if (value) {
-				handleSelect()
+		} else {
+			const currentIndex = options.findIndex((opt) => opt === value)
+			if (currentIndex > 0) {
+				value = options[currentIndex - 1]
 			}
 		}
+	}
+
+	function handleKeySelect() {
+		if (open && value) {
+			handleSelect(value)
+		}
+	}
+
+	function handleToggle() {
+		if (!disabled) {
+			open = !open
+		}
+	}
+
+	function handleDismiss() {
+		open = false
 	}
 
 	let offsetTop = $derived(activeItem?.offsetTop + activeItem?.clientHeight ?? 0)
 </script>
 
 <input-select
-	class="relative flex flex-col {className}"
+	data-select
+	class={className}
 	class:open
-	tabindex="0"
-	role="listbox"
+	{tabindex}
+	role="combobox"
 	aria-label={name}
+	aria-expanded={open}
+	aria-disabled={disabled}
+	aria-controls={open ? `${name}-listbox` : undefined}
 	use:dismissable
 	use:navigable={{ horizontal: false, vertical: true }}
-	onfocus={() => (open = true)}
+	onfocus={() => !disabled && (open = true)}
 	onblur={() => (open = false)}
-	ondismiss={() => (open = false)}
+	ondismiss={handleDismiss}
 	onprevious={handlePrevious}
 	onnext={handleNext}
 	onselect={handleKeySelect}
 >
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<selected-item
-		onclick={() => (open = !open)}
-		class="flex w-full items-center"
+		data-select-trigger
+		onclick={handleToggle}
 		bind:this={activeItem}
-		role="option"
+		role="button"
 		tabindex="-1"
-		aria-selected={value !== null && !open}
 	>
-		<item>
+		<item data-select-value>
 			{#if currentItem}
 				{@render currentItem(value, fields)}
+			{:else if value}
+				<Item {value} {fields} />
+			{:else}
+				<span data-select-placeholder>{placeholder}</span>
 			{/if}
-			<Item value={value ?? placeholder} {fields} />
 		</item>
-		{#if open}
-			<Icon name={icons.opened} label="opened" tabindex="-1" />
-		{:else}
-			<Icon name={icons.closed} label="closed" tabindex="-1" />
-		{/if}
+		<Icon
+			name={open ? icons.opened : icons.closed}
+			label={open ? 'opened' : 'closed'}
+			tabindex="-1"
+		/>
 	</selected-item>
 	{#if open}
 		<Slider top={offsetTop}>
-			<!-- <list class="flex flex-col w-full flex-shrink-0 select-none" role="listbox" tabindex="-1">
-			<ListItems
-				items={options}
-				bind:value
-				{fields}
-				{using}
-			/>
-		</list> -->
 			<List
-				bind:items={options}
+				items={options}
 				{fields}
-				{using}
 				bind:value
-				on:select={handleSelect}
+				onselect={handleListSelect}
 				tabindex="-1"
+				name={`${name}-listbox`}
 			/>
 		</Slider>
 	{/if}

@@ -3,26 +3,30 @@
 exports[`Select.svelte > should render string array 1`] = `
 <div>
   <input-select
+    aria-controls="test-listbox"
+    aria-disabled="false"
+    aria-expanded="true"
     aria-label="test"
-    class="relative flex flex-col open"
-    role="listbox"
+    class="open"
+    data-select="true"
+    role="combobox"
     tabindex="0"
   >
     <selected-item
-      aria-selected="false"
-      class="flex w-full items-center"
-      role="option"
+      data-select-trigger="true"
+      role="button"
       tabindex="-1"
     >
-      <item>
+      <item
+        data-select-value=""
+      >
         <!---->
-         
-        <!---->
-        <!---->
+        <span
+          data-select-placeholder=""
+        >
+          
+        </span>
         
-        <!---->
-         
-        <!---->
         <!---->
       </item>
        
@@ -49,7 +53,7 @@ exports[`Select.svelte > should render string array 1`] = `
       style="top: 0px;"
     >
       <div
-        aria-label="list"
+        aria-label="test-listbox"
         data-list=""
         role="listbox"
         tabindex="-1"

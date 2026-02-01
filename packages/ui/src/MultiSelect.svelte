@@ -1,48 +1,75 @@
 <script>
+	import { defaultFields, createEmitter } from '@rokkit/core'
 	import Select from './Select.svelte'
 	import Item from './Item.svelte'
-	import { defaultFields } from '@rokkit/core'
 
-	let className = ''
-	export { className as class }
-	export let name
-	export let value = []
-	export let options = []
-	/** @type {import('@rokkit/core').FieldMapping} */
-	export let fields = {}
-	export let using = {}
-	export let placeholder = ''
+	/** @type {import('./types.js').MultiSelectProps} */
+	let {
+		class: className = '',
+		name = 'multiselect',
+		value = $bindable([]),
+		options = $bindable([]),
+		fields = {},
+		placeholder = '',
+		tabindex = 0,
+		disabled = false,
+		onselect,
+		onchange,
+		onremove
+	} = $props()
 
-	$: available = options.filter((item) => !value.includes(item))
+	let mergedFields = $derived({ ...defaultFields, ...fields })
+	let available = $derived(options.filter((item) => !value.includes(item)))
+	let emitter = createEmitter({ onchange, onselect, onremove }, ['select', 'change', 'remove'])
 
-	function handleRemove(event) {
-		value = [...value.filter((item) => item !== event.detail)]
+	function handleRemove(item) {
+		value = value.filter((v) => v !== item)
+		emitter.remove(item)
+		emitter.change(value)
 	}
-	function handleSelect(event) {
-		if (!value.includes(event.detail)) value = [...value, event.detail]
+
+	function handleSelect(selectedItem) {
+		if (!value.includes(selectedItem)) {
+			value = [...value, selectedItem]
+			emitter.select(selectedItem)
+			emitter.change(value)
+		}
 	}
-	$: using = { default: Item, ...using }
-	$: fields = { ...defaultFields, ...fields }
 </script>
 
-<Select
-	{name}
-	options={available}
-	{fields}
-	{using}
-	on:select={handleSelect}
-	class={className}
-	{placeholder}
->
-	{#if value.length > 0}
-		<items class="flex flex-wrap">
-			{#each value as item, index (index)}
-				<Item value={item} {fields} {using} removable on:remove={handleRemove} class="pill" />
-			{/each}
-		</items>
-	{:else}
-		<item class="flex w-full">
-			<svelte:component this={using.default} value={placeholder} />
-		</item>
-	{/if}
-</Select>
+<multi-select data-multiselect class={className} aria-label={name}>
+	<Select
+		{name}
+		options={available}
+		fields={mergedFields}
+		onselect={handleSelect}
+		class=""
+		{placeholder}
+		{tabindex}
+		{disabled}
+	>
+		{#snippet currentItem()}
+			{#if value.length > 0}
+				<items data-multiselect-items>
+					{#each value as item, index (index)}
+						<wrap-item data-multiselect-pill class="pill">
+							<Item value={item} fields={mergedFields} />
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<icon
+								role="button"
+								tabindex="-1"
+								data-multiselect-remove
+								onclick={() => handleRemove(item)}
+								aria-label="Remove"
+							>
+								×
+							</icon>
+						</wrap-item>
+					{/each}
+				</items>
+			{:else}
+				<item>{placeholder}</item>
+			{/if}
+		{/snippet}
+	</Select>
+</multi-select>

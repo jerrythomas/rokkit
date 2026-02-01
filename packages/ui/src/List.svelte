@@ -3,27 +3,15 @@
 	import { navigator } from '@rokkit/actions'
 	import ListBody from './ListBody.svelte'
 	import { ListController } from '@rokkit/states'
-	import { omit, has } from 'ramda'
+	import { has } from 'ramda'
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} [class]
-	 * @property {string} [name]
-	 * @property {any} [items]
-	 * @property {import('@rokkit/core').FieldMapping} [fields]
-	 * @property {any} [value]
-	 * @property {number} [tabindex]
-	 * @property {any} [hierarchy]
-	 * @property {import('svelte').Snippet} [children]
-	 */
-
-	/** @type {Props} */
+	/** @type {import('./types.js').ListProps} */
 	let {
 		class: classes = '',
 		name = 'list',
 		items = $bindable([]),
 		value = $bindable(null),
-		fields,
+		fields = {},
 		tabindex = 0,
 		hierarchy = [],
 		multiSelect = false,

@@ -2,26 +2,54 @@
 
 exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 <input-select
+  aria-disabled="false"
+  aria-expanded="false"
   aria-label="test"
-  class="relative flex flex-col "
-  role="listbox"
+  data-select="true"
+  role="combobox"
   tabindex="0"
 >
   <selected-item
-    aria-selected="false"
-    class="flex w-full items-center"
-    role="option"
+    data-select-trigger="true"
+    role="button"
     tabindex="-1"
   >
-    <item>
+    <item
+      data-select-value=""
+    >
       <!---->
-       
       <!---->
-      <!---->
+      <items
+        data-multiselect-items=""
+      >
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            One
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        
+      </items>
       
-      <!---->
-       
-      <!---->
+      
       <!---->
     </item>
      
@@ -49,26 +77,56 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
 
 exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
 <input-select
+  aria-controls="test-listbox"
+  aria-disabled="false"
+  aria-expanded="true"
   aria-label="test"
-  class="relative flex flex-col open"
-  role="listbox"
+  class="open"
+  data-select="true"
+  role="combobox"
   tabindex="0"
 >
   <selected-item
-    aria-selected="false"
-    class="flex w-full items-center"
-    role="option"
+    data-select-trigger="true"
+    role="button"
     tabindex="-1"
   >
-    <item>
+    <item
+      data-select-value=""
+    >
       <!---->
-       
       <!---->
-      <!---->
+      <items
+        data-multiselect-items=""
+      >
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            One
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        
+      </items>
       
-      <!---->
-       
-      <!---->
+      
       <!---->
     </item>
      
@@ -95,7 +153,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     style="top: 0px;"
   >
     <div
-      aria-label="list"
+      aria-label="test-listbox"
       data-list=""
       role="listbox"
       tabindex="-1"
@@ -160,26 +218,80 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
 
 exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
 <input-select
+  aria-controls="test-listbox"
+  aria-disabled="false"
+  aria-expanded="true"
   aria-label="test"
-  class="relative flex flex-col open"
-  role="listbox"
+  class="open"
+  data-select="true"
+  role="combobox"
   tabindex="0"
 >
   <selected-item
-    aria-selected="false"
-    class="flex w-full items-center"
-    role="option"
+    data-select-trigger="true"
+    role="button"
     tabindex="-1"
   >
-    <item>
+    <item
+      data-select-value=""
+    >
       <!---->
-       
       <!---->
-      <!---->
+      <items
+        data-multiselect-items=""
+      >
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            One
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Two
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        
+      </items>
       
-      <!---->
-       
-      <!---->
+      
       <!---->
     </item>
      
@@ -206,7 +318,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     style="top: 0px;"
   >
     <div
-      aria-label="list"
+      aria-label="test-listbox"
       data-list=""
       role="listbox"
       tabindex="-1"
