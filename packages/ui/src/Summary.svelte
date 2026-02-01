@@ -2,21 +2,33 @@
 	import Item from './Item.svelte'
 	/**
 	 * @typedef {Object} Props
-	 * @property {import('@rokkit/states').NodeProxy} value
-	 * @property {Boolean} [expanded]
+	 * @property {any} value
+	 * @property {Object} [fields]
+	 * @property {boolean} [expanded]
+	 * @property {boolean} [hasChildren]
+	 * @property {boolean} [disabled]
 	 */
 
 	/** @type {Props} */
-	let { value = $bindable(), fields, expanded = false, hasChildren = false } = $props()
+	let { value, fields = {}, expanded = false, hasChildren = false, disabled = false } = $props()
 </script>
 
-<rk-summary class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center" tabindex="-1">
-	<Item bind:value {fields} />
+<div
+	data-accordion-trigger
+	role="button"
+	tabindex="-1"
+	aria-expanded={hasChildren ? expanded : undefined}
+	aria-disabled={disabled}
+	data-disabled={disabled}
+>
+	<Item {value} {fields} />
 	{#if hasChildren}
-		{#if expanded}
-			<icon class="accordion-opened sm" aria-label="collapse"></icon>
-		{:else}
-			<icon class="accordion-closed sm" aria-label="expand"></icon>
-		{/if}
+		<span data-accordion-icon>
+			{#if expanded}
+				<icon class="accordion-opened sm" aria-hidden="true"></icon>
+			{:else}
+				<icon class="accordion-closed sm" aria-hidden="true"></icon>
+			{/if}
+		</span>
 	{/if}
-</rk-summary>
+</div>

@@ -40,11 +40,11 @@ describe('RangeTick.svelte', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should emit click event', () => {
+	it('should emit click event', async () => {
 		const props = $state({ value: 10, onclick: vi.fn() })
 		const { container } = render(RangeTick, { props })
 
-		fireEvent.click(container.querySelector('rk-tick'))
+		await fireEvent.click(container.querySelector('[data-range-tick]'))
 		expect(props.onclick).toHaveBeenCalled()
 	})
 })

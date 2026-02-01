@@ -1,25 +1,17 @@
 <script>
-	import { equals } from 'ramda'
-	import {
-		createEmitter,
-		noop,
-		getKeyFromPath,
-		getSnippet,
-		defaultFields,
-		hasChildren
-	} from '@rokkit/core'
+	import { has } from 'ramda'
+	import { createEmitter, defaultFields, hasChildren } from '@rokkit/core'
 	import { NestedController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Summary from './Summary.svelte'
-	import Item from './Item.svelte'
 	import ListBody from './ListBody.svelte'
 
-	const eventNames = ['collapse', 'change', 'expand', 'click', 'select', 'move']
+	const eventNames = ['collapse', 'change', 'expand', 'click', 'select', 'move', 'toggle']
 	/**
 	 * @typedef {Object} Props
 	 * @property {string} [class]
 	 * @property {any} [items]
-	 * @property {import('@rokkit/core').FieldMapper} [mapping]
+	 * @property {import('@rokkit/core').FieldMapper} [fields]
 	 * @property {boolean} [autoCloseSiblings]
 	 * @property {boolean} [multiselect]
 	 * @property {any} [value]
@@ -30,89 +22,99 @@
 		class: classes = '',
 		items = $bindable([]),
 		value = $bindable(null),
-		fields,
+		fields = {},
 		autoCloseSiblings = false,
 		multiselect = false,
-		header = null,
-		footer = null,
-		empty = null,
+		header,
+		footer,
+		empty,
 		oncollapse,
 		onexpand,
 		onchange,
 		onselect,
 		onmove,
+		ontoggle,
 		...snippets
 	} = $props()
 
-	let emitter = $derived(
-		createEmitter({ oncollapse, onexpand, onchange, onselect, onmove }, eventNames)
-	)
-	function handleAction(event) {
-		const { name, data } = event.detail
+	let selected = $state([])
 
-		if (has(name, emitter)) {
-			value = data.value
-			selected = data.selected
-			emitter[name](data)
-		}
-	}
+	let emitter = $derived(
+		createEmitter({ oncollapse, onexpand, onchange, onselect, onmove, ontoggle }, eventNames)
+	)
 
 	let wrapper = new NestedController(items, value, fields, {
 		multiselect,
 		autoCloseSiblings
 	})
+
 	let derivedFields = $derived({ ...defaultFields, ...fields })
+
+	function handleAction(event) {
+		const { name, data } = event.detail
+
+		if (name === 'select') value = data.value
+		if (name === 'toggle') {
+			// Toggle expansion is handled by the wrapper
+		}
+		if (has(name, emitter)) {
+			selected = data.selected
+			emitter[name](data)
+		}
+	}
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-accordion
+<div
+	data-accordion-root
 	class={classes}
 	tabindex="0"
 	use:navigator={{ wrapper, nested: true }}
-	onactivate={() => (value = wrapper.value)}
+	onaction={handleAction}
 >
 	{#if header}
-		<rk-header>{@render header()}</rk-header>
+		<div data-accordion-header>{@render header()}</div>
 	{/if}
 	{#if items.length === 0}
-		<rk-list-item role="presentation">
+		<div data-accordion-empty role="presentation">
 			{#if empty}
 				{@render empty()}
 			{:else}
 				No items found.
 			{/if}
-		</rk-list-item>
+		</div>
 	{/if}
 	{#each items as item, index (index)}
 		{@const key = `${index}`}
 		{@const expanded = item[derivedFields.expanded]}
+		{@const itemHasChildren = hasChildren(item, derivedFields)}
 		<div
-			class="flex flex-col"
+			data-accordion-item
 			class:is-expanded={expanded}
 			class:is-selected={wrapper.selectedKeys.has(key)}
 			data-path={index}
+			data-expanded={expanded}
+			data-disabled={item[derivedFields.disabled] ?? false}
+			aria-expanded={itemHasChildren ? expanded : undefined}
+			aria-disabled={item[derivedFields.disabled] ?? false}
 		>
-			<Summary
-				bind:value={items[index]}
-				{fields}
-				{expanded}
-				hasChildren={hasChildren(item, derivedFields)}
-			/>
-			{#if expanded}
-				<rk-list role="listbox" tabindex="-1">
+			<Summary value={item} {fields} {expanded} hasChildren={itemHasChildren} />
+			{#if expanded && itemHasChildren}
+				<div data-accordion-content role="region">
 					<ListBody
-						bind:items={items[fields.children]}
+						bind:items={item[derivedFields.children]}
 						bind:value
 						fields={fields.fields ?? fields}
-						{selected}
+						selectedKeys={wrapper.selectedKeys}
+						focusedKey={wrapper.focusedKey}
 						onchange={emitter.change}
 						{snippets}
 					/>
-				</rk-list>
+				</div>
 			{/if}
 		</div>
 	{/each}
 	{#if footer}
-		<rk-footer>{@render footer()}</rk-footer>
+		<div data-accordion-footer>{@render footer()}</div>
 	{/if}
-</rk-accordion>
+</div>

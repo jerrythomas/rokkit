@@ -14,6 +14,7 @@
 	 * @property {boolean}                          [focused=false]
 	 * @property {boolean}                          [selected=false]
 	 * @property {boolean}                          [expanded=false]
+	 * @property {boolean}                          [disabled=false]
 	 * @property {Function}                         [children]
 	 * @property {Function}                         [stub=null]
 	 * @property {Object<string, Function>}         [snippets={}]
@@ -29,6 +30,7 @@
 		focused = false,
 		selected = false,
 		expanded = false,
+		disabled = false,
 		children,
 		stub = null,
 		snippets = {}
@@ -43,15 +45,19 @@
 	const template = getSnippet(value[fields.snippet], snippets, stub)
 </script>
 
-<rk-node
+<div
+	data-node
 	aria-current={focused}
 	aria-selected={selected}
 	aria-expanded={expanded}
+	aria-disabled={disabled}
+	data-disabled={disabled}
 	role="treeitem"
 	data-path={getKeyFromPath(path)}
 	data-depth={path.length}
+	data-state={stateName}
 >
-	<div class="flex flex-row items-center">
+	<div data-node-content>
 		{#each types as type, index (index)}
 			{#if type === 'icon'}
 				<Icon name={state.icon} label={state.label} state={stateName} class="w-4" size="small" />
@@ -59,7 +65,7 @@
 				<Connector {type} />
 			{/if}
 		{/each}
-		<rk-item>
+		<div data-node-item>
 			<svelte:boundary>
 				{#if template}
 					{@render template(value)}
@@ -70,7 +76,7 @@
 					<Item {value} {fields} />
 				{/if}
 			</svelte:boundary>
-		</rk-item>
+		</div>
 	</div>
 	{@render children?.()}
-</rk-node>
+</div>

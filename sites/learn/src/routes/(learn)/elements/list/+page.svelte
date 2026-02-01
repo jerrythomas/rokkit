@@ -1,9 +1,11 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 </script>
 
 <article data-article-root>
+	<ApiDocsLink component="list" />
 	<h1>Introduction</h1>
 	<p>
 		Lists are useful for displaying information and selection. This is a flexible component with

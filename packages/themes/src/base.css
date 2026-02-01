@@ -1,13 +1,41 @@
+/* Base Theme - Structure & Layout */
+
+/* Core */
 @import './base/core.css';
 @import './base/scrollbar.css';
+
+/* Atoms */
 @import './base/atoms.css';
-@import './base/molecules.css';
-@import './base/organisms.css';
-@import './base/layout.css';
-@import './base/table.css';
+
+/* Components */
+@import './base/button.css';
+@import './base/checkbox.css';
+@import './base/list.css';
+@import './base/nested-list.css';
+@import './base/accordion.css';
+@import './base/tabs.css';
+@import './base/select.css';
+@import './base/switch.css';
+@import './base/pill.css';
+@import './base/breadcrumbs.css';
+@import './base/message.css';
 @import './base/tree.css';
+@import './base/table.css';
+@import './base/range.css';
 @import './base/carousel.css';
-@import './base/animation.css';
-@import './base/alert.css';
 @import './base/progress.css';
 @import './base/toggles.css';
+@import './base/alert.css';
+@import './base/input.css';
+
+/* Molecules (forms, calendar, etc.) */
+@import './base/molecules.css';
+
+/* Organisms (complex compositions) */
+@import './base/organisms.css';
+
+/* Layout */
+@import './base/layout.css';
+
+/* Animation */
+@import './base/animation.css';

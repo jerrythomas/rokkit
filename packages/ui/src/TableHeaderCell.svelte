@@ -10,6 +10,7 @@
 	 * @property {boolean} [sortable]
 	 * @property {boolean} [hidden]
 	 * @property {string} [order]
+	 * @property {boolean} [disabled]
 	 */
 
 	/** @type {Props} */
@@ -20,11 +21,12 @@
 		sortable = false,
 		hidden = false,
 		order = $bindable('none'),
+		disabled = false,
 		onsort = noop
 	} = $props()
 
 	const handleSort = (event) => {
-		if (!sortable) return
+		if (!sortable || disabled) return
 		event.stopPropagation()
 		order = order === 'none' ? 'ascending' : order === 'ascending' ? 'descending' : 'none'
 		const extend = event.getModifierState('Shift') || event.getModifierState('Control')
@@ -41,14 +43,16 @@
 		scope="col"
 		onclick={handleSort}
 		data-sortable={sortable}
+		data-disabled={disabled}
+		aria-disabled={disabled}
 		aria-label={description}
 		class={className}
 	>
-		<rk-cell>
+		<div data-table-header-cell>
 			{title}
 			{#if sortable}
 				<Icon name={icon} class="small" label="change the sort order" />
 			{/if}
-		</rk-cell>
+		</div>
 	</th>
 {/if}

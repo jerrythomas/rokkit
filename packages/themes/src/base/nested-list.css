@@ -1,0 +1,40 @@
+/* Nested List / Node - Base Structure */
+
+[data-nested-list-root] {
+  @apply flex w-full flex-col;
+}
+
+[data-node] {
+  @apply flex min-h-5 cursor-pointer select-none flex-col;
+}
+
+[data-node][data-disabled='true'],
+[data-node][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-node-content] {
+  @apply flex items-center;
+}
+
+[data-node-children] {
+  @apply flex flex-col;
+}
+
+[data-node-toggle] {
+  @apply flex cursor-pointer items-center justify-center;
+}
+
+/* Legacy custom element support */
+rk-nested-list {
+  @apply flex w-full flex-col;
+}
+
+rk-node {
+  @apply flex min-h-5 cursor-pointer select-none flex-col;
+}
+
+rk-node[aria-disabled='true'],
+rk-node[data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}

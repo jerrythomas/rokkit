@@ -1,9 +1,11 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 </script>
 
 <article data-article-root>
+	<ApiDocsLink component="stepper" />
 	<h1>Introduction</h1>
 	<p>
 		A stepper progress control is a user interface element that visually represents a user's

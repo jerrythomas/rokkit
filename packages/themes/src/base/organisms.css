@@ -1,51 +1,11 @@
-/* default structure */
-/*  List styles */
-rk-list {
-  @apply flex w-full flex-shrink-0 select-none flex-col;
-}
+/* Organisms - Base Structure */
+/* Complex component compositions that don't have their own files */
 
-/* Accordion */
-rk-accordion {
-  @apply flex w-full select-none flex-col;
-}
-/* Node Styles */
-rk-node {
-  @apply flex min-h-5 cursor-pointer select-none flex-col;
-}
-/* Nested List Styles */
-rk-nested-list {
-  @apply flex w-full flex-col;
-}
-rk-tree {
-  @apply flex h-full w-full flex-shrink-0 flex-col scroll-auto;
-}
-rk-status-report {
-  @apply flex flex-col;
-}
-rk-status-report > rk-message {
-  @apply flex gap-2;
-}
-rk-input-range {
-  @apply relative grid h-10 grid-rows-2;
-}
-rk-checkbox {
-  @apply flex cursor-pointer select-none items-center leading-loose;
-}
-rk-crumbs {
-  @apply flex gap-1;
-}
-rk-pill {
-  @apply py-2px flex items-center gap-2 px-2;
-}
-
-rk-input-select,
-rk-drop-down {
-  @apply cursor-pointer overflow-visible;
-}
-
+/* Input Field */
 rk-input-field rk-field {
   @apply gap-1px;
 }
+
 rk-input-field rk-field rk-icon {
   @apply bg-surface-z2 text-surface-800 h-9 w-9;
 }
@@ -54,13 +14,11 @@ rk-input-field > rk-field > rk-input-select {
   @apply px-0;
 }
 
-rk-input-select rk-selected-item > rk-icon,
-rk-drop-down > button > span > rk-icon {
-  @apply h-full w-9;
+/* Container focus */
+rk-container:focus-within {
+  @apply outline-none;
 }
-rk-input-select > rk-selected-item,
-rk-drop-down > button > span {
-  /* @apply bg-surface-z1 pl-3; */
-  @apply min-h-9 items-center gap-2 pl-3 normal-case;
-  @apply text-surface-800 rounded;
+
+[data-container]:focus-within {
+  @apply outline-none;
 }

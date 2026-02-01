@@ -4,8 +4,9 @@ import { flushSync, tick } from 'svelte'
 import Rating from '../src/Rating.svelte'
 
 describe('Rating component', () => {
-	const ROOT = 'rk-rating'
+	const ROOT = '[data-rating-root]'
 	const ICON = '[data-tag-icon]'
+	const ITEM = '[data-rating-item]'
 
 	function getSelectedStars(container) {
 		const stars = container.querySelectorAll(ICON)
@@ -125,13 +126,13 @@ describe('Rating component', () => {
 	it('should handle mouseenter and mouseleave events', async () => {
 		const props = $state({ value: 2, max: 5 })
 		const { container } = render(Rating, { props })
-		const stars = container.querySelectorAll(ICON)
+		const items = container.querySelectorAll(ITEM)
 
-		await fireEvent.mouseEnter(stars[props.value + 1])
+		await fireEvent.mouseEnter(container.querySelectorAll(ICON)[props.value + 1])
 		await tick()
 		for (let i = 0; i < props.max; i++) {
-			if (i <= props.value + 1) expect(Array.from(stars[i].classList)).toContain('hovering')
-			else expect(Array.from(stars[i].classList)).not.toContain('hovering')
+			if (i <= props.value + 1) expect(items[i].getAttribute('data-hovering')).toBe('true')
+			else expect(items[i].getAttribute('data-hovering')).toBe('false')
 		}
 		expect(container).toMatchSnapshot()
 	})
@@ -139,12 +140,12 @@ describe('Rating component', () => {
 	it('should not handle mouseenter and mouseleave events when disabled', async () => {
 		const props = $state({ value: 2, max: 5, disabled: true })
 		const { container } = render(Rating, { props })
-		const stars = container.querySelectorAll(ICON)
+		const items = container.querySelectorAll(ITEM)
 
-		await fireEvent.mouseEnter(stars[3])
+		await fireEvent.mouseEnter(container.querySelectorAll(ICON)[3])
 		await tick()
 		for (let i = 0; i < 5; i++) {
-			expect(Array.from(stars[i].classList)).not.toContain('hovering')
+			expect(items[i].getAttribute('data-hovering')).toBe('false')
 		}
 		expect(container).toMatchSnapshot()
 	})

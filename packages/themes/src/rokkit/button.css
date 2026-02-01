@@ -1,0 +1,100 @@
+/* Button - Rokkit Theme */
+
+[data-style='rokkit'] [data-button-root] {
+  @apply bg-surface-z2 text-on-surface-z2 min-h-9 gap-3 rounded-full px-6 uppercase;
+  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+}
+
+[data-style='rokkit'] [data-button-root][data-variant='primary'],
+[data-style='rokkit'] [data-button-root][data-primary] {
+  @apply from-primary to-secondary bg-gradient-to-r px-4 text-white;
+}
+
+[data-style='rokkit'] [data-button-root][data-variant='secondary'] {
+  @apply bg-surface-z3 text-on-surface-z3;
+}
+
+[data-style='rokkit'] [data-button-root]:hover {
+  @apply opacity-90;
+}
+
+[data-style='rokkit'] [data-button-root]:active {
+  @apply scale-95;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-button-root][data-disabled='true'],
+[data-style='rokkit'] [data-button-root]:disabled {
+  @apply bg-surface-z2 text-surface-500 cursor-not-allowed opacity-50;
+}
+
+/* Square button variant */
+[data-style='rokkit'] [data-button-root][data-variant='square'] {
+  @apply border-surface-z2 bg-surface-z2 rounded-md border leading-loose;
+}
+
+[data-style='rokkit'] [data-button-root][data-variant='square'] > [data-icon] {
+  @apply text-on-surface-z2 h-full w-full;
+}
+
+/* Button group */
+[data-style='rokkit'] [data-button-group] {
+  @apply gap-1px m-auto justify-center py-1;
+}
+
+[data-style='rokkit'] [data-button-group] [data-button-root] {
+  @apply rounded-none px-2 pt-0.5 uppercase focus:outline-none;
+}
+
+[data-style='rokkit'] [data-button-group] [data-button-root]:first-child {
+  @apply rounded-l-full pl-3;
+}
+
+[data-style='rokkit'] [data-button-group] [data-button-root]:last-child {
+  @apply rounded-r-full pr-3;
+}
+
+[data-style='rokkit'] [data-button-group] [data-button-root][data-active='true'],
+[data-style='rokkit'] [data-button-group] [data-button-root].active {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+/* Legacy support */
+[data-style='rokkit'] button,
+[data-style='rokkit'] .button {
+  @apply bg-surface-z2 text-on-surface-z2 flex min-h-9 cursor-pointer items-center gap-3 rounded-full px-6 uppercase;
+  animation: button-pop var(--animation-btn, 0.25s) ease-out;
+}
+
+[data-style='rokkit'] button.is-primary,
+[data-style='rokkit'] .button.is-primary {
+  @apply from-primary to-secondary bg-gradient-to-r px-4 text-white;
+}
+
+[data-style='rokkit'] a.square > rk-icon {
+  @apply text-on-surface-z2 h-full w-full;
+}
+
+[data-style='rokkit'] a.square {
+  @apply border-surface-z2 bg-surface-z2 flex items-center justify-center rounded-md border leading-loose;
+}
+
+[data-style='rokkit'] button-group {
+  @apply gap-1px m-auto flex items-center justify-center py-1;
+}
+
+[data-style='rokkit'] button-group button {
+  @apply flex rounded-none px-2 pt-0.5 uppercase focus:outline-none;
+}
+
+[data-style='rokkit'] button-group button:first-child {
+  @apply rounded-l-full pl-3;
+}
+
+[data-style='rokkit'] button-group button:last-child {
+  @apply rounded-r-full pr-3;
+}
+
+[data-style='rokkit'] button-group button.active {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}

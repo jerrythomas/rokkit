@@ -2,8 +2,11 @@
 
 exports[`Summary > should render  1`] = `
 <div>
-  <rk-summary
-    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+  <div
+    aria-disabled="false"
+    data-accordion-trigger=""
+    data-disabled="false"
+    role="button"
     tabindex="-1"
   >
     <!---->
@@ -18,15 +21,18 @@ exports[`Summary > should render  1`] = `
     <!---->
      
     <!---->
-  </rk-summary>
+  </div>
   
 </div>
 `;
 
 exports[`Summary > should render  2`] = `
 <div>
-  <rk-summary
-    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+  <div
+    aria-disabled="false"
+    data-accordion-trigger=""
+    data-disabled="false"
+    role="button"
     tabindex="-1"
   >
     <!---->
@@ -41,15 +47,18 @@ exports[`Summary > should render  2`] = `
     <!---->
      
     <!---->
-  </rk-summary>
+  </div>
   
 </div>
 `;
 
 exports[`Summary > should render using expanded state 1`] = `
 <div>
-  <rk-summary
-    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+  <div
+    aria-disabled="false"
+    data-accordion-trigger=""
+    data-disabled="false"
+    role="button"
     tabindex="-1"
   >
     <!---->
@@ -64,15 +73,18 @@ exports[`Summary > should render using expanded state 1`] = `
     <!---->
      
     <!---->
-  </rk-summary>
+  </div>
   
 </div>
 `;
 
 exports[`Summary > should render using expanded state 2`] = `
 <div>
-  <rk-summary
-    class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+  <div
+    aria-disabled="false"
+    data-accordion-trigger=""
+    data-disabled="false"
+    role="button"
     tabindex="-1"
   >
     <!---->
@@ -87,7 +99,7 @@ exports[`Summary > should render using expanded state 2`] = `
     <!---->
      
     <!---->
-  </rk-summary>
+  </div>
   
 </div>
 `;

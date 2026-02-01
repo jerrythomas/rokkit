@@ -14,6 +14,7 @@
 	 * @property {number} [duration]
 	 * @property {any} [easing]
 	 * @property {any} [value]
+	 * @property {boolean} [disabled]
 	 */
 
 	/** @type {Props} */
@@ -24,7 +25,8 @@
 		small = true,
 		duration = 400,
 		easing = cubicInOut,
-		value = $bindable(null)
+		value = $bindable(null),
+		disabled = false
 	} = $props()
 
 	let previous = $state(-1)
@@ -33,10 +35,12 @@
 	let width = $state()
 
 	function handleNext() {
+		if (disabled) return
 		if (activeIndex < items.length - 1) value = items[activeIndex + 1]
 	}
 
 	function handlePrevious() {
+		if (disabled) return
 		if (activeIndex > 0) value = items[activeIndex - 1]
 	}
 
@@ -47,20 +51,22 @@
 
 	$effect.pre(() => {
 		activeIndex = activeIndexFromPage(value)
-		// direction = Math.sign(activeIndex - previous)
 		previous = activeIndex
 	})
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-container
-	use:swipeable={{ enabled: small }}
+<div
+	data-responsive-grid-root
+	class={className}
+	use:swipeable={{ enabled: small && !disabled }}
 	onswipeLeft={handleNext}
 	onswipeRight={handlePrevious}
 	onprevious={handlePrevious}
 	onnext={handleNext}
-	tabindex={0}
-	class="overflow-hidden {className}"
+	tabindex={disabled ? -1 : 0}
+	aria-disabled={disabled}
+	data-disabled={disabled}
 	bind:clientWidth={width}
 >
 	{#each items as item, index (index)}
@@ -68,8 +74,9 @@
 		{@const props = mapping.get('props', item, {})}
 		{@const Template = item[mapping.fields.component]}
 		{#if small && equals(index, activeIndex)}
-			<rk-segment
-				class="absolute h-full w-full {segmentClass}"
+			<div
+				data-grid-segment
+				class={segmentClass}
 				out:fade={{
 					x: -1 * direction * width,
 					duration,
@@ -78,11 +85,21 @@
 				in:fly={{ x: direction * width, duration, easing }}
 			>
 				<Template {...props} />
-			</rk-segment>
+			</div>
 		{:else if !small}
-			<rk-segment class={segmentClass}>
+			<div data-grid-segment class={segmentClass}>
 				<Template {...props} />
-			</rk-segment>
+			</div>
 		{/if}
 	{/each}
-</rk-container>
+</div>
+
+<style>
+	[data-responsive-grid-root] {
+		overflow: hidden;
+	}
+	[data-responsive-grid-root][data-disabled='true'] {
+		pointer-events: none;
+		opacity: 0.5;
+	}
+</style>

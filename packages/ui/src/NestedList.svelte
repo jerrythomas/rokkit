@@ -20,6 +20,7 @@
 	 * @property {import('./types').ConnectionType[]} [types=[]]
 	 * @property {string}                             [focusedKey]
 	 * @property {SvelteSet}                          [selectedKeys]
+	 * @property {boolean}                            [disabled=false]
 	 */
 
 	/** @type {Props} */
@@ -32,22 +33,23 @@
 		types = [],
 		focusedKey,
 		selectedKeys = new SvelteSet(),
+		disabled = false,
 		stub,
 		snippets
 	} = $props()
 
 	const stateIcons = $derived({ ...defaultStateIcons.node, ...icons })
 	const childFields = $derived(getNestedFields(fields))
-	// $inspect(childFields, items[0], expandedKeys)
 </script>
 
-<rk-nested-list role="tree">
+<div data-nested-list-root role="group" aria-disabled={disabled} data-disabled={disabled}>
 	{#each items as item, index (index)}
 		{@const nodePath = [...path, index]}
 		{@const key = getKeyFromPath(nodePath)}
 		{@const expanded = item[fields.expanded]}
 		{@const nodeType = index === items.length - 1 ? 'last' : 'child'}
 		{@const connectors = getLineTypes(hasChildren(item, fields), types, nodeType)}
+		{@const itemDisabled = item[fields.disabled] || disabled}
 
 		<Node
 			value={item}
@@ -57,6 +59,7 @@
 			focused={focusedKey === key}
 			selected={selectedKeys.has(key)}
 			{expanded}
+			disabled={itemDisabled}
 			path={nodePath}
 			{stub}
 			{snippets}
@@ -71,8 +74,9 @@
 					types={connectors}
 					{focusedKey}
 					{selectedKeys}
+					{disabled}
 				/>
 			{/if}
 		</Node>
 	{/each}
-</rk-nested-list>
+</div>

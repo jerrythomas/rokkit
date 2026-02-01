@@ -2,154 +2,189 @@
 
 exports[`RangeTick.svelte > should render as selected 1`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="true"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       10
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;
 
 exports[`RangeTick.svelte > should render as selected 2`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="false"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       10
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;
 
 exports[`RangeTick.svelte > should render using value 1`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="false"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       10
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;
 
 exports[`RangeTick.svelte > should render using value 2`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="false"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       20
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;
 
 exports[`RangeTick.svelte > should render with custom label 1`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="false"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       Custom Label
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;
 
 exports[`RangeTick.svelte > should render with custom label 2`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="false"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;
 
 exports[`RangeTick.svelte > should render with custom label 3`] = `
 <div>
-  <rk-tick
+  <div
+    aria-disabled="false"
     aria-selected="false"
-    class="grid cursor-pointer select-none grid-cols-2"
+    class="svelte-1n8zkn2"
+    data-disabled="false"
+    data-range-tick=""
     role="option"
     tabindex="0"
   >
-    <rk-tick-bar
-      class="h-5px col-start-2 border-l"
+    <div
+      class="svelte-1n8zkn2"
+      data-tick-bar=""
     />
      
     <p
-      class="col-span-2 flex justify-center"
+      class="svelte-1n8zkn2"
+      data-tick-label=""
     >
       10
     </p>
-  </rk-tick>
+  </div>
   
 </div>
 `;

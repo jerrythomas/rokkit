@@ -9,10 +9,11 @@
 	 * @property {string} [class]
 	 * @property {Array<any>} [items]
 	 * @property {any} [value]
-	 * @property {import('@rokkit/core').FieldMapping} [mapping]
+	 * @property {import('@rokkit/core').FieldMapping} [fields]
 	 * @property {import('./types').NodeStateIcons|Object} [icons]
 	 * @property {boolean} [autoCloseSiblings=false]
 	 * @property {boolean} [multiselect=false]
+	 * @property {boolean} [disabled=false]
 	 * @property {Function} [header]
 	 * @property {Function} [footer]
 	 * @property {Function} [empty]
@@ -21,13 +22,14 @@
 
 	/** @type {Props & { [key: string]: any }} */
 	let {
-		class: classes = 'h-full overflow-scroll flex flex-col',
+		class: classes = '',
 		items = $bindable([]),
 		value = $bindable(null),
 		fields,
 		icons = {},
 		autoCloseSiblings = false,
 		multiselect = false,
+		disabled = false,
 		header,
 		footer,
 		empty,
@@ -48,20 +50,24 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<rk-tree
-	tabindex="0"
+<div
+	data-tree-root
+	tabindex={disabled ? -1 : 0}
 	class={classes}
+	role="tree"
+	aria-disabled={disabled}
+	data-disabled={disabled}
 	use:navigator={{ wrapper, nested: true }}
 	onaction={handleAction}
 >
 	{#if header}
-		<rk-header>{@render header()}</rk-header>
+		<div data-tree-header>{@render header()}</div>
 	{/if}
 	{#if items.length === 0}
 		{#if empty}
 			{@render empty()}
 		{:else}
-			<div class="m-auto p-4 text-center text-gray-500">No data available</div>
+			<div data-tree-empty>No data available</div>
 		{/if}
 	{/if}
 	<NestedList
@@ -69,12 +75,13 @@
 		fields={derivedFields}
 		{value}
 		{icons}
+		{disabled}
 		focusedKey={wrapper.currentKey}
 		selectedKeys={wrapper.selectedKeys}
 		{stub}
 		{snippets}
 	/>
 	{#if footer}
-		<rk-footer>{@render footer()}</rk-footer>
+		<div data-tree-footer>{@render footer()}</div>
 	{/if}
-</rk-tree>
+</div>

@@ -6,7 +6,6 @@
 	 * @property {any} [value]
 	 * @property {any} [max]
 	 * @property {string} [height]
-	 * @property {number} [width]
 	 */
 
 	/** @type {Props} */
@@ -16,6 +15,15 @@
 	let percentage = $derived(indeterminate ? '100%' : `${(value * 100) / max}%`)
 </script>
 
-<rk-progress class:indeterminate class={classes} style:height>
-	<value-bar class="h-full" style:width={percentage}></value-bar>
-</rk-progress>
+<div
+	data-progress-root
+	class={classes}
+	role="progressbar"
+	aria-valuenow={indeterminate ? undefined : value}
+	aria-valuemin={0}
+	aria-valuemax={max}
+	data-indeterminate={indeterminate}
+	style:height
+>
+	<div data-progress-bar style:width={percentage}></div>
+</div>

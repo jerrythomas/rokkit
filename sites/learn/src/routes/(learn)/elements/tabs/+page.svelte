@@ -1,10 +1,12 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 	import Preview from './Preview.svelte'
 </script>
 
 <article data-article-root>
+	<ApiDocsLink component="tabs" />
 	<h1>Overview</h1>
 	<p>
 		The Tabs component is a highly extensible and versatile UI element that simplifies navigation

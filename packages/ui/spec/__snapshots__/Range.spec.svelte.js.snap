@@ -3,8 +3,11 @@
 exports[`Range.svelte > should handle class changes 1`] = `
 <div>
   <!---->
-  <rk-input-range
+  <div
+    aria-disabled="false"
     class="test"
+    data-disabled="false"
+    data-range-root=""
   >
     <input
       name="range"
@@ -12,215 +15,278 @@ exports[`Range.svelte > should handle class changes 1`] = `
       value="0,0"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 0px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 0px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 10;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           0
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           10
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           30
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           50
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           60
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           70
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           80
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           90
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           100
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>
@@ -229,8 +295,11 @@ exports[`Range.svelte > should handle class changes 1`] = `
 exports[`Range.svelte > should handle class changes 2`] = `
 <div>
   <!---->
-  <rk-input-range
+  <div
+    aria-disabled="false"
     class="test2"
+    data-disabled="false"
+    data-range-root=""
   >
     <input
       name="range"
@@ -238,215 +307,278 @@ exports[`Range.svelte > should handle class changes 2`] = `
       value="0,0"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 0px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 0px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 10;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           0
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           10
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           30
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           50
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           60
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           70
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           80
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           90
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           100
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>
@@ -455,222 +587,289 @@ exports[`Range.svelte > should handle class changes 2`] = `
 exports[`Range.svelte > should handle value changes 1`] = `
 <div>
   <!---->
-  <rk-input-range>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-range-root=""
+  >
     <input
       name="range"
       type="hidden"
       value="0,30"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 0px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="30"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 0px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 10;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           0
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           10
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           30
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           50
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           60
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           70
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           80
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           90
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           100
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>
@@ -679,222 +878,289 @@ exports[`Range.svelte > should handle value changes 1`] = `
 exports[`Range.svelte > should handle value changes 2`] = `
 <div>
   <!---->
-  <rk-input-range>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-range-root=""
+  >
     <input
       name="range"
       type="hidden"
       value="0,30"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 0px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="30"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 0px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 10;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           0
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           10
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           30
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           50
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           60
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           70
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           80
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           90
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           100
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>
@@ -903,222 +1169,289 @@ exports[`Range.svelte > should handle value changes 2`] = `
 exports[`Range.svelte > should render 1`] = `
 <div>
   <!---->
-  <rk-input-range>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-range-root=""
+  >
     <input
       name="range"
       type="hidden"
       value="0,0"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 0px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 0px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 10;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           0
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           10
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           30
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           50
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           60
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           70
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           80
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           90
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           100
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>
@@ -1127,222 +1460,289 @@ exports[`Range.svelte > should render 1`] = `
 exports[`Range.svelte > should render with min, max 1`] = `
 <div>
   <!---->
-  <rk-input-range>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-range-root=""
+  >
     <input
       name="range"
       type="hidden"
       value="20,20"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 20px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="20"
         aria-valuenow="20"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 20px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 10;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           22
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           24
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           26
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           28
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           30
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           32
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           34
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           36
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           38
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>
@@ -1351,142 +1751,184 @@ exports[`Range.svelte > should render with min, max 1`] = `
 exports[`Range.svelte > should render with ticks 1`] = `
 <div>
   <!---->
-  <rk-input-range>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-range-root=""
+  >
     <input
       name="range"
       type="hidden"
       value="0,0"
     />
      
-    <rk-range-track
-      class="relative grid svelte-uj4j6v"
+    <div
+      class="svelte-uj4j6v"
+      data-range-track=""
     >
-      <rk-range-track-bar
-        class="relative col-start-2 box-border"
+      <div
+        class="svelte-uj4j6v"
+        data-range-track-bar=""
       />
        
-      <rk-selected-bar
-        class="absolute col-start-2"
+      <div
+        class="svelte-uj4j6v"
+        data-range-selected=""
         style="left: 0px; width: 0px;"
       />
        
       <!---->
        
-      <rk-thumb
+      <div
+        aria-disabled="false"
         aria-valuemax="0"
         aria-valuemin="0"
         aria-valuenow="0"
-        class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+        class="svelte-144gy4u"
+        data-disabled="false"
+        data-range-thumb=""
+        data-sliding="false"
         role="slider"
         style="left: 0px;"
         tabindex="0"
       />
       <!---->
-    </rk-range-track>
+    </div>
      
-    <rk-ticks
+    <div
       class="svelte-uj4j6v"
+      data-range-ticks=""
       style="--count: 5;"
     >
-      <rk-tick
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           0
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           20
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           40
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           60
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           80
         </p>
-      </rk-tick>
-      <rk-tick
+      </div>
+      <div
+        aria-disabled="false"
         aria-selected="false"
-        class="grid cursor-pointer select-none grid-cols-2"
+        class="svelte-1n8zkn2"
+        data-disabled="false"
+        data-range-tick=""
         role="option"
         tabindex="0"
       >
-        <rk-tick-bar
-          class="h-5px col-start-2 border-l"
+        <div
+          class="svelte-1n8zkn2"
+          data-tick-bar=""
         />
          
         <p
-          class="col-span-2 flex justify-center"
+          class="svelte-1n8zkn2"
+          data-tick-label=""
         >
           100
         </p>
-      </rk-tick>
+      </div>
       
-    </rk-ticks>
-  </rk-input-range>
+    </div>
+  </div>
   
   
 </div>

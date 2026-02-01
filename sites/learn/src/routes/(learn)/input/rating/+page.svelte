@@ -1,9 +1,11 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 </script>
 
 <article data-article-root>
+	<ApiDocsLink component="rating" />
 	<h1>Introduction</h1>
 	<p>
 		An input to provide rating values. Recommended for use when values are less than 10. For larger

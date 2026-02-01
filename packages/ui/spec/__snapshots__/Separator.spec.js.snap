@@ -2,8 +2,11 @@
 
 exports[`Separator.svelte > should render 1`] = `
 <div>
-  <rk-separator
-    class="flex flex-grow"
+  <div
+    aria-orientation="horizontal"
+    data-orientation="horizontal"
+    data-separator-root=""
+    role="separator"
   />
   
 </div>

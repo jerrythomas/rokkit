@@ -7,6 +7,7 @@
 	 * @property {any} [id]
 	 * @property {any} name
 	 * @property {boolean} [value]
+	 * @property {boolean} [disabled]
 	 * @property {boolean} [readOnly]
 	 * @property {any} [stateIcons]
 	 * @property {number} [tabindex]
@@ -18,11 +19,13 @@
 		id = null,
 		name,
 		value = $bindable(false),
+		disabled = false,
 		readOnly = false,
 		stateIcons = defaultStateIcons.checkbox,
 		tabindex = 0
 	} = $props()
 
+	let isDisabled = $derived(disabled || readOnly)
 	let state = $derived(value === null ? 'unknown' : value ? 'checked' : 'unchecked')
 
 	function toggle(event) {
@@ -31,26 +34,29 @@
 		value = !value
 	}
 	function handleClick(event) {
-		if (!readOnly) toggle(event)
+		if (!isDisabled) toggle(event)
 	}
 	function handleKeydown(event) {
-		if (readOnly) return
+		if (isDisabled) return
 		if (event.key === 'Enter' || event.key === ' ') toggle(event)
 	}
 </script>
 
-<rk-checkbox
+<div
+	data-checkbox-root
 	{id}
 	class={classes}
-	class:disabled={readOnly}
 	role="checkbox"
 	aria-checked={state}
-	aria-disabled={readOnly}
+	aria-disabled={isDisabled}
+	data-disabled={isDisabled}
+	data-state={state}
 	onclick={handleClick}
 	onkeydown={handleKeydown}
 	{tabindex}
 >
-	<input hidden type="checkbox" {name} {readOnly} bind:checked={value} />
-
-	<icon class={stateIcons[state]}></icon>
-</rk-checkbox>
+	<input hidden type="checkbox" {name} disabled={isDisabled} bind:checked={value} />
+	<span data-checkbox-indicator>
+		<icon class={stateIcons[state]} aria-hidden="true"></icon>
+	</span>
+</div>

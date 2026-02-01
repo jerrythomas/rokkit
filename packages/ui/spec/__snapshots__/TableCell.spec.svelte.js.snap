@@ -5,11 +5,13 @@ exports[`TableCell > should render a table cell 1`] = `
   <td
     class="custom-class"
   >
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>
@@ -20,11 +22,13 @@ exports[`TableCell > should render a table cell 2`] = `
   <td
     class="another-class"
   >
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>
@@ -33,7 +37,9 @@ exports[`TableCell > should render a table cell 2`] = `
 exports[`TableCell > should render a table cell as a parent 1`] = `
 <div>
   <td>
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
@@ -68,7 +74,7 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>
@@ -77,7 +83,9 @@ exports[`TableCell > should render a table cell as a parent 1`] = `
 exports[`TableCell > should render a table cell as a parent 2`] = `
 <div>
   <td>
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
@@ -112,7 +120,7 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>
@@ -121,7 +129,9 @@ exports[`TableCell > should render a table cell as a parent 2`] = `
 exports[`TableCell > should render a table cell as a parent 3`] = `
 <div>
   <td>
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
       <span
         class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
@@ -153,7 +163,7 @@ exports[`TableCell > should render a table cell as a parent 3`] = `
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>
@@ -162,7 +172,9 @@ exports[`TableCell > should render a table cell as a parent 3`] = `
 exports[`TableCell > should render a table cell with path 1`] = `
 <div>
   <td>
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
       <!---->
        
@@ -172,7 +184,7 @@ exports[`TableCell > should render a table cell with path 1`] = `
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>
@@ -181,7 +193,9 @@ exports[`TableCell > should render a table cell with path 1`] = `
 exports[`TableCell > should render a table cell with path 2`] = `
 <div>
   <td>
-    <rk-cell>
+    <div
+      data-table-cell=""
+    >
       <!---->
       <!---->
        
@@ -191,7 +205,7 @@ exports[`TableCell > should render a table cell with path 2`] = `
       <!---->
        
       <!---->
-    </rk-cell>
+    </div>
   </td>
   
 </div>

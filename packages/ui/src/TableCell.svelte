@@ -35,7 +35,7 @@
 </script>
 
 <td class={classes}>
-	<rk-cell>
+	<div data-table-cell>
 		{#if path}
 			{#each levels.slice(0, -1) as level (level)}
 				<Connector type="empty" />
@@ -47,5 +47,5 @@
 			{/if}
 		{/if}
 		<Template bind:value {mapping} {formatter} />
-	</rk-cell>
+	</div>
 </td>

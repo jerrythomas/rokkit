@@ -2,7 +2,8 @@
 
 exports[`Accordion > should render accordion 1`] = `
 <div>
-  <rk-accordion
+  <div
+    data-accordion-root=""
     tabindex="0"
   >
     <!---->
@@ -10,11 +11,17 @@ exports[`Accordion > should render accordion 1`] = `
     <!---->
      
     <div
-      class="flex flex-col"
+      aria-disabled="false"
+      data-accordion-item=""
+      data-disabled="false"
       data-path="0"
     >
-      <rk-summary
-        class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        data-accordion-trigger=""
+        data-disabled="false"
+        role="button"
         tabindex="-1"
       >
         <!---->
@@ -28,24 +35,33 @@ exports[`Accordion > should render accordion 1`] = `
         <!---->
         <!---->
          
+        <span
+          data-accordion-icon=""
+        >
+          <icon
+            aria-hidden="true"
+            class="accordion-closed sm"
+          />
+          <!---->
+        </span>
         <!---->
-        <icon
-          aria-label="expand"
-          class="accordion-closed sm"
-        />
-        
-        <!---->
-      </rk-summary>
+      </div>
       <!---->
        
       <!---->
     </div>
     <div
-      class="flex flex-col"
+      aria-disabled="false"
+      data-accordion-item=""
+      data-disabled="false"
       data-path="1"
     >
-      <rk-summary
-        class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        data-accordion-trigger=""
+        data-disabled="false"
+        role="button"
         tabindex="-1"
       >
         <!---->
@@ -59,14 +75,17 @@ exports[`Accordion > should render accordion 1`] = `
         <!---->
         <!---->
          
+        <span
+          data-accordion-icon=""
+        >
+          <icon
+            aria-hidden="true"
+            class="accordion-closed sm"
+          />
+          <!---->
+        </span>
         <!---->
-        <icon
-          aria-label="expand"
-          class="accordion-closed sm"
-        />
-        
-        <!---->
-      </rk-summary>
+      </div>
       <!---->
        
       <!---->
@@ -74,15 +93,16 @@ exports[`Accordion > should render accordion 1`] = `
     <!---->
      
     <!---->
-  </rk-accordion>
+  </div>
   
 </div>
 `;
 
 exports[`Accordion > should render accordion 2`] = `
 <div>
-  <rk-accordion
+  <div
     class="another-class"
+    data-accordion-root=""
     tabindex="0"
   >
     <!---->
@@ -90,11 +110,17 @@ exports[`Accordion > should render accordion 2`] = `
     <!---->
      
     <div
-      class="flex flex-col"
+      aria-disabled="false"
+      data-accordion-item=""
+      data-disabled="false"
       data-path="0"
     >
-      <rk-summary
-        class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        data-accordion-trigger=""
+        data-disabled="false"
+        role="button"
         tabindex="-1"
       >
         <!---->
@@ -108,24 +134,33 @@ exports[`Accordion > should render accordion 2`] = `
         <!---->
         <!---->
          
+        <span
+          data-accordion-icon=""
+        >
+          <icon
+            aria-hidden="true"
+            class="accordion-closed sm"
+          />
+          <!---->
+        </span>
         <!---->
-        <icon
-          aria-label="expand"
-          class="accordion-closed sm"
-        />
-        
-        <!---->
-      </rk-summary>
+      </div>
       <!---->
        
       <!---->
     </div>
     <div
-      class="flex flex-col"
+      aria-disabled="false"
+      data-accordion-item=""
+      data-disabled="false"
       data-path="1"
     >
-      <rk-summary
-        class="flex w-full flex-shrink-0 cursor-pointer flex-row items-center"
+      <div
+        aria-disabled="false"
+        aria-expanded="false"
+        data-accordion-trigger=""
+        data-disabled="false"
+        role="button"
         tabindex="-1"
       >
         <!---->
@@ -139,14 +174,17 @@ exports[`Accordion > should render accordion 2`] = `
         <!---->
         <!---->
          
+        <span
+          data-accordion-icon=""
+        >
+          <icon
+            aria-hidden="true"
+            class="accordion-closed sm"
+          />
+          <!---->
+        </span>
         <!---->
-        <icon
-          aria-label="expand"
-          class="accordion-closed sm"
-        />
-        
-        <!---->
-      </rk-summary>
+      </div>
       <!---->
        
       <!---->
@@ -154,7 +192,7 @@ exports[`Accordion > should render accordion 2`] = `
     <!---->
      
     <!---->
-  </rk-accordion>
+  </div>
   
 </div>
 `;

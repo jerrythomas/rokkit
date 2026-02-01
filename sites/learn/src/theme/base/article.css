@@ -1,7 +1,7 @@
 /* Article styles - Base Layout */
 
 [data-article-root] {
-  @apply md:w-200 w-full md:mx-auto md:my-10;
+  @apply md:w-200 relative w-full md:mx-auto md:my-10;
 }
 
 /* Typography hierarchy - Layout */

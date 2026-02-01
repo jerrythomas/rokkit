@@ -2,9 +2,13 @@
 
 exports[`ValidationReport.svelte > should render validation report 1`] = `
 <div>
-  <rk-status-report>
-    <rk-message
-      class="pass"
+  <div
+    data-validation-report-root=""
+    role="status"
+  >
+    <div
+      data-status="pass"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -26,9 +30,10 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check passed
       </p>
-    </rk-message>
-    <rk-message
-      class="fail"
+    </div>
+    <div
+      data-status="fail"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -50,9 +55,10 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check failed
       </p>
-    </rk-message>
-    <rk-message
-      class="unknown"
+    </div>
+    <div
+      data-status="unknown"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -74,9 +80,10 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check is unknown
       </p>
-    </rk-message>
-    <rk-message
-      class="warn"
+    </div>
+    <div
+      data-status="warn"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -98,18 +105,22 @@ exports[`ValidationReport.svelte > should render validation report 1`] = `
       <p>
         This check is warning
       </p>
-    </rk-message>
+    </div>
     
-  </rk-status-report>
+  </div>
   
 </div>
 `;
 
 exports[`ValidationReport.svelte > should render validation report with custom icons 1`] = `
 <div>
-  <rk-status-report>
-    <rk-message
-      class="pass"
+  <div
+    data-validation-report-root=""
+    role="status"
+  >
+    <div
+      data-status="pass"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -131,9 +142,10 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check passed
       </p>
-    </rk-message>
-    <rk-message
-      class="fail"
+    </div>
+    <div
+      data-status="fail"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -155,9 +167,10 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check failed
       </p>
-    </rk-message>
-    <rk-message
-      class="unknown"
+    </div>
+    <div
+      data-status="unknown"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -179,9 +192,10 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check is unknown
       </p>
-    </rk-message>
-    <rk-message
-      class="warn"
+    </div>
+    <div
+      data-status="warn"
+      data-validation-item=""
     >
       <icon
         aria-checked="false"
@@ -203,9 +217,9 @@ exports[`ValidationReport.svelte > should render validation report with custom i
       <p>
         This check is warning
       </p>
-    </rk-message>
+    </div>
     
-  </rk-status-report>
+  </div>
   
 </div>
 `;

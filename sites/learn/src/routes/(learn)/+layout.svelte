@@ -22,6 +22,6 @@
 
 	<!-- Main Content -->
 	<main class="h-full overflow-y-auto p-8 lg:col-span-3">
-		{@render children()}
+		{@render children?.()}
 	</main>
 </div>

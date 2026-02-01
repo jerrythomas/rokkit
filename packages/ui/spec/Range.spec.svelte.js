@@ -5,7 +5,7 @@ import Range from '../src/Range.svelte'
 import '@rokkit/helpers/mocks'
 
 describe('Range.svelte', () => {
-	const ROOT_ELEMENT = 'rk-input-range'
+	const ROOT_ELEMENT = '[data-range-root]'
 
 	beforeEach(() => cleanup())
 	it('should render', () => {

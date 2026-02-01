@@ -4,7 +4,7 @@ import { tick } from 'svelte'
 import ValidationReport from '../src/ValidationReport.svelte'
 
 describe('ValidationReport.svelte', () => {
-	const ROOT_ELEMENT = 'rk-status-report'
+	const ROOT_ELEMENT = '[data-validation-report-root]'
 	const items = [
 		{
 			text: 'This check passed',

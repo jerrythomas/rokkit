@@ -1,9 +1,11 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 </script>
 
 <article data-article-root>
+	<ApiDocsLink component="select" />
 	<h1>Introduction</h1>
 	<p>
 		Input component that allows users to choose one value from a list of options. This component has

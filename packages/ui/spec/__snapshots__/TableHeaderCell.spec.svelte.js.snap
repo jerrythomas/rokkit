@@ -4,15 +4,19 @@ exports[`TableHeaderCell > should render a table header 1`] = `
 <div>
   <!---->
   <th
+    aria-disabled="false"
     aria-label="name"
     class="custom-class"
+    data-disabled="false"
     data-sortable="false"
     scope="col"
   >
-    <rk-cell>
+    <div
+      data-table-header-cell=""
+    >
       name 
       <!---->
-    </rk-cell>
+    </div>
   </th>
   
   
@@ -23,15 +27,19 @@ exports[`TableHeaderCell > should render a table header 2`] = `
 <div>
   <!---->
   <th
+    aria-disabled="false"
     aria-label="name"
     class="another-class"
+    data-disabled="false"
     data-sortable="false"
     scope="col"
   >
-    <rk-cell>
+    <div
+      data-table-header-cell=""
+    >
       name 
       <!---->
-    </rk-cell>
+    </div>
   </th>
   
   

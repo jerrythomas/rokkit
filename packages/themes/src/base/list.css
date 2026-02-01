@@ -1,0 +1,45 @@
+/* List - Base Structure */
+
+[data-list] {
+  @apply flex w-full flex-shrink-0 select-none flex-col;
+}
+
+[data-list-header],
+[data-list-footer] {
+  @apply flex-shrink-0;
+}
+
+[data-list-body] {
+  @apply flex flex-col;
+}
+
+[data-list-item] {
+  @apply flex min-h-8 cursor-pointer items-center;
+}
+
+[data-list-item] > a {
+  @apply flex flex-grow items-center;
+}
+
+/* Disabled state */
+[data-list-item][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+/* Legacy custom element support */
+rk-list {
+  @apply flex w-full flex-shrink-0 select-none flex-col;
+}
+
+rk-list-item {
+  @apply flex min-h-8 cursor-pointer items-center;
+}
+
+rk-list-item > a {
+  @apply flex flex-grow items-center;
+}
+
+rk-list-item[aria-disabled='true'],
+rk-list-item[data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}

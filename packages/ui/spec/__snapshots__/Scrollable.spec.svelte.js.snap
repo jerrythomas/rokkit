@@ -2,28 +2,30 @@
 
 exports[`Scrollable.svelte > should render 1`] = `
 <div>
-  <rk-scroll
-    class="flex h-full flex-col overflow-scroll "
+  <div
+    class="svelte-9md5tb"
+    data-scrollable-root=""
   >
     <p>
       This is a static content component.
     </p>
     <!---->
-  </rk-scroll>
+  </div>
   
 </div>
 `;
 
 exports[`Scrollable.svelte > should render 2`] = `
 <div>
-  <rk-scroll
-    class="flex h-full flex-col overflow-scroll custom-class"
+  <div
+    class="custom-class svelte-9md5tb"
+    data-scrollable-root=""
   >
     <p>
       This is a static content component.
     </p>
     <!---->
-  </rk-scroll>
+  </div>
   
 </div>
 `;

@@ -2,19 +2,26 @@
 
 exports[`NestedList > should render nested list 1`] = `
 <div>
-  <rk-nested-list
-    role="tree"
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-nested-list-root=""
+    role="group"
   >
-    <rk-node
+    <div
       aria-current="false"
+      aria-disabled="false"
       aria-expanded="true"
       aria-selected="false"
       data-depth="1"
+      data-disabled="false"
+      data-node=""
       data-path="0"
+      data-state="opened"
       role="treeitem"
     >
       <div
-        class="flex flex-row items-center"
+        data-node-content=""
       >
         <!---->
         <icon
@@ -37,7 +44,9 @@ exports[`NestedList > should render nested list 1`] = `
         
         <!---->
          
-        <rk-item>
+        <div
+          data-node-item=""
+        >
           <!---->
           <!---->
           <!---->
@@ -50,23 +59,30 @@ exports[`NestedList > should render nested list 1`] = `
           <!---->
           
           <!---->
-        </rk-item>
+        </div>
       </div>
        
       <!---->
-      <rk-nested-list
-        role="tree"
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
       >
-        <rk-node
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="false"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="0-0"
+          data-state="closed"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -103,7 +119,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -116,23 +134,27 @@ exports[`NestedList > should render nested list 1`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
           
           <!---->
-        </rk-node>
-        <rk-node
+        </div>
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="false"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="0-1"
+          data-state="closed"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -167,7 +189,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -180,28 +204,32 @@ exports[`NestedList > should render nested list 1`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
           
           <!---->
-        </rk-node>
+        </div>
         
-      </rk-nested-list>
+      </div>
       
       <!---->
-    </rk-node>
-    <rk-node
+    </div>
+    <div
       aria-current="false"
+      aria-disabled="false"
       aria-expanded="true"
       aria-selected="false"
       data-depth="1"
+      data-disabled="false"
+      data-node=""
       data-path="1"
+      data-state="opened"
       role="treeitem"
     >
       <div
-        class="flex flex-row items-center"
+        data-node-content=""
       >
         <!---->
         <icon
@@ -224,7 +252,9 @@ exports[`NestedList > should render nested list 1`] = `
         
         <!---->
          
-        <rk-item>
+        <div
+          data-node-item=""
+        >
           <!---->
           <!---->
           <!---->
@@ -237,23 +267,30 @@ exports[`NestedList > should render nested list 1`] = `
           <!---->
           
           <!---->
-        </rk-item>
+        </div>
       </div>
        
       <!---->
-      <rk-nested-list
-        role="tree"
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
       >
-        <rk-node
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="true"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="1-0"
+          data-state="opened"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -296,7 +333,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -309,23 +348,30 @@ exports[`NestedList > should render nested list 1`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
-          <rk-nested-list
-            role="tree"
+          <div
+            aria-disabled="false"
+            data-disabled="false"
+            data-nested-list-root=""
+            role="group"
           >
-            <rk-node
+            <div
               aria-current="false"
+              aria-disabled="false"
               aria-expanded="false"
               aria-selected="false"
               data-depth="3"
+              data-disabled="false"
+              data-node=""
               data-path="1-0-0"
+              data-state="closed"
               role="treeitem"
             >
               <div
-                class="flex flex-row items-center"
+                data-node-content=""
               >
                 <!---->
                 <span
@@ -376,7 +422,9 @@ exports[`NestedList > should render nested list 1`] = `
                 
                 <!---->
                  
-                <rk-item>
+                <div
+                  data-node-item=""
+                >
                   <!---->
                   <!---->
                   <!---->
@@ -389,28 +437,32 @@ exports[`NestedList > should render nested list 1`] = `
                   <!---->
                   
                   <!---->
-                </rk-item>
+                </div>
               </div>
                
               <!---->
               
               <!---->
-            </rk-node>
+            </div>
             
-          </rk-nested-list>
+          </div>
           
           <!---->
-        </rk-node>
-        <rk-node
+        </div>
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="false"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="1-1"
+          data-state="closed"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -445,7 +497,9 @@ exports[`NestedList > should render nested list 1`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -458,39 +512,46 @@ exports[`NestedList > should render nested list 1`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
           
           <!---->
-        </rk-node>
+        </div>
         
-      </rk-nested-list>
+      </div>
       
       <!---->
-    </rk-node>
+    </div>
     
-  </rk-nested-list>
+  </div>
   
 </div>
 `;
 
 exports[`NestedList > should render nested list 2`] = `
 <div>
-  <rk-nested-list
-    role="tree"
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-nested-list-root=""
+    role="group"
   >
-    <rk-node
+    <div
       aria-current="false"
+      aria-disabled="false"
       aria-expanded="true"
       aria-selected="false"
       data-depth="1"
+      data-disabled="false"
+      data-node=""
       data-path="0"
+      data-state="opened"
       role="treeitem"
     >
       <div
-        class="flex flex-row items-center"
+        data-node-content=""
       >
         <!---->
         <icon
@@ -513,7 +574,9 @@ exports[`NestedList > should render nested list 2`] = `
         
         <!---->
          
-        <rk-item>
+        <div
+          data-node-item=""
+        >
           <!---->
           <!---->
           <!---->
@@ -526,23 +589,30 @@ exports[`NestedList > should render nested list 2`] = `
           <!---->
           
           <!---->
-        </rk-item>
+        </div>
       </div>
        
       <!---->
-      <rk-nested-list
-        role="tree"
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
       >
-        <rk-node
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="false"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="0-0"
+          data-state="closed"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -579,7 +649,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -592,23 +664,27 @@ exports[`NestedList > should render nested list 2`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
           
           <!---->
-        </rk-node>
-        <rk-node
+        </div>
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="false"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="0-1"
+          data-state="closed"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -643,7 +719,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -656,28 +734,32 @@ exports[`NestedList > should render nested list 2`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
           
           <!---->
-        </rk-node>
+        </div>
         
-      </rk-nested-list>
+      </div>
       
       <!---->
-    </rk-node>
-    <rk-node
+    </div>
+    <div
       aria-current="false"
+      aria-disabled="false"
       aria-expanded="true"
       aria-selected="false"
       data-depth="1"
+      data-disabled="false"
+      data-node=""
       data-path="1"
+      data-state="opened"
       role="treeitem"
     >
       <div
-        class="flex flex-row items-center"
+        data-node-content=""
       >
         <!---->
         <icon
@@ -700,7 +782,9 @@ exports[`NestedList > should render nested list 2`] = `
         
         <!---->
          
-        <rk-item>
+        <div
+          data-node-item=""
+        >
           <!---->
           <!---->
           <!---->
@@ -713,23 +797,30 @@ exports[`NestedList > should render nested list 2`] = `
           <!---->
           
           <!---->
-        </rk-item>
+        </div>
       </div>
        
       <!---->
-      <rk-nested-list
-        role="tree"
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
       >
-        <rk-node
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="true"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="1-0"
+          data-state="opened"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -772,7 +863,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -785,23 +878,30 @@ exports[`NestedList > should render nested list 2`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
-          <rk-nested-list
-            role="tree"
+          <div
+            aria-disabled="false"
+            data-disabled="false"
+            data-nested-list-root=""
+            role="group"
           >
-            <rk-node
+            <div
               aria-current="false"
+              aria-disabled="false"
               aria-expanded="false"
               aria-selected="false"
               data-depth="3"
+              data-disabled="false"
+              data-node=""
               data-path="1-0-0"
+              data-state="closed"
               role="treeitem"
             >
               <div
-                class="flex flex-row items-center"
+                data-node-content=""
               >
                 <!---->
                 <span
@@ -852,7 +952,9 @@ exports[`NestedList > should render nested list 2`] = `
                 
                 <!---->
                  
-                <rk-item>
+                <div
+                  data-node-item=""
+                >
                   <!---->
                   <!---->
                   <!---->
@@ -865,28 +967,32 @@ exports[`NestedList > should render nested list 2`] = `
                   <!---->
                   
                   <!---->
-                </rk-item>
+                </div>
               </div>
                
               <!---->
               
               <!---->
-            </rk-node>
+            </div>
             
-          </rk-nested-list>
+          </div>
           
           <!---->
-        </rk-node>
-        <rk-node
+        </div>
+        <div
           aria-current="false"
+          aria-disabled="false"
           aria-expanded="false"
           aria-selected="false"
           data-depth="2"
+          data-disabled="false"
+          data-node=""
           data-path="1-1"
+          data-state="closed"
           role="treeitem"
         >
           <div
-            class="flex flex-row items-center"
+            data-node-content=""
           >
             <!---->
             <span
@@ -921,7 +1027,9 @@ exports[`NestedList > should render nested list 2`] = `
             
             <!---->
              
-            <rk-item>
+            <div
+              data-node-item=""
+            >
               <!---->
               <!---->
               <!---->
@@ -934,20 +1042,20 @@ exports[`NestedList > should render nested list 2`] = `
               <!---->
               
               <!---->
-            </rk-item>
+            </div>
           </div>
            
           <!---->
           
           <!---->
-        </rk-node>
+        </div>
         
-      </rk-nested-list>
+      </div>
       
       <!---->
-    </rk-node>
+    </div>
     
-  </rk-nested-list>
+  </div>
   
 </div>
 `;

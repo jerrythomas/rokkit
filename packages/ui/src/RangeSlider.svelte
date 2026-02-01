@@ -9,11 +9,21 @@
 	 * @property {number} cx      - The current position of the thumb.
 	 * @property {number[]} steps - An array of steps within a range.
 	 * @property {import('d3-scale').ScaleLinear} scale - Scale mapping the thumb's position to its value.
+	 * @property {boolean} [disabled] - Whether the slider is disabled.
 	 */
 	/** @type {Props} */
-	let { min = 0, max = 100, value = $bindable(), cx = $bindable(), steps = [], scale } = $props()
+	let {
+		min = 0,
+		max = 100,
+		value = $bindable(),
+		cx = $bindable(),
+		steps = [],
+		scale,
+		disabled = false
+	} = $props()
 
 	function handlePanMove(event) {
+		if (disabled) return
 		let x = cx + event.detail.dx
 		let limits = [scale.invert(min), scale.invert(max)]
 
@@ -41,6 +51,7 @@
 		}
 	}
 	function handleKeyDown(event) {
+		if (disabled) return
 		if (steps.length === 0) {
 			const offset = (max - min) / 10
 			const step = event.key === 'ArrowLeft' ? -offset : event.key === 'ArrowRight' ? offset : 0
@@ -60,20 +71,38 @@
 	let position = $derived(`${cx}px`)
 </script>
 
-<rk-thumb
-	class="absolute -top-1 box-border h-4 w-4 cursor-pointer"
+<div
+	data-range-thumb
 	style:left={position}
-	class:sliding
-	tabindex="0"
-	onfocus={() => (sliding = true)}
+	data-sliding={sliding}
+	data-disabled={disabled}
+	tabindex={disabled ? -1 : 0}
+	onfocus={() => !disabled && (sliding = true)}
 	onblur={() => (sliding = false)}
 	use:pannable
 	onpanmove={handlePanMove}
-	onpanstart={() => (sliding = true)}
+	onpanstart={() => !disabled && (sliding = true)}
 	onpanend={handlePanEnd}
 	onkeydown={handleKeyDown}
 	role="slider"
 	aria-valuenow={value}
 	aria-valuemin={min}
 	aria-valuemax={max}
-></rk-thumb>
+	aria-disabled={disabled}
+></div>
+
+<style>
+	[data-range-thumb] {
+		position: absolute;
+		top: -0.25rem;
+		box-sizing: border-box;
+		height: 1rem;
+		width: 1rem;
+		cursor: pointer;
+	}
+	[data-range-thumb][data-disabled='true'] {
+		pointer-events: none;
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+</style>

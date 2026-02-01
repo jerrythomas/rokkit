@@ -1,0 +1,36 @@
+/* Switch - Base Structure */
+
+[data-switch-root] {
+  @apply flex cursor-pointer select-none items-center;
+}
+
+[data-switch-root][data-disabled='true'],
+[data-switch-root][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-switch-thumb] {
+  @apply flex items-center justify-center;
+}
+
+[data-switch-item] {
+  @apply flex cursor-pointer items-center justify-center;
+}
+
+[data-switch-item][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed;
+}
+
+/* Legacy custom element support */
+rk-switch {
+  @apply flex cursor-pointer select-none items-center;
+}
+
+rk-switch[aria-disabled='true'],
+rk-switch[data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+rk-switch rk-item {
+  @apply flex cursor-pointer items-center justify-center;
+}

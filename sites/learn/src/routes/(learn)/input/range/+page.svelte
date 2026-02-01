@@ -1,9 +1,11 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 </script>
 
 <article data-article-root>
+	<ApiDocsLink component="range" />
 	<h1>Introduction</h1>
 	<p>
 		Range input can be used to select a value between two values. The value can be changed by using

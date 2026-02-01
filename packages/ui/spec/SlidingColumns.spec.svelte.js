@@ -5,6 +5,9 @@ import { flushSync, tick } from 'svelte'
 import '@rokkit/helpers/mocks'
 
 describe('SlidingColumns', () => {
+	const ROOT_ELEMENT = '[data-sliding-columns-root]'
+	const SEGMENT = '[data-sliding-segment]'
+
 	it('should render correctly', () => {
 		const props = $state({
 			columns: ['Column 1', 'Column 2', 'Column 3']
@@ -23,14 +26,14 @@ describe('SlidingColumns', () => {
 			activeIndex: 1
 		})
 		const { container } = render(SlidingColumns, { props })
-		const root = container.querySelector('rk-container')
+		const root = container.querySelector(ROOT_ELEMENT)
 
 		expect(container).toMatchSnapshot()
-		expect(container.querySelector('rk-segment').textContent).toEqual('Column 2')
+		expect(container.querySelector(SEGMENT).textContent).toEqual('Column 2')
 		fireEvent.keyUp(root, { key: 'ArrowRight' })
 		await tick()
 		expect(container).toMatchSnapshot()
-		expect(container.querySelector('rk-segment').textContent).toEqual('Column 3')
+		expect(container.querySelector(SEGMENT).textContent).toEqual('Column 3')
 	})
 
 	it('should navigate to the previous column', async () => {
@@ -39,7 +42,7 @@ describe('SlidingColumns', () => {
 			activeIndex: 1
 		})
 		const { container } = render(SlidingColumns, { props })
-		const root = container.querySelector('rk-container')
+		const root = container.querySelector(ROOT_ELEMENT)
 
 		expect(container).toMatchSnapshot()
 		fireEvent.keyUp(root, { key: 'ArrowLeft' })

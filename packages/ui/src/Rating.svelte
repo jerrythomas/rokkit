@@ -65,31 +65,33 @@
 	let stars = $derived([...Array(max).keys()].map((i) => i < value))
 </script>
 
-<rk-rating
+<div
+	data-rating-root
 	{id}
-	class="flex cursor-pointer select-none"
-	class:disabled
 	{tabindex}
 	role="radiogroup"
+	aria-disabled={disabled}
+	data-disabled={disabled}
 	onkeydown={handleKeyDown}
 >
 	{#if name}
-		<input {name} hidden type="number" bind:value min={0} {max} readOnly={disabled} />
+		<input {name} hidden type="number" bind:value min={0} {max} {disabled} />
 	{/if}
 	{#each stars as selected, index (index)}
 		{@const stateIcon = selected ? stateIcons.filled : stateIcons.empty}
 		{@const label = [placeholder, index + 1, 'out of', max].join(' ')}
-		<Icon
-			name={stateIcon}
-			{label}
-			role="option"
-			{disabled}
-			checked={index < value}
-			class={index <= hoverIndex ? 'hovering' : ''}
-			onmouseenter={() => handleEnter(index)}
-			onmouseleave={handleLeave}
-			onclick={() => handleClick(index)}
-			tabindex="-1"
-		/>
+		<span data-rating-item data-selected={selected} data-hovering={index <= hoverIndex}>
+			<Icon
+				name={stateIcon}
+				{label}
+				role="option"
+				{disabled}
+				checked={index < value}
+				onmouseenter={() => handleEnter(index)}
+				onmouseleave={handleLeave}
+				onclick={() => handleClick(index)}
+				tabindex="-1"
+			/>
+		</span>
 	{/each}
-</rk-rating>
+</div>

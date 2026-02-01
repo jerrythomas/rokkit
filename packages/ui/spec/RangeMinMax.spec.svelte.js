@@ -5,8 +5,8 @@ import RangeMinMax from '../src/RangeMinMax.svelte'
 import '@rokkit/helpers/mocks'
 
 describe('RangeMinMax.svelte', () => {
-	const ROOT_ELEMENT = 'rk-input-range'
-	const SLIDER_ELEMENT = 'rk-thumb'
+	const ROOT_ELEMENT = '[data-range-root]'
+	const SLIDER_ELEMENT = '[data-range-thumb]'
 
 	beforeEach(() => cleanup())
 	it('should render', () => {

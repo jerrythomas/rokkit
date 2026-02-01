@@ -2,20 +2,26 @@
 
 exports[`Node > should render 1`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -28,31 +34,37 @@ exports[`Node > should render 1`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render 2`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -65,27 +77,31 @@ exports[`Node > should render 2`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render as a sibling 1`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -105,7 +121,9 @@ exports[`Node > should render as a sibling 1`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -118,27 +136,31 @@ exports[`Node > should render as a sibling 1`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render as last sibling 1`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="3"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -160,7 +182,9 @@ exports[`Node > should render as last sibling 1`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -173,27 +197,31 @@ exports[`Node > should render as last sibling 1`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render having child 1`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="2"
+    data-disabled="false"
+    data-node=""
     data-path="0-0"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -233,7 +261,9 @@ exports[`Node > should render having child 1`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -246,27 +276,31 @@ exports[`Node > should render having child 1`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render with different states 1`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -309,7 +343,9 @@ exports[`Node > should render with different states 1`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -322,27 +358,31 @@ exports[`Node > should render with different states 1`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render with different states 2`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="true"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="opened"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -385,7 +425,9 @@ exports[`Node > should render with different states 2`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -398,27 +440,31 @@ exports[`Node > should render with different states 2`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render with different states 3`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="true"
     aria-selected="true"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="opened"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -461,7 +507,9 @@ exports[`Node > should render with different states 3`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -474,27 +522,31 @@ exports[`Node > should render with different states 3`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render with different states 4`] = `
 <div>
-  <rk-node
+  <div
     aria-current="true"
+    aria-disabled="false"
     aria-expanded="true"
     aria-selected="true"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="opened"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -537,7 +589,9 @@ exports[`Node > should render with different states 4`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -550,27 +604,31 @@ exports[`Node > should render with different states 4`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;
 
 exports[`Node > should render with icon 1`] = `
 <div>
-  <rk-node
+  <div
     aria-current="false"
+    aria-disabled="false"
     aria-expanded="false"
     aria-selected="false"
     data-depth="1"
+    data-disabled="false"
+    data-node=""
     data-path="0"
+    data-state="closed"
     role="treeitem"
   >
     <div
-      class="flex flex-row items-center"
+      data-node-content=""
     >
       <!---->
       <span
@@ -613,7 +671,9 @@ exports[`Node > should render with icon 1`] = `
       
       <!---->
        
-      <rk-item>
+      <div
+        data-node-item=""
+      >
         <!---->
         <!---->
         <!---->
@@ -626,11 +686,11 @@ exports[`Node > should render with icon 1`] = `
         <!---->
         
         <!---->
-      </rk-item>
+      </div>
     </div>
      
     <!---->
-  </rk-node>
+  </div>
   
 </div>
 `;

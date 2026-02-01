@@ -22,8 +22,11 @@
 		<div class="text-md flex flex-col gap-6 text-justify font-thin xl:gap-8">
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>
-			<span class="flex text-xl">
+			<span class="flex gap-4 text-xl">
 				<a data-button-root data-primary href="/welcome/introduction"> Get Started </a>
+				<a data-button-root href="/docs/llms.txt" target="_blank" rel="noopener">
+					API Docs (llms.txt)
+				</a>
 			</span>
 		</div>
 	</div>

@@ -4,7 +4,7 @@ import { flushSync, tick } from 'svelte'
 import CheckBox from '../src/CheckBox.svelte'
 
 describe('CheckBox', () => {
-	const ROOT_ELEMENT = 'rk-checkbox'
+	const ROOT_ELEMENT = '[data-checkbox-root]'
 	beforeEach(() => cleanup())
 
 	it('should render checkbox', () => {
@@ -42,10 +42,10 @@ describe('CheckBox', () => {
 	})
 
 	it('should render checkbox with disabled state', () => {
-		const { container } = render(CheckBox, { name: 'test', readOnly: true })
+		const { container } = render(CheckBox, { name: 'test', disabled: true })
 		const checkbox = container.querySelector(ROOT_ELEMENT)
 
-		expect(Array.from(checkbox.classList)).toContain('disabled')
+		expect(checkbox.getAttribute('data-disabled')).toBe('true')
 		expect(checkbox.getAttribute('aria-disabled')).toBe('true')
 	})
 
@@ -65,7 +65,7 @@ describe('CheckBox', () => {
 	it('should handle clicks without changing value when disabled', async () => {
 		const props = $state({
 			name: 'test',
-			readOnly: true
+			disabled: true
 		})
 		const { container } = render(CheckBox, { props })
 		const checkbox = container.querySelector(ROOT_ELEMENT)
@@ -76,7 +76,7 @@ describe('CheckBox', () => {
 		await tick()
 		expect(checkbox.getAttribute('aria-checked')).toBe('unchecked')
 
-		props.readOnly = false
+		props.disabled = false
 		flushSync()
 		await fireEvent.click(checkbox)
 		await tick()

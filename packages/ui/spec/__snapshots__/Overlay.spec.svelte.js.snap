@@ -2,77 +2,82 @@
 
 exports[`Overlay > should close when clicked outside 1`] = `
 <div>
-  <rk-overlay
+  <div
     aria-hidden="true"
-    class="absolute left-0 top-0 h-screen w-screen z-1"
+    data-dismissed="false"
+    data-overlay-root=""
     role="presentation"
   >
     <p>
       This is a static content component.
     </p>
     <!---->
-  </rk-overlay>
+  </div>
   
 </div>
 `;
 
 exports[`Overlay > should close when clicked outside 2`] = `
 <div>
-  <rk-overlay
+  <div
     aria-hidden="true"
-    class="absolute left-0 top-0 h-screen w-screen display-none"
+    data-dismissed="true"
+    data-overlay-root=""
     role="presentation"
   >
     <p>
       This is a static content component.
     </p>
     <!---->
-  </rk-overlay>
+  </div>
   
 </div>
 `;
 
 exports[`Overlay > should close when escape key is pressed 1`] = `
 <div>
-  <rk-overlay
+  <div
     aria-hidden="true"
-    class="absolute left-0 top-0 h-screen w-screen z-1"
+    data-dismissed="false"
+    data-overlay-root=""
     role="presentation"
   >
     <p>
       This is a static content component.
     </p>
     <!---->
-  </rk-overlay>
+  </div>
   
 </div>
 `;
 
 exports[`Overlay > should close when escape key is pressed 2`] = `
 <div>
-  <rk-overlay
+  <div
     aria-hidden="true"
-    class="absolute left-0 top-0 h-screen w-screen display-none"
+    data-dismissed="true"
+    data-overlay-root=""
     role="presentation"
   >
     <p>
       This is a static content component.
     </p>
     <!---->
-  </rk-overlay>
+  </div>
   
 </div>
 `;
 
 exports[`Overlay > should render empty 1`] = `
 <div>
-  <rk-overlay
+  <div
     aria-hidden="true"
-    class="absolute left-0 top-0 h-screen w-screen z-1"
+    data-dismissed="false"
+    data-overlay-root=""
     role="presentation"
   >
     <!---->
-  </rk-overlay>
+  </div>
   
 </div>
 `;

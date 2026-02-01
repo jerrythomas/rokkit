@@ -2,10 +2,10 @@
 	let { text = null, type = 'error', children } = $props()
 </script>
 
-<rk-message class={type}>
+<div data-message-root data-type={type} role="alert">
 	{#if children}
 		{@render children()}
 	{:else}
 		{text}
 	{/if}
-</rk-message>
+</div>

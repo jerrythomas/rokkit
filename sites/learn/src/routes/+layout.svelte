@@ -39,5 +39,5 @@
 </svelte:head>
 <!-- <ParaglideJS {i18n}> -->
 <Header version={data.app.version} class={headerStyle}></Header>
-{@render children()}
+{@render children?.()}
 <!-- </ParaglideJS> -->

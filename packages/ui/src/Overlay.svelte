@@ -7,15 +7,14 @@
 	}
 </script>
 
-<rk-overlay
-	class="absolute left-0 top-0 h-screen w-screen"
+<div
+	data-overlay-root
 	role="presentation"
-	class:z-1={!dismissed}
-	class:display-none={dismissed}
 	aria-hidden="true"
+	data-dismissed={dismissed}
 	onclick={ondismiss}
 	use:dismissable
 	{ondismiss}
 >
 	{@render children?.()}
-</rk-overlay>
+</div>

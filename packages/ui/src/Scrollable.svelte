@@ -2,6 +2,15 @@
 	let { class: className = '', children } = $props()
 </script>
 
-<rk-scroll class="flex h-full flex-col overflow-scroll {className}">
+<div data-scrollable-root class={className}>
 	{@render children?.()}
-</rk-scroll>
+</div>
+
+<style>
+	[data-scrollable-root] {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		overflow: scroll;
+	}
+</style>

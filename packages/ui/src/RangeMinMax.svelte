@@ -16,6 +16,7 @@
 	 * @property {number} [step]
 	 * @property {number} [ticks]
 	 * @property {number} [labelSkip]
+	 * @property {boolean} [disabled]
 	 */
 
 	/** @type {Props} */
@@ -28,7 +29,8 @@
 		single = false,
 		step = 1,
 		ticks = 10,
-		labelSkip = 0
+		labelSkip = 0,
+		disabled = false
 	} = $props()
 
 	let limits = $state([0, 0])
@@ -49,6 +51,7 @@
 		}
 	}
 	function handleClick(event) {
+		if (disabled) return
 		const distance = [Math.abs(event.detail - value[0]), Math.abs(event.detail - value[1])]
 		const index = single ? 1 : distance[0] < distance[1] ? 0 : 1
 
@@ -71,18 +74,13 @@
 </script>
 
 {#if !Array.isArray(value)}
-	<error>Expected value to be an array</error>
+	<div data-error>Expected value to be an array</div>
 {:else}
-	<rk-input-range class={classes}>
-		<input {name} type="hidden" bind:value />
-		<rk-range-track class="relative grid">
-			<rk-range-track-bar class="relative col-start-2 box-border" bind:clientWidth={width}>
-			</rk-range-track-bar>
-			<rk-selected-bar
-				class="absolute col-start-2"
-				style:left={selectedPos}
-				style:width={selectedWidth}
-			></rk-selected-bar>
+	<div data-range-root class={classes} aria-disabled={disabled} data-disabled={disabled}>
+		<input {name} type="hidden" bind:value {disabled} />
+		<div data-range-track>
+			<div data-range-track-bar bind:clientWidth={width}></div>
+			<div data-range-selected style:left={selectedPos} style:width={selectedWidth}></div>
 			{#if !single}
 				<RangeSlider
 					bind:cx={lower}
@@ -91,6 +89,7 @@
 					{scale}
 					min={limits[0]}
 					max={upper}
+					{disabled}
 				/>
 			{/if}
 			<RangeSlider
@@ -100,22 +99,38 @@
 				{scale}
 				min={lower}
 				max={limits[1]}
+				{disabled}
 			/>
-		</rk-range-track>
+		</div>
 
-		<rk-ticks style:--count={tickItems.length - 1}>
+		<div data-range-ticks style:--count={tickItems.length - 1}>
 			{#each tickItems as { value, label }, index (index)}
-				<RangeTick {label} {value} on:click={handleClick} />
+				<RangeTick {label} {value} {disabled} on:click={handleClick} />
 			{/each}
-		</rk-ticks>
-	</rk-input-range>
+		</div>
+	</div>
 {/if}
 
 <style>
-	rk-range-track {
+	[data-range-track] {
+		display: grid;
 		grid-template-columns: 0.5rem auto 0.5rem;
+		position: relative;
+		margin-top: 0.75rem;
+		height: 0.25rem;
 	}
-	rk-ticks {
+	[data-range-track-bar] {
+		position: relative;
+		grid-column-start: 2;
+		box-sizing: border-box;
+	}
+	[data-range-selected] {
+		position: absolute;
+		grid-column-start: 2;
+		top: 0;
+		bottom: 0;
+	}
+	[data-range-ticks] {
 		display: grid;
 		grid-gap: calc((100% - 1rem * (var(--count) + 1)) / var(--count));
 		grid-template-columns: repeat(var(--count), 1rem) 1rem;

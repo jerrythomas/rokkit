@@ -13,11 +13,11 @@
 	let { class: classes = '', items, icons = defaultStateIcons.badge } = $props()
 </script>
 
-<rk-status-report class={classes}>
+<div data-validation-report-root class={classes} role="status">
 	{#each items as { text, status }, index (index)}
-		<rk-message class={status}>
+		<div data-validation-item data-status={status}>
 			<Icon name={icons[status]} />
 			<p>{text}</p>
-		</rk-message>
+		</div>
 	{/each}
-</rk-status-report>
+</div>

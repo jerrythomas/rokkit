@@ -1,0 +1,64 @@
+/* Range - Rokkit Theme */
+
+[data-style='rokkit'] [data-range-root] {
+  @apply text-surface-600;
+}
+
+[data-style='rokkit'] [data-range-track-bar] {
+  @apply bg-surface-z2 border-surface-z3 rounded-full;
+}
+
+[data-style='rokkit'] [data-range-selected] {
+  @apply from-primary to-secondary bg-gradient-to-r;
+}
+
+[data-style='rokkit'] [data-range-thumb] {
+  @apply bg-secondary border-secondary rounded-full border shadow-xl;
+}
+
+[data-style='rokkit'] [data-range-thumb][data-sliding='true']::before {
+  content: '';
+  @apply bg-secondary-400 absolute inset-0 rounded-full opacity-30;
+  transform: scale(2, 2);
+}
+
+[data-style='rokkit'] [data-range-tick] {
+  @apply text-surface-600;
+}
+
+[data-style='rokkit'] [data-tick-bar] {
+  @apply border-surface-600;
+}
+
+[data-style='rokkit'] [data-tick-label] {
+  @apply text-surface-600 leading-tight;
+  font-size: 8px;
+}
+
+/* Bookend variant */
+[data-style='rokkit'] [data-range-root].bookend [data-range-track-bar]::before,
+[data-style='rokkit'] [data-range-root].bookend [data-range-track-bar]::after {
+  content: '';
+  @apply bg-gray-300 w-1px absolute -bottom-2 -top-2 rounded-full;
+}
+
+[data-style='rokkit'] [data-range-root].bookend [data-range-track-bar]::before {
+  @apply -left-1px;
+}
+
+[data-style='rokkit'] [data-range-root].bookend [data-range-track-bar]::after {
+  @apply -right-2px;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-range-root][data-disabled='true'] {
+  @apply text-surface-400;
+}
+
+[data-style='rokkit'] [data-range-root][data-disabled='true'] [data-range-thumb] {
+  @apply bg-surface-400 border-surface-400;
+}
+
+[data-style='rokkit'] [data-range-root][data-disabled='true'] [data-range-selected] {
+  @apply bg-surface-400;
+}

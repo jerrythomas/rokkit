@@ -7,7 +7,7 @@ import { tick } from 'svelte'
 import ResponsiveGrid from '../src/ResponsiveGrid.svelte'
 
 describe('ResponsiveGrid.svelte', () => {
-	const ROOT_ELEMENT = 'rk-container'
+	const ROOT_ELEMENT = '[data-responsive-grid-root]'
 	const items = [
 		{ component: MockItem, props: { value: ' Content for A' } },
 		{ component: MockItem, props: { value: ' Content for B' } },

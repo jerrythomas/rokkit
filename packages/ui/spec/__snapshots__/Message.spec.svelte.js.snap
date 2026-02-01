@@ -2,8 +2,10 @@
 
 exports[`Message.svelte > should render children 1`] = `
 <div>
-  <rk-message
-    class="info"
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
   >
     <!---->
     <p>
@@ -11,15 +13,17 @@ exports[`Message.svelte > should render children 1`] = `
     </p>
     
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render children 2`] = `
 <div>
-  <rk-message
-    class="warning"
+  <div
+    data-message-root=""
+    data-type="warning"
+    role="alert"
   >
     <!---->
     <p>
@@ -27,15 +31,17 @@ exports[`Message.svelte > should render children 2`] = `
     </p>
     
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render children 3`] = `
 <div>
-  <rk-message
-    class="success"
+  <div
+    data-message-root=""
+    data-type="success"
+    role="alert"
   >
     <!---->
     <p>
@@ -43,15 +49,17 @@ exports[`Message.svelte > should render children 3`] = `
     </p>
     
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render children 4`] = `
 <div>
-  <rk-message
-    class="info"
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
   >
     <!---->
     <p>
@@ -59,79 +67,91 @@ exports[`Message.svelte > should render children 4`] = `
     </p>
     
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render empty 1`] = `
 <div>
-  <rk-message
-    class="error"
+  <div
+    data-message-root=""
+    data-type="error"
+    role="alert"
   >
     
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render error message 1`] = `
 <div>
-  <rk-message
-    class="error"
+  <div
+    data-message-root=""
+    data-type="error"
+    role="alert"
   >
     Error
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render error message 2`] = `
 <div>
-  <rk-message
-    class="info"
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
   >
     Info
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render error message 3`] = `
 <div>
-  <rk-message
-    class="warning"
+  <div
+    data-message-root=""
+    data-type="warning"
+    role="alert"
   >
     Warning
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render error message 4`] = `
 <div>
-  <rk-message
-    class="success"
+  <div
+    data-message-root=""
+    data-type="success"
+    role="alert"
   >
     Success
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;
 
 exports[`Message.svelte > should render error message 5`] = `
 <div>
-  <rk-message
-    class="info"
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
   >
     Info
     <!---->
-  </rk-message>
+  </div>
   
 </div>
 `;

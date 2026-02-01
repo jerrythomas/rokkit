@@ -1,0 +1,52 @@
+/* Accordion - Base Structure */
+
+[data-accordion-root] {
+  @apply flex w-full select-none flex-col;
+}
+
+[data-accordion-item] {
+  @apply flex flex-col;
+}
+
+[data-accordion-trigger] {
+  @apply flex w-full flex-shrink-0 cursor-pointer flex-row items-center;
+}
+
+[data-accordion-trigger]:focus {
+  @apply outline-none;
+}
+
+[data-accordion-icon] {
+  @apply flex-shrink-0;
+}
+
+[data-accordion-content] {
+  @apply flex flex-col;
+}
+
+[data-accordion-header],
+[data-accordion-footer] {
+  @apply flex-shrink-0;
+}
+
+[data-accordion-empty] {
+  @apply p-4 text-center;
+}
+
+/* Disabled state */
+[data-accordion-item][data-disabled='true'] {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-accordion-trigger][data-disabled='true'] {
+  @apply cursor-not-allowed;
+}
+
+/* Focus visible for keyboard navigation */
+[data-accordion-root]:focus-visible {
+  @apply outline-none;
+}
+
+[data-accordion-item][aria-current='true'] [data-accordion-trigger] {
+  @apply outline-none;
+}
