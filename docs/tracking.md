@@ -6,8 +6,8 @@
 
 | Metric | Progress | Percentage |
 |--------|----------|------------|
-| Public llms.txt routes created | 3/50+ | ~6% |
-| Design docs consolidated | 2/6 | 33% |
+| Public llms.txt routes created | 9/50+ | ~18% |
+| Design docs consolidated | 6/8 | 75% |
 | Requirements docs | 0/5 | 0% |
 
 ## Public Documentation (sites/learn)
@@ -19,15 +19,18 @@
 | `/llms.txt` | ✅ | Root library overview with component index |
 | `/docs/components/tree/llms.txt` | ✅ | Tree/NestedList component |
 | `/docs/components/form/llms.txt` | ✅ | Forms system |
-| `/docs/components/list/llms.txt` | ❌ | List component |
-| `/docs/components/select/llms.txt` | ❌ | Select component |
-| `/docs/components/tabs/llms.txt` | ❌ | Tabs component |
+| `/docs/components/list/llms.txt` | ✅ | List component |
+| `/docs/components/select/llms.txt` | ✅ | Select component |
+| `/docs/components/tabs/llms.txt` | ✅ | Tabs component |
+| `/docs/components/switch/llms.txt` | ✅ | Switch component |
+| `/docs/components/radiogroup/llms.txt` | ✅ | RadioGroup component |
+| `/docs/components/multiselect/llms.txt` | ✅ | MultiSelect component |
 
 ### Component llms.txt Progress
 
 | Category | Documented | Total | Progress |
 |----------|------------|-------|----------|
-| Selection | 0 | 7 | 0% |
+| Selection | 6 | 7 | 86% |
 | Hierarchical | 1 | 4 | 25% |
 | Form Inputs | 1 | 7 | 14% |
 | Layout | 0 | 6 | 0% |
@@ -86,6 +89,13 @@
 | 2026-01-31 | theme-system-design.md | Created | Consolidated from customizations/ |
 | 2026-01-31 | forms-design.md | Created | Consolidated from forms/ |
 | 2026-01-31 | Old docs folders | Removed | customizations/, features/, properties/, llms/, story/, forms/ |
+| 2026-01-31 | @rokkit/bits-ui | Renamed | To @rokkit/composables |
+| 2026-01-31 | list/llms.txt | Created | List component documentation |
+| 2026-01-31 | select/llms.txt | Created | Select component documentation |
+| 2026-01-31 | tabs/llms.txt | Created | Tabs component documentation |
+| 2026-01-31 | switch/llms.txt | Created | Switch component documentation |
+| 2026-01-31 | radiogroup/llms.txt | Created | RadioGroup component documentation |
+| 2026-01-31 | multiselect/llms.txt | Created | MultiSelect component documentation |
 
 ## Migration Summary
 
@@ -110,10 +120,8 @@
 
 ## Next Actions
 
-1. Create remaining high-priority component llms.txt routes:
-   - `/docs/components/list/llms.txt`
-   - `/docs/components/select/llms.txt`
-   - `/docs/components/tabs/llms.txt`
+1. Create remaining selection component llms.txt:
+   - `/docs/components/pickone/llms.txt` (low priority)
 
 2. Complete design documentation:
    - `docs/design/project-status.md`
@@ -122,6 +130,10 @@
 3. Create requirements documentation:
    - `docs/requirements/component-requirements.md`
    - `docs/requirements/accessibility-requirements.md`
+
+4. Create hierarchical component documentation:
+   - `/docs/components/accordion/llms.txt`
+   - `/docs/components/nestedlist/llms.txt`
 
 ## Notes
 
