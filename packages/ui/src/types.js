@@ -34,7 +34,7 @@
  * Props for components with open/close state (dropdowns, accordions, etc.)
  * @typedef {Object} OpenStateProps
  * @property {boolean} [open] - Whether the component is open
- * @property {'up' | 'down' | 'auto'} [direction] - Direction for dropdown opening
+ * @property {'up' | 'down' | 'auto'} [direction] - Direction for dropdown opening ('auto' detects viewport space)
  */
 
 /**
@@ -143,6 +143,16 @@
  *   onexpand?: (node: any) => void,
  *   oncollapse?: (node: any) => void
  * }} TreeProps
+ */
+
+/**
+ * Panel container component props
+ * @typedef {Object} PanelProps
+ * @property {string} [class] - CSS class names
+ * @property {import('svelte').Snippet} [header] - Header section snippet
+ * @property {import('svelte').Snippet} [body] - Body section snippet
+ * @property {import('svelte').Snippet} [footer] - Footer section snippet
+ * @property {import('svelte').Snippet} [children] - Default slot (used as body if body not provided)
  */
 
 // ============================================

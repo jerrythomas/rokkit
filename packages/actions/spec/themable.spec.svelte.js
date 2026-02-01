@@ -111,7 +111,8 @@ describe('themable', () => {
 				JSON.stringify({
 					style: 'material',
 					mode: 'dark',
-					density: 'comfortable'
+					density: 'comfortable',
+					direction: 'ltr'
 				})
 			)
 
@@ -126,7 +127,8 @@ describe('themable', () => {
 				JSON.stringify({
 					style: 'material',
 					mode: 'light',
-					density: 'comfortable'
+					density: 'comfortable',
+					direction: 'ltr'
 				})
 			)
 
@@ -141,7 +143,8 @@ describe('themable', () => {
 				JSON.stringify({
 					style: 'material',
 					mode: 'light',
-					density: 'compact'
+					density: 'compact',
+					direction: 'ltr'
 				})
 			)
 

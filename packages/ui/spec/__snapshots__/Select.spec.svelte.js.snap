@@ -8,6 +8,7 @@ exports[`Select.svelte > should render string array 1`] = `
     aria-expanded="true"
     aria-label="test"
     class="open"
+    data-direction="down"
     data-select="true"
     role="combobox"
     tabindex="0"
@@ -48,8 +49,10 @@ exports[`Select.svelte > should render string array 1`] = `
       <!---->
     </selected-item>
      
+    <!---->
     <scroll
       class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+      data-direction="down"
       style="top: 0px;"
     >
       <!---->
@@ -136,6 +139,7 @@ exports[`Select.svelte > should render string array 1`] = `
       <!---->
       <!---->
     </scroll>
+    
     <!---->
   </input-select>
   

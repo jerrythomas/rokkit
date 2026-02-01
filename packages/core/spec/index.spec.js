@@ -30,6 +30,8 @@ describe('@rokkit/core', () => {
 			'TONE_MAP',
 			'stateIconsFromNames',
 			'defaultStateIcons',
+			'detectDirection',
+			'isRTL',
 			'getClosestAncestorWithAttribute',
 			'noop',
 			'id',

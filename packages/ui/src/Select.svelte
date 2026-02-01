@@ -17,7 +17,7 @@
 		tabindex = 0,
 		disabled = false,
 		open = $bindable(false),
-		direction = 'down',
+		direction = 'auto',
 		searchable = false,
 		searchText = $bindable(''),
 		searchPlaceholder = 'Search...',
@@ -28,10 +28,41 @@
 	} = $props()
 
 	let icons = defaultStateIcons.selector
+	let selectElement = $state(null)
 	let activeItem = $state(null)
 	let searchInput = $state(null)
 	let emitter = createEmitter({ onchange, onselect }, ['select', 'change'])
 	let fm = $derived(new FieldMapper(fields))
+
+	/**
+	 * Calculate the effective direction based on viewport space
+	 * @returns {'up' | 'down'}
+	 */
+	function calculateDirection() {
+		if (direction !== 'auto') return direction
+		if (!selectElement) return 'down'
+
+		const rect = selectElement.getBoundingClientRect()
+		const viewportHeight = window.innerHeight
+		const spaceBelow = viewportHeight - rect.bottom
+		const spaceAbove = rect.top
+
+		// Prefer down unless there's significantly more space above
+		// Use 200px as threshold for dropdown height
+		const dropdownHeight = 200
+		if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+			return 'up'
+		}
+		return 'down'
+	}
+
+	let effectiveDirection = $state('down')
+
+	$effect(() => {
+		if (open) {
+			effectiveDirection = calculateDirection()
+		}
+	})
 
 	/**
 	 * Default filter function
@@ -105,7 +136,6 @@
 		if (!disabled) {
 			open = !open
 			if (open && searchable && searchInput) {
-				// Focus search input when opening
 				setTimeout(() => searchInput?.focus(), 0)
 			}
 		}
@@ -117,11 +147,9 @@
 	}
 
 	function handleSearchKeydown(event) {
-		// Allow navigation keys to pass through to the navigable action
 		if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {
 			return
 		}
-		// Stop propagation for typing
 		event.stopPropagation()
 	}
 
@@ -129,8 +157,10 @@
 </script>
 
 <input-select
+	bind:this={selectElement}
 	data-select
 	data-searchable={searchable || undefined}
+	data-direction={effectiveDirection}
 	class={className}
 	class:open
 	{tabindex}
@@ -172,7 +202,7 @@
 		/>
 	</selected-item>
 	{#if open}
-		<Slider top={offsetTop}>
+		<Slider top={offsetTop} direction={effectiveDirection}>
 			{#if searchable}
 				<div data-select-search>
 					<input

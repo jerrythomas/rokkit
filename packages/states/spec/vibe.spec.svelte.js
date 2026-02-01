@@ -15,6 +15,8 @@ describe('vibe', () => {
 		expect(vibe.style).toEqual('rokkit')
 		expect(vibe.mode).toEqual('dark')
 		expect(vibe.density).toEqual('comfortable')
+		expect(vibe.direction).toEqual('ltr')
+		expect(vibe.isRTL).toEqual(false)
 		expect(vibe.palette).toEqual(themeRules())
 	})
 
@@ -99,7 +101,8 @@ describe('vibe', () => {
 		vibe.update({
 			style: 'minimal',
 			mode: 'light',
-			density: 'compact'
+			density: 'compact',
+			direction: 'ltr'
 		})
 		flushSync()
 
@@ -109,7 +112,8 @@ describe('vibe', () => {
 		expect(stored).toEqual({
 			style: 'minimal',
 			mode: 'light',
-			density: 'compact'
+			density: 'compact',
+			direction: 'ltr'
 		})
 	})
 

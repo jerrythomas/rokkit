@@ -2,6 +2,53 @@ import { has, isNil } from 'ramda'
 import { DATA_IMAGE_REGEX } from './constants'
 
 let idCounter = 0
+
+/**
+ * RTL language codes (ISO 639-1)
+ * @type {string[]}
+ */
+const RTL_LANGUAGES = [
+	'ar', // Arabic
+	'he', // Hebrew
+	'fa', // Persian/Farsi
+	'ur', // Urdu
+	'yi', // Yiddish
+	'ps', // Pashto
+	'sd', // Sindhi
+	'ug', // Uyghur
+	'ku', // Kurdish (Sorani)
+	'dv' // Divehi/Maldivian
+]
+
+/**
+ * Detects text direction based on HTML lang attribute
+ * @returns {'ltr' | 'rtl'}
+ */
+export function detectDirection() {
+	if (typeof document === 'undefined') return 'ltr'
+
+	// Check dir attribute first (explicit override)
+	const htmlDir = document.documentElement.getAttribute('dir')
+	if (htmlDir === 'rtl' || htmlDir === 'ltr') return htmlDir
+
+	// Detect from lang attribute
+	const lang = document.documentElement.getAttribute('lang')
+	if (lang) {
+		// Extract primary language code (e.g., 'ar-SA' -> 'ar')
+		const primaryLang = lang.split('-')[0].toLowerCase()
+		if (RTL_LANGUAGES.includes(primaryLang)) return 'rtl'
+	}
+
+	return 'ltr'
+}
+
+/**
+ * Checks if current document direction is RTL
+ * @returns {boolean}
+ */
+export function isRTL() {
+	return detectDirection() === 'rtl'
+}
 /**
  * Finds the closest ancestor of the given element that has the given attribute.
  *

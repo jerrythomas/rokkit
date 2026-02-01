@@ -1,8 +1,9 @@
 /** @typedef {'light' | 'dark'} ThemeMode */
 /** @typedef {'cozy' | 'compact' | 'comfortable'} Density */
+/** @typedef {'ltr' | 'rtl'} Direction */
 
-import { defaultColors, defaultThemeMapping, themeRules } from '@rokkit/core'
-import { DEFAULT_STYLES, VALID_DENSITIES, VALID_MODES } from './constants'
+import { defaultColors, defaultThemeMapping, themeRules, detectDirection } from '@rokkit/core'
+import { DEFAULT_STYLES, VALID_DENSITIES, VALID_MODES, VALID_DIRECTIONS } from './constants'
 import { has } from 'ramda'
 
 /**
@@ -25,6 +26,7 @@ class Vibe {
 	#style = $state('rokkit')
 	#colors = $state(defaultColors)
 	#density = $state('comfortable')
+	#direction = $state(detectDirection())
 	#colorMap = $state(defaultThemeMapping)
 	#palette = $derived.by(() => themeRules(this.#colorMap, this.#colors))
 
@@ -105,6 +107,21 @@ class Vibe {
 		}
 	}
 
+	get direction() {
+		return this.#direction
+	}
+
+	set direction(value) {
+		if (isAllowedValue(value, VALID_DIRECTIONS, this.#direction)) {
+			this.#direction = value
+		}
+	}
+
+	/** @returns {boolean} */
+	get isRTL() {
+		return this.#direction === 'rtl'
+	}
+
 	get palette() {
 		return this.#palette
 	}
@@ -133,7 +150,12 @@ class Vibe {
 		if (!key) throw new Error('Key is required')
 
 		try {
-			const config = { style: this.#style, mode: this.#mode, density: this.#density }
+			const config = {
+				style: this.#style,
+				mode: this.#mode,
+				density: this.#density,
+				direction: this.#direction
+			}
 			localStorage.setItem(key, JSON.stringify(config))
 		} catch (e) {
 			// eslint-disable-next-line no-console
@@ -149,6 +171,15 @@ class Vibe {
 		this.style = value.style
 		this.mode = value.mode
 		this.density = value.density
+		this.direction = value.direction
+	}
+
+	/**
+	 * Re-detect direction from document
+	 * Useful when lang attribute changes dynamically
+	 */
+	detectDirection() {
+		this.#direction = detectDirection()
 	}
 }
 

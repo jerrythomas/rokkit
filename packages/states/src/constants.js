@@ -9,6 +9,7 @@ export const DEFAULT_EVENTS = {
 
 export const VALID_DENSITIES = ['compact', 'comfortable', 'cozy']
 export const VALID_MODES = ['light', 'dark']
+export const VALID_DIRECTIONS = ['ltr', 'rtl']
 /** @type {string[]} */
 export const DEFAULT_STYLES = ['rokkit', 'minimal', 'material']
 

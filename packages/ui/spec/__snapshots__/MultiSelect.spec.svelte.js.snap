@@ -5,6 +5,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
   aria-disabled="false"
   aria-expanded="false"
   aria-label="test"
+  data-direction="down"
   data-select="true"
   role="combobox"
   tabindex="0"
@@ -82,6 +83,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
   aria-expanded="true"
   aria-label="test"
   class="open"
+  data-direction="down"
   data-select="true"
   role="combobox"
   tabindex="0"
@@ -148,8 +150,10 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     <!---->
   </selected-item>
    
+  <!---->
   <scroll
     class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+    data-direction="down"
     style="top: 0px;"
   >
     <!---->
@@ -216,6 +220,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
     <!---->
     <!---->
   </scroll>
+  
   <!---->
 </input-select>
 `;
@@ -227,6 +232,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
   aria-expanded="true"
   aria-label="test"
   class="open"
+  data-direction="down"
   data-select="true"
   role="combobox"
   tabindex="0"
@@ -317,8 +323,10 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     <!---->
   </selected-item>
    
+  <!---->
   <scroll
     class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+    data-direction="down"
     style="top: 0px;"
   >
     <!---->
@@ -365,6 +373,7 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
     <!---->
     <!---->
   </scroll>
+  
   <!---->
 </input-select>
 `;
