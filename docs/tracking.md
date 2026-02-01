@@ -7,8 +7,8 @@
 | Metric | Progress | Percentage |
 |--------|----------|------------|
 | Public llms.txt routes created | 9/50+ | ~18% |
-| Design docs consolidated | 6/8 | 75% |
-| Requirements docs | 0/5 | 0% |
+| Design docs consolidated | 8/8 | 100% |
+| Requirements docs | 1/5 | 20% |
 
 ## Public Documentation (sites/learn)
 
@@ -50,8 +50,8 @@
 | forms-design.md | ✅ | Consolidated from forms/ |
 | navigation-system-design.md | ✅ | Actions/navigation architecture |
 | component-gaps.md | ✅ | Migration issues (TreeTable, Select, MultiSelect) |
-| project-status.md | ❌ | Not started |
-| architecture.md | ❌ | Not started |
+| architecture.md | ✅ | System architecture, data flow, type system |
+| component-approach-pattern.md | ✅ | Reusable component development pattern |
 
 ### Architecture Decision Records
 
@@ -64,7 +64,7 @@
 
 | Document | Status | Notes |
 |----------|--------|-------|
-| component-requirements.md | ❌ | |
+| component-requirements.md | ✅ | Type system, architecture patterns, new features |
 | accessibility-requirements.md | ❌ | |
 | theme-requirements.md | ❌ | |
 | forms-requirements.md | ❌ | |
@@ -96,6 +96,10 @@
 | 2026-01-31 | switch/llms.txt | Created | Switch component documentation |
 | 2026-01-31 | radiogroup/llms.txt | Created | RadioGroup component documentation |
 | 2026-01-31 | multiselect/llms.txt | Created | MultiSelect component documentation |
+| 2026-01-31 | component-requirements.md | Created | Type system, separation of concerns, new features |
+| 2026-01-31 | architecture.md | Created | System architecture, data flow, patterns |
+| 2026-01-31 | component-approach-pattern.md | Created | Reusable development pattern |
+| 2026-01-31 | CLAUDE.md | Updated | Component development workflow |
 
 ## Migration Summary
 
@@ -120,20 +124,29 @@
 
 ## Next Actions
 
-1. Create remaining selection component llms.txt:
-   - `/docs/components/pickone/llms.txt` (low priority)
+1. **Type System Implementation**
+   - Create `packages/ui/src/types.js` with base types
+   - Extract component props to individual `types.js` files
+   - Export types from package index
 
-2. Complete design documentation:
-   - `docs/design/project-status.md`
-   - `docs/design/architecture.md`
+2. **New Components (per requirements)**
+   - `SearchFilter` - Separate filter component
+   - `Panel` - Generic container with header/body/footer
+   - `FloatingActions` - Overlay action menu
 
-3. Create requirements documentation:
-   - `docs/requirements/component-requirements.md`
-   - `docs/requirements/accessibility-requirements.md`
+3. **Component Fixes**
+   - Add dropdown direction support to Select/Dropdown
+   - Fix MultiSelect Svelte 5 migration
+   - Implement RTL auto-detection in vibe store
 
-4. Create hierarchical component documentation:
+4. **Remaining Documentation**
    - `/docs/components/accordion/llms.txt`
    - `/docs/components/nestedlist/llms.txt`
+   - `/docs/components/pickone/llms.txt` (low priority)
+
+5. **Requirements Documentation**
+   - `docs/requirements/accessibility-requirements.md`
+   - `docs/requirements/theme-requirements.md`
 
 ## Notes
 
