@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons, createEmitter } from '@rokkit/core'
+	import { defaultStateIcons, createEmitter, FieldMapper } from '@rokkit/core'
 	import Slider from './Slider.svelte'
 	import Icon from './Icon.svelte'
 	import { dismissable, navigable } from '@rokkit/actions'
@@ -18,6 +18,10 @@
 		disabled = false,
 		open = $bindable(false),
 		direction = 'down',
+		searchable = false,
+		searchText = $bindable(''),
+		searchPlaceholder = 'Search...',
+		filterFn,
 		currentItem,
 		onselect,
 		onchange
@@ -25,11 +29,42 @@
 
 	let icons = defaultStateIcons.selector
 	let activeItem = $state(null)
+	let searchInput = $state(null)
 	let emitter = createEmitter({ onchange, onselect }, ['select', 'change'])
+	let fm = $derived(new FieldMapper(fields))
+
+	/**
+	 * Default filter function
+	 * @param {any} item
+	 * @param {string} text
+	 */
+	function defaultFilter(item, text) {
+		const searchTerm = text.toLowerCase()
+		const textValue = fm.get('text', item)
+		if (textValue) {
+			if (String(textValue).toLowerCase().includes(searchTerm)) return true
+		}
+		const keywords = fm.get('keywords', item)
+		if (keywords) {
+			const keywordStr = Array.isArray(keywords) ? keywords.join(' ') : String(keywords)
+			if (keywordStr.toLowerCase().includes(searchTerm)) return true
+		}
+		return false
+	}
+
+	let filter = $derived(filterFn || defaultFilter)
+
+	let filteredOptions = $derived.by(() => {
+		if (!searchable || !searchText || searchText.trim() === '') {
+			return options
+		}
+		return options.filter((item) => filter(item, searchText))
+	})
 
 	function handleSelect(selectedValue) {
 		value = selectedValue
 		open = false
+		searchText = ''
 		emitter.select(value)
 		emitter.change(value)
 	}
@@ -42,9 +77,9 @@
 		if (!open) {
 			open = true
 		} else {
-			const currentIndex = options.findIndex((opt) => opt === value)
-			if (currentIndex < options.length - 1) {
-				value = options[currentIndex + 1]
+			const currentIndex = filteredOptions.findIndex((opt) => opt === value)
+			if (currentIndex < filteredOptions.length - 1) {
+				value = filteredOptions[currentIndex + 1]
 			}
 		}
 	}
@@ -53,9 +88,9 @@
 		if (!open) {
 			open = true
 		} else {
-			const currentIndex = options.findIndex((opt) => opt === value)
+			const currentIndex = filteredOptions.findIndex((opt) => opt === value)
 			if (currentIndex > 0) {
-				value = options[currentIndex - 1]
+				value = filteredOptions[currentIndex - 1]
 			}
 		}
 	}
@@ -69,11 +104,25 @@
 	function handleToggle() {
 		if (!disabled) {
 			open = !open
+			if (open && searchable && searchInput) {
+				// Focus search input when opening
+				setTimeout(() => searchInput?.focus(), 0)
+			}
 		}
 	}
 
 	function handleDismiss() {
 		open = false
+		searchText = ''
+	}
+
+	function handleSearchKeydown(event) {
+		// Allow navigation keys to pass through to the navigable action
+		if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {
+			return
+		}
+		// Stop propagation for typing
+		event.stopPropagation()
 	}
 
 	let offsetTop = $derived(activeItem?.offsetTop + activeItem?.clientHeight ?? 0)
@@ -81,6 +130,7 @@
 
 <input-select
 	data-select
+	data-searchable={searchable || undefined}
 	class={className}
 	class:open
 	{tabindex}
@@ -123,8 +173,21 @@
 	</selected-item>
 	{#if open}
 		<Slider top={offsetTop}>
+			{#if searchable}
+				<div data-select-search>
+					<input
+						bind:this={searchInput}
+						data-search-input
+						type="search"
+						bind:value={searchText}
+						placeholder={searchPlaceholder}
+						aria-label={searchPlaceholder}
+						onkeydown={handleSearchKeydown}
+					/>
+				</div>
+			{/if}
 			<List
-				items={options}
+				items={filteredOptions}
 				{fields}
 				bind:value
 				onselect={handleListSelect}

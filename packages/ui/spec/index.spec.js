@@ -29,6 +29,7 @@ describe('components', () => {
 			'Toggle',
 			'Switch',
 			'List',
+			'SearchFilter',
 			'Accordion',
 			'Tree',
 			'Tabs',

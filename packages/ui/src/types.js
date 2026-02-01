@@ -38,12 +38,26 @@
  */
 
 /**
- * Props for searchable/filterable components
+ * Props for searchable/filterable components (built-in to Select/MultiSelect)
  * @typedef {Object} SearchableProps
  * @property {boolean} [searchable] - Whether search is enabled
  * @property {string} [searchText] - Current search text
  * @property {string} [searchPlaceholder] - Placeholder for search input
  * @property {(item: any, searchText: string) => boolean} [filterFn] - Custom filter function
+ */
+
+/**
+ * SearchFilter component props (standalone filter for List/Tree)
+ * @typedef {Object} SearchFilterProps
+ * @property {string} [class] - CSS class names
+ * @property {any[]} [items] - Input data array to filter
+ * @property {any[]} [filtered] - Output filtered array (bindable)
+ * @property {FieldMapping} [fields] - Field mapping configuration
+ * @property {string} [searchText] - Current search text (bindable)
+ * @property {string} [placeholder] - Placeholder text for search input
+ * @property {(item: any, searchText: string) => boolean} [filterFn] - Custom filter function
+ * @property {boolean} [caseSensitive] - Whether search is case sensitive
+ * @property {import('svelte').Snippet} [children] - Child content (usually List/Tree)
  */
 
 /**
@@ -86,14 +100,14 @@
 
 /**
  * Full Select component props
- * @typedef {DataSelectionProps & SelectionEventHandlers & PlaceholderProps & OpenStateProps & {
+ * @typedef {DataSelectionProps & SelectionEventHandlers & PlaceholderProps & OpenStateProps & SearchableProps & {
  *   currentItem?: import('svelte').Snippet<[any, FieldMapping]>
  * }} SelectProps
  */
 
 /**
  * Full MultiSelect component props
- * @typedef {DataSelectionProps & SelectionEventHandlers & PlaceholderProps & {
+ * @typedef {DataSelectionProps & SelectionEventHandlers & PlaceholderProps & SearchableProps & {
  *   value?: any[],
  *   onremove?: (item: any) => void
  * }} MultiSelectProps

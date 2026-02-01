@@ -13,6 +13,10 @@
 		placeholder = '',
 		tabindex = 0,
 		disabled = false,
+		searchable = false,
+		searchText = $bindable(''),
+		searchPlaceholder = 'Search...',
+		filterFn,
 		onselect,
 		onchange,
 		onremove
@@ -47,6 +51,10 @@
 		{placeholder}
 		{tabindex}
 		{disabled}
+		{searchable}
+		bind:searchText
+		{searchPlaceholder}
+		{filterFn}
 	>
 		{#snippet currentItem()}
 			{#if value.length > 0}
