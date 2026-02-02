@@ -42,7 +42,6 @@ describe('@rokkit/core', () => {
 			'getKeyFromPath',
 			'getPathFromKey',
 			'getSnippet',
-			'importIcons',
 			'hex2rgb',
 			'getImage',
 			'flattenNestedList',

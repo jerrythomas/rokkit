@@ -8,17 +8,12 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { importIcons, shades, defaultPalette } from '@rokkit/core'
+import { shades, defaultPalette } from '@rokkit/core'
+import { iconCollections } from '@rokkit/core/vite'
 import { iconShortcuts, defaultIcons, Theme } from '@rokkit/themes'
+
 const mapping = { surface: 'shark' }
 const theme = new Theme()
-const icons = {
-	rokkit: '@rokkit/icons/ui.json',
-	logo: '@rokkit/icons/auth.json',
-	component: '@rokkit/icons/components.json',
-	app: '@rokkit/icons/app.json',
-	solar: '@iconify-json/solar/icons.json'
-}
 
 const components = [
 	'accordion',
@@ -116,13 +111,14 @@ export default defineConfig({
 		presetWind3(themeConfig),
 		presetTypography(),
 		presetIcons({
-			collections: {
-				...importIcons(icons),
-				file: () =>
-					import('./static/icons/files/icons.json', { with: { type: 'json' } }).then(
-						(i) => i.default
-					)
-			}
+			collections: iconCollections({
+				rokkit: '@rokkit/icons/ui.json',
+				logo: '@rokkit/icons/auth.json',
+				component: '@rokkit/icons/components.json',
+				app: '@rokkit/icons/app.json',
+				solar: '@iconify-json/solar/icons.json',
+				file: './static/icons/files/icons.json'
+			})
 		})
 	],
 	transformers: [transformerDirectives(), transformerVariantGroup()]

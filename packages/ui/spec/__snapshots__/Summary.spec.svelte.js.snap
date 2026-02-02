@@ -6,6 +6,7 @@ exports[`Summary > should render  1`] = `
     aria-disabled="false"
     data-accordion-trigger=""
     data-disabled="false"
+    data-path=""
     role="button"
     tabindex="-1"
   >
@@ -32,6 +33,7 @@ exports[`Summary > should render  2`] = `
     aria-disabled="false"
     data-accordion-trigger=""
     data-disabled="false"
+    data-path=""
     role="button"
     tabindex="-1"
   >
@@ -58,6 +60,7 @@ exports[`Summary > should render using expanded state 1`] = `
     aria-disabled="false"
     data-accordion-trigger=""
     data-disabled="false"
+    data-path=""
     role="button"
     tabindex="-1"
   >
@@ -84,6 +87,7 @@ exports[`Summary > should render using expanded state 2`] = `
     aria-disabled="false"
     data-accordion-trigger=""
     data-disabled="false"
+    data-path=""
     role="button"
     tabindex="-1"
   >

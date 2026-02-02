@@ -65,75 +65,67 @@ exports[`Select.svelte > should render string array 1`] = `
         tabindex="-1"
       >
         <!---->
-         
         <div
-          data-list-body=""
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="0"
+          role="option"
         >
           <!---->
-          <div
-            aria-current="false"
-            aria-selected="false"
-            data-list-item=""
-            data-path="0"
-            role="option"
-          >
-            <!---->
-            <!---->
-            <!---->
-            
-            <!---->
-             
-            <p>
-              a
-            </p>
-            <!---->
-            
-            <!---->
-          </div>
-          <div
-            aria-current="false"
-            aria-selected="false"
-            data-list-item=""
-            data-path="1"
-            role="option"
-          >
-            <!---->
-            <!---->
-            <!---->
-            
-            <!---->
-             
-            <p>
-              b
-            </p>
-            <!---->
-            
-            <!---->
-          </div>
-          <div
-            aria-current="false"
-            aria-selected="false"
-            data-list-item=""
-            data-path="2"
-            role="option"
-          >
-            <!---->
-            <!---->
-            <!---->
-            
-            <!---->
-             
-            <p>
-              c
-            </p>
-            <!---->
-            
-            <!---->
-          </div>
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            a
+          </p>
+          <!---->
           
           <!---->
         </div>
-         
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            b
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="2"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            c
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        
         <!---->
       </div>
       <!---->

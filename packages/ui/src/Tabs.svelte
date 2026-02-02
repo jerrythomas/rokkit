@@ -85,7 +85,9 @@
 		onremove?.(item)
 	}
 	let tabIcons = $derived({ ...pick(['add', 'close'], defaultStateIcons.action), ...icons })
-	let emitter = createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
+	let emitter = $derived(
+		createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
+	)
 	let wrapper = new ListController(options, value, fields)
 
 	$effect(() => wrapper.update(options))

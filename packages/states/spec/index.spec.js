@@ -9,7 +9,8 @@ describe('components', () => {
 			'Proxy',
 			'vibe',
 			'ListController',
-			'NestedController'
+			'NestedController',
+			'messages'
 		])
 	})
 })

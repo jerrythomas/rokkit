@@ -9,7 +9,7 @@
 		square = false
 	} = $props()
 
-	const options = $state([
+	const options = $derived([
 		{ label: labels[0], value: 'light', icon: icons.light },
 		{ label: labels[1], value: 'dark', icon: icons.dark }
 	])

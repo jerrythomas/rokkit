@@ -15,16 +15,16 @@ function scrollFocusedIntoView(container, wrapper) {
 	if (wrapper.focusedKey) {
 		focusedElement = container.querySelector(`[data-path="${wrapper.focusedKey}"]`)
 	}
-	
+
 	// Fallback: find by aria-current
 	if (!focusedElement) {
 		focusedElement = container.querySelector('[aria-current="true"]')
 	}
-	
-	// Scroll into view if element found
-	if (focusedElement) {
-		focusedElement.scrollIntoView({ 
-			behavior: 'smooth', 
+
+	// Scroll into view if element found and method exists (may not exist in test env)
+	if (focusedElement?.scrollIntoView) {
+		focusedElement.scrollIntoView({
+			behavior: 'smooth',
 			block: 'nearest',
 			inline: 'nearest'
 		})

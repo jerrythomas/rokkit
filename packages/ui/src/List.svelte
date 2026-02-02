@@ -1,6 +1,7 @@
 <script>
 	import { createEmitter } from '@rokkit/core'
 	import { navigator } from '@rokkit/actions'
+	import { messages } from '@rokkit/states'
 	import ListBody from './ListBody.svelte'
 	import { ListController } from '@rokkit/states'
 	import { has } from 'ramda'
@@ -15,8 +16,6 @@
 		tabindex = 0,
 		hierarchy = [],
 		multiSelect = false,
-		header,
-		footer,
 		empty,
 		onselect,
 		onchange,
@@ -36,7 +35,9 @@
 		}
 	}
 
-	let emitter = createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
+	let emitter = $derived(
+		createEmitter({ onchange, onmove, onselect }, ['select', 'change', 'move'])
+	)
 	let wrapper = new ListController(items, value, fields, { multiSelect })
 </script>
 
@@ -49,29 +50,23 @@
 	{tabindex}
 	onaction={handleAction}
 >
-	{#if header}
-		<div data-list-header>{@render header()}</div>
-	{/if}
-	<div data-list-body>
-		{#if items.length === 0}
+	{#if items.length === 0}
+		<div data-list-empty>
 			{#if empty}
 				{@render empty()}
 			{:else}
-				<p>No items found.</p>
+				<p>{messages.current.emptyList}</p>
 			{/if}
-		{:else}
-			<ListBody
-				bind:items
-				bind:value
-				{fields}
-				selectedKeys={wrapper.selectedKeys}
-				focusedKey={wrapper.focusedKey}
-				onchange={emitter.change}
-				{snippets}
-			/>
-		{/if}
-	</div>
-	{#if footer}
-		<div data-list-footer>{@render footer()}</div>
+		</div>
+	{:else}
+		<ListBody
+			bind:items
+			bind:value
+			{fields}
+			selectedKeys={wrapper.selectedKeys}
+			focusedKey={wrapper.focusedKey}
+			onchange={emitter.change}
+			{snippets}
+		/>
 	{/if}
 </div>

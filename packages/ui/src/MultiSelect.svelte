@@ -24,7 +24,9 @@
 
 	let mergedFields = $derived({ ...defaultFields, ...fields })
 	let available = $derived(options.filter((item) => !value.includes(item)))
-	let emitter = createEmitter({ onchange, onselect, onremove }, ['select', 'change', 'remove'])
+	let emitter = $derived(
+		createEmitter({ onchange, onselect, onremove }, ['select', 'change', 'remove'])
+	)
 
 	function handleRemove(item) {
 		value = value.filter((v) => v !== item)

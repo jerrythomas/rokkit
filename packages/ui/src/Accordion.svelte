@@ -1,7 +1,7 @@
 <script>
 	import { has } from 'ramda'
 	import { createEmitter, defaultFields, hasChildren } from '@rokkit/core'
-	import { NestedController } from '@rokkit/states'
+	import { NestedController, messages } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import Summary from './Summary.svelte'
 	import ListBody from './ListBody.svelte'
@@ -25,8 +25,6 @@
 		fields = {},
 		autoCloseSiblings = false,
 		multiselect = false,
-		header,
-		footer,
 		empty,
 		oncollapse,
 		onexpand,
@@ -43,6 +41,8 @@
 		createEmitter({ oncollapse, onexpand, onchange, onselect, onmove, ontoggle }, eventNames)
 	)
 
+	// Note: fields, multiselect, autoCloseSiblings are captured at initialization
+	// and won't update reactively - this is intentional for controller configuration
 	let wrapper = new NestedController(items, value, fields, {
 		multiselect,
 		autoCloseSiblings
@@ -72,15 +72,12 @@
 	use:navigator={{ wrapper, nested: true }}
 	onaction={handleAction}
 >
-	{#if header}
-		<div data-accordion-header>{@render header()}</div>
-	{/if}
 	{#if items.length === 0}
 		<div data-accordion-empty role="presentation">
 			{#if empty}
 				{@render empty()}
 			{:else}
-				No items found.
+				{messages.current.emptyList}
 			{/if}
 		</div>
 	{/if}
@@ -92,13 +89,12 @@
 			data-accordion-item
 			class:is-expanded={expanded}
 			class:is-selected={wrapper.selectedKeys.has(key)}
-			data-path={index}
 			data-expanded={expanded}
 			data-disabled={item[derivedFields.disabled] ?? false}
 			aria-expanded={itemHasChildren ? expanded : undefined}
 			aria-disabled={item[derivedFields.disabled] ?? false}
 		>
-			<Summary value={item} {fields} {expanded} hasChildren={itemHasChildren} />
+			<Summary value={item} {fields} {expanded} hasChildren={itemHasChildren} path={key} />
 			{#if expanded && itemHasChildren}
 				<div data-accordion-content role="region">
 					<ListBody
@@ -114,7 +110,4 @@
 			{/if}
 		</div>
 	{/each}
-	{#if footer}
-		<div data-accordion-footer>{@render footer()}</div>
-	{/if}
 </div>

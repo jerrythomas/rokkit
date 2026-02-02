@@ -34,7 +34,9 @@
 	} = $props()
 
 	let limits = $state([0, 0])
+	// eslint-disable-next-line svelte/state-referenced-locally -- intentionally initialized once from props
 	let lower = $state(min)
+	// eslint-disable-next-line svelte/state-referenced-locally -- intentionally initialized once from props
 	let upper = $state(min)
 	let scale = $state()
 	let width = $state()

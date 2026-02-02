@@ -25,6 +25,7 @@
 		labelSkip = 0
 	} = $props()
 
+	// eslint-disable-next-line svelte/state-referenced-locally -- bounds is intentionally initialized once from props
 	let bounds = $state([min, value])
 
 	$effect(() => {

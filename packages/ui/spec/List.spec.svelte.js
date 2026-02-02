@@ -29,23 +29,6 @@ describe('List', () => {
 		expect(container).toMatchSnapshot()
 	})
 
-	it('should render with custom header', () => {
-		const props = $state({ items, addheader: true })
-		const { container } = render(CustomList, props)
-		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
-		const element = container.querySelector('[data-list-header]')
-		expect(element.textContent).toEqual('Custom header')
-	})
-
-	it('should render with custom footer', () => {
-		const props = $state({ items, addfooter: true })
-		const { container } = render(CustomList, props)
-		expect(container).toBeTruthy()
-		expect(container).toMatchSnapshot()
-		const element = container.querySelector('[data-list-footer]')
-		expect(element.textContent).toEqual('Custom footer')
-	})
 	it('should render with custom empty', () => {
 		const props = $state({ items: [], addempty: true })
 		const { container } = render(CustomList, props)

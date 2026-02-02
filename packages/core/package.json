@@ -27,6 +27,10 @@
       "types": "./dist/index.d.ts",
       "import": "./src/index.js",
       "svelte": "./src/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite/index.d.ts",
+      "import": "./src/vite/index.js"
     }
   },
   "dependencies": {

@@ -8,19 +8,17 @@ exports[`Accordion > should render accordion 1`] = `
   >
     <!---->
      
-    <!---->
-     
     <div
       aria-disabled="false"
       data-accordion-item=""
       data-disabled="false"
-      data-path="0"
     >
       <div
         aria-disabled="false"
         aria-expanded="false"
         data-accordion-trigger=""
         data-disabled="false"
+        data-path="0"
         role="button"
         tabindex="-1"
       >
@@ -39,9 +37,22 @@ exports[`Accordion > should render accordion 1`] = `
           data-accordion-icon=""
         >
           <icon
-            aria-hidden="true"
-            class="accordion-closed sm"
-          />
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="accordion-closed"
+            />
+            <!---->
+          </icon>
           <!---->
         </span>
         <!---->
@@ -54,13 +65,13 @@ exports[`Accordion > should render accordion 1`] = `
       aria-disabled="false"
       data-accordion-item=""
       data-disabled="false"
-      data-path="1"
     >
       <div
         aria-disabled="false"
         aria-expanded="false"
         data-accordion-trigger=""
         data-disabled="false"
+        data-path="1"
         role="button"
         tabindex="-1"
       >
@@ -79,9 +90,22 @@ exports[`Accordion > should render accordion 1`] = `
           data-accordion-icon=""
         >
           <icon
-            aria-hidden="true"
-            class="accordion-closed sm"
-          />
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="accordion-closed"
+            />
+            <!---->
+          </icon>
           <!---->
         </span>
         <!---->
@@ -90,8 +114,6 @@ exports[`Accordion > should render accordion 1`] = `
        
       <!---->
     </div>
-    <!---->
-     
     <!---->
   </div>
   
@@ -107,19 +129,17 @@ exports[`Accordion > should render accordion 2`] = `
   >
     <!---->
      
-    <!---->
-     
     <div
       aria-disabled="false"
       data-accordion-item=""
       data-disabled="false"
-      data-path="0"
     >
       <div
         aria-disabled="false"
         aria-expanded="false"
         data-accordion-trigger=""
         data-disabled="false"
+        data-path="0"
         role="button"
         tabindex="-1"
       >
@@ -138,9 +158,22 @@ exports[`Accordion > should render accordion 2`] = `
           data-accordion-icon=""
         >
           <icon
-            aria-hidden="true"
-            class="accordion-closed sm"
-          />
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="accordion-closed"
+            />
+            <!---->
+          </icon>
           <!---->
         </span>
         <!---->
@@ -153,13 +186,13 @@ exports[`Accordion > should render accordion 2`] = `
       aria-disabled="false"
       data-accordion-item=""
       data-disabled="false"
-      data-path="1"
     >
       <div
         aria-disabled="false"
         aria-expanded="false"
         data-accordion-trigger=""
         data-disabled="false"
+        data-path="1"
         role="button"
         tabindex="-1"
       >
@@ -178,9 +211,22 @@ exports[`Accordion > should render accordion 2`] = `
           data-accordion-icon=""
         >
           <icon
-            aria-hidden="true"
-            class="accordion-closed sm"
-          />
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="accordion-closed"
+            />
+            <!---->
+          </icon>
           <!---->
         </span>
         <!---->
@@ -189,8 +235,6 @@ exports[`Accordion > should render accordion 2`] = `
        
       <!---->
     </div>
-    <!---->
-     
     <!---->
   </div>
   

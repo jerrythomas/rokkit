@@ -22,12 +22,14 @@
 	} = $props()
 
 	let fm = $derived(new FieldMapper(fields))
-	let emitter = createEmitter({ onselect, onchange, onexpand, oncollapse }, [
-		'select',
-		'change',
-		'expand',
-		'collapse'
-	])
+	let emitter = $derived(
+		createEmitter({ onselect, onchange, onexpand, oncollapse }, [
+			'select',
+			'change',
+			'expand',
+			'collapse'
+		])
+	)
 
 	// Find the hierarchy column (column with path: true or hierarchy: true)
 	let hierarchyColumn = $derived(columns.find((col) => col.hierarchy || col.path))

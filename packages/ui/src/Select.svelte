@@ -31,7 +31,7 @@
 	let selectElement = $state(null)
 	let activeItem = $state(null)
 	let searchInput = $state(null)
-	let emitter = createEmitter({ onchange, onselect }, ['select', 'change'])
+	let emitter = $derived(createEmitter({ onchange, onselect }, ['select', 'change']))
 	let fm = $derived(new FieldMapper(fields))
 
 	/**

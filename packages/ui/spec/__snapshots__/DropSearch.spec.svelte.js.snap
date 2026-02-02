@@ -65,75 +65,67 @@ exports[`DropSearch.svelte > should render 1`] = `
         tabindex="-1"
       >
         <!---->
-         
         <div
-          data-list-body=""
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="0"
+          role="option"
         >
           <!---->
-          <div
-            aria-current="false"
-            aria-selected="false"
-            data-list-item=""
-            data-path="0"
-            role="option"
-          >
-            <!---->
-            <!---->
-            <!---->
-            
-            <!---->
-             
-            <p>
-              1
-            </p>
-            <!---->
-            
-            <!---->
-          </div>
-          <div
-            aria-current="false"
-            aria-selected="false"
-            data-list-item=""
-            data-path="1"
-            role="option"
-          >
-            <!---->
-            <!---->
-            <!---->
-            
-            <!---->
-             
-            <p>
-              2
-            </p>
-            <!---->
-            
-            <!---->
-          </div>
-          <div
-            aria-current="false"
-            aria-selected="false"
-            data-list-item=""
-            data-path="2"
-            role="option"
-          >
-            <!---->
-            <!---->
-            <!---->
-            
-            <!---->
-             
-            <p>
-              3
-            </p>
-            <!---->
-            
-            <!---->
-          </div>
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            1
+          </p>
+          <!---->
           
           <!---->
         </div>
-         
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            2
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="2"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            3
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        
         <!---->
       </div>
       <!---->

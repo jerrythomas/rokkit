@@ -2,7 +2,7 @@
 	import { Proxy } from '@rokkit/states'
 	let { class: classNames = '', value = $bindable(), fields, child, children, onClick } = $props()
 
-	const proxy = $state(new Proxy(value, fields))
+	const proxy = $derived(new Proxy(value, fields))
 	const childSnippet = $derived(child ?? defaultChild)
 	const href = $derived(proxy.get('href'))
 

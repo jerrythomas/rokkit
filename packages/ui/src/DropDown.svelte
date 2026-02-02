@@ -9,8 +9,8 @@
 	let {
 		class: className,
 		options = [],
-		fields = defaultFields,
-		using = { default: Item },
+		fields: fieldsIn = {},
+		using: usingIn = {},
 		value = null,
 		title = null,
 		icon = null,
@@ -18,8 +18,8 @@
 		disabled = false
 	} = $props()
 
-	using = { default: Item, ...using }
-	fields = { ...defaultFields, ...fields }
+	let using = $derived({ default: Item, ...usingIn })
+	let fields = $derived({ ...defaultFields, ...fieldsIn })
 
 	let offsetTop = $state(0)
 	let open = $state(false)

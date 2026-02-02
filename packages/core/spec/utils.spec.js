@@ -11,7 +11,6 @@ import {
 	getPathFromKey,
 	getSnippet,
 	getImage,
-	importIcons,
 	hex2rgb
 } from '../src/utils.js'
 
@@ -225,27 +224,6 @@ describe('utils', () => {
 
 			// Restore original URL
 			global.URL = originalURL
-		})
-	})
-
-	describe('importIcons', () => {
-		it('should return empty object when icons is null or undefined', () => {
-			expect(importIcons(null)).toEqual({})
-			expect(importIcons(undefined)).toEqual({})
-		})
-
-		it('should create import functions for each icon collection', () => {
-			const icons = {
-				heroicons: '/path/to/heroicons.json',
-				feather: '/path/to/feather.json'
-			}
-
-			const result = importIcons(icons)
-
-			expect(result).toHaveProperty('heroicons')
-			expect(result).toHaveProperty('feather')
-			expect(typeof result.heroicons).toBe('function')
-			expect(typeof result.feather).toBe('function')
 		})
 	})
 

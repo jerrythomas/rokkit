@@ -170,22 +170,6 @@ export function getSnippet(obj, key, defaultSnippet = null) {
 }
 
 /**
- * Creates a collection of icon import functions based on an icons dictionary
- *
- * @param {Object} icons - Dictionary mapping collection names to file paths
- * @returns {Object} Collections object with functions that dynamically import icon files
- */
-export const importIcons = (icons) => {
-	if (!icons) return {}
-
-	return Object.entries(icons).reduce((acc, [key, value]) => {
-		acc[key] = () =>
-			import(/* @vite-ignore */ value, { with: { type: 'json' } }).then((i) => i.default)
-		return acc
-	}, {})
-}
-
-/**
  * convert hex string to `{r} {g} {b}`
  * @param {string} hex
  * @return {string}

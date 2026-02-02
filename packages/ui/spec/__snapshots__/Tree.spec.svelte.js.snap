@@ -11,8 +11,6 @@ exports[`Tree > should render nested list 1`] = `
   >
     <!---->
      
-    <!---->
-     
     <div
       aria-disabled="false"
       data-disabled="false"
@@ -137,8 +135,6 @@ exports[`Tree > should render nested list 1`] = `
       </div>
       
     </div>
-    <!---->
-     
     <!---->
   </div>
   
@@ -157,8 +153,6 @@ exports[`Tree > should render nested list 2`] = `
   >
     <!---->
      
-    <!---->
-     
     <div
       aria-disabled="false"
       data-disabled="false"
@@ -283,8 +277,6 @@ exports[`Tree > should render nested list 2`] = `
       </div>
       
     </div>
-    <!---->
-     
     <!---->
   </div>
   

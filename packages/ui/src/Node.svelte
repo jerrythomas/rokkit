@@ -42,7 +42,7 @@
 		expanded ? { icon: icons.opened, label: 'collapse' } : { icon: icons.closed, label: 'expand' }
 	)
 
-	const template = getSnippet(value[fields.snippet], snippets, stub)
+	let template = $derived(getSnippet(value[fields.snippet], snippets, stub))
 </script>
 
 <div

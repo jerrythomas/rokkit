@@ -166,55 +166,47 @@ exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
       tabindex="-1"
     >
       <!---->
-       
       <div
-        data-list-body=""
+        aria-current="false"
+        aria-selected="false"
+        data-list-item=""
+        data-path="0"
+        role="option"
       >
         <!---->
-        <div
-          aria-current="false"
-          aria-selected="false"
-          data-list-item=""
-          data-path="0"
-          role="option"
-        >
-          <!---->
-          <!---->
-          <!---->
-          
-          <!---->
-           
-          <p>
-            Two
-          </p>
-          <!---->
-          
-          <!---->
-        </div>
-        <div
-          aria-current="false"
-          aria-selected="false"
-          data-list-item=""
-          data-path="1"
-          role="option"
-        >
-          <!---->
-          <!---->
-          <!---->
-          
-          <!---->
-           
-          <p>
-            Three
-          </p>
-          <!---->
-          
-          <!---->
-        </div>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Two
+        </p>
+        <!---->
         
         <!---->
       </div>
-       
+      <div
+        aria-current="false"
+        aria-selected="false"
+        data-list-item=""
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Three
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+      
       <!---->
     </div>
     <!---->
@@ -339,35 +331,27 @@ exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
       tabindex="-1"
     >
       <!---->
-       
       <div
-        data-list-body=""
+        aria-current="false"
+        aria-selected="false"
+        data-list-item=""
+        data-path="0"
+        role="option"
       >
         <!---->
-        <div
-          aria-current="false"
-          aria-selected="false"
-          data-list-item=""
-          data-path="0"
-          role="option"
-        >
-          <!---->
-          <!---->
-          <!---->
-          
-          <!---->
-           
-          <p>
-            Three
-          </p>
-          <!---->
-          
-          <!---->
-        </div>
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Three
+        </p>
+        <!---->
         
         <!---->
       </div>
-       
+      
       <!---->
     </div>
     <!---->
