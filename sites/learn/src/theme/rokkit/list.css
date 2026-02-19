@@ -1,3 +1,4 @@
+/* List item selected - unfocused state */
 [data-list-item][aria-selected='true'] {
   @apply from-primary-z4 to-secondary-z4 text-surface-z10 bg-gradient-to-r;
 }
@@ -72,8 +73,9 @@
 [data-list-item] p {
   @apply py-0 text-lg;
 }
-[data-list-item][aria-selected='true'] {
-  @apply bg-surface-z3 rounded-md;
+/* List item selected - focused state (when list has focus) */
+[data-list]:focus-within [data-list-item][aria-selected='true'] {
+  @apply from-primary to-secondary on-primary rounded-md bg-gradient-to-r;
 }
 [data-sidebar] {
   @apply bg-surface-z1;
@@ -87,6 +89,12 @@ a[data-command-item] {
   @apply no-underline;
 }
 
+/* Command item selected - unfocused state */
 [data-command-item][data-selected] {
-  @apply text-secondary-z7 hover:text-secondary-z6 bg-surface-z4;
+  @apply from-primary-z4 to-secondary-z4 text-surface-z10 rounded-md bg-gradient-to-r;
+}
+
+/* Command item selected - focused state (when root has focus) */
+[data-command-root]:focus-within [data-command-item][data-selected] {
+  @apply from-primary to-secondary on-primary bg-gradient-to-r;
 }

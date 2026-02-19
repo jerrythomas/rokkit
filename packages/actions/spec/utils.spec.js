@@ -101,5 +101,31 @@ describe('utils', () => {
 
 			expect(getClickAction(event)).toBe('select')
 		})
+
+		it('should return "toggle" when clicked on an accordion trigger', () => {
+			const trigger = document.createElement('div')
+			trigger.setAttribute('data-accordion-trigger', '')
+
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', {
+				get: () => trigger
+			})
+
+			expect(getClickAction(event)).toBe('toggle')
+		})
+
+		it('should return "toggle" when clicked on element inside accordion trigger', () => {
+			const trigger = document.createElement('div')
+			trigger.setAttribute('data-accordion-trigger', '')
+			const child = document.createElement('span')
+			trigger.appendChild(child)
+
+			const event = new MouseEvent('click')
+			Object.defineProperty(event, 'target', {
+				get: () => child
+			})
+
+			expect(getClickAction(event)).toBe('toggle')
+		})
 	})
 })

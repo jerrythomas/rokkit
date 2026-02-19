@@ -9,6 +9,8 @@ import { Proxy } from './proxy.svelte'
  */
 export function flatVisibleNodes(items, fields = defaultFields, path = []) {
 	const data = []
+	if (!items || !Array.isArray(items)) return data
+
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]
 		const key = getKeyFromPath(itemPath)
@@ -38,6 +40,7 @@ export function flatVisibleNodes(items, fields = defaultFields, path = []) {
  */
 export function deriveLookupWithProxy(items, fields = defaultFields, path = []) {
 	const lookup = new Map()
+	if (!items || !Array.isArray(items)) return lookup
 
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]

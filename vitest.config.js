@@ -5,6 +5,12 @@ import path from 'path'
 
 export default defineConfig({
 	plugins: [svelte({ hot: !process.env.VITEST }), svelteTesting()],
+	optimizeDeps: {
+		include: ['bits-ui']
+	},
+	ssr: {
+		noExternal: ['bits-ui']
+	},
 	resolve: {
 		alias: {
 			// Handle $lib alias for sites/learn tests
@@ -17,6 +23,7 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		include: ['**/*.{spec,spec.svelte}.[jt]s'],
+		exclude: ['**/node_modules/**', '**/dist/**', 'archive/**', 'packages/ui/spec/**'],
 		coverage: {
 			all: true,
 			reporter: ['text', 'html', 'lcov', 'json'],

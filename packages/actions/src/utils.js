@@ -92,7 +92,7 @@ export function getPathFromEvent(event) {
 /**
  * Identifies if an element is a collapsible icon
  * @param {HTMLElement} target
- * @returns
+ * @returns {boolean}
  */
 function isNodeToggle(target) {
 	return (
@@ -100,6 +100,29 @@ function isNodeToggle(target) {
 		target.hasAttribute('data-tag-icon') &&
 		['closed', 'opened'].includes(target.getAttribute('data-state'))
 	)
+}
+
+/**
+ * Finds the closest ancestor (or self) that has the given attribute
+ * @param {HTMLElement} element
+ * @param {string} attribute
+ * @returns {HTMLElement|null}
+ */
+function findClosestWithAttribute(element, attribute) {
+	if (!element) return null
+	if (element.hasAttribute && element.hasAttribute(attribute)) return element
+	return findClosestWithAttribute(element.parentElement, attribute)
+}
+
+/**
+ * Identifies if an element or its ancestors is an accordion/tree trigger
+ * @param {HTMLElement} target
+ * @returns {boolean}
+ */
+function isAccordionTrigger(target) {
+	if (!target) return false
+	const trigger = findClosestWithAttribute(target, 'data-accordion-trigger')
+	return trigger !== null
 }
 // getKeyboardAction moved to kbd.js
 
@@ -119,6 +142,11 @@ export const getClickAction = (event) => {
 
 	// Check if clicked on icon with collapsed/expanded state
 	if (isNodeToggle(target) || isNodeToggle(target.parentElement)) {
+		return 'toggle'
+	}
+
+	// Check if clicked on accordion trigger (header area)
+	if (isAccordionTrigger(target)) {
 		return 'toggle'
 	}
 

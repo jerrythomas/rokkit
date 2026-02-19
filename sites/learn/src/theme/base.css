@@ -8,6 +8,7 @@
 @import './base/list.css';
 @import './base/article.css';
 @import './base/tab.css';
+@import './base/accordion.css';
 
 [data-story-root] {
   @apply space-y-8;
