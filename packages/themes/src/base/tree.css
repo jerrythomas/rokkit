@@ -1,46 +1,135 @@
-/* Tree - Base Structure */
+/**
+ * Tree - Base Structural Styles
+ *
+ * These styles provide layout, positioning, and basic structure.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ *
+ * Note: Connector styles are in connector.css
+ */
 
-[data-tree-root] {
-  @apply flex h-full w-full flex-shrink-0 flex-col overflow-auto;
+/* =============================================================================
+   Tree Container
+   ============================================================================= */
+
+[data-tree] {
+  display: flex;
+  flex-direction: column;
 }
 
-[data-tree-root][data-disabled='true'],
-[data-tree-root][aria-disabled='true'] {
-  @apply pointer-events-none cursor-not-allowed opacity-50;
+/* =============================================================================
+   Tree Node
+   ============================================================================= */
+
+[data-tree-node] {
+  display: flex;
+  flex-direction: column;
 }
 
-[data-tree-header],
-[data-tree-footer] {
-  @apply flex-shrink-0;
+[data-tree-node]:focus {
+  outline: none;
 }
 
-[data-tree-empty] {
-  @apply m-auto p-4 text-center;
+[data-tree-node-row] {
+  display: flex;
+  align-items: stretch;
 }
 
-/* Nested List */
-[data-nested-list-root] {
-  @apply flex w-full flex-col;
+/* =============================================================================
+   Tree Toggle Button (Expand/Collapse)
+   ============================================================================= */
+
+[data-tree-toggle-btn] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 150ms ease;
 }
 
-[data-nested-list-root][data-disabled='true'] {
-  @apply pointer-events-none opacity-50;
+/* Size variants for toggle */
+[data-tree][data-size='sm'] [data-tree-toggle-btn] {
+  width: 1rem;
+  height: 1rem;
 }
 
-/* Node */
-[data-node] {
-  @apply flex min-h-5 cursor-pointer select-none flex-col;
+[data-tree][data-size='md'] [data-tree-toggle-btn],
+[data-tree]:not([data-size]) [data-tree-toggle-btn] {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
-[data-node][data-disabled='true'],
-[data-node][aria-disabled='true'] {
-  @apply pointer-events-none cursor-not-allowed opacity-50;
+[data-tree][data-size='lg'] [data-tree-toggle-btn] {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-[data-node-content] {
-  @apply flex items-center;
+/* Toggle icon container */
+[data-tree-toggle] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
-[data-node-item] {
-  @apply flex flex-grow items-center;
+[data-tree-toggle]:not([data-tree-has-children]) {
+  /* Leaf node - no toggle needed */
+  visibility: hidden;
 }
+
+/* =============================================================================
+   Tree Indent (when showLines=false)
+   ============================================================================= */
+
+[data-tree-indent] {
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+/* =============================================================================
+   Tree Item Content
+   ============================================================================= */
+
+[data-tree-item-content] {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  flex: 1;
+  min-width: 0;
+  padding: 0.25rem 0.375rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  font: inherit;
+  color: inherit;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+/* Size variants for item content */
+[data-tree][data-size='sm'] [data-tree-item-content] {
+  gap: 0.375rem;
+  font-size: 0.75rem;
+}
+
+[data-tree][data-size='md'] [data-tree-item-content],
+[data-tree]:not([data-size]) [data-tree-item-content] {
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+[data-tree][data-size='lg'] [data-tree-item-content] {
+  gap: 0.625rem;
+  font-size: 1rem;
+}
+
+/* Item elements use shared [data-item-*] from item.css */

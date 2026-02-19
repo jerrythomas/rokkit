@@ -1,0 +1,50 @@
+/**
+ * Toggle - Minimal Theme Styles
+ *
+ * Clean, understated toggle with subtle borders.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='minimal'] [data-toggle] {
+	@apply bg-transparent border-surface-z3 rounded-lg border;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='minimal'] [data-toggle-option] {
+	@apply text-surface-z6;
+}
+
+[data-style='minimal'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']) {
+	@apply text-surface-z8;
+}
+
+[data-style='minimal'] [data-toggle-option]:focus-visible {
+	@apply outline-none ring-1 ring-surface-z5 ring-inset;
+}
+
+/* Selected state */
+[data-style='minimal'] [data-toggle-option][data-selected='true'] {
+	@apply bg-surface-z2 text-surface-z9 border-surface-z4 border;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='minimal'] [data-toggle-option] [data-toggle-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+	@apply text-surface-z8;
+}

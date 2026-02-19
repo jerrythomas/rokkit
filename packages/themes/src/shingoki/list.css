@@ -1,0 +1,180 @@
+/**
+ * List - Shingoki Theme Styles
+ *
+ * Visual theming using semantic colors with UnoCSS @apply syntax.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-list]:focus-within {
+  @apply ring-primary-z4 rounded ring-1;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-list-item] {
+  @apply text-surface-z8;
+}
+
+[data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z2 text-surface-z10 outline-none;
+}
+
+/* Active state - when focus is within list */
+[data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply bg-primary-z2 text-primary-z9;
+}
+
+[data-list]:focus-within [data-list-item][data-active='true']:hover:not(:disabled) {
+  @apply bg-primary-z3;
+}
+
+/* Active state - when focus is outside list (muted) */
+[data-list]:not(:focus-within) [data-list-item][data-active='true'] {
+  @apply bg-surface-z2 text-surface-z9;
+}
+
+/* =============================================================================
+   List Item Links and Buttons (inline)
+   ============================================================================= */
+
+a[data-list-item],
+button[data-list-item] {
+  @apply text-surface-z6;
+}
+
+a[data-list-item]:hover:not([data-disabled='true']),
+button[data-list-item]:hover:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z8;
+}
+
+a[data-list-item][data-active='true'],
+button[data-list-item][data-active='true'] {
+  @apply bg-surface-z2 text-primary-z6;
+}
+
+/* Focus visible for keyboard navigation */
+[data-list-item]:focus-visible {
+  @apply ring-primary-z5 outline-none ring-2 ring-offset-1;
+}
+
+/* Item icon */
+[data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-list-item]:focus:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-list]:focus-within [data-list-item][data-active='true'] [data-item-icon] {
+  @apply text-primary-z6;
+}
+
+[data-list]:not(:focus-within) [data-list-item][data-active='true'] [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+/* Item description */
+[data-list-item] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-list]:focus-within [data-list-item][data-active='true'] [data-item-description] {
+  @apply text-primary-z7;
+}
+
+[data-list]:not(:focus-within)
+  [data-list-item][data-active='true']
+  [data-item-description] {
+  @apply text-surface-z6;
+}
+
+/* Item badge */
+[data-list-item] [data-item-badge] {
+  @apply text-surface-z6 bg-surface-z2;
+}
+
+[data-list]:focus-within [data-list-item][data-active='true'] [data-item-badge] {
+  @apply text-primary-z8 bg-primary-z2;
+}
+
+[data-list]:not(:focus-within) [data-list-item][data-active='true'] [data-item-badge] {
+  @apply text-surface-z7 bg-surface-z3;
+}
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-list-item-custom] > a,
+[data-list-item-custom] > button {
+  @apply text-surface-z8;
+}
+
+[data-list-item-custom] > a:hover,
+[data-list-item-custom] > button:hover:not(:disabled),
+[data-list-item-custom] > a:focus,
+[data-list-item-custom] > button:focus:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z10 outline-none;
+}
+
+[data-list]:focus-within [data-list-item-custom][data-active='true'] > a,
+[data-list]:focus-within [data-list-item-custom][data-active='true'] > button {
+  @apply bg-primary-z2 text-primary-z9;
+}
+
+[data-list]:not(:focus-within) [data-list-item-custom][data-active='true'] > a,
+[data-list]:not(:focus-within) [data-list-item-custom][data-active='true'] > button {
+  @apply bg-surface-z2 text-surface-z9;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-list-group-label] {
+  @apply text-surface-z6;
+}
+
+[data-list-group-label]:hover:not(:disabled) {
+  @apply text-surface-z7;
+}
+
+/* Group label with nested button */
+[data-list-group-label] > button {
+  @apply text-surface-z9 hover:bg-surface-z2;
+}
+
+[data-list-group-label] > button [data-icon],
+[data-list-group-label] > button [data-chevron] {
+  @apply text-surface-z6;
+}
+
+/* Group label as button directly */
+button[data-list-group-label] {
+  @apply text-surface-z6 hover:text-surface-z7;
+}
+
+button[data-list-group-label] [data-icon],
+button[data-list-group-label] [data-chevron] {
+  @apply text-surface-z6;
+}
+
+button[data-list-group-label] [data-stats] {
+  @apply text-surface-z4;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-list-divider] {
+  @apply bg-surface-z3;
+}

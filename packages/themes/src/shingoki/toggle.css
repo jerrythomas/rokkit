@@ -1,0 +1,70 @@
+/**
+ * Toggle - Shingoki Theme Styles
+ *
+ * Visual theming using semantic colors with UnoCSS @apply syntax.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-toggle] {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-toggle-option] {
+  @apply text-surface-z6;
+}
+
+[data-toggle-option]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z3 text-surface-z8;
+}
+
+[data-toggle-option]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply outline-secondary;
+}
+
+/* Selected state */
+[data-toggle-option][data-selected='true'] {
+  @apply bg-primary-z3 text-primary-z9 border-primary-z4;
+}
+
+[data-toggle-option][data-selected='true']:hover:not(:disabled) {
+  @apply bg-primary-z4;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-toggle-option]:hover:not(:disabled) [data-toggle-icon] {
+  @apply text-surface-z7;
+}
+
+[data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Toggle Label
+   ============================================================================= */
+
+[data-toggle-option] [data-toggle-label] {
+  @apply text-surface-z6;
+}
+
+[data-toggle-option]:hover:not(:disabled) [data-toggle-label] {
+  @apply text-surface-z8;
+}
+
+[data-toggle-option][data-selected='true'] [data-toggle-label] {
+  @apply text-primary-z9;
+}

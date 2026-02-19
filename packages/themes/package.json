@@ -1,37 +1,34 @@
 {
   "name": "@rokkit/themes",
-  "version": "1.0.0-next.125",
-  "description": "Themes for use with rokkit components.",
-  "author": "Jerry Thomas <me@jerrythomas.name>",
-  "license": "MIT",
-  "module": "src/index.js",
-  "types": "dist/index.d.ts",
+  "version": "0.0.1",
+  "description": "Theme styles for @rokkit/ui components",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "prepublishOnly": "tsc --project tsconfig.build.json",
-    "clean": "rm -rf dist",
-    "build": "bun clean && bun prepublishOnly"
+  "main": "./src/index.css",
+  "exports": {
+    ".": "./src/index.css",
+    "./base": "./src/base/index.css",
+    "./base/*": "./src/base/*.css",
+    "./shingoki": "./src/shingoki/index.css",
+    "./shingoki/*": "./src/shingoki/*.css",
+    "./rokkit": "./src/rokkit/index.css",
+    "./rokkit/*": "./src/rokkit/*.css",
+    "./minimal": "./src/minimal/index.css",
+    "./minimal/*": "./src/minimal/*.css",
+    "./material": "./src/material/index.css",
+    "./material/*": "./src/material/*.css",
+    "./glass": "./src/glass/index.css",
+    "./glass/*": "./src/glass/*.css"
   },
   "files": [
     "src"
   ],
-  "exports": {
-    "./modern.css": "./src/modern.css",
-    "./material.css": "./src/material.css",
-    "./minimal.css": "./src/minimal.css",
-    "./rokkit.css": "./src/rokkit.css",
-    "./prism.css": "./src/prism.css",
-    "./palette.css": "./src/palette.css",
-    "./markdown.css": "./src/markdown.css",
-    "./package.json": "./src/package.json",
-    ".": {
-      "import": "./src/index.js"
-    }
+  "scripts": {
+    "build": "echo 'No build step needed for CSS-only package'"
   },
-  "dependencies": {
-    "@rokkit/core": "workspace:latest"
-  }
+  "keywords": [
+    "themes",
+    "css",
+    "styles",
+    "ui"
+  ]
 }

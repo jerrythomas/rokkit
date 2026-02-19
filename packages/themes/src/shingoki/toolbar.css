@@ -1,0 +1,85 @@
+/**
+ * Toolbar - Shingoki Theme Styles
+ *
+ * Visual theming using semantic colors with UnoCSS @apply syntax.
+ * Variants (primary, ghost, danger) can be implemented via custom snippets.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-toolbar] {
+  @apply bg-surface-z1;
+}
+
+/* Position-based borders */
+[data-toolbar][data-toolbar-position='top'],
+[data-toolbar]:not([data-toolbar-position]) {
+  @apply border-surface-z3 border-b;
+}
+
+[data-toolbar][data-toolbar-position='bottom'] {
+  @apply border-surface-z3 border-t;
+}
+
+[data-toolbar][data-toolbar-position='left'] {
+  @apply border-surface-z3 border-r;
+}
+
+[data-toolbar][data-toolbar-position='right'] {
+  @apply border-surface-z3 border-l;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-toolbar-item] {
+  @apply text-surface-z7;
+}
+
+[data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z3 text-surface-z10;
+}
+
+[data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply bg-surface-z3 text-surface-z10 outline-secondary;
+}
+
+/* Active/pressed state */
+[data-toolbar-item][data-active='true'] {
+  @apply bg-primary-z3 text-primary-z9;
+}
+
+[data-toolbar-item][data-active='true']:hover:not(:disabled) {
+  @apply bg-primary-z4 text-primary-z10;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-toolbar-item] [data-toolbar-icon] {
+  @apply text-surface-z6;
+}
+
+[data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+  @apply text-surface-z9;
+}
+
+[data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-toolbar-separator] {
+  @apply bg-surface-z4;
+}
+
+[data-toolbar-divider] {
+  @apply bg-surface-z4;
+}

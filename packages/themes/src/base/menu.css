@@ -1,20 +1,20 @@
 /**
- * Select - Base Structural Styles
+ * Menu - Base Structural Styles
  *
  * These styles provide layout, positioning, and basic structure.
  * No colors, shadows, or visual theming - those belong in theme styles.
  */
 
 /* =============================================================================
-   Select Container
+   Menu Container
    ============================================================================= */
 
-[data-select] {
+[data-menu] {
   position: relative;
   display: inline-block;
 }
 
-[data-select][data-disabled='true'] {
+[data-menu][data-disabled='true'] {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -23,13 +23,12 @@
    Trigger Button
    ============================================================================= */
 
-[data-select-trigger] {
+[data-menu-trigger] {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  width: 100%;
-  min-width: 180px;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
   cursor: pointer;
   user-select: none;
   border: 1px solid transparent;
@@ -38,166 +37,112 @@
   transition: all 150ms ease;
 }
 
-[data-select-trigger]:disabled {
+[data-menu-trigger]:disabled {
   cursor: not-allowed;
 }
 
-[data-select-trigger]:focus-visible {
+[data-menu-trigger]:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
 /* Size variants */
-[data-select][data-size='sm'] [data-select-trigger] {
-  height: 1.75rem;
+[data-menu][data-size='sm'] [data-menu-trigger] {
+  height: 1.5rem;
   padding-inline: 0.5rem;
   font-size: 0.75rem;
 }
 
-[data-select][data-size='md'] [data-select-trigger],
-[data-select]:not([data-size]) [data-select-trigger] {
-  height: 2.25rem;
-  padding-inline: 0.75rem;
+[data-menu][data-size='md'] [data-menu-trigger],
+[data-menu]:not([data-size]) [data-menu-trigger] {
+  height: 2rem;
+  padding-inline: 0.625rem;
   font-size: 0.875rem;
 }
 
-[data-select][data-size='lg'] [data-select-trigger] {
-  height: 2.75rem;
-  padding-inline: 1rem;
+[data-menu][data-size='lg'] [data-menu-trigger] {
+  height: 2.5rem;
+  padding-inline: 0.75rem;
   font-size: 1rem;
 }
 
 /* =============================================================================
-   Trigger Value Display
+   Trigger Elements (icon, label, arrow)
    ============================================================================= */
 
-[data-select-value] {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-}
-
-[data-select-value-icon] {
+[data-menu-trigger] > [data-menu-icon] {
   flex-shrink: 0;
 }
 
-[data-select-value-text] {
+[data-menu-trigger] > [data-menu-label] {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-[data-select-placeholder] {
-  opacity: 0.6;
-}
-
-[data-select-arrow] {
+[data-menu-trigger] > [data-menu-arrow] {
   flex-shrink: 0;
   transition: transform 150ms ease;
 }
 
-[data-select][data-open='true'] [data-select-arrow] {
+[data-menu][data-open='true'] [data-menu-arrow] {
   transform: rotate(180deg);
 }
 
 /* Arrow sizes */
-[data-select][data-size='sm'] [data-select-arrow] {
+[data-menu][data-size='sm'] [data-menu-arrow] {
+  font-size: 0.75rem;
+}
+[data-menu][data-size='md'] [data-menu-arrow],
+[data-menu]:not([data-size]) [data-menu-arrow] {
   font-size: 0.875rem;
 }
-[data-select][data-size='md'] [data-select-arrow],
-[data-select]:not([data-size]) [data-select-arrow] {
+[data-menu][data-size='lg'] [data-menu-arrow] {
   font-size: 1rem;
-}
-[data-select][data-size='lg'] [data-select-arrow] {
-  font-size: 1.125rem;
-}
-
-/* =============================================================================
-   MultiSelect Tags
-   ============================================================================= */
-
-[data-select-tags] {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  align-items: center;
-}
-
-[data-select-tag] {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-size: 0.75em;
-  line-height: 1.25;
-}
-
-[data-select-tag-text] {
-  white-space: nowrap;
-}
-
-[data-select-tag-remove] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 0.125rem;
-  font-size: 0.75em;
-  opacity: 0.7;
-  transition: opacity 150ms ease;
-}
-
-[data-select-tag-remove]:hover {
-  opacity: 1;
-}
-
-[data-select-count] {
-  font-weight: 500;
 }
 
 /* =============================================================================
    Dropdown Panel
    ============================================================================= */
 
-[data-select-dropdown] {
+[data-menu-dropdown] {
   position: absolute;
   z-index: 50;
-  min-width: 100%;
+  min-width: 200px;
+  max-height: 400px;
   overflow-y: auto;
   border-radius: 0.5rem;
 }
 
+/* Focus ring on dropdown when it contains focus */
+[data-menu-dropdown]:focus-within {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 /* Direction: down (default) */
-[data-select][data-direction='down'] [data-select-dropdown],
-[data-select]:not([data-direction]) [data-select-dropdown] {
+[data-menu][data-direction='down'] [data-menu-dropdown],
+[data-menu]:not([data-direction]) [data-menu-dropdown] {
   top: calc(100% + 4px);
-  animation: select-dropdown-down 150ms ease;
+  animation: menu-dropdown-down 150ms ease;
 }
 
 /* Direction: up */
-[data-select][data-direction='up'] [data-select-dropdown] {
+[data-menu][data-direction='up'] [data-menu-dropdown] {
   bottom: calc(100% + 4px);
-  animation: select-dropdown-up 150ms ease;
+  animation: menu-dropdown-up 150ms ease;
 }
 
 /* Alignment */
-[data-select][data-align='left'] [data-select-dropdown],
-[data-select]:not([data-align]) [data-select-dropdown] {
+[data-menu][data-align='left'] [data-menu-dropdown],
+[data-menu]:not([data-align]) [data-menu-dropdown] {
   left: 0;
 }
 
-[data-select][data-align='right'] [data-select-dropdown] {
+[data-menu][data-align='right'] [data-menu-dropdown] {
   right: 0;
 }
 
-@keyframes select-dropdown-down {
+@keyframes menu-dropdown-down {
   from {
     opacity: 0;
     transform: translateY(-4px);
@@ -208,7 +153,7 @@
   }
 }
 
-@keyframes select-dropdown-up {
+@keyframes menu-dropdown-up {
   from {
     opacity: 0;
     transform: translateY(4px);
@@ -220,10 +165,10 @@
 }
 
 /* =============================================================================
-   Select Options
+   Menu Items
    ============================================================================= */
 
-[data-select-option] {
+[data-menu-item] {
   display: flex;
   align-items: center;
   width: 100%;
@@ -234,66 +179,88 @@
   transition: background-color 150ms ease;
 }
 
-[data-select-option][data-disabled='true'],
-[data-select-option]:disabled {
+[data-menu-item][data-disabled='true'],
+[data-menu-item]:disabled {
   pointer-events: none;
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-[data-select-option]:focus,
-[data-select-option]:focus-visible {
+[data-menu-item]:focus,
+[data-menu-item]:focus-visible {
   outline: none;
 }
 
-/* Size variants for options */
-[data-select][data-size='sm'] [data-select-option] {
+/* Size variants for items */
+[data-menu][data-size='sm'] [data-menu-item] {
   gap: 0.5rem;
   padding: 0.375rem 0.5rem;
   font-size: 0.75rem;
 }
 
-[data-select][data-size='md'] [data-select-option],
-[data-select]:not([data-size]) [data-select-option] {
+[data-menu][data-size='md'] [data-menu-item],
+[data-menu]:not([data-size]) [data-menu-item] {
   gap: 0.625rem;
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
 }
 
-[data-select][data-size='lg'] [data-select-option] {
+[data-menu][data-size='lg'] [data-menu-item] {
   gap: 0.75rem;
   padding: 0.625rem 1rem;
   font-size: 1rem;
 }
 
-/* Check mark for single select */
-[data-select-check] {
+/* =============================================================================
+   Item Elements (icon, content, shortcut)
+   ============================================================================= */
+
+[data-menu-item] > [data-menu-item-icon] {
   flex-shrink: 0;
-  margin-left: auto;
 }
 
-/* Checkbox for multi select */
-[data-select-checkbox] {
+[data-menu-item] > [data-menu-item-content] {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+[data-menu-item] > [data-menu-item-content] > [data-menu-item-label] {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-menu-item] > [data-menu-item-content] > [data-menu-item-description] {
+  font-size: 0.75em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-menu-item] > [data-menu-item-shortcut] {
   flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
+  margin-left: auto;
+  padding: 0.125rem 0.375rem;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.75em;
+  font-weight: 500;
   border-radius: 0.25rem;
-  border: 1px solid currentColor;
-  font-size: 0.75rem;
 }
 
 /* =============================================================================
    Custom Snippet Wrapper
    ============================================================================= */
 
-[data-select-option-custom] {
+[data-menu-item-custom] {
   display: contents;
 }
 
-[data-select-option-custom] > button {
+/* Style direct children of custom wrapper */
+[data-menu-item-custom] > button,
+[data-menu-item-custom] > a {
   display: flex;
   align-items: center;
   width: 100%;
@@ -304,15 +271,22 @@
   transition: background-color 150ms ease;
 }
 
+[data-menu-item-custom][data-disabled='true'] > button,
+[data-menu-item-custom][data-disabled='true'] > a {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* =============================================================================
    Groups
    ============================================================================= */
 
-[data-select-group] {
+[data-menu-group] {
   padding-block: 0.25rem;
 }
 
-[data-select-group-label] {
+[data-menu-group-label] {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -323,18 +297,18 @@
 }
 
 /* Group label sizes */
-[data-select][data-size='sm'] [data-select-group-label] {
+[data-menu][data-size='sm'] [data-menu-group-label] {
   padding: 0.25rem 0.5rem;
 }
-[data-select][data-size='md'] [data-select-group-label],
-[data-select]:not([data-size]) [data-select-group-label] {
+[data-menu][data-size='md'] [data-menu-group-label],
+[data-menu]:not([data-size]) [data-menu-group-label] {
   padding: 0.375rem 0.75rem;
 }
-[data-select][data-size='lg'] [data-select-group-label] {
+[data-menu][data-size='lg'] [data-menu-group-label] {
   padding: 0.5rem 1rem;
 }
 
-[data-select-group-label] > [data-select-group-icon] {
+[data-menu-group-label] > [data-menu-group-icon] {
   flex-shrink: 0;
   opacity: 0.7;
 }
@@ -343,7 +317,7 @@
    Divider
    ============================================================================= */
 
-[data-select-divider] {
+[data-menu-divider] {
   height: 1px;
   margin-block: 0.25rem;
 }

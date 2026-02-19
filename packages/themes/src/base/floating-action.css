@@ -1,0 +1,388 @@
+/**
+ * FloatingAction - Base Structural Styles
+ *
+ * These styles provide layout, positioning, and basic structure.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   FAB Container
+   ============================================================================= */
+
+[data-fab] {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  /* Ensure the container only sizes to the trigger button */
+  width: fit-content;
+  height: fit-content;
+}
+
+/* Contained mode - position relative to parent instead of viewport */
+[data-fab][data-contained] {
+  position: absolute;
+}
+
+[data-fab][data-contained] [data-fab-backdrop] {
+  position: absolute;
+}
+
+/* Position variants */
+[data-fab][data-position='bottom-right'] {
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+[data-fab][data-position='bottom-left'] {
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+
+[data-fab][data-position='top-right'] {
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+[data-fab][data-position='top-left'] {
+  top: 1.5rem;
+  left: 1.5rem;
+}
+
+[data-fab][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-fab-trigger] {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+[data-fab-trigger]:disabled {
+  cursor: not-allowed;
+}
+
+[data-fab-trigger]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Size variants for trigger */
+[data-fab][data-size='sm'] [data-fab-trigger] {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.25rem;
+}
+
+[data-fab][data-size='md'] [data-fab-trigger],
+[data-fab]:not([data-size]) [data-fab-trigger] {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+}
+
+[data-fab][data-size='lg'] [data-fab-trigger] {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.75rem;
+}
+
+/* Trigger rotation when open */
+[data-fab][data-open='true'] [data-fab-trigger] {
+  transform: rotate(45deg);
+}
+
+/* Icon inside trigger */
+[data-fab-icon] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 150ms ease;
+}
+
+/* Counter-rotate icon when trigger rotates (if using plus icon) */
+[data-fab][data-open='true'] [data-fab-icon] {
+  transform: rotate(-45deg);
+}
+
+/* =============================================================================
+   FAB Menu (Action Items Container)
+   ============================================================================= */
+
+[data-fab-menu] {
+  position: absolute;
+  display: flex;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+[data-fab][data-open='true'] [data-fab-menu] {
+  pointer-events: auto;
+}
+
+/* Vertical expansion (default) */
+[data-fab][data-expand='vertical'] [data-fab-menu],
+[data-fab]:not([data-expand]) [data-fab-menu] {
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+/* Item alignment for vertical expansion - align relative to trigger button */
+[data-fab][data-expand='vertical'][data-item-align='start'] [data-fab-menu],
+[data-fab]:not([data-expand])[data-item-align='start'] [data-fab-menu] {
+  align-items: flex-start;
+  left: 0;
+}
+
+[data-fab][data-expand='vertical'][data-item-align='center'] [data-fab-menu],
+[data-fab]:not([data-expand])[data-item-align='center'] [data-fab-menu],
+[data-fab][data-expand='vertical']:not([data-item-align]) [data-fab-menu],
+[data-fab]:not([data-expand]):not([data-item-align]) [data-fab-menu] {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+[data-fab][data-expand='vertical'][data-item-align='end'] [data-fab-menu],
+[data-fab]:not([data-expand])[data-item-align='end'] [data-fab-menu] {
+  align-items: flex-end;
+  right: 0;
+}
+
+/* Position menu based on FAB position */
+[data-fab][data-position='bottom-right'][data-expand='vertical'] [data-fab-menu],
+[data-fab][data-position='bottom-right']:not([data-expand]) [data-fab-menu],
+[data-fab][data-position='bottom-left'][data-expand='vertical'] [data-fab-menu],
+[data-fab][data-position='bottom-left']:not([data-expand]) [data-fab-menu] {
+  bottom: calc(100% + 0.75rem);
+}
+
+[data-fab][data-position='top-right'][data-expand='vertical'] [data-fab-menu],
+[data-fab][data-position='top-right']:not([data-expand]) [data-fab-menu],
+[data-fab][data-position='top-left'][data-expand='vertical'] [data-fab-menu],
+[data-fab][data-position='top-left']:not([data-expand]) [data-fab-menu] {
+  top: calc(100% + 0.75rem);
+  flex-direction: column;
+}
+
+/* Horizontal expansion */
+[data-fab][data-expand='horizontal'] [data-fab-menu] {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Item alignment for horizontal expansion */
+[data-fab][data-expand='horizontal'][data-item-align='start'] [data-fab-menu] {
+  align-items: flex-start;
+}
+
+[data-fab][data-expand='horizontal'][data-item-align='end'] [data-fab-menu] {
+  align-items: flex-end;
+}
+
+[data-fab][data-position='bottom-right'][data-expand='horizontal'] [data-fab-menu],
+[data-fab][data-position='top-right'][data-expand='horizontal'] [data-fab-menu] {
+  right: calc(100% + 0.75rem);
+  flex-direction: row-reverse;
+}
+
+[data-fab][data-position='bottom-left'][data-expand='horizontal'] [data-fab-menu],
+[data-fab][data-position='top-left'][data-expand='horizontal'] [data-fab-menu] {
+  left: calc(100% + 0.75rem);
+}
+
+/* Radial expansion */
+[data-fab][data-expand='radial'] [data-fab-menu] {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-fab-item] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease,
+    background-color 150ms ease;
+  transition-delay: var(--fab-delay, 0ms);
+}
+
+/* Hidden state (before animation) */
+[data-fab]:not([data-open='true']) [data-fab-item] {
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+
+/* Visible state (after animation) */
+[data-fab][data-open='true'] [data-fab-item] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-fab-item][data-disabled='true'],
+[data-fab-item]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-fab-item]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Size variants for items */
+[data-fab][data-size='sm'] [data-fab-item] {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-fab][data-size='md'] [data-fab-item],
+[data-fab]:not([data-size]) [data-fab-item] {
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+}
+
+[data-fab][data-size='lg'] [data-fab-item] {
+  min-width: 3.5rem;
+  height: 3.5rem;
+  padding: 0 1.25rem;
+  font-size: 1rem;
+}
+
+/* Icon-only items (no label) */
+[data-fab-item]:not(:has([data-fab-item-label])) {
+  padding: 0;
+  aspect-ratio: 1;
+  justify-content: center;
+}
+
+[data-fab-item-icon] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+[data-fab-item-label] {
+  flex: 1;
+}
+
+/* =============================================================================
+   Radial Expansion Positioning
+   ============================================================================= */
+
+[data-fab][data-expand='radial'][data-open='true'] [data-fab-item] {
+  position: absolute;
+}
+
+/* Radial positions for bottom-right (expanding up-left arc) */
+[data-fab][data-expand='radial'][data-position='bottom-right'][data-open='true']
+  [data-fab-item]:nth-child(1) {
+  transform: translate(-120%, -20%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-right'][data-open='true']
+  [data-fab-item]:nth-child(2) {
+  transform: translate(-85%, -85%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-right'][data-open='true']
+  [data-fab-item]:nth-child(3) {
+  transform: translate(-20%, -120%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-right'][data-open='true']
+  [data-fab-item]:nth-child(4) {
+  transform: translate(45%, -120%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-right'][data-open='true']
+  [data-fab-item]:nth-child(5) {
+  transform: translate(-120%, 45%);
+}
+
+/* Radial positions for bottom-left (expanding up-right arc) */
+[data-fab][data-expand='radial'][data-position='bottom-left'][data-open='true']
+  [data-fab-item]:nth-child(1) {
+  transform: translate(20%, -120%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-left'][data-open='true']
+  [data-fab-item]:nth-child(2) {
+  transform: translate(85%, -85%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-left'][data-open='true']
+  [data-fab-item]:nth-child(3) {
+  transform: translate(120%, -20%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-left'][data-open='true']
+  [data-fab-item]:nth-child(4) {
+  transform: translate(-45%, -120%);
+}
+[data-fab][data-expand='radial'][data-position='bottom-left'][data-open='true']
+  [data-fab-item]:nth-child(5) {
+  transform: translate(120%, 45%);
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-fab-backdrop] {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: transparent;
+}
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-fab-item-custom] {
+  display: contents;
+}
+
+[data-fab-item-custom] > button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease,
+    background-color 150ms ease;
+}

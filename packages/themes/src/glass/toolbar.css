@@ -1,0 +1,84 @@
+/**
+ * Toolbar - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-style='glass'] [data-toolbar] {
+	@apply bg-white/10 backdrop-blur-md;
+}
+
+/* Position-based borders */
+[data-style='glass'] [data-toolbar][data-toolbar-position='top'],
+[data-style='glass'] [data-toolbar]:not([data-toolbar-position]) {
+	@apply border-white/20 border-b;
+}
+
+[data-style='glass'] [data-toolbar][data-toolbar-position='bottom'] {
+	@apply border-white/20 border-t;
+}
+
+[data-style='glass'] [data-toolbar][data-toolbar-position='left'] {
+	@apply border-white/20 border-r;
+}
+
+[data-style='glass'] [data-toolbar][data-toolbar-position='right'] {
+	@apply border-white/20 border-l;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-style='glass'] [data-toolbar-item] {
+	@apply text-surface-z7;
+}
+
+[data-style='glass'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+	@apply bg-white/20 text-surface-z10;
+}
+
+[data-style='glass'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+	@apply bg-white/20 text-surface-z10 outline-none ring-1 ring-white/40;
+}
+
+/* Active/pressed state */
+[data-style='glass'] [data-toolbar-item][data-active='true'] {
+	@apply bg-primary-z5/30 text-primary-z9;
+}
+
+[data-style='glass'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+	@apply bg-primary-z5/40 text-primary-z10;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-style='glass'] [data-toolbar-item] [data-toolbar-icon] {
+	@apply text-surface-z6;
+}
+
+[data-style='glass'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+	@apply text-surface-z9;
+}
+
+[data-style='glass'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+	@apply text-primary-z7;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-style='glass'] [data-toolbar-separator] {
+	@apply bg-white/20;
+}
+
+[data-style='glass'] [data-toolbar-divider] {
+	@apply bg-white/20;
+}

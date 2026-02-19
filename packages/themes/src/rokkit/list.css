@@ -1,86 +1,185 @@
-/* List - Rokkit Theme */
+/**
+ * List - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
 
-[data-style='rokkit'] [data-list] {
-  @apply gap-1px bg-surface-z2 rounded;
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list]:focus-within {
+  @apply ring-primary-z4 rounded ring-1;
 }
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
 
 [data-style='rokkit'] [data-list-item] {
-  @apply bg-surface-z1 text-surface-800 min-h-8 gap-2 px-4 leading-10;
+  @apply text-surface-z8;
 }
 
-[data-style='rokkit'] [data-list-item]:first-child {
-  @apply rounded-t;
+[data-style='rokkit'] [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='rokkit'] [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
 }
 
-[data-style='rokkit'] [data-list-item]:last-child {
-  @apply rounded-b;
+/* Active state - when focus is within list */
+[data-style='rokkit'] [data-list]:focus-within [data-list-item][data-active='true'] {
+  @apply from-primary-z3 to-primary-z2 text-primary-z9 border-l-primary-z5 border-l-2 bg-gradient-to-r;
 }
 
-[data-style='rokkit'] [data-list-item]:hover {
-  @apply bg-surface-z2;
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']:hover:not(:disabled) {
+  @apply from-primary-z4 to-primary-z3 bg-gradient-to-r;
 }
 
-[data-style='rokkit'] [data-list-item][aria-current='true'] {
-  @apply bg-surface-z2 text-on-surface-z2;
+/* Active state - when focus is outside list (muted) */
+[data-style='rokkit'] [data-list]:not(:focus-within) [data-list-item][data-active='true'] {
+  @apply from-surface-z3 to-surface-z2 text-surface-z9 border-l-surface-z5 border-l-2 bg-gradient-to-r;
 }
 
-[data-style='rokkit'] [data-list-item][aria-selected='true'] > a {
-  @apply text-white;
+/* =============================================================================
+   List Item Links and Buttons
+   ============================================================================= */
+
+[data-style='rokkit'] a[data-list-item],
+[data-style='rokkit'] button[data-list-item] {
+  @apply text-surface-z7;
 }
 
-[data-style='rokkit'] [data-list]:focus-within [data-list-item][aria-selected='true'] {
-  @apply from-primary to-secondary bg-gradient-to-r text-white;
-  @apply hover:from-secondary hover:to-primary;
+[data-style='rokkit'] a[data-list-item]:hover:not([data-disabled='true']),
+[data-style='rokkit'] button[data-list-item]:hover:not(:disabled) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z9 bg-gradient-to-r;
 }
 
-[data-style='rokkit'] [data-list]:focus {
-  @apply outline-secondary outline;
+[data-style='rokkit'] a[data-list-item][data-active='true'],
+[data-style='rokkit'] button[data-list-item][data-active='true'] {
+  @apply from-surface-z3 to-surface-z2 text-primary-z7 bg-gradient-to-r;
 }
 
-/* Bordered variant */
-[data-style='rokkit'] [data-list][data-variant='bordered'] {
-  @apply border-surface-400 overflow-y-scroll rounded border shadow;
+/* Focus visible for keyboard navigation */
+[data-style='rokkit'] [data-list-item]:focus-visible {
+  @apply ring-primary-z5 ring-2 outline-none;
 }
 
-/* Disabled state */
-[data-style='rokkit'] [data-list-item][data-disabled='true'] {
-  @apply bg-surface-z2 text-surface-500 cursor-not-allowed;
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list-item] [data-item-icon] {
+  @apply text-surface-z5;
 }
 
-/* Legacy custom element support */
-[data-style='rokkit'] rk-list {
-  @apply gap-1px bg-surface-z2 rounded;
+[data-style='rokkit'] [data-list-item]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
 }
 
-[data-style='rokkit'] rk-list-item {
-  @apply bg-surface-z1 text-surface-800 min-h-8 gap-2 px-4 leading-10;
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-icon] {
+  @apply text-primary-z6;
 }
 
-[data-style='rokkit'] :not(accordion > div) > rk-list {
-  @apply border-surface-400 overflow-y-scroll rounded border shadow;
+[data-style='rokkit']
+  [data-list]:not(:focus-within)
+  [data-list-item][data-active='true']
+  [data-item-icon] {
+  @apply text-surface-z6;
 }
 
-[data-style='rokkit'] :not(accordion > div) > rk-list rk-list-item {
-  @apply first:rounded-t last:rounded-b;
+/* Item description */
+[data-style='rokkit'] [data-list-item] [data-item-description] {
+  @apply text-surface-z5;
 }
 
-[data-style='rokkit'] rk-list rk-list-item:hover {
-  @apply bg-surface-z2;
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-description] {
+  @apply text-primary-z7;
 }
 
-[data-style='rokkit'] rk-list-item[aria-current='true'] {
-  @apply bg-surface-z2 text-on-surface-z2;
+[data-style='rokkit']
+  [data-list]:not(:focus-within)
+  [data-list-item][data-active='true']
+  [data-item-description] {
+  @apply text-surface-z6;
 }
 
-[data-style='rokkit'] rk-list rk-list-item[aria-selected='true'] > a {
-  @apply text-white;
+/* Item badge */
+[data-style='rokkit'] [data-list-item] [data-item-badge] {
+  @apply text-surface-z6 from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
 }
 
-[data-style='rokkit'] rk-list:focus-within rk-list-item[aria-selected='true'] {
-  @apply from-primary to-secondary bg-gradient-to-r text-white;
-  @apply hover:from-secondary hover:to-primary;
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item][data-active='true']
+  [data-item-badge] {
+  @apply text-primary-z8 from-primary-z3 to-primary-z2 border-primary-z4 border bg-gradient-to-b;
 }
 
-[data-style='rokkit'] rk-list:focus {
-  @apply outline-secondary outline;
+[data-style='rokkit']
+  [data-list]:not(:focus-within)
+  [data-list-item][data-active='true']
+  [data-item-badge] {
+  @apply text-surface-z7 from-surface-z4 to-surface-z3 bg-gradient-to-b;
+}
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list-item-custom] > a,
+[data-style='rokkit'] [data-list-item-custom] > button {
+  @apply text-surface-z8;
+}
+
+[data-style='rokkit'] [data-list-item-custom] > a:hover,
+[data-style='rokkit'] [data-list-item-custom] > button:hover:not(:disabled),
+[data-style='rokkit'] [data-list-item-custom] > a:focus,
+[data-style='rokkit'] [data-list-item-custom] > button:focus:not(:disabled) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+}
+
+[data-style='rokkit'] [data-list]:focus-within [data-list-item-custom][data-active='true'] > a,
+[data-style='rokkit']
+  [data-list]:focus-within
+  [data-list-item-custom][data-active='true']
+  > button {
+  @apply from-primary-z3 to-primary-z2 text-primary-z9 bg-gradient-to-r;
+}
+
+[data-style='rokkit']
+  [data-list]:not(:focus-within)
+  [data-list-item-custom][data-active='true']
+  > a,
+[data-style='rokkit']
+  [data-list]:not(:focus-within)
+  [data-list-item-custom][data-active='true']
+  > button {
+  @apply from-surface-z3 to-surface-z2 text-surface-z9 bg-gradient-to-r;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list-group-label] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-list-group-label]:hover:not(:disabled) {
+  @apply text-surface-z7;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list-divider] {
+  @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
 }

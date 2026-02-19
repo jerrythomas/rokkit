@@ -1,0 +1,111 @@
+/**
+ * List - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='glass'] [data-list]:focus-within {
+	@apply ring-1 ring-white/30 rounded;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='glass'] [data-list-item] {
+	@apply text-surface-z8;
+}
+
+[data-style='glass'] [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='glass'] [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+	@apply bg-white/15 text-surface-z10 outline-none;
+}
+
+/* Active state */
+[data-style='glass'] [data-list-item][data-active='true'] {
+	@apply bg-primary-z5/30 text-primary-z9;
+}
+
+[data-style='glass'] [data-list-item][data-active='true']:hover:not(:disabled) {
+	@apply bg-primary-z5/40;
+}
+
+/* =============================================================================
+   List Item Links and Buttons
+   ============================================================================= */
+
+[data-style='glass'] a[data-list-item],
+[data-style='glass'] button[data-list-item] {
+	@apply text-surface-z7;
+}
+
+[data-style='glass'] a[data-list-item]:hover:not([data-disabled='true']),
+[data-style='glass'] button[data-list-item]:hover:not(:disabled) {
+	@apply bg-white/15 text-surface-z9;
+}
+
+[data-style='glass'] a[data-list-item][data-active='true'],
+[data-style='glass'] button[data-list-item][data-active='true'] {
+	@apply bg-primary-z5/25 text-primary-z8;
+}
+
+/* Focus visible for keyboard navigation */
+[data-style='glass'] [data-list-item]:focus-visible {
+	@apply outline-none ring-1 ring-white/40;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='glass'] [data-list-item] [data-item-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-list-item]:hover:not(:disabled) [data-item-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='glass'] [data-list-item][data-active='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}
+
+[data-style='glass'] [data-list-item] [data-item-description] {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-list-item][data-active='true'] [data-item-description] {
+	@apply text-primary-z7;
+}
+
+[data-style='glass'] [data-list-item] [data-item-badge] {
+	@apply text-surface-z6 bg-white/20;
+}
+
+[data-style='glass'] [data-list-item][data-active='true'] [data-item-badge] {
+	@apply text-primary-z8 bg-primary-z5/25;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='glass'] [data-list-group-label] {
+	@apply text-surface-z6;
+}
+
+[data-style='glass'] [data-list-group-label]:hover:not(:disabled) {
+	@apply text-surface-z7;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='glass'] [data-list-divider] {
+	@apply bg-white/20;
+}

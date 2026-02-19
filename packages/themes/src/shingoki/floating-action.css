@@ -1,0 +1,65 @@
+/**
+ * FloatingAction - Shingoki Theme Styles
+ *
+ * Visual theming using semantic colors with UnoCSS @apply syntax.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-fab-trigger] {
+	@apply bg-primary-z5 text-white shadow-lg;
+}
+
+[data-fab-trigger]:hover:not(:disabled) {
+	@apply bg-primary-z6 shadow-xl;
+	transform: scale(1.05);
+}
+
+[data-fab-trigger]:focus-visible {
+	@apply ring-primary-z4 outline-none ring-2 ring-offset-2;
+}
+
+[data-fab][data-open='true'] [data-fab-trigger] {
+	@apply bg-surface-z6;
+	transform: rotate(45deg);
+}
+
+[data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+	@apply bg-surface-z7;
+	transform: rotate(45deg) scale(1.05);
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-fab-item] {
+	@apply bg-surface-z1 text-surface-z8 shadow-md;
+}
+
+[data-fab-item]:hover:not(:disabled) {
+	@apply bg-surface-z2 text-surface-z10 shadow-lg;
+}
+
+[data-fab-item]:focus-visible {
+	@apply ring-primary-z5 outline-none ring-2;
+}
+
+/* Item icon */
+[data-fab-item] [data-fab-item-icon] {
+	@apply text-primary-z6;
+}
+
+[data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+	@apply text-primary-z7;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-fab-backdrop] {
+	background: rgba(0, 0, 0, 0.4);
+}

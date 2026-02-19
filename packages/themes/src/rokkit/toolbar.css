@@ -1,0 +1,84 @@
+/**
+ * Toolbar - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toolbar] {
+  @apply from-surface-z2 to-surface-z1 bg-gradient-to-b;
+}
+
+/* Position-based borders */
+[data-style='rokkit'] [data-toolbar][data-toolbar-position='top'],
+[data-style='rokkit'] [data-toolbar]:not([data-toolbar-position]) {
+  @apply border-surface-z4 border-b shadow-sm;
+}
+
+[data-style='rokkit'] [data-toolbar][data-toolbar-position='bottom'] {
+  @apply border-surface-z4 border-t shadow-sm;
+}
+
+[data-style='rokkit'] [data-toolbar][data-toolbar-position='left'] {
+  @apply border-surface-z4 border-r shadow-sm;
+}
+
+[data-style='rokkit'] [data-toolbar][data-toolbar-position='right'] {
+  @apply border-surface-z4 border-l shadow-sm;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toolbar-item] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 ring-primary-z4 bg-gradient-to-b ring-2 outline-none;
+}
+
+/* Active/pressed state */
+[data-style='rokkit'] [data-toolbar-item][data-active='true'] {
+  @apply from-primary-z4 to-primary-z3 text-primary-z9 border-primary-z5 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+  @apply from-primary-z5 to-primary-z4 text-primary-z10 bg-gradient-to-b;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toolbar-item] [data-toolbar-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+  @apply text-surface-z9;
+}
+
+[data-style='rokkit'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toolbar-separator] {
+  @apply from-surface-z5 to-surface-z3 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-toolbar-divider] {
+  @apply from-surface-z5 to-surface-z3 bg-gradient-to-r;
+}

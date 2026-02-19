@@ -1,0 +1,50 @@
+/**
+ * Toggle - Material Theme Styles
+ *
+ * Material Design inspired with elevation and rounded corners.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='material'] [data-toggle] {
+	@apply bg-surface-z2 rounded-full shadow-sm;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='material'] [data-toggle-option] {
+	@apply text-surface-z6 rounded-full;
+}
+
+[data-style='material'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']) {
+	@apply bg-surface-z3 text-surface-z8;
+}
+
+[data-style='material'] [data-toggle-option]:focus-visible {
+	@apply outline-none ring-2 ring-primary-z4;
+}
+
+/* Selected state */
+[data-style='material'] [data-toggle-option][data-selected='true'] {
+	@apply bg-primary-z5 text-white shadow-md;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='material'] [data-toggle-option] [data-toggle-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='material'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='material'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+	@apply text-white;
+}
