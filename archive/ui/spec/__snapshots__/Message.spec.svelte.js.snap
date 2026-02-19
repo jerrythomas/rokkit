@@ -1,0 +1,157 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Message.svelte > should render children 1`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render children 2`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="warning"
+    role="alert"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render children 3`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="success"
+    role="alert"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render children 4`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
+  >
+    <!---->
+    <p>
+      This is a static content component.
+    </p>
+    
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render empty 1`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="error"
+    role="alert"
+  >
+    
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 1`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="error"
+    role="alert"
+  >
+    Error
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 2`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
+  >
+    Info
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 3`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="warning"
+    role="alert"
+  >
+    Warning
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 4`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="success"
+    role="alert"
+  >
+    Success
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Message.svelte > should render error message 5`] = `
+<div>
+  <div
+    data-message-root=""
+    data-type="info"
+    role="alert"
+  >
+    Info
+    <!---->
+  </div>
+  
+</div>
+`;

@@ -1,0 +1,157 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Node.svelte > renders node with label 1`] = `
+<div>
+  <div
+    aria-current="false"
+    aria-expanded="false"
+    aria-selected="false"
+    class="flex flex-row items-center"
+    data-depth="1"
+    data-path="0"
+    data-tree-leaf="true"
+    data-tree-node=""
+    role="treeitem"
+    tabindex="-1"
+  >
+    <!---->
+     
+    <div
+      data-tree-content=""
+    >
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Root Node
+      </p>
+      <!---->
+      
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Node.svelte > sets aria attributes correctly 1`] = `
+<div>
+  <div
+    aria-current="true"
+    aria-expanded="true"
+    aria-selected="true"
+    class="flex flex-row items-center"
+    data-depth="1"
+    data-path="0"
+    data-tree-leaf="true"
+    data-tree-node=""
+    role="treeitem"
+    tabindex="-1"
+  >
+    <!---->
+     
+    <div
+      data-tree-content=""
+    >
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Root Node
+      </p>
+      <!---->
+      
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Node.svelte > sets data-tree-branch for branch node 1`] = `
+<div>
+  <div
+    aria-current="false"
+    aria-expanded="false"
+    aria-selected="false"
+    class="flex flex-row items-center"
+    data-depth="1"
+    data-path="0"
+    data-tree-branch="true"
+    data-tree-node=""
+    role="treeitem"
+    tabindex="-1"
+  >
+    <!---->
+     
+    <div
+      data-tree-content=""
+    >
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Branch Node
+      </p>
+      <!---->
+      
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Node.svelte > sets data-tree-leaf for leaf node 1`] = `
+<div>
+  <div
+    aria-current="false"
+    aria-expanded="false"
+    aria-selected="false"
+    class="flex flex-row items-center"
+    data-depth="1"
+    data-path="0"
+    data-tree-leaf="true"
+    data-tree-node=""
+    role="treeitem"
+    tabindex="-1"
+  >
+    <!---->
+     
+    <div
+      data-tree-content=""
+    >
+      <!---->
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Root Node
+      </p>
+      <!---->
+      
+      <!---->
+    </div>
+     
+    <!---->
+  </div>
+  
+</div>
+`;

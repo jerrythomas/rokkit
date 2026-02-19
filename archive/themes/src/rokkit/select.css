@@ -1,0 +1,105 @@
+/* Select/Dropdown - Rokkit Theme */
+
+[data-style='rokkit'] [data-select-root],
+[data-style='rokkit'] [data-dropdown-root] > button {
+  @apply rounded;
+}
+
+[data-style='rokkit'] [data-dropdown-root] > button {
+  @apply bg-surface-z1 p-0;
+}
+
+[data-style='rokkit'] [data-dropdown-root] > button > span {
+  @apply rounded py-0;
+}
+
+[data-style='rokkit'] [data-dropdown-root] > button > span > * {
+  @apply h-full items-center;
+}
+
+[data-style='rokkit'] :not([data-field]) > [data-select-root] {
+  @apply bg-surface-z1 border-surface-z3 p-2px border;
+}
+
+[data-style='rokkit'] :not([data-field]) > [data-select-root] > [data-select-value] {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] :not([data-field]) > [data-select-root]:focus-within,
+[data-style='rokkit'] [data-dropdown-root]:focus-within > button {
+  @apply border-none outline-none;
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+[data-style='rokkit'] [data-select-content] {
+  @apply my-1 rounded shadow-lg;
+}
+
+/* Select items */
+[data-style='rokkit'] [data-select-item] {
+  @apply bg-surface-z1 text-surface-800 min-h-8 px-4 leading-10;
+}
+
+[data-style='rokkit'] [data-select-item]:hover {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-select-item][aria-selected='true'] {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-select-root][data-disabled='true'],
+[data-style='rokkit'] [data-dropdown-root][data-disabled='true'] {
+  @apply bg-surface-z2 text-surface-500 cursor-not-allowed opacity-50;
+}
+
+[data-style='rokkit'] [data-select-item][data-disabled='true'] {
+  @apply bg-surface-z2 text-surface-500 cursor-not-allowed;
+}
+
+/* Legacy custom element support */
+[data-style='rokkit'] input-select,
+[data-style='rokkit'] drop-down > button {
+  @apply rounded;
+}
+
+[data-style='rokkit'] drop-down > button {
+  @apply bg-surface-z1 p-0;
+}
+
+[data-style='rokkit'] drop-down > button > span {
+  @apply rounded py-0;
+}
+
+[data-style='rokkit'] drop-down > button > span > * {
+  @apply h-full items-center;
+}
+
+[data-style='rokkit'] :not(field) > input-select {
+  @apply bg-surface-z1 border-surface-z3 p-2px border;
+}
+
+[data-style='rokkit'] :not(field) > input-select > selected-item {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] :not(field) > input-select:focus-within,
+[data-style='rokkit'] drop-down:focus-within > button {
+  @apply border-none outline-none;
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+[data-style='rokkit'] input-select scroll {
+  @apply my-1 rounded shadow-lg;
+}
+
+[data-style='rokkit'] rk-input-select > rk-selected-item > rk-items {
+  @apply flex-grow flex-wrap gap-2;
+}
+
+/* Focus removal */
+[data-style='rokkit'] drop-down:focus-within rk-list,
+[data-style='rokkit'] input-select:focus-within rk-list {
+  @apply outline-none focus:outline-none;
+}

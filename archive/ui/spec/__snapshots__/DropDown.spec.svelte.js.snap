@@ -1,0 +1,106 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DropDown.svelte > should render using icon only 1`] = `
+<button
+  class="flex items-center"
+  tabindex="0"
+>
+  <span
+    class="flex items-center"
+  >
+    <icon
+      aria-checked="false"
+      aria-label="theme"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="theme"
+      />
+      <!---->
+    </icon>
+    <!---->
+     
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="selector-closed"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </span>
+</button>
+`;
+
+exports[`DropDown.svelte > should render using icon only 2`] = `
+<div>
+  <drop-down
+    aria-controls="menu"
+    aria-haspopup="true"
+    class="dropdown relative flex cursor-pointer select-none "
+  >
+    <button
+      class="flex items-center"
+      tabindex="0"
+    >
+      <span
+        class="flex items-center"
+      >
+        <icon
+          aria-checked="false"
+          aria-label="theme"
+          data-disabled="false"
+          data-size="base"
+          data-tag-icon="true"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="theme"
+          />
+          <!---->
+        </icon>
+        <!---->
+         
+        <!---->
+         
+        <icon
+          aria-checked="false"
+          aria-label="selector-closed"
+          data-disabled="false"
+          data-size="base"
+          data-tag-icon="true"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="selector-closed"
+          />
+          <!---->
+        </icon>
+        <!---->
+      </span>
+    </button>
+     
+    <!---->
+  </drop-down>
+  
+</div>
+`;

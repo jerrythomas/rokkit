@@ -1,0 +1,50 @@
+/* Table - Base Structure */
+
+[data-table-root] {
+  @apply w-full border-collapse;
+}
+
+[data-table-root][data-disabled='true'] {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-table-header] {
+  @apply text-left;
+}
+
+[data-table-header-cell] {
+  @apply flex items-center gap-2;
+}
+
+[data-table-header-cell][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-table-body] {
+  @apply w-full;
+}
+
+[data-table-row] {
+  @apply w-full;
+}
+
+[data-table-row][data-disabled='true'] {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-table-cell] {
+  @apply flex items-center gap-2;
+}
+
+/* Sortable header styling */
+th[data-sortable='true'] {
+  @apply cursor-pointer select-none;
+}
+
+th[data-sortable='true']:hover {
+  @apply bg-opacity-80;
+}
+
+th[data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}

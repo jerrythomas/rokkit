@@ -1,0 +1,212 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TableCell > should render a table cell 1`] = `
+<div>
+  <td
+    class="custom-class"
+  >
+    <div
+      data-table-cell=""
+    >
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell 2`] = `
+<div>
+  <td
+    class="another-class"
+  >
+    <div
+      data-table-cell=""
+    >
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell as a parent 1`] = `
+<div>
+  <td>
+    <div
+      data-table-cell=""
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
+       
+      <icon
+        aria-checked="false"
+        aria-label="node-closed"
+        class="small cursor-pointer"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-closed"
+        />
+        <!---->
+      </icon>
+      <!---->
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell as a parent 2`] = `
+<div>
+  <td>
+    <div
+      data-table-cell=""
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
+       
+      <icon
+        aria-checked="false"
+        aria-label="node-opened"
+        class="small cursor-pointer"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="node-opened"
+        />
+        <!---->
+      </icon>
+      <!---->
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell as a parent 3`] = `
+<div>
+  <td>
+    <div
+      data-table-cell=""
+    >
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      <!---->
+       
+      <!---->
+      <span
+        class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+        data-tag-line-empty=""
+        data-tag-tree-line=""
+      >
+        <!---->
+        <!---->
+        
+        
+        <!---->
+      </span>
+      
+      <!---->
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell with path 1`] = `
+<div>
+  <td>
+    <div
+      data-table-cell=""
+    >
+      <!---->
+      <!---->
+       
+      <!---->
+      
+      <!---->
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;
+
+exports[`TableCell > should render a table cell with path 2`] = `
+<div>
+  <td>
+    <div
+      data-table-cell=""
+    >
+      <!---->
+      <!---->
+       
+      <!---->
+      
+      <!---->
+      <!---->
+       
+      <!---->
+    </div>
+  </td>
+  
+</div>
+`;

@@ -1,0 +1,303 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ResponsiveGrid.svelte > should handle prop updates 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="three-col svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+      New Content for A
+      <!---->
+    </div>
+    
+    <!---->
+    <!---->
+    
+    
+    <!---->
+    <!---->
+    
+    
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should handle prop updates for large 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="test-class svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-2"
+      data-grid-segment=""
+    >
+       Content for B
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-3"
+      data-grid-segment=""
+    >
+       Content for C
+      <!---->
+    </div>
+    
+    
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should render a responsive grid 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="three-col svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-2"
+      data-grid-segment=""
+    >
+       Content for B
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-3"
+      data-grid-segment=""
+    >
+       Content for C
+      <!---->
+    </div>
+    
+    
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should render a responsive grid for small devices 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="three-col svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    
+    <!---->
+    <!---->
+    
+    
+    <!---->
+    <!---->
+    
+    
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="three-col svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    
+    <!---->
+    <!---->
+    
+    
+    <!---->
+    <!---->
+    
+    
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 2`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="three-col svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-2"
+      data-grid-segment=""
+    >
+       Content for B
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-3"
+      data-grid-segment=""
+    >
+       Content for C
+      <!---->
+    </div>
+    
+    
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ResponsiveGrid.svelte > should switch columns on left and right arrow keys 3`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="three-col svelte-1kq9yto"
+    data-disabled="false"
+    data-responsive-grid-root=""
+    tabindex="0"
+  >
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    <!---->
+    <div
+      class="col-1"
+      data-grid-segment=""
+    >
+       Content for A
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-2"
+      data-grid-segment=""
+    >
+       Content for B
+      <!---->
+    </div>
+    
+    
+    <!---->
+    <!---->
+    <div
+      class="col-3"
+      data-grid-segment=""
+    >
+       Content for C
+      <!---->
+    </div>
+    
+    
+    
+  </div>
+  
+</div>
+`;

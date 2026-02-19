@@ -1,0 +1,413 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Pill > should fire remove event on Backspace 1`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="Remove"
+      data-disabled="true"
+      data-size="base"
+      data-tag-button="true"
+      data-tag-icon="true"
+      role="button"
+      small="true"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="action-close"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on Backspace 2`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="Remove"
+      data-disabled="false"
+      data-size="base"
+      data-tag-button="true"
+      data-tag-icon="true"
+      role="button"
+      small="true"
+      tabindex="0"
+    >
+      <i
+        aria-hidden="true"
+        class="action-close"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on Delete 1`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="Remove"
+      data-disabled="true"
+      data-size="base"
+      data-tag-button="true"
+      data-tag-icon="true"
+      role="button"
+      small="true"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="action-close"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on Delete 2`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="Remove"
+      data-disabled="false"
+      data-size="base"
+      data-tag-button="true"
+      data-tag-icon="true"
+      role="button"
+      small="true"
+      tabindex="0"
+    >
+      <i
+        aria-hidden="true"
+        class="action-close"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on click 1`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="Remove"
+      data-disabled="true"
+      data-size="base"
+      data-tag-button="true"
+      data-tag-icon="true"
+      role="button"
+      small="true"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="action-close"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should fire remove event on click 2`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <icon
+      aria-checked="false"
+      aria-label="Remove"
+      data-disabled="false"
+      data-size="base"
+      data-tag-button="true"
+      data-tag-icon="true"
+      role="button"
+      small="true"
+      tabindex="0"
+    >
+      <i
+        aria-hidden="true"
+        class="action-close"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should render 1`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should render 2`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should render with icon 1`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <icon
+      aria-checked="false"
+      aria-label="Hello"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="world"
+      />
+      <!---->
+    </icon>
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should render with icon 2`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <icon
+      aria-checked="false"
+      aria-label="World"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="hello"
+      />
+      <!---->
+    </icon>
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should render with image 1`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <img
+      alt="Hello"
+      src="world.png"
+    />
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Pill > should render with image 2`] = `
+<div>
+  <div
+    data-pill-root=""
+    tabindex="0"
+  >
+    <!---->
+    <!---->
+    <img
+      alt="World"
+      src="hello.png"
+    />
+    
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+     
+    <!---->
+  </div>
+  
+</div>
+`;

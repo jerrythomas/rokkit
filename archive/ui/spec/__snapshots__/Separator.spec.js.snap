@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Separator.svelte > should render 1`] = `
+<div>
+  <div
+    aria-orientation="horizontal"
+    data-orientation="horizontal"
+    data-separator-root=""
+    role="separator"
+  />
+  
+</div>
+`;

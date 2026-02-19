@@ -1,0 +1,121 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Item > should render 1`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    Hello
+  </p>
+  <!---->
+  
+</div>
+`;
+
+exports[`Item > should render 2`] = `
+<div>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    World
+  </p>
+  <!---->
+  
+</div>
+`;
+
+exports[`Item > should render with custom mapping 1`] = `
+<div>
+  <!---->
+  <icon
+    aria-checked="false"
+    aria-label="World"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="World"
+    />
+    <!---->
+  </icon>
+  <!---->
+   
+  <p>
+    World
+  </p>
+  <!---->
+  
+</div>
+`;
+
+exports[`Item > should render with custom mapping 2`] = `
+<div>
+  <!---->
+  <!---->
+  <img
+    src="world.png"
+  />
+  
+  <!---->
+   
+  <!---->
+  
+</div>
+`;
+
+exports[`Item > should render with icon 1`] = `
+<div>
+  <!---->
+  <icon
+    aria-checked="false"
+    aria-label="Hello"
+    data-disabled="false"
+    data-size="base"
+    data-tag-icon="true"
+    role="img"
+    tabindex="-1"
+  >
+    <i
+      aria-hidden="true"
+      class="world"
+    />
+    <!---->
+  </icon>
+  <!---->
+   
+  <p>
+    Hello
+  </p>
+  <!---->
+  
+</div>
+`;
+
+exports[`Item > should render with image 1`] = `
+<div>
+  <!---->
+  <!---->
+  <img
+    alt="Hello"
+    src="world.png"
+  />
+  
+  <!---->
+   
+  <p>
+    Hello
+  </p>
+  <!---->
+  
+</div>
+`;

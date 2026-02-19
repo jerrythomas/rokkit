@@ -1,0 +1,16 @@
+/* Scrollbar styles */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+}
+/* For Webkit browsers */
+::-webkit-scrollbar:horizontal {
+  @apply max-h-2;
+}
+::-webkit-scrollbar:vertical {
+  @apply max-w-2;
+}
+::-webkit-scrollbar-thumb {
+  @apply rgba(0,0,0,0.5) rounded-full;
+}

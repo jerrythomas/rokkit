@@ -1,0 +1,1061 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NestedList > should render nested list 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-nested-list-root=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-disabled="false"
+      aria-expanded="true"
+      aria-selected="false"
+      data-depth="1"
+      data-disabled="false"
+      data-node=""
+      data-path="0"
+      data-state="opened"
+      role="treeitem"
+    >
+      <div
+        data-node-content=""
+      >
+        <!---->
+        <icon
+          aria-checked="false"
+          aria-label="collapse"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
+          data-state="opened"
+          data-tag-icon="true"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-opened"
+          />
+          <!---->
+        </icon>
+        
+        <!---->
+         
+        <div
+          data-node-item=""
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Item 1
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+      </div>
+       
+      <!---->
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="0-0"
+          data-state="closed"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 1
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="0-1"
+          data-state="closed"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 2
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-disabled="false"
+      aria-expanded="true"
+      aria-selected="false"
+      data-depth="1"
+      data-disabled="false"
+      data-node=""
+      data-path="1"
+      data-state="opened"
+      role="treeitem"
+    >
+      <div
+        data-node-content=""
+      >
+        <!---->
+        <icon
+          aria-checked="false"
+          aria-label="collapse"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
+          data-state="opened"
+          data-tag-icon="true"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-opened"
+          />
+          <!---->
+        </icon>
+        
+        <!---->
+         
+        <div
+          data-node-item=""
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Item 2
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+      </div>
+       
+      <!---->
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="true"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="1-0"
+          data-state="opened"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <icon
+              aria-checked="false"
+              aria-label="collapse"
+              class="w-4"
+              data-disabled="false"
+              data-size="small"
+              data-state="opened"
+              data-tag-icon="true"
+              role="img"
+              tabindex="-1"
+            >
+              <i
+                aria-hidden="true"
+                class="node-opened"
+              />
+              <!---->
+            </icon>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 3
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          <div
+            aria-disabled="false"
+            data-disabled="false"
+            data-nested-list-root=""
+            role="group"
+          >
+            <div
+              aria-current="false"
+              aria-disabled="false"
+              aria-expanded="false"
+              aria-selected="false"
+              data-depth="3"
+              data-disabled="false"
+              data-node=""
+              data-path="1-0-0"
+              data-state="closed"
+              role="treeitem"
+            >
+              <div
+                data-node-content=""
+              >
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-sibling=""
+                  data-tag-tree-line=""
+                >
+                  <!---->
+                  <!---->
+                  <i
+                    class="row-span-2 border-r"
+                  />
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-last=""
+                  data-tag-tree-line=""
+                >
+                  <!---->
+                  <i
+                    class="border-r"
+                  />
+                   
+                  <i
+                    class="border-b"
+                  />
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-empty=""
+                  data-tag-tree-line=""
+                >
+                  <!---->
+                  <!---->
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                 
+                <div
+                  data-node-item=""
+                >
+                  <!---->
+                  <!---->
+                  <!---->
+                  
+                  <!---->
+                   
+                  <p>
+                    Grandchild 1
+                  </p>
+                  <!---->
+                  
+                  <!---->
+                </div>
+              </div>
+               
+              <!---->
+              
+              <!---->
+            </div>
+            
+          </div>
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="1-1"
+          data-state="closed"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 4
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`NestedList > should render nested list 2`] = `
+<div>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-nested-list-root=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-disabled="false"
+      aria-expanded="true"
+      aria-selected="false"
+      data-depth="1"
+      data-disabled="false"
+      data-node=""
+      data-path="0"
+      data-state="opened"
+      role="treeitem"
+    >
+      <div
+        data-node-content=""
+      >
+        <!---->
+        <icon
+          aria-checked="false"
+          aria-label="collapse"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
+          data-state="opened"
+          data-tag-icon="true"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-opened"
+          />
+          <!---->
+        </icon>
+        
+        <!---->
+         
+        <div
+          data-node-item=""
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Item 1
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+      </div>
+       
+      <!---->
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="0-0"
+          data-state="closed"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 1
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="0-1"
+          data-state="closed"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 2
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-disabled="false"
+      aria-expanded="true"
+      aria-selected="false"
+      data-depth="1"
+      data-disabled="false"
+      data-node=""
+      data-path="1"
+      data-state="opened"
+      role="treeitem"
+    >
+      <div
+        data-node-content=""
+      >
+        <!---->
+        <icon
+          aria-checked="false"
+          aria-label="collapse"
+          class="w-4"
+          data-disabled="false"
+          data-size="small"
+          data-state="opened"
+          data-tag-icon="true"
+          role="img"
+          tabindex="-1"
+        >
+          <i
+            aria-hidden="true"
+            class="node-opened"
+          />
+          <!---->
+        </icon>
+        
+        <!---->
+         
+        <div
+          data-node-item=""
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Item 2
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+      </div>
+       
+      <!---->
+      <div
+        aria-disabled="false"
+        data-disabled="false"
+        data-nested-list-root=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="true"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="1-0"
+          data-state="opened"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-child=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              <i
+                class="col-span-1 row-span-2 border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <icon
+              aria-checked="false"
+              aria-label="collapse"
+              class="w-4"
+              data-disabled="false"
+              data-size="small"
+              data-state="opened"
+              data-tag-icon="true"
+              role="img"
+              tabindex="-1"
+            >
+              <i
+                aria-hidden="true"
+                class="node-opened"
+              />
+              <!---->
+            </icon>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 3
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          <div
+            aria-disabled="false"
+            data-disabled="false"
+            data-nested-list-root=""
+            role="group"
+          >
+            <div
+              aria-current="false"
+              aria-disabled="false"
+              aria-expanded="false"
+              aria-selected="false"
+              data-depth="3"
+              data-disabled="false"
+              data-node=""
+              data-path="1-0-0"
+              data-state="closed"
+              role="treeitem"
+            >
+              <div
+                data-node-content=""
+              >
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-sibling=""
+                  data-tag-tree-line=""
+                >
+                  <!---->
+                  <!---->
+                  <i
+                    class="row-span-2 border-r"
+                  />
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-last=""
+                  data-tag-tree-line=""
+                >
+                  <!---->
+                  <i
+                    class="border-r"
+                  />
+                   
+                  <i
+                    class="border-b"
+                  />
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                <span
+                  class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+                  data-tag-line-empty=""
+                  data-tag-tree-line=""
+                >
+                  <!---->
+                  <!---->
+                  
+                  
+                  <!---->
+                </span>
+                
+                <!---->
+                 
+                <div
+                  data-node-item=""
+                >
+                  <!---->
+                  <!---->
+                  <!---->
+                  
+                  <!---->
+                   
+                  <p>
+                    Grandchild 1
+                  </p>
+                  <!---->
+                  
+                  <!---->
+                </div>
+              </div>
+               
+              <!---->
+              
+              <!---->
+            </div>
+            
+          </div>
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-disabled="false"
+          aria-expanded="false"
+          aria-selected="false"
+          data-depth="2"
+          data-disabled="false"
+          data-node=""
+          data-path="1-1"
+          data-state="closed"
+          role="treeitem"
+        >
+          <div
+            data-node-content=""
+          >
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-last=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <i
+                class="border-r"
+              />
+               
+              <i
+                class="border-b"
+              />
+              
+              <!---->
+            </span>
+            
+            <!---->
+            <span
+              class="grid h-full w-4 min-w-4 grid-cols-2 grid-rows-2"
+              data-tag-line-empty=""
+              data-tag-tree-line=""
+            >
+              <!---->
+              <!---->
+              
+              
+              <!---->
+            </span>
+            
+            <!---->
+             
+            <div
+              data-node-item=""
+            >
+              <!---->
+              <!---->
+              <!---->
+              
+              <!---->
+               
+              <p>
+                Child 4
+              </p>
+              <!---->
+              
+              <!---->
+            </div>
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;

@@ -1,0 +1,60 @@
+/* Checkbox - Rokkit Theme */
+
+[data-style='rokkit'] [data-checkbox-root] {
+  @apply text-surface-800;
+}
+
+[data-style='rokkit'] [data-checkbox-indicator] icon {
+  @apply text-primary;
+}
+
+[data-style='rokkit'] [data-checkbox-root]:hover {
+  @apply text-primary-700;
+}
+
+[data-style='rokkit'] [data-checkbox-root][data-state='checked'] {
+  @apply text-primary-700;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-checkbox-root][data-disabled='true'] {
+  @apply text-surface-500;
+}
+
+[data-style='rokkit'] [data-checkbox-root][data-disabled='true'] [data-checkbox-indicator] icon {
+  @apply text-surface-400;
+}
+
+/* Radio Group */
+[data-style='rokkit'] [data-radio-group-root] {
+  @apply text-surface-800 gap-2;
+}
+
+[data-style='rokkit'] [data-radio-item] {
+  @apply py-1;
+}
+
+[data-style='rokkit'] [data-radio-item]:hover {
+  @apply text-primary-700;
+}
+
+[data-style='rokkit'] [data-radio-indicator] icon {
+  @apply text-primary;
+}
+
+[data-style='rokkit'] [data-radio-item][data-state='on'] {
+  @apply text-primary-700;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-radio-group-root][data-disabled='true'] {
+  @apply text-surface-500;
+}
+
+[data-style='rokkit'] [data-radio-item][data-disabled='true'] {
+  @apply text-surface-500;
+}
+
+[data-style='rokkit'] [data-radio-item][data-disabled='true'] [data-radio-indicator] icon {
+  @apply text-surface-400;
+}

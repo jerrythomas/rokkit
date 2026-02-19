@@ -1,0 +1,225 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ValidationReport.svelte > should render validation report 1`] = `
+<div>
+  <div
+    data-validation-report-root=""
+    role="status"
+  >
+    <div
+      data-status="pass"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="badge-pass"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-pass"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check passed
+      </p>
+    </div>
+    <div
+      data-status="fail"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="badge-fail"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-fail"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check failed
+      </p>
+    </div>
+    <div
+      data-status="unknown"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="badge-unknown"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-unknown"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check is unknown
+      </p>
+    </div>
+    <div
+      data-status="warn"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="badge-warn"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="badge-warn"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check is warning
+      </p>
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`ValidationReport.svelte > should render validation report with custom icons 1`] = `
+<div>
+  <div
+    data-validation-report-root=""
+    role="status"
+  >
+    <div
+      data-status="pass"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="pass"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="pass"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check passed
+      </p>
+    </div>
+    <div
+      data-status="fail"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="fail"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="fail"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check failed
+      </p>
+    </div>
+    <div
+      data-status="unknown"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="unknown"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="unknown"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check is unknown
+      </p>
+    </div>
+    <div
+      data-status="warn"
+      data-validation-item=""
+    >
+      <icon
+        aria-checked="false"
+        aria-label="warn"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="warn"
+        />
+        <!---->
+      </icon>
+      <!---->
+       
+      <p>
+        This check is warning
+      </p>
+    </div>
+    
+  </div>
+  
+</div>
+`;

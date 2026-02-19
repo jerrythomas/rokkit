@@ -1,0 +1,47 @@
+/* Message / Status Report - Base Structure */
+
+[data-message-root] {
+  @apply flex items-start gap-2;
+}
+
+[data-message-icon] {
+  @apply flex-shrink-0;
+}
+
+[data-message-content] {
+  @apply flex flex-grow flex-col;
+}
+
+[data-message-title] {
+  @apply font-medium;
+}
+
+[data-message-description] {
+  @apply text-sm;
+}
+
+[data-message-close] {
+  @apply cursor-pointer;
+}
+
+/* Status Report */
+[data-status-report-root] {
+  @apply flex flex-col;
+}
+
+[data-status-report-root] [data-message-root] {
+  @apply flex gap-2;
+}
+
+/* Legacy custom element support */
+rk-status-report {
+  @apply flex flex-col;
+}
+
+rk-status-report > rk-message {
+  @apply flex gap-2;
+}
+
+rk-message {
+  @apply flex items-start gap-2;
+}

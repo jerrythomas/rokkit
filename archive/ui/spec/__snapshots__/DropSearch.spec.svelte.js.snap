@@ -1,0 +1,139 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DropSearch.svelte > should render 1`] = `
+<div>
+  <input-select
+    aria-controls="select-listbox"
+    aria-disabled="false"
+    aria-expanded="true"
+    aria-label="select"
+    class="open"
+    data-direction="down"
+    data-select="true"
+    role="combobox"
+    tabindex="0"
+  >
+    <selected-item
+      data-select-trigger="true"
+      role="button"
+      tabindex="-1"
+    >
+      <item
+        data-select-value=""
+      >
+        <!---->
+        <span
+          data-select-placeholder=""
+        >
+          
+        </span>
+        
+        <!---->
+      </item>
+       
+      <icon
+        aria-checked="false"
+        aria-label="opened"
+        data-disabled="false"
+        data-size="base"
+        data-tag-icon="true"
+        role="img"
+        tabindex="-1"
+      >
+        <i
+          aria-hidden="true"
+          class="selector-opened"
+        />
+        <!---->
+      </icon>
+      <!---->
+    </selected-item>
+     
+    <!---->
+    <scroll
+      class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+      data-direction="down"
+      style="top: 0px;"
+    >
+      <!---->
+      <!---->
+       
+      <div
+        aria-label="select-listbox"
+        data-list=""
+        role="listbox"
+        tabindex="-1"
+      >
+        <!---->
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="0"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            1
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="1"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            2
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-selected="false"
+          data-list-item=""
+          data-path="2"
+          role="option"
+        >
+          <!---->
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            3
+          </p>
+          <!---->
+          
+          <!---->
+        </div>
+        
+        <!---->
+      </div>
+      <!---->
+      <!---->
+    </scroll>
+    
+    <!---->
+  </input-select>
+  
+</div>
+`;

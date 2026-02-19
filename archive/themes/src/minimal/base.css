@@ -1,0 +1,8 @@
+/* @import '../base.css'; */
+
+[data-style='minimal'] rk-icon[role='button'] {
+  @apply text-surface-z3 hover:text-secondary-600 focus:outline-secondary-600 focus:m-1px focus:rounded;
+}
+[data-style='minimal'] button:disabled > rk-icon {
+  @apply text-surface-z2 hover:text-surface-z2 cursor-not-allowed;
+}

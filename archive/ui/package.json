@@ -1,0 +1,45 @@
+{
+  "name": "@rokkit/ui",
+  "version": "1.0.0-next.125",
+  "description": "Data driven UI components, improving DX",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "module": "src/index.js",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun prepublishOnly"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./utils": "./src/lib/index.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "@rokkit/actions": "workspace:latest",
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/data": "workspace:latest",
+    "@rokkit/forms": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
+    "bits-ui": "^2.10.0",
+    "d3-scale": "^4.0.2",
+    "date-fns": "^4.1.0",
+    "ramda": "^0.31.3",
+    "typescript": "^5.9.2"
+  }
+}

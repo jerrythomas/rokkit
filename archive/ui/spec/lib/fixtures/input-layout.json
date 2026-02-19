@@ -1,0 +1,68 @@
+{
+  "type": "vertical",
+  "elements": [
+    {
+      "scope": "#/name",
+      "key": "name",
+      "label": "name",
+      "component": "custom",
+      "props": {
+        "type": "string",
+        "label": "Name"
+      }
+    },
+    {
+      "scope": "#/age",
+      "key": "age",
+      "label": "age",
+
+      "props": {
+        "type": "number"
+      }
+    },
+    {
+      "type": "vertical",
+      "scope": "#/address",
+      "key": "address",
+      "title": "Address",
+      "elements": [
+        {
+          "scope": "#/address/street",
+          "key": "street",
+          "label": "street",
+
+          "props": {
+            "type": "string"
+          }
+        },
+        {
+          "scope": "#/address/city",
+          "key": "city",
+          "label": "city",
+
+          "props": {
+            "type": "string"
+          }
+        },
+        {
+          "scope": "#/address/state",
+          "key": "state",
+          "label": "state",
+
+          "props": {
+            "type": "string"
+          }
+        },
+        {
+          "scope": "#/address/zip",
+          "key": "zip",
+          "label": "zip",
+
+          "props": {
+            "type": "number"
+          }
+        }
+      ]
+    }
+  ]
+}

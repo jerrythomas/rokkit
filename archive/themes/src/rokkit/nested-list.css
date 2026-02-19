@@ -1,0 +1,105 @@
+/* Nested List / Node - Rokkit Theme */
+
+[data-style='rokkit'] [data-nested-list-root] {
+  @apply text-surface-800;
+}
+
+[data-style='rokkit'] [data-node-content] {
+  @apply h-8 px-2;
+}
+
+[data-style='rokkit'] [data-node-content]:hover {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-node][aria-current='true'] > [data-node-content] {
+  @apply bg-surface-z2 text-on-surface-z2;
+}
+
+[data-style='rokkit'] [data-node][aria-selected='true'] > [data-node-content] {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-nested-list-root]:focus-within [data-node][aria-selected='true'] > [data-node-content] {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+}
+
+[data-style='rokkit'] [data-node-content] > [data-item] {
+  @apply px-1;
+}
+
+[data-style='rokkit'] [data-node-content] > span {
+  @apply flex-shrink-0;
+}
+
+[data-style='rokkit'] [data-node-content] > span > i {
+  @apply border-surface-z3;
+}
+
+[data-style='rokkit'] [data-node-content] > [data-icon] > i {
+  @apply text-surface-z6;
+}
+
+/* Focus styles */
+[data-style='rokkit'] [data-nested-list-root],
+[data-style='rokkit'] [data-nested-list-root]:focus-within {
+  @apply rounded outline-none;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-node][data-disabled='true'] > [data-node-content] {
+  @apply text-surface-500 cursor-not-allowed;
+}
+
+/* Legacy custom element support */
+[data-style='rokkit'] rk-nested-list {
+  @apply text-surface-800;
+}
+
+[data-style='rokkit'] rk-nested-list rk-node > div {
+  @apply h-8 px-2;
+}
+
+[data-style='rokkit'] rk-node > div:hover {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] rk-node[aria-current='true'] > div {
+  @apply bg-surface-z2 text-on-surface-z2;
+}
+
+[data-style='rokkit'] rk-tree:focus-within rk-node[aria-selected='true'] > div {
+  @apply from-primary to-secondary bg-gradient-to-r text-white;
+  @apply hover:from-secondary hover:to-primary;
+}
+
+[data-style='rokkit'] rk-node > div > rk-item {
+  @apply px-1;
+}
+
+[data-style='rokkit'] rk-node > div > span {
+  @apply flex-shrink-0;
+}
+
+[data-style='rokkit'] rk-node > div > span > i {
+  @apply border-surface-z3;
+}
+
+[data-style='rokkit'] rk-node > div > rk-icon > i {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] rk-nested-list,
+[data-style='rokkit'] rk-nested-list:focus-within,
+[data-style='rokkit'] rk-tree:focus-within {
+  @apply rounded outline-none;
+}
+
+/* Folder tree variant */
+[data-style='rokkit'] .folder-tree {
+  @apply bg-surface-z0 h-full;
+}
+
+[data-style='rokkit'] .folder-tree rk-nested-list {
+  @apply bg-surface-z0 h-full;
+}

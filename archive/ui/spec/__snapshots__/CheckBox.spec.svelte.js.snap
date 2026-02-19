@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CheckBox > should apply custom class names 1`] = `
+<div>
+  <div
+    aria-checked="unchecked"
+    aria-disabled="false"
+    class="custom-class"
+    data-checkbox-root=""
+    data-disabled="false"
+    data-state="unchecked"
+    role="checkbox"
+    tabindex="0"
+  >
+    <input
+      hidden=""
+      name="test"
+      type="checkbox"
+    />
+     
+    <span
+      data-checkbox-indicator=""
+    >
+      <icon
+        aria-hidden="true"
+        class="checkbox-unchecked"
+      />
+    </span>
+  </div>
+  
+</div>
+`;
+
+exports[`CheckBox > should render checkbox 1`] = `
+<div>
+  <div
+    aria-checked="unchecked"
+    aria-disabled="false"
+    data-checkbox-root=""
+    data-disabled="false"
+    data-state="unchecked"
+    role="checkbox"
+    tabindex="0"
+  >
+    <input
+      hidden=""
+      name="test"
+      type="checkbox"
+    />
+     
+    <span
+      data-checkbox-indicator=""
+    >
+      <icon
+        aria-hidden="true"
+        class="checkbox-unchecked"
+      />
+    </span>
+  </div>
+  
+</div>
+`;

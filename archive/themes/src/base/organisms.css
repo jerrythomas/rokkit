@@ -1,0 +1,24 @@
+/* Organisms - Base Structure */
+/* Complex component compositions that don't have their own files */
+
+/* Input Field */
+rk-input-field rk-field {
+  @apply gap-1px;
+}
+
+rk-input-field rk-field rk-icon {
+  @apply bg-surface-z2 text-surface-800 h-9 w-9;
+}
+
+rk-input-field > rk-field > rk-input-select {
+  @apply px-0;
+}
+
+/* Container focus */
+rk-container:focus-within {
+  @apply outline-none;
+}
+
+[data-container]:focus-within {
+  @apply outline-none;
+}

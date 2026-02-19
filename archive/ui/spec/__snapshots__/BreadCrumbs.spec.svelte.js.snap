@@ -1,0 +1,185 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BreadCrumbs.svelte > should render breadcrumbs 1`] = `
+<div>
+  <div
+    data-crumb-root=""
+  >
+    <!---->
+    <!---->
+     
+    <div
+      data-crumb-item=""
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Alpha
+      </p>
+      <!---->
+      <!---->
+    </div>
+    <!---->
+    <icon
+      aria-checked="false"
+      aria-label="/"
+      data-crumb-separator="true"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <span>
+        /
+      </span>
+      <!---->
+    </icon>
+    <!---->
+     
+    <div
+      class="is-selected"
+      data-crumb-item=""
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Beta
+      </p>
+      <!---->
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`BreadCrumbs.svelte > should render breadcrumbs with separator 1`] = `
+<div>
+  <div
+    data-crumb-root=""
+  >
+    <!---->
+    <!---->
+     
+    <div
+      data-crumb-item=""
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Alpha
+      </p>
+      <!---->
+      <!---->
+    </div>
+    <!---->
+    <icon
+      aria-checked="false"
+      aria-label=">"
+      data-crumb-separator="true"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <span>
+        &gt;
+      </span>
+      <!---->
+    </icon>
+    <!---->
+     
+    <div
+      class="is-selected"
+      data-crumb-item=""
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Beta
+      </p>
+      <!---->
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`BreadCrumbs.svelte > should render breadcrumbs with separator icon 1`] = `
+<div>
+  <div
+    data-crumb-root=""
+  >
+    <!---->
+    <!---->
+     
+    <div
+      data-crumb-item=""
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Alpha
+      </p>
+      <!---->
+      <!---->
+    </div>
+    <!---->
+    <icon
+      aria-checked="false"
+      aria-label="icon"
+      data-crumb-separator="true"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="icon"
+      />
+      <!---->
+    </icon>
+    <!---->
+     
+    <div
+      class="is-selected"
+      data-crumb-item=""
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        Beta
+      </p>
+      <!---->
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;

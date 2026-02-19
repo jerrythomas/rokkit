@@ -1,0 +1,33 @@
+/* Button - Base Structure */
+
+[data-button-root] {
+  @apply flex cursor-pointer items-center justify-center;
+}
+
+[data-button-root][data-disabled='true'],
+[data-button-root][aria-disabled='true'],
+[data-button-root]:disabled {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+/* Button group */
+[data-button-group] {
+  @apply flex items-center;
+}
+
+/* Legacy support */
+button,
+.button {
+  @apply flex cursor-pointer items-center;
+}
+
+button:disabled,
+.button:disabled,
+button[aria-disabled='true'],
+.button[aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+button-group {
+  @apply flex items-center;
+}

@@ -1,0 +1,791 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`List.svelte > passes focused and selected props 1`] = `
+<div>
+  <div
+    data-tree-list=""
+    role="group"
+  >
+    <div
+      aria-current="true"
+      aria-expanded="true"
+      aria-selected="true"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="0"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 1
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      <div
+        data-tree-list=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-0"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-1"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="1"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 2
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`List.svelte > renders all root nodes 1`] = `
+<div>
+  <div
+    data-tree-list=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-expanded="true"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="0"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 1
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      <div
+        data-tree-list=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-0"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-1"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="1"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 2
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`List.svelte > renders children when expanded 1`] = `
+<div>
+  <div
+    data-tree-list=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-expanded="true"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="0"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 1
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      <div
+        data-tree-list=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-0"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-1"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="1"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 2
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`List.svelte > renders leaf and branch data attributes 1`] = `
+<div>
+  <div
+    data-tree-list=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-expanded="true"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="0"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 1
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      <div
+        data-tree-list=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-0"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-1"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="1"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 2
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;
+
+exports[`List.svelte > renders nested lists recursively 1`] = `
+<div>
+  <div
+    data-tree-list=""
+    role="group"
+  >
+    <div
+      aria-current="false"
+      aria-expanded="true"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="0"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 1
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      <div
+        data-tree-list=""
+        role="group"
+      >
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-0"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        <div
+          aria-current="false"
+          aria-expanded="false"
+          aria-selected="false"
+          class="flex flex-row items-center"
+          data-depth="2"
+          data-path="0-1"
+          data-tree-leaf="true"
+          data-tree-node=""
+          role="treeitem"
+          tabindex="-1"
+        >
+          <!---->
+           
+          <div
+            data-tree-content=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Child 1.2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+           
+          <!---->
+          
+          <!---->
+        </div>
+        
+      </div>
+      
+      <!---->
+    </div>
+    <div
+      aria-current="false"
+      aria-expanded="false"
+      aria-selected="false"
+      class="flex flex-row items-center"
+      data-depth="1"
+      data-path="1"
+      data-tree-branch="true"
+      data-tree-node=""
+      role="treeitem"
+      tabindex="-1"
+    >
+      <!---->
+       
+      <div
+        data-tree-content=""
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Root 2
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+       
+      <!---->
+      
+      <!---->
+    </div>
+    
+  </div>
+  
+</div>
+`;

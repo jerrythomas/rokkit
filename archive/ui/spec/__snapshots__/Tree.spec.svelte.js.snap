@@ -1,0 +1,284 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tree > should render nested list 1`] = `
+<div>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-tree-root=""
+    role="tree"
+    tabindex="0"
+  >
+    <!---->
+     
+    <div
+      aria-disabled="false"
+      data-disabled="false"
+      data-nested-list-root=""
+      role="group"
+    >
+      <div
+        aria-current="false"
+        aria-disabled="false"
+        aria-expanded="false"
+        aria-selected="false"
+        data-depth="1"
+        data-disabled="false"
+        data-node=""
+        data-path="0"
+        data-state="closed"
+        role="treeitem"
+      >
+        <div
+          data-node-content=""
+        >
+          <!---->
+          <icon
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="node-closed"
+            />
+            <!---->
+          </icon>
+          
+          <!---->
+           
+          <div
+            data-node-item=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Item 1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+        </div>
+         
+        <!---->
+        
+        <!---->
+      </div>
+      <div
+        aria-current="false"
+        aria-disabled="false"
+        aria-expanded="false"
+        aria-selected="false"
+        data-depth="1"
+        data-disabled="false"
+        data-node=""
+        data-path="1"
+        data-state="closed"
+        role="treeitem"
+      >
+        <div
+          data-node-content=""
+        >
+          <!---->
+          <icon
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="node-closed"
+            />
+            <!---->
+          </icon>
+          
+          <!---->
+           
+          <div
+            data-node-item=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Item 2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+        </div>
+         
+        <!---->
+        
+        <!---->
+      </div>
+      
+    </div>
+    <!---->
+  </div>
+  
+</div>
+`;
+
+exports[`Tree > should render nested list 2`] = `
+<div>
+  <div
+    aria-disabled="false"
+    class="another-class"
+    data-disabled="false"
+    data-tree-root=""
+    role="tree"
+    tabindex="0"
+  >
+    <!---->
+     
+    <div
+      aria-disabled="false"
+      data-disabled="false"
+      data-nested-list-root=""
+      role="group"
+    >
+      <div
+        aria-current="false"
+        aria-disabled="false"
+        aria-expanded="false"
+        aria-selected="false"
+        data-depth="1"
+        data-disabled="false"
+        data-node=""
+        data-path="0"
+        data-state="closed"
+        role="treeitem"
+      >
+        <div
+          data-node-content=""
+        >
+          <!---->
+          <icon
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="node-closed"
+            />
+            <!---->
+          </icon>
+          
+          <!---->
+           
+          <div
+            data-node-item=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Item 1
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+        </div>
+         
+        <!---->
+        
+        <!---->
+      </div>
+      <div
+        aria-current="false"
+        aria-disabled="false"
+        aria-expanded="false"
+        aria-selected="false"
+        data-depth="1"
+        data-disabled="false"
+        data-node=""
+        data-path="1"
+        data-state="closed"
+        role="treeitem"
+      >
+        <div
+          data-node-content=""
+        >
+          <!---->
+          <icon
+            aria-checked="false"
+            aria-label="expand"
+            class="w-4"
+            data-disabled="false"
+            data-size="small"
+            data-state="closed"
+            data-tag-icon="true"
+            role="img"
+            tabindex="-1"
+          >
+            <i
+              aria-hidden="true"
+              class="node-closed"
+            />
+            <!---->
+          </icon>
+          
+          <!---->
+           
+          <div
+            data-node-item=""
+          >
+            <!---->
+            <!---->
+            <!---->
+            
+            <!---->
+             
+            <p>
+              Item 2
+            </p>
+            <!---->
+            
+            <!---->
+          </div>
+        </div>
+         
+        <!---->
+        
+        <!---->
+      </div>
+      
+    </div>
+    <!---->
+  </div>
+  
+</div>
+`;

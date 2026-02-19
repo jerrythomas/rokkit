@@ -1,0 +1,124 @@
+/* Styles for ' rk-input-range' class */
+[data-style='rokkit'] rk-input-range rk-range-track {
+  @apply relative mt-2 h-2;
+}
+[data-style='rokkit'] rk-input-range rk-range-track rk-range-track-bar {
+  @apply bg-surface-z3 border-surface-z3 box-border rounded-full border;
+}
+[data-style='rokkit'] rk-input-range rk-range-track selected-bar {
+  @apply top-0px bottom-0px from-primary to-secondary border-secondary rounded-full border bg-gradient-to-r;
+}
+[data-style='rokkit'] rk-input-range rk-range-track rk-thumb {
+  @apply rounded-sm focus:outline-none;
+}
+/* [data-style="rokkit"]  rk-input-range rk-tick p {
+  @apply text-surface-800;
+} */
+[data-style='rokkit'] .bookend rk-range-track rk-range-track-bar::before,
+[data-style='rokkit'] .bookend rk-range-track rk-range-track-bar::after {
+  content: '';
+  @apply w-1px absolute -bottom-2 -top-2 rounded-full bg-gray-300;
+}
+[data-style='rokkit'] .bookend rk-range-track rk-range-track-bar::before {
+  @apply -left-1px;
+}
+[data-style='rokkit'] .bookend rk-range-track rk-range-track-bar::after {
+  @apply -right-2px;
+}
+
+/* Styles for 'tick' class */
+/* [data-style="rokkit"] rk-tick {
+  @apply h-6;
+} */
+[data-style='rokkit'] rk-tick rk-tick-bar {
+  @apply border-surface h-full;
+}
+[data-style='rokkit'] rk-tick p {
+  @apply items-top text-surface-600;
+  font-size: 8px;
+}
+
+/* Styles for 'thumb' class */
+[data-style='rokkit'] rk-thumb {
+  @apply from-primary to-secondary border-secondary border bg-gradient-to-r shadow-xl;
+}
+[data-style='rokkit'] rk-thumb.sliding::before {
+  content: '';
+  @apply bg-secondary absolute bottom-0 left-0 right-0 top-0 rounded-sm opacity-30;
+  transform: scale(2, 2);
+}
+
+/* Styles for 'button[role='switch']' class */
+[data-style='rokkit'] button[role='switch'] {
+  @apply h-8 min-h-6 w-16 rounded-full p-0;
+  @apply bg-surface-z2 border-surface-z2 border;
+}
+[data-style='rokkit'] button[role='switch'] > rk-mark {
+  @apply top-0.75 h-6 w-6 rounded-full;
+  @apply from-primary to-secondary bg-gradient-to-r;
+}
+
+/* Styles for 'rating' class */
+[data-style='rokkit'] rating {
+  @apply focus:outline-secondary text-surface-600 h-9 justify-center rounded text-xl focus:outline;
+}
+[data-style='rokkit'] rating > icon {
+  @apply w-8;
+}
+[data-style='rokkit'] rating:focus-within icon[aria-checked='true'] {
+  @apply text-primary;
+}
+[data-style='rokkit'] rating icon.hovering > i {
+  @apply text-secondary;
+}
+
+/* Pill styles */
+[data-style='rokkit'] .pill {
+  @apply bg-surface-z0 border-surface-z2 flex-grow-0 rounded-full border px-2 py-1;
+}
+[data-style='rokkit'] .pill > icon[role='button'] {
+  @apply hover:bg-surface-z3 h-5 w-5 rounded-full hover:text-current focus:m-0 focus:rounded-full;
+}
+
+[data-style='rokkit'] .pill > rk-item {
+  @apply gap-2 px-2 leading-6;
+}
+[data-style='rokkit'] .pill > rk-item > img {
+  @apply h-4 w-4;
+}
+
+/* Styles for 'item' class */
+[data-style='rokkit'] rk-item,
+[data-style='rokkit'] rk-list-item {
+  @apply flex flex-shrink items-center gap-1;
+}
+[data-style='rokkit'] rk-item > p,
+[data-style='rokkit'] rk-list-item > p {
+  @apply flex-shrink text-ellipsis;
+}
+
+/* Image and link styles */
+[data-style='rokkit'] rk-item > img,
+[data-style='rokkit'] rk-item > a > img,
+[data-style='rokkit'] rk-list-item > img,
+[data-style='rokkit'] rk-list-item > a > img {
+  @apply h-6 w-6;
+}
+[data-style='rokkit'] rk-item > a,
+[data-style='rokkit'] rk-list-item > a {
+  @apply gap-2;
+}
+[data-style='rokkit'] rk-node rk-item {
+  @apply gap-2 px-1;
+}
+/* rk-crumbs styles */
+[data-style='rokkit'] rk-crumbs {
+  @apply flex-grow gap-1;
+}
+[data-style='rokkit'] rk-crumbs rk-crumb.is-selected {
+  @apply text-secondary-700;
+}
+
+[data-style='rokkit'] rk-day-of-month[aria-selected='true'] {
+  @apply from-primary to-secondary text-surface-200 dark:text-surface-800 bg-gradient-to-r;
+}

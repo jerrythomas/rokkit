@@ -1,0 +1,442 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Toggle > should render 1`] = `
+<div
+  data-disabled="false"
+  data-square="false"
+  data-toggle-root=""
+>
+  <button
+    aria-label="toggle"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <!---->
+    <!---->
+  </button>
+</div>
+`;
+
+exports[`Toggle > should render with object options 1`] = `
+<button
+  aria-label="toggle"
+>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <p>
+    sun
+  </p>
+  <!---->
+  <!---->
+</button>
+`;
+
+exports[`Toggle > should render with options 1`] = `
+<button
+  aria-label="toggle"
+>
+  <!---->
+  <!---->
+  
+  <!---->
+   
+  <!---->
+  <!---->
+</button>
+`;
+
+exports[`Toggle > should switch options on click 1`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on click 2`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on click 3`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowDown 1`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowDown 2`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowDown 3`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowLeft 1`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowLeft 2`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowLeft 3`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowRight 1`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowRight 2`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowRight 3`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowUp 1`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        earth
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowUp 2`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        moon
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;
+
+exports[`Toggle > should switch options on keydown ArrowUp 3`] = `
+<div>
+  <div
+    data-disabled="false"
+    data-square="false"
+    data-toggle-root=""
+  >
+    <button
+      aria-label="toggle"
+    >
+      <!---->
+      <!---->
+      
+      <!---->
+       
+      <p>
+        sun
+      </p>
+      <!---->
+      <!---->
+    </button>
+  </div>
+  
+</div>
+`;

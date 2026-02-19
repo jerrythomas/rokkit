@@ -1,0 +1,79 @@
+/* Select/Dropdown - Base Structure */
+
+[data-select-root] {
+  @apply cursor-pointer overflow-visible;
+}
+
+[data-select-root][data-disabled='true'],
+[data-select-root][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-select-trigger] {
+  @apply flex cursor-pointer items-center;
+}
+
+[data-select-value] {
+  @apply flex flex-grow items-center;
+}
+
+[data-select-content] {
+  @apply flex flex-col;
+}
+
+[data-select-item] {
+  @apply flex cursor-pointer items-center;
+}
+
+[data-select-item][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+/* Dropdown */
+[data-dropdown-root] {
+  @apply cursor-pointer overflow-visible;
+}
+
+[data-dropdown-root][data-disabled='true'],
+[data-dropdown-root][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-dropdown-trigger] {
+  @apply flex cursor-pointer items-center;
+}
+
+[data-dropdown-content] {
+  @apply flex flex-col;
+}
+
+[data-dropdown-item] {
+  @apply flex cursor-pointer items-center;
+}
+
+[data-dropdown-item][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+/* Legacy custom element support */
+rk-input-select,
+rk-drop-down {
+  @apply cursor-pointer overflow-visible;
+}
+
+rk-input-select[aria-disabled='true'],
+rk-input-select[data-disabled='true'],
+rk-drop-down[aria-disabled='true'],
+rk-drop-down[data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+rk-input-select rk-selected-item > rk-icon,
+rk-drop-down > button > span > rk-icon {
+  @apply h-full w-9;
+}
+
+rk-input-select > rk-selected-item,
+rk-drop-down > button > span {
+  @apply text-surface-800 min-h-9 items-center gap-2 rounded pl-3 normal-case;
+}

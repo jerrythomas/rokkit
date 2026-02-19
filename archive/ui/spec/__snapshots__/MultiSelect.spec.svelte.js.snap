@@ -1,0 +1,363 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MultiSelect.svelte > should render using default field mapping 1`] = `
+<input-select
+  aria-disabled="false"
+  aria-expanded="false"
+  aria-label="test"
+  data-direction="down"
+  data-select="true"
+  role="combobox"
+  tabindex="0"
+>
+  <selected-item
+    data-select-trigger="true"
+    role="button"
+    tabindex="-1"
+  >
+    <item
+      data-select-value=""
+    >
+      <!---->
+      <!---->
+      <items
+        data-multiselect-items=""
+      >
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            One
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        
+      </items>
+      
+      
+      <!---->
+    </item>
+     
+    <icon
+      aria-checked="false"
+      aria-label="closed"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-closed"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </selected-item>
+   
+  <!---->
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using default field mapping 2`] = `
+<input-select
+  aria-controls="test-listbox"
+  aria-disabled="false"
+  aria-expanded="true"
+  aria-label="test"
+  class="open"
+  data-direction="down"
+  data-select="true"
+  role="combobox"
+  tabindex="0"
+>
+  <selected-item
+    data-select-trigger="true"
+    role="button"
+    tabindex="-1"
+  >
+    <item
+      data-select-value=""
+    >
+      <!---->
+      <!---->
+      <items
+        data-multiselect-items=""
+      >
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            One
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        
+      </items>
+      
+      
+      <!---->
+    </item>
+     
+    <icon
+      aria-checked="false"
+      aria-label="opened"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </selected-item>
+   
+  <!---->
+  <scroll
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+    data-direction="down"
+    style="top: 0px;"
+  >
+    <!---->
+    <!---->
+     
+    <div
+      aria-label="test-listbox"
+      data-list=""
+      role="listbox"
+      tabindex="-1"
+    >
+      <!---->
+      <div
+        aria-current="false"
+        aria-selected="false"
+        data-list-item=""
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Two
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+      <div
+        aria-current="false"
+        aria-selected="false"
+        data-list-item=""
+        data-path="1"
+        role="option"
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Three
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+      
+      <!---->
+    </div>
+    <!---->
+    <!---->
+  </scroll>
+  
+  <!---->
+</input-select>
+`;
+
+exports[`MultiSelect.svelte > should render using default field mapping 3`] = `
+<input-select
+  aria-controls="test-listbox"
+  aria-disabled="false"
+  aria-expanded="true"
+  aria-label="test"
+  class="open"
+  data-direction="down"
+  data-select="true"
+  role="combobox"
+  tabindex="0"
+>
+  <selected-item
+    data-select-trigger="true"
+    role="button"
+    tabindex="-1"
+  >
+    <item
+      data-select-value=""
+    >
+      <!---->
+      <!---->
+      <items
+        data-multiselect-items=""
+      >
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            One
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        <wrap-item
+          class="pill"
+          data-multiselect-pill="true"
+        >
+          <!---->
+          <!---->
+          
+          <!---->
+           
+          <p>
+            Two
+          </p>
+          <!---->
+          <!---->
+           
+          <icon
+            aria-label="Remove"
+            data-multiselect-remove=""
+            role="button"
+            tabindex="-1"
+          >
+            ×
+          </icon>
+        </wrap-item>
+        
+      </items>
+      
+      
+      <!---->
+    </item>
+     
+    <icon
+      aria-checked="false"
+      aria-label="opened"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="selector-opened"
+      />
+      <!---->
+    </icon>
+    <!---->
+  </selected-item>
+   
+  <!---->
+  <scroll
+    class="absolute z-10 flex w-full flex-col overflow-scroll menu"
+    data-direction="down"
+    style="top: 0px;"
+  >
+    <!---->
+    <!---->
+     
+    <div
+      aria-label="test-listbox"
+      data-list=""
+      role="listbox"
+      tabindex="-1"
+    >
+      <!---->
+      <div
+        aria-current="false"
+        aria-selected="false"
+        data-list-item=""
+        data-path="0"
+        role="option"
+      >
+        <!---->
+        <!---->
+        <!---->
+        
+        <!---->
+         
+        <p>
+          Three
+        </p>
+        <!---->
+        
+        <!---->
+      </div>
+      
+      <!---->
+    </div>
+    <!---->
+    <!---->
+  </scroll>
+  
+  <!---->
+</input-select>
+`;

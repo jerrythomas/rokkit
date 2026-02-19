@@ -1,0 +1,46 @@
+/* Tree - Base Structure */
+
+[data-tree-root] {
+  @apply flex h-full w-full flex-shrink-0 flex-col overflow-auto;
+}
+
+[data-tree-root][data-disabled='true'],
+[data-tree-root][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-tree-header],
+[data-tree-footer] {
+  @apply flex-shrink-0;
+}
+
+[data-tree-empty] {
+  @apply m-auto p-4 text-center;
+}
+
+/* Nested List */
+[data-nested-list-root] {
+  @apply flex w-full flex-col;
+}
+
+[data-nested-list-root][data-disabled='true'] {
+  @apply pointer-events-none opacity-50;
+}
+
+/* Node */
+[data-node] {
+  @apply flex min-h-5 cursor-pointer select-none flex-col;
+}
+
+[data-node][data-disabled='true'],
+[data-node][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-node-content] {
+  @apply flex items-center;
+}
+
+[data-node-item] {
+  @apply flex flex-grow items-center;
+}

@@ -1,0 +1,39 @@
+/* Tabs - Base Structure */
+
+[data-tabs-root] {
+  @apply flex select-none flex-col;
+}
+
+[data-tabs-list] {
+  @apply flex flex-shrink-0;
+}
+
+[data-tabs-list][data-orientation='vertical'] {
+  @apply flex-col;
+}
+
+[data-tab-trigger] {
+  @apply flex cursor-pointer items-center;
+}
+
+[data-tab-trigger][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-tabs-content] {
+  @apply flex-grow;
+}
+
+/* Legacy custom element support */
+tabs {
+  @apply flex select-none;
+}
+
+tabs .tab {
+  @apply flex cursor-pointer items-center;
+}
+
+tabs .tab[aria-disabled='true'],
+tabs .tab[data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}

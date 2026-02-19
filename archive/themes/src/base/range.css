@@ -1,0 +1,50 @@
+/* Range - Base Structure */
+
+[data-range-root] {
+  @apply relative grid h-10 grid-rows-2;
+}
+
+[data-range-root][data-disabled='true'],
+[data-range-root][aria-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-range-track] {
+  @apply relative mt-3 h-1;
+}
+
+[data-range-track-bar] {
+  @apply relative h-full rounded-full;
+}
+
+[data-range-selected] {
+  @apply absolute;
+}
+
+[data-range-thumb] {
+  @apply absolute cursor-pointer rounded-full;
+}
+
+[data-range-thumb][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed;
+}
+
+[data-range-ticks] {
+  @apply select-none;
+}
+
+[data-range-tick] {
+  @apply cursor-pointer select-none;
+}
+
+[data-range-tick][data-disabled='true'] {
+  @apply pointer-events-none cursor-not-allowed opacity-50;
+}
+
+[data-tick-bar] {
+  @apply h-full;
+}
+
+[data-tick-label] {
+  @apply text-center text-xs;
+}

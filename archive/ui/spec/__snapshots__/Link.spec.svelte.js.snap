@@ -1,0 +1,173 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Link > should render 1`] = `
+<div>
+  <a
+    href="#"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render 2`] = `
+<div>
+  <a
+    href="#"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      World
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with custom mapping 1`] = `
+<div>
+  <a
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with custom mapping 2`] = `
+<div>
+  <a
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with custom mapping 3`] = `
+<div>
+  <a
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with href 1`] = `
+<div>
+  <a
+    href="http://example.com"
+    target="_blank"
+  >
+    <!---->
+    <!---->
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with icon 1`] = `
+<div>
+  <a
+    href="#"
+  >
+    <!---->
+    <icon
+      aria-checked="false"
+      aria-label="Hello"
+      data-disabled="false"
+      data-size="base"
+      data-tag-icon="true"
+      role="img"
+      tabindex="-1"
+    >
+      <i
+        aria-hidden="true"
+        class="world"
+      />
+      <!---->
+    </icon>
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;
+
+exports[`Link > should render with image 1`] = `
+<div>
+  <a
+    href="#"
+  >
+    <!---->
+    <!---->
+    <img
+      alt="Hello"
+      src="world.png"
+    />
+    
+    <!---->
+     
+    <p>
+      Hello
+    </p>
+    <!---->
+    <!---->
+  </a>
+  
+</div>
+`;

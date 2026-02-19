@@ -1,0 +1,60 @@
+{
+  "type": "vertical",
+  "elements": [
+    {
+      "key": "name",
+      "component": "custom",
+      "props": {
+        "type": "string",
+        "label": "Name"
+      }
+    },
+    {
+      "key": "age",
+
+      "props": {
+        "label": "age",
+        "type": "number"
+      }
+    },
+    {
+      "type": "vertical",
+      "key": "address",
+      "title": "Address",
+      "elements": [
+        {
+          "key": "street",
+
+          "props": {
+            "label": "street",
+            "type": "string"
+          }
+        },
+        {
+          "key": "city",
+
+          "props": {
+            "label": "city",
+            "type": "string"
+          }
+        },
+        {
+          "key": "state",
+
+          "props": {
+            "label": "state",
+            "type": "string"
+          }
+        },
+        {
+          "key": "zip",
+
+          "props": {
+            "label": "zip",
+            "type": "number"
+          }
+        }
+      ]
+    }
+  ]
+}
