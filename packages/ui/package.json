@@ -1,44 +1,56 @@
 {
   "name": "@rokkit/ui",
-  "version": "1.0.0-next.125",
-  "description": "Data driven UI components, improving DX",
-  "author": "Jerry Thomas <me@jerrythomas.name>",
-  "license": "MIT",
-  "module": "src/index.js",
+  "version": "0.0.1",
+  "description": "Data driven UI components for Rokkit applications",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
-    "clean": "rm -rf dist",
-    "build": "bun prepublishOnly"
-  },
-  "files": [
-    "src/**/*.js",
-    "src/**/*.svelte",
-    "dist/**/*.d.ts",
-    "README.md",
-    "package.json"
-  ],
+  "svelte": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
-    "./package.json": "./package.json",
-    "./utils": "./src/lib/index.js",
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./src/index.js",
-      "svelte": "./src/index.js"
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "default": "./src/types/index.ts"
+    },
+    "./utils/palette": {
+      "types": "./src/utils/palette.ts",
+      "default": "./src/utils/palette.ts"
     }
   },
-  "dependencies": {
-    "@rokkit/actions": "workspace:latest",
-    "@rokkit/core": "workspace:latest",
-    "@rokkit/data": "workspace:latest",
-    "@rokkit/forms": "workspace:latest",
-    "@rokkit/states": "workspace:latest",
-    "d3-scale": "^4.0.2",
-    "date-fns": "^4.1.0",
-    "ramda": "^0.31.3",
-    "typescript": "^5.9.2"
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "echo 'No build step needed for source-only package'"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "svelte",
+    "menu",
+    "dropdown"
+  ],
+  "peerDependencies": {
+    "shiki": "^3.22.0",
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/svelte": "^5.2.8",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitest/browser": "^3.2.4",
+    "playwright": "^1.57.0",
+    "svelte": "^5.45.6",
+    "svelte-check": "^4.2.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.6",
+    "vitest": "^3.2.4"
   }
 }

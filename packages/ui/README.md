@@ -1,123 +1,220 @@
 # @rokkit/ui
 
-A collection of data-driven UI components for Svelte applications that improve developer experience.
+Data driven UI components for Rokkit applications.
 
 ## Installation
 
-```sh
-npm install @rokkit/ui
-```
-
-or
-
-```sh
-bun add @rokkit/ui
+```bash
+pnpm add @rokkit/ui
 ```
 
 ## Components
 
-### Basic Components
+### Menu
 
-- **Button** - Versatile button component with support for variants, icons, and different button types
-- **Icon** - Display icons with consistent styling
-- **Item** - Base component for displaying individual items within lists
-- **Pill** - Compact label component for status indicators or tags
-- **ProgressBar** - Visual indicator of progress or completion
-- **Separator** - Visual divider between content sections
-- **Connector** - Visual connector between elements
-- **Summary** - Display summary information
-- **ValidationReport** - Display validation results and error messages
+A flexible, data-driven dropdown menu component with support for:
 
-### Layout Components
-
-- **Accordion** - Collapsible content panels
-- **Card** - Container for displaying content with consistent styling
-- **ResponsiveGrid** - Grid layout that adjusts based on screen size
-- **SlidingColumns** - Multi-column layout with sliding navigation
-- **Tabs** - Tabbed interface for organizing content
-- **Overlay** - Modal overlay for dialogs and popups
-- **Message** - Styled message display
-
-### Navigation Components
-
-- **BreadCrumbs** - Navigation breadcrumb trail
-- **Link** - Styled link component
-- **PageNavigator** - Component for paginating through content
-- **NestedPaginator** - Pagination for nested data structures
-
-### Form Components
-
-- **InputField** - Base component for form inputs
-- **Form** - Container for form elements with built-in validation
-- **FieldLayout** - Layout component for form fields
-- **CheckBox** - Checkbox input component
-- **RadioGroup** - Group of radio button options
-- **Toggle** - Toggle switch component
-- **Switch** - Switch control component
-- **Select** - Dropdown select component
-- **MultiSelect** - Multiple selection dropdown component
-- **DropDown** - Dropdown menu component
-- **DropSearch** - Searchable dropdown component
-- **Range** - Range selection component
-- **RangeMinMax** - Range with minimum and maximum values
-- **RangeSlider** - Slider control for selecting from a range
-- **RangeTick** - Range with tick marks
-- **Calendar** - Date selection calendar
-- **Rating** - Star rating component
-
-### Data Components
-
-- **DataEditor** - Component for editing structured data
-- **ListEditor** - Component for editing lists
-- **NestedEditor** - Component for editing nested data structures
-- **List** - Display a list of items
-- **ListBody** - Container for list items
-- **NestedList** - Display nested/hierarchical lists
-- **Table** - Table component for structured data (alias for TreeTable)
-- **TreeTable** - Table component with support for hierarchical data
-- **Tree** - Tree view for hierarchical data
-- **Node** - Individual node within a tree
-
-### Progress & Navigation Components
-
-- **Stepper** - Step-by-step process indicator
-- **ProgressDots** - Progress indicator using dots
-- **Carousel** - Image or content carousel
-
-### Visual Effect Components
-
-- **Shine** - Add shine effect to elements
-- **Tilt** - Add tilt effect to elements
-- **Scrollable** - Scrollable container with custom scrollbars
-
-### Theme Components
-
-- **ToggleThemeMode** - Toggle between light and dark themes
-
-## Usage Example
+- Flat or grouped menu items
+- Custom field mapping for any data structure
+- Icons, descriptions, and disabled states
+- Size variants (sm, md, lg)
+- Keyboard navigation
+- Full accessibility (ARIA)
 
 ```svelte
 <script>
-  import { Button, Icon, Card } from '@rokkit/ui'
+  import { Menu } from '@rokkit/ui'
+
+  const options = [
+    { text: 'Copy', icon: 'i-solar:copy-bold', value: 'copy' },
+    { text: 'Paste', icon: 'i-solar:clipboard-bold', value: 'paste' },
+    { text: 'Delete', icon: 'i-solar:trash-bold', value: 'delete', disabled: true }
+  ]
+
+  function handleSelect(value, item) {
+    console.log('Selected:', value, item)
+  }
 </script>
 
-<Card>
-  <h2>Example Card</h2>
-  <p>This is an example of using the Card component</p>
-  <Button variant="primary" label="Click Me" leftIcon="check" />
-</Card>
+<Menu {options} label="Actions" icon="i-solar:menu-dots-bold" onselect={handleSelect} />
 ```
 
-## Dependencies
+#### Grouped Options
 
-- @rokkit/actions
-- @rokkit/core
-- @rokkit/data
-- @rokkit/forms
-- @rokkit/states
-- d3-scale
-- date-fns
-- ramda
+```svelte
+<script>
+  const groupedOptions = [
+    {
+      text: 'Image',
+      children: [
+        { text: 'Export as PNG', value: 'png' },
+        { text: 'Export as SVG', value: 'svg' }
+      ]
+    },
+    {
+      text: 'Data',
+      children: [
+        { text: 'Export as CSV', value: 'csv' },
+        { text: 'Export as JSON', value: 'json' }
+      ]
+    }
+  ]
+</script>
+
+<Menu options={groupedOptions} label="Export" />
+```
+
+#### Custom Field Mapping
+
+Use the `fields` prop to map your data structure to Menu's expected fields:
+
+```svelte
+<script>
+  const items = [
+    { name: 'Option A', id: 'a' },
+    { name: 'Option B', id: 'b' }
+  ]
+
+  const fields = {
+    text: 'name',
+    value: 'id'
+  }
+</script>
+
+<Menu options={items} {fields} label="Select" />
+```
+
+### Custom Item Rendering
+
+Use snippets to customize how menu items and group labels are rendered:
+
+```svelte
+<script>
+  import { Menu } from '@rokkit/ui'
+
+  const options = [
+    { text: 'Normal Item', value: 'normal' },
+    { text: 'Premium Feature', value: 'premium', snippet: 'premium' },
+    { text: 'Special Offer', value: 'special', snippet: 'special' }
+  ]
+</script>
+
+<Menu {options}>
+  {#snippet item(menuItem, fields, handlers)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+      🎯 {menuItem.text}
+    </button>
+  {/snippet}
+
+  {#snippet groupLabel(group, fields)}
+    <div class="custom-header">
+      📁 {group.text}
+    </div>
+  {/snippet}
+
+  {#snippet premium(menuItem, fields, handlers)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+      🔒 Premium: {menuItem.text}
+    </button>
+  {/snippet}
+
+  {#snippet special(menuItem, fields, handlers)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+      ⭐ {menuItem.text}
+    </button>
+  {/snippet}
+</Menu>
+```
+
+#### Snippet Resolution Order
+
+1. **Per-item snippet**: If an item has a `snippet` field (e.g., `snippet: 'premium'`), the named snippet is used
+2. **Generic `item` snippet**: Falls back to the `item` snippet if provided
+3. **Default rendering**: Uses the built-in rendering if no custom snippet matches
+
+#### Handlers Object
+
+Custom snippets receive a `handlers` object with:
+
+- `onclick: () => void` - Call to trigger item selection
+- `onkeydown: (event) => void` - Forward keyboard events for accessibility
+
+### Props
+
+| Prop         | Type                    | Default  | Description                        |
+| ------------ | ----------------------- | -------- | ---------------------------------- |
+| `options`    | `MenuItem[]`            | `[]`     | Array of menu items or groups      |
+| `fields`     | `MenuFields`            | `{}`     | Field mapping configuration        |
+| `label`      | `string`                | `'Menu'` | Button label text                  |
+| `icon`       | `string`                | -        | Button icon class                  |
+| `showArrow`  | `boolean`               | `true`   | Show dropdown arrow indicator      |
+| `size`       | `'sm' \| 'md' \| 'lg'`  | `'md'`   | Size variant                       |
+| `align`      | `'left' \| 'right'`     | `'left'` | Dropdown alignment                 |
+| `disabled`   | `boolean`               | `false`  | Disable the menu                   |
+| `onselect`   | `(value, item) => void` | -        | Selection callback                 |
+| `item`       | `Snippet`               | -        | Custom snippet for rendering items |
+| `groupLabel` | `Snippet`               | -        | Custom snippet for group headers   |
+| `class`      | `string`                | `''`     | Additional CSS classes             |
+
+### CSS Custom Properties
+
+```css
+/* Trigger button */
+--menu-trigger-bg
+--menu-trigger-bg-hover
+--menu-trigger-bg-active
+--menu-trigger-border
+--menu-trigger-border-hover
+--menu-trigger-border-active
+--menu-trigger-text
+--menu-trigger-text-hover
+--menu-focus-ring
+
+/* Dropdown */
+--menu-dropdown-bg
+--menu-dropdown-border
+--menu-dropdown-shadow
+
+/* Items */
+--menu-item-text
+--menu-item-text-hover
+--menu-item-bg-hover
+--menu-item-bg-focus
+--menu-item-icon
+--menu-item-icon-hover
+--menu-item-description
+
+/* Groups */
+--menu-group-label-color
+--menu-divider-color
+```
+
+### Field Mapping
+
+| Field         | Default         | Description               |
+| ------------- | --------------- | ------------------------- |
+| `text`        | `'text'`        | Display text field        |
+| `value`       | `'value'`       | Value to emit on select   |
+| `icon`        | `'icon'`        | Icon class field          |
+| `description` | `'description'` | Secondary text field      |
+| `disabled`    | `'disabled'`    | Disabled state field      |
+| `children`    | `'children'`    | Children array for groups |
+| `snippet`     | `'snippet'`     | Custom snippet name field |
+
+## Types
+
+All types are exported from the package:
+
+```typescript
+import type {
+  MenuProps,
+  MenuFields,
+  MenuItem,
+  MenuItemSnippet,
+  MenuGroupLabelSnippet,
+  MenuItemHandlers
+} from '@rokkit/ui'
+```
 
 ## License
 
