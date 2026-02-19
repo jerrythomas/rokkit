@@ -9,31 +9,20 @@
    ============================================================================= */
 
 [data-style='glass'] [data-fab-trigger] {
-	@apply text-white;
-	background: rgba(var(--color-primary-500), 0.8);
-	backdrop-filter: blur(12px);
-	box-shadow:
-		0 4px 16px rgba(0, 0, 0, 0.2),
-		inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	@apply text-white backdrop-blur-md bg-primary-z5/80 shadow-lg;
 }
 
 [data-style='glass'] [data-fab-trigger]:hover:not(:disabled) {
-	background: rgba(var(--color-primary-500), 0.9);
-	box-shadow:
-		0 6px 24px rgba(0, 0, 0, 0.3),
-		inset 0 1px 0 rgba(255, 255, 255, 0.3);
+	@apply bg-primary-z5/90 shadow-xl;
 	transform: scale(1.05);
 }
 
 [data-style='glass'] [data-fab-trigger]:focus-visible {
-	box-shadow:
-		0 4px 16px rgba(0, 0, 0, 0.2),
-		0 0 0 2px rgba(255, 255, 255, 0.5);
-	outline: none;
+	@apply outline-none ring-2 ring-surface-z5/40;
 }
 
 [data-style='glass'] [data-fab][data-open='true'] [data-fab-trigger] {
-	background: rgba(var(--color-surface-600), 0.8);
+	@apply bg-surface-z6/80;
 	transform: rotate(45deg);
 }
 
@@ -42,28 +31,15 @@
    ============================================================================= */
 
 [data-style='glass'] [data-fab-item] {
-	@apply text-surface-z9;
-	background: rgba(255, 255, 255, 0.15);
-	backdrop-filter: blur(12px);
-	box-shadow:
-		0 2px 8px rgba(0, 0, 0, 0.15),
-		inset 0 1px 0 rgba(255, 255, 255, 0.2);
-	border: 1px solid rgba(255, 255, 255, 0.2);
+	@apply text-surface-z9 backdrop-blur-md border shadow-md bg-surface-z1/70 border-surface-z5/20;
 }
 
 [data-style='glass'] [data-fab-item]:hover:not(:disabled) {
-	@apply text-surface-z10;
-	background: rgba(255, 255, 255, 0.25);
-	box-shadow:
-		0 4px 12px rgba(0, 0, 0, 0.2),
-		inset 0 1px 0 rgba(255, 255, 255, 0.3);
+	@apply text-surface-z10 bg-surface-z2/80 shadow-lg;
 }
 
 [data-style='glass'] [data-fab-item]:focus-visible {
-	box-shadow:
-		0 2px 8px rgba(0, 0, 0, 0.15),
-		0 0 0 2px rgba(255, 255, 255, 0.4);
-	outline: none;
+	@apply outline-none ring-2 ring-surface-z5/40;
 }
 
 /* Item icon */

@@ -86,7 +86,7 @@
 }
 
 [data-style='minimal'] [data-select-option][data-selected='true'] {
-	@apply text-primary-z7;
+	@apply text-primary-z7 border-l-2 border-l-secondary-500;
 }
 
 [data-style='minimal'] [data-select-option][data-selected='true']:hover:not(:disabled),
@@ -118,7 +118,7 @@
 }
 
 [data-style='minimal'] [data-select-option][data-selected='true'] [data-item-icon] {
-	@apply text-primary-z5;
+	@apply text-primary-z7;
 }
 
 [data-style='minimal'] [data-select-option] [data-item-description] {

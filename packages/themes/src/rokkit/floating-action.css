@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-fab-trigger] {
-  @apply from-primary-500 to-primary-600 ring-primary-600 bg-gradient-to-b text-white shadow-lg ring-1;
+  @apply from-primary-z5 to-secondary-z5 ring-primary-600 bg-gradient-to-b text-white shadow-lg ring-1;
 }
 
 [data-style='rokkit'] [data-fab-trigger]:hover:not(:disabled) {
@@ -24,6 +24,11 @@
 [data-style='rokkit'] [data-fab][data-open='true'] [data-fab-trigger] {
   @apply from-surface-z4 to-surface-z3 text-surface-z10 ring-surface-z5 bg-gradient-to-b shadow-lg ring-1;
   transform: rotate(45deg);
+}
+
+[data-style='rokkit'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply from-surface-z5 to-surface-z4 bg-gradient-to-b;
+  transform: rotate(45deg) scale(1.05);
 }
 
 /* =============================================================================
@@ -45,4 +50,16 @@
 /* Item icon */
 [data-style='rokkit'] [data-fab-item] [data-fab-item-icon] {
   @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='rokkit'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.4);
 }

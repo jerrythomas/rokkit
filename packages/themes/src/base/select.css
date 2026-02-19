@@ -90,6 +90,15 @@
   white-space: nowrap;
 }
 
+[data-select-value-custom] {
+  display: contents;
+}
+
+[data-select-value-custom] > button,
+[data-select-value-custom] > a {
+  display: contents;
+}
+
 [data-select-placeholder] {
   opacity: 0.6;
 }
@@ -302,6 +311,26 @@
   border: none;
   cursor: pointer;
   transition: background-color 150ms ease;
+}
+
+/* Size variants for custom snippet buttons */
+[data-select][data-size='sm'] [data-select-option-custom] > button {
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-select][data-size='md'] [data-select-option-custom] > button,
+[data-select]:not([data-size]) [data-select-option-custom] > button {
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-select][data-size='lg'] [data-select-option-custom] > button {
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
 }
 
 /* =============================================================================

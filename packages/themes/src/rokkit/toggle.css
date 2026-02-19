@@ -30,7 +30,7 @@
 
 /* Selected state */
 [data-style='rokkit'] [data-toggle-option][data-selected='true'] {
-  @apply from-primary-z4 to-primary-z3 text-primary-z9 border-primary-z5 border bg-gradient-to-b shadow-sm;
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-primary-z5 border bg-gradient-to-b shadow-sm;
 }
 
 /* =============================================================================

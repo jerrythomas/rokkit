@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-tree]:focus-within {
-	@apply ring-1 ring-white/30 rounded;
+	@apply ring-1 rounded ring-surface-z5/40;
 }
 
 /* =============================================================================
@@ -21,7 +21,7 @@
 }
 
 [data-style='glass'] [data-tree-toggle-btn]:hover {
-	@apply bg-white/15 text-surface-z7;
+	@apply text-surface-z7 bg-surface-z2/15;
 }
 
 /* =============================================================================
@@ -34,12 +34,12 @@
 
 [data-style='glass'] [data-tree-item-content]:hover:not(:disabled),
 [data-style='glass'] [data-tree-item-content]:focus:not(:disabled) {
-	@apply bg-white/15 text-surface-z10 outline-none;
+	@apply text-surface-z10 outline-none bg-surface-z2/15;
 }
 
 /* Focus visible for keyboard navigation */
 [data-style='glass'] [data-tree-item-content]:focus-visible {
-	@apply outline-none ring-1 ring-white/40;
+	@apply outline-none ring-1 ring-surface-z5/40;
 }
 
 /* Active/selected state */
@@ -76,7 +76,7 @@
 }
 
 [data-style='glass'] [data-tree-item-content] [data-item-badge] {
-	@apply text-surface-z6 bg-white/20;
+	@apply text-surface-z6 bg-surface-z2/15;
 }
 
 [data-style='glass'] [data-tree-item-content][data-active='true'] [data-item-badge] {

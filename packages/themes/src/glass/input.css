@@ -1,0 +1,124 @@
+/* Glass Theme - Form field and input styles
+ * Glassmorphism inputs with blur, transparency, and subtle borders.
+ */
+
+/* Field root: text color, spacing */
+[data-style='glass'] [data-field-root] {
+	@apply text-surface-z9 gap-1 rounded-md transition-all;
+}
+
+/* Disabled state */
+[data-style='glass'] [data-field-root][data-field-disabled] [data-input-root] {
+	@apply cursor-not-allowed opacity-50;
+}
+
+/* Labels */
+[data-style='glass'] [data-field] > label {
+	@apply text-surface-z7;
+}
+
+[data-style='glass'] [data-form-root] label {
+	@apply text-surface-z7;
+}
+
+/* Info field value */
+[data-style='glass'] [data-field-info] {
+	@apply text-primary-z6 font-medium;
+}
+
+/* Separator */
+[data-style='glass'] [data-form-separator] {
+	@apply border-surface-z5/20;
+}
+
+/* Input root: glass container — p-0.5 gives a small gap between border and content.
+ * No backdrop-blur here: it creates a stacking context that traps select dropdowns.
+ * The semi-transparent background provides the frosted glass look. */
+[data-style='glass'] [data-input-root] {
+	@apply flex items-center rounded-md p-0.5 transition-all border bg-surface-z1/70 border-surface-z5/20;
+}
+
+[data-style='glass'] [data-input-root]:hover {
+	@apply border-surface-z5/30;
+}
+
+[data-style='glass'] [data-input-root]:focus-within {
+	@apply border-primary-z5/50 bg-surface-z1/70;
+}
+
+/* Standard inputs inside wrapper */
+[data-style='glass'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='glass'] [data-input-root] select {
+	@apply bg-transparent text-surface-z8 rounded-md border-none px-3 focus:outline-none;
+	font-size: 0.875rem;
+	height: 2.25rem;
+}
+
+[data-style='glass'] [data-input-root] textarea {
+	@apply bg-transparent text-surface-z8 rounded-md border-none px-3 py-2 focus:outline-none;
+	font-size: 0.875rem;
+}
+
+/* Select inside input-root: suppress standalone glass select styles */
+[data-style='glass'] [data-input-root] [data-select-trigger] {
+	@apply border-none bg-transparent text-surface-z8 rounded-md shadow-none ring-0 focus:outline-none;
+	background-image: none;
+	backdrop-filter: none;
+}
+
+/* Suppress standalone select open-state when inside input-root */
+[data-style='glass'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
+	@apply border-none ring-0 shadow-none;
+}
+
+/* Placeholders */
+[data-style='glass'] [data-input-root] input::placeholder,
+[data-style='glass'] [data-input-root] textarea::placeholder {
+	@apply text-surface-z5;
+}
+
+/* Checkbox field */
+[data-style='glass'] [data-field-type='checkbox'] [data-field] {
+	@apply flex items-center leading-loose;
+}
+
+/* Checkbox icon */
+[data-style='glass'] [data-checkbox-icon] {
+	@apply text-surface-z5 cursor-pointer transition-colors text-lg rounded;
+}
+
+[data-style='glass'] [data-checkbox-icon]:focus-visible {
+	@apply outline-2 outline-primary-z4 outline-offset-2;
+}
+
+[data-style='glass'] [data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+	@apply text-primary-z6;
+}
+
+[data-style='glass'] [data-field] textarea {
+	@apply resize-vertical min-h-20 py-2;
+}
+
+/* Color input */
+[data-style='glass'] [data-field-type='color'] [data-input-root] {
+	@apply overflow-hidden;
+}
+
+[data-style='glass'] [data-field-type='color'] input[type='color'] {
+	@apply bg-transparent flex min-h-11 flex-1 rounded-md focus:outline-none;
+}
+
+/* Description and message */
+[data-style='glass'] [data-description],
+[data-style='glass'] [data-message] {
+	@apply text-surface-z6;
+}
+
+[data-style='glass'] [data-message] {
+	@apply rounded-md px-2 py-1;
+}
+
+/* Error state */
+[data-style='glass'] [data-field-root][data-field-state='fail'] [data-input-root] {
+	@apply border-danger-z5/50;
+}

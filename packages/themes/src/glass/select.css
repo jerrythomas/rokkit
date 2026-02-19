@@ -5,19 +5,27 @@
  */
 
 /* =============================================================================
+   Select Container — elevate when open so dropdown escapes sibling stacking contexts
+   ============================================================================= */
+
+[data-style='glass'] [data-select][data-open='true'] {
+	z-index: 50;
+}
+
+/* =============================================================================
    Trigger Button
    ============================================================================= */
 
 [data-style='glass'] [data-select-trigger] {
-	@apply bg-white/10 backdrop-blur-md text-surface-z8 border-white/20 border;
+	@apply backdrop-blur-md text-surface-z8 border bg-surface-z1/70 border-surface-z5/20;
 }
 
 [data-style='glass'] [data-select-trigger]:hover:not(:disabled) {
-	@apply bg-white/20 border-white/30 text-surface-z10;
+	@apply text-surface-z10 bg-surface-z2/80 border-surface-z5/30;
 }
 
 [data-style='glass'] [data-select-trigger]:focus-visible {
-	@apply outline-none ring-1 ring-white/40;
+	@apply outline-none ring-1 ring-surface-z5/40;
 }
 
 [data-style='glass'] [data-select][data-open='true'] [data-select-trigger] {
@@ -49,7 +57,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-select-tag] {
-	@apply bg-white/20 text-surface-z8;
+	@apply text-surface-z8 bg-surface-z2/15;
 }
 
 [data-style='glass'] [data-select-tag-remove] {
@@ -65,7 +73,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-select-dropdown] {
-	@apply bg-white/10 backdrop-blur-lg border-white/20 border shadow-lg;
+	@apply backdrop-blur-lg border shadow-lg bg-surface-z2/50 border-surface-z5/20;
 }
 
 /* =============================================================================
@@ -78,20 +86,20 @@
 
 [data-style='glass'] [data-select-option]:hover:not(:disabled),
 [data-style='glass'] [data-select-option]:focus:not(:disabled) {
-	@apply bg-white/15 text-surface-z10;
+	@apply text-surface-z10 bg-surface-z2/80;
 }
 
 [data-style='glass'] [data-select-option]:focus-visible {
-	@apply outline-none ring-1 ring-white/30 ring-inset;
+	@apply outline-none ring-1 ring-inset ring-surface-z5/40;
 }
 
 [data-style='glass'] [data-select-option][data-selected='true'] {
-	@apply bg-primary-z5/30 text-primary-z9;
+	@apply text-primary-z9 bg-primary-z5/40;
 }
 
 [data-style='glass'] [data-select-option][data-selected='true']:hover:not(:disabled),
 [data-style='glass'] [data-select-option][data-selected='true']:focus:not(:disabled) {
-	@apply bg-primary-z5/40;
+	@apply bg-primary-z5/60;
 }
 
 /* Check mark */
@@ -101,7 +109,7 @@
 
 /* Checkbox */
 [data-style='glass'] [data-select-checkbox] {
-	@apply border-white/40 bg-white/10;
+	@apply border-surface-z5/40 bg-surface-z1/70;
 }
 
 [data-style='glass'] [data-select-checkbox][data-checked='true'] {
@@ -142,5 +150,5 @@
    ============================================================================= */
 
 [data-style='glass'] [data-select-divider] {
-	@apply bg-white/20;
+	@apply bg-surface-z5/20;
 }

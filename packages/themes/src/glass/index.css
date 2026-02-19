@@ -5,6 +5,7 @@
  * Use with data-style="glass" wrapper.
  */
 
+@import './input.css';
 @import './toolbar.css';
 @import './toggle.css';
 @import './list.css';

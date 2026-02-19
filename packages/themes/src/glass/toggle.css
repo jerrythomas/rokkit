@@ -9,7 +9,7 @@
    ============================================================================= */
 
 [data-style='glass'] [data-toggle] {
-	@apply bg-white/10 backdrop-blur-md border-white/20 rounded-lg border;
+	@apply backdrop-blur-md rounded-lg border bg-surface-z1/70 border-surface-z5/20;
 }
 
 /* =============================================================================
@@ -21,11 +21,11 @@
 }
 
 [data-style='glass'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']) {
-	@apply bg-white/15 text-surface-z8;
+	@apply text-surface-z8 bg-surface-z2/15;
 }
 
 [data-style='glass'] [data-toggle-option]:focus-visible {
-	@apply outline-none ring-1 ring-white/40 ring-inset;
+	@apply outline-none ring-1 ring-inset ring-surface-z5/40;
 }
 
 /* Selected state */
