@@ -1,12 +1,30 @@
 <script lang="ts">
 	import { MultiSelect } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropText, PropInfo } from '$lib/controls'
 
 	let value = $state<Record<string, unknown>[]>([])
-	let size = $state('md')
-	let disabled = $state(false)
-	let placeholder = $state('Pick colors...')
+
+	let props = $state({ placeholder: 'Pick colors...', size: 'md', disabled: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			placeholder: { type: 'string' },
+			size: { type: 'string' },
+			disabled: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/placeholder', label: 'Placeholder' },
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/disabled', label: 'Disabled' },
+			{ type: 'separator' }
+		]
+	}
 
 	const colors = [
 		{ text: 'Red', value: 'red' },
@@ -33,21 +51,21 @@
 	description="Multi-selection dropdown with tags, keyboard navigation, and bindable value array."
 >
 	{#snippet preview()}
-		<div class="demos">
+		<div class="flex gap-8 flex-wrap">
 			<div>
-				<h4>Colors</h4>
-				<div class="constrained">
-					<MultiSelect options={colors} {placeholder} size={size as any} {disabled} bind:value />
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Colors</h4>
+				<div class="w-[300px]">
+					<MultiSelect options={colors} placeholder={props.placeholder} size={props.size as any} disabled={props.disabled} bind:value />
 				</div>
 			</div>
 			<div>
-				<h4>With icons</h4>
-				<div class="constrained">
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With icons</h4>
+				<div class="w-[300px]">
 					<MultiSelect
 						options={withIcons}
 						placeholder="Pick pages..."
-						size={size as any}
-						{disabled}
+						size={props.size as any}
+						disabled={props.disabled}
 					/>
 				</div>
 			</div>
@@ -55,34 +73,8 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropText label="Placeholder" bind:value={placeholder} />
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropCheckbox label="Disabled" bind:checked={disabled} />
-		<hr />
-		<PropInfo label="Count" value={value.length} />
-		<PropInfo label="Selected" value={value.map((v) => v.text).join(', ') || '—'} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Count" value={value.length} />
+		<InfoField label="Selected" value={value.map((v) => v.text).join(', ') || '—'} />
 	{/snippet}
 </Playground>
-
-<style>
-	.demos {
-		display: flex;
-		gap: 2rem;
-		flex-wrap: wrap;
-	}
-	.demos h4 {
-		margin: 0 0 0.5rem;
-		font-size: 0.75rem;
-		color: rgb(var(--color-surface-500));
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-	.constrained {
-		width: 300px;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>

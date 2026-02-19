@@ -1,12 +1,30 @@
 <script lang="ts">
 	import { Tree } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropInfo } from '$lib/controls'
 
 	let selected = $state<unknown>(undefined)
-	let size = $state('md')
-	let showLines = $state(true)
-	let expandAll = $state(true)
+
+	let props = $state({ size: 'md', showLines: true, expandAll: true })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			size: { type: 'string' },
+			showLines: { type: 'boolean' },
+			expandAll: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/showLines', label: 'Show lines' },
+			{ scope: '#/expandAll', label: 'Expand all' },
+			{ type: 'separator' }
+		]
+	}
 
 	const fileTree = [
 		{
@@ -50,12 +68,12 @@
 	description="Hierarchical view with expand/collapse, tree lines, and custom icons."
 >
 	{#snippet preview()}
-		<div class="constrained">
+		<div class="max-w-[320px]">
 			<Tree
 				items={fileTree}
-				{showLines}
-				{expandAll}
-				size={size as any}
+				showLines={props.showLines}
+				expandAll={props.expandAll}
+				size={props.size as any}
 				value={selected}
 				onselect={handleSelect}
 			/>
@@ -63,21 +81,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropCheckbox label="Show lines" bind:checked={showLines} />
-		<PropCheckbox label="Expand all" bind:checked={expandAll} />
-		<hr />
-		<PropInfo label="Selected" value={selected} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Selected" value={selected} />
 	{/snippet}
 </Playground>
-
-<style>
-	.constrained {
-		max-width: 320px;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>

@@ -1,12 +1,29 @@
 <script lang="ts">
 	import { Code } from '@rokkit/ui'
+	import { FormRenderer } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox } from '$lib/controls'
 
-	let language = $state('typescript')
-	let codeTheme = $state('light')
-	let showLineNumbers = $state(false)
-	let showCopyButton = $state(true)
+	let props = $state({ language: 'typescript', codeTheme: 'light', showLineNumbers: false, showCopyButton: true })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			language: { type: 'string' },
+			codeTheme: { type: 'string' },
+			showLineNumbers: { type: 'boolean' },
+			showCopyButton: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/language', label: 'Language', props: { options: ['typescript', 'svelte', 'css', 'json'] } },
+			{ scope: '#/codeTheme', label: 'Theme', props: { options: ['light', 'dark'] } },
+			{ scope: '#/showLineNumbers', label: 'Line numbers' },
+			{ scope: '#/showCopyButton', label: 'Copy button' }
+		]
+	}
 
 	const samples: Record<string, string> = {
 		typescript: `interface User {
@@ -46,7 +63,7 @@ function greet(user: User): string {
 }`
 	}
 
-	let code = $derived(samples[language] ?? samples.typescript)
+	let code = $derived(samples[props.language] ?? samples.typescript)
 </script>
 
 <Playground
@@ -54,17 +71,10 @@ function greet(user: User): string {
 	description="Syntax-highlighted code blocks via shiki with line numbers and copy button."
 >
 	{#snippet preview()}
-		<Code {code} {language} theme={codeTheme as any} {showLineNumbers} {showCopyButton} />
+		<Code {code} language={props.language} theme={props.codeTheme as any} showLineNumbers={props.showLineNumbers} showCopyButton={props.showCopyButton} />
 	{/snippet}
 
 	{#snippet controls()}
-		<PropSelect
-			label="Language"
-			bind:value={language}
-			options={['typescript', 'svelte', 'css', 'json']}
-		/>
-		<PropSelect label="Theme" bind:value={codeTheme} options={['light', 'dark']} />
-		<PropCheckbox label="Line numbers" bind:checked={showLineNumbers} />
-		<PropCheckbox label="Copy button" bind:checked={showCopyButton} />
+		<FormRenderer bind:data={props} {schema} {layout} />
 	{/snippet}
 </Playground>

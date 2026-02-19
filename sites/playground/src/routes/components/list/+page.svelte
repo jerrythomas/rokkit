@@ -1,12 +1,30 @@
 <script lang="ts">
 	import { List } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropInfo } from '$lib/controls'
 
 	let selected = $state<unknown>(undefined)
-	let size = $state('md')
-	let disabled = $state(false)
-	let collapsible = $state(true)
+
+	let props = $state({ size: 'md', collapsible: true, disabled: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			size: { type: 'string' },
+			collapsible: { type: 'boolean' },
+			disabled: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/collapsible', label: 'Collapsible groups' },
+			{ scope: '#/disabled', label: 'Disabled' },
+			{ type: 'separator' }
+		]
+	}
 
 	const navItems = [
 		{ text: 'Home', href: '#home', icon: 'i-lucide:home' },
@@ -70,46 +88,46 @@
 	description="Navigation or button list with collapsible groups, active tracking, and badges."
 >
 	{#snippet preview()}
-		<div class="demos">
+		<div class="flex gap-6 flex-wrap">
 			<div>
-				<h4>Navigation</h4>
-				<div class="constrained">
-					<List items={navItems} active="#home" size={size as any} {disabled} />
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Navigation</h4>
+				<div class="w-[240px]">
+					<List items={navItems} active="#home" size={props.size as any} disabled={props.disabled} />
 				</div>
 			</div>
 			<div>
-				<h4>Button items</h4>
-				<div class="constrained">
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Button items</h4>
+				<div class="w-[240px]">
 					<List
 						items={buttonItems}
 						value={selected}
-						size={size as any}
-						{disabled}
+						size={props.size as any}
+						disabled={props.disabled}
 						onselect={handleSelect}
 					/>
 				</div>
 			</div>
 			<div>
-				<h4>Grouped</h4>
-				<div class="constrained">
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
+				<div class="w-[240px]">
 					<List
 						items={groupedItems}
-						{collapsible}
+						collapsible={props.collapsible}
 						value={selected}
-						size={size as any}
-						{disabled}
+						size={props.size as any}
+						disabled={props.disabled}
 						onselect={handleSelect}
 					/>
 				</div>
 			</div>
 			<div>
-				<h4>Descriptions</h4>
-				<div class="constrained">
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Descriptions</h4>
+				<div class="w-[240px]">
 					<List
 						items={withDescriptions}
 						value={selected}
-						size={size as any}
-						{disabled}
+						size={props.size as any}
+						disabled={props.disabled}
 						onselect={handleSelect}
 					/>
 				</div>
@@ -118,33 +136,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropCheckbox label="Collapsible groups" bind:checked={collapsible} />
-		<PropCheckbox label="Disabled" bind:checked={disabled} />
-		<hr />
-		<PropInfo label="Selected" value={selected} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Selected" value={selected} />
 	{/snippet}
 </Playground>
-
-<style>
-	.demos {
-		display: flex;
-		gap: 1.5rem;
-		flex-wrap: wrap;
-	}
-	.demos h4 {
-		margin: 0 0 0.5rem;
-		font-size: 0.75rem;
-		color: rgb(var(--color-surface-500));
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-	.constrained {
-		width: 240px;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>

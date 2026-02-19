@@ -1,13 +1,32 @@
 <script lang="ts">
 	import { Toolbar } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropInfo } from '$lib/controls'
 
 	let lastAction = $state('')
-	let size = $state('md')
-	let compact = $state(false)
-	let disabled = $state(false)
-	let showDividers = $state(false)
+
+	let props = $state({ size: 'md', compact: false, showDividers: false, disabled: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			size: { type: 'string' },
+			compact: { type: 'boolean' },
+			showDividers: { type: 'boolean' },
+			disabled: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/compact', label: 'Compact' },
+			{ scope: '#/showDividers', label: 'Show dividers' },
+			{ scope: '#/disabled', label: 'Disabled' },
+			{ type: 'separator' }
+		]
+	}
 
 	const items = [
 		{ text: 'Bold', value: 'bold', icon: 'i-lucide:bold', type: 'toggle' },
@@ -37,26 +56,26 @@
 	description="Data-driven or slot-based action bar with separators and spacers."
 >
 	{#snippet preview()}
-		<div class="demos">
+		<div class="flex flex-col gap-6">
 			<div>
-				<h4>With separators</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With separators</h4>
 				<Toolbar
 					{items}
-					size={size as any}
-					{compact}
-					{disabled}
-					{showDividers}
+					size={props.size as any}
+					compact={props.compact}
+					disabled={props.disabled}
+					showDividers={props.showDividers}
 					onclick={handleClick}
 				/>
 			</div>
 			<div>
-				<h4>With spacer</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With spacer</h4>
 				<Toolbar
 					items={withSpacer}
-					size={size as any}
-					{compact}
-					{disabled}
-					{showDividers}
+					size={props.size as any}
+					compact={props.compact}
+					disabled={props.disabled}
+					showDividers={props.showDividers}
 					onclick={handleClick}
 				/>
 			</div>
@@ -64,31 +83,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropCheckbox label="Compact" bind:checked={compact} />
-		<PropCheckbox label="Show dividers" bind:checked={showDividers} />
-		<PropCheckbox label="Disabled" bind:checked={disabled} />
-		<hr />
-		<PropInfo label="Last action" value={lastAction || '—'} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Last action" value={lastAction || '—'} />
 	{/snippet}
 </Playground>
-
-<style>
-	.demos {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-	.demos h4 {
-		margin: 0 0 0.5rem;
-		font-size: 0.75rem;
-		color: rgb(var(--color-surface-500));
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>

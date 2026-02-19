@@ -1,15 +1,36 @@
 <script lang="ts">
 	import { Menu } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropText, PropInfo } from '$lib/controls'
 
 	let selected = $state('')
-	let size = $state('md')
-	let align = $state('left')
-	let direction = $state('down')
-	let disabled = $state(false)
-	let showArrow = $state(true)
-	let label = $state('Actions')
+
+	let props = $state({ label: 'Actions', size: 'md', align: 'left', direction: 'down', showArrow: true, disabled: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			label: { type: 'string' },
+			size: { type: 'string' },
+			align: { type: 'string' },
+			direction: { type: 'string' },
+			showArrow: { type: 'boolean' },
+			disabled: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/label', label: 'Label' },
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/align', label: 'Align', props: { options: ['left', 'right'] } },
+			{ scope: '#/direction', label: 'Direction', props: { options: ['down', 'up'] } },
+			{ scope: '#/showArrow', label: 'Show arrow' },
+			{ scope: '#/disabled', label: 'Disabled' },
+			{ type: 'separator' }
+		]
+	}
 
 	const items = [
 		{ text: 'Cut', value: 'cut', icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
@@ -46,31 +67,31 @@
 	description="Dropdown menu with flat or grouped items, keyboard navigation, and custom rendering."
 >
 	{#snippet preview()}
-		<div class="demos">
+		<div class="flex gap-8 flex-wrap">
 			<div>
-				<h4>Flat</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Flat</h4>
 				<Menu
 					options={items}
-					{label}
+					label={props.label}
 					icon="i-lucide:menu"
-					size={size as any}
-					align={align as any}
-					direction={direction as any}
-					{disabled}
-					{showArrow}
+					size={props.size as any}
+					align={props.align as any}
+					direction={props.direction as any}
+					disabled={props.disabled}
+					showArrow={props.showArrow}
 					onselect={handleSelect}
 				/>
 			</div>
 			<div>
-				<h4>Grouped</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
 				<Menu
 					options={groupedItems}
 					label="File Menu"
-					size={size as any}
-					align={align as any}
-					direction={direction as any}
-					{disabled}
-					{showArrow}
+					size={props.size as any}
+					align={props.align as any}
+					direction={props.direction as any}
+					disabled={props.disabled}
+					showArrow={props.showArrow}
 					onselect={handleSelect}
 				/>
 			</div>
@@ -78,33 +99,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropText label="Label" bind:value={label} />
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropSelect label="Align" bind:value={align} options={['left', 'right']} />
-		<PropSelect label="Direction" bind:value={direction} options={['down', 'up']} />
-		<PropCheckbox label="Show arrow" bind:checked={showArrow} />
-		<PropCheckbox label="Disabled" bind:checked={disabled} />
-		<hr />
-		<PropInfo label="Selected" value={selected || '—'} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Selected" value={selected || '—'} />
 	{/snippet}
 </Playground>
-
-<style>
-	.demos {
-		display: flex;
-		gap: 2rem;
-		flex-wrap: wrap;
-	}
-	.demos h4 {
-		margin: 0 0 0.5rem;
-		font-size: 0.75rem;
-		color: rgb(var(--color-surface-500));
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>

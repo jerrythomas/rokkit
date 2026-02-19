@@ -1,14 +1,34 @@
 <script lang="ts">
 	import { Select } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropText, PropInfo } from '$lib/controls'
 
 	let value = $state<unknown>(undefined)
-	let size = $state('md')
-	let align = $state('left')
-	let direction = $state('down')
-	let disabled = $state(false)
-	let placeholder = $state('Choose a fruit...')
+
+	let props = $state({ placeholder: 'Choose a fruit...', size: 'md', align: 'left', direction: 'down', disabled: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			placeholder: { type: 'string' },
+			size: { type: 'string' },
+			align: { type: 'string' },
+			direction: { type: 'string' },
+			disabled: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/placeholder', label: 'Placeholder' },
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/align', label: 'Align', props: { options: ['left', 'right'] } },
+			{ scope: '#/direction', label: 'Direction', props: { options: ['down', 'up'] } },
+			{ scope: '#/disabled', label: 'Disabled' },
+			{ type: 'separator' }
+		]
+	}
 
 	const fruits = [
 		{ text: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
@@ -43,31 +63,31 @@
 	description="Single-selection dropdown with field mapping and keyboard navigation."
 >
 	{#snippet preview()}
-		<div class="demos">
+		<div class="flex gap-8 flex-wrap">
 			<div>
-				<h4>Simple</h4>
-				<div class="constrained">
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Simple</h4>
+				<div class="w-[250px]">
 					<Select
 						options={fruits}
-						{placeholder}
-						size={size as any}
-						align={align as any}
-						direction={direction as any}
-						{disabled}
+						placeholder={props.placeholder}
+						size={props.size as any}
+						align={props.align as any}
+						direction={props.direction as any}
+						disabled={props.disabled}
 						bind:value
 					/>
 				</div>
 			</div>
 			<div>
-				<h4>Grouped</h4>
-				<div class="constrained">
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
+				<div class="w-[250px]">
 					<Select
 						options={grouped}
 						placeholder="Choose..."
-						size={size as any}
-						align={align as any}
-						direction={direction as any}
-						{disabled}
+						size={props.size as any}
+						align={props.align as any}
+						direction={props.direction as any}
+						disabled={props.disabled}
 						bind:value
 					/>
 				</div>
@@ -76,35 +96,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropText label="Placeholder" bind:value={placeholder} />
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropSelect label="Align" bind:value={align} options={['left', 'right']} />
-		<PropSelect label="Direction" bind:value={direction} options={['down', 'up']} />
-		<PropCheckbox label="Disabled" bind:checked={disabled} />
-		<hr />
-		<PropInfo label="Value" {value} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Value" {value} />
 	{/snippet}
 </Playground>
-
-<style>
-	.demos {
-		display: flex;
-		gap: 2rem;
-		flex-wrap: wrap;
-	}
-	.demos h4 {
-		margin: 0 0 0.5rem;
-		font-size: 0.75rem;
-		color: rgb(var(--color-surface-500));
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-	.constrained {
-		width: 250px;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>

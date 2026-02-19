@@ -1,13 +1,34 @@
 <script lang="ts">
 	import { FloatingAction } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
-	import { PropSelect, PropCheckbox, PropInfo } from '$lib/controls'
 
 	let lastAction = $state('')
-	let size = $state('md')
-	let expand = $state('vertical')
-	let position = $state('bottom-right')
-	let backdrop = $state(false)
+
+	let props = $state({ size: 'md', expand: 'vertical', position: 'bottom-right', itemAlign: 'center', backdrop: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			size: { type: 'string' },
+			expand: { type: 'string' },
+			position: { type: 'string' },
+			itemAlign: { type: 'string' },
+			backdrop: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/expand', label: 'Expand', props: { options: ['vertical', 'horizontal', 'radial'] } },
+			{ scope: '#/position', label: 'Position', props: { options: ['bottom-right', 'bottom-left', 'top-right', 'top-left'] } },
+			{ scope: '#/itemAlign', label: 'Item Align', props: { options: ['start', 'center', 'end'] } },
+			{ scope: '#/backdrop', label: 'Backdrop' },
+			{ type: 'separator' }
+		]
+	}
 
 	const actions = [
 		{ text: 'Edit', value: 'edit', icon: 'i-lucide:edit' },
@@ -26,14 +47,15 @@
 	description="Floating action button (FAB) with radial, vertical, or horizontal expansion."
 >
 	{#snippet preview()}
-		<div class="fab-area">
+		<div class="relative w-full h-[400px] border-dashed border-surface-z3 border rounded-lg overflow-visible">
 			<FloatingAction
 				items={actions}
 				icon="i-lucide:plus"
-				expand={expand as any}
-				position={position as any}
-				size={size as any}
-				{backdrop}
+				expand={props.expand as any}
+				position={props.position as any}
+				itemAlign={props.itemAlign as any}
+				size={props.size as any}
+				backdrop={props.backdrop}
 				contained
 				onselect={handleSelect}
 			/>
@@ -41,29 +63,7 @@
 	{/snippet}
 
 	{#snippet controls()}
-		<PropSelect label="Size" bind:value={size} options={['sm', 'md', 'lg']} />
-		<PropSelect label="Expand" bind:value={expand} options={['vertical', 'horizontal', 'radial']} />
-		<PropSelect
-			label="Position"
-			bind:value={position}
-			options={['bottom-right', 'bottom-left', 'top-right', 'top-left']}
-		/>
-		<PropCheckbox label="Backdrop" bind:checked={backdrop} />
-		<hr />
-		<PropInfo label="Last action" value={lastAction || '—'} />
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Last action" value={lastAction || '—'} />
 	{/snippet}
 </Playground>
-
-<style>
-	.fab-area {
-		position: relative;
-		height: 300px;
-		border: 1px dashed rgb(var(--color-surface-300));
-		border-radius: 0.5rem;
-	}
-	hr {
-		border: none;
-		border-top: 1px solid rgb(var(--color-surface-200));
-		margin: 0;
-	}
-</style>
