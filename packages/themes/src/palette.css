@@ -1,7 +1,0 @@
-@layer base {
-  :root {
-    --scroll-width: 0.5rem;
-    --tab-size: 2;
-    @apply skin-default;
-  }
-}
