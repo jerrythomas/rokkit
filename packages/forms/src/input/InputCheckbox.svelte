@@ -1,5 +1,4 @@
 <script>
-	import { Icon } from '@rokkit/ui'
 	import { defaultStateIcons } from '@rokkit/core'
 	import { isNil } from 'ramda'
 
@@ -27,7 +26,7 @@
 	/** @type {InputCheckboxProps & { [key: string]: any }} */
 	let {
 		value = $bindable(),
-		variant = 'default',
+		variant = 'custom',
 		icons,
 		onchange,
 		onfocus,
@@ -69,6 +68,6 @@
 		{...rest}
 	/>
 	{#if variant !== 'default'}
-		<Icon name={icon} data-checkbox-icon role="button" onclick={toggle} />
+		<span class={icon} data-checkbox-icon role="button" tabindex="0" onclick={toggle} onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && toggle()} aria-hidden="true"></span>
 	{/if}
 </div>

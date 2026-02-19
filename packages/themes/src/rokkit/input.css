@@ -1,0 +1,109 @@
+/* Rokkit Theme - Form field and input styles */
+
+/* Field root: text color, spacing, rounded */
+[data-field-root] {
+  @apply text-surface-z9 gap-1 rounded-md transition-all;
+}
+
+/* Disabled state */
+[data-field-root][data-field-disabled] [data-input-root] {
+  @apply bg-surface-z3 text-surface-z6 cursor-not-allowed;
+}
+
+/* Labels */
+[data-field] > label {
+  @apply text-surface-z7;
+}
+
+[data-form-root] label {
+  @apply text-surface-z7;
+}
+
+/* Info field value */
+[data-field-info] {
+  @apply text-primary-z6 font-medium;
+}
+
+/* Separator */
+[data-form-separator] {
+  @apply border-surface-z2;
+}
+
+/* Input root: gradient border wrapper */
+[data-input-root] {
+  @apply bg-surface-z4 flex items-center rounded-md p-px transition-all;
+}
+
+[data-input-root]:focus-within {
+  @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
+}
+
+/* Standard inputs inside wrapper */
+[data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-input-root] textarea,
+[data-input-root] select {
+  @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 py-1 focus:outline-none;
+}
+
+[data-input-root] input::placeholder,
+[data-input-root] textarea::placeholder {
+  @apply text-surface-z5;
+}
+
+/* Checkbox field */
+[data-field-type='checkbox'] [data-field] {
+  @apply flex items-center leading-loose;
+}
+
+/* Checkbox icon: theme-colored */
+[data-checkbox-icon] {
+  @apply text-surface-z5 cursor-pointer transition-colors text-lg;
+}
+
+[data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+  @apply text-primary-z6;
+}
+
+[data-field] textarea {
+  @apply resize-vertical min-h-20 py-2;
+}
+
+/* Color input */
+[data-field-type='color'] [data-input-root] {
+  @apply overflow-hidden;
+}
+
+[data-field-type='color'] input[type='color'] {
+  @apply bg-surface-z2 flex min-h-11 flex-1 rounded-md focus:outline-none;
+}
+
+/* Description and message */
+[data-description],
+[data-message] {
+  @apply text-surface-z6;
+}
+
+[data-message] {
+  @apply rounded-md px-2 py-1;
+}
+
+/* Validation state messages */
+[data-field-state='success'] [data-message] {
+  @apply bg-success text-success opacity-10;
+}
+
+[data-field-state='warning'] [data-message] {
+  @apply bg-warning text-warning opacity-10;
+}
+
+[data-field-state='info'] [data-message] {
+  @apply bg-info text-info opacity-10;
+}
+
+[data-field-state='error'] [data-message] {
+  @apply bg-error text-error opacity-10;
+}
+
+[data-field-root][data-field-state='fail'] [data-input-root] {
+  @apply bg-error text-error opacity-10;
+}

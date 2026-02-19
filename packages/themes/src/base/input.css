@@ -1,0 +1,138 @@
+/* Base structural styles for form fields and inputs */
+
+/* Form root: vertical stack */
+[data-form-root] {
+  @apply flex flex-col gap-3;
+}
+
+/* Form field container */
+[data-form-field] {
+  @apply flex flex-col;
+}
+
+/* Separator between form fields */
+[data-form-separator] {
+  @apply border-t border-surface-z2 my-1;
+}
+
+/* Field root container */
+[data-field-root] {
+  @apply box-border flex flex-col;
+}
+
+/* Field wrapper: vertical by default */
+[data-field-root] > [data-field] {
+  @apply flex flex-col gap-1;
+}
+
+/* Checkbox and switch: inline layout */
+[data-field-type='switch'] > [data-field],
+[data-field-type='checkbox'] > [data-field] {
+  @apply flex-row items-center gap-2;
+}
+
+/* Select: stretch to fill input wrapper */
+[data-input-root] [data-select] {
+  @apply flex-1;
+}
+
+/* Checkbox icon */
+[data-checkbox-root] {
+  @apply flex items-center;
+}
+
+/* Label: fills available space */
+[data-field] > label {
+  @apply flex-1 text-xs;
+}
+
+/* Info field: horizontal layout */
+[data-field-type='info'] > [data-field] {
+  @apply flex-row items-center justify-between;
+}
+
+[data-field-info] {
+  @apply text-xs font-mono;
+}
+
+/* Numeric/date input alignment */
+[data-field-type='number'] input,
+[data-field-type='integer'] input,
+[data-field-type='date'] input,
+[data-field-type='time'] input {
+  @apply text-right;
+}
+
+/* Input wrapper: horizontal for input + icon */
+[data-input-root] {
+  @apply flex flex-row items-center;
+}
+
+/* Input elements fill available width */
+[data-input-root] input,
+[data-input-root] textarea,
+[data-input-root] select {
+  @apply m-0 min-w-0 flex-1 leading-loose transition-all;
+}
+
+/* Icons inside inputs */
+[data-input-root] [data-icon] {
+  @apply aspect-square min-h-full flex-shrink-0;
+}
+
+/* Description below input */
+[data-description] {
+  @apply text-xs leading-snug;
+}
+
+/* Validation message */
+[data-message] {
+  @apply text-xs leading-snug;
+}
+
+/* Checkbox icon: focus handling */
+[data-checkbox-icon] {
+  @apply focus:outline-none;
+}
+
+/* Range slider thumb */
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: rgba(var(--color-primary-500));
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: rgba(var(--color-primary-500));
+  cursor: pointer;
+  border: none;
+}
+
+/* Color input */
+input[type='color'] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  @apply p-0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  [data-field-root] {
+    @apply p-1;
+  }
+  [data-field] {
+    @apply min-h-7 gap-1;
+  }
+  [data-description],
+  [data-message] {
+    @apply text-sm;
+  }
+}

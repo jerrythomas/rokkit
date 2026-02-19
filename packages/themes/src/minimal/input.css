@@ -1,0 +1,68 @@
+/* Minimal Theme - Form field and input styles */
+
+/* Input root */
+[data-style='minimal'] [data-input-root] {
+  @apply bg-surface-z3 border-surface-z4 rounded-md border-2 p-2 transition-all;
+}
+
+[data-style='minimal'] [data-input-root]:focus-within {
+  @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
+}
+
+/* Inputs inside wrapper */
+[data-style='minimal'] [data-input-root] input,
+[data-style='minimal'] [data-input-root] textarea,
+[data-style='minimal'] [data-input-root] select {
+  @apply bg-surface-z3 text-surface-z9 min-h-10 w-full rounded-md border-none px-3 py-2 outline-none transition-all;
+}
+
+[data-style='minimal'] [data-input-root] textarea {
+  @apply resize-vertical min-h-20;
+}
+
+/* Labels */
+[data-style='minimal'] [data-input-root] > label,
+[data-style='minimal'] [data-field] > label {
+  @apply text-surface-z8 w-full text-sm uppercase leading-6;
+}
+
+/* Info field value */
+[data-style='minimal'] [data-field-info] {
+  @apply text-primary-z6;
+}
+
+/* Separator */
+[data-style='minimal'] [data-form-separator] {
+  @apply border-surface-z3;
+}
+
+/* Disabled state */
+[data-style='minimal'] [data-input-root][data-field-disabled] {
+  @apply bg-surface-z3 border-surface-z3 text-on-surface;
+}
+
+[data-style='minimal'] [data-input-root][data-field-disabled] input,
+[data-style='minimal'] [data-input-root][data-field-disabled] textarea,
+[data-style='minimal'] [data-input-root][data-field-disabled] select {
+  @apply bg-surface-z3 text-on-surface cursor-not-allowed;
+}
+
+/* Error state */
+[data-style='minimal'] [data-input-root][data-field-state='fail'] {
+  @apply bg-error border-error text-error opacity-10;
+}
+
+/* Description */
+[data-style='minimal'] [data-description] {
+  @apply text-surface-z7 mt-1 text-xs;
+}
+
+/* Message */
+[data-style='minimal'] [data-message] {
+  @apply bg-surface-z3 text-error rounded px-2 py-1;
+}
+
+/* Focused label */
+[data-style='minimal'] [data-input-root]:focus-within > label {
+  @apply text-secondary-600;
+}

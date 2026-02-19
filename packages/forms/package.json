@@ -25,6 +25,9 @@
       "types": "./dist/index.d.ts",
       "import": "./src/index.js",
       "svelte": "./src/index.js"
+    },
+    "./lib": {
+      "import": "./src/lib/index.js"
     }
   },
   "dependencies": {

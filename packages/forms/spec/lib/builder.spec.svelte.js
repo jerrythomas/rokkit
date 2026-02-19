@@ -37,14 +37,14 @@ describe('FormBuilder', () => {
 					override: false,
 					props: { label: 'count', message: null, type: 'number' },
 					scope: '#/count',
-
+					type: 'number',
 					value: 25
 				},
 				{
 					override: false,
 					props: { label: 'distance', message: null, type: 'number' },
 					scope: '#/distance',
-
+					type: 'number',
 					value: 150
 				}
 			])
@@ -331,13 +331,21 @@ describe('FormBuilder', () => {
 			expect(formBuilder.elements).toEqual([])
 		})
 
-		it('should handle element without scope', () => {
+		it('should handle element without scope as separator', () => {
 			formBuilder = new FormBuilder({ count: 25 }, null, {
 				type: 'vertical',
-				elements: [{ label: 'Invalid' }] // No scope
+				elements: [{ label: 'Invalid' }] // No scope → treated as separator
 			})
 
-			expect(formBuilder.elements).toEqual([])
+			expect(formBuilder.elements).toEqual([
+				{
+					type: 'separator',
+					scope: null,
+					value: null,
+					override: false,
+					props: { label: 'Invalid' }
+				}
+			])
 		})
 
 		// it('should handle schema without properties', () => {

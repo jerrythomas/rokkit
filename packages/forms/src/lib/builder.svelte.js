@@ -46,7 +46,13 @@ export class FormBuilder {
 
 	/** @type {FormElement[]} */
 	elements = $derived(this.#buildElements())
-	combined = $derived(getSchemaWithLayout(this.schema, this.layout))
+
+	/** Combined schema+layout (scoped elements only) */
+	get combined() {
+		const scopedElements = (this.#layout?.elements ?? []).filter((el) => el.scope)
+		const scopedLayout = { ...this.#layout, elements: scopedElements }
+		return getSchemaWithLayout(this.#schema, scopedLayout)
+	}
 	/**
 	 * Get the current data
 	 * @returns {Object} Current data object
@@ -236,17 +242,42 @@ export class FormBuilder {
 	 * @returns {FormElement[]} Array of form elements
 	 */
 	#buildElements() {
-		// if (!this.#schema || !this.#layout || !this.#layout.elements) {
-		// 	return []
-		// }
-
 		try {
-			// Use getSchemaWithLayout to combine schema and layout
-			// const combined = getSchemaWithLayout(this.#schema, this.#layout)
-			// Convert combined elements to FormElement format
-			return this.combined.elements
-				.map((element) => this.#convertToFormElement(element))
-				.filter((element) => element !== null)
+			const result = []
+			const layoutElements = this.#layout?.elements ?? []
+			// Track which layout elements have scopes (for schema merge)
+			const scopedElements = layoutElements.filter((el) => el.scope)
+			const scopedLayout = { ...this.#layout, elements: scopedElements }
+			const combined = getSchemaWithLayout(this.#schema, scopedLayout)
+
+			// Build a map of combined elements by key for lookup
+			const combinedMap = new Map()
+			for (const el of combined.elements ?? []) {
+				if (el.key) combinedMap.set(el.key, el)
+			}
+
+			// Iterate original layout order to preserve separators and other non-scoped elements
+			for (const layoutEl of layoutElements) {
+				if (!layoutEl.scope) {
+					// Non-scoped element (separator, etc.)
+					result.push({
+						type: layoutEl.type ?? 'separator',
+						scope: null,
+						value: null,
+						override: false,
+						props: omit(['type'], layoutEl)
+					})
+				} else {
+					// Extract key from scope
+					const key = layoutEl.scope.replace(/^#\//, '').split('/').pop()
+					const combinedEl = combinedMap.get(key)
+					if (combinedEl) {
+						const formEl = this.#convertToFormElement(combinedEl)
+						if (formEl) result.push(formEl)
+					}
+				}
+			}
+			return result
 		} catch (error) {
 			// If getSchemaWithLayout fails, fall back to basic element creation
 			console.warn('Failed to build elements:', error)
@@ -302,7 +333,7 @@ export class FormBuilder {
 
 		return {
 			scope,
-			// type,
+			type,
 			value,
 			override,
 			props
@@ -349,6 +380,18 @@ export class FormBuilder {
 			}
 		}
 
+		// Readonly fields render as info display
+		if (props.readonly) {
+			const validationMessage = this.#validation[fieldPath] || null
+			return {
+				scope,
+				type: 'info',
+				value,
+				override: element.override || false,
+				props: { ...props, type: 'info', message: validationMessage }
+			}
+		}
+
 		// Determine input type based on schema type
 		let type = 'text'
 		if (props.type) {
@@ -361,11 +404,11 @@ export class FormBuilder {
 					type = 'checkbox'
 					break
 				case 'string':
-					if (props.enum) {
+					if (props.enum || props.options) {
 						type = 'select'
 						// Map enum values to options format expected by select inputs
-						if (Array.isArray(props.enum)) {
-							props.options = props.enum //.map((val) => ({ value: val, label: val }))
+						if (Array.isArray(props.enum) && !props.options) {
+							props.options = props.enum
 						}
 					} else {
 						type = 'text'
@@ -389,7 +432,7 @@ export class FormBuilder {
 
 		return {
 			scope,
-			// type,
+			type,
 			value,
 			override: element.override || false,
 			props: finalProps

@@ -2,13 +2,16 @@
  * @rokkit/themes - Rokkit Theme
  *
  * Rich gradients, glowing borders, and vibrant accents.
- * Use with data-style="rokkit" wrapper.
+ * Default theme — no wrapper needed.
  */
 
+@import './button.css';
 @import './toolbar.css';
 @import './toggle.css';
 @import './list.css';
 @import './tree.css';
+@import './connector.css';
 @import './select.css';
 @import './menu.css';
 @import './floating-action.css';
+@import './input.css';

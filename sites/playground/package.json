@@ -26,6 +26,8 @@
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
+		"@rokkit/forms": "workspace:*",
+		"@rokkit/icons": "workspace:*",
 		"@rokkit/ui": "workspace:*",
 		"@rokkit/themes": "workspace:*"
 	}

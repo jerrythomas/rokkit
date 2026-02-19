@@ -1,6 +1,5 @@
 <script>
 	import { pick, omit, isNil } from 'ramda'
-	import { Icon } from '@rokkit/ui'
 	import Input from './Input.svelte'
 
 	let {
@@ -20,13 +19,13 @@
 		...restProps
 	} = $props()
 
-	let rootProps = pick(['id'], restProps)
-	let properties = {
+	let rootProps = $derived(pick(['id'], restProps))
+	let properties = $derived({
 		required,
 		readOnly: disabled,
 		...omit(['id'], restProps),
 		name
-	}
+	})
 </script>
 
 <div

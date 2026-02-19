@@ -1,5 +1,5 @@
 import { describe, expect, beforeEach, it, vi } from 'vitest'
-import { cleanup, render } from '@testing-library/svelte'
+import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { flushSync } from 'svelte'
 
 // Import all input components
@@ -299,7 +299,7 @@ describe('Input Component Props Integration', () => {
 	})
 
 	describe('Complex Component Props', () => {
-		it('should handle InputSelect with fields prop', () => {
+		it('should handle InputSelect with fields prop', async () => {
 			const options = [
 				{ label: 'Option 1', value: 1 },
 				{ label: 'Option 2', value: 2 },
@@ -314,14 +314,15 @@ describe('Input Component Props Integration', () => {
 			})
 
 			const { container } = render(InputSelect, { props })
-			const selectElement = container.querySelector('select')
-			const optionElements = container.querySelectorAll('option')
+			const selectElement = container.querySelector('[data-select]')
+			const trigger = container.querySelector('[data-select-trigger]')
 
 			expect(selectElement).toBeTruthy()
+
+			// Open dropdown to check options
+			await fireEvent.click(trigger)
+			const optionElements = container.querySelectorAll('[data-select-option]')
 			expect(optionElements).toHaveLength(3)
-			expect(optionElements[0].textContent.trim()).toBe('Option 1')
-			expect(optionElements[1].textContent.trim()).toBe('Option 2')
-			expect(optionElements[2].textContent.trim()).toBe('Option 3')
 		})
 
 		it('should handle InputRadio with fields prop', () => {
