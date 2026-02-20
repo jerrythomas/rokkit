@@ -5,6 +5,70 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-02-20 (session 2)
+
+### Documentation Restructuring — Requirements Split, LLMs Reference, ADR-003
+
+Restructured documentation per approved plan: split catch-all requirements file, created per-component requirements, built package reference docs, and wrote architecture decision for MVC separation.
+
+**Phase 1 — Split 000-component-requirements.md:**
+- Created `000-patterns.md` (type system, architecture patterns, TypeScript strategy)
+- Created `000-rtl.md` (RTL detection, Vibe direction)
+- Created `020-chart.md` (AnimatedChart, accessible patterns)
+- Created `060-effects.md` (Tilt, Shine, Glow, Depth3D, Motion, Parallax)
+- Created `080-cli.md` (CLI scaffolding, svelte-add)
+- Appended TreeTable subsection to `004-table.md`
+- Deleted `000-component-requirements.md`
+
+**Phase 2 — Active component requirements (5 new files):**
+- `001-button.md`, `005-select.md`, `006-menu.md`, `007-toggle.md`, `008-toolbar.md`
+
+**Phase 3 — Archived component requirements (4 new files):**
+- `009-navigation.md` (Tabs, BreadCrumbs, Stepper, PageNavigator)
+- `040-layout.md` (Card, Panel, Overlay, ResponsiveGrid, Carousel, SlidingColumns)
+- `050-feedback.md` (ProgressBar, Message, Pill, Separator, Summary, Icon, Link, Accordion)
+- `070-data.md` (SearchFilter, Calendar)
+
+**Phase 4 — docs/llms/ package reference (14 files + README):**
+- Created `docs/llms/` with reference docs for all 14 packages
+- Each doc: dependency hierarchy, exports table, key patterns, internal modules
+
+**ADR-003 — MVC Separation (docs/decisions/003-mvc-separation.md):**
+- Analysis found ~1200 lines of duplicated keyboard/navigation/focus code across List, Select, Menu, Tree
+- Decision: fold composables into ui, add states/actions as ui dependencies, remove bits-ui entirely
+- Found chart has dead bits-ui dependency; composables fully superseded by ui equivalents
+
+**Backlog updated:** #28 expanded (ramda project-wide), added #29–#33 (helpers exports, chart bits-ui, ui MVC adoption, parseFilters, composables fold)
+
+**READMEs updated:** requirements + design READMEs with expanded numbering (000–089)
+
+---
+
+## 2026-02-20
+
+### Requirements & Design Documentation — List, Tree, Form
+
+Documented requirements and design for three component areas based on existing code analysis.
+
+**Files created:**
+- `docs/requirements/002-list.md` — 10 sections, identified 4 gaps (navigator refactor, multi-selection, type-ahead, missing role="listbox")
+- `docs/requirements/003-tree.md` — 12 sections, identified 6 gaps (navigator refactor, multi-selection, drag-and-drop, lazy loading, proxy recreation, search/filter)
+- `docs/requirements/010-form.md` — 17 sections covering current + future features (custom type renderers, validation integration, enhanced lookups, master-detail, semantic command input, dirty tracking, form submission, audit fields)
+- `docs/design/002-list.md` — Current architecture + proposed `use:navigator` + `ListDataController` refactor (~118 lines saved)
+- `docs/design/003-tree.md` — Current architecture + proposed `use:navigator` + `NestedController` refactor (~54 lines saved)
+- `docs/design/010-form.md` — Current architecture + 5-phase enhancement plan (FormBuilder stability, type registry, validation, lookups, master-detail, semantic command)
+
+**Backlog updated:**
+- Items #8-#16: List/Tree navigator refactor, multi-selection, lazy loading, FormBuilder recreation, legacy migration, dirty tracking, parseFilters export, type-ahead search
+- Items #17-#28: Custom type renderer registry, validation integration, ValidationReport migration, InputToggle, FieldGroup, ArrayEditor, enhanced lookups, form submission, audit metadata, master-detail, semantic command input, ramda removal
+
+**Key decisions:**
+- Forms do NOT benefit from `use:navigator` — standard tab order is sufficient, arrow keys would break text inputs
+- List (~100 lines inline keyboard code) and Tree (~80 lines) should be refactored to use `use:navigator` + controllers
+- Form enhancement follows 5-phase strategy: fix current → type renderers → lookups/validation → master-detail → semantic command
+
+---
+
 ## 2026-02-19
 
 ### Forms Phase 1 — Complete (Steps 1–8)

@@ -2,82 +2,93 @@
 
 > Specifications and standards for Rokkit UI components
 
-## Overview
+## Numbering Convention
 
-This section defines what components must do, including functional requirements, accessibility standards, theme compatibility, and documentation expectations.
+Files use `NNN-name.md` numbering grouped by component category:
+
+| Range | Category | Description |
+|-------|----------|-------------|
+| 000 | Foundation | Cross-cutting standards, API patterns, RTL |
+| 001–009 | UI Components | Button, List, Tree, Table, Select, Menu, Toggle, Toolbar, Navigation |
+| 010–019 | Forms | FormRenderer, inputs, validation, lookups |
+| 020–029 | Charts | Chart system |
+| 030–039 | Themes | Theme system, styling |
+| 040–049 | Layout | Card, Panel, Overlay, Grid, Carousel |
+| 050–059 | Feedback | ProgressBar, Message, Pill, Separator, Accordion |
+| 060–069 | Effects | Tilt, Shine, Glow, Motion |
+| 070–079 | Data Components | SearchFilter, Calendar |
+| 080–089 | CLI/Tooling | CLI integration |
+
+Gaps are intentional — they leave room for future docs without renumbering.
 
 ## Documents
 
-| Document | Description | Status |
-|----------|-------------|--------|
-| [component-requirements.md](./component-requirements.md) | Standard API patterns and component behavior | ❌ |
-| [accessibility-requirements.md](./accessibility-requirements.md) | WCAG 2.1 AA compliance and ARIA standards | ❌ |
-| [theme-requirements.md](./theme-requirements.md) | Theme system and dark/light mode support | ❌ |
-| [forms-requirements.md](./forms-requirements.md) | Form system schema and validation | ❌ |
-| [documentation-requirements.md](./documentation-requirements.md) | llms.txt and documentation standards | ❌ |
+### Foundation (000)
 
-## Component Requirements Summary
+| # | Document | Description |
+|---|----------|-------------|
+| 000 | [patterns](./000-patterns.md) | Type system, architecture patterns, TypeScript strategy |
+| 000 | [rtl](./000-rtl.md) | RTL detection, Vibe direction, cross-cutting |
 
-### Standard API Pattern
+### UI Components (001–009)
 
-All selection components must follow:
+| # | Document | Description |
+|---|----------|-------------|
+| 001 | [button](./001-button.md) | Button, ButtonGroup, FloatingAction |
+| 002 | [list](./002-list.md) | List with grouping, selection, keyboard nav |
+| 003 | [tree](./003-tree.md) | Tree with expand/collapse, connectors, keyboard nav |
+| 004 | [table](./004-table.md) | Table with sorting, filtering, TreeTable |
+| 005 | [select](./005-select.md) | Select, MultiSelect, DropDown, DropSearch |
+| 006 | [menu](./006-menu.md) | Menu with groups, shortcuts |
+| 007 | [toggle](./007-toggle.md) | Toggle, Switch, CheckBox, RadioGroup |
+| 008 | [toolbar](./008-toolbar.md) | Toolbar, ToolbarGroup |
+| 009 | [navigation](./009-navigation.md) | Tabs, BreadCrumbs, Stepper, PageNavigator |
 
-```svelte
-<script>
-  let {
-    items = [],                    // Data array
-    value = $bindable(),           // Selected value(s)
-    fields = {},                   // Field mapping
-    class: className = ''          // User CSS classes
-  } = $props()
-</script>
-```
+### Forms (010–019)
 
-### Proxy System
+| # | Document | Description |
+|---|----------|-------------|
+| 010 | [form](./010-form.md) | FormRenderer, FormBuilder, inputs, validation, lookups, master-detail, semantic input |
 
-Components handling data must use the Proxy system from `@rokkit/states`:
+### Charts (020–029)
 
-```svelte
-import { Proxy } from '@rokkit/states'
-let proxyItems = $derived(items.map(item => new Proxy(item, fields)))
-```
+| # | Document | Description |
+|---|----------|-------------|
+| 020 | [chart](./020-chart.md) | AnimatedChart, accessible patterns, Plot architecture |
 
-### Data Attributes
+### Layout (040–049)
 
-Components must use `data-*` attributes for theming:
+| # | Document | Description |
+|---|----------|-------------|
+| 040 | [layout](./040-layout.md) | Card, Panel, Overlay, ResponsiveGrid, Carousel, SlidingColumns |
 
-```html
-<div data-component="list" data-state="active" data-variant="primary">
-```
+### Feedback & Display (050–059)
 
-### Snippet Support
+| # | Document | Description |
+|---|----------|-------------|
+| 050 | [feedback](./050-feedback.md) | ProgressBar, Message, Pill, Separator, Summary, Icon, Link, Accordion |
 
-Components must support customization via snippets:
+### Effects (060–069)
 
-```svelte
-{#snippet child(node)}
-  <CustomRenderer data={node.value} />
-{/snippet}
-```
+| # | Document | Description |
+|---|----------|-------------|
+| 060 | [effects](./060-effects.md) | Tilt, Shine, Glow, Depth3D, Motion, Parallax |
 
-## Accessibility Requirements Summary
+### Data Components (070–079)
 
-- WCAG 2.1 AA compliance
-- Full keyboard navigation
-- Proper ARIA roles and states
-- Screen reader compatibility
-- Focus management
-- Minimum 44x44px touch targets
+| # | Document | Description |
+|---|----------|-------------|
+| 070 | [data](./070-data.md) | SearchFilter, Calendar |
 
-## Theme Requirements Summary
+### CLI/Tooling (080–089)
 
-- Support all three themes: rokkit, minimal, material
-- Support dark and light modes
-- Use semantic CSS variables
-- No hard-coded colors in components
+| # | Document | Description |
+|---|----------|-------------|
+| 080 | [cli](./080-cli.md) | CLI scaffolding, svelte-add support |
 
 ## Related
 
-- [Design Documentation](../design/) - How components are built
-- [Component Status](../design/component-status.md) - Implementation tracking
-- [.rules/guidelines/](../../.rules/guidelines/) - Coding standards
+- [Design Documentation](../design/) — How components are built
+- [Component Status](../design/000-component-status.md) — Implementation tracking
+- [Package Reference](../llms/) — API reference for all packages
+- [Architecture Decisions](../decisions/) — ADRs
