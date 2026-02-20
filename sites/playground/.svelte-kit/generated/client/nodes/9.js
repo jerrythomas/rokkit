@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/routes/components/select/+page.svelte";
+export { default as component } from "../../../../src/routes/components/palette-manager/+page.svelte";

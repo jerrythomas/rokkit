@@ -7,7 +7,8 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { shades, defaultPalette } from '@rokkit/core'
+import { shades, defaultPalette, defaultIcons, iconShortcuts } from '@rokkit/core'
+import { iconCollections } from '@rokkit/core/vite'
 import { Theme } from '@rokkit/core'
 
 const theme = new Theme()
@@ -32,6 +33,7 @@ export default defineConfig({
 		}
 	},
 	safelist: [
+		...defaultIcons,
 		...defaultPalette.flatMap((color: string) =>
 			shades.map((shade: number) => `bg-${color}-${shade}`)
 		),
@@ -77,14 +79,22 @@ export default defineConfig({
 		'i-lucide:palette',
 		'i-lucide:circle',
 		'i-lucide:monitor',
-		'i-lucide:scissors'
+		'i-lucide:scissors',
+		'i-lucide:square',
+		'i-lucide:hash'
 	],
 	shortcuts: [
 		['skin-default', theme.getPalette()],
 		...theme.getShortcuts('surface'),
 		...theme.getShortcuts('primary'),
 		...theme.getShortcuts('secondary'),
-		...theme.getShortcuts('accent')
+		...theme.getShortcuts('accent'),
+		...theme.getShortcuts('success'),
+		...theme.getShortcuts('warning'),
+		...theme.getShortcuts('danger'),
+		...theme.getShortcuts('info'),
+		...theme.getShortcuts('error'),
+		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit'))
 	],
 	theme: {
 		colors: theme.getColorRules()
@@ -93,7 +103,10 @@ export default defineConfig({
 		presetWind3(themeConfig),
 		presetIcons({
 			collections: {
-				lucide: () => import('@iconify-json/lucide/icons.json').then((m) => m.default as any)
+				lucide: () => import('@iconify-json/lucide/icons.json').then((m) => m.default as any),
+				...iconCollections({
+					rokkit: '@rokkit/icons/ui.json'
+				})
 			}
 		})
 	],

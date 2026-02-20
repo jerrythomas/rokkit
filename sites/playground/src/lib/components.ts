@@ -1,4 +1,5 @@
 export const components = [
+	{ text: 'Button', href: '/components/button', icon: 'i-lucide:square' },
 	{ text: 'Menu', href: '/components/menu', icon: 'i-lucide:menu' },
 	{ text: 'Select', href: '/components/select', icon: 'i-lucide:chevron-down' },
 	{ text: 'MultiSelect', href: '/components/multi-select', icon: 'i-lucide:list' },
@@ -11,5 +12,5 @@ export const components = [
 	{ text: 'PaletteManager', href: '/components/palette-manager', icon: 'i-lucide:palette' }
 ] as const
 
-export const themes = ['shingoki', 'rokkit', 'minimal', 'material', 'glass'] as const
+export const themes = ['rokkit', 'minimal', 'material', 'glass'] as const
 export type Theme = (typeof themes)[number]

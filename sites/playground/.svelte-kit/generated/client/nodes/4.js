@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/routes/components/floating-action/+page.svelte";
+export { default as component } from "../../../../src/routes/components/code/+page.svelte";

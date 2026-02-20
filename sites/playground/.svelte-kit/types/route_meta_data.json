@@ -3,6 +3,9 @@
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
 	],
+	"/components/button": [
+		"src/routes/+layout.ts"
+	],
 	"/components/code": [
 		"src/routes/+layout.ts"
 	],

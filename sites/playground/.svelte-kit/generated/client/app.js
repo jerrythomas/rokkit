@@ -13,23 +13,25 @@ export const nodes = [
 	() => import('./nodes/9'),
 	() => import('./nodes/10'),
 	() => import('./nodes/11'),
-	() => import('./nodes/12')
+	() => import('./nodes/12'),
+	() => import('./nodes/13')
 ];
 
 export const server_loads = [];
 
 export const dictionary = {
 		"/": [2],
-		"/components/code": [3],
-		"/components/floating-action": [4],
-		"/components/list": [5],
-		"/components/menu": [6],
-		"/components/multi-select": [7],
-		"/components/palette-manager": [8],
-		"/components/select": [9],
-		"/components/toggle": [10],
-		"/components/toolbar": [11],
-		"/components/tree": [12]
+		"/components/button": [3],
+		"/components/code": [4],
+		"/components/floating-action": [5],
+		"/components/list": [6],
+		"/components/menu": [7],
+		"/components/multi-select": [8],
+		"/components/palette-manager": [9],
+		"/components/select": [10],
+		"/components/toggle": [11],
+		"/components/toolbar": [12],
+		"/components/tree": [13]
 	};
 
 export const hooks = {

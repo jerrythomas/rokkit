@@ -27,13 +27,14 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/components" | "/components/code" | "/components/floating-action" | "/components/list" | "/components/menu" | "/components/multi-select" | "/components/palette-manager" | "/components/select" | "/components/toggle" | "/components/toolbar" | "/components/tree";
+		RouteId(): "/" | "/components" | "/components/button" | "/components/code" | "/components/floating-action" | "/components/list" | "/components/menu" | "/components/multi-select" | "/components/palette-manager" | "/components/select" | "/components/toggle" | "/components/toolbar" | "/components/tree";
 		RouteParams(): {
 			
 		};
 		LayoutParams(): {
 			"/": Record<string, never>;
 			"/components": Record<string, never>;
+			"/components/button": Record<string, never>;
 			"/components/code": Record<string, never>;
 			"/components/floating-action": Record<string, never>;
 			"/components/list": Record<string, never>;
@@ -45,7 +46,7 @@ declare module "$app/types" {
 			"/components/toolbar": Record<string, never>;
 			"/components/tree": Record<string, never>
 		};
-		Pathname(): "/" | "/components" | "/components/" | "/components/code" | "/components/code/" | "/components/floating-action" | "/components/floating-action/" | "/components/list" | "/components/list/" | "/components/menu" | "/components/menu/" | "/components/multi-select" | "/components/multi-select/" | "/components/palette-manager" | "/components/palette-manager/" | "/components/select" | "/components/select/" | "/components/toggle" | "/components/toggle/" | "/components/toolbar" | "/components/toolbar/" | "/components/tree" | "/components/tree/";
+		Pathname(): "/" | "/components" | "/components/" | "/components/button" | "/components/button/" | "/components/code" | "/components/code/" | "/components/floating-action" | "/components/floating-action/" | "/components/list" | "/components/list/" | "/components/menu" | "/components/menu/" | "/components/multi-select" | "/components/multi-select/" | "/components/palette-manager" | "/components/palette-manager/" | "/components/select" | "/components/select/" | "/components/toggle" | "/components/toggle/" | "/components/toolbar" | "/components/toolbar/" | "/components/tree" | "/components/tree/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): string & {};
 	}
