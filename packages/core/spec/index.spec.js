@@ -57,6 +57,7 @@ describe('@rokkit/core', () => {
 			'shadesOf',
 			'themeRules',
 			'semanticShortcuts',
+			'contrastShortcuts',
 			'Theme'
 		])
 	})

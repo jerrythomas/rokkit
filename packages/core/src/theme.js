@@ -105,6 +105,22 @@ export function semanticShortcuts(name) {
 }
 
 /**
+ * Generates "on-color" text shortcuts for readable text on colored backgrounds.
+ *
+ * - `text-on-{name}` → high contrast text for use on z5+ backgrounds (always light text)
+ * - `text-on-{name}-muted` → slightly muted but still readable on z5+ backgrounds
+ *
+ * @param {string} name - Color name (e.g., 'primary', 'surface')
+ * @returns {Array} Array of shortcut definitions
+ */
+export function contrastShortcuts(name) {
+	return [
+		[`text-on-${name}`, `text-${name}-50 dark:text-${name}-50`],
+		[`text-on-${name}-muted`, `text-${name}-100 dark:text-${name}-200`]
+	]
+}
+
+/**
  * Theme class for managing color palettes, mappings, and semantic shortcuts.
  */
 export class Theme {
@@ -169,6 +185,6 @@ export class Theme {
 	}
 
 	getShortcuts(name) {
-		return semanticShortcuts(name)
+		return [...semanticShortcuts(name), ...contrastShortcuts(name)]
 	}
 }

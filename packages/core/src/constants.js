@@ -44,6 +44,8 @@ export const defaultIcons = [
 	'node-closed',
 	'selector-opened',
 	'selector-closed',
+	'menu-opened',
+	'menu-closed',
 	'checkbox-checked',
 	'checkbox-unchecked',
 	'checkbox-unknown',

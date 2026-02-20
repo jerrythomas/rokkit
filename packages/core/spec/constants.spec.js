@@ -46,6 +46,10 @@ describe('Utility functions', () => {
 				unchecked: 'checkbox-unchecked',
 				unknown: 'checkbox-unknown'
 			},
+			menu: {
+				opened: 'menu-opened',
+				closed: 'menu-closed'
+			},
 			rating: {
 				filled: 'rating-filled',
 				empty: 'rating-empty',
