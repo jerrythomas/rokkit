@@ -1,5 +1,7 @@
 // Components
 export {
+	Button,
+	ButtonGroup,
 	Code,
 	Menu,
 	Select,

@@ -3,9 +3,10 @@
 		MultiSelectProps,
 		SelectItem,
 		SelectItemSnippet,
-		SelectItemHandlers
+		SelectItemHandlers,
+		SelectStateIcons
 	} from '../types/select.js'
-	import { getSnippet } from '../types/select.js'
+	import { getSnippet, defaultSelectStateIcons } from '../types/select.js'
 	import { ItemProxy } from '../types/item-proxy.js'
 	import ItemContent from './ItemContent.svelte'
 
@@ -22,11 +23,15 @@
 		disabled = false,
 		onchange,
 		class: className = '',
+		icons: userIcons,
 		item: itemSnippet,
 		groupLabel: groupLabelSnippet,
 		selectedValues: selectedValuesSnippet,
 		...snippets
 	}: MultiSelectProps & { [key: string]: SelectItemSnippet | unknown } = $props()
+
+	// Merge icons with defaults
+	const icons = $derived<SelectStateIcons>({ ...defaultSelectStateIcons, ...userIcons })
 
 	// Normalize alignment value
 	const normalizedAlign = $derived(align === 'left' || align === 'start' ? 'left' : 'right')
@@ -290,7 +295,7 @@
 	>
 		<span data-select-checkbox data-checked={isItemSelected || undefined}>
 			{#if isItemSelected}
-				<span class="i-lucide:check" aria-hidden="true"></span>
+				<span class={icons.checked} aria-hidden="true"></span>
 			{/if}
 		</span>
 		<ItemContent {proxy} />
@@ -391,7 +396,7 @@
 										}
 									}}
 								>
-									<span class="i-lucide:x" aria-hidden="true"></span>
+									<span class={icons.remove} aria-hidden="true"></span>
 								</span>
 							</span>
 						{/each}
@@ -403,7 +408,7 @@
 				<span data-select-placeholder>{placeholder}</span>
 			{/if}
 		</span>
-		<span data-select-arrow class="i-lucide:chevron-down" aria-hidden="true"></span>
+		<span data-select-arrow class={icons.opened} aria-hidden="true"></span>
 	</button>
 
 	{#if isOpen}

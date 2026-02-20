@@ -36,6 +36,9 @@
     "menu",
     "dropdown"
   ],
+  "dependencies": {
+    "@rokkit/core": "workspace:*"
+  },
   "peerDependencies": {
     "shiki": "^3.22.0",
     "svelte": "^5.0.0"

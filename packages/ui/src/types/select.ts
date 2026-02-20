@@ -7,6 +7,7 @@
 
 import type { Snippet } from 'svelte'
 import type { ItemFields } from './item-proxy.js'
+import { defaultStateIcons } from '@rokkit/core'
 
 // =============================================================================
 // Field Mapping Types
@@ -115,6 +116,9 @@ export interface SelectBaseProps {
 	/** Additional CSS classes */
 	class?: string
 
+	/** Icons for select states (dropdown arrow, check, remove) */
+	icons?: SelectStateIcons
+
 	/** Custom snippet for rendering options */
 	item?: SelectItemSnippet
 
@@ -154,6 +158,36 @@ export interface MultiSelectProps extends SelectBaseProps {
 
 	/** Maximum number of tags to show before collapsing to count */
 	maxDisplay?: number
+}
+
+// =============================================================================
+// State Icons
+// =============================================================================
+
+/**
+ * Icons configuration for select expand/collapse and selection states.
+ * Keys match the naming convention in @rokkit/core defaultStateIcons.
+ */
+export interface SelectStateIcons {
+	/** Icon class for dropdown arrow (open state) */
+	opened?: string
+	/** Icon class for dropdown arrow (closed state) */
+	closed?: string
+	/** Icon class for selected item indicator */
+	checked?: string
+	/** Icon class for tag remove button (MultiSelect) */
+	remove?: string
+}
+
+/**
+ * Default state icons — uses semantic names from @rokkit/core
+ * that get resolved to actual icon classes via UnoCSS shortcuts.
+ */
+export const defaultSelectStateIcons: SelectStateIcons = {
+	opened: defaultStateIcons.selector.opened,
+	closed: defaultStateIcons.selector.closed,
+	checked: defaultStateIcons.checkbox.checked,
+	remove: defaultStateIcons.action.remove
 }
 
 // =============================================================================

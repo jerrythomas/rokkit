@@ -1,6 +1,12 @@
 <script lang="ts">
-	import type { ListProps, ListItem, ListItemSnippet, ListItemHandlers } from '../types/list.js'
-	import { getSnippet } from '../types/list.js'
+	import type {
+		ListProps,
+		ListItem,
+		ListItemSnippet,
+		ListItemHandlers,
+		ListStateIcons
+	} from '../types/list.js'
+	import { getSnippet, defaultListStateIcons } from '../types/list.js'
 	import { ItemProxy } from '../types/item-proxy.js'
 	import ItemContent from './ItemContent.svelte'
 
@@ -16,10 +22,14 @@
 		onselect,
 		onexpandedchange,
 		class: className = '',
+		icons: userIcons,
 		item: itemSnippet,
 		groupLabel: groupLabelSnippet,
 		...snippets
 	}: ListProps & { [key: string]: ListItemSnippet | unknown } = $props()
+
+	// Merge icons with defaults
+	const icons = $derived<ListStateIcons>({ ...defaultListStateIcons, ...userIcons })
 
 	/**
 	 * Create an ItemProxy for the given item
@@ -427,7 +437,7 @@
 		{/if}
 		<span data-list-group-text>{proxy.text}</span>
 		{#if collapsible}
-			<span data-list-group-arrow class="i-solar:alt-arrow-down-linear" aria-hidden="true"></span>
+			<span data-list-group-arrow class={icons.opened} aria-hidden="true"></span>
 		{/if}
 	</button>
 {/snippet}

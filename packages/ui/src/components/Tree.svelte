@@ -328,12 +328,10 @@
 	<span data-tree-toggle data-tree-has-children={hasChildren || undefined}>
 		{#if hasChildren}
 			{#if isExpanded}
-				<span class={stateIcons.expanded} aria-hidden="true"></span>
+				<span class={stateIcons.opened} aria-hidden="true"></span>
 			{:else}
-				<span class={stateIcons.collapsed} aria-hidden="true"></span>
+				<span class={stateIcons.closed} aria-hidden="true"></span>
 			{/if}
-		{:else if stateIcons.leaf}
-			<span class={stateIcons.leaf} aria-hidden="true"></span>
 		{/if}
 	</span>
 {/snippet}

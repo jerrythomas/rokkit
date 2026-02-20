@@ -1,6 +1,12 @@
 <script lang="ts">
-	import type { MenuProps, MenuItem, MenuItemSnippet, MenuItemHandlers } from '../types/menu.js'
-	import { getSnippet } from '../types/menu.js'
+	import type {
+		MenuProps,
+		MenuItem,
+		MenuItemSnippet,
+		MenuItemHandlers,
+		MenuStateIcons
+	} from '../types/menu.js'
+	import { getSnippet, defaultMenuStateIcons } from '../types/menu.js'
 	import { ItemProxy } from '../types/item-proxy.js'
 
 	const {
@@ -15,10 +21,14 @@
 		disabled = false,
 		onselect,
 		class: className = '',
+		icons: userIcons,
 		item: itemSnippet,
 		groupLabel: groupLabelSnippet,
 		...snippets
 	}: MenuProps & { [key: string]: MenuItemSnippet | unknown } = $props()
+
+	// Merge icons with defaults
+	const icons = $derived<MenuStateIcons>({ ...defaultMenuStateIcons, ...userIcons })
 
 	// Normalize alignment value (support both start/end and left/right)
 	const normalizedAlign = $derived(align === 'left' || align === 'start' ? 'left' : 'right')
@@ -57,15 +67,14 @@
 	function toggleMenu() {
 		if (disabled) return
 		isOpen = !isOpen
-		if (isOpen) {
-			focusedIndex = 0
+		if (!isOpen) {
+			focusedIndex = -1
 		}
 	}
 
 	function openMenu() {
 		if (disabled || isOpen) return
 		isOpen = true
-		focusedIndex = 0
 	}
 
 	function closeMenu() {
@@ -129,9 +138,14 @@
 	}
 
 	function handleTriggerKeyDown(event: KeyboardEvent) {
-		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+		if (event.key === 'ArrowDown') {
 			event.preventDefault()
 			openMenu()
+			requestAnimationFrame(() => focusItem(0))
+		} else if (event.key === 'ArrowUp') {
+			event.preventDefault()
+			openMenu()
+			requestAnimationFrame(() => focusItem(flatItems.length - 1))
 		}
 	}
 
@@ -183,8 +197,6 @@
 		if (isOpen) {
 			document.addEventListener('click', handleClickOutside, true)
 			document.addEventListener('keydown', handleKeyDown)
-			// Focus first item after dropdown renders
-			requestAnimationFrame(() => focusItem(0))
 		}
 		return () => {
 			document.removeEventListener('click', handleClickOutside, true)
@@ -291,7 +303,7 @@
 		{/if}
 		<span data-menu-label>{label}</span>
 		{#if showArrow}
-			<span data-menu-arrow class="i-solar:alt-arrow-down-linear" aria-hidden="true"></span>
+			<span data-menu-arrow class={icons.opened} aria-hidden="true"></span>
 		{/if}
 	</button>
 

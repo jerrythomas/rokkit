@@ -2,10 +2,10 @@
 	import type { ToggleProps, ToggleItem, ToggleItemHandlers } from '../types/toggle.js'
 	import { ItemProxy } from '../types/item-proxy.js'
 
-	const {
+	let {
 		options = [],
 		fields: userFields,
-		value,
+		value = $bindable(),
 		onchange,
 		showLabels = true,
 		size = 'md',
@@ -35,6 +35,7 @@
 		if (proxy.disabled || disabled) return
 		const itemValue = proxy.itemValue
 		if (itemValue !== value) {
+			value = itemValue
 			onchange?.(itemValue, proxy.original as ToggleItem)
 		}
 	}

@@ -5,7 +5,7 @@ Data driven UI components for Rokkit applications.
 ## Installation
 
 ```bash
-pnpm add @rokkit/ui
+bun add @rokkit/ui
 ```
 
 ## Components

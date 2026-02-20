@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { CodeProps } from '../types/index.js'
+	import type { CodeProps, CodeStateIcons } from '../types/index.js'
+	import { defaultCodeStateIcons } from '../types/code.js'
 	import { highlightCode } from '../utils/shiki.js'
 
 	const {
@@ -8,8 +9,12 @@
 		theme = 'dark',
 		showLineNumbers = false,
 		showCopyButton = true,
+		icons: userIcons,
 		class: className = ''
 	}: CodeProps = $props()
+
+	// Merge icons with defaults
+	const icons = $derived<CodeStateIcons>({ ...defaultCodeStateIcons, ...userIcons })
 
 	let copied = $state(false)
 	let highlightedCode = $derived(highlightCode(code, { lang: language, theme }))
@@ -53,9 +58,9 @@
 			aria-label={copied ? 'Copied!' : 'Copy code'}
 		>
 			{#if copied}
-				<span class="copy-icon i-solar:check-circle-bold"></span>
+				<span class="copy-icon {icons.copysuccess}"></span>
 			{:else}
-				<span class="copy-icon i-solar:copy-bold"></span>
+				<span class="copy-icon {icons.copy}"></span>
 			{/if}
 		</button>
 	{/if}

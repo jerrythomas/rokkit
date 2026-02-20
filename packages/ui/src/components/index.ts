@@ -1,4 +1,6 @@
 // UI Components
+export { default as Button } from './Button.svelte'
+export { default as ButtonGroup } from './ButtonGroup.svelte'
 export { default as Code } from './Code.svelte'
 export { default as Menu } from './Menu.svelte'
 export { default as Select } from './Select.svelte'

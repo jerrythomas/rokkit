@@ -5,6 +5,8 @@
  * Field mapping and data access is handled by ItemProxy.
  */
 
+import { defaultStateIcons } from '@rokkit/core'
+
 // =============================================================================
 // Field Mapping Types
 // =============================================================================
@@ -134,11 +136,38 @@ export interface MenuProps {
 	/** Additional CSS classes */
 	class?: string
 
+	/** Icons for menu states (dropdown arrow) */
+	icons?: MenuStateIcons
+
 	/** Custom snippet for rendering menu items (both standalone and grouped children) */
 	item?: MenuItemSnippet
 
 	/** Custom snippet for rendering group labels/headers */
 	groupLabel?: MenuGroupLabelSnippet
+}
+
+// =============================================================================
+// State Icons
+// =============================================================================
+
+/**
+ * Icons configuration for menu expand/collapse states.
+ * Keys match the naming convention in @rokkit/core defaultStateIcons.
+ */
+export interface MenuStateIcons {
+	/** Icon class for dropdown arrow (open state) */
+	opened?: string
+	/** Icon class for dropdown arrow (closed state) */
+	closed?: string
+}
+
+/**
+ * Default state icons — uses semantic names from @rokkit/core
+ * that get resolved to actual icon classes via UnoCSS shortcuts.
+ */
+export const defaultMenuStateIcons: MenuStateIcons = {
+	opened: defaultStateIcons.menu.opened,
+	closed: defaultStateIcons.menu.closed
 }
 
 // =============================================================================

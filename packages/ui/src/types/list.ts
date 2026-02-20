@@ -6,6 +6,8 @@
  * Field mapping and data access is handled by ItemProxy.
  */
 
+import { defaultStateIcons } from '@rokkit/core'
+
 // =============================================================================
 // Field Mapping Types
 // =============================================================================
@@ -144,11 +146,38 @@ export interface ListProps {
 	/** Additional CSS classes */
 	class?: string
 
+	/** Icons for list group states (expand/collapse arrow) */
+	icons?: ListStateIcons
+
 	/** Custom snippet for rendering list items */
 	item?: ListItemSnippet
 
 	/** Custom snippet for rendering group labels/headers */
 	groupLabel?: ListGroupLabelSnippet
+}
+
+// =============================================================================
+// State Icons
+// =============================================================================
+
+/**
+ * Icons configuration for list collapsible group states.
+ * Keys match the naming convention in @rokkit/core defaultStateIcons.
+ */
+export interface ListStateIcons {
+	/** Icon class for expanded group */
+	opened?: string
+	/** Icon class for collapsed group */
+	closed?: string
+}
+
+/**
+ * Default state icons — uses semantic names from @rokkit/core
+ * that get resolved to actual icon classes via UnoCSS shortcuts.
+ */
+export const defaultListStateIcons: ListStateIcons = {
+	opened: defaultStateIcons.accordion.opened,
+	closed: defaultStateIcons.accordion.closed
 }
 
 // =============================================================================

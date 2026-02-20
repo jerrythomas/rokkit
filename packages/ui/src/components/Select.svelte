@@ -3,9 +3,10 @@
 		SelectProps,
 		SelectItem,
 		SelectItemSnippet,
-		SelectItemHandlers
+		SelectItemHandlers,
+		SelectStateIcons
 	} from '../types/select.js'
-	import { getSnippet } from '../types/select.js'
+	import { getSnippet, defaultSelectStateIcons } from '../types/select.js'
 	import { ItemProxy } from '../types/item-proxy.js'
 	import ItemContent from './ItemContent.svelte'
 
@@ -22,11 +23,15 @@
 		disabled = false,
 		onchange,
 		class: className = '',
+		icons: userIcons,
 		item: itemSnippet,
 		groupLabel: groupLabelSnippet,
 		selectedValue: selectedValueSnippet,
 		...snippets
 	}: SelectProps & { [key: string]: SelectItemSnippet | unknown } = $props()
+
+	// Merge icons with defaults
+	const icons = $derived<SelectStateIcons>({ ...defaultSelectStateIcons, ...userIcons })
 
 	// Normalize alignment value
 	const normalizedAlign = $derived(align === 'left' || align === 'start' ? 'left' : 'right')
@@ -201,6 +206,12 @@
 		}
 	}
 
+	/** No-op handlers for rendering item snippet in the trigger (selected value display) */
+	const noopHandlers: SelectItemHandlers = {
+		onclick: () => {},
+		onkeydown: () => {}
+	}
+
 	/**
 	 * Create handlers object for custom snippets
 	 */
@@ -278,7 +289,7 @@
 	>
 		<ItemContent {proxy} />
 		{#if isItemSelected}
-			<span data-select-check class="i-lucide:check" aria-hidden="true"></span>
+			<span data-select-check class={icons.checked} aria-hidden="true"></span>
 		{/if}
 	</button>
 {/snippet}
@@ -350,6 +361,10 @@
 		<span data-select-value>
 			{#if selectedValueSnippet && selectedItem}
 				{@render selectedValueSnippet(selectedItem.original, selectedItem.proxy.fields)}
+			{:else if selectedItem && itemSnippet}
+				<span data-select-value-custom>
+					{@render itemSnippet(selectedItem.original, selectedItem.proxy.fields, noopHandlers, true)}
+				</span>
 			{:else if selectedItem}
 				{#if selectedItem.proxy.icon}
 					<span data-select-value-icon class={selectedItem.proxy.icon} aria-hidden="true"></span>
@@ -359,7 +374,7 @@
 				<span data-select-placeholder>{placeholder}</span>
 			{/if}
 		</span>
-		<span data-select-arrow class="i-lucide:chevron-down" aria-hidden="true"></span>
+		<span data-select-arrow class={icons.opened} aria-hidden="true"></span>
 	</button>
 
 	{#if isOpen}
