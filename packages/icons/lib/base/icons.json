@@ -133,8 +133,14 @@
     "menu": {
       "body": "<path fill=\"currentColor\" d=\"M3 4.5h18V6H3zM3 18h18v1.5H3zm0-9h18v1.5H3zm0 4.5h18V15H3z\"/>"
     },
+    "menu-closed": {
+      "body": "<path fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m9 18 6-6-6-6\"/>"
+    },
     "menu-dots": {
       "body": "<g fill=\"none\"><path fill=\"currentColor\" d=\"M9 12a1 1 0 11-2 0 1 1 0 012 0m4 0a1 1 0 11-2 0 1 1 0 012 0m4 0a1 1 0 11-2 0 1 1 0 012 0\"/><path stroke=\"currentColor\" stroke-width=\"1.5\" d=\"M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z\" opacity=\".5\"/></g>"
+    },
+    "menu-opened": {
+      "body": "<path fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m6 9 6 6 6-6\"/>"
     },
     "menu-sidebar": {
       "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 11c0-3.771 0-5.657 1.172-6.828S6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172S22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828S17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172S2 16.771 2 13z\"/><path stroke-linecap=\"round\" d=\"M5.5 10h6m-5 4h4\"/><path stroke-linecap=\"round\" d=\"M15 21V3\" opacity=\".5\"/></g>"
@@ -251,7 +257,7 @@
       "body": "<path fill=\"currentColor\" d=\"M22.2 17.633 14.002 3.396a2.322 2.322 0 00-4.004 0L1.8 17.633a2.2 2.2 0 000 2.224A2.28 2.28 0 003.802 21h16.397a2.28 2.28 0 002-1.143 2.2 2.2 0 00.001-2.224M11.25 9.75a.75.75 0 111.5 0v3.75a.75.75 0 11-1.5 0zM12 18a1.124 1.124 0 110-2.249A1.124 1.124 0 0112 18\"/>"
     }
   },
-  "lastModified": 1753396703,
+  "lastModified": 1771534445,
   "width": 24,
   "height": 24
 }

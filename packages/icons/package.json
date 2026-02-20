@@ -31,8 +31,8 @@
     "format": "prettier --write .",
     "lint": "eslint --fix .",
     "build": "rokkit-cli build && bun format",
-    "latest": "pnpm upgrade --latest",
-    "release": "pnpm publish --access public"
+    "latest": "bun update --latest",
+    "release": "bun publish --access public"
   },
   "type": "module"
 }
