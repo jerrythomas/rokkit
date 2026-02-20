@@ -4,7 +4,7 @@ A simple project to get you started with SvelteKit + Rokkit + UnoCSS.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `bun install` (or `pnpm install` or `npm`), start a development server:
+Once you've created a project and installed dependencies with `bun install`, start a development server:
 
 ```bash
 bun run dev

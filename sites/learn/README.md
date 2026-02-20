@@ -36,7 +36,7 @@ To install Rokkit, use the following command:
 
 ```bash
 degit jerrythomas/rokkit/packages/quick-start my-app
-pnpm i
+bun install
 ```
 
 ## Basic Usage
@@ -108,8 +108,8 @@ We hope you enjoy using Rokkit in your projects!
 ```bash
 degit jerrythomas/rokkit/packages/quick-start my-app
 cd my-app
-pnpm i
-pnpm dev
+bun install
+bun dev
 ```
 
 [coverage_badge]: https://api.codeclimate.com/v1/badges/fd3e28efe14760b16f74/test_coverage

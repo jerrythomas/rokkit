@@ -58,13 +58,13 @@ project-root/
 
 ```bash
 # Tests
-npm run test                      # Run all tests
+bun run test                      # Run all tests
 
 # Lint
-npm run lint                      # 0 errors expected
+bun run lint                      # 0 errors expected
 ```
 
-**Important:** Always run commands from the `solution/` directory.
+**Important:** Always run commands from the project root.
 
 ## Conventions
 

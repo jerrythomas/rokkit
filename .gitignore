@@ -203,3 +203,4 @@ vite.config.ts.timestamp-*
 src/lib/paraglide
 
 project.inlang/caches
+.svelte-kit
