@@ -8,8 +8,6 @@
     ".": "./src/index.css",
     "./base": "./src/base/index.css",
     "./base/*": "./src/base/*.css",
-    "./shingoki": "./src/shingoki/index.css",
-    "./shingoki/*": "./src/shingoki/*.css",
     "./rokkit": "./src/rokkit/index.css",
     "./rokkit/*": "./src/rokkit/*.css",
     "./minimal": "./src/minimal/index.css",

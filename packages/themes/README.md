@@ -16,15 +16,18 @@ src/
 ├── base/           # Structural styles (layout, positioning)
 │   ├── index.css   # All base styles
 │   └── menu.css    # Menu structural styles
-├── shingoki/       # Themed styles (colors, effects)
-│   ├── index.css   # All shingoki theme styles
+├── rokkit/         # Default theme (gradients + borders)
+│   ├── index.css   # All rokkit theme styles
 │   └── menu.css    # Menu themed styles
-└── index.css       # Main entry (imports base + shingoki)
+├── minimal/        # Clean + subtle theme
+├── material/       # Elevation + shadows theme
+├── glass/          # Blur + transparency theme
+└── index.css       # Main entry (imports base + all themes)
 ```
 
 ## Usage
 
-### Full Theme (base + shingoki)
+### Full Theme (base + all themes)
 
 ```ts
 import '@rokkit/themes'
@@ -36,17 +39,17 @@ import '@rokkit/themes'
 import '@rokkit/themes/base'
 ```
 
-### Shingoki Theme Only
+### Rokkit Theme Only
 
 ```ts
-import '@rokkit/themes/shingoki'
+import '@rokkit/themes/rokkit'
 ```
 
 ### Individual Component Styles
 
 ```ts
 import '@rokkit/themes/base/menu.css'
-import '@rokkit/themes/shingoki/menu.css'
+import '@rokkit/themes/rokkit/menu.css'
 ```
 
 ## Data Attributes
@@ -77,26 +80,28 @@ Components use semantic data attributes for styling hooks:
 
 ## Theme Scoping
 
-Shingoki theme styles are scoped with `[data-theme='shingoki']` to allow multiple themes:
+Rokkit is the default theme — its styles apply without any wrapper.
+
+Other themes are scoped with `data-style` to allow switching:
 
 ```html
-<div data-theme="shingoki">
-  <!-- Components here use shingoki theme -->
+<div data-style="minimal">
+  <!-- Components here use minimal theme -->
 </div>
 ```
 
 For global application, set on the root element:
 
 ```html
-<html data-theme="shingoki"></html>
+<html data-style="material"></html>
 ```
 
 ## Creating Custom Themes
 
-1. Copy `src/shingoki/` to `src/my-theme/`
+1. Copy `src/rokkit/` to `src/my-theme/`
 2. Modify styles using same data attribute selectors
-3. Change scope from `[data-theme='shingoki']` to `[data-theme='my-theme']`
-4. Import your theme instead of shingoki
+3. Wrap selectors with `[data-style='my-theme']` scope
+4. Import your theme alongside or instead of rokkit
 
 ## CSS Custom Properties
 

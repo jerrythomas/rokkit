@@ -20,7 +20,6 @@ The List component accepts a custom class prop. Add a site-nav CSS variant in ea
 Each theme should define its own site-nav variant consistent with its design language:
 
 - src/base/list.css - base structural overrides
-- src/shingoki/list.css - shingoki variant
 - src/rokkit/list.css - rokkit variant
 - src/minimal/list.css - minimal variant
 - src/material/list.css - material variant
@@ -48,32 +47,7 @@ Once implemented here, FitTrack can remove its app-level overrides in app.css.
 
 ---
 
-## 2. Update rokkit active highlight gradient to primary-z5 to secondary-z5
-
-The current rokkit active item style uses from-primary-z3 to-primary-z2 which is quite dark / monochrome. Update to use from-primary-z5 to-secondary-z5 for a more vibrant highlight that takes advantage of the secondary palette.
-
-### Files to update
-
-- src/rokkit/list.css - both focused and unfocused active states
-
-### Current
-
-```css
-@apply from-primary-z3 to-primary-z2 text-primary-z9 border-l-primary-z5 border-l-2 bg-gradient-to-r;
-```
-
-### Proposed
-
-```css
-@apply from-primary-z5 to-secondary-z5 text-primary-z9 border-l-primary-z4 border-l-2 bg-gradient-to-r;
-```
-
-Consider applying the same primary to secondary gradient approach to other themes for consistency.
-
-
----
-
-## 3. Fix List group child item indentation
+## 2. Fix List group child item indentation
 
 Child items within a group are rendered at the same indentation level as the group header. This makes it hard to visually distinguish the hierarchy. Child items should have additional left padding to indent them under their parent group.
 
@@ -83,7 +57,7 @@ Child items within a group are rendered at the same indentation level as the gro
 
 ---
 
-## 4. Extra space before text in groups without icons
+## 3. Extra space before text in groups without icons
 
 When a group header has no icon, there appears to be extra leading space before the text (as if space is reserved for a missing icon). The group label should not have phantom spacing when no icon is present.
 
