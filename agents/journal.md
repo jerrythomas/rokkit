@@ -35,6 +35,25 @@ Implemented form-driven property controls via `@rokkit/forms`.
 
 **Tests:** 1057 passing, all green
 
-### Forms Phase 2 — Started
+### Forms Phase 2 — Complete
 
-Next: convert 9 remaining playground pages from PropSelect/PropCheckbox/PropText/PropInfo controls to FormRenderer. Then delete `$lib/controls/` directory and all archive/deprecated folders.
+Converted 8 playground pages to FormRenderer and cleaned up deprecated code.
+
+**Page conversions (8):** list, tree, toolbar, code, floating-action, menu, select, multi-select
+- Each page: replaced individual `$state()` + Prop* imports with single `props = $state({})` + schema + layout + `<FormRenderer>`
+- PaletteManager skipped (uses custom snippets, not expressible as schema)
+
+**Controls deletion:** removed `sites/playground/src/lib/controls/` (PropSelect, PropCheckbox, PropText, PropInfo, index.ts)
+
+**Archive/deprecated cleanup:**
+- Deleted `archive/forms/` (forms-old, inp, lib-deprecated, spec-inp)
+- Deleted rebuilt components from `archive/ui/` (Button, List, Tree, Select, MultiSelect, Toggle, FloatingAction(s), Connector, Node, Item, NestedList + specs/snapshots)
+- Deleted `packages/states/deprecated/` (hierarchy.js)
+- Deleted `packages/forms/src/forms-old/`, `packages/forms/src/inp/`, `packages/forms/src/lib/deprecated/`
+- Kept `archive/themes/` (reference for theme migration)
+- Kept un-rebuilt components in `archive/ui/` (47 components)
+
+**Commits:**
+- `7af488f8` — feat: convert playground pages to FormRenderer and clean up deprecated code
+
+**Tests:** 1057 passing, all green

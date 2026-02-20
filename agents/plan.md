@@ -1,44 +1,25 @@
-# Active Plan: Forms Phase 2 — Playground Conversion + Cleanup
+# Active Plan: Fix Issues from docs/issues/001.md
 
 ## Context
 
-Forms phase 1 (Steps 1–8) is complete. The forms package now supports schema-driven rendering with `@rokkit/ui` Select, custom icon checkbox, InfoField, separators, and theme CSS. The toggle page was converted as a pilot.
-
-Phase 2: Convert remaining 9 playground pages to FormRenderer, then clean up dead code.
+Forms Phase 2 is complete (commit `7af488f8`). All playground pages converted to FormRenderer, old controls deleted, archive/deprecated cleaned up. User wants to prioritize the reported issues before any new feature work.
 
 ## Steps
 
-### Part A: Convert Playground Pages
+### Bug Fixes (High Priority)
 
-Each page: replace individual `$state()` + Prop* controls with `props = $state({...})` + schema + layout + `<FormRenderer>`.
+- [ ] 1. **Input text value binding bug** — value changes to `[Object Event]` on edit. Fix the oninput/onchange handler in InputText to pass `event.target.value` not the event object.
+- [ ] 2. **Menu first item always highlighted** — Menu should not pre-highlight any item on open since it doesn't track active selection.
+- [ ] 3. **Button icon select extra thick border on empty value** — empty string option in Select causes rendering issue. Fix the empty item handling.
 
-- [ ] 1. List page — 3 props (size select, collapsible checkbox, disabled checkbox)
-- [ ] 2. Tree page — 3 props (size select, showLines checkbox, expandAll checkbox)
-- [ ] 3. Toolbar page — 4 props (size select, compact checkbox, showDividers checkbox, disabled checkbox)
-- [ ] 4. FloatingAction page — 5 props (size/expand/position/itemAlign selects, backdrop checkbox)
-- [ ] 5. Menu page — 6 props (label text, size/align/direction selects, showArrow/disabled checkboxes)
-- [ ] 6. Select page — 5 props (placeholder text, size/align/direction selects, disabled checkbox)
-- [ ] 7. MultiSelect page — 3 props (placeholder text, size select, disabled checkbox)
-- [ ] 8. Button page — 8 props (variant/style/size/icon selects, label text, disabled/loading/asLink checkboxes)
-- [ ] 9. Code page — 4 props (language/codeTheme selects, showLineNumbers/showCopyButton checkboxes)
-- [ ] 10. (Skip PaletteManager — uses custom List+Select with item snippets, can't be expressed as schema)
+### Style Fixes
 
-### Part B: Delete Old Controls
+- [ ] 4. **input-root border 2px → 1px** — `[data-input-root]` wrapping Select has 2px border, should be 1px to match inputs.
+- [ ] 5. **Input/Select height and font-size mismatch** — Input text has larger height/font than Select; they should match.
+- [ ] 6. **Button Danger text invisible in dark mode** — fix text color for danger variant in dark mode.
+- [ ] 7. **Minimal theme underline style** — rework minimal input-root: no padding, underline only, `::after` gradient underline on focus, smaller label, matched heights.
+- [ ] 8. **Material theme outlined floating label** — implement Material Design text field pattern with outline border and floating label.
 
-- [ ] 11. Delete `sites/playground/src/lib/controls/` (PropSelect, PropCheckbox, PropText, PropInfo, index.ts)
+### Icons
 
-### Part C: Delete Archive and Deprecated
-
-- [ ] 12. Delete `archive/forms/` (all superseded by current forms package)
-- [ ] 13. ~~Delete `archive/themes/`~~ — **KEEP**: old minimal/material CSS needed as reference for theme migration
-- [ ] 14. Delete rebuilt components from `archive/ui/` (Button, List, Select, MultiSelect, Toggle, Tree, NestedList, FloatingAction(s), Connector, Node, Item + their specs/snapshots). Keep un-rebuilt components (Accordion, Tabs, Calendar, etc.)
-- [ ] 15. Delete `packages/states/deprecated/` (hierarchy.js — active version in packages/data)
-- [ ] 16. Delete `packages/forms/dist/src/lib/deprecated/` and `packages/states/dist/deprecated/` (stale .d.ts)
-
-## Verification
-
-```bash
-bun run test:ci                                    # all tests pass
-grep -r "from.*\$lib/controls" sites/playground/   # no results
-grep -r "from.*archive" packages/ sites/            # no results
-```
+- [ ] 9. **Add menu-closed/menu-opened icon aliases** — copy lucide chevron-right as menu-closed, chevron-down as menu-opened, update icon bundles.
