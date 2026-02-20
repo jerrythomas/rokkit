@@ -27,10 +27,14 @@
 		id,
 		...rest
 	} = $props()
+
+	function handleChange(event) {
+		value = event.target.files
+		onchange?.(value)
+	}
 </script>
 
 <input
-	bind:value
 	type="file"
 	{accept}
 	{multiple}
@@ -38,7 +42,7 @@
 	{disabled}
 	{name}
 	{id}
-	{onchange}
+	onchange={handleChange}
 	{onfocus}
 	{onblur}
 	{...rest}

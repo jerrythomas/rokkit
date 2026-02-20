@@ -37,6 +37,11 @@
 		wrap,
 		...rest
 	} = $props()
+
+	function handleChange(event) {
+		value = event.target.value
+		onchange?.(value)
+	}
 </script>
 
 <textarea
@@ -52,7 +57,7 @@
 	{maxlength}
 	{minlength}
 	{wrap}
-	{onchange}
+	onchange={handleChange}
 	{onfocus}
 	{onblur}
 	{...rest}

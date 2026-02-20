@@ -17,9 +17,9 @@
 		children
 	} = $props()
 
-	let index = 0
-	let item = $state(value[index])
-	let location = $state([...path, index])
+	let index = $state(0)
+	let item = $derived(value[index])
+	let location = $derived([...path, index])
 
 	function handleSelect(event) {
 		index = event.detail.indices[0]

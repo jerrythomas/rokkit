@@ -14,10 +14,12 @@
 
 	let { value, schema = null, layout = null, using = {}, onchange = noop } = $props()
 
-	registry.editors = { ...types, ...using?.editors }
-	registry.components = { default: Item, ...using?.components }
-	registry.wrappers = { default: Wrapper, ...using?.wrappers }
-	registry.navigators = { default: Tabs, ...using?.navigators }
+	$effect(() => {
+		registry.editors = { ...types, ...using?.editors }
+		registry.components = { default: Item, ...using?.components }
+		registry.wrappers = { default: Wrapper, ...using?.wrappers }
+		registry.navigators = { default: Tabs, ...using?.navigators }
+	})
 
 	let schemaWithLayout = $derived.by(() => {
 		return getSchemaWithLayout(

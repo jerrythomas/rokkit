@@ -31,6 +31,11 @@
 		onblur,
 		...rest
 	} = $props()
+
+	function handleChange(event) {
+		value = event.target.valueAsNumber
+		onchange?.(value)
+	}
 </script>
 
 <input
@@ -44,7 +49,7 @@
 	{disabled}
 	{name}
 	{id}
-	{onchange}
+	onchange={handleChange}
 	{onfocus}
 	{onblur}
 	{...rest}

@@ -70,11 +70,11 @@
 
 	// Generate unique ID for accessibility
 	let fieldId = `field-${Math.random().toString(36).substr(2, 9)}`
-	let descriptionId = description ? `${fieldId}-description` : undefined
-	let messageId = message ? `${fieldId}-message` : undefined
+	let descriptionId = $derived(description ? `${fieldId}-description` : undefined)
+	let messageId = $derived(message ? `${fieldId}-message` : undefined)
 
 	// Build aria-describedby
-	let ariaDescribedBy = [descriptionId, messageId].filter(Boolean).join(' ') || undefined
+	let ariaDescribedBy = $derived([descriptionId, messageId].filter(Boolean).join(' ') || undefined)
 </script>
 
 <div

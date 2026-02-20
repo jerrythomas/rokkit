@@ -39,6 +39,11 @@
 		multiple,
 		...rest
 	} = $props()
+
+	function handleChange(event) {
+		value = event.target.value
+		onchange?.(value)
+	}
 </script>
 
 <input
@@ -56,7 +61,7 @@
 	{pattern}
 	{size}
 	{multiple}
-	{onchange}
+	onchange={handleChange}
 	{onfocus}
 	{onblur}
 	{...rest}

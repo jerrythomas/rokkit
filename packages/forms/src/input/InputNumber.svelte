@@ -35,6 +35,11 @@
 		autocomplete,
 		...rest
 	} = $props()
+
+	function handleChange(event) {
+		value = event.target.valueAsNumber
+		onchange?.(value)
+	}
 </script>
 
 <input
@@ -50,7 +55,7 @@
 	{name}
 	{id}
 	{autocomplete}
-	{onchange}
+	onchange={handleChange}
 	{onfocus}
 	{onblur}
 	{...rest}
