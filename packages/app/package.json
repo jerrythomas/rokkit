@@ -1,0 +1,49 @@
+{
+  "name": "@rokkit/app",
+  "version": "0.0.1",
+  "description": "App-level controls for Rokkit applications - theme management and UI chrome",
+  "type": "module",
+  "svelte": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "default": "./src/types/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "echo 'No build step needed for source-only package'"
+  },
+  "dependencies": {
+    "@rokkit/core": "workspace:*",
+    "@rokkit/states": "workspace:*",
+    "@rokkit/ui": "workspace:*"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/svelte": "^5.2.8",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitest/browser": "^3.2.4",
+    "playwright": "^1.57.0",
+    "svelte": "^5.45.6",
+    "svelte-check": "^4.2.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.6",
+    "vitest": "^3.2.4"
+  }
+}
