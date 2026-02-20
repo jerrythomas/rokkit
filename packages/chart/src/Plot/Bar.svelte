@@ -60,6 +60,7 @@
 			{@const barY = initialY > 0 ? brewer.getDimensions().innerHeight : bar.y}
 			{@const barHeight = initialHeight > 0 ? 0 : bar.height}
 
+			<!-- svelte-ignore a11y_no_noninteractive_element_interactions, a11y_click_events_have_key_events -->
 			<rect
 				class="bar"
 				x={bar.x}
@@ -68,11 +69,11 @@
 				height={barHeight}
 				fill={bar.color}
 				{opacity}
-				on:click={(event) => handleClick(event, bar)}
-				on:mouseenter={(event) => {
+				onclick={(event) => handleClick(event, bar)}
+				onmouseenter={(event) => {
 					event.target.setAttribute('opacity', Math.min(opacity + 0.2, 1))
 				}}
-				on:mouseleave={(event) => {
+				onmouseleave={(event) => {
 					event.target.setAttribute('opacity', opacity)
 				}}
 				style="transition: y {animationDuration}ms ease, height {animationDuration}ms ease;"

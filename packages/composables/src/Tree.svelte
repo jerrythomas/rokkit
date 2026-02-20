@@ -36,8 +36,8 @@
 		...events
 	} = $props()
 
-	let emitter = createEmitter(events, ['select', 'move', 'toggle'])
-	let snippets = omit(['onselect', 'onmove', 'ontoggle'], events)
+	let emitter = $derived(createEmitter(events, ['select', 'move', 'toggle']))
+	let snippets = $derived(omit(['onselect', 'onmove', 'ontoggle'], events))
 
 	function handleSelect(event) {
 		value = event.detail.value

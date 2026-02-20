@@ -9,7 +9,7 @@ This library provides composable UI components built on top of bits-ui unstyled 
 ## Installation
 
 ```bash
-npm install @rokkit/composables bits-ui @rokkit/states
+bun add @rokkit/composables bits-ui @rokkit/states
 ```
 
 ## Components

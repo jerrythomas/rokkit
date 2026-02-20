@@ -5,7 +5,7 @@ Data-driven chart components for Svelte inspired by [dc.js](https://dc-js.github
 ## Installation
 
 ```bash
-npm install @rokkit/chart
+bun add @rokkit/chart
 ```
 
 ## Usage

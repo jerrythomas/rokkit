@@ -128,7 +128,7 @@
 	let containerWidth = $derived(isExpanded ? '280px' : '60px')
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	bind:this={navContainer}
 	class="fixed {positionClasses} top-1/2 z-40 -translate-y-1/2 {classNames}"
@@ -197,7 +197,7 @@
 						{#if !isExpanded && activeSection === item.id}
 							<div
 								class="absolute right-1 h-2 w-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 transition-all duration-300"
-							/>
+							></div>
 						{/if}
 					</div>
 				{/snippet}
@@ -209,7 +209,7 @@
 	{#if !isExpanded}
 		<div
 			class="absolute -left-3 top-1/2 h-8 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-orange-500 to-pink-500 shadow-md transition-all duration-200"
-		/>
+		></div>
 	{/if}
 </div>
 

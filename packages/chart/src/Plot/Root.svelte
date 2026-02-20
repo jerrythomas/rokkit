@@ -9,18 +9,16 @@
 		margin = { top: 20, right: 30, bottom: 40, left: 50 },
 		fill = null,
 		responsive = true,
-		animationDuration = 300
+		animationDuration = 300,
+		children
 	} = $props()
 
 	// Create chart brewer instance
-	let brewer = $state(
-		new ChartBrewer({
-			width,
-			height,
-			margin,
-			animationDuration
-		})
-	)
+	let brewer = $state(new ChartBrewer())
+
+	$effect(() => {
+		brewer.setDimensions({ width, height, margin })
+	})
 
 	// Chart dimensions derived from brewer
 	let dimensions = $derived(brewer.getDimensions())
@@ -36,11 +34,6 @@
 
 		// Create scales after setting data
 		brewer.createScales()
-	})
-
-	// Update chart dimensions when props change
-	$effect(() => {
-		brewer.setDimensions({ width, height, margin })
 	})
 
 	// Provide chart context to child components
@@ -91,7 +84,7 @@
 			transform="translate({dimensions.margin.left}, {dimensions.margin.top})"
 			data-plot-canvas
 		>
-			<slot />
+			{@render children?.()}
 		</g>
 	</svg>
 </div>
