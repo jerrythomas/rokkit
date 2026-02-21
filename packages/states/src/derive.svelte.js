@@ -5,25 +5,25 @@ import { Proxy } from './proxy.svelte'
  * @param {Array<*>} items
  * @param {import('@rokkit/core').FieldMapping} fields
  * @param {Array<number>} path
+ * @param {Set<string>|null} expandedKeys - When provided, expansion is determined by key membership; falls back to item field
  * @returns {Array<{ key: string, value: any }>}
  */
-export function flatVisibleNodes(items, fields = defaultFields, path = []) {
+export function flatVisibleNodes(items, fields = defaultFields, path = [], expandedKeys = null) {
 	const data = []
 	if (!items || !Array.isArray(items)) return data
 
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]
 		const key = getKeyFromPath(itemPath)
-		const expanded =
-			Array.isArray(item[fields.children]) &&
-			item[fields.children].length > 0 &&
-			item[fields.expanded]
+		const hasChildren =
+			Array.isArray(item[fields.children]) && item[fields.children].length > 0
+		const expanded = hasChildren && (expandedKeys ? expandedKeys.has(key) : item[fields.expanded])
 
 		data.push({ key, value: item })
 
 		if (expanded) {
 			const childFields = getNestedFields(fields)
-			data.push(...flatVisibleNodes(item[fields.children], childFields, itemPath))
+			data.push(...flatVisibleNodes(item[fields.children], childFields, itemPath, expandedKeys))
 		}
 	})
 	return data

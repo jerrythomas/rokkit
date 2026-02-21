@@ -33,9 +33,40 @@ Second component in Phase B (after Toggle). Replaced ~100 lines of inline keyboa
 **Not implemented (backlog):**
 - ArrowRight on expanded group → move to first child (tree-style navigation)
 - ArrowLeft on child → move to parent group label
-- Controller skip of disabled items (End/Home land on disabled buttons)
 
 **Tests:** 1058 unit tests + 60 e2e tests (27 toggle + 33 list) all passing.
+
+### ListController — Skip Disabled Items (Backlog #36)
+
+Added `disabled: 'disabled'` to `@rokkit/core` defaultFields and `#isDisabled(index)` helper to `ListController`. All four movement methods (`moveNext`, `movePrev`, `moveFirst`, `moveLast`) now skip disabled items. `moveToIndex()` and `moveTo()` remain unchanged — they're used for explicit focus (focusin handler, selection) where any index should be reachable.
+
+**Files changed:**
+- `packages/core/src/constants.js` — added `disabled: 'disabled'` field
+- `packages/core/spec/constants.spec.js` — updated defaultFields snapshot
+- `packages/states/src/list-controller.svelte.js` — added `#isDisabled()` + updated 4 movement methods
+- `packages/states/spec/list-controller.spec.svelte.js` — 7 new disabled item tests
+- `sites/playground/e2e/list.spec.ts` — updated End/ArrowDown tests to verify disabled skip
+
+**Tests:** 1065 unit tests + 60 e2e tests all passing.
+
+### Proxy State Isolation — Controller-Owned expandedKeys
+
+Moved expansion state from Proxy (which mutated original items via `proxy.expanded = true` → `item._expanded = true`) into a `SvelteSet` owned by the controller. Original items are no longer polluted with internal state flags when returned via `onselect`/`onchange`.
+
+**Approach:** Added `expandedKeys = new SvelteSet()` to `ListController`. `flatVisibleNodes` now accepts an optional `expandedKeys` parameter — when provided, checks `expandedKeys.has(key)` instead of `item[fields.expanded]`. Falls back to item field for backward compat when `expandedKeys` is null. `NestedController.expand/collapse/toggleExpansion` now manipulate `expandedKeys` directly instead of `proxy.expanded`. Proxy's `expanded` setter removed; getter kept for reading initial data.
+
+**List.svelte simplification:** Removed the `expandedByPath` reactive bridge (which was a workaround for Svelte 5 reactivity not tracking through `$derived` Map → `proxy.expanded` `$state`). Now reads `controller.expandedKeys.has(pathKey)` directly — `SvelteSet` is natively reactive.
+
+**Files changed:**
+- `packages/states/src/derive.svelte.js` — `flatVisibleNodes` accepts `expandedKeys` param
+- `packages/states/src/list-controller.svelte.js` — added `expandedKeys`, `#initExpandedKeys()`
+- `packages/states/src/nested-controller.svelte.js` — expand/collapse/toggle use `expandedKeys`
+- `packages/states/src/proxy.svelte.js` — removed `expanded` setter
+- `packages/ui/src/components/List.svelte` — removed `expandedByPath`, use `controller.expandedKeys`
+- `packages/core/src/mapping.js` — added deprecation note to `isExpanded`
+- Tests: updated proxy spec, added derive expandedKeys test, added nested-controller non-mutation test
+
+**Tests:** 1068 unit tests + 60 e2e tests all passing.
 
 ---
 

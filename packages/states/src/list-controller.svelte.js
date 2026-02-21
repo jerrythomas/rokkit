@@ -1,4 +1,4 @@
-import { FieldMapper, defaultFields } from '@rokkit/core'
+import { FieldMapper, defaultFields, getKeyFromPath, getNestedFields } from '@rokkit/core'
 import { equals } from 'ramda'
 import { SvelteSet } from 'svelte/reactivity'
 import { deriveLookupWithProxy, flatVisibleNodes } from './derive.svelte'
@@ -10,12 +10,13 @@ export class ListController {
 	#options = $state({})
 	// lookup = new Map()
 	selectedKeys = new SvelteSet()
+	expandedKeys = new SvelteSet()
 	focusedKey = $state(null)
 	#currentIndex = -1
 
 	selected = $derived(Array.from(this.selectedKeys).map((key) => this.lookup.get(key).value))
 	focused = $derived(this.lookup.get(this.focusedKey)?.value)
-	data = $derived(flatVisibleNodes(this.items, this.fields))
+	data = $derived(flatVisibleNodes(this.items, this.fields, [], this.expandedKeys))
 	lookup = $derived(deriveLookupWithProxy(this.items, this.fields))
 
 	constructor(items, value, fields, options) {
@@ -23,7 +24,27 @@ export class ListController {
 		this.fields = { ...defaultFields, ...fields }
 		this.mappers.push(new FieldMapper(fields))
 		this.#options = { multiselect: false, ...options }
+		this.#initExpandedKeys(items, this.fields)
 		this.init(value)
+	}
+
+	/**
+	 * Scan items for pre-existing expanded flags and populate expandedKeys
+	 * @private
+	 */
+	#initExpandedKeys(items, fields, path = []) {
+		if (!items || !Array.isArray(items)) return
+		items.forEach((item, index) => {
+			if (item == null || typeof item !== 'object') return
+			const itemPath = [...path, index]
+			const children = item[fields.children]
+			if (Array.isArray(children) && children.length > 0) {
+				if (item[fields.expanded]) {
+					this.expandedKeys.add(getKeyFromPath(itemPath))
+				}
+				this.#initExpandedKeys(children, getNestedFields(fields), itemPath)
+			}
+		})
 	}
 
 	/**
@@ -110,28 +131,44 @@ export class ListController {
 		return false
 	}
 
+	/**
+	 * @private
+	 * @param {number} index
+	 * @returns {boolean}
+	 */
+	#isDisabled(index) {
+		const item = this.data[index]?.value
+		if (item == null || typeof item !== 'object') return false
+		return item[this.fields.disabled] === true
+	}
+
 	movePrev() {
-		if (this.#currentIndex > 0) {
-			return this.moveToIndex(this.#currentIndex - 1)
-		} else if (this.#currentIndex < 0) {
-			return this.moveLast()
+		if (this.#currentIndex < 0) return this.moveLast()
+		for (let i = this.#currentIndex - 1; i >= 0; i--) {
+			if (!this.#isDisabled(i)) return this.moveToIndex(i)
 		}
 		return false
 	}
 
 	moveNext() {
-		if (this.#currentIndex < this.data.length - 1) {
-			return this.moveToIndex(this.#currentIndex + 1)
+		for (let i = this.#currentIndex + 1; i < this.data.length; i++) {
+			if (!this.#isDisabled(i)) return this.moveToIndex(i)
 		}
 		return false
 	}
 
 	moveFirst() {
-		return this.moveToIndex(0)
+		for (let i = 0; i < this.data.length; i++) {
+			if (!this.#isDisabled(i)) return this.moveToIndex(i)
+		}
+		return false
 	}
 
 	moveLast() {
-		return this.moveToIndex(this.data.length - 1)
+		for (let i = this.data.length - 1; i >= 0; i--) {
+			if (!this.#isDisabled(i)) return this.moveToIndex(i)
+		}
+		return false
 	}
 
 	/**

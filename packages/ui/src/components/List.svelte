@@ -46,12 +46,6 @@
 	let controller = new NestedController(items, value, userFields)
 	let listRef = $state<HTMLElement | null>(null)
 
-	// Reactive expansion state keyed by path key (e.g. "0", "1")
-	// This is the source of truth for the template's expansion rendering.
-	// We maintain this separately because Svelte 5 cannot track reactivity
-	// through controller.lookup (a $derived Map) → proxy.expanded ($state).
-	let expandedByPath = $state<Record<string, boolean>>({})
-
 	/**
 	 * Get expanded state for a group key from the expanded prop
 	 * Default to expanded (true) when not explicitly set
@@ -65,17 +59,18 @@
 		return true // Default: expanded
 	}
 
-	// Sync expansion state: expanded prop → controller proxies + expandedByPath
+	// Sync expansion state: expanded prop → controller.expandedKeys
 	function syncExpandedToController() {
 		for (const [key, proxy] of controller.lookup.entries()) {
 			if (!proxy.hasChildren) continue
 			const groupProxy = createProxy(proxy.value)
 			const groupKey = getGroupKey(groupProxy)
 			const shouldExpand = getExpandedState(groupKey)
-			if (proxy.expanded !== shouldExpand) {
-				proxy.expanded = shouldExpand
+			if (shouldExpand) {
+				controller.expandedKeys.add(key)
+			} else {
+				controller.expandedKeys.delete(key)
 			}
-			expandedByPath[key] = shouldExpand
 		}
 	}
 
@@ -96,15 +91,15 @@
 		syncExpandedToController()
 	})
 
-	// Derive expanded prop FROM expandedByPath state (pathKey → groupKey mapping)
-	function deriveExpandedFromPath(): Record<string, boolean> {
+	// Derive expanded prop from controller.expandedKeys (pathKey → groupKey mapping)
+	function deriveExpandedFromController(): Record<string, boolean> {
 		const result: Record<string, boolean> = {}
 		items.forEach((item, index) => {
 			const proxy = createProxy(item)
 			if (!proxy.hasChildren) return
 			const pathKey = String(index)
 			const groupKey = getGroupKey(proxy)
-			result[groupKey] = expandedByPath[pathKey] ?? true
+			result[groupKey] = controller.expandedKeys.has(pathKey)
 		})
 		return result
 	}
@@ -133,12 +128,8 @@
 			}
 
 			if (detail.name === 'toggle') {
-				// Controller already toggled the expansion. Sync expandedByPath + expanded prop.
-				for (const [key, proxy] of controller.lookup.entries()) {
-					if (!proxy.hasChildren) continue
-					expandedByPath[key] = proxy.expanded
-				}
-				const newExpanded = deriveExpandedFromPath()
+				// Controller already toggled expandedKeys. Derive the expanded prop.
+				const newExpanded = deriveExpandedFromController()
 				expanded = newExpanded
 				onexpandedchange?.(newExpanded)
 			}
@@ -175,8 +166,7 @@
 		// If it's a group, toggle expansion
 		if (proxy.hasChildren) {
 			controller.toggleExpansion(key)
-			expandedByPath[key] = proxy.expanded
-			const newExpanded = deriveExpandedFromPath()
+			const newExpanded = deriveExpandedFromController()
 			expanded = newExpanded
 			onexpandedchange?.(newExpanded)
 			return
@@ -226,11 +216,11 @@
 	}
 
 	/**
-	 * Check if a group is expanded (reads from reactive expandedByPath state)
+	 * Check if a group is expanded (reads from controller.expandedKeys)
 	 */
 	function isGroupExpandedByKey(pathKey: string): boolean {
 		if (!collapsible) return true
-		return expandedByPath[pathKey] ?? true
+		return controller.expandedKeys.has(pathKey)
 	}
 
 	/**
@@ -239,9 +229,7 @@
 	function toggleGroupByKey(pathKey: string) {
 		if (!collapsible) return
 		controller.toggleExpansion(pathKey)
-		// Update reactive expandedByPath state for template re-rendering
-		expandedByPath[pathKey] = !expandedByPath[pathKey]
-		const newExpanded = deriveExpandedFromPath()
+		const newExpanded = deriveExpandedFromController()
 		expanded = newExpanded
 		onexpandedchange?.(newExpanded)
 	}

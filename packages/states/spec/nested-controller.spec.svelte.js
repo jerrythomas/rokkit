@@ -72,6 +72,20 @@ describe('NestedController', () => {
 			expect(controller.collapse()).toBe(true)
 		})
 	})
+	describe('state isolation', () => {
+		it('should not mutate original items on expand/collapse', () => {
+			const controller = new NestedController(items)
+			expect(controller.expand('0')).toBe(true)
+			expect(controller.data.length).toEqual(5)
+			// Original item should NOT have _expanded
+			expect(items[0]._expanded).toBeUndefined()
+
+			controller.collapse('0')
+			expect(controller.data.length).toEqual(3)
+			expect(items[0]._expanded).toBeUndefined()
+		})
+	})
+
 	describe('toggleExpansion', () => {
 		it('should toggle expansion of specified path', () => {
 			const controller = new NestedController(items)

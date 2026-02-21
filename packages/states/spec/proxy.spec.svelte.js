@@ -152,60 +152,42 @@ describe('Proxy', () => {
 		expect(snippet()).toEqual('other')
 	})
 
-	it('should handle expanded property getter and setter', () => {
+	it('should handle expanded property getter (read-only)', () => {
 		// Test with object that has expanded field
 		const item = $state({ id: '123', name: 'John', _expanded: true })
 		const proxy = new Proxy(item, { expanded: '_expanded' })
 
-		// Test getter when field exists
+		// Getter returns the original item's expanded value
 		expect(proxy.expanded).toBe(true)
 
-		// Test getter when field doesn't exist (should return false)
+		// Without expanded field — returns false
 		const itemWithoutExpanded = $state({ id: '456', name: 'Jane' })
 		const proxyWithoutExpanded = new Proxy(itemWithoutExpanded)
 		expect(proxyWithoutExpanded.expanded).toBe(false)
 
-		// Test setter with object
-		proxy.expanded = false
-		flushSync()
-		expect(proxy.expanded).toBe(false)
-		expect(item._expanded).toBe(false)
-
-		proxy.expanded = 'truthy'
-		flushSync()
-		expect(proxy.expanded).toBe(true)
-		expect(item._expanded).toBe(true)
-
-		// Test setter with non-object (should not throw)
+		// String proxy — returns false
 		const stringProxy = new Proxy('test string')
-		stringProxy.expanded = true // Should not crash or modify anything
-		expect(stringProxy.expanded).toBe(false) // Should still return false since it's not an object
+		expect(stringProxy.expanded).toBe(false)
 	})
 
-	it('should handle expanded property with default fields', () => {
-		// Test with object using default expanded field mapping
+	it('should read expanded with default fields', () => {
 		const item = $state({ id: '123', name: 'John', _expanded: true })
-		const proxy = new Proxy(item) // Using default fields
-
-		// Test getter with default field mapping
+		const proxy = new Proxy(item)
 		expect(proxy.expanded).toBe(true)
 
-		// Test setter with default field mapping
-		proxy.expanded = false
-		flushSync()
-		expect(proxy.expanded).toBe(false)
-		expect(item._expanded).toBe(false)
-
-		// Test with object that doesn't have the expanded field
+		// Without the field — returns false
 		const itemNoExpanded = $state({ id: '456', name: 'Jane' })
 		const proxyNoExpanded = new Proxy(itemNoExpanded)
 		expect(proxyNoExpanded.expanded).toBe(false)
+	})
 
-		// Setting expanded should create the field
-		proxyNoExpanded.expanded = true
-		flushSync()
-		expect(proxyNoExpanded.expanded).toBe(true)
-		expect(itemNoExpanded._expanded).toBe(true)
+	it('should not mutate original item (expanded is read-only on proxy)', () => {
+		const item = $state({ id: '123', name: 'John' })
+		const proxy = new Proxy(item)
+		// Proxy reads initial state — no _expanded on item means false
+		expect(proxy.expanded).toBe(false)
+		// Original item should NOT have _expanded set
+		expect(item._expanded).toBeUndefined()
 	})
 
 	it('should handle edge cases in processChildren', () => {

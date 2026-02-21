@@ -24,6 +24,7 @@ export const defaultFields = {
 	label: 'label',
 	component: 'component', // to be deprecated in favour of snippet
 	snippet: 'snippet',
+	disabled: 'disabled',
 	/* flag fields  */
 	deleted: '_deleted',
 	expanded: '_expanded',

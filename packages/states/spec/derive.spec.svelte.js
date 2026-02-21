@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { flatVisibleNodes, deriveLookupWithProxy } from '../src/derive.svelte'
 import { equals } from 'ramda'
 import { flushSync } from 'svelte'
+import { SvelteSet } from 'svelte/reactivity'
 
 describe('derive', () => {
 	describe('flatVisibleNodes', () => {
@@ -72,6 +73,33 @@ describe('derive', () => {
 			expect(result).toEqual(1)
 		})
 	})
+	describe('flatVisibleNodes with expandedKeys', () => {
+		it('should use expandedKeys when provided', () => {
+			const items = $state([
+				{ text: 'A', children: [{ text: 'A1' }, { text: 'A2' }] },
+				{ text: 'B' },
+				{ text: 'C' }
+			])
+			const fields = { children: 'children', expanded: '_expanded' }
+			const expandedKeys = new SvelteSet()
+			const data = $derived(flatVisibleNodes(items, fields, [], expandedKeys))
+
+			// Not expanded — only top-level items
+			expect(data.length).toEqual(3)
+
+			// Expand via expandedKeys
+			expandedKeys.add('0')
+			expect(data.length).toEqual(5)
+
+			// Collapse via expandedKeys
+			expandedKeys.delete('0')
+			expect(data.length).toEqual(3)
+
+			// Original item should NOT have _expanded
+			expect(items[0]._expanded).toBeUndefined()
+		})
+	})
+
 	describe('deriveLookupWithProxy', () => {
 		it('should handle a string array', () => {
 			let items = $state(['A', 'B', 'C'])

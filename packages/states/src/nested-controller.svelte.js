@@ -25,47 +25,47 @@ export class NestedController extends ListController {
 
 		for (let i = 1; i < path.length; i++) {
 			const nodeKey = getKeyFromPath(path.slice(0, i))
-			this.expand(nodeKey)
+			this.expandedKeys.add(nodeKey)
 		}
 		return true
 	}
 
 	/**
 	 * Toggle expansion of item
-	 * @param {*} value
-	 * @returns
+	 * @param {string} key
+	 * @returns {boolean}
 	 */
 	toggleExpansion(key) {
 		if (!this.lookup.has(key)) return false
-		const proxy = this.lookup.get(key)
-		proxy.expanded = !proxy.expanded
+		if (this.expandedKeys.has(key)) {
+			this.expandedKeys.delete(key)
+		} else {
+			this.expandedKeys.add(key)
+		}
 		return true
 	}
 
 	/**
 	 * Expand item
-	 * @param {*} value
-	 * @returns
+	 * @param {string} [key]
+	 * @returns {boolean}
 	 */
 	expand(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
-		const proxy = this.lookup.get(actualKey)
-		proxy.expanded = true
-
+		this.expandedKeys.add(actualKey)
 		return true
 	}
 
 	/**
 	 * Collapse item
-	 * @param {*} value
-	 * @returns
+	 * @param {string} [key]
+	 * @returns {boolean}
 	 */
 	collapse(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
-		const proxy = this.lookup.get(actualKey)
-		proxy.expanded = false
+		this.expandedKeys.delete(actualKey)
 		return true
 	}
 }

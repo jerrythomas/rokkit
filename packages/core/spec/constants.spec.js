@@ -118,6 +118,7 @@ describe('Utility functions', () => {
 			component: 'component',
 			snippet: 'snippet',
 			currency: 'currency',
+			disabled: 'disabled',
 			expanded: '_expanded',
 			deleted: '_deleted',
 			selected: '_selected'

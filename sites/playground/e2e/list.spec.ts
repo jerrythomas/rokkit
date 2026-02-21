@@ -42,27 +42,28 @@ test.describe('List', () => {
 			await expect(items.first()).toBeFocused()
 		})
 
-		test('End moves focus to last item', async ({ page }) => {
-			// Use Descriptions list (nth(3)) which has no disabled items
-			const list = page.locator('[data-list]').nth(3)
+		test('End skips disabled item and lands on last enabled', async ({ page }) => {
+			// Button items list: Cut, Copy, Paste, Delete(disabled)
+			const list = page.locator('[data-list]').nth(1)
 			const items = list.locator('[data-list-item]')
 			await items.first().focus()
 			await page.keyboard.press('End')
-			await expect(items.last()).toBeFocused()
+			// Should land on Paste (index 2), not Delete (index 3, disabled)
+			await expect(items.nth(2)).toBeFocused()
 		})
 
-		test('ArrowDown at last stays on last (no wrap)', async ({ page }) => {
-			// Use Descriptions list (nth(3)) which has no disabled items
-			const list = page.locator('[data-list]').nth(3)
+		test('ArrowDown at last enabled stays put (disabled after)', async ({ page }) => {
+			// Button items list: Cut, Copy, Paste, Delete(disabled)
+			const list = page.locator('[data-list]').nth(1)
 			const items = list.locator('[data-list-item]')
 			await items.first().focus()
 			await page.keyboard.press('End')
 
-			// Press ArrowDown multiple times — should stay on last
+			// Press ArrowDown multiple times — should stay on Paste
 			for (let i = 0; i < 3; i++) {
 				await page.keyboard.press('ArrowDown')
 			}
-			await expect(items.last()).toBeFocused()
+			await expect(items.nth(2)).toBeFocused()
 		})
 
 		test('ArrowUp at first stays on first (no wrap)', async ({ page }) => {

@@ -553,13 +553,6 @@ Input text value binds to the event object instead of the string value when chan
 
 ---
 
-## 36. ListController — Skip Disabled Items
+## ~~36. ListController / NestedController — Skip Disabled Items~~ DONE
 
-**Source:** List e2e test findings (2026-02-21)
-
-**Problem:** `moveFirst()`/`moveLast()`/`moveNext()`/`movePrev()` don't check if target items are disabled. End/Home can land on disabled buttons that can't receive focus. The `data` array includes all items regardless of disabled state.
-
-**What's needed:**
-- [ ] Add disabled check to movement methods (skip disabled items)
-- [ ] Alternatively, filter disabled items from `data` array in `flatVisibleNodes`
-- [ ] Ensure focus management handles disabled items at boundaries
+Implemented in ListController. Added `disabled: 'disabled'` to `@rokkit/core` defaultFields, `#isDisabled(index)` helper, and updated all four movement methods (`moveNext`, `movePrev`, `moveFirst`, `moveLast`) to skip disabled items. NestedController inherits this behavior. 7 unit tests + 2 e2e tests verify the behavior.

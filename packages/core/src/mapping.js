@@ -108,7 +108,10 @@ export function hasChildren(item, fields) {
 }
 
 /**
- * Check if the current item is a parent and is expanded
+ * Check if the current item is a parent and is expanded.
+ * Note: Controllers now manage expansion state via expandedKeys (SvelteSet),
+ * not by writing to items. This function reads from item fields directly
+ * and is kept for backward compatibility.
  *
  * @param {*}                              item
  * @param {import('./types').FieldMapping} fields

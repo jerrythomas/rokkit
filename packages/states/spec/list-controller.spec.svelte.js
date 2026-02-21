@@ -16,6 +16,8 @@ describe('ListController', () => {
 			expect(controller.currentKey).toBeFalsy()
 			expect(controller.currentIndex).toEqual(-1)
 			expect(Array.from(controller.selected)).toEqual([])
+			expect(controller.expandedKeys).toBeDefined()
+			expect(controller.expandedKeys.size).toBe(0)
 		})
 
 		it('should initialize with string array and value', () => {
@@ -124,6 +126,79 @@ describe('ListController', () => {
 			expect(controller.moveLast()).toBe(true)
 			expect(controller.focused).toEqual(items[2])
 			expect(controller.moveLast()).toBe(false)
+		})
+	})
+
+	describe('disabled items', () => {
+		const disabledItems = $state([
+			{ text: 'Alpha' },
+			{ text: 'Beta', disabled: true },
+			{ text: 'Gamma' },
+			{ text: 'Delta', disabled: true }
+		])
+
+		it('moveNext skips disabled item', () => {
+			const controller = new ListController(disabledItems)
+			controller.moveFirst()
+			expect(controller.focused).toEqual(disabledItems[0])
+			expect(controller.moveNext()).toBe(true)
+			expect(controller.focused).toEqual(disabledItems[2])
+		})
+
+		it('movePrev skips disabled item', () => {
+			const controller = new ListController(disabledItems)
+			controller.moveTo('2')
+			expect(controller.focused).toEqual(disabledItems[2])
+			expect(controller.movePrev()).toBe(true)
+			expect(controller.focused).toEqual(disabledItems[0])
+		})
+
+		it('moveFirst skips disabled first item', () => {
+			const allDisabledFirst = $state([
+				{ text: 'A', disabled: true },
+				{ text: 'B' },
+				{ text: 'C' }
+			])
+			const controller = new ListController(allDisabledFirst)
+			expect(controller.moveFirst()).toBe(true)
+			expect(controller.focused).toEqual(allDisabledFirst[1])
+		})
+
+		it('moveLast skips disabled last item', () => {
+			const controller = new ListController(disabledItems)
+			expect(controller.moveLast()).toBe(true)
+			expect(controller.focused).toEqual(disabledItems[2])
+		})
+
+		it('moveNext at last enabled item stays put', () => {
+			const controller = new ListController(disabledItems)
+			controller.moveTo('2')
+			expect(controller.moveNext()).toBe(false)
+			expect(controller.focused).toEqual(disabledItems[2])
+		})
+
+		it('movePrev at first enabled item stays put', () => {
+			const allDisabledFirst = $state([
+				{ text: 'A', disabled: true },
+				{ text: 'B' },
+				{ text: 'C' }
+			])
+			const controller = new ListController(allDisabledFirst)
+			controller.moveTo('1')
+			expect(controller.movePrev()).toBe(false)
+			expect(controller.focused).toEqual(allDisabledFirst[1])
+		})
+
+		it('all disabled items — movement returns false', () => {
+			const allDisabled = $state([
+				{ text: 'A', disabled: true },
+				{ text: 'B', disabled: true }
+			])
+			const controller = new ListController(allDisabled)
+			expect(controller.moveFirst()).toBe(false)
+			expect(controller.moveLast()).toBe(false)
+			expect(controller.moveNext()).toBe(false)
+			expect(controller.movePrev()).toBe(false)
 		})
 	})
 

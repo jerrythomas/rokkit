@@ -117,10 +117,4 @@ export class Proxy {
 	get expanded() {
 		return this.has('expanded') ? this.#value[this.fields.expanded] : false
 	}
-
-	set expanded(value) {
-		if (typeof this.#original === 'object') {
-			this.#value[this.fields.expanded] = Boolean(value)
-		}
-	}
 }
