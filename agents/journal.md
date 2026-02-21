@@ -5,6 +5,40 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-02-21
+
+### List — Migrated to NestedController + use:navigator (ADR-003 Phase B)
+
+Second component in Phase B (after Toggle). Replaced ~100 lines of inline keyboard navigation in List.svelte with `NestedController` + `use:navigator`.
+
+**Key decisions:**
+- Used `NestedController` (not `ListController`) because expand/collapse is handled by NestedController. Navigator handles all keyboard when `nested: collapsible`.
+- Created `expandedByPath` (`$state<Record<string, boolean>>`) as reactive bridge for template rendering. Svelte 5 cannot track reactivity through `controller.lookup` ($derived Map) → `proxy.expanded` ($state). The `expandedByPath` state is the template's source of truth for expansion.
+- Removed `onclick` from group label button — navigator intercepts clicks on `data-path` elements. Without this, click would double-toggle (button onclick + navigator select → handleSelectAction toggle).
+- `handleSelectAction` handles both button items (fires `onselect`) and group labels (toggles expansion).
+- `handleListKeyDown` only intercepts Enter/Space on link items (`<a>`) to let native navigation through.
+- `handleFocusIn` syncs DOM focus → controller via `controller.moveTo(path)`.
+
+**Expansion bridge pattern:**
+1. External `expanded` prop (keyed by group name: `{ "Favorites": true }`) → `syncExpandedToController()` → controller proxy.expanded + expandedByPath
+2. User toggles → `toggleGroupByKey(pathKey)` → controller.toggleExpansion + expandedByPath update → `deriveExpandedFromPath()` → expanded prop + onexpandedchange
+3. Navigator toggle action → sync controller proxy states → expandedByPath → expanded prop
+
+**E2e tests (33 total):**
+- 9 flat list keyboard tests (ArrowDown/Up repeated, Home, End, no-wrap, Enter, Space, focus≠select)
+- 5 grouped list keyboard tests (navigation through groups, collapse/expand, Enter toggle, repeated cycles)
+- 3 mouse tests (click select, deselect, group toggle)
+- 16 visual snapshots (4 themes × 2 modes × 2 states)
+
+**Not implemented (backlog):**
+- ArrowRight on expanded group → move to first child (tree-style navigation)
+- ArrowLeft on child → move to parent group label
+- Controller skip of disabled items (End/Home land on disabled buttons)
+
+**Tests:** 1058 unit tests + 60 e2e tests (27 toggle + 33 list) all passing.
+
+---
+
 ## 2026-02-20 (session 2)
 
 ### Documentation Restructuring — Requirements Split, LLMs Reference, ADR-003

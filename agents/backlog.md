@@ -97,20 +97,9 @@ Input text value binds to the event object instead of the string value when chan
 
 ---
 
-## 8. List — Refactor to use:navigator + Controller
+## 8. ~~List — Refactor to use:navigator + Controller~~ ✅ DONE
 
-**Source:** docs/design/002-list.md, docs/requirements/002-list.md
-
-**Problem:** List.svelte has ~100 lines of inline keyboard navigation code (handleKeyDown, focusListIndex, navigateRelative, visibleIndices). This duplicates logic already available in `@rokkit/actions/navigator` + `@rokkit/states/ListController`.
-
-**What's needed:**
-- [ ] Create `ListDataController` in `@rokkit/states` (or adapt existing `ListController`) to manage List's focus, selection, and group expansion
-- [ ] Wire `use:navigator={{ wrapper: controller }}` on `<nav>` element
-- [ ] Remove inline keyboard handlers (~100 lines)
-- [ ] Add `data-path` attributes to items for navigator's click detection
-- [ ] Verify all existing keyboard behaviors preserved
-
-**Benefits:** ~118 lines removed, consistent navigation across List/Tree/Table, testable controller logic.
+**Completed:** 2026-02-21. Used `NestedController` + `use:navigator` with `nested: collapsible`. Added `expandedByPath` reactive state for template rendering bridge. 1058 unit tests + 33 e2e tests pass.
 
 ---
 
@@ -483,7 +472,7 @@ Input text value binds to the event object instead of the string value when chan
 **What's needed:**
 - [ ] Phase A: Clean up (remove composables dep from forms, fix InputSwitch, remove bits-ui from chart)
 - [ ] Phase B: Add @rokkit/states and @rokkit/actions to ui package.json
-- [ ] Phase C: Migrate Toggle, Menu, Select, MultiSelect, List, Toolbar, Tree to use controllers + navigator
+- [ ] Phase C: Migrate ~~Toggle~~, Menu, Select, MultiSelect, ~~List~~, Toolbar, Tree to use controllers + navigator (Toggle: done `54202902`, List: done 2026-02-21)
 - [ ] Phase D: Remove @rokkit/composables package
 - [ ] Unify Proxy/ItemProxy
 
@@ -543,3 +532,34 @@ Input text value binds to the event object instead of the string value when chan
 - [ ] Update `selectedItems` derivation to match by extracted value
 - [ ] Update `toggleItemSelection` and `removeItem`
 - [ ] Update tests
+
+---
+
+## 35. NestedController — Tree-style Focus Navigation
+
+**Source:** List e2e test findings (2026-02-21)
+
+**Problem:** NestedController's `expand(key)` only sets `proxy.expanded = true` — it doesn't move focus into children. Similarly, `collapse(key)` doesn't move focus to parent. Tree-style navigation (WAI-ARIA treeview pattern) expects:
+- ArrowRight on expanded group → focus first child
+- ArrowLeft on child → focus parent group
+
+**Currently:** Both actions are no-ops when group is already in target state. The navigator's `expand`/`collapse` handlers return `true` but focus doesn't change.
+
+**What's needed:**
+- [ ] `expand(key)` when already expanded: call `moveNext()` or `moveToChild()` to focus first child
+- [ ] `collapse(key)` when item is a child: move focus to parent group label
+- [ ] Update navigator to handle the focus change after expand/collapse
+- [ ] Add e2e tests for tree-style navigation in List and Tree
+
+---
+
+## 36. ListController — Skip Disabled Items
+
+**Source:** List e2e test findings (2026-02-21)
+
+**Problem:** `moveFirst()`/`moveLast()`/`moveNext()`/`movePrev()` don't check if target items are disabled. End/Home can land on disabled buttons that can't receive focus. The `data` array includes all items regardless of disabled state.
+
+**What's needed:**
+- [ ] Add disabled check to movement methods (skip disabled items)
+- [ ] Alternatively, filter disabled items from `data` array in `flatVisibleNodes`
+- [ ] Ensure focus management handles disabled items at boundaries
