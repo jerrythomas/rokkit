@@ -25,7 +25,7 @@
 }
 
 [data-style='glass'] [data-toggle-option]:focus-visible {
-	@apply outline-none ring-1 ring-inset ring-surface-z5/40;
+	@apply text-surface-z8 bg-surface-z2/15 outline-none ring-1 ring-inset ring-surface-z5/40;
 }
 
 /* Selected state */
@@ -41,7 +41,8 @@
 	@apply text-surface-z5;
 }
 
-[data-style='glass'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon] {
+[data-style='glass'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='glass'] [data-toggle-option]:focus-visible [data-toggle-icon] {
 	@apply text-surface-z7;
 }
 

@@ -3,7 +3,7 @@
 > Schema-driven form builder and renderer with 18+ input types, validation, and dynamic lookups.
 
 ## Position in Dependency Hierarchy
-**Depends on**: @rokkit/core, @rokkit/states, @rokkit/ui, @rokkit/composables, @rokkit/data, valibot, ramda
+**Depends on**: @rokkit/core, @rokkit/states, @rokkit/ui, valibot, ramda
 **Depended on by**: application forms
 
 ## Exports
@@ -37,7 +37,7 @@
 
 ### Input Components (18 types)
 
-`InputText`, `InputPassword`, `InputEmail`, `InputNumber`, `InputRange`, `InputTel`, `InputUrl`, `InputDate`, `InputDateTime`, `InputMonth`, `InputTime`, `InputWeek`, `InputColor`, `InputFile`, `InputCheckbox`, `InputRadio`, `InputSelect`, `InputTextArea`
+`InputText`, `InputPassword`, `InputEmail`, `InputNumber`, `InputRange`, `InputTel`, `InputUrl`, `InputDate`, `InputDateTime`, `InputMonth`, `InputTime`, `InputWeek`, `InputColor`, `InputFile`, `InputCheckbox`, `InputRadio`, `InputSelect`, `InputSwitch`, `InputTextArea`
 
 ## FormBuilder
 

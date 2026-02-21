@@ -54,7 +54,17 @@ export class ListController {
 	 * @returns
 	 */
 	findByValue(value) {
-		const index = this.data.findIndex((row) => equals(row.value, value))
+		// Try exact match first (full object comparison)
+		let index = this.data.findIndex((row) => equals(row.value, value))
+
+		// Fallback: match by extracted value field (e.g. primitive 'a' against { text: 'A', value: 'a' })
+		if (index < 0) {
+			const valueField = this.fields.value
+			index = this.data.findIndex(
+				(row) => typeof row.value === 'object' && row.value !== null && equals(row.value[valueField], value)
+			)
+		}
+
 		return index < 0 ? { index } : { index, ...this.data[index] }
 	}
 

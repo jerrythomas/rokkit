@@ -2,11 +2,11 @@
 
 > Composable UI components built on bits-ui.
 >
-> **Status**: Proposed for removal per [ADR-003](../decisions/003-mvc-separation.md).
+> **Status**: Pending removal per [ADR-003](../decisions/003-mvc-separation.md). Phase A complete — no consumers remain.
 
 ## Position in Dependency Hierarchy
 **Depends on**: @rokkit/core, @rokkit/states, bits-ui, ramda
-**Depended on by**: @rokkit/forms (InputSwitch — broken), sites/learn (Sidebar)
+**Depended on by**: None (all consumers migrated)
 
 ## Exports
 
@@ -23,16 +23,14 @@
 |-----------|----------------------|--------|
 | List | ui/List (525 lines, superior) | Redundant |
 | GroupedList | ui/List handles groups | Redundant |
-| Switch | None yet (recreate as 32-line custom) | Only consumer is broken |
+| Switch | ui/Toggle (used by forms/InputSwitch) | Replaced |
 | TabGroup | Not exported, unused | Dead code |
 
-**Only real consumer**: sites/learn Sidebar uses GroupedList (trivially replaced by ui/List).
+## Migration Status (ADR-003 Phase A — Complete)
 
-## Migration Path (ADR-003)
-
-1. Replace `GroupedList` in sites/learn with `@rokkit/ui` List
-2. Fix InputSwitch in forms (backlog #1)
-3. Remove `@rokkit/composables` dependency from forms
-4. Delete package
+1. ~~Replace `GroupedList` in sites/learn with `@rokkit/ui` List~~ — Done
+2. ~~Fix InputSwitch in forms~~ — Done (now uses `@rokkit/ui` Toggle)
+3. ~~Remove `@rokkit/composables` dependency from forms~~ — Done
+4. Delete package — ADR-003 Phase D (pending)
 
 See [ADR-003](../decisions/003-mvc-separation.md) for full plan.

@@ -513,3 +513,33 @@ Input text value binds to the event object instead of the string value when chan
 - [ ] Remove from workspace config
 
 **See:** ADR-003 Phase A + D
+
+---
+
+## 34. MultiSelect — Align Value Contract
+
+**Source:** ADR-003 Phase C, value contract standardization
+
+**Problem:** MultiSelect binds `value` as an array of full item objects (`SelectItem[]`), while all other selection components (Toggle, Select, List, Tree) bind `value` as the extracted value-field primitive. This is inconsistent.
+
+**Current behavior:**
+- `value = $bindable<SelectItem[]>([])` — stores `[{ text: 'A', value: 'a' }, ...]`
+- `onchange?.(newValues)` — passes array of full items
+- Selection comparison uses both reference and itemValue matching
+
+**Expected (consistent) behavior:**
+- `value` should be an array of extracted primitives: `['a', 'c']`
+- `onchange?.(extractedValues, fullItems)` — primitives first, full items second
+- `isSelected` compares `proxy.itemValue` against value array entries
+
+**Standard contract (all components):**
+- `value` (bindable): extracted value-field primitive(s) — what you'd bind to an id/key
+- `onchange`/`onselect`: `(value, item)` — primitive + full item for when you need the object
+
+**What's needed:**
+- [ ] Change `value` type from `SelectItem[]` to `unknown[]`
+- [ ] Store extracted primitives in value array
+- [ ] Update `onchange` signature to `(values: unknown[], items: SelectItem[])`
+- [ ] Update `selectedItems` derivation to match by extracted value
+- [ ] Update `toggleItemSelection` and `removeItem`
+- [ ] Update tests

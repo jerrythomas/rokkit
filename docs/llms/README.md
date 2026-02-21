@@ -13,10 +13,10 @@
   ↑
 @rokkit/data          ← Data: DataSet, joins, filters, type detection
   ↑
-@rokkit/ui            ← Components: 15 data-driven components (currently depends on core only)
-@rokkit/composables   ← Composables: bits-ui wrappers (proposed for removal, see ADR-003)
+@rokkit/ui            ← Components: 15 data-driven components (now depends on core, states, actions)
+@rokkit/composables   ← Composables: bits-ui wrappers (pending removal, no consumers remain — ADR-003)
   ↑
-@rokkit/forms         ← Forms: FormBuilder, FormRenderer, 18+ input types
+@rokkit/forms         ← Forms: FormBuilder, FormRenderer, 19 input types
 @rokkit/chart         ← Charts: Plot system, ChartBrewer, D3-based
 
 @rokkit/themes        ← CSS: 4 theme variants (rokkit, minimal, material, glass)
@@ -34,10 +34,10 @@
 | [@rokkit/states](states.md) | State | Proxy, ListController, NestedController, Vibe, Messages | core, d3-array, ramda | [states.md](states.md) |
 | [@rokkit/actions](actions.md) | Interaction | 10 Svelte actions | core, ramda | [actions.md](actions.md) |
 | [@rokkit/data](data.md) | Data | DataSet, joins, typeOf, model, renamer | core, d3-array, ramda | [data.md](data.md) |
-| [@rokkit/ui](ui.md) | Components | 15 components, types, utilities | core, shiki (peer) | [ui.md](ui.md) |
-| [@rokkit/forms](forms.md) | Forms | FormBuilder, FormRenderer, 18 inputs | core, states, ui, composables, valibot | [forms.md](forms.md) |
+| [@rokkit/ui](ui.md) | Components | 15 components, types, utilities | core, states, actions, shiki (peer) | [ui.md](ui.md) |
+| [@rokkit/forms](forms.md) | Forms | FormBuilder, FormRenderer, 19 inputs | core, states, ui, valibot | [forms.md](forms.md) |
 | [@rokkit/composables](composables.md) | Composables | List, GroupedList, Switch, TabGroup | core, states, bits-ui | [composables.md](composables.md) |
-| [@rokkit/chart](chart.md) | Charts | Plot.Root/Axis/Bar/Grid/Legend, ChartBrewer | core, data, states, d3-* | [chart.md](chart.md) |
+| [@rokkit/chart](chart.md) | Charts | Plot.Root/Axis/Bar/Grid/Legend, ChartBrewer | core, data, states, d3-*, ramda | [chart.md](chart.md) |
 | [@rokkit/themes](themes.md) | CSS | 4 theme variants, base styles | (CSS only) | [themes.md](themes.md) |
 | [@rokkit/icons](icons.md) | Icons | 7 JSON bundles, 250+ icons | (JSON only) | [icons.md](icons.md) |
 | [@rokkit/app](app.md) | App | ThemeSwitcherToggle, ColorModeManager | core, states, ui | [app.md](app.md) |

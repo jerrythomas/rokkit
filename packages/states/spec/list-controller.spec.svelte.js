@@ -59,6 +59,24 @@ describe('ListController', () => {
 			expect(proxy.focused).toBeFalsy()
 			expect(proxy.selected).toEqual([])
 		})
+
+		it('should match by extracted value field', () => {
+			const opts = $state([
+				{ text: 'Option A', value: 'a' },
+				{ text: 'Option B', value: 'b' },
+				{ text: 'Option C', value: 'c' }
+			])
+			const controller = new ListController(opts, 'b')
+			expect(controller.focused).toEqual(opts[1])
+			expect(controller.currentIndex).toEqual(1)
+			expect(controller.selected).toEqual([opts[1]])
+
+			expect(controller.moveToValue('c')).toBe(true)
+			expect(controller.focused).toEqual(opts[2])
+
+			expect(controller.moveToValue('a')).toBe(true)
+			expect(controller.focused).toEqual(opts[0])
+		})
 	})
 
 	describe('traversal', () => {

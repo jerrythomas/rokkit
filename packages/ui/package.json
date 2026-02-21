@@ -37,7 +37,9 @@
     "dropdown"
   ],
   "dependencies": {
-    "@rokkit/core": "workspace:*"
+    "@rokkit/core": "workspace:*",
+    "@rokkit/states": "workspace:*",
+    "@rokkit/actions": "workspace:*"
   },
   "peerDependencies": {
     "shiki": "^3.22.0",

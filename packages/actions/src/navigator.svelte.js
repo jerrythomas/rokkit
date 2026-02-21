@@ -131,7 +131,7 @@ export function navigator(node, options) {
 	}
 
 	$effect(() => {
-		const cleanup = [on(node, 'keyup', handleKeydown), on(node, 'click', handleClick)]
+		const cleanup = [on(node, 'keydown', handleKeydown), on(node, 'click', handleClick)]
 
 		return () => {
 			cleanup.forEach((fn) => fn())

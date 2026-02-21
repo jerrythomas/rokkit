@@ -1,6 +1,5 @@
 <script>
-	import { GroupedList } from '@rokkit/composables'
-	import { Icon } from '@rokkit/ui'
+	import { List, Icon } from '@rokkit/ui'
 
 	/**
 	 * @typedef {Object} Section
@@ -15,7 +14,7 @@
 	/**
 	 * @typedef {Object} SidebarProps
 	 * @property {Section[]} sections - Array of tutorial sections
-	 * @property {Object} fields - Field mapping object for GroupedList component
+	 * @property {Object} fields - Field mapping object for List component
 	 * @property {string} [currentSection] - Currently active section ID
 	 * @property {function(string): void} [onNavigate] - Navigation callback function
 	 */
@@ -25,14 +24,14 @@
 </script>
 
 <nav class="flex w-full flex-1 pb-8" data-sidebar>
-	<GroupedList items={sections} {fields}>
-		{#snippet child(proxy)}
+	<List items={sections} {fields}>
+		{#snippet item(data, fieldMap, handlers, active)}
 			<div class="flex items-center gap-3">
-				<Icon name={proxy.get('icon')} data-sidebar-icon />
+				<Icon name={data[fieldMap.icon ?? 'icon']} data-sidebar-icon />
 				<h3 class="text-sm font-medium">
-					{proxy.get('text')}
+					{data[fieldMap.text ?? 'text']}
 				</h3>
 			</div>
 		{/snippet}
-	</GroupedList>
+	</List>
 </nav>

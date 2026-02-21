@@ -3,10 +3,10 @@
 > 15 data-driven UI components for Svelte 5 with field mapping, custom snippets, and keyboard navigation.
 
 ## Position in Dependency Hierarchy
-**Depends on**: @rokkit/core, svelte (peer), shiki (peer)
+**Depends on**: @rokkit/core, @rokkit/states, @rokkit/actions, svelte (peer), shiki (peer)
 **Depended on by**: @rokkit/forms, @rokkit/app, application UI
 
-**Note**: ADR-003 proposes adding @rokkit/states and @rokkit/actions as dependencies to eliminate ~1200 lines of duplicated navigation/selection logic.
+**Note**: Per ADR-003, states and actions dependencies added. Components are being migrated from inline logic to shared controllers/actions (Phase C).
 
 ## Exports
 
@@ -22,7 +22,7 @@
 | `Select` | options, fields, value, placeholder, size, align, direction, maxRows, onchange | Single-select dropdown |
 | `MultiSelect` | options, fields, value, maxDisplay, onchange | Multi-select with tag display |
 | `Menu` | options, fields, label, icon, showArrow, size, align, direction, onselect | Action dropdown menu |
-| `Toggle` | options, fields, value, showLabels, size, onchange | Mutually exclusive toggle group |
+| `Toggle` | options, fields, value, showLabels, size, onchange | Mutually exclusive toggle group (uses ListController + navigator) |
 | `Toolbar` | items, fields, position, size, sticky, compact, showDividers, onclick | Horizontal/vertical toolbar |
 | `ToolbarGroup` | label, gap, children | Grouped toolbar section |
 | `FloatingAction` | items, fields, icon, position, expand, open, backdrop, onselect | Speed dial floating button |
@@ -97,6 +97,46 @@ proxy.createChildProxy(child)  // Create proxy for child item
 <List items={groupedData} collapsible bind:expanded />
 <Tree items={nestedData} showLines expandAll />
 ```
+
+### MVC Pattern (ADR-003)
+
+Toggle is the first component migrated to the shared MVC pattern:
+- **Model**: `ListController` from `@rokkit/states` — manages focus, selection, navigation state
+- **Controller**: `navigator` action from `@rokkit/actions` — keyboard (ArrowLeft/Right, Home/End) and click handling
+- **View**: Component `.svelte` file — rendering, DOM focus management
+
+`ListController.moveToValue()` accepts both full item objects and extracted value-field primitives (e.g., `'a'` matches `{ text: 'A', value: 'a' }`). Use `lastSyncedValue` guard to prevent the value-sync `$effect` from fighting navigator focus moves.
+
+```svelte
+let controller = new ListController(options, value, userFields)
+let lastSyncedValue = value
+
+$effect(() => {
+  if (value !== lastSyncedValue) {
+    lastSyncedValue = value
+    controller.moveToValue(value)
+  }
+})
+```
+
+### Value Binding Contract
+
+All selection components use extracted value-field primitives (not full objects) for `value`:
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `value` (bindable) | `unknown` (single) or `unknown[]` (multi) | The extracted `item[fields.value]` primitive |
+| `onchange` / `onselect` | `(value, item) => void` | First arg: extracted primitive. Second arg: full item object |
+
+```svelte
+<!-- fields.value defaults to 'value', so value binds to item.value -->
+<Select options={users} fields={{ text: 'name', value: 'id' }} bind:value={selectedUserId} />
+
+<!-- For string arrays, the item IS the value -->
+<Toggle options={['day', 'week', 'month']} bind:value={period} />
+```
+
+**Compliant**: Toggle, Select, List, Tree. **Pending migration**: MultiSelect (backlog #34 — currently stores full item objects).
 
 ### Button Variants
 

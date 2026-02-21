@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Toggle from '../src/components/Toggle.svelte'
 import ToggleSnippetTest from './ToggleSnippetTest.svelte'
 
@@ -142,6 +142,62 @@ describe('Toggle', () => {
 		const opts = container.querySelectorAll('[data-toggle-option]')
 		await fireEvent.keyDown(opts[1], { key: ' ' })
 		expect(onchange).toHaveBeenCalledWith('b', basicOptions[1])
+	})
+
+	// ─── Arrow Key Navigation ───────────────────────────────────────
+
+	it('moves focus right with ArrowRight', async () => {
+		const { container } = render(Toggle, { options: basicOptions, value: 'a' })
+		const toggle = container.querySelector('[data-toggle]')!
+		const opts = container.querySelectorAll('[data-toggle-option]')
+		opts[0].focus()
+		await fireEvent.keyDown(toggle, { key: 'ArrowRight' })
+		expect(document.activeElement).toBe(opts[1])
+	})
+
+	it('moves focus left with ArrowLeft', async () => {
+		const { container } = render(Toggle, { options: basicOptions, value: 'b' })
+		const toggle = container.querySelector('[data-toggle]')!
+		const opts = container.querySelectorAll('[data-toggle-option]')
+		opts[1].focus()
+		await fireEvent.keyDown(toggle, { key: 'ArrowLeft' })
+		await waitFor(() => expect(document.activeElement).toBe(opts[0]))
+	})
+
+	it('moves focus to first with Home', async () => {
+		const { container } = render(Toggle, { options: basicOptions, value: 'c' })
+		const toggle = container.querySelector('[data-toggle]')!
+		const opts = container.querySelectorAll('[data-toggle-option]')
+		opts[2].focus()
+		await fireEvent.keyDown(toggle, { key: 'Home' })
+		await waitFor(() => expect(document.activeElement).toBe(opts[0]))
+	})
+
+	it('moves focus to last with End', async () => {
+		const { container } = render(Toggle, { options: basicOptions, value: 'a' })
+		const toggle = container.querySelector('[data-toggle]')!
+		const opts = container.querySelectorAll('[data-toggle-option]')
+		opts[0].focus()
+		await fireEvent.keyDown(toggle, { key: 'End' })
+		await waitFor(() => expect(document.activeElement).toBe(opts[2]))
+	})
+
+	it('does not move past the last option', async () => {
+		const { container } = render(Toggle, { options: basicOptions, value: 'c' })
+		const toggle = container.querySelector('[data-toggle]')!
+		const opts = container.querySelectorAll('[data-toggle-option]')
+		opts[2].focus()
+		await fireEvent.keyDown(toggle, { key: 'ArrowRight' })
+		expect(document.activeElement).toBe(opts[2])
+	})
+
+	it('does not move before the first option', async () => {
+		const { container } = render(Toggle, { options: basicOptions, value: 'a' })
+		const toggle = container.querySelector('[data-toggle]')!
+		const opts = container.querySelectorAll('[data-toggle-option]')
+		opts[0].focus()
+		await fireEvent.keyDown(toggle, { key: 'ArrowLeft' })
+		expect(document.activeElement).toBe(opts[0])
 	})
 
 	// ─── Sizes ──────────────────────────────────────────────────────

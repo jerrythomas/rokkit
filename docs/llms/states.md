@@ -37,7 +37,7 @@ const controller = new ListController(items, value, fields, { multiselect: false
 controller.moveFirst() / controller.moveLast()
 controller.moveNext() / controller.movePrev()
 controller.moveToIndex(index)
-controller.moveToValue(value)
+controller.moveToValue(value)           // Accepts full item OR extracted value-field primitive
 controller.moveTo(path)
 
 // Selection

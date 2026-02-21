@@ -93,3 +93,67 @@ export interface {Component}Props {
    - The UnoCSS shortcut is auto-generated via `iconShortcuts()`
 
 **Used in:** Tree, Select, MultiSelect, Menu, List, Code
+
+---
+
+### Value Binding Contract
+
+**Context:** Any data-driven selection component (Toggle, Select, MultiSelect, List, Tree, Menu).
+
+**Contract:**
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `value` (bindable) | `unknown` (single) or `unknown[]` (multi) | The **extracted value-field primitive** — what `item[fields.value]` resolves to. For string arrays, the item itself. |
+| `onchange` / `onselect` | `(value, item) => void` | First arg: extracted primitive. Second arg: the full item object from the options array. |
+
+**Rationale:** Consumers typically bind to an id or key (`bind:value={selectedId}`), not a full object. When the full object is needed, it's available via the callback's second argument. This matches native `<select>` semantics where `value` is the option's value attribute.
+
+**How it works with field mapping:**
+
+```svelte
+<!-- fields.value defaults to 'value', so value binds to item.value -->
+<Select options={users} fields={{ text: 'name', value: 'id' }} bind:value={selectedUserId} />
+
+<!-- For string arrays, the item IS the value -->
+<Toggle options={['day', 'week', 'month']} bind:value={period} />
+```
+
+**ItemProxy resolution order** for extracting value (`itemValue` getter):
+1. Mapped value field: `item[fields.value]`
+2. Fallback fields: `id`, `key`, `value`
+3. Last resort: the original item itself (covers string/number arrays)
+
+**ListController integration:**
+`ListController.findByValue()` accepts both full item objects (deep equality) and extracted value-field primitives (fallback match via `item[fields.value]`). Components pass the extracted value directly:
+
+```svelte
+let controller = new ListController(options, value, userFields)
+// value can be 'a' and controller finds { text: 'A', value: 'a' }
+```
+
+**Guard pattern for value sync:**
+When using `ListController` + `navigator`, arrow keys move focus without changing selection. Use `lastSyncedValue` to prevent the value-sync `$effect` from fighting navigator focus moves:
+
+```svelte
+let lastSyncedValue = value
+
+$effect(() => {
+  if (value !== lastSyncedValue) {
+    lastSyncedValue = value
+    controller.moveToValue(value)
+  }
+})
+```
+
+**Current compliance:**
+
+| Component | `value` type | `onchange`/`onselect` sig | Status |
+|-----------|-------------|---------------------------|--------|
+| Toggle | extracted primitive | `(value, item)` | Compliant |
+| Select | extracted primitive | `(value, item)` + `selected` bindable for full item | Compliant |
+| List | extracted primitive | `(value, item)` | Compliant |
+| Tree | extracted primitive | `(value, item)` | Compliant |
+| MultiSelect | **full item array** | `(items)` | **Needs migration** (backlog #34) |
+
+**Used in:** Toggle, Select, List, Tree. MultiSelect pending alignment.

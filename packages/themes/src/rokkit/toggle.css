@@ -25,7 +25,7 @@
 }
 
 [data-style='rokkit'] [data-toggle-option]:focus-visible {
-  @apply ring-primary-z4 ring-2 outline-none;
+  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-b ring-primary-z4 ring-2 outline-none;
 }
 
 /* Selected state */
@@ -41,7 +41,8 @@
   @apply text-surface-z5;
 }
 
-[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon] {
+[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='rokkit'] [data-toggle-option]:focus-visible [data-toggle-icon] {
   @apply text-surface-z7;
 }
 

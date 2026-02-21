@@ -17,7 +17,7 @@ describe('components', () => {
 			'InputRadio',
 			'InputRange',
 			'InputSelect',
-			// 'InputSwitch',
+			'InputSwitch',
 			'InputTel',
 			'InputText',
 			'InputTextArea',

@@ -6,10 +6,10 @@ A command-line utility for bundling and converting SVG icons into JSON formats c
 
 ```bash
 # Install globally
-npm install -g @rokkit/cli
+bun add -g @rokkit/cli
 
-# Or use directly with npx
-npx @rokkit/cli [command]
+# Or use directly with bunx
+bunx @rokkit/cli [command]
 ```
 
 ## Usage

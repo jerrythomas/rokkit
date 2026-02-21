@@ -4,7 +4,6 @@
 
 ## Position in Dependency Hierarchy
 **Depends on**: @rokkit/core, @rokkit/data, @rokkit/states, d3-array, d3-axis, d3-scale, d3-scale-chromatic, d3-selection, d3-transition, ramda
-**Note**: bits-ui listed as dependency but **never imported** — dead dependency to remove.
 
 ## Exports
 

@@ -25,7 +25,7 @@
 }
 
 [data-style='material'] [data-toggle-option]:focus-visible {
-	@apply outline-none ring-2 ring-primary-z4;
+	@apply bg-surface-z3 text-surface-z8 outline-none ring-2 ring-primary-z4;
 }
 
 /* Selected state */
@@ -41,7 +41,8 @@
 	@apply text-surface-z5;
 }
 
-[data-style='material'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon] {
+[data-style='material'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='material'] [data-toggle-option]:focus-visible [data-toggle-icon] {
 	@apply text-surface-z7;
 }
 

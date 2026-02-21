@@ -45,8 +45,7 @@
 }
 
 [data-toggle-option]:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline: none;
 }
 
 [data-toggle-option][data-disabled='true'],

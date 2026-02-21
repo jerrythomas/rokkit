@@ -1,6 +1,6 @@
 <script>
 	import { getValue, defaultFields } from '@rokkit/core'
-	import Switch from '@rokkit/composables'
+	import { Toggle } from '@rokkit/ui'
 
 	/**
 	 * @typedef {Object} InputSwitchProps
@@ -12,18 +12,15 @@
 	 */
 
 	/** @type {InputSwitchProps & { [key: string]: any }} */
-	let { name, value, options, fields, onchange, ...restProps } = $props()
-	// let selected = $state(null)
+	let { name, value = $bindable(), options, fields, onchange, ...restProps } = $props()
+
 	let configFields = $derived({ ...defaultFields, ...fields })
-	function handle(data) {
-		value = getValue(data.value, configFields)
-		onchange?.(data.value)
+
+	function handle(itemValue, item) {
+		value = getValue(item, configFields)
+		onchange?.(item)
 	}
-	let selected = $derived(options.find((option) => getValue(option, configFields) === value))
-	// $effect(() => {
-	// 	selected = options.find((option) => getValue(option, configFields) === value)
-	// })
 </script>
 
 <input {name} type="hidden" bind:value />
-<Switch bind:value={selected} {options} {fields} {...restProps} onchange={handle} />
+<Toggle {options} fields={configFields} bind:value {onchange} {...restProps} />

@@ -51,62 +51,62 @@ describe('navigator', () => {
 				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'vertical' }))
 				flushSync()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 				expect(wrapper.moveNext).toHaveBeenCalled()
 				expect(action).not.toHaveBeenCalled()
 
 				wrapper.moveNext.mockReturnValue(true)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 				expect(action).toHaveBeenCalledTimes(1)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 				expect(wrapper.movePrev).toHaveBeenCalled()
 
 				wrapper.movePrev.mockReturnValue(true)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 				expect(wrapper.movePrev).toHaveBeenCalled()
 				expect(action).toHaveBeenCalledTimes(2)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 				expect(wrapper.select).toHaveBeenCalled()
 
 				wrapper.select.mockReturnValue(true)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 				expect(action).toHaveBeenCalledTimes(3)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', ctrlKey: true }))
 				expect(wrapper.extendSelection).toHaveBeenCalledTimes(1)
 				expect(action).toHaveBeenCalledTimes(3)
 
 				wrapper.extendSelection.mockReturnValue(true)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', metaKey: true }))
 				expect(wrapper.extendSelection).toHaveBeenCalledTimes(2)
 				expect(action).toHaveBeenCalledTimes(4)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home' }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(1)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', ctrlKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(2)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', metaKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(3)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', metaKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(4)
 				wrapper.moveFirst.mockReturnValue(true)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', ctrlKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(5)
 				expect(action).toHaveBeenCalledTimes(5)
 				expect(getEventsFromDetail()).toEqual(['move', 'move', 'select', 'select', 'move'])
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(1)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', ctrlKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(2)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', metaKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(3)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', ctrlKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(4)
 				wrapper.moveLast.mockReturnValue(true)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', metaKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(5)
 
 				expect(action).toHaveBeenCalledTimes(6)
@@ -119,10 +119,10 @@ describe('navigator', () => {
 					navigator(root, { wrapper, orientation: 'vertical', dir: 'ltr', nested: true })
 				)
 				flushSync()
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 				expect(wrapper.expand).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 				expect(wrapper.collapse).toHaveBeenCalled()
 				cleanup()
 			})
@@ -136,14 +136,14 @@ describe('navigator', () => {
 				flushSync()
 
 				// Basic navigation remains the same in RTL (up/down)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 				expect(wrapper.moveNext).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 				expect(wrapper.movePrev).toHaveBeenCalled()
 
 				// Selection also remains the same
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 				expect(wrapper.select).toHaveBeenCalled()
 
 				cleanup()
@@ -156,10 +156,10 @@ describe('navigator', () => {
 				flushSync()
 
 				// In RTL, the meaning of left/right is reversed for tree operations
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 				expect(wrapper.expand).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 				expect(wrapper.collapse).toHaveBeenCalled()
 
 				cleanup()
@@ -171,46 +171,46 @@ describe('navigator', () => {
 				const cleanup = $effect.root(() => navigator(root, { wrapper, orientation: 'horizontal' }))
 				flushSync()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 				expect(wrapper.moveNext).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 				expect(wrapper.movePrev).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 				expect(wrapper.select).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', ctrlKey: true }))
 				expect(wrapper.extendSelection).toHaveBeenCalledTimes(1)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: ' ', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', metaKey: true }))
 				expect(wrapper.extendSelection).toHaveBeenCalledTimes(2)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home' }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(1)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', ctrlKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(2)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Home', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', metaKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(3)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', metaKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(4)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', ctrlKey: true }))
 				expect(wrapper.moveFirst).toHaveBeenCalledTimes(5)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(1)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', ctrlKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(2)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'End', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', metaKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(3)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', ctrlKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', ctrlKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(4)
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', metaKey: true }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', metaKey: true }))
 				expect(wrapper.moveLast).toHaveBeenCalledTimes(5)
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 				expect(wrapper.expand).not.toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 				expect(wrapper.collapse).not.toHaveBeenCalled()
 
 				cleanup()
@@ -220,10 +220,10 @@ describe('navigator', () => {
 					navigator(root, { wrapper, orientation: 'horizontal', nested: true })
 				)
 				flushSync()
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 				expect(wrapper.expand).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 				expect(wrapper.collapse).toHaveBeenCalled()
 				cleanup()
 			})
@@ -237,14 +237,14 @@ describe('navigator', () => {
 				flushSync()
 
 				// In RTL horizontal mode, left/right arrow keys are reversed
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }))
 				expect(wrapper.movePrev).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }))
 				expect(wrapper.moveNext).toHaveBeenCalled()
 
 				// Selection remains the same
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
 				expect(wrapper.select).toHaveBeenCalled()
 
 				cleanup()
@@ -257,10 +257,10 @@ describe('navigator', () => {
 				flushSync()
 
 				// In horizontal mode, up/down for expand/collapse is not affected by RTL
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowDown' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
 				expect(wrapper.expand).toHaveBeenCalled()
 
-				root.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowUp' }))
+				root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
 				expect(wrapper.collapse).toHaveBeenCalled()
 
 				cleanup()
@@ -367,12 +367,12 @@ describe('navigator', () => {
 		flushSync()
 
 		expect(addEventListenerSpy).toHaveBeenCalledTimes(2)
-		expect(addEventListenerSpy).toHaveBeenNthCalledWith(1, 'keyup', expect.any(Function), {})
+		expect(addEventListenerSpy).toHaveBeenNthCalledWith(1, 'keydown', expect.any(Function), {})
 		expect(addEventListenerSpy).toHaveBeenNthCalledWith(2, 'click', expect.any(Function), {})
 
 		cleanup()
 		expect(removeEventListenerSpy).toHaveBeenCalledTimes(2)
-		expect(removeEventListenerSpy).toHaveBeenNthCalledWith(1, 'keyup', expect.any(Function), {})
+		expect(removeEventListenerSpy).toHaveBeenNthCalledWith(1, 'keydown', expect.any(Function), {})
 		expect(removeEventListenerSpy).toHaveBeenNthCalledWith(2, 'click', expect.any(Function), {})
 
 		addEventListenerSpy.mockRestore()

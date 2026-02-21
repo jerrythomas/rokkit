@@ -35,7 +35,6 @@
     "@rokkit/core": "workspace:latest",
     "@rokkit/data": "workspace:latest",
     "@rokkit/states": "workspace:latest",
-    "bits-ui": "^2.10.0",
     "d3-array": "^3.2.4",
     "d3-axis": "^3.0.0",
     "d3-scale": "^4.0.2",

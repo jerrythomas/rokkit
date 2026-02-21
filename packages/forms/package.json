@@ -34,7 +34,6 @@
     "@rokkit/core": "workspace:latest",
     "@rokkit/states": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
-    "@rokkit/composables": "workspace:latest",
     "ramda": "^0.31.3",
     "valibot": "^1.1.0"
   }
