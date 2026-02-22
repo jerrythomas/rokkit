@@ -73,25 +73,28 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-select-option] {
-	@apply text-surface-z8;
+	@apply text-surface-z8 rounded-none border-0 border-solid border-transparent;
 }
 
+/* Hover and focus */
 [data-style='rokkit'] [data-select-option]:hover:not(:disabled),
 [data-style='rokkit'] [data-select-option]:focus:not(:disabled) {
-	@apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r;
+	@apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
 }
 
-[data-style='rokkit'] [data-select-option]:focus-visible {
-	@apply ring-primary-z5 ring-2 outline-none ring-inset;
-}
-
+/* Selected state — muted when dropdown not focused */
 [data-style='rokkit'] [data-select-option][data-selected='true'] {
-	@apply from-primary-z5 to-secondary-z5 text-white bg-gradient-to-r;
+	@apply bg-surface-z2 text-primary-z9 border-l-primary-z5 border-l-2;
 }
 
-[data-style='rokkit'] [data-select-option][data-selected='true']:hover:not(:disabled),
-[data-style='rokkit'] [data-select-option][data-selected='true']:focus:not(:disabled) {
-	@apply from-primary-z4 to-secondary-z4 bg-gradient-to-r;
+/* Selected state — full gradient when dropdown has focus */
+[data-style='rokkit'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
+	@apply from-primary-z5 to-secondary-z5 text-primary-z9 border-l-primary-z5 border-l-2 bg-gradient-to-r;
+}
+
+/* Selected + hover */
+[data-style='rokkit'] [data-select-option][data-selected='true']:hover:not(:disabled) {
+	@apply from-primary-z4 to-primary-z3 bg-gradient-to-r;
 }
 
 /* Check mark */
@@ -119,6 +122,10 @@
 
 [data-style='rokkit'] [data-select-option][data-selected='true'] [data-item-icon] {
 	@apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z9;
 }
 
 [data-style='rokkit'] [data-select-option] [data-item-description] {

@@ -73,30 +73,28 @@
    ============================================================================= */
 
 [data-style='minimal'] [data-select-option] {
-  @apply text-surface-z7;
+  @apply text-surface-z7 border-0 border-solid border-transparent;
 }
 
+/* Hover and focus */
 [data-style='minimal'] [data-select-option]:hover:not(:disabled),
 [data-style='minimal'] [data-select-option]:focus:not(:disabled) {
-  @apply text-surface-z9;
+  @apply text-surface-z9 border-l-surface-z2 border-l-2 outline-none;
 }
 
-[data-style='minimal'] [data-select-option]:focus-visible {
-  @apply ring-surface-z5 outline-none ring-1 ring-inset;
-}
-
+/* Selected state */
 [data-style='minimal'] [data-select-option][data-selected='true'] {
-  @apply text-secondary-z7 border-l-secondary border-l-2;
+  @apply text-surface-z8 border-primary-z4 border-l-2;
 }
 
-/*[data-style='minimal'] [data-select-option][data-selected='true']:hover:not(:disabled),
-[data-style='minimal'] [data-select-option][data-selected='true']:focus:not(:disabled) {
-  @apply text-secondary-z7 border-l-secondary-500 border-l-2;
-}*/
+/* Selected state — full highlight when dropdown has focus */
+[data-style='minimal'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
+  @apply text-primary-z7 border-primary-z4 border-l-2;
+}
 
 /* Check mark */
 [data-style='minimal'] [data-select-check] {
-  @apply text-secondary-z6;
+  @apply text-primary-z6;
 }
 
 /* Checkbox */
@@ -126,7 +124,7 @@
 }
 
 [data-style='minimal'] [data-select-option][data-selected='true'] [data-item-description] {
-  @apply text-secondary-z6;
+  @apply text-primary-z6;
 }
 
 /* =============================================================================

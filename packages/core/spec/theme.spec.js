@@ -287,19 +287,24 @@ describe('themeRules', () => {
 describe('semanticShortcuts', () => {
 	it('should generate shortcuts for secondary color', () => {
 		const shortcuts = semanticShortcuts('secondary')
-		expect(shortcuts.length).toBe(11 * 3 * 8)
+		expect(shortcuts.length).toBe(11 * 3 * 12)
 		expect(shortcuts[0]).toEqual([/^(.+):bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[1]).toEqual([/bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
+		expect(shortcuts[1]).toEqual([/^bg-secondary-z0(\/\d+)?$/, expect.any(Function)])
 		expect(shortcuts[2]).toEqual(['bg-secondary-z0', 'bg-secondary-50 dark:bg-secondary-950'])
 		expect(shortcuts[3]).toEqual([/^(.+):border-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[4]).toEqual([/border-secondary-z0(\/\d+)?$/, expect.any(Function)])
+		expect(shortcuts[4]).toEqual([/^border-secondary-z0(\/\d+)?$/, expect.any(Function)])
 		expect(shortcuts[5]).toEqual([
 			'border-secondary-z0',
 			'border-secondary-50 dark:border-secondary-950'
 		])
-		expect(shortcuts[6]).toEqual([/^(.+):text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[7]).toEqual([/text-secondary-z0(\/\d+)?$/, expect.any(Function)])
-		expect(shortcuts[8]).toEqual(['text-secondary-z0', 'text-secondary-50 dark:text-secondary-950'])
+		// border-l at index 6-8
+		expect(shortcuts[6]).toEqual([/^(.+):border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
+		expect(shortcuts[7]).toEqual([/^border-l-secondary-z0(\/\d+)?$/, expect.any(Function)])
+		expect(shortcuts[8]).toEqual(['border-l-secondary-z0', 'border-l-secondary-50 dark:border-l-secondary-950'])
+		// text at index 18-20
+		expect(shortcuts[18]).toEqual([/^(.+):text-secondary-z0(\/\d+)?$/, expect.any(Function)])
+		expect(shortcuts[19]).toEqual([/^text-secondary-z0(\/\d+)?$/, expect.any(Function)])
+		expect(shortcuts[20]).toEqual(['text-secondary-z0', 'text-secondary-50 dark:text-secondary-950'])
 	})
 
 	it('should execute variant pattern callback function (line 85)', () => {

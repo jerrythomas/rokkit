@@ -70,7 +70,7 @@ export function themeRules(mapping = defaultThemeMapping, colors = defaultColors
  * @returns {Array} Array of shortcut definitions
  */
 export function semanticShortcuts(name) {
-	const prefixes = ['bg', 'border', 'text', 'ring', 'outline', 'from', 'to', 'divide']
+	const prefixes = ['bg', 'border', 'border-l', 'border-r', 'border-t', 'border-b', 'text', 'ring', 'outline', 'from', 'to', 'divide']
 	const shortcuts = []
 
 	for (const [toneName, lightValue] of Object.entries(TONE_MAP)) {
@@ -85,7 +85,7 @@ export function semanticShortcuts(name) {
 					`${variant}:${prefix}-${name}-${lightValue}${end || ''} ${variant}:dark:${prefix}-${name}-${darkValue}${end || ''}`
 			])
 
-			const opacityPattern = new RegExp(`${prefix}-${name}-${toneName}(\/\\d+)?$`)
+			const opacityPattern = new RegExp(`^${prefix}-${name}-${toneName}(\/\\d+)?$`)
 			shortcuts.push([
 				opacityPattern,
 				([, end]) =>

@@ -54,16 +54,12 @@
    ============================================================================= */
 
 [data-style='rokkit'] [data-menu-item] {
-  @apply text-surface-z8;
+  @apply text-surface-z8 rounded-none border-0 border-solid border-transparent;
 }
 
 [data-style='rokkit'] [data-menu-item]:hover:not(:disabled):not([data-disabled='true']),
 [data-style='rokkit'] [data-menu-item]:focus:not(:disabled):not([data-disabled='true']) {
   @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
-}
-
-[data-style='rokkit'] [data-menu-item]:focus-visible {
-  @apply outline-none;
 }
 
 /* Item elements */
