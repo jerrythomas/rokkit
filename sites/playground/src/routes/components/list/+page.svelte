@@ -3,7 +3,10 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
 
-	let selected = $state<unknown>(undefined)
+	let navSelected = $state<unknown>('#home')
+	let buttonSelected = $state<unknown>(undefined)
+	let groupedSelected = $state<unknown>(undefined)
+	let descSelected = $state<unknown>(undefined)
 
 	let props = $state({ size: 'md', collapsible: true, disabled: false })
 
@@ -27,10 +30,10 @@
 	}
 
 	const navItems = [
-		{ text: 'Home', href: '#home', icon: 'i-lucide:home' },
-		{ text: 'Settings', href: '#settings', icon: 'i-lucide:settings' },
-		{ text: 'Profile', href: '#profile', icon: 'i-lucide:user' },
-		{ text: 'Messages', href: '#messages', icon: 'i-lucide:mail', badge: '3' }
+		{ text: 'Home', href: '#home', value: '#home', icon: 'i-lucide:home' },
+		{ text: 'Settings', href: '#settings', value: '#settings', icon: 'i-lucide:settings' },
+		{ text: 'Profile', href: '#profile', value: '#profile', icon: 'i-lucide:user' },
+		{ text: 'Messages', href: '#messages', value: '#messages', icon: 'i-lucide:mail', badge: '3' }
 	]
 
 	const buttonItems = [
@@ -78,8 +81,14 @@
 		}
 	]
 
-	function handleSelect(value: unknown) {
-		selected = value
+	function handleButtonSelect(value: unknown) {
+		buttonSelected = value
+	}
+	function handleGroupedSelect(value: unknown) {
+		groupedSelected = value
+	}
+	function handleDescSelect(value: unknown) {
+		descSelected = value
 	}
 </script>
 
@@ -100,10 +109,10 @@
 				<div class="w-[240px]">
 					<List
 						items={buttonItems}
-						value={selected}
+						value={buttonSelected}
 						size={props.size as any}
 						disabled={props.disabled}
-						onselect={handleSelect}
+						onselect={handleButtonSelect}
 					/>
 				</div>
 			</div>
@@ -113,10 +122,10 @@
 					<List
 						items={groupedItems}
 						collapsible={props.collapsible}
-						value={selected}
+						value={groupedSelected}
 						size={props.size as any}
 						disabled={props.disabled}
-						onselect={handleSelect}
+						onselect={handleGroupedSelect}
 					/>
 				</div>
 			</div>
@@ -125,10 +134,10 @@
 				<div class="w-[240px]">
 					<List
 						items={withDescriptions}
-						value={selected}
+						value={descSelected}
 						size={props.size as any}
 						disabled={props.disabled}
-						onselect={handleSelect}
+						onselect={handleDescSelect}
 					/>
 				</div>
 			</div>
@@ -137,6 +146,8 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Selected" value={selected} />
+		<InfoField label="Button" value={buttonSelected} />
+		<InfoField label="Grouped" value={groupedSelected} />
+		<InfoField label="Descriptions" value={descSelected} />
 	{/snippet}
 </Playground>

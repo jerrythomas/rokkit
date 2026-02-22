@@ -1,5 +1,6 @@
 @import '@unocss/reset/tailwind.css';
 @import '@rokkit/themes';
+@import './palette-manager.css';
 
 :root {
 	font-family: 'Inter', -apple-system, system-ui, sans-serif;

@@ -110,12 +110,13 @@ export class ListController {
 
 	/**
 	 *
-	 * @param {string} path
+	 * @param {string|number} path - path key string (e.g. "0", "1-0", "2-1-3")
 	 * @returns
 	 */
 	moveTo(path) {
-		const index = Number(path)
-		return this.moveToIndex(index)
+		const key = String(path)
+		const index = this.data.findIndex((row) => row.key === key)
+		return index >= 0 ? this.moveToIndex(index) : false
 	}
 
 	/**

@@ -33,6 +33,54 @@ describe('NestedController', () => {
 			controller.moveTo(0)
 			expect(controller.focused).toEqual(items[0])
 		})
+
+		it('should move to second group by key when first group is expanded', () => {
+			const controller = new NestedController(items)
+
+			// Expand first group: data = ['0', '0-0', '0-1', '1', '2']
+			controller.expand('0')
+			expect(controller.data.length).toEqual(5)
+
+			// moveTo('1') should focus Item 2 (second group), not '0-0'
+			expect(controller.moveTo('1')).toBe(true)
+			expect(controller.focused).toEqual(items[1])
+			expect(controller.focusedKey).toBe('1')
+		})
+
+		it('should move to nested child by key', () => {
+			const controller = new NestedController(items)
+
+			// Expand first group: data = ['0', '0-0', '0-1', '1', '2']
+			controller.expand('0')
+
+			// moveTo('0-1') should focus Item 1.2
+			expect(controller.moveTo('0-1')).toBe(true)
+			expect(controller.focused).toEqual(items[0].children[1])
+			expect(controller.focusedKey).toBe('0-1')
+		})
+
+		it('should navigate correctly after moveTo on second group', () => {
+			const controller = new NestedController(items)
+
+			// Expand both groups
+			controller.expand('0')
+			controller.expand('1')
+			// data = ['0', '0-0', '0-1', '1', '1-0', '2']
+
+			// Move to second group
+			controller.moveTo('1')
+			expect(controller.focusedKey).toBe('1')
+
+			// moveNext should go to first child of second group
+			controller.moveNext()
+			expect(controller.focusedKey).toBe('1-0')
+			expect(controller.focused).toEqual(items[1].children[0])
+		})
+
+		it('should return false for invalid key', () => {
+			const controller = new NestedController(items)
+			expect(controller.moveTo('99')).toBe(false)
+		})
 	})
 
 	describe('expand', () => {

@@ -188,6 +188,80 @@ test.describe('List', () => {
 			await expect(firstGroup).not.toHaveAttribute('data-list-group-collapsed')
 		})
 
+		test('ArrowDown navigates into second group children', async ({ page }) => {
+			const list = page.locator('[data-list]').nth(2)
+			const groupLabels = list.locator('[data-list-group-label]')
+			const secondGroupItems = list.locator('[data-list-group]').nth(1).locator('[data-list-item]')
+
+			// Focus first group label and navigate to second group
+			await groupLabels.first().focus()
+			await page.keyboard.press('ArrowDown') // → Favorites child 1
+			await page.keyboard.press('ArrowDown') // → Favorites child 2
+			await page.keyboard.press('ArrowDown') // → Settings group label
+			await expect(groupLabels.nth(1)).toBeFocused()
+
+			// ArrowDown from second group label → first child of second group
+			await page.keyboard.press('ArrowDown')
+			await expect(secondGroupItems.first()).toBeFocused()
+
+			// ArrowDown → second child of second group
+			await page.keyboard.press('ArrowDown')
+			await expect(secondGroupItems.nth(1)).toBeFocused()
+		})
+
+		test('ArrowLeft collapses second group', async ({ page }) => {
+			const list = page.locator('[data-list]').nth(2)
+			const groupLabels = list.locator('[data-list-group-label]')
+			const secondGroup = list.locator('[data-list-group]').nth(1)
+
+			// Navigate to second group label
+			await groupLabels.first().focus()
+			await page.keyboard.press('ArrowDown')
+			await page.keyboard.press('ArrowDown')
+			await page.keyboard.press('ArrowDown')
+			await expect(groupLabels.nth(1)).toBeFocused()
+
+			// Collapse second group
+			await page.keyboard.press('ArrowLeft')
+			await expect(secondGroup).toHaveAttribute('data-list-group-collapsed')
+
+			// Expand second group
+			await page.keyboard.press('ArrowRight')
+			await expect(secondGroup).not.toHaveAttribute('data-list-group-collapsed')
+		})
+
+		test('full navigation across both groups and back', async ({ page }) => {
+			const list = page.locator('[data-list]').nth(2)
+			const groupLabels = list.locator('[data-list-group-label]')
+			const firstGroupItems = list.locator('[data-list-group]').first().locator('[data-list-item]')
+			const secondGroupItems = list.locator('[data-list-group]').nth(1).locator('[data-list-item]')
+
+			// Navigate forward through entire list
+			await groupLabels.first().focus()
+			await page.keyboard.press('ArrowDown')
+			await expect(firstGroupItems.first()).toBeFocused()
+			await page.keyboard.press('ArrowDown')
+			await expect(firstGroupItems.nth(1)).toBeFocused()
+			await page.keyboard.press('ArrowDown')
+			await expect(groupLabels.nth(1)).toBeFocused()
+			await page.keyboard.press('ArrowDown')
+			await expect(secondGroupItems.first()).toBeFocused()
+			await page.keyboard.press('ArrowDown')
+			await expect(secondGroupItems.nth(1)).toBeFocused()
+
+			// Navigate back through entire list
+			await page.keyboard.press('ArrowUp')
+			await expect(secondGroupItems.first()).toBeFocused()
+			await page.keyboard.press('ArrowUp')
+			await expect(groupLabels.nth(1)).toBeFocused()
+			await page.keyboard.press('ArrowUp')
+			await expect(firstGroupItems.nth(1)).toBeFocused()
+			await page.keyboard.press('ArrowUp')
+			await expect(firstGroupItems.first()).toBeFocused()
+			await page.keyboard.press('ArrowUp')
+			await expect(groupLabels.first()).toBeFocused()
+		})
+
 		test('repeated collapse/expand cycles work correctly', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
 			const firstGroup = list.locator('[data-list-group]').first()

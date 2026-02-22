@@ -20,12 +20,9 @@
   @apply text-surface-z6;
 }
 
-[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']) {
+[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='rokkit'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
   @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-b;
-}
-
-[data-style='rokkit'] [data-toggle-option]:focus-visible {
-  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-b ring-primary-z4 ring-2 outline-none;
 }
 
 /* Selected state */
@@ -42,7 +39,7 @@
 }
 
 [data-style='rokkit'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
-[data-style='rokkit'] [data-toggle-option]:focus-visible [data-toggle-icon] {
+[data-style='rokkit'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
   @apply text-surface-z7;
 }
 

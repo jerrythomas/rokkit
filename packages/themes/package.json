@@ -15,7 +15,8 @@
     "./material": "./src/material/index.css",
     "./material/*": "./src/material/*.css",
     "./glass": "./src/glass/index.css",
-    "./glass/*": "./src/glass/*.css"
+    "./glass/*": "./src/glass/*.css",
+    "./palette.css": "./src/palette.css"
   },
   "files": [
     "src"
