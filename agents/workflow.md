@@ -122,10 +122,11 @@ How to confirm it works (test commands, expected outcomes).
 
 ## Backlog Management
 
-Deferred work lives in `agents/backlog.md`:
+Deferred work lives in `agents/backlog/` as priority-ordered files:
 
+- `01-forms.md`, `02-ui-components.md`, `03-effects.md`, `04-infrastructure.md`, `05-charts.md`
 - Items are added when features are explicitly scoped out of current work
-- Each item includes: what exists, what’s needed, relevant design docs
+- Each item includes: what exists, what's needed, relevant design docs
 - Items are numbered and have actionable checklists
 - Review the backlog periodically during housekeeping sessions
 
@@ -165,7 +166,7 @@ For non-trivial implementation:
 | `agents/plan.md` | Active plan/checklist | During implementation |
 | `agents/open-questions.md` | Q&A tracking for design discussions | During question phases |
 | `agents/design-patterns.md` | Established patterns cookbook | When patterns are proven |
-| `agents/backlog.md` | Deferred items for future phases | When items are scoped out |
+| `agents/backlog/` | Priority-ordered backlog files | When items are scoped out |
 | `agents/sessions/` | Archived completed plans | On plan completion |
 | `docs/design/*.md` | Module design documents | When designs are agreed |
 | `docs/requirements/*.md` | Feature requirements | Reference only |

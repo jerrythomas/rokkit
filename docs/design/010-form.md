@@ -583,6 +583,113 @@ CommandConsole.svelte
 
 ---
 
+## Display-Only Schema Rendering
+
+### Architecture
+
+```
+FormRenderer receives display-* layout elements:
+  │
+  ├── type: 'display-table'
+  │   └── DisplayTable.svelte
+  │       ├── Wraps @rokkit/ui Table
+  │       ├── Accepts: data array (from scope), columns definition
+  │       ├── Optional: select ('one' | 'many')
+  │       └── Emits: onselect(selected)
+  │
+  ├── type: 'display-cards'
+  │   └── DisplayCardGrid.svelte
+  │       ├── Renders DisplayCard per item
+  │       ├── Responsive CSS grid
+  │       ├── Optional: select ('one' | 'many')
+  │       └── Fields with format hints
+  │
+  ├── type: 'display-section'
+  │   └── DisplaySection.svelte
+  │       ├── Key-value pairs from object
+  │       ├── Optional title
+  │       └── Fields with format hints
+  │
+  └── type: 'display-list'
+      └── DisplayList.svelte (simple styled list)
+```
+
+### DisplayValue Component
+
+Shared formatting component used by all display types:
+
+```svelte
+<script>
+  let { value, format = 'text' } = $props()
+
+  const formatted = $derived.by(() => {
+    switch (format) {
+      case 'currency': return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
+      case 'datetime': return new Date(value).toLocaleString()
+      case 'number': return new Intl.NumberFormat().format(value)
+      case 'boolean': return value ? '✓' : '✗'
+      default: return String(value ?? '')
+    }
+  })
+</script>
+
+<span data-display-value data-format={format}>{formatted}</span>
+```
+
+### FormBuilder Integration
+
+`#buildElements()` recognizes `display-*` types and produces display elements:
+
+```
+FormElement (display variant) {
+  scope: string
+  type: 'display-table' | 'display-cards' | 'display-section' | 'display-list'
+  value: any          // data at scope (array or object)
+  props: {
+    title?: string
+    columns?: Array<{ key, label, format? }>
+    fields?: Array<{ key, label, format? }>
+    select?: 'one' | 'many'
+  }
+}
+```
+
+### FormRenderer Routing
+
+```svelte
+{#each formBuilder.elements as element}
+  {#if element.type === 'display-table'}
+    <DisplayTable data={element.value} {...element.props} />
+  {:else if element.type === 'display-cards'}
+    <DisplayCardGrid data={element.value} {...element.props} />
+  {:else if element.type === 'display-section'}
+    <DisplaySection data={element.value} {...element.props} />
+  {:else if element.type === 'display-list'}
+    <DisplayList data={element.value} {...element.props} />
+  {:else if element.type === 'separator'}
+    <!-- existing separator handling -->
+  {:else}
+    <!-- existing input field handling -->
+  {/if}
+{/each}
+```
+
+### Data Attributes
+
+| Attribute | Element | Purpose |
+|-----------|---------|---------|
+| `data-display-table` | root | Table display container |
+| `data-display-cards` | root | Card grid container |
+| `data-display-card` | card | Individual card |
+| `data-display-section` | root | Key-value section |
+| `data-display-field` | row | Individual field row |
+| `data-display-value` | value | Formatted value |
+| `data-format` | value | Format hint for styling |
+| `data-selectable` | container | Has selection enabled |
+| `data-selected` | item | Currently selected |
+
+---
+
 ## Legacy Migration Path
 
 ### What Needs Migration
@@ -726,3 +833,4 @@ CommandConsole.svelte
 | 14 | Semantic command input | Future | 5 |
 | 15 | Legacy component retirement | Low | After Phase 4 |
 | 16 | ramda dependency removal | Low | Any phase |
+| 17 | Display-only schema rendering | Medium | 2–3 |

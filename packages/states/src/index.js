@@ -1,4 +1,4 @@
-export { TableWrapper } from './tabular.svelte.js'
+export { TableController } from './table-controller.svelte.js'
 export { Proxy } from './proxy.svelte.js'
 export { vibe } from './vibe.svelte.js'
 export { ListController } from './list-controller.svelte.js'

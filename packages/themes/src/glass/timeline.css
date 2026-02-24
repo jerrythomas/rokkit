@@ -1,0 +1,46 @@
+/**
+ * Timeline - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Circle
+   ============================================================================= */
+
+[data-style='glass'] [data-timeline-circle] {
+	@apply border-surface-z5/30 text-surface-z6;
+}
+
+[data-style='glass'] [data-timeline-item][data-completed] [data-timeline-circle] {
+	@apply bg-primary/80 border-primary/50 text-on-primary backdrop-blur-sm;
+}
+
+[data-style='glass'] [data-timeline-item][data-active] [data-timeline-circle] {
+	@apply border-primary/60 text-primary;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+/* =============================================================================
+   Connector
+   ============================================================================= */
+
+[data-style='glass'] [data-timeline-connector] {
+	@apply bg-surface-z5/20;
+}
+
+[data-style='glass'] [data-timeline-item][data-completed] [data-timeline-connector] {
+	@apply bg-primary/40;
+}
+
+/* =============================================================================
+   Body
+   ============================================================================= */
+
+[data-style='glass'] [data-timeline-title] {
+	@apply text-surface-z8;
+}
+
+[data-style='glass'] [data-timeline-description] {
+	@apply text-surface-z6;
+}

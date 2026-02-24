@@ -1,0 +1,61 @@
+/**
+ * Range - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-style='glass'] [data-range-bar] {
+	@apply bg-surface-z2/50 border border-surface-z5/20;
+}
+
+[data-style='glass'] [data-range-selected] {
+	@apply bg-primary/40;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-style='glass'] [data-range-thumb] {
+	@apply bg-primary/80 border-primary/50 backdrop-blur-sm;
+}
+
+[data-style='glass'] [data-range-thumb][data-sliding] {
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+[data-style='glass'] [data-range-thumb]:focus-visible {
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-style='glass'] [data-range-tick] {
+	@apply text-surface-z6;
+}
+
+[data-style='glass'] [data-tick-bar] {
+	@apply border-surface-z5/40;
+}
+
+[data-style='glass'] [data-tick-label] {
+	@apply text-surface-z6;
+}
+
+/* =============================================================================
+   Disabled
+   ============================================================================= */
+
+[data-style='glass'] [data-range][data-disabled] [data-range-thumb] {
+	@apply bg-surface-z4/50 border-surface-z4/30;
+}
+
+[data-style='glass'] [data-range][data-disabled] [data-range-selected] {
+	@apply bg-surface-z4/30;
+}

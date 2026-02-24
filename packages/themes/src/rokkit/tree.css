@@ -101,3 +101,23 @@
 [data-style='rokkit'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-badge] {
   @apply text-surface-z7 from-surface-z4 to-surface-z3 bg-gradient-to-b;
 }
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
+  @apply bg-primary-z3;
+}
+
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-node][data-selected='true'] [data-tree-node-row] {
+  @apply bg-primary-z4;
+}
+
+[data-style='rokkit'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+  @apply text-primary-z9;
+}
+
+[data-style='rokkit'] [data-tree-node][data-selected='true'] [data-tree-item-content] [data-item-icon] {
+  @apply text-primary-z6;
+}

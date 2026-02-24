@@ -1,12 +1,10 @@
 <script>
-	import { Pill, Item } from '@rokkit/ui'
-	import { FieldMapper } from '@rokkit/core'
+	import { Pill } from '@rokkit/ui'
 
 	let message = $state()
 	function handleRemove(event) {
 		message = JSON.stringify(event.detail, null, 2)
 	}
-	let mapping = new FieldMapper({ text: 'title' }, { default: Item })
 </script>
 
 <span class="flex flex-col items-start gap-2">
@@ -17,7 +15,7 @@
 		removable={true}
 		onremove={handleRemove}
 	/>
-	<Pill value={{ title: 'Content with mapping' }} {mapping} class="px-10 text-blue-500" />
+	<Pill value={{ text: 'Content with custom class' }} class="px-10 text-blue-500" />
 </span>
 
 Click on the removable Removable to see the remove event details:

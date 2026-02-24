@@ -212,7 +212,7 @@ export function createLookupManager(lookupConfigs) {
 	 */
 	async function handleFieldChange(changedField, formData) {
 		// Find all lookups that depend on this field
-		for (const [fieldPath, lookup] of lookups) {
+		for (const [_fieldPath, lookup] of lookups) {
 			if (lookup.dependsOn.includes(changedField)) {
 				// Reset dependent field value and fetch new options
 				await lookup.fetch(formData)
@@ -226,7 +226,7 @@ export function createLookupManager(lookupConfigs) {
 	 */
 	async function initialize(formData) {
 		const promises = []
-		for (const [fieldPath, lookup] of lookups) {
+		for (const [_fieldPath, lookup] of lookups) {
 			// Only fetch for lookups without dependencies or with all deps satisfied
 			if (lookup.dependsOn.length === 0) {
 				promises.push(lookup.fetch(formData))

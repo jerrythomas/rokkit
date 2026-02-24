@@ -1,16 +1,7 @@
 <script>
-	export let size = 10
-	export let thickness = 0.5
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
-	export let data = []
+	let { size = 10, thickness = 0.5, fill = 'currentColor', stroke = 'currentColor', data = [] } = $props()
 
-	const polygons = data.map((points) => points.map((point) => point * size).join(', '))
-	// [
-	// 	[0, 0.5 * size, 0.5 * size, size, 0, size],
-	// 	[0.5 * size, 0, 0, 0, 0, 0.5 * size],
-	// 	[size, 0, 0.5 * size, 0.5 * size, size, size]
-	// ]
+	let polygons = $derived(data.map((points) => points.map((point) => point * size).join(', ')))
 </script>
 
 {#each polygons as points, index (index)}

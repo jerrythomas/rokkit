@@ -1,4 +1,4 @@
-import { describe, expect, beforeEach, it } from 'vitest'
+import { describe, expect, beforeEach, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/svelte'
 import { userEvent } from '@testing-library/user-event'
 import { flushSync, tick } from 'svelte'
@@ -135,4 +135,24 @@ describe('InputText', () => {
 		const element = container.querySelector('input')
 		expect(element.size).toBe(20)
 	})
+
+	it('should call onchange with string value, not event object', async () => {
+		const onchange = vi.fn()
+		const props = $state({ value: 'initial', onchange })
+		const { container } = render(InputText, { props })
+
+		const element = container.querySelector('input')
+		// Simulate user changing the value and triggering change
+		await userEvent.clear(element)
+		await userEvent.type(element, 'updated')
+		await userEvent.tab() // trigger blur which fires change event
+		await tick()
+
+		// onchange should be called with string value, not Event
+		expect(onchange).toHaveBeenCalled()
+		const lastCall = onchange.mock.calls[onchange.mock.calls.length - 1]
+		expect(typeof lastCall[0]).toBe('string')
+		expect(lastCall[0]).toBe('updated')
+	})
+
 })

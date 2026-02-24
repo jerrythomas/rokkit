@@ -119,3 +119,23 @@
 [data-style='rokkit'] [data-list] [data-list-divider] {
   @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
 }
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='rokkit'] [data-list] [data-list-item][data-selected='true'] {
+  @apply bg-primary-z3 text-primary-z9;
+}
+
+[data-style='rokkit'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+  @apply bg-primary-z4 text-primary-z9;
+}
+
+[data-style='rokkit'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+  @apply bg-primary-z5;
+}
+
+[data-style='rokkit'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+  @apply text-primary-z6;
+}

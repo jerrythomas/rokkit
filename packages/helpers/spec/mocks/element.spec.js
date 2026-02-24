@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 import { describe, it, expect, vi } from 'vitest'
 import {
 	getMockNode,

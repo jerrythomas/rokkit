@@ -1,1 +1,0 @@
-<Item value="Sample Text" />

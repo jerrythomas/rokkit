@@ -1,12 +1,9 @@
 <script>
 	import { patterns } from './constants'
 
-	export let size = 10
-	export let thickness = 0.5
-	export let stroke = 'currentColor'
-	export let name = 'cross-hatch'
+	let { size = 10, thickness = 0.5, stroke = 'currentColor', name = 'cross-hatch' } = $props()
 
-	$: d = patterns[name](size)
+	let d = $derived(patterns[name](size))
 </script>
 
 <path {d} {stroke} stroke-width={thickness} fill="none" />

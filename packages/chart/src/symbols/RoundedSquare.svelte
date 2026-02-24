@@ -1,12 +1,8 @@
 <script>
-	export let x = 0
-	export let y = 0
-	export let size = 1
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
+	let { x = 0, y = 0, size = 1, fill = 'currentColor', stroke = 'currentColor', onclick, onmouseover, onmouseleave, onfocus, ...restProps } = $props()
 
-	$: r = size * 3.534
-	$: props = { rx: r * 0.1, ry: r * 0.1, ...$$restProps }
+	let r = $derived(size * 3.534)
+	let props = $derived({ rx: r * 0.1, ry: r * 0.1, ...restProps })
 </script>
 
 <rect
@@ -18,9 +14,9 @@
 	{stroke}
 	{...props}
 	role="button"
-	on:click
-	on:mouseover
-	on:mouseleave
-	on:focus
+	{onclick}
+	{onmouseover}
+	{onmouseleave}
+	{onfocus}
 	tabindex="0"
 />

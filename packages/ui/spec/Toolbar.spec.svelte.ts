@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Toolbar from '../src/components/Toolbar.svelte'
 import ToolbarSnippetTest from './ToolbarSnippetTest.svelte'
 
@@ -119,17 +119,137 @@ describe('Toolbar', () => {
 	it('triggers on Enter key', async () => {
 		const onclick = vi.fn()
 		const { container } = render(Toolbar, { items: basicItems, onclick })
-		const btn = container.querySelectorAll('[data-toolbar-item]')[0]
-		await fireEvent.keyDown(btn, { key: 'Enter' })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'Enter' })
 		expect(onclick).toHaveBeenCalledWith('bold', basicItems[0])
 	})
 
 	it('triggers on Space key', async () => {
 		const onclick = vi.fn()
 		const { container } = render(Toolbar, { items: basicItems, onclick })
-		const btn = container.querySelectorAll('[data-toolbar-item]')[2]
-		await fireEvent.keyDown(btn, { key: ' ' })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[2].focus()
+		// Move focus to the third item first
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await fireEvent.keyDown(toolbar, { key: ' ' })
 		expect(onclick).toHaveBeenCalledWith('underline', basicItems[2])
+	})
+
+	// ─── Arrow Key Navigation ───────────────────────────────────────
+
+	it('moves focus right with ArrowRight', async () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await waitFor(() => expect(document.activeElement).toBe(btns[1]))
+	})
+
+	it('moves focus left with ArrowLeft', async () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await fireEvent.keyDown(toolbar, { key: 'ArrowLeft' })
+		await waitFor(() => expect(document.activeElement).toBe(btns[0]))
+	})
+
+	it('moves focus to first with Home', async () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await fireEvent.keyDown(toolbar, { key: 'Home' })
+		await waitFor(() => expect(document.activeElement).toBe(btns[0]))
+	})
+
+	it('moves focus to last with End', async () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'End' })
+		await waitFor(() => expect(document.activeElement).toBe(btns[2]))
+	})
+
+	it('does not move past the last item', async () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'End' })
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		await waitFor(() => expect(document.activeElement).toBe(btns[2]))
+	})
+
+	it('does not move before the first item', async () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowLeft' })
+		expect(document.activeElement).toBe(btns[0])
+	})
+
+	it('skips separators during navigation', async () => {
+		const items = [
+			{ text: 'Bold', value: 'bold', icon: 'mdi:bold' },
+			{ type: 'separator' },
+			{ text: 'Italic', value: 'italic', icon: 'mdi:italic' }
+		]
+		const { container } = render(Toolbar, { items })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		expect(document.activeElement).toBe(btns[1])
+	})
+
+	it('skips spacers during navigation', async () => {
+		const items = [
+			{ text: 'Left', value: 'left', icon: 'mdi:left' },
+			{ type: 'spacer' },
+			{ text: 'Right', value: 'right', icon: 'mdi:right' }
+		]
+		const { container } = render(Toolbar, { items })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		expect(document.activeElement).toBe(btns[1])
+	})
+
+	it('uses ArrowDown/ArrowUp for vertical toolbar', async () => {
+		const { container } = render(Toolbar, { items: basicItems, position: 'left' })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowDown' })
+		expect(document.activeElement).toBe(btns[1])
+		await fireEvent.keyDown(toolbar, { key: 'ArrowUp' })
+		await waitFor(() => expect(document.activeElement).toBe(btns[0]))
+	})
+
+	it('skips disabled items during navigation', async () => {
+		const items = [
+			{ text: 'A', value: 'a', icon: 'mdi:a' },
+			{ text: 'B', value: 'b', icon: 'mdi:b', disabled: true },
+			{ text: 'C', value: 'c', icon: 'mdi:c' }
+		]
+		const { container } = render(Toolbar, { items })
+		const toolbar = container.querySelector('[data-toolbar]')!
+		const btns = container.querySelectorAll('[data-toolbar-item]')
+		btns[0].focus()
+		await fireEvent.keyDown(toolbar, { key: 'ArrowRight' })
+		expect(document.activeElement).toBe(btns[2])
 	})
 
 	// ─── Disabled ───────────────────────────────────────────────────

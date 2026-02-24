@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Tree from '../src/components/Tree.svelte'
 
 const flatItems = [
@@ -363,5 +363,179 @@ describe('Tree', () => {
 		const link = container.querySelector('a[data-tree-item-content]')
 		expect(link).toBeTruthy()
 		expect(link?.getAttribute('href')).toBe('/home')
+	})
+
+	// ─── Multi-Selection ────────────────────────────────────────────
+
+	it('applies data-multiselect on container when multiselect is true', () => {
+		const { container } = render(Tree, { items: flatItems, multiselect: true })
+		const tree = container.querySelector('[data-tree]')
+		expect(tree?.hasAttribute('data-multiselect')).toBe(true)
+	})
+
+	it('does not apply data-multiselect when multiselect is false', () => {
+		const { container } = render(Tree, { items: flatItems })
+		const tree = container.querySelector('[data-tree]')
+		expect(tree?.hasAttribute('data-multiselect')).toBe(false)
+	})
+
+	it('sets aria-multiselectable when multiselect is true', () => {
+		const { container } = render(Tree, { items: flatItems, multiselect: true })
+		const tree = container.querySelector('[data-tree]')
+		expect(tree?.getAttribute('aria-multiselectable')).toBe('true')
+	})
+
+	it('uses aria-selected for active state in single-select mode', () => {
+		const { container } = render(Tree, { items: flatItems, active: 'file1' })
+		const nodes = container.querySelectorAll('[data-tree-node]')
+		expect(nodes[0]?.getAttribute('aria-selected')).toBe('true')
+		expect(nodes[1]?.getAttribute('aria-selected')).toBe('false')
+	})
+
+	it('renders aria-selected=false on all items in multiselect mode with no selection', () => {
+		const { container } = render(Tree, { items: flatItems, multiselect: true })
+		const nodes = container.querySelectorAll('[data-tree-node]')
+		nodes.forEach((node) => {
+			expect(node.getAttribute('aria-selected')).toBe('false')
+		})
+	})
+
+	// ─── Lazy Loading ───────────────────────────────────────────────
+
+	it('renders expand toggle for nodes with children: true', () => {
+		const items = [
+			{ text: 'Folder', value: 'folder', children: true },
+			{ text: 'File', value: 'file' }
+		]
+		const { container } = render(Tree, { items })
+		const nodes = container.querySelectorAll('[data-tree-node]')
+		// Folder should have expand toggle (data-tree-has-children)
+		expect(nodes[0]?.hasAttribute('data-tree-has-children')).toBe(true)
+		expect(nodes[0]?.getAttribute('aria-expanded')).toBe('false')
+		// File should not
+		expect(nodes[1]?.hasAttribute('data-tree-has-children')).toBe(false)
+	})
+
+	it('calls onloadchildren when expanding a lazy node', async () => {
+		const onloadchildren = vi.fn().mockResolvedValue([
+			{ text: 'Child 1', value: 'c1' },
+			{ text: 'Child 2', value: 'c2' }
+		])
+		const items = [
+			{ text: 'Folder', value: 'folder', children: true },
+			{ text: 'File', value: 'file' }
+		]
+		const { container } = render(Tree, { items, onloadchildren })
+		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')!
+		await fireEvent.click(toggleBtn)
+
+		// Wait for async load to complete
+		await waitFor(() => {
+			expect(onloadchildren).toHaveBeenCalled()
+			// Check the value argument (first arg) — item ref is mutated after load
+			expect(onloadchildren.mock.calls[0][0]).toBe('folder')
+		})
+	})
+
+	it('shows children after onloadchildren resolves', async () => {
+		const onloadchildren = vi.fn().mockResolvedValue([
+			{ text: 'Child 1', value: 'c1' },
+			{ text: 'Child 2', value: 'c2' }
+		])
+		const items = [
+			{ text: 'Folder', value: 'folder', children: true },
+			{ text: 'File', value: 'file' }
+		]
+		const { container } = render(Tree, { items, onloadchildren })
+		// Initially 2 nodes
+		expect(container.querySelectorAll('[data-tree-node]').length).toBe(2)
+
+		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')!
+		await fireEvent.click(toggleBtn)
+
+		// Wait for children to appear
+		await waitFor(() => {
+			const nodes = container.querySelectorAll('[data-tree-node]')
+			expect(nodes.length).toBe(4) // Folder + 2 children + File
+		})
+	})
+
+	it('does not re-call onloadchildren after children are loaded', async () => {
+		const onloadchildren = vi.fn().mockResolvedValue([
+			{ text: 'Child', value: 'c1' }
+		])
+		const items = [{ text: 'Folder', value: 'folder', children: true }]
+		const { container } = render(Tree, { items, onloadchildren })
+
+		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')!
+		// First click: expand (triggers load)
+		await fireEvent.click(toggleBtn)
+		await waitFor(() => {
+			expect(container.querySelectorAll('[data-tree-node]').length).toBe(2)
+		})
+
+		// Second click: collapse
+		await fireEvent.click(toggleBtn)
+		await waitFor(() => {
+			expect(container.querySelectorAll('[data-tree-node]').length).toBe(1)
+		})
+
+		// Third click: expand again (should NOT call onloadchildren again)
+		await fireEvent.click(toggleBtn)
+		await waitFor(() => {
+			expect(container.querySelectorAll('[data-tree-node]').length).toBe(2)
+		})
+
+		expect(onloadchildren).toHaveBeenCalledTimes(1)
+	})
+
+	it('stays collapsed on onloadchildren rejection', async () => {
+		const onloadchildren = vi.fn().mockRejectedValue(new Error('Network error'))
+		const items = [{ text: 'Folder', value: 'folder', children: true }]
+		const { container } = render(Tree, { items, onloadchildren })
+
+		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')!
+		await fireEvent.click(toggleBtn)
+
+		// Wait for the rejection to be handled
+		await waitFor(() => {
+			expect(onloadchildren).toHaveBeenCalled()
+		})
+
+		// Should still have only 1 node (not expanded)
+		const nodes = container.querySelectorAll('[data-tree-node]')
+		expect(nodes.length).toBe(1)
+		expect(nodes[0]?.getAttribute('aria-expanded')).toBe('false')
+	})
+
+	it('supports lazy loading in nested trees', async () => {
+		const onloadchildren = vi.fn().mockResolvedValue([
+			{ text: 'Nested Child', value: 'nc1' }
+		])
+		const items = [
+			{
+				text: 'Root',
+				value: 'root',
+				children: [
+					{ text: 'Lazy Folder', value: 'lazy', children: true }
+				]
+			}
+		]
+		const { container } = render(Tree, { items, expandAll: true, onloadchildren })
+		// Root expanded: Root + Lazy Folder = 2 nodes
+		expect(container.querySelectorAll('[data-tree-node]').length).toBe(2)
+
+		// Find the lazy folder's toggle button via its node path
+		const lazyNode = container.querySelector('[data-tree-path="0-0"]')!
+		const lazyToggle = lazyNode.querySelector('[data-tree-toggle-btn]')!
+		await fireEvent.click(lazyToggle)
+
+		await waitFor(() => {
+			// Root + Lazy Folder + Nested Child = 3
+			expect(container.querySelectorAll('[data-tree-node]').length).toBe(3)
+		})
+
+		expect(onloadchildren).toHaveBeenCalled()
+		expect(onloadchildren.mock.calls[0][0]).toBe('lazy')
 	})
 })

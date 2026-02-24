@@ -250,4 +250,80 @@ describe('ListController', () => {
 			expect(multi.selected).toEqual([items[0]])
 		})
 	})
+
+	describe('range selection', () => {
+		it('should select range between anchor and target', () => {
+			const multi = new ListController(items, null, {}, { multiselect: true })
+			// Select first item to set anchor
+			multi.select('0')
+			expect(multi.selected).toEqual([items[0]])
+
+			// Range select to last item
+			expect(multi.selectRange('2')).toBe(true)
+			expect(multi.selected).toEqual([items[0], items[1], items[2]])
+		})
+
+		it('should select range in reverse direction', () => {
+			const multi = new ListController(items, null, {}, { multiselect: true })
+			multi.select('2')
+			expect(multi.selectRange('0')).toBe(true)
+			expect(multi.selected).toEqual([items[0], items[1], items[2]])
+		})
+
+		it('should skip disabled items in range', () => {
+			const disabledItems = $state([
+				{ text: 'A' },
+				{ text: 'B', disabled: true },
+				{ text: 'C' },
+				{ text: 'D' }
+			])
+			const multi = new ListController(disabledItems, null, {}, { multiselect: true })
+			multi.select('0')
+			expect(multi.selectRange('3')).toBe(true)
+			// B is disabled, should be skipped
+			expect(multi.selected).toEqual([disabledItems[0], disabledItems[2], disabledItems[3]])
+		})
+
+		it('should move focus to target but keep anchor', () => {
+			const multi = new ListController(items, null, {}, { multiselect: true })
+			multi.select('0')
+			multi.selectRange('2')
+			expect(multi.focused).toEqual(items[2])
+			// Second range select from same anchor
+			multi.selectRange('1')
+			expect(multi.selected).toEqual([items[0], items[1]])
+			expect(multi.focused).toEqual(items[1])
+		})
+
+		it('should fall back to select when not multiselect', () => {
+			const single = new ListController(items)
+			single.select('0')
+			expect(single.selectRange('2')).toBe(true)
+			// In single mode, selectRange acts as select
+			expect(single.selected).toEqual([items[2]])
+		})
+
+		it('should return false for invalid key', () => {
+			const multi = new ListController(items, null, {}, { multiselect: true })
+			multi.select('0')
+			expect(multi.selectRange('99')).toBe(false)
+		})
+
+		it('should use focusedKey as anchor when no prior selection', () => {
+			const multi = new ListController(items, null, {}, { multiselect: true })
+			multi.moveFirst()
+			expect(multi.selectRange('2')).toBe(true)
+			expect(multi.selected).toEqual([items[0], items[1], items[2]])
+		})
+
+		it('extendSelection sets anchor for subsequent range', () => {
+			const multi = new ListController(items, null, {}, { multiselect: true })
+			// Toggle-select item 1 (sets anchor)
+			multi.extendSelection('1')
+			expect(multi.selected).toEqual([items[1]])
+			// Range from anchor (1) to target (2)
+			multi.selectRange('2')
+			expect(multi.selected).toEqual([items[1], items[2]])
+		})
+	})
 })

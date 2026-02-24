@@ -6,16 +6,16 @@
 		x: 'Economy (MPG)',
 		y: 'Horsepower'
 	}
-	
-	let chartType = 'scatter'
-	let colorBy = 'cyl'
-	let showLegend = true
-	
-	$: plotData = data.map(d => ({
+
+	let chartType = $state('scatter')
+	let colorBy = $state('cyl')
+	let showLegend = $state(true)
+
+	let plotData = $derived(data.map(d => ({
 		...d,
 		cylinders: `${d.cyl} cylinders`,
 		transmission: d.am ? 'Manual' : 'Automatic'
-	}))
+	})))
 </script>
 
 <div class="space-y-6">

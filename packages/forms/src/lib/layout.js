@@ -13,7 +13,7 @@ function deriveElementLayout(val, scope, label) {
 		return {
 			title: label,
 			scope: path,
-			// eslint-disable-next-line no-use-before-define
+			 
 			...deriveLayoutFromValue(val, path)
 		}
 	}
@@ -40,7 +40,7 @@ function deriveObjectLayout(value, scope) {
  * @returns {import('../types').DataLayout}
  */
 function deriveArrayLayout(value, scope) {
-	// eslint-disable-next-line no-use-before-define
+	 
 	const schema = deriveLayoutFromValue(value[0], '#')
 	return {
 		scope,

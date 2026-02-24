@@ -3,11 +3,7 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit Tree / NestedList
 
-> Composable tree components for hierarchical data display with selection and navigation.
-
-Rokkit provides two tree implementations:
-- **bits-ui Tree** - Low-level composable primitives for custom tree UIs
-- **ui Tree/NestedList** - Higher-level data-driven tree with built-in features
+> Data-driven tree component for hierarchical data display with selection and navigation.
 
 ## Quick Start (Data-Driven)
 
@@ -151,50 +147,6 @@ Customize field names to match your data:
 </Tree.Root>
 \`\`\`
 
-## Composable Tree
-
-For maximum customization, use the low-level composable API:
-
-\`\`\`svelte
-<script>
-  import Tree from '@rokkit/composables/tree'
-</script>
-
-<Tree.Root>
-  <Tree.Viewport>
-    <Tree.NodeList>
-      <Tree.Node>
-        <Tree.Item>Item 1</Tree.Item>
-        <Tree.NodeList>
-          <Tree.Node>
-            <Tree.Item>Item 1.1</Tree.Item>
-          </Tree.Node>
-          <Tree.Node>
-            <Tree.Item>Item 1.2</Tree.Item>
-          </Tree.Node>
-        </Tree.NodeList>
-      </Tree.Node>
-      <Tree.Node>
-        <Tree.Item>Item 2</Tree.Item>
-      </Tree.Node>
-    </Tree.NodeList>
-  </Tree.Viewport>
-</Tree.Root>
-\`\`\`
-
-### Composable Components
-
-| Component | Purpose |
-|-----------|---------|
-| \`Tree.Root\` | Root container with context |
-| \`Tree.Viewport\` | Scrollable viewport |
-| \`Tree.NodeList\` | Container for nodes |
-| \`Tree.Node\` | Individual tree node |
-| \`Tree.Item\` | Node content wrapper |
-| \`Tree.Line\` | Connection lines |
-| \`Tree.Empty\` | Empty state |
-| \`Tree.Loading\` | Loading state |
-
 ## NestedList Component
 
 Recursive list for rendering nested data:
@@ -279,9 +231,6 @@ import { Tree } from '@rokkit/ui'
 // Or specific components
 import Tree from '@rokkit/ui/tree'
 import { NestedList } from '@rokkit/ui'
-
-// Low-level composables
-import Tree from '@rokkit/composables/tree'
 \`\`\`
 
 ## TypeScript Types

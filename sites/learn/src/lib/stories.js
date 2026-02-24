@@ -185,9 +185,10 @@ export function findSection(sections, slug) {
 
 /**
  * Get the group that contains a specific section
- * @param {string} sectionId - The section ID to find the group for
+ * @param {Array} sections - The sections to search
+ * @param {string} slug - The section slug to find the group for
  * @returns {Object|null} The group object or null if not found
  */
-export function findGroupForSection(sections, sectionId) {
-	return sections.find((group) => group.children.some((child) => child.id === sectionId)) || null
+export function findGroupForSection(sections, slug) {
+	return sections.find((group) => group.children.some((child) => child.slug === slug)) || null
 }

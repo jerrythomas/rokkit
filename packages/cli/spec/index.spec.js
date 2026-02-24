@@ -25,9 +25,9 @@ describe('CLI Integration', () => {
 	beforeEach(() => {
 		// Store original process.argv
 		originalArgv = process.argv
-		// eslint-disable-next-line no-console
+		 
 		console.info = vi.fn()
-		// eslint-disable-next-line no-console
+		 
 		console.warn = vi.fn()
 		// Spy on console methods
 		consoleSpy = vi.spyOn(console, 'info')
@@ -58,7 +58,7 @@ describe('CLI Integration', () => {
 		await import('../src/index.js')
 		expect(getFolderNames).toHaveBeenCalledWith('./src')
 		expect(readConfigFile).toHaveBeenCalledWith('./src/config.json')
-		expect(bundleFolders).toHaveBeenCalled
+		expect(bundleFolders).toHaveBeenCalled()
 	})
 
 	it('should call bundle with custom input and output', async () => {

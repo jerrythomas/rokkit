@@ -1,11 +1,5 @@
 <script>
-	export let id
-	export let path
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
-	export let thickness = 0.5
-	export let patternUnits = 'userSpaceOnUse'
-	export let size = 10
+	let { id, path, fill = 'currentColor', stroke = 'currentColor', thickness = 0.5, patternUnits = 'userSpaceOnUse', size = 10 } = $props()
 </script>
 
 <pattern {id} {patternUnits} width={size} height={size}>

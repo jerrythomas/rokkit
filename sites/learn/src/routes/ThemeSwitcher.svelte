@@ -1,6 +1,6 @@
 <script>
 	import { vibe } from '@rokkit/states'
-	import { ToggleThemeMode } from '@rokkit/ui'
+	import { ThemeSwitcherToggle } from '@rokkit/app'
 	// import { InputSelect } from '@rokkit/forms'
 	let {
 		themes = $bindable([
@@ -18,4 +18,4 @@
 
 <!-- <InputSelect options={themes} bind:value={currentTheme} onchange={handleThemeChange}></InputSelect> -->
 
-<ToggleThemeMode square />
+<ThemeSwitcherToggle square />

@@ -101,8 +101,7 @@
 	</div>
 
 	<!-- Next Steps -->
-	<section>
-		data-card-cta>
+	<section data-card-cta>
 		<h2>Ready for more?</h2>
 		<p>
 			Now that you understand how the Select component works, explore MultiSelect for multiple
@@ -113,8 +112,8 @@
 				MultiSelect
 				<span class="ml-2">→</span>
 			</a>
-			<a href="/elements/drop-down" class="button is-primary">
-				DropDown
+			<a href="/elements/menu" class="button is-primary">
+				Menu
 				<span class="ml-2">→</span>
 			</a>
 		</span>

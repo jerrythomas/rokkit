@@ -2,9 +2,9 @@
 	import ContentNavigator from './ContentNavigator.svelte'
 	import { Tabs } from '@rokkit/ui'
 
-	let items = ['Dashboard', 'Analytics', 'Reports', 'Settings']
+	const items = ['Dashboard', 'Analytics', 'Reports', 'Settings']
 	let value = $state('Dashboard')
-	
+
 	const contentData = {
 		'Dashboard': {
 			title: 'Dashboard Overview',
@@ -27,26 +27,30 @@
 			metrics: ['Profile Complete: 85%', 'Notifications: 7', 'Integrations: 3']
 		}
 	}
-	
-	$: currentContent = contentData[value] || contentData['Dashboard']
+
+	let currentContent = $derived(contentData[value] || contentData['Dashboard'])
 </script>
 
 <div class="h-64 border border-gray-200 rounded-lg overflow-hidden">
 	<ContentNavigator vertical>
-		<div slot="nav" class="bg-gray-50 p-4 border-b">
-			<Tabs {items} bind:value />
-		</div>
-		<div slot="content" class="flex-grow p-6">
-			<div>
-				<h3 class="text-lg font-semibold mb-2">{currentContent.title}</h3>
-				<p class="text-gray-600 mb-4">{currentContent.description}</p>
-				<div class="space-y-2">
-					{#each currentContent.metrics as metric}
-						<div class="text-sm bg-blue-50 p-2 rounded">{metric}</div>
-					{/each}
+		{#snippet nav()}
+			<div class="bg-gray-50 p-4 border-b">
+				<Tabs {items} bind:value />
+			</div>
+		{/snippet}
+		{#snippet content()}
+			<div class="flex-grow p-6">
+				<div>
+					<h3 class="text-lg font-semibold mb-2">{currentContent.title}</h3>
+					<p class="text-gray-600 mb-4">{currentContent.description}</p>
+					<div class="space-y-2">
+						{#each currentContent.metrics as metric}
+							<div class="text-sm bg-blue-50 p-2 rounded">{metric}</div>
+						{/each}
+					</div>
 				</div>
 			</div>
-		</div>
+		{/snippet}
 	</ContentNavigator>
 </div>
 

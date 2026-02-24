@@ -181,23 +181,23 @@ Vite/Rollup tree-shakes at the ES module level. Unused exports from `@rokkit/sta
 - [ ] Replace `GroupedList` in sites/learn Sidebar with ui/List
 
 ### Phase B: Add Dependencies to UI
-- [ ] Add `@rokkit/states` and `@rokkit/actions` to ui package.json dependencies
-- [ ] Verify build and tests pass with new dependencies
+- [x] Add `@rokkit/states` and `@rokkit/actions` to ui package.json dependencies
+- [x] Verify build and tests pass with new dependencies
 
 ### Phase C: Migrate Components (One at a Time)
-- [ ] Migrate Toggle to use ListController
-- [ ] Migrate Menu to use ListController + navigator
-- [ ] Migrate Select to use ListController + navigator
-- [ ] Migrate MultiSelect
-- [ ] Migrate List to use ListController + navigator
-- [ ] Migrate Toolbar
-- [ ] Migrate Tree to use NestedController + navigator
-- [ ] Unify Proxy/ItemProxy — replace ItemProxy with states.Proxy
+- [x] Migrate Toggle to use ListController (commit `54202902`)
+- [x] Migrate Menu to use ListController + navigator (2026-02-22)
+- [x] Migrate Select to use ListController + navigator (2026-02-23)
+- [x] Migrate MultiSelect (2026-02-23)
+- [x] Migrate List to use NestedController + navigator (2026-02-21)
+- [x] Toolbar — skipped, minimal keyboard code (~7 lines Enter/Space only), no arrow navigation
+- [x] Migrate Tree to use NestedController + navigator (2026-02-23)
+- [x] Unify Proxy/ItemProxy — assessed and deferred: different abstractions (see backlog #3). states.Proxy is reactive+mutable data model; ItemProxy is read-only view-layer field mapper with UI-specific getters. Unification would add unnecessary reactivity overhead and break clean MVC separation.
 
-### Phase D: Remove Composables
-- [ ] Delete `packages/composables/`
-- [ ] Remove from workspace configuration
-- [ ] Update all documentation references
+### Phase D: Remove Composables (2026-02-23)
+- [x] Delete `packages/composables/` (55 files, 26 tests)
+- [x] Remove from workspace — auto-discovered via `packages/*` glob, bun.lock regenerated
+- [x] Update documentation references (LLM docs, rules, memory, learn site LLM generators)
 
 ## Related
 

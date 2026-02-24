@@ -8,9 +8,9 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { shades, defaultPalette } from '@rokkit/core'
+import { shades, defaultPalette, defaultIcons, iconShortcuts } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
-import { iconShortcuts, defaultIcons, Theme } from '@rokkit/themes'
+import { Theme } from '@rokkit/core'
 
 const mapping = { surface: 'shark' }
 const theme = new Theme()

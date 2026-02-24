@@ -1,19 +1,12 @@
 <script>
 	import { namedShapes } from './constants'
 
-	export let x = 0
-	export let y = 0
-	export let size = 1
-	export let fill = 'none'
-	export let stroke = 'currentColor'
-	export let thickness = 1
+	let { x = 0, y = 0, size = 1, fill = 'none', stroke = 'currentColor', thickness = 1, name = 'circle', onclick, onmouseover, onmouseleave, onfocus, onblur } = $props()
 
-	export let name = 'circle'
-
-	$: d = name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size)
+	let d = $derived(name in namedShapes ? namedShapes[name](size) : namedShapes['circle'](size))
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 <path
 	{d}
 	{fill}
@@ -22,10 +15,10 @@
 	stroke-width={thickness}
 	fill-rule="evenodd"
 	role="button"
-	on:click
-	on:mouseover
-	on:mouseleave
-	on:focus
-	on:blur
+	{onclick}
+	{onmouseover}
+	{onmouseleave}
+	{onfocus}
+	{onblur}
 	tabindex="0"
 />

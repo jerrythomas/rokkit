@@ -149,8 +149,14 @@ export interface TreeProps {
 	/** Whether to show tree lines/connectors */
 	showLines?: boolean
 
+	/** Enable multiple item selection (Ctrl+click toggle, Shift+click range) */
+	multiselect?: boolean
+
 	/** Which nodes are expanded (bindable) - keyed by node value */
 	expanded?: Record<string, boolean>
+
+	/** Selected items array (bindable) - populated in multiselect mode */
+	selected?: unknown[]
 
 	/** Expand all nodes by default */
 	expandAll?: boolean
@@ -164,11 +170,17 @@ export interface TreeProps {
 	/** Called when an item is selected */
 	onselect?: (value: unknown, item: TreeItem) => void
 
+	/** Called when selected items change in multiselect mode */
+	onselectedchange?: (selected: unknown[]) => void
+
 	/** Called when expanded state changes */
 	onexpandedchange?: (expanded: Record<string, boolean>) => void
 
 	/** Called when a node is toggled */
 	ontoggle?: (value: unknown, item: TreeItem, isExpanded: boolean) => void
+
+	/** Called when expanding a node with unloaded children (children: true). Returns the children array. */
+	onloadchildren?: (value: unknown, item: TreeItem) => Promise<TreeItem[]>
 
 	/** Additional CSS classes */
 	class?: string

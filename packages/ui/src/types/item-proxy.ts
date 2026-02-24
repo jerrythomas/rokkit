@@ -312,6 +312,16 @@ export class ItemProxy<T extends Record<string, unknown> = Record<string, unknow
 	}
 
 	/**
+	 * Check if this item can load children on demand (has truthy children field that isn't an array)
+	 * Convention: `children: true` means "has children, not yet loaded"
+	 */
+	get canLoadChildren(): boolean {
+		const childrenField = this.#fields.children
+		const children = this.#value[childrenField]
+		return Boolean(children) && !Array.isArray(children)
+	}
+
+	/**
 	 * Get children array from this item
 	 */
 	get children(): Record<string, unknown>[] {

@@ -162,18 +162,33 @@ export function createModifierKeyboardActionMap(options) {
 }
 
 /**
+ * Creates a keyboard action mapping for shift key combinations
+ *
+ * @returns {Object} Mapping of keys to actions
+ */
+export function createShiftKeyboardActionMap() {
+	return { ' ': 'range' }
+}
+
+/**
  * Gets the keyboard action for a key event
  * @param {KeyboardEvent} event - The keyboard event
  * @param {Object} options - Configuration options
  * @returns {string|null} The action to perform, or null if no action is defined
  */
 export function getKeyboardAction(event, options = {}) {
-	const { key, ctrlKey, metaKey } = event
+	const { key, ctrlKey, metaKey, shiftKey } = event
 
 	// Use updated options with defaults
 	const mergedOptions = { ...defaultNavigationOptions, ...options }
 
-	// Check for modifier keys first (highest priority)
+	// Check for shift key (range selection)
+	if (shiftKey && !ctrlKey && !metaKey) {
+		const shiftMap = createShiftKeyboardActionMap()
+		return shiftMap[key] || null
+	}
+
+	// Check for modifier keys (ctrl/cmd)
 	if (ctrlKey || metaKey) {
 		const modifierMap = createModifierKeyboardActionMap(mergedOptions)
 		return modifierMap[key] || null

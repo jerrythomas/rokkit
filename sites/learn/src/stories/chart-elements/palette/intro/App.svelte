@@ -1,8 +1,10 @@
 <script>
 	import { swatch } from '@rokkit/chart/lib'
+	import { get } from 'svelte/store'
 
-	let palettes = $state(Object.keys(swatch.palette).slice(0, 8)) // Show first 8 palettes
-	let shades = $state([100, 200, 300, 400, 500, 600, 700, 800, 900])
+	const swatchData = get(swatch)
+	const palettes = Object.keys(swatchData.palette).slice(0, 8)
+	const shades = [100, 200, 300, 400, 500, 600, 700, 800, 900]
 </script>
 
 <div class="space-y-6">
@@ -20,7 +22,7 @@
 						{#each shades as shade (shade)}
 							<div
 								class="flex h-12 flex-1 items-end justify-center"
-								style="background-color: {$swatch.palette[palette][shade]}"
+								style="background-color: {swatchData.palette[palette][shade]}"
 							>
 								<span class="mb-1 text-xs text-white mix-blend-difference">{shade}</span>
 							</div>

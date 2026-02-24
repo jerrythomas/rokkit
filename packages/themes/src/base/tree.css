@@ -133,3 +133,31 @@
 }
 
 /* Item elements use shared [data-item-*] from item.css */
+
+/* =============================================================================
+   Loading Spinner
+   ============================================================================= */
+
+[data-tree-spinner] {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: tree-spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes tree-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =============================================================================
+   Multi-selection
+   ============================================================================= */
+
+[data-tree][data-multiselect='true'] [data-tree-item-content] {
+  user-select: none;
+}

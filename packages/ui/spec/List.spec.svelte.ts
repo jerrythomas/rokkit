@@ -327,4 +327,48 @@ describe('List', () => {
 		expect(nav).toBeTruthy()
 		expect(container.querySelectorAll('[data-list-item]').length).toBe(0)
 	})
+
+	// ─── Multi-Selection ────────────────────────────────────────────
+
+	it('applies data-multiselect on container when multiselect is true', () => {
+		const { container } = render(List, { items: flatItems, multiselect: true })
+		const nav = container.querySelector('nav[data-list]')
+		expect(nav?.hasAttribute('data-multiselect')).toBe(true)
+	})
+
+	it('does not apply data-multiselect when multiselect is false', () => {
+		const { container } = render(List, { items: flatItems })
+		const nav = container.querySelector('nav[data-list]')
+		expect(nav?.hasAttribute('data-multiselect')).toBe(false)
+	})
+
+	it('sets aria-multiselectable when multiselect is true', () => {
+		const { container } = render(List, { items: flatItems, multiselect: true })
+		const nav = container.querySelector('nav[data-list]')
+		expect(nav?.getAttribute('aria-multiselectable')).toBe('true')
+	})
+
+	it('does not render data-selected on items when multiselect is false', () => {
+		const { container } = render(List, { items: flatItems, active: 'dashboard' })
+		const items = container.querySelectorAll('[data-list-item]')
+		items.forEach((item) => {
+			expect(item.hasAttribute('data-selected')).toBe(false)
+		})
+	})
+
+	it('does not render aria-selected on items when multiselect is false', () => {
+		const { container } = render(List, { items: flatItems })
+		const items = container.querySelectorAll('button[data-list-item]')
+		items.forEach((item) => {
+			expect(item.hasAttribute('aria-selected')).toBe(false)
+		})
+	})
+
+	it('renders aria-selected on items when multiselect is true', () => {
+		const { container } = render(List, { items: flatItems, multiselect: true })
+		const items = container.querySelectorAll('button[data-list-item]')
+		items.forEach((item) => {
+			expect(item.getAttribute('aria-selected')).toBe('false')
+		})
+	})
 })

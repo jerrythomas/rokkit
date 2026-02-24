@@ -98,7 +98,6 @@ Map any data structure to component expectations without transforming data:
 |---------|-------------|
 | \`@rokkit/core\` | Core utilities and field mapping system |
 | \`@rokkit/ui\` | Main UI components (57+ components) |
-| \`@rokkit/composables\` | Composable primitives built on bits-ui |
 | \`@rokkit/forms\` | Dynamic form generation with schema support |
 | \`@rokkit/states\` | State management and Proxy system |
 | \`@rokkit/actions\` | Svelte actions for behaviors (keyboard, swipe, etc.) |

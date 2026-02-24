@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - Minimal Theme Styles
+ *
+ * Clean, understated styling with subtle borders.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='minimal'] [data-search-input] {
+	@apply text-surface-z7 border-surface-z4 border bg-transparent;
+}
+
+[data-style='minimal'] [data-search-input]:focus {
+	@apply border-surface-z6 ring-surface-z5 ring-1;
+}
+
+[data-style='minimal'] [data-search-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='minimal'] [data-search-clear] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-search-clear]:hover {
+	@apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='minimal'] [data-search-tag] {
+	@apply text-surface-z7 border-surface-z4 border bg-transparent;
+}
+
+[data-style='minimal'] [data-search-tag-remove] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-search-tag-remove]:hover {
+	@apply text-surface-z8;
+}

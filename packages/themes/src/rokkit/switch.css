@@ -1,0 +1,28 @@
+/**
+ * Switch - Rokkit Theme Styles
+ */
+
+[data-style='rokkit'] [data-switch-track] {
+	@apply from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-switch-thumb] {
+	@apply bg-surface-z6 shadow-sm;
+}
+
+[data-style='rokkit'] [data-switch]:focus-visible [data-switch-track] {
+	@apply ring-2 ring-primary-z5 ring-offset-1;
+}
+
+/* On state */
+[data-style='rokkit'] [data-switch][aria-checked='true'] [data-switch-track] {
+	@apply from-primary-z4 to-secondary-z4 border-primary-z5 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-switch][aria-checked='true'] [data-switch-thumb] {
+	@apply bg-white shadow-md;
+}
+
+[data-style='rokkit'] [data-switch-label] {
+	@apply text-surface-z7;
+}

@@ -52,7 +52,7 @@
 }
 
 [data-button][data-style='outline'][data-variant='danger'] {
-  @apply border-danger-z4 text-danger-z6 border bg-transparent;
+  @apply border-danger-z4 text-danger-z4 border bg-transparent;
 }
 
 /* =============================================================================
@@ -77,7 +77,7 @@
 }
 
 [data-button][data-style='ghost'][data-variant='danger'] {
-  @apply text-danger-z6;
+  @apply text-danger-z4;
 }
 
 /* =============================================================================

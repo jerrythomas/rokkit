@@ -187,11 +187,88 @@ StepItem {
 | `@rokkit/actions` | `navigator` | Keyboard navigation |
 | `@rokkit/composables` | `bits-ui` | TabGroup wrapper |
 
+## 6. FloatingNavigation
+
+A floating, collapsible navigation widget that anchors to a screen edge. Primarily shows icons; expands on hover to reveal text labels. Supports pinning open and tracks the active section via IntersectionObserver.
+
+### 6.1 Props
+
+| Prop | Type | Default | Bindable | Description |
+|------|------|---------|----------|-------------|
+| `items` | `any[]` | `[]` | No | Navigation items (data-driven) |
+| `fields` | `ItemFields` | defaults | No | Field mapping (text, value, icon, href) |
+| `value` | `unknown` | — | Yes | Active item value |
+| `position` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` | No | Screen edge to anchor to |
+| `pinned` | `boolean` | `false` | Yes | Whether nav is pinned open |
+| `observe` | `boolean` | `true` | No | Auto-track active section via IntersectionObserver |
+| `observerOptions` | `object` | `{ rootMargin: '-20% 0px -70% 0px' }` | No | IntersectionObserver config |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | No | Size variant |
+| `class` | `string` | `''` | No | CSS classes |
+| `onselect` | callback | — | No | `(value, item) => void` — fires on item click |
+| `onpinchange` | callback | — | No | `(pinned: boolean) => void` |
+| `item` | `Snippet` | — | No | Custom item rendering |
+
+### 6.2 Rendering
+
+- Fixed-position container on the configured screen edge, centered along that edge
+- **Collapsed state**: Icon-only buttons in a column (left/right) or row (top/bottom), with active indicator dot
+- **Expanded state**: Icons + text labels visible, with chevron indicators on active item
+- **Pin button**: Header area with pin/unpin toggle; when pinned, nav stays expanded regardless of hover
+- **Hover expand**: On mouseenter the nav expands; on mouseleave it collapses (unless pinned)
+- Smooth scroll to target section on item click (`element.scrollIntoView({ behavior: 'smooth' })`)
+
+### 6.3 Animations
+
+| Animation | Description |
+|-----------|-------------|
+| Entrance | Slide in from edge with fade (e.g. right position: `opacity: 0, x: 100` → `opacity: 1, x: 0`) |
+| Expand/collapse | Width (left/right) or height (top/bottom) animates between icon-only and full size; 300ms ease-in-out |
+| Label appear | Text labels fade in with slight slide from icon direction; 200ms |
+| Active indicator | Animated dot/pill that moves between items (CSS transition or `layoutId`-style shared element) |
+| Item hover | Subtle scale (1.02) on hover, scale (0.98) on press |
+| Staggered items | Items animate in with staggered delay (index × 100ms) on mount |
+| Edge indicator | When collapsed, a gradient pill on the outer edge fades in/out |
+
+### 6.4 IntersectionObserver
+
+When `observe` is true, the component watches elements whose `id` matches each item's `value` (or `href` target). As sections scroll into view, `value` updates to reflect the active section. This provides automatic scroll-tracking without manual state management.
+
+### 6.5 Keyboard
+
+| Key | Action |
+|-----|--------|
+| `ArrowUp` / `ArrowDown` (vertical) | Navigate items |
+| `ArrowLeft` / `ArrowRight` (horizontal) | Navigate items |
+| `Enter` / `Space` | Activate item (scroll to section) |
+| `Escape` | Collapse (if not pinned) |
+
+### 6.6 Data Attributes
+
+| Attribute | Element | Purpose |
+|-----------|---------|---------|
+| `data-floating-nav` | root | Container |
+| `data-position` | root | Anchor position (left/right/top/bottom) |
+| `data-expanded` | root | Expanded state |
+| `data-pinned` | root | Pinned state |
+| `data-floating-nav-item` | button/a | Navigation item |
+| `data-active` | item | Active/current item |
+| `data-floating-nav-pin` | button | Pin toggle button |
+| `data-floating-nav-indicator` | span | Active indicator dot |
+
+### 6.7 ARIA
+
+- Root: `role="navigation"`, `aria-label="Page navigation"`
+- Items: anchor (`<a>`) when `href` available, `<button>` otherwise
+- Active item: `aria-current="true"`
+- Pin button: `aria-pressed` reflecting pin state
+- Expanded state: `aria-expanded` on container
+
 ## 7. Gaps
 
-1. BreadCrumbs not recreated from archive
-2. Stepper not recreated from archive
+1. ~~BreadCrumbs not recreated from archive~~ ✅ Done
+2. ~~Stepper not recreated from archive~~ ✅ Done
 3. PageNavigator not recreated from archive
 4. TabGroup (composables) may need to move to `@rokkit/ui` per package clarity
 5. No animated tab transitions
 6. No lazy tab panel rendering (render only active panel)
+7. FloatingNavigation not yet implemented

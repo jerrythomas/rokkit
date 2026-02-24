@@ -131,14 +131,23 @@ export interface ListProps {
 	/** Whether groups can be collapsed */
 	collapsible?: boolean
 
+	/** Enable multiple item selection (Ctrl+click toggle, Shift+click range) */
+	multiselect?: boolean
+
 	/** Which groups are expanded (bindable) - keyed by group value/text */
 	expanded?: Record<string, boolean>
+
+	/** Selected items array (bindable) - populated in multiselect mode */
+	selected?: unknown[]
 
 	/** Active item value - List looks up item by this value to highlight it */
 	active?: unknown
 
 	/** Called when a button item is selected */
 	onselect?: (value: unknown, item: ListItem) => void
+
+	/** Called when selected items change in multiselect mode */
+	onselectedchange?: (selected: unknown[]) => void
 
 	/** Called when expanded state changes (for bindable expanded) */
 	onexpandedchange?: (expanded: Record<string, boolean>) => void

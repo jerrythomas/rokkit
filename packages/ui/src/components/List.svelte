@@ -19,9 +19,12 @@
 		size = 'md',
 		disabled = false,
 		collapsible = false,
+		multiselect = false,
 		expanded = $bindable({}),
+		selected = $bindable([]),
 		active,
 		onselect,
+		onselectedchange,
 		onexpandedchange,
 		class: className = '',
 		icons: userIcons,
@@ -42,8 +45,8 @@
 
 	// ─── NestedController for keyboard navigation ───────────────────
 
-	// eslint-disable-next-line svelte/valid-compile -- initial capture is intentional
-	let controller = new NestedController(items, value, userFields)
+	 
+	let controller = new NestedController(items, value, userFields, { multiselect })
 	let listRef = $state<HTMLElement | null>(null)
 
 	/**
@@ -125,6 +128,7 @@
 
 			if (detail.name === 'select') {
 				handleSelectAction()
+				syncSelectedFromController()
 			}
 
 			if (detail.name === 'toggle') {
@@ -203,6 +207,25 @@
 		if (href) {
 			event.stopPropagation()
 		}
+	}
+
+	// ─── Multi-selection helpers ────────────────────────────────────
+
+	/**
+	 * Sync the selected bindable prop from controller.selected
+	 */
+	function syncSelectedFromController() {
+		if (!multiselect) return
+		selected = [...controller.selected]
+		onselectedchange?.(selected)
+	}
+
+	/**
+	 * Check if an item is in the current selection (for data-selected attribute)
+	 */
+	function isItemSelected(pathKey: string): boolean {
+		if (!multiselect) return false
+		return controller.selectedKeys.has(pathKey)
 	}
 
 	// ─── Group helpers ──────────────────────────────────────────────
@@ -295,12 +318,13 @@
 
 {#snippet defaultItem(
 	proxy: ItemProxy,
-	handlers: ListItemHandlers,
+	_handlers: ListItemHandlers,
 	active: boolean,
 	listIndex: string,
 	pathKey: string
 )}
 	{@const href = proxy.get<string>('href')}
+	{@const itemSelected = isItemSelected(pathKey)}
 	{#if href}
 		<a
 			{href}
@@ -308,9 +332,11 @@
 			data-list-index={listIndex}
 			data-path={pathKey}
 			data-active={active || undefined}
+			data-selected={itemSelected || undefined}
 			data-disabled={proxy.disabled || undefined}
 			aria-label={proxy.label}
 			aria-current={active ? 'page' : undefined}
+			aria-selected={multiselect ? itemSelected : undefined}
 		>
 			<ItemContent {proxy} />
 		</a>
@@ -321,10 +347,12 @@
 			data-list-index={listIndex}
 			data-path={pathKey}
 			data-active={active || undefined}
+			data-selected={itemSelected || undefined}
 			data-disabled={proxy.disabled || undefined}
 			disabled={proxy.disabled || disabled}
 			aria-label={proxy.label}
 			aria-pressed={active}
+			aria-selected={multiselect ? itemSelected : undefined}
 		>
 			<ItemContent {proxy} />
 		</button>
@@ -333,7 +361,7 @@
 
 {#snippet defaultGroupLabel(
 	proxy: ItemProxy,
-	toggle: () => void,
+	_toggle: () => void,
 	isExpanded: boolean,
 	listIndex: string,
 	pathKey: string
@@ -361,6 +389,7 @@
 	{@const customSnippet = resolveItemSnippet(proxy)}
 	{@const handlers = createHandlers(proxy)}
 	{@const active = checkIsActive(proxy)}
+	{@const itemSelected = isItemSelected(pathKey)}
 	{#if customSnippet}
 		<div
 			data-list-item
@@ -368,7 +397,9 @@
 			data-list-index={listIndex}
 			data-path={pathKey}
 			data-active={active || undefined}
+			data-selected={itemSelected || undefined}
 			data-disabled={proxy.disabled || undefined}
+			aria-selected={multiselect ? itemSelected : undefined}
 		>
 			<svelte:boundary>
 				{@render customSnippet(proxy.original as ListItem, proxy.fields, handlers, active)}
@@ -404,8 +435,10 @@
 	data-size={size}
 	data-disabled={disabled || undefined}
 	data-collapsible={collapsible || undefined}
+	data-multiselect={multiselect || undefined}
 	class={className || undefined}
 	aria-label="List"
+	aria-multiselectable={multiselect || undefined}
 	onkeydown={handleListKeyDown}
 	onfocusin={handleFocusIn}
 	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: collapsible }}

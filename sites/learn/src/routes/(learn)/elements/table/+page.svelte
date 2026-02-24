@@ -1,130 +1,124 @@
 <script>
 	import { StoryViewer, Code } from '$lib/components/Story'
+	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'
 </script>
 
 <article data-article-root>
-	<h1>Overview</h1>
+	<ApiDocsLink component="table" />
+	<h1>Introduction</h1>
 	<p>
-		The Table component allows you to visualize an object array in a table format. To get started
-		you just need to provide the data, and the component will automatically generate columns based
-		on the object keys.
+		Tables display tabular data with sortable columns and keyboard navigation. Built on the same
+		navigator pattern as List, the Table component auto-derives columns from your data or accepts
+		custom column definitions with labels, formatters, and alignment.
 	</p>
 
-	<h1>Notable features:</h1>
+	<h2>Notable features:</h2>
 	<ul>
-		<li>Automatic column generation from object keys</li>
-		<li>Custom column configuration with sorting and formatting</li>
-		<li>Tree table support for hierarchical data</li>
-		<li>Caption and header customization</li>
-		<li>Responsive design that adapts to screen sizes</li>
-		<li>Sorting and filtering capabilities</li>
+		<li>Auto-derives columns from data keys — get started with just an array of objects</li>
+		<li>Click column headers to sort (ascending → descending → none)</li>
+		<li>Hold Shift and click to sort by multiple columns</li>
+		<li>Keyboard navigation with arrow keys, Home, End, and Enter to select</li>
+		<li>Custom columns with labels, width, alignment, and cell formatters</li>
+		<li>Compose with SearchFilter for powerful filtering</li>
 	</ul>
 
-	<h1>Basic Example</h1>
-	<p>Here's a simple example of a Table component with automatic column generation:</p>
-
-	<StoryViewer {...storyBuilder.getExample('introduction')} />
-	<h1>Auto-Generated Columns</h1>
+	<h2>Basic Example</h2>
 	<p>
-		The simplest way to use the Table component is to provide just the data. The component will
-		automatically create columns for each property in your objects.
+		Pass an array of objects to the <code>data</code> prop. The Table auto-derives column headers
+		from the object keys. Click a row to select it:
 	</p>
 
-	<Code {...storyBuilder.getFragment(0)} />
+	<StoryViewer {...storyBuilder.getExample('intro')} />
 
+	<h2>Sorting</h2>
 	<p>
-		You can also provide a caption for the table using the `caption` property to improve
-		accessibility and provide context for the data.
-	</p>
-	<h1>Custom Columns</h1>
-	<p>
-		You can customize the columns of the Table component by using the `columns` prop. This allows
-		you to control which columns are displayed, their order, labels, and behavior.
+		All columns are sortable by default. Click a column header to cycle through ascending,
+		descending, and unsorted states. Hold <strong>Shift</strong> while clicking to add secondary sort
+		columns.
 	</p>
 
-	<StoryViewer {...storyBuilder.getExample('columns')} />
+	<StoryViewer {...storyBuilder.getExample('sorting')} />
 
-	<p>Column configuration options:</p>
-	<Code {...storyBuilder.getFragment(1)} />
-
+	<!-- Properties Documentation -->
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 		<div data-card>
-			<h1>Column Properties</h1>
+			<h2>Properties</h2>
 			<ul>
-				<li><strong>name</strong>: The object property key to display</li>
-				<li><strong>label</strong>: Header text for the column</li>
-				<li><strong>sortable</strong>: Enable sorting for this column</li>
-				<li><strong>formatter</strong>: Function to format cell values</li>
+				<li><strong>data</strong>: Array of objects to display as rows</li>
+				<li><strong>columns</strong>: Optional column definitions (auto-derived if omitted)</li>
+				<li><strong>value</strong>: Currently selected row value</li>
+				<li><strong>caption</strong>: Table caption text (also sets aria-label)</li>
+				<li><strong>size</strong>: Size variant — <code>sm</code>, <code>md</code>, <code>lg</code></li>
+				<li><strong>striped</strong>: Alternate row background colors</li>
+				<li><strong>disabled</strong>: Disable interaction</li>
 			</ul>
 		</div>
 
 		<div data-card>
-			<h1>Column Benefits</h1>
+			<h2>Events</h2>
 			<ul>
-				<li>Exclude unwanted columns</li>
-				<li>Reorder column display</li>
-				<li>Add custom formatting</li>
-				<li>Control sorting behavior</li>
+				<li><strong>onselect</strong>: Triggered when a row is selected (click or Enter)</li>
+				<li><strong>onsort</strong>: Triggered when sort state changes</li>
 			</ul>
 		</div>
 	</div>
-	<h1>Tree Table</h1>
+
+	<h2>Custom Columns</h2>
 	<p>
-		The Table component supports hierarchical data display through tree table functionality. This is
-		useful for nested data structures like organizational charts or file systems.
+		Provide a <code>columns</code> array to control which fields are shown, their labels, width,
+		alignment, and how values are formatted. Here's an example column definition:
 	</p>
 
-	<StoryViewer {...storyBuilder.getExample('tree-table')} />
+	<Code {...storyBuilder.getFragment(1)} />
 
-	<h1>Tree Table Features:</h1>
-	<ul>
-		<li><strong>Expandable rows</strong>: Click to expand/collapse child rows</li>
-		<li><strong>Visual hierarchy</strong>: Indentation shows data relationships</li>
-		<li><strong>Nested sorting</strong>: Sort within each level of the hierarchy</li>
-		<li><strong>Selective expansion</strong>: Control which branches are expanded</li>
-	</ul>
-	<h1>Advanced Features</h1>
 	<p>
-		The Table component supports various advanced features for complex data visualization needs.
+		The <code>formatter</code> function receives the cell value and the full row object, returning a
+		display string. Set <code>sortable: false</code> on a column to disable sorting for that column.
 	</p>
 
-	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-		<div data-card>
-			<h1>Data Manipulation</h1>
-			<ul>
-				<li>Column sorting (ascending/descending)</li>
-				<li>Data filtering and search</li>
-				<li>Pagination for large datasets</li>
-				<li>Custom cell renderers</li>
-			</ul>
-		</div>
+	<StoryViewer {...storyBuilder.getExample('custom-columns')} />
 
-		<div data-card>
-			<h1>Accessibility & UX</h1>
-			<ul>
-				<li>Keyboard navigation support</li>
-				<li>Screen reader compatibility</li>
-				<li>Responsive breakpoints</li>
-				<li>Loading and empty states</li>
-			</ul>
-		</div>
+	<h2>Filtering with SearchFilter</h2>
+	<p>
+		The <code>SearchFilter</code> component parses search queries into structured filters. Compose it
+		with Table by passing the filtered data:
+	</p>
+
+	<Code {...storyBuilder.getFragment(2)} />
+
+	<p>
+		SearchFilter supports free text search (matches all columns), <code>column:value</code> syntax,
+		and comparison operators like <code>age&gt;30</code>, <code>salary&gt;=90000</code>.
+	</p>
+
+	<StoryViewer {...storyBuilder.getExample('filtering')} />
+
+	<!-- Snippets Documentation -->
+	<div data-card>
+		<h3>Available Snippets</h3>
+		<ul>
+			<li><strong>header</strong>: Custom header row rendering</li>
+			<li><strong>row</strong>: Custom row rendering (receives row data, columns, index, isSelected)</li>
+			<li><strong>cell</strong>: Custom cell rendering (receives value, column, row)</li>
+			<li><strong>empty</strong>: Custom empty state when no data</li>
+		</ul>
 	</div>
 
 	<!-- Next Steps -->
 	<section data-card-cta>
 		<h2>Ready for more?</h2>
 		<p>
-			Now that you understand how the Table component works, explore other data-driven components
-			like Tree and Accordion, or learn about form components.
+			Now that you understand how the Table component works, explore the List component for
+			non-tabular data, or learn about form components.
 		</p>
 		<span>
-			<a href="/elements/tree" class="button is-primary">
-				Tree
+			<a href="/elements/list" class="button is-primary">
+				List
 				<span class="ml-2">→</span>
 			</a>
-			<a href="/elements/accordion" class="button is-primary">
-				Accordion
+			<a href="/elements/select" class="button is-primary">
+				Select
 				<span class="ml-2">→</span>
 			</a>
 		</span>

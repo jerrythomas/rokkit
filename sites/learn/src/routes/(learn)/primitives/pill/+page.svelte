@@ -6,17 +6,17 @@
 <article data-article-root>
 	<h1>Introduction</h1>
 	<p>
-		The ItemWrapper component wraps the Item component and provides an optional remove
+		The Pill component wraps the Item component and provides an optional remove
 		functionality. This component can be used for displaying tags, selected items from a list, or
 		other scenarios where a removable visual element is required. You can get all the features of
-		the Item component in the ItemWrapper component. In addition, you can also use a custom
+		the Item component in the Pill component. In addition, you can also use a custom
 		component for the content.
 	</p>
 
 	<!-- Basic Usage Demo -->
 	<div class="mb-8">
 		<h1>Basic Usage</h1>
-		<p>To render a basic ItemWrapper component, pass a string as the `value` prop:</p>
+		<p>To render a basic Pill component, pass a string as the `value` prop:</p>
 
 		<StoryViewer {...storyBuilder.getExample('intro')} />
 	</div>
@@ -40,7 +40,7 @@
 	</div>
 	<h1>Custom Component</h1>
 	<p>
-		You can also use a custom component for the content of the ItemWrapper. In this example, we will
+		You can also use a custom component for the content of the Pill. In this example, we will
 		create a custom Status component, which takes a status string and shows color and text for the
 		status.
 	</p>
@@ -51,13 +51,13 @@
 		<h1>Custom Component Implementation:</h1>
 		<Code {...storyBuilder.getFragment(3)} />
 		<p>
-			Set the using property to the Status component and ItemWrapper will use this for the content.
+			Set the using property to the Status component and Pill will use this for the content.
 		</p>
 	</div>
 	<h1>Removable Pills</h1>
 	<p>
-		To create a removable ItemWrapper, set the `removable` prop to `true`. This will add a remove
-		icon to the ItemWrapper, and when clicked, it will emit a `remove` event that you can handle to
+		To create a removable Pill, set the `removable` prop to `true`. This will add a remove
+		icon to the Pill, and when clicked, it will emit a `remove` event that you can handle to
 		perform the actual remove action:
 	</p>
 
@@ -67,7 +67,7 @@
 		<h1>Removable Implementation:</h1>
 		<Code {...storyBuilder.getFragment(4)} />
 		<p>
-			The ItemWrapper component provides a flexible and customizable way to display removable
+			The Pill component provides a flexible and customizable way to display removable
 			elements in your application. By utilizing the Item component's features, you can create
 			various appearances to suit your specific use cases.
 		</p>

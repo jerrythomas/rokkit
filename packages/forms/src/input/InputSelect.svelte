@@ -21,7 +21,7 @@
 		disabled = false,
 		size,
 		onchange,
-		...rest
+		..._rest
 	} = $props()
 
 	// Check if options include an empty string (used as "none" option)

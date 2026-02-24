@@ -31,9 +31,15 @@
   @apply flex-row items-center gap-2;
 }
 
-/* Select: stretch to fill input wrapper */
+/* Select: stretch to fill input wrapper — display:flex eliminates inline-block gap */
 [data-input-root] [data-select] {
-  @apply flex-1;
+  @apply flex-1 self-stretch;
+  display: flex;
+}
+
+[data-input-root] [data-select] [data-select-trigger] {
+  @apply flex-1 self-stretch;
+  min-width: 0;
 }
 
 /* Checkbox icon */

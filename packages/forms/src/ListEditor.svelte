@@ -4,12 +4,11 @@
 	import { defaultFields } from '@rokkit/core'
 	import { getContext } from 'svelte'
 
-	// const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
 	let {
 		class: className,
-		value,
+		value = $bindable(),
 		fields = defaultFields,
 		schema,
 		path = [],
@@ -23,9 +22,6 @@
 
 	function handleSelect(event) {
 		index = event.detail.indices[0]
-		item = event.detail.item
-		location = [...path, ...event.detail.indices]
-		dispatch('select', { item: value, indices: path })
 	}
 </script>
 
@@ -35,7 +31,7 @@
 		bind:value={item}
 		{fields}
 		using={registry.components}
-		on:select={handleSelect}
+		onselect={handleSelect}
 	/>
 	<item-editor class="flex" class:below>
 		{@render children?.()}

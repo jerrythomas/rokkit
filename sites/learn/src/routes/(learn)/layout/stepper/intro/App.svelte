@@ -1,42 +1,35 @@
 <script>
 	import { Stepper } from '@rokkit/ui'
-	
-	const data = [
-		{
-			text: '01',
-			label: 'Personal Info',
-			completed: true,
-			active: false
-		},
-		{
-			text: '02',
-			label: 'Contact Details',
-			completed: true,
-			active: false
-		},
-		{
-			text: '03',
-			label: 'Preferences',
-			active: true
-		},
-		{
-			text: '04',
-			label: 'Review',
-			disabled: true
-		},
-		{
-			text: '05',
-			label: 'Complete',
-			disabled: true
+
+	let steps = $state([
+		{ text: 'Account', completed: true },
+		{ text: 'Profile', completed: true },
+		{ text: 'Preferences' },
+		{ text: 'Review' }
+	])
+
+	let current = $state(2)
+
+	function handleClick(step) {
+		current = step
+	}
+
+	function advance() {
+		steps[current] = { ...steps[current], completed: true }
+		if (current < steps.length - 1) {
+			current++
 		}
-	]
-	
-	let value = $state(data[2]) // Currently on step 3
+	}
 </script>
 
-<Stepper {data} bind:value />
+<div class="flex w-full flex-col items-center gap-6">
+	<Stepper {steps} bind:current onclick={handleClick} />
 
-<div class="mt-6 p-4 bg-gray-50 rounded">
-	<h4 class="font-medium">Current Stage:</h4>
-	<pre class="text-sm mt-2">{JSON.stringify(value, null, 2)}</pre>
+	<p class="text-surface-z6 text-sm">
+		Current: <strong>{steps[current].text}</strong> (Step {current + 1} of {steps.length})
+	</p>
+
+	<button class="button is-primary" onclick={advance}>
+		Complete &amp; Next
+	</button>
 </div>

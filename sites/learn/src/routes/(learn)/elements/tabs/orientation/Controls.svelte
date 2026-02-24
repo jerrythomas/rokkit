@@ -1,5 +1,5 @@
 <script>
-	import { Switch } from '@rokkit/ui'
+	import { Toggle } from '@rokkit/ui'
 
 	let { properties } = $props()
 </script>
@@ -8,7 +8,7 @@
 	{#each properties as opt, index (index)}
 		<div class="flex items-center gap-2 px-2">
 			<p>{opt.label}</p>
-			<Switch bind:value={opt.value} options={opt.options} compact={opt.options.length == 2} />
+			<Toggle bind:value={opt.value} options={opt.options} />
 		</div>
 	{/each}
 </aside>

@@ -1,13 +1,11 @@
 <script>
-	export let size = 10
-	export let fill = 'currentColor'
-	export let stroke = 'currentColor'
+	let { size = 10, fill = 'currentColor', stroke = 'currentColor' } = $props()
 
-	const polygons = [
+	let polygons = $derived([
 		[0, 0.5 * size, 0.5 * size, size, 0, size],
 		[0.5 * size, 0, 0, 0, 0, 0.5 * size],
 		[size, 0, 0.5 * size, 0.5 * size, size, size]
-	]
+	])
 </script>
 
 {#each polygons as points, index (index)}

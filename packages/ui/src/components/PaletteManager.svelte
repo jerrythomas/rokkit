@@ -107,7 +107,7 @@
 
 		// Add # if missing
 		if (hex && !hex.startsWith('#')) {
-			hex = '#' + hex
+			hex = `#${  hex}`
 		}
 
 		hexInputs[role] = hex

@@ -120,8 +120,67 @@ Button components provide clickable actions. The family includes a standard Butt
 | `@rokkit/core` | `defaultStateIcons` | FAB open/close icons |
 | `@rokkit/ui` | `ItemProxy` | Field mapping for FAB items |
 
-## 6. Gaps
+## 6. Button Style Enhancements
+
+Improvements to button visual styles across themes, inspired by modern design patterns.
+
+### 6.1 New Style Variants
+
+| Style | Description | CSS Approach |
+|-------|-------------|-------------|
+| `gradient` | Gradient fill background (primary → secondary gradient per theme) | `data-style="gradient"` — uses `background: linear-gradient(...)` with shifted gradient on hover |
+| `link` | Text-only with underline on hover, no background/border | `data-style="link"` — `text-decoration: underline` on hover, transparent background |
+
+### 6.2 Interaction Micro-Animations
+
+All themes should include these subtle interaction feedback animations:
+
+| Animation | Description | Implementation |
+|-----------|-------------|----------------|
+| **Press feedback** | Scale to 0.97 on `:active` | `transform: scale(0.97)` transition |
+| **Hover lift** | Subtle translateY(-1px) + shadow elevation on hover | `transform: translateY(-1px)` + `box-shadow` increase |
+| **Focus ring** | Animated focus ring that scales in (not instant) | `box-shadow` transition for ring, or `outline` with `transition` |
+| **Icon shift** | Trailing icon (iconRight) shifts right on hover | `translate: 0.25rem 0` on `[data-button]:hover [data-item-icon-right]` |
+| **Loading pulse** | Subtle opacity pulse while loading | `animation: button-pulse 1.5s ease-in-out infinite` |
+| **Pop on click** | Brief scale overshoot on activation | `@keyframes button-pop { 0% { scale: 0.97 } 50% { scale: 1.02 } 100% { scale: 1 } }` — already in rokkit theme, standardize across all themes |
+
+### 6.3 Theme-Specific Enhancements
+
+Each theme should provide its own flavor of these interaction patterns:
+
+| Theme | Enhancement |
+|-------|-------------|
+| **rokkit** | Already has gradient + pop. Add hover-lift, icon-shift. |
+| **glass** | Backdrop-blur intensifies on hover. Subtle glow on active. |
+| **material** | Ripple effect on click (CSS-only using `:active` + pseudo-element). Elevation change on hover. |
+| **minimal** | Border emphasis on hover. Clean underline slide on focus. |
+
+### 6.4 Gradient Button Specifics
+
+The gradient style uses theme-aware gradient colors:
+
+```css
+/* Base gradient structure */
+[data-button][data-style="gradient"] {
+  background: linear-gradient(to bottom right, var(--btn-gradient-from), var(--btn-gradient-to));
+  border: none;
+  color: var(--btn-gradient-text);
+  transition: all 150ms ease;
+}
+
+[data-button][data-style="gradient"]:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 4px 12px -2px color-mix(in srgb, var(--btn-gradient-from) 30%, transparent);
+}
+```
+
+Theme CSS provides `--btn-gradient-from`, `--btn-gradient-to`, `--btn-gradient-text`.
+
+## 7. Gaps
 
 1. No draggable repositioning on FloatingAction
 2. Button loading spinner not standardized across themes
 3. No `FloatingActions` container for multiple FABs (only single FAB with items)
+4. Missing `gradient` and `link` style variants
+5. Micro-animation feedback not standardized across themes
+6. No icon-shift effect on trailing icons

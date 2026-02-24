@@ -46,26 +46,48 @@ export class NestedController extends ListController {
 	}
 
 	/**
-	 * Expand item
+	 * Expand item. If already expanded, move focus to first child.
 	 * @param {string} [key]
 	 * @returns {boolean}
 	 */
 	expand(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
+
+		const firstChildKey = `${actualKey}-0`
+		const hasChildren = this.lookup.has(firstChildKey)
+
+		if (!hasChildren) return false
+
+		if (this.expandedKeys.has(actualKey)) {
+			// Already expanded → move to first child
+			return this.moveTo(firstChildKey)
+		}
+
 		this.expandedKeys.add(actualKey)
 		return true
 	}
 
 	/**
-	 * Collapse item
+	 * Collapse item. If not expandable (leaf or already collapsed), move focus to parent.
 	 * @param {string} [key]
 	 * @returns {boolean}
 	 */
 	collapse(key) {
 		const actualKey = key ?? this.focusedKey
 		if (!this.lookup.has(actualKey)) return false
-		this.expandedKeys.delete(actualKey)
-		return true
+
+		if (this.expandedKeys.has(actualKey)) {
+			this.expandedKeys.delete(actualKey)
+			return true
+		}
+
+		// Leaf or collapsed group → move to parent
+		const path = getPathFromKey(actualKey)
+		if (path.length > 1) {
+			const parentKey = getKeyFromPath(path.slice(0, -1))
+			return this.lookup.has(parentKey) ? this.moveTo(parentKey) : false
+		}
+		return false
 	}
 }

@@ -1,9 +1,7 @@
 <script>
 	import NamedPattern from './paths/NamedPattern.svelte'
 
-	export let size = 10
-	export let thickness = 0.5
-	export let stroke = 'currentColor'
+	let { size = 10, thickness = 0.5, stroke = 'currentColor' } = $props()
 </script>
 
 <NamedPattern {size} {thickness} {stroke} name="curvedWave" />

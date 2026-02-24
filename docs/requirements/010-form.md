@@ -787,8 +787,140 @@ When `onsubmit` is provided, optionally render submit and reset buttons:
 | 14 | Master-detail view | Low | Legacy ListEditor, needs rewrite |
 | 15 | Semantic command input | Future | Not started, depends on Table + Form |
 | 16 | ramda dependency | Low | Could be removed |
+| 17 | Display-only schema rendering | Medium | New §18 — display tables, cards, sections for agent UIs |
 
-## 17. Non-Goals (Future Phases)
+## 18. Display-Only Schema Rendering
+
+### 18.1 Overview
+
+The form system currently supports input-focused rendering. Display-only rendering of structured data — tables, card grids, sectioned layouts, and comparison views — is needed for read-only data views, agent interaction UIs, and mixed input+display layouts.
+
+**Cross-project:** Strategos backlog #15 (Human-in-the-Loop Interaction System) depends on this for rendering agent interaction requests (flight options, itinerary reviews, booking confirmations) in a generic UI.
+
+### 18.2 Display Layout Types
+
+New layout element types for display-only rendering:
+
+| Type | Description | Data |
+|------|-------------|------|
+| `display-table` | Renders data array as a table with column definitions | Array |
+| `display-cards` | Renders data array as a card grid | Array |
+| `display-section` | Renders grouped key-value pairs (detail view) | Object |
+| `display-list` | Renders data array as a styled list | Array |
+
+Each type accepts a `columns` or `fields` definition specifying which data fields to show, labels, and format hints.
+
+### 18.3 Format Hints
+
+`format` property on display fields for rendering:
+
+| Format | Example Output |
+|--------|---------------|
+| `currency` | `$450.00` |
+| `datetime` | `8:00 AM, Mar 15` |
+| `duration` | `6h 30m` |
+| `number` | `1,234` |
+| `badge` | Colored status badge |
+| `text` | Plain text (default) |
+| `boolean` | Check/cross icon |
+
+A `DisplayValue` component renders values with format-aware formatting. Format is a rendering concern only — no data transformation.
+
+### 18.4 Display Components
+
+| Component | Purpose |
+|-----------|---------|
+| `DisplayTable.svelte` | Wraps `@rokkit/ui` Table, accepts data array + column definitions from layout schema |
+| `DisplayCard.svelte` | Renders a single data object as a card with field labels + formatted values |
+| `DisplayCardGrid.svelte` | Renders array of cards in a responsive grid |
+| `DisplaySection.svelte` | Renders grouped key-value pairs as a detail/summary section (label: value rows) |
+
+All components are schema-driven — receive data + display schema, no domain-specific props.
+
+### 18.5 FormRenderer Integration
+
+- `FormRenderer` recognizes `display-*` layout types and routes to display components
+- Mixed layouts: a form can contain both input fields and display sections (e.g., review screen with readonly data + confirmation checkbox)
+- `FormBuilder.elements` supports display elements alongside input elements
+
+### 18.6 Selection Support
+
+`DisplayTable` and `DisplayCardGrid` support optional selection:
+- `select: 'one'` or `select: 'many'` in layout definition
+- Selected items emitted via `onselect` callback or bindable `selected` prop
+- Enables "pick from this table" interactions without custom code
+
+### 18.7 Example Usage
+
+#### Agent interaction: "Pick a flight" (select_one with table)
+
+```svelte
+<FormRenderer
+  data={{ flights: data }}
+  layout={{
+    type: 'vertical',
+    elements: [{
+      type: 'display-table',
+      scope: '#/flights',
+      select: 'one',
+      columns: [
+        { key: 'airline', label: 'Airline' },
+        { key: 'departure', label: 'Departs', format: 'datetime' },
+        { key: 'price', label: 'Price', format: 'currency' },
+      ]
+    }]
+  }}
+  bind:selected
+/>
+```
+
+#### Mixed layout: display data + input form
+
+```svelte
+<FormRenderer
+  bind:data
+  schema={{ type: 'object', properties: { cardNumber: { type: 'string' } } }}
+  layout={{
+    type: 'vertical',
+    elements: [
+      {
+        type: 'display-section',
+        title: 'Order Summary',
+        scope: '#/order',
+        fields: [
+          { key: 'item', label: 'Item' },
+          { key: 'price', label: 'Price', format: 'currency' },
+        ]
+      },
+      { type: 'separator' },
+      { scope: '#/cardNumber', label: 'Card Number' },
+    ]
+  }}
+/>
+```
+
+### 18.8 Dependencies
+
+- Depends on: §2.1 FormBuilder stability fix
+- Depends on: `@rokkit/ui` Table (Phase 1 done)
+
+### 18.9 Data Attributes
+
+| Attribute | Element | Purpose |
+|-----------|---------|---------|
+| `data-display-table` | root | Table display container |
+| `data-display-cards` | root | Card grid container |
+| `data-display-card` | card | Individual card |
+| `data-display-section` | root | Key-value section |
+| `data-display-field` | row | Individual field row |
+| `data-display-value` | value | Formatted value |
+| `data-format` | value | Format hint for styling |
+| `data-selectable` | container | Has selection enabled |
+| `data-selected` | item | Currently selected |
+
+---
+
+## 19. Non-Goals (Future Phases)
 
 - Drag-and-drop form builder (visual form designer)
 - Multi-step wizard forms

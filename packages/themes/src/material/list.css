@@ -100,3 +100,23 @@
 [data-style='material'] [data-list] [data-list-divider] {
 	@apply bg-surface-z3;
 }
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='material'] [data-list] [data-list-item][data-selected='true'] {
+	@apply bg-primary-z2 text-primary-z9;
+}
+
+[data-style='material'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+	@apply bg-primary-z2;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+	@apply bg-primary-z3;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}

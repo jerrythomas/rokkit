@@ -70,7 +70,7 @@ export async function preloadHighlighter() {
 	try {
 		await initializeHighlighter()
 	} catch (error) {
-		console.warn('Failed to preload syntax highlighter:', error.message)
+		console.warn('Failed to preload syntax highlighter:', error.message)  
 	}
 }
 

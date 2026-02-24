@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='rokkit'] [data-search-input] {
+	@apply text-surface-z8 border-surface-z4 border bg-transparent;
+}
+
+[data-style='rokkit'] [data-search-input]:focus {
+	@apply border-primary-z5 ring-1 ring-primary-z4;
+}
+
+[data-style='rokkit'] [data-search-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='rokkit'] [data-search-clear] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-search-clear]:hover {
+	@apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='rokkit'] [data-search-tag] {
+	@apply text-surface-z7 from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-search-tag-remove] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-search-tag-remove]:hover {
+	@apply text-surface-z9;
+}

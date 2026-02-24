@@ -152,3 +152,27 @@
 [data-style='glass'] [data-select-divider] {
 	@apply bg-surface-z5/20;
 }
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='glass'] [data-select-filter] {
+	@apply bg-surface-z2/30;
+}
+
+[data-style='glass'] [data-select-filter-input] {
+	@apply text-surface-z8 border-surface-z5/20 bg-surface-z1/50 border;
+}
+
+[data-style='glass'] [data-select-filter-input]:focus {
+	@apply border-primary-z5/50 ring-1 ring-surface-z5/30;
+}
+
+[data-style='glass'] [data-select-filter-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-select-empty] {
+	@apply text-surface-z5;
+}

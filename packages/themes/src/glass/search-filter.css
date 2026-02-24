@@ -1,0 +1,49 @@
+/**
+ * SearchFilter - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Input
+   ============================================================================= */
+
+[data-style='glass'] [data-search-input] {
+	@apply text-surface-z8 border-surface-z5/20 bg-surface-z1/50 border backdrop-blur-md;
+}
+
+[data-style='glass'] [data-search-input]:focus {
+	@apply border-primary-z5/50 ring-1 ring-surface-z5/30;
+}
+
+[data-style='glass'] [data-search-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Clear Button
+   ============================================================================= */
+
+[data-style='glass'] [data-search-clear] {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-search-clear]:hover {
+	@apply text-surface-z9;
+}
+
+/* =============================================================================
+   Tags
+   ============================================================================= */
+
+[data-style='glass'] [data-search-tag] {
+	@apply text-surface-z8 bg-surface-z2/15;
+}
+
+[data-style='glass'] [data-search-tag-remove] {
+	@apply text-surface-z6;
+}
+
+[data-style='glass'] [data-search-tag-remove]:hover {
+	@apply text-surface-z9;
+}

@@ -1,19 +1,19 @@
 <script>
 	import { DefinePatterns } from '@rokkit/chart/elements'
 	import { swatch, swatchGrid } from '@rokkit/chart/lib'
+	import { get } from 'svelte/store'
 
-	export let base = 'blue'
-	export let fill = 300
-	export let stroke = 500
-	export let outline = 600
+	let { base = 'blue', fill = 300, stroke = 500, outline = 600 } = $props()
 
-	$: patterns = $swatch.keys.pattern.map((id) => ({
+	const swatchData = get(swatch)
+
+	let patterns = $derived(swatchData.keys.pattern.map((id) => ({
 		id: `${base}-${fill}-${id}`,
-		component: $swatch.patterns[id],
-		fill: $swatch.palette[base][fill],
-		stroke: $swatch.palette[base][stroke]
-	}))
-	$: grid = swatchGrid(patterns.length, 30, 10)
+		component: swatchData.patterns[id],
+		fill: swatchData.palette[base][fill],
+		stroke: swatchData.palette[base][stroke]
+	})))
+	let grid = $derived(swatchGrid(patterns.length, 30, 10))
 </script>
 
 <div class="space-y-6">
@@ -32,7 +32,7 @@
 					width={r * 2}
 					height={r * 2}
 					fill="url(#{patterns[index].id})"
-					stroke={$swatch.palette[base][outline]}
+					stroke={swatchData.palette[base][outline]}
 					stroke-width="0.5"
 				/>
 			{/each}

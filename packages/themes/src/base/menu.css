@@ -113,10 +113,9 @@
   border-radius: 0.5rem;
 }
 
-/* Focus ring on dropdown when it contains focus */
+/* Menu dropdown — no focus ring on container, focus managed on individual items */
 [data-menu-dropdown]:focus-within {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline: none;
 }
 
 /* Direction: down (default) */

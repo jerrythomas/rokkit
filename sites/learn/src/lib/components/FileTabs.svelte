@@ -71,7 +71,7 @@
 			}, 2000)
 			onCopy?.({ file, content: file.content })
 		} catch (err) {
-			console.error('Failed to copy code:', err)
+			console.error('Failed to copy code:', err) // eslint-disable-line no-console
 		}
 	}
 

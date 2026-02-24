@@ -8,6 +8,8 @@
 	} from '../types/menu.js'
 	import { getSnippet, defaultMenuStateIcons } from '../types/menu.js'
 	import { ItemProxy } from '../types/item-proxy.js'
+	import { ListController } from '@rokkit/states'
+	import { navigator } from '@rokkit/actions'
 
 	const {
 		options = [],
@@ -40,35 +42,115 @@
 		return new ItemProxy(item, userFields)
 	}
 
-	// Dropdown state
-	let isOpen = $state(false)
-	let menuRef = $state<HTMLDivElement | null>(null)
-	let focusedIndex = $state(-1)
+	// ─── Flatten options into navigable items for the controller ────
+	// Groups are presentation-only; only leaf items are navigable.
 
-	// Flatten all selectable items for keyboard navigation
+	/** Flat array of raw selectable items (for controller) */
 	const flatItems = $derived.by(() => {
-		const items: ItemProxy[] = []
+		const items: MenuItem[] = []
 		for (const option of options) {
 			const proxy = createProxy(option)
 			if (proxy.hasChildren) {
 				for (const child of proxy.children) {
-					const childProxy = proxy.createChildProxy(child)
-					if (!childProxy.disabled) {
-						items.push(childProxy)
-					}
+					items.push(child as MenuItem)
 				}
-			} else if (!proxy.disabled) {
-				items.push(proxy)
+			} else {
+				items.push(option)
 			}
 		}
 		return items
 	})
 
+	/** Map from raw item object → flat index key (for data-path) */
+	const itemPathMap = $derived.by(() => {
+		const map = new WeakMap<object, string>()
+		flatItems.forEach((item, index) => {
+			if (item && typeof item === 'object') {
+				map.set(item, String(index))
+			}
+		})
+		return map
+	})
+
+	// ─── Controller + Navigator ────────────────────────────────────
+
+	// Dropdown state
+	let isOpen = $state(false)
+	let menuRef = $state<HTMLDivElement | null>(null)
+	let dropdownRef = $state<HTMLDivElement | null>(null)
+
+	 
+	let controller = new ListController(flatItems, undefined, userFields)
+
+	$effect(() => {
+		controller.update(flatItems)
+	})
+
+	// Focus the element matching controller.focusedKey on navigator action events
+	// and handle select action (fire onselect + close menu)
+	$effect(() => {
+		if (!dropdownRef) return
+		const el = dropdownRef
+
+		function onAction(event: Event) {
+			const detail = (event as CustomEvent).detail
+
+			if (detail.name === 'move') {
+				const key = controller.focusedKey
+				if (key) {
+					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+					if (target && target !== document.activeElement) {
+						target.focus()
+					}
+				}
+			}
+
+			if (detail.name === 'select') {
+				handleSelectAction()
+			}
+		}
+
+		el.addEventListener('action', onAction)
+		return () => el.removeEventListener('action', onAction)
+	})
+
+	/**
+	 * Handle the navigator's select action (Enter/Space or click on data-path item)
+	 */
+	function handleSelectAction() {
+		const key = controller.focusedKey
+		if (!key) return
+
+		const proxy = controller.lookup.get(key)
+		if (!proxy) return
+
+		const itemProxy = createProxy(proxy.value)
+		if (!itemProxy.disabled) {
+			onselect?.(itemProxy.itemValue, proxy.value as MenuItem)
+		}
+		closeMenu()
+	}
+
+	/**
+	 * Sync DOM focus to controller state
+	 */
+	function handleFocusIn(event: FocusEvent) {
+		const target = event.target as HTMLElement
+		if (!target) return
+		const path = target.dataset.path
+		if (path !== undefined) {
+			controller.moveTo(path)
+		}
+	}
+
+	// ─── Dropdown open/close ───────────────────────────────────────
+
 	function toggleMenu() {
 		if (disabled) return
-		isOpen = !isOpen
-		if (!isOpen) {
-			focusedIndex = -1
+		if (isOpen) {
+			closeMenu()
+		} else {
+			openMenu()
 		}
 	}
 
@@ -79,81 +161,51 @@
 
 	function closeMenu() {
 		isOpen = false
-		focusedIndex = -1
+		controller.moveToValue(undefined)
 	}
 
-	function handleItemClick(proxy: ItemProxy) {
-		if (proxy.disabled) return
-		onselect?.(proxy.itemValue, proxy.original as MenuItem)
-		closeMenu()
-	}
-
-	function focusItem(index: number) {
-		if (index < 0 || index >= flatItems.length) return
-		focusedIndex = index
-		// Focus the actual DOM element
-		const dropdown = menuRef?.querySelector('[data-menu-dropdown]')
-		if (dropdown) {
-			const items = dropdown.querySelectorAll('[data-menu-item]:not([data-disabled])')
-			const item = items[index] as HTMLElement | undefined
-			item?.focus()
-		}
-	}
-
-	function handleKeyDown(event: KeyboardEvent) {
-		if (!isOpen) return
-
-		switch (event.key) {
-			case 'Escape':
-				event.preventDefault()
-				closeMenu()
-				// Return focus to trigger
-				const trigger = menuRef?.querySelector('[data-menu-trigger]') as HTMLElement | undefined
-				trigger?.focus()
-				break
-			case 'ArrowDown':
-				event.preventDefault()
-				focusItem(focusedIndex < flatItems.length - 1 ? focusedIndex + 1 : 0)
-				break
-			case 'ArrowUp':
-				event.preventDefault()
-				focusItem(focusedIndex > 0 ? focusedIndex - 1 : flatItems.length - 1)
-				break
-			case 'Home':
-				event.preventDefault()
-				focusItem(0)
-				break
-			case 'End':
-				event.preventDefault()
-				focusItem(flatItems.length - 1)
-				break
-			case 'Enter':
-			case ' ':
-				event.preventDefault()
-				if (focusedIndex >= 0 && focusedIndex < flatItems.length) {
-					handleItemClick(flatItems[focusedIndex])
-				}
-				break
-		}
-	}
+	// ─── Trigger keyboard handling ─────────────────────────────────
 
 	function handleTriggerKeyDown(event: KeyboardEvent) {
 		if (event.key === 'ArrowDown') {
 			event.preventDefault()
 			openMenu()
-			requestAnimationFrame(() => focusItem(0))
+			requestAnimationFrame(() => focusFirstItem())
 		} else if (event.key === 'ArrowUp') {
 			event.preventDefault()
 			openMenu()
-			requestAnimationFrame(() => focusItem(flatItems.length - 1))
+			requestAnimationFrame(() => focusLastItem())
 		}
 	}
 
-	function handleItemKeyDown(event: KeyboardEvent, proxy: ItemProxy) {
-		// Enter/Space handled by global handleKeyDown, but keep for direct item interaction
-		if (event.key === 'Enter' || event.key === ' ') {
+	function focusFirstItem() {
+		controller.moveFirst()
+		focusCurrentItem()
+	}
+
+	function focusLastItem() {
+		controller.moveLast()
+		focusCurrentItem()
+	}
+
+	function focusCurrentItem() {
+		if (!dropdownRef || !controller.focusedKey) return
+		const target = dropdownRef.querySelector(
+			`[data-path="${controller.focusedKey}"]`
+		) as HTMLElement | null
+		target?.focus()
+	}
+
+	// ─── Escape + click-outside ────────────────────────────────────
+
+	function handleEscapeKey(event: KeyboardEvent) {
+		if (!isOpen) return
+		if (event.key === 'Escape') {
 			event.preventDefault()
-			handleItemClick(proxy)
+			closeMenu()
+			// Return focus to trigger
+			const trigger = menuRef?.querySelector('[data-menu-trigger]') as HTMLElement | undefined
+			trigger?.focus()
 		}
 	}
 
@@ -163,24 +215,49 @@
 		}
 	}
 
+	$effect(() => {
+		if (isOpen) {
+			document.addEventListener('click', handleClickOutside, true)
+			document.addEventListener('keydown', handleEscapeKey)
+		}
+		return () => {
+			document.removeEventListener('click', handleClickOutside, true)
+			document.removeEventListener('keydown', handleEscapeKey)
+		}
+	})
+
+	// ─── Snippet + rendering helpers (unchanged) ───────────────────
+
+	/**
+	 * Handle direct Enter/Space on a menu item (for items without data-path or custom snippets).
+	 * Stops propagation to prevent navigator from double-handling.
+	 */
+	function handleItemSelect(proxy: ItemProxy) {
+		if (proxy.disabled) return
+		onselect?.(proxy.itemValue, proxy.original as MenuItem)
+		closeMenu()
+	}
+
 	/**
 	 * Create handlers object for custom snippets
 	 */
 	function createHandlers(proxy: ItemProxy): MenuItemHandlers {
 		return {
-			onclick: () => handleItemClick(proxy),
-			onkeydown: (event: KeyboardEvent) => handleItemKeyDown(event, proxy)
+			onclick: () => handleItemSelect(proxy),
+			onkeydown: (event: KeyboardEvent) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault()
+					event.stopPropagation()
+					handleItemSelect(proxy)
+				}
+			}
 		}
 	}
 
 	/**
-	 * Resolve which snippet to use for an item:
-	 * 1. Check for per-item snippet override via snippet field
-	 * 2. Fall back to the item snippet prop
-	 * 3. Return null if no custom snippet (use default rendering)
+	 * Resolve which snippet to use for an item
 	 */
 	function resolveItemSnippet(proxy: ItemProxy): MenuItemSnippet | null {
-		// Check for per-item snippet name
 		const snippetName = proxy.snippetName
 		if (snippetName) {
 			const namedSnippet = getSnippet(snippets, snippetName)
@@ -188,37 +265,35 @@
 				return namedSnippet as MenuItemSnippet
 			}
 		}
-
-		// Fall back to the generic item snippet
 		return itemSnippet ?? null
 	}
-
-	$effect(() => {
-		if (isOpen) {
-			document.addEventListener('click', handleClickOutside, true)
-			document.addEventListener('keydown', handleKeyDown)
-		}
-		return () => {
-			document.removeEventListener('click', handleClickOutside, true)
-			document.removeEventListener('keydown', handleKeyDown)
-		}
-	})
 
 	// Track option index for divider logic - show divider before groups that aren't the first item
 	function shouldShowDivider(optionIndex: number, isGroup: boolean): boolean {
 		return isGroup && optionIndex > 0
 	}
+
+	/**
+	 * Get the data-path key for a raw item (looks up in the pre-computed map)
+	 */
+	function getPathKey(item: MenuItem): string | undefined {
+		if (item && typeof item === 'object') {
+			return itemPathMap.get(item)
+		}
+		return undefined
+	}
 </script>
 
-{#snippet defaultItem(proxy: ItemProxy, handlers: MenuItemHandlers)}
+{#snippet defaultItem(proxy: ItemProxy, handlers: MenuItemHandlers, pathKey: string | undefined)}
 	<button
 		type="button"
 		data-menu-item
+		data-path={pathKey}
 		data-disabled={proxy.disabled || undefined}
 		role="menuitem"
+		tabindex="-1"
 		disabled={proxy.disabled}
 		aria-label={proxy.label}
-		onclick={handlers.onclick}
 		onkeydown={handlers.onkeydown}
 	>
 		{#if proxy.icon}
@@ -247,20 +322,20 @@
 	</div>
 {/snippet}
 
-{#snippet renderItem(proxy: ItemProxy)}
+{#snippet renderItem(proxy: ItemProxy, pathKey: string | undefined)}
 	{@const customSnippet = resolveItemSnippet(proxy)}
 	{@const handlers = createHandlers(proxy)}
 	{#if customSnippet}
-		<div data-menu-item data-menu-item-custom data-disabled={proxy.disabled || undefined}>
+		<div data-menu-item data-menu-item-custom data-path={pathKey} data-disabled={proxy.disabled || undefined}>
 			<svelte:boundary>
 				{@render customSnippet(proxy.original as MenuItem, proxy.fields, handlers)}
 				{#snippet failed()}
-					{@render defaultItem(proxy, handlers)}
+					{@render defaultItem(proxy, handlers, pathKey)}
 				{/snippet}
 			</svelte:boundary>
 		</div>
 	{:else}
-		{@render defaultItem(proxy, handlers)}
+		{@render defaultItem(proxy, handlers, pathKey)}
 	{/if}
 {/snippet}
 
@@ -308,7 +383,15 @@
 	</button>
 
 	{#if isOpen}
-		<div data-menu-dropdown role="menu" aria-orientation="vertical">
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div
+			bind:this={dropdownRef}
+			data-menu-dropdown
+			role="menu"
+			aria-orientation="vertical"
+			onfocusin={handleFocusIn}
+			use:navigator={{ wrapper: controller, orientation: 'vertical' }}
+		>
 			{#each options as option, optionIndex (optionIndex)}
 				{@const proxy = createProxy(option)}
 
@@ -323,12 +406,14 @@
 
 						{#each proxy.children as child, childIndex (childIndex)}
 							{@const childProxy = proxy.createChildProxy(child)}
-							{@render renderItem(childProxy)}
+							{@const pathKey = getPathKey(child as MenuItem)}
+							{@render renderItem(childProxy, pathKey)}
 						{/each}
 					</div>
 				{:else}
 					<!-- Standalone item (no children) -->
-					{@render renderItem(proxy)}
+					{@const pathKey = getPathKey(option)}
+					{@render renderItem(proxy, pathKey)}
 				{/if}
 			{/each}
 		</div>

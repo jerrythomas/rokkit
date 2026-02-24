@@ -18,13 +18,12 @@ This file is read at the start of every session.
 
 | Package | Purpose |
 |---------|---------|
-| `@rokkit/ui` | UI components (Select, Toggle, List, Tree, Menu, etc.) — zero workspace deps |
+| `@rokkit/ui` | UI components (Select, Toggle, List, Tree, Menu, etc.) — depends on core, states, actions |
 | `@rokkit/forms` | Schema-driven form rendering (FormBuilder, FormRenderer, Input types) |
 | `@rokkit/themes` | CSS themes (base structural + rokkit/minimal/material variants) |
 | `@rokkit/core` | Constants, utilities, field mapping, icon collections |
 | `@rokkit/states` | Reactive state classes (Proxy, ListController, NestedController) |
 | `@rokkit/actions` | Svelte actions (keyboard, navigation, dismissable, etc.) |
-| `@rokkit/composables` | Higher-level compositions (Tree, FloatingNav) |
 | `@rokkit/icons` | SVG icon sets |
 | `@rokkit/data` | Data structures (Dataset, hierarchy, parsing) |
 | `@rokkit/chart` | Chart components |

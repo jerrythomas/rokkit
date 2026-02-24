@@ -13,9 +13,7 @@
   ↑
 @rokkit/data          ← Data: DataSet, joins, filters, type detection
   ↑
-@rokkit/ui            ← Components: 15 data-driven components (now depends on core, states, actions)
-@rokkit/composables   ← Composables: bits-ui wrappers (pending removal, no consumers remain — ADR-003)
-  ↑
+@rokkit/ui            ← Components: 22 UI components (depends on core, states, actions)
 @rokkit/forms         ← Forms: FormBuilder, FormRenderer, 19 input types
 @rokkit/chart         ← Charts: Plot system, ChartBrewer, D3-based
 
@@ -34,9 +32,8 @@
 | [@rokkit/states](states.md) | State | Proxy, ListController, NestedController, Vibe, Messages | core, d3-array, ramda | [states.md](states.md) |
 | [@rokkit/actions](actions.md) | Interaction | 10 Svelte actions | core, ramda | [actions.md](actions.md) |
 | [@rokkit/data](data.md) | Data | DataSet, joins, typeOf, model, renamer | core, d3-array, ramda | [data.md](data.md) |
-| [@rokkit/ui](ui.md) | Components | 15 components, types, utilities | core, states, actions, shiki (peer) | [ui.md](ui.md) |
+| [@rokkit/ui](ui.md) | Components | 24 components, types, utilities | core, states, actions, shiki (peer) | [ui.md](ui.md) |
 | [@rokkit/forms](forms.md) | Forms | FormBuilder, FormRenderer, 19 inputs | core, states, ui, valibot | [forms.md](forms.md) |
-| [@rokkit/composables](composables.md) | Composables | List, GroupedList, Switch, TabGroup | core, states, bits-ui | [composables.md](composables.md) |
 | [@rokkit/chart](chart.md) | Charts | Plot.Root/Axis/Bar/Grid/Legend, ChartBrewer | core, data, states, d3-*, ramda | [chart.md](chart.md) |
 | [@rokkit/themes](themes.md) | CSS | 4 theme variants, base styles | (CSS only) | [themes.md](themes.md) |
 | [@rokkit/icons](icons.md) | Icons | 7 JSON bundles, 250+ icons | (JSON only) | [icons.md](icons.md) |
@@ -46,7 +43,7 @@
 
 ## Common Patterns
 
-### Field Mapping (used by ui, forms, composables)
+### Field Mapping (used by ui, forms)
 ```javascript
 // Map custom field names to component expectations
 <List options={data} fields={{ text: 'name', value: 'id', icon: 'avatar' }} />
@@ -80,4 +77,4 @@ vibe.style = 'minimal'
 |-----|----------|--------|
 | [ADR-001](../decisions/001-component-architecture.md) | Focus on custom implementations, standardize `options` prop | Accepted |
 | [ADR-002](../decisions/002-package-rename.md) | Rename @rokkit/bits-ui → @rokkit/composables | Accepted |
-| [ADR-003](../decisions/003-mvc-separation.md) | Fold composables into ui, adopt states/actions in ui | Proposed |
+| [ADR-003](../decisions/003-mvc-separation.md) | Fold composables into ui, adopt states/actions in ui | Complete |

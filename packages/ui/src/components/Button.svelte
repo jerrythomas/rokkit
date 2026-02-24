@@ -20,7 +20,7 @@
 		children
 	}: ButtonProps = $props()
 
-	const isIconOnly = $derived(!!icon && !label && !children)
+	const isIconOnly = $derived(Boolean(icon) && !label && !children)
 	const isDisabled = $derived(disabled || loading)
 
 	/**

@@ -1,0 +1,66 @@
+/**
+ * Tabs - Minimal Theme Styles
+ *
+ * Clean, understated tabs with subtle bottom-border indicators.
+ */
+
+/* =============================================================================
+   Tab List
+   ============================================================================= */
+
+[data-style='minimal'] [data-tabs-list] {
+  @apply border-surface-z3 gap-1 border-b;
+}
+
+[data-style='minimal'] [data-tabs][data-position='after'] [data-tabs-list] {
+  @apply border-b-0 border-t;
+}
+
+[data-style='minimal'] [data-tabs][data-orientation='vertical'] [data-tabs-list] {
+  @apply border-b-0 border-r;
+}
+
+[data-style='minimal'] [data-tabs][data-orientation='vertical'][data-position='after'] [data-tabs-list] {
+  @apply border-r-0 border-l;
+}
+
+/* =============================================================================
+   Tab Triggers
+   ============================================================================= */
+
+[data-style='minimal'] [data-tabs-trigger] {
+  @apply text-surface-z6 border-b-2 border-b-transparent;
+}
+
+[data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply text-surface-z8 border-b-surface-z4;
+}
+
+/* Selected state */
+[data-style='minimal'] [data-tabs-trigger][data-selected] {
+  @apply text-surface-z9 border-b-primary-z4;
+}
+
+/* =============================================================================
+   Tab Icon
+   ============================================================================= */
+
+[data-style='minimal'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-surface-z8;
+}
+
+/* =============================================================================
+   Tab Panel
+   ============================================================================= */
+
+[data-style='minimal'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

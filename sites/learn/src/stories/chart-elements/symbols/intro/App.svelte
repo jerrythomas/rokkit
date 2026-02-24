@@ -1,13 +1,15 @@
 <script>
 	import { Symbol } from '@rokkit/chart'
 	import { swatch, swatchGrid } from '@rokkit/chart/lib'
+	import { get } from 'svelte/store'
 
-	$: grid = swatchGrid($swatch.keys.symbol.length, 10, 10)
-	
-	let selectedSymbol = 'circle'
-	let symbolSize = 5
-	let fillColor = 'blue'
-	let strokeColor = 'blue'
+	const swatchData = get(swatch)
+	const grid = swatchGrid(swatchData.keys.symbol.length, 10, 10)
+
+	let selectedSymbol = $state('circle')
+	let symbolSize = $state(5)
+	let fillColor = $state('blue')
+	let strokeColor = $state('blue')
 </script>
 
 <div class="space-y-6">
@@ -23,9 +25,9 @@
 					{x}
 					{y}
 					size={r / 5}
-					name={$swatch.keys.symbol[index]}
-					fill={$swatch.palette['teal'][500]}
-					stroke={$swatch.palette['teal'][700]}
+					name={swatchData.keys.symbol[index]}
+					fill={swatchData.palette['teal'][500]}
+					stroke={swatchData.palette['teal'][700]}
 				/>
 				<text 
 					x={x} 
@@ -33,7 +35,7 @@
 					text-anchor="middle" 
 					class="text-xs fill-gray-600"
 				>
-					{$swatch.keys.symbol[index]}
+					{swatchData.keys.symbol[index]}
 				</text>
 			{/each}
 		</svg>
@@ -45,7 +47,7 @@
 			<div>
 				<label class="block text-sm font-medium mb-2">Symbol Type</label>
 				<select bind:value={selectedSymbol} class="border rounded px-3 py-2 w-full">
-					{#each $swatch.keys.symbol as symbol}
+					{#each swatchData.keys.symbol as symbol}
 						<option value={symbol}>{symbol}</option>
 					{/each}
 				</select>
@@ -87,8 +89,8 @@
 					y={30}
 					size={symbolSize}
 					name={selectedSymbol}
-					fill={$swatch.palette[fillColor][500]}
-					stroke={$swatch.palette[strokeColor][700]}
+					fill={swatchData.palette[fillColor][500]}
+					stroke={swatchData.palette[strokeColor][700]}
 				/>
 			</svg>
 			<p class="text-sm text-gray-600 mt-2">

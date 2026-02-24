@@ -1,5 +1,5 @@
 <script>
-	import { List, Icon } from '@rokkit/ui'
+	import { List } from '@rokkit/ui'
 
 	/**
 	 * @typedef {Object} Section
@@ -24,10 +24,10 @@
 </script>
 
 <nav class="flex w-full flex-1 pb-8" data-sidebar>
-	<List items={sections} {fields}>
-		{#snippet item(data, fieldMap, handlers, active)}
+	<List items={sections} {fields} collapsible>
+		{#snippet item(data, fieldMap, _handlers, _active)}
 			<div class="flex items-center gap-3">
-				<Icon name={data[fieldMap.icon ?? 'icon']} data-sidebar-icon />
+				<span class="{data[fieldMap.icon ?? 'icon']} text-lg" aria-hidden="true"></span>
 				<h3 class="text-sm font-medium">
 					{data[fieldMap.text ?? 'text']}
 				</h3>

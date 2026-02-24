@@ -159,3 +159,27 @@
 [data-style='rokkit'] [data-select-divider] {
 	@apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
 }
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-filter] {
+	@apply bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-select-filter-input] {
+	@apply text-surface-z8 border-surface-z4 bg-surface-z1 border;
+}
+
+[data-style='rokkit'] [data-select-filter-input]:focus {
+	@apply border-primary-z5 ring-primary-z4 ring-1;
+}
+
+[data-style='rokkit'] [data-select-filter-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-select-empty] {
+	@apply text-surface-z5;
+}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
-	import { getTheme, setTheme, themes, type Theme } from '$lib/theme.svelte'
+	import { getTheme, setTheme, themes } from '$lib/theme.svelte'
 
 	let {
 		title,

@@ -82,3 +82,19 @@
 [data-style='material'] [data-tree-item-content][data-active='true'] [data-item-badge] {
 	@apply text-primary-z8 bg-primary-z2;
 }
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='material'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
+	@apply bg-primary-z2;
+}
+
+[data-style='material'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+	@apply text-primary-z9;
+}
+
+[data-style='material'] [data-tree-node][data-selected='true'] [data-tree-item-content] [data-item-icon] {
+	@apply text-primary-z6;
+}

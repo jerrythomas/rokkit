@@ -209,8 +209,8 @@ function isImageUrl(str) {
 
 		// Fallback if URL constructor is not available
 		return fallbackValidation()
-		// eslint-disable-next-line no-unused-vars
-	} catch (e) {
+		 
+	} catch {
 		// Fallback if URL constructor fails
 		return fallbackValidation()
 	}

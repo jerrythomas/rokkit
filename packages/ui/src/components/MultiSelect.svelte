@@ -9,6 +9,8 @@
 	import { getSnippet, defaultSelectStateIcons } from '../types/select.js'
 	import { ItemProxy } from '../types/item-proxy.js'
 	import ItemContent from './ItemContent.svelte'
+	import { ListController } from '@rokkit/states'
+	import { navigator } from '@rokkit/actions'
 
 	let {
 		options = [],
@@ -52,79 +54,134 @@
 		return new ItemProxy(item, userFields)
 	}
 
-	// Dropdown state
-	let isOpen = $state(false)
-	let selectRef = $state<HTMLDivElement | null>(null)
-	let focusedIndex = $state(-1)
+	// ─── Flatten options into navigable items for the controller ────
 
-	// Flatten all selectable items for keyboard navigation
+	/** Flat array of raw selectable items (for controller) */
 	const flatItems = $derived.by(() => {
-		const items: { proxy: ItemProxy; original: SelectItem }[] = []
+		const items: SelectItem[] = []
 		for (const option of options) {
 			const proxy = createProxy(option)
 			if (proxy.hasChildren) {
 				for (const child of proxy.children) {
-					const childProxy = proxy.createChildProxy(child)
-					if (!childProxy.disabled) {
-						items.push({ proxy: childProxy, original: child as SelectItem })
-					}
+					items.push(child as SelectItem)
 				}
-			} else if (!proxy.disabled) {
-				items.push({ proxy, original: option })
+			} else {
+				items.push(option)
 			}
 		}
 		return items
 	})
 
-	// Find selected items based on current value (derived, no effects needed)
-	// value now contains full item objects, so we match by reference or by itemValue
-	const selectedItems = $derived.by(() => {
-		if (!value || value.length === 0) return []
-		return flatItems.filter((item) =>
-			value.some((v) => v === item.original || createProxy(v).itemValue === item.proxy.itemValue)
-		)
+	/** Map from raw item → flat index key (for data-path). Uses Map to support primitives. */
+	const itemPathMap = $derived.by(() => {
+		const map = new Map<unknown, string>()
+		flatItems.forEach((item, index) => {
+			map.set(item, String(index))
+		})
+		return map
 	})
 
-	function toggleDropdown() {
-		if (disabled) return
-		isOpen = !isOpen
-		if (isOpen) {
-			focusedIndex = 0
+	// ─── Controller + Navigator ────────────────────────────────────
+
+	let isOpen = $state(false)
+	let selectRef = $state<HTMLDivElement | null>(null)
+	let dropdownRef = $state<HTMLDivElement | null>(null)
+
+	 
+	let controller = new ListController(flatItems, undefined, userFields)
+
+	$effect(() => {
+		controller.update(flatItems)
+	})
+
+	// Find selected items based on current value
+	const selectedItems = $derived.by(() => {
+		if (!value || value.length === 0) return [] as { proxy: ItemProxy; original: SelectItem }[]
+		return flatItems
+			.filter((item) => {
+				const proxy = createProxy(item)
+				return value.some(
+					(v) => v === item || createProxy(v).itemValue === proxy.itemValue
+				)
+			})
+			.map((item) => ({ proxy: createProxy(item), original: item }))
+	})
+
+	// Focus the element matching controller.focusedKey on navigator action events
+	$effect(() => {
+		if (!dropdownRef) return
+		const el = dropdownRef
+
+		function onAction(event: Event) {
+			const detail = (event as CustomEvent).detail
+
+			if (detail.name === 'move') {
+				const key = controller.focusedKey
+				if (key) {
+					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+					if (target && target !== document.activeElement) {
+						target.focus()
+						target.scrollIntoView?.({ block: 'nearest' })
+					}
+				}
+			}
+
+			if (detail.name === 'select') {
+				handleSelectAction()
+			}
+		}
+
+		el.addEventListener('action', onAction)
+		return () => el.removeEventListener('action', onAction)
+	})
+
+	/**
+	 * Handle the navigator's select action — toggle selection (don't close)
+	 */
+	function handleSelectAction() {
+		const key = controller.focusedKey
+		if (!key) return
+
+		const proxy = controller.lookup.get(key)
+		if (!proxy) return
+
+		const item = proxy.value as SelectItem
+		toggleItemSelection(item)
+	}
+
+	/**
+	 * Sync DOM focus to controller state
+	 */
+	function handleFocusIn(event: FocusEvent) {
+		const target = event.target as HTMLElement
+		if (!target) return
+		const path = target.dataset.path
+		if (path !== undefined) {
+			controller.moveTo(path)
 		}
 	}
 
-	function openDropdown() {
-		if (disabled || isOpen) return
-		isOpen = true
-		focusedIndex = 0
-	}
+	// ─── Selection logic ───────────────────────────────────────────
 
-	function closeDropdown() {
-		isOpen = false
-		focusedIndex = -1
-	}
-
-	function toggleItemSelection(item: { proxy: ItemProxy; original: SelectItem }) {
-		if (item.proxy.disabled) return
+	function toggleItemSelection(item: SelectItem) {
+		const proxy = createProxy(item)
+		if (proxy.disabled) return
 
 		const currentValues = value ?? []
-		const itemValue = item.proxy.itemValue
+		const itemValue = proxy.itemValue
 
-		// Check if already selected (by reference or by value)
 		const isAlreadySelected = currentValues.some(
-			(v) => v === item.original || createProxy(v).itemValue === itemValue
+			(v) => v === item || createProxy(v).itemValue === itemValue
 		)
 
 		let newValues: SelectItem[]
 
 		if (isAlreadySelected) {
-			// Remove from selection
 			newValues = currentValues.filter(
-				(v) => v !== item.original && createProxy(v).itemValue !== itemValue
+				(v) => v !== item && createProxy(v).itemValue !== itemValue
 			)
 		} else {
-			// Add to selection (store the full item object)
-			newValues = [...currentValues, item.original]
+			newValues = [...currentValues, item]
 		}
 
 		value = newValues
@@ -141,55 +198,56 @@
 		onchange?.(newValues)
 	}
 
-	function focusItem(index: number) {
-		if (index < 0 || index >= flatItems.length) return
-		focusedIndex = index
+	// ─── Dropdown open/close ───────────────────────────────────────
+
+	function toggleDropdown() {
+		if (disabled) return
+		if (isOpen) {
+			closeDropdown()
+		} else {
+			openDropdown()
+		}
+	}
+
+	function openDropdown() {
+		if (disabled || isOpen) return
+		isOpen = true
+		controller.moveFirst()
+		requestAnimationFrame(() => {
+			measureRowHeight()
+			focusCurrentItem()
+		})
+	}
+
+	function closeDropdown() {
+		isOpen = false
+	}
+
+	function focusCurrentItem() {
+		if (!dropdownRef || !controller.focusedKey) return
+		const target = dropdownRef.querySelector(
+			`[data-path="${controller.focusedKey}"]`
+		) as HTMLElement | null
+		if (target) {
+			target.focus()
+			target.scrollIntoView?.({ block: 'nearest' })
+		}
+	}
+
+	function measureRowHeight() {
 		const dropdown = selectRef?.querySelector('[data-select-dropdown]')
 		if (dropdown) {
-			const items = dropdown.querySelectorAll('[data-select-option]:not([data-disabled])')
-			const item = items[index] as HTMLElement | undefined
-			if (item) {
-				item.focus()
-				item.scrollIntoView({ block: 'nearest' })
+			const firstOption = dropdown.querySelector('[data-select-option]')
+			if (firstOption) {
+				const height = firstOption.getBoundingClientRect().height
+				if (height > 0) {
+					measuredRowHeight = height
+				}
 			}
 		}
 	}
 
-	function handleKeyDown(event: KeyboardEvent) {
-		if (!isOpen) return
-
-		switch (event.key) {
-			case 'Escape':
-				event.preventDefault()
-				closeDropdown()
-				const trigger = selectRef?.querySelector('[data-select-trigger]') as HTMLElement | undefined
-				trigger?.focus()
-				break
-			case 'ArrowDown':
-				event.preventDefault()
-				focusItem(focusedIndex < flatItems.length - 1 ? focusedIndex + 1 : 0)
-				break
-			case 'ArrowUp':
-				event.preventDefault()
-				focusItem(focusedIndex > 0 ? focusedIndex - 1 : flatItems.length - 1)
-				break
-			case 'Home':
-				event.preventDefault()
-				focusItem(0)
-				break
-			case 'End':
-				event.preventDefault()
-				focusItem(flatItems.length - 1)
-				break
-			case 'Enter':
-			case ' ':
-				event.preventDefault()
-				if (focusedIndex >= 0 && focusedIndex < flatItems.length) {
-					toggleItemSelection(flatItems[focusedIndex])
-				}
-				break
-		}
-	}
+	// ─── Trigger keyboard handling ─────────────────────────────────
 
 	function handleTriggerKeyDown(event: KeyboardEvent) {
 		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
@@ -201,13 +259,15 @@
 		}
 	}
 
-	function handleItemKeyDown(
-		event: KeyboardEvent,
-		item: { proxy: ItemProxy; original: SelectItem }
-	) {
-		if (event.key === 'Enter' || event.key === ' ') {
+	// ─── Escape + click-outside ────────────────────────────────────
+
+	function handleEscapeKey(event: KeyboardEvent) {
+		if (!isOpen) return
+		if (event.key === 'Escape') {
 			event.preventDefault()
-			toggleItemSelection(item)
+			closeDropdown()
+			const trigger = selectRef?.querySelector('[data-select-trigger]') as HTMLElement | undefined
+			trigger?.focus()
 		}
 	}
 
@@ -217,13 +277,40 @@
 		}
 	}
 
+	$effect(() => {
+		if (isOpen) {
+			document.addEventListener('click', handleClickOutside, true)
+			document.addEventListener('keydown', handleEscapeKey)
+		}
+		return () => {
+			document.removeEventListener('click', handleClickOutside, true)
+			document.removeEventListener('keydown', handleEscapeKey)
+		}
+	})
+
+	// ─── Snippet + rendering helpers ───────────────────────────────
+
+	/**
+	 * Handle direct Enter/Space on an option.
+	 * Stops propagation to prevent navigator from double-handling.
+	 */
+	function handleItemToggle(item: SelectItem) {
+		toggleItemSelection(item)
+	}
+
 	/**
 	 * Create handlers object for custom snippets
 	 */
-	function createHandlers(item: { proxy: ItemProxy; original: SelectItem }): SelectItemHandlers {
+	function createHandlers(item: SelectItem): SelectItemHandlers {
 		return {
-			onclick: () => toggleItemSelection(item),
-			onkeydown: (event: KeyboardEvent) => handleItemKeyDown(event, item)
+			onclick: () => handleItemToggle(item),
+			onkeydown: (event: KeyboardEvent) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault()
+					event.stopPropagation()
+					handleItemToggle(item)
+				}
+			}
 		}
 	}
 
@@ -249,48 +336,29 @@
 		return (value ?? []).some((v) => v === proxy.original || createProxy(v).itemValue === itemValue)
 	}
 
-	$effect(() => {
-		if (isOpen) {
-			document.addEventListener('click', handleClickOutside, true)
-			document.addEventListener('keydown', handleKeyDown)
-
-			// Measure actual row height after render
-			requestAnimationFrame(() => {
-				const dropdown = selectRef?.querySelector('[data-select-dropdown]')
-				if (dropdown) {
-					const firstOption = dropdown.querySelector('[data-select-option]')
-					if (firstOption) {
-						const height = firstOption.getBoundingClientRect().height
-						if (height > 0) {
-							measuredRowHeight = height
-						}
-					}
-				}
-				focusItem(0)
-			})
-		}
-		return () => {
-			document.removeEventListener('click', handleClickOutside, true)
-			document.removeEventListener('keydown', handleKeyDown)
-		}
-	})
-
 	function shouldShowDivider(optionIndex: number, isGroup: boolean): boolean {
 		return isGroup && optionIndex > 0
 	}
+
+	/**
+	 * Get the data-path key for a raw item
+	 */
+	function getPathKey(item: SelectItem): string | undefined {
+		return itemPathMap.get(item)
+	}
 </script>
 
-{#snippet defaultOption(proxy: ItemProxy, handlers: SelectItemHandlers, isItemSelected: boolean)}
+{#snippet defaultOption(proxy: ItemProxy, handlers: SelectItemHandlers, isItemSelected: boolean, pathKey: string | undefined)}
 	<button
 		type="button"
 		data-select-option
+		data-path={pathKey}
 		data-disabled={proxy.disabled || undefined}
 		data-selected={isItemSelected || undefined}
 		role="option"
 		aria-selected={isItemSelected}
 		disabled={proxy.disabled}
 		aria-label={proxy.label}
-		onclick={handlers.onclick}
 		onkeydown={handlers.onkeydown}
 	>
 		<span data-select-checkbox data-checked={isItemSelected || undefined}>
@@ -311,26 +379,27 @@
 	</div>
 {/snippet}
 
-{#snippet renderOption(item: { proxy: ItemProxy; original: SelectItem })}
-	{@const customSnippet = resolveItemSnippet(item.proxy)}
+{#snippet renderOption(item: SelectItem, proxy: ItemProxy, pathKey: string | undefined)}
+	{@const customSnippet = resolveItemSnippet(proxy)}
 	{@const handlers = createHandlers(item)}
-	{@const isItemSelected = isSelected(item.proxy)}
+	{@const isItemSelected = isSelected(proxy)}
 	{#if customSnippet}
 		<div
 			data-select-option
 			data-select-option-custom
-			data-disabled={item.proxy.disabled || undefined}
+			data-path={pathKey}
+			data-disabled={proxy.disabled || undefined}
 			data-selected={isItemSelected || undefined}
 		>
 			<svelte:boundary>
-				{@render customSnippet(item.original, item.proxy.fields, handlers, isItemSelected)}
+				{@render customSnippet(item, proxy.fields, handlers, isItemSelected)}
 				{#snippet failed()}
-					{@render defaultOption(item.proxy, handlers, isItemSelected)}
+					{@render defaultOption(proxy, handlers, isItemSelected, pathKey)}
 				{/snippet}
 			</svelte:boundary>
 		</div>
 	{:else}
-		{@render defaultOption(item.proxy, handlers, isItemSelected)}
+		{@render defaultOption(proxy, handlers, isItemSelected, pathKey)}
 	{/if}
 {/snippet}
 
@@ -412,12 +481,16 @@
 	</button>
 
 	{#if isOpen}
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<div
+			bind:this={dropdownRef}
 			data-select-dropdown
 			role="listbox"
 			aria-multiselectable="true"
 			aria-orientation="vertical"
 			style="max-height: {maxHeight}px"
+			onfocusin={handleFocusIn}
+			use:navigator={{ wrapper: controller, orientation: 'vertical' }}
 		>
 			{#each options as option, optionIndex (optionIndex)}
 				{@const proxy = createProxy(option)}
@@ -432,11 +505,13 @@
 
 						{#each proxy.children as child, childIndex (childIndex)}
 							{@const childProxy = proxy.createChildProxy(child)}
-							{@render renderOption({ proxy: childProxy, original: child as SelectItem })}
+							{@const pathKey = getPathKey(child as SelectItem)}
+							{@render renderOption(child as SelectItem, childProxy, pathKey)}
 						{/each}
 					</div>
 				{:else}
-					{@render renderOption({ proxy, original: option })}
+					{@const pathKey = getPathKey(option)}
+					{@render renderOption(option, proxy, pathKey)}
 				{/if}
 			{/each}
 		</div>

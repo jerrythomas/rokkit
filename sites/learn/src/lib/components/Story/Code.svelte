@@ -4,7 +4,7 @@
 	import CopyToClipboard from './CopyToClipboard.svelte'
 
 	let { content, language } = $props()
-	let theme = $derived(vibe.mode == 'dark' ? 'github-dark' : 'github-light')
+	let theme = $derived(vibe.mode === 'dark' ? 'github-dark' : 'github-light')
 	let highlightedCode = $derived(highlightCode(content, { lang: language, theme }))
 </script>
 

@@ -300,4 +300,145 @@ describe('Select', () => {
 		expect(container.querySelector('[data-select]')).toBeTruthy()
 		expect(container.querySelector('[data-select-placeholder]')).toBeTruthy()
 	})
+
+	// ─── Filterable ────────────────────────────────────────────────
+
+	describe('filterable', () => {
+		it('does not render filter input without filterable prop', async () => {
+			const { container } = render(Select, { options: flatOptions })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			expect(container.querySelector('[data-select-filter]')).toBeNull()
+		})
+
+		it('renders filter input when filterable is true', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			expect(container.querySelector('[data-select-filter]')).toBeTruthy()
+			expect(container.querySelector('[data-select-filter-input]')).toBeTruthy()
+		})
+
+		it('uses default placeholder "Search..."', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			expect(input.placeholder).toBe('Search...')
+		})
+
+		it('supports custom filterPlaceholder', async () => {
+			const { container } = render(Select, {
+				options: flatOptions,
+				filterable: true,
+				filterPlaceholder: 'Type to filter...'
+			})
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			expect(input.placeholder).toBe('Type to filter...')
+		})
+
+		it('filters options by text (case-insensitive)', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'ban' } })
+			const opts = container.querySelectorAll('[data-select-option]')
+			expect(opts.length).toBe(1)
+			expect(opts[0]?.textContent).toContain('Banana')
+		})
+
+		it('shows all options when filter is cleared', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'ban' } })
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(1)
+			await fireEvent.input(input, { target: { value: '' } })
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(3)
+		})
+
+		it('hides empty groups when filtering', async () => {
+			const { container } = render(Select, { options: groupedOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'carrot' } })
+			const groups = container.querySelectorAll('[data-select-group]')
+			expect(groups.length).toBe(1)
+			const label = groups[0]?.querySelector('[data-select-group-label]')
+			expect(label?.textContent).toContain('Vegetables')
+		})
+
+		it('shows matching children within groups', async () => {
+			const { container } = render(Select, { options: groupedOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'app' } })
+			const opts = container.querySelectorAll('[data-select-option]')
+			expect(opts.length).toBe(1)
+			expect(opts[0]?.textContent).toContain('Apple')
+		})
+
+		it('shows empty state when no results match', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'xyz' } })
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(0)
+			const empty = container.querySelector('[data-select-empty]')
+			expect(empty).toBeTruthy()
+			expect(empty?.textContent).toBe('No results')
+		})
+
+		it('ArrowDown from filter focuses first option', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.keyDown(input, { key: 'ArrowDown' })
+			// Controller should move to first item
+			const opts = container.querySelectorAll('[data-select-option]')
+			expect(opts.length).toBe(3)
+		})
+
+		it('Escape clears filter first, then closes on second Escape', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			await fireEvent.input(input, { target: { value: 'ban' } })
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(1)
+
+			// First Escape: clears filter
+			await fireEvent.keyDown(input, { key: 'Escape' })
+			expect((container.querySelector('[data-select-filter-input]') as HTMLInputElement)?.value).toBe('')
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(3)
+			expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
+
+			// Second Escape: closes dropdown
+			await fireEvent.keyDown(input, { key: 'Escape' })
+			expect(container.querySelector('[data-select-dropdown]')).toBeNull()
+		})
+
+		it('filter is cleared when dropdown closes', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'ban' } })
+			// Close via second trigger click
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			// Re-open
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const newInput = container.querySelector('[data-select-filter-input]') as HTMLInputElement
+			expect(newInput.value).toBe('')
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(3)
+		})
+
+		it('filter is cleared after selecting an option', async () => {
+			const { container } = render(Select, { options: flatOptions, filterable: true })
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			const input = container.querySelector('[data-select-filter-input]')!
+			await fireEvent.input(input, { target: { value: 'ban' } })
+			const opts = container.querySelectorAll('[data-select-option]')
+			await fireEvent.click(opts[0])
+			// Dropdown closed, re-open to check
+			await fireEvent.click(container.querySelector('[data-select-trigger]')!)
+			expect(container.querySelectorAll('[data-select-option]').length).toBe(3)
+		})
+	})
 })

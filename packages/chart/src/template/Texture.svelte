@@ -3,14 +3,10 @@
 	import * as templates from './shapes'
 	import { pick } from 'ramda'
 
-	export let size = 10
-	export let fill = 'none'
-	export let stroke = 'none'
-	export let thickness = 0.5
-	export let name = 'Waves'
+	let { size = 10, fill = 'none', stroke = 'none', thickness = 0.5, name = 'Waves' } = $props()
 
-	$: pattern = library[name]
-	$: props = pick(pattern.allowed ?? [], { fill, stroke, thickness })
+	let pattern = $derived(library[name])
+	let props = $derived(pick(pattern.allowed ?? [], { fill, stroke, thickness }))
 </script>
 
 <svelte:component this={templates[pattern.component]} {size} {...props} data={pattern.data} />

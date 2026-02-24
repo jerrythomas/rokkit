@@ -16,7 +16,13 @@ describe('library', () => {
 			'antiJoin',
 			'semiJoin',
 			'dataset',
-			'dataview'
+			'dataview',
+			'deriveColumns',
+			'deriveMetadata',
+			'deriveSortableColumn',
+			'parseFilters',
+			'filterData',
+			'filterObjectArray'
 		])
 	})
 })

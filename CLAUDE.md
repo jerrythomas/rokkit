@@ -1,4 +1,4 @@
-# Project Name — Agent Instructions
+# Rokkit — Agent Instructions
 
 This file is the entry point for any AI agent working on this repo.
 
@@ -10,6 +10,7 @@ Before doing any work, read these files in order:
 3. **`agents/journal.md`** (last ~50 lines) — recent progress
 4. **`agents/plan.md`** — check for active plan to resume
 5. **`agents/design-patterns.md`** — established patterns to follow for implementation
+6. **`agents/references.md`** — coding conventions, styling rules, project structure
 
 These files govern how you work. Do not skip them.
 
@@ -17,14 +18,12 @@ These files govern how you work. Do not skip them.
 
 ## Project Overview
 
-<!-- Replace with a 2-3 sentence description of what this project does. -->
-
-**Project Name** is ...
+**Rokkit** is a Svelte 5 component library and design system for data-driven applications. It features field mapping, snippet-based customization, keyboard navigation, and a theme/layout CSS separation architecture.
 
 ## Repository Structure
 
 ```
-project-root/
+rokkit/
   CLAUDE.md                      <-- You are here
   agents/                        <-- Agent instructions, session tracking, patterns
     workflow.md                  <-- Methodology and session lifecycle (READ FIRST)
@@ -33,38 +32,41 @@ project-root/
     plan.md                     <-- Active plan/checklist
     open-questions.md           <-- Q&A tracking for design discussions
     design-patterns.md          <-- Established patterns cookbook
-    backlog.md                  <-- Deferred items for future phases
+    references.md               <-- Coding conventions, styling, project structure
+    backlog/                    <-- Priority-ordered backlog files
     sessions/                   <-- Archived completed plans
   docs/
-    requirements/               <-- Feature requirements (numbered: 01-xxx.md)
-    design/                     <-- Module design documents (numbered: 01-xxx.md)
-    examples/                   <-- Usage examples
-  solution/                     <-- All source code lives here
+    requirements/               <-- Feature requirements (numbered: 001-xxx.md)
+    design/                     <-- Module design documents (numbered: 001-xxx.md)
+  packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
+  sites/
+    learn/                      <-- Documentation site
+    playground/                 <-- Interactive demos + e2e tests
 ```
 
 ## Key Design Principles
 
-<!-- Replace with 3-5 principles that guide this project's architecture. -->
-
-- **Principle 1** — ...
-- **Principle 2** — ...
-- **Principle 3** — ...
+- **Data-First** — Components adapt to data structures via field mapping, not the other way around
+- **Composable** — Every component extensible via snippets without modification
+- **Consistent API** — Standard props: `items`, `value` (bindable), `fields`, `onchange`/`onselect`
+- **Accessible** — Keyboard navigation + ARIA via controller + navigator pattern
+- **Themeable** — Unstyled components with data-attribute hooks, theme/layout CSS separation
 
 ## Working with this Repo
 
-### Commands (run from `solution/`)
-
-<!-- Replace with actual commands for your project. -->
+### Commands (run from project root)
 
 ```bash
 # Tests
-bun run test                      # Run all tests
+bun run test:ci                   # All tests (~1057)
+bun run test:ui                   # UI package tests (~655)
 
 # Lint
 bun run lint                      # 0 errors expected
-```
 
-**Important:** Always run commands from the project root.
+# E2E tests
+cd sites/playground && npx playwright test
+```
 
 ## Conventions
 
@@ -89,13 +91,12 @@ See `agents/workflow.md` for the full process.
 
 ## Key Files Quick Reference
 
-<!-- Replace with key files for your project. -->
-
 | File | Purpose |
 |------|---------|
 | `agents/workflow.md` | Methodology and session lifecycle |
 | `agents/memory.md` | Shared project knowledge |
 | `agents/plan.md` | Active plan/checklist |
 | `agents/journal.md` | Chronological progress log |
-| `agents/backlog.md` | Deferred items for future phases |
+| `agents/backlog/` | Priority-ordered backlog files |
 | `agents/design-patterns.md` | Established patterns cookbook |
+| `agents/references.md` | Coding conventions, styling, structure |

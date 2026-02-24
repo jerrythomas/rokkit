@@ -18,6 +18,8 @@
 	import { ItemProxy } from '../types/item-proxy.js'
 	import Connector from './Connector.svelte'
 	import ItemContent from './ItemContent.svelte'
+	import { NestedController } from '@rokkit/states'
+	import { navigator } from '@rokkit/actions'
 
 	let {
 		items = [],
@@ -25,13 +27,17 @@
 		value = $bindable(),
 		size = 'md',
 		showLines = true,
+		multiselect = false,
 		expanded = $bindable({}),
+		selected = $bindable([]),
 		expandAll = false,
 		active,
 		icons: userIcons,
 		onselect,
+		onselectedchange,
 		onexpandedchange,
 		ontoggle,
+		onloadchildren,
 		class: className = '',
 		item: itemSnippet,
 		toggle: toggleSnippet,
@@ -50,45 +56,295 @@
 		return new ItemProxy(item, fields)
 	}
 
-	// Internal expanded state management
-	let internalExpanded = $state<Record<string, boolean>>({})
+	// ─── NestedController for keyboard navigation ───────────────────
 
-	// Use external expanded if provided, else internal
-	const effectiveExpanded = $derived(Object.keys(expanded).length > 0 ? expanded : internalExpanded)
+	 
+	let controller = new NestedController(items, value, userFields, { multiselect })
+	let treeRef = $state<HTMLElement | null>(null)
+	let loadingPaths = $state(new Set<string>())
+	let loadVersion = $state(0)
 
 	/**
-	 * Check if a node is expanded
+	 * Get expanded state for a node key from the expanded prop.
+	 * Default to expandAll setting when not explicitly set.
 	 */
-	function isNodeExpanded(proxy: ItemProxy): boolean {
-		const key = getNodeKey(proxy)
-		// Check explicit state first
-		if (key in effectiveExpanded) {
-			return effectiveExpanded[key]
+	function getExpandedState(nodeKey: string): boolean {
+		const externalKeys = Object.keys(expanded)
+		if (externalKeys.length > 0) {
+			if (nodeKey in expanded) return expanded[nodeKey]
 		}
-		// Default to expandAll setting
 		return expandAll
 	}
 
 	/**
-	 * Toggle node expansion
+	 * Sync expansion state: expanded prop + expandAll → controller.expandedKeys
 	 */
-	function toggleNode(proxy: ItemProxy) {
-		if (!proxy.hasChildren) return
+	function syncExpandedToController() {
+		for (const [key, proxy] of controller.lookup.entries()) {
+			if (!proxy.hasChildren) continue
+			const itemProxy = createProxy(proxy.value)
+			const nodeKey = getNodeKey(itemProxy)
+			const shouldExpand = getExpandedState(nodeKey)
+			if (shouldExpand) {
+				controller.expandedKeys.add(key)
+			} else {
+				controller.expandedKeys.delete(key)
+			}
+		}
+	}
 
-		const key = getNodeKey(proxy)
-		const newState = !isNodeExpanded(proxy)
+	// Sync on init
+	syncExpandedToController()
 
-		if (Object.keys(expanded).length > 0) {
-			// Using external state
-			expanded = { ...expanded, [key]: newState }
-			onexpandedchange?.(expanded)
-		} else {
-			// Using internal state
-			internalExpanded = { ...internalExpanded, [key]: newState }
+	$effect(() => {
+		controller.update(items)
+		syncExpandedToController()
+	})
+
+	// Sync expanded prop / expandAll changes → controller
+	$effect(() => {
+		void expanded
+		void expandAll
+		syncExpandedToController()
+	})
+
+	/**
+	 * Derive expanded prop from controller.expandedKeys (pathKey → nodeKey mapping)
+	 */
+	function deriveExpandedFromController(): Record<string, boolean> {
+		const result: Record<string, boolean> = {}
+		function walk(treeItems: TreeItem[], pathPrefix: string) {
+			treeItems.forEach((item, index) => {
+				const proxy = createProxy(item)
+				if (!proxy.hasChildren) return
+				const pathKey = pathPrefix ? `${pathPrefix}-${index}` : String(index)
+				const nodeKey = getNodeKey(proxy)
+				result[nodeKey] = controller.expandedKeys.has(pathKey)
+				if (controller.expandedKeys.has(pathKey)) {
+					walk(proxy.children as TreeItem[], pathKey)
+				}
+			})
+		}
+		walk(items, '')
+		return result
+	}
+
+	// Focus the element matching controller.focusedKey on navigator action events
+	$effect(() => {
+		if (!treeRef) return
+		const el = treeRef
+
+		function onAction(event: Event) {
+			const detail = (event as CustomEvent).detail
+
+			if (detail.name === 'move') {
+				const key = controller.focusedKey
+				if (key) {
+					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+					if (target && target !== document.activeElement) {
+						target.focus()
+						target.scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
+					}
+				}
+			}
+
+			if (detail.name === 'select') {
+				handleSelectAction()
+				syncSelectedFromController()
+			}
+
+			if (detail.name === 'toggle') {
+				// Controller already toggled expandedKeys. Derive the expanded prop.
+				handleToggleAction()
+			}
 		}
 
-		ontoggle?.(proxy.itemValue, proxy.original as TreeItem, newState)
+		el.addEventListener('action', onAction)
+		return () => el.removeEventListener('action', onAction)
+	})
+
+	/**
+	 * Handle the navigator's select action (Enter/Space or click on data-path item)
+	 */
+	function handleSelectAction() {
+		const key = controller.focusedKey
+		if (!key) return
+
+		const proxy = controller.lookup.get(key)
+		if (!proxy) return
+
+		const itemProxy = createProxy(proxy.value)
+		const href = itemProxy.get<string>('href')
+		if (!href) {
+			onselect?.(itemProxy.itemValue, proxy.value as TreeItem)
+		}
 	}
+
+	/**
+	 * Handle the navigator's toggle action (ArrowLeft collapse / ArrowRight expand)
+	 */
+	function handleToggleAction() {
+		const key = controller.focusedKey
+		if (!key) return
+
+		const proxy = controller.lookup.get(key)
+		if (!proxy) return
+
+		const itemProxy = createProxy(proxy.value)
+		const isExpanded = controller.expandedKeys.has(key)
+		const newExpanded = deriveExpandedFromController()
+		expanded = newExpanded
+		onexpandedchange?.(newExpanded)
+		ontoggle?.(itemProxy.itemValue, proxy.value as TreeItem, isExpanded)
+	}
+
+	// ─── Lazy loading helpers ──────────────────────────────────────
+
+	/**
+	 * Load children for a lazy node (children: true → children: [...]).
+	 * Returns true if children were loaded successfully.
+	 */
+	async function loadLazyChildren(pathKey: string): Promise<boolean> {
+		const proxy = controller.lookup.get(pathKey)
+		if (!proxy) return false
+		const itemProxy = createProxy(proxy.value)
+		if (!itemProxy.canLoadChildren || !onloadchildren) return false
+
+		loadingPaths = new Set([...loadingPaths, pathKey])
+		try {
+			const children = await onloadchildren(itemProxy.itemValue, proxy.value as TreeItem)
+			const childrenField = fields.children ?? 'children'
+			;(proxy.value as Record<string, unknown>)[childrenField] = children
+			controller.update(items)
+			syncExpandedToController()
+			loadVersion++
+		} catch {
+			loadingPaths = new Set([...loadingPaths].filter((p) => p !== pathKey))
+			return false
+		}
+		loadingPaths = new Set([...loadingPaths].filter((p) => p !== pathKey))
+		return true
+	}
+
+	/**
+	 * Toggle expansion of a node by its path key (for toggle button clicks)
+	 */
+	async function toggleNodeByKey(pathKey: string) {
+		// Collapsing — toggle normally
+		if (controller.expandedKeys.has(pathKey)) {
+			controller.toggleExpansion(pathKey)
+			const proxy = controller.lookup.get(pathKey)
+			if (!proxy) return
+			const itemProxy = createProxy(proxy.value)
+			const newExpanded = deriveExpandedFromController()
+			expanded = newExpanded
+			onexpandedchange?.(newExpanded)
+			ontoggle?.(itemProxy.itemValue, proxy.value as TreeItem, false)
+			return
+		}
+
+		// Expanding — check if lazy load is needed
+		const proxy = controller.lookup.get(pathKey)
+		let lazyLoaded = false
+		if (proxy) {
+			const itemProxy = createProxy(proxy.value)
+			if (itemProxy.canLoadChildren && onloadchildren) {
+				const loaded = await loadLazyChildren(pathKey)
+				if (!loaded) return // Error — stay collapsed
+				lazyLoaded = true
+			}
+		}
+
+		// After lazy load, syncExpandedToController may have already expanded the node
+		// (e.g. when expandAll=true). Only toggle if not already expanded.
+		if (!lazyLoaded || !controller.expandedKeys.has(pathKey)) {
+			controller.toggleExpansion(pathKey)
+		}
+		const updatedProxy = controller.lookup.get(pathKey)
+		if (!updatedProxy) return
+		const updatedItemProxy = createProxy(updatedProxy.value)
+		const isExpanded = controller.expandedKeys.has(pathKey)
+		const newExpanded = deriveExpandedFromController()
+		expanded = newExpanded
+		onexpandedchange?.(newExpanded)
+		ontoggle?.(updatedItemProxy.itemValue, updatedProxy.value as TreeItem, isExpanded)
+	}
+
+	/**
+	 * Sync DOM focus to controller state
+	 */
+	function handleFocusIn(event: FocusEvent) {
+		const target = event.target as HTMLElement
+		if (!target) return
+		const path = target.dataset.path
+		if (path !== undefined) {
+			controller.moveTo(path)
+		}
+	}
+
+	/**
+	 * Handle keyboard events the navigator doesn't cover:
+	 * - Enter/Space on link items: let native <a> behavior through
+	 * - ArrowRight on lazy nodes: trigger async load before expand
+	 */
+	function handleTreeKeyDown(event: KeyboardEvent) {
+		// ArrowRight on lazy node: intercept before navigator
+		if (event.key === 'ArrowRight') {
+			const key = controller.focusedKey
+			if (!key) return
+			const proxy = controller.lookup.get(key)
+			if (!proxy) return
+			const itemProxy = createProxy(proxy.value)
+			if (itemProxy.canLoadChildren && onloadchildren) {
+				event.preventDefault()
+				event.stopPropagation()
+				loadLazyChildren(key).then((loaded) => {
+					if (loaded) {
+						controller.expand(key)
+						handleToggleAction()
+						const target = treeRef?.querySelector(`[data-path="${key}"]`) as HTMLElement
+						target?.focus()
+					}
+				})
+				return
+			}
+		}
+
+		if (event.key !== 'Enter' && event.key !== ' ') return
+
+		const key = controller.focusedKey
+		if (!key) return
+
+		const proxy = controller.lookup.get(key)
+		if (!proxy) return
+
+		const itemProxy = createProxy(proxy.value)
+		const href = itemProxy.get<string>('href')
+		if (href) {
+			event.stopPropagation()
+		}
+	}
+
+	// ─── Multi-selection helpers ────────────────────────────────────
+
+	/**
+	 * Sync the selected bindable prop from controller.selected
+	 */
+	function syncSelectedFromController() {
+		if (!multiselect) return
+		selected = [...controller.selected]
+		onselectedchange?.(selected)
+	}
+
+	/**
+	 * Check if an item is in the current selection (for data-selected attribute)
+	 */
+	function isItemSelected(pathKey: string): boolean {
+		if (!multiselect) return false
+		return controller.selectedKeys.has(pathKey)
+	}
+
+	// ─── Check active ──────────────────────────────────────────────
 
 	/**
 	 * Check if an item is currently active/selected
@@ -101,7 +357,7 @@
 	}
 
 	/**
-	 * Handle item selection
+	 * Handle item click (for button items)
 	 */
 	function handleItemClick(proxy: ItemProxy) {
 		value = proxy.itemValue
@@ -109,23 +365,19 @@
 	}
 
 	/**
-	 * Handle Enter/Space to select item
-	 */
-	function handleItemSelect(event: KeyboardEvent, proxy: ItemProxy) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault()
-			handleItemClick(proxy)
-		}
-	}
-
-	/**
 	 * Create handlers object for custom snippets
 	 */
-	function createHandlers(proxy: ItemProxy): TreeItemHandlers {
+	function createHandlers(proxy: ItemProxy, pathKey: string): TreeItemHandlers {
 		return {
 			onclick: () => handleItemClick(proxy),
-			ontoggle: () => toggleNode(proxy),
-			onkeydown: (event: KeyboardEvent) => handleItemSelect(event, proxy)
+			ontoggle: () => toggleNodeByKey(pathKey),
+			onkeydown: (event: KeyboardEvent) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault()
+					event.stopPropagation()
+					handleItemClick(proxy)
+				}
+			}
 		}
 	}
 
@@ -139,16 +391,12 @@
 		lineTypes: TreeLineType[]
 		path: string
 		isLast: boolean
+		isExpandable: boolean
 	}
 
 	/**
 	 * Flatten the tree into a list of visible nodes with their line types.
-	 * Uses the same algorithm as @rokkit/ui NestedList.
-	 *
-	 * @param treeItems - Items at current level
-	 * @param level - Current depth (0 = root)
-	 * @param types - Line types inherited from parents (passed to getLineTypes)
-	 * @param pathPrefix - Path prefix for generating unique keys
+	 * Reads expansion state from controller.expandedKeys.
 	 */
 	function flattenTree(
 		treeItems: TreeItem[],
@@ -163,22 +411,21 @@
 			const isLast = index === treeItems.length - 1
 			const nodeType: 'child' | 'last' = isLast ? 'last' : 'child'
 			const path = pathPrefix ? `${pathPrefix}-${index}` : String(index)
+			const isExpandable = proxy.hasChildren || proxy.canLoadChildren
 
-			// Calculate connectors using Rokkit algorithm
-			// getLineTypes(hasChildren, parentTypes, position)
-			const connectors = getLineTypes(proxy.hasChildren, types, nodeType)
+			const connectors = getLineTypes(isExpandable, types, nodeType)
 
 			result.push({
 				proxy,
 				level,
 				lineTypes: connectors,
 				path,
-				isLast
+				isLast,
+				isExpandable
 			})
 
-			// If expanded, recurse into children with updated types
-			if (proxy.hasChildren && isNodeExpanded(proxy)) {
-				// Pass connectors as parent types for children
+			// If expanded (read from controller), recurse into children
+			if (proxy.hasChildren && controller.expandedKeys.has(path)) {
 				const childNodes = flattenTree(proxy.children as TreeItem[], level + 1, connectors, path)
 				result.push(...childNodes)
 			}
@@ -187,127 +434,8 @@
 		return result
 	}
 
-	const flatNodes = $derived(flattenTree(items))
-
-	// ==========================================================================
-	// Keyboard Navigation
-	// ==========================================================================
-
-	let treeRef = $state<HTMLElement | null>(null)
-	let focusedPath = $state<string | null>(null)
-
-	/**
-	 * Focus a node's item content by its path and scroll into view if needed
-	 */
-	function focusPath(path: string) {
-		if (!treeRef) return
-		focusedPath = path
-		// Focus the item content button, not the node container
-		const element = treeRef.querySelector(
-			`[data-tree-node][data-tree-path="${path}"] [data-tree-item-content]`
-		) as HTMLElement | null
-		if (element) {
-			element.focus()
-			// Scroll into view with minimal movement
-			element.scrollIntoView({ block: 'nearest', inline: 'nearest' })
-		}
-	}
-
-	/**
-	 * Handle focus events to track focused path
-	 */
-	function handleFocusIn(event: FocusEvent) {
-		const target = event.target as HTMLElement
-		// Find the parent node to get the path
-		const node = target.closest('[data-tree-node]') as HTMLElement | null
-		const path = node?.dataset.treePath
-		if (path !== undefined) {
-			focusedPath = path
-		}
-	}
-
-	/**
-	 * Handle keyboard navigation on item content
-	 */
-	function handleItemKeyDown(event: KeyboardEvent) {
-		if (flatNodes.length === 0) return
-
-		// If no focused path, initialize to first node
-		if (!focusedPath) {
-			if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
-				event.preventDefault()
-				focusPath(flatNodes[0]?.path ?? '0')
-			}
-			return
-		}
-
-		const currentIndex = flatNodes.findIndex((n) => n.path === focusedPath)
-		if (currentIndex === -1) return
-
-		const currentNode = flatNodes[currentIndex]
-
-		switch (event.key) {
-			case 'ArrowDown':
-				event.preventDefault()
-				if (currentIndex < flatNodes.length - 1) {
-					focusPath(flatNodes[currentIndex + 1].path)
-				}
-				break
-
-			case 'ArrowUp':
-				event.preventDefault()
-				if (currentIndex > 0) {
-					focusPath(flatNodes[currentIndex - 1].path)
-				}
-				break
-
-			case 'ArrowRight':
-				event.preventDefault()
-				if (currentNode.proxy.hasChildren) {
-					if (!isNodeExpanded(currentNode.proxy)) {
-						// Expand
-						toggleNode(currentNode.proxy)
-					} else {
-						// Move to first child
-						const nextIndex = currentIndex + 1
-						if (nextIndex < flatNodes.length && flatNodes[nextIndex].level > currentNode.level) {
-							focusPath(flatNodes[nextIndex].path)
-						}
-					}
-				}
-				break
-
-			case 'ArrowLeft':
-				event.preventDefault()
-				if (currentNode.proxy.hasChildren && isNodeExpanded(currentNode.proxy)) {
-					// Collapse
-					toggleNode(currentNode.proxy)
-				} else if (currentNode.level > 0) {
-					// Move to parent
-					const parentPath = currentNode.path.substring(0, currentNode.path.lastIndexOf('-'))
-					if (parentPath) {
-						focusPath(parentPath)
-					}
-				}
-				break
-
-			case 'Home':
-				event.preventDefault()
-				focusPath(flatNodes[0].path)
-				break
-
-			case 'End':
-				event.preventDefault()
-				focusPath(flatNodes[flatNodes.length - 1].path)
-				break
-
-			case 'Enter':
-			case ' ':
-				event.preventDefault()
-				handleItemClick(currentNode.proxy)
-				break
-		}
-	}
+	 
+	const flatNodes = $derived((void loadVersion, flattenTree(items)))
 
 	/**
 	 * Resolve which snippet to use for an item
@@ -349,10 +477,10 @@
 		<a
 			{href}
 			data-tree-item-content
+			data-path={_path}
 			data-active={isActive || undefined}
 			aria-label={proxy.label}
 			aria-current={isActive ? 'page' : undefined}
-			onkeydown={handleItemKeyDown}
 		>
 			<ItemContent {proxy} />
 		</a>
@@ -360,11 +488,11 @@
 		<button
 			type="button"
 			data-tree-item-content
+			data-path={_path}
 			data-active={isActive || undefined}
 			aria-label={proxy.label}
 			aria-pressed={isActive}
-			onclick={handlers.onclick}
-			onkeydown={handleItemKeyDown}
+			onkeydown={handlers.onkeydown}
 		>
 			<ItemContent {proxy} />
 		</button>
@@ -374,8 +502,10 @@
 {#snippet renderNode(node: FlatNode)}
 	{@const proxy = node.proxy}
 	{@const isActive = checkIsActive(proxy)}
-	{@const isExpanded = isNodeExpanded(proxy)}
-	{@const handlers = createHandlers(proxy)}
+	{@const nodeSelected = isItemSelected(node.path)}
+	{@const isExpanded = controller.expandedKeys.has(node.path)}
+	{@const isLoading = loadingPaths.has(node.path)}
+	{@const handlers = createHandlers(proxy, node.path)}
 	{@const customSnippet = resolveItemSnippet(proxy)}
 
 	<div
@@ -383,11 +513,14 @@
 		data-tree-path={node.path}
 		data-tree-level={node.level}
 		data-tree-expanded={isExpanded || undefined}
-		data-tree-has-children={proxy.hasChildren || undefined}
+		data-tree-has-children={node.isExpandable || undefined}
+		data-tree-loading={isLoading || undefined}
 		data-active={isActive || undefined}
+		data-selected={nodeSelected || undefined}
 		role="treeitem"
-		aria-expanded={proxy.hasChildren ? isExpanded : undefined}
-		aria-selected={isActive}
+		aria-expanded={node.isExpandable ? isExpanded : undefined}
+		aria-selected={multiselect ? nodeSelected : isActive}
+		aria-busy={isLoading || undefined}
 		aria-level={node.level + 1}
 	>
 		<div data-tree-node-row>
@@ -399,14 +532,16 @@
 						<button
 							type="button"
 							data-tree-toggle-btn
-							onclick={() => toggleNode(proxy)}
-							aria-label={isExpanded ? 'Collapse' : 'Expand'}
+							onclick={() => toggleNodeByKey(node.path)}
+							aria-label={isLoading ? 'Loading' : isExpanded ? 'Collapse' : 'Expand'}
 							tabindex={-1}
 						>
-							{#if toggleSnippet}
-								{@render toggleSnippet(isExpanded, proxy.hasChildren, icons)}
+							{#if isLoading}
+								<span data-tree-spinner aria-hidden="true"></span>
+							{:else if toggleSnippet}
+								{@render toggleSnippet(isExpanded, node.isExpandable, icons)}
 							{:else}
-								{@render defaultToggle(isExpanded, proxy.hasChildren, icons)}
+								{@render defaultToggle(isExpanded, node.isExpandable, icons)}
 							{/if}
 						</button>
 					{:else if connectorSnippet}
@@ -421,14 +556,16 @@
 				<button
 					type="button"
 					data-tree-toggle-btn
-					onclick={() => toggleNode(proxy)}
-					aria-label={isExpanded ? 'Collapse' : 'Expand'}
+					onclick={() => toggleNodeByKey(node.path)}
+					aria-label={isLoading ? 'Loading' : isExpanded ? 'Collapse' : 'Expand'}
 					tabindex={-1}
 				>
-					{#if toggleSnippet}
-						{@render toggleSnippet(isExpanded, proxy.hasChildren, icons)}
+					{#if isLoading}
+						<span data-tree-spinner aria-hidden="true"></span>
+					{:else if toggleSnippet}
+						{@render toggleSnippet(isExpanded, node.isExpandable, icons)}
 					{:else}
-						{@render defaultToggle(isExpanded, proxy.hasChildren, icons)}
+						{@render defaultToggle(isExpanded, node.isExpandable, icons)}
 					{/if}
 				</button>
 			{/if}
@@ -455,15 +592,20 @@
 	</div>
 {/snippet}
 
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
 	bind:this={treeRef}
 	data-tree
 	data-size={size}
 	data-show-lines={showLines || undefined}
+	data-multiselect={multiselect || undefined}
 	class={className || undefined}
 	role="tree"
 	aria-label="Tree"
+	aria-multiselectable={multiselect || undefined}
+	onkeydown={handleTreeKeyDown}
 	onfocusin={handleFocusIn}
+	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: true }}
 >
 	{#each flatNodes as node (node.path)}
 		{@render renderNode(node)}

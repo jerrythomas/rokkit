@@ -4,7 +4,6 @@
 	import InputDate from './input/InputDate.svelte'
 	import InputDateTime from './input/InputDateTime.svelte'
 	import InputEmail from './input/InputEmail.svelte'
-	import InputFile from './input/InputFile.svelte'
 	import InputMonth from './input/InputMonth.svelte'
 	import InputNumber from './input/InputNumber.svelte'
 	import InputPassword from './input/InputPassword.svelte'

@@ -495,7 +495,6 @@ interface TabIcons {
 
 ## Related Components
 
-- **TabGroup** - Composable tabs from \`@rokkit/composables\` (bits-ui based)
 - **List** - Used internally for tab selection
 - **ListController** - State management for tabs
 `

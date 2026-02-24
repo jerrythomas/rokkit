@@ -280,7 +280,7 @@ export class FormBuilder {
 			return result
 		} catch (error) {
 			// If getSchemaWithLayout fails, fall back to basic element creation
-			console.warn('Failed to build elements:', error)
+			console.warn('Failed to build elements:', error) // eslint-disable-line no-console
 			return this.#buildBasicElements()
 		}
 	}

@@ -1,0 +1,7 @@
+{
+  "title": "Code",
+  "description": "Syntax-highlighted code block with copy support",
+  "icon": "i-lucide:code",
+  "category": "primitives",
+  "sequence": 50
+}

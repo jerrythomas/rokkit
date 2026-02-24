@@ -100,3 +100,23 @@
 [data-style='glass'] [data-list] [data-list-divider] {
 	@apply bg-surface-z5/20;
 }
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='glass'] [data-list] [data-list-item][data-selected='true'] {
+	@apply bg-primary-z5/20 text-primary-z9;
+}
+
+[data-style='glass'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+	@apply bg-primary-z5/30;
+}
+
+[data-style='glass'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+	@apply bg-primary-z5/40;
+}
+
+[data-style='glass'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}

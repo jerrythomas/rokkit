@@ -3,7 +3,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
 	// import { page } from '$app/state'
 	import { media } from '$lib/media.js'
-	import { Icon, ProgressBar, Toggle } from '@rokkit/ui'
+	import { ProgressBar } from '@rokkit/ui'
 	import ThemeSwitcher from './ThemeSwitcher.svelte'
 
 	const site = getContext('site')()
@@ -56,8 +56,8 @@
 			{/each}
 		</nav>
 		<ThemeSwitcher />
-		<a href="https://github.com/jerrythomas/rokkit" target="_blank" data-button-root>
-			<Icon name="i-logo:github" label="Rokkit on Github" />
+		<a href="https://github.com/jerrythomas/rokkit" target="_blank" data-button-root aria-label="Rokkit on Github">
+			<span class="i-logo:github text-xl" aria-hidden="true"></span>
 		</a>
 	</settings>
 </header>

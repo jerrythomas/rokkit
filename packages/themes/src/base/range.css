@@ -1,0 +1,121 @@
+/**
+ * Range - Base Structural Styles
+ *
+ * Layout, positioning, and sizing for the range slider.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   Range Container
+   ============================================================================= */
+
+[data-range] {
+	position: relative;
+	display: grid;
+	grid-template-rows: auto auto;
+	height: 2.5rem;
+	user-select: none;
+}
+
+[data-range][data-disabled] {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-range-track] {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 2rem;
+	cursor: pointer;
+}
+
+[data-range-bar] {
+	position: relative;
+	width: 100%;
+	height: 4px;
+	border-radius: 9999px;
+}
+
+[data-range-selected] {
+	position: absolute;
+	top: 50%;
+	height: 4px;
+	transform: translateY(-50%);
+	border-radius: 9999px;
+	pointer-events: none;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-range-thumb] {
+	position: absolute;
+	top: 50%;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 9999px;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+	z-index: 1;
+	border: 2px solid transparent;
+	box-sizing: border-box;
+	transition: box-shadow 150ms ease;
+}
+
+[data-range-thumb]:focus {
+	outline: none;
+}
+
+[data-range-thumb]:focus-visible {
+	outline: none;
+}
+
+[data-range-thumb][data-disabled] {
+	pointer-events: none;
+	cursor: not-allowed;
+}
+
+/* =============================================================================
+   Ticks
+   ============================================================================= */
+
+[data-range-ticks] {
+	display: grid;
+	grid-gap: calc((100% - 1rem * (var(--count) + 1)) / var(--count));
+	grid-template-columns: repeat(var(--count), 1rem) 1rem;
+	grid-template-rows: 7px auto;
+}
+
+[data-range-tick] {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	cursor: pointer;
+	user-select: none;
+}
+
+[data-range-tick][data-disabled] {
+	pointer-events: none;
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+[data-tick-bar] {
+	grid-column-start: 2;
+	height: 5px;
+	border-left-width: 1px;
+	border-left-style: solid;
+}
+
+[data-tick-label] {
+	grid-column: span 2;
+	display: flex;
+	justify-content: center;
+	font-size: 0.625rem;
+	line-height: 1.2;
+}

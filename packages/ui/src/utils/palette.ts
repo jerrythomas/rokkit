@@ -64,7 +64,7 @@ export function hexToRgb(hex: string): RGB {
 export function rgbToHex(rgb: RGB): string {
 	const toHex = (n: number) => {
 		const hex = Math.round(Math.max(0, Math.min(255, n))).toString(16)
-		return hex.length === 1 ? '0' + hex : hex
+		return hex.length === 1 ? `0${  hex}` : hex
 	}
 	return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`
 }

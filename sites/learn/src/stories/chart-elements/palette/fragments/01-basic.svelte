@@ -1,9 +1,11 @@
 <script>
   import { swatch } from '@rokkit/chart/lib'
-  
+  import { get } from 'svelte/store'
+
   // Access color palettes
-  $: blueShades = $swatch.palette.blue
-  $: primaryColor = $swatch.palette.blue[500]
+  const swatchData = get(swatch)
+  const blueShades = swatchData.palette.blue
+  const primaryColor = swatchData.palette.blue[500]
 </script>
 
 <!-- Use colors in your charts -->

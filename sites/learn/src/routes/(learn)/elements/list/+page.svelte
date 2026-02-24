@@ -80,6 +80,14 @@
 		</ul>
 	</div>
 
+	<h2>Nested Groups</h2>
+	<p>
+		Items with a <code>children</code> array are rendered as collapsible groups. Click a group header
+		to expand or collapse it. Keyboard navigation with arrow keys moves through all visible items.
+	</p>
+
+	<StoryViewer {...storyBuilder.getExample('nested')} />
+
 	<h2>Field Mapping</h2>
 	<p>
 		The List component is flexible and can adapt to your data structure. Instead of altering your

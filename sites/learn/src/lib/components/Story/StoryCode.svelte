@@ -67,7 +67,7 @@
 		typeof code === 'string'
 			? highlightCode(code, {
 					lang: language,
-					theme: vibe.mode == 'dark' ? 'github-dark' : 'github-light'
+					theme: vibe.mode === 'dark' ? 'github-dark' : 'github-light'
 				})
 			: Promise.resolve('')
 	)

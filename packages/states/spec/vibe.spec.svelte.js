@@ -5,7 +5,7 @@ import { flushSync } from 'svelte'
 
 describe('vibe', () => {
 	beforeAll(() => {
-		// eslint-disable-next-line no-console
+		 
 		console.warn = vi.fn()
 	})
 	afterAll(() => {
@@ -163,7 +163,7 @@ describe('vibe', () => {
 		localStorage.setItem('theme', 'invalid json')
 
 		vibe.load('theme')
-		// eslint-disable-next-line no-console
+		 
 		expect(console.warn).toHaveBeenCalledWith(
 			'Failed to load theme from storage for key "theme"',
 			'Unexpected token \'i\', "invalid json" is not valid JSON'
@@ -191,7 +191,7 @@ describe('vibe', () => {
 		it('should handle exceptions on save', () => {
 			expect(() => vibe.save()).toThrow('Key is required')
 			vibe.save('invalid')
-			// eslint-disable-next-line no-console
+			 
 			expect(console.warn).toHaveBeenCalledWith(
 				'Failed to save theme to storage for key "invalid"',
 				'Mocked error'

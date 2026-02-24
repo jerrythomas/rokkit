@@ -1,0 +1,82 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte'
+	import { ItemProxy, type ItemFields } from '../types/item-proxy.js'
+
+	interface BreadCrumbsProps {
+		/** Array of breadcrumb items */
+		items?: unknown[]
+		/** Custom field mappings */
+		fields?: Partial<ItemFields>
+		/** Separator icon class (default: 'i-lucide:chevron-right') */
+		separator?: string
+		/** Callback when a breadcrumb is clicked */
+		onclick?: (value: unknown, item: unknown) => void
+		/** Custom snippet for rendering each crumb */
+		crumb?: Snippet<[ItemProxy, boolean]>
+		/** Additional CSS class */
+		class?: string
+	}
+
+	const {
+		items = [],
+		fields,
+		separator = 'i-lucide:chevron-right',
+		onclick,
+		crumb,
+		class: className = ''
+	}: BreadCrumbsProps = $props()
+
+	function createProxy(item: unknown): ItemProxy {
+		return new ItemProxy(item as Record<string, unknown>, fields)
+	}
+
+	function handleClick(proxy: ItemProxy) {
+		onclick?.(proxy.itemValue, proxy.original)
+	}
+</script>
+
+{#snippet defaultCrumb(proxy: ItemProxy, _isLast: boolean)}
+	{#if proxy.icon}
+		<span data-breadcrumb-icon class={proxy.icon} aria-hidden="true"></span>
+	{/if}
+	<span data-breadcrumb-label>{proxy.text}</span>
+{/snippet}
+
+<nav data-breadcrumbs class={className || undefined} aria-label="Breadcrumb">
+	<ol data-breadcrumb-list>
+		{#each items as item, index (index)}
+			{@const proxy = createProxy(item)}
+			{@const isLast = index === items.length - 1}
+
+			{#if index > 0}
+				<li data-breadcrumb-separator aria-hidden="true">
+					<span class={separator}></span>
+				</li>
+			{/if}
+
+			<li data-breadcrumb-item data-current={isLast || undefined}>
+				{#if isLast}
+					<span data-breadcrumb-current aria-current="page">
+						{#if crumb}
+							{@render crumb(proxy, isLast)}
+						{:else}
+							{@render defaultCrumb(proxy, isLast)}
+						{/if}
+					</span>
+				{:else}
+					<button
+						type="button"
+						data-breadcrumb-link
+						onclick={() => handleClick(proxy)}
+					>
+						{#if crumb}
+							{@render crumb(proxy, isLast)}
+						{:else}
+							{@render defaultCrumb(proxy, isLast)}
+						{/if}
+					</button>
+				{/if}
+			</li>
+		{/each}
+	</ol>
+</nav>

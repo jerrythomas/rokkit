@@ -1,0 +1,58 @@
+/**
+ * Tabs - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Tab List
+   ============================================================================= */
+
+[data-style='glass'] [data-tabs-list] {
+  @apply backdrop-blur-md rounded-t-lg border-b bg-surface-z1/70 border-surface-z5/20;
+}
+
+[data-style='glass'] [data-tabs][data-position='after'] [data-tabs-list] {
+  @apply rounded-t-none rounded-b-lg border-b-0 border-t;
+}
+
+/* =============================================================================
+   Tab Triggers
+   ============================================================================= */
+
+[data-style='glass'] [data-tabs-trigger] {
+  @apply text-surface-z6;
+}
+
+[data-style='glass'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply text-surface-z8 bg-surface-z2/15;
+}
+
+/* Selected state */
+[data-style='glass'] [data-tabs-trigger][data-selected] {
+  @apply bg-primary-z5/40 text-primary-z9 border-primary-z5/50 backdrop-blur-sm border;
+}
+
+/* =============================================================================
+   Tab Icon
+   ============================================================================= */
+
+[data-style='glass'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='glass'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='glass'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Tab Panel
+   ============================================================================= */
+
+[data-style='glass'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

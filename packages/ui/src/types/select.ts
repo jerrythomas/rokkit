@@ -124,6 +124,12 @@ export interface SelectBaseProps {
 
 	/** Custom snippet for rendering group labels */
 	groupLabel?: SelectGroupLabelSnippet
+
+	/** Enable typeahead filter input in dropdown header */
+	filterable?: boolean
+
+	/** Placeholder text for the filter input */
+	filterPlaceholder?: string
 }
 
 /**

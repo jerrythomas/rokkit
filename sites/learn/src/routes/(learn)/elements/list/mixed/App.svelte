@@ -1,6 +1,5 @@
 <script>
-	import { List, Item } from '@rokkit/ui'
-	import { FieldMapper } from '@rokkit/core'
+	import { List } from '@rokkit/ui'
 	import { items } from './data.js'
 	import Odd from './Odd.svelte'
 	import Even from './Even.svelte'

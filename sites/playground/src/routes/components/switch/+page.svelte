@@ -1,0 +1,66 @@
+<script lang="ts">
+	import { Switch } from '@rokkit/ui'
+	import { FormRenderer, InfoField } from '@rokkit/forms'
+	import Playground from '$lib/Playground.svelte'
+
+	let boolValue = $state<unknown>(false)
+	let textValue = $state<unknown>('off')
+	let iconValue = $state<unknown>(0)
+
+	let props = $state({ size: 'md', showLabels: false, disabled: false })
+
+	const schema = {
+		type: 'object',
+		properties: {
+			size: { type: 'string' },
+			showLabels: { type: 'boolean' },
+			disabled: { type: 'boolean' }
+		}
+	}
+
+	const layout = {
+		type: 'vertical',
+		elements: [
+			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
+			{ scope: '#/showLabels', label: 'Show labels' },
+			{ scope: '#/disabled', label: 'Disabled' },
+			{ type: 'separator' }
+		]
+	}
+
+	const textOptions: [object, object] = [
+		{ text: 'Off', value: 'off' },
+		{ text: 'On', value: 'on' }
+	]
+
+	const iconOptions: [object, object] = [
+		{ text: 'Dark', value: 0, icon: 'i-lucide:moon' },
+		{ text: 'Light', value: 1, icon: 'i-lucide:sun' }
+	]
+</script>
+
+<Playground title="Switch" description="iOS-style binary toggle switch for two-state selection.">
+	{#snippet preview()}
+		<div class="flex flex-col gap-6">
+			<div>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Boolean (default)</h4>
+				<Switch bind:value={boolValue} size={props.size as any} showLabels={props.showLabels} disabled={props.disabled} />
+			</div>
+			<div>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Text options</h4>
+				<Switch options={textOptions} bind:value={textValue} size={props.size as any} showLabels={props.showLabels} disabled={props.disabled} />
+			</div>
+			<div>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">With icons</h4>
+				<Switch options={iconOptions} bind:value={iconValue} size={props.size as any} showLabels={props.showLabels} disabled={props.disabled} />
+			</div>
+		</div>
+	{/snippet}
+
+	{#snippet controls()}
+		<FormRenderer bind:data={props} {schema} {layout} />
+		<InfoField label="Boolean" value={boolValue} />
+		<InfoField label="Text" value={textValue} />
+		<InfoField label="Icon" value={iconValue} />
+	{/snippet}
+</Playground>

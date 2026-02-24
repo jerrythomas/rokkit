@@ -13,6 +13,7 @@ export class ListController {
 	expandedKeys = new SvelteSet()
 	focusedKey = $state(null)
 	#currentIndex = -1
+	#anchorKey = null
 
 	selected = $derived(Array.from(this.selectedKeys).map((key) => this.lookup.get(key).value))
 	focused = $derived(this.lookup.get(this.focusedKey)?.value)
@@ -35,7 +36,7 @@ export class ListController {
 	#initExpandedKeys(items, fields, path = []) {
 		if (!items || !Array.isArray(items)) return
 		items.forEach((item, index) => {
-			if (item == null || typeof item !== 'object') return
+			if (item === null || item === undefined || typeof item !== 'object') return
 			const itemPath = [...path, index]
 			const children = item[fields.children]
 			if (Array.isArray(children) && children.length > 0) {
@@ -139,7 +140,7 @@ export class ListController {
 	 */
 	#isDisabled(index) {
 		const item = this.data[index]?.value
-		if (item == null || typeof item !== 'object') return false
+		if (item === null || item === undefined || typeof item !== 'object') return false
 		return item[this.fields.disabled] === true
 	}
 
@@ -207,6 +208,7 @@ export class ListController {
 			this.selectedKeys.add(key)
 		}
 
+		this.#anchorKey = key
 		return true
 	}
 
@@ -221,10 +223,45 @@ export class ListController {
 		if (!this.lookup.has(key)) return false
 
 		if (this.#options.multiselect) {
+			this.#anchorKey = key
 			return this.toggleSelection(key)
 		} else {
 			return this.select(key)
 		}
+	}
+
+	/**
+	 * Select all non-disabled items between the anchor and the given key (inclusive).
+	 * Used for Shift+click range selection in multiselect mode.
+	 * @param {string} selectedKey
+	 * @returns {boolean}
+	 */
+	selectRange(selectedKey) {
+		const key = selectedKey ?? this.focusedKey
+		if (!this.lookup.has(key)) return false
+
+		if (!this.#options.multiselect) return this.select(key)
+
+		const anchorKey = this.#anchorKey ?? this.focusedKey
+		if (!anchorKey) return this.select(key)
+
+		const anchorIndex = this.data.findIndex((row) => row.key === anchorKey)
+		const targetIndex = this.data.findIndex((row) => row.key === key)
+		if (anchorIndex < 0 || targetIndex < 0) return false
+
+		const start = Math.min(anchorIndex, targetIndex)
+		const end = Math.max(anchorIndex, targetIndex)
+
+		this.selectedKeys.clear()
+		for (let i = start; i <= end; i++) {
+			if (!this.#isDisabled(i)) {
+				this.selectedKeys.add(this.data[i].key)
+			}
+		}
+
+		// Move focus but don't change anchor (anchor stays for subsequent Shift+clicks)
+		this.moveToIndex(targetIndex)
+		return true
 	}
 
 	update(items) {

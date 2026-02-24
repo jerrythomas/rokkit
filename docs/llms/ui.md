@@ -1,34 +1,60 @@
 # @rokkit/ui
 
-> 15 data-driven UI components for Svelte 5 with field mapping, custom snippets, and keyboard navigation.
+> 24 UI components for Svelte 5 with field mapping, custom snippets, keyboard navigation, and data-attribute theming.
 
 ## Position in Dependency Hierarchy
 **Depends on**: @rokkit/core, @rokkit/states, @rokkit/actions, svelte (peer), shiki (peer)
 **Depended on by**: @rokkit/forms, @rokkit/app, application UI
 
-**Note**: Per ADR-003, states and actions dependencies added. Components are being migrated from inline logic to shared controllers/actions (Phase C).
+**Note**: Per ADR-003, states and actions dependencies added. All interactive components use shared controllers/actions (ListController + navigator, or keyboard + swipeable).
 
 ## Exports
 
 ### Components
+
+#### Interactive (data-driven, keyboard navigable)
+
+| Export | Key Props | Navigation | Description |
+|--------|-----------|------------|-------------|
+| `List` | items, fields, value, size, collapsible, expanded, active, onselect | NestedController + navigator | Flat or grouped list with keyboard nav |
+| `Tree` | items, fields, value, showLines, expanded, expandAll, active, onselect, ontoggle | NestedController + navigator | Hierarchical tree with connectors |
+| `Select` | options, fields, value, placeholder, size, align, direction, maxRows, onchange | ListController + navigator | Single-select dropdown |
+| `MultiSelect` | options, fields, value, maxDisplay, onchange | ListController + navigator | Multi-select with tag display |
+| `Menu` | options, fields, label, icon, showArrow, size, align, direction, onselect | ListController + navigator | Action dropdown menu |
+| `Toggle` | options, fields, value, showLabels, size, onchange | ListController + navigator | Mutually exclusive toggle group |
+| `Tabs` | items, fields, value, position, size, onchange | ListController + navigator | Tab bar with panel content |
+| `Toolbar` | items, fields, position, size, sticky, compact, showDividers, onclick | ListController + navigator | Horizontal/vertical toolbar |
+| `Carousel` | count, current, autoplay, interval, loop, showDots, showArrows, transition, slide | keyboard + swipeable | Content slides with dots, arrows, swipe, autoplay |
+
+#### Presentational
 
 | Export | Key Props | Description |
 |--------|-----------|-------------|
 | `Button` | variant, style, size, label, icon, href, loading, disabled, onclick | Semantic button or link |
 | `ButtonGroup` | size, children | Groups related buttons |
 | `Code` | code, language, theme, showLineNumbers, showCopyButton | Syntax-highlighted code block (Shiki) |
-| `List` | items, fields, value, size, collapsible, expanded, active, onselect | Flat or grouped list with keyboard nav |
-| `Tree` | items, fields, value, showLines, expanded, expandAll, active, onselect, ontoggle | Hierarchical tree with connectors |
-| `Select` | options, fields, value, placeholder, size, align, direction, maxRows, onchange | Single-select dropdown |
-| `MultiSelect` | options, fields, value, maxDisplay, onchange | Multi-select with tag display |
-| `Menu` | options, fields, label, icon, showArrow, size, align, direction, onselect | Action dropdown menu |
-| `Toggle` | options, fields, value, showLabels, size, onchange | Mutually exclusive toggle group (uses ListController + navigator) |
-| `Toolbar` | items, fields, position, size, sticky, compact, showDividers, onclick | Horizontal/vertical toolbar |
+| `BreadCrumbs` | items, fields, separator, onclick, crumb | Navigation breadcrumbs with ARIA |
+| `Card` | href, onclick, header, footer, children | Flexible content container (div/a/button) |
+| `Pill` | value, fields, removable, disabled, onremove, content | Tag/chip with optional icon and remove |
+| `ProgressBar` | value, max | Determinate or indeterminate progress bar |
+| `Rating` | value, max, disabled, filledIcon, emptyIcon, onchange | Star/icon rating input with keyboard nav |
 | `ToolbarGroup` | label, gap, children | Grouped toolbar section |
 | `FloatingAction` | items, fields, icon, position, expand, open, backdrop, onselect | Speed dial floating button |
 | `PaletteManager` | (palette management props) | Color palette UI |
-| `Connector` | (internal) | Tree line connector renderer |
-| `ItemContent` | (internal) | Item with icon, text, description, badge |
+
+#### Visual Effects
+
+| Export | Key Props | Description |
+|--------|-----------|-------------|
+| `Tilt` | maxRotation, setBrightness, perspective | Parallax 3D tilt effect on mouse move |
+| `Shine` | color, radius, depth, surfaceScale, specularConstant, specularExponent | SVG specular lighting effect following cursor |
+
+#### Internal
+
+| Export | Description |
+|--------|-------------|
+| `Connector` | Tree line connector renderer |
+| `ItemContent` | Item with icon, text, description, badge |
 
 ### Utilities
 
@@ -100,12 +126,25 @@ proxy.createChildProxy(child)  // Create proxy for child item
 
 ### MVC Pattern (ADR-003)
 
-Toggle is the first component migrated to the shared MVC pattern:
-- **Model**: `ListController` from `@rokkit/states` — manages focus, selection, navigation state
-- **Controller**: `navigator` action from `@rokkit/actions` — keyboard (ArrowLeft/Right, Home/End) and click handling
+All interactive components use shared controllers and actions:
+
+**Pattern A — ListController + navigator** (Toggle, Tabs, Select, MultiSelect, Menu, Toolbar):
+- **Model**: `ListController` from `@rokkit/states` — manages focus, selection, navigation
+- **Controller**: `navigator` action from `@rokkit/actions` — keyboard (ArrowLeft/Right, Home/End) and click interception via `data-path`
 - **View**: Component `.svelte` file — rendering, DOM focus management
 
-`ListController.moveToValue()` accepts both full item objects and extracted value-field primitives (e.g., `'a'` matches `{ text: 'A', value: 'a' }`). Use `lastSyncedValue` guard to prevent the value-sync `$effect` from fighting navigator focus moves.
+**Pattern B — NestedController + navigator** (List, Tree):
+- Same as Pattern A but with `NestedController` for hierarchical data (expand/collapse, parent/child navigation)
+
+**Pattern C — keyboard + swipeable** (Carousel):
+- `keyboard` action maps keys to named custom events (prev, next, first, last)
+- `swipeable` action handles touch/mouse swipe gestures
+- No controller needed — simple index state
+
+**Key implementation notes:**
+- `ListController.moveToValue()` accepts both full item objects and extracted value-field primitives
+- Use `lastSyncedValue` guard to prevent value-sync `$effect` from fighting navigator focus moves
+- Elements with `data-path` have clicks intercepted by navigator — do NOT add `onclick` handlers on these elements
 
 ```svelte
 let controller = new ListController(options, value, userFields)
@@ -136,7 +175,7 @@ All selection components use extracted value-field primitives (not full objects)
 <Toggle options={['day', 'week', 'month']} bind:value={period} />
 ```
 
-**Compliant**: Toggle, Select, List, Tree. **Pending migration**: MultiSelect (backlog #34 — currently stores full item objects).
+**Compliant**: Toggle, Select, List, Tree, Tabs, Toolbar, Menu. **Pending migration**: MultiSelect (backlog #28 — currently stores full item objects).
 
 ### Button Variants
 

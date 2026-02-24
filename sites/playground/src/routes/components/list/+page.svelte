@@ -7,15 +7,17 @@
 	let buttonSelected = $state<unknown>(undefined)
 	let groupedSelected = $state<unknown>(undefined)
 	let descSelected = $state<unknown>(undefined)
+	let multiSelected = $state<unknown[]>([])
 
-	let props = $state({ size: 'md', collapsible: true, disabled: false })
+	let props = $state({ size: 'md', collapsible: true, disabled: false, multiselect: false })
 
 	const schema = {
 		type: 'object',
 		properties: {
 			size: { type: 'string' },
 			collapsible: { type: 'boolean' },
-			disabled: { type: 'boolean' }
+			disabled: { type: 'boolean' },
+			multiselect: { type: 'boolean' }
 		}
 	}
 
@@ -25,6 +27,7 @@
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
 			{ scope: '#/collapsible', label: 'Collapsible groups' },
 			{ scope: '#/disabled', label: 'Disabled' },
+			{ scope: '#/multiselect', label: 'Multi-select' },
 			{ type: 'separator' }
 		]
 	}
@@ -112,6 +115,8 @@
 						value={buttonSelected}
 						size={props.size as any}
 						disabled={props.disabled}
+						multiselect={props.multiselect}
+						bind:selected={multiSelected}
 						onselect={handleButtonSelect}
 					/>
 				</div>
@@ -149,5 +154,8 @@
 		<InfoField label="Button" value={buttonSelected} />
 		<InfoField label="Grouped" value={groupedSelected} />
 		<InfoField label="Descriptions" value={descSelected} />
+		{#if props.multiselect}
+			<InfoField label="Selected" value={multiSelected.join(', ')} />
+		{/if}
 	{/snippet}
 </Playground>

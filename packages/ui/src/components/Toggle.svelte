@@ -16,7 +16,7 @@
 		item: itemSnippet
 	}: ToggleProps = $props()
 
-	// eslint-disable-next-line svelte/valid-compile -- initial capture is intentional
+	 
 	let controller = new ListController(options, value, userFields)
 	let containerRef: HTMLElement | null = $state(null)
 	let lastSyncedValue: unknown = value

@@ -1,14 +1,17 @@
 <script>
   import { DefinePatterns } from '@rokkit/chart/elements'
   import { swatch } from '@rokkit/chart/lib'
-  
+  import { get } from 'svelte/store'
+
+  const swatchData = get(swatch)
+
   // Define patterns for use in charts
-  $: patterns = [
+  const patterns = [
     {
       id: 'stripe-pattern',
-      component: $swatch.patterns.stripe,
-      fill: $swatch.palette.blue[300],
-      stroke: $swatch.palette.blue[500]
+      component: swatchData.patterns.stripe,
+      fill: swatchData.palette.blue[300],
+      stroke: swatchData.palette.blue[500]
     }
   ]
 </script>

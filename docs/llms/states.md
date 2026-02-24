@@ -4,7 +4,7 @@
 
 ## Position in Dependency Hierarchy
 **Depends on**: @rokkit/core, d3-array, d3-collection, @lukeed/uuid, ramda, svelte
-**Depended on by**: @rokkit/actions (dev), @rokkit/composables, @rokkit/forms, @rokkit/chart
+**Depended on by**: @rokkit/actions (dev), @rokkit/ui, @rokkit/forms, @rokkit/chart
 
 ## Exports
 

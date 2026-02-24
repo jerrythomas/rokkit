@@ -4,16 +4,9 @@
 	import InputField from './input/InputField.svelte'
 	import FieldLayout from './FieldLayout.svelte'
 
-	// const dispatch = createEventDispatcher()
 	const registry = getContext('registry')
 
-	export let value = {}
-	export let schema = {}
-	export let path = []
-
-	function handle() {
-		dispatch('change', value)
-	}
+	let { value = $bindable({}), schema = {}, path = [], onchange } = $props()
 
 	let Wrapper = registry.wrappers[schema.wrapper] ?? registry.wrappers.default
 	let wrapperProps = omit(['wrapper', 'elements', 'key'], schema)
@@ -33,15 +26,15 @@
 
 			{#if nested}
 				{#if item.key}
-					<FieldLayout {...props} schema={item} bind:value={value[item.key]} on:change={handle} />
+					<FieldLayout {...props} schema={item} bind:value={value[item.key]} {onchange} />
 				{:else}
-					<FieldLayout {...props} schema={item} bind:value on:change={handle} />
+					<FieldLayout {...props} schema={item} bind:value {onchange} />
 				{/if}
 			{:else if Component}
 				<Component {...item.props} value={item.key ? value[item.key] : null} />
 			{:else}
 				{@const name = elementPath.join('.')}
-				<InputField {name} bind:value={value[item.key]} {...item.props} on:change={handle} />
+				<InputField {name} bind:value={value[item.key]} {...item.props} {onchange} />
 			{/if}
 		{/each}
 	</Wrapper>

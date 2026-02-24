@@ -5,7 +5,7 @@
 
 	let value = $state<unknown>(undefined)
 
-	let props = $state({ placeholder: 'Choose a fruit...', size: 'md', align: 'left', direction: 'down', disabled: false })
+	let props = $state({ placeholder: 'Choose a fruit...', size: 'md', align: 'left', direction: 'down', disabled: false, filterable: false })
 
 	const schema = {
 		type: 'object',
@@ -14,7 +14,8 @@
 			size: { type: 'string' },
 			align: { type: 'string' },
 			direction: { type: 'string' },
-			disabled: { type: 'boolean' }
+			disabled: { type: 'boolean' },
+			filterable: { type: 'boolean' }
 		}
 	}
 
@@ -26,6 +27,7 @@
 			{ scope: '#/align', label: 'Align', props: { options: ['left', 'right'] } },
 			{ scope: '#/direction', label: 'Direction', props: { options: ['down', 'up'] } },
 			{ scope: '#/disabled', label: 'Disabled' },
+			{ scope: '#/filterable', label: 'Filterable' },
 			{ type: 'separator' }
 		]
 	}
@@ -74,6 +76,7 @@
 						align={props.align as any}
 						direction={props.direction as any}
 						disabled={props.disabled}
+						filterable={props.filterable}
 						bind:value
 					/>
 				</div>
@@ -88,6 +91,7 @@
 						align={props.align as any}
 						direction={props.direction as any}
 						disabled={props.disabled}
+						filterable={props.filterable}
 						bind:value
 					/>
 				</div>

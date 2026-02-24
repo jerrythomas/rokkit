@@ -26,8 +26,8 @@ export function getClosestAncestorWithAttribute(element, attribute) {
  * @returns {string|null} - The event name or null if no match is found.
  */
 export const getEventForKey = (keyMapping, key) => {
-	// eslint-disable-next-line no-unused-vars
-	const matchEvent = ([eventName, keys]) =>
+	 
+	const matchEvent = ([_eventName, keys]) =>
 		(Array.isArray(keys) && keys.includes(key)) || (keys instanceof RegExp && keys.test(key))
 
 	const event = find(matchEvent, toPairs(keyMapping))
@@ -133,9 +133,14 @@ function isAccordionTrigger(target) {
  * @returns {string} The determined action
  */
 export const getClickAction = (event) => {
-	const { ctrlKey, metaKey, target } = event
+	const { ctrlKey, metaKey, shiftKey, target } = event
 
-	// Check for modifier keys first (highest priority)
+	// Check for shift key first (range selection)
+	if (shiftKey && !ctrlKey && !metaKey) {
+		return 'range'
+	}
+
+	// Check for modifier keys (toggle selection)
 	if (ctrlKey || metaKey) {
 		return 'extend'
 	}

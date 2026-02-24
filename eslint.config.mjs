@@ -1,10 +1,34 @@
 import eslintPluginSvelte from 'eslint-plugin-svelte'
+import svelteParser from 'svelte-eslint-parser'
+import tseslint from 'typescript-eslint'
 import globals from 'globals'
+
 export default [
+  ...tseslint.configs.recommended,
   ...eslintPluginSvelte.configs['flat/recommended'],
   {
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node }
+      globals: { ...globals.browser, ...globals.node },
+      parser: tseslint.parser,
+      parserOptions: {
+        extraFileExtensions: ['.svelte']
+      }
+    }
+  },
+  {
+    files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: {
+        parser: tseslint.parser,
+        svelteFeatures: {
+          experimentalGenerics: true,
+          runes: true
+        }
+      }
+    },
+    rules: {
+      'prefer-const': 'off'
     }
   },
   {
@@ -18,9 +42,14 @@ export default [
       '**/.svelte-kit/',
       '**/build/**',
       '**/.vercel/**',
-      'packages/archive',
+      'archive/**',
       'packages/icons/lib',
-      '**/app.d.ts'
+      'packages/chart/src/Plot/**',
+      '**/app.d.ts',
+      '**/_generated/**',
+      '**/paraglide/**',
+      'sites/learn/src/routes/(learn)/customization/icons/fragments/**',
+      'sites/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js'
     ]
   },
   {
@@ -28,7 +57,6 @@ export default [
       sourceType: 'module',
       ecmaVersion: 'latest',
       globals: {
-        // Correctly define globals as individual entries
         TouchEvent: 'readonly',
         CustomEvent: 'readonly',
         Touch: 'readonly',
@@ -44,22 +72,19 @@ export default [
         process: 'readonly',
         global: 'readonly',
         __APP_VERSION__: 'readonly'
-        // Add any other specific globals you need
       },
-      // You can use parserOptions to specify environments
       parserOptions: {
         ecmaFeatures: {
           jsx: true
         }
       }
     },
-    // Setting environments in flat config
     linterOptions: {
       reportUnusedDisableDirectives: true
     },
     rules: {
       complexity: ['warn', 5],
-      'max-depth': ['error', 3],
+      'max-depth': ['warn', 3],
       'max-params': ['warn', 4],
       'no-console': 'error',
       'prefer-const': 'error',
@@ -67,9 +92,15 @@ export default [
       eqeqeq: 'error',
       'no-eq-null': 'error',
       'no-implicit-coercion': 'error',
-      'no-use-before-define': 'error',
-      'no-unused-vars': 'error',
-      'no-undef': 'error',
+      'no-use-before-define': 'off',
+      '@typescript-eslint/no-use-before-define': ['warn', { functions: false }],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'no-undef': 'off',
       'max-lines-per-function': [
         'warn',
         {
@@ -79,14 +110,58 @@ export default [
         }
       ],
       'no-return-await': 'error',
-      'require-await': 'error'
+      'require-await': 'warn'
     },
-    files: ['**/*.js', '**/*.ts']
+    files: ['**/*.js', '**/*.ts', '**/*.svelte']
   },
   {
-    files: ['**/*.spec.js', '**/*.spec.svelte.js', '**/spec/mocks/**'],
+    files: [
+      '**/*.spec.js',
+      '**/*.spec.ts',
+      '**/*.spec.svelte.js',
+      '**/*.spec.svelte.ts',
+      '**/*.test.ts',
+      '**/*.test.js',
+      '**/spec/**'
+    ],
     rules: {
-      'max-lines-per-function': 'off'
+      'max-lines-per-function': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'require-await': 'off',
+      'no-console': 'off'
+    }
+  },
+  {
+    files: ['**/*.svelte', '**/*.svelte.js', '**/*.svelte.ts'],
+    rules: {
+      'prefer-const': 'off',
+      'svelte/no-navigation-without-resolve': 'off',
+      'svelte/require-each-key': 'warn',
+      'svelte/no-unused-svelte-ignore': 'warn',
+      'svelte/prefer-svelte-reactivity': 'warn'
+    }
+  },
+  {
+    files: [
+      '**/sites/*/src/routes/components/**',
+      '**/sites/*/src/routes/playground/**',
+      '**/examples/**',
+      '**/stories/**',
+      '**/fragments/**'
+    ],
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off'
+    }
+  },
+  {
+    files: ['**/sites/learn/src/**'],
+    rules: {
+      'svelte/no-at-html-tags': 'off',
+      'no-console': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn'
     }
   }
 ]

@@ -68,8 +68,7 @@
 	<Code {...storyBuilder.getFragment(1)} />
 
 	<!-- Next Steps -->
-	<section>
-		data-card-cta>
+	<section data-card-cta>
 		<h2>Ready for more?</h2>
 		<p>
 			Now that you understand how the MultiSelect component works, explore other selection
@@ -80,8 +79,8 @@
 				Select
 				<span class="ml-2">→</span>
 			</a>
-			<a href={resolve('/elements/switch')} class="button is-primary">
-				Switch
+			<a href={resolve('/elements/toggle')} class="button is-primary">
+				Toggle
 				<span class="ml-2">→</span>
 			</a>
 		</span>

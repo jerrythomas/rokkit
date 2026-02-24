@@ -7,7 +7,7 @@ import { omit, pick } from 'ramda'
  * @param {import('../types').LayoutSchema} attribute
  */
 function combineArrayElementsWithSchema(element, attribute) {
-	// eslint-disable-next-line no-use-before-define
+	 
 	const schema = getSchemaWithLayout(attribute.props.items, element.schema)
 	return {
 		...attribute,
@@ -76,7 +76,7 @@ function combineElementWithSchema(element, schema) {
 	let attribute = findAttributeByPath(scope, schema)
 
 	if (Array.isArray(element.elements)) {
-		// eslint-disable-next-line no-use-before-define
+		 
 		attribute = combineNestedElementsWithSchema(element, attribute, schema)
 	} else if (element.schema || attribute.props?.type === 'array') {
 		attribute = combineArrayElementsWithSchema(element, attribute)

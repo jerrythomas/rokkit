@@ -1,5 +1,4 @@
 <script>
-	import { Icon } from '@rokkit/ui'
 	/**
 	 * @typedef {Object} HeaderProps
 	 * @property {string} icon - The icon of the header.
@@ -40,7 +39,7 @@
 			{/if}
 			<h1 class="text-surface-900 flex items-center gap-4 text-3xl font-bold dark:text-white">
 				{#if icon}
-					<Icon name={icon} class="text-secondary-z7 text-6xl" />
+					<span class="{icon} text-secondary-z7 text-6xl" aria-hidden="true"></span>
 				{/if}
 				{title}
 			</h1>

@@ -1,13 +1,15 @@
 <script>
-	export let x
-	export let y
-	export let text
-	export let angle = 0
-	export let small = false
-	export let anchor = 'middle'
+	let {
+		x,
+		y,
+		text,
+		angle = 0,
+		small = false,
+		anchor = 'middle'
+	} = $props()
 
-	$: transform = `translate(${x},${y}) rotate(${angle})`
-	$: anchor = ['start', 'middle', 'end'].includes(anchor) ? anchor : 'middle'
+	let transform = $derived(`translate(${x},${y}) rotate(${angle})`)
+	let validAnchor = $derived(['start', 'middle', 'end'].includes(anchor) ? anchor : 'middle')
 </script>
 
-<text class="label" class:small text-anchor={anchor} {transform}>{text}</text>
+<text class="label" class:small text-anchor={validAnchor} {transform}>{text}</text>

@@ -26,7 +26,7 @@ function createFileObject(dir, entry) {
 function processEntry(entry, folderPath, pattern, dir) {
 	const currentPath = path.join(dir, entry.name)
 	if (entry.isDirectory()) {
-		// eslint-disable-next-line no-use-before-define
+		 
 		return getFiles(folderPath, pattern, currentPath)
 	}
 

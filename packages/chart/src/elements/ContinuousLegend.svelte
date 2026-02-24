@@ -1,23 +1,27 @@
 <script>
 	import { scaleLinear } from 'd3-scale'
-	// import { id as uniqueId } from '@rokkit/core'
 
-	export let x = 0
-	export let y = 0
-	export let textSize = 5
-	export let height = 10
-	export let width = 100
-	export let tickCount = 5
-	export let scale
-	export let id = 'legend'
+	let {
+		x = 0,
+		y = 0,
+		textSize = 5,
+		height = 10,
+		width = 100,
+		tickCount = 5,
+		scale,
+		id = 'legend'
+	} = $props()
 
-	$: scaleTicks = scaleLinear()
-		.range([x, x + 100])
-		.domain(scale.domain())
-	$: ticks = scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), label: d }))
+	let scaleTicks = $derived(
+		scaleLinear()
+			.range([x, x + 100])
+			.domain(scale.domain())
+	)
+	let ticks = $derived(
+		scale.ticks.apply(scale, [tickCount]).map((d) => ({ x: scaleTicks(d), label: d }))
+	)
 
-	$: colors = scale.range()
-	// $: id = uniqueId('legend-')
+	let colors = $derived(scale.range())
 </script>
 
 <defs>

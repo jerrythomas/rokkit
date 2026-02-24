@@ -115,9 +115,10 @@ describe('NestedController', () => {
 			expect(controller.collapse()).toBe(false)
 			expect(controller.collapse('99')).toBe(false)
 
+			// Collapse on root item that's not expanded → false (no parent to go to)
 			expect(controller.moveTo('0')).toBe(true)
 			expect(controller.focused).toEqual(items[0])
-			expect(controller.collapse()).toBe(true)
+			expect(controller.collapse()).toBe(false)
 		})
 	})
 	describe('state isolation', () => {
@@ -131,6 +132,110 @@ describe('NestedController', () => {
 			controller.collapse('0')
 			expect(controller.data.length).toEqual(3)
 			expect(items[0]._expanded).toBeUndefined()
+		})
+	})
+
+	describe('expand — tree-style focus', () => {
+		it('should move focus to first child when already expanded', () => {
+			const controller = new NestedController(items)
+			controller.expand('0') // expand Item 1
+			controller.moveTo('0') // focus Item 1
+
+			// ArrowRight on expanded group → first child
+			expect(controller.expand()).toBe(true)
+			expect(controller.focusedKey).toBe('0-0')
+			expect(controller.focused).toEqual(items[0].children[0])
+		})
+
+		it('should return false on leaf node (no children)', () => {
+			const controller = new NestedController(items)
+			controller.expand('0') // expand Item 1
+			controller.moveTo('0-0') // focus Item 1.1 (leaf with empty children array)
+
+			expect(controller.expand()).toBe(false)
+			expect(controller.focusedKey).toBe('0-0')
+		})
+
+		it('should move to deeply nested first child', () => {
+			const controller = new NestedController(items)
+			controller.expand('0')
+			controller.expand('0-1') // expand Item 1.2
+			controller.moveTo('0-1')
+
+			// ArrowRight on expanded Item 1.2 → Item 1.2.1
+			expect(controller.expand()).toBe(true)
+			expect(controller.focusedKey).toBe('0-1-0')
+			expect(controller.focused).toEqual(items[0].children[1].children[0])
+		})
+	})
+
+	describe('collapse — tree-style focus', () => {
+		it('should move focus to parent when on child item', () => {
+			const controller = new NestedController(items)
+			controller.expand('0')
+			controller.moveTo('0-0') // focus Item 1.1 (child)
+
+			// ArrowLeft on child → parent
+			expect(controller.collapse()).toBe(true)
+			expect(controller.focusedKey).toBe('0')
+			expect(controller.focused).toEqual(items[0])
+		})
+
+		it('should return false on root item that is not expanded', () => {
+			const controller = new NestedController(items)
+			controller.moveTo('1') // focus Item 2 (root, not expanded)
+
+			expect(controller.collapse()).toBe(false)
+			expect(controller.focusedKey).toBe('1')
+		})
+
+		it('should move to parent from deeply nested child', () => {
+			const controller = new NestedController(items)
+			controller.expand('0')
+			controller.expand('0-1')
+			controller.moveTo('0-1-0') // focus Item 1.2.1
+
+			// ArrowLeft → parent Item 1.2
+			expect(controller.collapse()).toBe(true)
+			expect(controller.focusedKey).toBe('0-1')
+			expect(controller.focused).toEqual(items[0].children[1])
+		})
+
+		it('should still collapse an expanded group', () => {
+			const controller = new NestedController(items)
+			controller.expand('0')
+			expect(controller.data.length).toEqual(5)
+			controller.moveTo('0')
+
+			// ArrowLeft on expanded group → collapse it
+			expect(controller.collapse()).toBe(true)
+			expect(controller.data.length).toEqual(3)
+			expect(controller.focusedKey).toBe('0')
+		})
+	})
+
+	describe('expand/collapse full cycle', () => {
+		it('should navigate: expand → first child → collapse → back to parent', () => {
+			const controller = new NestedController(items)
+			controller.moveTo('0')
+
+			// Expand Item 1
+			controller.expand()
+			expect(controller.data.length).toEqual(5)
+			expect(controller.focusedKey).toBe('0')
+
+			// ArrowRight again → first child
+			controller.expand()
+			expect(controller.focusedKey).toBe('0-0')
+
+			// ArrowLeft → back to parent
+			controller.collapse()
+			expect(controller.focusedKey).toBe('0')
+
+			// ArrowLeft → collapse
+			controller.collapse()
+			expect(controller.data.length).toEqual(3)
+			expect(controller.focusedKey).toBe('0')
 		})
 	})
 

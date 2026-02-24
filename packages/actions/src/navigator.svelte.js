@@ -38,6 +38,7 @@ const EVENT_MAP = {
 	next: ['move'],
 	select: ['move', 'select'],
 	extend: ['move', 'select'],
+	range: ['move', 'select'],
 	collapse: ['toggle'],
 	expand: ['toggle'],
 	toggle: ['toggle']
@@ -94,6 +95,7 @@ function getHandlers(wrapper) {
 		expand: () => wrapper.expand(),
 		select: (path) => wrapper.select(path),
 		extend: (path) => wrapper.extendSelection(path),
+		range: (path) => wrapper.selectRange(path),
 		toggle: (path) => wrapper.toggleExpansion(path)
 	}
 }
@@ -111,13 +113,26 @@ export function navigator(node, options) {
 
 	const handleKeydown = (event) => {
 		const action = getKeyboardAction(event, config)
+		const prevKey = wrapper.focusedKey
 		const handled = handleAction(event, handlers[action])
 		if (handled) {
-			emitAction(node, options.wrapper, action, true)
-			// Scroll focused element into view for navigation actions
-			if (['first', 'last', 'previous', 'next'].includes(action)) {
-				// Use a small delay to ensure DOM updates are processed
-				setTimeout(() => scrollFocusedIntoView(node, options.wrapper), 0)
+			emitAction(node, wrapper, action, true)
+			// If expand/collapse moved focus, also emit move so components update DOM focus
+			const focusMoved =
+				['expand', 'collapse'].includes(action) && wrapper.focusedKey !== prevKey
+			if (focusMoved) {
+				node.dispatchEvent(
+					new CustomEvent('action', {
+						detail: {
+							name: 'move',
+							data: { value: wrapper.focused, selected: wrapper.selected }
+						}
+					})
+				)
+			}
+			// Scroll focused element into view for navigation and focus-moving expand/collapse
+			if (focusMoved || ['first', 'last', 'previous', 'next'].includes(action)) {
+				setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
 			}
 		}
 	}
