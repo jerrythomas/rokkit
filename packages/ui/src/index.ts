@@ -8,11 +8,28 @@ export {
 	MultiSelect,
 	Toolbar,
 	ToolbarGroup,
+	Tabs,
 	Toggle,
 	List,
 	Tree,
 	FloatingAction,
-	PaletteManager
+	PaletteManager,
+	Tilt,
+	Shine,
+	BreadCrumbs,
+	Card,
+	ProgressBar,
+	Carousel,
+	Pill,
+	Rating,
+	Connector,
+	Stepper,
+	Switch,
+	Table,
+	SearchFilter,
+	Range,
+	Timeline,
+	Reveal
 } from './components/index.js'
 
 // Utilities

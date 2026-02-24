@@ -14,7 +14,8 @@ describe('actions', () => {
 			'dismissable',
 			'navigable',
 			'fillable',
-			'delegateKeyboardEvents'
+			'delegateKeyboardEvents',
+			'reveal'
 		])
 	})
 })
