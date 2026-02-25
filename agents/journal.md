@@ -7,6 +7,26 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-02-24
 
+### HoverLift, Magnetic, Ripple Actions (Backlog #53)
+
+Three new Svelte actions in `@rokkit/actions`:
+
+- **`use:hoverLift`** — translateY + elevated box-shadow on hover. Options: `distance`, `shadow`, `duration`.
+- **`use:magnetic`** — element shifts toward cursor on mousemove, springs back on leave. Options: `strength`, `duration`.
+- **`use:ripple`** — material-design click ripple. Creates expanding circle span at click point. Options: `color`, `opacity`, `duration`. Injects keyframes stylesheet once.
+
+All three respect `prefers-reduced-motion`, use `$effect()` wrapper with cleanup, restore original styles on destroy.
+
+**Files created:**
+- `actions/src/hover-lift.svelte.js`, `actions/src/magnetic.svelte.js`, `actions/src/ripple.svelte.js`
+- `actions/spec/hover-lift.spec.svelte.js` (12 tests), `actions/spec/magnetic.spec.svelte.js` (10 tests), `actions/spec/ripple.spec.svelte.js` (14 tests)
+
+**Files modified:** `actions/src/index.js`, `actions/spec/index.spec.js`
+**Tests:** 1316 CI passing
+**Backlog:** #53 marked done
+
+---
+
 ### Button Style Enhancements (Backlog #51)
 
 Added `gradient` and `link` style variants plus micro-animations.

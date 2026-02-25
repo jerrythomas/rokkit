@@ -4,18 +4,17 @@ Priority 3 — Decorative actions and components.
 
 ---
 
-## 53. HoverLift, Magnetic, Ripple Actions
+## ~~53. HoverLift, Magnetic, Ripple Actions~~ DONE
 
 **Source:** `docs/requirements/060-effects.md §6–8`
 
-**What's needed:**
-- [ ] `use:hoverLift` — translateY + shadow on hover
-- [ ] `use:magnetic` — element shifts toward cursor on hover
-- [ ] `use:ripple` — CSS-only click ripple (material style)
-- [ ] All in `@rokkit/actions` package
-- [ ] `prefers-reduced-motion` support
-
-**Priority:** Medium — nice interaction polish, small scope each.
+**What's done:**
+- [x] `use:hoverLift` — translateY + shadow on hover
+- [x] `use:magnetic` — element shifts toward cursor on hover
+- [x] `use:ripple` — CSS-only click ripple (material style)
+- [x] All in `@rokkit/actions` package
+- [x] `prefers-reduced-motion` support
+- [x] 36 tests (12 hover-lift + 10 magnetic + 14 ripple)
 
 ---
 

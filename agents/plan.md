@@ -12,10 +12,13 @@
 
 `gradient` + `link` style variants. Micro-animations (hover lift, press, icon shift, loading pulse). Glass/minimal/material button theme CSS created. Playground updated.
 
-## Phase 4: Next Priority Items
+## ~~Phase 4: HoverLift/Magnetic/Ripple Actions (backlog #53)~~ COMPLETE
+
+Three effect actions in `@rokkit/actions`: `use:hoverLift` (translateY + shadow), `use:magnetic` (cursor attraction), `use:ripple` (click ripple). All respect `prefers-reduced-motion`. 36 tests.
+
+## Phase 5: Next Priority Items
 
 Candidates (by priority):
-- **#53** HoverLift/Magnetic/Ripple actions (Medium) — small scope each
 - **#47** Table Phase 2–4 (Medium) — hierarchy, pagination, polish
 
 ---

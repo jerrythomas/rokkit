@@ -15,7 +15,10 @@ describe('actions', () => {
 			'navigable',
 			'fillable',
 			'delegateKeyboardEvents',
-			'reveal'
+			'reveal',
+			'hoverLift',
+			'magnetic',
+			'ripple'
 		])
 	})
 })
