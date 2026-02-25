@@ -44,6 +44,8 @@
 | `disabled` | `'disabled'` | Disabled flag |
 | `children` | `'children'` | Child items (groups) |
 
+See [field-mapping.md](field-mapping.md) for the full `ItemFields` interface, grouped data structures, fallback resolution, nested field mapping, and lazy loading.
+
 ## Keyboard Navigation
 
 | Key | Action |

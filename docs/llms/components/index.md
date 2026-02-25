@@ -79,6 +79,8 @@ All data-driven components accept a `fields` prop to map custom property names:
 
 Default field names: `text`, `value`, `icon`, `description`, `disabled`, `children`, `href`.
 
+**See [field-mapping.md](field-mapping.md)** for the complete guide: all 13 fields, grouped data structures, lazy loading, fallback resolution, nested field mapping, and per-component notes.
+
 ### Custom Snippets
 
 ```svelte
