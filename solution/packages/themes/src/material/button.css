@@ -1,0 +1,153 @@
+/**
+ * Button - Material Theme Styles
+ *
+ * Material Design inspired with elevation and shadows.
+ */
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+[data-style='material'] [data-button][data-style='default'][data-variant='default'],
+[data-style='material'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='material'] [data-button][data-style='default']:not([data-variant]),
+[data-style='material'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply bg-surface-z2 text-surface-z8 shadow-sm;
+}
+
+[data-style='material'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='material'] [data-button]:not([data-style])[data-variant='primary'] {
+  @apply bg-primary-z5 text-on-primary shadow-md;
+}
+
+[data-style='material'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='material'] [data-button]:not([data-style])[data-variant='secondary'] {
+  @apply bg-secondary-z4 text-on-secondary shadow-md;
+}
+
+[data-style='material'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='material'] [data-button]:not([data-style])[data-variant='danger'] {
+  @apply bg-danger-z4 text-on-danger shadow-md;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='material'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='material'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z4 text-surface-z7 border bg-transparent;
+}
+
+[data-style='material'] [data-button][data-style='outline'][data-variant='primary'] {
+  @apply border-primary-z4 text-primary-z6 border bg-transparent;
+}
+
+[data-style='material'] [data-button][data-style='outline'][data-variant='secondary'] {
+  @apply border-secondary-z4 text-secondary-z6 border bg-transparent;
+}
+
+[data-style='material'] [data-button][data-style='outline'][data-variant='danger'] {
+  @apply border-danger-z4 text-danger-z4 border bg-transparent;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='material'] [data-button][data-style='ghost'] {
+  @apply border-transparent bg-transparent;
+}
+
+[data-style='material'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='material'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='material'] [data-button][data-style='ghost'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='material'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='material'] [data-button][data-style='ghost'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+/* =============================================================================
+   Gradient Style
+   ============================================================================= */
+
+[data-style='material'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='material'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply from-surface-z3 to-surface-z1 text-surface-z10 shadow-md bg-gradient-to-br;
+}
+
+[data-style='material'] [data-button][data-style='gradient'][data-variant='primary'] {
+  @apply from-primary-z5 to-primary-z3 text-on-primary shadow-md bg-gradient-to-br;
+}
+
+[data-style='material'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply from-secondary-z5 to-secondary-z3 text-on-secondary shadow-md bg-gradient-to-br;
+}
+
+[data-style='material'] [data-button][data-style='gradient'][data-variant='danger'] {
+  @apply from-danger-z5 to-danger-z3 text-on-danger shadow-md bg-gradient-to-br;
+}
+
+[data-style='material'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  filter: brightness(1.08);
+  @apply shadow-lg;
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='material'] [data-button][data-style='link'][data-variant='default'],
+[data-style='material'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='material'] [data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='material'] [data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='material'] [data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+[data-style='material'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+[data-style='material'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='material'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply shadow-md;
+}
+
+[data-style='material'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z1;
+}
+
+[data-style='material'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Focus
+   ============================================================================= */
+
+[data-style='material'] [data-button]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}

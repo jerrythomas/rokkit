@@ -68,30 +68,12 @@ Priority 2 — Component enhancements and new features for `@rokkit/ui`.
 
 ---
 
-## 50. FloatingNavigation — New Component
+## ~~50. FloatingNavigation — New Component~~ ✅ DONE
 
-**Source:** `docs/requirements/009-navigation.md §6`, `docs/design/009-floating-navigation.md`
-
-**What's needed:**
-- [ ] `FloatingNavigation.svelte` in `@rokkit/ui` — data-driven with ItemProxy
-- [ ] Position on any screen edge (left, right, top, bottom)
-- [ ] Collapsed state: icon-only; expands on hover to show text labels
-- [ ] Pin toggle to lock expanded state
-- [ ] IntersectionObserver for automatic active section tracking
-- [ ] CSS animations: entrance slide-in, expand/collapse, label fade, active indicator, item hover, stagger
-- [ ] Keyboard: arrow navigation, Enter/Space to activate, Escape to collapse
-- [ ] Base + 4 theme CSS
-- [ ] Unit tests + playground page
+`FloatingNavigation.svelte` in `@rokkit/ui`. Data-driven with ItemProxy, 4-position layouts (left/right/top/bottom), hover expand/collapse, pin toggle, IntersectionObserver tracking, CSS animations, keyboard navigation. Base + 4 theme CSS files. 34 unit tests + playground page. See journal 2026-02-24.
 
 ---
 
-## 51. Button — Style Enhancements
+## ~~51. Button — Style Enhancements~~ ✅ DONE
 
-**Source:** `docs/requirements/001-button.md §6`
-
-**What's needed:**
-- [ ] Add `gradient` style variant (`data-style="gradient"`)
-- [ ] Add `link` style variant (`data-style="link"`)
-- [ ] Standardize micro-animations across all themes: press, hover lift, focus ring, icon shift, loading pulse
-- [ ] Theme-specific enhancements: glass backdrop, material ripple, minimal border
-- [ ] Update Button.svelte + base/button.css + all 4 theme CSS files
+Added `gradient` and `link` style variants. Micro-animations (hover lift, press scale, icon shift, loading pulse) in base CSS. Created button CSS for glass/minimal/material themes (previously only rokkit had button theme). Playground updated. See journal 2026-02-24.

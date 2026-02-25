@@ -81,6 +81,56 @@
 }
 
 /* =============================================================================
+   Gradient Style
+   ============================================================================= */
+
+[data-button][data-style='gradient'][data-variant='default'],
+[data-button][data-style='gradient']:not([data-variant]) {
+  @apply from-surface-z4 to-surface-z2 text-surface-z10 bg-gradient-to-br;
+}
+
+[data-button][data-style='gradient'][data-variant='primary'] {
+  @apply from-primary-z5 to-primary-z3 text-on-primary bg-gradient-to-br;
+}
+
+[data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br;
+}
+
+[data-button][data-style='gradient'][data-variant='danger'] {
+  @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br;
+}
+
+[data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  filter: brightness(1.1);
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-button][data-style='link'][data-variant='default'],
+[data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+[data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
    Hover States
    ============================================================================= */
 

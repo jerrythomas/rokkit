@@ -9,6 +9,7 @@ export const components = [
 	{ text: 'Toggle', href: '/components/toggle', icon: 'i-lucide:circle' },
 	{ text: 'Toolbar', href: '/components/toolbar', icon: 'i-lucide:grid-2x2' },
 	{ text: 'FloatingAction', href: '/components/floating-action', icon: 'i-lucide:plus' },
+	{ text: 'FloatingNavigation', href: '/components/floating-navigation', icon: 'i-lucide:compass' },
 	{ text: 'Code', href: '/components/code', icon: 'i-lucide:file-code' },
 	{ text: 'PaletteManager', href: '/components/palette-manager', icon: 'i-lucide:palette' },
 	{ text: 'Tilt', href: '/components/tilt', icon: 'i-lucide:rotate-3d' },

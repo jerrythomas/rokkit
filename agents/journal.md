@@ -7,6 +7,68 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-02-24
 
+### Button Style Enhancements (Backlog #51)
+
+Added `gradient` and `link` style variants plus micro-animations.
+
+**Type changes:** `ButtonStyle` now includes `'gradient' | 'link'`
+
+**Base CSS additions:**
+- Gradient structural style (border: none)
+- Link structural style (no bg/border/height, underline on hover)
+- Hover lift (`translateY(-1px)`) for non-link/ghost styles
+- Press feedback (`scale(0.97)`)
+- Icon shift (trailing icon moves right on hover)
+- Loading pulse (opacity animation)
+
+**Theme CSS:**
+- Rokkit: added gradient (diagonal) + link colors for all 4 variants
+- Glass: **new file** — full button theme with glassmorphism (backdrop-blur, transparency)
+- Minimal: **new file** — full button theme with clean borders
+- Material: **new file** — full button theme with elevation shadows
+- All 3 new themes added to their respective `index.css`
+
+**Files created:** `glass/button.css`, `minimal/button.css`, `material/button.css`
+**Files modified:** `types/button.ts`, `base/button.css`, `rokkit/button.css`, playground page, 3 theme index files
+
+**Backlog:** #51 marked done
+**Tests:** 1282 CI passing, 0 lint errors
+
+---
+
+### FloatingNavigation Component (Backlog #50)
+
+Implemented `FloatingNavigation.svelte` — floating, collapsible page navigation widget.
+
+**Component features:**
+- Data-driven with ItemProxy field mapping
+- 4-position layouts: left, right, top, bottom (screen edge anchoring)
+- Hover expand/collapse with pin toggle to lock expanded
+- IntersectionObserver for automatic active section tracking
+- CSS animations: entrance slide-in, expand/collapse, label fade, active indicator, item hover, stagger
+- Keyboard: arrow navigation (direction-aware), Enter/Space to activate, Escape to collapse
+- Renders `<a>` when href provided, `<button>` otherwise
+- Active indicator bar with smooth CSS transition
+- `prefers-reduced-motion` support
+
+**Files created:**
+- `packages/ui/src/components/FloatingNavigation.svelte`
+- `packages/ui/src/types/floating-navigation.ts`
+- `packages/ui/spec/FloatingNavigation.spec.svelte.ts` (34 tests)
+- `packages/themes/src/base/floating-navigation.css`
+- `packages/themes/src/rokkit/floating-navigation.css`
+- `packages/themes/src/glass/floating-navigation.css`
+- `packages/themes/src/minimal/floating-navigation.css`
+- `packages/themes/src/material/floating-navigation.css`
+- `sites/playground/src/routes/components/floating-navigation/+page.svelte`
+
+**Files modified:** component index, types index, 5 CSS index files, components.ts nav
+
+**Backlog:** #50 marked done
+**Tests:** 1282 CI passing, 34 FloatingNavigation UI tests, 0 lint errors
+
+---
+
 ### Monorepo Restructure + Legacy Cleanup
 
 - Moved `packages/` and `sites/` into `solution/` directory (user-initiated)

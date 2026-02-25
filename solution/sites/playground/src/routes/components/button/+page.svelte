@@ -32,7 +32,7 @@
 		type: 'vertical',
 		elements: [
 			{ scope: '#/variant', label: 'Variant', props: { options: ['default', 'primary', 'secondary', 'danger'] } },
-			{ scope: '#/style', label: 'Style', props: { options: ['default', 'outline', 'ghost'] } },
+			{ scope: '#/style', label: 'Style', props: { options: ['default', 'outline', 'ghost', 'gradient', 'link'] } },
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
 			{ scope: '#/label', label: 'Label' },
 			{ scope: '#/icon', label: 'Icon', props: { options: ['', 'i-lucide:star', 'i-lucide:heart', 'i-lucide:plus', 'i-lucide:settings', 'i-lucide:download'] } },

@@ -4,11 +4,17 @@
 
 `use:reveal` action + `Reveal` wrapper component. IntersectionObserver-based scroll-triggered entry animations with stagger support. 22 action tests + 16 component tests. Playground page.
 
-## Phase 2: Next Priority Items
+## ~~Phase 2: FloatingNavigation (backlog #50)~~ COMPLETE
+
+`FloatingNavigation.svelte` — 4-position layouts, hover expand, pin toggle, IntersectionObserver, CSS animations, keyboard nav. 34 tests + playground page. Base + 4 theme CSS.
+
+## ~~Phase 3: Button Style Enhancements (backlog #51)~~ COMPLETE
+
+`gradient` + `link` style variants. Micro-animations (hover lift, press, icon shift, loading pulse). Glass/minimal/material button theme CSS created. Playground updated.
+
+## Phase 4: Next Priority Items
 
 Candidates (by priority):
-- **#50** FloatingNavigation (Medium) — design doc ready
-- **#51** Button style enhancements (Medium) — gradient/link variants + micro-animations
 - **#53** HoverLift/Magnetic/Ripple actions (Medium) — small scope each
 - **#47** Table Phase 2–4 (Medium) — hierarchy, pagination, polish
 

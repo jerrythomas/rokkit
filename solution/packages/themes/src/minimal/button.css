@@ -1,0 +1,152 @@
+/**
+ * Button - Minimal Theme Styles
+ *
+ * Clean, understated styling with subtle borders.
+ */
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+[data-style='minimal'] [data-button][data-style='default'][data-variant='default'],
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='minimal'] [data-button][data-style='default']:not([data-variant]),
+[data-style='minimal'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply bg-surface-z2 border-surface-z4 text-surface-z8 border;
+}
+
+[data-style='minimal'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='primary'] {
+  @apply bg-primary-z5 text-on-primary border-transparent;
+}
+
+[data-style='minimal'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='secondary'] {
+  @apply bg-secondary-z4 text-on-secondary border-transparent;
+}
+
+[data-style='minimal'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='minimal'] [data-button]:not([data-style])[data-variant='danger'] {
+  @apply bg-danger-z4 text-on-danger border-transparent;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='minimal'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='minimal'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z4 text-surface-z7 border bg-transparent;
+}
+
+[data-style='minimal'] [data-button][data-style='outline'][data-variant='primary'] {
+  @apply border-primary-z4 text-primary-z6 border bg-transparent;
+}
+
+[data-style='minimal'] [data-button][data-style='outline'][data-variant='secondary'] {
+  @apply border-secondary-z4 text-secondary-z6 border bg-transparent;
+}
+
+[data-style='minimal'] [data-button][data-style='outline'][data-variant='danger'] {
+  @apply border-danger-z4 text-danger-z4 border bg-transparent;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='minimal'] [data-button][data-style='ghost'] {
+  @apply border-transparent bg-transparent;
+}
+
+[data-style='minimal'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='minimal'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-button][data-style='ghost'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='minimal'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='minimal'] [data-button][data-style='ghost'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+/* =============================================================================
+   Gradient Style
+   ============================================================================= */
+
+[data-style='minimal'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='minimal'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply from-surface-z3 to-surface-z1 text-surface-z10 bg-gradient-to-br;
+}
+
+[data-style='minimal'] [data-button][data-style='gradient'][data-variant='primary'] {
+  @apply from-primary-z5 to-primary-z3 text-on-primary bg-gradient-to-br;
+}
+
+[data-style='minimal'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br;
+}
+
+[data-style='minimal'] [data-button][data-style='gradient'][data-variant='danger'] {
+  @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br;
+}
+
+[data-style='minimal'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  filter: brightness(1.05);
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='minimal'] [data-button][data-style='link'][data-variant='default'],
+[data-style='minimal'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='minimal'] [data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='minimal'] [data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+[data-style='minimal'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-surface-z9;
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+[data-style='minimal'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='minimal'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z3 border-surface-z5;
+}
+
+[data-style='minimal'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z1 border-surface-z5;
+}
+
+[data-style='minimal'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Focus
+   ============================================================================= */
+
+[data-style='minimal'] [data-button]:focus-visible {
+  @apply outline-none ring-1 ring-surface-z5;
+}

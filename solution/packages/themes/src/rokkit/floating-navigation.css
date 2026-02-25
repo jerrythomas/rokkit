@@ -1,0 +1,83 @@
+/**
+ * FloatingNavigation - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='rokkit'] [data-floating-nav] {
+  @apply from-surface-z1 to-surface-z0 ring-surface-z3 bg-gradient-to-b shadow-xl ring-1;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='rokkit'] [data-floating-nav-title] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-floating-nav-pin] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-floating-nav-pin]:hover {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='rokkit'] [data-floating-nav-item] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-floating-nav-item]:hover {
+  @apply from-surface-z2 to-surface-z1 bg-gradient-to-b text-surface-z10;
+}
+
+[data-style='rokkit'] [data-floating-nav-item][data-active] {
+  @apply from-primary-z5/10 to-primary-z5/5 bg-gradient-to-b text-primary-z7;
+}
+
+[data-style='rokkit'] [data-floating-nav-item]:focus-visible {
+  @apply ring-primary-400 ring-2 outline-none;
+}
+
+/* Icon */
+[data-style='rokkit'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-primary-z7;
+}
+
+/* Label */
+[data-style='rokkit'] [data-floating-nav-label] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-floating-nav-item][data-active] [data-floating-nav-label] {
+  @apply text-primary-z7 font-medium;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='rokkit'] [data-floating-nav-indicator] {
+  @apply from-primary-z5 to-primary-z6 bg-gradient-to-b shadow-sm;
+}

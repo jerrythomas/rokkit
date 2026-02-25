@@ -48,3 +48,6 @@ export * from './range.js'
 
 // Timeline Types
 export * from './timeline.js'
+
+// FloatingNavigation Types
+export * from './floating-navigation.js'

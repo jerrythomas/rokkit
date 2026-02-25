@@ -15,7 +15,7 @@ import type { Snippet } from 'svelte'
 export type ButtonVariant = 'default' | 'primary' | 'secondary' | 'danger'
 
 /** Visual style treatment */
-export type ButtonStyle = 'default' | 'outline' | 'ghost'
+export type ButtonStyle = 'default' | 'outline' | 'ghost' | 'gradient' | 'link'
 
 // =============================================================================
 // Component Props Types

@@ -1,0 +1,74 @@
+/**
+ * FloatingNavigation - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='glass'] [data-floating-nav] {
+  @apply backdrop-blur-xl border shadow-xl bg-surface-z1/70 border-surface-z5/20;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='glass'] [data-floating-nav-title] {
+  @apply text-surface-z6;
+}
+
+[data-style='glass'] [data-floating-nav-pin] {
+  @apply text-surface-z6;
+}
+
+[data-style='glass'] [data-floating-nav-pin]:hover {
+  @apply text-primary-z6;
+}
+
+[data-style='glass'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='glass'] [data-floating-nav-item] {
+  @apply text-surface-z8;
+}
+
+[data-style='glass'] [data-floating-nav-item]:hover {
+  @apply text-surface-z10 bg-surface-z2/50;
+}
+
+[data-style='glass'] [data-floating-nav-item][data-active] {
+  @apply text-primary-z7 bg-primary-z5/10;
+}
+
+[data-style='glass'] [data-floating-nav-item]:focus-visible {
+  @apply outline-none ring-2 ring-surface-z5/40;
+}
+
+/* Icon */
+[data-style='glass'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='glass'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='glass'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='glass'] [data-floating-nav-indicator] {
+  @apply bg-primary-z5/80;
+}
