@@ -1,0 +1,115 @@
+/* Minimal Theme - Form field and input styles
+ * Underline-based input styling with clean, minimal appearance.
+ */
+
+/* Input root: transparent background, bottom border only */
+[data-style='minimal'] [data-input-root] {
+  @apply flex items-center border-b border-surface-z3 bg-transparent p-0 transition-all relative;
+  border-radius: 0;
+  background-image: none;
+}
+
+/* Override rokkit default gradient on focus */
+[data-style='minimal'] [data-input-root]:focus-within {
+  @apply border-b-secondary-600 bg-transparent;
+  background-image: none;
+}
+
+/* Inputs inside wrapper */
+[data-style='minimal'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='minimal'] [data-input-root] textarea,
+[data-style='minimal'] [data-input-root] select {
+  @apply bg-transparent text-surface-z9 w-full border-none px-1 py-1.5 outline-none transition-all;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+[data-style='minimal'] [data-input-root] textarea {
+  @apply resize-vertical min-h-20 py-2;
+}
+
+/* Select inside input-root: match text input appearance */
+[data-style='minimal'] [data-input-root] [data-select-trigger] {
+  @apply bg-transparent text-surface-z9 border-none rounded-none px-1 shadow-none ring-0 focus:outline-none;
+  font-size: 0.875rem;
+  background-image: none;
+  transition: color 150ms ease;
+}
+
+[data-style='minimal'] [data-input-root] [data-select-trigger]:hover:not(:disabled) {
+  @apply bg-transparent;
+  background-image: none;
+}
+
+[data-style='minimal'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
+  @apply border-none ring-0 shadow-none bg-transparent;
+}
+
+/* Labels: smaller, uppercase */
+[data-style='minimal'] [data-field] > label {
+  @apply text-surface-z6 text-xs uppercase tracking-wide;
+}
+
+[data-style='minimal'] [data-form-root] label {
+  @apply text-surface-z6 text-xs uppercase tracking-wide;
+}
+
+/* Focused label: secondary color */
+[data-style='minimal'] [data-field]:has([data-input-root]:focus-within) > label {
+  @apply text-secondary-600;
+}
+
+/* Field root */
+[data-style='minimal'] [data-field-root] {
+  @apply gap-0.5;
+}
+
+/* Info field value */
+[data-style='minimal'] [data-field-info] {
+  @apply text-primary-z6;
+}
+
+/* Separator */
+[data-style='minimal'] [data-form-separator] {
+  @apply border-surface-z3;
+}
+
+/* Disabled state */
+[data-style='minimal'] [data-field-disabled] [data-input-root] {
+  @apply border-surface-z3 opacity-50 cursor-not-allowed;
+}
+
+/* Error state */
+[data-style='minimal'] [data-field-state='fail'] [data-input-root] {
+  @apply border-danger-z4;
+}
+
+/* Description */
+[data-style='minimal'] [data-description] {
+  @apply text-surface-z6 mt-0.5 text-xs;
+}
+
+/* Message */
+[data-style='minimal'] [data-message] {
+  @apply text-danger-z6 text-xs mt-0.5;
+}
+
+/* Checkbox */
+[data-style='minimal'] [data-checkbox-icon] {
+  @apply text-surface-z5 text-lg;
+}
+
+[data-style='minimal'] [data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+  @apply text-secondary-600;
+}
+
+/* Checkbox label: secondary on focus (checkbox has no input-root) */
+[data-style='minimal'] [data-field-type='checkbox'] [data-field]:has(:focus-within) > label {
+  @apply text-secondary-600;
+}
+
+/* Placeholders */
+[data-style='minimal'] [data-input-root] input::placeholder,
+[data-style='minimal'] [data-input-root] textarea::placeholder {
+  @apply text-surface-z4;
+}

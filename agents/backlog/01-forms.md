@@ -6,15 +6,9 @@ Priority 1 — `@rokkit/forms` enhancements.
 
 ---
 
-## 7. FormBuilder Recreated on Every Render
+## ~~7. FormBuilder Recreated on Every Render~~ ✅ DONE
 
-**Priority:** High
-
-**Problem:** `FormRenderer` creates a new `FormBuilder` on every derivation: `let formBuilder = $derived(new FormBuilder(data, schema, layout))`. This loses validation state, lookup manager, and internal state on each data change.
-
-**What's needed:**
-- [ ] Use stable `FormBuilder` instance with reactive updates via `$effect`
-- [ ] Only recreate on schema/layout changes, update data reactively
+Stable instance with `$effect` sync. See journal 2026-02-24.
 
 ---
 
@@ -26,86 +20,45 @@ Priority 1 — `@rokkit/forms` enhancements.
 
 **What's needed:**
 - [ ] Migrate `FieldLayout` to Svelte 5 runes
-- [ ] Enhance `FormRenderer` to handle nested `type: 'group'` elements recursively
+- [x] Enhance `FormRenderer` to handle nested `type: 'group'` elements recursively — DONE (2026-02-24)
 - [ ] Replace `ListEditor` with List + FormRenderer composition
 - [ ] Replace `NestedEditor` with Tree + FormRenderer composition
 
 ---
 
-## 9. No Dirty Tracking
+## ~~9. No Dirty Tracking~~ ✅ DONE
 
-**Priority:** Medium
-
-**Problem:** No mechanism to track which fields have been modified from initial values. Useful for "unsaved changes" warnings and conditional submit.
-
-**What's needed:**
-- [ ] Add `isDirty` / `dirtyFields` to `FormBuilder`
-- [ ] Compare current values against initial snapshot
-- [ ] `onDirtyChange` callback or reactive `dirty` state
+`isDirty`, `dirtyFields`, `isFieldDirty()`, `snapshot()`, `reset()` on FormBuilder. `data-field-dirty` attribute on InputField. See journal 2026-02-24.
 
 ---
 
-## 12. Custom Type Renderer Registry
+## ~~12. Custom Type Renderer Registry~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §5, docs/design/010-form.md
-
-**Phase:** 2 (after FormBuilder stability fix)
-
-**What's needed:**
-- [ ] Configurable registry mapping schema types + hints to UI components
-- [ ] Support `renderer` field in layout to override default type resolution
-- [ ] Custom renderers via `renderers` prop on `FormRenderer`
+`defaultRenderers` + `resolveRenderer()` in `renderers.js`, `renderers` prop on FormRenderer. See journal 2026-02-24.
 
 ---
 
-## 13. Validation Integration into FormRenderer
+## ~~13. Validation Integration into FormRenderer~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §6, docs/design/010-form.md
-
-**Priority:** High — Phase 1
-
-**What's needed:**
-- [ ] Wire `validateField()` into FormRenderer on blur
-- [ ] `builder.validate()` runs `validateAll()` on submit
-- [ ] `builder.isValid` and `builder.errors` derived properties
-- [ ] Validation messages flow to InputField via `FormElement.props.message`
+`validateField()`, `validate()`, `isValid`, `errors` on FormBuilder. `validateOn` prop on FormRenderer. See journal 2026-02-24.
 
 ---
 
-## 14. ValidationReport Component Migration
+## ~~14. ValidationReport Component Migration~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §6.6
-
-**Phase:** 2
-
-**What's needed:**
-- [ ] Migrate from archive to `@rokkit/forms` or `@rokkit/ui`
-- [ ] Svelte 5, data-attributes, grouping by severity
-- [ ] Click-to-focus-field support
+`ValidationReport.svelte` in `@rokkit/forms` — grouped by severity, count headers, click-to-focus via `onclick(path)`. `FormBuilder.messages` getter. See journal 2026-02-24.
 
 ---
 
-## 15. InputToggle Component
+## ~~15. InputToggle Component~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §9.2
-
-**Phase:** 2
-
-**What's needed:**
-- [ ] Option toggle group for enums or booleans
-- [ ] Wraps `@rokkit/ui` Toggle
+`InputToggle.svelte` wraps `@rokkit/ui` Toggle. Registered as `toggle` in `defaultRenderers`. Use `renderer: 'toggle'` in layout. See journal 2026-02-24.
 
 ---
 
-## 16. FieldGroup Component (Nested Objects)
+## ~~16. FieldGroup Component (Nested Objects)~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §9.2
-
-**Phase:** 2
-
-**What's needed:**
-- [ ] Renders nested `type: 'object'` as a sub-form section
-- [ ] Recursive FormRenderer integration
+Recursive group rendering in FormRenderer via `{#snippet renderElement}`. `<fieldset data-form-group>` with `<legend>`. See journal 2026-02-24.
 
 ---
 
@@ -134,16 +87,9 @@ Priority 1 — `@rokkit/forms` enhancements.
 
 ---
 
-## 19. Form Submission Handling
+## ~~19. Form Submission Handling~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §14
-
-**Phase:** 3
-
-**What's needed:**
-- [ ] `onsubmit` callback with validate-before-submit
-- [ ] Loading state, success/error feedback
-- [ ] Optional submit/reset buttons
+`onsubmit` prop on FormRenderer with validate-before-submit, `data-form-submitting` loading state, default submit/reset buttons, custom `actions` snippet. See journal 2026-02-24.
 
 ---
 
@@ -187,9 +133,9 @@ Priority 1 — `@rokkit/forms` enhancements.
 
 ---
 
-## 60. Display-Only Schema Rendering
+## ~~60. Display-Only Schema Rendering~~ ✅ DONE
 
-**Priority:** High — enables generic UI rendering for agent interactions
+Display components (DisplayValue, DisplaySection, DisplayTable, DisplayCardGrid, DisplayList), FormBuilder integration, FormRenderer routing. See journal 2026-02-24.
 
 **Source:** `docs/requirements/010-form.md §18`, `docs/design/010-form.md`
 

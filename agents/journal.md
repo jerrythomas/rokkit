@@ -7,6 +7,153 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-02-24
 
+### Forms Phase 7: Form Submission Handling (#19)
+
+- Added `onsubmit` prop to `FormRenderer` — validate-before-submit flow
+- When `onsubmit` provided: renders as `<form>` (not `<div>`), enables Enter-to-submit
+- Submit flow: `validate()` → `onvalidate('*', data, 'submit')` → focus first error if invalid → call `onsubmit` → `snapshot()`
+- Loading state via `data-form-submitting` attribute, fields become non-interactive
+- Default submit/reset buttons rendered when `onsubmit` set (no custom `actions` snippet)
+- Custom `actions` snippet prop receives `{ submitting, isValid, isDirty, submit, reset }`
+- Reset button calls `formBuilder.reset()`, syncs data back to bindable prop
+- Error handling: caught in `handleSubmit` (consumer handles errors in their callback)
+- Added "Submit" tab to playground with contact form demo + simulated async submission
+
+**Files modified:** `FormRenderer.svelte`, `input.css`, `forms/+page.svelte`
+**Files modified (tests):** `FormRenderer.spec.svelte.js`
+**Tests added:** 12 FormRenderer submission tests (form/div rendering, buttons, submit flow, validation, focus, loading state, reset, onvalidate, error handling)
+**Tests:** 1267 CI — all passing. Lint: 0 errors.
+
+**New public API:** `FormRenderer.onsubmit`, `FormRenderer.actions` (snippet)
+
+---
+
+### Forms Phase 6: ValidationReport Component (#14)
+
+- Created `ValidationReport.svelte` — grouped summary of validation messages by severity
+- Groups items by state (error, warning, info, success) with count headers
+- Items render as `<button>` when `onclick` is provided (click-to-focus), `<div>` otherwise
+- Empty state: renders nothing
+- Added `messages` getter to FormBuilder — returns all validation messages sorted by severity
+- CSS: severity-colored count badges, clickable item hover states
+- Updated playground Validation tab to show ValidationReport with click-to-focus
+
+**Files created:** `ValidationReport.svelte`, `spec/ValidationReport.spec.svelte.js`
+**Files modified:** `builder.svelte.js`, `index.js`, `input.css`, `forms/+page.svelte`
+**Tests added:** 12 ValidationReport tests, 4 FormBuilder messages getter tests
+**Tests:** 1255 CI — all passing. Lint: 0 errors.
+
+**New public API:** `FormBuilder.messages`, `ValidationReport` component
+
+---
+
+### Forms Phase 5: Recursive Group Rendering (#8 partial, #16)
+
+- FormRenderer now renders `type: 'group'` elements as `<fieldset data-form-group>` with recursive child rendering
+- Extracted element rendering into a `{#snippet renderElement(element)}` for recursion
+- Group label renders as `<legend data-form-group-label>` (optional)
+- Fixed FormBuilder `#convertToFormElement` to extract top-level properties (label, etc.) from combined group elements into props
+- Fixed `Input.svelte` `{@const}` placement for Svelte 5 compatibility
+- Added `[data-form-group]` and `[data-form-group-label]` CSS to base theme
+- Added "Nested Form" demo tab to playground with address + emergency contact groups
+- Deeply nested groups (group within group) supported
+
+**Files modified:** `FormRenderer.svelte`, `Input.svelte`, `builder.svelte.js`, `input.css`, `forms/+page.svelte`
+**Files created:** `spec/FormRenderer.spec.svelte.js`
+**Tests added:** 7 FormRenderer group tests, 4 FormBuilder group tests
+**Tests:** 1238 CI — all passing. Lint: 0 errors.
+
+---
+
+### Forms Playground Page
+
+Created playground page at `/components/forms` with travel planner scenario. 7 tabbed demos: Input Form, Pick a Flight (display-table), Hotel Cards (display-cards), Itinerary Review (display-section + display-list), Mixed Layout (display + input), Validation, Dirty Tracking.
+
+**Files created:** `sites/playground/src/routes/components/forms/+page.svelte`
+**Files modified:** `sites/playground/src/lib/components.ts` (nav entry)
+
+---
+
+### Forms Phase 4: InputToggle Component (#15)
+
+- Created `InputToggle.svelte` — thin wrapper around `@rokkit/ui` Toggle
+- Converts string option arrays to `{ text, value }` objects automatically
+- Registered as `toggle` in `defaultRenderers` registry
+- Usage: `{ scope: '#/field', props: { renderer: 'toggle' } }` in layout
+- Updated playground traveler form `travelClass` field to use toggle renderer
+
+**Files created:** `input/InputToggle.svelte`, `spec/input/InputToggle.spec.svelte.js`
+**Files modified:** `input/index.js`, `renderers.js`, `spec/input/index.spec.js`, `forms/+page.svelte`
+**Tests added:** 8 InputToggle tests
+**Tests:** 1227 CI — all passing. Lint: 0 errors.
+
+---
+
+### Forms Phase 3: Dirty Tracking (#9)
+
+- Added `deepClone()` / `deepEqual()` helpers to builder (no external dependencies, handles $state proxies)
+- `#initialData` snapshot taken at construction via `deepClone(data)`
+- `isDirty` getter — compares current data vs initial snapshot
+- `dirtyFields` getter — returns `Set<string>` of modified field paths
+- `isFieldDirty(fieldPath)` — single field check
+- `snapshot()` — updates initial snapshot to current data (post-save workflow)
+- `reset()` — restores data to initial snapshot, clears validation
+- `dirty: boolean` added to `FormElement.props` via `#convertToFormElement`
+- `data-field-dirty` attribute added to `InputField.svelte`
+- Playground "Dirty Tracking" tab with snapshot/reset buttons
+
+**Files modified:** `builder.svelte.js`, `InputField.svelte`, `forms/+page.svelte`
+**Tests added:** 14 dirty tracking tests in `builder.spec.svelte.js`
+**Tests:** 1219 CI — all passing. Lint: 0 errors.
+
+**New public API:** `FormBuilder.isDirty`, `FormBuilder.dirtyFields`, `FormBuilder.isFieldDirty()`, `FormBuilder.snapshot()`
+
+---
+
+### Forms Phase 1: FormBuilder Stability (#7) + Validation Integration (#13)
+
+**FormBuilder stability (#7):**
+- Replaced `$derived(new FormBuilder(...))` in FormRenderer with stable instance + `$effect` sync
+- Builder's `$state` fields + `$derived` elements handle reactivity via setters
+- Added `builder` prop to FormRenderer for external builder injection
+
+**Validation integration (#13):**
+- Added `validateField(fieldPath)`, `validate()`, `isValid`, `errors` to FormBuilder
+- Wired into FormRenderer with `validateOn` prop ('blur'|'change'|'manual')
+- External `onvalidate` callback for custom validation logic
+- Validation messages flow to InputField via `message` prop as `{ state, text }` objects
+
+**Ramda removal:** Removed `ramda` imports from FormBuilder, InputField, InfoField — replaced with native destructuring and strict equality checks.
+
+**Files modified:** `builder.svelte.js`, `FormRenderer.svelte`, `InputField.svelte`, `InfoField.svelte`, `index.js`
+**Tests added:** builder validation tests (11), validation.spec.js (37)
+**Tests:** 1151 CI, 819 UI — all passing. Lint: 0 errors.
+
+---
+
+### Forms Phase 2: Type Renderer Registry (#12) + Display-Only Rendering (#60)
+
+**Type Renderer Registry (#12):**
+- Created `packages/forms/src/lib/renderers.js` — `defaultRenderers` map (21 type→component mappings) + `resolveRenderer()` with 3-level resolution (explicit renderer → type → fallback to InputText)
+- Refactored `Input.svelte` — replaced 30-line if/else chain with registry-based `<svelte:component>` dispatch
+- `renderers` prop flows FormRenderer → InputField → Input for custom type overrides
+
+**Display-Only Rendering (#60):**
+- 5 new display components: `DisplayValue` (format-aware: currency/datetime/duration/number/boolean/badge), `DisplaySection` (key-value pairs), `DisplayTable` (wraps @rokkit/ui Table), `DisplayCardGrid` (responsive grid with single/multi selection), `DisplayList` (styled list)
+- FormBuilder handles `display-*` layout types, resolves data from scope, supports `renderer` hint for custom type overrides
+- FormRenderer routes `display-*` elements to display components, new `onselect` prop
+- `packages/themes/src/base/display.css` — base structural CSS with responsive grid
+
+**Files created:** `renderers.js`, `display/DisplayValue.svelte`, `display/DisplaySection.svelte`, `display/DisplayTable.svelte`, `display/DisplayCardGrid.svelte`, `display/DisplayList.svelte`, `display/index.js`, `base/display.css`
+**Files modified:** `Input.svelte`, `InputField.svelte`, `FormRenderer.svelte`, `builder.svelte.js`, `forms/index.js`, `base/index.css`
+**Tests added:** `renderers.spec.js` (10), `DisplayValue.spec` (13), `DisplaySection.spec` (9), `DisplayList.spec` (7), `DisplayCardGrid.spec` (10), builder display tests (5)
+**Tests:** 1205 CI, 819 UI — all passing. Lint: 0 errors.
+
+**New public API:** `defaultRenderers`, `resolveRenderer`, `DisplayValue`, `DisplayTable`, `DisplayCardGrid`, `DisplaySection`, `DisplayList`
+**Layout types:** `display-table`, `display-cards`, `display-section`, `display-list`
+
+---
+
 ### Housekeeping: Consolidate .rules → agents, split backlog
 
 **Consolidated `.rules/` into `agents/`:**

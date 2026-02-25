@@ -27,6 +27,7 @@ Gaps are intentional — they leave room for future docs without renumbering.
 
 | # | Document | Description |
 |---|----------|-------------|
+| 000 | [project-overview](./000-project-overview.md) | Vision, cross-cutting requirements (llms.txt, showcase, palette), success criteria |
 | 000 | [patterns](./000-patterns.md) | Type system, architecture patterns, TypeScript strategy |
 | 000 | [rtl](./000-rtl.md) | RTL detection, Vibe direction, cross-cutting |
 

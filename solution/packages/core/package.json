@@ -1,0 +1,44 @@
+{
+  "name": "@rokkit/core",
+  "version": "1.0.0-next.125",
+  "description": "Contains core utility functions and classes that can be used in various components.",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "bunx tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun clean && bun prepublishOnly"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.json",
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    "./src": "./src",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite/index.d.ts",
+      "import": "./src/vite/index.js"
+    }
+  },
+  "dependencies": {
+    "@unocss/preset-mini": "^66.5.1",
+    "date-fns": "^4.1.0",
+    "ramda": "^0.31.3"
+  },
+  "devDependencies": {
+    "@rokkit/icons": "workspace:*"
+  }
+}

@@ -69,4 +69,4 @@ docs/
 
 - [CLAUDE.md](../CLAUDE.md) - Claude Code instructions
 - [.rules/](../.rules/) - Development guidelines
-- [objective.md](../objective.md) - Master reference document
+- [Project Overview](./requirements/000-project-overview.md) - Vision, cross-cutting requirements, success criteria

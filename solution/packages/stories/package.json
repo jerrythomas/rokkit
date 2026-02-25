@@ -1,0 +1,37 @@
+{
+  "name": "@rokkit/stories",
+  "version": "1.0.0-next.125",
+  "description": "Utilities for building tutorials.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "story",
+    "tutorial",
+    "markdown",
+    "svelte",
+    "svelte-kit"
+  ],
+  "author": "Jerry Thomas<me@jerrythomas.name>",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js"
+    }
+  },
+  "scripts": {
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun prepublishOnly"
+  },
+  "dependencies": {
+    "@vitest/expect": "^3.2.4",
+    "frontmatter": "^0.0.3",
+    "ramda": "^0.31.3",
+    "shiki": "^3.12.2",
+    "@rokkit/core": "workspace:latest"
+  }
+}
