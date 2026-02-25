@@ -251,6 +251,61 @@ describe('ListController', () => {
 		})
 	})
 
+	describe('findByText', () => {
+		it('should find item by text prefix', () => {
+			const controller = new ListController(items)
+			expect(controller.findByText('Al')).toBe('0')
+			expect(controller.findByText('Be')).toBe('1')
+			expect(controller.findByText('Ga')).toBe('2')
+		})
+
+		it('should be case-insensitive', () => {
+			const controller = new ListController(items)
+			expect(controller.findByText('al')).toBe('0')
+			expect(controller.findByText('BETA')).toBe('1')
+			expect(controller.findByText('gAmMa')).toBe('2')
+		})
+
+		it('should return null when no match', () => {
+			const controller = new ListController(items)
+			expect(controller.findByText('Zz')).toBe(null)
+		})
+
+		it('should start search after startAfterKey', () => {
+			const controller = new ListController(items)
+			// Start after '0' (Alpha) — next match for 'G' is Gamma at index 2
+			expect(controller.findByText('G', '0')).toBe('2')
+			// Start after '2' (Gamma) — wraps around to Alpha at index 0
+			expect(controller.findByText('A', '2')).toBe('0')
+		})
+
+		it('should cycle to earlier items via wrap-around', () => {
+			const dupes = $state([{ text: 'Apple' }, { text: 'Avocado' }, { text: 'Banana' }])
+			const controller = new ListController(dupes)
+			// Start after '0' (Apple) — should find Avocado next
+			expect(controller.findByText('A', '0')).toBe('1')
+			// Start after '1' (Avocado) — wraps around to find Apple
+			expect(controller.findByText('A', '1')).toBe('0')
+		})
+
+		it('should skip disabled items', () => {
+			const disabledItems = $state([
+				{ text: 'Alpha', disabled: true },
+				{ text: 'Ace' },
+				{ text: 'Beta' }
+			])
+			const controller = new ListController(disabledItems)
+			expect(controller.findByText('A')).toBe('1')
+		})
+
+		it('should work with string arrays', () => {
+			const strings = $state(['Apple', 'Banana', 'Cherry'])
+			const controller = new ListController(strings)
+			expect(controller.findByText('B')).toBe('1')
+			expect(controller.findByText('C')).toBe('2')
+		})
+	})
+
 	describe('range selection', () => {
 		it('should select range between anchor and target', () => {
 			const multi = new ListController(items, null, {}, { multiselect: true })

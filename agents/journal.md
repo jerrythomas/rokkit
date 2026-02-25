@@ -7,6 +7,28 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-02-24
 
+### Monorepo Restructure + Legacy Cleanup
+
+- Moved `packages/` and `sites/` into `solution/` directory (user-initiated)
+- Fixed undeclared workspace dependencies exposed by restructuring (states, forms, ui → @rokkit/data; core → @unocss/preset-mini; chart → d3-format; stories → shiki; learn → ramda)
+- Moved `tsconfig.json` into `solution/` (packages reference `../../tsconfig.json`)
+- Added svelte, svelte-eslint-parser, globals to root devDependencies
+- Updated `.husky/pre-commit` to `cd solution`
+- Removed stale root `bun.lock`
+
+### Legacy Component Cleanup (#8)
+
+- `FieldLayout.svelte` — already migrated to Svelte 5 runes, kept as internal component
+- Deleted `ListEditor.svelte` — broken (`./List.svelte` import doesn't exist), unused, not exported
+- Deleted `NestedEditor.svelte` — broken (`generateTreeTable`, `deriveNestedSchema` don't exist), unused, not exported
+- Deleted `DataEditor.svelte` — internal-only wrapper, no consumers after NestedEditor removal
+- Deleted stale `__snapshots__/NestedEditor.spec.svelte.js.snap`
+- All superseded by FormRenderer + List/Tree composition
+
+**Tests:** 1267 CI — all passing. Lint: 0 errors.
+
+---
+
 ### Forms Phase 7: Form Submission Handling (#19)
 
 - Added `onsubmit` prop to `FormRenderer` — validate-before-submit flow
@@ -1097,3 +1119,53 @@ Added Ctrl+click toggle and Shift+click range selection to both List and Tree co
 
 **Backlog:** #5 marked done
 **Tests:** 1075 CI + 797 UI passing, all green
+
+---
+
+### 2026-02-24 — Monorepo Restructure + Legacy Cleanup
+
+**Monorepo restructure:** Moved packages/ and sites/ under `solution/` directory. Fixed tsconfig path, undeclared workspace dependencies (7 packages), husky pre-commit hook, ESLint dependencies. Commit `cbe786d0`.
+
+**Backlog #8 (Legacy Component Migration):** Deleted broken/unused ListEditor, NestedEditor, DataEditor. Kept FieldLayout (already migrated). Stale snapshot removed.
+
+**Backlog #25 (bits-ui in chart):** Already removed — marked done.
+**Backlog #58 (Svelte 4→5 migration):** No legacy patterns remain — marked done.
+
+---
+
+### 2026-02-24 — Type-Ahead Search (Backlog #11)
+
+Implemented type-ahead search for List and Tree components.
+
+**Changes:**
+- `packages/states/src/list-controller.svelte.js` — `findByText(query, startAfterKey)`: wrapping prefix search, case-insensitive, skips disabled
+- `packages/actions/src/kbd.js` — added `typeahead: false` to `defaultNavigationOptions`
+- `packages/actions/src/navigator.svelte.js` — type-ahead buffer + 500ms reset timer, triggers on single printable chars (no modifiers), emits 'move' action, scrolls into view, resets on navigation actions
+- `packages/ui/src/components/List.svelte` — `typeahead: true` in navigator options
+- `packages/ui/src/components/Tree.svelte` — `typeahead: true` in navigator options
+- `packages/states/spec/list-controller.spec.svelte.js` — 7 findByText tests
+- `packages/actions/spec/navigator.spec.svelte.js` — 7 typeahead tests
+
+**Not enabled for:** Select/MultiSelect (have filter input), Menu (transient), Toolbar/Tabs/Toggle (not applicable)
+
+**Backlog:** #11 marked done
+**Tests:** 1282 CI passing, 0 lint errors
+
+---
+
+### 2026-02-24 — MultiSelect Value Contract Alignment (Backlog #28)
+
+Aligned MultiSelect with the Value Binding Contract used by Select/List/Tree.
+
+**Before:** `value: SelectItem[]`, `onchange: (items) => void`
+**After:** `value: unknown[]` (extracted primitives), `selected: SelectItem[]` (bindable full items), `onchange: (values, items) => void`
+
+**Changes:**
+- `packages/ui/src/types/select.ts` — `MultiSelectProps.value: unknown[]`, added `selected: SelectItem[]`, `onchange: (values, items)`
+- `packages/ui/src/components/MultiSelect.svelte` — selection logic uses extracted values via `ItemProxy.itemValue`, `isSelected` compares primitives, `toggleItemSelection`/`removeItem` emit both values and items
+- `packages/ui/spec/MultiSelect.spec.svelte.ts` — all assertions updated for primitive values
+- `sites/playground/.../multi-select/+page.svelte` — `value` type to `unknown[]`
+- `agents/design-patterns.md` — MultiSelect row updated to "Compliant"
+
+**Backlog:** #28 marked done
+**Tests:** 1282 CI passing, 0 lint errors

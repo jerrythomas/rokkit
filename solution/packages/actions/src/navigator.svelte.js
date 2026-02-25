@@ -111,11 +111,47 @@ export function navigator(node, options) {
 	const config = { ...defaultNavigationOptions, ...omit(['wrapper'], options) }
 	const handlers = getHandlers(wrapper)
 
+	// Type-ahead state
+	let typeaheadBuffer = ''
+	let typeaheadTimer = null
+
+	function resetTypeahead() {
+		typeaheadBuffer = ''
+		if (typeaheadTimer) {
+			clearTimeout(typeaheadTimer)
+			typeaheadTimer = null
+		}
+	}
+
+	function handleTypeahead(event) {
+		const { key, ctrlKey, metaKey, altKey } = event
+		if (ctrlKey || metaKey || altKey) return false
+		if (key.length !== 1 || key === ' ') return false
+
+		// Single-char repeat: start after current to cycle through matches
+		const startAfter = typeaheadBuffer.length === 0 ? wrapper.focusedKey : null
+
+		typeaheadBuffer += key
+		if (typeaheadTimer) clearTimeout(typeaheadTimer)
+		typeaheadTimer = setTimeout(resetTypeahead, 500)
+
+		const matchKey = wrapper.findByText(typeaheadBuffer, startAfter)
+		if (matchKey !== null && wrapper.moveTo(matchKey)) {
+			event.preventDefault()
+			event.stopPropagation()
+			emitAction(node, wrapper, 'first', true) // emit 'move'
+			setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
+			return true
+		}
+		return false
+	}
+
 	const handleKeydown = (event) => {
 		const action = getKeyboardAction(event, config)
 		const prevKey = wrapper.focusedKey
 		const handled = handleAction(event, handlers[action])
 		if (handled) {
+			resetTypeahead()
 			emitAction(node, wrapper, action, true)
 			// If expand/collapse moved focus, also emit move so components update DOM focus
 			const focusMoved =
@@ -134,6 +170,12 @@ export function navigator(node, options) {
 			if (focusMoved || ['first', 'last', 'previous', 'next'].includes(action)) {
 				setTimeout(() => scrollFocusedIntoView(node, wrapper), 0)
 			}
+			return
+		}
+
+		// Type-ahead: when no navigation action matched and typeahead is enabled
+		if (config.typeahead && wrapper.findByText) {
+			handleTypeahead(event)
 		}
 	}
 
@@ -149,6 +191,7 @@ export function navigator(node, options) {
 		const cleanup = [on(node, 'keydown', handleKeydown), on(node, 'click', handleClick)]
 
 		return () => {
+			resetTypeahead()
 			cleanup.forEach((fn) => fn())
 		}
 	})

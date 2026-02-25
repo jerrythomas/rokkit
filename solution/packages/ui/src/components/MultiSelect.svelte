@@ -15,7 +15,8 @@
 	let {
 		options = [],
 		fields: userFields,
-		value = $bindable<SelectItem[]>([]),
+		value = $bindable<unknown[]>([]),
+		selected = $bindable<SelectItem[]>([]),
 		placeholder = 'Select...',
 		size = 'md',
 		align = 'left',
@@ -94,15 +95,14 @@
 		controller.update(flatItems)
 	})
 
-	// Find selected items based on current value
+	// Find selected items based on current value (extracted primitives)
 	const selectedItems = $derived.by(() => {
 		if (!value || value.length === 0) return [] as { proxy: ItemProxy; original: SelectItem }[]
 		return flatItems
 			.filter((item) => {
 				const proxy = createProxy(item)
-				return value.some(
-					(v) => v === item || createProxy(v).itemValue === proxy.itemValue
-				)
+				const extracted = proxy.itemValue
+				return value.some((v) => v === extracted)
 			})
 			.map((item) => ({ proxy: createProxy(item), original: item }))
 	})
@@ -167,35 +167,37 @@
 		const proxy = createProxy(item)
 		if (proxy.disabled) return
 
-		const currentValues = value ?? []
-		const itemValue = proxy.itemValue
+		const extracted = proxy.itemValue
+		const isAlreadySelected = (value ?? []).some((v) => v === extracted)
 
-		const isAlreadySelected = currentValues.some(
-			(v) => v === item || createProxy(v).itemValue === itemValue
-		)
-
-		let newValues: SelectItem[]
+		let newValues: unknown[]
+		let newItems: SelectItem[]
 
 		if (isAlreadySelected) {
-			newValues = currentValues.filter(
-				(v) => v !== item && createProxy(v).itemValue !== itemValue
-			)
+			newValues = (value ?? []).filter((v) => v !== extracted)
+			newItems = selectedItems
+				.filter((si) => si.proxy.itemValue !== extracted)
+				.map((si) => si.original)
 		} else {
-			newValues = [...currentValues, item]
+			newValues = [...(value ?? []), extracted]
+			newItems = [...selectedItems.map((si) => si.original), item]
 		}
 
 		value = newValues
-		onchange?.(newValues)
+		selected = newItems
+		onchange?.(newValues, newItems)
 	}
 
 	function removeItem(item: { proxy: ItemProxy; original: SelectItem }) {
-		const itemValue = item.proxy.itemValue
-		const newValues = (value ?? []).filter(
-			(v) => v !== item.original && createProxy(v).itemValue !== itemValue
-		)
+		const extracted = item.proxy.itemValue
+		const newValues = (value ?? []).filter((v) => v !== extracted)
+		const newItems = selectedItems
+			.filter((si) => si.proxy.itemValue !== extracted)
+			.map((si) => si.original)
 
 		value = newValues
-		onchange?.(newValues)
+		selected = newItems
+		onchange?.(newValues, newItems)
 	}
 
 	// ─── Dropdown open/close ───────────────────────────────────────
@@ -332,8 +334,8 @@
 	 * Check if an item is currently selected
 	 */
 	function isSelected(proxy: ItemProxy): boolean {
-		const itemValue = proxy.itemValue
-		return (value ?? []).some((v) => v === proxy.original || createProxy(v).itemValue === itemValue)
+		const extracted = proxy.itemValue
+		return (value ?? []).some((v) => v === extracted)
 	}
 
 	function shouldShowDivider(optionIndex: number, isGroup: boolean): boolean {

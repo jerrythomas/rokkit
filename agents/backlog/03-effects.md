@@ -69,3 +69,12 @@ Priority 3 — Decorative actions and components.
 - [ ] Container requires `position: relative; overflow: hidden`
 
 **Priority:** Low — decorative, marketing pages.
+
+## Background Pulsing Orbs
+
+**Reference**: `/Users/Jerry/Work/ai-labs/FizzBot/workspace/apps/app/src/lib/background`
+**What's needed:**
+- [ ] Analyze and migrate
+- [ ] support user prefers 
+
+**Priority:** Low — decorative, background animation.

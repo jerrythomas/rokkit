@@ -264,6 +264,33 @@ export class ListController {
 		return true
 	}
 
+	/**
+	 * Find the first visible, non-disabled item whose text starts with `query`.
+	 * Search wraps around and starts after `startAfterKey` for cycling.
+	 *
+	 * @param {string} query - Prefix to match (case-insensitive)
+	 * @param {string|null} [startAfterKey] - Key to start searching after (for cycling)
+	 * @returns {string|null} The matching item's key, or null
+	 */
+	findByText(query, startAfterKey = null) {
+		const q = query.toLowerCase()
+		let startIndex = 0
+		if (startAfterKey !== null) {
+			const idx = this.data.findIndex((row) => row.key === startAfterKey)
+			if (idx >= 0) startIndex = idx + 1
+		}
+		for (let i = 0; i < this.data.length; i++) {
+			const idx = (startIndex + i) % this.data.length
+			if (this.#isDisabled(idx)) continue
+			const proxy = this.lookup.get(this.data[idx].key)
+			const text = proxy?.get('text') ?? ''
+			if (String(text).toLowerCase().startsWith(q)) {
+				return this.data[idx].key
+			}
+		}
+		return null
+	}
+
 	update(items) {
 		this.items = items
 	}

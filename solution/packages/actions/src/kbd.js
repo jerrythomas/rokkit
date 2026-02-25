@@ -57,7 +57,8 @@ export const defaultNavigationOptions = {
 	orientation: 'vertical',
 	dir: 'ltr',
 	nested: false,
-	enabled: true
+	enabled: true,
+	typeahead: false
 }
 
 /**

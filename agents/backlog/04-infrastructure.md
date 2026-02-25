@@ -9,10 +9,12 @@ Priority 4 — Code quality, dependency cleanup, migration.
 **Affected packages:** core, states, actions, data, forms, chart, helpers
 
 **What's needed:**
+
 - [ ] Replace `isNil(v)` → `v == null`
 - [ ] Replace `pick`/`omit` → native `Object.fromEntries` + `Object.entries` with filter
 - [ ] Replace `pipe`, `map`, `filter` with native equivalents
 - [ ] Remove ramda from all package.json files
+Q: In order to remove ramda dependency, wouldn't it be easier to just create a replacement function under core/utils. code remains same but uses native equivaluents. 
 
 **Priority:** Low — no functional impact, reduces bundle size.
 
@@ -28,41 +30,16 @@ Priority 4 — Code quality, dependency cleanup, migration.
 
 ---
 
-## 25. @rokkit/chart — Dead bits-ui Dependency
+## ~~25. @rokkit/chart — Dead bits-ui Dependency~~ ✅ DONE
 
-**Source:** ADR-003
-
-**What's needed:**
-- [ ] Remove bits-ui from chart package.json
-- [ ] Verify no imports reference bits-ui
+bits-ui already removed from chart during ADR-003 archive cleanup. No bits-ui imports in any @rokkit package.
 
 ---
 
-## 58. Svelte 4 → 5 Migration — Remaining Files
+## ~~58. Svelte 4 → 5 Migration — Remaining Files~~ ✅ DONE
 
-**Source:** ESLint upgrade revealed 41 files still using Svelte 4 patterns. Currently excluded from lint via `ignores`.
+All Svelte 4 patterns (`export let`, `$:`, `createEventDispatcher`, `$$restProps`) removed from codebase. Archive deleted. Forms legacy components deleted (#8). No `export let` in any `.svelte` file.
 
-### `packages/chart/` (20+ files)
-- All pattern, symbol, texture, and element components
-- See full list in original backlog
+## Release. 
 
-### `packages/forms/` (3 files — overlaps with #8)
-- `src/FieldLayout.svelte`
-- `src/ListEditor.svelte`
-- `src/NestedEditor.svelte`
-
-### `sites/learn/src/stories/` (8 files)
-- Chart-related stories and nav-content stories
-
-### `archive/ui/src/` (7 files — low priority, may be deleted)
-- Legacy components from archive
-
-**Migration pattern per file:**
-- `export let` → `$props()` destructuring
-- `$:` reactive → `$derived()` / `$derived.by()`
-- `createEventDispatcher()` → callback props
-- `$$restProps` → `{...restProps}` from `$props()`
-
-**Blocked by:** `packages/chart` also has dead bits-ui dependency (#25) and ramda usage (#23) — consider combining into a single chart modernization effort.
-
-**When done:** Remove corresponding entries from `eslint.config.mjs` ignores.
+We need a pre release script that copies LICENCE from root and post release script that removes it for each package.

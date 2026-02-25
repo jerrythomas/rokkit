@@ -354,6 +354,159 @@ describe('navigator', () => {
 		})
 	})
 
+	describe('typeahead', () => {
+		const typeaheadWrapper = {
+			...wrapper,
+			findByText: vi.fn(),
+			focusedKey: '0'
+		}
+
+		afterEach(() => {
+			vi.clearAllMocks()
+			vi.useRealTimers()
+		})
+
+		it('should not trigger typeahead when disabled (default)', () => {
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical' })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+			expect(typeaheadWrapper.findByText).not.toHaveBeenCalled()
+
+			cleanup()
+		})
+
+		it('should call findByText on letter key when typeahead enabled', () => {
+			typeaheadWrapper.findByText.mockReturnValue('1')
+			typeaheadWrapper.moveTo.mockReturnValue(true)
+
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('b', '0')
+			expect(typeaheadWrapper.moveTo).toHaveBeenCalledWith('1')
+
+			cleanup()
+		})
+
+		it('should accumulate buffer for multi-char search', () => {
+			vi.useFakeTimers()
+			typeaheadWrapper.findByText.mockReturnValue(null)
+
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('b', '0')
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'e' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('be', null)
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 't' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('bet', null)
+
+			cleanup()
+			vi.useRealTimers()
+		})
+
+		it('should reset buffer after 500ms', () => {
+			vi.useFakeTimers()
+			typeaheadWrapper.findByText.mockReturnValue(null)
+
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('a', '0')
+
+			vi.advanceTimersByTime(500)
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }))
+			// After reset, buffer starts fresh with 'b', and startAfter = focusedKey
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('b', '0')
+
+			cleanup()
+			vi.useRealTimers()
+		})
+
+		it('should emit move action on match', () => {
+			typeaheadWrapper.findByText.mockReturnValue('2')
+			typeaheadWrapper.moveTo.mockReturnValue(true)
+
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'g' }))
+			expect(action).toHaveBeenCalledTimes(1)
+			expect(action.mock.calls[0][0].detail.name).toBe('move')
+
+			cleanup()
+		})
+
+		it('should not trigger on modifier keys', () => {
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', ctrlKey: true }))
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', metaKey: true }))
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', altKey: true }))
+			expect(typeaheadWrapper.findByText).not.toHaveBeenCalled()
+
+			cleanup()
+		})
+
+		it('should not trigger on space key', () => {
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			// Space is handled by select action, not typeahead
+			typeaheadWrapper.select.mockReturnValue(false)
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }))
+			expect(typeaheadWrapper.findByText).not.toHaveBeenCalled()
+
+			cleanup()
+		})
+
+		it('should reset buffer on navigation action', () => {
+			vi.useFakeTimers()
+			typeaheadWrapper.findByText.mockReturnValue(null)
+			typeaheadWrapper.moveNext.mockReturnValue(true)
+
+			const cleanup = $effect.root(() =>
+				navigator(root, { wrapper: typeaheadWrapper, orientation: 'vertical', typeahead: true })
+			)
+			flushSync()
+
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('a', '0')
+
+			// Navigation action should reset buffer
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+
+			// Next letter should start fresh buffer
+			root.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }))
+			expect(typeaheadWrapper.findByText).toHaveBeenCalledWith('b', '0')
+
+			cleanup()
+			vi.useRealTimers()
+		})
+	})
+
 	it('should cleanup event listeners', () => {
 		const addEventListenerSpy = vi.spyOn(root, 'addEventListener')
 		const removeEventListenerSpy = vi.spyOn(root, 'removeEventListener')

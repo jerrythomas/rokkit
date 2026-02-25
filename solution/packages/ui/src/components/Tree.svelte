@@ -605,7 +605,7 @@
 	aria-multiselectable={multiselect || undefined}
 	onkeydown={handleTreeKeyDown}
 	onfocusin={handleFocusIn}
-	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: true }}
+	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: true, typeahead: true }}
 >
 	{#each flatNodes as node (node.path)}
 		{@render renderNode(node)}

@@ -441,7 +441,7 @@
 	aria-multiselectable={multiselect || undefined}
 	onkeydown={handleListKeyDown}
 	onfocusin={handleFocusIn}
-	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: collapsible }}
+	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: collapsible, typeahead: true }}
 >
 	{#each items as item, itemIndex (itemIndex)}
 		{@const proxy = createProxy(item)}

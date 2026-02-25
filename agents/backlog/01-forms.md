@@ -12,17 +12,9 @@ Stable instance with `$effect` sync. See journal 2026-02-24.
 
 ---
 
-## 8. Legacy Component Migration
+## ~~8. Legacy Component Migration~~ ✅ DONE
 
-**Priority:** High
-
-**Problem:** `DataEditor`, `FieldLayout`, `ListEditor`, `NestedEditor` use Svelte 4 patterns (`export let`, `createEventDispatcher`, `getContext('registry')`). These don't work properly in Svelte 5 apps.
-
-**What's needed:**
-- [ ] Migrate `FieldLayout` to Svelte 5 runes
-- [x] Enhance `FormRenderer` to handle nested `type: 'group'` elements recursively — DONE (2026-02-24)
-- [ ] Replace `ListEditor` with List + FormRenderer composition
-- [ ] Replace `NestedEditor` with Tree + FormRenderer composition
+`FieldLayout` already migrated to Svelte 5. `ListEditor`, `NestedEditor`, `DataEditor` deleted (broken, unused, superseded by FormRenderer + List/Tree composition). See journal 2026-02-24.
 
 ---
 
@@ -136,54 +128,3 @@ Recursive group rendering in FormRenderer via `{#snippet renderElement}`. `<fiel
 ## ~~60. Display-Only Schema Rendering~~ ✅ DONE
 
 Display components (DisplayValue, DisplaySection, DisplayTable, DisplayCardGrid, DisplayList), FormBuilder integration, FormRenderer routing. See journal 2026-02-24.
-
-**Source:** `docs/requirements/010-form.md §18`, `docs/design/010-form.md`
-
-**Cross-project:** Strategos backlog #15 (Human-in-the-Loop Interaction System) depends on this for rendering agent interaction requests.
-
-### What exists
-- `InfoField.svelte` — renders a single readonly value with label
-- `FormRenderer` — renders schema+layout as input fields, with `readonly` layout prop routing to `InfoField`
-- `FormBuilder` — merges schema + layout into renderable elements
-- `@rokkit/ui` Table — data-driven table with columns, sort, selection
-
-### What's needed
-
-#### Display layout types
-- [ ] New layout element types for display-only rendering:
-  - `type: 'display-table'` — renders data array as a table with column definitions
-  - `type: 'display-cards'` — renders data array as a card grid
-  - `type: 'display-section'` — renders grouped key-value pairs (like a detail view)
-  - `type: 'display-list'` — renders data array as a styled list
-- [ ] Each type accepts a `columns` or `fields` definition specifying which data fields to show, labels, and format hints
-
-#### Format hints for display values
-- [ ] `format` property on display fields: `'currency'`, `'datetime'`, `'duration'`, `'number'`, `'badge'`, `'text'`, `'boolean'`
-- [ ] `DisplayValue` component — renders a single value with format-aware formatting
-- [ ] Format is a rendering concern only — no data transformation
-
-#### Display components
-- [ ] `DisplayTable.svelte` — wraps `@rokkit/ui` Table, accepts data array + column definitions from layout schema
-- [ ] `DisplayCard.svelte` — renders a single data object as a card with field labels + formatted values
-- [ ] `DisplayCardGrid.svelte` — renders array of cards in a responsive grid
-- [ ] `DisplaySection.svelte` — renders grouped key-value pairs as a detail/summary section
-- [ ] All components are schema-driven — receive data + display schema, no domain-specific props
-
-#### FormRenderer integration
-- [ ] `FormRenderer` recognizes `display-*` layout types and routes to display components
-- [ ] Mixed layouts: a form can contain both input fields and display sections
-- [ ] `FormBuilder.elements` supports display elements alongside input elements
-
-#### Selection support for display components
-- [ ] `DisplayTable` and `DisplayCardGrid` support optional selection (`select: 'one'` or `select: 'many'`)
-- [ ] Selected items emitted via `onselect` callback or bindable `selected` prop
-
-**Depends on:** #7 (FormBuilder stability), #47 Phase 1 (Table — done)
-
-### Example usage patterns
-
-See `docs/requirements/010-form.md §18` for full examples including:
-1. Agent interaction: "Pick a flight" (select_one with table)
-2. Agent interaction: "Review itinerary" (display sections)
-3. Mixed layout: display data + input form
-4. Card grid with selection

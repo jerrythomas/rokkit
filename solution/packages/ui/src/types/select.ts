@@ -153,11 +153,14 @@ export interface SelectProps extends SelectBaseProps {
  * Props for the MultiSelect component (multiple selection)
  */
 export interface MultiSelectProps extends SelectBaseProps {
-	/** Currently selected items (bindable) - array of full item objects */
-	value?: SelectItem[]
+	/** Currently selected values (bindable) - extracted primitives via ItemProxy.itemValue */
+	value?: unknown[]
+
+	/** Currently selected items (bindable) - full item objects for convenience */
+	selected?: SelectItem[]
 
 	/** Called when selection changes */
-	onchange?: (items: SelectItem[]) => void
+	onchange?: (values: unknown[], items: SelectItem[]) => void
 
 	/** Custom snippet for rendering selected values */
 	selectedValues?: MultiSelectValueSnippet

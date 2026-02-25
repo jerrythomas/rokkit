@@ -16,29 +16,15 @@ Priority 2 — Component enhancements and new features for `@rokkit/ui`.
 
 ---
 
-## 11. List/Tree — Type-Ahead Search
+## ~~11. List/Tree — Type-Ahead Search~~ ✅ DONE
 
-**Source:** docs/requirements/002-list.md §10.3
-
-**Problem:** No type-ahead (pressing a letter to jump to matching item). Common accessibility pattern for lists and trees.
-
-**What's needed:**
-- [ ] Could be added to `navigator` action or as a separate `use:typeahead` action
-- [ ] Buffer typed characters, find matching item, focus it
-- [ ] Reset buffer after timeout (~500ms)
+`findByText()` on ListController + `typeahead: true` option on navigator action. Enabled for List and Tree. Buffer accumulates, resets after 500ms, wrapping search, skips disabled. See journal 2026-02-24.
 
 ---
 
-## 28. MultiSelect — Align Value Contract
+## ~~28. MultiSelect — Align Value Contract~~ ✅ DONE
 
-**Source:** ADR-003 Phase C
-
-**Problem:** MultiSelect emits full item arrays instead of extracted value-field primitives (inconsistent with Select/List/Tree).
-
-**What's needed:**
-- [ ] `value` should be `unknown[]` of extracted primitives (not full items)
-- [ ] `onchange` signature: `(values, items) => void`
-- [ ] See `agents/design-patterns.md` Value Binding Contract
+`value` is now `unknown[]` (extracted primitives), `selected` is `SelectItem[]` (bindable full items), `onchange` is `(values, items) => void`. Aligned with Select/List/Tree. See journal 2026-02-24.
 
 ---
 

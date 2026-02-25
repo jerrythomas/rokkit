@@ -154,6 +154,6 @@ $effect(() => {
 | Select | extracted primitive | `(value, item)` + `selected` bindable for full item | Compliant |
 | List | extracted primitive | `(value, item)` | Compliant |
 | Tree | extracted primitive | `(value, item)` | Compliant |
-| MultiSelect | **full item array** | `(items)` | **Needs migration** (backlog #34) |
+| MultiSelect | extracted primitive array | `(values, items)` + `selected` bindable for full items | Compliant |
 
-**Used in:** Toggle, Select, List, Tree. MultiSelect pending alignment.
+**Used in:** Toggle, Select, MultiSelect, List, Tree.

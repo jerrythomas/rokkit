@@ -3,7 +3,7 @@
 	import { FormRenderer, InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
 
-	let value = $state<Record<string, unknown>[]>([])
+	let value = $state<unknown[]>([])
 
 	let props = $state({ placeholder: 'Pick colors...', size: 'md', disabled: false })
 
@@ -75,6 +75,6 @@
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
 		<InfoField label="Count" value={value.length} />
-		<InfoField label="Selected" value={value.map((v) => v.text).join(', ') || '—'} />
+		<InfoField label="Selected" value={value.join(', ') || '—'} />
 	{/snippet}
 </Playground>
