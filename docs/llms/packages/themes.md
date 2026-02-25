@@ -31,9 +31,9 @@
 | Material | `data-style="material"` | Elevation shadows, responsive ripples, angular |
 | Glass | `data-style="glass"` | Backdrop blur, semi-transparent, frosted |
 
-## Base Components (~21 files)
+## Base Components (~30 files)
 
-button, input, select, toggle, list, menu, toolbar, tabs, floating-action, tree, item, connector, tilt, shine, breadcrumbs, card, progress, carousel, pill, rating, index (aggregator)
+button, input, select, toggle, list, menu, toolbar, tabs, floating-action, tree, item, connector, tilt, shine, breadcrumbs, card, progress, carousel, pill, rating, switch, stepper, timeline, table, range, search-filter, floating-navigation, reveal, index (aggregator)
 
 ## Usage
 

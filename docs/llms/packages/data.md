@@ -86,8 +86,8 @@ view.toggle(index)  // Toggle expansion
 
 | Module | What | Notes |
 |--------|------|-------|
-| `parser.js` | `parseFilters(text)` | Parses structured search: `name:John age>30`. **Not exported** — see backlog #15 |
-| `filter.js` | `filterData(data, filters)` | Applies parsed filters. **Not exported** |
+| `parser.js` | `parseFilters(text)` | Parses structured search: `name:John age>30`. Used internally by `SearchFilter` component. |
+| `filter.js` | `filterData(data, filters)` | Applies parsed filters. |
 | `hierarchy.js` | Tree flattening/expansion | Manages hierarchical state |
 | `aggregators.js` | sum, count, average, min, max | Predefined aggregation functions |
 | `formatter.js` | Currency, date, percentage | Value formatting utilities |

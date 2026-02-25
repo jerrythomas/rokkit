@@ -1251,3 +1251,32 @@ Aligned MultiSelect with the Value Binding Contract used by Select/List/Tree.
 
 **Backlog:** #28 marked done
 **Tests:** 1282 CI passing, 0 lint errors
+
+---
+
+## 2026-02-25 — LLM Documentation Restructure
+
+Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an index and per-item files.
+
+**New structure (60 files):**
+- `docs/llms/index.md` — master index with dependency graph, section links, common patterns
+- `docs/llms/components/` — 27 files: `index.md` + one file per component
+  - Interactive: List, Tree, Select, MultiSelect, Menu, Toggle, Tabs, Toolbar, Switch, Carousel, Table, Range, SearchFilter
+  - Presentational: Button, BreadCrumbs, Card, Pill, ProgressBar, Rating, Stepper, Timeline, Code
+  - Overlay: FloatingAction, FloatingNavigation
+  - Effects: Reveal, Tilt, Shine
+- `docs/llms/actions/` — 13 files: `index.md` + one file per action
+  - Navigation: navigator, keyboard, navigable, dismissable
+  - Gestures: swipeable, pannable
+  - Visual effects: reveal, hoverLift, magnetic, ripple
+  - Theming: themable, skinnable
+- `docs/llms/states/` — 6 files: `index.md` + ListController, NestedController, Proxy, Vibe, Messages
+- `docs/llms/forms/` — 4 files: `index.md` + form-builder, input-types, schema-layout
+- `docs/llms/packages/` — 8 files: core, data, chart, themes, icons, app, cli, helpers
+
+**Updated content:**
+- All new components documented: Switch, Switch, Table, Range, SearchFilter, Stepper, Timeline, FloatingNavigation, Reveal
+- All new actions documented: reveal, hoverLift, magnetic, ripple
+- `themes.md` updated with 30 base CSS files (was 21)
+- `data.md` updated: parseFilters note corrected (used by SearchFilter)
+- Old flat files deleted (superseded by new structure)
