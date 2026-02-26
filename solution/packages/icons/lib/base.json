@@ -1,6 +1,6 @@
 {
   "prefix": "base",
-  "lastModified": 1771534445,
+  "lastModified": 1772059510,
   "icons": {
     "accordion-closed": {
       "body": "<path fill=\"currentColor\" d=\"M16.5 12 9 19.5l-1.05-1.05L14.4 12 7.95 5.55 9 4.5z\"/>"
@@ -154,6 +154,9 @@
     },
     "mode-light": {
       "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"5\"/><path stroke-linecap=\"round\" d=\"M12 2v2m0 16v2M4 12H2m20 0h-2\"/><path stroke-linecap=\"round\" d=\"m19.778 4.222-2.222 2.032M4.222 4.222l2.222 2.032m0 11.302-2.222 2.222m15.556 0-2.222-2.222\" opacity=\".5\"/></g>"
+    },
+    "mode-system": {
+      "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"><rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><path d=\"M8 21h8m-4-4v4\"/></g>"
     },
     "navigate-down": {
       "body": "<path fill=\"currentColor\" d=\"M12 16.5 4.5 9l1.05-1.05L12 14.4l6.45-6.45L19.5 9z\"/>"

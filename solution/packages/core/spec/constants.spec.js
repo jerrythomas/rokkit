@@ -61,7 +61,8 @@ describe('Utility functions', () => {
 			},
 			mode: {
 				dark: 'mode-dark',
-				light: 'mode-light'
+				light: 'mode-light',
+				system: 'mode-system'
 			},
 			navigate: {
 				down: 'navigate-down',

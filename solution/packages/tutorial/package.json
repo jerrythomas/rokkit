@@ -27,9 +27,9 @@
     "build": "bun prepublishOnly"
   },
   "dependencies": {
-    "@vitest/expect": "^3.2.4",
+    "@vitest/expect": "^4.0.18",
     "frontmatter": "^0.0.3",
-    "ramda": "^0.31.3",
+    "ramda": "^0.32.0",
     "@rokkit/core": "workspace:latest"
   }
 }

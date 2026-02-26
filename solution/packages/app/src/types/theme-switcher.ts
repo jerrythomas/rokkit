@@ -19,7 +19,7 @@ export interface ThemeSwitcherIcons {
 }
 
 export const defaultThemeSwitcherIcons: Required<ThemeSwitcherIcons> = {
-	system: 'i-lucide:monitor',
+	system: defaultStateIcons.mode.system,
 	light: defaultStateIcons.mode.light,
 	dark: defaultStateIcons.mode.dark
 }

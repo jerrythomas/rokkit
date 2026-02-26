@@ -39,7 +39,7 @@
     "build": "bun clean && bun prepublishOnly"
   },
   "dependencies": {
-    "@vitest/expect": "^3.2.4",
-    "ramda": "^0.31.3"
+    "@vitest/expect": "^4.0.18",
+    "ramda": "^0.32.0"
   }
 }

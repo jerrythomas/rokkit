@@ -34,9 +34,9 @@
     }
   },
   "dependencies": {
-    "@unocss/preset-mini": "^66.5.1",
+    "@unocss/preset-mini": "^66.6.1",
     "date-fns": "^4.1.0",
-    "ramda": "^0.31.3"
+    "ramda": "^0.32.0"
   },
   "devDependencies": {
     "@rokkit/icons": "workspace:*"

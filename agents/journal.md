@@ -5,6 +5,108 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-02-25
+
+### Enhanced Lookup System — Backlog #18
+
+Extended `@rokkit/forms` lookup system end-to-end: fetch/filter hooks, `disabled` state, reactive injection into form elements, and `FormRenderer` wiring.
+
+**`lookup.svelte.js` changes:**
+- Extended `LookupConfig` typedef: `fetch` (async hook), `source` (pre-loaded array), `filter` (client-side filter), `cacheKey` (custom cache key fn)
+- Added `disabled = $state(false)` — set to `true` when dep check fails, `false` when deps met
+- `fetch()` branches: filter+source (synchronous), fetch hook (async, optional caching via `cacheKeyFn`), URL (unchanged)
+- `clearCache()` guards `if (!url) return` for non-URL configs
+- `reset()` also resets `disabled = false`
+- `createLookupManager.initialize()` now always calls `fetch()` for all lookups (lets missing-dep check set `disabled = true` on init)
+
+**`builder.svelte.js` changes:**
+- `getLookupState()` returns `disabled` property
+- `#convertToFormElement()` injects `options`, `loading`, `disabled`, `fields` from lookup state into `finalProps` (reactive via `$derived(#buildElements())`)
+- `updateField()` clears dependent field values (`null`) before triggering lookup re-fetch
+- New `isFieldDisabled(path)` and `refreshLookup(path)` public methods
+
+**`FormRenderer.svelte` changes:**
+- Added `lookups = {}` prop, passed to `FormBuilder` constructor
+- `onMount` calls `formBuilder.initializeLookups()` (fire-and-forget)
+
+**Reactive chain:** `onMount → initializeLookups() → lookup.fetch() → options/disabled ($state) → $derived(#buildElements()) re-runs → element.props updated → FormRenderer re-renders`
+
+**Tests:** 16 new tests in `lookup.spec.js` (fetch hook, filter hook, disabled state, cacheKey, clearCache guard) + 5 new integration tests in `FormRenderer.spec.svelte.js` (options injection, disabled state, value clearing). 1355 total passing, 0 lint errors.
+
+---
+
+### ArrayEditor Component — Backlog #17
+
+Added `ArrayEditor.svelte` to `@rokkit/forms` — a composable input component that manages a dynamic list of array items within the form renderer pipeline.
+
+**Architecture:**
+- `type: 'array'` schema fields now resolve to `ArrayEditor` via `defaultRenderers.array`
+- Primitive items (`string`, `number`, etc.) render via `resolveRenderer({ type: itemSchema.type }, defaultRenderers)` + `svelte:component`
+- Object items render a nested `<FormRenderer data={item} schema={itemSchema} onupdate={...} />`, using `onupdate` callback (not `bind:data`) to avoid Svelte 5 array-index binding issues
+- Default item creation via `createDefaultItem(schema)` — fills object properties with type defaults
+- Always produces new array references (no in-place mutations)
+- `renderers` not forwarded through `Input.svelte` restProps — ArrayEditor imports `defaultRenderers` directly (custom renderer propagation deferred)
+
+**DOM structure:** `[data-array-editor]` root with `[data-array-editor-empty]` / `[data-array-editor-disabled]` boolean attributes; `[data-array-editor-items]` → `[data-array-editor-item]` × N; `[data-array-editor-remove]` buttons (hidden when `readonly`); `[data-array-editor-add]` button (hidden when `readonly`, disabled when `disabled`)
+
+**Files created/modified:**
+- `packages/forms/src/input/ArrayEditor.svelte` — new component
+- `packages/forms/src/lib/renderers.js` — added `array: ArrayEditor`
+- `packages/forms/src/input/index.js` — exported `ArrayEditor`
+- `packages/forms/spec/input/ArrayEditor.spec.svelte.js` — 14 tests
+- `packages/forms/spec/input/index.spec.js` — updated component list
+
+**Tests:** 1339 passing (up from 1322), 0 lint errors
+
+---
+
+### Playground Sidebar — List Component + E2E Tests
+
+Replaced the hand-rolled `<nav>` sidebar in `sites/playground/src/routes/+layout.svelte` with the `List` component. Items from `$lib/components` (which have `text`, `href`, `icon`) are passed with `fields={{ value: 'href' }}` so active state tracks `page.url.pathname`. Sidebar wrapper uses `data-style="rokkit"` for consistent styling.
+
+Added `e2e/sidebar-nav.spec.ts` covering:
+- Active item reflects current route on load
+- Click navigates to the correct page and updates active state
+- ArrowDown/Up moves keyboard focus through items
+- Home/End jump to first/last item
+- Enter on focused link navigates (browser-native, no `preventDefault`)
+
+**Files modified:**
+- `sites/playground/src/routes/+layout.svelte` — sidebar replaced with `List` component
+- `sites/playground/e2e/sidebar-nav.spec.ts` — new e2e test file (10 tests)
+
+**Tests:** 1322 unit tests passing, 0 lint errors
+
+---
+
+### Navigator — Keyboard Enter Fix on Href Items
+
+**Bug:** `handleKeydown` mapped Enter/Space → `'select'` action → `handleAction()` which called `event.preventDefault()`, blocking native link activation for `<a href>` items. The `handleListKeyDown` `stopPropagation()` in `List.svelte` did not prevent same-element navigator handler from running.
+
+**Fix:** In `handleKeydown`, early return when `action === 'select' && event.target.closest('a[href]')` — browser handles Enter/Space natively on focused anchor.
+
+**Files modified:**
+- `packages/actions/src/navigator.svelte.js` — `handleKeydown` anchor early return
+- `packages/actions/spec/navigator.spec.svelte.js` — 2 new keyboard anchor tests (dispatched on anchor element so `event.target` is set correctly)
+
+**Tests:** 1322 passing (up from 1320)
+
+---
+
+### Navigator — Anchor Click Fix (Backlog #61)
+
+**Bug:** `handleClick` in `navigator.svelte.js` called `event.preventDefault()` unconditionally via `handleAction()`, blocking `<a href>` navigation on click. Keyboard was already protected (`handleListKeyDown` in `List.svelte` stops propagation for Enter/Space on href items), but click had no equivalent guard.
+
+**Fix:** In `handleClick`, detect `event.target.closest('a[href]')` and bypass `handleAction` — call the controller handler directly (preserving focus/select state updates) without calling `preventDefault()`.
+
+**Files modified:**
+- `packages/actions/src/navigator.svelte.js` — fix `handleClick`
+- `packages/actions/spec/navigator.spec.svelte.js` — 4 new anchor click tests
+
+**Tests:** 1320 passing (up from 1316)
+
+---
+
 ## 2026-02-24
 
 ### HoverLift, Magnetic, Ripple Actions (Backlog #53)

@@ -35,6 +35,6 @@
     "@rokkit/data": "workspace:latest",
     "@rokkit/states": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
-    "ramda": "^0.31.3"
+    "ramda": "^0.32.0"
   }
 }

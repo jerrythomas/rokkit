@@ -57,6 +57,7 @@ export const defaultIcons = [
 	'radio-on',
 	'mode-dark',
 	'mode-light',
+	'mode-system',
 	'navigate-left',
 	'navigate-right',
 	'navigate-up',

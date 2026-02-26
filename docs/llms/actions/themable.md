@@ -48,4 +48,5 @@
 
 - Reactively updates attributes when `vibe` properties change.
 - `storageKey` saves to localStorage on change; loads on mount.
-- Used by `@rokkit/app`'s `ThemeSwitcherToggle` internally.
+- Cross-tab sync: listens to `storage` events so theme changes in one tab propagate to others.
+- Pair with `ThemeSwitcherToggle` + `ColorModeManager` from `@rokkit/app` for a complete theme-switching setup — see `@rokkit/app` docs for the full pattern.
