@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/app",
-  "version": "0.0.1",
+  "version": "1.0.0-next.126",
   "description": "App-level controls for Rokkit applications - theme management and UI chrome",
   "type": "module",
   "svelte": "./src/index.ts",
