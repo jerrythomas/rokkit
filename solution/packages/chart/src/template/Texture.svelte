@@ -7,6 +7,7 @@
 
 	let pattern = $derived(library[name])
 	let props = $derived(pick(pattern.allowed ?? [], { fill, stroke, thickness }))
+	let Component = $derived(templates[pattern.component])
 </script>
 
-<svelte:component this={templates[pattern.component]} {size} {...props} data={pattern.data} />
+<Component {size} {...props} data={pattern.data} />

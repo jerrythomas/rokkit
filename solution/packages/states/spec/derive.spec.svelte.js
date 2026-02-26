@@ -82,18 +82,17 @@ describe('derive', () => {
 			])
 			const fields = { children: 'children', expanded: '_expanded' }
 			const expandedKeys = new SvelteSet()
-			const data = $derived(flatVisibleNodes(items, fields, [], expandedKeys))
 
 			// Not expanded — only top-level items
-			expect(data.length).toEqual(3)
+			expect(flatVisibleNodes(items, fields, [], expandedKeys).length).toEqual(3)
 
 			// Expand via expandedKeys
 			expandedKeys.add('0')
-			expect(data.length).toEqual(5)
+			expect(flatVisibleNodes(items, fields, [], expandedKeys).length).toEqual(5)
 
 			// Collapse via expandedKeys
 			expandedKeys.delete('0')
-			expect(data.length).toEqual(3)
+			expect(flatVisibleNodes(items, fields, [], expandedKeys).length).toEqual(3)
 
 			// Original item should NOT have _expanded
 			expect(items[0]._expanded).toBeUndefined()
