@@ -124,39 +124,42 @@ For selecting a range of values (min and max), use the RangeMinMax component:
 ## Component Structure
 
 \`\`\`
-<rk-range>
-├── <input type="range" hidden>  // Form value
-├── <track>                       // Background track
-│   └── <fill>                   // Filled portion
-├── <thumb>                       // Draggable handle
-└── <ticks>                       // Tick marks container
-    └── <tick>                   // Individual tick
-        └── <label>              // Optional label
-</rk-range>
+[data-range]
+├── [data-range-track]
+│   ├── [data-range-bar]         // Background track
+│   └── [data-range-selected]    // Filled portion
+├── [data-range-thumb]           // Draggable handle
+└── [data-range-ticks]           // Tick marks container
+    └── [data-range-tick]        // Individual tick
+        └── [data-tick-label]    // Optional label
 \`\`\`
 
 ## Data Attributes for Styling
 
 | Attribute | Element | Purpose |
 |-----------|---------|---------|
-| \`rk-range\` | Root | Main container |
-| \`data-track\` | track | Track element |
-| \`data-fill\` | fill | Filled track portion |
-| \`data-thumb\` | thumb | Handle element |
-| \`data-ticks\` | ticks | Ticks container |
-| \`data-tick\` | tick | Individual tick |
+| \`[data-range]\` | Root | Main container |
+| \`[data-range][data-disabled]\` | Root | Disabled state |
+| \`[data-range-track]\` | Track | Track wrapper |
+| \`[data-range-bar]\` | Bar | Background bar |
+| \`[data-range-selected]\` | Selected | Filled portion |
+| \`[data-range-thumb]\` | Thumb | Draggable handle |
+| \`[data-range-thumb][data-sliding]\` | Thumb | Active drag state |
+| \`[data-range-ticks]\` | Ticks | Tick marks container |
+| \`[data-range-tick]\` | Tick | Individual tick mark |
+| \`[data-tick-label]\` | Label | Tick label text |
 
 ### Styling Example
 
 \`\`\`css
-rk-range {
+[data-range] {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 8px 0;
 }
 
-[data-track] {
+[data-range-track] {
   position: relative;
   height: 6px;
   background: var(--surface-200);
@@ -164,14 +167,14 @@ rk-range {
   cursor: pointer;
 }
 
-[data-fill] {
+[data-range-selected] {
   position: absolute;
   height: 100%;
   background: var(--primary-500);
   border-radius: 3px;
 }
 
-[data-thumb] {
+[data-range-thumb] {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -184,22 +187,22 @@ rk-range {
   transition: transform 0.1s;
 }
 
-[data-thumb]:hover {
+[data-range-thumb]:hover {
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-[data-thumb]:active {
+[data-range-thumb][data-sliding] {
   cursor: grabbing;
   transform: translate(-50%, -50%) scale(1.15);
 }
 
-[data-ticks] {
+[data-range-ticks] {
   display: flex;
   justify-content: space-between;
   margin-top: 8px;
 }
 
-[data-tick] {
+[data-range-tick] {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -207,7 +210,7 @@ rk-range {
   color: var(--text-muted);
 }
 
-[data-tick]::before {
+[data-range-tick]::before {
   content: '';
   width: 1px;
   height: 6px;

@@ -23,6 +23,10 @@ describe('NestedController', () => {
 			expect(controller.focused).toEqual(items[0].children[1].children[0])
 			expect(controller.selected).toEqual([items[0].children[1].children[0]])
 		})
+
+		it('should initialize without crashing when value is not in items', () => {
+			expect(() => new NestedController(items, { text: 'not-in-list' })).not.toThrow()
+		})
 	})
 
 	describe('moveTo', () => {

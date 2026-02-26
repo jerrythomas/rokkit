@@ -13,6 +13,7 @@ export {
 	List,
 	Tree,
 	FloatingAction,
+	FloatingNavigation,
 	PaletteManager,
 	Tilt,
 	Shine,

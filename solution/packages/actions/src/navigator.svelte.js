@@ -149,6 +149,14 @@ export function navigator(node, options) {
 	const handleKeydown = (event) => {
 		const action = getKeyboardAction(event, config)
 		const prevKey = wrapper.focusedKey
+
+		// For activation keys (Enter/Space) on anchor elements, let the browser
+		// navigate natively. The click handler will update controller state when
+		// the browser fires the synthetic click.
+		if (action === 'select' && event.target.closest('a[href]')) {
+			return
+		}
+
 		const handled = handleAction(event, handlers[action])
 		if (handled) {
 			resetTypeahead()
@@ -182,8 +190,16 @@ export function navigator(node, options) {
 	const handleClick = (event) => {
 		const action = getClickAction(event)
 		const path = getPathFromEvent(event)
-		const handled = handleAction(event, handlers[action], path)
 
+		// Anchor elements with href handle navigation natively — don't preventDefault.
+		// Still call the handler so focus/selection state stays in sync.
+		if (event.target.closest('a[href]')) {
+			const handler = handlers[action]
+			if (handler?.(path)) emitAction(node, options.wrapper, action)
+			return
+		}
+
+		const handled = handleAction(event, handlers[action], path)
 		if (handled) emitAction(node, options.wrapper, action)
 	}
 

@@ -21,6 +21,7 @@ export class NestedController extends ListController {
 	 */
 	ensureVisible(value) {
 		const result = this.lookup.entries().find((entry) => equals(entry[1].value, value))
+		if (!result) return false
 		const path = getPathFromKey(result[0])
 
 		for (let i = 1; i < path.length; i++) {

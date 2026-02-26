@@ -99,53 +99,52 @@ const stateIcons = {
 ## Component Structure
 
 \`\`\`
-<rk-rating role="radiogroup">
-├── <input type="number" hidden>  // Form submission
-└── <Icon>                        // Repeated for each star
-    └── role="option"
-</rk-rating>
+[data-rating]
+└── [data-rating-item]            // Repeated for each star
+    └── [data-filled]             // Present when star is filled
 \`\`\`
 
 ## Data Attributes for Styling
 
 | Attribute | Element | Purpose |
 |-----------|---------|---------|
-| \`rk-rating\` | Root | Custom element tag |
-| \`.disabled\` | Root | Disabled class |
-| \`.hovering\` | Icon | Hover state class |
-| \`aria-checked\` | Icon | Selected state |
+| \`[data-rating]\` | Root | Main container |
+| \`[data-rating][data-rating-disabled]\` | Root | Disabled state |
+| \`[data-rating-item]\` | Item | Individual star |
+| \`[data-rating-item][data-filled]\` | Item | Star is filled/selected |
+| \`[data-rating-item][data-hovering]\` | Item | Hover state |
 
 ### Styling Example
 
 \`\`\`css
-rk-rating {
+[data-rating] {
   display: inline-flex;
   gap: 4px;
   cursor: pointer;
   user-select: none;
 }
 
-rk-rating.disabled {
+[data-rating][data-rating-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-rk-rating icon {
+[data-rating-item] {
   font-size: 1.5rem;
   color: var(--surface-400);
   transition: color 0.15s, transform 0.15s;
 }
 
-rk-rating icon[aria-checked="true"] {
+[data-rating-item][data-filled] {
   color: var(--warning-500);
 }
 
-rk-rating icon.hovering {
+[data-rating-item][data-hovering] {
   color: var(--warning-400);
   transform: scale(1.1);
 }
 
-rk-rating:focus-visible {
+[data-rating]:focus-visible {
   outline: 2px solid var(--primary-500);
   outline-offset: 4px;
   border-radius: 4px;

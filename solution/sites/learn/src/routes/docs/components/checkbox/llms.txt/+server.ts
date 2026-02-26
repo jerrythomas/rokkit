@@ -89,25 +89,23 @@ const stateIcons = {
 ## Component Structure
 
 \`\`\`
-<rk-checkbox>
-├── <input type="checkbox" hidden>  // Hidden native input
-└── <icon class="...">              // Visual icon
-</rk-checkbox>
+[data-checkbox-root]
+├── <input type="checkbox">      // Native input (variant="default")
+└── [data-checkbox-icon]         // Visual icon (variant="custom")
 \`\`\`
 
 ## Data Attributes for Styling
 
 | Attribute | Element | Purpose |
 |-----------|---------|---------|
-| \`rk-checkbox\` | Root | Custom element tag |
-| \`aria-checked\` | Root | Current state (checked/unchecked/unknown) |
-| \`aria-disabled\` | Root | Read-only state |
-| \`.disabled\` | Root | Class when readOnly |
+| \`[data-checkbox-root]\` | Root | Main container |
+| \`[data-checkbox-root][data-variant="custom"]\` | Root | Custom icon variant |
+| \`[data-checkbox-icon]\` | Icon | Custom visual icon span |
 
 ### Styling Example
 
 \`\`\`css
-rk-checkbox {
+[data-checkbox-root] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -115,34 +113,30 @@ rk-checkbox {
   user-select: none;
 }
 
-rk-checkbox icon {
+[data-checkbox-icon] {
   font-size: 1.25rem;
   color: var(--surface-600);
   transition: color 0.15s, transform 0.15s;
 }
 
-rk-checkbox[aria-checked="true"] icon {
+[data-checkbox-root]:has(input:checked) [data-checkbox-icon] {
   color: var(--primary-500);
 }
 
-rk-checkbox[aria-checked="mixed"] icon {
-  color: var(--warning-500);
-}
-
-rk-checkbox:hover icon {
+[data-checkbox-root]:hover [data-checkbox-icon] {
   transform: scale(1.1);
 }
 
-rk-checkbox:active icon {
+[data-checkbox-root]:active [data-checkbox-icon] {
   transform: scale(0.95);
 }
 
-rk-checkbox.disabled {
+[data-checkbox-root][data-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-rk-checkbox.disabled:hover icon {
+[data-checkbox-root][data-disabled]:hover [data-checkbox-icon] {
   transform: none;
 }
 \`\`\`

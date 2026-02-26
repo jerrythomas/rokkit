@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"@rokkit/core": "workspace:*",
+		"@rokkit/data": "workspace:*",
 		"@rokkit/forms": "workspace:*",
 		"@rokkit/icons": "workspace:*",
 		"@rokkit/ui": "workspace:*",

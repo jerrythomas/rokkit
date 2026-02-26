@@ -3,9 +3,10 @@
 	import '../app.css'
 	import { page } from '$app/state'
 	import { onMount } from 'svelte'
-	import { components } from '$lib/components'
+	import { componentGroups } from '$lib/components'
 	import { initMode, getMode, setMode, type ColorMode } from '$lib/mode.svelte'
 	import { getTheme } from '$lib/theme.svelte'
+	import { List } from '@rokkit/ui'
 
 	let { children } = $props()
 
@@ -39,21 +40,15 @@
 		</div>
 	</header>
 
-	<nav class="flex flex-col overflow-y-auto p-2 bg-surface-z1 border-surface-z3 border-r">
-		<ul class="list-none m-0 p-0 flex flex-col gap-0.5">
-			{#each components as item}
-				<li>
-					<a
-						href={item.href}
-						class="flex items-center gap-2 py-1.5 px-3 rounded-md no-underline text-[0.8125rem] transition-colors text-surface-z7 hover:bg-surface-z2 {page.url.pathname === item.href ? 'bg-primary-z1! text-primary-z7! font-medium' : ''}"
-					>
-						<span class="{item.icon} text-base shrink-0"></span>
-						<span>{item.text}</span>
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</nav>
+	<div class="flex flex-col overflow-y-auto bg-surface-z1 border-surface-z3 border-r" data-style="rokkit" data-sidebar>
+		<List
+			items={[...componentGroups]}
+			value={page.url.pathname}
+			fields={{ value: 'href' }}
+			collapsible
+			class="p-2"
+		/>
+	</div>
 
 	<main class="overflow-y-auto p-4 bg-surface-z0" data-style={theme}>
 		{@render children()}

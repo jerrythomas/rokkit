@@ -148,32 +148,35 @@ Map your data structure to accordion expectations:
 
 ## Component Structure
 
+> The Accordion pattern in Rokkit is implemented using the \`List\` component with collapsible groups. See the List component for the authoritative data-attribute reference.
+
 \`\`\`
-<rk-accordion>
-├── <rk-header>                    // Optional header
-├── <div>                          // Section container
-│   ├── <Summary>                  // Section header
-│   └── <rk-list>                  // Items (when expanded)
-│       └── <ListBody>
-│           └── <Item>             // Each child item
-├── ...                            // More sections
-└── <rk-footer>                    // Optional footer
-</rk-accordion>
+[data-list][data-collapsible]
+├── [data-list-group]                    // Section container
+│   ├── [data-list-group-label]          // Section header (clickable)
+│   │   └── [data-list-group-arrow]      // Expand/collapse arrow
+│   └── [data-list-group-items]          // Items (when expanded)
+│       └── [data-list-item]             // Each child item
+└── ...                                  // More sections
 \`\`\`
 
 ## Data Attributes for Styling
 
 | Attribute | Element | Purpose |
 |-----------|---------|---------|
-| \`rk-accordion\` | Root | Main container |
-| \`.is-expanded\` | Section | Expanded state class |
-| \`.is-selected\` | Section/Item | Selected state class |
-| \`data-path\` | Section | Section index |
+| \`[data-list][data-collapsible]\` | Root | Collapsible list (accordion) |
+| \`[data-list-group]\` | Group | Section container |
+| \`[data-list-group][data-list-group-collapsed]\` | Group | Collapsed state |
+| \`[data-list-group-label]\` | Label | Clickable section header |
+| \`[data-list-group-items]\` | Items | Children container |
+| \`[data-list-item]\` | Item | Individual child item |
+| \`[data-list-item][data-active]\` | Item | Active/selected state |
+| \`[data-path]\` | Item/Group | Navigator path key |
 
 ### Styling Example
 
 \`\`\`css
-rk-accordion {
+[data-list][data-collapsible] {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-color);
@@ -181,16 +184,7 @@ rk-accordion {
   overflow: hidden;
 }
 
-rk-accordion > div {
-  border-bottom: 1px solid var(--border-color);
-}
-
-rk-accordion > div:last-child {
-  border-bottom: none;
-}
-
-/* Section header */
-rk-accordion :global([data-summary]) {
+[data-list-group-label] {
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -199,32 +193,29 @@ rk-accordion :global([data-summary]) {
   user-select: none;
 }
 
-rk-accordion :global([data-summary]:hover) {
+[data-list-group-label]:hover {
   background: var(--surface-200);
 }
 
-/* Expanded section */
-rk-accordion > div.is-expanded :global([data-summary]) {
+[data-list-group]:not([data-list-group-collapsed]) [data-list-group-label] {
   background: var(--primary-100);
   font-weight: 600;
 }
 
-/* Section content */
-rk-accordion rk-list {
+[data-list-group-items] {
   padding: 8px 0;
   background: var(--surface-50);
 }
 
-/* Items */
-rk-accordion :global([data-item]) {
+[data-list-item] {
   padding: 8px 16px 8px 32px;
 }
 
-rk-accordion :global([data-item]:hover) {
+[data-list-item]:hover {
   background: var(--surface-100);
 }
 
-rk-accordion :global([data-item].is-selected) {
+[data-list-item][data-active] {
   background: var(--primary-100);
   color: var(--primary-700);
 }

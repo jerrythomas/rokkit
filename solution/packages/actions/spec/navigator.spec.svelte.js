@@ -32,12 +32,12 @@ describe('navigator', () => {
 		root.addEventListener('action', action)
 		root.innerHTML = `
       <div data-path="0">Item 1
-        <rk-icon data-tag-icon data-state="closed"></rk-icon>
+        <span data-tag-icon data-state="closed"></span>
         <div data-path="0-0">Child 1</div>
         <div data-path="0-1">Child 2</div>
       </div>
       <div data-path="1">Item 2
-        <rk-icon data-tag-icon data-state="opened"></rk-icon>
+        <span data-tag-icon data-state="opened"></span>
       </div>
     `
 	})
@@ -351,6 +351,99 @@ describe('navigator', () => {
 			expect(wrapper.extendSelection).toHaveBeenCalledWith('0')
 
 			cleanup()
+		})
+
+		describe('anchor clicks', () => {
+			beforeEach(() => {
+				root.innerHTML = `
+          <a href="/page-1" data-path="0">Link 1</a>
+          <a href="/page-2" data-path="1"><span>Link 2 inner</span></a>
+          <div data-path="2">Button</div>
+        `
+			})
+
+			it('should not call preventDefault on anchor click', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
+
+				wrapper.select.mockReturnValue(true)
+				const anchor = root.querySelector('a[href]')
+				const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+				const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+				anchor.dispatchEvent(event)
+
+				expect(preventDefaultSpy).not.toHaveBeenCalled()
+				cleanup()
+			})
+
+			it('should still call wrapper.select and emit action on anchor click', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
+
+				wrapper.select.mockReturnValue(true)
+				const anchor = root.querySelector('a[href]')
+				anchor.click()
+
+				expect(wrapper.select).toHaveBeenCalledWith('0')
+				expect(action).toHaveBeenCalled()
+				cleanup()
+			})
+
+			it('should not call preventDefault on Enter keydown for anchor element', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
+
+				// Dispatch on the anchor so event.target is the anchor, then it bubbles to root
+				const anchor = root.querySelector('a[href]')
+				const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+				const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+				anchor.dispatchEvent(event)
+
+				expect(preventDefaultSpy).not.toHaveBeenCalled()
+				cleanup()
+			})
+
+			it('should not call preventDefault on Space keydown for anchor element', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
+
+				// Dispatch on the anchor so event.target is the anchor, then it bubbles to root
+				const anchor = root.querySelector('a[href]')
+				const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true })
+				const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+				anchor.dispatchEvent(event)
+
+				expect(preventDefaultSpy).not.toHaveBeenCalled()
+				cleanup()
+			})
+
+			it('should not call preventDefault when clicking a child element inside an anchor', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
+
+				wrapper.select.mockReturnValue(true)
+				const innerSpan = root.querySelector('a[href] span')
+				const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+				const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+				innerSpan.dispatchEvent(event)
+
+				expect(preventDefaultSpy).not.toHaveBeenCalled()
+				cleanup()
+			})
+
+			it('should call preventDefault on non-anchor element click', () => {
+				const cleanup = $effect.root(() => navigator(root, { wrapper }))
+				flushSync()
+
+				wrapper.select.mockReturnValue(true)
+				const div = root.querySelector('div[data-path]')
+				const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+				const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+				div.dispatchEvent(event)
+
+				expect(preventDefaultSpy).toHaveBeenCalled()
+				cleanup()
+			})
 		})
 	})
 

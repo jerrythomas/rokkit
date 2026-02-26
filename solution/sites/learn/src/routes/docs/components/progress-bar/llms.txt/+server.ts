@@ -73,23 +73,22 @@ Adjust the bar thickness:
 ## Component Structure
 
 \`\`\`
-<rk-progress>
-└── <value-bar>    // Filled portion
-</rk-progress>
+[data-progress]
+└── [data-progress-bar]    // Filled portion
 \`\`\`
 
 ## Data Attributes for Styling
 
 | Attribute | Element | Purpose |
 |-----------|---------|---------|
-| \`rk-progress\` | Root | Main container |
-| \`.indeterminate\` | Root | Class when value is null |
-| \`value-bar\` | Inner | Filled progress portion |
+| \`[data-progress]\` | Root | Main container |
+| \`[data-progress][data-indeterminate]\` | Root | Indeterminate/loading state |
+| \`[data-progress-bar]\` | Inner | Filled progress portion |
 
 ### Styling Example
 
 \`\`\`css
-rk-progress {
+[data-progress] {
   display: block;
   width: 100%;
   background: var(--surface-200);
@@ -97,7 +96,7 @@ rk-progress {
   overflow: hidden;
 }
 
-rk-progress value-bar {
+[data-progress-bar] {
   display: block;
   background: var(--primary-500);
   border-radius: 9999px;
@@ -105,7 +104,7 @@ rk-progress value-bar {
 }
 
 /* Indeterminate animation */
-rk-progress.indeterminate value-bar {
+[data-progress][data-indeterminate] [data-progress-bar] {
   animation: indeterminate 1.5s infinite ease-in-out;
 }
 
