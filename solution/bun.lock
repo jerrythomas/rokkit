@@ -34,7 +34,7 @@
     },
     "packages/actions": {
       "name": "@rokkit/actions",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "ramda": "^0.32.0",
@@ -46,7 +46,7 @@
     },
     "packages/app": {
       "name": "@rokkit/app",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/states": "workspace:*",
@@ -71,7 +71,7 @@
     },
     "packages/chart": {
       "name": "@rokkit/chart",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -88,7 +88,7 @@
     },
     "packages/cli": {
       "name": "@rokkit/cli",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "bin": {
         "rokkit": "src/index.js",
       },
@@ -106,7 +106,7 @@
     },
     "packages/core": {
       "name": "@rokkit/core",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@unocss/preset-mini": "^66.6.1",
         "date-fns": "^4.1.0",
@@ -118,7 +118,7 @@
     },
     "packages/data": {
       "name": "@rokkit/data",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@lukeed/uuid": "^2.0.1",
         "@rokkit/core": "workspace:*",
@@ -130,7 +130,7 @@
     },
     "packages/forms": {
       "name": "@rokkit/forms",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@rokkit/data": "workspace:latest",
@@ -141,7 +141,7 @@
     },
     "packages/helpers": {
       "name": "@rokkit/helpers",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@vitest/expect": "^4.0.18",
         "ramda": "^0.32.0",
@@ -149,14 +149,14 @@
     },
     "packages/icons": {
       "name": "@rokkit/icons",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "devDependencies": {
         "@rokkit/cli": "workspace:latest",
       },
     },
     "packages/states": {
       "name": "@rokkit/states",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
@@ -167,7 +167,7 @@
     },
     "packages/stories": {
       "name": "@rokkit/stories",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@vitest/expect": "^4.0.18",
@@ -178,14 +178,14 @@
     },
     "packages/themes": {
       "name": "@rokkit/themes",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
     },
     "packages/tutorial": {
       "name": "@rokkit/tutorial",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:latest",
         "@vitest/expect": "^4.0.18",
@@ -195,7 +195,7 @@
     },
     "packages/ui": {
       "name": "@rokkit/ui",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/actions": "workspace:*",
         "@rokkit/core": "workspace:*",
@@ -222,7 +222,7 @@
     },
     "sites/learn": {
       "name": "@rokkit/learn",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.7",
         "@fontsource/overpass": "^5.2.8",
@@ -262,7 +262,7 @@
     },
     "sites/playground": {
       "name": "@rokkit/playground",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@rokkit/core": "workspace:*",
         "@rokkit/data": "workspace:*",
@@ -289,7 +289,7 @@
     },
     "sites/quick-start": {
       "name": "quick-start",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "dependencies": {
         "@fontsource/open-sans": "^5.2.5",
         "@fontsource/overpass": "^5.2.5",
@@ -318,7 +318,7 @@
     },
     "sites/sample": {
       "name": "sample",
-      "version": "1.0.0-next.126",
+      "version": "1.0.0-next.127",
       "devDependencies": {
         "@inlang/paraglide-js": "^2.0.0",
         "@sveltejs/adapter-auto": "^6.0.0",
