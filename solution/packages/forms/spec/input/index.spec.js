@@ -5,6 +5,7 @@ import * as components from '../../src/input/index.js'
 describe('components', () => {
 	it('should contain all exported components', () => {
 		expect(Object.keys(components)).toEqual([
+			'ArrayEditor',
 			'InputCheckbox',
 			'InputColor',
 			'InputDate',

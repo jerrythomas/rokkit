@@ -183,6 +183,153 @@ describe('lookup utilities', () => {
 			expect(lookup.loading).toBe(false)
 			expect(lookup.error).toBe(null)
 		})
+
+		describe('fetch hook', () => {
+			it('calls async function, sets options, does not use globalThis.fetch', async () => {
+				const mockFetchHook = vi.fn().mockResolvedValue([{ id: 1, name: 'Option A' }])
+				globalThis.fetch = vi.fn()
+
+				const lookup = createLookup({ fetch: mockFetchHook })
+				await lookup.fetch()
+				flushSync()
+
+				expect(mockFetchHook).toHaveBeenCalledOnce()
+				expect(globalThis.fetch).not.toHaveBeenCalled()
+				expect(lookup.options).toEqual([{ id: 1, name: 'Option A' }])
+			})
+
+			it('loading transitions: true during fetch, false after', async () => {
+				let resolveFn
+				const mockFetchHook = vi.fn(() => new Promise((resolve) => { resolveFn = resolve }))
+
+				const lookup = createLookup({ fetch: mockFetchHook })
+				const fetchPromise = lookup.fetch()
+
+				expect(lookup.loading).toBe(true)
+
+				resolveFn([])
+				await fetchPromise
+				flushSync()
+
+				expect(lookup.loading).toBe(false)
+			})
+
+			it('error from rejected promise sets lookup.error', async () => {
+				const mockFetchHook = vi.fn().mockRejectedValue(new Error('Network error'))
+
+				const lookup = createLookup({ fetch: mockFetchHook })
+				await lookup.fetch()
+				flushSync()
+
+				expect(lookup.error).toBe('Network error')
+				expect(lookup.options).toEqual([])
+				expect(lookup.loading).toBe(false)
+			})
+
+			it('with cacheKey: second call with same key hits cache (fn called once)', async () => {
+				const mockFetchHook = vi.fn().mockResolvedValue([{ id: 1 }])
+				const cacheKeyFn = vi.fn((params) => `key-${params.type ?? 'all'}`)
+
+				const lookup = createLookup({ fetch: mockFetchHook, cacheKey: cacheKeyFn })
+
+				await lookup.fetch({ type: 'A' })
+				await lookup.fetch({ type: 'A' })
+
+				expect(mockFetchHook).toHaveBeenCalledTimes(1)
+			})
+
+			it('without cacheKey: no caching, function called on each fetch', async () => {
+				const mockFetchHook = vi.fn().mockResolvedValue([{ id: 1 }])
+
+				const lookup = createLookup({ fetch: mockFetchHook })
+
+				await lookup.fetch()
+				await lookup.fetch()
+
+				expect(mockFetchHook).toHaveBeenCalledTimes(2)
+			})
+		})
+
+		describe('filter hook', () => {
+			it('synchronous, returns filtered source, loading stays false', async () => {
+				const source = ['active', 'pending', 'inactive']
+				const filterFn = vi.fn((src, params) => src.filter((s) => s !== params.exclude))
+
+				const lookup = createLookup({ source, filter: filterFn })
+				await lookup.fetch({ exclude: 'inactive' })
+				flushSync()
+
+				expect(filterFn).toHaveBeenCalledWith(source, { exclude: 'inactive' })
+				expect(lookup.options).toEqual(['active', 'pending'])
+				expect(lookup.loading).toBe(false)
+			})
+
+			it('empty result when no items match filter', async () => {
+				const source = ['active', 'pending']
+				const filterFn = (src) => src.filter((s) => s === 'unknown')
+
+				const lookup = createLookup({ source, filter: filterFn })
+				await lookup.fetch()
+				flushSync()
+
+				expect(lookup.options).toEqual([])
+			})
+		})
+
+		describe('disabled state', () => {
+			it('true when dependencies not met, options empty', async () => {
+				const lookup = createLookup({
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				})
+
+				await lookup.fetch({})
+				flushSync()
+
+				expect(lookup.disabled).toBe(true)
+				expect(lookup.options).toEqual([])
+			})
+
+			it('false after successful fetch with deps met', async () => {
+				globalThis.fetch = vi.fn().mockResolvedValue({
+					ok: true,
+					json: () => Promise.resolve([{ id: 1, name: 'New York' }])
+				})
+
+				const lookup = createLookup({
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				})
+
+				await lookup.fetch({ country: 'USA' })
+				flushSync()
+
+				expect(lookup.disabled).toBe(false)
+				expect(lookup.options.length).toBe(1)
+			})
+
+			it('reset() clears disabled to false', async () => {
+				const lookup = createLookup({
+					url: '/api/cities?country={country}',
+					dependsOn: ['country']
+				})
+
+				await lookup.fetch({})
+				flushSync()
+				expect(lookup.disabled).toBe(true)
+
+				lookup.reset()
+				flushSync()
+				expect(lookup.disabled).toBe(false)
+			})
+		})
+
+		it('clearCache does not crash when config has no URL (fetch hook config)', () => {
+			const mockFetchHook = vi.fn().mockResolvedValue([])
+			const lookup = createLookup({ fetch: mockFetchHook })
+
+			expect(() => lookup.clearCache()).not.toThrow()
+		})
 	})
 
 	describe('createLookupManager', () => {

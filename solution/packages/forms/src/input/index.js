@@ -1,4 +1,5 @@
 // Native Input Components
+export { default as ArrayEditor } from './ArrayEditor.svelte'
 export { default as InputCheckbox } from './InputCheckbox.svelte'
 export { default as InputColor } from './InputColor.svelte'
 export { default as InputDate } from './InputDate.svelte'

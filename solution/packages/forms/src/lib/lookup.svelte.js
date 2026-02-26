@@ -1,6 +1,10 @@
 /**
  * @typedef {Object} LookupConfig
- * @property {string} url - URL template with optional placeholders (e.g., '/api/cities?country={country}')
+ * @property {string} [url] - URL template with optional placeholders (e.g., '/api/cities?country={country}')
+ * @property {(formData: any) => Promise<any[]>} [fetch] - Async function replacing URL template
+ * @property {any[]} [source] - Pre-loaded array for filter pattern
+ * @property {(items: any[], formData: any) => any[]} [filter] - Client-side filter applied to source
+ * @property {(formData: any) => string} [cacheKey] - Custom cache key for fetch hooks (no caching when absent)
  * @property {string[]} [dependsOn] - Field paths this lookup depends on
  * @property {Object} [fields] - Field mapping for the response data
  * @property {number} [cacheTime] - Cache duration in milliseconds (default: 5 minutes)
@@ -12,6 +16,7 @@
  * @property {any[]} options - Current options
  * @property {boolean} loading - Whether lookup is in progress
  * @property {string|null} error - Error message if lookup failed
+ * @property {boolean} disabled - Whether field is disabled (deps not met)
  */
 
 /**
@@ -64,15 +69,26 @@ function isCacheValid(entry, cacheTime) {
  * @returns {Object} Lookup provider with reactive state
  */
 export function createLookup(config) {
-	const { url, dependsOn = [], fields = {}, cacheTime = DEFAULT_CACHE_TIME, transform } = config
+	const {
+		url,
+		fetch: fetchHook,
+		source,
+		filter,
+		cacheKey: cacheKeyFn,
+		dependsOn = [],
+		fields = {},
+		cacheTime = DEFAULT_CACHE_TIME,
+		transform
+	} = config
 
 	let options = $state([])
 	let loading = $state(false)
 	let error = $state(null)
+	let disabled = $state(false)
 
 	/**
-	 * Fetches options from the configured URL
-	 * @param {Object} params - Parameter values for URL interpolation
+	 * Fetches options from the configured source (URL, fetch hook, or filter)
+	 * @param {Object} params - Parameter values for URL interpolation / filter context
 	 * @returns {Promise<any[]>}
 	 */
 	async function fetch(params = {}) {
@@ -80,14 +96,65 @@ export function createLookup(config) {
 		const missingDeps = dependsOn.filter((dep) => !params[dep] && params[dep] !== 0)
 		if (missingDeps.length > 0) {
 			options = []
+			disabled = true
 			return []
 		}
 
+		disabled = false
+
+		// Branch: synchronous filter over pre-loaded source
+		if (filter !== undefined && source !== undefined) {
+			options = filter(source, params)
+			return options
+		}
+
+		// Branch: async fetch hook with optional caching
+		if (fetchHook) {
+			const key = cacheKeyFn?.(params)
+
+			if (key !== undefined) {
+				const cached = cache.get(key)
+				if (cached && isCacheValid(cached, cacheTime)) {
+					options = cached.data
+					return cached.data
+				}
+			}
+
+			loading = true
+			error = null
+
+			try {
+				let data = await fetchHook(params)
+
+				if (transform) {
+					data = transform(data)
+				}
+
+				if (!Array.isArray(data)) {
+					data = data?.data || data?.items || data?.results || []
+				}
+
+				if (key !== undefined) {
+					cache.set(key, { data, timestamp: Date.now() })
+				}
+
+				options = data
+				return data
+			} catch (err) {
+				error = err.message || 'Failed to load options'
+				options = []
+				return []
+			} finally {
+				loading = false
+			}
+		}
+
+		// Branch: URL-based fetch (original behavior)
 		const resolvedUrl = interpolateUrl(url, params)
-		const cacheKey = getCacheKey(resolvedUrl)
+		const urlCacheKey = getCacheKey(resolvedUrl)
 
 		// Check cache first
-		const cached = cache.get(cacheKey)
+		const cached = cache.get(urlCacheKey)
 		if (cached && isCacheValid(cached, cacheTime)) {
 			options = cached.data
 			return cached.data
@@ -116,7 +183,7 @@ export function createLookup(config) {
 			}
 
 			// Cache the result
-			cache.set(cacheKey, { data, timestamp: Date.now() })
+			cache.set(urlCacheKey, { data, timestamp: Date.now() })
 
 			options = data
 			return data
@@ -133,6 +200,7 @@ export function createLookup(config) {
 	 * Clears the cache for this lookup
 	 */
 	function clearCache() {
+		if (!url) return // fetch/filter hooks have no URL-keyed cache entries
 		// Clear all cache entries that match this URL pattern
 		const baseUrl = url.split('?')[0]
 		for (const key of cache.keys()) {
@@ -149,6 +217,7 @@ export function createLookup(config) {
 		options = []
 		loading = false
 		error = null
+		disabled = false
 	}
 
 	return {
@@ -160,6 +229,9 @@ export function createLookup(config) {
 		},
 		get error() {
 			return error
+		},
+		get disabled() {
+			return disabled
 		},
 		get dependsOn() {
 			return dependsOn
@@ -221,23 +293,14 @@ export function createLookupManager(lookupConfigs) {
 	}
 
 	/**
-	 * Initializes all lookups with current form data
+	 * Initializes all lookups with current form data.
+	 * Calls fetch() for every lookup so disabled state is set correctly.
 	 * @param {Object} formData - Current form data
 	 */
 	async function initialize(formData) {
 		const promises = []
 		for (const [_fieldPath, lookup] of lookups) {
-			// Only fetch for lookups without dependencies or with all deps satisfied
-			if (lookup.dependsOn.length === 0) {
-				promises.push(lookup.fetch(formData))
-			} else {
-				const hasAllDeps = lookup.dependsOn.every(
-					(dep) => formData[dep] !== undefined && formData[dep] !== null
-				)
-				if (hasAllDeps) {
-					promises.push(lookup.fetch(formData))
-				}
-			}
+			promises.push(lookup.fetch(formData))
 		}
 		await Promise.all(promises)
 	}

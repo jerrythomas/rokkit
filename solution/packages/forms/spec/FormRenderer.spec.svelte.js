@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { cleanup, render, fireEvent } from '@testing-library/svelte'
 import { tick, flushSync } from 'svelte'
 import FormRenderer from '../src/FormRenderer.svelte'
+import { clearLookupCache } from '../src/lib/lookup.svelte.js'
 
 describe('FormRenderer — group rendering', () => {
 	beforeEach(() => cleanup())
@@ -454,5 +455,183 @@ describe('FormRenderer — form submission', () => {
 
 		// Submitting should be cleared despite error
 		expect(form.getAttribute('data-form-submitting')).toBeNull()
+	})
+})
+
+describe('FormRenderer — lookup integration', () => {
+	beforeEach(() => {
+		cleanup()
+		clearLookupCache()
+		vi.restoreAllMocks()
+	})
+
+	afterEach(() => {
+		vi.restoreAllMocks()
+	})
+
+	const baseSchema = {
+		type: 'object',
+		properties: {
+			status: { type: 'string' },
+			country: { type: 'string' },
+			city: { type: 'string' }
+		}
+	}
+
+	it('filter hook injects options into select field', async () => {
+		const schema = {
+			type: 'object',
+			properties: { status: { type: 'string' } }
+		}
+		const layout = {
+			elements: [{ scope: '#/status', label: 'Status', renderer: 'select' }]
+		}
+		const lookups = {
+			status: {
+				source: ['active', 'pending', 'inactive'],
+				filter: (src) => src
+			}
+		}
+		const props = $state({ data: { status: null }, schema, layout, lookups })
+		const { container } = render(FormRenderer, { props })
+
+		// Let onMount fire and lookup initialize
+		await tick()
+		flushSync()
+
+		// Open the dropdown to see options
+		const trigger = container.querySelector('[data-select-trigger]')
+		expect(trigger).toBeTruthy()
+		await fireEvent.click(trigger)
+		await tick()
+		flushSync()
+
+		const optionEls = container.querySelectorAll('[data-select-option]')
+		expect(optionEls).toHaveLength(3)
+	})
+
+	it('field is disabled when lookup dependencies are not met', async () => {
+		const layout = {
+			elements: [
+				{ scope: '#/country', label: 'Country', renderer: 'select' },
+				{ scope: '#/city', label: 'City', renderer: 'select' }
+			]
+		}
+		const lookups = {
+			city: {
+				dependsOn: ['country'],
+				source: ['New York', 'Los Angeles', 'Paris'],
+				filter: (src) => src
+			}
+		}
+		const props = $state({ data: { country: null, city: null }, schema: baseSchema, layout, lookups })
+		const { container } = render(FormRenderer, { props })
+
+		await tick()
+		flushSync()
+
+		// City field should be disabled because country is null
+		const cityFieldRoot = container.querySelector('[data-scope="#/city"] [data-field-root]')
+		expect(cityFieldRoot).toBeTruthy()
+		expect(cityFieldRoot.hasAttribute('data-field-disabled')).toBe(true)
+	})
+
+	it('field is not disabled when lookup dependencies are met', async () => {
+		const layout = {
+			elements: [
+				{ scope: '#/country', label: 'Country', renderer: 'select' },
+				{ scope: '#/city', label: 'City', renderer: 'select' }
+			]
+		}
+		const lookups = {
+			city: {
+				dependsOn: ['country'],
+				source: ['New York', 'Los Angeles', 'Paris'],
+				filter: (src) => src
+			}
+		}
+		// country is already set — city should be enabled after init
+		const props = $state({ data: { country: 'USA', city: null }, schema: baseSchema, layout, lookups })
+		const { container } = render(FormRenderer, { props })
+
+		await tick()
+		flushSync()
+
+		const cityFieldRoot = container.querySelector('[data-scope="#/city"] [data-field-root]')
+		expect(cityFieldRoot).toBeTruthy()
+		expect(cityFieldRoot.hasAttribute('data-field-disabled')).toBe(false)
+	})
+
+	it('fetch hook calls async function and injects options', async () => {
+		const schema = {
+			type: 'object',
+			properties: { status: { type: 'string' } }
+		}
+		const layout = {
+			elements: [{ scope: '#/status', label: 'Status', renderer: 'select' }]
+		}
+		const fetchFn = vi.fn().mockResolvedValue(['active', 'pending'])
+		const lookups = { status: { fetch: fetchFn } }
+
+		const props = $state({ data: { status: null }, schema, layout, lookups })
+		const { container } = render(FormRenderer, { props })
+
+		await tick()
+		flushSync()
+		// Allow async fetch to complete
+		await tick()
+		flushSync()
+
+		expect(fetchFn).toHaveBeenCalledOnce()
+
+		// Open dropdown to verify options are present
+		const trigger = container.querySelector('[data-select-trigger]')
+		await fireEvent.click(trigger)
+		await tick()
+		flushSync()
+
+		const optionEls = container.querySelectorAll('[data-select-option]')
+		expect(optionEls).toHaveLength(2)
+	})
+
+	it('dependent field value is cleared when dependency changes', async () => {
+		// Use text inputs to make value-change testing straightforward
+		const schema = {
+			type: 'object',
+			properties: {
+				country: { type: 'string' },
+				city: { type: 'string' }
+			}
+		}
+		const layout = {
+			elements: [
+				{ scope: '#/country', label: 'Country' },
+				{ scope: '#/city', label: 'City' }
+			]
+		}
+		const lookups = {
+			city: {
+				dependsOn: ['country'],
+				source: ['New York', 'Paris'],
+				filter: (src) => src
+			}
+		}
+		const props = $state({ data: { country: 'USA', city: 'New York' }, schema, layout, lookups })
+		const { container } = render(FormRenderer, { props })
+
+		await tick()
+		flushSync()
+
+		// Verify initial state
+		expect(props.data.city).toBe('New York')
+
+		// Change country — city should be cleared automatically
+		const countryInput = container.querySelector('[data-scope="#/country"] input')
+		expect(countryInput).toBeTruthy()
+		countryInput.value = 'France'
+		await fireEvent.change(countryInput)
+		flushSync()
+
+		expect(props.data.city).toBeNull()
 	})
 })

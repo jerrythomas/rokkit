@@ -5,6 +5,7 @@
  * Consumers can extend via the `renderers` prop on FormRenderer.
  */
 
+import ArrayEditor from '../input/ArrayEditor.svelte'
 import InputCheckbox from '../input/InputCheckbox.svelte'
 import InputColor from '../input/InputColor.svelte'
 import InputDate from '../input/InputDate.svelte'
@@ -31,6 +32,7 @@ import InputWeek from '../input/InputWeek.svelte'
  * @type {Record<string, import('svelte').Component>}
  */
 export const defaultRenderers = {
+	array: ArrayEditor,
 	text: InputText,
 	number: InputNumber,
 	integer: InputNumber,

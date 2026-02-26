@@ -92,26 +92,75 @@ Validation messages can be customized per field via layout `message` property.
 
 ## Lookup Configuration
 
-For select inputs that load options asynchronously:
+Pass a `lookups` object to `FormRenderer` (or the `FormBuilder` constructor) to wire up dynamic options for select fields. The key is the **plain field path** (no `#/` prefix).
+
+Three patterns are supported:
+
+### URL template
 
 ```javascript
-form.setLookupConfigs({
-  // Static cache
+const lookups = {
   countries: {
-    fetch: async () => (await fetch('/api/countries')).json(),
-    fields: { text: 'name', value: 'code' },
-    cache: true
+    url: '/api/countries',
+    fields: { text: 'name', value: 'code' }
   },
-  // Dynamic (re-fetches when dependency changes)
+  // Re-fetches when 'country' changes; field is disabled until dependency is met
   cities: {
-    fetch: async (q, formData) => {
-      const country = formData.country
-      return (await fetch(`/api/cities?country=${country}&q=${q}`)).json()
-    },
-    dependsOn: '#/country',
-    cache: false
+    url: '/api/cities?country={country}',
+    dependsOn: ['country'],
+    fields: { text: 'name', value: 'id' }
   }
-})
+}
 ```
 
-The lookup key matches the field scope: `#/countries` → `countries` config.
+### Async fetch hook
+
+```javascript
+const lookups = {
+  countries: {
+    fetch: async (formData) => (await fetch('/api/countries')).json(),
+    fields: { text: 'name', value: 'code' }
+  },
+  // With optional result caching keyed by a custom function
+  cities: {
+    fetch: async (formData) => (await fetch(`/api/cities?c=${formData.country}`)).json(),
+    dependsOn: ['country'],
+    cacheKey: (formData) => formData.country   // omit to disable caching
+  }
+}
+```
+
+### Client-side filter (synchronous)
+
+```javascript
+const allCities = [
+  { name: 'New York', country: 'USA' },
+  { name: 'Paris', country: 'France' }
+]
+
+const lookups = {
+  city: {
+    source: allCities,
+    filter: (items, formData) => items.filter(c => c.country === formData.country),
+    dependsOn: ['country'],
+    fields: { text: 'name', value: 'name' }
+  }
+}
+```
+
+### Common options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `dependsOn` | `string[]` | Field paths this lookup depends on. Field is **disabled** until all deps have values; dependent field values are **cleared** when a dep changes. |
+| `fields` | `object` | Field mapping for the response data (`text`, `value`, etc.) |
+| `transform` | `(data) => any[]` | Transform response before use |
+| `cacheTime` | `number` | Cache TTL in ms (default: 5 min). URL lookups cache by resolved URL; fetch hooks cache by `cacheKey`. |
+
+### Using with FormRenderer
+
+```svelte
+<FormRenderer bind:data {schema} {layout} {lookups} />
+```
+
+Lookups initialize on mount. When a dependency field changes, the dependent field value clears and the options re-fetch automatically.

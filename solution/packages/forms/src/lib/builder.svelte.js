@@ -194,7 +194,7 @@ export class FormBuilder {
 	/**
 	 * Get lookup state for a field
 	 * @param {string} fieldPath - Field path
-	 * @returns {{ options: any[], loading: boolean, error: string|null, fields: Object }|null}
+	 * @returns {{ options: any[], loading: boolean, error: string|null, fields: Object, disabled: boolean }|null}
 	 */
 	getLookupState(fieldPath) {
 		if (!this.#lookupManager) return null
@@ -204,8 +204,28 @@ export class FormBuilder {
 			options: lookup.options,
 			loading: lookup.loading,
 			error: lookup.error,
-			fields: lookup.fields
+			fields: lookup.fields,
+			disabled: lookup.disabled
 		}
+	}
+
+	/**
+	 * Check if a field is disabled due to unmet lookup dependencies
+	 * @param {string} path - Field path
+	 * @returns {boolean}
+	 */
+	isFieldDisabled(path) {
+		return this.#lookupManager?.getLookup(path)?.disabled ?? false
+	}
+
+	/**
+	 * Manually refresh a field's lookup with the current form data
+	 * @param {string} path - Field path
+	 * @returns {Promise<void>}
+	 */
+	async refreshLookup(path) {
+		const lookup = this.#lookupManager?.getLookup(path)
+		if (lookup) await lookup.fetch(this.#data)
 	}
 
 	/**
@@ -252,6 +272,15 @@ export class FormBuilder {
 
 		// Trigger dependent lookups if configured
 		if (triggerLookups && this.#lookupManager) {
+			// Clear dependent field values synchronously before lookup re-fetch
+			for (const [depPath, lookup] of this.#lookupManager.lookups) {
+				if (lookup.dependsOn.includes(path)) {
+					const depKeys = depPath.split('/')
+					if (depKeys.length === 1) {
+						this.#data = { ...this.#data, [depKeys[0]]: null }
+					}
+				}
+			}
 			this.#lookupManager.handleFieldChange(path, this.#data)
 		}
 	}
@@ -498,6 +527,15 @@ export class FormBuilder {
 			type,
 			message: validationMessage,
 			dirty: this.isFieldDirty(fieldPath)
+		}
+
+		// Inject lookup state (options, loading, disabled, fields) when present
+		const lookupState = this.getLookupState(fieldPath)
+		if (lookupState) {
+			if (lookupState.options?.length > 0) finalProps.options = lookupState.options
+			if (lookupState.loading) finalProps.loading = true
+			if (lookupState.disabled) finalProps.disabled = true
+			if (lookupState.fields && !finalProps.fields) finalProps.fields = lookupState.fields
 		}
 
 		return {
