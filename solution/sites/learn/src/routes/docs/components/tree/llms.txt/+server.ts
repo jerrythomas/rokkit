@@ -1,11 +1,13 @@
 import { text } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 
-const content = `# Rokkit Tree / NestedList
+const content = `# Rokkit Tree Component
 
-> Data-driven tree component for hierarchical data display with selection and navigation.
+> Data-driven tree component for hierarchical data with expand/collapse, keyboard navigation, and lazy loading.
 
-## Quick Start (Data-Driven)
+The Tree component renders nested items with tree-line connectors, expand/collapse per node, single or multi-selection, and optional lazy child loading via \`onloadchildren\`.
+
+## Quick Start
 
 \`\`\`svelte
 <script>
@@ -13,259 +15,221 @@ const content = `# Rokkit Tree / NestedList
 
   let items = $state([
     {
-      id: 1,
-      label: 'Parent 1',
-      expanded: true,
+      text: 'Documents',
+      value: 'docs',
       children: [
-        { id: 11, label: 'Child 1.1' },
-        { id: 12, label: 'Child 1.2' }
+        { text: 'Report.pdf', value: 'report' },
+        { text: 'Notes.txt',  value: 'notes' }
       ]
     },
-    {
-      id: 2,
-      label: 'Parent 2',
-      children: [
-        { id: 21, label: 'Child 2.1' }
-      ]
-    }
+    { text: 'Images', value: 'images', children: [] }
   ])
 
   let value = $state(null)
 </script>
 
-<Tree.Root bind:items bind:value />
+<Tree {items} bind:value />
 \`\`\`
 
-## Core Concepts
+## Props
 
-### Data Structure
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| \`items\` | \`TreeItem[]\` | \`[]\` | Hierarchical data array |
+| \`fields\` | \`TreeFields\` | defaults | Field mapping |
+| \`value\` | \`unknown\` | — | Selected value — use \`bind:value\` |
+| \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
+| \`showLines\` | \`boolean\` | \`true\` | Show tree line connectors |
+| \`multiselect\` | \`boolean\` | \`false\` | Enable multi-selection |
+| \`expanded\` | \`Record<string,boolean>\` | \`{}\` | Expanded nodes — use \`bind:expanded\` |
+| \`selected\` | \`unknown[]\` | \`[]\` | Selected values (multiselect) — use \`bind:selected\` |
+| \`expandAll\` | \`boolean\` | \`false\` | Expand all nodes by default |
+| \`active\` | \`unknown\` | — | Highlight node by value |
+| \`icons\` | \`TreeStateIcons\` | — | Override expand/collapse icons |
+| \`class\` | \`string\` | \`''\` | Additional CSS classes |
 
-Tree items follow a nested structure with configurable field mappings:
-
-\`\`\`javascript
-const items = [
-  {
-    id: 'unique-key',        // Unique identifier
-    label: 'Display Text',   // Displayed text
-    expanded: false,         // Expansion state
-    children: []             // Nested items
-  }
-]
-\`\`\`
-
-### Field Mapping
-
-Customize field names to match your data:
-
-\`\`\`svelte
-<Tree.Root
-  {items}
-  fields={{
-    value: 'id',
-    text: 'name',
-    children: 'items',
-    expanded: 'isOpen'
-  }}
-/>
-\`\`\`
-
-### Default Fields
+## Field Mapping
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| \`value\` | \`'id'\` | Unique identifier field |
-| \`text\` | \`'label'\` | Display text field |
-| \`children\` | \`'children'\` | Nested items field |
-| \`expanded\` | \`'expanded'\` | Expansion state field |
+| \`value\` | \`'value'\` | Unique identifier for selection |
+| \`text\` | \`'text'\` | Display text |
+| \`icon\` | \`'icon'\` | Icon class name |
+| \`description\` | \`'description'\` | Secondary text |
+| \`children\` | \`'children'\` | Nested items array |
+| \`expanded\` | \`'expanded'\` | Initial expanded state |
+| \`disabled\` | \`'disabled'\` | Disabled state |
+| \`href\` | \`'href'\` | URL (renders as \`<a>\`) |
+| \`badge\` | \`'badge'\` | Badge/count indicator |
+| \`level\` | \`'level'\` | Depth override |
 
-## Tree.Root Props
+## Lazy Loading Children
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| \`items\` | \`array\` | \`[]\` | Tree data (use \`bind:items\`) |
-| \`value\` | \`any\` | \`null\` | Selected value (use \`bind:value\`) |
-| \`fields\` | \`object\` | \`defaultFields\` | Field mapping |
-| \`icons\` | \`object\` | \`{}\` | Custom state icons |
-| \`autoCloseSiblings\` | \`boolean\` | \`false\` | Auto-close other expanded nodes |
-| \`multiselect\` | \`boolean\` | \`false\` | Enable multi-selection |
-
-## Events
-
-| Event | Payload | Description |
-|-------|---------|-------------|
-| \`onselect\` | \`{ item, value }\` | Node selected |
-| \`ontoggle\` | \`{ item, expanded }\` | Node expanded/collapsed |
-| \`onmove\` | \`{ item, direction }\` | Keyboard navigation |
-
-\`\`\`svelte
-<Tree.Root
-  {items}
-  onselect={(e) => console.log('Selected:', e.value)}
-  ontoggle={(e) => console.log('Toggled:', e.item, e.expanded)}
-/>
-\`\`\`
-
-## Snippets (Custom Rendering)
-
-### Header / Footer
-
-\`\`\`svelte
-<Tree.Root {items}>
-  {#snippet header()}
-    <div class="p-2 border-b">Tree Header</div>
-  {/snippet}
-
-  {#snippet footer()}
-    <div class="p-2 border-t">Tree Footer</div>
-  {/snippet}
-</Tree.Root>
-\`\`\`
-
-### Empty State
-
-\`\`\`svelte
-<Tree.Root {items}>
-  {#snippet empty()}
-    <div class="p-4 text-center text-gray-500">
-      No items to display
-    </div>
-  {/snippet}
-</Tree.Root>
-\`\`\`
-
-### Custom Node Stub
-
-\`\`\`svelte
-<Tree.Root {items}>
-  {#snippet stub(node)}
-    <div class="flex items-center gap-2">
-      <Icon name={node.icon} />
-      <span>{node.label}</span>
-      <Badge>{node.count}</Badge>
-    </div>
-  {/snippet}
-</Tree.Root>
-\`\`\`
-
-## NestedList Component
-
-Recursive list for rendering nested data:
+Set \`children: true\` (not an array) on a node to trigger lazy loading when the user expands it. Provide \`onloadchildren\` to fetch the data:
 
 \`\`\`svelte
 <script>
-  import { NestedList } from '@rokkit/ui'
+  import { Tree } from '@rokkit/ui'
 
-  const items = [
-    {
-      id: 1,
-      hasChildren: true,
-      children: [
-        { id: 11 },
-        { id: 12 }
-      ]
-    }
-  ]
-</script>
+  let items = $state([
+    { text: 'src',  value: 'src',  children: true },   // lazy
+    { text: 'docs', value: 'docs', children: [] }       // empty leaf
+  ])
 
-<NestedList {items}>
-  {#snippet child(item)}
-    <span>{item.id}</span>
-  {/snippet}
-</NestedList>
-\`\`\`
-
-### NestedList Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| \`items\` | \`array\` | \`[]\` | Nested data |
-| \`nodeIcon\` | \`snippet\` | - | Icon renderer |
-| \`depth\` | \`number\` | \`0\` | Current depth |
-| \`path\` | \`array\` | \`[]\` | Path to node |
-
-## Node State Icons
-
-Customize icons for different node states:
-
-\`\`\`svelte
-<script>
-  import ChevronRight from 'lucide-svelte/icons/chevron-right'
-  import ChevronDown from 'lucide-svelte/icons/chevron-down'
-  import Check from 'lucide-svelte/icons/check'
-  import Loader from 'lucide-svelte/icons/loader'
-
-  const icons = {
-    expanded: ChevronDown,
-    collapsed: ChevronRight,
-    selected: Check,
-    loading: Loader
+  async function loadChildren(value, item) {
+    const res = await fetch(\`/api/tree/\${value}\`)
+    return res.json()
   }
 </script>
 
-<Tree.Root {items} {icons} />
+<Tree {items} bind:value onloadchildren={loadChildren} />
+\`\`\`
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| \`onselect\` | \`(value, item) => void\` | Node selected |
+| \`onselectedchange\` | \`(selected[]) => void\` | Multi-selection changed |
+| \`onexpandedchange\` | \`(expanded) => void\` | Expanded state changed |
+| \`ontoggle\` | \`(value, item, isExpanded) => void\` | Node toggled |
+| \`onloadchildren\` | \`async (value, item) => TreeItem[]\` | Load children lazily |
+
+## Snippets
+
+### Custom Item Rendering
+
+\`\`\`svelte
+<Tree {items}>
+  {#snippet item(data, fields, handlers, isActive, isExpanded, level)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+      {#if data.icon}<span class={data.icon}></span>{/if}
+      <span>{data.text}</span>
+      {#if data.badge}<span class="badge">{data.badge}</span>{/if}
+    </button>
+  {/snippet}
+</Tree>
+\`\`\`
+
+### Custom Toggle Icon
+
+\`\`\`svelte
+<Tree {items}>
+  {#snippet toggle(isExpanded, hasChildren, icons)}
+    {#if hasChildren}
+      <span class={isExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
+    {:else}
+      <span class="i-lucide:minus w-4"></span>
+    {/if}
+  {/snippet}
+</Tree>
+\`\`\`
+
+## State Icons
+
+Override the default expand/collapse icons:
+
+\`\`\`svelte
+<Tree {items} icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
+\`\`\`
+
+## Expand All Nodes
+
+\`\`\`svelte
+<Tree {items} expandAll bind:value />
 \`\`\`
 
 ## Keyboard Navigation
 
-Built-in keyboard support:
-- \`ArrowUp/Down\` - Navigate between visible nodes
-- \`ArrowRight\` - Expand node or move to first child
-- \`ArrowLeft\` - Collapse node or move to parent
-- \`Enter/Space\` - Select focused node
-- \`Home/End\` - Jump to first/last node
+| Key | Action |
+|-----|--------|
+| \`ArrowUp/Down\` | Move between visible nodes |
+| \`ArrowRight\` | Expand node / enter first child |
+| \`ArrowLeft\` | Collapse node / go to parent |
+| \`Home/End\` | First/last visible node |
+| \`Enter/Space\` | Select focused node |
 
 ## Accessibility
 
-- \`role="tree"\` on root container
-- \`role="group"\` on node lists
-- \`aria-expanded\` state on branch nodes
-- Focus management and keyboard navigation
-- Screen reader announcements
+- \`role="tree"\` on root
+- \`role="treeitem"\` on each node
+- \`aria-expanded\` on branch nodes
+- \`aria-selected\` on selected nodes
+- Full keyboard navigation
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| \`data-tree\` | Root element |
+| \`data-tree-item\` | Tree node |
+| \`data-tree-toggle\` | Expand/collapse button |
+| \`data-expanded\` | Expanded node |
+| \`data-selected\` | Selected node |
+| \`data-active\` | Active/current node |
+| \`data-loading\` | Node loading children |
 
 ## Import
 
 \`\`\`javascript
-// Data-driven tree
 import { Tree } from '@rokkit/ui'
-
-// Or specific components
-import Tree from '@rokkit/ui/tree'
-import { NestedList } from '@rokkit/ui'
 \`\`\`
 
 ## TypeScript Types
 
 \`\`\`typescript
-interface TreeLineType = 'empty' | 'last' | 'child' | 'sibling'
-
-interface NodeStateIcons {
-  expanded?: ComponentType
-  collapsed?: ComponentType
-  selected?: ComponentType
-  loading?: ComponentType
+interface TreeProps {
+  items?: TreeItem[]
+  fields?: TreeFields
+  value?: unknown
+  size?: 'sm' | 'md' | 'lg'
+  showLines?: boolean
+  multiselect?: boolean
+  expanded?: Record<string, boolean>
+  selected?: unknown[]
+  expandAll?: boolean
+  active?: unknown
+  icons?: TreeStateIcons
+  class?: string
+  onselect?: (value: unknown, item: TreeItem) => void
+  onselectedchange?: (selected: unknown[]) => void
+  onexpandedchange?: (expanded: Record<string, boolean>) => void
+  ontoggle?: (value: unknown, item: TreeItem, isExpanded: boolean) => void
+  onloadchildren?: (value: unknown, item: TreeItem) => Promise<TreeItem[]>
+  item?: Snippet<[TreeItem, TreeFields, TreeItemHandlers, boolean, boolean, number]>
+  toggle?: Snippet<[boolean, boolean, TreeStateIcons]>
+  connector?: Snippet<[TreeLineType]>
 }
 
-interface TreeNodeEvent {
-  item: any
-  value: any
+interface TreeFields {
+  value?: string       // default: 'value'
+  text?: string        // default: 'text'
+  icon?: string        // default: 'icon'
+  description?: string // default: 'description'
+  children?: string    // default: 'children'
+  expanded?: string    // default: 'expanded'
+  disabled?: string    // default: 'disabled'
+  href?: string        // default: 'href'
+  badge?: string       // default: 'badge'
+  level?: string       // default: 'level'
 }
 
-interface TreeToggleEvent {
-  item: any
-  expanded: boolean
+interface TreeStateIcons {
+  opened?: string  // icon class for expanded state
+  closed?: string  // icon class for collapsed state
 }
 
-interface TreeMoveEvent {
-  item: any
-  direction: string
-}
+type TreeLineType = 'child' | 'last' | 'sibling' | 'empty' | 'icon'
 \`\`\`
+
+## Related Components
+
+- [List](/docs/components/list/llms.txt) — flat list with collapsible groups
+- [Accordion](/docs/components/accordion/llms.txt) — collapsible content panels
 `
 
 export const GET: RequestHandler = async () => {
 	return text(content, {
-		headers: {
-			'Content-Type': 'text/plain; charset=utf-8'
-		}
+		headers: { 'Content-Type': 'text/plain; charset=utf-8' }
 	})
 }

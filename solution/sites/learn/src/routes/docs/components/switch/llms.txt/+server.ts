@@ -3,9 +3,9 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit Switch Component
 
-> Data-driven switch component for cycling through multiple options with keyboard navigation.
+> iOS-style boolean toggle with track and thumb.
 
-The Switch component displays a horizontal list of clickable options where one is always selected. It supports any number of options (minimum 2), full keyboard navigation, and adapts to any data structure through field mapping.
+Switch renders a sliding toggle button (\`role="switch"\`) that alternates between two states — off and on. Default values are \`false\`/\`true\`, but any two values can be used. Optionally shows a text label beside the track.
 
 ## Quick Start
 
@@ -13,254 +13,14 @@ The Switch component displays a horizontal list of clickable options where one i
 <script>
   import { Switch } from '@rokkit/ui'
 
-  let options = ['Light', 'Dark', 'System']
-  let value = $state('Light')
-</script>
-
-<Switch {options} bind:value />
-\`\`\`
-
-## Core Concepts
-
-### Data-Driven Design
-
-Switch adapts to your data structure through field mapping:
-
-\`\`\`svelte
-<script>
-  const themes = [
-    { id: 'light', name: 'Light Mode', icon: 'sun' },
-    { id: 'dark', name: 'Dark Mode', icon: 'moon' },
-    { id: 'auto', name: 'Auto', icon: 'monitor' }
-  ]
-
-  const fields = {
-    text: 'name',
-    icon: 'icon'
-  }
-
-  let selected = $state(themes[0])
-</script>
-
-<Switch options={themes} {fields} bind:value={selected} />
-\`\`\`
-
-### Proxy System
-
-Each option is wrapped in a Proxy for consistent data access:
-
-\`\`\`svelte
-<Switch {options} {fields}>
-  {#snippet child(proxy)}
-    <div class="option">
-      {#if proxy.has('icon')}
-        <Icon name={proxy.get('icon')} />
-      {/if}
-      <span>{proxy.get('text')}</span>
-    </div>
-  {/snippet}
-</Switch>
-\`\`\`
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| \`options\` | \`array\` | \`[false, true]\` | Array of options (minimum 2) |
-| \`value\` | \`any\` | \`undefined\` | Selected value (use \`bind:value\`) |
-| \`fields\` | \`object\` | \`{}\` | Field mapping configuration |
-| \`description\` | \`string\` | \`'Toggle Switch'\` | Aria-label for accessibility |
-| \`compact\` | \`boolean\` | \`false\` | Compact display mode |
-| \`disabled\` | \`boolean\` | \`false\` | Disable interaction |
-| \`class\` | \`string\` | \`''\` | CSS class names |
-| \`child\` | \`Snippet\` | \`undefined\` | Custom option renderer |
-
-## Field Mapping
-
-Map your data fields to component expectations:
-
-| Field | Default | Description |
-|-------|---------|-------------|
-| \`text\` | \`'text'\` | Display text |
-| \`icon\` | \`'icon'\` | Icon name |
-| \`image\` | \`'image'\` | Image URL |
-| \`label\` | \`'label'\` | Aria-label |
-
-## Events
-
-| Handler | Payload | Description |
-|---------|---------|-------------|
-| \`onchange\` | \`value\` | Fired when selection changes |
-
-### Event Handling
-
-\`\`\`svelte
-<script>
-  function handleChange(newValue) {
-    console.log('Changed to:', newValue)
-  }
-</script>
-
-<Switch {options} bind:value onchange={handleChange} />
-\`\`\`
-
-## Snippets
-
-### Custom Option Rendering
-
-\`\`\`svelte
-<Switch {options} {fields}>
-  {#snippet child(proxy)}
-    <div class="custom-option">
-      {#if proxy.has('icon')}
-        <Icon name={proxy.get('icon')} size={16} />
-      {/if}
-      <span class="label">{proxy.get('text')}</span>
-      {#if proxy.value.badge}
-        <span class="badge">{proxy.value.badge}</span>
-      {/if}
-    </div>
-  {/snippet}
-</Switch>
-\`\`\`
-
-## Keyboard Navigation
-
-| Key | Action |
-|-----|--------|
-| \`ArrowRight\` | Next option |
-| \`ArrowDown\` | Next option |
-| \`ArrowLeft\` | Previous option |
-| \`ArrowUp\` | Previous option |
-| \`Space\` | Next option |
-| \`Enter\` | Next option |
-
-Navigation wraps around at boundaries (cyclic).
-
-## Switch vs Toggle
-
-| Aspect | Switch | Toggle |
-|--------|--------|--------|
-| UI Pattern | Horizontal list of options | Single button |
-| Options | 2+ items, any type | 2+ items |
-| Selection | Click any option directly | Click to cycle |
-| Visual | Each option visible | Shows current state |
-| Use Case | Theme, view mode, etc. | Simple on/off |
-
-## Boolean Switch
-
-For simple on/off toggling:
-
-\`\`\`svelte
-<script>
   let enabled = $state(false)
 </script>
 
-<!-- Default options are [false, true] -->
 <Switch bind:value={enabled} />
-
-<!-- Or with custom labels -->
-<Switch
-  options={[
-    { text: 'Off', value: false },
-    { text: 'On', value: true }
-  ]}
-  fields={{ text: 'text' }}
-  bind:value={enabled}
-/>
+<p>Enabled: {enabled}</p>
 \`\`\`
 
-## Accessibility
-
-- \`role="listbox"\` on container
-- \`role="option"\` on each option
-- \`aria-selected\` reflects selection state
-- \`aria-label\` from \`description\` prop
-- \`aria-orientation="horizontal"\`
-- \`aria-disabled\` when disabled
-- Full keyboard navigation
-
-## Data Attributes for Styling
-
-| Attribute | Element | Purpose |
-|-----------|---------|---------|
-| \`data-switch-root\` | Root | Main container |
-| \`data-switch-item\` | Option | Individual option |
-| \`data-switch-mark\` | Marker | Selection indicator |
-| \`data-switch-on\` | Root | When "on" (2-option) |
-| \`data-switch-off\` | Root | When "off" (2-option) |
-| \`data-switch-compact\` | Root | Compact mode |
-
-### Styling Example
-
-\`\`\`css
-[data-switch-root] {
-  display: inline-flex;
-  background: var(--surface-100);
-  border-radius: 8px;
-  padding: 4px;
-  gap: 4px;
-}
-
-[data-switch-item] {
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-[data-switch-item][aria-selected="true"] {
-  background: var(--primary);
-  color: white;
-}
-
-[data-switch-root][data-switch-compact] [data-switch-item] {
-  padding: 4px 8px;
-}
-
-[data-switch-root][aria-disabled="true"] {
-  opacity: 0.5;
-  pointer-events: none;
-}
-\`\`\`
-
-## Import
-
-\`\`\`javascript
-// Named import
-import { Switch } from '@rokkit/ui'
-
-// Default import
-import Switch from '@rokkit/ui/switch'
-\`\`\`
-
-## TypeScript Types
-
-\`\`\`typescript
-interface SwitchProps {
-  options?: any[]
-  value?: any
-  fields?: FieldMapping
-  description?: string
-  compact?: boolean
-  disabled?: boolean
-  class?: string
-  child?: Snippet<[Proxy]>
-  onchange?: (value: any) => void
-}
-
-interface FieldMapping {
-  text?: string
-  icon?: string
-  image?: string
-  label?: string
-  [key: string]: string | undefined
-}
-\`\`\`
-
-## Examples
-
-### Theme Switcher
+## Custom On/Off Options
 
 \`\`\`svelte
 <script>
@@ -269,70 +29,124 @@ interface FieldMapping {
   let theme = $state('light')
 
   const options = [
-    { id: 'light', text: 'Light', icon: 'sun' },
-    { id: 'dark', text: 'Dark', icon: 'moon' },
-    { id: 'system', text: 'System', icon: 'monitor' }
-  ]
+    { value: 'light', text: 'Light', icon: 'i-lucide:sun' },
+    { value: 'dark',  text: 'Dark',  icon: 'i-lucide:moon' }
+  ] as [object, object]
 </script>
 
-<Switch {options} bind:value={theme} fields={{ text: 'text', icon: 'icon' }} />
+<Switch {options} bind:value={theme} fields={{ value: 'value' }} showLabels />
 \`\`\`
 
-### View Mode Selector
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| \`options\` | \`[SwitchItem, SwitchItem]\` | \`[false, true]\` | Exactly two items: [off, on] |
+| \`fields\` | \`SwitchFields\` | defaults | Field mapping |
+| \`value\` | \`unknown\` | — | Current value — use \`bind:value\` |
+| \`showLabels\` | \`boolean\` | \`false\` | Show text label beside track |
+| \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
+| \`disabled\` | \`boolean\` | \`false\` | Disable the switch |
+| \`class\` | \`string\` | \`''\` | Additional CSS classes |
+
+## Field Mapping
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| \`value\` | \`'value'\` | The value to emit |
+| \`text\` | \`'text'\` | Label shown when \`showLabels\` is true |
+| \`icon\` | \`'icon'\` | Icon class on the thumb |
+| \`description\` | \`'description'\` | Used as \`title\` tooltip |
+| \`disabled\` | \`'disabled'\` | Per-option disabled state |
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| \`onchange\` | \`(value, item) => void\` | Called when toggled |
+
+## With Labels
 
 \`\`\`svelte
-<script>
-  let view = $state('grid')
-  const options = ['list', 'grid', 'table']
-</script>
-
-<Switch {options} bind:value={view}>
-  {#snippet child(proxy)}
-    <Icon name={proxy.value} />
-  {/snippet}
-</Switch>
+<Switch
+  options={[
+    { value: false, text: 'Off' },
+    { value: true,  text: 'On' }
+  ]}
+  bind:value={enabled}
+  showLabels
+/>
 \`\`\`
 
-### Compact Boolean Toggle
+## With Icons
 
 \`\`\`svelte
-<script>
-  let notifications = $state(true)
-</script>
-
-<label>
-  Notifications
-  <Switch
-    options={['Off', 'On']}
-    value={notifications ? 'On' : 'Off'}
-    onchange={(v) => notifications = v === 'On'}
-    compact
-  />
-</label>
+<Switch
+  options={[
+    { value: 'system', icon: 'i-lucide:monitor', text: 'System' },
+    { value: 'dark',   icon: 'i-lucide:moon',    text: 'Dark' }
+  ]}
+  bind:value={mode}
+/>
 \`\`\`
 
-### Multiple Options
+## Keyboard Navigation
 
-\`\`\`svelte
-<script>
-  const speeds = ['0.5x', '1x', '1.5x', '2x']
-  let playbackSpeed = $state('1x')
-</script>
+| Key | Action |
+|-----|--------|
+| \`Space/Enter\` | Toggle |
+| \`ArrowRight\` | Turn on (if off) |
+| \`ArrowLeft\` | Turn off (if on) |
 
-<Switch options={speeds} bind:value={playbackSpeed} description="Playback speed" />
+## Accessibility
+
+- \`role="switch"\` on the button
+- \`aria-checked\` reflects current state (\`true\`/\`false\`)
+- \`aria-label\` from current option's \`text\` field
+- \`title\` from current option's \`description\` field
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| \`data-switch\` | Root button |
+| \`data-switch-track\` | Sliding track |
+| \`data-switch-thumb\` | Moving thumb |
+| \`data-switch-icon\` | Icon on thumb |
+| \`data-switch-label\` | Text label (when \`showLabels\`) |
+| \`data-switch-size\` | Size variant |
+| \`data-switch-disabled\` | Disabled state |
+
+## Import
+
+\`\`\`javascript
+import { Switch } from '@rokkit/ui'
+\`\`\`
+
+## TypeScript Types
+
+\`\`\`typescript
+interface SwitchProps {
+  options?: [SwitchItem, SwitchItem]  // [off, on] — default: [false, true]
+  fields?: SwitchFields
+  value?: unknown
+  showLabels?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  disabled?: boolean
+  class?: string
+  onchange?: (value: unknown, item: SwitchItem) => void
+}
 \`\`\`
 
 ## Related Components
 
-- **Toggle** - Single button toggle (shows current state only)
-- **RadioGroup** - Vertical list of radio buttons
-- **Tabs** - Tab-based selection with content panels
+- [Toggle](/docs/components/toggle/llms.txt) — radio-style group for 2+ options
+- [RadioGroup](/docs/components/radiogroup/llms.txt) — traditional radio buttons
+- [Tabs](/docs/components/tabs/llms.txt) — tabbed content panels
 `
 
 export const GET: RequestHandler = async () => {
 	return text(content, {
-		headers: {
-			'Content-Type': 'text/plain; charset=utf-8'
-		}
+		headers: { 'Content-Type': 'text/plain; charset=utf-8' }
 	})
 }

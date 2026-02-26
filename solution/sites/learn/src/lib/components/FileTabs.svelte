@@ -1,5 +1,4 @@
 <script>
-	import { Tabs } from 'bits-ui'
 	import { highlightCode } from '$lib/shiki.js'
 	import { vibe } from '@rokkit/states'
 
@@ -23,10 +22,6 @@
 	 * @property {Function} [onCopy] - Callback when code is copied
 	 */
 
-	/**
-	 * Props for the FileTabs component
-	 * @type {FileTabsProps}
-	 */
 	let {
 		files = [],
 		selectedFile = $bindable(),
@@ -47,7 +42,6 @@
 	let activeFile = $derived(files.find((f) => f.id === selectedFile))
 	let copySuccess = $state({})
 
-	// Highlight code for the active file
 	let highlightedCode = $derived(
 		activeFile
 			? highlightCode(activeFile.content, {
@@ -78,164 +72,77 @@
 	function getFileIcon(file) {
 		if (file.icon) return file.icon
 		const KNOWN_EXTENSIONS = ['svelte', 'js', 'mjs', 'ts', 'css', 'html', 'json', 'md']
-		if (KNOWN_EXTENSIONS.includes(file.name.split('.').pop()?.toLowerCase())) return '📄'
-
-		// Default icons based on file extension
 		const ext = file.name.split('.').pop()?.toLowerCase()
 		return KNOWN_EXTENSIONS.includes(ext) ? `i-file:${ext}` : '📄'
 	}
 </script>
 
-<div class="file-tabs {className}">
+<div class="file-tabs border-surface-z2 bg-surface-z2 rounded-lg border {className}">
 	{#if files.length === 0}
-		<div class="border-surface-z2 bg-surface-z2 rounded-lg border p-6 text-center">
-			<p class="text-surface-floating">No files to display</p>
-		</div>
-	{:else if files.length === 1}
-		<!-- Single file - no tabs needed -->
-		<div class="border-surface-z2 bg-surface-z2 rounded-lg border">
-			{#if showFileInfo}
-				<div class="border-surface-z2 bg-surface-elevated border-b px-4 py-2">
-					<div class="flex items-center justify-between">
-						<div class="flex items-center space-x-2">
-							<span class="text-sm">{getFileIcon(files[0])}</span>
-							<span class="text-surface-overlay text-sm font-medium">{files[0].name}</span>
-						</div>
-						<div class="flex items-center space-x-3">
-							<span class="text-surface-floating text-xs">
-								{files[0].content.split('\n').length} lines
-							</span>
-							{#if showCopyButton}
-								<button
-									onclick={() => copyFileContent(files[0])}
-									class="text-surface-floating hover:text-surface-overlay transition-colors"
-									title="Copy code"
-								>
-									{#if copySuccess[files[0].id]}
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M5 13l4 4L19 7"
-											></path>
-										</svg>
-									{:else}
-										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-											></path>
-										</svg>
-									{/if}
-								</button>
-							{/if}
-						</div>
-					</div>
-				</div>
-			{/if}
-
-			<div class="overflow-x-auto">
-				{#await highlightCode( files[0].content, { lang: files[0].language, theme: vibe.mode === 'dark' ? 'github-dark' : 'github-light' } )}
-					<div class="text-surface-floating p-4">Highlighting code...</div>
-				{:then value}
-					{@html value}
-				{:catch error}
-					<div class="p-4 text-red-500">Error highlighting code: {error.message}</div>
-				{/await}
-			</div>
+		<div class="p-6 text-center">
+			<p class="text-surface-z5">No files to display</p>
 		</div>
 	{:else}
-		<!-- Multiple files - show tabs -->
-		<div class="border-surface-z2 bg-surface-z2 rounded-lg border">
-			<Tabs.Root value={selectedFile} onValueChange={handleFileSelect}>
-				<!-- Tab List -->
-				<Tabs.List class="border-surface-z2 bg-surface-elevated flex overflow-x-auto border-b">
-					{#each files as file (file.id)}
-						<Tabs.Trigger
-							value={file.id}
-							class="text-surface-floating hover:text-surface-overlay hover:bg-surface-z2 data-[state=active]:text-surface-overlay data-[state=active]:bg-surface-z2 data-[state=active]:border-primary-overlay flex items-center space-x-2 whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors data-[state=active]:border-b-2"
-						>
-							<span class="text-xs">{getFileIcon(file)}</span>
-							<span>{file.name}</span>
-						</Tabs.Trigger>
-					{/each}
-				</Tabs.List>
+		<!-- Tab List -->
+		<div class="border-surface-z2 bg-surface-z1 flex overflow-x-auto border-b" role="tablist">
+			{#each files as file (file.id)}
+				<button
+					type="button"
+					role="tab"
+					aria-selected={selectedFile === file.id}
+					onclick={() => handleFileSelect(file.id)}
+					class="text-surface-z5 hover:text-surface-z7 hover:bg-surface-z2 flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors
+						{selectedFile === file.id ? 'text-surface-z8 bg-surface-z2 border-primary-500 border-b-2' : ''}"
+				>
+					<span class={getFileIcon(file)} aria-hidden="true"></span>
+					<span>{file.name}</span>
+				</button>
+			{/each}
+		</div>
 
-				<!-- Tab Content -->
-				{#each files as file (file.id)}
-					<Tabs.Content value={file.id} class="p-0">
-						{#if showFileInfo}
-							<!-- File Header -->
-							<div class="border-surface-z2 bg-surface-elevated border-b px-4 py-2">
-								<div class="flex items-center justify-between">
-									<div class="flex items-center space-x-2">
-										<span class="text-sm">{getFileIcon(file)}</span>
-										<span class="text-surface-overlay text-sm font-medium">{file.name}</span>
-									</div>
-									<div class="flex items-center space-x-3">
-										<span class="text-surface-floating text-xs">
-											{file.content.split('\n').length} lines
-										</span>
-										{#if showCopyButton}
-											<button
-												onclick={() => copyFileContent(file)}
-												class="text-surface-floating hover:text-surface-overlay transition-colors"
-												title="Copy code"
-											>
-												{#if copySuccess[file.id]}
-													<svg
-														class="h-4 w-4"
-														fill="none"
-														stroke="currentColor"
-														viewBox="0 0 24 24"
-													>
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="2"
-															d="M5 13l4 4L19 7"
-														></path>
-													</svg>
-												{:else}
-													<svg
-														class="h-4 w-4"
-														fill="none"
-														stroke="currentColor"
-														viewBox="0 0 24 24"
-													>
-														<path
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															stroke-width="2"
-															d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-														></path>
-													</svg>
-												{/if}
-											</button>
-										{/if}
-									</div>
-								</div>
-							</div>
+		<!-- Active File Header -->
+		{#if showFileInfo && activeFile}
+			<div class="border-surface-z2 border-b px-4 py-2">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-2">
+						<span class={getFileIcon(activeFile)} aria-hidden="true"></span>
+						<span class="text-surface-z7 text-sm font-medium">{activeFile.name}</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<span class="text-surface-z5 text-xs">
+							{activeFile.content.split('\n').length} lines
+						</span>
+						{#if showCopyButton}
+							<button
+								onclick={() => copyFileContent(activeFile)}
+								class="text-surface-z5 hover:text-surface-z8 transition-colors"
+								title="Copy code"
+							>
+								{#if copySuccess[activeFile.id]}
+									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+									</svg>
+								{:else}
+									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+									</svg>
+								{/if}
+							</button>
 						{/if}
+					</div>
+				</div>
+			</div>
+		{/if}
 
-						<!-- Code Content -->
-						<div class="overflow-x-auto">
-							{#if file.id === selectedFile}
-								{#await highlightedCode}
-									<div class="text-surface-floating p-4">Highlighting code...</div>
-								{:then value}
-									{@html value}
-								{:catch error}
-									<div class="p-4 text-red-500">Error highlighting code: {error.message}</div>
-								{/await}
-							{/if}
-						</div>
-					</Tabs.Content>
-				{/each}
-			</Tabs.Root>
+		<!-- Code Content -->
+		<div class="overflow-x-auto">
+			{#await highlightedCode}
+				<div class="text-surface-z5 p-4">Highlighting code...</div>
+			{:then value}
+				{@html value}
+			{:catch error}
+				<div class="p-4 text-red-500">Error highlighting code: {error.message}</div>
+			{/await}
 		</div>
 	{/if}
 </div>

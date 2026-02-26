@@ -3,441 +3,231 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit List Component
 
-> Data-driven, accessible list component with keyboard navigation and selection support.
+> Data-driven, accessible list component with keyboard navigation, selection, and collapsible groups.
 
-The List component renders an array of items as an accessible listbox with single or multi-selection, keyboard navigation, and extensive customization through snippets and field mapping.
+The List component renders an array of items as a navigable list. Items can be plain buttons, navigation links (when \`href\` is present), or grouped with collapsible sections. Supports single and multi-selection.
 
 ## Quick Start
 
 \`\`\`svelte
 <script>
   import { List } from '@rokkit/ui'
-
-  let items = [
-    { id: 1, text: 'Apple', icon: 'fruit' },
-    { id: 2, text: 'Carrot', icon: 'vegetable' },
-    { id: 3, text: 'Banana', icon: 'fruit' }
-  ]
-
+  let items = ['Apple', 'Banana', 'Cherry']
   let value = $state(null)
 </script>
-
 <List {items} bind:value />
-\`\`\`
-
-## Core Concepts
-
-### Data-Driven Design
-
-The List component adapts to your data structure through field mapping:
-
-\`\`\`svelte
-<script>
-  // Your API returns different field names
-  const users = [
-    { userId: 1, fullName: 'John Doe', avatar: '/john.jpg' },
-    { userId: 2, fullName: 'Jane Smith', avatar: '/jane.jpg' }
-  ]
-
-  // Map your fields to what List expects
-  const fields = {
-    value: 'userId',
-    text: 'fullName',
-    image: 'avatar'
-  }
-</script>
-
-<List items={users} {fields} bind:value />
-\`\`\`
-
-### Proxy System
-
-Each item is wrapped in a Proxy instance for consistent data access:
-
-\`\`\`svelte
-<List {items}>
-  {#snippet child(node)}
-    <div class="custom-item">
-      <!-- Use node.get() to access mapped fields -->
-      <span>{node.get('text')}</span>
-
-      <!-- Check if field exists -->
-      {#if node.has('icon')}
-        <Icon name={node.get('icon')} />
-      {/if}
-
-      <!-- Access original value -->
-      <span class="id">{node.value.id}</span>
-    </div>
-  {/snippet}
-</List>
 \`\`\`
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| \`items\` | \`array\` | \`[]\` | Data array (use \`bind:items\` for reactivity) |
-| \`value\` | \`any\` | \`null\` | Selected item value (use \`bind:value\`) |
-| \`fields\` | \`object\` | \`defaultFields\` | Field mapping configuration |
-| \`class\` | \`string\` | \`''\` | CSS class names for root container |
-| \`name\` | \`string\` | \`'list'\` | Aria-label for accessibility |
-| \`tabindex\` | \`number\` | \`0\` | Tab index for keyboard focus |
-| \`multiSelect\` | \`boolean\` | \`false\` | Enable multiple item selection |
-| \`hierarchy\` | \`array\` | \`[]\` | For nested list support |
+| \`items\` | \`ListItem[]\` | \`[]\` | Data array |
+| \`fields\` | \`ListFields\` | defaults | Field mapping configuration |
+| \`value\` | \`unknown\` | — | Selected value — use \`bind:value\` |
+| \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
+| \`disabled\` | \`boolean\` | \`false\` | Disable all items |
+| \`collapsible\` | \`boolean\` | \`false\` | Allow groups to be collapsed |
+| \`multiselect\` | \`boolean\` | \`false\` | Enable multi-selection |
+| \`expanded\` | \`Record<string,boolean>\` | \`{}\` | Expanded groups — use \`bind:expanded\` |
+| \`selected\` | \`unknown[]\` | \`[]\` | Selected values (multiselect) — use \`bind:selected\` |
+| \`active\` | \`unknown\` | — | Highlight item by value (e.g. current route) |
+| \`icons\` | \`ListStateIcons\` | — | Override expand/collapse icons |
+| \`class\` | \`string\` | \`''\` | Additional CSS classes |
 
 ## Field Mapping
 
-Map your data fields to component expectations:
-
 | Field | Default | Description |
 |-------|---------|-------------|
-| \`value\` | \`'value'\` | Unique identifier for selection |
+| \`value\` | \`'value'\` | Selection value |
 | \`text\` | \`'text'\` | Display text |
-| \`icon\` | \`'icon'\` | Icon name or object |
-| \`image\` | \`'image'\` | Image URL |
-| \`href\` | \`'href'\` | Link URL |
-| \`label\` | \`'label'\` | Aria-label |
-| \`summary\` | \`'summary'\` | Description text |
-| \`children\` | \`'children'\` | Nested items array |
-| \`expanded\` | \`'_expanded'\` | Expansion state |
-| \`selected\` | \`'_selected'\` | Selection state |
+| \`href\` | \`'href'\` | URL — renders item as \`<a>\` |
+| \`icon\` | \`'icon'\` | Icon class name |
+| \`description\` | \`'description'\` | Secondary/subtitle text |
+| \`label\` | \`'label'\` | Aria-label override |
 | \`disabled\` | \`'disabled'\` | Disabled state |
+| \`children\` | \`'children'\` | Nested items array (groups) |
+| \`snippet\` | \`'snippet'\` | Named item snippet |
+| \`badge\` | \`'badge'\` | Badge/count indicator |
 
-### Field Mapping Example
+## Navigation Links
+
+Items with an \`href\` field render as \`<a>\` tags. Use \`active\` to highlight the current route:
 
 \`\`\`svelte
 <script>
-  const products = [
-    { sku: 'A001', name: 'Widget', thumbnail: '/widget.jpg', price: 9.99 },
-    { sku: 'A002', name: 'Gadget', thumbnail: '/gadget.jpg', price: 19.99 }
+  import { List } from '@rokkit/ui'
+  import { page } from '$app/state'
+
+  const nav = [
+    { text: 'Home',     href: '/',         icon: 'i-lucide:home' },
+    { text: 'Settings', href: '/settings', icon: 'i-lucide:settings' }
   ]
-
-  const fields = {
-    value: 'sku',
-    text: 'name',
-    image: 'thumbnail'
-  }
 </script>
-
-<List items={products} {fields} bind:value />
+<List items={nav} active={page.url.pathname} />
 \`\`\`
 
-## Events
+## Grouped Items with Collapsible Sections
 
-| Handler | Event | Payload | Description |
-|---------|-------|---------|-------------|
-| \`onchange\` | change | \`{ value, selected }\` | Fired when value changes |
-| \`onselect\` | select | \`{ value, selected }\` | Fired when item is selected |
-| \`onmove\` | move | \`{ value, selected }\` | Fired when focus moves |
-
-### Event Handling
+Items with a \`children\` array create collapsible group sections:
 
 \`\`\`svelte
 <script>
-  function handleSelect(event) {
-    console.log('Selected:', event.detail.value)
-  }
+  import { List } from '@rokkit/ui'
 
-  function handleMove(event) {
-    console.log('Focused:', event.detail.value)
-  }
+  const items = [
+    { text: 'Fruits', children: [
+        { text: 'Apple', value: 'apple' },
+        { text: 'Banana', value: 'banana' }
+    ]},
+    { text: 'Vegetables', children: [
+        { text: 'Carrot', value: 'carrot' }
+    ]}
+  ]
+  let value = $state(null)
+  let expanded = $state({})
 </script>
-
-<List {items} onselect={handleSelect} onmove={handleMove} />
+<List {items} bind:value bind:expanded collapsible />
 \`\`\`
+
+## Multi-Selection
+
+\`\`\`svelte
+<script>
+  import { List } from '@rokkit/ui'
+  let items = [{ text: 'A', value: 1 }, { text: 'B', value: 2 }]
+  let selected = $state([])
+</script>
+<List {items} bind:selected multiselect />
+<p>Selected: {selected.join(', ')}</p>
+\`\`\`
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| \`onselect\` | \`(value, item) => void\` | Item selected |
+| \`onselectedchange\` | \`(selected[]) => void\` | Multi-selection changed |
+| \`onexpandedchange\` | \`(expanded) => void\` | Group expanded/collapsed |
 
 ## Snippets
 
-### Header and Footer
-
-\`\`\`svelte
-<List {items}>
-  {#snippet header()}
-    <div class="list-header">
-      <h3>Select an Item</h3>
-      <span>{items.length} items</span>
-    </div>
-  {/snippet}
-
-  {#snippet footer()}
-    <div class="list-footer">
-      <button>Load More</button>
-    </div>
-  {/snippet}
-</List>
-\`\`\`
-
-### Empty State
-
-\`\`\`svelte
-<List {items}>
-  {#snippet empty()}
-    <div class="empty-state">
-      <Icon name="inbox" size={48} />
-      <p>No items found</p>
-      <button>Add Item</button>
-    </div>
-  {/snippet}
-</List>
-\`\`\`
-
 ### Custom Item Rendering
 
-Use the \`child\` snippet to customize item display:
-
 \`\`\`svelte
 <List {items}>
-  {#snippet child(node)}
-    <div class="product-card">
-      {#if node.has('image')}
-        <img src={node.get('image')} alt="" />
-      {/if}
-      <div class="details">
-        <h4>{node.get('text')}</h4>
-        {#if node.has('summary')}
-          <p>{node.get('summary')}</p>
-        {/if}
-        <span class="price">\${node.value.price}</span>
-      </div>
-    </div>
+  {#snippet item(data, fields, handlers, isActive)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+      {#if data.icon}<span class={data.icon}></span>{/if}
+      <span>{data.text}</span>
+      {#if data.badge}<span class="badge">{data.badge}</span>{/if}
+    </button>
   {/snippet}
 </List>
+\`\`\`
+
+### Custom Group Label
+
+\`\`\`svelte
+<List {items} collapsible>
+  {#snippet groupLabel(group, fields, toggle, isExpanded)}
+    <button onclick={toggle}>
+      <span class={isExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
+      {group.text}
+    </button>
+  {/snippet}
+</List>
+\`\`\`
+
+## State Icons
+
+Override the default expand/collapse arrow icons:
+
+\`\`\`svelte
+<List {items} collapsible icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
 \`\`\`
 
 ## Keyboard Navigation
 
-Built-in keyboard support for accessibility:
-
 | Key | Action |
 |-----|--------|
-| \`ArrowUp\` | Move focus to previous item |
-| \`ArrowDown\` | Move focus to next item |
-| \`Home\` | Move focus to first item |
-| \`End\` | Move focus to last item |
-| \`Enter\` | Select focused item |
-| \`Space\` | Select focused item |
-| \`Ctrl/Cmd + Space\` | Extend selection (multiSelect mode) |
+| \`ArrowUp/Down\` | Move focus |
+| \`ArrowRight\` | Expand collapsed group |
+| \`ArrowLeft\` | Collapse expanded group |
+| \`Home/End\` | First/last item |
+| \`Enter/Space\` | Select focused item |
+| \`Ctrl+Space\` | Toggle multi-selection |
 
-## Multi-Selection
+## Data Attributes
 
-Enable selecting multiple items:
-
-\`\`\`svelte
-<script>
-  let items = [
-    { id: 1, text: 'Option A' },
-    { id: 2, text: 'Option B' },
-    { id: 3, text: 'Option C' }
-  ]
-
-  // value becomes an array in multiSelect mode
-  let value = $state([])
-</script>
-
-<List {items} bind:value multiSelect />
-
-<p>Selected: {value.map(v => v.text).join(', ')}</p>
-\`\`\`
-
-## Accessibility
-
-The List component includes:
-
-- \`role="listbox"\` on container
-- \`role="option"\` on each item
-- \`aria-label\` via \`name\` prop
-- \`aria-selected\` state on items
-- \`aria-current\` on focused item
-- Full keyboard navigation
-- Focus management with auto-scroll
-
-## Data Attributes for Styling
-
-| Attribute | Element | Purpose |
-|-----------|---------|---------|
-| \`data-list\` | Root | Main list container |
-| \`data-list-header\` | Header | Header section |
-| \`data-list-body\` | Body | Items container |
-| \`data-list-item\` | Item | Individual list item |
-| \`data-list-footer\` | Footer | Footer section |
-| \`data-path\` | Item | Unique path for tracking |
-
-### Styling Example
-
-\`\`\`css
-/* Theme with data attributes */
-[data-list] {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-[data-list-item] {
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background-color 0.15s;
-}
-
-[data-list-item]:hover {
-  background-color: var(--hover-bg);
-}
-
-[data-list-item][aria-selected="true"] {
-  background-color: var(--selected-bg);
-  color: var(--selected-text);
-}
-
-[data-list-item][aria-current="true"] {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: -2px;
-}
-\`\`\`
-
-## ListController
-
-The List uses ListController from \`@rokkit/states\` for state management:
-
-\`\`\`javascript
-import { ListController } from '@rokkit/states'
-
-// Controller manages:
-// - items: reactive items array
-// - selectedKeys: SvelteSet of selected keys
-// - focusedKey: currently focused item key
-// - selected: derived array of selected values
-// - focused: derived currently focused value
-
-// Movement methods:
-controller.moveFirst()
-controller.moveLast()
-controller.moveNext()
-controller.movePrev()
-
-// Selection methods:
-controller.select(key)
-controller.extendSelection(key)
-controller.toggleSelection(key)
-\`\`\`
+| Attribute | Description |
+|-----------|-------------|
+| \`data-list\` | Root element |
+| \`data-list-item\` | Individual item |
+| \`data-list-group\` | Group container |
+| \`data-list-group-label\` | Group header |
+| \`data-selected\` | Selected item |
+| \`data-active\` | Active/current item |
+| \`data-disabled\` | Disabled item |
 
 ## Import
 
 \`\`\`javascript
-// Named import
 import { List } from '@rokkit/ui'
-
-// Default import
-import List from '@rokkit/ui/list'
-
-// With related components
-import { List, Item, Icon } from '@rokkit/ui'
 \`\`\`
 
 ## TypeScript Types
 
 \`\`\`typescript
 interface ListProps {
-  items?: any[]
-  value?: any
-  fields?: FieldMapping
+  items?: ListItem[]
+  fields?: ListFields
+  value?: unknown
+  size?: 'sm' | 'md' | 'lg'
+  disabled?: boolean
+  collapsible?: boolean
+  multiselect?: boolean
+  expanded?: Record<string, boolean>
+  selected?: unknown[]
+  active?: unknown
+  icons?: ListStateIcons
   class?: string
-  name?: string
-  tabindex?: number
-  multiSelect?: boolean
-  hierarchy?: any[]
-  header?: Snippet
-  footer?: Snippet
-  empty?: Snippet
-  onchange?: (event: CustomEvent) => void
-  onselect?: (event: CustomEvent) => void
-  onmove?: (event: CustomEvent) => void
+  onselect?: (value: unknown, item: ListItem) => void
+  onselectedchange?: (selected: unknown[]) => void
+  onexpandedchange?: (expanded: Record<string, boolean>) => void
+  item?: Snippet<[ListItem, ListFields, ListItemHandlers, boolean]>
+  groupLabel?: Snippet<[ListItem, ListFields, () => void, boolean]>
 }
 
-interface FieldMapping {
-  value?: string
-  text?: string
-  icon?: string
-  image?: string
-  href?: string
-  label?: string
-  summary?: string
-  children?: string
-  expanded?: string
-  selected?: string
-  disabled?: string
-  [key: string]: string | undefined
+interface ListFields {
+  value?: string       // default: 'value'
+  text?: string        // default: 'text'
+  href?: string        // default: 'href'
+  icon?: string        // default: 'icon'
+  description?: string // default: 'description'
+  label?: string       // default: 'label'
+  disabled?: string    // default: 'disabled'
+  children?: string    // default: 'children'
+  snippet?: string     // default: 'snippet'
+  badge?: string       // default: 'badge'
 }
 
-interface ListEvent {
-  value: any
-  selected: any[]
+interface ListStateIcons {
+  opened?: string  // icon class for expanded state
+  closed?: string  // icon class for collapsed state
 }
 \`\`\`
 
-## Examples
+## Related Components
 
-### Basic Selection
-
-\`\`\`svelte
-<script>
-  import { List } from '@rokkit/ui'
-
-  let fruits = ['Apple', 'Banana', 'Cherry', 'Date']
-  let selected = $state(null)
-</script>
-
-<List items={fruits} bind:value={selected} />
-<p>Selected: {selected}</p>
-\`\`\`
-
-### With Icons
-
-\`\`\`svelte
-<script>
-  import { List } from '@rokkit/ui'
-
-  let items = [
-    { text: 'Home', icon: 'home', href: '/' },
-    { text: 'Settings', icon: 'cog', href: '/settings' },
-    { text: 'Profile', icon: 'user', href: '/profile' }
-  ]
-</script>
-
-<List {items} name="Navigation" />
-\`\`\`
-
-### Grouped Items with Custom Rendering
-
-\`\`\`svelte
-<script>
-  import { List, Icon } from '@rokkit/ui'
-
-  let contacts = [
-    { name: 'Alice', email: 'alice@example.com', department: 'Engineering' },
-    { name: 'Bob', email: 'bob@example.com', department: 'Design' }
-  ]
-
-  const fields = { text: 'name', summary: 'email' }
-</script>
-
-<List items={contacts} {fields}>
-  {#snippet child(node)}
-    <div class="contact">
-      <Icon name="user" />
-      <div>
-        <strong>{node.get('text')}</strong>
-        <small>{node.get('summary')}</small>
-      </div>
-    </div>
-  {/snippet}
-</List>
-\`\`\`
+- [Tree](/docs/components/tree/llms.txt) — hierarchical tree with per-node expand/collapse
+- [Select](/docs/components/select/llms.txt) — dropdown single selection
+- [MultiSelect](/docs/components/multiselect/llms.txt) — dropdown multi-selection
+- [Tabs](/docs/components/tabs/llms.txt) — tabbed interface
 `
 
 export const GET: RequestHandler = async () => {
 	return text(content, {
-		headers: {
-			'Content-Type': 'text/plain; charset=utf-8'
-		}
+		headers: { 'Content-Type': 'text/plain; charset=utf-8' }
 	})
 }
