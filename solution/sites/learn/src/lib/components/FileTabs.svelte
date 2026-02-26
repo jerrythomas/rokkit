@@ -1,6 +1,8 @@
 <script>
+	// @ts-nocheck
 	import { highlightCode } from '$lib/shiki.js'
 	import { vibe } from '@rokkit/states'
+	import { Tabs } from '@rokkit/ui'
 
 	/**
 	 * @typedef {Object} FileTabsFile
@@ -39,6 +41,9 @@
 		}
 	})
 
+	let processedFiles = $derived(files.map((f) => ({ ...f, _icon: getFileIcon(f) })))
+	let fields = { value: 'id', text: 'name', icon: '_icon' }
+
 	let activeFile = $derived(files.find((f) => f.id === selectedFile))
 	let copySuccess = $state({})
 
@@ -51,12 +56,8 @@
 			: Promise.resolve('')
 	)
 
-	function handleFileSelect(fileId) {
-		selectedFile = fileId
-		onFileSelect?.({ fileId, file: files.find((f) => f.id === fileId) })
-	}
-
 	async function copyFileContent(file) {
+		if (!file) return
 		try {
 			await navigator.clipboard.writeText(file.content)
 			copySuccess[file.id] = true
@@ -83,66 +84,56 @@
 			<p class="text-surface-z5">No files to display</p>
 		</div>
 	{:else}
-		<!-- Tab List -->
-		<div class="border-surface-z2 bg-surface-z1 flex overflow-x-auto border-b" role="tablist">
-			{#each files as file (file.id)}
-				<button
-					type="button"
-					role="tab"
-					aria-selected={selectedFile === file.id}
-					onclick={() => handleFileSelect(file.id)}
-					class="text-surface-z5 hover:text-surface-z7 hover:bg-surface-z2 flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors
-						{selectedFile === file.id ? 'text-surface-z8 bg-surface-z2 border-primary-500 border-b-2' : ''}"
-				>
-					<span class={getFileIcon(file)} aria-hidden="true"></span>
-					<span>{file.name}</span>
-				</button>
-			{/each}
-		</div>
-
-		<!-- Active File Header -->
-		{#if showFileInfo && activeFile}
-			<div class="border-surface-z2 border-b px-4 py-2">
-				<div class="flex items-center justify-between">
-					<div class="flex items-center gap-2">
-						<span class={getFileIcon(activeFile)} aria-hidden="true"></span>
-						<span class="text-surface-z7 text-sm font-medium">{activeFile.name}</span>
-					</div>
-					<div class="flex items-center gap-3">
-						<span class="text-surface-z5 text-xs">
-							{activeFile.content.split('\n').length} lines
-						</span>
-						{#if showCopyButton}
-							<button
-								onclick={() => copyFileContent(activeFile)}
-								class="text-surface-z5 hover:text-surface-z8 transition-colors"
-								title="Copy code"
-							>
-								{#if copySuccess[activeFile.id]}
-									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-									</svg>
-								{:else}
-									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-									</svg>
+		<Tabs
+			options={processedFiles}
+			{fields}
+			bind:value={selectedFile}
+			onchange={() => onFileSelect?.({ fileId: selectedFile, file: activeFile })}
+		>
+			{#snippet tabPanel()}
+				{#if showFileInfo && activeFile}
+					<div class="border-surface-z2 border-b px-4 py-2">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center gap-2">
+								<span class={getFileIcon(activeFile)} aria-hidden="true"></span>
+								<span class="text-surface-z7 text-sm font-medium">{activeFile.name}</span>
+							</div>
+							<div class="flex items-center gap-3">
+								<span class="text-surface-z5 text-xs">
+									{activeFile.content.split('\n').length} lines
+								</span>
+								{#if showCopyButton}
+									<button
+										onclick={() => copyFileContent(activeFile)}
+										class="text-surface-z5 hover:text-surface-z8 transition-colors"
+										title="Copy code"
+									>
+										{#if copySuccess[activeFile.id]}
+											<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+											</svg>
+										{:else}
+											<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+											</svg>
+										{/if}
+									</button>
 								{/if}
-							</button>
-						{/if}
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
-		{/if}
+				{/if}
 
-		<!-- Code Content -->
-		<div class="overflow-x-auto">
-			{#await highlightedCode}
-				<div class="text-surface-z5 p-4">Highlighting code...</div>
-			{:then value}
-				{@html value}
-			{:catch error}
-				<div class="p-4 text-red-500">Error highlighting code: {error.message}</div>
-			{/await}
-		</div>
+				<div class="overflow-x-auto">
+					{#await highlightedCode}
+						<div class="text-surface-z5 p-4">Highlighting code...</div>
+					{:then value}
+						{@html value}
+					{:catch error}
+						<div class="p-4 text-red-500">Error highlighting code: {error.message}</div>
+					{/await}
+				</div>
+			{/snippet}
+		</Tabs>
 	{/if}
 </div>

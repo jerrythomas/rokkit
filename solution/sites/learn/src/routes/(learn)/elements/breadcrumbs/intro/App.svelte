@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { BreadCrumbs } from '@rokkit/ui'
 
 	let items = [

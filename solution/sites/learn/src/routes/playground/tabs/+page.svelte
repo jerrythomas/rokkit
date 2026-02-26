@@ -1,15 +1,19 @@
 <script>
+	// @ts-nocheck
+	import { untrack } from 'svelte'
 	import { Tabs } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 	import { equals } from 'ramda'
 
 	let { data } = $props()
-	let { schema, layout } = data
+	let schema = $derived(data.schema)
+	let layout = $derived(data.layout)
 
 	// Configuration state - need this to be reactive for updates
-	let config = $state({ ...data.config })
-	let items = $state([...data.items])
-	let selectedTab = $state(data.items[0])
+	// untrack: intentionally snapshot initial server data for local mutation
+	let config = $state({ ...untrack(() => data.config) })
+	let items = $state([...untrack(() => data.items)])
+	let selectedTab = $state(untrack(() => data.items[0]))
 
 	// Handle form configuration changes
 	function handleConfigUpdate(newData) {

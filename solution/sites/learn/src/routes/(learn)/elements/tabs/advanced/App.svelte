@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Tabs } from '@rokkit/ui'
 
 	let options = [

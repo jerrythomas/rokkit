@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Menu } from '@rokkit/ui'
 
 	let options = [

@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte'
+	import { Button } from '@rokkit/ui'
 	import Background from './Background.svelte'
-	// import Features from './Features.svelte'
 	import WhyRokkit from './WhyRokkit.svelte'
 	const site = getContext('site')()
 
@@ -23,14 +23,15 @@
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>
 			<span class="flex gap-4 text-xl">
-				<a data-button-root data-primary href="/welcome/introduction"> Get Started </a>
-				<a data-button-root href="/docs/llms.txt" target="_blank" rel="noopener">
-					API Docs (llms.txt)
-				</a>
+				<Button variant="primary" href="/welcome/introduction" label="Get Started" />
+				<Button
+					href="/docs/llms.txt"
+					target="_blank"
+					icon="i-solar:file-text-bold-duotone"
+					label="llms"
+				/>
 			</span>
 		</div>
 	</div>
-	<!-- <Features /> -->
-	<!-- Feature highlight cards section -->
 	<WhyRokkit />
 </main>

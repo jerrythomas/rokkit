@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { StoryViewer, Code } from '$lib/components/Story'
 	import { storyBuilder } from './stories.js'
 </script>

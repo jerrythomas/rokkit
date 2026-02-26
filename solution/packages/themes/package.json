@@ -11,6 +11,12 @@
       "default": "./src/index.js"
     },
     "./styles": "./src/index.css",
+    "./dist": "./dist/index.css",
+    "./dist/base": "./dist/base.css",
+    "./dist/rokkit": "./dist/rokkit.css",
+    "./dist/minimal": "./dist/minimal.css",
+    "./dist/material": "./dist/material.css",
+    "./dist/glass": "./dist/glass.css",
     "./base": "./src/base/index.css",
     "./base/*": "./src/base/*.css",
     "./rokkit": "./src/rokkit/index.css",
@@ -24,13 +30,19 @@
     "./palette.css": "./src/palette.css"
   },
   "files": [
-    "src"
+    "src",
+    "dist",
+    "build.mjs"
   ],
   "scripts": {
-    "build": "echo 'No build step needed for CSS-only package'"
+    "build": "bun run build.mjs"
   },
   "dependencies": {
     "@rokkit/core": "workspace:*"
+  },
+  "devDependencies": {
+    "magic-string": "^0.30.21",
+    "unocss": "^66.5.1"
   },
   "keywords": [
     "themes",

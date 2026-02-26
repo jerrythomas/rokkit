@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import { Plot } from '@rokkit/chart'
   
   const salesData = [

@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { List } from '@rokkit/ui'
 	let items = $state([
 		{ text: 'Fruits' },

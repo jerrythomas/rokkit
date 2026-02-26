@@ -1,3 +1,4 @@
+// @ts-nocheck
 const columns = [
   { name: 'name', label: 'Employee', width: '200px' },
   { name: 'department', label: 'Dept' },

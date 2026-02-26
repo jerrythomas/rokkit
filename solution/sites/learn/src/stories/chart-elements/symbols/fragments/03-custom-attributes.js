@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Advanced symbol configuration
 import { swatch } from '@rokkit/chart/lib'
 

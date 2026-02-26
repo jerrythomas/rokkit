@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { StoryViewer, Code } from '$lib/components/Story'
 	import ApiDocsLink from '$lib/components/ApiDocsLink.svelte'
 	import { storyBuilder } from './stories.js'

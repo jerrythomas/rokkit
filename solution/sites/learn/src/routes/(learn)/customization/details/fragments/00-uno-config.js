@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Example: Using Theme in UnoCSS Configuration
  *

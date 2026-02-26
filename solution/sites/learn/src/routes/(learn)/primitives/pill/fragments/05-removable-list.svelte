@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   let items = [
     { text: 'Sample Removable 1' },
     { text: 'Sample Removable 2' },

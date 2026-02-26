@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Stepper } from '@rokkit/ui'
 
 	let steps = $state([

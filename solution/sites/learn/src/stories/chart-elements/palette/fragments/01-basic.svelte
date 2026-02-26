@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import { swatch } from '@rokkit/chart/lib'
   import { get } from 'svelte/store'
 

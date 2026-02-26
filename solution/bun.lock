@@ -182,6 +182,10 @@
       "dependencies": {
         "@rokkit/core": "workspace:*",
       },
+      "devDependencies": {
+        "magic-string": "^0.30.21",
+        "unocss": "^66.5.1",
+      },
     },
     "packages/tutorial": {
       "name": "@rokkit/tutorial",

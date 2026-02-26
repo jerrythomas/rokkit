@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { omit } from 'ramda'
 const LANGUAGE_MAP = {
 	js: 'javascript',

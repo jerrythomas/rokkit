@@ -1,10 +1,6 @@
 <script>
 	import { StoryViewer } from '$lib/components/Story'
 	import { storyBuilder } from './stories.js'
-
-	const example = storyBuilder.getExample('example')
-
-	console.log(example)
 </script>
 
 <article data-article-root>
@@ -126,7 +122,7 @@
 			Here's a simple example of a Rokkit List component. Click on any item to see how data-driven
 			components work:
 		</p>
-		<StoryViewer files={example.files} App={example.App} />
+		<StoryViewer {...storyBuilder.getExample('example')} />
 	</section>
 
 	<section>

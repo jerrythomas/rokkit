@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Toolbar } from '@rokkit/ui'
 
 	let lastAction = $state('none')

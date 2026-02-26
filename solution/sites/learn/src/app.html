@@ -16,6 +16,17 @@
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">
+    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('rokkit-theme') || '{}')
+          var b = document.body
+          b.dataset.style = t.style || 'rokkit'
+          b.dataset.mode = t.mode || 'dark'
+          b.dataset.density = t.density || 'comfortable'
+        } catch (e) {}
+      })()
+    </script>
     <app>%sveltekit.body%</app>
   </body>
 </html>

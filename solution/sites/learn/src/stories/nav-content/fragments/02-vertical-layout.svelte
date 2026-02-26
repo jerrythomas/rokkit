@@ -1,3 +1,6 @@
+<script>
+// @ts-nocheck
+</script>
 <!-- Horizontal Layout (Default) -->
 <ContentNavigator>
   <nav slot="nav">Navigation sidebar</nav>

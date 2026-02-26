@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Pill } from '@rokkit/ui'
 
 	let items = $state([

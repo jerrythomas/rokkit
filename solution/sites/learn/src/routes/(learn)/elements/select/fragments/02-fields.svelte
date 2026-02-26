@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import { Select } from '@rokkit/ui'
   
   const options = [

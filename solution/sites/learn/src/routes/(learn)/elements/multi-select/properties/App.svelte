@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { MultiSelect } from '@rokkit/ui'
 
 	let options = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon']

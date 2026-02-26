@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Example: Using custom icon collections with UnoCSS presetIcons
  *

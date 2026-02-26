@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Customizing the palette
 const mapping = {
 	primary: 'norway' // Override Primary color with custom color

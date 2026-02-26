@@ -8,9 +8,13 @@
 @import '@fontsource/open-sans';
 @import '@fontsource/open-sans/300.css';
 
-@import '@rokkit/themes/palette.css';
-@import './theme/base.css';
-@import './theme/rokkit.css';
+@import '@rokkit/themes/dist/base';
+@import '@rokkit/themes/dist/rokkit';
+
+/* Learn-site specific overrides loaded after package */
+@import './theme/base/shiki.css';
+@import './theme/base/article.css';
+@import './theme/base/typography.css';
 
 body {
   @apply flex h-screen w-screen flex-col overflow-hidden;
@@ -22,6 +26,10 @@ app {
 
 main {
   @apply flex-1;
+}
+
+[data-story-root] {
+  @apply space-y-8;
 }
 
 [data-playground-root] > header {

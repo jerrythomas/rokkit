@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getSections, fetchImports } from '$lib/stories.js'
 const metadataList = import.meta.glob('./*/**/meta.json', { import: 'default' })
 

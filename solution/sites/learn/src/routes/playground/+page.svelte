@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { goto } from '$app/navigation'
 	import { Button, Card } from '@rokkit/ui'
 

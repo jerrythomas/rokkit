@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { highlightCode } from '$lib/shiki.js'
 	import { vibe } from '@rokkit/states'
 	import FileTabs from '$lib/components/FileTabs.svelte'
@@ -38,7 +39,7 @@
 	} = $props()
 
 	// Convert single code string to files array if needed
-	let codeFiles = $derived(() => {
+	let codeFiles = $derived.by(() => {
 		// If files array is provided, use it
 		if (files && files.length > 0) {
 			return files

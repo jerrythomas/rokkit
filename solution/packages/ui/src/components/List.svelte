@@ -336,7 +336,6 @@
 			data-disabled={proxy.disabled || undefined}
 			aria-label={proxy.label}
 			aria-current={active ? 'page' : undefined}
-			aria-selected={multiselect ? itemSelected : undefined}
 		>
 			<ItemContent {proxy} />
 		</a>
@@ -352,7 +351,6 @@
 			disabled={proxy.disabled || disabled}
 			aria-label={proxy.label}
 			aria-pressed={active}
-			aria-selected={multiselect ? itemSelected : undefined}
 		>
 			<ItemContent {proxy} />
 		</button>
@@ -399,7 +397,6 @@
 			data-active={active || undefined}
 			data-selected={itemSelected || undefined}
 			data-disabled={proxy.disabled || undefined}
-			aria-selected={multiselect ? itemSelected : undefined}
 		>
 			<svelte:boundary>
 				{@render customSnippet(proxy.original as ListItem, proxy.fields, handlers, active)}
@@ -438,7 +435,6 @@
 	data-multiselect={multiselect || undefined}
 	class={className || undefined}
 	aria-label="List"
-	aria-multiselectable={multiselect || undefined}
 	onkeydown={handleListKeyDown}
 	onfocusin={handleFocusIn}
 	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: collapsible, typeahead: true }}

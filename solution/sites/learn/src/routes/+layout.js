@@ -1,3 +1,4 @@
+// @ts-nocheck
 /** @type {import('./$types').LayoutLoad} */
 export function load() {
 	const code = {

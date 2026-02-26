@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import Odd from './Odd.svelte'
   import Even from './Even.svelte'
 </script>

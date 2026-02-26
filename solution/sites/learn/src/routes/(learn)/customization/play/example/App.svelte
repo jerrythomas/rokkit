@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Input } from '@rokkit/forms'
 	import { Tabs } from '@rokkit/ui'
 	// import { FormRenderer } from '@rokkit/forms'

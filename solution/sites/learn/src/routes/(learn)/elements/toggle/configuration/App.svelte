@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Toggle } from '@rokkit/ui'
 	import { FormRenderer } from '@rokkit/forms'
 

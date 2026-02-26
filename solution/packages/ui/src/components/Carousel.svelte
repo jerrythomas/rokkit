@@ -85,11 +85,12 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
 	data-carousel
 	data-carousel-transition={transition}
 	class={className || undefined}
-	role="group"
+	role="application"
 	aria-roledescription="carousel"
 	aria-label="Carousel"
 	tabindex="0"

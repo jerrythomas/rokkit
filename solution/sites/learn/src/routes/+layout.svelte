@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import 'uno.css'
 	import '../app.css'
 
@@ -21,23 +22,26 @@
 
 	let site = $state({
 		sidebar: media.large.current,
-		title: data.app.name,
-		description: data.app.about,
 		code: 'hidden',
 		dir: 'ltr'
 	})
 
 	setContext('site', () => site)
 
+	let showRootHeader = $derived(
+		page.url.pathname === '/' || page.url.pathname.startsWith('/playground')
+	)
 	let headerStyle = $derived(page.url.pathname === '/' ? '' : 'border-b border-surface-z1 z-10')
 </script>
 
 <svelte:body use:themable={{ theme: vibe, storageKey: 'rokkit-theme' }} />
 <svelte:head>
-	<title>{site.title}</title>
-	<meta name="description" content={site.description} />
+	<title>{data.app.name}</title>
+	<meta name="description" content={data.app.about} />
 </svelte:head>
 <!-- <ParaglideJS {i18n}> -->
-<Header version={data.app.version} class={headerStyle}></Header>
+{#if showRootHeader}
+	<Header version={data.app.version} class={headerStyle}></Header>
+{/if}
 {@render children?.()}
 <!-- </ParaglideJS> -->

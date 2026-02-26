@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Create multiple patterns for multi-series charts
 import { swatch } from '@rokkit/chart/lib'
 

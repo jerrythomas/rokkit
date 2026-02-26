@@ -56,6 +56,15 @@ const themeConfig = {
 export default defineConfig({
 	darkMode: 'attribute',
 	extractors: [extractorSvelte()],
+	content: {
+		pipeline: {
+			include: [
+				'src/**/*.{svelte,js,ts}',
+				'../../packages/themes/src/**/*.css',
+				'../../packages/ui/src/**/*.svelte'
+			]
+		}
+	},
 	rules: [['hidden', { display: 'none' }]],
 	safelist: [
 		...defaultIcons,
@@ -64,7 +73,14 @@ export default defineConfig({
 		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`)),
 		'i-solar:calendar-bold-duotone',
 		'i-solar:sidebar-bold-duotone',
-		'i-solar:rocket-bold-duotone'
+		'i-solar:rocket-bold-duotone',
+		'i-solar:database-bold-duotone',
+		'i-solar:layers-bold-duotone',
+		'i-solar:code-square-bold-duotone',
+		'i-solar:palette-bold-duotone',
+		'i-solar:eye-bold-duotone',
+		'i-solar:hamburger-menu-bold-duotone',
+		'i-solar:file-text-bold-duotone'
 	],
 	shortcuts: [
 		['skin-default', theme.getPalette(mapping)],
@@ -87,6 +103,10 @@ export default defineConfig({
 		...theme.getShortcuts('primary'),
 		...theme.getShortcuts('secondary'),
 		...theme.getShortcuts('accent'),
+		...theme.getShortcuts('success'),
+		...theme.getShortcuts('warning'),
+		...theme.getShortcuts('danger'),
+		...theme.getShortcuts('error'),
 		...theme.getShortcuts('info'),
 		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit')),
 		['text-on-primary', 'text-surface-50'],
@@ -111,6 +131,9 @@ export default defineConfig({
 		presetWind3(themeConfig),
 		presetTypography(),
 		presetIcons({
+			extraProperties: {
+				display: 'inline-block'
+			},
 			collections: iconCollections({
 				rokkit: '@rokkit/icons/ui.json',
 				logo: '@rokkit/icons/auth.json',

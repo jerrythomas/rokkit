@@ -79,6 +79,7 @@
 			data-filled={filled || undefined}
 			data-hovering={index <= hoverIndex || undefined}
 			role="radio"
+			tabindex={-1}
 			aria-checked={filled}
 			aria-label="Rate {index + 1} of {max}"
 			onclick={() => handleClick(index)}

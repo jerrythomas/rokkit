@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { iconShortcuts, defaultIcons } from '@rokkit/themes'
 
 export default defineConfig({

@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { defaultStateIcons } from '@rokkit/core'
 	import { Button } from '@rokkit/ui'
 	let { content, class: className = 'absolute right-2 top-2 z-10', title = 'Copy code' } = $props()

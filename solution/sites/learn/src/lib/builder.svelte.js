@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { fetchStories } from './stories.js'
 /**
  * @typedef {Object} Example

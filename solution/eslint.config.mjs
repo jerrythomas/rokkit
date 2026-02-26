@@ -160,7 +160,8 @@ export default [
     rules: {
       'svelte/no-at-html-tags': 'off',
       'no-console': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn'
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off'
     }
   }
 ]

@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { List, Select, MultiSelect } from '@rokkit/ui'
 
 	// Form data

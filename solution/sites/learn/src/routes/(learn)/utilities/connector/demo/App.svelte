@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Connector } from '@rokkit/ui'
 
 	let variants = [

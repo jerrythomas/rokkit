@@ -16,7 +16,11 @@
 
 Three effect actions in `@rokkit/actions`: `use:hoverLift` (translateY + shadow), `use:magnetic` (cursor attraction), `use:ripple` (click ripple). All respect `prefers-reduced-motion`. 36 tests.
 
-## Phase 5: Next Priority Items
+## ~~Phase 5: Learn/Play Integration~~ COMPLETE
+
+URL-routed play pages for List, Select, Tabs. Toggle header in per-component layouts. FileTabs rewritten to use `Tabs` from `@rokkit/ui`. PlaySection.svelte created. (learn) layout fixed for `/play` sub-routes. 1356 tests pass.
+
+## Phase 6: Next Priority Items
 
 Candidates (by priority):
 - **#47** Table Phase 2–4 (Medium) — hierarchy, pagination, polish

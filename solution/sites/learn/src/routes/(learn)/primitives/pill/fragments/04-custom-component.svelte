@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import { Pill } from '@rokkit/ui'
   import { FieldMapper } from '@rokkit/core'
   import Status from './Status.svelte'

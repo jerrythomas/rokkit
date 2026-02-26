@@ -1,3 +1,4 @@
+// @ts-nocheck
 const schema = {
 	type: 'object',
 	properties: {

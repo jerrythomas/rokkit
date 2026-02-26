@@ -2,7 +2,18 @@ import { createRequire } from 'module'
 import { resolve, isAbsolute } from 'path'
 import { readFileSync } from 'fs'
 
-const require = createRequire(import.meta.url)
+// Two require contexts: CWD (for site-specific packages like @iconify-json/*)
+// and the module's own location (for workspace packages like @rokkit/icons).
+const requireFromCwd = createRequire(resolve(process.cwd(), 'package.json'))
+const requireFromModule = createRequire(import.meta.url)
+
+function requirePackage(jsonPath) {
+	try {
+		return requireFromCwd(jsonPath)
+	} catch {
+		return requireFromModule(jsonPath)
+	}
+}
 
 /**
  * Creates icon collection loaders for UnoCSS presetIcons from a simple config.
@@ -54,8 +65,8 @@ export function iconCollections(config) {
 				return JSON.parse(readFileSync(jsonPath, 'utf-8'))
 			}
 
-			// Otherwise treat as a package path and use require
-			return require(jsonPath)
+			// Otherwise treat as a package path; try CWD first (site packages), then module location
+			return requirePackage(jsonPath)
 		}
 		return acc
 	}, {})

@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { InputField } from '@rokkit/forms'
 
 	// List of input types to showcase

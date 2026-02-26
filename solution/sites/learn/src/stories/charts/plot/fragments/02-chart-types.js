@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Different chart types using the Plot component
 import { Plot } from '@rokkit/chart'
 

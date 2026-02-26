@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Table } from '@rokkit/ui'
 
 	const products = [

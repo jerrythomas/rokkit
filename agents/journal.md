@@ -5,7 +5,99 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-02-26
+
+### Learn Site — Layout Redesign + Theme Fix
+
+Replaced partial theme imports and rebuilt the learn layout as a proper two-column design.
+
+**Theme fix (`app.css`):**
+- Replaced `@rokkit/themes/palette.css` + `theme/base.css` + `theme/rokkit.css` with `@import '@rokkit/themes'` (full bundle)
+- Kept only learn-site-exclusive CSS: `shiki.css`, `article.css`, `typography.css`
+- Moved `[data-story-root]` rule into `app.css` (was in the deleted `base.css` aggregate)
+
+**Layout redesign:**
+- Root `+layout.svelte`: `showRootHeader` derived flag hides top-level `<Header>` on all learn routes (shows only on `/` and `/playground/...`)
+- `(learn)/+layout.svelte`: Full rewrite — two-column flex layout with sidebar overlay on small/medium screens
+  - Top bar: hamburger toggle (lg:hidden), logo (icon on small, full on larger), version, ThemeSwitcher, GitHub link
+  - Sub-header: breadcrumbs + page title/icon/description
+  - Sidebar: fixed overlay with slide-in animation on mobile, static inline column on `≥1024px`
+  - Scoped CSS uses `-z` semantic shades (`--color-surface-z0`, `--color-surface-z2`) for sidebar background/border
+- Deleted `(learn)/Header.svelte` — content inlined into layout
+
+**Tests:** 1356 passing, build ✓
+
+---
+
+### Learn/Play Integration — FileTabs + URL-Routed Play Pages
+
+Added interactive Play pages to the learn site for List, Select, and Tabs. Approach: URL routing (`/elements/{component}/play`) with a Toggle header in per-component layouts.
+
+**FileTabs.svelte rewrite:**
+- Replaced manual `<div role="tablist">` with `<Tabs>` from `@rokkit/ui` (same pattern as `CodeViewer.svelte`)
+- Pre-computes icons via `processedFiles = $derived(files.map(f => ({ ...f, _icon: getFileIcon(f) })))`
+- `fields = { value: 'id', text: 'name', icon: '_icon' }` — backward-compatible `selectedFile` binding
+- `tabPanel` snippet uses reactive `activeFile`/`highlightedCode` (all panels share same derived state)
+
+**PlaySection.svelte** (new shared component):
+- Two-column layout: preview area (dotted grid background) + 280px controls sidebar
+
+**(learn)/+layout.svelte fix:**
+- Added `canonicalPath` stripping `/play` suffix before `findSection`/`findGroupForSection` lookups
+- Play sub-routes inherit correct title/breadcrumbs from parent component's meta.json
+
+**Per-component layouts** (`elements/{list,select,tabs}/+layout.svelte`):
+- `Toggle` with Learn/Play options at top-right; navigates via `goto()` on change
+
+**Play pages** — new routes at `elements/{list,select,tabs}/play/+page.svelte`:
+- List: 4 variants (Navigation, Button, Grouped, Descriptions) + FormRenderer controls
+- Select: Simple + Grouped + FormRenderer controls
+- Tabs: With-icons + Simple + FormRenderer controls
+
+**Tests:** 1356 passing, learn site build ✓ (0 errors)
+
+### Learn Site E2E Test Fixes
+
+Fixed all 48 Playwright e2e tests after diagnosing selector and timing issues.
+
+**Root causes and fixes:**
+
+1. **Toggle tests** — Multiple `[data-toggle]` elements on page (ThemeSwitcherToggle in header + Learn/Play toggle). Fixed by adding `data-view-toggle` to the layout wrapper div and updating tests to use `[data-view-toggle] [data-toggle]` as the scoped locator.
+
+2. **List index tests** — `page.locator('[data-list]')` included the sidebar List (nth(0)), causing demo lists to be off by one. Fixed by scoping to `page.locator('main [data-list]')`, matching the expected indices (nth(1) = Button items, nth(2) = Grouped).
+
+3. **Select keyboard navigation** — After opening dropdown via ArrowDown, a `requestAnimationFrame` defers focus to the first option. Pressing ArrowDown immediately triggered on the still-focused trigger (not the option), which is a no-op when `isOpen`. Fixed by adding `await expect(options.first()).toBeFocused()` between opening and navigating — matching the playground test pattern.
+
+All 48 e2e tests now pass. Unit tests: 1356 passing.
+
+---
+
 ## 2026-02-25
+
+### Learn Site Build Fixes + LLMs.txt Updates
+
+Fixed learn site build failures and rewrote all component llms.txt documentation to match current APIs.
+
+**Build fixes:**
+- Added `@rokkit/app` and `@rokkit/data` to `sites/learn/package.json` (missing workspace dependencies)
+- Rewrote `FileTabs.svelte` without `bits-ui` (ADR-003 compliance — bits-ui removed)
+
+**LLMs.txt rewrites** — corrected against actual TypeScript type files:
+- `List`, `Tree`: correct props (`items`, `fields`, `value`, `multiselect`, `expanded`, lazy loading)
+- `Select`, `MultiSelect`: `filterable`/`filterPlaceholder` (not `searchable`), added `align`/`maxRows`/`selected`
+- `Toggle`: removed non-existent `square`/`label` props, added `showLabels`
+- `Switch`: complete rewrite — iOS-style binary toggle (`options` tuple `[off,on]`, `showLabels`)
+- `Tabs`: correct snippet names (`tabItem`, `tabPanel`), correct callbacks
+- `Menu` (dropdown route): updated from old `DropDown` component to current `Menu` component API
+- `FloatingActions`: rewrite for single `FloatingAction` component with `items` array (not two-component pattern)
+- `SearchFilter`: rewrite for structured `FilterObject[]` API (was documenting obsolete text filter API)
+- `Toolbar`, `Table`: created new llms.txt endpoints
+- Main `docs/llms.txt` index: updated component list, removed stale entries (`NestedList`, `ResponsiveGrid`, `ValidationReport`, `InputField`), added `Toolbar`/`Table`/`FloatingNavigation`
+
+**Commits:** `1c1dcfe7` (Svelte warnings), `19417499` (chart+states warnings), `cc4ed227` (learn site + llms.txt)
+**Tests:** 1356 passing, 0 lint errors, learn site build ✓ (2179 modules)
+
+---
 
 ### Enhanced Lookup System — Backlog #18
 

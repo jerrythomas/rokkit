@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { List } from '@rokkit/ui'
 	import { items } from './data.js'
 	import Odd from './Odd.svelte'

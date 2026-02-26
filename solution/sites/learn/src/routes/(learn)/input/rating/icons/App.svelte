@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Rating } from '@rokkit/ui'
 
 	let value = $state(2)

@@ -601,6 +601,7 @@
 	data-multiselect={multiselect || undefined}
 	class={className || undefined}
 	role="tree"
+	tabindex="0"
 	aria-label="Tree"
 	aria-multiselectable={multiselect || undefined}
 	onkeydown={handleTreeKeyDown}

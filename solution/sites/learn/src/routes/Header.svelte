@@ -4,7 +4,7 @@
 	// import { page } from '$app/state'
 	import { media } from '$lib/media.js'
 	import { ProgressBar } from '@rokkit/ui'
-	import ThemeSwitcher from './ThemeSwitcher.svelte'
+	import { ThemeSwitcherToggle } from '@rokkit/app'
 
 	const site = getContext('site')()
 
@@ -55,7 +55,7 @@
 				>
 			{/each}
 		</nav>
-		<ThemeSwitcher />
+		<ThemeSwitcherToggle size="sm" />
 		<a href="https://github.com/jerrythomas/rokkit" target="_blank" data-button-root aria-label="Rokkit on Github">
 			<span class="i-logo:github text-xl" aria-hidden="true"></span>
 		</a>

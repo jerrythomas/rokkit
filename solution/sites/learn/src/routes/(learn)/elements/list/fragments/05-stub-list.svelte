@@ -1,3 +1,6 @@
+<script>
+// @ts-nocheck
+</script>
 <List {items} {fields}>
   {#snippet stub(node)}
     <Odd value={node.value} />

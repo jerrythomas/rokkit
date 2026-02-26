@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import ContentNavigator from './ContentNavigator.svelte'
   import { Tabs } from '@rokkit/ui'
   

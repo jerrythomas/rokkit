@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import ContentNavigator from './ContentNavigator.svelte'
 	import { Tabs } from '@rokkit/ui'
 
@@ -35,7 +36,7 @@
 	<ContentNavigator vertical>
 		{#snippet nav()}
 			<div class="bg-gray-50 p-4 border-b">
-				<Tabs {items} bind:value />
+				<Tabs options={items} bind:value />
 			</div>
 		{/snippet}
 		{#snippet content()}

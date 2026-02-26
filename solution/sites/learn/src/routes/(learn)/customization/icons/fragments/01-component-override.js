@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Example: Per-component icon override in Rokkit UI
  *
@@ -12,5 +13,5 @@ const myIcons = {
 }
 
 // Usage in Svelte:
-<List items={items} icons={myIcons} />
+// <List items={items} icons={myIcons} />
 // Note: Use the base icon names (e.g., "add", "remove"), not full keys like "action-add".

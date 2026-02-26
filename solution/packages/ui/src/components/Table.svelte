@@ -206,7 +206,6 @@
 							data-path={entry.key}
 							data-selected={isSelected || undefined}
 							data-focused={isFocused || undefined}
-							role="row"
 							aria-selected={isSelected}
 							aria-rowindex={rowIndex + 1}
 							tabindex={isFocused ? 0 : -1}

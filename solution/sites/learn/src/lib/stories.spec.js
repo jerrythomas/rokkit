@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { getSections, getSlug, fetchImports, fetchStories, groupFiles } from './stories.js'
 

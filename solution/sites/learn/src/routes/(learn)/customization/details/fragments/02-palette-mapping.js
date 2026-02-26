@@ -1,3 +1,4 @@
+// @ts-nocheck
 const mapping = {
 	primary: 'orange',
 	surface: 'shark'

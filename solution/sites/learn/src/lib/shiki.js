@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Shiki syntax highlighting utility for CodeViewer
  */

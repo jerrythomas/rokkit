@@ -308,6 +308,7 @@
 					data-range-tick
 					data-disabled={disabled || undefined}
 					role="option"
+					aria-selected={false}
 					aria-disabled={disabled || undefined}
 					tabindex={disabled ? -1 : 0}
 					onclick={() => handleTickClick(tick.value)}

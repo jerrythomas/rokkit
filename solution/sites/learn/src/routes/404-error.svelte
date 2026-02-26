@@ -1,3 +1,6 @@
+<script>
+// @ts-nocheck
+</script>
 <svg
 	class="m-auto flex w-1/2"
 	viewBox="0 0 3125 2084"

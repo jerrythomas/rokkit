@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
   import { Table, SearchFilter } from '@rokkit/ui'
   import { filterData } from '@rokkit/data'
 

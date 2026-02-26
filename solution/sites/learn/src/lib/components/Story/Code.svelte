@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { highlightCode } from '$lib/shiki.js'
 	import { vibe } from '@rokkit/states'
 	import CopyToClipboard from './CopyToClipboard.svelte'

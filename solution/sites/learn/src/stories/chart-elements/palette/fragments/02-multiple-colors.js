@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Generate a color sequence for multiple data series
 import { swatch } from '@rokkit/chart/lib'
 

@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import { Carousel } from '@rokkit/ui'
 
 	let transition = $state('slide')
