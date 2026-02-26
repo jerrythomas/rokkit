@@ -9,6 +9,7 @@
 	import { ItemProxy } from '../types/item-proxy.js'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	const {
 		items = [],
@@ -64,9 +65,11 @@
 		position === 'left' || position === 'right' ? 'vertical' : 'horizontal'
 	)
 
-	 
-	let controller = new ListController(interactiveItems, undefined, userFields)
-	controller.moveFirst()
+	let controller = untrack(() => {
+		const c = new ListController(interactiveItems, undefined, userFields)
+		c.moveFirst()
+		return c
+	})
 	let containerRef: HTMLElement | null = $state(null)
 
 	$effect(() => {

@@ -5,7 +5,7 @@
 	 * Supports form submission with validate-before-submit, loading state, and optional action buttons.
 	 */
 
-	import { onMount } from 'svelte'
+	import { onMount, untrack } from 'svelte'
 	import InputField from './InputField.svelte'
 	import InfoField from './InfoField.svelte'
 	import { FormBuilder } from './lib/builder.svelte.js'
@@ -56,7 +56,7 @@
 	const allRenderers = $derived({ ...defaultRenderers, ...renderers })
 
 	// Stable FormBuilder instance — created once, updated via $effect
-	let formBuilder = builder ?? new FormBuilder(data, schema, layout, lookups)
+	let formBuilder = untrack(() => builder ?? new FormBuilder(data, schema, layout, lookups))
 
 	// Initialize lookups after mount (async fire-and-forget; $state updates trigger re-derive)
 	onMount(() => {

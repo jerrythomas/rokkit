@@ -3,6 +3,7 @@
 	import { ItemProxy } from '../types/item-proxy.js'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	let {
 		options = [],
@@ -16,8 +17,7 @@
 		item: itemSnippet
 	}: ToggleProps = $props()
 
-	 
-	let controller = new ListController(options, value, userFields)
+	let controller = untrack(() => new ListController(options, value, userFields))
 	let containerRef: HTMLElement | null = $state(null)
 	let lastSyncedValue: unknown = value
 

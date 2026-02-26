@@ -72,6 +72,50 @@ All Svelte 4 patterns (`export let`, `$:`, `createEventDispatcher`, `$$restProps
 
 ---
 
+## 66. @rokkit/themes — CSS Variables Migration (Remove @apply dependency)
+
+**Problem:** All theme CSS files use UnoCSS `@apply` directives (e.g. `@apply border-surface-z3 rounded-lg border`). This means:
+1. Consumers MUST set up UnoCSS with Rokkit presets to get any visual styles
+2. If a consumer imports only a theme variant (e.g. `@rokkit/themes/rokkit`) without the base, structural styles are missing
+3. Pre-processing in the package itself is impossible without a build step
+
+**Short-term fix (consumer workaround):**
+Import both base and theme variant in the consumer app:
+```css
+@import '@rokkit/themes/base';   /* structural layout */
+@import '@rokkit/themes/rokkit'; /* visual styles */
+/* or simply: @import '@rokkit/themes'; */
+```
+
+**Long-term solution — rewrite to CSS custom properties:**
+
+Replace all `@apply` directives with native CSS using Rokkit's CSS custom property tokens (already defined by `skin-*` palette). Example:
+
+```css
+/* Before (requires UnoCSS) */
+[data-style='rokkit'] [data-toggle] {
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 rounded-lg border bg-gradient-to-b;
+}
+
+/* After (plain CSS, works anywhere) */
+[data-style='rokkit'] [data-toggle] {
+  background: linear-gradient(to bottom, var(--surface-z3), var(--surface-z2));
+  border: 1px solid var(--surface-z4);
+  border-radius: 0.5rem;
+}
+```
+
+**Scope:** All CSS files under `packages/themes/src/` (base + rokkit + minimal + material + glass variants). ~30 files.
+
+**Benefits:**
+- Zero UnoCSS dependency for theme consumption
+- Can ship pre-compiled CSS that works in any project
+- Themes can be loaded via a plain `<link>` tag
+
+**Priority:** Medium — eliminates the biggest consumer onboarding friction.
+
+---
+
 ## Release.
 
 We need a pre release script that copies LICENCE from root and post release script that removes it for each package.

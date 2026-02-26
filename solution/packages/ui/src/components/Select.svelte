@@ -11,6 +11,7 @@
 	import ItemContent from './ItemContent.svelte'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	let {
 		options = [],
@@ -116,8 +117,7 @@
 	let selectRef = $state<HTMLDivElement | null>(null)
 	let dropdownRef = $state<HTMLDivElement | null>(null)
 
-	 
-	let controller = new ListController(flatItems, value, userFields)
+	let controller = untrack(() => new ListController(flatItems, value, userFields))
 	let lastSyncedValue: unknown = value
 
 	$effect(() => {

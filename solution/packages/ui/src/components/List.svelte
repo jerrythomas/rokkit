@@ -11,6 +11,7 @@
 	import ItemContent from './ItemContent.svelte'
 	import { NestedController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	let {
 		items = [],
@@ -45,8 +46,7 @@
 
 	// ─── NestedController for keyboard navigation ───────────────────
 
-	 
-	let controller = new NestedController(items, value, userFields, { multiselect })
+	let controller = untrack(() => new NestedController(items, value, userFields, { multiselect }))
 	let listRef = $state<HTMLElement | null>(null)
 
 	/**

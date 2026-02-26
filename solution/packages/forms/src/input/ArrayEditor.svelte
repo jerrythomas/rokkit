@@ -83,8 +83,7 @@
 							onupdate={(newData) => updateItem(index, newData)}
 						/>
 					{:else}
-						<svelte:component
-							this={PrimitiveComponent}
+						<PrimitiveComponent
 							value={item}
 							onchange={(newVal) => updateItem(index, newVal)}
 							{disabled}

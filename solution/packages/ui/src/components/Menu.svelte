@@ -10,6 +10,7 @@
 	import { ItemProxy } from '../types/item-proxy.js'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	const {
 		options = [],
@@ -79,8 +80,7 @@
 	let menuRef = $state<HTMLDivElement | null>(null)
 	let dropdownRef = $state<HTMLDivElement | null>(null)
 
-	 
-	let controller = new ListController(flatItems, undefined, userFields)
+	let controller = untrack(() => new ListController(flatItems, undefined, userFields))
 
 	$effect(() => {
 		controller.update(flatItems)

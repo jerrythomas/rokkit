@@ -3,6 +3,7 @@
 	import { defaultTableSortIcons } from '../types/table.js'
 	import { TableController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	let {
 		data = [],
@@ -27,12 +28,11 @@
 
 	// ─── Controller ─────────────────────────────────────────────────
 
-	 
-	let controller = new TableController(data, {
+	let controller = untrack(() => new TableController(data, {
 		columns: userColumns,
 		fields: userFields,
 		value
-	})
+	}))
 	let tableRef = $state<HTMLElement | null>(null)
 
 	// Sync data changes to controller

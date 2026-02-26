@@ -19,13 +19,13 @@
 
 {#if type === 'checkbox'}
 	{@const Component = resolveRenderer({ type: 'checkbox' }, allRenderers)}
-	<svelte:component this={Component} bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />
+	<Component bind:value {onchange} {oninput} {onfocus} {onblur} {...restProps} />
 {:else}
 	{@const Component = resolveRenderer({ type, props: restProps }, allRenderers)}
 	<div data-input-root>
 		{#if icon}
 			<span class={icon} aria-hidden="true"></span>
 		{/if}
-		<svelte:component this={Component} bind:value {onchange} {oninput} {onfocus} {onblur} {...extraProps} {...restProps} />
+		<Component bind:value {onchange} {oninput} {onfocus} {onblur} {...extraProps} {...restProps} />
 	</div>
 {/if}

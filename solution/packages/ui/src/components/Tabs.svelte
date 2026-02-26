@@ -3,6 +3,7 @@
 	import { ItemProxy } from '../types/item-proxy.js'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
+	import { untrack } from 'svelte'
 
 	let {
 		options = [],
@@ -28,8 +29,7 @@
 	/** Content field name from user fields or default */
 	const contentField = $derived((userFields as Record<string, string> | undefined)?.content ?? 'content')
 
-	 
-	let controller = new ListController(options, value, userFields)
+	let controller = untrack(() => new ListController(options, value, userFields))
 	let containerRef: HTMLElement | null = $state(null)
 	let lastSyncedValue: unknown = value
 
