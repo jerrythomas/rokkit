@@ -66,16 +66,9 @@ Recursive group rendering in FormRenderer via `{#snippet renderElement}`. `<fiel
 
 ---
 
-## 18. Enhanced Lookup System (Fetch/Filter Hooks)
+## ~~18. Enhanced Lookup System (Fetch/Filter Hooks)~~ ✅ DONE
 
-**Source:** docs/requirements/010-form.md §7
-
-**Phase:** 3
-
-**What's needed:**
-- [ ] Fetch hook pattern (async function replaces URL template)
-- [ ] Filter hook pattern (client-side filtering of pre-loaded data)
-- [ ] Cascading dependencies with disabled state
+`createLookup` supports: `url` (URL template), `fetch` (async hook), `source`+`filter` (sync client-side filter). `disabled` state managed inside `fetch()`. `initialize()` always calls `fetch()` for all lookups. `FormBuilder.#convertToFormElement()` injects lookup state into `finalProps`. `updateField()` clears dependent field values before re-fetch. New methods: `isFieldDisabled(path)`, `refreshLookup(path)`. See memory file.
 
 ---
 

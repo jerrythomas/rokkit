@@ -220,26 +220,19 @@ The Tree currently manages keyboard navigation inline with ~80 lines of handler 
 | `@rokkit/ui` | `ItemProxy`, `ItemContent`, `Connector` | Field mapping, rendering |
 | `@rokkit/core` | `defaultStateIcons` | Expand/collapse icons |
 
-## 12. Gaps
+## 12. Status & Gaps
 
-### 12.1 Keyboard Navigation Should Use `use:navigator` Action
+### ~~12.1 Keyboard Navigation Should Use `use:navigator` Action~~ ✅ DONE
 
-**Current**: ~80 lines of inline `handleItemKeyDown` logic managing focus, expansion, and selection.
+Tree rewritten using `Wrapper` + `Navigator` with `collapsible: true`. ~80 lines of inline keyboard handling replaced with `use:navigator` action. See commit `cddada02`.
 
-**Proposed**: Replace with `use:navigator` action wired to a `NestedController` from `@rokkit/states`. The existing `NestedController` already supports `moveFirst/Last/Next/Prev`, `select`, `extendSelection`, `expand`, `collapse`, `toggleExpansion`, `ensureVisible`.
+### ~~12.4 No Lazy Loading of Children~~ ✅ DONE (basic)
 
-**Benefits**:
-- Reduces component from ~470 lines to ~300 lines
-- Consistent keyboard behavior across List, Tree, Table
-- Testable controller logic independent of UI
-- `navigator` already handles scroll-into-view
+`LazyTree` component created with `onloadchildren` callback for async subtree loading. Sentinel pattern: `children: true` marks nodes needing fetch. Loading state (`proxy.loading`) shows spinner. See `docs/requirements/011-states.md` for enhanced lazy loading design (ProxyTree, `onlazyload`, root pagination, `hasMore`).
 
-**Approach**:
-1. Create a `NestedController` instance from props (items, fields, expanded state)
-2. Wire `use:navigator={{ wrapper: controller, orientation: 'vertical', nested: true }}` on root
-3. Remove inline `handleItemKeyDown`, `focusPath`, `handleFocusIn`
-4. The controller manages focus tracking and flat node resolution
-5. Need to bridge controller's `data-path` attribute convention with tree's `data-tree-path`
+### ~~12.5 Flattening Recreates Proxies on Every Render~~ ✅ DONE
+
+`ProxyItem` instances created once and never recreated. `$derived` flatView reads `proxy.expanded` and `proxy.children` for reactive updates without proxy recreation.
 
 ### 12.2 Multi-Selection Not Supported
 
@@ -248,14 +241,6 @@ Current Tree only supports single selection. Future need for Ctrl+click multi-se
 ### 12.3 No Drag-and-Drop
 
 No support for reordering tree nodes via drag-and-drop. Future enhancement.
-
-### 12.4 No Lazy Loading of Children
-
-Currently all children must be provided upfront. No `onloadchildren` callback for async loading of subtrees.
-
-### 12.5 Flattenning Recreates Proxies on Every Render
-
-`flattenTree` creates new `ItemProxy` instances on every derivation. Could be optimized with memoization or by integrating with controller's `deriveLookupWithProxy`.
 
 ### 12.6 No Search/Filter Integration
 

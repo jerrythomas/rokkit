@@ -3,6 +3,53 @@
 Priority 2 — Component enhancements and new features for `@rokkit/ui`.
 
 ---
+## 71. Canonical BASE_FIELDS + ProxyItem API Refinements
+
+**Source:** `docs/design/011-states.md` §Canonical Field Mapping
+
+**Goal:** Replace scattered field constants (`DEFAULT_FIELDS`, `PROXY_ITEM_FIELDS`, `defaultItemFields`) with single `BASE_FIELDS` in `@rokkit/core`. Update ProxyItem API.
+
+**Checklist:**
+- [ ] Create `BASE_FIELDS` in `@rokkit/core/src/constants.js`
+- [ ] Add `avatar` (image URL → `<img>`) and `hrefTarget` (link target) fields
+- [ ] Rename `text` → `label`, `description` → `subtext`, `title` → `tooltip` (semantic keys)
+- [ ] Update ProxyItem: add `id` (auto-generated), rename `raw` → `original`, add `mutate()`, limit direct getters to `label`, `value`, `id`
+- [ ] Update all components to import `BASE_FIELDS` instead of local field constants
+- [ ] Backward compatibility: semantic keys map to common raw keys (`label` → `'text'`, `subtext` → `'description'`)
+- [ ] Run `bun run test:ci` — 0 failures
+
+**Depends on:** #70 (ProxyTree)
+
+**Priority:** High — foundational change for all components.
+
+---
+
+## 72. Shared Content Component
+
+**Source:** `docs/design/011-states.md` §Phase 5
+
+**Goal:** Extract shared `Content` component from List/Menu/Select/MultiSelect/Tree.
+
+**Context:**
+- List, Menu, Select, MultiSelect all have identical rendering logic for GroupContent and ItemContent
+- Only differences: `data-{entity}-*` attribute prefix and presence/absence of anchor tags
+- Tree/LazyTree also share the same item rendering pattern
+- `entity` prop controls `data-{entity}-[group|item]` attributes
+- Handles icon/avatar/label/subtext/badge/shortcut rendering
+- `avatar` renders as `<img>`, `icon` renders as iconify class (mutually exclusive)
+
+**Checklist:**
+- [ ] Create shared `Content.svelte` in `packages/ui/src/components/`
+- [ ] `entity` prop for data-attribute prefix (list, menu, select, tree)
+- [ ] Support both `<button>` and `<a href>` modes
+- [ ] Migrate List, Menu, Select, MultiSelect, Tree to use shared Content
+- [ ] Run `bun run test:ci` — all existing tests pass
+
+**Depends on:** #71 (BASE_FIELDS)
+
+**Priority:** Medium — reduces duplication across 5+ components.
+
+---
 
 ## 64. Component Labels — Translatable Strings via MessagesStore
 
@@ -189,15 +236,18 @@ Note: `handleListKeyDown` `stopPropagation()` in `List.svelte` does NOT prevent 
 
 ---
 
-## 3. ItemProxy → @rokkit/states
+## 3. ItemProxy + Proxy → Deprecate in favour of ProxyItem
 
-**Decision (deferred):** Not appropriate — different abstraction layers:
-- `ItemProxy` — pure TypeScript, read-only field-mapper, no reactivity
-- `@rokkit/states` classes — reactive Svelte 5 (`$state`/`$derived`), mutable, `@rokkit/core`-dependent
+**Updated decision:** ProxyItem (`@rokkit/states`) is now the canonical proxy class. ItemProxy (`@rokkit/ui/types`) and Proxy (`@rokkit/states/proxy.svelte.js`) are deprecated.
 
-**Revisit when:** The two proxy systems are consolidated or if ItemProxy gains consumers outside `@rokkit/ui`.
+**Migration plan** (see `docs/design/011-states.md` §ProxyItem Deprecation):
+1. Port fallback resolution chains (text, value, shortcut, description) to ProxyItem
+2. Port `getSnippet(snippets, defaultSnippet)` method to ProxyItem
+3. Migrate 16 UI components from ItemProxy → ProxyItem
+4. Remove Proxy class (also removes Ramda dependency from `@rokkit/states`)
+5. Remove ItemProxy class
 
-**Concern:** Moving would add `states → core` dependency chain to `@rokkit/ui` (currently standalone with zero workspace deps).
+**Priority:** Medium — enables consistent proxy model across all packages.
 
 ---
 
@@ -265,74 +315,21 @@ Added `gradient` and `link` style variants. Micro-animations (hover lift, press 
 
 ---
 
-## 65. Select — Migrate to Navigator/Wrapper/ProxyItem Stack
+## ~~65. Select — Migrate to Trigger+Wrapper+Navigator Stack~~ ✅ DONE
 
-**Goal:** Replace current `ListController` + `navigator` (Svelte action) implementation with `Wrapper` + `Navigator` (class) stack. Add `class` prop.
-
-**Checklist:**
-- [ ] Rewrite `Select.svelte` using `Wrapper` + `Navigator` class
-  - Dropdown list uses `Wrapper` with `flatView` for rendering
-  - `Navigator` attached to dropdown container (not root)
-  - Pre-flatten groups into leaf items before passing to `Wrapper`
-  - Keep `Escape`/click-outside as document-level listeners
-  - Add `class` prop to root `<div data-select>`
-- [ ] Update `packages/ui/src/types/select.ts` if needed
-- [ ] Update learn site `(learn)/elements/select/+page.svelte` with improved examples
-  - Add playground page at `elements/select/play/+page.svelte`
-  - Add `+layout.svelte` for learn/play toggle
-  - Update or create `PlaySection` demo
-- [ ] Update `sites/learn/src/routes/docs/components/select/llms.txt/+server.ts`
-- [ ] Add e2e tests in `sites/learn/e2e/select.spec.ts` (keyboard + mouse + learn page)
-- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
-- [ ] Mark complete, commit, wait for confirmation before continuing to #66
-
-**Priority:** High — largest user-facing selection component.
+Rewritten with `Trigger` action + `Wrapper` + `Navigator`. Dropdown uses `Wrapper.flatView`, `Navigator` on dropdown container. Filter input uses native `addEventListener` (fires before Navigator's handler for correct Escape precedence). `items` prop (was `options`), `align: 'start'/'end'` (was `left`/`right`). Learn site updated, playground updated. 48 tests pass. See commit `7d09c15d`.
 
 ---
 
-## 66. MultiSelect — Migrate to Navigator/Wrapper/ProxyItem Stack
+## ~~66. MultiSelect — Migrate to Trigger+Wrapper+Navigator Stack~~ ✅ DONE
 
-**Goal:** Replace `ListController` + `navigator` with `Wrapper` + `Navigator` class. Add `class` prop.
-
-**Checklist:**
-- [ ] Rewrite `MultiSelect.svelte` using `Wrapper` + `Navigator` class
-  - Multi-selection: `Wrapper` supports `selectAll`/`deselectAll` or extend for multi mode
-  - Keep tag/pill row for selected items; keyboard removes last tag on `Backspace`
-  - Add `class` prop to root element
-- [ ] Update `packages/ui/src/types/multi-select.ts` if needed
-- [ ] Update learn site `(learn)/elements/multi-select/+page.svelte` with improved examples
-  - Add playground page at `elements/multi-select/play/+page.svelte`
-  - Add `+layout.svelte` for learn/play toggle
-- [ ] Update `sites/learn/src/routes/docs/components/multiselect/llms.txt/+server.ts`
-- [ ] Add e2e tests in `sites/learn/e2e/multi-select.spec.ts`
-- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
-- [ ] Mark complete, commit, wait for confirmation before continuing to #67
-
-**Priority:** High — companion to Select.
+Rewritten with `Trigger` action + `Wrapper` + `Navigator`. Tag remove buttons work correctly (Trigger ignores clicks from interactive children). Toggle rebuilds items from `wrapper.lookup` for both add and remove. `items` prop (was `options`). Learn site updated, playground updated. 28 tests pass. See commit `7d09c15d`.
 
 ---
 
-## 67. Menu — Migrate to Navigator/Wrapper/ProxyItem Stack
+## ~~67. Menu — Migrate to Trigger+Wrapper+Navigator Stack~~ ✅ DONE
 
-**Goal:** Replace `ListController` + `navigator` with `Wrapper` + `Navigator` class. Add `class` prop.
-
-**Checklist:**
-- [ ] Rewrite `Menu.svelte` using `Wrapper` + `Navigator` class
-  - Dropdown: `Navigator` on dropdown container only (not root trigger button)
-  - Pre-flatten groups into leaf items
-  - Separator/spacer items supported via `proxy.type === 'separator'`
-  - Keep `Escape`/click-outside as document-level listeners
-  - Add `class` prop to root element
-- [ ] Update `packages/ui/src/types/menu.ts` if needed
-- [ ] Update learn site `(learn)/elements/menu/+page.svelte` with improved examples
-  - Add playground page at `elements/menu/play/+page.svelte`
-  - Add `+layout.svelte` for learn/play toggle
-- [ ] Update `sites/learn/src/routes/docs/components/menu/llms.txt/+server.ts`
-- [ ] Add e2e tests in `sites/learn/e2e/menu.spec.ts`
-- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
-- [ ] Mark complete, commit, wait for confirmation before continuing to #68
-
-**Priority:** High — used in toolbars and context menus.
+Rewritten with `Trigger` action + `Wrapper` + `Navigator`. Dropdown content identical to List pattern. `items` prop (was `options`), `text` field (was `label`). Learn site updated, playground updated. 47 tests pass. See commit `7d09c15d`.
 
 ---
 
@@ -365,61 +362,47 @@ Added `gradient` and `link` style variants. Micro-animations (hover lift, press 
 
 ---
 
-## 67. Menu — Rewrite Using List Pattern + Trigger Class
+## ~~67b. Menu — Trigger Class Approach~~ ✅ DONE (merged with #67 above)
 
-**Goal:** Compose Menu from List rendering pattern + new `Trigger` class for open/close management.
-
-**Architecture (new approach):**
-- Create `Trigger` class in `@rokkit/actions/src/trigger.svelte.js`
-  - Manages `isOpen = $state(false)` (reactive — template uses directly)
-  - Click on `[data-menu-trigger]` child toggles open/close
-  - Click-outside detection (document capture listener)
-  - Escape key closes + returns focus to trigger
-- Rewrite `Menu.svelte` using List rendering pattern:
-  - `renderNodes` computed array: `{ type: 'group', proxy }` | `{ type: 'item', key }`
-  - Pre-flatten leaf items for `Wrapper` (groups are visual-only — not navigable)
-  - `wrapper.flatView` for items rendered inside `{#if trigger?.isOpen}` panel
-  - `resolveSnippet(snippets, proxy, 'item')` from `@rokkit/core`
-  - `...snippets` rest props (no explicit `item:` destructuring)
-  - `proxy.raw` in `handleSelect` callback
-
-**Checklist:**
-- [x] `raw` getter on `ProxyItem` (done in #68)
-- [ ] Create `Trigger` class in `packages/actions/src/trigger.svelte.js`
-- [ ] Export `Trigger` from `packages/actions/src/index.js`
-- [ ] Rewrite `Menu.svelte` using List pattern + `Trigger`
-- [ ] Update `packages/ui/src/types/menu.ts` if needed
-- [ ] Update learn site `(learn)/elements/menu/+page.svelte` with improved examples
-- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
-- [ ] Mark complete, commit, wait for confirmation before continuing to #69
-
-**Priority:** High — used in toolbars and context menus.
+`Trigger` class created in `@rokkit/actions/src/trigger.js`. Uses `isOpen` callback function (not internal state) for sync with component. Ignores clicks from interactive children. Exported from `@rokkit/actions`. See commit `7d09c15d`.
 
 ---
 
-## 69. Tree — Rewrite Using List Pattern + Tree-Line Helper
+## ~~69. Tree — Rewrite Using Wrapper+Navigator + Tree-Line Helper~~ ✅ DONE
 
-**Goal:** Copy List.svelte as starting point; change rendering to use tree-line decorations instead of simple indentation. Everything else (Wrapper, Navigator, collapsible) stays the same.
+Rewritten as `Tree.svelte` (formerly SimpleTree) using `Wrapper` + `Navigator` with `collapsible: true`. Tree line types computed in `buildReactiveFlatView`. `LazyTree.svelte` added for async children loading. Learn site pages created for both. 28 Tree tests pass. See commits `cddada02`, `7d09c15d`.
 
-**Architecture (new approach):**
-- Copy List.svelte — same `wrapper.flatView` rendering loop, `collapsible: true` on Navigator
-- Change rendering: instead of `data-level` indentation only, compute tree-line type per node
-  - Helper `getTreeLineType(node, flatView)` → `'leaf' | 'last-leaf' | 'branch' | 'last-branch' | 'none'`
-  - Render tree-line decorations (`data-tree-line` attribute) based on type
-- No separate Tree type file changes needed — same props as current
-- `resolveSnippet(snippets, proxy, ...)` from `@rokkit/core`
-- `...snippets` rest props
+---
+
+## 70. ProxyTree + Lazy Loading Enhancements
+
+**Source:** `docs/requirements/011-states.md`, `docs/design/011-states.md`
+
+**Goal:** Create `ProxyTree` class for reactive collection management with `append()` and `addChildren()`. Refactor Wrapper to receive ProxyTree. Make LazyWrapper extend Wrapper. Rename `onloadchildren` → `onlazyload`. Add `hasMore` prop and "Load More" button to LazyTree.
+
+**Key decisions (resolved):**
+- Wrapper receives ProxyTree (does not create it)
+- LazyWrapper extends Wrapper (overrides expand/select only, no code duplication)
+- `onlazyload(item)` = fetch children, `onlazyload()` = fetch more root items
+- `hasMore` is client-controlled (client sets to false when no more data)
+- `showLines` → `lineStyle` prop with `data-line-style` attribute (none|dotted|dashed|solid)
+- LazyTree only for now (LazyList, LazyTable later once pattern is proven)
+- `toggle()` stays on Wrapper for accordion-trigger pattern
 
 **Checklist:**
-- [ ] Write `getTreeLineType(node, index, nodes)` helper function
-- [ ] Rewrite `Tree.svelte` using List pattern + tree-line helper
-- [ ] Update `packages/ui/src/types/tree.ts` if needed
-- [ ] Add tree story to learn site (`(learn)/elements/tree/+page.svelte`)
-  - Add playground page at `elements/tree/play/+page.svelte`
-  - Add `+layout.svelte` for learn/play toggle
-- [ ] Create `sites/learn/src/routes/docs/components/tree/llms.txt/+server.ts`
-- [ ] Add e2e tests in `sites/learn/e2e/tree.spec.ts`
-- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
-- [ ] Mark complete, commit
+- [ ] Create `ProxyTree` class in `packages/states/src/proxy-tree.svelte.js`
+  - append(items): add root items, batch version bump
+  - addChildren(proxy, items): add children to node, batch version bump
+  - Reactive flatView and lookup derived from version
+  - Custom proxy factory support (for LazyProxyItem)
+- [ ] Refactor `Wrapper` to receive ProxyTree (not build it)
+- [ ] Refactor `LazyWrapper` to extend `Wrapper` (override expand/select, add loadMore)
+- [ ] Rename `onloadchildren` → `onlazyload` in LazyWrapper + LazyTree
+- [ ] Add `hasMore` prop to LazyTree
+- [ ] Add "Load More" button to LazyTree template
+- [ ] Replace `showLines` with `lineStyle` prop + `data-line-style` attribute on Tree and LazyTree
+- [ ] Update tests for ProxyTree, Wrapper, LazyWrapper, and LazyTree
+- [ ] Update learn site LazyTree pages
+- [ ] Run `bun run test:ci` — 0 failures
 
-**Priority:** Medium — complex nested navigation, good validation of the stack.
+**Priority:** High — enables pagination and on-demand data loading across tree components.

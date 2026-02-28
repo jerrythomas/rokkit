@@ -5,6 +5,62 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-02-28
+
+### ProxyTree + Lazy Loading Enhancements (Backlog #70)
+
+Implemented ProxyTree class and refactored lazy loading stack.
+
+**Commits:**
+- `5a3a834c` — feat(states): add ProxyTree reactive collection manager
+- `55b9f16d` — refactor(states): LazyWrapper delegates to ProxyTree
+- `cb3d6f0a` — feat(states): add onlazyload callback + loadMore() to LazyWrapper
+- `4e2baa23` — feat(ui): LazyTree onlazyload + hasMore + Load More button
+- `2975acde` — docs: update LazyTree site pages — onlazyload rename, hasMore demo
+- `0c7c2cf8` — fix: remove unused PROXY_ITEM_FIELDS import from lazy-wrapper
+
+**What was built:**
+- `ProxyTree` class in `@rokkit/states` — reactive collection manager with `append()`, `addChildren()`, `flatView`, `lookup`
+- LazyWrapper refactored to delegate data management to ProxyTree
+- `onloadchildren` → `onlazyload` rename throughout (LazyWrapper, LazyTree, playground, learn site, llms.txt)
+- `loadMore()` method on LazyWrapper — calls `onlazyload()` (no args) for root pagination
+- `hasMore` prop on LazyTree — renders "Load More" button when true
+- 35 new tests (30 ProxyTree + 5 loadMore)
+
+**Tests:** 2520 pass (up from 2485). Lint 0 new errors. Both sites build.
+
+---
+
+### States Design Doc — Resolved All Discussion Items
+
+Updated `docs/design/011-states.md` and `docs/requirements/011-states.md` with all resolved decisions from design discussion:
+
+**ProxyItem API:**
+- `text` → `label`, `raw` → `original`, added `id` (auto-generated), added `mutate()`
+- Limited direct getters to `label`, `value`, `id` — all others via `get(fieldName)`
+- Fallback resolution chains not needed (primitive handling covers stringify)
+- `getSnippet` superseded by `resolveSnippet`
+
+**Canonical BASE_FIELDS:**
+- Single field mapping replacing `DEFAULT_FIELDS`, `PROXY_ITEM_FIELDS`, `defaultItemFields`
+- 18 fields: id, value, label, icon, avatar, subtext, tooltip, badge, shortcut, children, type, snippet, href, hrefTarget, disabled, expanded, selected
+- `avatar` for image URLs (rendered as `<img>`), `icon` for iconify classes (mutually exclusive)
+- Semantic keys map to common raw keys for backward compat (`label`→`'text'`, `subtext`→`'description'`, `tooltip`→`'title'`)
+
+**Architecture:**
+- Wrapper receives ProxyTree (does not create it)
+- LazyWrapper extends Wrapper (overrides expand/select only, no code duplication)
+- `toggle()` stays on Wrapper for accordion-trigger pattern
+- `showLines` → `lineStyle` prop with `data-line-style` attribute (none|dotted|dashed|solid)
+- "sentinel" → "lazy marker" terminology throughout
+
+**Backlog updates:**
+- Added #71 (Canonical BASE_FIELDS + ProxyItem API Refinements)
+- Added #72 (Shared Content Component)
+- Updated #70 with all resolved decisions
+
+---
+
 ## 2026-02-27 (continued)
 
 ### SimpleTree → Tree Rename + Learn Pages

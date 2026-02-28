@@ -33,7 +33,7 @@ describe('ProxyTree', () => {
 
 		it('should accept custom factory via createProxy option', () => {
 			class CustomProxy extends ProxyItem {
-				get custom() { return 'custom-' + this.text }
+				get custom() { return `custom-${  this.text}` }
 			}
 
 			const tree = new ProxyTree(
@@ -312,7 +312,7 @@ describe('ProxyTree', () => {
 
 		it('should use custom factory for appended items', () => {
 			class CustomProxy extends ProxyItem {
-				get custom() { return 'custom-' + this.text }
+				get custom() { return `custom-${  this.text}` }
 			}
 
 			const tree = new ProxyTree(
