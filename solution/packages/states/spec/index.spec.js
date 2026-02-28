@@ -17,6 +17,7 @@ describe('components', () => {
 			'buildProxyList',
 			'buildFlatView',
 			'PROXY_ITEM_FIELDS',
+			'ProxyTree',
 			'Wrapper',
 			'LazyWrapper'
 		])
