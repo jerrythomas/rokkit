@@ -3,9 +3,9 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit LazyTree Component
 
-> Tree with on-demand lazy-loaded children.
+> Tree with on-demand lazy-loaded children and optional root-level pagination.
 
-LazyTree extends Tree with async child loading. Nodes with \`children: true\` (a boolean sentinel) fetch their children via \`onloadchildren\` when expanded. A loading spinner appears during fetch.
+LazyTree extends Tree with async child loading. Nodes with \`children: true\` (a boolean sentinel) fetch their children via \`onlazyload\` when expanded. A loading spinner appears during fetch. Set \`hasMore\` to show a "Load More" button for root-level pagination.
 
 ## Quick Start
 
@@ -19,24 +19,52 @@ LazyTree extends Tree with async child loading. Nodes with \`children: true\` (a
     { text: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
   ]
 
-  async function loadChildren(value) {
-    const res = await fetch(\`/api/tree/\${value}\`)
+  async function loadChildren(item) {
+    const res = await fetch(\`/api/tree/\${item.value}\`)
     return res.json()
   }
 
   let value = $state(null)
 </script>
 
-<LazyTree {items} onloadchildren={loadChildren} bind:value />
+<LazyTree {items} onlazyload={loadChildren} bind:value />
 \`\`\`
 
 ## How it Works
 
 1. Set \`children: true\` on nodes that should load children on demand
-2. Provide \`onloadchildren\` — an async function that receives the node's value and returns child items
+2. Provide \`onlazyload\` — an async function that receives the node's raw item and returns child items
 3. When the user expands the node, a loading spinner appears while children are fetched
 4. Returned children can themselves have \`children: true\` for progressive lazy loading
 5. Once loaded, children are cached — subsequent expand/collapse uses the cached data
+
+## Root-Level Pagination (Load More)
+
+Set \`hasMore={true}\` to show a "Load More" button at the bottom of the tree. When clicked, \`onlazyload()\` is called with no arguments. The callback should return the next batch of root items. Set \`hasMore={false}\` when all items are loaded.
+
+\`\`\`svelte
+<script>
+  import { LazyTree } from '@rokkit/ui'
+
+  let items = $state([
+    { text: 'Item 1', value: '1' },
+    { text: 'Item 2', value: '2' }
+  ])
+  let hasMore = $state(true)
+
+  async function handleLazyLoad(item) {
+    if (!item) {
+      // No item = "Load More" at root level
+      hasMore = false
+      return [{ text: 'Item 3', value: '3' }]
+    }
+    // item provided = lazy-load children for that node
+    return fetchChildren(item)
+  }
+</script>
+
+<LazyTree {items} onlazyload={handleLazyLoad} {hasMore} />
+\`\`\`
 
 ## Props
 
@@ -49,13 +77,14 @@ LazyTree extends Tree with async child loading. Nodes with \`children: true\` (a
 | \`showLines\` | \`boolean\` | \`true\` | Show tree line connectors |
 | \`icons\` | \`{ opened?: string; closed?: string }\` | defaults | Override expand/collapse icons |
 | \`onselect\` | \`(value, proxy) => void\` | — | Selection callback |
-| \`onloadchildren\` | \`(value, item) => Promise<unknown[]>\` | — | Async callback to fetch children |
+| \`onlazyload\` | \`(item?) => Promise<unknown[]>\` | — | Async callback to fetch children (with item) or next root batch (without args) |
+| \`hasMore\` | \`boolean\` | \`false\` | Show "Load More" button for root pagination |
 | \`class\` | \`string\` | \`''\` | Additional CSS classes |
 
 ## Sentinel Pattern
 
 \`\`\`javascript
-// children: true  → lazy (will call onloadchildren on expand)
+// children: true  → lazy (will call onlazyload on expand)
 // children: [...]  → pre-loaded children
 // no children key → leaf node
 const items = [
@@ -93,6 +122,7 @@ Same as Tree:
 | \`data-tree-spinner\` | Loading spinner element |
 | \`data-tree-toggle-btn\` | Expand/collapse button |
 | \`data-tree-item-content\` | Clickable item content |
+| \`data-tree-load-more\` | "Load More" button |
 | \`data-active\` | Active/current node |
 
 ## Import
@@ -112,7 +142,8 @@ interface LazyTreeProps {
   showLines?: boolean
   icons?: { opened?: string; closed?: string }
   onselect?: (value: unknown, proxy: ProxyItem) => void
-  onloadchildren?: (value: unknown, item: unknown) => Promise<unknown[]>
+  onlazyload?: (item?: unknown) => Promise<unknown[]>
+  hasMore?: boolean
   class?: string
 }
 \`\`\`

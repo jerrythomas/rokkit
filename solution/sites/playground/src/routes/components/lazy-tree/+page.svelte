@@ -3,6 +3,7 @@
 	import { InfoField } from '@rokkit/forms'
 	import Playground from '$lib/Playground.svelte'
 
+	// --- Lazy Load Children Demo ---
 	let selected = $state<unknown>(undefined)
 
 	const lazyTree = [
@@ -11,9 +12,9 @@
 		{ text: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
 	]
 
-	async function handleLoadChildren(value: unknown): Promise<Record<string, unknown>[]> {
+	async function handleLazyLoad(item: Record<string, unknown>): Promise<Record<string, unknown>[]> {
 		await new Promise((r) => setTimeout(r, 800))
-		if (value === 'docs') {
+		if (item.value === 'docs') {
 			return [
 				{ text: 'Resume.pdf', value: 'resume', icon: 'i-lucide:file-text' },
 				{
@@ -24,17 +25,54 @@
 				}
 			]
 		}
-		if (value === 'pics') {
+		if (item.value === 'pics') {
 			return [
 				{ text: 'vacation.jpg', value: 'vacation', icon: 'i-lucide:image' },
 				{ text: 'profile.png', value: 'profile', icon: 'i-lucide:image' }
 			]
 		}
-		if (value === 'projects') {
+		if (item.value === 'projects') {
 			return [
 				{ text: 'rokkit/', value: 'rokkit', icon: 'i-lucide:folder-open' },
 				{ text: 'notes.md', value: 'proj-notes', icon: 'i-lucide:file-text' }
 			]
+		}
+		return []
+	}
+
+	// --- Load More (hasMore) Demo ---
+	let selected2 = $state<unknown>(undefined)
+	let hasMore = $state(true)
+	let batch = $state(0)
+
+	const initialItems = [
+		{ text: 'Alpha', value: 'alpha', icon: 'i-lucide:file' },
+		{ text: 'Bravo', value: 'bravo', icon: 'i-lucide:file' },
+		{ text: 'Charlie', value: 'charlie', icon: 'i-lucide:file' }
+	]
+
+	let paginatedItems = $state([...initialItems])
+
+	const batches = [
+		[
+			{ text: 'Delta', value: 'delta', icon: 'i-lucide:file' },
+			{ text: 'Echo', value: 'echo', icon: 'i-lucide:file' },
+			{ text: 'Foxtrot', value: 'foxtrot', icon: 'i-lucide:file' }
+		],
+		[
+			{ text: 'Golf', value: 'golf', icon: 'i-lucide:file' },
+			{ text: 'Hotel', value: 'hotel', icon: 'i-lucide:file' }
+		]
+	]
+
+	async function handleLoadMore(item?: unknown): Promise<Record<string, unknown>[]> {
+		await new Promise((r) => setTimeout(r, 500))
+		if (!item) {
+			// Root-level "Load More" — return next batch
+			const nextBatch = batches[batch] || []
+			batch++
+			if (batch >= batches.length) hasMore = false
+			return nextBatch
 		}
 		return []
 	}
@@ -50,12 +88,35 @@
 				items={lazyTree}
 				value={selected}
 				onselect={(v) => (selected = v)}
-				onloadchildren={handleLoadChildren}
+				onlazyload={handleLazyLoad}
 			/>
 		</div>
 	{/snippet}
 
 	{#snippet controls()}
 		<InfoField label="Selected" value={selected} />
+	{/snippet}
+</Playground>
+
+<Playground
+	title="LazyTree — Load More"
+	description="Root-level pagination with hasMore. Click 'Load More' to fetch additional items."
+>
+	{#snippet preview()}
+		<div class="max-w-[320px]">
+			<LazyTree
+				items={paginatedItems}
+				value={selected2}
+				onselect={(v) => (selected2 = v)}
+				onlazyload={handleLoadMore}
+				{hasMore}
+			/>
+		</div>
+	{/snippet}
+
+	{#snippet controls()}
+		<InfoField label="Selected" value={selected2} />
+		<InfoField label="Has More" value={hasMore} />
+		<InfoField label="Batch" value={batch} />
 	{/snippet}
 </Playground>

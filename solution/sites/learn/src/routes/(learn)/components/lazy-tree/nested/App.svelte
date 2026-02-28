@@ -8,9 +8,9 @@
 		{ text: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
 	]
 
-	async function handleLoadChildren(value) {
+	async function handleLazyLoad(item) {
 		await new Promise((r) => setTimeout(r, 600))
-		if (value === 'docs') {
+		if (item.value === 'docs') {
 			return [
 				{ text: 'Resume.pdf', value: 'resume', icon: 'i-lucide:file-text' },
 				{
@@ -21,13 +21,13 @@
 				}
 			]
 		}
-		if (value === 'pics') {
+		if (item.value === 'pics') {
 			return [
 				{ text: 'vacation.jpg', value: 'vacation', icon: 'i-lucide:image' },
 				{ text: 'profile.png', value: 'profile', icon: 'i-lucide:image' }
 			]
 		}
-		if (value === 'projects') {
+		if (item.value === 'projects') {
 			return [
 				{ text: 'rokkit/', value: 'rokkit', icon: 'i-lucide:folder-open' },
 				{ text: 'notes.md', value: 'proj-notes', icon: 'i-lucide:file-text' }
@@ -39,7 +39,7 @@
 	let value = $state(null)
 </script>
 
-<LazyTree {items} onloadchildren={handleLoadChildren} bind:value onselect={(v) => (value = v)} />
+<LazyTree {items} onlazyload={handleLazyLoad} bind:value onselect={(v) => (value = v)} />
 
 {#if value}
 	<p class="text-surface-z6 mt-3 text-sm">Selected: <strong>{value}</strong></p>

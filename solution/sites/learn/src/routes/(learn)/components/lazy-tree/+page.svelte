@@ -14,7 +14,7 @@
 	<h2>Basic Example</h2>
 	<p>
 		Set <code>children: true</code> on nodes that should load children on demand, and provide an
-		<code>onloadchildren</code> callback that returns a promise resolving to an array of child items.
+		<code>onlazyload</code> callback that returns a promise resolving to an array of child items.
 		A loading spinner appears while children are being fetched.
 	</p>
 
@@ -26,7 +26,7 @@
 	<!-- Nested Lazy Loading -->
 	<h2>Nested Lazy Loading</h2>
 	<p>
-		Children returned by <code>onloadchildren</code> can themselves have <code>children: true</code>,
+		Children returned by <code>onlazyload</code> can themselves have <code>children: true</code>,
 		enabling progressive lazy loading at any depth. Here, expanding "Documents" reveals a "Projects"
 		folder that also loads lazily.
 	</p>
@@ -41,7 +41,7 @@
 	</p>
 	<ol>
 		<li>The node shows a loading spinner (<code>data-tree-loading</code>, <code>aria-busy</code>)</li>
-		<li><code>onloadchildren(value, item)</code> is called with the node's value</li>
+		<li><code>onlazyload(item)</code> is called with the node's raw item</li>
 		<li>The returned children replace the sentinel and the node expands</li>
 		<li>Subsequent expansions use the cached children (no re-fetch)</li>
 	</ol>
@@ -57,7 +57,8 @@
 				<li><strong>showLines</strong>: Show tree-line connectors (default: true)</li>
 				<li><strong>icons</strong>: Override the expand/collapse icons</li>
 				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
-				<li><strong>onloadchildren</strong>: Async callback to fetch children</li>
+				<li><strong>onlazyload</strong>: Async callback to fetch children</li>
+				<li><strong>hasMore</strong>: Show a "Load More" button for root-level pagination</li>
 				<li><strong>class</strong>: Additional CSS classes</li>
 			</ul>
 		</div>
@@ -79,8 +80,8 @@
 				<strong>onselect(value, proxy)</strong>: Fired when a node is selected
 			</li>
 			<li>
-				<strong>onloadchildren(value, item)</strong>: Async callback — receives the node's value
-				and raw item, must return a Promise resolving to an array of child items
+				<strong>onlazyload(item)</strong>: Async callback — receives the node's raw item,
+				must return a Promise resolving to an array of child items. Called with no args for root-level "Load More" pagination.
 			</li>
 		</ul>
 	</div>
