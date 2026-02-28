@@ -114,7 +114,7 @@ test.describe('List — play page', () => {
 		test('ArrowDown navigates through group labels and expanded children', async ({ page }) => {
 			// Grouped list is nth(2). Groups start expanded (expanded: true in data).
 			const list = page.locator('main [data-list]').nth(2)
-			const groupLabels = list.locator('[data-list-group-label]')
+			const groupLabels = list.locator('[data-list-group]')
 			const allItems = list.locator('[data-list-item]')
 
 			await groupLabels.first().focus()
@@ -130,7 +130,7 @@ test.describe('List — play page', () => {
 
 		test('ArrowLeft on expanded group collapses it', async ({ page }) => {
 			const list = page.locator('main [data-list]').nth(2)
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 			await expect(firstLabel).toHaveAttribute('aria-expanded', 'true')
@@ -141,7 +141,7 @@ test.describe('List — play page', () => {
 
 		test('ArrowRight on collapsed group expands it', async ({ page }) => {
 			const list = page.locator('main [data-list]').nth(2)
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 			await page.keyboard.press('ArrowLeft') // collapse first
@@ -153,7 +153,7 @@ test.describe('List — play page', () => {
 
 		test('Enter on group label toggles expansion', async ({ page }) => {
 			const list = page.locator('main [data-list]').nth(2)
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 			await expect(firstLabel).toHaveAttribute('aria-expanded', 'true')
@@ -167,7 +167,7 @@ test.describe('List — play page', () => {
 
 		test('full navigation across both groups', async ({ page }) => {
 			const list = page.locator('main [data-list]').nth(2)
-			const groupLabels = list.locator('[data-list-group-label]')
+			const groupLabels = list.locator('[data-list-group]')
 			const allItems = list.locator('[data-list-item]')
 
 			await groupLabels.first().focus()
@@ -196,7 +196,7 @@ test.describe('List — play page', () => {
 
 		test('repeated collapse/expand cycles preserve state', async ({ page }) => {
 			const list = page.locator('main [data-list]').nth(2)
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 
@@ -234,7 +234,7 @@ test.describe('List — play page', () => {
 
 		test('click on group label toggles expansion', async ({ page }) => {
 			const list = page.locator('main [data-list]').nth(2)
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await expect(firstLabel).toHaveAttribute('aria-expanded', 'true')
 
@@ -326,7 +326,7 @@ test.describe('List — learn page', () => {
 		const storyViewers = page.locator('[data-story-viewer]')
 		const nestedViewer = storyViewers.nth(2)
 		const list = nestedViewer.locator('[data-list]')
-		const groupLabels = list.locator('[data-list-group-label]')
+		const groupLabels = list.locator('[data-list-group]')
 
 		await expect(groupLabels).toHaveCount(3) // Fruits, Vegetables, Grains
 		await expect(groupLabels.first()).toContainText('Fruits')
@@ -336,7 +336,7 @@ test.describe('List — learn page', () => {
 		const storyViewers = page.locator('[data-story-viewer]')
 		const nestedViewer = storyViewers.nth(2)
 		const list = nestedViewer.locator('[data-list]')
-		const firstLabel = list.locator('[data-list-group-label]').first()
+		const firstLabel = list.locator('[data-list-group]').first()
 
 		// Groups start collapsed; click to expand
 		const initialExpanded = await firstLabel.getAttribute('aria-expanded')

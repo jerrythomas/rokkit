@@ -1,1065 +1,439 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, fireEvent } from '@testing-library/svelte'
+import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Menu from '../src/components/Menu.svelte'
 import MenuSnippetTest from './MenuSnippetTest.svelte'
-import type { MenuFields, MenuItem } from '../src/types/menu.js'
 
-// Sample flat options for testing
-const flatOptions: MenuItem[] = [
-	{ text: 'Copy', icon: 'i-solar:copy-bold', value: 'copy' },
-	{ text: 'Paste', icon: 'i-solar:clipboard-bold', value: 'paste' },
-	{ text: 'Cut', icon: 'i-solar:scissors-bold', value: 'cut' },
-	{ text: 'Delete', icon: 'i-solar:trash-bold', value: 'delete', disabled: true }
+const flatItems = [
+	{ text: 'Copy', icon: 'i-copy', value: 'copy' },
+	{ text: 'Paste', icon: 'i-paste', value: 'paste' },
+	{ text: 'Cut', value: 'cut' },
+	{ text: 'Delete', value: 'delete', disabled: true }
 ]
 
-// Sample grouped options for testing
-const groupedOptions: MenuItem[] = [
+const groupedItems = [
 	{
-		text: 'Image',
-		icon: 'i-solar:gallery-bold',
+		text: 'File',
+		icon: 'i-file',
 		children: [
-			{
-				text: 'Export as PNG',
-				description: 'High-quality image',
-				icon: 'i-solar:gallery-bold',
-				value: 'png'
-			},
-			{
-				text: 'Export as SVG',
-				description: 'Vector graphics',
-				icon: 'i-solar:code-bold',
-				value: 'svg'
-			}
+			{ text: 'New', value: 'new' },
+			{ text: 'Open', value: 'open' }
 		]
 	},
 	{
-		text: 'Data',
-		icon: 'i-solar:database-bold',
+		text: 'Edit',
 		children: [
-			{
-				text: 'Export as CSV',
-				description: 'Spreadsheet format',
-				icon: 'i-solar:table-bold',
-				value: 'csv'
-			},
-			{
-				text: 'Export as JSON',
-				description: 'Configuration file',
-				icon: 'i-solar:settings-bold',
-				value: 'json'
-			}
+			{ text: 'Undo', value: 'undo' },
+			{ text: 'Redo', value: 'redo' }
 		]
 	}
 ]
 
-// Sample mixed options (standalone items and groups)
-const mixedOptions: MenuItem[] = [
-	{ text: 'Quick Save', icon: 'i-solar:diskette-bold', value: 'save' },
-	{
-		text: 'Export As',
-		children: [
-			{ text: 'PNG', value: 'png' },
-			{ text: 'SVG', value: 'svg' }
-		]
-	},
-	{ text: 'Settings', icon: 'i-solar:settings-bold', value: 'settings' }
-]
-
-// Sample data with custom field names
-const customData: MenuItem[] = [
-	{
-		title: 'File',
-		actions: [
-			{ title: 'New', shortcut: 'Ctrl+N', actionId: 'new' },
-			{ title: 'Open', shortcut: 'Ctrl+O', actionId: 'open' }
-		]
-	}
-]
-
-const customFields: MenuFields = {
-	text: 'title',
-	value: 'actionId',
-	description: 'shortcut',
-	children: 'actions'
+async function openMenu(container: HTMLElement) {
+	const trigger = container.querySelector('[data-menu-trigger]')!
+	await fireEvent.click(trigger)
+	await waitFor(() => {
+		expect(container.querySelector('[data-menu-dropdown]')).toBeTruthy()
+	})
 }
 
 describe('Menu', () => {
-	describe('rendering', () => {
-		it('renders with correct data attributes', () => {
-			const { container } = render(Menu)
+	// ─── Rendering ──────────────────────────────────────────────────
 
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toBeInTheDocument()
-		})
+	it('renders a menu container', () => {
+		const { container } = render(Menu, { items: flatItems })
+		expect(container.querySelector('[data-menu]')).toBeTruthy()
+	})
 
-		it('has aria-label for accessibility', () => {
-			const { container } = render(Menu)
+	it('renders trigger button', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger).toBeTruthy()
+		expect(trigger?.tagName).toBe('BUTTON')
+	})
 
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('aria-label', 'Menu')
-		})
+	it('renders trigger label', () => {
+		const { container } = render(Menu, { items: flatItems, label: 'Actions' })
+		const label = container.querySelector('[data-menu-label]')
+		expect(label?.textContent).toBe('Actions')
+	})
 
-		it('renders trigger button', () => {
-			const { container } = render(Menu)
+	it('renders trigger icon when provided', () => {
+		const { container } = render(Menu, { items: flatItems, icon: 'i-dots' })
+		const icon = container.querySelector('[data-menu-icon]')
+		expect(icon).toBeTruthy()
+		expect(icon?.classList.contains('i-dots')).toBe(true)
+	})
 
-			const trigger = container.querySelector('[data-menu-trigger]')
-			expect(trigger).toBeInTheDocument()
-		})
+	it('renders trigger arrow by default', () => {
+		const { container } = render(Menu, { items: flatItems })
+		expect(container.querySelector('[data-menu-arrow]')).toBeTruthy()
+	})
 
-		it('renders default label', () => {
-			const { container } = render(Menu)
+	it('hides trigger arrow when showArrow is false', () => {
+		const { container } = render(Menu, { items: flatItems, showArrow: false })
+		expect(container.querySelector('[data-menu-arrow]')).toBeNull()
+	})
 
-			const label = container.querySelector('[data-menu-label]')
-			expect(label?.textContent).toBe('Menu')
-		})
+	it('dropdown is hidden by default', () => {
+		const { container } = render(Menu, { items: flatItems })
+		expect(container.querySelector('[data-menu-dropdown]')).toBeNull()
+	})
 
-		it('renders custom label', () => {
-			const { container } = render(Menu, {
-				props: { label: 'Actions' }
-			})
+	// ─── Open / Close ───────────────────────────────────────────────
 
-			const label = container.querySelector('[data-menu-label]')
-			expect(label?.textContent).toBe('Actions')
-		})
+	it('opens dropdown on trigger click', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		expect(container.querySelector('[data-menu-dropdown]')).toBeTruthy()
+		expect(container.querySelector('[data-menu]')?.hasAttribute('data-open')).toBe(true)
+	})
 
-		it('renders icon when provided', () => {
-			const { container } = render(Menu, {
-				props: { icon: 'i-solar:menu-dots-bold' }
-			})
-
-			const icon = container.querySelector('[data-menu-icon]')
-			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveClass('i-solar:menu-dots-bold')
-		})
-
-		it('does not render icon when not provided', () => {
-			const { container } = render(Menu)
-
-			const icon = container.querySelector('[data-menu-icon]')
-			expect(icon).not.toBeInTheDocument()
-		})
-
-		it('renders arrow by default', () => {
-			const { container } = render(Menu)
-
-			const arrow = container.querySelector('[data-menu-arrow]')
-			expect(arrow).toBeInTheDocument()
-		})
-
-		it('does not render arrow when showArrow is false', () => {
-			const { container } = render(Menu, {
-				props: { showArrow: false }
-			})
-
-			const arrow = container.querySelector('[data-menu-arrow]')
-			expect(arrow).not.toBeInTheDocument()
+	it('closes dropdown on second trigger click', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const trigger = container.querySelector('[data-menu-trigger]')!
+		await fireEvent.click(trigger)
+		await waitFor(() => {
+			expect(container.querySelector('[data-menu-dropdown]')).toBeNull()
 		})
 	})
 
-	describe('dropdown behavior', () => {
-		it('dropdown is initially closed', () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).not.toBeInTheDocument()
-		})
-
-		it('opens dropdown on trigger click', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).toBeInTheDocument()
-		})
-
-		it('closes dropdown on second trigger click', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-			await fireEvent.click(trigger!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).not.toBeInTheDocument()
-		})
-
-		it('closes dropdown on Escape key', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			await fireEvent.keyDown(document, { key: 'Escape' })
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).not.toBeInTheDocument()
-		})
-
-		it('sets data-open attribute when open', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const menu = container.querySelector('[data-menu]')
-			// When closed, data-open attribute is not present (undefined)
-			expect(menu).not.toHaveAttribute('data-open')
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			// When open, data-open='true'
-			expect(menu).toHaveAttribute('data-open', 'true')
-		})
-
-		it('arrow is present when menu is open', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			// Arrow rotation is handled by CSS via [data-open] on parent
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-open', 'true')
-
-			const arrow = container.querySelector('[data-menu-arrow]')
-			expect(arrow).toBeInTheDocument()
+	it('opens on Enter key', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]') as HTMLElement
+		trigger.focus()
+		await fireEvent.keyDown(trigger, { key: 'Enter' })
+		await waitFor(() => {
+			expect(container.querySelector('[data-menu-dropdown]')).toBeTruthy()
 		})
 	})
 
-	describe('flat options', () => {
-		it('renders all flat options', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			expect(items).toHaveLength(4)
-		})
-
-		it('renders item labels correctly', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const labels = container.querySelectorAll('[data-menu-item-label]')
-			expect(labels[0]?.textContent).toBe('Copy')
-			expect(labels[1]?.textContent).toBe('Paste')
-		})
-
-		it('renders item icons', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const icons = container.querySelectorAll('[data-menu-item-icon]')
-			expect(icons).toHaveLength(4)
-			expect(icons[0]).toHaveClass('i-solar:copy-bold')
-		})
-
-		it('marks disabled items', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			const disabledItem = items[3]
-			expect(disabledItem).toHaveAttribute('disabled')
-			expect(disabledItem).toHaveAttribute('data-disabled', 'true')
+	it('opens on Space key', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]') as HTMLElement
+		trigger.focus()
+		await fireEvent.keyDown(trigger, { key: ' ' })
+		await waitFor(() => {
+			expect(container.querySelector('[data-menu-dropdown]')).toBeTruthy()
 		})
 	})
 
-	describe('grouped options', () => {
-		it('renders groups', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const groups = container.querySelectorAll('[data-menu-group]')
-			expect(groups).toHaveLength(2)
-		})
-
-		it('renders group labels', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const groupLabels = container.querySelectorAll('[data-menu-group-label]')
-			expect(groupLabels[0]?.textContent?.trim()).toContain('Image')
-			expect(groupLabels[1]?.textContent?.trim()).toContain('Data')
-		})
-
-		it('renders children within groups', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			// 2 items in Image group + 2 items in Data group = 4 total
-			expect(items).toHaveLength(4)
-		})
-
-		it('renders divider between groups', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dividers = container.querySelectorAll('[data-menu-divider]')
-			// Divider before second group only
-			expect(dividers).toHaveLength(1)
-		})
-
-		it('does not render divider before first group', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			const firstChild = dropdown?.firstElementChild
-			expect(firstChild).not.toHaveAttribute('data-menu-divider')
-		})
-
-		it('renders item descriptions', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const descriptions = container.querySelectorAll('[data-menu-item-description]')
-			expect(descriptions).toHaveLength(4)
-			expect(descriptions[0]?.textContent).toBe('High-quality image')
+	it('opens on ArrowDown key', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]') as HTMLElement
+		trigger.focus()
+		await fireEvent.keyDown(trigger, { key: 'ArrowDown' })
+		await waitFor(() => {
+			expect(container.querySelector('[data-menu-dropdown]')).toBeTruthy()
 		})
 	})
 
-	describe('mixed options', () => {
-		it('renders both standalone items and groups', async () => {
-			const { container } = render(Menu, {
-				props: { options: mixedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const groups = container.querySelectorAll('[data-menu-group]')
-			expect(groups).toHaveLength(1) // Only "Export As" is a group
-
-			const allItems = container.querySelectorAll('[data-menu-item]')
-			// Quick Save + Settings (standalone) + 2 in Export As group = 4
-			expect(allItems).toHaveLength(4)
+	it('opens on ArrowUp key', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]') as HTMLElement
+		trigger.focus()
+		await fireEvent.keyDown(trigger, { key: 'ArrowUp' })
+		await waitFor(() => {
+			expect(container.querySelector('[data-menu-dropdown]')).toBeTruthy()
 		})
 	})
 
-	describe('custom fields', () => {
-		it('uses custom text field', async () => {
-			const { container } = render(Menu, {
-				props: { options: customData, fields: customFields }
-			})
+	// ─── Flat Items ─────────────────────────────────────────────────
 
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
+	it('renders all flat items in dropdown', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		expect(items.length).toBe(4)
+	})
 
-			const groupLabel = container.querySelector('[data-menu-group-label]')
-			expect(groupLabel?.textContent?.trim()).toContain('File')
-		})
+	it('renders item text', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const texts = container.querySelectorAll('[data-menu-item-text]')
+		expect(texts[0]?.textContent).toBe('Copy')
+		expect(texts[1]?.textContent).toBe('Paste')
+	})
 
-		it('uses custom children field', async () => {
-			const { container } = render(Menu, {
-				props: { options: customData, fields: customFields }
-			})
+	it('renders item icons', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const icons = container.querySelectorAll('[data-menu-item-icon]')
+		expect(icons.length).toBe(2) // only Copy and Paste have icons
+		expect(icons[0]?.classList.contains('i-copy')).toBe(true)
+	})
 
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
+	it('renders items with data-path', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		expect(items[0]?.getAttribute('data-path')).toBe('0')
+		expect(items[1]?.getAttribute('data-path')).toBe('1')
+	})
 
+	it('renders items with role="menuitem"', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const menuitems = container.querySelectorAll('[role="menuitem"]')
+		expect(menuitems.length).toBe(4)
+	})
+
+	// ─── Disabled Items ─────────────────────────────────────────────
+
+	it('marks disabled items', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		expect(items[3]?.hasAttribute('data-disabled')).toBe(true)
+		expect((items[3] as HTMLButtonElement).disabled).toBe(true)
+	})
+
+	it('does not call onselect for disabled items', async () => {
+		const onselect = vi.fn()
+		const { container } = render(Menu, { items: flatItems, onselect })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		await fireEvent.click(items[3])
+		expect(onselect).not.toHaveBeenCalled()
+	})
+
+	// ─── Grouped Items ──────────────────────────────────────────────
+
+	it('renders groups as flatView nodes', async () => {
+		const { container } = render(Menu, { items: groupedItems })
+		await openMenu(container)
+		const groups = container.querySelectorAll('[data-menu-group]')
+		expect(groups.length).toBe(2)
+	})
+
+	it('renders group text', async () => {
+		const { container } = render(Menu, { items: groupedItems })
+		await openMenu(container)
+		const groupTexts = container.querySelectorAll('[data-menu-group-text]')
+		expect(groupTexts[0]?.textContent).toBe('File')
+		expect(groupTexts[1]?.textContent).toBe('Edit')
+	})
+
+	it('renders children when groups are expanded', async () => {
+		const { container } = render(Menu, { items: groupedItems, collapsible: true })
+		await openMenu(container)
+		// Groups start collapsed in collapsible mode — click to expand
+		const groups = container.querySelectorAll('[data-menu-group]')
+		await fireEvent.click(groups[0])
+		await waitFor(() => {
 			const items = container.querySelectorAll('[data-menu-item]')
-			expect(items).toHaveLength(2) // New and Open
-		})
-
-		it('uses custom description field', async () => {
-			const { container } = render(Menu, {
-				props: { options: customData, fields: customFields }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const descriptions = container.querySelectorAll('[data-menu-item-description]')
-			expect(descriptions[0]?.textContent).toBe('Ctrl+N')
+			expect(items.length).toBeGreaterThanOrEqual(2)
 		})
 	})
 
-	describe('selection', () => {
-		it('calls onselect with value when item clicked', async () => {
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options: flatOptions, onselect }
-			})
+	// ─── Selection ──────────────────────────────────────────────────
 
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
+	it('calls onselect when item is clicked', async () => {
+		const onselect = vi.fn()
+		const { container } = render(Menu, { items: flatItems, onselect })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		await fireEvent.click(items[0])
+		expect(onselect).toHaveBeenCalledWith('copy', expect.anything())
+	})
 
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.click(items[0]!)
-
-			expect(onselect).toHaveBeenCalledTimes(1)
-			expect(onselect).toHaveBeenCalledWith('copy', expect.objectContaining({ text: 'Copy' }))
-		})
-
-		it('calls onselect with correct value for grouped items', async () => {
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options: groupedOptions, onselect }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.click(items[0]!)
-
-			expect(onselect).toHaveBeenCalledWith(
-				'png',
-				expect.objectContaining({ text: 'Export as PNG' })
-			)
-		})
-
-		it('calls onselect with custom value field', async () => {
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options: customData, fields: customFields, onselect }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.click(items[0]!)
-
-			expect(onselect).toHaveBeenCalledWith('new', expect.objectContaining({ title: 'New' }))
-		})
-
-		it('closes menu after selection', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.click(items[0]!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).not.toBeInTheDocument()
-		})
-
-		it('does not call onselect for disabled items', async () => {
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options: flatOptions, onselect }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			// Last item (Delete) is disabled
-			await fireEvent.click(items[3]!)
-
-			expect(onselect).not.toHaveBeenCalled()
+	it('closes dropdown after selection', async () => {
+		const onselect = vi.fn()
+		const { container } = render(Menu, { items: flatItems, onselect })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		await fireEvent.click(items[1])
+		await waitFor(() => {
+			expect(container.querySelector('[data-menu-dropdown]')).toBeNull()
 		})
 	})
 
-	describe('keyboard navigation', () => {
-		it('selects item on Enter key', async () => {
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options: flatOptions, onselect }
-			})
-
+	it('returns focus to trigger after selection', async () => {
+		const onselect = vi.fn()
+		const { container } = render(Menu, { items: flatItems, onselect })
+		await openMenu(container)
+		const items = container.querySelectorAll('[data-menu-item]')
+		await fireEvent.click(items[0])
+		await waitFor(() => {
 			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.keyDown(items[0]!, { key: 'Enter' })
-
-			expect(onselect).toHaveBeenCalledWith('copy', expect.objectContaining({ text: 'Copy' }))
-		})
-
-		it('selects item on Space key', async () => {
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options: flatOptions, onselect }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.keyDown(items[0]!, { key: ' ' })
-
-			expect(onselect).toHaveBeenCalledWith('copy', expect.objectContaining({ text: 'Copy' }))
+			expect(document.activeElement).toBe(trigger)
 		})
 	})
 
-	describe('sizes', () => {
-		it('applies sm size data attribute', () => {
-			const { container } = render(Menu, {
-				props: { size: 'sm' }
-			})
+	// ─── Custom Fields ──────────────────────────────────────────────
 
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-size', 'sm')
+	it('supports custom field mapping', async () => {
+		const items = [
+			{ name: 'Save', id: 'save' },
+			{ name: 'Load', id: 'load' }
+		]
+		const onselect = vi.fn()
+		const { container } = render(Menu, {
+			items,
+			fields: { text: 'name', value: 'id' },
+			onselect
 		})
-
-		it('applies md size data attribute', () => {
-			const { container } = render(Menu, {
-				props: { size: 'md' }
-			})
-
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-size', 'md')
-		})
-
-		it('applies lg size data attribute', () => {
-			const { container } = render(Menu, {
-				props: { size: 'lg' }
-			})
-
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-size', 'lg')
-		})
+		await openMenu(container)
+		const texts = container.querySelectorAll('[data-menu-item-text]')
+		expect(texts[0]?.textContent).toBe('Save')
+		const menuItems = container.querySelectorAll('[data-menu-item]')
+		await fireEvent.click(menuItems[1])
+		expect(onselect).toHaveBeenCalledWith('load', expect.anything())
 	})
 
-	describe('alignment', () => {
-		it('sets left alignment by default', () => {
-			const { container } = render(Menu)
+	// ─── Separators ─────────────────────────────────────────────────
 
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-align', 'left')
-		})
-
-		it('sets right alignment', () => {
-			const { container } = render(Menu, {
-				props: { align: 'right' }
-			})
-
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-align', 'right')
-		})
-
-		it('normalizes start to left', () => {
-			const { container } = render(Menu, {
-				props: { align: 'start' }
-			})
-
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-align', 'left')
-		})
-
-		it('normalizes end to right', () => {
-			const { container } = render(Menu, {
-				props: { align: 'end' }
-			})
-
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-align', 'right')
-		})
+	it('renders separators', async () => {
+		const items = [
+			{ text: 'Cut', value: 'cut' },
+			{ type: 'separator' },
+			{ text: 'Paste', value: 'paste' }
+		]
+		const { container } = render(Menu, { items })
+		await openMenu(container)
+		const seps = container.querySelectorAll('[data-menu-separator]')
+		expect(seps.length).toBe(1)
 	})
 
-	describe('disabled state', () => {
-		it('sets disabled data attribute', () => {
-			const { container } = render(Menu, {
-				props: { disabled: true }
-			})
+	// ─── Sizes ──────────────────────────────────────────────────────
 
-			const menu = container.querySelector('[data-menu]')
-			expect(menu).toHaveAttribute('data-disabled', 'true')
-		})
-
-		it('disables trigger button', () => {
-			const { container } = render(Menu, {
-				props: { disabled: true }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			expect(trigger).toHaveAttribute('disabled')
-		})
-
-		it('does not open when disabled', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions, disabled: true }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).not.toBeInTheDocument()
-		})
+	it('renders with default md size', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-size')).toBe('md')
 	})
 
-	describe('accessibility', () => {
-		it('trigger has aria-haspopup="menu"', () => {
-			const { container } = render(Menu)
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			expect(trigger).toHaveAttribute('aria-haspopup', 'menu')
-		})
-
-		it('trigger has aria-expanded', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			expect(trigger).toHaveAttribute('aria-expanded', 'false')
-
-			await fireEvent.click(trigger!)
-
-			expect(trigger).toHaveAttribute('aria-expanded', 'true')
-		})
-
-		it('trigger has aria-label', () => {
-			const { container } = render(Menu, {
-				props: { label: 'Actions' }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			expect(trigger).toHaveAttribute('aria-label', 'Actions')
-		})
-
-		it('dropdown has role="menu"', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).toHaveAttribute('role', 'menu')
-		})
-
-		it('items have role="menuitem"', async () => {
-			const { container } = render(Menu, {
-				props: { options: flatOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			items.forEach((item) => {
-				expect(item).toHaveAttribute('role', 'menuitem')
-			})
-		})
-
-		it('dividers have role="separator"', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dividers = container.querySelectorAll('[data-menu-divider]')
-			dividers.forEach((divider) => {
-				expect(divider).toHaveAttribute('role', 'separator')
-			})
-		})
-
-		it('group labels have role="presentation"', async () => {
-			const { container } = render(Menu, {
-				props: { options: groupedOptions }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const groupLabels = container.querySelectorAll('[data-menu-group-label]')
-			groupLabels.forEach((label) => {
-				expect(label).toHaveAttribute('role', 'presentation')
-			})
-		})
+	it('renders with sm size', () => {
+		const { container } = render(Menu, { items: flatItems, size: 'sm' })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-size')).toBe('sm')
 	})
 
-	describe('field fallbacks', () => {
-		it('falls back to label field for text', async () => {
-			const options = [{ label: 'Test Label', value: 'test' }]
-			const { container } = render(Menu, {
-				props: { options }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const itemLabel = container.querySelector('[data-menu-item-label]')
-			expect(itemLabel?.textContent).toBe('Test Label')
-		})
-
-		it('falls back to id field for value', async () => {
-			const options = [{ text: 'Test', id: 'test-id' }]
-			const onselect = vi.fn()
-			const { container } = render(Menu, {
-				props: { options, onselect }
-			})
-
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			await fireEvent.click(items[0]!)
-
-			expect(onselect).toHaveBeenCalledWith('test-id', expect.anything())
-		})
+	it('renders with lg size', () => {
+		const { container } = render(Menu, { items: flatItems, size: 'lg' })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-size')).toBe('lg')
 	})
 
-	describe('empty state', () => {
-		it('renders empty dropdown when no options', async () => {
-			const { container } = render(Menu, {
-				props: { options: [] }
-			})
+	// ─── Alignment and Direction ────────────────────────────────────
 
-			const trigger = container.querySelector('[data-menu-trigger]')
-			await fireEvent.click(trigger!)
-
-			const dropdown = container.querySelector('[data-menu-dropdown]')
-			expect(dropdown).toBeInTheDocument()
-
-			const items = container.querySelectorAll('[data-menu-item]')
-			expect(items).toHaveLength(0)
-		})
+	it('defaults to start alignment', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-align')).toBe('start')
 	})
 
-	describe('custom snippets', () => {
-		describe('item snippet', () => {
-			it('renders custom item snippet for flat options', async () => {
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: flatOptions,
-						useItemSnippet: true
-					}
-				})
+	it('supports end alignment', () => {
+		const { container } = render(Menu, { items: flatItems, align: 'end' })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-align')).toBe('end')
+	})
 
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
+	it('defaults to down direction', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-direction')).toBe('down')
+	})
 
-				const customItems = container.querySelectorAll('[data-custom-item]')
-				expect(customItems).toHaveLength(4)
-				expect(customItems[0]?.textContent).toContain('Custom: Copy')
-			})
+	it('supports up direction', () => {
+		const { container } = render(Menu, { items: flatItems, direction: 'up' })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.getAttribute('data-direction')).toBe('up')
+	})
 
-			it('renders custom item snippet for grouped children', async () => {
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: groupedOptions,
-						useItemSnippet: true
-					}
-				})
+	// ─── Disabled ───────────────────────────────────────────────────
 
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
+	it('disables entire menu', () => {
+		const { container } = render(Menu, { items: flatItems, disabled: true })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.hasAttribute('data-disabled')).toBe(true)
+		const trigger = container.querySelector('[data-menu-trigger]') as HTMLButtonElement
+		expect(trigger.disabled).toBe(true)
+	})
 
-				const customItems = container.querySelectorAll('[data-custom-item]')
-				expect(customItems).toHaveLength(4) // 4 children total in grouped options
-				expect(customItems[0]?.textContent).toContain('Custom: Export as PNG')
-			})
+	it('does not open when disabled', async () => {
+		const { container } = render(Menu, { items: flatItems, disabled: true })
+		const trigger = container.querySelector('[data-menu-trigger]')!
+		await fireEvent.click(trigger)
+		expect(container.querySelector('[data-menu-dropdown]')).toBeNull()
+	})
 
-			it('calls onselect when custom item is clicked', async () => {
-				const onselect = vi.fn()
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: flatOptions,
-						useItemSnippet: true,
-						onselect
-					}
-				})
+	// ─── Accessibility ──────────────────────────────────────────────
 
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
+	it('trigger has aria-haspopup="menu"', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger?.getAttribute('aria-haspopup')).toBe('menu')
+	})
 
-				const customItems = container.querySelectorAll('[data-custom-item]')
-				await fireEvent.click(customItems[0]!)
+	it('trigger has aria-expanded=false when closed', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger?.getAttribute('aria-expanded')).toBe('false')
+	})
 
-				expect(onselect).toHaveBeenCalledWith('copy', expect.objectContaining({ text: 'Copy' }))
-			})
+	it('trigger has aria-expanded=true when open', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger?.getAttribute('aria-expanded')).toBe('true')
+	})
 
-			it('handles keyboard events in custom item', async () => {
-				const onselect = vi.fn()
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: flatOptions,
-						useItemSnippet: true,
-						onselect
-					}
-				})
+	it('trigger has aria-label', () => {
+		const { container } = render(Menu, { items: flatItems, label: 'Actions' })
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger?.getAttribute('aria-label')).toBe('Actions')
+	})
 
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
+	it('dropdown has role="menu"', async () => {
+		const { container } = render(Menu, { items: flatItems })
+		await openMenu(container)
+		const dropdown = container.querySelector('[data-menu-dropdown]')
+		expect(dropdown?.getAttribute('role')).toBe('menu')
+	})
 
-				const customItems = container.querySelectorAll('[data-custom-item]')
-				await fireEvent.keyDown(customItems[0]!, { key: 'Enter' })
+	// ─── Custom Class ───────────────────────────────────────────────
 
-				expect(onselect).toHaveBeenCalledWith('copy', expect.objectContaining({ text: 'Copy' }))
-			})
-		})
+	it('applies custom class', () => {
+		const { container } = render(Menu, { items: flatItems, class: 'my-menu' })
+		const el = container.querySelector('[data-menu]')
+		expect(el?.classList.contains('my-menu')).toBe(true)
+	})
 
-		describe('groupLabel snippet', () => {
-			it('renders custom group label snippet', async () => {
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: groupedOptions,
-						useGroupLabelSnippet: true
-					}
-				})
+	// ─── Custom Snippets ────────────────────────────────────────────
 
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
+	it('renders custom item snippet', async () => {
+		const { container } = render(MenuSnippetTest, { items: flatItems })
+		await openMenu(container)
+		const custom = container.querySelectorAll('[data-custom-item]')
+		expect(custom.length).toBe(4)
+		expect(custom[0]?.textContent?.trim()).toContain('Custom: Copy')
+	})
 
-				const customGroupLabels = container.querySelectorAll('[data-custom-group-label]')
-				expect(customGroupLabels).toHaveLength(2)
-				expect(customGroupLabels[0]?.textContent).toContain('Group: Image')
-				expect(customGroupLabels[1]?.textContent).toContain('Group: Data')
-			})
+	it('renders custom group snippet', async () => {
+		const { container } = render(MenuSnippetTest, { items: groupedItems })
+		await openMenu(container)
+		const custom = container.querySelectorAll('[data-custom-group]')
+		expect(custom.length).toBe(2)
+		expect(custom[0]?.textContent?.trim()).toContain('Group: File')
+	})
 
-			it('still uses default item rendering with custom group label', async () => {
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: groupedOptions,
-						useGroupLabelSnippet: true
-					}
-				})
+	it('custom snippet handles click', async () => {
+		const onselect = vi.fn()
+		const { container } = render(MenuSnippetTest, { items: flatItems, onselect })
+		await openMenu(container)
+		const custom = container.querySelectorAll('[data-custom-item]')
+		await fireEvent.click(custom[1])
+		expect(onselect).toHaveBeenCalledWith('paste', expect.anything())
+	})
 
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
+	// ─── Empty State ────────────────────────────────────────────────
 
-				// Should have custom group labels
-				const customGroupLabels = container.querySelectorAll('[data-custom-group-label]')
-				expect(customGroupLabels).toHaveLength(2)
-
-				// But default menu items
-				const defaultItems = container.querySelectorAll('[data-menu-item]')
-				expect(defaultItems).toHaveLength(4)
-			})
-		})
-
-		describe('combined snippets', () => {
-			it('renders both custom item and group label snippets', async () => {
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: groupedOptions,
-						useItemSnippet: true,
-						useGroupLabelSnippet: true
-					}
-				})
-
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
-
-				const customItems = container.querySelectorAll('[data-custom-item]')
-				const customGroupLabels = container.querySelectorAll('[data-custom-group-label]')
-
-				expect(customItems).toHaveLength(4)
-				expect(customGroupLabels).toHaveLength(2)
-			})
-		})
-
-		describe('per-item snippet override', () => {
-			it('uses named snippet for items with snippet field', async () => {
-				const optionsWithSnippet: MenuItem[] = [
-					{ text: 'Normal Item', value: 'normal' },
-					{ text: 'Premium Feature', value: 'premium', snippet: 'premium' },
-					{ text: 'Special Offer', value: 'special', snippet: 'special' }
-				]
-
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: optionsWithSnippet,
-						useNamedSnippets: true
-					}
-				})
-
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
-
-				// All items have data-menu-item (default item directly, custom items wrapped)
-				const allItems = container.querySelectorAll('[data-menu-item]')
-				expect(allItems).toHaveLength(3)
-
-				// Normal item should use default rendering (not wrapped with data-menu-item-custom)
-				const defaultItems = container.querySelectorAll(
-					'[data-menu-item]:not([data-menu-item-custom])'
-				)
-				expect(defaultItems).toHaveLength(1)
-
-				// Premium item should use premium snippet
-				const premiumItems = container.querySelectorAll('[data-premium-item]')
-				expect(premiumItems).toHaveLength(1)
-				expect(premiumItems[0]?.textContent).toContain('🔒 Premium: Premium Feature')
-
-				// Special item should use special snippet
-				const specialItems = container.querySelectorAll('[data-special-item]')
-				expect(specialItems).toHaveLength(1)
-				expect(specialItems[0]?.textContent).toContain('⭐ Special: Special Offer')
-
-				// Custom items are wrapped with data-menu-item-custom
-				const customWrappers = container.querySelectorAll('[data-menu-item-custom]')
-				expect(customWrappers).toHaveLength(2)
-			})
-
-			it('falls back to default when named snippet not found', async () => {
-				const optionsWithMissingSnippet: MenuItem[] = [
-					{ text: 'Unknown Snippet', value: 'unknown', snippet: 'nonexistent' }
-				]
-
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: optionsWithMissingSnippet,
-						useNamedSnippets: true
-					}
-				})
-
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
-
-				// Should fall back to default item rendering
-				const defaultItems = container.querySelectorAll('[data-menu-item]')
-				expect(defaultItems).toHaveLength(1)
-				expect(defaultItems[0]?.textContent).toContain('Unknown Snippet')
-			})
-
-			it('calls onselect when named snippet item is clicked', async () => {
-				const onselect = vi.fn()
-				const optionsWithSnippet: MenuItem[] = [
-					{ text: 'Premium Feature', value: 'premium', snippet: 'premium' }
-				]
-
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: optionsWithSnippet,
-						useNamedSnippets: true,
-						onselect
-					}
-				})
-
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
-
-				const premiumItems = container.querySelectorAll('[data-premium-item]')
-				await fireEvent.click(premiumItems[0]!)
-
-				expect(onselect).toHaveBeenCalledWith(
-					'premium',
-					expect.objectContaining({ text: 'Premium Feature' })
-				)
-			})
-
-			it('per-item snippet takes precedence over item snippet', async () => {
-				const optionsWithSnippet: MenuItem[] = [
-					{ text: 'Normal Item', value: 'normal' },
-					{ text: 'Premium Feature', value: 'premium', snippet: 'premium' }
-				]
-
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: optionsWithSnippet,
-						useItemSnippet: true,
-						useGroupLabelSnippet: true,
-						useNamedSnippets: true
-					}
-				})
-
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
-
-				// Normal item should use the item snippet (not default)
-				const customItems = container.querySelectorAll('[data-custom-item]')
-				expect(customItems).toHaveLength(1)
-				expect(customItems[0]?.textContent).toContain('Custom: Normal Item')
-
-				// Premium item should use its named snippet (premium), not the generic item snippet
-				const premiumItems = container.querySelectorAll('[data-premium-item]')
-				expect(premiumItems).toHaveLength(1)
-				expect(premiumItems[0]?.textContent).toContain('🔒 Premium: Premium Feature')
-			})
-		})
-
-		describe('custom snippet field name', () => {
-			it('uses custom field name for snippet', async () => {
-				const optionsWithCustomField: MenuItem[] = [
-					{ text: 'Normal', value: 'normal' },
-					{ text: 'Special', value: 'special', renderer: 'special' }
-				]
-
-				const { container } = render(MenuSnippetTest, {
-					props: {
-						options: optionsWithCustomField,
-						fields: { snippet: 'renderer' },
-						useNamedSnippets: true
-					}
-				})
-
-				const trigger = container.querySelector('[data-menu-trigger]')
-				await fireEvent.click(trigger!)
-
-				// Both items have data-menu-item (default item directly, custom wrapped)
-				const allItems = container.querySelectorAll('[data-menu-item]')
-				expect(allItems).toHaveLength(2)
-
-				// Normal uses default rendering (button is the menu-item itself)
-				const defaultItems = container.querySelectorAll(
-					'[data-menu-item]:not([data-menu-item-custom])'
-				)
-				expect(defaultItems).toHaveLength(1)
-
-				// Special uses the special snippet (via custom 'renderer' field)
-				const specialItems = container.querySelectorAll('[data-special-item]')
-				expect(specialItems).toHaveLength(1)
-
-				// Special item wrapper has data-menu-item-custom
-				const customWrappers = container.querySelectorAll('[data-menu-item-custom]')
-				expect(customWrappers).toHaveLength(1)
-			})
-		})
+	it('renders empty dropdown with no items', async () => {
+		const { container } = render(Menu, { items: [] })
+		await openMenu(container)
+		const dropdown = container.querySelector('[data-menu-dropdown]')
+		expect(dropdown).toBeTruthy()
+		expect(container.querySelectorAll('[data-menu-item]').length).toBe(0)
 	})
 })

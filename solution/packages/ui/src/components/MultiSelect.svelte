@@ -1,421 +1,256 @@
 <script lang="ts">
-	import type {
-		MultiSelectProps,
-		SelectItem,
-		SelectItemSnippet,
-		SelectItemHandlers,
-		SelectStateIcons
-	} from '../types/select.js'
-	import { getSnippet, defaultSelectStateIcons } from '../types/select.js'
-	import { ItemProxy } from '../types/item-proxy.js'
-	import ItemContent from './ItemContent.svelte'
-	import { ListController } from '@rokkit/states'
-	import { navigator } from '@rokkit/actions'
-	import { untrack } from 'svelte'
+	/**
+	 * MultiSelect — Trigger + dropdown with List-style flatView content.
+	 *
+	 * Same architecture as Select but with toggle selection (dropdown stays open),
+	 * checkbox indicators, and tags display in trigger.
+	 *
+	 * Data attributes:
+	 *   data-select / data-multiselect — root container (both for theme compat)
+	 *   data-select-trigger     — trigger button
+	 *   data-select-value       — selected value display area
+	 *   data-select-tags        — tags container
+	 *   data-select-tag         — individual tag
+	 *   data-select-tag-text    — tag text
+	 *   data-select-tag-remove  — tag remove button
+	 *   data-select-count       — count indicator when exceeding maxDisplay
+	 *   data-select-placeholder — placeholder text
+	 *   data-select-arrow       — dropdown arrow icon
+	 *   data-select-dropdown    — dropdown container
+	 *   data-select-option      — option items
+	 *   data-select-checkbox    — checkbox indicator
+	 *   data-select-group-label — group header (non-interactive)
+	 *   data-select-group-icon  — icon inside group label
+	 *   data-select-divider     — divider between groups
+	 *   data-path, data-selected, data-checked, data-disabled, data-open, data-size
+	 */
+	// @ts-nocheck
+	import type { ProxyItem } from '@rokkit/states'
+	import { Wrapper } from '@rokkit/states'
+	import { Navigator, Trigger } from '@rokkit/actions'
+	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+
+	interface MultiSelectIcons {
+		opened?: string
+		closed?: string
+		checked?: string
+		remove?: string
+	}
 
 	let {
-		options = [],
-		fields: userFields,
+		items = [],
+		fields = {},
 		value = $bindable<unknown[]>([]),
-		selected = $bindable<SelectItem[]>([]),
+		selected = $bindable<unknown[]>([]),
 		placeholder = 'Select...',
 		size = 'md',
-		align = 'left',
-		direction = 'down',
-		maxRows = 5,
-		maxDisplay = 3,
 		disabled = false,
+		maxDisplay = 3,
+		align = 'start',
+		direction = 'down',
+		icons: userIcons = {} as MultiSelectIcons,
 		onchange,
 		class: className = '',
-		icons: userIcons,
-		item: itemSnippet,
-		groupLabel: groupLabelSnippet,
-		selectedValues: selectedValuesSnippet,
 		...snippets
-	}: MultiSelectProps & { [key: string]: SelectItemSnippet | unknown } = $props()
+	}: {
+		items?: unknown[]
+		fields?: Record<string, string>
+		value?: unknown[]
+		selected?: unknown[]
+		placeholder?: string
+		size?: string
+		disabled?: boolean
+		maxDisplay?: number
+		align?: 'start' | 'end'
+		direction?: 'up' | 'down'
+		icons?: MultiSelectIcons
+		onchange?: (values: unknown[], items: unknown[]) => void
+		class?: string
+		[key: string]: unknown
+	} = $props()
 
-	// Merge icons with defaults
-	const icons = $derived<SelectStateIcons>({ ...defaultSelectStateIcons, ...userIcons })
+	const icons = $derived({ ...DEFAULT_STATE_ICONS.selector, ...DEFAULT_STATE_ICONS.checkbox, ...DEFAULT_STATE_ICONS.action, ...userIcons })
 
-	// Normalize alignment value
-	const normalizedAlign = $derived(align === 'left' || align === 'start' ? 'left' : 'right')
-
-	// Default row heights by size (used until we measure actual height)
-	const defaultRowHeight = $derived(size === 'sm' ? 28 : size === 'lg' ? 40 : 34)
-
-	// Measured row height (updated when dropdown opens)
-	let measuredRowHeight = $state<number | null>(null)
-
-	// Use measured height if available, otherwise fall back to default
-	const maxHeight = $derived(maxRows * (measuredRowHeight ?? defaultRowHeight))
-
-	/**
-	 * Create an ItemProxy for the given item
-	 */
-	function createProxy(item: SelectItem): ItemProxy {
-		return new ItemProxy(item, userFields)
-	}
-
-	// ─── Flatten options into navigable items for the controller ────
-
-	/** Flat array of raw selectable items (for controller) */
-	const flatItems = $derived.by(() => {
-		const items: SelectItem[] = []
-		for (const option of options) {
-			const proxy = createProxy(option)
-			if (proxy.hasChildren) {
-				for (const child of proxy.children) {
-					items.push(child as SelectItem)
-				}
-			} else {
-				items.push(option)
-			}
-		}
-		return items
-	})
-
-	/** Map from raw item → flat index key (for data-path). Uses Map to support primitives. */
-	const itemPathMap = $derived.by(() => {
-		const map = new Map<unknown, string>()
-		flatItems.forEach((item, index) => {
-			map.set(item, String(index))
-		})
-		return map
-	})
-
-	// ─── Controller + Navigator ────────────────────────────────────
+	// ─── Dropdown state ───────────────────────────────────────────────────────
 
 	let isOpen = $state(false)
-	let selectRef = $state<HTMLDivElement | null>(null)
-	let dropdownRef = $state<HTMLDivElement | null>(null)
+	let selectRef = $state<HTMLElement | null>(null)
+	let triggerRef = $state<HTMLElement | null>(null)
+	let dropdownRef = $state<HTMLElement | null>(null)
 
-	let controller = untrack(() => new ListController(flatItems, undefined, userFields))
+	// ─── Pre-process items ────────────────────────────────────────────────────
 
-	$effect(() => {
-		controller.update(flatItems)
-	})
+	const childrenField = $derived(fields?.children || 'children')
 
-	// Find selected items based on current value (extracted primitives)
-	const selectedItems = $derived.by(() => {
-		if (!value || value.length === 0) return [] as { proxy: ItemProxy; original: SelectItem }[]
-		return flatItems
-			.filter((item) => {
-				const proxy = createProxy(item)
-				const extracted = proxy.itemValue
-				return value.some((v) => v === extracted)
-			})
-			.map((item) => ({ proxy: createProxy(item), original: item }))
-	})
-
-	// Focus the element matching controller.focusedKey on navigator action events
-	$effect(() => {
-		if (!dropdownRef) return
-		const el = dropdownRef
-
-		function onAction(event: Event) {
-			const detail = (event as CustomEvent).detail
-
-			if (detail.name === 'move') {
-				const key = controller.focusedKey
-				if (key) {
-					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-					if (target && target !== document.activeElement) {
-						target.focus()
-						target.scrollIntoView?.({ block: 'nearest' })
-					}
-				}
+	// Force groups expanded + disabled (non-navigable labels)
+	const processedItems = $derived(
+		items.map((item) => {
+			const children = item[childrenField]
+			if (Array.isArray(children) && children.length > 0) {
+				return { ...item, expanded: true, disabled: true }
 			}
+			return item
+		})
+	)
 
-			if (detail.name === 'select') {
-				handleSelectAction()
-			}
-		}
+	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
-		el.addEventListener('action', onAction)
-		return () => el.removeEventListener('action', onAction)
-	})
-
-	/**
-	 * Handle the navigator's select action — toggle selection (don't close)
-	 */
-	function handleSelectAction() {
-		const key = controller.focusedKey
-		if (!key) return
-
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-
-		const item = proxy.value as SelectItem
-		toggleItemSelection(item)
-	}
-
-	/**
-	 * Sync DOM focus to controller state
-	 */
-	function handleFocusIn(event: FocusEvent) {
-		const target = event.target as HTMLElement
-		if (!target) return
-		const path = target.dataset.path
-		if (path !== undefined) {
-			controller.moveTo(path)
-		}
-	}
-
-	// ─── Selection logic ───────────────────────────────────────────
-
-	function toggleItemSelection(item: SelectItem) {
-		const proxy = createProxy(item)
+	function handleSelect(extractedValue: unknown, proxy: ProxyItem) {
 		if (proxy.disabled) return
+		toggleItemSelection(extractedValue, proxy.raw)
+	}
 
-		const extracted = proxy.itemValue
-		const isAlreadySelected = (value ?? []).some((v) => v === extracted)
+	const wrapper = $derived(new Wrapper(processedItems, fields, { onselect: handleSelect }))
+
+	// Override cancel/blur to close dropdown
+	$effect(() => {
+		const w = wrapper
+		w.cancel = () => {
+			isOpen = false
+			triggerRef?.focus()
+		}
+		w.blur = () => {
+			isOpen = false
+		}
+	})
+
+	// When wrapper recreates while open, focus first item
+	$effect(() => {
+		const _w = wrapper
+		if (isOpen) _w.first(null)
+	})
+
+	// ─── Selection logic ──────────────────────────────────────────────────────
+
+	function isItemSelected(extractedValue: unknown): boolean {
+		return (value ?? []).some((v) => v === extractedValue)
+	}
+
+	function toggleItemSelection(extractedValue: unknown, rawItem: unknown) {
+		const currentValues = value ?? []
+		const alreadySelected = currentValues.some((v) => v === extractedValue)
 
 		let newValues: unknown[]
-		let newItems: SelectItem[]
+		let newItems: unknown[]
 
-		if (isAlreadySelected) {
-			newValues = (value ?? []).filter((v) => v !== extracted)
-			newItems = selectedItems
-				.filter((si) => si.proxy.itemValue !== extracted)
-				.map((si) => si.original)
+		if (alreadySelected) {
+			newValues = currentValues.filter((v) => v !== extractedValue)
+			// Rebuild selected items from remaining values
+			newItems = []
+			for (const [, proxy] of wrapper.lookup) {
+				if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
+					newItems.push(proxy.raw)
+				}
+			}
 		} else {
-			newValues = [...(value ?? []), extracted]
-			newItems = [...selectedItems.map((si) => si.original), item]
-		}
-
-		value = newValues
-		selected = newItems
-		onchange?.(newValues, newItems)
-	}
-
-	function removeItem(item: { proxy: ItemProxy; original: SelectItem }) {
-		const extracted = item.proxy.itemValue
-		const newValues = (value ?? []).filter((v) => v !== extracted)
-		const newItems = selectedItems
-			.filter((si) => si.proxy.itemValue !== extracted)
-			.map((si) => si.original)
-
-		value = newValues
-		selected = newItems
-		onchange?.(newValues, newItems)
-	}
-
-	// ─── Dropdown open/close ───────────────────────────────────────
-
-	function toggleDropdown() {
-		if (disabled) return
-		if (isOpen) {
-			closeDropdown()
-		} else {
-			openDropdown()
-		}
-	}
-
-	function openDropdown() {
-		if (disabled || isOpen) return
-		isOpen = true
-		controller.moveFirst()
-		requestAnimationFrame(() => {
-			measureRowHeight()
-			focusCurrentItem()
-		})
-	}
-
-	function closeDropdown() {
-		isOpen = false
-	}
-
-	function focusCurrentItem() {
-		if (!dropdownRef || !controller.focusedKey) return
-		const target = dropdownRef.querySelector(
-			`[data-path="${controller.focusedKey}"]`
-		) as HTMLElement | null
-		if (target) {
-			target.focus()
-			target.scrollIntoView?.({ block: 'nearest' })
-		}
-	}
-
-	function measureRowHeight() {
-		const dropdown = selectRef?.querySelector('[data-select-dropdown]')
-		if (dropdown) {
-			const firstOption = dropdown.querySelector('[data-select-option]')
-			if (firstOption) {
-				const height = firstOption.getBoundingClientRect().height
-				if (height > 0) {
-					measuredRowHeight = height
+			newValues = [...currentValues, extractedValue]
+			// Rebuild selected items from lookup to include all values
+			newItems = []
+			for (const [, proxy] of wrapper.lookup) {
+				if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
+					newItems.push(proxy.raw)
 				}
 			}
 		}
+
+		value = newValues
+		selected = newItems
+		onchange?.(newValues, newItems)
 	}
 
-	// ─── Trigger keyboard handling ─────────────────────────────────
-
-	function handleTriggerKeyDown(event: KeyboardEvent) {
-		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-			event.preventDefault()
-			openDropdown()
-		} else if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault()
-			toggleDropdown()
+	function removeTag(extractedValue: unknown) {
+		const currentValues = value ?? []
+		const newValues = currentValues.filter((v) => v !== extractedValue)
+		const newItems: unknown[] = []
+		for (const [, proxy] of wrapper.lookup) {
+			if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
+				newItems.push(proxy.raw)
+			}
 		}
+		value = newValues
+		selected = newItems
+		onchange?.(newValues, newItems)
 	}
 
-	// ─── Escape + click-outside ────────────────────────────────────
+	// ─── Selected items for tags display ──────────────────────────────────────
 
-	function handleEscapeKey(event: KeyboardEvent) {
-		if (!isOpen) return
-		if (event.key === 'Escape') {
-			event.preventDefault()
-			closeDropdown()
-			const trigger = selectRef?.querySelector('[data-select-trigger]') as HTMLElement | undefined
-			trigger?.focus()
+	const selectedProxies = $derived.by(() => {
+		const vals = value ?? []
+		if (vals.length === 0) return []
+		const result: ProxyItem[] = []
+		for (const [, proxy] of wrapper.lookup) {
+			if (!proxy.hasChildren && vals.some((v) => v === proxy.value)) {
+				result.push(proxy)
+			}
 		}
-	}
-
-	function handleClickOutside(event: MouseEvent) {
-		if (selectRef && !selectRef.contains(event.target as Node)) {
-			closeDropdown()
-		}
-	}
-
-	$effect(() => {
-		if (isOpen) {
-			document.addEventListener('click', handleClickOutside, true)
-			document.addEventListener('keydown', handleEscapeKey)
-		}
-		return () => {
-			document.removeEventListener('click', handleClickOutside, true)
-			document.removeEventListener('keydown', handleEscapeKey)
-		}
+		return result
 	})
 
-	// ─── Snippet + rendering helpers ───────────────────────────────
+	// ─── Trigger action ───────────────────────────────────────────────────────
 
-	/**
-	 * Handle direct Enter/Space on an option.
-	 * Stops propagation to prevent navigator from double-handling.
-	 */
-	function handleItemToggle(item: SelectItem) {
-		toggleItemSelection(item)
-	}
+	$effect(() => {
+		if (!triggerRef || !selectRef || disabled) return
+		const t = new Trigger(triggerRef, selectRef, {
+			isOpen: () => isOpen,
+			onopen: () => {
+				isOpen = true
+				requestAnimationFrame(() => wrapper.first(null))
+			},
+			onclose: () => { isOpen = false },
+			onlast: () => requestAnimationFrame(() => wrapper.last(null))
+		})
+		return () => t.destroy()
+	})
 
-	/**
-	 * Create handlers object for custom snippets
-	 */
-	function createHandlers(item: SelectItem): SelectItemHandlers {
-		return {
-			onclick: () => handleItemToggle(item),
-			onkeydown: (event: KeyboardEvent) => {
-				if (event.key === 'Enter' || event.key === ' ') {
-					event.preventDefault()
-					event.stopPropagation()
-					handleItemToggle(item)
-				}
+	// ─── Navigator on dropdown ────────────────────────────────────────────────
+
+	$effect(() => {
+		if (!isOpen || !dropdownRef) return
+		const dir = getComputedStyle(dropdownRef).direction || 'ltr'
+		const nav = new Navigator(dropdownRef, wrapper, { dir })
+		return () => nav.destroy()
+	})
+
+	// DOM focus sync
+	$effect(() => {
+		const key = wrapper.focusedKey
+		if (!isOpen || !dropdownRef || !key) return
+		requestAnimationFrame(() => {
+			const target = dropdownRef?.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+			if (target && target !== document.activeElement) {
+				target.focus()
+				target.scrollIntoView?.({ block: 'nearest' })
+			}
+		})
+	})
+
+	// ─── Helpers ──────────────────────────────────────────────────────────────
+
+	const groupDividers = $derived.by(() => {
+		const set = new Set<string>()
+		let foundFirst = false
+		for (const node of wrapper.flatView) {
+			if (node.hasChildren) {
+				if (foundFirst) set.add(node.key)
+				foundFirst = true
 			}
 		}
-	}
-
-	/**
-	 * Resolve which snippet to use for an item
-	 */
-	function resolveItemSnippet(proxy: ItemProxy): SelectItemSnippet | null {
-		const snippetName = proxy.snippetName
-		if (snippetName) {
-			const namedSnippet = getSnippet(snippets, snippetName)
-			if (namedSnippet) {
-				return namedSnippet as SelectItemSnippet
-			}
-		}
-		return itemSnippet ?? null
-	}
-
-	/**
-	 * Check if an item is currently selected
-	 */
-	function isSelected(proxy: ItemProxy): boolean {
-		const extracted = proxy.itemValue
-		return (value ?? []).some((v) => v === extracted)
-	}
-
-	function shouldShowDivider(optionIndex: number, isGroup: boolean): boolean {
-		return isGroup && optionIndex > 0
-	}
-
-	/**
-	 * Get the data-path key for a raw item
-	 */
-	function getPathKey(item: SelectItem): string | undefined {
-		return itemPathMap.get(item)
-	}
+		return set
+	})
 </script>
 
-{#snippet defaultOption(proxy: ItemProxy, handlers: SelectItemHandlers, isItemSelected: boolean, pathKey: string | undefined)}
-	<button
-		type="button"
-		data-select-option
-		data-path={pathKey}
-		data-disabled={proxy.disabled || undefined}
-		data-selected={isItemSelected || undefined}
-		role="option"
-		aria-selected={isItemSelected}
-		disabled={proxy.disabled}
-		aria-label={proxy.label}
-		onkeydown={handlers.onkeydown}
-	>
-		<span data-select-checkbox data-checked={isItemSelected || undefined}>
-			{#if isItemSelected}
-				<span class={icons.checked} aria-hidden="true"></span>
-			{/if}
-		</span>
-		<ItemContent {proxy} />
-	</button>
-{/snippet}
-
-{#snippet defaultGroupLabel(proxy: ItemProxy)}
-	<div data-select-group-label role="presentation">
-		{#if proxy.icon}
-			<span data-select-group-icon class={proxy.icon} aria-hidden="true"></span>
-		{/if}
-		<span>{proxy.text}</span>
-	</div>
-{/snippet}
-
-{#snippet renderOption(item: SelectItem, proxy: ItemProxy, pathKey: string | undefined)}
-	{@const customSnippet = resolveItemSnippet(proxy)}
-	{@const handlers = createHandlers(item)}
-	{@const isItemSelected = isSelected(proxy)}
-	{#if customSnippet}
-		<div
-			data-select-option
-			data-select-option-custom
-			data-path={pathKey}
-			data-disabled={proxy.disabled || undefined}
-			data-selected={isItemSelected || undefined}
-		>
-			<svelte:boundary>
-				{@render customSnippet(item, proxy.fields, handlers, isItemSelected)}
-				{#snippet failed()}
-					{@render defaultOption(proxy, handlers, isItemSelected, pathKey)}
-				{/snippet}
-			</svelte:boundary>
-		</div>
-	{:else}
-		{@render defaultOption(proxy, handlers, isItemSelected, pathKey)}
+{#snippet defaultOptionContent(proxy: ProxyItem)}
+	{#if proxy.icon}
+		<span data-select-option-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
+	<span data-item-text>{proxy.text}</span>
 {/snippet}
 
-{#snippet renderGroupLabel(proxy: ItemProxy)}
-	{#if groupLabelSnippet}
-		<svelte:boundary>
-			{@render groupLabelSnippet(proxy.original as SelectItem, proxy.fields)}
-			{#snippet failed()}
-				{@render defaultGroupLabel(proxy)}
-			{/snippet}
-		</svelte:boundary>
-	{:else}
-		{@render defaultGroupLabel(proxy)}
+{#snippet defaultGroupContent(proxy: ProxyItem)}
+	{#if proxy.icon}
+		<span data-select-group-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
+	<span>{proxy.text}</span>
 {/snippet}
 
 <div
@@ -425,45 +260,39 @@
 	data-open={isOpen || undefined}
 	data-size={size}
 	data-disabled={disabled || undefined}
-	data-align={normalizedAlign}
+	data-align={align}
 	data-direction={direction}
 	class={className || undefined}
 >
 	<button
+		bind:this={triggerRef}
 		type="button"
 		data-select-trigger
 		{disabled}
 		aria-haspopup="listbox"
 		aria-expanded={isOpen}
-		onclick={toggleDropdown}
-		onkeydown={handleTriggerKeyDown}
 	>
 		<span data-select-value>
-			{#if selectedValuesSnippet && selectedItems.length > 0}
-				{@render selectedValuesSnippet(
-					selectedItems.map((item) => item.original),
-					selectedItems[0]?.proxy.fields ?? {}
-				)}
-			{:else if selectedItems.length > 0}
-				{#if selectedItems.length <= maxDisplay}
+			{#if selectedProxies.length > 0}
+				{#if selectedProxies.length <= maxDisplay}
 					<span data-select-tags>
-						{#each selectedItems as item (item.proxy.itemValue)}
+						{#each selectedProxies as proxy (proxy.value)}
 							<span data-select-tag>
-								<span data-select-tag-text>{item.proxy.text}</span>
+								<span data-select-tag-text>{proxy.text}</span>
 								<span
 									role="button"
 									tabindex="0"
 									data-select-tag-remove
-									aria-label="Remove {item.proxy.text}"
+									aria-label="Remove {proxy.text}"
 									onclick={(e) => {
 										e.stopPropagation()
-										removeItem(item)
+										removeTag(proxy.value)
 									}}
 									onkeydown={(e) => {
 										if (e.key === 'Enter' || e.key === ' ') {
 											e.preventDefault()
 											e.stopPropagation()
-											removeItem(item)
+											removeTag(proxy.value)
 										}
 									}}
 								>
@@ -473,7 +302,7 @@
 						{/each}
 					</span>
 				{:else}
-					<span data-select-count>{selectedItems.length} selected</span>
+					<span data-select-count>{selectedProxies.length} selected</span>
 				{/if}
 			{:else}
 				<span data-select-placeholder>{placeholder}</span>
@@ -490,30 +319,50 @@
 			role="listbox"
 			aria-multiselectable="true"
 			aria-orientation="vertical"
-			style="max-height: {maxHeight}px"
-			onfocusin={handleFocusIn}
-			use:navigator={{ wrapper: controller, orientation: 'vertical' }}
 		>
-			{#each options as option, optionIndex (optionIndex)}
-				{@const proxy = createProxy(option)}
+			{#each wrapper.flatView as node (node.key)}
+				{@const proxy = node.proxy}
+				{@const sel = !node.hasChildren && isItemSelected(proxy.value)}
+				{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
 
-				{#if proxy.hasChildren}
-					{#if shouldShowDivider(optionIndex, true)}
-						<div data-select-divider role="separator"></div>
+				{#if node.type === 'separator'}
+					<hr data-select-separator />
+				{:else if node.hasChildren}
+					{#if groupDividers.has(node.key)}
+						<div data-select-divider></div>
 					{/if}
-
-					<div data-select-group>
-						{@render renderGroupLabel(proxy)}
-
-						{#each proxy.children as child, childIndex (childIndex)}
-							{@const childProxy = proxy.createChildProxy(child)}
-							{@const pathKey = getPathKey(child as SelectItem)}
-							{@render renderOption(child as SelectItem, childProxy, pathKey)}
-						{/each}
+					<div data-select-group-label role="presentation">
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							{@render defaultGroupContent(proxy)}
+						{/if}
 					</div>
 				{:else}
-					{@const pathKey = getPathKey(option)}
-					{@render renderOption(option, proxy, pathKey)}
+					<button
+						type="button"
+						data-select-option
+						data-path={node.key}
+						data-level={node.level}
+						data-selected={sel || undefined}
+						data-disabled={proxy.disabled || undefined}
+						role="option"
+						aria-selected={sel}
+						aria-label={proxy.text}
+						disabled={proxy.disabled || disabled}
+						tabindex="-1"
+					>
+						<span data-select-checkbox data-checked={sel || undefined}>
+							{#if sel}
+								<span class={icons.checked} aria-hidden="true"></span>
+							{/if}
+						</span>
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							{@render defaultOptionContent(proxy)}
+						{/if}
+					</button>
 				{/if}
 			{/each}
 		</div>

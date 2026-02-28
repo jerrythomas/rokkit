@@ -92,7 +92,7 @@ describe('List', () => {
 
 	it('renders group labels', () => {
 		const { container } = render(List, { items: groupedItems })
-		const labels = container.querySelectorAll('[data-list-group-label]')
+		const labels = container.querySelectorAll('[data-list-group]')
 		expect(labels.length).toBe(2)
 		expect(labels[0]?.textContent).toContain('Navigation')
 		expect(labels[1]?.textContent).toContain('Account')
@@ -101,7 +101,7 @@ describe('List', () => {
 	it('renders group children when expanded', async () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
 		// Groups start collapsed — expand the first group
-		const label = container.querySelector('[data-list-group-label]')!
+		const label = container.querySelector('[data-list-group]')!
 		await fireEvent.click(label)
 		flushSync()
 		const items = container.querySelectorAll('[data-list-item]')
@@ -135,7 +135,7 @@ describe('List', () => {
 
 	it('toggles group on click when collapsible', async () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
-		const label = container.querySelector('[data-list-group-label]')!
+		const label = container.querySelector('[data-list-group]')!
 		// Groups start collapsed
 		expect(label.getAttribute('aria-expanded')).toBe('false')
 		await fireEvent.click(label)
@@ -145,7 +145,7 @@ describe('List', () => {
 
 	it('sets aria-expanded on group labels when collapsible', () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
-		const labels = container.querySelectorAll('[data-list-group-label]')
+		const labels = container.querySelectorAll('[data-list-group]')
 		// Groups start collapsed
 		expect(labels[0]?.getAttribute('aria-expanded')).toBe('false')
 		expect(labels[1]?.getAttribute('aria-expanded')).toBe('false')
@@ -153,7 +153,7 @@ describe('List', () => {
 
 	it('disables group label button when not collapsible', () => {
 		const { container } = render(List, { items: groupedItems, collapsible: false })
-		const labels = container.querySelectorAll('[data-list-group-label]')
+		const labels = container.querySelectorAll('[data-list-group]')
 		expect(labels[0]?.hasAttribute('disabled')).toBe(true)
 	})
 
@@ -183,7 +183,7 @@ describe('List', () => {
 		const onselect = vi.fn()
 		const { container } = render(List, { items: groupedItems, collapsible: true, onselect })
 		// Expand first group
-		const label = container.querySelector('[data-list-group-label]')!
+		const label = container.querySelector('[data-list-group]')!
 		await fireEvent.click(label)
 		flushSync()
 		// Click first child item

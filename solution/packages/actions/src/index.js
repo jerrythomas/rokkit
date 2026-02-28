@@ -1,6 +1,7 @@
 // skipcq: JS-E1004 - Needed for exposing all types
 export * from './types.js'
 export { Navigator } from './navigator.js'
+export { Trigger } from './trigger.js'
 export { buildKeymap, resolveAction, ACTIONS } from './keymap.js'
 export { keyboard } from './keyboard.svelte.js'
 export { pannable } from './pannable.svelte.js'

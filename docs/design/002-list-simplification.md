@@ -252,7 +252,7 @@ incrementally once the core pattern is proven.
       <!-- Group header -->
       <button
         type="button"
-        data-list-group-label
+        data-list-group
         data-path={node.key}
         style:padding-left="{level * 1.5}rem"
         aria-expanded={isExpanded}

@@ -32,7 +32,7 @@ export default defineConfig({
 			{ extends: true, test: { name: 'states', root: 'packages/states' } },
 			{ extends: true, test: { name: 'stories', root: 'packages/stories' } },
 			{ extends: true, test: { name: 'tutorial', root: 'packages/tutorial' } },
-			{ extends: true, test: { name: 'ui', root: 'packages/ui' } },
+			{ extends: true, test: { name: 'ui', root: 'packages/ui', setupFiles: ['../helpers/src/mocks/index.js'] } },
 			{
 				extends: true,
 				test: {

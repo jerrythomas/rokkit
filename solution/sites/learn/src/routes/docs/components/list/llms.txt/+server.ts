@@ -233,7 +233,7 @@ Disabled items are skipped during keyboard navigation.
 |-----------|---------|-------------|
 | \`data-list\` | Root \`<nav>\` | Root marker |
 | \`data-list-item\` | \`<button>\` or \`<a>\` | Leaf item |
-| \`data-list-group-label\` | \`<button>\` | Group header |
+| \`data-list-group\` | \`<button>\` | Group header |
 | \`data-list-separator\` | \`<hr>\` | Separator line |
 | \`data-list-spacer\` | \`<div>\` | Spacer |
 | \`data-active\` | Item | Currently selected |

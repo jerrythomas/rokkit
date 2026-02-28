@@ -1,202 +1,206 @@
 <script lang="ts">
+	/**
+	 * Select — Trigger + dropdown with List-style flatView content.
+	 *
+	 * Architecture:
+	 *   Trigger      — manages open/close (click, Enter, Escape, click-outside)
+	 *   Wrapper      — owns focusedKey $state + flatView $derived
+	 *   Navigator    — attaches DOM event handlers on dropdown
+	 *   flatView loop — single flat {#each}, groups rendered as non-interactive labels
+	 *
+	 * Groups are pre-processed with expanded:true (always show children) and
+	 * disabled:true (excluded from keyboard navigation). Group labels have no
+	 * data-path so Navigator ignores them entirely.
+	 *
+	 * Data attributes:
+	 *   data-select           — root container
+	 *   data-select-trigger   — trigger button
+	 *   data-select-value     — selected value display area
+	 *   data-select-value-text — selected item text
+	 *   data-select-value-icon — selected item icon
+	 *   data-select-placeholder — placeholder text
+	 *   data-select-arrow     — dropdown arrow icon
+	 *   data-select-dropdown  — dropdown container
+	 *   data-select-filter    — filter input wrapper
+	 *   data-select-filter-input — filter text input
+	 *   data-select-option    — leaf option items
+	 *   data-select-group-label — group header label (non-interactive)
+	 *   data-select-group-icon — icon inside group label
+	 *   data-select-divider   — divider between groups
+	 *   data-select-check     — check icon on selected item
+	 *   data-select-empty     — no results message
+	 *   data-path             — required by Navigator
+	 *   data-selected         — selected state
+	 *   data-disabled         — disabled state
+	 *   data-open             — dropdown is open
+	 *   data-size             — size variant
+	 *   data-align            — dropdown alignment
+	 *   data-direction        — dropdown direction
+	 */
 	// @ts-nocheck
-	import type { SelectProps, SelectStateIcons, SelectItem } from '../types/select.js'
-	import { defaultSelectStateIcons, getSnippet } from '../types/select.js'
-	import { Wrapper, ProxyItem, PROXY_ITEM_FIELDS } from '@rokkit/states'
-	import { Navigator } from '@rokkit/actions'
+	import type { ProxyItem } from '@rokkit/states'
+	import { Wrapper } from '@rokkit/states'
+	import { Navigator, Trigger } from '@rokkit/actions'
+	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+
+	interface SelectIcons {
+		opened?: string
+		closed?: string
+		checked?: string
+	}
 
 	let {
-		options = [],
-		fields: userFields = {},
+		items = [],
+		fields = {},
 		value = $bindable(),
-		selected = $bindable<SelectItem | null>(null),
+		selected = $bindable<unknown>(null),
 		placeholder = 'Select...',
 		size = 'md',
-		align = 'left',
-		direction = 'down',
-		maxRows = 5,
 		disabled = false,
 		filterable = false,
 		filterPlaceholder = 'Search...',
+		align = 'start',
+		direction = 'down',
+		icons: userIcons = {} as SelectIcons,
 		onchange,
 		class: className = '',
-		icons: userIcons,
-		option: optionSnippet,
-		groupLabel: groupLabelSnippet,
-		selectedValue: selectedValueSnippet,
-		...extraSnippets
-	}: SelectProps & { [key: string]: unknown } = $props()
+		...snippets
+	}: {
+		items?: unknown[]
+		fields?: Record<string, string>
+		value?: unknown
+		selected?: unknown
+		placeholder?: string
+		size?: string
+		disabled?: boolean
+		filterable?: boolean
+		filterPlaceholder?: string
+		align?: 'start' | 'end'
+		direction?: 'up' | 'down'
+		icons?: SelectIcons
+		onchange?: (value: unknown, item: unknown) => void
+		class?: string
+		[key: string]: unknown
+	} = $props()
 
-	const icons = $derived<SelectStateIcons>({ ...defaultSelectStateIcons, ...userIcons })
-	const mergedFields = $derived({ ...PROXY_ITEM_FIELDS, ...userFields })
-	const normalizedAlign = $derived(align === 'left' || align === 'start' ? 'left' : 'right')
-	const defaultRowHeight = $derived(size === 'sm' ? 28 : size === 'lg' ? 40 : 34)
-	let measuredRowHeight = $state<number | null>(null)
-	const maxHeight = $derived(maxRows * (measuredRowHeight ?? defaultRowHeight))
+	const icons = $derived({ ...DEFAULT_STATE_ICONS.selector, ...DEFAULT_STATE_ICONS.checkbox, ...userIcons })
+
+	// ─── Dropdown state ───────────────────────────────────────────────────────
+
+	let isOpen = $state(false)
+	let selectRef = $state<HTMLElement | null>(null)
+	let triggerRef = $state<HTMLElement | null>(null)
+	let dropdownRef = $state<HTMLElement | null>(null)
 
 	// ─── Filter ───────────────────────────────────────────────────────────────
 
 	let filterQuery = $state('')
 	let filterInputRef = $state<HTMLInputElement | null>(null)
 
-	const filteredOptions = $derived.by(() => {
-		if (!filterable || !filterQuery) return options
+	const textField = $derived(fields?.text || 'text')
+	const childrenField = $derived(fields?.children || 'children')
+
+	const filteredItems = $derived.by(() => {
+		if (!filterable || !filterQuery) return items
 		const query = filterQuery.toLowerCase()
-		const { children: childrenField, text: textField } = mergedFields
-		return options
-			.map((option) => {
-				const children = option[childrenField]
+		return items
+			.map((item) => {
+				const children = item[childrenField]
 				if (Array.isArray(children) && children.length > 0) {
 					const matching = children.filter((child) =>
 						String(child[textField] ?? '').toLowerCase().includes(query)
 					)
-					return matching.length > 0 ? { ...option, [childrenField]: matching } : null
+					return matching.length > 0 ? { ...item, [childrenField]: matching } : null
 				}
-				return String(option[textField] ?? '').toLowerCase().includes(query) ? option : null
+				return String(item[textField] ?? '').toLowerCase().includes(query) ? item : null
 			})
 			.filter(Boolean)
 	})
 
-	// ─── Flat items for Wrapper (groups pre-flattened — only leaf items) ───────
-
-	const flatItems = $derived.by(() => {
-		const items = []
-		const childrenField = mergedFields.children
-		for (const option of filteredOptions) {
-			const children = option[childrenField]
+	// Pre-process: force groups expanded + disabled (non-navigable labels)
+	const processedItems = $derived(
+		filteredItems.map((item) => {
+			const children = item[childrenField]
 			if (Array.isArray(children) && children.length > 0) {
-				for (const child of children) items.push(child)
-			} else {
-				items.push(option)
+				return { ...item, expanded: true, disabled: true }
 			}
-		}
-		return items
-	})
-
-	/** item → key string (flat index '0','1',...) matching Wrapper keys */
-	const itemPathMap = $derived.by(() => {
-		const map = new Map()
-		flatItems.forEach((item, i) => map.set(item, String(i)))
-		return map
-	})
+			return item
+		})
+	)
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
-	const wrapper = $derived(new Wrapper(flatItems, mergedFields, { onselect: handleSelect }))
+	function handleSelect(extractedValue: unknown, proxy: ProxyItem) {
+		if (proxy.disabled) return
+		value = extractedValue
+		selected = proxy.raw
+		onchange?.(extractedValue, proxy.raw)
+		isOpen = false
+		filterQuery = ''
+		triggerRef?.focus()
+	}
 
-	// When wrapper recreates (filter changed) while open, focus first item
+	const wrapper = $derived(new Wrapper(processedItems, fields, { onselect: handleSelect }))
+
+	// Override cancel/blur to close dropdown
 	$effect(() => {
 		const w = wrapper
-		if (isOpen) w.first(null)
+		w.cancel = () => {
+			isOpen = false
+			filterQuery = ''
+			triggerRef?.focus()
+		}
+		w.blur = () => {
+			isOpen = false
+			filterQuery = ''
+		}
 	})
 
-	// ─── Dropdown state ───────────────────────────────────────────────────────
+	// When wrapper recreates while open, focus first item
+	$effect(() => {
+		const _w = wrapper
+		if (isOpen && !filterable) _w.first(null)
+	})
 
-	let isOpen = $state(false)
-	let selectRef = $state<HTMLDivElement | null>(null)
-	let dropdownRef = $state<HTMLDivElement | null>(null)
-
-	// ─── Selected item display ────────────────────────────────────────────────
+	// ─── Selected proxy for trigger display ───────────────────────────────────
 
 	const selectedProxy = $derived.by(() => {
 		if (value === undefined || value === null) return null
-		const { children: childrenField, value: valueField } = mergedFields
-		for (const option of options) {
-			const children = option[childrenField]
-			if (Array.isArray(children) && children.length > 0) {
-				for (const child of children) {
-					const v = child[valueField]
-					if (v === value || (v === undefined && child === value)) {
-						return new ProxyItem(child, mergedFields)
-					}
-				}
-			} else {
-				const v = option[valueField]
-				if (v === value || (v === undefined && option === value)) {
-					return new ProxyItem(option, mergedFields)
-				}
-			}
+		for (const [, proxy] of wrapper.lookup) {
+			if (!proxy.hasChildren && proxy.value === value) return proxy
 		}
 		return null
 	})
 
+	// Sync selected raw item
 	$effect(() => {
-		if (!selectedProxy) { selected = null; return }
-		const { children: childrenField, value: valueField } = mergedFields
-		for (const option of options) {
-			const children = option[childrenField]
-			if (Array.isArray(children) && children.length > 0) {
-				for (const child of children) {
-					const v = child[valueField]
-					if (v === value || (v === undefined && child === value)) { selected = child; return }
-				}
-			} else {
-				const v = option[valueField]
-				if (v === value || (v === undefined && option === value)) { selected = option; return }
-			}
-		}
-		selected = null
+		selected = selectedProxy?.raw ?? null
 	})
 
-	// ─── Navigator ────────────────────────────────────────────────────────────
+	// ─── Trigger action ───────────────────────────────────────────────────────
 
 	$effect(() => {
-		if (!isOpen || !dropdownRef) return
-		const nav = new Navigator(dropdownRef, wrapper, { orientation: 'vertical' })
-		return () => nav.destroy()
-	})
-
-	// DOM focus sync
-	$effect(() => {
-		const key = wrapper.focusedKey
-		if (!isOpen || !dropdownRef || !key) return
-		requestAnimationFrame(() => {
-			const target = dropdownRef?.querySelector(`[data-path="${key}"]`)
-			if (target && target !== document.activeElement) {
-				target.focus()
-				target.scrollIntoView?.({ block: 'nearest' })
-			}
+		if (!triggerRef || !selectRef || disabled) return
+		const t = new Trigger(triggerRef, selectRef, {
+			isOpen: () => isOpen,
+			onopen: () => {
+				isOpen = true
+				requestAnimationFrame(() => {
+					if (filterable) {
+						filterInputRef?.focus()
+					} else {
+						focusSelectedOrFirst()
+					}
+				})
+			},
+			onclose: () => {
+				isOpen = false
+				filterQuery = ''
+			},
+			onlast: () => requestAnimationFrame(() => wrapper.last(null))
 		})
+		return () => t.destroy()
 	})
-
-	// ─── Selection handler ────────────────────────────────────────────────────
-
-	function handleSelect(extractedValue, proxy) {
-		if (proxy.disabled) return
-		const rawItem = flatItems[parseInt(proxy.key)] ?? null
-		value = extractedValue
-		selected = rawItem
-		onchange?.(extractedValue, rawItem)
-		closeDropdown()
-		const trigger = selectRef?.querySelector('[data-select-trigger]')
-		trigger?.focus()
-	}
-
-	// ─── Dropdown control ─────────────────────────────────────────────────────
-
-	function toggleDropdown() {
-		if (disabled) return
-		if (isOpen) closeDropdown()
-		else openDropdown()
-	}
-
-	function openDropdown() {
-		if (disabled || isOpen) return
-		isOpen = true
-		requestAnimationFrame(() => {
-			measureRowHeight()
-			if (filterable) {
-				filterInputRef?.focus()
-			} else {
-				focusSelectedOrFirst()
-			}
-		})
-	}
-
-	function closeDropdown() {
-		isOpen = false
-		filterQuery = ''
-	}
 
 	function focusSelectedOrFirst() {
 		if (value !== undefined && value !== null) {
@@ -210,95 +214,74 @@
 		wrapper.first(null)
 	}
 
-	function measureRowHeight() {
-		const firstOption = selectRef?.querySelector('[data-select-dropdown] [data-select-option]')
-		if (firstOption) {
-			const h = firstOption.getBoundingClientRect().height
-			if (h > 0) measuredRowHeight = h
-		}
-	}
-
-	// ─── Keyboard handlers ────────────────────────────────────────────────────
-
-	function handleTriggerKeyDown(event) {
-		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-			event.preventDefault()
-			openDropdown()
-		} else if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault()
-			toggleDropdown()
-		}
-	}
-
-	function handleFilterKeyDown(event) {
-		if (event.key === 'ArrowDown') {
-			event.preventDefault()
-			wrapper.first(null)
-		} else if (event.key === 'Escape') {
-			event.preventDefault()
-			if (filterQuery) {
-				filterQuery = ''
-				event.stopPropagation()
-			} else {
-				closeDropdown()
-				selectRef?.querySelector('[data-select-trigger]')?.focus()
-			}
-		} else if (event.key === 'Enter') {
-			event.preventDefault()
-			if (wrapper.focusedKey) wrapper.select(null)
-		}
-	}
-
-	function handleEscapeKey(event) {
-		if (!isOpen || event.key !== 'Escape') return
-		event.preventDefault()
-		closeDropdown()
-		selectRef?.querySelector('[data-select-trigger]')?.focus()
-	}
-
-	function handleClickOutside(event) {
-		if (selectRef && !selectRef.contains(event.target)) closeDropdown()
-	}
+	// ─── Navigator on dropdown ────────────────────────────────────────────────
 
 	$effect(() => {
-		if (isOpen) {
-			document.addEventListener('click', handleClickOutside, true)
-			document.addEventListener('keydown', handleEscapeKey)
-		}
-		return () => {
-			document.removeEventListener('click', handleClickOutside, true)
-			document.removeEventListener('keydown', handleEscapeKey)
-		}
+		if (!isOpen || !dropdownRef) return
+		const dir = getComputedStyle(dropdownRef).direction || 'ltr'
+		const nav = new Navigator(dropdownRef, wrapper, { dir })
+		return () => nav.destroy()
 	})
 
-	// ─── Rendering helpers ────────────────────────────────────────────────────
+	// DOM focus sync
+	$effect(() => {
+		const key = wrapper.focusedKey
+		if (!isOpen || !dropdownRef || !key) return
+		requestAnimationFrame(() => {
+			const target = dropdownRef?.querySelector(`[data-path="${key}"]`) as HTMLElement | null
+			if (target && target !== document.activeElement) {
+				target.focus()
+				target.scrollIntoView?.({ block: 'nearest' })
+			}
+		})
+	})
 
-	function getOptionProxy(item) {
-		const key = itemPathMap.get(item)
-		return (key !== undefined ? wrapper.lookup.get(key) : null) ?? new ProxyItem(item, mergedFields)
-	}
+	// ─── Filter keyboard (native listener, fires before Navigator) ───────────
 
-	function getGroupProxy(group) {
-		return new ProxyItem(group, mergedFields)
-	}
-
-	function resolveOptionSnippet(proxy) {
-		const name = proxy.snippet
-		if (name && typeof name === 'string') {
-			const named = getSnippet(extraSnippets, name)
-			if (named) return named
+	$effect(() => {
+		if (!isOpen || !filterable || !filterInputRef) return
+		const el = filterInputRef
+		const handler = (event: KeyboardEvent) => {
+			if (event.key === 'ArrowDown') {
+				event.preventDefault()
+				event.stopPropagation()
+				wrapper.first(null)
+			} else if (event.key === 'Escape') {
+				if (filterQuery) {
+					event.preventDefault()
+					event.stopPropagation()
+					filterQuery = ''
+				}
+				// Empty filter: let event bubble to Navigator/Trigger for close
+			} else if (event.key === 'Enter') {
+				event.preventDefault()
+				event.stopPropagation()
+				if (wrapper.focusedKey) wrapper.select(null)
+			}
 		}
-		return optionSnippet ?? null
-	}
+		el.addEventListener('keydown', handler)
+		return () => el.removeEventListener('keydown', handler)
+	})
 
-	function isItemSelected(proxy) {
-		return proxy.value === value
-	}
+	// ─── Helpers ──────────────────────────────────────────────────────────────
+
+	/** Set of group keys that need a divider before them (not the first group) */
+	const groupDividers = $derived.by(() => {
+		const set = new Set<string>()
+		let foundFirst = false
+		for (const node of wrapper.flatView) {
+			if (node.hasChildren) {
+				if (foundFirst) set.add(node.key)
+				foundFirst = true
+			}
+		}
+		return set
+	})
 </script>
 
-{#snippet defaultOptionContent(proxy)}
+{#snippet defaultOptionContent(proxy: ProxyItem)}
 	{#if proxy.icon}
-		<span data-item-icon class={proxy.icon} aria-hidden="true"></span>
+		<span data-select-option-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
 	<span data-item-text>
 		<span data-item-label>{proxy.text}</span>
@@ -306,12 +289,9 @@
 			<span data-item-description>{proxy.get('description')}</span>
 		{/if}
 	</span>
-	{#if proxy.get('badge')}
-		<span data-item-badge>{proxy.get('badge')}</span>
-	{/if}
 {/snippet}
 
-{#snippet defaultGroupContent(proxy)}
+{#snippet defaultGroupContent(proxy: ProxyItem)}
 	{#if proxy.icon}
 		<span data-select-group-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
@@ -324,29 +304,24 @@
 	data-open={isOpen || undefined}
 	data-size={size}
 	data-disabled={disabled || undefined}
-	data-align={normalizedAlign}
+	data-align={align}
 	data-direction={direction}
 	class={className || undefined}
 >
 	<button
+		bind:this={triggerRef}
 		type="button"
 		data-select-trigger
 		{disabled}
 		aria-haspopup="listbox"
 		aria-expanded={isOpen}
-		onclick={toggleDropdown}
-		onkeydown={handleTriggerKeyDown}
 	>
 		<span data-select-value>
 			{#if selectedProxy}
-				{#if selectedValueSnippet}
-					{@render selectedValueSnippet(selectedProxy)}
-				{:else}
-					{#if selectedProxy.icon}
-						<span data-select-value-icon class={selectedProxy.icon} aria-hidden="true"></span>
-					{/if}
-					<span data-select-value-text>{selectedProxy.text}</span>
+				{#if selectedProxy.icon}
+					<span data-select-value-icon class={selectedProxy.icon} aria-hidden="true"></span>
 				{/if}
+				<span data-select-value-text>{selectedProxy.text}</span>
 			{:else}
 				<span data-select-placeholder>{placeholder}</span>
 			{/if}
@@ -361,7 +336,6 @@
 			data-select-dropdown
 			role="listbox"
 			aria-orientation="vertical"
-			style="max-height: {maxHeight}px"
 		>
 			{#if filterable}
 				<div data-select-filter>
@@ -372,84 +346,55 @@
 						data-select-filter-input
 						placeholder={filterPlaceholder}
 						bind:value={filterQuery}
-						onkeydown={handleFilterKeyDown}
 					/>
 				</div>
 			{/if}
 
-			{#each filteredOptions as option, oi (oi)}
-				{@const childrenField = mergedFields.children}
-				{@const children = option[childrenField]}
+			{#each wrapper.flatView as node (node.key)}
+				{@const proxy = node.proxy}
+				{@const sel = !node.hasChildren && proxy.value === value}
+				{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
 
-				{#if Array.isArray(children) && children.length > 0}
-					{@const groupProxy = getGroupProxy(option)}
-					{#if oi > 0}
-						<div data-select-divider role="separator"></div>
+				{#if node.type === 'separator'}
+					<hr data-select-separator />
+				{:else if node.hasChildren}
+					{#if groupDividers.has(node.key)}
+						<div data-select-divider></div>
 					{/if}
-					<div data-select-group>
-						<div data-select-group-label role="presentation">
-							{#if groupLabelSnippet}
-								{@render groupLabelSnippet(groupProxy)}
-							{:else}
-								{@render defaultGroupContent(groupProxy)}
-							{/if}
-						</div>
-						{#each children as child, ci (ci)}
-							{@const proxy = getOptionProxy(child)}
-							{@const pathKey = itemPathMap.get(child)}
-							{@const sel = isItemSelected(proxy)}
-							{@const customSnippet = resolveOptionSnippet(proxy)}
-							<button
-								type="button"
-								title={proxy.get('title')}
-								data-select-option
-								data-path={pathKey}
-								data-disabled={proxy.disabled || undefined}
-								data-selected={sel || undefined}
-								role="option"
-								aria-selected={sel}
-								disabled={proxy.disabled}
-							>
-								{#if customSnippet}
-									{@render customSnippet(proxy)}
-								{:else}
-									{@render defaultOptionContent(proxy)}
-									{#if sel}
-										<span data-select-check class={icons.checked} aria-hidden="true"></span>
-									{/if}
-								{/if}
-							</button>
-						{/each}
+					<div data-select-group-label role="presentation">
+						{#if content}
+							{@render content(proxy)}
+						{:else}
+							{@render defaultGroupContent(proxy)}
+						{/if}
 					</div>
 				{:else}
-					{@const proxy = getOptionProxy(option)}
-					{@const pathKey = itemPathMap.get(option)}
-					{@const sel = isItemSelected(proxy)}
-					{@const customSnippet = resolveOptionSnippet(proxy)}
 					<button
 						type="button"
 						title={proxy.get('title')}
 						data-select-option
-						data-path={pathKey}
-						data-disabled={proxy.disabled || undefined}
+						data-path={node.key}
+						data-level={node.level}
 						data-selected={sel || undefined}
+						data-disabled={proxy.disabled || undefined}
 						role="option"
 						aria-selected={sel}
-						disabled={proxy.disabled}
+						disabled={proxy.disabled || disabled}
+						tabindex="-1"
 					>
-						{#if customSnippet}
-							{@render customSnippet(proxy)}
+						{#if content}
+							{@render content(proxy)}
 						{:else}
 							{@render defaultOptionContent(proxy)}
-							{#if sel}
-								<span data-select-check class={icons.checked} aria-hidden="true"></span>
-							{/if}
+						{/if}
+						{#if sel}
+							<span data-select-check class={icons.checked} aria-hidden="true"></span>
 						{/if}
 					</button>
 				{/if}
 			{/each}
 
-			{#if filterable && filterQuery && filteredOptions.length === 0}
+			{#if filterable && filterQuery && filteredItems.length === 0}
 				<div data-select-empty>No results</div>
 			{/if}
 		</div>

@@ -116,7 +116,7 @@ Reference this file before implementing new features to ensure consistency.
     {#if node.proxy.type === 'separator'}
       <hr data-list-separator />
     {:else if node.proxy.hasChildren}
-      <button data-list-group-label data-path={node.key}
+      <button data-list-group data-path={node.key}
               aria-expanded={node.proxy.expanded}
               disabled={!collapsible}>
         {#if resolveSnippet($$snippets, node.proxy, 'groupContent')}

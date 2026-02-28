@@ -21,7 +21,9 @@
 	 *   data-level             — nesting depth (1=root); theme CSS uses for indentation
 	 *   data-accordion-trigger — tells Navigator to dispatch toggle (not select) on click
 	 *   data-list-item         — theme hook for leaf items
-	 *   data-list-group-label  — theme hook for group headers
+	 *   data-list-item-icon    — icon span inside leaf items
+	 *   data-list-group        — theme hook for group headers
+	 *   data-list-group-icon   — icon span inside group headers
 	 *   data-active            — highlights current value match
 	 *   data-disabled          — disabled state
 	 */
@@ -90,7 +92,7 @@
 -->
 {#snippet defaultItemContent(proxy: ProxyItem)}
 	{#if proxy.icon}
-		<span class={proxy.icon} aria-hidden="true"></span>
+		<span data-list-item-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
 	<span data-list-item-text>{proxy.text}</span>
 {/snippet}
@@ -101,7 +103,7 @@
 -->
 {#snippet defaultGroupContent(proxy: ProxyItem)}
 	{#if proxy.icon}
-		<span class={proxy.icon} aria-hidden="true"></span>
+		<span data-list-group-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
 	<span data-list-group-text>{proxy.text}</span>
 	{#if collapsible}
@@ -140,7 +142,7 @@
 			-->
 			<button
 				type="button"
-				data-list-group-label
+				data-list-group
 				data-path={node.key}
 				data-accordion-trigger
 				data-level={node.level}

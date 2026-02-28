@@ -153,7 +153,7 @@ Map your data structure to accordion expectations:
 \`\`\`
 [data-list][data-collapsible]
 ├── [data-list-group]                    // Section container
-│   ├── [data-list-group-label]          // Section header (clickable)
+│   ├── [data-list-group]          // Section header (clickable)
 │   │   └── [data-list-group-arrow]      // Expand/collapse arrow
 │   └── [data-list-group-items]          // Items (when expanded)
 │       └── [data-list-item]             // Each child item
@@ -167,7 +167,7 @@ Map your data structure to accordion expectations:
 | \`[data-list][data-collapsible]\` | Root | Collapsible list (accordion) |
 | \`[data-list-group]\` | Group | Section container |
 | \`[data-list-group][data-list-group-collapsed]\` | Group | Collapsed state |
-| \`[data-list-group-label]\` | Label | Clickable section header |
+| \`[data-list-group]\` | Label | Clickable section header |
 | \`[data-list-group-items]\` | Items | Children container |
 | \`[data-list-item]\` | Item | Individual child item |
 | \`[data-list-item][data-active]\` | Item | Active/selected state |
@@ -184,7 +184,7 @@ Map your data structure to accordion expectations:
   overflow: hidden;
 }
 
-[data-list-group-label] {
+[data-list-group] {
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -193,11 +193,11 @@ Map your data structure to accordion expectations:
   user-select: none;
 }
 
-[data-list-group-label]:hover {
+[data-list-group]:hover {
   background: var(--surface-200);
 }
 
-[data-list-group]:not([data-list-group-collapsed]) [data-list-group-label] {
+[data-list-group]:not([data-list-group-collapsed]) [data-list-group] {
   background: var(--primary-100);
   font-weight: 600;
 }

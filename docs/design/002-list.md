@@ -201,7 +201,7 @@ The component has three responsibilities:
     {:else if node.type === 'spacer'}
       <div data-list-spacer></div>
     {:else if node.hasChildren}
-      <button data-list-group-label data-path={node.key}
+      <button data-list-group data-path={node.key}
               data-accordion-trigger data-level={node.level}
               aria-expanded={proxy.expanded}>
         {proxy.text}
@@ -282,7 +282,7 @@ both the focus and the scroll are handled.
 | `data-path` | Every focusable item | `'0'`, `'0-0'`, … | Navigator click detection + scroll target |
 | `data-level` | Every item | integer ≥ 1 | CSS indentation (`padding-left: calc(var(--level) * 1.25rem)`) |
 | `data-list-item` | Leaf items (`<a>`, `<button>`) | (present) | Theme + CSS selector |
-| `data-list-group-label` | Group headers | (present) | Theme + CSS selector |
+| `data-list-group` | Group headers | (present) | Theme + CSS selector |
 | `data-accordion-trigger` | Group headers | (present) | Navigator: dispatch `toggle` instead of `select` on click |
 | `data-list-separator` | Separator dividers | (present) | Rendered but never focused |
 | `data-list-spacer` | Spacer items | (present) | Rendered but never focused |

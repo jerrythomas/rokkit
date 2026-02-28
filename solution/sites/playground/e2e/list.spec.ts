@@ -123,7 +123,7 @@ test.describe('List', () => {
 	test.describe('keyboard — grouped list', () => {
 		test('ArrowDown navigates through group labels and children', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2) // Grouped list
-			const groupLabels = list.locator('[data-list-group-label]')
+			const groupLabels = list.locator('[data-list-group]')
 			const firstGroupItems = list.locator('[data-list-group]').first().locator('[data-list-item]')
 
 			// Focus first group label
@@ -146,7 +146,7 @@ test.describe('List', () => {
 		test('ArrowLeft on expanded group collapses it', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
 			const firstGroup = list.locator('[data-list-group]').first()
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 			// Group starts expanded
@@ -159,7 +159,7 @@ test.describe('List', () => {
 		test('ArrowRight on collapsed group expands it', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
 			const firstGroup = list.locator('[data-list-group]').first()
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			// Collapse first
 			await firstLabel.focus()
@@ -174,7 +174,7 @@ test.describe('List', () => {
 		test('Enter on group label toggles expansion', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
 			const firstGroup = list.locator('[data-list-group]').first()
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 			await expect(firstGroup).not.toHaveAttribute('data-list-group-collapsed')
@@ -190,7 +190,7 @@ test.describe('List', () => {
 
 		test('ArrowDown navigates into second group children', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
-			const groupLabels = list.locator('[data-list-group-label]')
+			const groupLabels = list.locator('[data-list-group]')
 			const secondGroupItems = list.locator('[data-list-group]').nth(1).locator('[data-list-item]')
 
 			// Focus first group label and navigate to second group
@@ -211,7 +211,7 @@ test.describe('List', () => {
 
 		test('ArrowLeft collapses second group', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
-			const groupLabels = list.locator('[data-list-group-label]')
+			const groupLabels = list.locator('[data-list-group]')
 			const secondGroup = list.locator('[data-list-group]').nth(1)
 
 			// Navigate to second group label
@@ -232,7 +232,7 @@ test.describe('List', () => {
 
 		test('full navigation across both groups and back', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
-			const groupLabels = list.locator('[data-list-group-label]')
+			const groupLabels = list.locator('[data-list-group]')
 			const firstGroupItems = list.locator('[data-list-group]').first().locator('[data-list-item]')
 			const secondGroupItems = list.locator('[data-list-group]').nth(1).locator('[data-list-item]')
 
@@ -265,7 +265,7 @@ test.describe('List', () => {
 		test('repeated collapse/expand cycles work correctly', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
 			const firstGroup = list.locator('[data-list-group]').first()
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await firstLabel.focus()
 
@@ -305,7 +305,7 @@ test.describe('List', () => {
 		test('click on group label toggles expansion', async ({ page }) => {
 			const list = page.locator('[data-list]').nth(2)
 			const firstGroup = list.locator('[data-list-group]').first()
-			const firstLabel = list.locator('[data-list-group-label]').first()
+			const firstLabel = list.locator('[data-list-group]').first()
 
 			await expect(firstGroup).not.toHaveAttribute('data-list-group-collapsed')
 

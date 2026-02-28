@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
 import MultiSelect from '../src/components/MultiSelect.svelte'
 
-const flatOptions = [
+const flatItems = [
 	{ text: 'Apple', value: 'apple' },
 	{ text: 'Banana', value: 'banana' },
 	{ text: 'Cherry', value: 'cherry' },
@@ -10,7 +10,7 @@ const flatOptions = [
 	{ text: 'Elderberry', value: 'elderberry' }
 ]
 
-const groupedOptions = [
+const groupedItems = [
 	{
 		text: 'Fruits',
 		children: [
@@ -31,48 +31,48 @@ describe('MultiSelect', () => {
 	// ─── Rendering ──────────────────────────────────────────────────
 
 	it('renders a multiselect container', () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		const el = container.querySelector('[data-multiselect]')
 		expect(el).toBeTruthy()
 	})
 
 	it('renders a trigger button', () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		expect(container.querySelector('[data-select-trigger]')).toBeTruthy()
 	})
 
 	it('shows placeholder when nothing selected', () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		expect(container.querySelector('[data-select-placeholder]')?.textContent).toBe('Select...')
 	})
 
 	it('shows custom placeholder', () => {
-		const { container } = render(MultiSelect, { options: flatOptions, placeholder: 'Pick items' })
+		const { container } = render(MultiSelect, { items: flatItems, placeholder: 'Pick items' })
 		expect(container.querySelector('[data-select-placeholder]')?.textContent).toBe('Pick items')
 	})
 
 	// ─── Dropdown ───────────────────────────────────────────────────
 
 	it('dropdown is closed by default', () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		expect(container.querySelector('[data-select-dropdown]')).toBeNull()
 	})
 
 	it('opens dropdown on trigger click', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
 	})
 
 	it('dropdown has aria-multiselectable', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const dropdown = container.querySelector('[data-select-dropdown]')
 		expect(dropdown?.getAttribute('aria-multiselectable')).toBe('true')
 	})
 
 	it('closes on Escape', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
 		await fireEvent.keyDown(document, { key: 'Escape' })
@@ -82,7 +82,7 @@ describe('MultiSelect', () => {
 	// ─── Multi-Selection ────────────────────────────────────────────
 
 	it('shows checkbox indicators on options', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const checkboxes = container.querySelectorAll('[data-select-checkbox]')
 		expect(checkboxes.length).toBe(5)
@@ -90,16 +90,16 @@ describe('MultiSelect', () => {
 
 	it('toggles selection on click', async () => {
 		const onchange = vi.fn()
-		const { container } = render(MultiSelect, { options: flatOptions, onchange })
+		const { container } = render(MultiSelect, { items: flatItems, onchange })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const opts = container.querySelectorAll('[data-select-option]')
 		await fireEvent.click(opts[0])
-		expect(onchange).toHaveBeenCalledWith(['apple'], [flatOptions[0]])
+		expect(onchange).toHaveBeenCalledWith(['apple'], [flatItems[0]])
 	})
 
 	it('marks selected options', async () => {
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['banana']
 		})
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
@@ -111,7 +111,7 @@ describe('MultiSelect', () => {
 	it('deselects on second click', async () => {
 		const onchange = vi.fn()
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple'],
 			onchange
 		})
@@ -122,7 +122,7 @@ describe('MultiSelect', () => {
 	})
 
 	it('dropdown stays open after selection', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const opts = container.querySelectorAll('[data-select-option]')
 		await fireEvent.click(opts[0])
@@ -132,21 +132,21 @@ describe('MultiSelect', () => {
 	it('calls onchange with extracted values and full items', async () => {
 		const onchange = vi.fn()
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple'],
 			onchange
 		})
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const opts = container.querySelectorAll('[data-select-option]')
 		await fireEvent.click(opts[2])
-		expect(onchange).toHaveBeenCalledWith(['apple', 'cherry'], [flatOptions[0], flatOptions[2]])
+		expect(onchange).toHaveBeenCalledWith(['apple', 'cherry'], [flatItems[0], flatItems[2]])
 	})
 
 	// ─── Tags Display ───────────────────────────────────────────────
 
 	it('displays selected items as tags', () => {
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple', 'banana']
 		})
 		const tags = container.querySelectorAll('[data-select-tag]')
@@ -155,7 +155,7 @@ describe('MultiSelect', () => {
 
 	it('displays tag text', () => {
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple']
 		})
 		const tagText = container.querySelector('[data-select-tag-text]')
@@ -164,7 +164,7 @@ describe('MultiSelect', () => {
 
 	it('shows count when exceeding maxDisplay', () => {
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple', 'banana', 'cherry', 'date'],
 			maxDisplay: 3
 		})
@@ -174,7 +174,7 @@ describe('MultiSelect', () => {
 
 	it('shows tags when within maxDisplay', () => {
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple', 'banana'],
 			maxDisplay: 3
 		})
@@ -186,26 +186,26 @@ describe('MultiSelect', () => {
 	it('tag remove button removes item', async () => {
 		const onchange = vi.fn()
 		const { container } = render(MultiSelect, {
-			options: flatOptions,
+			items: flatItems,
 			value: ['apple', 'banana'],
 			onchange
 		})
 		const removeBtn = container.querySelector('[data-select-tag-remove]')!
 		await fireEvent.click(removeBtn)
-		expect(onchange).toHaveBeenCalledWith(['banana'], [flatOptions[1]])
+		expect(onchange).toHaveBeenCalledWith(['banana'], [flatItems[1]])
 	})
 
 	// ─── Grouped Options ────────────────────────────────────────────
 
 	it('renders grouped options', async () => {
-		const { container } = render(MultiSelect, { options: groupedOptions })
+		const { container } = render(MultiSelect, { items: groupedItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
-		const groups = container.querySelectorAll('[data-select-group]')
+		const groups = container.querySelectorAll('[data-select-group-label]')
 		expect(groups.length).toBe(2)
 	})
 
 	it('renders group labels', async () => {
-		const { container } = render(MultiSelect, { options: groupedOptions })
+		const { container } = render(MultiSelect, { items: groupedItems })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const labels = container.querySelectorAll('[data-select-group-label]')
 		expect(labels.length).toBe(2)
@@ -215,14 +215,14 @@ describe('MultiSelect', () => {
 	// ─── Keyboard ───────────────────────────────────────────────────
 
 	it('opens on ArrowDown', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		const trigger = container.querySelector('[data-select-trigger]')!
 		await fireEvent.keyDown(trigger, { key: 'ArrowDown' })
 		expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
 	})
 
 	it('opens on Enter', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		const trigger = container.querySelector('[data-select-trigger]')!
 		await fireEvent.keyDown(trigger, { key: 'Enter' })
 		expect(container.querySelector('[data-select-dropdown]')).toBeTruthy()
@@ -231,13 +231,13 @@ describe('MultiSelect', () => {
 	// ─── Disabled ───────────────────────────────────────────────────
 
 	it('disables the multiselect', () => {
-		const { container } = render(MultiSelect, { options: flatOptions, disabled: true })
+		const { container } = render(MultiSelect, { items: flatItems, disabled: true })
 		const el = container.querySelector('[data-multiselect]')
 		expect(el?.hasAttribute('data-disabled')).toBe(true)
 	})
 
 	it('does not open when disabled', async () => {
-		const { container } = render(MultiSelect, { options: flatOptions, disabled: true })
+		const { container } = render(MultiSelect, { items: flatItems, disabled: true })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		expect(container.querySelector('[data-select-dropdown]')).toBeNull()
 	})
@@ -245,33 +245,33 @@ describe('MultiSelect', () => {
 	// ─── Custom Fields ──────────────────────────────────────────────
 
 	it('supports custom field mapping', async () => {
-		const options = [
+		const items = [
 			{ name: 'Apple', id: 'apple' },
 			{ name: 'Banana', id: 'banana' }
 		]
 		const onchange = vi.fn()
 		const { container } = render(MultiSelect, {
-			options,
+			items,
 			fields: { text: 'name', value: 'id' },
 			onchange
 		})
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
 		const opts = container.querySelectorAll('[data-select-option]')
 		await fireEvent.click(opts[0])
-		expect(onchange).toHaveBeenCalledWith(['apple'], [options[0]])
+		expect(onchange).toHaveBeenCalledWith(['apple'], [items[0]])
 	})
 
 	// ─── Size ───────────────────────────────────────────────────────
 
 	it('defaults to md size', () => {
-		const { container } = render(MultiSelect, { options: flatOptions })
+		const { container } = render(MultiSelect, { items: flatItems })
 		expect(container.querySelector('[data-multiselect]')?.getAttribute('data-size')).toBe('md')
 	})
 
 	// ─── Empty ──────────────────────────────────────────────────────
 
 	it('renders with empty options', () => {
-		const { container } = render(MultiSelect, { options: [] })
+		const { container } = render(MultiSelect, { items: [] })
 		expect(container.querySelector('[data-multiselect]')).toBeTruthy()
 		expect(container.querySelector('[data-select-placeholder]')).toBeTruthy()
 	})

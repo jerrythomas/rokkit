@@ -112,7 +112,7 @@ The List currently manages keyboard navigation inline with ~100 lines of handler
 | `data-active` | item elements | Active/selected state |
 | `data-disabled` | item elements | Disabled item |
 | `data-list-group` | `<div>` | Group container |
-| `data-list-group-label` | `<button>` | Group header |
+| `data-list-group` | `<button>` | Group header |
 | `data-list-group-items` | `<div>` | Group children container |
 | `data-list-group-collapsed` | `<div>` | Collapsed group |
 | `data-list-divider` | `<div>` | Divider between groups |

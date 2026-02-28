@@ -63,4 +63,4 @@ When a group header has no icon, there appears to be extra leading space before 
 
 ### Selector
 
-- `[data-list-group-label]` - check for leftover gap/padding when `[data-list-group-icon]` is absent or empty
+- `[data-list-group]` - check for leftover gap/padding when `[data-list-group-icon]` is absent or empty

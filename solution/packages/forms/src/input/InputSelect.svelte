@@ -39,7 +39,7 @@
 </script>
 
 <Select
-	options={filteredOptions}
+	items={filteredOptions}
 	{fields}
 	bind:value
 	placeholder={effectivePlaceholder}

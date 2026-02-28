@@ -6,6 +6,7 @@ describe('actions', () => {
 	it('should contain all exported actions', () => {
 		expect(Object.keys(actions)).toEqual([
 			'Navigator',
+			'Trigger',
 			'buildKeymap',
 			'resolveAction',
 			'ACTIONS',

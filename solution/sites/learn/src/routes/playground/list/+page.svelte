@@ -280,7 +280,7 @@
 	}
 
 	/* Group label */
-	:global([data-list-group-label]) {
+	:global([data-list-group]) {
 		display: flex;
 		align-items: center;
 		gap: 8px;
@@ -295,13 +295,13 @@
 		color: inherit;
 	}
 
-	:global([data-list-group-label]:hover),
-	:global([data-list-group-label]:focus-visible) {
+	:global([data-list-group]:hover),
+	:global([data-list-group]:focus-visible) {
 		background: color-mix(in srgb, currentColor 6%, transparent);
 		outline: none;
 	}
 
-	:global([data-list-group-label]:disabled) {
+	:global([data-list-group]:disabled) {
 		cursor: default;
 	}
 

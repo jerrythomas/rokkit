@@ -23,7 +23,7 @@
 	 *   data-level             — nesting depth (1=root); CSS uses for indentation
 	 *   data-accordion-trigger — tells Navigator to dispatch toggle (not select) on click
 	 *   data-list-item         — theme hook for leaf items
-	 *   data-list-group-label  — theme hook for group headers
+	 *   data-list-group  — theme hook for group headers
 	 *   data-active            — highlights current value match
 	 *   data-disabled          — disabled state
 	 */
@@ -113,7 +113,7 @@
 			-->
 			<button
 				type="button"
-				data-list-group-label
+				data-list-group
 				data-path={node.key}
 				data-accordion-trigger
 				data-level={node.level}

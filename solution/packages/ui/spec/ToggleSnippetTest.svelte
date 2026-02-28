@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Toggle from '../src/components/Toggle.svelte'
-	import type { ToggleItem, ToggleFields, ToggleItemHandlers } from '../src/types/toggle.js'
 
 	const {
 		options = [],
@@ -8,24 +7,21 @@
 		value,
 		onchange
 	}: {
-		options?: ToggleItem[]
-		fields?: ToggleFields
+		options?: unknown[]
+		fields?: Record<string, string>
 		value?: unknown
-		onchange?: (value: unknown, item: ToggleItem) => void
+		onchange?: (value: unknown, item: unknown) => void
 	} = $props()
 </script>
 
 <Toggle {options} {fields} {value} {onchange}>
-	{#snippet item(toggleItem: ToggleItem, _itemFields: ToggleFields, handlers: ToggleItemHandlers, selected: boolean)}
-		<button
-			type="button"
+	{#snippet itemContent(proxy, selected)}
+		<span
 			data-custom-toggle-item
-			data-item-value={toggleItem.value}
+			data-item-value={proxy.get('value')}
 			data-selected={selected || undefined}
-			onclick={handlers.onclick}
-			onkeydown={handlers.onkeydown}
 		>
-			Custom: {toggleItem.text}
-		</button>
+			Custom: {proxy.text}
+		</span>
 	{/snippet}
 </Toggle>

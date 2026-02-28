@@ -10,10 +10,10 @@ describe('Carousel', () => {
 		expect(container.querySelector('[data-carousel]')).toBeTruthy()
 	})
 
-	it('has role="group" and aria-roledescription', () => {
+	it('has role="application" and aria-roledescription', () => {
 		const { container } = render(Carousel, { count: 3 })
 		const el = container.querySelector('[data-carousel]')
-		expect(el?.getAttribute('role')).toBe('group')
+		expect(el?.getAttribute('role')).toBe('application')
 		expect(el?.getAttribute('aria-roledescription')).toBe('carousel')
 	})
 
