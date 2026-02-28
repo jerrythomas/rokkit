@@ -77,3 +77,20 @@ export const defaultMenuStateIcons: MenuStateIcons = {
 	opened: DEFAULT_STATE_ICONS.selector.opened,
 	closed: DEFAULT_STATE_ICONS.selector.closed
 }
+
+// =============================================================================
+// Snippet Utilities
+// =============================================================================
+
+/**
+ * Retrieve a named snippet from a snippets record, with type/null safety.
+ */
+export function getSnippet<T>(
+	snippets: Record<string, T | undefined>,
+	name: string | null
+): T | null {
+	if (name === null) return null
+	const snippet = snippets[name]
+	if (snippet !== undefined && typeof snippet === 'function') return snippet
+	return null
+}

@@ -25,27 +25,59 @@
 
 	<StoryViewer {...storyBuilder.getExample('groups')} />
 
-	<h2>Properties</h2>
+	<!-- Props Reference -->
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 		<div data-card>
-			<h3>Core Properties</h3>
+			<h2>Props</h2>
 			<ul>
-				<li><strong>options</strong>: Array of menu items</li>
+				<li><strong>items</strong>: Array of menu items (objects or primitives)</li>
+				<li><strong>fields</strong>: Remap your data keys to component fields</li>
 				<li><strong>label</strong>: Button label</li>
 				<li><strong>icon</strong>: Button icon</li>
-				<li><strong>onselect</strong>: Callback on item selection</li>
+				<li><strong>align</strong>: Dropdown alignment (<code>start</code>, <code>end</code>)</li>
+				<li><strong>direction</strong>: Open direction (<code>down</code>, <code>up</code>)</li>
+				<li><strong>showArrow</strong>: Show dropdown arrow</li>
+				<li><strong>disabled</strong>: Disable the menu</li>
+				<li><strong>class</strong>: Additional CSS classes</li>
 			</ul>
 		</div>
 
 		<div data-card>
-			<h3>Display Options</h3>
+			<h2>Snippets</h2>
 			<ul>
-				<li><strong>align</strong>: Dropdown alignment (left, right)</li>
-				<li><strong>direction</strong>: Open direction (down, up)</li>
-				<li><strong>showArrow</strong>: Show dropdown arrow</li>
-				<li><strong>disabled</strong>: Disable the menu</li>
+				<li>
+					<strong>itemContent(proxy)</strong>: Custom rendering for menu items
+				</li>
+				<li>
+					<strong>groupContent(proxy)</strong>: Custom rendering for group headers
+				</li>
+				<li>
+					<strong>[name](proxy)</strong>: Per-item snippet — set <code>item.snippet = 'name'</code>
+				</li>
 			</ul>
 		</div>
 	</div>
 
+	<div data-card>
+		<h2>ProxyItem API</h2>
+		<p>Snippets receive a <code>ProxyItem</code> instance:</p>
+		<ul>
+			<li><strong>proxy.text</strong>: Mapped display text</li>
+			<li><strong>proxy.icon</strong>: Mapped icon class</li>
+			<li><strong>proxy.href</strong>: Mapped href (renders an <code>&lt;a&gt;</code>)</li>
+			<li><strong>proxy.value</strong>: The original raw item (object or primitive)</li>
+			<li><strong>proxy.disabled</strong>: Whether the item is disabled</li>
+			<li><strong>proxy.get('field')</strong>: Read any field by name</li>
+		</ul>
+	</div>
+
+	<div data-card>
+		<h2>Events</h2>
+		<ul>
+			<li>
+				<strong>onselect(value, proxy)</strong>: Fired when an item is selected — receives the raw
+				item value and its ProxyItem
+			</li>
+		</ul>
+	</div>
 </article>

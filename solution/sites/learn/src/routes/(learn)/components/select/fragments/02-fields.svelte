@@ -11,4 +11,4 @@
 	let value = $state(null)
 </script>
 
-<Select options={countries} {fields} bind:value placeholder="Select a country" />
+<Select items={countries} {fields} bind:value placeholder="Select a country" />

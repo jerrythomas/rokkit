@@ -2,23 +2,23 @@
 	// @ts-nocheck
 	import { Select } from '@rokkit/ui'
 
-	const options = [
+	const items = [
 		{
-			label: 'Fruits',
+			text: 'Fruits',
 			children: [
-				{ label: 'Apple', value: 'apple' },
-				{ label: 'Banana', value: 'banana' }
+				{ text: 'Apple', value: 'apple' },
+				{ text: 'Banana', value: 'banana' }
 			]
 		},
 		{
-			label: 'Vegetables',
+			text: 'Vegetables',
 			children: [
-				{ label: 'Carrot', value: 'carrot' },
-				{ label: 'Broccoli', value: 'broccoli' }
+				{ text: 'Carrot', value: 'carrot' },
+				{ text: 'Broccoli', value: 'broccoli' }
 			]
 		}
 	]
 	let value = $state(null)
 </script>
 
-<Select {options} bind:value placeholder="Choose a food" />
+<Select {items} bind:value placeholder="Choose a food" />

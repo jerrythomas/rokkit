@@ -11,15 +11,14 @@ stack (identical to `List`) for consistent keyboard navigation and field mapping
 
 ### Props
 
-- `options: SelectItem[]` — Array of option objects or group objects (with `children`)
-- `fields: Record<string, string>` — Field mapping overrides (default: `{ text: 'label', value: 'value', icon: 'icon', children: 'children', disabled: 'disabled' }`)
+- `items: SelectItem[]` — Array of option objects or group objects (with `children`)
+- `fields: Record<string, string>` — Field mapping overrides (default: `{ text: 'text', value: 'value', icon: 'icon', children: 'children', disabled: 'disabled' }`)
 - `value: unknown` (bindable) — Currently selected value (extracted via `fields.value`)
 - `selected: SelectItem | null` (bindable) — Currently selected raw item object
 - `placeholder: string` — Text shown when nothing is selected (default: `'Select...'`)
 - `size: 'sm' | 'md' | 'lg'` — Size variant (default: `'md'`)
-- `align: 'left' | 'right'` — Dropdown alignment (default: `'left'`)
+- `align: 'start' | 'end'` — Dropdown alignment (default: `'start'`)
 - `direction: 'up' | 'down'` — Dropdown slide direction (default: `'down'`)
-- `maxRows: number` — Max visible rows before scroll (default: `5`)
 - `disabled: boolean` — Disable the entire select (default: `false`)
 - `filterable: boolean` — Show a search input in the dropdown (default: `false`)
 - `filterPlaceholder: string` — Placeholder for the filter input (default: `'Search...'`)
@@ -28,9 +27,8 @@ stack (identical to `List`) for consistent keyboard navigation and field mapping
 
 ### Snippets
 
-- `option(proxy: ProxyItem)` — Custom rendering for dropdown options
-- `groupLabel(proxy: ProxyItem)` — Custom rendering for group header labels
-- `selectedValue(proxy: ProxyItem)` — Custom rendering in the trigger button when a value is selected
+- `itemContent(proxy: ProxyItem)` — Custom rendering for dropdown options
+- `groupContent(proxy: ProxyItem)` — Custom rendering for group header labels
 - `[name](proxy: ProxyItem)` — Per-item snippet; set `item.snippet = 'name'` to route specific items
 
 ### Events
@@ -56,14 +54,14 @@ All snippets receive a `ProxyItem` instance:
   import { Select } from '@rokkit/ui'
 
   const fruits = [
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' },
-    { label: 'Cherry', value: 'cherry' }
+    { text: 'Apple', value: 'apple' },
+    { text: 'Banana', value: 'banana' },
+    { text: 'Cherry', value: 'cherry' }
   ]
   let value = $state(null)
 </script>
 
-<Select options={fruits} bind:value placeholder="Choose a fruit" />
+<Select items={fruits} bind:value placeholder="Choose a fruit" />
 ```
 
 ### Field Mapping
@@ -80,7 +78,7 @@ All snippets receive a `ProxyItem` instance:
   let value = $state(null)
 </script>
 
-<Select options={countries} {fields} bind:value placeholder="Select a country" />
+<Select items={countries} {fields} bind:value placeholder="Select a country" />
 ```
 
 ### Grouped Options
@@ -89,39 +87,39 @@ All snippets receive a `ProxyItem` instance:
 <script>
   import { Select } from '@rokkit/ui'
 
-  const options = [
+  const items = [
     {
-      label: 'Fruits',
+      text: 'Fruits',
       children: [
-        { label: 'Apple', value: 'apple' },
-        { label: 'Banana', value: 'banana' }
+        { text: 'Apple', value: 'apple' },
+        { text: 'Banana', value: 'banana' }
       ]
     },
     {
-      label: 'Vegetables',
+      text: 'Vegetables',
       children: [
-        { label: 'Carrot', value: 'carrot' },
-        { label: 'Broccoli', value: 'broccoli' }
+        { text: 'Carrot', value: 'carrot' },
+        { text: 'Broccoli', value: 'broccoli' }
       ]
     }
   ]
   let value = $state(null)
 </script>
 
-<Select {options} bind:value placeholder="Choose a food" />
+<Select {items} bind:value placeholder="Choose a food" />
 ```
 
 ### Filterable
 
 ```svelte
-<Select options={countries} bind:value filterable placeholder="Select a country" />
+<Select items={countries} bind:value filterable placeholder="Select a country" />
 ```
 
 ### Custom Option Snippet
 
 ```svelte
-<Select options={statuses} bind:value placeholder="Select a status">
-  {#snippet option(proxy)}
+<Select items={statuses} bind:value placeholder="Select a status">
+  {#snippet itemContent(proxy)}
     <span class="dot {proxy.get('color')}"></span>
     <span>{proxy.text}</span>
   {/snippet}
@@ -134,7 +132,7 @@ All snippets receive a `ProxyItem` instance:
 - `data-open` — Present when dropdown is open
 - `data-size` — Size variant (`sm`, `md`, `lg`)
 - `data-disabled` — Present when select is disabled
-- `data-align` — Alignment (`left`, `right`)
+- `data-align` — Alignment (`start`, `end`)
 - `data-direction` — Direction (`up`, `down`)
 - `data-select-trigger` — The trigger button
 - `data-select-value` — Value display area in trigger
@@ -166,7 +164,7 @@ Default `PROXY_ITEM_FIELDS` mapping (used when no `fields` prop is passed):
 
 ```js
 {
-  text: 'label',
+  text: 'text',
   value: 'value',
   icon: 'icon',
   href: 'href',

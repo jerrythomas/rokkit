@@ -1,11 +1,16 @@
-<script lang="ts">
+<script>
+	// @ts-nocheck
 	import { MultiSelect } from '@rokkit/ui'
 	import { FormRenderer, InfoField } from '@rokkit/forms'
-	import Playground from '$lib/Playground.svelte'
+	import PlaySection from '$lib/components/PlaySection.svelte'
 
-	let value = $state<unknown[]>([])
+	let value = $state([])
 
-	let props = $state({ placeholder: 'Pick colors...', size: 'md', disabled: false })
+	let props = $state({
+		placeholder: 'Pick colors...',
+		size: 'md',
+		disabled: false
+	})
 
 	const schema = {
 		type: 'object',
@@ -46,16 +51,19 @@
 	]
 </script>
 
-<Playground
-	title="MultiSelect"
-	description="Multi-selection dropdown with tags, keyboard navigation, and bindable value array."
->
+<PlaySection>
 	{#snippet preview()}
 		<div class="flex gap-8 flex-wrap">
 			<div>
 				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Colors</h4>
 				<div class="w-[300px]">
-					<MultiSelect items={colors} placeholder={props.placeholder} size={props.size as any} disabled={props.disabled} bind:value />
+					<MultiSelect
+						items={colors}
+						placeholder={props.placeholder}
+						size={props.size}
+						disabled={props.disabled}
+						bind:value
+					/>
 				</div>
 			</div>
 			<div>
@@ -64,7 +72,7 @@
 					<MultiSelect
 						items={withIcons}
 						placeholder="Pick pages..."
-						size={props.size as any}
+						size={props.size}
 						disabled={props.disabled}
 					/>
 				</div>
@@ -77,4 +85,4 @@
 		<InfoField label="Count" value={value.length} />
 		<InfoField label="Selected" value={value.join(', ') || '—'} />
 	{/snippet}
-</Playground>
+</PlaySection>

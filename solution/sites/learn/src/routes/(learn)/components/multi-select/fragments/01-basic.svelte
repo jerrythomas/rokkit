@@ -1,9 +1,13 @@
 <script>
 	// @ts-nocheck
-  import { MultiSelect } from '@rokkit/ui'
-  
-  let options = ['Alpha', 'Beta', 'Gamma']
-  let value = []
+	import { MultiSelect } from '@rokkit/ui'
+
+	const items = [
+		{ text: 'Alpha', value: 'alpha' },
+		{ text: 'Beta', value: 'beta' },
+		{ text: 'Gamma', value: 'gamma' }
+	]
+	let value = $state([])
 </script>
 
-<MultiSelect {options} bind:value placeholder="Select multiple values" />
+<MultiSelect {items} bind:value placeholder="Select values" />

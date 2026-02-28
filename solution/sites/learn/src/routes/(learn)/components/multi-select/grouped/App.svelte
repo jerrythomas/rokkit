@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { Select } from '@rokkit/ui'
+	import { MultiSelect } from '@rokkit/ui'
 
 	const items = [
 		{
@@ -15,15 +15,15 @@
 			text: 'Vegetables',
 			children: [
 				{ text: 'Carrot', value: 'carrot' },
-				{ text: 'Broccoli', value: 'broccoli' },
-				{ text: 'Spinach', value: 'spinach' }
+				{ text: 'Broccoli', value: 'broccoli' }
 			]
 		}
 	]
-
-	let value = $state(null)
+	let value = $state([])
 </script>
 
-<Select {items} bind:value placeholder="Choose a food" />
+<div class="w-[300px]">
+	<MultiSelect {items} bind:value placeholder="Choose foods" />
+</div>
 
-<p class="mt-3 text-sm text-surface-z5">Selected: <strong>{value ?? 'none'}</strong></p>
+<p class="mt-3 text-sm text-surface-z5">Selected: <strong>{value.join(', ') || 'none'}</strong></p>

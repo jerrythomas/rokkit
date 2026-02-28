@@ -4,16 +4,16 @@
 
 	let selected = $state(null)
 
-	let options = [
-		{ label: 'Copy', icon: 'i-lucide:copy' },
-		{ label: 'Cut', icon: 'i-lucide:scissors' },
-		{ label: 'Paste', icon: 'i-lucide:clipboard' },
-		{ label: 'Delete', icon: 'i-lucide:trash' }
+	let items = [
+		{ text: 'Copy', icon: 'i-lucide:copy' },
+		{ text: 'Cut', icon: 'i-lucide:scissors' },
+		{ text: 'Paste', icon: 'i-lucide:clipboard' },
+		{ text: 'Delete', icon: 'i-lucide:trash' }
 	]
 </script>
 
 <div class="flex items-start gap-8">
-	<Menu {options} label="Actions" onselect={(value) => (selected = value)} />
+	<Menu {items} label="Actions" onselect={(value) => (selected = value)} />
 
 	{#if selected}
 		<p class="text-surface-z7">

@@ -1,11 +1,19 @@
-<script lang="ts">
+<script>
+	// @ts-nocheck
 	import { Menu } from '@rokkit/ui'
 	import { FormRenderer, InfoField } from '@rokkit/forms'
-	import Playground from '$lib/Playground.svelte'
+	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	let selected = $state('')
 
-	let props = $state({ label: 'Actions', size: 'md', align: 'start', direction: 'down', showArrow: true, disabled: false })
+	let props = $state({
+		label: 'Actions',
+		size: 'md',
+		align: 'start',
+		direction: 'down',
+		showArrow: true,
+		disabled: false
+	})
 
 	const schema = {
 		type: 'object',
@@ -57,15 +65,12 @@
 		}
 	]
 
-	function handleSelect(value: unknown) {
+	function handleSelect(value) {
 		selected = String(value)
 	}
 </script>
 
-<Playground
-	title="Menu"
-	description="Dropdown menu with flat or grouped items, keyboard navigation, and custom rendering."
->
+<PlaySection>
 	{#snippet preview()}
 		<div class="flex gap-8 flex-wrap">
 			<div>
@@ -74,9 +79,9 @@
 					{items}
 					label={props.label}
 					icon="i-lucide:menu"
-					size={props.size as any}
-					align={props.align as any}
-					direction={props.direction as any}
+					size={props.size}
+					align={props.align}
+					direction={props.direction}
 					disabled={props.disabled}
 					showArrow={props.showArrow}
 					onselect={handleSelect}
@@ -87,9 +92,9 @@
 				<Menu
 					items={groupedItems}
 					label="File Menu"
-					size={props.size as any}
-					align={props.align as any}
-					direction={props.direction as any}
+					size={props.size}
+					align={props.align}
+					direction={props.direction}
 					disabled={props.disabled}
 					showArrow={props.showArrow}
 					onselect={handleSelect}
@@ -102,4 +107,4 @@
 		<FormRenderer bind:data={props} {schema} {layout} />
 		<InfoField label="Selected" value={selected || '—'} />
 	{/snippet}
-</Playground>
+</PlaySection>

@@ -2,5 +2,7 @@
   "title": "Menu",
   "description": "Dropdown menu with keyboard navigation and grouped items",
   "icon": "i-component:dropdown",
-  "category": "components"
+  "category": "components",
+  "tags": ["menu", "dropdown", "navigation", "actions"],
+  "experimental": false
 }

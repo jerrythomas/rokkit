@@ -1,14 +1,13 @@
 <script>
 	// @ts-nocheck
-  import { MultiSelect } from '@rokkit/ui'
-  
-  const options = [
-    { name: 'Fruits', category: 'food' },
-    { name: 'Vegetables', category: 'food' }
-  ]
-  
-  let fields = { text: 'name' }
-  let value = []
+	import { MultiSelect } from '@rokkit/ui'
+
+	const items = [
+		{ name: 'Fruits', category: 'food' },
+		{ name: 'Vegetables', category: 'food' }
+	]
+	const fields = { text: 'name' }
+	let value = $state([])
 </script>
 
-<MultiSelect {options} {fields} bind:value />
+<MultiSelect {items} {fields} bind:value />

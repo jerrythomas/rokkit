@@ -14,7 +14,7 @@
 	<!-- Basic Example -->
 	<h2>Basic Example</h2>
 	<p>
-		Pass an array of objects with <code>label</code> and optionally <code>icon</code> fields. Bind
+		Pass an array of objects with <code>text</code> and optionally <code>icon</code> fields. Bind
 		<code>value</code> to track the selected value. Set <code>disabled: true</code> on any item to
 		make it unselectable.
 	</p>
@@ -25,7 +25,7 @@
 	<!-- Field Mapping -->
 	<h2>Field Mapping</h2>
 	<p>
-		Your data rarely matches the component's default field names (<code>label</code>,
+		Your data rarely matches the component's default field names (<code>text</code>,
 		<code>value</code>). Use the <code>fields</code> prop to remap without transforming your data.
 	</p>
 
@@ -56,7 +56,7 @@
 	<!-- Custom Option Snippet -->
 	<h2>Custom Option Rendering</h2>
 	<p>
-		Use the <code>option</code> snippet to fully control what appears inside each dropdown option.
+		Use the <code>itemContent</code> snippet to fully control what appears inside each dropdown option.
 		The snippet receives a <code>ProxyItem</code> — use <code>proxy.text</code>,
 		<code>proxy.icon</code>, and <code>proxy.get('fieldName')</code> to access any field.
 	</p>
@@ -69,15 +69,14 @@
 		<div data-card>
 			<h2>Props</h2>
 			<ul>
-				<li><strong>options</strong>: Array of objects or grouped option arrays</li>
+				<li><strong>items</strong>: Array of objects or grouped option arrays</li>
 				<li><strong>fields</strong>: Remap your data keys to component fields</li>
 				<li><strong>value</strong> (bindable): Currently selected value</li>
 				<li><strong>selected</strong> (bindable): Currently selected raw item object</li>
 				<li><strong>placeholder</strong>: Text shown when nothing is selected</li>
 				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
-				<li><strong>align</strong>: Dropdown alignment (<code>left</code>, <code>right</code>)</li>
+				<li><strong>align</strong>: Dropdown alignment (<code>start</code>, <code>end</code>)</li>
 				<li><strong>direction</strong>: Dropdown direction (<code>down</code>, <code>up</code>)</li>
-				<li><strong>maxRows</strong>: Max visible rows before scroll (default: 5)</li>
 				<li><strong>disabled</strong>: Disable the entire select</li>
 				<li><strong>filterable</strong>: Show a search input in the dropdown</li>
 				<li><strong>filterPlaceholder</strong>: Placeholder for the filter input</li>
@@ -88,9 +87,8 @@
 		<div data-card>
 			<h2>Snippets</h2>
 			<ul>
-				<li><strong>option(proxy)</strong>: Custom rendering for dropdown options</li>
-				<li><strong>groupLabel(proxy)</strong>: Custom rendering for group headers</li>
-				<li><strong>selectedValue(proxy)</strong>: Custom rendering in the trigger button</li>
+				<li><strong>itemContent(proxy)</strong>: Custom rendering for dropdown options</li>
+				<li><strong>groupContent(proxy)</strong>: Custom rendering for group headers</li>
 				<li>
 					<strong>[name](proxy)</strong>: Per-item snippet — set <code>item.snippet = 'name'</code>
 				</li>

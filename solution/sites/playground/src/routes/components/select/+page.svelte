@@ -5,7 +5,7 @@
 
 	let value = $state<unknown>(undefined)
 
-	let props = $state({ placeholder: 'Choose a fruit...', size: 'md', align: 'left', direction: 'down', disabled: false, filterable: false })
+	let props = $state({ placeholder: 'Choose a fruit...', size: 'md', align: 'start', direction: 'down', disabled: false, filterable: false })
 
 	const schema = {
 		type: 'object',
@@ -24,7 +24,7 @@
 		elements: [
 			{ scope: '#/placeholder', label: 'Placeholder' },
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
-			{ scope: '#/align', label: 'Align', props: { options: ['left', 'right'] } },
+			{ scope: '#/align', label: 'Align', props: { options: ['start', 'end'] } },
 			{ scope: '#/direction', label: 'Direction', props: { options: ['down', 'up'] } },
 			{ scope: '#/disabled', label: 'Disabled' },
 			{ scope: '#/filterable', label: 'Filterable' },
@@ -70,7 +70,7 @@
 				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Simple</h4>
 				<div class="w-[250px]">
 					<Select
-						options={fruits}
+						items={fruits}
 						placeholder={props.placeholder}
 						size={props.size as any}
 						align={props.align as any}
@@ -85,7 +85,7 @@
 				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
 				<div class="w-[250px]">
 					<Select
-						options={grouped}
+						items={grouped}
 						placeholder="Choose..."
 						size={props.size as any}
 						align={props.align as any}

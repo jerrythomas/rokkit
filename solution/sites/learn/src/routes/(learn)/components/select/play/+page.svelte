@@ -9,7 +9,7 @@
 	let props = $state({
 		placeholder: 'Choose a fruit...',
 		size: 'md',
-		align: 'left',
+		align: 'start',
 		direction: 'down',
 		disabled: false,
 		filterable: false
@@ -32,7 +32,7 @@
 		elements: [
 			{ scope: '#/placeholder', label: 'Placeholder' },
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
-			{ scope: '#/align', label: 'Align', props: { options: ['left', 'right'] } },
+			{ scope: '#/align', label: 'Align', props: { options: ['start', 'end'] } },
 			{ scope: '#/direction', label: 'Direction', props: { options: ['down', 'up'] } },
 			{ scope: '#/disabled', label: 'Disabled' },
 			{ scope: '#/filterable', label: 'Filterable' },
@@ -41,28 +41,28 @@
 	}
 
 	const fruits = [
-		{ label: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
-		{ label: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
-		{ label: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
-		{ label: 'Date', value: 'date', icon: 'i-lucide:circle' },
-		{ label: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
+		{ text: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
+		{ text: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
+		{ text: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
+		{ text: 'Date', value: 'date', icon: 'i-lucide:circle' },
+		{ text: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
 	]
 
 	const grouped = [
 		{
-			label: 'Fruits',
+			text: 'Fruits',
 			children: [
-				{ label: 'Apple', value: 'apple' },
-				{ label: 'Banana', value: 'banana' },
-				{ label: 'Cherry', value: 'cherry' }
+				{ text: 'Apple', value: 'apple' },
+				{ text: 'Banana', value: 'banana' },
+				{ text: 'Cherry', value: 'cherry' }
 			]
 		},
 		{
-			label: 'Vegetables',
+			text: 'Vegetables',
 			children: [
-				{ label: 'Carrot', value: 'carrot' },
-				{ label: 'Broccoli', value: 'broccoli' },
-				{ label: 'Spinach', value: 'spinach' }
+				{ text: 'Carrot', value: 'carrot' },
+				{ text: 'Broccoli', value: 'broccoli' },
+				{ text: 'Spinach', value: 'spinach' }
 			]
 		}
 	]
@@ -75,7 +75,7 @@
 				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Simple</h4>
 				<div class="w-[250px]">
 					<Select
-						options={fruits}
+						items={fruits}
 						placeholder={props.placeholder}
 						size={props.size}
 						align={props.align}
@@ -90,7 +90,7 @@
 				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
 				<div class="w-[250px]">
 					<Select
-						options={grouped}
+						items={grouped}
 						placeholder="Choose..."
 						size={props.size}
 						align={props.align}

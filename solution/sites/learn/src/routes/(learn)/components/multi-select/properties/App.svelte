@@ -2,13 +2,18 @@
 	// @ts-nocheck
 	import { MultiSelect } from '@rokkit/ui'
 
-	let options = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon']
+	const items = [
+		{ text: 'Red', value: 'red' },
+		{ text: 'Green', value: 'green' },
+		{ text: 'Blue', value: 'blue' },
+		{ text: 'Yellow', value: 'yellow' },
+		{ text: 'Purple', value: 'purple' }
+	]
 	let value = $state([])
 </script>
 
-<MultiSelect {options} bind:value placeholder="Select multiple values" />
-
-<div class="mt-4">
-	<p><strong>Selected Values:</strong></p>
-	<pre class="text-sm">{JSON.stringify(value, null, 2)}</pre>
+<div class="w-[300px]">
+	<MultiSelect {items} bind:value placeholder="Select colors" />
 </div>
+
+<p class="mt-3 text-sm text-surface-z5">Selected: <strong>{value.join(', ') || 'none'}</strong></p>

@@ -3,11 +3,11 @@
 	import { Select } from '@rokkit/ui'
 
 	const fruits = [
-		{ label: 'Apple', value: 'apple' },
-		{ label: 'Banana', value: 'banana' },
-		{ label: 'Cherry', value: 'cherry' }
+		{ text: 'Apple', value: 'apple' },
+		{ text: 'Banana', value: 'banana' },
+		{ text: 'Cherry', value: 'cherry' }
 	]
 	let value = $state(null)
 </script>
 
-<Select options={fruits} bind:value placeholder="Choose a fruit" />
+<Select items={fruits} bind:value placeholder="Choose a fruit" />
