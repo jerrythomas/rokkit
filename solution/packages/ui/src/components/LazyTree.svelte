@@ -21,7 +21,8 @@
 		showLines = true,
 		icons: userIcons = {},
 		onselect,
-		onloadchildren,
+		onlazyload,
+		hasMore = false,
 		class: className = '',
 		...snippets
 	}: {
@@ -32,7 +33,8 @@
 		showLines?: boolean
 		icons?: { opened?: string; closed?: string }
 		onselect?: (value: unknown, proxy: ProxyItem) => void
-		onloadchildren?: (value: unknown, item: unknown) => Promise<unknown[]>
+		onlazyload?: (current?: unknown) => Promise<unknown[]>
+		hasMore?: boolean
 		class?: string
 		[key: string]: unknown
 	} = $props()
@@ -42,8 +44,12 @@
 	const wrapper = $derived(
 		new LazyWrapper(items, fields, {
 			onselect,
+			onlazyload,
 			createProxy: (raw, f, key, level) =>
-				new LazyProxyItem(raw, f, key, level, onloadchildren ?? null)
+				new LazyProxyItem(raw, f, key, level, onlazyload
+					? async (_value, rawItem) => onlazyload(rawItem)
+					: null
+				)
 		})
 	)
 
@@ -164,4 +170,13 @@
 				</div>
 			</div>
 	{/each}
+	{#if hasMore}
+		<button
+			type="button"
+			data-tree-load-more
+			onclick={() => wrapper.loadMore()}
+		>
+			Load More
+		</button>
+	{/if}
 </div>
