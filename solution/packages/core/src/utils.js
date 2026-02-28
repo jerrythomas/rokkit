@@ -1,5 +1,5 @@
 import { has, isNil } from 'ramda'
-import { DATA_IMAGE_REGEX } from './constants'
+import { DATA_IMAGE_REGEX, ITEM_SNIPPET } from './constants'
 
 let idCounter = 0
 
@@ -167,6 +167,25 @@ export function getSnippet(obj, key, defaultSnippet = null) {
 		return obj[key]
 	}
 	return defaultSnippet
+}
+
+/**
+ * Resolve which snippet to render for a proxy item.
+ *
+ * Checks proxy.snippet for a per-item named override first (e.g. item.snippet = 'highlighted').
+ * Falls back to the component-level fallback snippet name (e.g. 'itemContent' / 'groupContent').
+ * Returns null if neither is found.
+ *
+ * @param {Record<string, unknown>} snippets  - snippets passed to the component
+ * @param {{ snippet?: string | null }} proxy  - any object with an optional .snippet property
+ * @param {string} [fallback]                  - fallback snippet name; defaults to ITEM_SNIPPET ('itemContent')
+ * @returns {Function | null}
+ */
+export function resolveSnippet(snippets, proxy, fallback = ITEM_SNIPPET) {
+	const name = proxy?.snippet
+	if (name && typeof snippets[name] === 'function') return snippets[name]
+	const fb = snippets[fallback]
+	return typeof fb === 'function' ? fb : null
 }
 
 /**

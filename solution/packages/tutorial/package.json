@@ -1,7 +1,8 @@
 {
   "name": "@rokkit/tutorial",
   "version": "1.0.0-next.127",
-  "description": "Utilities for building tutorials.",
+  "description": "DEPRECATED: Superseded by @rokkit/stories. Utilities for building tutorials (Svelte 4 era).",
+  "deprecated": "Superseded by @rokkit/stories. This package is no longer used and will be removed in a future release.",
   "publishConfig": {
     "access": "public"
   },

@@ -8,7 +8,7 @@
 
 import type { Snippet } from 'svelte'
 import type { ItemProxy, ItemFields } from './item-proxy.js'
-import { defaultStateIcons } from '@rokkit/core'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
 // Field Mapping Types
@@ -72,7 +72,7 @@ export type ConnectorType = 'child' | 'last' | 'sibling' | 'empty'
 
 /**
  * Icons configuration for tree expand/collapse states.
- * Keys match the naming convention in @rokkit/core defaultStateIcons.
+ * Keys match the naming convention in @rokkit/core DEFAULT_STATE_ICONS.
  */
 export interface TreeStateIcons {
 	/** Icon class for expanded/opened state */
@@ -86,8 +86,8 @@ export interface TreeStateIcons {
  * that get resolved to actual icon classes via UnoCSS shortcuts.
  */
 export const defaultTreeStateIcons: TreeStateIcons = {
-	opened: defaultStateIcons.node.opened,
-	closed: defaultStateIcons.node.closed
+	opened: DEFAULT_STATE_ICONS.node.opened,
+	closed: DEFAULT_STATE_ICONS.node.closed
 }
 
 // =============================================================================

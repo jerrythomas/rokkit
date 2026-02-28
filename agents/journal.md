@@ -5,7 +5,222 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-02-27 (continued)
+
+### Architecture Decision: Components Built from List Pattern
+
+After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:
+- **Toggle**: Copy List.svelte, set `orientation: 'horizontal'` on Navigator, add external value sync effect. No group content. Uses `wrapper.flatView` loop and `resolveSnippet`.
+- **Menu**: Copy List + add `Trigger` class (new in `@rokkit/actions`) for open/close management. Pre-flatten leaf items for Wrapper; use `renderNodes` array for group/item rendering. Panel renders like List inside `{#if trigger?.isOpen}`.
+- **Tree**: Copy List + tree-line helper (`getTreeLineType`). Everything else (collapsible Navigator) stays same.
+- **Select/MultiSelect**: Will use Trigger class + List pattern for dropdown panel.
+
+**Key additions:**
+- `ProxyItem.raw` getter added — exposes `#raw` directly so `handleSelect` can return raw item without `itemPathMap`
+- Backlog items #67, #68, #69 updated with new architecture
+
+### Toggle Rewrite — In Progress
+
+**`packages/states/src/proxy-item.svelte.js`:**
+- Added `get raw() { return this.#raw }` — exposes original raw item
+
+**`packages/ui/src/components/Toggle.svelte` rewritten:**
+- Uses `wrapper.flatView` loop (like List) instead of index-based `wrapper.lookup.get(String(index))`
+- `new Navigator(containerRef, wrapper, { orientation: 'horizontal' })` — left/right arrow keys
+- External value sync: `$effect` calls `wrapper.moveTo(key)` when `value` changes
+- `resolveSnippet(snippets, proxy, 'item')` from `@rokkit/core` — no local `resolveItemSnippet`
+- `...snippets` rest props instead of `item: itemSnippet` destructuring
+- `proxy.raw` in `handleSelect` (second arg to `onchange` callback)
+- 1600 tests pass, 0 lint errors
+
+---
+
+## 2026-02-28
+
+### Select Migration to Navigator/Wrapper/ProxyItem Stack — Complete
+
+**`packages/ui/src/components/Select.svelte` rewritten:**
+- Uses `Wrapper`, `ProxyItem`, `PROXY_ITEM_FIELDS` from `@rokkit/states`; `Navigator` from `@rokkit/actions`
+- `mergedFields = { ...PROXY_ITEM_FIELDS, ...userFields }` (text → 'label' default)
+- `filteredOptions` derived from `options + filterQuery` (group-aware filter)
+- `flatItems` pre-flattens groups to leaf items for Wrapper
+- `wrapper = $derived(new Wrapper(flatItems, mergedFields, { onselect: handleSelect }))`
+- Navigator attached via `$effect` on `dropdownRef`; DOM focus synced via `$effect` on `wrapper.focusedKey`
+- Snippet API: `option(proxy)`, `groupLabel(proxy)`, `selectedValue(proxy)`
+- `handleSelect` recovers raw item via `flatItems[parseInt(proxy.key)]`
+
+**`packages/ui/src/types/select.ts` updated:**
+- New snippet types: `SelectOptionSnippet`, `SelectGroupLabelSnippet`, `SelectValueSnippet`
+- Legacy types kept for MultiSelect backward compat (`SelectItemHandlers`, `SelectItemSnippet`, etc.)
+- `SelectBaseProps.option` prop uses new `SelectOptionSnippet = Snippet<[ProxyItem]>`
+
+**Learn site `elements/select/` updated:**
+- Rewrote `+page.svelte` with comprehensive docs (6 sections, props table, ProxyItem API, snippets)
+- Updated `properties/App.svelte`, `fields/App.svelte` with `label:` field names
+- Created `grouped/App.svelte`, `filterable/App.svelte`, `snippet/App.svelte`
+- Updated fragments 01–02, created fragments 03–04
+- Created `llms.txt` with full API reference
+- `play/+page.svelte` already updated (previous session)
+- E2e tests: `sites/learn/e2e/select.spec.ts` already written
+
+**Tests:** 1600 passing, lint 0 errors, build ✓
+
+---
+
+## 2026-02-27
+
+### List Docs, E2E Tests, llms.txt, Design Patterns, Backlog — Complete
+
+**SimplifiedList removed:**
+- Deleted `packages/ui/src/components/SimplifiedList.svelte`
+- Removed from `packages/ui/src/components/index.ts` and `packages/ui/src/index.ts`
+- Deleted `sites/learn/src/routes/poc/+page.svelte` and `sites/learn/e2e/poc.spec.ts`
+
+**Learn site play page updated (`elements/list/play/+page.svelte`):**
+- Changed all `text:` → `label:` in items
+- Removed `multiselect` prop (not in new API)
+- Added `expanded: true` to grouped items (so groups start open for e2e)
+- Fixed `value` binding and `onselect` callbacks
+
+**E2E tests rewritten (`sites/learn/e2e/list.spec.ts`):**
+- Play page tests: keyboard flat list, keyboard grouped, mouse interaction, learn/play toggle
+- Group expansion uses `aria-expanded` attribute (not old `data-list-group-collapsed`)
+- Learn page tests: intro example, primitives, nested groups toggle, itemContent snippet badges, interactive checkboxes
+
+**`llms.txt` updated (`sites/learn/src/routes/docs/components/list/llms.txt/+server.ts`):**
+- Props table: removed `multiselect`/`expanded`/`selected`, added `class` prop
+- Field mapping: `text → 'label'` default (was `'text'`)
+- New snippet API: `itemContent(proxy)`, `groupContent(proxy)`, per-item named snippets
+- Added ProxyItem API table
+- Added Interactive Elements section and Custom Class section
+- Updated data attributes: no `data-list-group`, uses `aria-expanded` on group label
+
+**Design patterns documented (`agents/design-patterns.md`):**
+- New: Navigator/Wrapper/ProxyItem Stack pattern
+- New: Snippet Customization pattern (`itemContent`/`groupContent`/per-item)
+- New: `class` prop convention
+- Updated: State Icons pattern to use `DEFAULT_STATE_ICONS` / `DEFAULT_ICONS` (UPPER_SNAKE_CASE)
+
+**Migration backlog added (`agents/backlog/02-ui-components.md`):**
+- #65 Select — migrate to Navigator/Wrapper/ProxyItem stack
+- #66 MultiSelect — migrate to Navigator/Wrapper/ProxyItem stack
+- #67 Menu — migrate to Navigator/Wrapper/ProxyItem stack
+- #68 Toggle — migrate to Navigator/Wrapper/ProxyItem stack
+- #69 Tree — migrate to Navigator/Wrapper/ProxyItem stack
+
+---
+
+### ProxyItem + Wrapper + Navigator — Production Migration Complete
+
+Promoted the testbed Navigator/Wrapper/ProxyItem stack to production packages and rewrote the List component.
+
+**Constants rename — `@rokkit/core`:**
+- All `default*` constants renamed to `DEFAULT_*` (UPPER_SNAKE_CASE):
+  - `defaultFields` → `DEFAULT_FIELDS`, `defaultIcons` → `DEFAULT_ICONS`
+  - `defaultOptions` → `DEFAULT_OPTIONS`, `defaultKeyMap` → `DEFAULT_KEYMAP`
+  - `defaultThemeMapping` → `DEFAULT_THEME_MAPPING`, `defaultStateIcons` → `DEFAULT_STATE_ICONS`
+- Updated all dependents: `mapping.js`, `nested.js`, `field-mapper.js`, `theme.js`, `themes/index.js`
+- Updated `states/src/`: `proxy.svelte.js`, `derive.svelte.js`, `list-controller.svelte.js`, `vibe.svelte.js`
+- Updated all `packages/ui/src/types/*.ts`, `forms/InputCheckbox.svelte`, `app/ThemeSwitcherToggle.ts`
+- Updated `sites/learn/uno.config.js`, `sites/playground/uno.config.ts`, `sites/quick-start/uno.config.js`
+- Added `resolveSnippet` to `@rokkit/core/src/utils.js`
+
+**New files in `@rokkit/actions`:**
+- `nav-constants.js` — ACTIONS, PLAIN_FIXED, CTRL_FIXED, SHIFT_FIXED, ARROWS, TYPEAHEAD_RESET_MS
+- `keymap.js` — `buildKeymap`, `resolveAction`
+- `navigator.js` — `Navigator` class (not a Svelte action); exported as capital-N to avoid conflict with existing `navigator` Svelte action
+
+**New files in `@rokkit/states`:**
+- `abstract-wrapper.js` — base class with uniform method signatures (all params use `_path` for lint compliance)
+- `proxy-item.svelte.js` — `ProxyItem`, `buildProxyList`, `buildFlatView`, `PROXY_ITEM_FIELDS` (text → 'label' default)
+- `wrapper.svelte.js` — `Wrapper extends AbstractWrapper` with full navigation + selection state
+
+**`@rokkit/ui` List.svelte rewrite:**
+- Uses `Wrapper` from `@rokkit/states`, `Navigator` class via `$effect`, `resolveSnippet` from `@rokkit/core`
+- Icons: `$derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })`
+- Single flat `{#each wrapper.flatView}` loop; separators/spacers/groups/links/buttons all handled
+- Snippets: `itemContent(proxy)`, `groupContent(proxy)`, per-item via `item.snippet = 'name'`
+
+**Learn site List docs rewritten:**
+- New examples: `primitives/`, `icons/`, `interactive/` (checkbox in snippet)
+- Updated: `nested/`, `mapping/`, `snippets/` (itemContent badge demo), `mixed/` (per-item snippet)
+- Removed old image/component-field examples (not in new API)
+- New fragments: `01-basic-items.js`, `02-field-mapping.js`, `03-item-snippet.svelte`, `04-per-item-snippet.svelte`
+- `+page.svelte` fully rewritten with ProxyItem API reference table
+
+**Tests:** 1600 passing, lint 0 errors, build ✓
+
+---
+
 ## 2026-02-26
+
+### Testbed Package — 100% Coverage
+
+Achieved 100% coverage on all production files in `packages/testbed/src/`:
+
+**New test files:**
+- `keymap.spec.js` — 37 tests covering ACTIONS, all three orientations (vertical/horizontal-ltr/horizontal-rtl), collapsible variants, `resolveAction` for all modifier combinations including null-returning branches
+- `wrapper.spec.js` — 19 tests covering `Wrapper` base class: initial `focusedKey = null`, all 12 action methods callable without error, `findByText` returns null
+
+**Extended existing specs:**
+- `navigator.spec.js` — 4 new tests for `navigator()` Svelte action adapter (returns `{ destroy }`, wires events, destroy removes listeners, passes options through)
+- `proxy.spec.svelte.js` — 9 new tests: `get('value')`, `get('hasChildren')`, `get('disabled')`, `get('selected')` delegates; `text ?? ''` fallback (items without label); `children ?? []` fallback; `buildProxyList(undefined)`, `buildProxyList(null)`, `buildProxyList([])` edge cases
+
+**Coverage result:**
+```
+keymap.js     100 | 100 | 100 | 100
+navigator.js  100 | 100 | 100 | 100
+wrapper.js    100 | 100 | 100 | 100
+proxy.svelte  100 | 100 | 100 | 100
+```
+
+`types.ts` excluded from coverage (TypeScript interface-only file, no runtime code — added to global `vitest.config.ts` coverage exclude).
+
+**Tests:** 1508 passing (up from 1446 — 62 new tests)
+
+---
+
+### Navigator + Wrapper + Keymap POC (`sites/learn/src/lib/list/`)
+
+Built a clean three-layer keyboard/mouse navigation architecture as a POC before promoting to
+`packages/`. All 1402 tests pass.
+
+**`keymap.js`:**
+- `ACTIONS` frozen object with 10 semantic actions (next/prev/first/last/expand/collapse/select/extend/range/cancel)
+- Three modifier layers: `plain`, `shift`, `ctrl`
+- Orientation variants: vertical, horizontal-ltr, horizontal-rtl
+- `collapsible` flag adds arrow key bindings for expand/collapse
+- `Escape → cancel` in PLAIN_FIXED
+
+**`wrapper.js`:**
+- `Wrapper` base class with uniform signature — every method receives `path`
+- Movement methods (`next/prev/first/last/expand/collapse`) receive path but ignore it
+- Selection methods (`select/extend/range/toggle/moveTo`) use path (fall back to `focusedKey`)
+- `focusedKey` property — Navigator reads after keyboard actions to scroll focused item into view
+
+**`navigator.js`:**
+- Plain class (not just a Svelte action) — testable without framework
+- Handles: keydown (keymap lookup), click (modifier-aware), focusin (path redirect), focusout (blur detection)
+- Typeahead: 500ms buffer, accumulates chars, calls `wrapper.findByText`, scrolls match
+- `scrollIntoView` after keyboard navigation only (not click, not focusin)
+- `data-accordion-trigger` attribute signals click → `toggle` not `select`
+- Svelte action adapter: `export function navigator(node, options)` for `use:navigator`
+
+**`navigator.spec.js`:**
+- 44 tests across 7 describe blocks
+- MockWrapper records all calls as `{ action, path }`
+- Tests: movement keys, expand/collapse, selection, scrollIntoView, click modifiers, focusin/focusout, typeahead, destroy
+
+**Design documented at `docs/design/000-navigator-wrapper.md`**
+
+Key design decision: Navigator always passes path to ALL wrapper methods (resolved from
+`document.activeElement` for keyboard, `event.target` for click). Wrappers decide what to use.
+This eliminates branching in dispatch.
+
+Composite widget pattern documented: trigger handles open/close; Navigator attaches only to the
+list half; shared Wrapper coordinates both (Escape → cancel, focusout → blur → close).
+
+---
 
 ### Learn Site — Layout Redesign + Theme Fix
 
@@ -1474,3 +1689,44 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 - `themes.md` updated with 30 base CSS files (was 21)
 - `data.md` updated: parseFilters note corrected (used by SearchFilter)
 - Old flat files deleted (superseded by new structure)
+
+---
+
+### 2026-02-26 — Testbed: ProxyItem Refinements + ListWrapper + List Reference
+
+**ProxyItem final design:**
+- `#raw` / `#item` split: primitives normalised to `{ [fields.text]: raw, [fields.value]: raw }` for uniform access
+- `#key` + `#level`: path identifiers with invariant `level === key.split('-').length`; root items level 1
+- `snippet` field added to `DEFAULT_FIELDS` and as a getter
+- `#children = $derived(#buildChildren())`: auto-wraps children as `ProxyItem[]` with propagated keys/levels
+- `get(fieldName)` is pure field mapper only; control state (`expanded`/`selected`) and computed props accessed as direct properties
+- `Wrapper.focusedKey` changed from class field to getter to prevent parent's own-property shadowing subclass getters
+
+**Tests:** 78 proxy tests, 17 wrapper tests, 32 keymap tests, 49 navigator tests = 176 testbed tests, 100% coverage
+
+**ListWrapper (`packages/testbed/src/wrapper/list-wrapper.svelte.js`):**
+- Extends `Wrapper`; uses `buildProxyList` + `buildFlatView` for reactive proxy tree
+- `flatView = $derived(buildFlatView(#roots))` — re-derives on any `proxy.expanded` change
+- `#navigable = $derived(flatView.filter(...))` — excludes separator/spacer/disabled
+- `#focusedKey = $state(null)` with getter override
+- Full `IWrapper` implementation: next/prev/first/last (clamp, skip disabled/separator), expand (open or enter), collapse (close or go to parent), select (group toggles, leaf fires onselect), toggle, moveTo, findByText (prefix, wrap-around, case-insensitive)
+- 66 tests covering all paths including integration scenario
+
+**Reference List (`packages/testbed/src/ui/List.svelte`):**
+- Thin rendering layer: `ListWrapper` + `use:navigator` + flat `{#each wrapper.flatView}`
+- `$effect` syncs `wrapper.focusedKey` → DOM `.focus()`
+- `data-accordion-trigger` on group headers → Navigator dispatches `toggle` not `select`
+- Level-based indentation via `data-level` attribute
+- Old `packages/ui/src/components/List.svelte` unchanged — switch export pending full validation
+
+**Design docs updated:**
+- `docs/design/002-list.md` — rewritten for ProxyItem-based design (supersedes NestedController approach)
+- `docs/design/000-navigator-wrapper.md` — file paths updated to reflect testbed package
+
+**Tests:** 1600 passing (up from 1534 — 66 new ListWrapper tests)
+
+**Promotion plan (when design is proven):**
+- `Wrapper` + `Navigator` + `keymap` → `packages/actions/src/`
+- `ProxyItem` + `buildProxyList/buildFlatView` → `packages/states/src/`
+- `ListWrapper` → `packages/states/src/`
+- `List.svelte` → `packages/ui/src/components/List.svelte` (replacing old impl)

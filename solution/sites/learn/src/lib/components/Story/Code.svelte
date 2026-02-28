@@ -10,13 +10,18 @@
 </script>
 
 <div data-code-root>
-	<CopyToClipboard {content} floating={true} />
+	<div data-code-overlay>
+		<CopyToClipboard {content} class="" />
+	</div>
+	{#if language}
+		<span data-code-lang>{language}</span>
+	{/if}
 	{#await highlightedCode}
-		<div class="text-surface-floating p-4">Highlighting code...</div>
+		<div class="text-surface-floating p-2">Highlighting code...</div>
 	{:then code}
 		<!-- eslint-disable svelte/no-at-html-tags -->
 		{@html code}
 	{:catch error}
-		<div class="p-4 text-red-500">Error highlighting code: {error.message}</div>
+		<div class="p-2 text-red-500">Error highlighting code: {error.message}</div>
 	{/await}
 </div>

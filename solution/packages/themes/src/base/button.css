@@ -57,6 +57,10 @@
   padding: 0;
 }
 
+[data-button][data-icon-only] [data-item-text] {
+  display: none;
+}
+
 /* =============================================================================
    Size Variants
    ============================================================================= */
@@ -75,7 +79,7 @@
 
 [data-button][data-size='sm'] [data-item-icon],
 [data-button][data-size='sm'] [data-button-icon-right] {
-  font-size: 0.875rem;
+  font-size: 1.25rem;
 }
 
 /* Medium (default) */
@@ -96,7 +100,7 @@
 [data-button][data-size='md'] [data-button-icon-right],
 [data-button]:not([data-size]) [data-item-icon],
 [data-button]:not([data-size]) [data-button-icon-right] {
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 /* Large */
@@ -113,7 +117,7 @@
 
 [data-button][data-size='lg'] [data-item-icon],
 [data-button][data-size='lg'] [data-button-icon-right] {
-  font-size: 1.25rem;
+  font-size: 1.875rem;
 }
 
 /* =============================================================================

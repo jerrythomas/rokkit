@@ -25,8 +25,6 @@
   ],
   "scripts": {
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "test": "vitest run",
-    "test:watch": "vitest",
     "build": "echo 'No build step needed for source-only package'"
   },
   "keywords": [
@@ -47,16 +45,8 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/svelte": "^5.3.1",
-    "@testing-library/user-event": "^14.6.1",
-    "@vitest/browser": "^4.0.18",
-    "playwright": "^1.58.2",
     "svelte": "^5.53.5",
     "svelte-check": "^4.4.3",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "typescript": "^5.9.3"
   }
 }

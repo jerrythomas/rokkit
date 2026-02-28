@@ -1,6 +1,8 @@
 @import '@unocss/reset/tailwind.css';
 @import '@fontsource/victor-mono';
 @import '@fontsource/victor-mono/latin.css';
+@import '@fontsource/victor-mono/300.css';
+@import '@fontsource/victor-mono/300-italic.css';
 @import '@fontsource/overpass';
 @import '@fontsource/overpass/100.css';
 @import '@fontsource/overpass/200.css';

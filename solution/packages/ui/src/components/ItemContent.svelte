@@ -13,12 +13,14 @@
 {#if proxy.icon}
 	<span data-item-icon class={proxy.icon} aria-hidden="true"></span>
 {/if}
-<span data-item-text>
-	<span data-item-label>{proxy.text}</span>
-	{#if proxy.description}
-		<span data-item-description>{proxy.description}</span>
-	{/if}
-</span>
+{#if proxy.text || proxy.description}
+	<span data-item-text>
+		<span data-item-label>{proxy.text}</span>
+		{#if proxy.description}
+			<span data-item-description>{proxy.description}</span>
+		{/if}
+	</span>
+{/if}
 {#if badge}
 	<span data-item-badge>{badge}</span>
 {/if}

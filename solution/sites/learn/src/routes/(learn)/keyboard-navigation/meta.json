@@ -1,0 +1,8 @@
+{
+  "title": "Keyboard Navigation",
+  "description": "Built-in keyboard navigation, ARIA support, and the navigator pattern",
+  "icon": "i-solar:keyboard-bold-duotone",
+  "category": "guide",
+  "order": 5,
+  "tags": ["keyboard", "navigation", "accessibility", "aria", "navigator"]
+}

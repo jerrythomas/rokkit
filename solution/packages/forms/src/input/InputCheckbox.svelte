@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons } from '@rokkit/core'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import { isNil } from 'ramda'
 
 	/**
@@ -49,7 +49,7 @@
 	}
 
 	let checked = $derived(Boolean(value))
-	let stateIcons = $derived({ ...defaultStateIcons.checkbox, ...icons })
+	let stateIcons = $derived({ ...DEFAULT_STATE_ICONS.checkbox, ...icons })
 	let icon = $derived(stateIcons[isNil(value) ? 'unknown' : value ? 'checked' : 'unchecked'])
 </script>
 

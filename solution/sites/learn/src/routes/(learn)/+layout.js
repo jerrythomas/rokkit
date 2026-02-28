@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { getSections, fetchImports } from '$lib/stories.js'
-const metadataList = import.meta.glob('./*/**/meta.json', { import: 'default' })
+const metadataList = import.meta.glob('./**/meta.json', { import: 'default' })
 
 /**
  * Layout load function that provides sections data to all child routes
@@ -12,6 +12,6 @@ export async function load() {
 
 	return {
 		sections,
-		fields: { text: 'title', href: 'slug' }
+		fields: { text: 'title', href: 'slug', icon: 'icon', description: 'none' }
 	}
 }

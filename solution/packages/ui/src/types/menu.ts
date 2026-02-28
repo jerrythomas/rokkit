@@ -2,65 +2,12 @@
  * Menu Component Types
  *
  * Provides types for the data-driven Menu component.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
-import { defaultStateIcons } from '@rokkit/core'
-
-// =============================================================================
-// Field Mapping Types
-// =============================================================================
-
-/**
- * Field mapping configuration for menu data.
- * Maps custom data field names to the component's expected properties.
- */
-export interface MenuFields {
-	/** Field for display text - default: 'text' */
-	text?: string
-
-	/** Field for the value to emit on select - default: 'value' */
-	value?: string
-
-	/** Field for icon class name - default: 'icon' */
-	icon?: string
-
-	/** Field for secondary descriptive text - default: 'description' */
-	description?: string
-
-	/** Field for keyboard shortcut display - default: 'shortcut' */
-	shortcut?: string
-
-	/** Field for aria-label override - default: 'label' */
-	label?: string
-
-	/** Field for disabled state - default: 'disabled' */
-	disabled?: string
-
-	/** Field for children array (for grouping) - default: 'children' */
-	children?: string
-
-	/** Field for custom snippet name - default: 'snippet' */
-	snippet?: string
-
-	/** Nested field mapping for children - default: inherits parent */
-	fields?: MenuFields
-}
-
-/**
- * Default field mapping values
- */
-export const defaultMenuFields: Required<Omit<MenuFields, 'fields'>> = {
-	text: 'text',
-	value: 'value',
-	icon: 'icon',
-	description: 'description',
-	shortcut: 'shortcut',
-	label: 'label',
-	disabled: 'disabled',
-	children: 'children',
-	snippet: 'snippet'
-}
+import type { Snippet } from 'svelte'
+import type { ProxyItem } from '@rokkit/states'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
 // Menu Item Types
@@ -72,28 +19,36 @@ export const defaultMenuFields: Required<Omit<MenuFields, 'fields'>> = {
 export type MenuItem = Record<string, unknown>
 
 // =============================================================================
-// Snippet Types
+// Legacy types — kept for backward compat until usages are updated
 // =============================================================================
 
-/**
- * Handlers passed to custom item snippets
- */
+/** @deprecated No longer needed — Navigator handles clicks via data-path */
 export interface MenuItemHandlers {
-	/** Call to trigger item selection */
 	onclick: () => void
-	/** Forward keyboard events for accessibility */
 	onkeydown: (event: KeyboardEvent) => void
 }
 
-/**
- * Snippet type for rendering menu items
- */
-export type MenuItemSnippet = import('svelte').Snippet<[MenuItem, MenuFields, MenuItemHandlers]>
+/** @deprecated Use MenuItemSnippet (new ProxyItem API) */
+export type LegacyMenuItemSnippet = Snippet<[MenuItem, Record<string, string>, MenuItemHandlers]>
+
+/** @deprecated Use MenuGroupLabelSnippet (new ProxyItem API) */
+export type LegacyMenuGroupLabelSnippet = Snippet<[MenuItem, Record<string, string>]>
+
+// =============================================================================
+// Snippet Types — ProxyItem-based API
+// =============================================================================
 
 /**
- * Snippet type for rendering group labels
+ * Snippet type for rendering menu items.
+ * The component renders the focusable wrapper + data-path; snippet renders inner content.
+ * Navigator handles click selection via data-path — no handlers needed.
  */
-export type MenuGroupLabelSnippet = import('svelte').Snippet<[MenuItem, MenuFields]>
+export type MenuItemSnippet = Snippet<[ProxyItem]>
+
+/**
+ * Snippet type for rendering group header labels.
+ */
+export type MenuGroupLabelSnippet = Snippet<[ProxyItem]>
 
 // =============================================================================
 // Component Props Types
@@ -106,8 +61,8 @@ export interface MenuProps {
 	/** Array of menu items or groups */
 	options?: MenuItem[]
 
-	/** Field mapping configuration */
-	fields?: MenuFields
+	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	fields?: Record<string, string>
 
 	/** Button label text */
 	label?: string
@@ -139,10 +94,10 @@ export interface MenuProps {
 	/** Icons for menu states (dropdown arrow) */
 	icons?: MenuStateIcons
 
-	/** Custom snippet for rendering menu items (both standalone and grouped children) */
+	/** Custom snippet for rendering menu items */
 	item?: MenuItemSnippet
 
-	/** Custom snippet for rendering group labels/headers */
+	/** Custom snippet for rendering group labels */
 	groupLabel?: MenuGroupLabelSnippet
 }
 
@@ -152,7 +107,6 @@ export interface MenuProps {
 
 /**
  * Icons configuration for menu expand/collapse states.
- * Keys match the naming convention in @rokkit/core defaultStateIcons.
  */
 export interface MenuStateIcons {
 	/** Icon class for dropdown arrow (open state) */
@@ -166,8 +120,8 @@ export interface MenuStateIcons {
  * that get resolved to actual icon classes via UnoCSS shortcuts.
  */
 export const defaultMenuStateIcons: MenuStateIcons = {
-	opened: defaultStateIcons.menu.opened,
-	closed: defaultStateIcons.menu.closed
+	opened: DEFAULT_STATE_ICONS.menu.opened,
+	closed: DEFAULT_STATE_ICONS.menu.closed
 }
 
 // =============================================================================
@@ -182,14 +136,8 @@ export function getSnippet<T>(
 	snippets: Record<string, T | undefined>,
 	name: string | null
 ): T | null {
-	if (name === null) {
-		return null
-	}
-
+	if (name === null) return null
 	const snippet = snippets[name]
-	if (snippet !== undefined && typeof snippet === 'function') {
-		return snippet
-	}
-
+	if (snippet !== undefined && typeof snippet === 'function') return snippet
 	return null
 }

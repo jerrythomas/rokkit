@@ -319,6 +319,46 @@ describe('List', () => {
 		expect(onselect).toHaveBeenCalledWith('home', items[0])
 	})
 
+	// ─── External value sync (moveToValue) ─────────────────────────
+
+	it('marks matching item as active on initial render', () => {
+		const { container } = render(List, { items: flatItems, value: 'settings' })
+		const items = container.querySelectorAll('[data-list-item]')
+		expect(items[0]?.hasAttribute('data-active')).toBe(false)
+		expect(items[1]?.hasAttribute('data-active')).toBe(true)
+		expect(items[2]?.hasAttribute('data-active')).toBe(false)
+	})
+
+	it('updates active item when value changes externally', async () => {
+		const { container, rerender } = render(List, { items: flatItems, value: 'dashboard' })
+		let items = container.querySelectorAll('[data-list-item]')
+		expect(items[0]?.hasAttribute('data-active')).toBe(true)
+
+		await rerender({ value: 'profile' })
+		items = container.querySelectorAll('[data-list-item]')
+		expect(items[0]?.hasAttribute('data-active')).toBe(false)
+		expect(items[2]?.hasAttribute('data-active')).toBe(true)
+	})
+
+	it('clears active state when value set to undefined', async () => {
+		const { container, rerender } = render(List, { items: flatItems, value: 'settings' })
+		expect(container.querySelector('[data-active]')).toBeTruthy()
+
+		await rerender({ value: undefined })
+		expect(container.querySelector('[data-active]')).toBeNull()
+	})
+
+	it('keyboard navigation starts from externally set value position', async () => {
+		const { container } = render(List, { items: flatItems, value: 'settings' })
+		const nav = container.querySelector('nav[data-list]')!
+
+		// focusedKey synced to 'settings' (path "1") — ArrowDown should land on 'profile' (path "2")
+		await fireEvent.keyDown(nav, { key: 'ArrowDown' })
+
+		const focused = document.activeElement
+		expect(focused?.getAttribute('data-path')).toBe('2')
+	})
+
 	// ─── Empty State ────────────────────────────────────────────────
 
 	it('renders empty list', () => {

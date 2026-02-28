@@ -1,427 +1,115 @@
 <script lang="ts">
-	import type {
-		ListProps,
-		ListItem,
-		ListItemSnippet,
-		ListItemHandlers,
-		ListStateIcons
-	} from '../types/list.js'
-	import { getSnippet, defaultListStateIcons } from '../types/list.js'
-	import { ItemProxy } from '../types/item-proxy.js'
-	import ItemContent from './ItemContent.svelte'
-	import { NestedController } from '@rokkit/states'
-	import { navigator } from '@rokkit/actions'
-	import { untrack } from 'svelte'
+	/**
+	 * List — ProxyItem + Wrapper + Navigator implementation.
+	 *
+	 * Architecture:
+	 *   Wrapper       — owns focusedKey $state + flatView $derived
+	 *   Navigator     — attaches DOM event handlers, calls wrapper[action](path)
+	 *                   owns focus + scrollIntoView after every keyboard action
+	 *   flatView loop — single flat {#each}, no nested groups in template
+	 *
+	 * Snippet customization:
+	 *   itemContent   — replaces inner content of <a>/<button> for leaf items
+	 *   groupContent  — replaces inner content of group header <button>
+	 *   [named]       — per-item override via item.snippet = 'name'; falls back to itemContent
+	 *
+	 *   Snippets receive (proxy) only — the <a>/<button> wrapper with data-path is
+	 *   always rendered by this component, so snippets never need to handle navigation.
+	 *
+	 * Data attributes on rendered elements:
+	 *   data-path              — required by Navigator for click detection + scroll
+	 *   data-level             — nesting depth (1=root); theme CSS uses for indentation
+	 *   data-accordion-trigger — tells Navigator to dispatch toggle (not select) on click
+	 *   data-list-item         — theme hook for leaf items
+	 *   data-list-group-label  — theme hook for group headers
+	 *   data-active            — highlights current value match
+	 *   data-disabled          — disabled state
+	 */
+	import type { ProxyItem } from '@rokkit/states'
+	import { Wrapper } from '@rokkit/states'
+	import { Navigator } from '@rokkit/actions'
+	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+
+	interface ListIcons {
+		opened?: string
+		closed?: string
+	}
 
 	let {
 		items = [],
-		fields: userFields,
+		fields = {},
 		value,
 		size = 'md',
 		disabled = false,
 		collapsible = false,
-		multiselect = false,
-		expanded = $bindable({}),
-		selected = $bindable([]),
-		active,
+		icons: userIcons = {} as ListIcons,
 		onselect,
-		onselectedchange,
-		onexpandedchange,
 		class: className = '',
-		icons: userIcons,
-		item: itemSnippet,
-		groupLabel: groupLabelSnippet,
 		...snippets
-	}: ListProps & { [key: string]: ListItemSnippet | unknown } = $props()
+	}: {
+		items?: unknown[]
+		fields?: Record<string, string>
+		value?: unknown
+		size?: string
+		disabled?: boolean
+		collapsible?: boolean
+		icons?: ListIcons
+		onselect?: (value: unknown, proxy: ProxyItem) => void
+		class?: string
+		[key: string]: unknown
+	} = $props()
 
-	// Merge icons with defaults
-	const icons = $derived<ListStateIcons>({ ...defaultListStateIcons, ...userIcons })
+	const icons = $derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })
 
-	/**
-	 * Create an ItemProxy for the given item
-	 */
-	function createProxy(item: ListItem): ItemProxy {
-		return new ItemProxy(item, userFields)
-	}
+	// Single source of truth.
+	// Navigator calls wrapper[action](path) → focusedKey / proxy.expanded updates →
+	// flatView $derived re-computes → Svelte re-renders the changed nodes.
+	const wrapper = $derived(new Wrapper(items, fields, { onselect }))
 
-	// ─── NestedController for keyboard navigation ───────────────────
-
-	let controller = untrack(() => new NestedController(items, value, userFields, { multiselect }))
 	let listRef = $state<HTMLElement | null>(null)
 
-	/**
-	 * Get expanded state for a group key from the expanded prop
-	 * Default to expanded (true) when not explicitly set
-	 */
-	function getExpandedState(groupKey: string): boolean {
-		if (!collapsible) return true
-		const externalKeys = Object.keys(expanded)
-		if (externalKeys.length > 0) {
-			return expanded[groupKey] !== false
-		}
-		return true // Default: expanded
-	}
-
-	// Sync expansion state: expanded prop → controller.expandedKeys
-	function syncExpandedToController() {
-		for (const [key, proxy] of controller.lookup.entries()) {
-			if (!proxy.hasChildren) continue
-			const groupProxy = createProxy(proxy.value)
-			const groupKey = getGroupKey(groupProxy)
-			const shouldExpand = getExpandedState(groupKey)
-			if (shouldExpand) {
-				controller.expandedKeys.add(key)
-			} else {
-				controller.expandedKeys.delete(key)
-			}
-		}
-	}
-
-	// Sync on init
-	syncExpandedToController()
-
-	$effect(() => {
-		controller.update(items)
-		// Re-sync expansion after items update
-		syncExpandedToController()
-	})
-
-	// Sync expanded prop changes → controller
-	$effect(() => {
-		// Track both expanded and collapsible to re-sync when either changes
-		void expanded
-		void collapsible
-		syncExpandedToController()
-	})
-
-	// Derive expanded prop from controller.expandedKeys (pathKey → groupKey mapping)
-	function deriveExpandedFromController(): Record<string, boolean> {
-		const result: Record<string, boolean> = {}
-		items.forEach((item, index) => {
-			const proxy = createProxy(item)
-			if (!proxy.hasChildren) return
-			const pathKey = String(index)
-			const groupKey = getGroupKey(proxy)
-			result[groupKey] = controller.expandedKeys.has(pathKey)
-		})
-		return result
-	}
-
-	// Focus the element matching controller.focusedKey on navigator action events
+	// Mount Navigator on the root element; destroy when component unmounts.
 	$effect(() => {
 		if (!listRef) return
-		const el = listRef
-
-		function onAction(event: Event) {
-			const detail = (event as CustomEvent).detail
-
-			if (detail.name === 'move') {
-				const key = controller.focusedKey
-				if (key) {
-					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-					if (target && target !== document.activeElement) {
-						target.focus()
-						target.scrollIntoView({ block: 'nearest', inline: 'nearest' })
-					}
-				}
-			}
-
-			if (detail.name === 'select') {
-				handleSelectAction()
-				syncSelectedFromController()
-			}
-
-			if (detail.name === 'toggle') {
-				// Controller already toggled expandedKeys. Derive the expanded prop.
-				const newExpanded = deriveExpandedFromController()
-				expanded = newExpanded
-				onexpandedchange?.(newExpanded)
-			}
-		}
-
-		el.addEventListener('action', onAction)
-		return () => el.removeEventListener('action', onAction)
+		const dir = getComputedStyle(listRef).direction
+		const nav = new Navigator(listRef, wrapper, { collapsible, dir })
+		return () => nav.destroy()
 	})
 
-	/**
-	 * Sync DOM focus to controller state.
-	 * When a user tabs into the list or clicks an item, the controller
-	 * needs to know which element is focused for arrow keys to work correctly.
-	 */
-	function handleFocusIn(event: FocusEvent) {
-		const target = event.target as HTMLElement
-		if (!target) return
-		const path = target.dataset.path
-		if (path !== undefined) {
-			controller.moveTo(path)
-		}
-	}
+	// ─── Sync external value → focused key ────────────────────────────────────
 
-	/**
-	 * Handle the navigator's select action (Enter/Space on focused item, or click)
-	 */
-	function handleSelectAction() {
-		const key = controller.focusedKey
-		if (!key) return
+	$effect(() => {
+		wrapper.moveToValue(value)
+	})
 
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-
-		// If it's a group, toggle expansion
-		if (proxy.hasChildren) {
-			controller.toggleExpansion(key)
-			const newExpanded = deriveExpandedFromController()
-			expanded = newExpanded
-			onexpandedchange?.(newExpanded)
-			return
-		}
-
-		// Otherwise fire onselect for button items
-		const itemProxy = createProxy(proxy.value)
-		if (!itemProxy.disabled && !disabled) {
-			const href = itemProxy.get<string>('href')
-			if (!href) {
-				onselect?.(itemProxy.itemValue, proxy.value as ListItem)
-			}
-		}
-	}
-
-	/**
-	 * Handle keyboard events the navigator doesn't cover:
-	 * - Enter/Space on link items: let native <a> behavior through
-	 *
-	 * Fires before navigator's keydown handler.
-	 */
-	function handleListKeyDown(event: KeyboardEvent) {
-		if (event.key !== 'Enter' && event.key !== ' ') return
-
-		const key = controller.focusedKey
-		if (!key) return
-
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-
-		// Link items: stop propagation to prevent navigator's preventDefault
-		const itemProxy = createProxy(proxy.value)
-		const href = itemProxy.get<string>('href')
-		if (href) {
-			event.stopPropagation()
-		}
-	}
-
-	// ─── Multi-selection helpers ────────────────────────────────────
-
-	/**
-	 * Sync the selected bindable prop from controller.selected
-	 */
-	function syncSelectedFromController() {
-		if (!multiselect) return
-		selected = [...controller.selected]
-		onselectedchange?.(selected)
-	}
-
-	/**
-	 * Check if an item is in the current selection (for data-selected attribute)
-	 */
-	function isItemSelected(pathKey: string): boolean {
-		if (!multiselect) return false
-		return controller.selectedKeys.has(pathKey)
-	}
-
-	// ─── Group helpers ──────────────────────────────────────────────
-
-	/**
-	 * Get the key for a group (for expanded state tracking)
-	 */
-	function getGroupKey(proxy: ItemProxy): string {
-		const val = proxy.itemValue
-		return typeof val === 'string' ? val : proxy.text
-	}
-
-	/**
-	 * Check if a group is expanded (reads from controller.expandedKeys)
-	 */
-	function isGroupExpandedByKey(pathKey: string): boolean {
-		if (!collapsible) return true
-		return controller.expandedKeys.has(pathKey)
-	}
-
-	/**
-	 * Toggle group expansion via the controller
-	 */
-	function toggleGroupByKey(pathKey: string) {
-		if (!collapsible) return
-		controller.toggleExpansion(pathKey)
-		const newExpanded = deriveExpandedFromController()
-		expanded = newExpanded
-		onexpandedchange?.(newExpanded)
-	}
-
-	// ─── Unchanged helpers ──────────────────────────────────────────
-
-	/**
-	 * Check if an item is currently active
-	 */
-	function checkIsActive(proxy: ItemProxy): boolean {
-		if (active !== undefined) {
-			return proxy.itemValue === active
-		}
-		return value !== undefined && proxy.itemValue === value
-	}
-
-	/**
-	 * Handle item click (for button items)
-	 */
-	function handleItemClick(proxy: ItemProxy) {
-		if (proxy.disabled || disabled) return
-		onselect?.(proxy.itemValue, proxy.original as ListItem)
-	}
-
-	/**
-	 * Create handlers object for custom snippets
-	 */
-	function createHandlers(proxy: ItemProxy): ListItemHandlers {
-		return {
-			onclick: () => handleItemClick(proxy),
-			onkeydown: () => {}
-		}
-	}
-
-	/**
-	 * Resolve which snippet to use for an item
-	 */
-	function resolveItemSnippet(proxy: ItemProxy): ListItemSnippet | null {
-		const snippetName = proxy.snippetName
-		if (snippetName) {
-			const namedSnippet = getSnippet(snippets, snippetName)
-			if (namedSnippet) {
-				return namedSnippet as ListItemSnippet
-			}
-		}
-		return itemSnippet ?? null
-	}
-
-	// Track option index for divider logic
-	function shouldShowDivider(index: number, isGroup: boolean): boolean {
-		return isGroup && index > 0
-	}
-
-	/**
-	 * Get the controller path key for a given item index and optional child index.
-	 * Maps to the same format as getKeyFromPath: "0", "0-0", "1-2", etc.
-	 */
-	function getPathKey(itemIndex: number, childIndex?: number): string {
-		if (childIndex !== undefined) return `${itemIndex}-${childIndex}`
-		return String(itemIndex)
-	}
 </script>
 
-{#snippet defaultItem(
-	proxy: ItemProxy,
-	_handlers: ListItemHandlers,
-	active: boolean,
-	listIndex: string,
-	pathKey: string
-)}
-	{@const href = proxy.get<string>('href')}
-	{@const itemSelected = isItemSelected(pathKey)}
-	{#if href}
-		<a
-			{href}
-			data-list-item
-			data-list-index={listIndex}
-			data-path={pathKey}
-			data-active={active || undefined}
-			data-selected={itemSelected || undefined}
-			data-disabled={proxy.disabled || undefined}
-			aria-label={proxy.label}
-			aria-current={active ? 'page' : undefined}
-		>
-			<ItemContent {proxy} />
-		</a>
-	{:else}
-		<button
-			type="button"
-			data-list-item
-			data-list-index={listIndex}
-			data-path={pathKey}
-			data-active={active || undefined}
-			data-selected={itemSelected || undefined}
-			data-disabled={proxy.disabled || undefined}
-			disabled={proxy.disabled || disabled}
-			aria-label={proxy.label}
-			aria-pressed={active}
-		>
-			<ItemContent {proxy} />
-		</button>
+<!--
+	Default content for leaf items (icon + text).
+	Used when no itemContent snippet or per-item snippet is provided.
+-->
+{#snippet defaultItemContent(proxy: ProxyItem)}
+	{#if proxy.icon}
+		<span class={proxy.icon} aria-hidden="true"></span>
 	{/if}
+	<span data-list-item-text>{proxy.text}</span>
 {/snippet}
 
-{#snippet defaultGroupLabel(
-	proxy: ItemProxy,
-	_toggle: () => void,
-	isExpanded: boolean,
-	listIndex: string,
-	pathKey: string
-)}
-	<button
-		type="button"
-		data-list-group-label
-		data-list-index={listIndex}
-		data-path={pathKey}
-		data-list-group-key={getGroupKey(proxy)}
-		aria-expanded={isExpanded}
-		disabled={!collapsible}
-	>
-		{#if proxy.icon}
-			<span data-list-group-icon class={proxy.icon} aria-hidden="true"></span>
-		{/if}
-		<span data-list-group-text>{proxy.text}</span>
-		{#if collapsible}
-			<span data-list-group-arrow class={icons.opened} aria-hidden="true"></span>
-		{/if}
-	</button>
-{/snippet}
-
-{#snippet renderItem(proxy: ItemProxy, listIndex: string, pathKey: string)}
-	{@const customSnippet = resolveItemSnippet(proxy)}
-	{@const handlers = createHandlers(proxy)}
-	{@const active = checkIsActive(proxy)}
-	{@const itemSelected = isItemSelected(pathKey)}
-	{#if customSnippet}
-		<div
-			data-list-item
-			data-list-item-custom
-			data-list-index={listIndex}
-			data-path={pathKey}
-			data-active={active || undefined}
-			data-selected={itemSelected || undefined}
-			data-disabled={proxy.disabled || undefined}
-		>
-			<svelte:boundary>
-				{@render customSnippet(proxy.original as ListItem, proxy.fields, handlers, active)}
-				{#snippet failed()}
-					{@render defaultItem(proxy, handlers, active, listIndex, pathKey)}
-				{/snippet}
-			</svelte:boundary>
-		</div>
-	{:else}
-		{@render defaultItem(proxy, handlers, active, listIndex, pathKey)}
+<!--
+	Default content for group headers (icon + text + expand chevron).
+	Used when no groupContent snippet is provided.
+-->
+{#snippet defaultGroupContent(proxy: ProxyItem)}
+	{#if proxy.icon}
+		<span class={proxy.icon} aria-hidden="true"></span>
 	{/if}
-{/snippet}
-
-{#snippet renderGroupLabel(proxy: ItemProxy, listIndex: string, pathKey: string)}
-	{@const toggle = () => toggleGroupByKey(pathKey)}
-	{@const isExpanded = isGroupExpandedByKey(pathKey)}
-	{#if groupLabelSnippet}
-		<svelte:boundary>
-			{@render groupLabelSnippet(proxy.original as ListItem, proxy.fields, toggle, isExpanded)}
-			{#snippet failed()}
-				{@render defaultGroupLabel(proxy, toggle, isExpanded, listIndex, pathKey)}
-			{/snippet}
-		</svelte:boundary>
-	{:else}
-		{@render defaultGroupLabel(proxy, toggle, isExpanded, listIndex, pathKey)}
+	<span data-list-group-text>{proxy.text}</span>
+	{#if collapsible}
+		<span
+			data-list-expand-icon
+			class={proxy.expanded ? icons.opened : icons.closed}
+			aria-hidden="true"
+		></span>
 	{/if}
 {/snippet}
 
@@ -432,41 +120,80 @@
 	data-size={size}
 	data-disabled={disabled || undefined}
 	data-collapsible={collapsible || undefined}
-	data-multiselect={multiselect || undefined}
 	class={className || undefined}
 	aria-label="List"
-	onkeydown={handleListKeyDown}
-	onfocusin={handleFocusIn}
-	use:navigator={{ wrapper: controller, orientation: 'vertical', nested: collapsible, typeahead: true }}
 >
-	{#each items as item, itemIndex (itemIndex)}
-		{@const proxy = createProxy(item)}
-		{@const listIndex = String(itemIndex)}
-		{@const pathKey = getPathKey(itemIndex)}
+	{#each wrapper.flatView as node (node.key)}
+		{@const proxy = node.proxy}
+		{@const isActive = proxy.value === value}
+		{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
 
-		{#if proxy.hasChildren}
-			<!-- Group with children -->
-			{#if shouldShowDivider(itemIndex, true)}
-				<div data-list-divider role="separator"></div>
-			{/if}
-
-			<div data-list-group data-list-group-collapsed={!isGroupExpandedByKey(pathKey) || undefined}>
-				{@render renderGroupLabel(proxy, listIndex, pathKey)}
-
-				{#if isGroupExpandedByKey(pathKey)}
-					<div data-list-group-items>
-						{#each proxy.children as child, childIndex (childIndex)}
-							{@const childProxy = proxy.createChildProxy(child)}
-							{@const childListIndex = `${itemIndex}-${childIndex}`}
-							{@const childPathKey = getPathKey(itemIndex, childIndex)}
-							{@render renderItem(childProxy, childListIndex, childPathKey)}
-						{/each}
-					</div>
+		{#if node.type === 'separator'}
+			<hr data-list-separator role="separator" />
+		{:else if node.type === 'spacer'}
+			<div data-list-spacer></div>
+		{:else if node.hasChildren}
+			<!--
+				Group header — data-accordion-trigger tells Navigator to dispatch
+				toggle() instead of select() when this element is clicked.
+				aria-expanded reflects the reactive proxy.expanded state.
+			-->
+			<button
+				type="button"
+				data-list-group-label
+				data-path={node.key}
+				data-accordion-trigger
+				data-level={node.level}
+				aria-expanded={proxy.expanded}
+				disabled={!collapsible}
+			>
+				{#if content}
+					{@render content(proxy)}
+				{:else}
+					{@render defaultGroupContent(proxy)}
 				{/if}
-			</div>
+			</button>
+		{:else if proxy.href}
+			<!--
+				Navigation link — native <a> handles click; Navigator updates state.
+				aria-current marks the active route for screen readers.
+			-->
+			<a
+				href={proxy.href}
+				title={proxy.get('title')}
+				data-list-item
+				data-path={node.key}
+				data-level={node.level}
+				data-active={isActive || undefined}
+				aria-current={isActive ? 'page' : undefined}
+			>
+				{#if content}
+					{@render content(proxy)}
+				{:else}
+					{@render defaultItemContent(proxy)}
+				{/if}
+			</a>
 		{:else}
-			<!-- Standalone item (no children) -->
-			{@render renderItem(proxy, listIndex, pathKey)}
+			<!--
+				Button item — Navigator calls wrapper.select(path) on click/Enter/Space.
+				The wrapper fires the onselect callback for non-group items.
+			-->
+			<button
+				type="button"
+				title={proxy.get('title')}
+				data-list-item
+				data-path={node.key}
+				data-level={node.level}
+				data-active={isActive || undefined}
+				data-disabled={proxy.disabled || undefined}
+				disabled={proxy.disabled || disabled}
+			>
+				{#if content}
+					{@render content(proxy)}
+				{:else}
+					{@render defaultItemContent(proxy)}
+				{/if}
+			</button>
 		{/if}
 	{/each}
 </nav>

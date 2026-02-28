@@ -1,0 +1,7 @@
+{
+  "title": "Card",
+  "description": "Container card component for organizing content",
+  "category": "components",
+  "sequence": 50,
+  "icon": "i-component:card"
+}

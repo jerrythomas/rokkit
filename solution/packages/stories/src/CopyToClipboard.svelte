@@ -1,5 +1,5 @@
 <script>
-	import { defaultStateIcons } from '@rokkit/core'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import { Icon, Button } from '@rokkit/ui'
 	let { content, class: className = 'absolute right-2 top-2 z-10', title = 'Copy code' } = $props()
 	let copySuccess = $state(false)
@@ -19,8 +19,8 @@
 
 <Button onclick={copyToClipboard} class={className} {title}>
 	{#if copySuccess}
-		<Icon name={defaultStateIcons.action.copysuccess} />
+		<Icon name={DEFAULT_STATE_ICONS.action.copysuccess} />
 	{:else}
-		<Icon name={defaultStateIcons.action.copy} />
+		<Icon name={DEFAULT_STATE_ICONS.action.copy} />
 	{/if}
 </Button>

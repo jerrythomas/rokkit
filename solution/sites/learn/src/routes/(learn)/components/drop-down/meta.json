@@ -1,0 +1,13 @@
+{
+  "title": "DropDown",
+  "description": "Context menus and action lists",
+  "icon": "i-component:dropdown",
+  "category": "components",
+  "tags": [
+    "dropdown",
+    "context",
+    "menus",
+    "actions"
+  ],
+  "experimental": false
+}

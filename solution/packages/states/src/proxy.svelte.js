@@ -1,10 +1,10 @@
-import { defaultFields, id, toString, getNestedFields } from '@rokkit/core'
+import { DEFAULT_FIELDS, id, toString, getNestedFields } from '@rokkit/core'
 import { isNil, has } from 'ramda'
 
 export class Proxy {
 	#original = null
 	#value = $state(null)
-	#fields = defaultFields
+	#fields = DEFAULT_FIELDS
 	#id = null
 
 	#children = $derived(this.#processChildren())
@@ -40,7 +40,7 @@ export class Proxy {
 		return this.#fields
 	}
 	set fields(value) {
-		this.#fields = { ...defaultFields, ...value }
+		this.#fields = { ...DEFAULT_FIELDS, ...value }
 	}
 
 	get value() {

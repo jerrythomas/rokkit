@@ -49,6 +49,9 @@ export interface ItemFields {
 	/** Field for badge/indicator content - default: 'badge' */
 	badge?: string
 
+	/** Field for tooltip text (HTML title attribute) - default: 'title' */
+	title?: string
+
 	/** Nested field mapping for children - default: inherits parent */
 	fields?: ItemFields
 }
@@ -69,7 +72,8 @@ export const defaultItemFields: Required<Omit<ItemFields, 'fields'>> = {
 	children: 'children',
 	snippet: 'snippet',
 	href: 'href',
-	badge: 'badge'
+	badge: 'badge',
+	title: 'title'
 }
 
 /**

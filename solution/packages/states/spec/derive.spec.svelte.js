@@ -72,6 +72,30 @@ describe('derive', () => {
 			const result = getCurrent().findIndex((row) => equals(row.value, { text: 'B' }))
 			expect(result).toEqual(1)
 		})
+
+		it('each node includes level and hasChildren', () => {
+			const items = $state([
+				{ text: 'A', children: [{ text: 'A1' }, { text: 'A2' }], _expanded: true },
+				{ text: 'B' }
+			])
+			const fields = { children: 'children', expanded: '_expanded' }
+			const data = $derived(flatVisibleNodes(items, fields))
+			const get = () => data
+
+			// Top-level group: level 0, hasChildren true
+			expect(get()[0].level).toEqual(0)
+			expect(get()[0].hasChildren).toEqual(true)
+
+			// Children: level 1, hasChildren false
+			expect(get()[1].level).toEqual(1)
+			expect(get()[1].hasChildren).toEqual(false)
+			expect(get()[2].level).toEqual(1)
+			expect(get()[2].hasChildren).toEqual(false)
+
+			// Top-level leaf: level 0, hasChildren false
+			expect(get()[3].level).toEqual(0)
+			expect(get()[3].hasChildren).toEqual(false)
+		})
 	})
 	describe('flatVisibleNodes with expandedKeys', () => {
 		it('should use expandedKeys when provided', () => {
@@ -96,6 +120,22 @@ describe('derive', () => {
 
 			// Original item should NOT have _expanded
 			expect(items[0]._expanded).toBeUndefined()
+		})
+
+		it('level and hasChildren are correct with expandedKeys', () => {
+			const items = $state([
+				{ text: 'A', children: [{ text: 'A1' }, { text: 'A2' }] },
+				{ text: 'B' }
+			])
+			const fields = { children: 'children', expanded: '_expanded' }
+			const expandedKeys = new SvelteSet(['0'])
+
+			const data = flatVisibleNodes(items, fields, [], expandedKeys)
+
+			expect(data[0]).toMatchObject({ key: '0', level: 0, hasChildren: true })
+			expect(data[1]).toMatchObject({ key: '0-0', level: 1, hasChildren: false })
+			expect(data[2]).toMatchObject({ key: '0-1', level: 1, hasChildren: false })
+			expect(data[3]).toMatchObject({ key: '1', level: 0, hasChildren: false })
 		})
 	})
 

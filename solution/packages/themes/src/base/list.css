@@ -19,6 +19,11 @@
   opacity: 0.5;
 }
 
+[dir='rtl'] [data-list] [data-list-item] {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
 /* =============================================================================
    List Items (shared for links and buttons)
    ============================================================================= */

@@ -1,4 +1,4 @@
-import { getKeyFromPath, defaultFields, getNestedFields } from '@rokkit/core'
+import { getKeyFromPath, DEFAULT_FIELDS, getNestedFields } from '@rokkit/core'
 import { Proxy } from './proxy.svelte'
 /**
  *
@@ -6,11 +6,13 @@ import { Proxy } from './proxy.svelte'
  * @param {import('@rokkit/core').FieldMapping} fields
  * @param {Array<number>} path
  * @param {Set<string>|null} expandedKeys - When provided, expansion is determined by key membership; falls back to item field
- * @returns {Array<{ key: string, value: any }>}
+ * @returns {Array<{ key: string, value: any, level: number, hasChildren: boolean }>}
  */
-export function flatVisibleNodes(items, fields = defaultFields, path = [], expandedKeys = null) {
+export function flatVisibleNodes(items, fields = DEFAULT_FIELDS, path = [], expandedKeys = null) {
 	const data = []
 	if (!items || !Array.isArray(items)) return data
+
+	const level = path.length
 
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]
@@ -19,7 +21,7 @@ export function flatVisibleNodes(items, fields = defaultFields, path = [], expan
 			Array.isArray(item[fields.children]) && item[fields.children].length > 0
 		const expanded = hasChildren && (expandedKeys ? expandedKeys.has(key) : item[fields.expanded])
 
-		data.push({ key, value: item })
+		data.push({ key, value: item, level, hasChildren })
 
 		if (expanded) {
 			const childFields = getNestedFields(fields)
@@ -38,7 +40,7 @@ export function flatVisibleNodes(items, fields = defaultFields, path = [], expan
  * @param {Array<number>} path - Current path in the tree
  * @returns {Map<string, Proxy>} - Map of path keys to Proxy instances
  */
-export function deriveLookupWithProxy(items, fields = defaultFields, path = []) {
+export function deriveLookupWithProxy(items, fields = DEFAULT_FIELDS, path = []) {
 	const lookup = new Map()
 	if (!items || !Array.isArray(items)) return lookup
 

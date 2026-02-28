@@ -1,0 +1,7 @@
+{
+  "title": "Carousel",
+  "description": "Image and content carousel component with navigation",
+  "category": "components",
+  "icon": "i-component:carousel",
+  "sequence": 120
+}

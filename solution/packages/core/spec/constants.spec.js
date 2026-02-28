@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { defaultIcons, stateIconsFromNames, defaultFields } from '../src/constants'
+import { DEFAULT_ICONS, stateIconsFromNames, DEFAULT_FIELDS } from '../src/constants'
 
 describe('Utility functions', () => {
 	it('should convert names to nested state icons object', () => {
-		const stateIcons = stateIconsFromNames(defaultIcons)
+		const stateIcons = stateIconsFromNames(DEFAULT_ICONS)
 
 		expect(stateIcons).toEqual({
 			accordion: {
@@ -98,7 +98,7 @@ describe('Utility functions', () => {
 	})
 
 	it('should have the defaultFields', () => {
-		expect(defaultFields).toEqual({
+		expect(DEFAULT_FIELDS).toEqual({
 			id: 'id',
 			href: 'href',
 			icon: 'icon',

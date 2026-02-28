@@ -1,4 +1,4 @@
-import { defaultFields } from './constants.js'
+import { DEFAULT_FIELDS } from './constants.js'
 import { toString, isObject } from './utils.js'
 import { has } from 'ramda'
 /**
@@ -35,7 +35,7 @@ function getIconFromObject(value, fields) {
  * @param {import('./types.js').FieldMapping} fields
  * @returns {string}
  */
-export function getIcon(value, fields = defaultFields) {
+export function getIcon(value, fields = DEFAULT_FIELDS) {
 	if (fields.icon === undefined || typeof value !== 'object') return null
 
 	const name = getIconFromObject(value, fields)
@@ -50,7 +50,7 @@ export function getIcon(value, fields = defaultFields) {
  * @param {import('./types').FieldMapping} fields
  * @returns {*}
  */
-export function getValue(node, fields = defaultFields) {
+export function getValue(node, fields = DEFAULT_FIELDS) {
 	return typeof node === 'object' && node !== null
 		? (node[fields.value] ?? node[fields.text])
 		: node
@@ -64,7 +64,7 @@ export function getValue(node, fields = defaultFields) {
  * @param {import('./types').FieldMapping} fields
  * @returns {string}
  */
-export function getText(node, fields = defaultFields) {
+export function getText(node, fields = DEFAULT_FIELDS) {
 	const value = isObject(node) ? node[fields.text] : node
 	return value
 }
@@ -88,7 +88,7 @@ export function getAttribute(node, attr) {
  * @param {Function}                       formatter
  * @returns {Function}
  */
-export function getFormattedText(node, fields = defaultFields, formatter = toString) {
+export function getFormattedText(node, fields = DEFAULT_FIELDS, formatter = toString) {
 	const value = getText(node, fields)
 	const currency = getAttribute(node, fields.currency)
 	const formatValue = typeof formatter === 'function' ? formatter : toString
@@ -133,5 +133,5 @@ export function isExpanded(item, fields) {
  * @returns {import('./types').FieldMapping}
  */
 export function getNestedFields(fields) {
-	return { ...defaultFields, ...(fields.fields ?? fields) }
+	return { ...DEFAULT_FIELDS, ...(fields.fields ?? fields) }
 }

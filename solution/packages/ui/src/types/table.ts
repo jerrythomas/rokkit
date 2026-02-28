@@ -6,7 +6,7 @@
  * Field mapping and data access is handled by ItemProxy per cell.
  */
 
-import { defaultStateIcons } from '@rokkit/core'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
 // Column Types
@@ -116,9 +116,9 @@ export interface TableSortIcons {
  * Default sort icons from @rokkit/core state icons.
  */
 export const defaultTableSortIcons: TableSortIcons = {
-	none: defaultStateIcons.sort.none,
-	ascending: defaultStateIcons.sort.ascending,
-	descending: defaultStateIcons.sort.descending
+	none: DEFAULT_STATE_ICONS.sort.none,
+	ascending: DEFAULT_STATE_ICONS.sort.ascending,
+	descending: DEFAULT_STATE_ICONS.sort.descending
 }
 
 // =============================================================================

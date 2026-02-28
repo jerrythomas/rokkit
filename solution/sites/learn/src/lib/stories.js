@@ -87,39 +87,54 @@ export function getSlug(file) {
 }
 
 /**
- * Converts the input content into a group by catgeory
+ * Converts the input content into a group by category.
+ * Guide pages (category: "guide") become flat top-level items.
+ * Other categories (components, utilities) become collapsible groups.
+ *
  * @param {ModuleFile[]} metadata - The metadata to convert.
  * @returns {Metadata[]} Array of section objects
  */
 export function getSections(metadata) {
+	/** @type {Metadata[]} */
+	const guideItems = []
 	/** @type Object<string, Metadata> */
-	const sections = {}
+	const groups = {}
 
-	metadata.forEach(({ content, file, group }) => {
+	metadata.forEach(({ content, file }) => {
 		const item = {
-			category: group ?? '',
 			order: 99,
 			...content,
 			slug: getSlug(file),
 			depth: file.split('/').length - 2
 		}
 
-		const category = item.category.toLowerCase()
-		if (!sections[category]) {
-			sections[category] = { children: [] }
+		const category = (item.category ?? '').toLowerCase()
+
+		if (category === 'guide') {
+			guideItems.push(item)
+			return
+		}
+
+		if (!groups[category]) {
+			groups[category] = { children: [] }
 		}
 		if (item.depth === 1) {
-			sections[category] = {
-				...sections[category],
+			groups[category] = {
+				...groups[category],
 				...item
 			}
 		} else {
-			sections[category].children.push(item)
+			groups[category].children.push(item)
 		}
-		sections[category].children = sections[category].children.sort((a, b) => a.order - b.order)
+		groups[category].children = groups[category].children.sort((a, b) => a.order - b.order)
 	})
 
-	return Object.values(sections).sort((a, b) => a.order - b.order)
+	const sortedGuides = guideItems.sort((a, b) => a.order - b.order)
+	const sortedGroups = Object.values(groups)
+		.filter((g) => g.title)
+		.sort((a, b) => a.order - b.order)
+
+	return [...sortedGuides, ...sortedGroups]
 }
 
 /**
@@ -177,8 +192,9 @@ export function getAllSections() {
  * @returns {Object|null} The section object or null if not found
  */
 export function findSection(sections, slug) {
-	for (const group of sections) {
-		const section = group.children.find((child) => child.slug === slug)
+	for (const item of sections) {
+		if (item.slug === slug) return item
+		const section = item.children?.find((child) => child.slug === slug)
 		if (section) return section
 	}
 	return {}
@@ -191,5 +207,5 @@ export function findSection(sections, slug) {
  * @returns {Object|null} The group object or null if not found
  */
 export function findGroupForSection(sections, slug) {
-	return sections.find((group) => group.children.some((child) => child.slug === slug)) || null
+	return sections.find((group) => group.children?.some((child) => child.slug === slug)) || null
 }

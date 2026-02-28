@@ -1,8 +1,9 @@
 .shiki-container .shiki {
   background: transparent !important;
   font-family: 'Victor Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1.4;
 }
 
 .shiki-container pre {
@@ -11,20 +12,24 @@
   background: transparent !important;
 }
 
-/* .shiki-container code {
-  display: block;
-  padding: 0;
-  background: transparent !important;
-} */
-
 [data-tabs-root].no-padding [data-tabs-panel] {
   @apply p-0;
 }
 [data-code-root] {
   @apply max-h-100 bg-surface-z2 relative flex h-fit w-full flex-col overflow-hidden rounded-md;
 }
+[data-code-overlay] {
+  @apply absolute right-1 top-1 z-10 flex items-center gap-1 opacity-0 transition-opacity;
+}
+[data-code-root]:hover [data-code-overlay],
+[data-code-root]:focus-within [data-code-overlay] {
+  @apply opacity-100;
+}
+[data-code-lang] {
+  @apply text-surface-z5 absolute bottom-1 right-2 z-10 font-mono text-[0.5625rem] uppercase tracking-wider select-none;
+}
 [data-code-root] > pre.shiki {
-  @apply bg-surface-z2 m-0 h-fit border-none focus:outline-none;
+  @apply bg-surface-z2 m-0 h-fit border-none p-2 focus:outline-none;
 }
 [data-code-root] pre code {
   @apply w-full bg-transparent p-0;

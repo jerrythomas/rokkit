@@ -204,3 +204,5 @@ vite.config.ts.timestamp-*
 src/lib/paraglide
 
 project.inlang/caches
+tmp
+.playwright-mcp

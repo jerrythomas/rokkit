@@ -1,9 +1,0 @@
-{
-  "title": "What is Rokkit?",
-  "description": "A modular, data-driven ecosystem for Svelte, empowering you to build modern, accessible,and beautiful applications with speed and flexibility",
-  "icon": "👋",
-  "category": "welcome",
-  "order": 1,
-  "tags": ["introduction", "overview", "basics", "data-driven", "components"],
-  "experimental": false
-}

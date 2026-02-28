@@ -1,0 +1,8 @@
+{
+  "title": "LLMs",
+  "description": "LLM-friendly documentation endpoints for AI-assisted development",
+  "icon": "i-solar:chat-square-code-bold-duotone",
+  "category": "guide",
+  "order": 11,
+  "tags": ["llm", "ai", "documentation", "llms.txt"]
+}

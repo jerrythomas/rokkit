@@ -1,0 +1,182 @@
+# Select Component Documentation
+
+Data-driven, accessible Select (single-choice dropdown) component for Svelte 5.
+
+## Overview
+
+`Select` renders a trigger button + dropdown listbox. It uses the `Wrapper` + `Navigator` + `ProxyItem`
+stack (identical to `List`) for consistent keyboard navigation and field mapping.
+
+## Component API
+
+### Props
+
+- `options: SelectItem[]` — Array of option objects or group objects (with `children`)
+- `fields: Record<string, string>` — Field mapping overrides (default: `{ text: 'label', value: 'value', icon: 'icon', children: 'children', disabled: 'disabled' }`)
+- `value: unknown` (bindable) — Currently selected value (extracted via `fields.value`)
+- `selected: SelectItem | null` (bindable) — Currently selected raw item object
+- `placeholder: string` — Text shown when nothing is selected (default: `'Select...'`)
+- `size: 'sm' | 'md' | 'lg'` — Size variant (default: `'md'`)
+- `align: 'left' | 'right'` — Dropdown alignment (default: `'left'`)
+- `direction: 'up' | 'down'` — Dropdown slide direction (default: `'down'`)
+- `maxRows: number` — Max visible rows before scroll (default: `5`)
+- `disabled: boolean` — Disable the entire select (default: `false`)
+- `filterable: boolean` — Show a search input in the dropdown (default: `false`)
+- `filterPlaceholder: string` — Placeholder for the filter input (default: `'Search...'`)
+- `class: string` — Additional CSS classes on the root element
+- `icons: SelectStateIcons` — Override expand/collapse/check icon classes
+
+### Snippets
+
+- `option(proxy: ProxyItem)` — Custom rendering for dropdown options
+- `groupLabel(proxy: ProxyItem)` — Custom rendering for group header labels
+- `selectedValue(proxy: ProxyItem)` — Custom rendering in the trigger button when a value is selected
+- `[name](proxy: ProxyItem)` — Per-item snippet; set `item.snippet = 'name'` to route specific items
+
+### Events
+
+- `onchange(value: unknown, item: SelectItem)` — Fired when selection changes
+
+## ProxyItem API
+
+All snippets receive a `ProxyItem` instance:
+
+- `proxy.text` — Mapped display text
+- `proxy.icon` — Mapped icon class
+- `proxy.value` — Extracted value field (primitive)
+- `proxy.disabled` — Whether the item is disabled
+- `proxy.get('field')` — Read any field by mapped or raw name
+
+## Usage Examples
+
+### Basic
+
+```svelte
+<script>
+  import { Select } from '@rokkit/ui'
+
+  const fruits = [
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Cherry', value: 'cherry' }
+  ]
+  let value = $state(null)
+</script>
+
+<Select options={fruits} bind:value placeholder="Choose a fruit" />
+```
+
+### Field Mapping
+
+```svelte
+<script>
+  import { Select } from '@rokkit/ui'
+
+  const countries = [
+    { name: 'United States', code: 'US' },
+    { name: 'Germany', code: 'DE' }
+  ]
+  const fields = { text: 'name', value: 'code' }
+  let value = $state(null)
+</script>
+
+<Select options={countries} {fields} bind:value placeholder="Select a country" />
+```
+
+### Grouped Options
+
+```svelte
+<script>
+  import { Select } from '@rokkit/ui'
+
+  const options = [
+    {
+      label: 'Fruits',
+      children: [
+        { label: 'Apple', value: 'apple' },
+        { label: 'Banana', value: 'banana' }
+      ]
+    },
+    {
+      label: 'Vegetables',
+      children: [
+        { label: 'Carrot', value: 'carrot' },
+        { label: 'Broccoli', value: 'broccoli' }
+      ]
+    }
+  ]
+  let value = $state(null)
+</script>
+
+<Select {options} bind:value placeholder="Choose a food" />
+```
+
+### Filterable
+
+```svelte
+<Select options={countries} bind:value filterable placeholder="Select a country" />
+```
+
+### Custom Option Snippet
+
+```svelte
+<Select options={statuses} bind:value placeholder="Select a status">
+  {#snippet option(proxy)}
+    <span class="dot {proxy.get('color')}"></span>
+    <span>{proxy.text}</span>
+  {/snippet}
+</Select>
+```
+
+## Data Attributes for Styling
+
+- `data-select` — Root container
+- `data-open` — Present when dropdown is open
+- `data-size` — Size variant (`sm`, `md`, `lg`)
+- `data-disabled` — Present when select is disabled
+- `data-align` — Alignment (`left`, `right`)
+- `data-direction` — Direction (`up`, `down`)
+- `data-select-trigger` — The trigger button
+- `data-select-value` — Value display area in trigger
+- `data-select-placeholder` — Placeholder span
+- `data-select-value-text` — Selected value text
+- `data-select-arrow` — Dropdown arrow icon
+- `data-select-dropdown` — The dropdown listbox
+- `data-select-filter` — Filter input wrapper
+- `data-select-option` — An option button
+- `data-selected` — Present on the currently selected option
+- `data-select-check` — Checkmark icon on selected option
+- `data-select-group` — A group container
+- `data-select-group-label` — Group header
+- `data-select-divider` — Divider between groups
+- `data-select-empty` — Empty state when filter returns no results
+
+## Keyboard Navigation
+
+- `ArrowDown` / `ArrowUp` on trigger — opens dropdown
+- `Enter` / `Space` on trigger — toggles dropdown
+- `ArrowDown` / `ArrowUp` in dropdown — navigate options
+- `Enter` / `Space` on option — selects it and closes
+- `Escape` — closes dropdown and returns focus to trigger
+- When `filterable`: `ArrowDown` from filter input moves to first option; `Enter` selects focused option
+
+## Field Mapping Defaults
+
+Default `PROXY_ITEM_FIELDS` mapping (used when no `fields` prop is passed):
+
+```js
+{
+  text: 'label',
+  value: 'value',
+  icon: 'icon',
+  href: 'href',
+  children: 'children',
+  disabled: 'disabled',
+  snippet: 'snippet'
+}
+```
+
+Override only the fields you need:
+```js
+fields={{ text: 'name', value: 'id' }}
+```

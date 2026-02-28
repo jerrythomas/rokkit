@@ -2,23 +2,11 @@
  * Tabs Component Types
  *
  * Provides types for the data-driven Tabs component.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
-import type { ItemFields } from './item-proxy.js'
-
-// =============================================================================
-// Field Mapping Types
-// =============================================================================
-
-/**
- * Field mapping configuration for tabs data.
- * Extends standard item fields with a content field for tab panels.
- */
-export interface TabsFields extends ItemFields {
-	/** Field for tab panel content - default: 'content' */
-	content?: string
-}
+import type { Snippet } from 'svelte'
+import type { ProxyItem } from '@rokkit/states'
 
 // =============================================================================
 // Tabs Item Types
@@ -30,12 +18,10 @@ export interface TabsFields extends ItemFields {
 export type TabsItem = Record<string, unknown>
 
 // =============================================================================
-// Snippet Types
+// Legacy types — kept for backward compat until usages are updated
 // =============================================================================
 
-/**
- * Handlers passed to custom tab item snippets
- */
+/** @deprecated No longer needed — Navigator handles clicks via data-path */
 export interface TabsItemHandlers {
 	/** Call to trigger tab selection */
 	onclick: () => void
@@ -43,22 +29,35 @@ export interface TabsItemHandlers {
 	onkeydown: (event: KeyboardEvent) => void
 }
 
+/** @deprecated Use TabsItemSnippet (new ProxyItem API) */
+export type LegacyTabsItemSnippet = Snippet<
+	[TabsItem, Record<string, string>, TabsItemHandlers, boolean]
+>
+
+/** @deprecated Use TabsPanelSnippet (new ProxyItem API) */
+export type LegacyTabsPanelSnippet = Snippet<[TabsItem, Record<string, string>]>
+
+// =============================================================================
+// Snippet Types — ProxyItem-based API
+// =============================================================================
+
 /**
  * Snippet type for rendering tab triggers (headers).
+ * The component renders the focusable wrapper; the snippet renders the inner content.
+ * Navigator handles click selection via data-path — no handlers needed in snippet.
+ * Receives the ProxyItem and whether this item is currently selected.
  */
-export type TabsItemSnippet = import('svelte').Snippet<
-	[TabsItem, TabsFields, TabsItemHandlers, boolean]
->
+export type TabsItemSnippet = Snippet<[ProxyItem, boolean]>
 
 /**
  * Snippet type for rendering tab panel content.
  */
-export type TabsPanelSnippet = import('svelte').Snippet<[TabsItem, TabsFields]>
+export type TabsPanelSnippet = Snippet<[ProxyItem]>
 
 /**
  * Snippet type for rendering the empty state.
  */
-export type TabsEmptySnippet = import('svelte').Snippet<[]>
+export type TabsEmptySnippet = Snippet<[]>
 
 // =============================================================================
 // Component Props Types
@@ -71,8 +70,8 @@ export interface TabsProps {
 	/** Array of tab options */
 	options?: TabsItem[]
 
-	/** Field mapping configuration */
-	fields?: TabsFields
+	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	fields?: Record<string, string>
 
 	/** Currently selected tab value */
 	value?: unknown
@@ -104,7 +103,7 @@ export interface TabsProps {
 	/** Called when selection changes */
 	onchange?: (value: unknown, item: TabsItem) => void
 
-	/** Called when a tab is selected */
+	/** Called when a tab is selected (fires on every click, including same tab) */
 	onselect?: (value: unknown, item: TabsItem) => void
 
 	/** Called when a new tab is requested (editable mode) */

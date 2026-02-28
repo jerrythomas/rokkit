@@ -1,5 +1,5 @@
 import { omit } from 'ramda'
-import { defaultFields } from './constants.js'
+import { DEFAULT_FIELDS } from './constants.js'
 
 /**
  * Flattens a nested list of items
@@ -9,8 +9,8 @@ import { defaultFields } from './constants.js'
  * @param {number}                        level
  * @returns {Array}
  */
-export function flattenNestedList(items, fields = defaultFields, level = 0) {
-	fields = { ...defaultFields, ...fields }
+export function flattenNestedList(items, fields = DEFAULT_FIELDS, level = 0) {
+	fields = { ...DEFAULT_FIELDS, ...fields }
 	let data = []
 	items.forEach((item) => {
 		const children = item[fields.children] ?? []
@@ -36,7 +36,7 @@ export function flattenNestedList(items, fields = defaultFields, level = 0) {
  * @returns {any}
  */
 export function findValueFromPath(slug, data, fields) {
-	fields = { ...defaultFields, ...fields }
+	fields = { ...DEFAULT_FIELDS, ...fields }
 	const keys = slug.split('/')
 	let items = data
 	let value = null

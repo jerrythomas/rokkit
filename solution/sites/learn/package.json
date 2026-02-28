@@ -47,7 +47,7 @@
     "@rokkit/icons": "workspace:latest",
     "@rokkit/states": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
-    "@rokkit/tutorial": "workspace:latest",
+    "@rokkit/testbed": "workspace:*",
     "@rokkit/ui": "workspace:latest",
     "@sveltejs/adapter-vercel": "^5.10.2",
     "phosphor-svelte": "^3.0.1",

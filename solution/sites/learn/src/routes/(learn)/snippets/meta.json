@@ -1,0 +1,8 @@
+{
+  "title": "Snippets",
+  "description": "Customize component rendering with Svelte snippets",
+  "icon": "i-solar:code-bold-duotone",
+  "category": "guide",
+  "order": 4,
+  "tags": ["snippets", "customize", "render", "templates", "slots"]
+}

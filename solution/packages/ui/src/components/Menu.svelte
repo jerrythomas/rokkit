@@ -1,20 +1,13 @@
 <script lang="ts">
-	import type {
-		MenuProps,
-		MenuItem,
-		MenuItemSnippet,
-		MenuItemHandlers,
-		MenuStateIcons
-	} from '../types/menu.js'
-	import { getSnippet, defaultMenuStateIcons } from '../types/menu.js'
-	import { ItemProxy } from '../types/item-proxy.js'
-	import { ListController } from '@rokkit/states'
-	import { navigator } from '@rokkit/actions'
-	import { untrack } from 'svelte'
+	// @ts-nocheck
+	import type { MenuProps, MenuStateIcons } from '../types/menu.js'
+	import { defaultMenuStateIcons, getSnippet } from '../types/menu.js'
+	import { Wrapper, ProxyItem, PROXY_ITEM_FIELDS } from '@rokkit/states'
+	import { Navigator } from '@rokkit/actions'
 
-	const {
+	let {
 		options = [],
-		fields: userFields,
+		fields: userFields = {},
 		label = 'Menu',
 		icon,
 		showArrow = true,
@@ -27,34 +20,22 @@
 		icons: userIcons,
 		item: itemSnippet,
 		groupLabel: groupLabelSnippet,
-		...snippets
-	}: MenuProps & { [key: string]: MenuItemSnippet | unknown } = $props()
+		...extraSnippets
+	}: MenuProps & { [key: string]: unknown } = $props()
 
-	// Merge icons with defaults
 	const icons = $derived<MenuStateIcons>({ ...defaultMenuStateIcons, ...userIcons })
-
-	// Normalize alignment value (support both start/end and left/right)
+	const mergedFields = $derived({ ...PROXY_ITEM_FIELDS, ...userFields })
 	const normalizedAlign = $derived(align === 'left' || align === 'start' ? 'left' : 'right')
 
-	/**
-	 * Create an ItemProxy for the given item
-	 */
-	function createProxy(item: MenuItem): ItemProxy {
-		return new ItemProxy(item, userFields)
-	}
+	// ─── Flat items for Wrapper (groups pre-flattened — only leaf items) ────────
 
-	// ─── Flatten options into navigable items for the controller ────
-	// Groups are presentation-only; only leaf items are navigable.
-
-	/** Flat array of raw selectable items (for controller) */
 	const flatItems = $derived.by(() => {
-		const items: MenuItem[] = []
+		const items = []
+		const childrenField = mergedFields.children
 		for (const option of options) {
-			const proxy = createProxy(option)
-			if (proxy.hasChildren) {
-				for (const child of proxy.children) {
-					items.push(child as MenuItem)
-				}
+			const children = option[childrenField]
+			if (Array.isArray(children) && children.length > 0) {
+				for (const child of children) items.push(child)
 			} else {
 				items.push(option)
 			}
@@ -62,157 +43,109 @@
 		return items
 	})
 
-	/** Map from raw item object → flat index key (for data-path) */
+	/** item → key string matching Wrapper keys */
 	const itemPathMap = $derived.by(() => {
-		const map = new WeakMap<object, string>()
-		flatItems.forEach((item, index) => {
-			if (item && typeof item === 'object') {
-				map.set(item, String(index))
-			}
-		})
+		const map = new Map()
+		flatItems.forEach((item, i) => map.set(item, String(i)))
 		return map
 	})
 
-	// ─── Controller + Navigator ────────────────────────────────────
+	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
-	// Dropdown state
+	const wrapper = $derived(new Wrapper(flatItems, mergedFields, { onselect: handleSelect }))
+
+	// When wrapper recreates while open, focus first item
+	$effect(() => {
+		const w = wrapper
+		if (isOpen) w.first(null)
+	})
+
+	// ─── Dropdown state ───────────────────────────────────────────────────────
+
 	let isOpen = $state(false)
 	let menuRef = $state<HTMLDivElement | null>(null)
 	let dropdownRef = $state<HTMLDivElement | null>(null)
 
-	let controller = untrack(() => new ListController(flatItems, undefined, userFields))
+	// ─── Navigator ────────────────────────────────────────────────────────────
 
 	$effect(() => {
-		controller.update(flatItems)
+		if (!isOpen || !dropdownRef) return
+		const nav = new Navigator(dropdownRef, wrapper, { orientation: 'vertical' })
+		return () => nav.destroy()
 	})
 
-	// Focus the element matching controller.focusedKey on navigator action events
-	// and handle select action (fire onselect + close menu)
+	// DOM focus sync
 	$effect(() => {
-		if (!dropdownRef) return
-		const el = dropdownRef
-
-		function onAction(event: Event) {
-			const detail = (event as CustomEvent).detail
-
-			if (detail.name === 'move') {
-				const key = controller.focusedKey
-				if (key) {
-					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-					if (target && target !== document.activeElement) {
-						target.focus()
-					}
-				}
+		const key = wrapper.focusedKey
+		if (!isOpen || !dropdownRef || !key) return
+		requestAnimationFrame(() => {
+			const target = dropdownRef?.querySelector(`[data-path="${key}"]`)
+			if (target && target !== document.activeElement) {
+				target.focus()
 			}
-
-			if (detail.name === 'select') {
-				handleSelectAction()
-			}
-		}
-
-		el.addEventListener('action', onAction)
-		return () => el.removeEventListener('action', onAction)
+		})
 	})
 
-	/**
-	 * Handle the navigator's select action (Enter/Space or click on data-path item)
-	 */
-	function handleSelectAction() {
-		const key = controller.focusedKey
-		if (!key) return
+	// ─── Selection handler ────────────────────────────────────────────────────
 
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-
-		const itemProxy = createProxy(proxy.value)
-		if (!itemProxy.disabled) {
-			onselect?.(itemProxy.itemValue, proxy.value as MenuItem)
-		}
+	function handleSelect(extractedValue, proxy) {
+		if (proxy.disabled) return
+		const rawItem = flatItems[parseInt(proxy.key)] ?? null
+		onselect?.(extractedValue, rawItem)
 		closeMenu()
+		const trigger = menuRef?.querySelector('[data-menu-trigger]')
+		trigger?.focus()
 	}
 
-	/**
-	 * Sync DOM focus to controller state
-	 */
-	function handleFocusIn(event: FocusEvent) {
-		const target = event.target as HTMLElement
-		if (!target) return
-		const path = target.dataset.path
-		if (path !== undefined) {
-			controller.moveTo(path)
-		}
-	}
-
-	// ─── Dropdown open/close ───────────────────────────────────────
+	// ─── Dropdown control ─────────────────────────────────────────────────────
 
 	function toggleMenu() {
 		if (disabled) return
-		if (isOpen) {
-			closeMenu()
-		} else {
-			openMenu()
-		}
+		if (isOpen) closeMenu()
+		else openMenu()
 	}
 
 	function openMenu() {
 		if (disabled || isOpen) return
 		isOpen = true
+		requestAnimationFrame(() => wrapper.first(null))
 	}
 
 	function closeMenu() {
 		isOpen = false
-		controller.moveToValue(undefined)
 	}
 
-	// ─── Trigger keyboard handling ─────────────────────────────────
+	// ─── Keyboard handlers ────────────────────────────────────────────────────
 
-	function handleTriggerKeyDown(event: KeyboardEvent) {
+	function handleTriggerKeyDown(event) {
 		if (event.key === 'ArrowDown') {
 			event.preventDefault()
-			openMenu()
-			requestAnimationFrame(() => focusFirstItem())
+			if (!isOpen) {
+				openMenu()
+			} else {
+				wrapper.first(null)
+			}
 		} else if (event.key === 'ArrowUp') {
 			event.preventDefault()
-			openMenu()
-			requestAnimationFrame(() => focusLastItem())
-		}
-	}
-
-	function focusFirstItem() {
-		controller.moveFirst()
-		focusCurrentItem()
-	}
-
-	function focusLastItem() {
-		controller.moveLast()
-		focusCurrentItem()
-	}
-
-	function focusCurrentItem() {
-		if (!dropdownRef || !controller.focusedKey) return
-		const target = dropdownRef.querySelector(
-			`[data-path="${controller.focusedKey}"]`
-		) as HTMLElement | null
-		target?.focus()
-	}
-
-	// ─── Escape + click-outside ────────────────────────────────────
-
-	function handleEscapeKey(event: KeyboardEvent) {
-		if (!isOpen) return
-		if (event.key === 'Escape') {
+			if (!isOpen) {
+				openMenu()
+				requestAnimationFrame(() => wrapper.last(null))
+			}
+		} else if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault()
-			closeMenu()
-			// Return focus to trigger
-			const trigger = menuRef?.querySelector('[data-menu-trigger]') as HTMLElement | undefined
-			trigger?.focus()
+			toggleMenu()
 		}
 	}
 
-	function handleClickOutside(event: MouseEvent) {
-		if (menuRef && !menuRef.contains(event.target as Node)) {
-			closeMenu()
-		}
+	function handleEscapeKey(event) {
+		if (!isOpen || event.key !== 'Escape') return
+		event.preventDefault()
+		closeMenu()
+		menuRef?.querySelector('[data-menu-trigger]')?.focus()
+	}
+
+	function handleClickOutside(event) {
+		if (menuRef && !menuRef.contains(event.target)) closeMenu()
 	}
 
 	$effect(() => {
@@ -226,130 +159,49 @@
 		}
 	})
 
-	// ─── Snippet + rendering helpers (unchanged) ───────────────────
+	// ─── Rendering helpers ────────────────────────────────────────────────────
 
-	/**
-	 * Handle direct Enter/Space on a menu item (for items without data-path or custom snippets).
-	 * Stops propagation to prevent navigator from double-handling.
-	 */
-	function handleItemSelect(proxy: ItemProxy) {
-		if (proxy.disabled) return
-		onselect?.(proxy.itemValue, proxy.original as MenuItem)
-		closeMenu()
+	function getOptionProxy(item) {
+		const key = itemPathMap.get(item)
+		return (key !== undefined ? wrapper.lookup.get(key) : null) ?? new ProxyItem(item, mergedFields)
 	}
 
-	/**
-	 * Create handlers object for custom snippets
-	 */
-	function createHandlers(proxy: ItemProxy): MenuItemHandlers {
-		return {
-			onclick: () => handleItemSelect(proxy),
-			onkeydown: (event: KeyboardEvent) => {
-				if (event.key === 'Enter' || event.key === ' ') {
-					event.preventDefault()
-					event.stopPropagation()
-					handleItemSelect(proxy)
-				}
-			}
-		}
+	function getGroupProxy(group) {
+		return new ProxyItem(group, mergedFields)
 	}
 
-	/**
-	 * Resolve which snippet to use for an item
-	 */
-	function resolveItemSnippet(proxy: ItemProxy): MenuItemSnippet | null {
-		const snippetName = proxy.snippetName
-		if (snippetName) {
-			const namedSnippet = getSnippet(snippets, snippetName)
-			if (namedSnippet) {
-				return namedSnippet as MenuItemSnippet
-			}
+	function resolveItemSnippet(proxy) {
+		const name = proxy.snippet
+		if (name && typeof name === 'string') {
+			const named = getSnippet(extraSnippets, name)
+			if (named) return named
 		}
 		return itemSnippet ?? null
 	}
-
-	// Track option index for divider logic - show divider before groups that aren't the first item
-	function shouldShowDivider(optionIndex: number, isGroup: boolean): boolean {
-		return isGroup && optionIndex > 0
-	}
-
-	/**
-	 * Get the data-path key for a raw item (looks up in the pre-computed map)
-	 */
-	function getPathKey(item: MenuItem): string | undefined {
-		if (item && typeof item === 'object') {
-			return itemPathMap.get(item)
-		}
-		return undefined
-	}
 </script>
 
-{#snippet defaultItem(proxy: ItemProxy, handlers: MenuItemHandlers, pathKey: string | undefined)}
-	<button
-		type="button"
-		data-menu-item
-		data-path={pathKey}
-		data-disabled={proxy.disabled || undefined}
-		role="menuitem"
-		tabindex="-1"
-		disabled={proxy.disabled}
-		aria-label={proxy.label}
-		onkeydown={handlers.onkeydown}
-	>
-		{#if proxy.icon}
-			<span data-menu-item-icon class={proxy.icon} aria-hidden="true"></span>
+{#snippet defaultItemContent(proxy)}
+	{#if proxy.icon}
+		<span data-menu-item-icon class={proxy.icon} aria-hidden="true"></span>
+	{/if}
+	<span data-menu-item-content>
+		<span data-menu-item-label>{proxy.text}</span>
+		{#if proxy.get('description')}
+			<span data-menu-item-description>{proxy.get('description')}</span>
 		{/if}
-		<span data-menu-item-content>
-			<span data-menu-item-label>{proxy.text}</span>
-			{#if proxy.description}
-				<span data-menu-item-description>{proxy.description}</span>
-			{/if}
-		</span>
-		{#if proxy.shortcut}
-			<kbd data-menu-item-shortcut aria-label="Keyboard shortcut: {proxy.shortcut}"
-				>{proxy.shortcut}</kbd
-			>
-		{/if}
-	</button>
-{/snippet}
-
-{#snippet defaultGroupLabel(proxy: ItemProxy)}
-	<div data-menu-group-label role="presentation">
-		{#if proxy.icon}
-			<span data-menu-group-icon class={proxy.icon} aria-hidden="true"></span>
-		{/if}
-		<span>{proxy.text}</span>
-	</div>
-{/snippet}
-
-{#snippet renderItem(proxy: ItemProxy, pathKey: string | undefined)}
-	{@const customSnippet = resolveItemSnippet(proxy)}
-	{@const handlers = createHandlers(proxy)}
-	{#if customSnippet}
-		<div data-menu-item data-menu-item-custom data-path={pathKey} data-disabled={proxy.disabled || undefined}>
-			<svelte:boundary>
-				{@render customSnippet(proxy.original as MenuItem, proxy.fields, handlers)}
-				{#snippet failed()}
-					{@render defaultItem(proxy, handlers, pathKey)}
-				{/snippet}
-			</svelte:boundary>
-		</div>
-	{:else}
-		{@render defaultItem(proxy, handlers, pathKey)}
+	</span>
+	{#if proxy.get('shortcut')}
+		<kbd data-menu-item-shortcut aria-label="Keyboard shortcut: {proxy.get('shortcut')}"
+			>{proxy.get('shortcut')}</kbd
+		>
 	{/if}
 {/snippet}
 
-{#snippet renderGroupLabel(proxy: ItemProxy)}
-	{#if groupLabelSnippet}
-		<svelte:boundary>
-			{@render groupLabelSnippet(proxy.original as MenuItem, proxy.fields)}
-			{#snippet failed()}
-				{@render defaultGroupLabel(proxy)}
-			{/snippet}
-		</svelte:boundary>
-	{:else}
-		{@render defaultGroupLabel(proxy)}
+{#snippet defaultGroupContent(proxy)}
+	{#if proxy.icon}
+		<span data-menu-group-icon class={proxy.icon} aria-hidden="true"></span>
 	{/if}
+	<span>{proxy.text}</span>
 {/snippet}
 
 <div
@@ -378,7 +230,7 @@
 		{/if}
 		<span data-menu-label>{label}</span>
 		{#if showArrow}
-			<span data-menu-arrow class={icons.opened} aria-hidden="true"></span>
+			<span data-menu-arrow class={isOpen ? icons.opened : icons.closed} aria-hidden="true"></span>
 		{/if}
 	</button>
 
@@ -389,31 +241,66 @@
 			data-menu-dropdown
 			role="menu"
 			aria-orientation="vertical"
-			onfocusin={handleFocusIn}
-			use:navigator={{ wrapper: controller, orientation: 'vertical' }}
 		>
-			{#each options as option, optionIndex (optionIndex)}
-				{@const proxy = createProxy(option)}
+			{#each options as option, oi (oi)}
+				{@const childrenField = mergedFields.children}
+				{@const children = option[childrenField]}
 
-				{#if proxy.hasChildren}
-					<!-- Group with children -->
-					{#if shouldShowDivider(optionIndex, true)}
+				{#if Array.isArray(children) && children.length > 0}
+					{@const groupProxy = getGroupProxy(option)}
+					{#if oi > 0}
 						<div data-menu-divider role="separator"></div>
 					{/if}
-
 					<div data-menu-group>
-						{@render renderGroupLabel(proxy)}
-
-						{#each proxy.children as child, childIndex (childIndex)}
-							{@const childProxy = proxy.createChildProxy(child)}
-							{@const pathKey = getPathKey(child as MenuItem)}
-							{@render renderItem(childProxy, pathKey)}
+						<div data-menu-group-label role="presentation">
+							{#if groupLabelSnippet}
+								{@render groupLabelSnippet(groupProxy)}
+							{:else}
+								{@render defaultGroupContent(groupProxy)}
+							{/if}
+						</div>
+						{#each children as child, ci (ci)}
+							{@const proxy = getOptionProxy(child)}
+							{@const pathKey = itemPathMap.get(child)}
+							{@const customSnippet = resolveItemSnippet(proxy)}
+							<button
+								type="button"
+								title={proxy.get('title')}
+								data-menu-item
+								data-path={pathKey}
+								data-disabled={proxy.disabled || undefined}
+								role="menuitem"
+								tabindex="-1"
+								disabled={proxy.disabled}
+							>
+								{#if customSnippet}
+									{@render customSnippet(proxy)}
+								{:else}
+									{@render defaultItemContent(proxy)}
+								{/if}
+							</button>
 						{/each}
 					</div>
 				{:else}
-					<!-- Standalone item (no children) -->
-					{@const pathKey = getPathKey(option)}
-					{@render renderItem(proxy, pathKey)}
+					{@const proxy = getOptionProxy(option)}
+					{@const pathKey = itemPathMap.get(option)}
+					{@const customSnippet = resolveItemSnippet(proxy)}
+					<button
+						type="button"
+						title={proxy.get('title')}
+						data-menu-item
+						data-path={pathKey}
+						data-disabled={proxy.disabled || undefined}
+						role="menuitem"
+						tabindex="-1"
+						disabled={proxy.disabled}
+					>
+						{#if customSnippet}
+							{@render customSnippet(proxy)}
+						{:else}
+							{@render defaultItemContent(proxy)}
+						{/if}
+					</button>
 				{/if}
 			{/each}
 		</div>

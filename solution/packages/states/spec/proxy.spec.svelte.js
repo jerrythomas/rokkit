@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { Proxy } from '../src/proxy.svelte.js'
-import { defaultFields } from '@rokkit/core'
+import { DEFAULT_FIELDS } from '@rokkit/core'
 import { flushSync } from 'svelte'
 
 describe('Proxy', () => {
@@ -12,7 +12,7 @@ describe('Proxy', () => {
 		expect(proxy.has('id')).toBe(false)
 		expect(proxy.get('text')).toEqual('123')
 		expect(proxy.id).toEqual('123')
-		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.fields).toEqual(DEFAULT_FIELDS)
 		expect(proxy.hasChildren).toBe(false)
 
 		proxy.value = '345'
@@ -33,7 +33,7 @@ describe('Proxy', () => {
 		expect(proxy.has('id')).toBe(false)
 		expect(proxy.get('text')).toBeUndefined()
 		expect(proxy.id).toBeTruthy()
-		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.fields).toEqual(DEFAULT_FIELDS)
 		expect(proxy.hasChildren).toBe(false)
 
 		proxy.value = '345'
@@ -54,7 +54,7 @@ describe('Proxy', () => {
 		expect(proxy.has('id')).toBe(false)
 		expect(proxy.get('text')).toEqual('123')
 		expect(proxy.id).toEqual('123')
-		expect(proxy.fields).toEqual({ ...defaultFields, text: 't' })
+		expect(proxy.fields).toEqual({ ...DEFAULT_FIELDS, text: 't' })
 		expect(proxy.hasChildren).toBe(false)
 		expect(proxy.children).toEqual([])
 	})
@@ -84,7 +84,7 @@ describe('Proxy', () => {
 
 		proxy.fields = { icon: 'avatar' }
 		flushSync()
-		expect(proxy.fields).toEqual({ ...defaultFields, icon: 'avatar' })
+		expect(proxy.fields).toEqual({ ...DEFAULT_FIELDS, icon: 'avatar' })
 		expect(proxy.hasChildren).toBe(false)
 		expect(proxy.children).toEqual([])
 	})
@@ -103,7 +103,7 @@ describe('Proxy', () => {
 
 		proxy.fields = { icon: 'avatar' }
 		flushSync()
-		expect(proxy.fields).toEqual({ ...defaultFields, icon: 'avatar' })
+		expect(proxy.fields).toEqual({ ...DEFAULT_FIELDS, icon: 'avatar' })
 	})
 
 	it('should identify if item has children', () => {
@@ -207,16 +207,16 @@ describe('Proxy', () => {
 		const item = $state({ children: [{ id: '1', name: 'child' }] })
 		const proxy = new Proxy(item)
 
-		// Setting fields to null results in defaultFields due to spread operator
+		// Setting fields to null results in DEFAULT_FIELDS due to spread operator
 		proxy.fields = null
 		flushSync()
-		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.fields).toEqual(DEFAULT_FIELDS)
 		expect(proxy.children.length).toBe(1) // Children are processed normally
 
-		// Setting fields to undefined also results in defaultFields
+		// Setting fields to undefined also results in DEFAULT_FIELDS
 		proxy.fields = undefined
 		flushSync()
-		expect(proxy.fields).toEqual(defaultFields)
+		expect(proxy.fields).toEqual(DEFAULT_FIELDS)
 		expect(proxy.children.length).toBe(1) // Children are processed normally
 	})
 })

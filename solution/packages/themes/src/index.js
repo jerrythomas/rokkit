@@ -7,8 +7,8 @@ export {
 	semanticShortcuts,
 	contrastShortcuts,
 	iconShortcuts,
-	defaultIcons,
-	defaultThemeMapping,
+	DEFAULT_ICONS,
+	DEFAULT_THEME_MAPPING,
 	defaultColors
 } from '@rokkit/core'
 

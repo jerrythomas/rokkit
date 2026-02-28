@@ -8,7 +8,7 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { shades, defaultPalette, defaultIcons, iconShortcuts } from '@rokkit/core'
+import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { Theme } from '@rokkit/core'
 
@@ -44,7 +44,8 @@ const components = [
 	'tree',
 	'radio',
 	'range',
-	'rating'
+	'rating',
+	'input-password'
 ].map((icon) => `i-component:${icon}`)
 
 const themeConfig = {
@@ -67,7 +68,7 @@ export default defineConfig({
 	},
 	rules: [['hidden', { display: 'none' }]],
 	safelist: [
-		...defaultIcons,
+		...DEFAULT_ICONS,
 		...components,
 		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
 		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`)),
@@ -80,7 +81,15 @@ export default defineConfig({
 		'i-solar:palette-bold-duotone',
 		'i-solar:eye-bold-duotone',
 		'i-solar:hamburger-menu-bold-duotone',
-		'i-solar:file-text-bold-duotone'
+		'i-solar:file-text-bold-duotone',
+		'i-solar:minimize-square-bold-duotone',
+		'i-solar:widget-bold-duotone',
+		'i-solar:notes-bold-duotone',
+		'i-solar:cpu-bolt-bold-duotone',
+		'i-solar:info-circle-bold-duotone',
+		'i-solar:list-bold-duotone',
+		'i-solar:alt-arrow-down-bold-duotone',
+		'i-solar:table-bold-duotone'
 	],
 	shortcuts: [
 		['skin-default', theme.getPalette(mapping)],
@@ -108,7 +117,7 @@ export default defineConfig({
 		...theme.getShortcuts('danger'),
 		...theme.getShortcuts('error'),
 		...theme.getShortcuts('info'),
-		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit')),
+		...Object.entries(iconShortcuts(DEFAULT_ICONS, 'i-rokkit')),
 		['text-on-primary', 'text-surface-50'],
 		['text-on-secondary', 'text-surface-50'],
 		['text-on-info', 'text-surface-50'],

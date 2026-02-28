@@ -52,6 +52,9 @@ export interface ButtonProps {
 	/** Link target (when href is set) */
 	target?: string
 
+	/** Native tooltip shown on hover */
+	title?: string
+
 	/** Disabled state */
 	disabled?: boolean
 

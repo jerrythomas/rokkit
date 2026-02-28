@@ -1,13 +1,32 @@
 <script lang="ts">
-	import type { TabsProps, TabsItem, TabsItemHandlers } from '../types/tabs.js'
-	import { ItemProxy } from '../types/item-proxy.js'
-	import { ListController } from '@rokkit/states'
-	import { navigator } from '@rokkit/actions'
-	import { untrack } from 'svelte'
+	/**
+	 * Tabs — Wrapper + Navigator + ProxyItem implementation.
+	 *
+	 * Architecture:
+	 *   Wrapper       — owns focusedKey $state + flatView $derived
+	 *   Navigator     — attaches DOM event handlers, calls wrapper[action](path)
+	 *                   owns focus + scrollIntoView after every keyboard action
+	 *   flatView loop — single flat {#each} for tab triggers
+	 *
+	 * Snippet customization:
+	 *   itemContent   — replaces inner content of <button> for tab triggers
+	 *   tabPanel      — replaces panel content
+	 *   [named]       — per-item override via item.snippet = 'name'; falls back to itemContent
+	 *   empty         — rendered when no options
+	 *
+	 * Tab panels are rendered separately from triggers. Only the active panel
+	 * receives data-panel-active. Navigator ignores panels (no data-path on them).
+	 */
+	// @ts-nocheck
+	import type { TabsProps } from '../types/tabs.js'
+	import type { ProxyItem } from '@rokkit/states'
+	import { Wrapper } from '@rokkit/states'
+	import { Navigator } from '@rokkit/actions'
+	import { resolveSnippet, ITEM_SNIPPET, DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	let {
 		options = [],
-		fields: userFields,
+		fields: userFields = {},
 		value = $bindable(),
 		orientation = 'horizontal',
 		position = 'before',
@@ -21,172 +40,63 @@
 		onselect,
 		onadd,
 		onremove,
-		tabItem: tabItemSnippet,
-		tabPanel: tabPanelSnippet,
-		empty: emptySnippet
-	}: TabsProps = $props()
+		...snippets
+	}: TabsProps & { [key: string]: unknown } = $props()
 
-	/** Content field name from user fields or default */
-	const contentField = $derived((userFields as Record<string, string> | undefined)?.content ?? 'content')
+	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
-	let controller = untrack(() => new ListController(options, value, userFields))
-	let containerRef: HTMLElement | null = $state(null)
-	let lastSyncedValue: unknown = value
+	const wrapper = $derived(new Wrapper(options, userFields, {	onchange, onselect}))
 
-	$effect(() => {
-		controller.update(options)
-	})
+	// ─── Navigator ────────────────────────────────────────────────────────────
 
-	// Sync controller focus when value changes externally
-	$effect(() => {
-		if (value !== lastSyncedValue) {
-			lastSyncedValue = value
-			controller.moveToValue(value)
-		}
-	})
+	let containerRef = $state<HTMLElement | null>(null)
 
-	// Focus the tab matching controller.focusedKey on navigator move events
 	$effect(() => {
 		if (!containerRef) return
-		const el = containerRef
-
-		function handleAction(event: Event) {
-			const detail = (event as CustomEvent).detail
-
-			if (detail.name === 'move') {
-				const key = controller.focusedKey
-				if (key) {
-					const target = el.querySelector(`[data-path="${key}"]`) as HTMLElement | null
-					if (target && target !== document.activeElement) {
-						target.focus()
-					}
-				}
-			}
-
-			if (detail.name === 'select') {
-				handleSelectAction()
-			}
-		}
-
-		el.addEventListener('action', handleAction)
-		return () => el.removeEventListener('action', handleAction)
+		const nav = new Navigator(containerRef, wrapper, { orientation })
+		return () => nav.destroy()
 	})
 
-	/**
-	 * Create an ItemProxy for the given item
-	 */
-	function createProxy(item: TabsItem): ItemProxy {
-		return new ItemProxy(item, userFields)
-	}
+	// ─── Sync external value → focused key ────────────────────────────────────
 
-	/**
-	 * Check if an item is currently selected
-	 */
-	function isSelected(proxy: ItemProxy): boolean {
-		return proxy.itemValue === value
-	}
+	$effect(() => {
+		wrapper.moveToValue(value)
+	})
 
-	/**
-	 * Handle tab selection via navigator select action
-	 */
-	function handleSelectAction() {
-		const key = controller.focusedKey
-		if (!key) return
-
-		const proxy = controller.lookup.get(key)
-		if (!proxy) return
-
-		const itemProxy = createProxy(proxy.value)
-		selectTab(itemProxy)
-	}
-
-	/**
-	 * Select a tab by its proxy
-	 */
-	function selectTab(proxy: ItemProxy) {
-		if (proxy.disabled || disabled) return
-		const itemValue = proxy.itemValue
-		if (itemValue !== value) {
-			value = itemValue
-			lastSyncedValue = itemValue
-			controller.moveToValue(itemValue)
-			onchange?.(itemValue, proxy.original as TabsItem)
-		}
-		onselect?.(itemValue, proxy.original as TabsItem)
-	}
-
-	/**
-	 * Handle keyboard events on individual tabs (Enter/Space)
-	 */
-	function handleKeyDown(event: KeyboardEvent, proxy: ItemProxy) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault()
-			selectTab(proxy)
-		}
-	}
-
-	/**
-	 * Create handlers object for custom snippets
-	 */
-	function createHandlers(proxy: ItemProxy): TabsItemHandlers {
-		return {
-			onclick: () => selectTab(proxy),
-			onkeydown: (event: KeyboardEvent) => handleKeyDown(event, proxy)
-		}
-	}
+	// ─── Editable handlers ────────────────────────────────────────────────────
 
 	function handleAdd() {
 		onadd?.()
 	}
 
-	function handleRemove(proxy: ItemProxy) {
-		onremove?.(proxy.itemValue)
-	}
-
-	/**
-	 * Get the panel content for a tab item
-	 */
-	function getContent(item: TabsItem): unknown {
-		return item[contentField]
+	function handleRemove(proxy: ProxyItem) {
+		onremove?.(proxy.value)
 	}
 </script>
 
-{#snippet defaultTabItem(proxy: ItemProxy, handlers: TabsItemHandlers, selected: boolean, key: string)}
-	<button
-		type="button"
-		data-tabs-trigger
-		data-path={key}
-		data-selected={selected || undefined}
-		data-disabled={proxy.disabled || undefined}
-		role="tab"
-		aria-selected={selected}
-		aria-label={proxy.label}
-		disabled={proxy.disabled || disabled}
-		onkeydown={handlers.onkeydown}
-	>
-		{#if proxy.icon}
-			<span data-tabs-icon class={proxy.icon} aria-hidden="true"></span>
-		{/if}
-		<span data-tabs-label>{proxy.text}</span>
-		{#if editable}
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<span
-				data-tabs-remove
-				role="button"
-				tabindex="-1"
-				aria-label="Remove tab"
-				onclick={(e) => { e.stopPropagation(); handleRemove(proxy) }}
-				onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); e.preventDefault(); handleRemove(proxy) } }}
-			>
-				<span class="i-lucide:x" aria-hidden="true"></span>
-			</span>
-		{/if}
-	</button>
+{#snippet defaultTabContent(proxy: ProxyItem)}
+	{#if proxy.icon}
+		<span data-tabs-icon class={proxy.icon} aria-hidden="true"></span>
+	{/if}
+	<span data-tabs-label>{proxy.text}</span>
+	{#if editable}
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<span
+			data-tabs-remove
+			role="button"
+			tabindex="-1"
+			aria-label="Remove tab"
+			onclick={(e) => { e.stopPropagation(); handleRemove(proxy) }}
+			onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); e.preventDefault(); handleRemove(proxy) } }}
+		>
+			<span class={DEFAULT_STATE_ICONS.action.close} aria-hidden="true"></span>
+		</span>
+	{/if}
 {/snippet}
 
-{#snippet defaultPanel(item: TabsItem)}
+{#snippet defaultPanel(proxy: ProxyItem)}
 	<div data-tabs-content>
-		{getContent(item)}
+		{proxy.get('content')}
 	</div>
 {/snippet}
 
@@ -204,29 +114,39 @@
 	data-disabled={disabled || undefined}
 	class={className || undefined}
 	aria-label={name}
-	use:navigator={{ wrapper: controller, orientation }}
 >
 	{#if options.length === 0}
 		<div data-tabs-empty>
-			{#if emptySnippet}
-				{@render emptySnippet()}
+			{#if snippets.empty}
+				{@render snippets.empty()}
 			{:else}
 				{@render defaultEmpty()}
 			{/if}
 		</div>
 	{:else}
 		<div data-tabs-list role="tablist" aria-orientation={orientation}>
-			{#each options as option, index (index)}
-				{@const proxy = createProxy(option)}
-				{@const selected = isSelected(proxy)}
-				{@const handlers = createHandlers(proxy)}
-				{@const key = String(index)}
+			{#each wrapper.flatView as node (node.key)}
+				{@const proxy = node.proxy}
+				{@const sel = proxy.value === value}
+				{@const content = resolveSnippet(snippets, proxy, ITEM_SNIPPET)}
 
-				{#if tabItemSnippet}
-					{@render tabItemSnippet(option, userFields ?? {}, handlers, selected)}
-				{:else}
-					{@render defaultTabItem(proxy, handlers, selected, key)}
-				{/if}
+				<button
+					type="button"
+					data-tabs-trigger
+					data-path={node.key}
+					data-selected={sel || undefined}
+					data-disabled={proxy.disabled || undefined}
+					role="tab"
+					aria-selected={sel}
+					aria-label={proxy.get('label') || proxy.text}
+					disabled={proxy.disabled || disabled}
+				>
+					{#if content}
+						{@render content(proxy, sel)}
+					{:else}
+						{@render defaultTabContent(proxy)}
+					{/if}
+				</button>
 			{/each}
 			{#if editable}
 				<button
@@ -240,21 +160,21 @@
 			{/if}
 		</div>
 
-		{#each options as option, index (index)}
-			{@const proxy = createProxy(option)}
-			{@const active = isSelected(proxy)}
+		{#each wrapper.flatView as node (node.key)}
+			{@const proxy = node.proxy}
+			{@const active = proxy.value === value}
 
 			<div
 				data-tabs-panel
 				data-panel-active={active || undefined}
 				role="tabpanel"
-				id="tab-panel-{index}"
-				aria-labelledby="tab-{index}"
+				id="tab-panel-{node.key}"
+				aria-labelledby="tab-{node.key}"
 			>
-				{#if tabPanelSnippet}
-					{@render tabPanelSnippet(option, userFields ?? {})}
+				{#if snippets.tabPanel}
+					{@render snippets.tabPanel(proxy)}
 				{:else}
-					{@render defaultPanel(option)}
+					{@render defaultPanel(proxy)}
 				{/if}
 			</div>
 		{/each}

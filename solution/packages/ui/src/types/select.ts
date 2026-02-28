@@ -2,41 +2,13 @@
  * Select Component Types
  *
  * Provides types for the data-driven Select and MultiSelect components.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
 import type { Snippet } from 'svelte'
+import type { ProxyItem } from '@rokkit/states'
 import type { ItemFields } from './item-proxy.js'
-import { defaultStateIcons } from '@rokkit/core'
-
-// =============================================================================
-// Field Mapping Types
-// =============================================================================
-
-/**
- * Field mapping configuration for select data.
- * Extends ItemFields for consistency.
- */
-export type SelectFields = ItemFields
-
-/**
- * Default field mapping values
- */
-export const defaultSelectFields: Required<Omit<SelectFields, 'fields'>> = {
-	text: 'text',
-	value: 'value',
-	icon: 'icon',
-	description: 'description',
-	shortcut: 'shortcut',
-	label: 'label',
-	disabled: 'disabled',
-	active: 'active',
-	type: 'type',
-	children: 'children',
-	snippet: 'snippet',
-	href: 'href',
-	badge: 'badge'
-}
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
 // Select Item Types
@@ -48,38 +20,56 @@ export const defaultSelectFields: Required<Omit<SelectFields, 'fields'>> = {
 export type SelectItem = Record<string, unknown>
 
 // =============================================================================
-// Snippet Types
+// Legacy types — kept for MultiSelect backward compat until it is migrated
 // =============================================================================
 
-/**
- * Handlers passed to custom item snippets
- */
+/** @deprecated Use Record<string, string> directly */
+export type SelectFields = ItemFields
+
+/** @deprecated Legacy handlers no longer needed with Navigator stack */
 export interface SelectItemHandlers {
-	/** Call to trigger item selection */
 	onclick: () => void
-	/** Forward keyboard events for accessibility */
 	onkeydown: (event: KeyboardEvent) => void
 }
 
-/**
- * Snippet type for rendering select options
- */
+/** @deprecated Use SelectOptionSnippet instead */
 export type SelectItemSnippet = Snippet<[SelectItem, SelectFields, SelectItemHandlers, boolean]>
 
-/**
- * Snippet type for rendering group labels
- */
-export type SelectGroupLabelSnippet = Snippet<[SelectItem, SelectFields]>
+/** @deprecated Use SelectGroupLabelSnippet (new API) */
+export type LegacyGroupLabelSnippet = Snippet<[SelectItem, SelectFields]>
+
+/** @deprecated Use SelectValueSnippet (new API) */
+export type LegacySelectValueSnippet = Snippet<[SelectItem | null, SelectFields]>
+
+/** @deprecated Use MultiSelectValueSnippet (new API) */
+export type LegacyMultiSelectValueSnippet = Snippet<[SelectItem[], SelectFields]>
+
+// =============================================================================
+// Snippet Types — new ProxyItem-based API
+// =============================================================================
 
 /**
- * Snippet type for rendering the selected value display
+ * Snippet type for rendering a single option in the dropdown.
+ * The component renders the focusable wrapper; the snippet renders the inner content.
+ * Navigator handles click selection via data-path — no handlers needed in snippet.
  */
-export type SelectValueSnippet = Snippet<[SelectItem | null, SelectFields]>
+export type SelectOptionSnippet = Snippet<[ProxyItem]>
 
 /**
- * Snippet type for rendering selected values in MultiSelect
+ * Snippet type for rendering a group header label.
  */
-export type MultiSelectValueSnippet = Snippet<[SelectItem[], SelectFields]>
+export type SelectGroupLabelSnippet = Snippet<[ProxyItem]>
+
+/**
+ * Snippet type for rendering the selected value display in the trigger button.
+ */
+export type SelectValueSnippet = Snippet<[ProxyItem]>
+
+/**
+ * Snippet type for rendering selected values in MultiSelect trigger.
+ * Receives the array of selected ProxyItems.
+ */
+export type MultiSelectValueSnippet = Snippet<[ProxyItem[]]>
 
 // =============================================================================
 // Component Props Types
@@ -92,8 +82,8 @@ export interface SelectBaseProps {
 	/** Array of select options or groups */
 	options?: SelectItem[]
 
-	/** Field mapping configuration */
-	fields?: SelectFields
+	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	fields?: Record<string, string>
 
 	/** Placeholder text when no selection */
 	placeholder?: string
@@ -113,14 +103,14 @@ export interface SelectBaseProps {
 	/** Whether the select is disabled */
 	disabled?: boolean
 
-	/** Additional CSS classes */
+	/** Additional CSS classes on root element */
 	class?: string
 
 	/** Icons for select states (dropdown arrow, check, remove) */
 	icons?: SelectStateIcons
 
-	/** Custom snippet for rendering options */
-	item?: SelectItemSnippet
+	/** Custom snippet for rendering options in dropdown */
+	option?: SelectOptionSnippet
 
 	/** Custom snippet for rendering group labels */
 	groupLabel?: SelectGroupLabelSnippet
@@ -136,16 +126,16 @@ export interface SelectBaseProps {
  * Props for the Select component (single selection)
  */
 export interface SelectProps extends SelectBaseProps {
-	/** Currently selected value (bindable) */
+	/** Currently selected value (bindable) — extracted via item[fields.value] */
 	value?: unknown
 
-	/** Currently selected item reference (bindable) - the actual item from options */
+	/** Currently selected raw item (bindable) — full object from options array */
 	selected?: SelectItem | null
 
 	/** Called when selection changes */
 	onchange?: (value: unknown, item: SelectItem) => void
 
-	/** Custom snippet for rendering the selected value */
+	/** Custom snippet for rendering the selected value in the trigger */
 	selectedValue?: SelectValueSnippet
 }
 
@@ -153,7 +143,7 @@ export interface SelectProps extends SelectBaseProps {
  * Props for the MultiSelect component (multiple selection)
  */
 export interface MultiSelectProps extends SelectBaseProps {
-	/** Currently selected values (bindable) - extracted primitives via ItemProxy.itemValue */
+	/** Currently selected values (bindable) - extracted primitives */
 	value?: unknown[]
 
 	/** Currently selected items (bindable) - full item objects for convenience */
@@ -162,8 +152,9 @@ export interface MultiSelectProps extends SelectBaseProps {
 	/** Called when selection changes */
 	onchange?: (values: unknown[], items: SelectItem[]) => void
 
-	/** Custom snippet for rendering selected values */
-	selectedValues?: MultiSelectValueSnippet
+	/** Custom snippet for rendering selected values in trigger
+	 * @deprecated Will be updated to MultiSelectValueSnippet when MultiSelect is migrated */
+	selectedValues?: LegacyMultiSelectValueSnippet
 
 	/** Maximum number of tags to show before collapsing to count */
 	maxDisplay?: number
@@ -175,7 +166,6 @@ export interface MultiSelectProps extends SelectBaseProps {
 
 /**
  * Icons configuration for select expand/collapse and selection states.
- * Keys match the naming convention in @rokkit/core defaultStateIcons.
  */
 export interface SelectStateIcons {
 	/** Icon class for dropdown arrow (open state) */
@@ -193,10 +183,10 @@ export interface SelectStateIcons {
  * that get resolved to actual icon classes via UnoCSS shortcuts.
  */
 export const defaultSelectStateIcons: SelectStateIcons = {
-	opened: defaultStateIcons.selector.opened,
-	closed: defaultStateIcons.selector.closed,
-	checked: defaultStateIcons.checkbox.checked,
-	remove: defaultStateIcons.action.remove
+	opened: DEFAULT_STATE_ICONS.selector.opened,
+	closed: DEFAULT_STATE_ICONS.selector.closed,
+	checked: DEFAULT_STATE_ICONS.checkbox.checked,
+	remove: DEFAULT_STATE_ICONS.action.remove
 }
 
 // =============================================================================

@@ -2,44 +2,11 @@
  * Toggle Component Types
  *
  * Provides types for the data-driven Toggle component.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
-// =============================================================================
-// Field Mapping Types
-// =============================================================================
-
-/**
- * Field mapping configuration for toggle data.
- * Maps custom data field names to the component's expected properties.
- */
-export interface ToggleFields {
-	/** Field for display text - default: 'text' */
-	text?: string
-
-	/** Field for the value to emit on select - default: 'value' */
-	value?: string
-
-	/** Field for icon class name - default: 'icon' */
-	icon?: string
-
-	/** Field for disabled state - default: 'disabled' */
-	disabled?: string
-
-	/** Field for tooltip/description text - default: 'description' */
-	description?: string
-}
-
-/**
- * Default field mapping values
- */
-export const defaultToggleFields: Required<ToggleFields> = {
-	text: 'text',
-	value: 'value',
-	icon: 'icon',
-	disabled: 'disabled',
-	description: 'description'
-}
+import type { Snippet } from 'svelte'
+import type { ProxyItem } from '@rokkit/states'
 
 // =============================================================================
 // Toggle Item Types
@@ -51,26 +18,30 @@ export const defaultToggleFields: Required<ToggleFields> = {
 export type ToggleItem = Record<string, unknown>
 
 // =============================================================================
-// Snippet Types
+// Legacy types — kept for backward compat
 // =============================================================================
 
-/**
- * Handlers passed to custom item snippets
- */
+/** @deprecated No longer needed — Navigator handles clicks via data-path */
 export interface ToggleItemHandlers {
-	/** Call to trigger item selection */
 	onclick: () => void
-	/** Forward keyboard events for accessibility */
 	onkeydown: (event: KeyboardEvent) => void
 }
 
-/**
- * Snippet type for rendering toggle items.
- * Fourth parameter is whether the item is currently selected.
- */
-export type ToggleItemSnippet = import('svelte').Snippet<
-	[ToggleItem, ToggleFields, ToggleItemHandlers, boolean]
+/** @deprecated Use ToggleItemSnippet (new ProxyItem API) */
+export type LegacyToggleItemSnippet = Snippet<
+	[ToggleItem, Record<string, string>, ToggleItemHandlers, boolean]
 >
+
+// =============================================================================
+// Snippet Types — ProxyItem-based API
+// =============================================================================
+
+/**
+ * Snippet for rendering a toggle option.
+ * The component renders the button wrapper; the snippet renders inner content.
+ * Receives the ProxyItem and whether this item is currently selected.
+ */
+export type ToggleItemSnippet = Snippet<[ProxyItem, boolean]>
 
 // =============================================================================
 // Component Props Types
@@ -80,13 +51,13 @@ export type ToggleItemSnippet = import('svelte').Snippet<
  * Props for the Toggle component
  */
 export interface ToggleProps {
-	/** Array of toggle options */
+	/** Array of toggle options (strings, numbers, or objects) */
 	options?: ToggleItem[]
 
-	/** Field mapping configuration */
-	fields?: ToggleFields
+	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	fields?: Record<string, string>
 
-	/** Currently selected value */
+	/** Currently selected value (bindable) */
 	value?: unknown
 
 	/** Called when selection changes */
@@ -104,6 +75,6 @@ export interface ToggleProps {
 	/** Additional CSS classes */
 	class?: string
 
-	/** Custom snippet for rendering toggle items */
+	/** Custom snippet for rendering toggle options */
 	item?: ToggleItemSnippet
 }

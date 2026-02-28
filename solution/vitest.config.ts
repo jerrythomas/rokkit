@@ -19,7 +19,7 @@ export default defineConfig({
 			all: true,
 			reporter: ['text', 'html', 'lcov', 'json'],
 			include: ['**/src/**'],
-			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/sites/**', '**/fixtures/**']
+			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/sites/**', '**/fixtures/**', '**/types.ts']
 		},
 		projects: [
 			{ extends: true, test: { name: 'actions', root: 'packages/actions' } },
@@ -32,6 +32,7 @@ export default defineConfig({
 			{ extends: true, test: { name: 'states', root: 'packages/states' } },
 			{ extends: true, test: { name: 'stories', root: 'packages/stories' } },
 			{ extends: true, test: { name: 'tutorial', root: 'packages/tutorial' } },
+			{ extends: true, test: { name: 'ui', root: 'packages/ui' } },
 			{
 				extends: true,
 				test: {
@@ -44,7 +45,8 @@ export default defineConfig({
 						$app: path.resolve('./sites/learn/src/app')
 					}
 				}
-			}
+			},
+			{ extends: true, test: { name: 'testbed', root: 'packages/testbed' } }
 		]
 	}
 })

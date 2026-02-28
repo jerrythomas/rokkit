@@ -1,0 +1,15 @@
+{
+  "title": "Item",
+  "description": "Flexible content renderer for text, icons, and images",
+  "icon": "i-component:item",
+  "category": "components",
+  "tags": [
+    "item",
+    "content",
+    "renderer",
+    "text",
+    "icons",
+    "images"
+  ],
+  "experimental": false
+}

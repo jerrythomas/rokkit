@@ -28,16 +28,16 @@
 	}
 
 	const viewOptions = [
-		{ text: 'List', value: 'list', icon: 'i-lucide:list' },
-		{ text: 'Grid', value: 'grid', icon: 'i-lucide:grid-2x2' },
-		{ text: 'Board', value: 'board', icon: 'i-lucide:layout-grid' }
+		{ label: 'List', value: 'list', icon: 'i-lucide:list' },
+		{ label: 'Grid', value: 'grid', icon: 'i-lucide:grid-2x2' },
+		{ label: 'Board', value: 'board', icon: 'i-lucide:layout-grid' }
 	]
 
 	const textOnly = [
-		{ text: 'Day', value: 'day' },
-		{ text: 'Week', value: 'week' },
-		{ text: 'Month', value: 'month' },
-		{ text: 'Year', value: 'year' }
+		{ label: 'Day', value: 'day' },
+		{ label: 'Week', value: 'week' },
+		{ label: 'Month', value: 'month' },
+		{ label: 'Year', value: 'year' }
 	]
 </script>
 

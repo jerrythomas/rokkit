@@ -7,7 +7,7 @@ import {
 	transformerVariantGroup
 } from 'unocss'
 
-import { shades, defaultPalette, defaultIcons, iconShortcuts } from '@rokkit/core'
+import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts } from '@rokkit/core'
 import { iconCollections } from '@rokkit/core/vite'
 import { Theme } from '@rokkit/core'
 
@@ -33,7 +33,7 @@ export default defineConfig({
 		}
 	},
 	safelist: [
-		...defaultIcons,
+		...DEFAULT_ICONS,
 		...defaultPalette.flatMap((color: string) =>
 			shades.map((shade: number) => `bg-${color}-${shade}`)
 		),
@@ -94,7 +94,7 @@ export default defineConfig({
 		...theme.getShortcuts('danger'),
 		...theme.getShortcuts('info'),
 		...theme.getShortcuts('error'),
-		...Object.entries(iconShortcuts(defaultIcons, 'i-rokkit'))
+		...Object.entries(iconShortcuts(DEFAULT_ICONS, 'i-rokkit'))
 	],
 	theme: {
 		colors: theme.getColorRules()

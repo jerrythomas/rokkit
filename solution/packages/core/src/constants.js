@@ -1,9 +1,14 @@
 export { defaultColors, syntaxColors, shades, defaultPalette } from './colors/index.js'
 export const DATA_IMAGE_REGEX = /^data:image\/(jpeg|png|gif|bmp|webp|svg\+xml)/i
+
+// ─── Snippet names ────────────────────────────────────────────────────────────
+
+export const ITEM_SNIPPET = 'itemContent'
+export const GROUP_SNIPPET = 'groupContent'
 /**
  * @type {import('./types).FieldMapping} Fields
  */
-export const defaultFields = {
+export const DEFAULT_FIELDS = {
 	id: 'id',
 	href: 'href',
 	icon: 'icon',
@@ -31,7 +36,7 @@ export const defaultFields = {
 	selected: '_selected'
 }
 
-export const defaultIcons = [
+export const DEFAULT_ICONS = [
 	'accordion-opened',
 	'accordion-closed',
 	'action-remove',
@@ -88,14 +93,14 @@ export const defaultIcons = [
 	'align-vertical-middle'
 ]
 
-export const defaultOptions = {
+export const DEFAULT_OPTIONS = {
 	id: 'id',
 	label: 'label',
 	value: 'value',
 	checked: 'checked'
 }
 
-export const defaultKeyMap = {
+export const DEFAULT_KEYMAP = {
 	ArrowRight: 'open',
 	ArrowLeft: 'close',
 	ArrowDown: 'down',
@@ -104,7 +109,7 @@ export const defaultKeyMap = {
 	Escape: 'deselect'
 }
 
-export const defaultThemeMapping = {
+export const DEFAULT_THEME_MAPPING = {
 	surface: 'slate',
 	primary: 'orange',
 	secondary: 'pink',
@@ -128,15 +133,6 @@ export const TONE_MAP = {
 	z8: 800,
 	z9: 900,
 	z10: 950
-	// base: 50,
-	// inset: 100,
-	// subtle: 200,
-	// muted: 300,
-	// raised: 400,
-	// elevated: 600,
-	// floating: 700,
-	// contrast: 800,
-	// overlay: 900
 }
 /**
  * Splits an icon name into its group and key components.
@@ -165,4 +161,4 @@ export function stateIconsFromNames(icons) {
 	)
 }
 
-export const defaultStateIcons = stateIconsFromNames(defaultIcons)
+export const DEFAULT_STATE_ICONS = stateIconsFromNames(DEFAULT_ICONS)

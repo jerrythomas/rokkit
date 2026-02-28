@@ -9,7 +9,7 @@ import {
 } from 'unocss'
 
 import { importIcons } from '@rokkit/core'
-import { iconShortcuts, defaultIcons, themeColors, themeRules } from '@rokkit/themes'
+import { iconShortcuts, DEFAULT_ICONS, themeColors, themeRules } from '@rokkit/themes'
 export const palette = themeRules('rokkit', { surface: 'shark' })
 
 const icons = {
@@ -20,8 +20,8 @@ const icons = {
 export default defineConfig({
 	extractors: [extractorSvelte()],
 	rules: [...palette],
-	safelist: [...defaultIcons],
-	shortcuts: iconShortcuts(defaultIcons, 'i-rokkit'),
+	safelist: [...DEFAULT_ICONS],
+	shortcuts: iconShortcuts(DEFAULT_ICONS, 'i-rokkit'),
 	theme: {
 		fontFamily: {
 			mono: ['Victor Mono', 'monospace'],

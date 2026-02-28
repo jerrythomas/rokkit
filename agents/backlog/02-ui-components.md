@@ -262,3 +262,164 @@ Note: `handleListKeyDown` `stopPropagation()` in `List.svelte` does NOT prevent 
 ## ~~51. Button — Style Enhancements~~ ✅ DONE
 
 Added `gradient` and `link` style variants. Micro-animations (hover lift, press scale, icon shift, loading pulse) in base CSS. Created button CSS for glass/minimal/material themes (previously only rokkit had button theme). Playground updated. See journal 2026-02-24.
+
+---
+
+## 65. Select — Migrate to Navigator/Wrapper/ProxyItem Stack
+
+**Goal:** Replace current `ListController` + `navigator` (Svelte action) implementation with `Wrapper` + `Navigator` (class) stack. Add `class` prop.
+
+**Checklist:**
+- [ ] Rewrite `Select.svelte` using `Wrapper` + `Navigator` class
+  - Dropdown list uses `Wrapper` with `flatView` for rendering
+  - `Navigator` attached to dropdown container (not root)
+  - Pre-flatten groups into leaf items before passing to `Wrapper`
+  - Keep `Escape`/click-outside as document-level listeners
+  - Add `class` prop to root `<div data-select>`
+- [ ] Update `packages/ui/src/types/select.ts` if needed
+- [ ] Update learn site `(learn)/elements/select/+page.svelte` with improved examples
+  - Add playground page at `elements/select/play/+page.svelte`
+  - Add `+layout.svelte` for learn/play toggle
+  - Update or create `PlaySection` demo
+- [ ] Update `sites/learn/src/routes/docs/components/select/llms.txt/+server.ts`
+- [ ] Add e2e tests in `sites/learn/e2e/select.spec.ts` (keyboard + mouse + learn page)
+- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
+- [ ] Mark complete, commit, wait for confirmation before continuing to #66
+
+**Priority:** High — largest user-facing selection component.
+
+---
+
+## 66. MultiSelect — Migrate to Navigator/Wrapper/ProxyItem Stack
+
+**Goal:** Replace `ListController` + `navigator` with `Wrapper` + `Navigator` class. Add `class` prop.
+
+**Checklist:**
+- [ ] Rewrite `MultiSelect.svelte` using `Wrapper` + `Navigator` class
+  - Multi-selection: `Wrapper` supports `selectAll`/`deselectAll` or extend for multi mode
+  - Keep tag/pill row for selected items; keyboard removes last tag on `Backspace`
+  - Add `class` prop to root element
+- [ ] Update `packages/ui/src/types/multi-select.ts` if needed
+- [ ] Update learn site `(learn)/elements/multi-select/+page.svelte` with improved examples
+  - Add playground page at `elements/multi-select/play/+page.svelte`
+  - Add `+layout.svelte` for learn/play toggle
+- [ ] Update `sites/learn/src/routes/docs/components/multiselect/llms.txt/+server.ts`
+- [ ] Add e2e tests in `sites/learn/e2e/multi-select.spec.ts`
+- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
+- [ ] Mark complete, commit, wait for confirmation before continuing to #67
+
+**Priority:** High — companion to Select.
+
+---
+
+## 67. Menu — Migrate to Navigator/Wrapper/ProxyItem Stack
+
+**Goal:** Replace `ListController` + `navigator` with `Wrapper` + `Navigator` class. Add `class` prop.
+
+**Checklist:**
+- [ ] Rewrite `Menu.svelte` using `Wrapper` + `Navigator` class
+  - Dropdown: `Navigator` on dropdown container only (not root trigger button)
+  - Pre-flatten groups into leaf items
+  - Separator/spacer items supported via `proxy.type === 'separator'`
+  - Keep `Escape`/click-outside as document-level listeners
+  - Add `class` prop to root element
+- [ ] Update `packages/ui/src/types/menu.ts` if needed
+- [ ] Update learn site `(learn)/elements/menu/+page.svelte` with improved examples
+  - Add playground page at `elements/menu/play/+page.svelte`
+  - Add `+layout.svelte` for learn/play toggle
+- [ ] Update `sites/learn/src/routes/docs/components/menu/llms.txt/+server.ts`
+- [ ] Add e2e tests in `sites/learn/e2e/menu.spec.ts`
+- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
+- [ ] Mark complete, commit, wait for confirmation before continuing to #68
+
+**Priority:** High — used in toolbars and context menus.
+
+---
+
+## 68. Toggle — Rewrite Using List Pattern
+
+**Goal:** Copy List.svelte pattern: `wrapper.flatView` loop, `resolveSnippet`, horizontal Navigator, external value sync. Add `class` prop.
+
+**Architecture (adopted):**
+- Copy List.svelte as starting point — same `wrapper.flatView` rendering loop
+- `new Navigator(containerRef, wrapper, { orientation: 'horizontal' })` for left/right navigation
+- External value sync `$effect` — calls `wrapper.moveTo(key)` when `value` changes
+- `resolveSnippet(snippets, proxy, 'item')` replaces local `resolveItemSnippet`
+- `...snippets` rest props instead of `item: itemSnippet` destructuring
+- `proxy.raw` in `handleSelect` callback (needs `raw` getter on `ProxyItem`)
+- No group content (flat options only)
+
+**Checklist:**
+- [x] Add `raw` getter to `ProxyItem` in `@rokkit/states`
+- [x] Rewrite `Toggle.svelte` using List pattern + horizontal Navigator
+- [ ] Update `packages/ui/src/types/toggle.ts` if needed
+- [ ] Update learn site `(learn)/elements/toggle/+page.svelte` with improved examples
+  - Add playground page at `elements/toggle/play/+page.svelte`
+  - Add `+layout.svelte` for learn/play toggle
+- [ ] Update `sites/learn/src/routes/docs/components/toggle/llms.txt/+server.ts` (create if missing)
+- [ ] Add e2e tests in `sites/learn/e2e/toggle.spec.ts`
+- [x] Run `bun run test:ci` — 1600 pass, `bun run lint` — 0 errors
+- [ ] Mark complete, commit, wait for confirmation before continuing to #67
+
+**Priority:** Medium — used in ThemeSwitcher and other UI areas.
+
+---
+
+## 67. Menu — Rewrite Using List Pattern + Trigger Class
+
+**Goal:** Compose Menu from List rendering pattern + new `Trigger` class for open/close management.
+
+**Architecture (new approach):**
+- Create `Trigger` class in `@rokkit/actions/src/trigger.svelte.js`
+  - Manages `isOpen = $state(false)` (reactive — template uses directly)
+  - Click on `[data-menu-trigger]` child toggles open/close
+  - Click-outside detection (document capture listener)
+  - Escape key closes + returns focus to trigger
+- Rewrite `Menu.svelte` using List rendering pattern:
+  - `renderNodes` computed array: `{ type: 'group', proxy }` | `{ type: 'item', key }`
+  - Pre-flatten leaf items for `Wrapper` (groups are visual-only — not navigable)
+  - `wrapper.flatView` for items rendered inside `{#if trigger?.isOpen}` panel
+  - `resolveSnippet(snippets, proxy, 'item')` from `@rokkit/core`
+  - `...snippets` rest props (no explicit `item:` destructuring)
+  - `proxy.raw` in `handleSelect` callback
+
+**Checklist:**
+- [x] `raw` getter on `ProxyItem` (done in #68)
+- [ ] Create `Trigger` class in `packages/actions/src/trigger.svelte.js`
+- [ ] Export `Trigger` from `packages/actions/src/index.js`
+- [ ] Rewrite `Menu.svelte` using List pattern + `Trigger`
+- [ ] Update `packages/ui/src/types/menu.ts` if needed
+- [ ] Update learn site `(learn)/elements/menu/+page.svelte` with improved examples
+- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
+- [ ] Mark complete, commit, wait for confirmation before continuing to #69
+
+**Priority:** High — used in toolbars and context menus.
+
+---
+
+## 69. Tree — Rewrite Using List Pattern + Tree-Line Helper
+
+**Goal:** Copy List.svelte as starting point; change rendering to use tree-line decorations instead of simple indentation. Everything else (Wrapper, Navigator, collapsible) stays the same.
+
+**Architecture (new approach):**
+- Copy List.svelte — same `wrapper.flatView` rendering loop, `collapsible: true` on Navigator
+- Change rendering: instead of `data-level` indentation only, compute tree-line type per node
+  - Helper `getTreeLineType(node, flatView)` → `'leaf' | 'last-leaf' | 'branch' | 'last-branch' | 'none'`
+  - Render tree-line decorations (`data-tree-line` attribute) based on type
+- No separate Tree type file changes needed — same props as current
+- `resolveSnippet(snippets, proxy, ...)` from `@rokkit/core`
+- `...snippets` rest props
+
+**Checklist:**
+- [ ] Write `getTreeLineType(node, index, nodes)` helper function
+- [ ] Rewrite `Tree.svelte` using List pattern + tree-line helper
+- [ ] Update `packages/ui/src/types/tree.ts` if needed
+- [ ] Add tree story to learn site (`(learn)/elements/tree/+page.svelte`)
+  - Add playground page at `elements/tree/play/+page.svelte`
+  - Add `+layout.svelte` for learn/play toggle
+- [ ] Create `sites/learn/src/routes/docs/components/tree/llms.txt/+server.ts`
+- [ ] Add e2e tests in `sites/learn/e2e/tree.spec.ts`
+- [ ] Run `bun run test:ci` — 0 failures, `bun run lint` — 0 errors
+- [ ] Mark complete, commit
+
+**Priority:** Medium — complex nested navigation, good validation of the stack.

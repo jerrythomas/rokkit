@@ -1,4 +1,4 @@
-import { defaultThemeMapping, defaultColors, TONE_MAP } from './constants.js'
+import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants.js'
 import { shades } from './colors/index.js'
 import { hex2rgb } from './utils'
 
@@ -49,12 +49,12 @@ function generateColorRules(variant, colors, mapping) {
 /**
  * Constructs and returns the light and dark theme variants based on provided color mapping and color definitions.
  *
- * @param {Object} [mapping=defaultThemeMapping] - An object mapping variant names to color property names.
+ * @param {Object} [mapping=DEFAULT_THEME_MAPPING] - An object mapping variant names to color property names.
  * @param {Object} [colors=defaultColors]        - The object containing default color definitions.
  * @returns {Array<Array>} An array containing two arrays, one for the light theme variant and another for the dark theme.
  */
-export function themeRules(mapping = defaultThemeMapping, colors = defaultColors) {
-	mapping = { ...defaultThemeMapping, ...mapping }
+export function themeRules(mapping = DEFAULT_THEME_MAPPING, colors = defaultColors) {
+	mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
 	colors = { ...defaultColors, ...colors }
 	const variants = Object.keys(mapping)
 	const rules = variants
@@ -131,9 +131,9 @@ export class Theme {
 	 *
 	 * @param {import('./types.js').ColorTheme} param0
 	 */
-	constructor({ colors = defaultColors, mapping = defaultThemeMapping } = {}) {
+	constructor({ colors = defaultColors, mapping = DEFAULT_THEME_MAPPING } = {}) {
 		this.#colors = { ...defaultColors, ...colors }
-		this.#mapping = { ...defaultThemeMapping, ...mapping }
+		this.#mapping = { ...DEFAULT_THEME_MAPPING, ...mapping }
 	}
 
 	get colors() {

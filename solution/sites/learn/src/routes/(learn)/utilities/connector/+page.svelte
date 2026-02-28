@@ -117,7 +117,7 @@
 			use it, or learn about other utility components.
 		</p>
 		<span>
-			<a href="/elements/tree" class="button is-primary">
+			<a href="/components/tree" class="button is-primary">
 				Tree
 				<span class="ml-2">→</span>
 			</a>

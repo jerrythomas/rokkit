@@ -5,7 +5,7 @@
  */
 
 import type { ToggleItemSnippet } from '@rokkit/ui'
-import { defaultStateIcons } from '@rokkit/core'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 import type { ColorMode } from '../utils/color-mode.svelte.js'
 
 // =============================================================================
@@ -19,9 +19,9 @@ export interface ThemeSwitcherIcons {
 }
 
 export const defaultThemeSwitcherIcons: Required<ThemeSwitcherIcons> = {
-	system: defaultStateIcons.mode.system,
-	light: defaultStateIcons.mode.light,
-	dark: defaultStateIcons.mode.dark
+	system: DEFAULT_STATE_ICONS.mode.system,
+	light: DEFAULT_STATE_ICONS.mode.light,
+	dark: DEFAULT_STATE_ICONS.mode.dark
 }
 
 // =============================================================================

@@ -1,0 +1,13 @@
+{
+  "title": "Tree",
+  "description": "Hierarchical data navigation",
+  "icon": "i-component:tree",
+  "category": "components",
+  "tags": [
+    "tree",
+    "hierarchical",
+    "data",
+    "navigation"
+  ],
+  "experimental": false
+}

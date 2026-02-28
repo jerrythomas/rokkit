@@ -1,4 +1,74 @@
-# Active Plan: Effects & Visual Enhancements
+# Active Plan: Navigator/Wrapper/Proxy Stack — Component Migration
+
+**Revised architecture (2026-02-27):** Components are now built by copying the List pattern. Dropdown components (Menu, Select, MultiSelect) add a `Trigger` class from `@rokkit/actions` for open/close management. Toggle uses horizontal Navigator. Tree uses collapsible Navigator + tree-line helper.
+
+## Phase 1: List — COMPLETE
+
+- `@rokkit/core`: constants UPPER_SNAKE_CASE, `resolveSnippet` added
+- `@rokkit/actions`: `Navigator` class + `buildKeymap` + `resolveAction` + `ACTIONS`
+- `@rokkit/states`: `AbstractWrapper` + `ProxyItem` + `Wrapper` + `buildProxyList/buildFlatView`
+- `@rokkit/ui/List.svelte`: fully rewritten
+- Learn site List docs: 8 examples, play page, e2e tests, llms.txt
+- Design patterns documented, migration backlog added (#65-#69)
+- SimplifiedList removed
+
+**Tests:** 1600 passing, lint 0 errors, build ✓
+
+## Phase 2: Select — backlog #65 — COMPLETE
+
+- [x] Rewrite `Select.svelte` with `Wrapper` + `Navigator` class, add `class` prop
+- [x] Update learn site `elements/select/+page.svelte` (improved examples)
+- [x] Add playground page `elements/select/play/+page.svelte` + `+layout.svelte`
+- [x] Update `llms.txt` for Select
+- [x] Add e2e tests `sites/learn/e2e/select.spec.ts`
+- [x] `bun run test:ci` + `bun run lint` — 0 errors, build ✓
+
+## Phase 3: Toggle — backlog #68 — IN PROGRESS
+
+**New approach:** Copy List pattern. Horizontal Navigator. External value sync.
+
+- [x] Add `raw` getter to `ProxyItem` in `@rokkit/states`
+- [x] Rewrite `Toggle.svelte` using `wrapper.flatView` loop, `resolveSnippet`, horizontal Navigator
+- [x] `bun run test:ci` 1600 pass, lint 0 errors
+- [ ] Update `toggle.ts` types if needed
+- [ ] Update learn site `elements/toggle/+page.svelte` with examples
+- [ ] Add playground page `elements/toggle/play/+page.svelte` + `+layout.svelte`
+- [ ] Create `llms.txt` for Toggle
+- [ ] Commit, wait for confirmation → proceed to Menu
+
+## Phase 4: Menu — backlog #67
+
+**New approach:** List pattern + `Trigger` class (open/close management).
+
+- [x] `raw` getter on ProxyItem (done in Phase 3)
+- [ ] Create `Trigger` class in `packages/actions/src/trigger.svelte.js`
+- [ ] Export `Trigger` from `packages/actions/src/index.js`
+- [ ] Rewrite `Menu.svelte` using List pattern + `renderNodes` for groups + `Trigger`
+- [ ] Update learn site `elements/menu/+page.svelte` + examples
+- [ ] Create `llms.txt` for Menu
+- [ ] `bun run test:ci` + lint — 0 errors, build ✓
+- [ ] Commit, wait for confirmation → proceed to Tree
+
+## Phase 5: Tree — backlog #69
+
+**New approach:** Copy List. Add tree-line helper. Collapsible Navigator.
+
+- [ ] Write `getTreeLineType(node, index, nodes)` helper
+- [ ] Rewrite `Tree.svelte` using List pattern + tree-line rendering
+- [ ] Update learn site + tree story
+- [ ] Create `llms.txt` for Tree
+- [ ] Commit, wait for confirmation → proceed to MultiSelect
+
+## Phase 6: MultiSelect + FilteredWrapper — backlog #66
+
+- [ ] Create `FilteredWrapper extends Wrapper` subclass in `@rokkit/states`
+- [ ] Rewrite `MultiSelect.svelte` with `Wrapper`/`FilteredWrapper` + `Navigator` class
+- [ ] Revisit `Select.svelte` to use `FilteredWrapper` for cleaner filtering
+- [ ] Commit, wait for confirmation
+
+---
+
+# Previous Plan: Effects & Visual Enhancements
 
 ## ~~Phase 1: Reveal Effect (backlog #52)~~ COMPLETE
 

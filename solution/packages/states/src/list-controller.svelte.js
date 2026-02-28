@@ -1,11 +1,11 @@
-import { FieldMapper, defaultFields, getKeyFromPath, getNestedFields } from '@rokkit/core'
+import { FieldMapper, DEFAULT_FIELDS, getKeyFromPath, getNestedFields } from '@rokkit/core'
 import { equals } from 'ramda'
 import { SvelteSet } from 'svelte/reactivity'
 import { deriveLookupWithProxy, flatVisibleNodes } from './derive.svelte'
 
 export class ListController {
 	items = $state(null)
-	fields = defaultFields
+	fields = DEFAULT_FIELDS
 	mappers = []
 	#options = $state({})
 	// lookup = new Map()
@@ -22,7 +22,7 @@ export class ListController {
 
 	constructor(items, value, fields, options) {
 		this.items = items
-		this.fields = { ...defaultFields, ...fields }
+		this.fields = { ...DEFAULT_FIELDS, ...fields }
 		this.mappers.push(new FieldMapper(fields))
 		this.#options = { multiselect: false, ...options }
 		this.#initExpandedKeys(items, this.fields)

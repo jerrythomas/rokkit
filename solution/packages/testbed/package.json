@@ -1,0 +1,17 @@
+{
+	"name": "@rokkit/testbed",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Internal test bed — verifies design patterns and Svelte reactivity assumptions before committing to production packages. Never published.",
+	"type": "module",
+	"exports": {
+		"./List.svelte": "./src/ui/List.svelte"
+	},
+	"scripts": {
+		"test": "vitest run",
+		"test:watch": "vitest"
+	},
+	"devDependencies": {
+		"svelte": "workspace:*"
+	}
+}

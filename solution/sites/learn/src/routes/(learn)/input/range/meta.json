@@ -1,6 +1,0 @@
-{
-  "category": "Input",
-  "title": "Range",
-  "icon": "i-component:range",
-  "description": "A range input that allows users to select a value from a range."
-}

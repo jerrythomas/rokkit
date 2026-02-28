@@ -1,8 +1,0 @@
-{
-  "title": "Colors",
-  "description": "Color palette and theming system",
-  "icon": "i-component:palette",
-  "category": "Theming",
-  "tags": ["colors", "palette", "theming", "system"],
-  "experimental": false
-}

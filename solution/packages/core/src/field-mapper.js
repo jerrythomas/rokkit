@@ -1,12 +1,12 @@
 import { isNil, has, omit } from 'ramda'
-import { defaultFields } from './constants.js'
+import { DEFAULT_FIELDS } from './constants.js'
 import { isObject } from './utils.js'
 
 export class FieldMapper {
-	#fields = { ...defaultFields }
+	#fields = { ...DEFAULT_FIELDS }
 	#childMapper = null
 
-	constructor(fields = defaultFields) {
+	constructor(fields = DEFAULT_FIELDS) {
 		this.#updateFields(fields)
 	}
 

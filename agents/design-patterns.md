@@ -67,13 +67,180 @@ Reference this file before implementing new features to ensure consistency.
 
 ---
 
+### Navigator / Wrapper / ProxyItem Stack
+
+**Context:** Any persistent list-like component (List, Tree) that needs keyboard navigation, item selection, and custom snippet rendering. Also used in dropdown components (Select, MultiSelect, Menu) that pop a navigable list.
+
+**Architecture — Three Layers:**
+
+| Layer | Class / File | Responsibility |
+|-------|-------------|----------------|
+| `ProxyItem` | `@rokkit/states/proxy-item.svelte.js` | Read-only view of a raw item through a field map. Provides uniform `.text`, `.icon`, `.href`, `.value`, `.expanded`, `.disabled`, `.get('field')`. |
+| `Wrapper` | `@rokkit/states/wrapper.svelte.js` | Owns reactive state: `focusedKey`, `flatView` (flat array of `{ key, proxy, depth }`). Implements all navigation and selection actions (`moveNext`, `movePrev`, `select`, `expand`, `collapse`, etc.). |
+| `Navigator` | `@rokkit/actions/navigator.js` | Plain class (not Svelte action). Attaches DOM `keydown`/`click` event listeners to a container element. Translates key events → actions → calls `wrapper[action](path)`. |
+
+**Key constants:**
+- `PROXY_ITEM_FIELDS` — default field map: `{ text: 'label', value: 'value', icon: 'icon', href: 'href', children: 'children', type: 'type', disabled: 'disabled', expanded: 'expanded', snippet: 'snippet' }`. Note `text → 'label'` (not `'text'`).
+- `DEFAULT_STATE_ICONS.accordion` — default expand/collapse icons for collapsible components.
+
+**Pattern — Using the stack in a component:**
+
+```svelte
+<script>
+  import { Wrapper, PROXY_ITEM_FIELDS } from '@rokkit/states'
+  import { Navigator } from '@rokkit/actions'
+  import { DEFAULT_STATE_ICONS, resolveSnippet } from '@rokkit/core'
+
+  let { items = [], value = $bindable(), fields = {}, collapsible = false,
+        icons: userIcons, class: className = '', onselect } = $props()
+
+  const mergedFields = $derived({ ...PROXY_ITEM_FIELDS, ...fields })
+  const icons = $derived({ ...DEFAULT_STATE_ICONS.accordion, ...userIcons })
+  const wrapper = $derived(new Wrapper(items, value, mergedFields))
+
+  let listRef = $state(null)
+
+  $effect(() => {
+    if (!listRef) return
+    const nav = new Navigator(listRef, wrapper, { collapsible })
+    nav.on('select', (proxy) => {
+      value = proxy.value
+      onselect?.(proxy.value, proxy.raw)
+    })
+    return () => nav.destroy()
+  })
+</script>
+
+<nav bind:this={listRef} data-list class={className}>
+  {#each wrapper.flatView as node (node.key)}
+    {#if node.proxy.type === 'separator'}
+      <hr data-list-separator />
+    {:else if node.proxy.hasChildren}
+      <button data-list-group-label data-path={node.key}
+              aria-expanded={node.proxy.expanded}
+              disabled={!collapsible}>
+        {#if resolveSnippet($$snippets, node.proxy, 'groupContent')}
+          {@render resolveSnippet($$snippets, node.proxy, 'groupContent')(node.proxy)}
+        {:else}
+          <!-- default group content -->
+        {/if}
+      </button>
+    {:else}
+      <button data-list-item data-path={node.key}
+              data-active={node.proxy.value === value || undefined}>
+        {#if resolveSnippet($$snippets, node.proxy, 'itemContent')}
+          {@render resolveSnippet($$snippets, node.proxy, 'itemContent')(node.proxy)}
+        {:else}
+          <!-- default item content -->
+        {/if}
+      </button>
+    {/if}
+  {/each}
+</nav>
+```
+
+**Flat DOM structure:** Groups do NOT wrap their children in a container element. The entire `wrapper.flatView` is rendered in a single flat loop. Expansion state is tracked by `Wrapper` and `flatView` only includes currently-visible items.
+
+**`expandedByPath` reactivity workaround:** Svelte 5 cannot track reactivity through a `$derived` Map → `proxy.expanded` (`$state`) in templates. Maintain a separate `$state<Record<string, boolean>>` synced after mutations. See `List.svelte` for implementation.
+
+**Navigator click interception:** The `Navigator` intercepts clicks on elements with `data-path`. Do NOT add `onclick` on elements that also have `data-path` — this causes double-handling. Let Navigator handle all selection; use the `select` event for post-select logic.
+
+**Used in:** List.svelte (production). Planned: Select, MultiSelect, Menu, Tree, Toggle.
+
+---
+
+### Snippet Customization
+
+**Context:** Any component that renders items and needs to let consumers customize rendering without forking the component.
+
+**API — three snippet slots:**
+
+| Snippet | When used | Receives |
+|---------|-----------|---------|
+| `itemContent(proxy)` | Every leaf item | `ProxyItem` |
+| `groupContent(proxy)` | Every group header | `ProxyItem` |
+| `[name](proxy)` | Items with `item.snippet = 'name'` | `ProxyItem` (per-item named override) |
+
+**`resolveSnippet(snippets, proxy, fallbackName)`** — from `@rokkit/core/src/utils.js`:
+1. Check `proxy.get('snippet')` → look for `snippets[snippetName]`
+2. Fall back to `snippets[fallbackName]` (`'itemContent'` or `'groupContent'`)
+3. Return `undefined` if neither found (component renders default content)
+
+**Pattern — component template:**
+```svelte
+{#snippet defaultContent(proxy)}
+  {#if proxy.icon}<span class={proxy.icon} aria-hidden="true"></span>{/if}
+  <span>{proxy.text}</span>
+{/snippet}
+
+<!-- In each loop -->
+{@const snippet = resolveSnippet($$snippets, proxy, 'itemContent') ?? defaultContent}
+{@render snippet(proxy)}
+```
+
+**Pattern — consumer usage:**
+```svelte
+<!-- Override all items -->
+<List {items}>
+  {#snippet itemContent(proxy)}
+    <span class={proxy.icon}></span>
+    <span class="flex-1">{proxy.text}</span>
+    <span class="badge">{proxy.get('status')}</span>
+  {/snippet}
+</List>
+
+<!-- Per-item override via item.snippet -->
+<List items={[{ label: 'Apple', snippet: 'fruit' }, { label: 'Carrot', snippet: 'vegetable' }]}>
+  {#snippet fruit(proxy)}<span class="text-error-z5">{proxy.text}</span>{/snippet}
+  {#snippet vegetable(proxy)}<span class="text-success-z5">{proxy.text}</span>{/snippet}
+</List>
+```
+
+**`proxy.value` mutation pattern (interactive elements in snippets):**
+```svelte
+{#snippet itemContent(proxy)}
+  <span class="flex-1">{proxy.text}</span>
+  <input type="checkbox" checked={proxy.get('checked')}
+    onchange={(e) => { proxy.value.checked = e.currentTarget.checked }}
+    onclick={(e) => e.stopPropagation()} />  <!-- prevent List selection -->
+{/snippet}
+```
+
+**Used in:** List, Tree (planned), Select, MultiSelect, Menu.
+
+---
+
+### `class` Prop Convention
+
+**Context:** Any component that renders a root element and should allow consumers to add UnoCSS/CSS classes to constrain layout (height, width, overflow, etc.).
+
+**Pattern:**
+```svelte
+let { class: className = '', ...rest } = $props()
+```
+```html
+<nav data-list class={className}>
+```
+
+**Common use cases:**
+```svelte
+<List {items} class="max-h-64 overflow-y-auto" />  <!-- fixed height with scroll -->
+<List {items} class="w-48" />                       <!-- fixed width -->
+```
+
+**Rule:** The `class` prop is additive — it appends to the component's own structural classes. Never replace them. If the component has no own classes (uses data-attribute CSS), the `class` prop is the only class on the root element.
+
+**Applied to:** List, Tree (planned), Select, MultiSelect, Menu, Toggle, Tabs, Toolbar.
+
+---
+
 ### State Icons
 
 **Context:** When a component needs icons for UI states (expand/collapse, checked/unchecked, copy actions, etc.).
 
 **Architecture — Two-Layer Customization:**
 
-1. **Global** — Semantic icon names are defined in `packages/core/src/constants.js` as the `defaultIcons` array (e.g., `node-opened`, `selector-closed`, `action-copy`). The `iconShortcuts(defaultIcons, 'i-rokkit')` function in `uno.config.js` creates UnoCSS shortcuts that map these semantic names to actual icon classes (e.g., `node-opened` → `i-rokkit:node-opened`). Swapping the icon collection globally changes all icons.
+1. **Global** — Semantic icon names are defined in `packages/core/src/constants.js` as `DEFAULT_ICONS` array (e.g., `node-opened`, `selector-closed`, `action-copy`). The `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` function in `uno.config.js` creates UnoCSS shortcuts that map these semantic names to actual icon classes (e.g., `node-opened` → `i-rokkit:node-opened`). Swapping the icon collection globally changes all icons.
 
 2. **Per-instance** — Each component accepts an `icons` prop that merges with defaults, allowing overrides for a specific usage.
 
@@ -81,9 +248,9 @@ Reference this file before implementing new features to ensure consistency.
 
 | File | Purpose |
 |------|---------|
-| `packages/core/src/constants.js` | `defaultIcons` array + `stateIconsFromNames()` → `defaultStateIcons` |
+| `packages/core/src/constants.js` | `DEFAULT_ICONS` array + `stateIconsFromNames()` → `DEFAULT_STATE_ICONS` |
 | `packages/icons/src/base/` | SVGs matching the naming convention (`node-opened.svg`, etc.) |
-| `sites/learn/uno.config.js` | `iconShortcuts(defaultIcons, 'i-rokkit')` global mapping |
+| `sites/learn/uno.config.js` | `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` global mapping |
 | `packages/core/src/utils.js` | `iconShortcuts()` function |
 
 **Naming Convention:**
@@ -97,14 +264,14 @@ Flat icon names follow `{group}-{state}` pattern:
 - `checkbox-checked`, `checkbox-unchecked` — Selection indicator
 - `rating-filled`, `rating-empty`, `rating-half` — Rating stars
 
-`stateIconsFromNames()` converts these to nested objects: `defaultStateIcons.node.opened` → `'node-opened'`
+`stateIconsFromNames()` converts these to nested objects: `DEFAULT_STATE_ICONS.node.opened` → `'node-opened'`
 
 **Pattern — Adding State Icons to a Component:**
 
 1. **Define types** in `packages/ui/src/types/{component}.ts`:
 
 ```typescript
-import { defaultStateIcons } from '@rokkit/core'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 export interface {Component}StateIcons {
   opened?: string
@@ -112,8 +279,8 @@ export interface {Component}StateIcons {
 }
 
 export const default{Component}StateIcons: {Component}StateIcons = {
-  opened: defaultStateIcons.{group}.opened,
-  closed: defaultStateIcons.{group}.closed,
+  opened: DEFAULT_STATE_ICONS.{group}.opened,
+  closed: DEFAULT_STATE_ICONS.{group}.closed,
 }
 ```
 
@@ -140,11 +307,11 @@ export interface {Component}Props {
 ```
 
 4. **Add new icon names** — If a new state is needed:
-   - Add flat name to `defaultIcons` array in `packages/core/src/constants.js`
+   - Add flat name to `DEFAULT_ICONS` array in `packages/core/src/constants.js`
    - Add SVG to `packages/icons/src/base/{group}-{state}.svg`
    - The UnoCSS shortcut is auto-generated via `iconShortcuts()`
 
-**Rule — no inline icon strings in components:** All icon defaults must come from `defaultStateIcons.*`. Inline `i-lucide:*` / `i-solar:*` strings are only acceptable in playground/learn-site demos, never in library component source. See backlog #63 for the outstanding violations.
+**Rule — no inline icon strings in components:** All icon defaults must come from `DEFAULT_STATE_ICONS.*`. Inline `i-lucide:*` / `i-solar:*` strings are only acceptable in playground/learn-site demos, never in library component source. See backlog #63 for the outstanding violations.
 
 **Used in:** Tree, Select, MultiSelect, Menu, List, Code
 

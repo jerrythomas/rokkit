@@ -2,14 +2,14 @@
  * Code component types
  */
 
-import { defaultStateIcons } from '@rokkit/core'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 /** Supported themes for code highlighting */
 export type CodeTheme = 'light' | 'dark'
 
 /**
  * Icons configuration for code action states.
- * Keys match the naming convention in @rokkit/core defaultStateIcons.
+ * Keys match the naming convention in @rokkit/core DEFAULT_STATE_ICONS.
  */
 export interface CodeStateIcons {
 	/** Icon class for copy button */
@@ -23,8 +23,8 @@ export interface CodeStateIcons {
  * that get resolved to actual icon classes via UnoCSS shortcuts.
  */
 export const defaultCodeStateIcons: CodeStateIcons = {
-	copy: defaultStateIcons.action.copy,
-	copysuccess: defaultStateIcons.action.copysuccess
+	copy: DEFAULT_STATE_ICONS.action.copy,
+	copysuccess: DEFAULT_STATE_ICONS.action.copysuccess
 }
 
 /** Props for the Code component */

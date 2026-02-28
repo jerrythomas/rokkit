@@ -10,7 +10,13 @@ describe('components', () => {
 			'vibe',
 			'ListController',
 			'NestedController',
-			'messages'
+			'messages',
+			'AbstractWrapper',
+			'ProxyItem',
+			'buildProxyList',
+			'buildFlatView',
+			'PROXY_ITEM_FIELDS',
+			'Wrapper'
 		])
 	})
 })

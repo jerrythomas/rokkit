@@ -2,7 +2,7 @@
 /** @typedef {'cozy' | 'compact' | 'comfortable'} Density */
 /** @typedef {'ltr' | 'rtl'} Direction */
 
-import { defaultColors, defaultThemeMapping, themeRules, detectDirection } from '@rokkit/core'
+import { defaultColors, DEFAULT_THEME_MAPPING, themeRules, detectDirection } from '@rokkit/core'
 import { DEFAULT_STYLES, VALID_DENSITIES, VALID_MODES, VALID_DIRECTIONS } from './constants'
 import { has } from 'ramda'
 
@@ -27,7 +27,7 @@ class Vibe {
 	#colors = $state(defaultColors)
 	#density = $state('comfortable')
 	#direction = $state(detectDirection())
-	#colorMap = $state(defaultThemeMapping)
+	#colorMap = $state(DEFAULT_THEME_MAPPING)
 	#palette = $derived.by(() => themeRules(this.#colorMap, this.#colors))
 
 	/**
@@ -63,7 +63,7 @@ class Vibe {
 			if (missing.length > 0) {
 				throw new Error(`Did you forget to define "${missing.join(', ')}"?`)
 			}
-			this.#colorMap = { ...defaultThemeMapping, ...value }
+			this.#colorMap = { ...DEFAULT_THEME_MAPPING, ...value }
 		}
 	}
 

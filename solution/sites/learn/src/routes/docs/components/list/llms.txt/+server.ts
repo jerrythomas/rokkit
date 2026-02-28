@@ -3,172 +3,245 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit List Component
 
-> Data-driven, accessible list component with keyboard navigation, selection, and collapsible groups.
+> Data-driven, accessible list component with keyboard navigation, selection, and collapsible groups. Built on the ProxyItem + Wrapper + Navigator stack.
 
-The List component renders an array of items as a navigable list. Items can be plain buttons, navigation links (when \`href\` is present), or grouped with collapsible sections. Supports single and multi-selection.
+The List component renders an array of items as a navigable \`<nav>\`. Items can be plain buttons, navigation links (when \`href\` is present), or grouped with collapsible sections. Rendering is fully customizable via snippets — the \`<button>\`/\`<a>\` wrappers are always rendered by the component; snippets control only the inner content.
 
 ## Quick Start
 
 \`\`\`svelte
 <script>
   import { List } from '@rokkit/ui'
-  let items = ['Apple', 'Banana', 'Cherry']
+
+  const items = [
+    { label: 'Dashboard', icon: 'i-lucide:layout-dashboard' },
+    { label: 'Analytics', icon: 'i-lucide:bar-chart-2' },
+    { type: 'separator' },
+    { label: 'Settings', icon: 'i-lucide:settings', disabled: true }
+  ]
   let value = $state(null)
 </script>
-<List {items} bind:value />
+<List {items} bind:value onselect={(v) => (value = v)} />
+\`\`\`
+
+## Primitive Arrays
+
+Pass strings or numbers directly — no object wrapping needed:
+
+\`\`\`svelte
+<List items={['Dashboard', 'Analytics', 'Reports']} bind:value />
 \`\`\`
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| \`items\` | \`ListItem[]\` | \`[]\` | Data array |
-| \`fields\` | \`ListFields\` | defaults | Field mapping configuration |
+| \`items\` | \`unknown[]\` | \`[]\` | Data array (objects or primitives) |
+| \`fields\` | \`Record<string,string>\` | \`{}\` | Remap data keys to component fields |
 | \`value\` | \`unknown\` | — | Selected value — use \`bind:value\` |
 | \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
 | \`disabled\` | \`boolean\` | \`false\` | Disable all items |
-| \`collapsible\` | \`boolean\` | \`false\` | Allow groups to be collapsed |
-| \`multiselect\` | \`boolean\` | \`false\` | Enable multi-selection |
-| \`expanded\` | \`Record<string,boolean>\` | \`{}\` | Expanded groups — use \`bind:expanded\` |
-| \`selected\` | \`unknown[]\` | \`[]\` | Selected values (multiselect) — use \`bind:selected\` |
-| \`active\` | \`unknown\` | — | Highlight item by value (e.g. current route) |
-| \`icons\` | \`ListStateIcons\` | — | Override expand/collapse icons |
-| \`class\` | \`string\` | \`''\` | Additional CSS classes |
+| \`collapsible\` | \`boolean\` | \`false\` | Allow groups to be expanded/collapsed |
+| \`icons\` | \`{ opened?: string, closed?: string }\` | — | Override expand/collapse icons |
+| \`class\` | \`string\` | \`''\` | Additional CSS classes on the root \`<nav>\` |
+| \`onselect\` | \`(value, proxy) => void\` | — | Called when an item is selected |
 
 ## Field Mapping
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| \`value\` | \`'value'\` | Selection value |
-| \`text\` | \`'text'\` | Display text |
+Default field names (what the component reads from your data):
+
+| Field | Default key | Description |
+|-------|-------------|-------------|
+| \`text\` | \`'label'\` | Display text |
+| \`value\` | \`'value'\` | Selection value (falls back to raw item) |
+| \`icon\` | \`'icon'\` | Icon CSS class |
 | \`href\` | \`'href'\` | URL — renders item as \`<a>\` |
-| \`icon\` | \`'icon'\` | Icon class name |
-| \`description\` | \`'description'\` | Secondary/subtitle text |
-| \`label\` | \`'label'\` | Aria-label override |
+| \`children\` | \`'children'\` | Nested items array (creates a group) |
+| \`type\` | \`'type'\` | \`'separator'\` or \`'spacer'\` for structural items |
 | \`disabled\` | \`'disabled'\` | Disabled state |
-| \`children\` | \`'children'\` | Nested items array (groups) |
-| \`snippet\` | \`'snippet'\` | Named item snippet |
-| \`badge\` | \`'badge'\` | Badge/count indicator |
+| \`expanded\` | \`'expanded'\` | Initial expand state for groups |
+| \`snippet\` | \`'snippet'\` | Named snippet override for this item |
+
+To remap — e.g. your data uses \`name\` and \`path\` instead of \`label\` and \`value\`:
+
+\`\`\`svelte
+<List {items} fields={{ text: 'name', value: 'path' }} bind:value />
+\`\`\`
+
+## Grouped Items / Collapsible Sections
+
+Items with a \`children\` array create collapsible group sections. Add the \`collapsible\` prop to allow toggling. Groups start collapsed by default — set \`expanded: true\` on a group item to start it open:
+
+\`\`\`svelte
+<script>
+  const items = [
+    {
+      label: 'Fruits',
+      expanded: true,
+      children: [
+        { label: 'Apple' },
+        { label: 'Banana' }
+      ]
+    },
+    {
+      label: 'Vegetables',
+      children: [{ label: 'Carrot' }]
+    }
+  ]
+  let value = $state(null)
+</script>
+<List {items} collapsible bind:value onselect={(v) => (value = v)} />
+\`\`\`
 
 ## Navigation Links
 
-Items with an \`href\` field render as \`<a>\` tags. Use \`active\` to highlight the current route:
+Items with an \`href\` field render as \`<a>\` tags and get \`aria-current="page"\` when active:
 
 \`\`\`svelte
 <script>
-  import { List } from '@rokkit/ui'
   import { page } from '$app/state'
 
   const nav = [
-    { text: 'Home',     href: '/',         icon: 'i-lucide:home' },
-    { text: 'Settings', href: '/settings', icon: 'i-lucide:settings' }
+    { label: 'Home',     href: '/',         icon: 'i-lucide:home' },
+    { label: 'Settings', href: '/settings', icon: 'i-lucide:settings' }
   ]
+  let current = $derived(page.url.pathname)
 </script>
-<List items={nav} active={page.url.pathname} />
+<List items={nav} value={current} />
 \`\`\`
 
-## Grouped Items with Collapsible Sections
+## Custom Icons
 
-Items with a \`children\` array create collapsible group sections:
-
-\`\`\`svelte
-<script>
-  import { List } from '@rokkit/ui'
-
-  const items = [
-    { text: 'Fruits', children: [
-        { text: 'Apple', value: 'apple' },
-        { text: 'Banana', value: 'banana' }
-    ]},
-    { text: 'Vegetables', children: [
-        { text: 'Carrot', value: 'carrot' }
-    ]}
-  ]
-  let value = $state(null)
-  let expanded = $state({})
-</script>
-<List {items} bind:value bind:expanded collapsible />
-\`\`\`
-
-## Multi-Selection
-
-\`\`\`svelte
-<script>
-  import { List } from '@rokkit/ui'
-  let items = [{ text: 'A', value: 1 }, { text: 'B', value: 2 }]
-  let selected = $state([])
-</script>
-<List {items} bind:selected multiselect />
-<p>Selected: {selected.join(', ')}</p>
-\`\`\`
-
-## Callbacks
-
-| Callback | Signature | Description |
-|----------|-----------|-------------|
-| \`onselect\` | \`(value, item) => void\` | Item selected |
-| \`onselectedchange\` | \`(selected[]) => void\` | Multi-selection changed |
-| \`onexpandedchange\` | \`(expanded) => void\` | Group expanded/collapsed |
-
-## Snippets
-
-### Custom Item Rendering
-
-\`\`\`svelte
-<List {items}>
-  {#snippet item(data, fields, handlers, isActive)}
-    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
-      {#if data.icon}<span class={data.icon}></span>{/if}
-      <span>{data.text}</span>
-      {#if data.badge}<span class="badge">{data.badge}</span>{/if}
-    </button>
-  {/snippet}
-</List>
-\`\`\`
-
-### Custom Group Label
-
-\`\`\`svelte
-<List {items} collapsible>
-  {#snippet groupLabel(group, fields, toggle, isExpanded)}
-    <button onclick={toggle}>
-      <span class={isExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
-      {group.text}
-    </button>
-  {/snippet}
-</List>
-\`\`\`
-
-## State Icons
-
-Override the default expand/collapse arrow icons:
+Override the expand/collapse icons for group sections:
 
 \`\`\`svelte
 <List {items} collapsible icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
+\`\`\`
+
+## Snippet Customization
+
+### \`itemContent(proxy)\` — Custom leaf item rendering
+
+Replaces the inner content of each \`<button>\`/\`<a>\`. The component still renders the clickable wrapper with \`data-path\` and handles navigation:
+
+\`\`\`svelte
+<List {items} bind:value onselect={(v) => (value = v)}>
+  {#snippet itemContent(proxy)}
+    {#if proxy.icon}
+      <span class={proxy.icon} aria-hidden="true"></span>
+    {/if}
+    <span class="flex-1">{proxy.text}</span>
+    <span class="badge">{proxy.get('status')}</span>
+  {/snippet}
+</List>
+\`\`\`
+
+### \`groupContent(proxy)\` — Custom group header rendering
+
+\`\`\`svelte
+<List {items} collapsible>
+  {#snippet groupContent(proxy)}
+    <span class={proxy.icon}></span>
+    <span>{proxy.text}</span>
+    <span class={proxy.expanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
+  {/snippet}
+</List>
+\`\`\`
+
+### Per-item named snippets
+
+Set \`item.snippet = 'name'\` to route specific items to a named snippet. Falls back to \`itemContent\`:
+
+\`\`\`svelte
+<script>
+  const items = [
+    { label: 'Apple',  snippet: 'fruit',     icon: 'i-lucide:apple' },
+    { label: 'Carrot', snippet: 'vegetable', icon: 'i-lucide:carrot' }
+  ]
+</script>
+<List {items}>
+  {#snippet fruit(proxy)}
+    <span class={proxy.icon}></span>
+    <span>{proxy.text}</span>
+    <span class="text-error-z5 text-xs">fruit</span>
+  {/snippet}
+  {#snippet vegetable(proxy)}
+    <span class={proxy.icon}></span>
+    <span>{proxy.text}</span>
+    <span class="text-success-z5 text-xs">veggie</span>
+  {/snippet}
+</List>
+\`\`\`
+
+## ProxyItem API (passed to snippets)
+
+| Property/Method | Description |
+|----------------|-------------|
+| \`proxy.text\` | Mapped display text (reads from \`item[fields.text]\`) |
+| \`proxy.icon\` | Mapped icon class |
+| \`proxy.href\` | Mapped href |
+| \`proxy.value\` | The original raw item object or primitive |
+| \`proxy.disabled\` | Whether this item is disabled |
+| \`proxy.expanded\` | Expand state (for groups) — \`$state\`, reactive |
+| \`proxy.get('fieldName')\` | Read any field by semantic or raw name |
+
+## Interactive Elements in Snippets
+
+Snippets support full Svelte reactivity. Use \`proxy.value\` to mutate the original item, and \`e.stopPropagation()\` to prevent the List from also triggering selection:
+
+\`\`\`svelte
+<List {items}>
+  {#snippet itemContent(proxy)}
+    <span class="flex-1">{proxy.text}</span>
+    <input
+      type="checkbox"
+      checked={proxy.get('checked')}
+      onchange={(e) => { proxy.value.checked = e.currentTarget.checked }}
+      onclick={(e) => e.stopPropagation()}
+    />
+  {/snippet}
+</List>
+\`\`\`
+
+## Custom Class
+
+Pass \`class\` to add CSS classes to the root \`<nav>\` element — useful for constraining height or adding custom styling:
+
+\`\`\`svelte
+<!-- Fixed height with scroll -->
+<List {items} class="max-h-64 overflow-y-auto" bind:value />
 \`\`\`
 
 ## Keyboard Navigation
 
 | Key | Action |
 |-----|--------|
-| \`ArrowUp/Down\` | Move focus |
-| \`ArrowRight\` | Expand collapsed group |
-| \`ArrowLeft\` | Collapse expanded group |
-| \`Home/End\` | First/last item |
-| \`Enter/Space\` | Select focused item |
-| \`Ctrl+Space\` | Toggle multi-selection |
+| \`ArrowDown\` | Move focus to next visible item |
+| \`ArrowUp\` | Move focus to previous visible item |
+| \`ArrowRight\` | Expand collapsed group (when \`collapsible\`) |
+| \`ArrowLeft\` | Collapse expanded group (when \`collapsible\`) |
+| \`Home\` | Focus first item |
+| \`End\` | Focus last item |
+| \`Enter\` / \`Space\` | Select focused item or toggle group |
+| \`a-z\` | Typeahead: jump to item starting with typed character |
 
-## Data Attributes
+Disabled items are skipped during keyboard navigation.
 
-| Attribute | Description |
-|-----------|-------------|
-| \`data-list\` | Root element |
-| \`data-list-item\` | Individual item |
-| \`data-list-group\` | Group container |
-| \`data-list-group-label\` | Group header |
-| \`data-selected\` | Selected item |
-| \`data-active\` | Active/current item |
-| \`data-disabled\` | Disabled item |
+## Data Attributes (for CSS theming)
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| \`data-list\` | Root \`<nav>\` | Root marker |
+| \`data-list-item\` | \`<button>\` or \`<a>\` | Leaf item |
+| \`data-list-group-label\` | \`<button>\` | Group header |
+| \`data-list-separator\` | \`<hr>\` | Separator line |
+| \`data-list-spacer\` | \`<div>\` | Spacer |
+| \`data-active\` | Item | Currently selected |
+| \`data-disabled\` | Item | Disabled state |
+| \`data-level\` | Item/group | Nesting depth (1=root) |
+| \`aria-expanded\` | Group button | Expand state (\`true\`/\`false\`) |
+| \`data-collapsible\` | Root | Present when \`collapsible\` prop is set |
+| \`data-size\` | Root | Size variant |
 
 ## Import
 
@@ -176,53 +249,12 @@ Override the default expand/collapse arrow icons:
 import { List } from '@rokkit/ui'
 \`\`\`
 
-## TypeScript Types
-
-\`\`\`typescript
-interface ListProps {
-  items?: ListItem[]
-  fields?: ListFields
-  value?: unknown
-  size?: 'sm' | 'md' | 'lg'
-  disabled?: boolean
-  collapsible?: boolean
-  multiselect?: boolean
-  expanded?: Record<string, boolean>
-  selected?: unknown[]
-  active?: unknown
-  icons?: ListStateIcons
-  class?: string
-  onselect?: (value: unknown, item: ListItem) => void
-  onselectedchange?: (selected: unknown[]) => void
-  onexpandedchange?: (expanded: Record<string, boolean>) => void
-  item?: Snippet<[ListItem, ListFields, ListItemHandlers, boolean]>
-  groupLabel?: Snippet<[ListItem, ListFields, () => void, boolean]>
-}
-
-interface ListFields {
-  value?: string       // default: 'value'
-  text?: string        // default: 'text'
-  href?: string        // default: 'href'
-  icon?: string        // default: 'icon'
-  description?: string // default: 'description'
-  label?: string       // default: 'label'
-  disabled?: string    // default: 'disabled'
-  children?: string    // default: 'children'
-  snippet?: string     // default: 'snippet'
-  badge?: string       // default: 'badge'
-}
-
-interface ListStateIcons {
-  opened?: string  // icon class for expanded state
-  closed?: string  // icon class for collapsed state
-}
-\`\`\`
-
 ## Related Components
 
 - [Tree](/docs/components/tree/llms.txt) — hierarchical tree with per-node expand/collapse
 - [Select](/docs/components/select/llms.txt) — dropdown single selection
 - [MultiSelect](/docs/components/multiselect/llms.txt) — dropdown multi-selection
+- [Menu](/docs/components/menu/llms.txt) — contextual action menu
 - [Tabs](/docs/components/tabs/llms.txt) — tabbed interface
 `
 

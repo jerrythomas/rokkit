@@ -12,7 +12,8 @@
 		icon,
 		iconRight,
 		href,
-		target,
+		target = '_self',
+		title,
 		disabled = false,
 		loading = false,
 		onclick,
@@ -46,6 +47,7 @@
 	<a
 		{href}
 		{target}
+		{title}
 		data-button
 		data-variant={variant}
 		data-style={style}
@@ -65,6 +67,7 @@
 {:else}
 	<button
 		{type}
+		{title}
 		data-button
 		data-variant={variant}
 		data-style={style}

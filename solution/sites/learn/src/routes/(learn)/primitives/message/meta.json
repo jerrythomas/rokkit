@@ -1,7 +1,0 @@
-{
-  "title": "Message",
-  "description": "Alert and notification message component",
-  "icon": "i-component:message",
-  "category": "primitives",
-  "sequence": 60
-}

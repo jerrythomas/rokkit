@@ -6,7 +6,7 @@
  * Field mapping and data access is handled by ItemProxy.
  */
 
-import { defaultStateIcons } from '@rokkit/core'
+import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
 // Field Mapping Types
@@ -46,6 +46,9 @@ export interface ListFields {
 	/** Field for badge/indicator content - default: 'badge' */
 	badge?: string
 
+	/** Field for tooltip text (HTML title attribute) - default: 'title' */
+	title?: string
+
 	/** Nested field mapping for children - default: inherits parent */
 	fields?: ListFields
 }
@@ -63,7 +66,8 @@ export const defaultListFields: Required<Omit<ListFields, 'fields'>> = {
 	disabled: 'disabled',
 	children: 'children',
 	snippet: 'snippet',
-	badge: 'badge'
+	badge: 'badge',
+	title: 'title'
 }
 
 // =============================================================================
@@ -171,7 +175,7 @@ export interface ListProps {
 
 /**
  * Icons configuration for list collapsible group states.
- * Keys match the naming convention in @rokkit/core defaultStateIcons.
+ * Keys match the naming convention in @rokkit/core DEFAULT_STATE_ICONS.
  */
 export interface ListStateIcons {
 	/** Icon class for expanded group */
@@ -185,8 +189,8 @@ export interface ListStateIcons {
  * that get resolved to actual icon classes via UnoCSS shortcuts.
  */
 export const defaultListStateIcons: ListStateIcons = {
-	opened: defaultStateIcons.accordion.opened,
-	closed: defaultStateIcons.accordion.closed
+	opened: DEFAULT_STATE_ICONS.accordion.opened,
+	closed: DEFAULT_STATE_ICONS.accordion.closed
 }
 
 // =============================================================================
