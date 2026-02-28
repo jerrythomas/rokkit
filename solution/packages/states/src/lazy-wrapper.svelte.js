@@ -18,7 +18,6 @@
  */
 
 import { AbstractWrapper } from './abstract-wrapper.js'
-import { PROXY_ITEM_FIELDS } from './proxy-item.svelte.js'
 import { ProxyTree } from './proxy-tree.svelte.js'
 
 // ─── LazyWrapper ───────────────────────────────────────────────────────────────
