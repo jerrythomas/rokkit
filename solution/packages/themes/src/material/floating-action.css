@@ -1,0 +1,60 @@
+/**
+ * FloatingAction - Material Theme Styles
+ *
+ * Material Design inspired with elevation and shadows.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='material'] [data-fab-trigger] {
+  @apply bg-primary-z5 text-white shadow-lg;
+}
+
+[data-style='material'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply bg-primary-z6 shadow-xl;
+  transform: scale(1.05);
+}
+
+[data-style='material'] [data-fab-trigger]:focus-visible {
+  @apply ring-primary-z4 ring-2 ring-offset-2 outline-none;
+}
+
+[data-style='material'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply bg-surface-z4 text-surface-z10 shadow-lg;
+  transform: rotate(45deg);
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='material'] [data-fab-item] {
+  @apply bg-surface-z1 text-surface-z8 shadow-md;
+}
+
+[data-style='material'] [data-fab-item]:hover:not(:disabled) {
+  @apply bg-surface-z2 text-surface-z10 shadow-lg;
+}
+
+[data-style='material'] [data-fab-item]:focus-visible {
+  @apply ring-primary-z4 ring-2 outline-none;
+}
+
+/* Item icon */
+[data-style='material'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='material'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='material'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,48 @@
+/**
+ * Toggle - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toggle] {
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 rounded-lg border bg-gradient-to-b;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toggle-option] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='rokkit'] [data-toggle-option]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-b;
+}
+
+/* Selected state */
+[data-style='rokkit'] [data-toggle-option][data-selected='true'] {
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-primary-z5 border bg-gradient-to-b shadow-sm;
+}
+
+/* =============================================================================
+   Toggle Icon
+   ============================================================================= */
+
+[data-style='rokkit'] [data-toggle-option] [data-toggle-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-toggle-option]:hover:not(:disabled) [data-toggle-icon],
+[data-style='rokkit'] [data-toggle-option]:focus:not(:disabled) [data-toggle-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-toggle-option][data-selected='true'] [data-toggle-icon] {
+  @apply text-primary-z7;
+}

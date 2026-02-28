@@ -1,0 +1,58 @@
+{
+  "name": "@rokkit/learn",
+  "private": true,
+  "version": "1.0.0-next.127",
+  "type": "module",
+  "npm": {
+    "publish": false
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build:themes": "cd ../../packages/themes && bun run build",
+    "build": "bun run build:themes && paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+    "test:e2e": "playwright test",
+    "test": "npm run test:e2e",
+    "postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide"
+  },
+  "devDependencies": {
+    "@iconify-json/solar": "^1.2.4",
+    "@iconify/utils": "^3.0.2",
+    "@playwright/test": "^1.55.0",
+    "@sveltejs/adapter-auto": "^6.1.0",
+    "@sveltejs/kit": "^2.42.1",
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@unocss/extractor-svelte": "^66.5.1",
+    "@unocss/reset": "66.5.1",
+    "mdsvex": "^0.12.6",
+    "svelte": "^5.39.2",
+    "svelte-check": "^4.3.1",
+    "typescript": "^5.9.2",
+    "unocss": "^66.5.1",
+    "vite": "^7.1.6",
+    "@inlang/paraglide-js": "^2.3.2"
+  },
+  "dependencies": {
+    "@fontsource/open-sans": "^5.2.7",
+    "@fontsource/overpass": "^5.2.8",
+    "@fontsource/victor-mono": "^5.2.8",
+    "@rokkit/actions": "workspace:latest",
+    "@rokkit/app": "workspace:latest",
+    "@rokkit/data": "workspace:latest",
+    "@rokkit/chart": "workspace:latest",
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/forms": "workspace:latest",
+    "@rokkit/icons": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
+    "@rokkit/themes": "workspace:latest",
+    "@rokkit/testbed": "workspace:*",
+    "@rokkit/ui": "workspace:latest",
+    "@sveltejs/adapter-vercel": "^5.10.2",
+    "phosphor-svelte": "^3.0.1",
+    "ramda": "^0.31.3",
+    "rtl-detect": "^1.1.2",
+    "shiki": "^3.12.2"
+  }
+}

@@ -1,6 +1,6 @@
 # Contributing
 
-Arizto is a monorepo using `bun` or [pnpm workspaces](https://pnpm.io/workspaces) for easier organization.
+Rokkit is a monorepo using `bun` workspaces for easier organization.
 
 ## Packages
 

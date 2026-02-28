@@ -1,0 +1,234 @@
+/* Base structural styles for form fields and inputs */
+
+/* Form root: vertical stack */
+[data-form-root] {
+  @apply flex flex-col gap-3;
+}
+
+/* Form field container */
+[data-form-field] {
+  @apply flex flex-col;
+}
+
+/* Separator between form fields */
+[data-form-separator] {
+  @apply border-t border-surface-z2 my-1;
+}
+
+/* Form group (fieldset for nested objects) */
+[data-form-group] {
+  @apply flex flex-col gap-3 border-none m-0 p-0 pl-3 border-l border-surface-z2;
+}
+
+[data-form-group-label] {
+  @apply text-xs font-semibold pb-1;
+}
+
+/* Validation report */
+[data-validation-report] {
+  @apply flex flex-col gap-2;
+}
+
+[data-validation-group] {
+  @apply flex flex-col gap-0.5;
+}
+
+[data-validation-group-header] {
+  @apply flex items-center gap-1.5 text-xs font-semibold py-1;
+}
+
+[data-validation-count] {
+  @apply inline-flex items-center justify-center rounded-full text-[10px] font-bold min-w-[18px] h-[18px] px-1;
+}
+
+[data-severity='error'] > [data-validation-group-header] {
+  @apply text-error;
+}
+
+[data-severity='error'] [data-validation-count] {
+  @apply bg-error-z1 text-error-z7;
+}
+
+[data-severity='warning'] > [data-validation-group-header] {
+  @apply text-warning;
+}
+
+[data-severity='warning'] [data-validation-count] {
+  @apply bg-warning-z1 text-warning-z7;
+}
+
+[data-severity='info'] > [data-validation-group-header] {
+  @apply text-info;
+}
+
+[data-severity='info'] [data-validation-count] {
+  @apply bg-info-z1 text-info-z7;
+}
+
+[data-severity='success'] > [data-validation-group-header] {
+  @apply text-success;
+}
+
+[data-severity='success'] [data-validation-count] {
+  @apply bg-success-z1 text-success-z7;
+}
+
+[data-validation-item] {
+  @apply text-xs py-0.5 px-2 rounded text-left;
+}
+
+button[data-validation-item] {
+  @apply cursor-pointer bg-transparent border-none hover:bg-surface-z1;
+}
+
+/* Form actions (submit/reset buttons) */
+[data-form-actions] {
+  @apply flex flex-row gap-2 justify-end pt-2;
+}
+
+button[data-form-submit],
+button[data-form-reset] {
+  @apply px-4 py-1.5 text-sm rounded cursor-pointer border border-surface-z3 bg-surface-z1 hover:bg-surface-z2 transition-colors;
+}
+
+button[data-form-submit] {
+  @apply bg-primary text-on-primary border-primary hover:opacity-90;
+}
+
+button[data-form-submit]:disabled,
+button[data-form-reset]:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Submitting state: reduce interactivity */
+[data-form-submitting] > :not([data-form-actions]) {
+  @apply opacity-60 pointer-events-none;
+}
+
+/* Field root container */
+[data-field-root] {
+  @apply box-border flex flex-col;
+}
+
+/* Field wrapper: vertical by default */
+[data-field-root] > [data-field] {
+  @apply flex flex-col gap-1;
+}
+
+/* Checkbox and switch: inline layout */
+[data-field-type='switch'] > [data-field],
+[data-field-type='checkbox'] > [data-field] {
+  @apply flex-row items-center gap-2;
+}
+
+/* Select: stretch to fill input wrapper — display:flex eliminates inline-block gap */
+[data-input-root] [data-select] {
+  @apply flex-1 self-stretch;
+  display: flex;
+}
+
+[data-input-root] [data-select] [data-select-trigger] {
+  @apply flex-1 self-stretch;
+  min-width: 0;
+}
+
+/* Checkbox icon */
+[data-checkbox-root] {
+  @apply flex items-center;
+}
+
+/* Label: fills available space */
+[data-field] > label {
+  @apply flex-1 text-xs;
+}
+
+/* Info field: horizontal layout */
+[data-field-type='info'] > [data-field] {
+  @apply flex-row items-center justify-between;
+}
+
+[data-field-info] {
+  @apply text-xs font-mono;
+}
+
+/* Numeric/date input alignment */
+[data-field-type='number'] input,
+[data-field-type='integer'] input,
+[data-field-type='date'] input,
+[data-field-type='time'] input {
+  @apply text-right;
+}
+
+/* Input wrapper: horizontal for input + icon */
+[data-input-root] {
+  @apply flex flex-row items-center;
+}
+
+/* Input elements fill available width */
+[data-input-root] input,
+[data-input-root] textarea,
+[data-input-root] select {
+  @apply m-0 min-w-0 flex-1 leading-loose transition-all;
+}
+
+/* Icons inside inputs */
+[data-input-root] [data-icon] {
+  @apply aspect-square min-h-full flex-shrink-0;
+}
+
+/* Description below input */
+[data-description] {
+  @apply text-xs leading-snug;
+}
+
+/* Validation message */
+[data-message] {
+  @apply text-xs leading-snug;
+}
+
+/* Checkbox icon: focus handling */
+[data-checkbox-icon] {
+  @apply focus:outline-none;
+}
+
+/* Range slider thumb */
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: rgba(var(--color-primary-500));
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: rgba(var(--color-primary-500));
+  cursor: pointer;
+  border: none;
+}
+
+/* Color input */
+input[type='color'] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  @apply p-0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  [data-field-root] {
+    @apply p-1;
+  }
+  [data-field] {
+    @apply min-h-7 gap-1;
+  }
+  [data-description],
+  [data-message] {
+    @apply text-sm;
+  }
+}

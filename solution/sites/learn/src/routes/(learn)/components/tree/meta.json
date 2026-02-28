@@ -1,0 +1,9 @@
+{
+  "title": "Tree",
+  "description": "Hierarchical data navigation with tree lines and keyboard navigation",
+  "icon": "i-component:tree",
+  "category": "components",
+  "tags": ["tree", "hierarchical", "data", "navigation"],
+  "experimental": false,
+  "llms": true
+}

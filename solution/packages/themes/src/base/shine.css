@@ -1,0 +1,14 @@
+/* Shine — base structural styles */
+
+[data-shine-filter] {
+	pointer-events: none;
+	position: fixed;
+	inset: 0;
+	width: 0;
+	height: 0;
+	overflow: visible;
+}
+
+[data-shine] {
+	display: inline-block;
+}

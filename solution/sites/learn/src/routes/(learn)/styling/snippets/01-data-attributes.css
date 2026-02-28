@@ -1,0 +1,11 @@
+/* Target the list container */
+[data-list] { ... }
+
+/* Target individual items */
+[data-list-item] { ... }
+
+/* Target selected state */
+[data-list-item][data-selected] { ... }
+
+/* Target focused state */
+[data-list-item][data-focused] { ... }

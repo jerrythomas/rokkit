@@ -1,0 +1,65 @@
+/**
+ * FloatingAction - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   FAB Trigger Button
+   ============================================================================= */
+
+[data-style='rokkit'] [data-fab-trigger] {
+  @apply from-primary-z5 to-secondary-z5 ring-primary-600 bg-gradient-to-b text-white shadow-lg ring-1;
+}
+
+[data-style='rokkit'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply from-primary-400 to-primary-500 ring-primary-500 bg-gradient-to-b shadow-xl ring-1;
+  transform: scale(1.05);
+}
+
+[data-style='rokkit'] [data-fab-trigger]:focus-visible {
+  @apply ring-primary-400 shadow-lg ring-3 outline-none;
+}
+
+[data-style='rokkit'] [data-fab][data-open='true'] [data-fab-trigger] {
+  @apply from-surface-z4 to-surface-z3 text-surface-z10 ring-surface-z5 bg-gradient-to-b shadow-lg ring-1;
+  transform: rotate(45deg);
+}
+
+[data-style='rokkit'] [data-fab][data-open='true'] [data-fab-trigger]:hover:not(:disabled) {
+  @apply from-surface-z5 to-surface-z4 bg-gradient-to-b;
+  transform: rotate(45deg) scale(1.05);
+}
+
+/* =============================================================================
+   FAB Items
+   ============================================================================= */
+
+[data-style='rokkit'] [data-fab-item] {
+  @apply from-surface-z1 to-surface-z0 text-surface-z8 ring-surface-z2 bg-gradient-to-b shadow-md ring-1;
+}
+
+[data-style='rokkit'] [data-fab-item]:hover:not(:disabled) {
+  @apply from-surface-z2 to-surface-z1 text-surface-z10 ring-surface-z3 bg-gradient-to-b shadow-lg ring-1;
+}
+
+[data-style='rokkit'] [data-fab-item]:focus-visible {
+  @apply ring-primary-400 shadow-md ring-2 outline-none;
+}
+
+/* Item icon */
+[data-style='rokkit'] [data-fab-item] [data-fab-item-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-fab-item]:hover:not(:disabled) [data-fab-item-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Backdrop
+   ============================================================================= */
+
+[data-style='rokkit'] [data-fab-backdrop] {
+  background: rgba(0, 0, 0, 0.4);
+}

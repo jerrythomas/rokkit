@@ -1,0 +1,170 @@
+/* Article styles - Base Layout */
+
+[data-article-root] {
+  @apply text-surface-z8 relative w-full max-w-3xl;
+}
+
+/* Typography hierarchy - Layout */
+[data-article-root] h1 {
+  @apply mb-3 mt-0 flex items-center gap-3;
+}
+
+[data-article-root] h2 {
+  @apply mb-3 mt-10 border-b border-surface-z2 pb-2;
+}
+
+[data-article-root] h3 {
+  @apply mb-2 mt-6;
+}
+
+[data-article-root] h4 {
+  @apply mb-2 mt-4;
+}
+
+[data-article-root] h5 {
+  @apply mb-2 mt-3;
+}
+
+[data-article-root] h6 {
+  @apply mb-2 mt-3;
+}
+
+/* Paragraphs and text - Layout */
+[data-article-root] > p {
+  @apply mb-4 leading-7 text-surface-z6;
+}
+
+[data-article-root] p {
+  @apply leading-7 text-surface-z6;
+}
+
+/* Inline code */
+[data-article-root] :not(pre) > code {
+  @apply rounded bg-surface-z3 px-1.5 py-0.5 font-mono text-sm;
+}
+
+/* Lists - Layout */
+[data-article-root] ul {
+  @apply mb-6 pl-6;
+}
+
+[data-article-root] ol {
+  @apply mb-6 pl-6;
+}
+
+[data-article-root] li {
+  @apply mb-2 leading-relaxed;
+}
+
+[data-article-root] ul li {
+  @apply relative;
+  list-style: none;
+}
+
+[data-article-root] ul li::before {
+  content: '';
+  @apply absolute -ml-4 mt-3 h-1.5 w-1.5 rounded-full bg-surface-z4;
+}
+
+[data-article-root] ol li {
+  list-style: decimal;
+}
+
+/* Sections - Layout */
+[data-article-root] section {
+  @apply space-y-6;
+}
+
+[data-article-root] section:last-child {
+  @apply mb-0;
+}
+
+[data-article-root] section > span {
+  @apply flex gap-3;
+}
+
+/* Code - Layout */
+[data-article-root] pre {
+  @apply mb-6 overflow-x-auto rounded-lg border border-surface-z2 bg-surface-z2;
+}
+
+[data-article-root] pre code {
+  @apply block overflow-x-auto p-4 font-mono leading-relaxed text-surface-z7;
+  font-size: 10px;
+}
+
+/* Blockquotes - Layout */
+[data-article-root] blockquote {
+  @apply mb-6 pl-4 italic;
+}
+
+/* Tables - Layout */
+[data-article-root] table {
+  @apply text-surface-z6 mb-6 w-full border-collapse;
+}
+
+[data-article-root] th {
+  @apply text-surface-z8 px-4 py-2 text-left;
+}
+
+[data-article-root] td {
+  @apply px-4 py-2;
+}
+
+/* Horizontal rules - Layout */
+[data-article-root] hr {
+  @apply my-8 border-0 border-t border-surface-z2;
+}
+
+/* Images - Layout */
+[data-article-root] img {
+  @apply h-auto max-w-full;
+}
+
+/* Special content blocks - Layout */
+[data-article-root] .grid {
+  @apply mb-6 gap-6;
+}
+
+/* Focus states for accessibility - Layout */
+[data-article-root] a:focus,
+[data-article-root] button:focus {
+  @apply outline-2 outline-offset-2;
+}
+
+[data-article-root] [data-card] p {
+  @apply m-0;
+}
+
+[data-article-root] h1 > span,
+[data-article-root] h2 > span,
+[data-article-root] h3 > span {
+  @apply mr-4;
+}
+
+[data-article-root] h4 > span {
+  @apply mr-2;
+}
+
+[data-card-cta] > h2 {
+  @apply m-0 border-none leading-tight;
+}
+
+[data-card-cta] > p {
+  @apply m-0;
+}
+
+[data-article-root] h1 > [data-tag-icon] {
+  @apply text-secondary-z7 text-5xl;
+}
+
+/* Print styles - Layout */
+@media print {
+  [data-article-root] a {
+    @apply no-underline;
+  }
+
+  [data-article-root] a::after {
+    content: ' (' attr(href) ')';
+  }
+}

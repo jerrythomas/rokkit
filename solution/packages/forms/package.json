@@ -1,0 +1,40 @@
+{
+  "name": "@rokkit/forms",
+  "version": "1.0.0-next.127",
+  "module": "src/index.js",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun clean && bun prepublishOnly"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "dist/**/*.d.ts"
+  ],
+  "exports": {
+    "./src": "./src",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
+    },
+    "./lib": {
+      "import": "./src/lib/index.js"
+    }
+  },
+  "dependencies": {
+    "@rokkit/core": "workspace:latest",
+    "@rokkit/data": "workspace:latest",
+    "@rokkit/states": "workspace:latest",
+    "@rokkit/ui": "workspace:latest",
+    "ramda": "^0.32.0"
+  }
+}

@@ -1,0 +1,518 @@
+# States Package Design
+
+> Class structure for ProxyItem, ProxyTree, Wrapper, and LazyWrapper in `@rokkit/states`.
+
+## Architecture Overview
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Component (List, Tree, LazyTree, Select, Menu, etc.)    │
+│                                                          │
+│  proxyTree = new ProxyTree(items, fields)                │
+│  wrapper = new Wrapper(proxyTree, options)                │
+│  — or —                                                  │
+│  wrapper = new LazyWrapper(proxyTree, options)            │
+│                                                          │
+│  use:navigator={{ wrapper, collapsible }}                 │
+│  {#each wrapper.flatView as node}                        │
+└────────────────────┬─────────────────────────────────────┘
+                     │
+        ┌────────────┴────────────┐
+        ▼                         ▼
+┌───────────────┐       ┌──────────────────┐
+│    Wrapper    │       │   LazyWrapper    │
+│  (navigation  │       │  extends Wrapper │
+│   selection)  │       │  + lazy loading  │
+└───────┬───────┘       └────────┬─────────┘
+        │ uses                   │ uses
+        ▼                        ▼
+┌──────────────────────────────────────────┐
+│              ProxyTree                    │
+│  (collection management, version tracking│
+│   flatView derivation, append, addChildren)│
+└───────────────────┬──────────────────────┘
+                    │ creates
+                    ▼
+┌──────────────────────────────────────────┐
+│           ProxyItem (per item)           │
+│  key, level, expanded, selected, children│
+│  label, value, id, get(field), set(field)│
+├──────────────────────────────────────────┤
+│       LazyProxyItem (extends above)      │
+│  loaded, loading, fetch()                │
+└──────────────────────────────────────────┘
+```
+
+**Separation of concerns:**
+- **ProxyItem** — per-item reactive model with field mapping
+- **ProxyTree** — collection management (create, append, addChildren, flatView)
+- **Wrapper** — navigation + selection (receives ProxyTree, focus, next/prev, select, typeahead)
+- **LazyWrapper** — extends Wrapper with lazy loading (onlazyload, lazy marker detection)
+
+---
+
+## Canonical Field Mapping (BASE_FIELDS)
+
+All components share a single canonical field mapping defined in `@rokkit/core`. This replaces the scattered `DEFAULT_FIELDS`, `PROXY_ITEM_FIELDS`, and `defaultItemFields` constants.
+
+```js
+export const BASE_FIELDS = {
+  // Identity
+  id: 'id',                     // unique identifier (auto-generated if absent)
+  value: 'value',               // selection/matching value
+
+  // Display
+  label: 'text',                // primary text (maps to 'text' for backward compat)
+  icon: 'icon',                 // iconify class (e.g. 'i-lucide:home')
+  avatar: 'image',              // image URL (rendered as <img>)
+  subtext: 'description',       // secondary text
+  tooltip: 'title',             // hover text / aria title
+  badge: 'badge',               // badge content
+  shortcut: 'shortcut',         // keyboard shortcut display
+
+  // Structure
+  children: 'children',         // nested items array
+  type: 'type',                 // item type ('separator', 'spacer', etc.)
+  snippet: 'snippet',           // named snippet key
+  href: 'href',                 // navigation URL
+  hrefTarget: 'target',         // link target (_blank, _self, etc.)
+
+  // State (optional — ProxyItem manages internally when absent)
+  disabled: 'disabled',
+  expanded: 'expanded',
+  selected: 'selected',
+}
+```
+
+**Rules:**
+- `icon` and `avatar` don't co-exist: `icon` renders via iconify class, `avatar` renders as `<img src>`
+- Semantic keys (`label`, `subtext`, `tooltip`) map to common raw keys (`text`, `description`, `title`) for backward compatibility
+- Components extend `BASE_FIELDS` only when they need component-specific fields (e.g. Tree adds `level`)
+- `id` is auto-generated by ProxyItem when not present in raw data
+
+---
+
+## ProxyItem
+
+### Class Structure
+
+```
+ProxyItem
+├── Constructor(raw, fields?, key?, level?)
+│
+├── Private state
+│   ├── #raw          — original input (never mutated by get/set)
+│   ├── #item         — normalised object (= raw for objects, synthetic for primitives)
+│   ├── #fields       — merged field mapping config (BASE_FIELDS + overrides)
+│   ├── #id           — auto-generated unique id (from get('id') ?? generateId())
+│   ├── #key          — path-based key ('0', '0-1', '0-1-2')
+│   ├── #level        — nesting depth (1 = root)
+│   ├── #expanded     — $state(boolean) — control state
+│   ├── #selected     — $state(boolean) — control state
+│   └── #version      — $state(number) — bumped by set() to trigger children rebuild
+│
+├── Reactive derived
+│   └── #children     — $derived(#buildChildren()) — auto-wrapped child ProxyItems
+│
+├── Field access
+│   ├── get(fieldName) → value  — reads through field mapping
+│   ├── set(fieldName, value)   — writes to #item, increments #version
+│   └── mutate(fieldOrObj, value?) — writes to #raw, increments #version (advanced)
+│
+├── Direct getters (limited set — all others via get())
+│   ├── label         — get('label') — primary display text
+│   ├── value         — get('value') — selection/matching value
+│   ├── id            — #id — stable unique identifier
+│   ├── original      — #raw — original raw input (was `raw`)
+│   ├── key, level    — structural path info
+│   ├── children      — reactive child array
+│   ├── hasChildren   — children.length > 0
+│   ├── type          — get('type')
+│   └── expanded, selected — control state (get/set)
+│
+└── Factory
+    └── _createChild(raw, fields, key, level) → ProxyItem
+        (override in subclasses for specialised children)
+```
+
+**API decisions:**
+- **`label`** (not `text`): Renamed for clarity. `get('label')` resolves through field mapping to `item.text` by default.
+- **`id`**: Auto-generated in constructor: `#id = get('id') ?? generateId()`. Stable across re-renders.
+- **`original`** (not `raw`): Returns the original input passed to the constructor, never mutated by `get/set`.
+- **`mutate(field, value)`**: Writes directly to `#raw` (the original object). Advanced operation for when the caller needs to update the source data. Also accepts an object for batch updates: `mutate({ name: 'New', age: 30 })`.
+- **Limited direct getters**: Only `label`, `value`, `id` have convenience getters. All other fields accessed via `get(fieldName)` to keep the API surface small.
+- **`get(fieldName)`**: Pure field mapper. Looks up `fields[fieldName]` to find the raw key, reads from `#item`. Control state (`expanded`/`selected`) accessed as direct properties, not via `get()`.
+- **`set(fieldName, value)`**: Writes to `#item` through field mapping, increments `#version`.
+
+### Control State Flow
+
+```
+                 has field in #item?
+                    /          \
+                  yes           no
+                  /              \
+         External mode      Internal mode
+         read: #item[field]  read: $state
+         write: #item[field] write: $state
+               + $state sync
+```
+
+External mode is used when the raw data already has `expanded`/`selected` fields — the proxy reads/writes through to the raw item. Internal mode is used when the raw data lacks these fields — the proxy owns them as `$state`. Primitives always use internal mode.
+
+### Children Rebuild Trigger
+
+```
+proxy.set('children', newArray)
+  → #item[fields.children] = newArray
+  → #version++
+  → $derived(#buildChildren()) recomputes
+  → new ProxyItem instances for new children
+  → flatView re-derives (reads proxy.children)
+```
+
+### Deprecation: ItemProxy and Proxy
+
+**ItemProxy** (`@rokkit/ui/types/item-proxy.ts`):
+- Pure TypeScript, read-only, stateless
+- Used by 16 components in `@rokkit/ui`
+- Features assessment:
+  - Fallback resolution chains — **not needed**. Primitive handling covers stringify. Field mapping via `BASE_FIELDS` is the canonical approach.
+  - `getSnippet(snippets, defaultSnippet)` — **superseded** by `resolveSnippet` utility
+  - Typed `get<V>(fieldName, defaultValue)` — will add to ProxyItem when TypeScript types are added
+  - `canLoadChildren` lazy marker detection — **LazyProxyItem only**. Use `loaded` property on LazyProxyItem.
+
+**Proxy** (`@rokkit/states/proxy.svelte.js`):
+- Svelte 5 reactive, depends on Ramda
+- Legacy class from pre-ADR-003 architecture
+- Superseded by ProxyItem: no Ramda, writable set(), path-based keys, proper expansion state
+
+**Migration order:**
+1. Migrate components from ItemProxy → ProxyItem (16 files)
+2. Remove Proxy class (also removes Ramda dependency from `@rokkit/states`)
+3. Remove ItemProxy class
+---
+
+## ProxyTree (NEW)
+
+### Purpose
+
+Reactive collection manager that owns proxy instances. Provides structural mutation methods (`append`, `addChildren`) with batched version management. Derives `flatView` and `lookup` reactively.
+
+### Class Structure
+
+```
+ProxyTree
+├── Constructor(items, fields?, { createProxy? })
+│
+├── Private state
+│   ├── #rootProxies  — $state(ProxyItem[]) — root proxy array
+│   ├── #fields       — merged field mapping
+│   ├── #factory      — proxy creation function
+│   └── #version      — $state(number) — structural version counter
+│
+├── Reactive derived
+│   ├── flatView      — $derived(buildReactiveFlatView(#rootProxies))
+│   │                    depends on #version + proxy.expanded + proxy.children
+│   └── #lookup       — $derived(buildReactiveLookup(#rootProxies))
+│                        depends on #version + proxy.children
+│
+├── Mutation methods (each bumps #version exactly once)
+│   ├── append(items)              — create proxies, push to #rootProxies, version++
+│   └── addChildren(proxy, items)  — create child proxies, proxy.set('children', ...), version++
+│
+├── Read accessors
+│   ├── get roots()     — root proxy array
+│   ├── get flatView()  — flat view with tree line types
+│   └── get lookup()    — Map<key, ProxyItem>
+│
+└── Internal
+    └── #createProxies(items, startIndex, level) — batch proxy creation
+```
+
+### Append Flow
+
+```
+proxyTree.append([item1, item2, item3])
+  │
+  ├── startIndex = #rootProxies.length  (e.g. 10)
+  ├── Create proxies: key='10', key='11', key='12'
+  ├── Push to #rootProxies array
+  └── #version++ (single bump)
+       │
+       ├── flatView re-derives (sees 3 new root nodes)
+       └── lookup re-derives (adds 3 new entries)
+```
+
+### AddChildren Flow
+
+```
+proxyTree.addChildren(parentProxy, [child1, child2])
+  │
+  ├── parentKey = parentProxy.key  (e.g. '3')
+  ├── Create child proxies: key='3-0', key='3-1'
+  ├── Set raw children on parent item
+  ├── parentProxy's #version bumps internally (via set())
+  └── ProxyTree #version++ (single bump)
+       │
+       ├── flatView re-derives (sees children if parent expanded)
+       └── lookup re-derives (adds child entries)
+```
+
+### Version Strategy
+
+Two version levels prevent unnecessary rebuilds:
+
+1. **ProxyItem `#version`** — bumped by `set()`, triggers `#buildChildren()` for that proxy only
+2. **ProxyTree `#version`** — bumped by `append()` and `addChildren()`, triggers `flatView` and `lookup` rebuild
+
+For `addChildren`, both levels bump: ProxyItem version rebuilds children, ProxyTree version ensures flatView/lookup pick up the structural change.
+
+For `append`, only ProxyTree version bumps (no existing proxy is modified).
+
+### FlatView with Tree Lines
+
+ProxyTree owns the `buildReactiveFlatView` function (currently in LazyWrapper). Each flatView entry:
+
+```
+{
+  key: string,           // proxy.key
+  proxy: ProxyItem,      // stable reference
+  level: number,         // proxy.level
+  hasChildren: boolean,  // children.length > 0
+  isExpandable: boolean, // hasChildren || lazy marker (children === true)
+  type: string,          // 'item' | 'group' | 'separator' | 'spacer'
+  lineTypes: string[]    // tree line connectors for rendering
+}
+```
+
+**Lazy marker pattern:** When `children` is the boolean `true` (instead of an array), it marks a node whose children haven't been fetched yet. This is detected by `LazyProxyItem.loaded === false`. When the user expands such a node, `onlazyload(item)` is called to fetch the real children. After fetch, the boolean is replaced with the actual children array.
+
+---
+
+## Wrapper
+
+### Class Structure (after ProxyTree integration)
+
+```
+Wrapper
+├── Constructor(proxyTree, options?)
+│   └── Receives ProxyTree (does not create it)
+│
+├── Data (delegated to ProxyTree)
+│   ├── flatView      — from proxyTree.flatView
+│   ├── #navigable    — $derived filter (exclude separators/spacers/disabled)
+│   └── lookup        — from proxyTree.lookup
+│
+├── State
+│   ├── #focusedKey   — $state(string | null)
+│   └── #selectedValue — $state(unknown)
+│
+├── IWrapper: movement
+│   ├── next(path)     — focus next navigable
+│   ├── prev(path)     — focus previous navigable
+│   ├── first(path)    — focus first navigable
+│   ├── last(path)     — focus last navigable
+│   ├── expand(path)   — expand group or enter
+│   └── collapse(path) — collapse group or move to parent
+│
+├── IWrapper: selection
+│   ├── select(path)   — select item or toggle group
+│   ├── toggle(path)   — toggle group expansion
+│   ├── extend(path)   — multi-select toggle (future)
+│   ├── range(path)    — multi-select range (future)
+│   ├── moveTo(path)   — sync focus to path
+│   ├── moveToValue(v) — sync focus to value match
+│   ├── cancel(path)   — escape (override in dropdown wrappers)
+│   └── blur()         — focus left (override in dropdown wrappers)
+│
+├── IWrapper: typeahead
+│   └── findByText(query, startAfterKey?) → key | null
+│
+└── Callbacks
+    ├── onselect(value, proxy)  — fired every time select() hits a leaf
+    └── onchange(value, proxy)  — fired when value differs from previous
+```
+
+**Resolved decisions:**
+- **Wrapper receives ProxyTree** — does not create it. Component creates ProxyTree and passes it to Wrapper. This allows LazyWrapper to share the same ProxyTree and keeps data ownership clear.
+- **No lazy loading on Wrapper** — LazyWrapper extends Wrapper for lazy-specific overrides.
+- **No filter on Wrapper** — filtering is a data concern, handled before ProxyTree creation (e.g. `SearchFilter` filters items, then passes filtered items to ProxyTree).
+- **Events**: `onselect(value, proxy)` fires on every selection. `onchange(value, proxy)` fires only when value differs from previous.
+
+### Wrapper vs ProxyTree Responsibility Split
+
+| Concern | ProxyTree | Wrapper |
+|---------|-----------|---------|
+| Proxy creation | Yes | No |
+| flatView derivation | Yes | Reads from ProxyTree |
+| lookup map | Yes | Reads from ProxyTree |
+| Key generation | Yes | No |
+| Append/addChildren | Yes | No |
+| Focus tracking | No | Yes |
+| Keyboard navigation | No | Yes (next/prev/first/last) |
+| Expand/collapse | No | Yes (delegates expanded state to proxy) |
+| Selection | No | Yes (onselect/onchange) |
+| Typeahead | No | Yes |
+
+---
+
+## LazyWrapper
+
+### Class Structure (after ProxyTree integration)
+
+```
+LazyWrapper extends Wrapper
+├── Constructor(proxyTree, options?)
+│   ├── super(proxyTree, options)
+│   └── Stores onlazyload callback from options
+│
+├── Inherited from Wrapper
+│   ├── flatView, lookup, #navigable, #focusedKey, #selectedValue
+│   ├── next(), prev(), first(), last(), moveTo(), cancel(), blur()
+│   ├── findByText(), collapse()
+│   └── onselect, onchange callbacks
+│
+├── Overridden methods (lazy-aware)
+│   ├── expand(path)
+│   │   ├── Unloaded (lazy marker) → onlazyload(proxy.original) → proxyTree.addChildren(proxy, result) → expand
+│   │   ├── Loaded with children → super.expand(path)
+│   │   └── Already expanded → super.expand(path) (moves to first child)
+│   └── select(path)
+│       ├── Group with children → toggle expansion
+│       ├── Unloaded (lazy marker) → onlazyload(proxy.original) → addChildren → expand
+│       └── Leaf → super.select(path) (fires onchange/onselect)
+│
+├── New methods
+│   └── loadMore() → onlazyload() (no args) → proxyTree.append(result)
+│       Called by component's "Load More" button
+│
+└── Callbacks
+    └── onlazyload — lazy load callback (from options)
+```
+
+**Resolved decisions:**
+- **Extends Wrapper** — no code duplication. Only overrides `expand()` and `select()` for lazy marker detection. All navigation (next/prev/first/last), focus management, and typeahead are inherited.
+- **`toggle()` stays on Wrapper** — needed for accordion-trigger pattern. When an item has `data-accordion-trigger`, Navigator dispatches `toggle` instead of `select`. Toggle always toggles expansion regardless of current state (vs `expand` which only opens, `collapse` which only closes). Used by List groups and Tree parent nodes.
+- **Since Wrapper maintains `expandedKeys` and `selectedKeys` separately**, tree refresh (via ProxyTree.append/addChildren) does not affect expansion or selection state.
+
+### Lazy Loading Flows
+
+**Expand unloaded node:**
+```
+User clicks expand on node with children: true
+  → LazyWrapper.expand(path)
+  → Detects proxy.loaded === false
+  → proxy.loading = true (spinner shows)
+  → await onlazyload(proxy.original)
+  → proxyTree.addChildren(proxy, result)
+  → proxy.expanded = true
+  → proxy.loading = false
+  → flatView re-derives (shows children)
+```
+
+**Load more root items:**
+```
+User clicks "Load More" button
+  → LazyWrapper.loadMore()
+  → await onlazyload() (no args)
+  → proxyTree.append(result)
+  → flatView re-derives (shows new root items)
+  → Client updates hasMore prop
+```
+
+### onlazyload Signature
+
+```typescript
+type OnLazyLoad = (current?: unknown) => Promise<unknown[]>
+```
+
+| Invocation | Meaning |
+|------------|---------|
+| `onlazyload(item)` | Fetch children for this node (item = raw data object) |
+| `onlazyload()` | Fetch next batch of root items (pagination) |
+
+The callback returns a Promise resolving to an array of raw items (same format as `items` prop).
+
+---
+
+## LazyTree Component Changes
+
+### Template Structure
+
+```svelte
+<div data-tree use:navigator={{ wrapper, collapsible: true }}>
+  {#each wrapper.flatView as node (node.key)}
+    <!-- tree node rendering (same as Tree) -->
+    {#if node.proxy.loading}
+      <!-- loading spinner -->
+    {/if}
+  {/each}
+
+  {#if hasMore}
+    <button data-tree-load-more onclick={handleLoadMore}>
+      Load More
+    </button>
+  {/if}
+</div>
+```
+
+### Props
+
+```svelte
+let {
+  items, fields, value, size, lineStyle = 'solid', icons, class: className,
+  onlazyload,          // (current?) => Promise<items[]>
+  hasMore = false,     // show Load More button
+  onselect,
+} = $props()
+```
+
+**`lineStyle` replaces `showLines`:** Instead of a boolean on/off, tree line rendering is controlled via a `data-line-style` attribute on the root element. Values: `none` | `dotted` | `dashed` | `solid` (default: `solid`). CSS themes style connectors based on this attribute. To hide lines, use `lineStyle="none"` — connectors still render for alignment but are visually hidden via CSS.
+---
+
+## File Structure
+
+```
+packages/states/src/
+├── proxy-item.svelte.js      — ProxyItem, LazyProxyItem, buildProxyList, buildFlatView
+├── proxy-tree.svelte.js      — ProxyTree (NEW)
+├── wrapper.svelte.js         — Wrapper (refactored to receive ProxyTree)
+├── lazy-wrapper.svelte.js    — LazyWrapper (extends Wrapper, adds lazy loading)
+├── proxy.svelte.js           — Proxy (DEPRECATED — remove after migration)
+└── index.js                  — barrel exports
+```
+
+---
+
+## Migration Strategy
+
+### Phase 1: ProxyTree
+1. Create `proxy-tree.svelte.js` with ProxyTree class
+2. Move `buildReactiveFlatView` and `buildReactiveLookup` into ProxyTree
+3. Add `append()` and `addChildren()` methods
+4. Unit tests for ProxyTree standalone
+
+### Phase 2: Integrate into Wrapper + LazyWrapper
+1. Refactor Wrapper to receive ProxyTree (not create it)
+2. Refactor LazyWrapper to extend Wrapper (override expand/select only)
+3. Rename `onloadchildren` → `onlazyload`
+4. Add `loadMore()` method to LazyWrapper
+5. Update LazyTree component: add `hasMore` prop, Load More button, `lineStyle` prop
+6. Update tests
+
+### Phase 3: Canonical Field Mapping
+1. Create `BASE_FIELDS` in `@rokkit/core` replacing scattered field constants
+2. Update ProxyItem to use `BASE_FIELDS` as defaults
+3. Add `label`, `id`, `original`, `mutate()` to ProxyItem API
+4. Update components to use new field names where applicable
+
+### Phase 4: ItemProxy Deprecation
+1. Migrate 16 UI components from ItemProxy → ProxyItem
+2. Remove Proxy class (also removes Ramda dependency from `@rokkit/states`)
+3. Remove ItemProxy class
+
+### Phase 5: Shared Content Component
+1. Extract shared `Content` component from List/Menu/Select/MultiSelect/Tree
+2. `entity` prop controls `data-{entity}-item` attributes
+3. Handles icon/avatar/label/subtext/badge/shortcut rendering
+4. All list-like components use `Content` instead of duplicated markup

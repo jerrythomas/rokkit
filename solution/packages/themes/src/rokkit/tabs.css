@@ -1,0 +1,82 @@
+/**
+ * Tabs - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Tab List
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tabs-list] {
+  @apply border-surface-z3 gap-1 border-b-2 px-1;
+}
+
+[data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-list] {
+  @apply border-b-0 border-t-2;
+}
+
+[data-style='rokkit'] [data-tabs][data-orientation='vertical'] [data-tabs-list] {
+  @apply border-b-0 border-r-2 px-0 py-1;
+}
+
+[data-style='rokkit'] [data-tabs][data-orientation='vertical'][data-position='after'] [data-tabs-list] {
+  @apply border-r-0 border-l-2;
+}
+
+[data-style='rokkit'] [data-tabs-list]:focus-within {
+  @apply border-secondary outline-none;
+}
+
+/* =============================================================================
+   Tab Triggers
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tabs-trigger] {
+  @apply bg-surface-z1 flex-shrink-0 rounded-t;
+}
+
+[data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-trigger] {
+  @apply rounded-b rounded-t-none;
+}
+
+[data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z2 text-surface-z8;
+}
+
+/* Selected state */
+[data-style='rokkit'] [data-tabs-trigger][data-selected] {
+  @apply bg-surface-z3;
+}
+
+[data-style='rokkit'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply from-primary-z5 to-secondary-z5 bg-gradient-to-b text-primary-z9;
+}
+
+[data-style='rokkit'] [data-tabs][data-position='after'] [data-tabs-list]:focus-within [data-tabs-trigger][data-selected] {
+  @apply bg-gradient-to-t;
+}
+
+/* =============================================================================
+   Tab Icon
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Tab Panel
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

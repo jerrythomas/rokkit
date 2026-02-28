@@ -1,0 +1,62 @@
+/**
+ * Tabs - Material Theme Styles
+ *
+ * Material Design inspired with elevation and rounded corners.
+ */
+
+/* =============================================================================
+   Tab List
+   ============================================================================= */
+
+[data-style='material'] [data-tabs-list] {
+  @apply bg-surface-z2 gap-0.5 rounded-t-lg shadow-sm;
+}
+
+[data-style='material'] [data-tabs][data-position='after'] [data-tabs-list] {
+  @apply rounded-t-none rounded-b-lg;
+}
+
+/* =============================================================================
+   Tab Triggers
+   ============================================================================= */
+
+[data-style='material'] [data-tabs-trigger] {
+  @apply text-surface-z6 rounded-t-lg;
+}
+
+[data-style='material'] [data-tabs][data-position='after'] [data-tabs-trigger] {
+  @apply rounded-t-none rounded-b-lg;
+}
+
+[data-style='material'] [data-tabs-trigger]:hover:not(:disabled):not([data-disabled]) {
+  @apply bg-surface-z3 text-surface-z8;
+}
+
+/* Selected state */
+[data-style='material'] [data-tabs-trigger][data-selected] {
+  @apply bg-primary-z5 text-white shadow-md;
+}
+
+/* =============================================================================
+   Tab Icon
+   ============================================================================= */
+
+[data-style='material'] [data-tabs-trigger] [data-tabs-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='material'] [data-tabs-trigger]:hover:not(:disabled) [data-tabs-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='material'] [data-tabs-trigger][data-selected] [data-tabs-icon] {
+  @apply text-white;
+}
+
+/* =============================================================================
+   Tab Panel
+   ============================================================================= */
+
+[data-style='material'] [data-tabs-content] {
+  @apply text-surface-z8;
+}

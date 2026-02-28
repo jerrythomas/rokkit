@@ -1,0 +1,14 @@
+<script>
+	// @ts-nocheck
+	import { Toggle } from '@rokkit/ui'
+
+	// label is the default text field — no fields mapping needed
+	let options = [
+		{ label: 'Light', value: 'light', icon: 'i-lucide:sun' },
+		{ label: 'Dark', value: 'dark', icon: 'i-lucide:moon' },
+		{ label: 'System', value: 'system', icon: 'i-lucide:monitor' }
+	]
+	let value = $state('light')
+</script>
+
+<Toggle {options} bind:value />

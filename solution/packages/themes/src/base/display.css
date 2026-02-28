@@ -1,0 +1,91 @@
+/* Base structural styles for display components */
+
+/* Display section: key-value pairs */
+[data-display-section] {
+  @apply flex flex-col gap-2;
+}
+
+[data-display-title] {
+  @apply font-semibold text-sm text-on-surface;
+}
+
+[data-display-field] {
+  @apply flex justify-between items-baseline gap-4;
+}
+
+[data-display-label] {
+  @apply text-sm text-on-surface/70 shrink-0;
+}
+
+[data-display-value] {
+  @apply text-sm text-on-surface text-right;
+}
+
+/* Badge format: pill style */
+[data-display-value][data-format='badge'] {
+  @apply px-2 py-0.5 rounded-full text-xs font-medium bg-surface-z2;
+}
+
+/* Boolean format */
+[data-display-value][data-format='boolean'] {
+  @apply font-mono;
+}
+
+/* Display table wrapper */
+[data-display-table] {
+  @apply flex flex-col gap-2;
+}
+
+/* Display card grid */
+[data-display-cards] {
+  @apply flex flex-col gap-2;
+}
+
+[data-display-grid] {
+  @apply grid grid-cols-1 gap-3;
+}
+
+@media (min-width: 640px) {
+  [data-display-grid] {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 1024px) {
+  [data-display-grid] {
+    @apply grid-cols-3;
+  }
+}
+
+[data-display-card] {
+  @apply flex flex-col gap-1 p-3 rounded border border-surface-z2 bg-surface;
+}
+
+[data-display-card][data-selected] {
+  @apply border-primary ring-1 ring-primary;
+}
+
+[data-selectable] [data-display-card] {
+  @apply cursor-pointer transition-colors;
+}
+
+[data-selectable] [data-display-card]:hover {
+  @apply bg-surface-z1;
+}
+
+/* Display list */
+[data-display-list] {
+  @apply flex flex-col gap-2;
+}
+
+[data-display-list] ul {
+  @apply flex flex-col gap-1;
+}
+
+[data-display-list-item] {
+  @apply flex gap-4 items-baseline py-1 border-b border-surface-z2 last:border-0;
+}
+
+[data-display-list-item] [data-display-field] {
+  @apply flex gap-1;
+}

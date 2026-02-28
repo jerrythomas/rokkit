@@ -1,0 +1,152 @@
+/**
+ * Switch - Base Structural Styles
+ *
+ * These styles provide layout, positioning, size variants, and transitions.
+ * No colors, shadows, or visual theming — those belong in theme styles.
+ */
+
+/* =============================================================================
+   Switch Root (button)
+   ============================================================================= */
+
+[data-switch] {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+	border: none;
+	background: transparent;
+	padding: 0;
+	user-select: none;
+}
+
+[data-switch]:focus {
+	outline: none;
+}
+
+[data-switch][data-switch-disabled] {
+	pointer-events: none;
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* =============================================================================
+   Track
+   ============================================================================= */
+
+[data-switch-track] {
+	position: relative;
+	display: inline-block;
+	border-radius: 9999px;
+	transition: background-color 200ms ease;
+	flex-shrink: 0;
+}
+
+/* =============================================================================
+   Thumb
+   ============================================================================= */
+
+[data-switch-thumb] {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%) translateX(0);
+	border-radius: 9999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition:
+		transform 200ms ease,
+		background-color 200ms ease;
+}
+
+[data-switch][aria-checked='true'] [data-switch-thumb] {
+	transform: translateY(-50%) translateX(var(--switch-thumb-travel));
+}
+
+/* =============================================================================
+   Size Variants
+   ============================================================================= */
+
+/* Small: track 28×16, thumb 12px */
+[data-switch][data-switch-size='sm'] [data-switch-track] {
+	width: 1.75rem;
+	height: 1rem;
+}
+
+[data-switch][data-switch-size='sm'] [data-switch-thumb] {
+	width: 0.75rem;
+	height: 0.75rem;
+	left: 0.125rem;
+	--switch-thumb-travel: 0.75rem;
+}
+
+[data-switch][data-switch-size='sm'] [data-switch-icon] {
+	font-size: 0.5rem;
+}
+
+[data-switch][data-switch-size='sm'] [data-switch-label] {
+	font-size: 0.75rem;
+}
+
+/* Medium (default): track 44×24, thumb 18px */
+[data-switch][data-switch-size='md'] [data-switch-track],
+[data-switch]:not([data-switch-size]) [data-switch-track] {
+	width: 2.75rem;
+	height: 1.5rem;
+}
+
+[data-switch][data-switch-size='md'] [data-switch-thumb],
+[data-switch]:not([data-switch-size]) [data-switch-thumb] {
+	width: 1.125rem;
+	height: 1.125rem;
+	left: 0.1875rem;
+	--switch-thumb-travel: 1.25rem;
+}
+
+[data-switch][data-switch-size='md'] [data-switch-icon],
+[data-switch]:not([data-switch-size]) [data-switch-icon] {
+	font-size: 0.625rem;
+}
+
+[data-switch][data-switch-size='md'] [data-switch-label],
+[data-switch]:not([data-switch-size]) [data-switch-label] {
+	font-size: 0.875rem;
+}
+
+/* Large: track 56×32, thumb 24px */
+[data-switch][data-switch-size='lg'] [data-switch-track] {
+	width: 3.5rem;
+	height: 2rem;
+}
+
+[data-switch][data-switch-size='lg'] [data-switch-thumb] {
+	width: 1.5rem;
+	height: 1.5rem;
+	left: 0.25rem;
+	--switch-thumb-travel: 1.5rem;
+}
+
+[data-switch][data-switch-size='lg'] [data-switch-icon] {
+	font-size: 0.75rem;
+}
+
+[data-switch][data-switch-size='lg'] [data-switch-label] {
+	font-size: 1rem;
+}
+
+/* =============================================================================
+   Label
+   ============================================================================= */
+
+[data-switch-label] {
+	font-weight: 500;
+	user-select: none;
+}
+
+/* =============================================================================
+   Icon (inside thumb)
+   ============================================================================= */
+
+[data-switch-icon] {
+	flex-shrink: 0;
+}

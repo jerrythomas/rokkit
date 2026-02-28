@@ -1,0 +1,46 @@
+/* BreadCrumbs — base structural styles */
+
+[data-breadcrumbs] {
+	display: block;
+}
+
+[data-breadcrumb-list] {
+	display: flex;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	gap: 0.25rem;
+}
+
+[data-breadcrumb-item] {
+	display: flex;
+	align-items: center;
+}
+
+[data-breadcrumb-separator] {
+	display: flex;
+	align-items: center;
+	opacity: 0.5;
+}
+
+[data-breadcrumb-link] {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+	font: inherit;
+	color: inherit;
+}
+
+[data-breadcrumb-current] {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.25rem 0.5rem;
+	font-weight: 600;
+}

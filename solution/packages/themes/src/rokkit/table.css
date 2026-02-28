@@ -1,0 +1,87 @@
+/**
+ * Table - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='rokkit'] [data-table-header] th {
+	@apply text-surface-z6 border-b border-surface-z4;
+}
+
+[data-style='rokkit'] [data-table-header-cell][data-sortable='true']:hover {
+	@apply text-surface-z8;
+}
+
+[data-style='rokkit'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='rokkit'] [data-table-header-cell][data-sort-order='descending'] {
+	@apply text-primary-z7;
+}
+
+[data-style='rokkit'] [data-table-sort-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='rokkit'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
+	@apply text-primary-z6;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='rokkit'] [data-table-caption] {
+	@apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='rokkit'] [data-table-row] {
+	@apply text-surface-z8 border-b border-surface-z3;
+}
+
+[data-style='rokkit'] [data-table-row]:hover {
+	@apply from-surface-z3 to-surface-z2 bg-gradient-to-r;
+}
+
+[data-style='rokkit'] [data-table-row]:focus {
+	@apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+}
+
+[data-style='rokkit'] [data-table-row][data-selected='true'] {
+	@apply from-primary-z5 to-secondary-z5 text-primary-z9 bg-gradient-to-r;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='rokkit'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+	@apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='rokkit'] [data-table-empty] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='rokkit'] [data-table-cell] [data-cell-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-table-row][data-selected='true'] [data-cell-icon] {
+	@apply text-primary-z7;
+}

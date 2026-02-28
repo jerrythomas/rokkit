@@ -1,0 +1,18 @@
+/**
+ * @rokkit/themes - Complete Theme Bundle
+ *
+ * Includes base structural styles + all theme variants.
+ * For custom themes, import base only and add your own theme styles.
+ *
+ * Theme Usage:
+ * - rokkit: Default theme (no wrapper needed — gradients + borders)
+ * - minimal: Use data-style="minimal" wrapper (clean + subtle)
+ * - material: Use data-style="material" wrapper (elevation + shadows)
+ * - glass: Use data-style="glass" wrapper (blur + transparency)
+ */
+
+@import './base/index.css';
+@import './rokkit/index.css';
+@import './minimal/index.css';
+@import './material/index.css';
+@import './glass/index.css';

@@ -1,0 +1,13 @@
+@import '@unocss/reset/tailwind.css';
+@import '@rokkit/themes';
+@import './palette-manager.css';
+
+:root {
+	font-family: 'Inter', -apple-system, system-ui, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+}

@@ -1,0 +1,123 @@
+/**
+ * Tree - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Tree Container
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tree]:focus-within {
+  @apply ring-primary-z4 rounded ring-1;
+}
+
+/* =============================================================================
+   Tree Toggle Button
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tree-toggle-btn] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-tree-toggle-btn]:hover {
+  @apply from-surface-z3 to-surface-z2 text-surface-z8 bg-gradient-to-b;
+}
+
+/* =============================================================================
+   Tree Item Content
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tree-item-content] {
+  @apply text-surface-z8;
+}
+
+[data-style='rokkit'] [data-tree-item-content]:hover:not(:disabled),
+[data-style='rokkit'] [data-tree-item-content]:focus:not(:disabled) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+}
+
+/* Focus visible for keyboard navigation */
+[data-style='rokkit'] [data-tree-item-content]:focus-visible {
+  @apply ring-primary-z5 ring-2 outline-none;
+}
+
+/* Active/selected state - when focus is within tree */
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] {
+  @apply from-primary-z5 to-secondary-z5 text-primary-z9 border-l-primary-z5 border-l-2 bg-gradient-to-r;
+}
+
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+  @apply from-primary-z4 to-primary-z3 bg-gradient-to-r;
+}
+
+/* Active/selected state - when focus is outside tree (muted) */
+[data-style='rokkit'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] {
+  @apply from-surface-z3 to-surface-z2 text-surface-z9 border-l-surface-z5 border-l-2 bg-gradient-to-r;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tree-item-content] [data-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-icon] {
+  @apply text-surface-z6;
+}
+
+/* Item description */
+[data-style='rokkit'] [data-tree-item-content] [data-item-description] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-description] {
+  @apply text-primary-z7;
+}
+
+[data-style='rokkit'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-description] {
+  @apply text-surface-z6;
+}
+
+/* Item badge */
+[data-style='rokkit'] [data-tree-item-content] [data-item-badge] {
+  @apply text-surface-z6 from-surface-z3 to-surface-z2 border-surface-z4 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply text-primary-z8 from-primary-z3 to-primary-z2 border-primary-z4 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-tree]:not(:focus-within) [data-tree-item-content][data-active='true'] [data-item-badge] {
+  @apply text-surface-z7 from-surface-z4 to-surface-z3 bg-gradient-to-b;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='rokkit'] [data-tree-node][data-selected='true'] [data-tree-node-row] {
+  @apply bg-primary-z3;
+}
+
+[data-style='rokkit'] [data-tree]:focus-within [data-tree-node][data-selected='true'] [data-tree-node-row] {
+  @apply bg-primary-z4;
+}
+
+[data-style='rokkit'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+  @apply text-primary-z9;
+}
+
+[data-style='rokkit'] [data-tree-node][data-selected='true'] [data-tree-item-content] [data-item-icon] {
+  @apply text-primary-z6;
+}

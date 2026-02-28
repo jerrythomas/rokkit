@@ -1,0 +1,263 @@
+/**
+ * List - Base Structural Styles
+ *
+ * These styles provide layout, positioning, and basic structure.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-list] {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-list][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+[dir='rtl'] [data-list] [data-list-item] {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/* =============================================================================
+   List Items (shared for links and buttons)
+   ============================================================================= */
+
+[data-list-item] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+a[data-list-item],
+button[data-list-item] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-list-item][data-disabled='true'],
+[data-list-item]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-list-item]:focus {
+  outline: none;
+}
+
+/* Size variants for items */
+[data-list][data-size='sm'] [data-list-item],
+[data-list][data-size='sm'] a[data-list-item],
+[data-list][data-size='sm'] button[data-list-item] {
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-list][data-size='md'] [data-list-item],
+[data-list]:not([data-size]) [data-list-item],
+[data-list][data-size='md'] a[data-list-item],
+[data-list]:not([data-size]) a[data-list-item],
+[data-list][data-size='md'] button[data-list-item],
+[data-list]:not([data-size]) button[data-list-item] {
+  gap: 0.625rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-list][data-size='lg'] [data-list-item],
+[data-list][data-size='lg'] a[data-list-item],
+[data-list][data-size='lg'] button[data-list-item] {
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Item Elements - uses shared [data-item-*] from item.css
+   ============================================================================= */
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-list-item-custom] {
+  display: contents;
+}
+
+[data-list-item-custom] > a,
+[data-list-item-custom] > button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-list-group] {
+  padding-block: 0.25rem;
+}
+
+[data-list-group] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+/* Non-collapsible group labels are not interactive */
+[data-list]:not([data-collapsible='true']) [data-list-group] {
+  cursor: default;
+}
+
+[data-list-group]:focus {
+  outline: none;
+}
+
+/* Group label sizes */
+[data-list][data-size='sm'] [data-list-group] {
+  padding: 0.25rem 0.5rem;
+}
+[data-list][data-size='md'] [data-list-group],
+[data-list]:not([data-size]) [data-list-group] {
+  padding: 0.375rem 0.75rem;
+}
+[data-list][data-size='lg'] [data-list-group] {
+  padding: 0.5rem 1rem;
+}
+
+[data-list-group] > [data-list-group-icon] {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+[data-list-group] > [data-list-group-text] {
+  flex: 1;
+  text-align: left;
+}
+
+[data-list-group] > [data-list-group-arrow] {
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+[data-list-group][data-list-group-collapsed='true'] [data-list-group-arrow] {
+  transform: rotate(-90deg);
+}
+
+/* Group label with nested button */
+[data-list-group] > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-list-group] > button [data-icon] {
+  flex-shrink: 0;
+}
+
+[data-list-group] > button [data-chevron] {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  transition: transform 150ms ease;
+}
+
+[data-list-group] > button[data-state='open'] [data-chevron] {
+  transform: rotate(180deg);
+}
+
+/* Group label as button directly */
+button[data-list-group] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+button[data-list-group] [data-icon] {
+  flex-shrink: 0;
+}
+
+button[data-list-group] [data-chevron] {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  transition: transform 150ms ease;
+}
+
+button[data-list-group][data-state='open'] [data-chevron] {
+  transform: rotate(180deg);
+}
+
+button[data-list-group] [data-stats] {
+  font-weight: 400;
+  text-transform: none;
+}
+
+[data-list-group-items] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================================================
+   Multi-selection
+   ============================================================================= */
+
+[data-list][data-multiselect='true'] [data-list-item] {
+  user-select: none;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-list-divider] {
+  height: 1px;
+  margin-block: 0.25rem;
+}

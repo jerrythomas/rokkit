@@ -1,0 +1,13 @@
+{
+  "title": "Stepper",
+  "description": "Multi-step process navigation",
+  "icon": "i-component:stepper",
+  "category": "components",
+  "tags": [
+    "stepper",
+    "multi-step",
+    "process",
+    "navigation"
+  ],
+  "experimental": false
+}

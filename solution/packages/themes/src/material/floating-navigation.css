@@ -1,0 +1,74 @@
+/**
+ * FloatingNavigation - Material Theme Styles
+ *
+ * Material Design inspired with elevation and shadows.
+ */
+
+/* =============================================================================
+   Container
+   ============================================================================= */
+
+[data-style='material'] [data-floating-nav] {
+  @apply bg-surface-z1 shadow-xl;
+}
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='material'] [data-floating-nav-title] {
+  @apply text-surface-z6;
+}
+
+[data-style='material'] [data-floating-nav-pin] {
+  @apply text-surface-z6;
+}
+
+[data-style='material'] [data-floating-nav-pin]:hover {
+  @apply text-primary-z6;
+}
+
+[data-style='material'] [data-floating-nav-pin][aria-pressed='true'] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Items
+   ============================================================================= */
+
+[data-style='material'] [data-floating-nav-item] {
+  @apply text-surface-z8;
+}
+
+[data-style='material'] [data-floating-nav-item]:hover {
+  @apply bg-surface-z2 text-surface-z10;
+}
+
+[data-style='material'] [data-floating-nav-item][data-active] {
+  @apply text-primary-z7 bg-primary-z5/10;
+}
+
+[data-style='material'] [data-floating-nav-item]:focus-visible {
+  @apply ring-primary-z4 ring-2 outline-none;
+}
+
+/* Icon */
+[data-style='material'] [data-floating-nav-icon] {
+  @apply text-surface-z6;
+}
+
+[data-style='material'] [data-floating-nav-item]:hover [data-floating-nav-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='material'] [data-floating-nav-item][data-active] [data-floating-nav-icon] {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Active Indicator
+   ============================================================================= */
+
+[data-style='material'] [data-floating-nav-indicator] {
+  @apply bg-primary-z5 shadow-sm;
+}

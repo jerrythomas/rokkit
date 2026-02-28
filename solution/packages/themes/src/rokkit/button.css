@@ -1,0 +1,225 @@
+/**
+ * Button - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Default Style (filled)
+   ============================================================================= */
+
+/* Default variant */
+[data-style='rokkit'] [data-button][data-style='default'][data-variant='default'],
+[data-style='rokkit'] [data-button]:not([data-style])[data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='default']:not([data-variant]),
+[data-style='rokkit'] [data-button]:not([data-style]):not([data-variant]) {
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z8 border bg-gradient-to-b;
+}
+
+/* Primary variant */
+[data-style='rokkit'] [data-button][data-style='default'][data-variant='primary'],
+[data-style='rokkit'] [data-button]:not([data-style])[data-variant='primary'] {
+  @apply from-primary-z5 to-secondary-z5 border-primary-z5 text-on-primary border bg-gradient-to-b;
+}
+
+/* Secondary variant */
+[data-style='rokkit'] [data-button][data-style='default'][data-variant='secondary'],
+[data-style='rokkit'] [data-button]:not([data-style])[data-variant='secondary'] {
+  @apply from-secondary-z4 to-secondary-z3 border-secondary-z5 text-on-secondary border bg-gradient-to-b;
+}
+
+/* Danger variant */
+[data-style='rokkit'] [data-button][data-style='default'][data-variant='danger'],
+[data-style='rokkit'] [data-button]:not([data-style])[data-variant='danger'] {
+  @apply from-danger-z4 to-danger-z3 border-danger-z5 text-on-danger border bg-gradient-to-b;
+}
+
+/* =============================================================================
+   Outline Style
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button][data-style='outline'][data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='outline']:not([data-variant]) {
+  @apply border-surface-z4 text-surface-z7 border bg-transparent;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline'][data-variant='primary'] {
+  @apply border-primary-z4 text-primary-z6 border bg-transparent;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline'][data-variant='secondary'] {
+  @apply border-secondary-z4 text-secondary-z6 border bg-transparent;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline'][data-variant='danger'] {
+  @apply border-danger-z4 text-danger-z4 border bg-transparent;
+}
+
+/* =============================================================================
+   Ghost Style
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button][data-style='ghost'] {
+  @apply border-transparent bg-transparent;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost'][data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='ghost']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+/* =============================================================================
+   Gradient Style
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button][data-style='gradient'][data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='gradient']:not([data-variant]) {
+  @apply from-surface-z4 to-surface-z2 text-surface-z10 bg-gradient-to-br;
+}
+
+[data-style='rokkit'] [data-button][data-style='gradient'][data-variant='primary'] {
+  @apply from-primary-z5 to-primary-z3 text-on-primary bg-gradient-to-br;
+}
+
+[data-style='rokkit'] [data-button][data-style='gradient'][data-variant='secondary'] {
+  @apply from-secondary-z5 to-secondary-z3 text-on-secondary bg-gradient-to-br;
+}
+
+[data-style='rokkit'] [data-button][data-style='gradient'][data-variant='danger'] {
+  @apply from-danger-z5 to-danger-z3 text-on-danger bg-gradient-to-br;
+}
+
+[data-style='rokkit'] [data-button][data-style='gradient']:hover:not(:disabled):not([data-disabled]) {
+  filter: brightness(1.1);
+}
+
+/* =============================================================================
+   Link Style
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button][data-style='link'][data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='link']:not([data-variant]) {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-button][data-style='link'][data-variant='primary'] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-button][data-style='link'][data-variant='secondary'] {
+  @apply text-secondary-z6;
+}
+
+[data-style='rokkit'] [data-button][data-style='link'][data-variant='danger'] {
+  @apply text-danger-z4;
+}
+
+[data-style='rokkit'] [data-button][data-style='link']:hover:not(:disabled):not([data-disabled]) {
+  @apply text-primary-z7;
+}
+
+/* =============================================================================
+   Hover States
+   ============================================================================= */
+
+/* Default style hover */
+[data-style='rokkit'] [data-button][data-style='default']:hover:not(:disabled):not([data-disabled]),
+[data-style='rokkit'] [data-button]:not([data-style]):hover:not(:disabled):not([data-disabled]) {
+  @apply opacity-90;
+}
+
+/* Outline style hover */
+[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled]):not([data-variant]) {
+  @apply from-surface-z2 to-surface-z1 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='primary'] {
+  @apply from-primary-z2 to-primary-z1 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='secondary'] {
+  @apply from-secondary-z2 to-secondary-z1 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-button][data-style='outline']:hover:not(:disabled):not([data-disabled])[data-variant='danger'] {
+  @apply from-danger-z2 to-danger-z1 bg-gradient-to-b;
+}
+
+/* Ghost style hover */
+[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='default'],
+[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled]):not([data-variant]) {
+  @apply bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='primary'] {
+  @apply bg-primary-z1;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='secondary'] {
+  @apply bg-secondary-z1;
+}
+
+[data-style='rokkit'] [data-button][data-style='ghost']:hover:not(:disabled):not([data-disabled])[data-variant='danger'] {
+  @apply bg-danger-z1;
+}
+
+/* =============================================================================
+   Active/Pressed State
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button]:active:not(:disabled):not([data-disabled]) {
+  @apply scale-95;
+  animation: button-pop 0.25s ease-out;
+}
+
+/* =============================================================================
+   Focus
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button]:focus-visible {
+  @apply ring-primary-z4 ring-2 outline-none;
+}
+
+/* =============================================================================
+   Icon Colors
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button] [data-item-icon],
+[data-style='rokkit'] [data-button] [data-button-icon-right] {
+  color: inherit;
+  opacity: 0.8;
+}
+
+[data-style='rokkit'] [data-button]:hover [data-item-icon],
+[data-style='rokkit'] [data-button]:hover [data-button-icon-right] {
+  opacity: 1;
+}
+
+/* =============================================================================
+   Button Group
+   ============================================================================= */
+
+[data-style='rokkit'] [data-button-group] {
+  @apply gap-px;
+}
+
+[data-style='rokkit'] [data-button-group] [data-button]:first-child {
+  @apply rounded-l-lg rounded-r-none;
+}
+
+[data-style='rokkit'] [data-button-group] [data-button]:last-child {
+  @apply rounded-l-none rounded-r-lg;
+}

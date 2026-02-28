@@ -1,0 +1,87 @@
+/**
+ * Table - Material Theme Styles
+ *
+ * Material Design inspired with elevation and shadows.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='material'] [data-table-header] th {
+	@apply text-surface-z6 bg-surface-z2 border-b border-surface-z4 font-medium;
+}
+
+[data-style='material'] [data-table-header-cell][data-sortable='true']:hover {
+	@apply text-surface-z9 bg-surface-z3;
+}
+
+[data-style='material'] [data-table-header-cell][data-sort-order='ascending'],
+[data-style='material'] [data-table-header-cell][data-sort-order='descending'] {
+	@apply text-primary-z8;
+}
+
+[data-style='material'] [data-table-sort-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='material'] [data-table-header-cell][data-sort-order='ascending'] [data-table-sort-icon],
+[data-style='material'] [data-table-header-cell][data-sort-order='descending'] [data-table-sort-icon] {
+	@apply text-primary-z6;
+}
+
+/* =============================================================================
+   Caption
+   ============================================================================= */
+
+[data-style='material'] [data-table-caption] {
+	@apply text-surface-z7;
+}
+
+/* =============================================================================
+   Rows
+   ============================================================================= */
+
+[data-style='material'] [data-table-row] {
+	@apply text-surface-z8 border-b border-surface-z3;
+}
+
+[data-style='material'] [data-table-row]:hover {
+	@apply bg-surface-z2;
+}
+
+[data-style='material'] [data-table-row]:focus {
+	@apply bg-surface-z2 text-surface-z10 outline-none ring-2 ring-primary-z4 ring-inset;
+}
+
+[data-style='material'] [data-table-row][data-selected='true'] {
+	@apply bg-primary-z2 text-primary-z9;
+}
+
+/* =============================================================================
+   Striped
+   ============================================================================= */
+
+[data-style='material'] [data-striped='true'] [data-table-body] tr:nth-child(even) {
+	@apply bg-surface-z1;
+}
+
+/* =============================================================================
+   Empty
+   ============================================================================= */
+
+[data-style='material'] [data-table-empty] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Cell Icon
+   ============================================================================= */
+
+[data-style='material'] [data-table-cell] [data-cell-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='material'] [data-table-row][data-selected='true'] [data-cell-icon] {
+	@apply text-primary-z6;
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Connector",
+  "description": "Visual connectors for tree and nested layouts",
+  "icon": "🔗",
+  "category": "Utilities",
+  "tags": ["connector", "visual", "tree", "nested", "layout"],
+  "experimental": false
+}

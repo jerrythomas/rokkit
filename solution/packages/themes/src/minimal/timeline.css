@@ -1,0 +1,45 @@
+/**
+ * Timeline - Minimal Theme Styles
+ *
+ * Clean, understated styling with subtle borders.
+ */
+
+/* =============================================================================
+   Circle
+   ============================================================================= */
+
+[data-style='minimal'] [data-timeline-circle] {
+	@apply border-surface-z4 text-surface-z6;
+}
+
+[data-style='minimal'] [data-timeline-item][data-completed] [data-timeline-circle] {
+	@apply border-primary text-primary;
+}
+
+[data-style='minimal'] [data-timeline-item][data-active] [data-timeline-circle] {
+	@apply border-primary text-primary border-b-2;
+}
+
+/* =============================================================================
+   Connector
+   ============================================================================= */
+
+[data-style='minimal'] [data-timeline-connector] {
+	@apply bg-surface-z3;
+}
+
+[data-style='minimal'] [data-timeline-item][data-completed] [data-timeline-connector] {
+	@apply bg-primary;
+}
+
+/* =============================================================================
+   Body
+   ============================================================================= */
+
+[data-style='minimal'] [data-timeline-title] {
+	@apply text-surface-z8;
+}
+
+[data-style='minimal'] [data-timeline-description] {
+	@apply text-surface-z6;
+}

@@ -1,0 +1,157 @@
+import extractorSvelte from '@unocss/extractor-svelte'
+import {
+	defineConfig,
+	presetIcons,
+	presetTypography,
+	presetWind3,
+	transformerDirectives,
+	transformerVariantGroup
+} from 'unocss'
+
+import { shades, defaultPalette, DEFAULT_ICONS, iconShortcuts } from '@rokkit/core'
+import { iconCollections } from '@rokkit/core/vite'
+import { Theme } from '@rokkit/core'
+
+const mapping = { surface: 'shark' }
+const theme = new Theme()
+
+const components = [
+	'accordion',
+	'button',
+	'card',
+	'calendar',
+	'carousel',
+	'checkbox',
+	'combobox',
+	'crumbs',
+	'dropdown',
+	'icon',
+	'input-text',
+	'item',
+	'list',
+	'message',
+	'palette',
+	'pill',
+	'progress',
+	'range',
+	'multiselect',
+	'select',
+	'settings',
+	'stepper',
+	'switch',
+	'tabs',
+	'table',
+	'tree',
+	'radio',
+	'range',
+	'rating',
+	'input-password'
+].map((icon) => `i-component:${icon}`)
+
+const themeConfig = {
+	dark: {
+		light: '[data-mode="light"]',
+		dark: '[data-mode="dark"]'
+	}
+}
+export default defineConfig({
+	darkMode: 'attribute',
+	extractors: [extractorSvelte()],
+	content: {
+		pipeline: {
+			include: [
+				'src/**/*.{svelte,js,ts}',
+				'../../packages/themes/src/**/*.css',
+				'../../packages/ui/src/**/*.svelte'
+			]
+		}
+	},
+	rules: [['hidden', { display: 'none' }]],
+	safelist: [
+		...DEFAULT_ICONS,
+		...components,
+		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}`)),
+		defaultPalette.flatMap((color) => shades.map((shade) => `bg-${color}-${shade}/50`)),
+		'i-solar:calendar-bold-duotone',
+		'i-solar:sidebar-bold-duotone',
+		'i-solar:rocket-bold-duotone',
+		'i-solar:database-bold-duotone',
+		'i-solar:layers-bold-duotone',
+		'i-solar:code-square-bold-duotone',
+		'i-solar:palette-bold-duotone',
+		'i-solar:eye-bold-duotone',
+		'i-solar:hamburger-menu-bold-duotone',
+		'i-solar:file-text-bold-duotone',
+		'i-solar:minimize-square-bold-duotone',
+		'i-solar:widget-bold-duotone',
+		'i-solar:notes-bold-duotone',
+		'i-solar:cpu-bolt-bold-duotone',
+		'i-solar:info-circle-bold-duotone',
+		'i-solar:list-bold-duotone',
+		'i-solar:alt-arrow-down-bold-duotone',
+		'i-solar:table-bold-duotone'
+	],
+	shortcuts: [
+		['skin-default', theme.getPalette(mapping)],
+		['skin-vibrant', theme.getPalette({ primary: 'blue', secondary: 'purple' })],
+		[
+			'skin-seaweed',
+			theme.getPalette({
+				primary: 'sky',
+				secondary: 'green',
+				accent: 'blue',
+				danger: 'rose',
+				error: 'rose',
+				success: 'lime',
+				surface: 'zinc',
+				warning: 'amber',
+				info: 'indigo'
+			})
+		],
+		...theme.getShortcuts('surface'),
+		...theme.getShortcuts('primary'),
+		...theme.getShortcuts('secondary'),
+		...theme.getShortcuts('accent'),
+		...theme.getShortcuts('success'),
+		...theme.getShortcuts('warning'),
+		...theme.getShortcuts('danger'),
+		...theme.getShortcuts('error'),
+		...theme.getShortcuts('info'),
+		...Object.entries(iconShortcuts(DEFAULT_ICONS, 'i-rokkit')),
+		['text-on-primary', 'text-surface-50'],
+		['text-on-secondary', 'text-surface-50'],
+		['text-on-info', 'text-surface-50'],
+		['text-on-success', 'text-surface-50'],
+		['text-on-warning', 'text-surface-50'],
+		['text-on-error', 'text-surface-50'],
+		['text-on-surface', 'text-surface-50']
+	],
+	theme: {
+		fontFamily: {
+			mono: ['Victor Mono', 'monospace'],
+			heading: ['Open Sans', 'sans-serif'],
+			sans: ['Overpass', 'ui-serif', 'sans-serif'],
+			body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
+		},
+		colors: theme.getColorRules(mapping)
+	},
+
+	presets: [
+		presetWind3(themeConfig),
+		presetTypography(),
+		presetIcons({
+			extraProperties: {
+				display: 'inline-block'
+			},
+			collections: iconCollections({
+				rokkit: '@rokkit/icons/ui.json',
+				logo: '@rokkit/icons/auth.json',
+				component: '@rokkit/icons/components.json',
+				app: '@rokkit/icons/app.json',
+				solar: '@iconify-json/solar/icons.json',
+				file: './static/icons/files/icons.json'
+			})
+		})
+	],
+	transformers: [transformerDirectives(), transformerVariantGroup()]
+})

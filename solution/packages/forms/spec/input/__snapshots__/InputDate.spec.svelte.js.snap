@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputDate > should render with all date-specific props 1`] = `
+<div>
+  <input
+    autocomplete="bday"
+    id="appointment-date-input"
+    max="2023-12-31"
+    min="2023-01-01"
+    name="appointment-date"
+    required=""
+    step="1"
+    type="date"
+  />
+  
+</div>
+`;

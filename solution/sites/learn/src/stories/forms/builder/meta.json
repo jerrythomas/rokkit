@@ -1,0 +1,8 @@
+{
+  "title": "FormBuilder",
+  "description": "Create forms from data with automatic schema derivation",
+  "category": "forms",
+  "difficulty": "intermediate",
+  "tags": ["forms", "coming-soon"],
+  "order": 2
+}

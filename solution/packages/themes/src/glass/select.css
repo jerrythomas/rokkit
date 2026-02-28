@@ -1,0 +1,178 @@
+/**
+ * Select - Glass Theme Styles
+ *
+ * Glassmorphism styling with blur and transparency.
+ */
+
+/* =============================================================================
+   Select Container — elevate when open so dropdown escapes sibling stacking contexts
+   ============================================================================= */
+
+[data-style='glass'] [data-select][data-open='true'] {
+	z-index: 50;
+}
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-style='glass'] [data-select-trigger] {
+	@apply backdrop-blur-md text-surface-z8 border bg-surface-z1/70 border-surface-z5/20;
+}
+
+[data-style='glass'] [data-select-trigger]:hover:not(:disabled) {
+	@apply text-surface-z10 bg-surface-z2/80 border-surface-z5/30;
+}
+
+[data-style='glass'] [data-select-trigger]:focus-visible {
+	@apply outline-none ring-1 ring-surface-z5/40;
+}
+
+[data-style='glass'] [data-select][data-open='true'] [data-select-trigger] {
+	@apply border-primary-z5/50;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='glass'] [data-select-placeholder] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Arrow
+   ============================================================================= */
+
+[data-style='glass'] [data-select-arrow] {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+	@apply text-surface-z7;
+}
+
+/* =============================================================================
+   Tags (MultiSelect)
+   ============================================================================= */
+
+[data-style='glass'] [data-select-tag] {
+	@apply text-surface-z8 bg-surface-z2/15;
+}
+
+[data-style='glass'] [data-select-tag-remove] {
+	@apply text-surface-z6;
+}
+
+[data-style='glass'] [data-select-tag-remove]:hover {
+	@apply text-surface-z9;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-style='glass'] [data-select-dropdown] {
+	@apply backdrop-blur-lg border shadow-lg bg-surface-z2/50 border-surface-z5/20;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='glass'] [data-select-option] {
+	@apply text-surface-z8;
+}
+
+[data-style='glass'] [data-select-option]:hover:not(:disabled),
+[data-style='glass'] [data-select-option]:focus:not(:disabled) {
+	@apply text-surface-z10 bg-surface-z2/80;
+}
+
+[data-style='glass'] [data-select-option]:focus-visible {
+	@apply outline-none ring-1 ring-inset ring-surface-z5/40;
+}
+
+[data-style='glass'] [data-select-option][data-selected='true'] {
+	@apply text-primary-z9 bg-primary-z5/40;
+}
+
+[data-style='glass'] [data-select-option][data-selected='true']:hover:not(:disabled),
+[data-style='glass'] [data-select-option][data-selected='true']:focus:not(:disabled) {
+	@apply bg-primary-z5/60;
+}
+
+/* Check mark */
+[data-style='glass'] [data-select-check] {
+	@apply text-primary-z6;
+}
+
+/* Checkbox */
+[data-style='glass'] [data-select-checkbox] {
+	@apply border-surface-z5/40 bg-surface-z1/70;
+}
+
+[data-style='glass'] [data-select-checkbox][data-checked='true'] {
+	@apply bg-primary-z5 border-primary-z5 text-white;
+}
+
+/* Item elements */
+[data-style='glass'] [data-select-option] [data-item-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-select-option]:hover:not(:disabled) [data-item-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='glass'] [data-select-option][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}
+
+[data-style='glass'] [data-select-option] [data-item-description] {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-select-option][data-selected='true'] [data-item-description] {
+	@apply text-primary-z7;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='glass'] [data-select-group-label] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='glass'] [data-select-divider] {
+	@apply bg-surface-z5/20;
+}
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='glass'] [data-select-filter] {
+	@apply bg-surface-z2/30;
+}
+
+[data-style='glass'] [data-select-filter-input] {
+	@apply text-surface-z8 border-surface-z5/20 bg-surface-z1/50 border;
+}
+
+[data-style='glass'] [data-select-filter-input]:focus {
+	@apply border-primary-z5/50 ring-1 ring-surface-z5/30;
+}
+
+[data-style='glass'] [data-select-filter-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+[data-style='glass'] [data-select-empty] {
+	@apply text-surface-z5;
+}

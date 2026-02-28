@@ -1,0 +1,411 @@
+/**
+ * Select - Base Structural Styles
+ *
+ * These styles provide layout, positioning, and basic structure.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   Select Container
+   ============================================================================= */
+
+[data-select] {
+  position: relative;
+  display: inline-block;
+}
+
+[data-select][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-select-trigger] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 180px;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 150ms ease;
+}
+
+[data-select-trigger]:disabled {
+  cursor: not-allowed;
+}
+
+[data-select-trigger]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Size variants */
+[data-select][data-size='sm'] [data-select-trigger] {
+  height: 1.75rem;
+  padding-inline: 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-select][data-size='md'] [data-select-trigger],
+[data-select]:not([data-size]) [data-select-trigger] {
+  height: 2.25rem;
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-select][data-size='lg'] [data-select-trigger] {
+  height: 2.75rem;
+  padding-inline: 1rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Trigger Value Display
+   ============================================================================= */
+
+[data-select-value] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+[data-select-value-icon] {
+  flex-shrink: 0;
+}
+
+[data-select-value-text] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-select-value-custom] {
+  display: contents;
+}
+
+[data-select-value-custom] > button,
+[data-select-value-custom] > a {
+  display: contents;
+}
+
+[data-select-placeholder] {
+  opacity: 0.6;
+}
+
+[data-select-arrow] {
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+[data-select][data-open='true'] [data-select-arrow] {
+  transform: rotate(180deg);
+}
+
+/* Arrow sizes */
+[data-select][data-size='sm'] [data-select-arrow] {
+  font-size: 0.875rem;
+}
+[data-select][data-size='md'] [data-select-arrow],
+[data-select]:not([data-size]) [data-select-arrow] {
+  font-size: 1rem;
+}
+[data-select][data-size='lg'] [data-select-arrow] {
+  font-size: 1.125rem;
+}
+
+/* =============================================================================
+   MultiSelect Tags
+   ============================================================================= */
+
+[data-select-tags] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+[data-select-tag] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.75em;
+  line-height: 1.25;
+}
+
+[data-select-tag-text] {
+  white-space: nowrap;
+}
+
+[data-select-tag-remove] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.125rem;
+  font-size: 0.75em;
+  opacity: 0.7;
+  transition: opacity 150ms ease;
+}
+
+[data-select-tag-remove]:hover {
+  opacity: 1;
+}
+
+[data-select-count] {
+  font-weight: 500;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-select-dropdown] {
+  position: absolute;
+  z-index: 50;
+  min-width: 100%;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+}
+
+/* Direction: down (default) */
+[data-select][data-direction='down'] [data-select-dropdown],
+[data-select]:not([data-direction]) [data-select-dropdown] {
+  top: calc(100% + 4px);
+  animation: select-dropdown-down 150ms ease;
+}
+
+/* Direction: up */
+[data-select][data-direction='up'] [data-select-dropdown] {
+  bottom: calc(100% + 4px);
+  animation: select-dropdown-up 150ms ease;
+}
+
+/* Alignment */
+[data-select][data-align='left'] [data-select-dropdown],
+[data-select]:not([data-align]) [data-select-dropdown] {
+  left: 0;
+}
+
+[data-select][data-align='right'] [data-select-dropdown] {
+  right: 0;
+}
+
+@keyframes select-dropdown-down {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes select-dropdown-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================================================================
+   Select Options
+   ============================================================================= */
+
+[data-select-option] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background-color 150ms ease;
+}
+
+[data-select-option][data-disabled='true'],
+[data-select-option]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-select-option]:focus,
+[data-select-option]:focus-visible {
+  outline: none;
+}
+
+/* Size variants for options */
+[data-select][data-size='sm'] [data-select-option] {
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-select][data-size='md'] [data-select-option],
+[data-select]:not([data-size]) [data-select-option] {
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-select][data-size='lg'] [data-select-option] {
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+}
+
+/* Check mark for single select */
+[data-select-check] {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Checkbox for multi select */
+[data-select-checkbox] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid currentColor;
+  font-size: 0.75rem;
+}
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-select-option-custom] {
+  display: contents;
+}
+
+[data-select-option-custom] > button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+/* Size variants for custom snippet buttons */
+[data-select][data-size='sm'] [data-select-option-custom] > button {
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-select][data-size='md'] [data-select-option-custom] > button,
+[data-select]:not([data-size]) [data-select-option-custom] > button {
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-select][data-size='lg'] [data-select-option-custom] > button {
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-select-group] {
+  padding-block: 0.25rem;
+}
+
+[data-select-group-label] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Group label sizes */
+[data-select][data-size='sm'] [data-select-group-label] {
+  padding: 0.25rem 0.5rem;
+}
+[data-select][data-size='md'] [data-select-group-label],
+[data-select]:not([data-size]) [data-select-group-label] {
+  padding: 0.375rem 0.75rem;
+}
+[data-select][data-size='lg'] [data-select-group-label] {
+  padding: 0.5rem 1rem;
+}
+
+[data-select-group-label] > [data-select-group-icon] {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-select-divider] {
+  height: 1px;
+  margin-block: 0.25rem;
+}
+
+/* =============================================================================
+   Filter Input (filterable mode)
+   ============================================================================= */
+
+[data-select-filter] {
+  padding: 0.375rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+[data-select-filter-input] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.5rem;
+  font-size: inherit;
+  outline: none;
+  background: transparent;
+}
+
+/* =============================================================================
+   Empty State (no filter results)
+   ============================================================================= */
+
+[data-select-empty] {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  text-align: center;
+  opacity: 0.6;
+}

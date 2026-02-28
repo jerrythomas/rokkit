@@ -1,0 +1,88 @@
+/**
+ * Menu - Minimal Theme Styles
+ *
+ * Clean, understated menu with subtle borders.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='minimal'] [data-menu-trigger] {
+	@apply border-surface-z4 bg-transparent text-surface-z7 border;
+}
+
+[data-style='minimal'] [data-menu-trigger]:hover:not(:disabled) {
+	@apply text-surface-z9 border-surface-z5;
+}
+
+[data-style='minimal'] [data-menu-trigger]:focus-visible {
+	@apply outline-none ring-1 ring-surface-z5;
+}
+
+[data-style='minimal'] [data-menu][data-open='true'] [data-menu-trigger] {
+	@apply border-surface-z6;
+}
+
+/* Trigger elements */
+[data-style='minimal'] [data-menu-trigger] [data-menu-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-menu-trigger] [data-menu-arrow] {
+	@apply text-surface-z4;
+}
+
+/* =============================================================================
+   Menu Dropdown
+   ============================================================================= */
+
+[data-style='minimal'] [data-menu-dropdown] {
+	@apply bg-surface-z1 border-surface-z3 border shadow-sm;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='minimal'] [data-menu-item] {
+	@apply text-surface-z7 border-0 border-solid border-transparent;
+}
+
+[data-style='minimal'] [data-menu-item]:hover:not(:disabled),
+[data-style='minimal'] [data-menu-item]:focus:not(:disabled) {
+	@apply text-surface-z9 border-l-surface-z2 border-l-2 outline-none;
+}
+
+/* Item elements */
+[data-style='minimal'] [data-menu-item] [data-item-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-menu-item]:hover:not(:disabled) [data-item-icon] {
+	@apply text-surface-z6;
+}
+
+[data-style='minimal'] [data-menu-item] [data-item-description] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='minimal'] [data-menu-group-label] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='minimal'] [data-menu-divider] {
+	@apply bg-surface-z3;
+}

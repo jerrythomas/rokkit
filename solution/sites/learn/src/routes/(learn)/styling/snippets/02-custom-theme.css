@@ -1,0 +1,15 @@
+/* my-theme.css */
+[data-list-item] {
+  border-radius: 0.5rem;
+  transition: background 150ms ease;
+}
+
+[data-list-item][data-selected] {
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+
+[data-list-item][data-focused] {
+  outline: 2px solid var(--primary-500);
+  outline-offset: -2px;
+}

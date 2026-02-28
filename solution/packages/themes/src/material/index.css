@@ -1,0 +1,23 @@
+/**
+ * @rokkit/themes - Material Theme
+ *
+ * Material Design inspired styling with elevation shadows and ripple effects.
+ * Use with data-style="material" wrapper.
+ */
+
+@import './button.css';
+@import './input.css';
+@import './toolbar.css';
+@import './tabs.css';
+@import './toggle.css';
+@import './switch.css';
+@import './list.css';
+@import './tree.css';
+@import './select.css';
+@import './menu.css';
+@import './floating-action.css';
+@import './table.css';
+@import './search-filter.css';
+@import './range.css';
+@import './timeline.css';
+@import './floating-navigation.css';

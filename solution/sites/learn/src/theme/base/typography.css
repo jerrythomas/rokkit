@@ -1,0 +1,16 @@
+h1,
+h2,
+h3 {
+  @apply font-semibold text-surface-z8;
+}
+h1 {
+  @apply text-[1.75rem] font-bold tracking-tight;
+}
+
+h2 {
+  @apply text-xl;
+}
+
+h3 {
+  @apply text-base;
+}

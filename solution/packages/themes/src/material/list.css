@@ -1,0 +1,122 @@
+/**
+ * List - Material Theme Styles
+ *
+ * Material Design inspired with subtle elevation and ripple effects.
+ */
+
+/* =============================================================================
+   List Container
+   ============================================================================= */
+
+[data-style='material'] [data-list]:focus-within {
+	@apply outline-none;
+}
+
+/* =============================================================================
+   List Items
+   ============================================================================= */
+
+[data-style='material'] [data-list] [data-list-item] {
+	@apply text-surface-z8;
+}
+
+[data-style='material'] [data-list] a[data-list-item],
+[data-style='material'] [data-list] button[data-list-item] {
+	@apply text-surface-z7;
+}
+
+/* Hover and focus (keyboard navigation) */
+[data-style='material'] [data-list] [data-list-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='material'] [data-list] [data-list-item]:focus:not(:disabled):not([data-disabled='true']) {
+	@apply bg-surface-z2 text-surface-z10 outline-none;
+}
+
+/* Active state — muted when list not focused */
+[data-style='material'] [data-list] [data-list-item][data-active='true'] {
+	@apply bg-surface-z2 text-primary-z9;
+}
+
+/* Active state — full highlight when list has focus */
+[data-style='material'] [data-list]:focus-within [data-list-item][data-active='true'] {
+	@apply bg-primary-z2 text-primary-z9;
+}
+
+/* Active + hover/focus */
+[data-style='material'] [data-list] [data-list-item][data-active='true']:hover:not(:disabled),
+[data-style='material'] [data-list] [data-list-item][data-active='true']:focus:not(:disabled) {
+	@apply bg-primary-z3;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='material'] [data-list] [data-list-item] [data-item-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='material'] [data-list] [data-list-item]:hover:not(:disabled) [data-item-icon],
+[data-style='material'] [data-list] [data-list-item]:focus:not(:disabled) [data-item-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}
+
+[data-style='material'] [data-list] [data-list-item] [data-item-description] {
+	@apply text-surface-z5;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-description] {
+	@apply text-primary-z7;
+}
+
+[data-style='material'] [data-list] [data-list-item] [data-item-badge] {
+	@apply text-surface-z6 bg-surface-z2 rounded-full;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-active='true'] [data-item-badge] {
+	@apply text-primary-z8 bg-primary-z2;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='material'] [data-list] [data-list-group] {
+	@apply text-surface-z6 font-medium;
+}
+
+[data-style='material'] [data-list] [data-list-group]:hover:not(:disabled),
+[data-style='material'] [data-list] [data-list-group]:focus:not(:disabled) {
+	@apply text-surface-z7;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='material'] [data-list] [data-list-divider] {
+	@apply bg-surface-z3;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='material'] [data-list] [data-list-item][data-selected='true'] {
+	@apply bg-primary-z2 text-primary-z9;
+}
+
+[data-style='material'] [data-list]:focus-within [data-list-item][data-selected='true'] {
+	@apply bg-primary-z2;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-selected='true']:hover:not(:disabled) {
+	@apply bg-primary-z3;
+}
+
+[data-style='material'] [data-list] [data-list-item][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}

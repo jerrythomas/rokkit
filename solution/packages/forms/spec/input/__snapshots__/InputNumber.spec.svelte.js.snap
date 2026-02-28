@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`InputNumber > should render with all number-specific props 1`] = `
+<div>
+  <input
+    autocomplete="off"
+    id="percentage-input"
+    max="100"
+    min="0"
+    name="percentage"
+    placeholder="Enter percentage"
+    required=""
+    step="5"
+    type="number"
+  />
+  
+</div>
+`;

@@ -1,0 +1,138 @@
+/**
+ * Toggle - Base Structural Styles
+ *
+ * These styles provide layout, positioning, and basic structure.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   Toggle Container
+   ============================================================================= */
+
+[data-toggle] {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  gap: 0.125rem;
+}
+
+[data-toggle][data-toggle-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+[dir='rtl'] [data-toggle] {
+  flex-direction: row-reverse;
+}
+
+/* =============================================================================
+   Toggle Options
+   ============================================================================= */
+
+[data-toggle-option] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 150ms ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  user-select: none;
+  background: transparent;
+}
+
+[data-toggle-option]:focus {
+  outline: none;
+}
+
+[data-toggle-option]:focus-visible {
+  outline: none;
+}
+
+[data-toggle-option][data-disabled='true'],
+[data-toggle-option]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Size Variants
+   ============================================================================= */
+
+/* Small */
+[data-toggle][data-toggle-size='sm'] [data-toggle-option] {
+  height: 1.5rem;
+  font-size: 0.75rem;
+  gap: 0.25rem;
+}
+
+[data-toggle][data-toggle-size='sm'][data-toggle-labels='true'] [data-toggle-option] {
+  padding-inline: 0.375rem;
+}
+
+[data-toggle][data-toggle-size='sm']:not([data-toggle-labels='true']) [data-toggle-option] {
+  padding-inline: 0.25rem;
+}
+
+[data-toggle][data-toggle-size='sm'] [data-toggle-icon] {
+  font-size: 0.875rem;
+}
+
+/* Medium (default) */
+[data-toggle][data-toggle-size='md'] [data-toggle-option],
+[data-toggle]:not([data-toggle-size]) [data-toggle-option] {
+  height: 2rem;
+  font-size: 0.875rem;
+  gap: 0.375rem;
+}
+
+[data-toggle][data-toggle-size='md'][data-toggle-labels='true'] [data-toggle-option],
+[data-toggle]:not([data-toggle-size])[data-toggle-labels='true'] [data-toggle-option] {
+  padding-inline: 0.5rem;
+}
+
+[data-toggle][data-toggle-size='md']:not([data-toggle-labels='true']) [data-toggle-option],
+[data-toggle]:not([data-toggle-size]):not([data-toggle-labels='true']) [data-toggle-option] {
+  padding-inline: 0.375rem;
+}
+
+[data-toggle][data-toggle-size='md'] [data-toggle-icon],
+[data-toggle]:not([data-toggle-size]) [data-toggle-icon] {
+  font-size: 1rem;
+}
+
+/* Large */
+[data-toggle][data-toggle-size='lg'] [data-toggle-option] {
+  height: 2.5rem;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+[data-toggle][data-toggle-size='lg'][data-toggle-labels='true'] [data-toggle-option] {
+  padding-inline: 0.75rem;
+}
+
+[data-toggle][data-toggle-size='lg']:not([data-toggle-labels='true']) [data-toggle-option] {
+  padding-inline: 0.5rem;
+}
+
+[data-toggle][data-toggle-size='lg'] [data-toggle-icon] {
+  font-size: 1.25rem;
+}
+
+/* =============================================================================
+   Toggle Elements
+   ============================================================================= */
+
+[data-toggle-icon] {
+  flex-shrink: 0;
+}
+
+[data-toggle-label] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

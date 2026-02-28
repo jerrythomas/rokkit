@@ -1,0 +1,13 @@
+{
+  "title": "Pill",
+  "description": "Removable item wrappers and tags",
+  "icon": "i-component:pill",
+  "category": "components",
+  "tags": [
+    "pill",
+    "removable",
+    "tags",
+    "wrappers"
+  ],
+  "experimental": false
+}

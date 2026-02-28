@@ -1,0 +1,146 @@
+import { text } from '@sveltejs/kit'
+import type { RequestHandler } from './$types'
+
+const content = `# Rokkit SearchFilter Component
+
+> Structured filter parser that converts text input into typed filter conditions.
+
+SearchFilter parses a freeform search string into an array of structured \`FilterObject\` conditions. These can be applied to data using \`@rokkit/data\` utilities. Supports column-targeted filters (\`name:Alice\`), operators (\`score>80\`), and plain text (searches all columns).
+
+## Quick Start
+
+\`\`\`svelte
+<script>
+  import { SearchFilter } from '@rokkit/ui'
+  import type { FilterObject } from '@rokkit/ui'
+
+  let filters = $state([])
+</script>
+
+<SearchFilter bind:filters placeholder="Search..." />
+<p>{filters.length} active filters</p>
+\`\`\`
+
+## With Data Filtering
+
+Combine with \`@rokkit/data\` to filter rows:
+
+\`\`\`svelte
+<script>
+  import { SearchFilter, Table } from '@rokkit/ui'
+  import { filterData } from '@rokkit/data'
+
+  const data = [
+    { id: 1, name: 'Alice', role: 'Admin',  score: 95 },
+    { id: 2, name: 'Bob',   role: 'Editor', score: 72 }
+  ]
+
+  let filters = $state([])
+  let filtered = $derived(filterData(data, filters))
+</script>
+
+<SearchFilter bind:filters placeholder="e.g. role:Admin score>80" />
+<Table data={filtered} />
+\`\`\`
+
+## Filter Syntax
+
+| Input | Meaning |
+|-------|---------|
+| \`alice\` | Text contains "alice" (all columns) |
+| \`name:alice\` | \`name\` field contains "alice" |
+| \`score>80\` | \`score\` is greater than 80 |
+| \`score>=80\` | \`score\` is >= 80 |
+| \`score<50\` | \`score\` is less than 50 |
+| \`role=Admin\` | \`role\` equals "Admin" (exact) |
+| \`role!=Guest\` | \`role\` does not equal "Guest" |
+
+Multiple terms are combined with AND logic.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| \`filters\` | \`FilterObject[]\` | \`[]\` | Parsed filter array — use \`bind:filters\` |
+| \`debounce\` | \`number\` | \`300\` | Debounce delay in ms |
+| \`placeholder\` | \`string\` | \`'Search...'\` | Input placeholder |
+| \`columns\` | \`string[]\` | — | Column name hints (for future autocomplete) |
+| \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
+| \`class\` | \`string\` | \`''\` | Additional CSS classes |
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| \`onfilter\` | \`(filters: FilterObject[]) => void\` | Called when filters change |
+
+## FilterObject Type
+
+Each filter condition has this shape:
+
+\`\`\`typescript
+interface FilterObject {
+  column?: string    // undefined = search all columns
+  operator: string   // ':', '=', '!=', '>', '>=', '<', '<='
+  value: string | number | RegExp
+}
+\`\`\`
+
+## Custom Filter Tag Snippet
+
+Customize how active filter pills are displayed:
+
+\`\`\`svelte
+<SearchFilter bind:filters>
+  {#snippet tag(filter, remove)}
+    <span class="pill">
+      {filter.column ? \`\${filter.column}\${filter.operator}\${filter.value}\` : filter.value}
+      <button onclick={remove}>×</button>
+    </span>
+  {/snippet}
+</SearchFilter>
+\`\`\`
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| \`data-search-filter\` | Root element |
+| \`data-search-filter-input\` | Text input |
+| \`data-search-filter-tags\` | Active filter pills container |
+| \`data-search-filter-tag\` | Individual filter pill |
+
+## Import
+
+\`\`\`javascript
+import { SearchFilter } from '@rokkit/ui'
+import type { FilterObject } from '@rokkit/ui'
+\`\`\`
+
+## TypeScript Types
+
+\`\`\`typescript
+interface SearchFilterProps {
+  filters?: FilterObject[]
+  debounce?: number
+  placeholder?: string
+  columns?: string[]
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+  onfilter?: (filters: FilterObject[]) => void
+  tag?: Snippet<[FilterObject, () => void]>
+}
+\`\`\`
+
+## Related Components
+
+- [Table](/docs/components/table/llms.txt) — data table (common pairing)
+- [List](/docs/components/list/llms.txt) — list display (common pairing)
+- [Select](/docs/components/select/llms.txt) — dropdown with built-in typeahead (\`filterable\`)
+`
+
+export const GET: RequestHandler = async () => {
+	return text(content, {
+		headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+	})
+}

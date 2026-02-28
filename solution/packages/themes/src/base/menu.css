@@ -1,0 +1,322 @@
+/**
+ * Menu - Base Structural Styles
+ *
+ * These styles provide layout, positioning, and basic structure.
+ * No colors, shadows, or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   Menu Container
+   ============================================================================= */
+
+[data-menu] {
+  position: relative;
+  display: inline-block;
+}
+
+[data-menu][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-menu-trigger] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 150ms ease;
+}
+
+[data-menu-trigger]:disabled {
+  cursor: not-allowed;
+}
+
+[data-menu-trigger]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Size variants */
+[data-menu][data-size='sm'] [data-menu-trigger] {
+  height: 1.5rem;
+  padding-inline: 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-menu][data-size='md'] [data-menu-trigger],
+[data-menu]:not([data-size]) [data-menu-trigger] {
+  height: 2rem;
+  padding-inline: 0.625rem;
+  font-size: 0.875rem;
+}
+
+[data-menu][data-size='lg'] [data-menu-trigger] {
+  height: 2.5rem;
+  padding-inline: 0.75rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Trigger Elements (icon, label, arrow)
+   ============================================================================= */
+
+[data-menu-trigger] > [data-menu-icon] {
+  flex-shrink: 0;
+}
+
+[data-menu-trigger] > [data-menu-label] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-menu-trigger] > [data-menu-arrow] {
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+[data-menu][data-open='true'] [data-menu-arrow] {
+  transform: rotate(180deg);
+}
+
+/* Arrow sizes */
+[data-menu][data-size='sm'] [data-menu-arrow] {
+  font-size: 0.75rem;
+}
+[data-menu][data-size='md'] [data-menu-arrow],
+[data-menu]:not([data-size]) [data-menu-arrow] {
+  font-size: 0.875rem;
+}
+[data-menu][data-size='lg'] [data-menu-arrow] {
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-menu-dropdown] {
+  position: absolute;
+  z-index: 50;
+  min-width: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+}
+
+/* Menu dropdown — no focus ring on container, focus managed on individual items */
+[data-menu-dropdown]:focus-within {
+  outline: none;
+}
+
+/* Direction: down (default) */
+[data-menu][data-direction='down'] [data-menu-dropdown],
+[data-menu]:not([data-direction]) [data-menu-dropdown] {
+  top: calc(100% + 4px);
+  animation: menu-dropdown-down 150ms ease;
+}
+
+/* Direction: up */
+[data-menu][data-direction='up'] [data-menu-dropdown] {
+  bottom: calc(100% + 4px);
+  animation: menu-dropdown-up 150ms ease;
+}
+
+/* Alignment */
+[data-menu][data-align='left'] [data-menu-dropdown],
+[data-menu]:not([data-align]) [data-menu-dropdown] {
+  left: 0;
+}
+
+[data-menu][data-align='right'] [data-menu-dropdown] {
+  right: 0;
+}
+
+@keyframes menu-dropdown-down {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes menu-dropdown-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-menu-item] {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background-color 150ms ease;
+}
+
+[data-menu-item][data-disabled='true'],
+[data-menu-item]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-menu-item]:focus,
+[data-menu-item]:focus-visible {
+  outline: none;
+}
+
+/* Size variants for items */
+[data-menu][data-size='sm'] [data-menu-item] {
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+[data-menu][data-size='md'] [data-menu-item],
+[data-menu]:not([data-size]) [data-menu-item] {
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+[data-menu][data-size='lg'] [data-menu-item] {
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Item Elements (icon, content, shortcut)
+   ============================================================================= */
+
+[data-menu-item] > [data-menu-item-icon] {
+  flex-shrink: 0;
+}
+
+[data-menu-item] > [data-menu-item-content] {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+[data-menu-item] > [data-menu-item-content] > [data-menu-item-label] {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-menu-item] > [data-menu-item-content] > [data-menu-item-description] {
+  font-size: 0.75em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-menu-item] > [data-menu-item-shortcut] {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0.125rem 0.375rem;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.75em;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-menu-item-custom] {
+  display: contents;
+}
+
+/* Style direct children of custom wrapper */
+[data-menu-item-custom] > button,
+[data-menu-item-custom] > a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+[data-menu-item-custom][data-disabled='true'] > button,
+[data-menu-item-custom][data-disabled='true'] > a {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-menu-group] {
+  padding-block: 0.25rem;
+}
+
+[data-menu-group-label] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Group label sizes */
+[data-menu][data-size='sm'] [data-menu-group-label] {
+  padding: 0.25rem 0.5rem;
+}
+[data-menu][data-size='md'] [data-menu-group-label],
+[data-menu]:not([data-size]) [data-menu-group-label] {
+  padding: 0.375rem 0.75rem;
+}
+[data-menu][data-size='lg'] [data-menu-group-label] {
+  padding: 0.5rem 1rem;
+}
+
+[data-menu-group-label] > [data-menu-group-icon] {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-menu-divider] {
+  height: 1px;
+  margin-block: 0.25rem;
+}

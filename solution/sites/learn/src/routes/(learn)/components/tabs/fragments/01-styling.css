@@ -1,0 +1,15 @@
+/* Custom tab styling */
+[data-tab-item] {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+[data-tab-item][aria-selected="true"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Vertical layout adjustments */
+[data-tab-orientation="vertical"] [data-tab-list] {
+  min-width: 200px;
+}

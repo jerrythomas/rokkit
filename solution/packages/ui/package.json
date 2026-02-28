@@ -1,0 +1,52 @@
+{
+  "name": "@rokkit/ui",
+  "version": "1.0.0-next.127",
+  "description": "Data driven UI components for Rokkit applications",
+  "type": "module",
+  "svelte": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "default": "./src/types/index.ts"
+    },
+    "./utils/palette": {
+      "types": "./src/utils/palette.ts",
+      "default": "./src/utils/palette.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "build": "echo 'No build step needed for source-only package'"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "svelte",
+    "menu",
+    "dropdown"
+  ],
+  "dependencies": {
+    "@rokkit/core": "workspace:*",
+    "@rokkit/data": "workspace:*",
+    "@rokkit/states": "workspace:*",
+    "@rokkit/actions": "workspace:*"
+  },
+  "peerDependencies": {
+    "shiki": "^3.23.0",
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "svelte": "^5.53.5",
+    "svelte-check": "^4.4.3",
+    "typescript": "^5.9.3"
+  }
+}

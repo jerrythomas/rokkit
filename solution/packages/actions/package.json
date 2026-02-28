@@ -1,0 +1,39 @@
+{
+  "name": "@rokkit/actions",
+  "version": "1.0.0-next.127",
+  "description": "Contains generic actions that can be used in various components.",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun clean && bun prepublishOnly"
+  },
+  "files": [
+    "src/**/*.js",
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    "./src": "./src",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.js",
+      "svelte": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "ramda": "^0.32.0",
+    "@rokkit/core": "workspace:latest"
+  },
+  "devDependencies": {
+    "@rokkit/helpers": "workspace:latest",
+    "@rokkit/states": "workspace:latest"
+  }
+}

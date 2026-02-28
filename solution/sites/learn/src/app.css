@@ -1,0 +1,39 @@
+@import '@unocss/reset/tailwind.css';
+@import '@fontsource/victor-mono';
+@import '@fontsource/victor-mono/latin.css';
+@import '@fontsource/victor-mono/300.css';
+@import '@fontsource/victor-mono/300-italic.css';
+@import '@fontsource/overpass';
+@import '@fontsource/overpass/100.css';
+@import '@fontsource/overpass/200.css';
+@import '@fontsource/overpass/300.css';
+@import '@fontsource/open-sans';
+@import '@fontsource/open-sans/300.css';
+
+@import '@rokkit/themes/dist/base';
+@import '@rokkit/themes/dist/rokkit';
+
+/* Learn-site specific overrides loaded after package */
+@import './theme/base/shiki.css';
+@import './theme/base/article.css';
+@import './theme/base/typography.css';
+
+body {
+  @apply flex h-screen w-screen flex-col overflow-hidden;
+  @apply font-body bg-surface-z1 text-surface-floating font-extralight;
+}
+app {
+  @apply bg-surface-z1 text-surface-floating relative flex flex-1 flex-col overflow-hidden;
+}
+
+main {
+  @apply flex-1;
+}
+
+[data-story-root] {
+  @apply space-y-8;
+}
+
+[data-playground-root] > header {
+  @apply border-surface-z2 bg-surface-z2 space-y-2 border-b px-6 py-8;
+}

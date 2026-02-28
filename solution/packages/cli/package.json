@@ -1,0 +1,50 @@
+{
+  "name": "@rokkit/cli",
+  "version": "1.0.0-next.127",
+  "description": "Command line utilities for icon bundling and conversion.",
+  "author": "Jerry Thomas <me@jerrythomas.name>",
+  "license": "MIT",
+  "bin": {
+    "rokkit": "src/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "prepublishOnly": "bun clean && bun tsc --project tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "build": "bun prepublishOnly"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "iconify": "^1.4.0",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "@mdi/svg": "^7.4.47",
+    "sade": "^1.8.1",
+    "@iconify/tools": "5.0.3",
+    "@iconify/types": "^2.0.0",
+    "ramda": "^0.32.0"
+  },
+  "files": [
+    "lib/**/*",
+    "src/**/*.js",
+    "dist/**/*.d.ts",
+    "README.md",
+    "package.json"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./ui.json": "./lib/base.json",
+    "./light.json": "./lib/light.json",
+    "./solid.json": "./lib/solid.json",
+    "./twotone.json": "./lib/twotone.json",
+    "./components.json": "./lib/components.json",
+    "./auth.json": "./lib/auth.json",
+    "./app.json": "./lib/app.json",
+    ".": "./lib/base.json",
+    "./utils": "./src/convert.js",
+    "./cli": "./src/index.js"
+  }
+}

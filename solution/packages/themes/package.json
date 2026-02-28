@@ -1,0 +1,53 @@
+{
+  "name": "@rokkit/themes",
+  "version": "1.0.0-next.127",
+  "description": "Theme styles for @rokkit/ui components",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "style": "./src/index.css",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./styles": "./src/index.css",
+    "./dist": "./dist/index.css",
+    "./dist/base": "./dist/base.css",
+    "./dist/rokkit": "./dist/rokkit.css",
+    "./dist/minimal": "./dist/minimal.css",
+    "./dist/material": "./dist/material.css",
+    "./dist/glass": "./dist/glass.css",
+    "./base": "./src/base/index.css",
+    "./base/*": "./src/base/*.css",
+    "./rokkit": "./src/rokkit/index.css",
+    "./rokkit/*": "./src/rokkit/*.css",
+    "./minimal": "./src/minimal/index.css",
+    "./minimal/*": "./src/minimal/*.css",
+    "./material": "./src/material/index.css",
+    "./material/*": "./src/material/*.css",
+    "./glass": "./src/glass/index.css",
+    "./glass/*": "./src/glass/*.css",
+    "./palette.css": "./src/palette.css"
+  },
+  "files": [
+    "src",
+    "dist",
+    "build.mjs"
+  ],
+  "scripts": {
+    "build": "bun run build.mjs"
+  },
+  "dependencies": {
+    "@rokkit/core": "workspace:*"
+  },
+  "devDependencies": {
+    "magic-string": "^0.30.21",
+    "unocss": "^66.5.1"
+  },
+  "keywords": [
+    "themes",
+    "css",
+    "styles",
+    "ui"
+  ]
+}

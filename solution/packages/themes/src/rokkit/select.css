@@ -1,0 +1,185 @@
+/**
+ * Select - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Trigger Button
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-trigger] {
+	@apply from-surface-z2 to-surface-z1 text-surface-z8 border-surface-z4 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-select-trigger]:hover:not(:disabled) {
+	@apply from-surface-z3 to-surface-z2 border-surface-z5 text-surface-z10 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-select-trigger]:focus-visible {
+	@apply ring-primary-z4 ring-2 outline-none;
+}
+
+[data-style='rokkit'] [data-select][data-open='true'] [data-select-trigger] {
+	@apply border-primary-z5 ring-primary-z4 ring-1;
+}
+
+/* =============================================================================
+   Placeholder
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-placeholder] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Arrow
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-arrow] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-select-trigger]:hover:not(:disabled) [data-select-arrow] {
+	@apply text-surface-z7;
+}
+
+/* =============================================================================
+   Tags (MultiSelect)
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-tag] {
+	@apply from-surface-z4 to-surface-z3 text-surface-z8 border-surface-z5 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-select-tag-remove] {
+	@apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-select-tag-remove]:hover {
+	@apply text-surface-z9;
+}
+
+/* =============================================================================
+   Dropdown Panel
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-dropdown] {
+	@apply from-surface-z2 to-surface-z1 border-surface-z4 border bg-gradient-to-b shadow-md;
+}
+
+/* =============================================================================
+   Options
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-option] {
+	@apply text-surface-z8 rounded-none border-0 border-solid border-transparent;
+}
+
+/* Hover and focus */
+[data-style='rokkit'] [data-select-option]:hover:not(:disabled),
+[data-style='rokkit'] [data-select-option]:focus:not(:disabled) {
+	@apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+}
+
+/* Selected state — muted when dropdown not focused */
+[data-style='rokkit'] [data-select-option][data-selected='true'] {
+	@apply bg-surface-z2 text-primary-z9 border-l-primary-z5 border-l-2;
+}
+
+/* Selected state — full gradient when dropdown has focus */
+[data-style='rokkit'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] {
+	@apply from-primary-z5 to-secondary-z5 text-primary-z9 border-l-primary-z5 border-l-2 bg-gradient-to-r;
+}
+
+/* Selected + hover */
+[data-style='rokkit'] [data-select-option][data-selected='true']:hover:not(:disabled) {
+	@apply from-primary-z4 to-primary-z3 bg-gradient-to-r;
+}
+
+/* Check mark */
+[data-style='rokkit'] [data-select-check] {
+	@apply text-primary-z6;
+}
+
+/* Checkbox */
+[data-style='rokkit'] [data-select-checkbox] {
+	@apply from-surface-z2 to-surface-z1 border-surface-z5 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-select-checkbox][data-checked='true'] {
+	@apply from-primary-z6 to-primary-z5 border-primary-z6 bg-gradient-to-b text-white;
+}
+
+/* Item elements */
+[data-style='rokkit'] [data-select-option] [data-item-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-select-option]:hover:not(:disabled) [data-item-icon] {
+	@apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-select-option][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-select-dropdown]:focus-within [data-select-option][data-selected='true'] [data-item-icon] {
+	@apply text-primary-z9;
+}
+
+[data-style='rokkit'] [data-select-option] [data-item-description] {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-select-option][data-selected='true'] [data-item-description] {
+	@apply text-primary-z7;
+}
+
+[data-style='rokkit'] [data-select-option] [data-item-badge] {
+	@apply text-surface-z6 bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-select-option][data-selected='true'] [data-item-badge] {
+	@apply text-primary-z8 bg-primary-z2;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-group-label] {
+	@apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-divider] {
+	@apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
+}
+
+/* =============================================================================
+   Filter Input
+   ============================================================================= */
+
+[data-style='rokkit'] [data-select-filter] {
+	@apply bg-surface-z2;
+}
+
+[data-style='rokkit'] [data-select-filter-input] {
+	@apply text-surface-z8 border-surface-z4 bg-surface-z1 border;
+}
+
+[data-style='rokkit'] [data-select-filter-input]:focus {
+	@apply border-primary-z5 ring-primary-z4 ring-1;
+}
+
+[data-style='rokkit'] [data-select-filter-input]::placeholder {
+	@apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-select-empty] {
+	@apply text-surface-z5;
+}

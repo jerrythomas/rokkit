@@ -1,0 +1,100 @@
+/**
+ * Tree - Minimal Theme Styles
+ *
+ * Clean, understated tree with subtle borders.
+ */
+
+/* =============================================================================
+   Tree Container
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree]:focus-within {
+	@apply outline-none;
+}
+
+/* =============================================================================
+   Tree Toggle Button
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree-toggle-btn] {
+	@apply text-surface-z4;
+}
+
+[data-style='minimal'] [data-tree-toggle-btn]:hover {
+	@apply text-surface-z6;
+}
+
+/* =============================================================================
+   Tree Item Content
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree-item-content] {
+	@apply text-surface-z7;
+}
+
+[data-style='minimal'] [data-tree-item-content]:hover:not(:disabled),
+[data-style='minimal'] [data-tree-item-content]:focus:not(:disabled) {
+	@apply text-surface-z9 outline-none;
+}
+
+/* Focus visible for keyboard navigation */
+[data-style='minimal'] [data-tree-item-content]:focus-visible {
+	@apply outline-none ring-1 ring-surface-z5;
+}
+
+/* Active/selected state */
+[data-style='minimal'] [data-tree-item-content][data-active='true'] {
+	@apply text-primary-z7 border-primary-z4 border-l-2;
+}
+
+[data-style='minimal'] [data-tree-item-content][data-active='true']:hover:not(:disabled) {
+	@apply text-primary-z8;
+}
+
+/* =============================================================================
+   Item Elements
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree-item-content] [data-item-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-tree-item-content]:hover:not(:disabled) [data-item-icon] {
+	@apply text-surface-z6;
+}
+
+[data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-icon] {
+	@apply text-primary-z5;
+}
+
+[data-style='minimal'] [data-tree-item-content] [data-item-description] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-description] {
+	@apply text-primary-z6;
+}
+
+[data-style='minimal'] [data-tree-item-content] [data-item-badge] {
+	@apply text-surface-z6 bg-transparent border-surface-z4 border;
+}
+
+[data-style='minimal'] [data-tree-item-content][data-active='true'] [data-item-badge] {
+	@apply text-primary-z7 border-primary-z4;
+}
+
+/* =============================================================================
+   Multi-Selection
+   ============================================================================= */
+
+[data-style='minimal'] [data-tree-node][data-selected='true'] [data-tree-item-content] {
+	@apply text-primary-z7 border-primary-z3 border-l-2;
+}
+
+[data-style='minimal'] [data-tree]:focus-within [data-tree-node][data-selected='true'] [data-tree-item-content] {
+	@apply text-primary-z7 border-primary-z4 border-l-2;
+}
+
+[data-style='minimal'] [data-tree-node][data-selected='true'] [data-tree-item-content] [data-item-icon] {
+	@apply text-primary-z5;
+}

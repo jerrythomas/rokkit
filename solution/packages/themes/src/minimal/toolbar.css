@@ -1,0 +1,84 @@
+/**
+ * Toolbar - Minimal Theme Styles
+ *
+ * Clean, understated styling with subtle borders.
+ */
+
+/* =============================================================================
+   Toolbar Container
+   ============================================================================= */
+
+[data-style='minimal'] [data-toolbar] {
+	@apply bg-transparent;
+}
+
+/* Position-based borders */
+[data-style='minimal'] [data-toolbar][data-toolbar-position='top'],
+[data-style='minimal'] [data-toolbar]:not([data-toolbar-position]) {
+	@apply border-surface-z3 border-b;
+}
+
+[data-style='minimal'] [data-toolbar][data-toolbar-position='bottom'] {
+	@apply border-surface-z3 border-t;
+}
+
+[data-style='minimal'] [data-toolbar][data-toolbar-position='left'] {
+	@apply border-surface-z3 border-r;
+}
+
+[data-style='minimal'] [data-toolbar][data-toolbar-position='right'] {
+	@apply border-surface-z3 border-l;
+}
+
+/* =============================================================================
+   Toolbar Items
+   ============================================================================= */
+
+[data-style='minimal'] [data-toolbar-item] {
+	@apply text-surface-z6;
+}
+
+[data-style='minimal'] [data-toolbar-item]:hover:not(:disabled):not([data-disabled='true']) {
+	@apply text-surface-z9;
+}
+
+[data-style='minimal'] [data-toolbar-item]:focus-visible:not(:disabled):not([data-disabled='true']) {
+	@apply text-surface-z9 outline-none ring-1 ring-surface-z5;
+}
+
+/* Active/pressed state */
+[data-style='minimal'] [data-toolbar-item][data-active='true'] {
+	@apply text-primary-z7;
+}
+
+[data-style='minimal'] [data-toolbar-item][data-active='true']:hover:not(:disabled) {
+	@apply text-primary-z8;
+}
+
+/* =============================================================================
+   Toolbar Icon
+   ============================================================================= */
+
+[data-style='minimal'] [data-toolbar-item] [data-toolbar-icon] {
+	@apply text-surface-z5;
+}
+
+[data-style='minimal'] [data-toolbar-item]:hover:not(:disabled) [data-toolbar-icon] {
+	@apply text-surface-z8;
+}
+
+[data-style='minimal'] [data-toolbar-item][data-active='true'] [data-toolbar-icon] {
+	@apply text-primary-z6;
+}
+
+/* =============================================================================
+   Separator & Divider
+   ============================================================================= */
+
+[data-style='minimal'] [data-toolbar-separator] {
+	@apply bg-surface-z3;
+}
+
+[data-style='minimal'] [data-toolbar-divider] {
+	@apply bg-surface-z3;
+}

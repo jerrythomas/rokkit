@@ -1,0 +1,123 @@
+/**
+ * Menu - Rokkit Theme Styles
+ *
+ * Rich gradients and glowing borders.
+ */
+
+/* =============================================================================
+   Menu Trigger
+   ============================================================================= */
+
+[data-style='rokkit'] [data-menu-trigger] {
+  @apply from-surface-z3 to-surface-z2 border-surface-z4 text-surface-z8 border bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-menu-trigger]:hover:not(:disabled) {
+  @apply from-surface-z4 to-surface-z3 text-surface-z10 border-surface-z5 bg-gradient-to-b;
+}
+
+[data-style='rokkit'] [data-menu-trigger]:focus-visible {
+  @apply outline-none;
+}
+
+[data-style='rokkit'] [data-menu][data-open='true'] [data-menu-trigger] {
+  @apply from-primary-z5 to-secondary-z5 border-primary-z5 bg-gradient-to-b;
+}
+
+/* Trigger elements */
+[data-style='rokkit'] [data-menu-trigger] [data-menu-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-menu-trigger]:hover:not(:disabled) [data-menu-icon] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-menu-trigger] [data-menu-arrow] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Menu Dropdown
+   ============================================================================= */
+
+[data-style='rokkit'] [data-menu-dropdown] {
+  @apply from-surface-z2 to-surface-z1 border-surface-z4 border bg-gradient-to-b shadow-md;
+}
+
+[data-style='rokkit'] [data-menu-dropdown]:focus-within {
+  @apply outline-none;
+}
+
+/* =============================================================================
+   Menu Items
+   ============================================================================= */
+
+[data-style='rokkit'] [data-menu-item] {
+  @apply text-surface-z8 rounded-none border-0 border-solid border-transparent;
+}
+
+[data-style='rokkit'] [data-menu-item]:hover:not(:disabled):not([data-disabled='true']),
+[data-style='rokkit'] [data-menu-item]:focus:not(:disabled):not([data-disabled='true']) {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r outline-none;
+}
+
+/* Item elements */
+[data-style='rokkit'] [data-menu-item] [data-item-icon],
+[data-style='rokkit'] [data-menu-item] > [data-menu-item-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-menu-item]:hover:not(:disabled) [data-item-icon],
+[data-style='rokkit'] [data-menu-item]:hover:not(:disabled) > [data-menu-item-icon],
+[data-style='rokkit'] [data-menu-item]:focus:not(:disabled) [data-item-icon],
+[data-style='rokkit'] [data-menu-item]:focus:not(:disabled) > [data-menu-item-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-menu-item] [data-item-description],
+[data-style='rokkit'] [data-menu-item] > [data-menu-item-content] > [data-menu-item-description] {
+  @apply text-surface-z5;
+}
+
+/* Item shortcut */
+[data-style='rokkit'] [data-menu-item] > [data-menu-item-shortcut] {
+  @apply text-surface-z5 bg-surface-z2 border-surface-z4 border;
+}
+
+[data-style='rokkit'] [data-menu-item]:hover:not(:disabled) > [data-menu-item-shortcut],
+[data-style='rokkit'] [data-menu-item]:focus:not(:disabled) > [data-menu-item-shortcut] {
+  @apply text-surface-z7 bg-surface-z3 border-surface-z5;
+}
+
+/* =============================================================================
+   Custom Snippet Wrapper
+   ============================================================================= */
+
+[data-style='rokkit'] [data-menu-item-custom] > button,
+[data-style='rokkit'] [data-menu-item-custom] > a {
+  @apply text-surface-z9;
+}
+
+[data-style='rokkit'] [data-menu-item-custom] > button:hover:not(:disabled),
+[data-style='rokkit'] [data-menu-item-custom] > a:hover,
+[data-style='rokkit'] [data-menu-item-custom] > button:focus:not(:disabled),
+[data-style='rokkit'] [data-menu-item-custom] > a:focus {
+  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r;
+}
+
+/* =============================================================================
+   Groups
+   ============================================================================= */
+
+[data-style='rokkit'] [data-menu-group-label] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Divider
+   ============================================================================= */
+
+[data-style='rokkit'] [data-menu-divider] {
+  @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
+}

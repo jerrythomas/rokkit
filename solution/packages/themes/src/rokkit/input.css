@@ -1,0 +1,130 @@
+/* Rokkit Theme - Form field and input styles */
+
+/* Field root: text color, spacing, rounded */
+[data-style='rokkit'] [data-field-root] {
+  @apply text-surface-z9 gap-1 rounded-md transition-all;
+}
+
+/* Disabled state */
+[data-style='rokkit'] [data-field-root][data-field-disabled] [data-input-root] {
+  @apply bg-surface-z3 text-surface-z6 cursor-not-allowed;
+}
+
+/* Labels */
+[data-style='rokkit'] [data-field] > label {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-form-root] label {
+  @apply text-surface-z7;
+}
+
+/* Info field value */
+[data-style='rokkit'] [data-field-info] {
+  @apply text-primary-z6 font-medium;
+}
+
+/* Separator */
+[data-style='rokkit'] [data-form-separator] {
+  @apply border-surface-z2;
+}
+
+/* Input root: gradient border wrapper */
+[data-style='rokkit'] [data-input-root] {
+  @apply bg-surface-z4 flex items-center rounded-md p-px transition-all;
+}
+
+[data-style='rokkit'] [data-input-root]:focus-within {
+  @apply from-primary-500 to-secondary-500 border-transparent bg-gradient-to-r;
+}
+
+/* Standard inputs inside wrapper */
+[data-style='rokkit'] [data-input-root] input:not([type='checkbox'], [type='radio'], [type='color']),
+[data-style='rokkit'] [data-input-root] select {
+  @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 focus:outline-none;
+  font-size: 0.875rem;
+  height: 2.25rem;
+}
+
+[data-style='rokkit'] [data-input-root] textarea {
+  @apply bg-surface-z2 text-surface-z8 rounded-md border-none px-3 py-2 focus:outline-none;
+  font-size: 0.875rem;
+}
+
+/* Select inside input-root: remove trigger styles since input-root provides the border */
+[data-style='rokkit'] [data-input-root] [data-select-trigger] {
+  @apply border-none bg-surface-z2 text-surface-z8 rounded-md shadow-none ring-0 focus:outline-none;
+  background-image: none;
+}
+
+/* Suppress standalone select open-state ring/border when inside input-root */
+[data-style='rokkit'] [data-input-root] [data-select][data-open='true'] [data-select-trigger] {
+  @apply border-none ring-0 shadow-none;
+}
+
+[data-style='rokkit'] [data-input-root] input::placeholder,
+[data-style='rokkit'] [data-input-root] textarea::placeholder {
+  @apply text-surface-z5;
+}
+
+/* Checkbox field */
+[data-style='rokkit'] [data-field-type='checkbox'] [data-field] {
+  @apply flex items-center leading-loose;
+}
+
+/* Checkbox icon: theme-colored */
+[data-style='rokkit'] [data-checkbox-icon] {
+  @apply text-surface-z5 cursor-pointer transition-colors text-lg rounded;
+}
+
+[data-style='rokkit'] [data-checkbox-icon]:focus-visible {
+  @apply outline-2 outline-primary-z4 outline-offset-2;
+}
+
+[data-style='rokkit'] [data-checkbox-root][data-variant='custom']:has(input:checked) [data-checkbox-icon] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-field] textarea {
+  @apply resize-vertical min-h-20 py-2;
+}
+
+/* Color input */
+[data-style='rokkit'] [data-field-type='color'] [data-input-root] {
+  @apply overflow-hidden;
+}
+
+[data-style='rokkit'] [data-field-type='color'] input[type='color'] {
+  @apply bg-surface-z2 flex min-h-11 flex-1 rounded-md focus:outline-none;
+}
+
+/* Description and message */
+[data-style='rokkit'] [data-description],
+[data-style='rokkit'] [data-message] {
+  @apply text-surface-z6;
+}
+
+[data-style='rokkit'] [data-message] {
+  @apply rounded-md px-2 py-1;
+}
+
+/* Validation state messages */
+[data-style='rokkit'] [data-field-state='success'] [data-message] {
+  @apply bg-success text-success opacity-10;
+}
+
+[data-style='rokkit'] [data-field-state='warning'] [data-message] {
+  @apply bg-warning text-warning opacity-10;
+}
+
+[data-style='rokkit'] [data-field-state='info'] [data-message] {
+  @apply bg-info text-info opacity-10;
+}
+
+[data-style='rokkit'] [data-field-state='error'] [data-message] {
+  @apply bg-error text-error opacity-10;
+}
+
+[data-style='rokkit'] [data-field-root][data-field-state='fail'] [data-input-root] {
+  @apply bg-error text-error opacity-10;
+}

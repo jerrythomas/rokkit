@@ -1,0 +1,8 @@
+{
+  "title": "ValidationReport",
+  "description": "Display validation results and status",
+  "icon": "✅",
+  "category": "Utilities",
+  "tags": ["validation", "report", "status", "results"],
+  "experimental": false
+}
