@@ -6,105 +6,27 @@
  * ProxyNode tree.
  *
  * Key difference from Wrapper:
- *   Wrapper:     buildProxyList → static ProxyNode tree → buildFlatView(nodes)
- *   LazyWrapper: root ProxyItems → flatView from proxy.children ($derived)
+ *   Wrapper:     buildProxyList -> static ProxyNode tree -> buildFlatView(nodes)
+ *   LazyWrapper: root ProxyItems -> flatView from proxy.children ($derived)
+ *
+ * Delegates data management (flatView, lookup) to ProxyTree while keeping
+ * all navigation/selection logic here.
  *
  * When LazyProxyItem.fetch() calls set('children', [...]),
- * proxy.children recomputes (via #version), which triggers flatView
- * and lookup to re-derive automatically — no Wrapper recreation needed.
+ * proxy.children recomputes (via #version), which triggers ProxyTree's flatView
+ * and lookup to re-derive automatically -- no Wrapper recreation needed.
  */
 
 import { AbstractWrapper } from './abstract-wrapper.js'
-import { ProxyItem, PROXY_ITEM_FIELDS } from './proxy-item.svelte.js'
-
-// ─── Tree line type computation ────────────────────────────────────────────────
-
-// Maps a parent's line type to the continuation type shown at the same column
-// in child rows below it. 'child'→'sibling' (line continues), 'last'→'empty' (branch ended).
-const NEXT_LINE = { child: 'sibling', last: 'empty', sibling: 'sibling', empty: 'empty', icon: 'empty' }
-
-// ─── Reactive tree traversal utilities ─────────────────────────────────────────
-
-/**
- * Build flat view by walking proxy.children ($derived) recursively.
- * Reads proxy.expanded ($state) and proxy.children ($derived), so any
- * $derived wrapping this function re-computes on expansion or children changes.
- *
- * Computes lineTypes per node during the walk — no second pass needed.
- * lineTypes is an array of connector types for rendering tree lines:
- *   'child'   — ├ branch connector
- *   'last'    — └ last branch connector
- *   'sibling' — │ vertical continuation line
- *   'empty'   — (blank space)
- *   'icon'    — expand/collapse toggle slot
- *
- * @param {ProxyItem[]} proxies
- * @param {string[]} [parentLineTypes]  Line types of the parent node (for computing inherited connectors)
- * @returns {{ key: string, proxy: ProxyItem, level: number, hasChildren: boolean, isExpandable: boolean, type: string, lineTypes: string[] }[]}
- */
-function buildReactiveFlatView(proxies, parentLineTypes = []) {
-	const result = []
-	for (let i = 0; i < proxies.length; i++) {
-		const proxy = proxies[i]
-		const children = proxy.children // reads $derived — registers dependency
-		const hasChildren = children.length > 0
-		const isExpandable = hasChildren || proxy.get('children') === true // sentinel: lazy-loadable
-		const isLast = i === proxies.length - 1
-		const position = isLast ? 'last' : 'child'
-
-		// Compute line types: inherit parent's continuations + current position + icon/empty
-		const inherited = parentLineTypes.slice(0, -1).map((t) => NEXT_LINE[t] ?? 'empty')
-		if (parentLineTypes.length > 0) inherited.push(position)
-		const lineTypes = [...inherited, isExpandable ? 'icon' : 'empty']
-
-		result.push({
-			key: proxy.key,
-			proxy,
-			level: proxy.level,
-			hasChildren,
-			isExpandable,
-			type: proxy.type,
-			lineTypes
-		})
-		if (hasChildren && proxy.expanded) {
-			result.push(...buildReactiveFlatView(children, lineTypes))
-		}
-	}
-	return result
-}
-
-/**
- * Build lookup Map by walking proxy.children ($derived) recursively.
- * Traverses ALL children (not just expanded) so keys are available
- * for selection and navigation even before a group is opened.
- *
- * @param {ProxyItem[]} proxies
- * @param {Map<string, ProxyItem>} [map]
- * @returns {Map<string, ProxyItem>}
- */
-function buildReactiveLookup(proxies, map = new Map()) {
-	for (const proxy of proxies) {
-		map.set(proxy.key, proxy)
-		const children = proxy.children
-		if (children.length > 0) {
-			buildReactiveLookup(children, map)
-		}
-	}
-	return map
-}
+import { PROXY_ITEM_FIELDS } from './proxy-item.svelte.js'
+import { ProxyTree } from './proxy-tree.svelte.js'
 
 // ─── LazyWrapper ───────────────────────────────────────────────────────────────
 
 export class LazyWrapper extends AbstractWrapper {
 	// ─── Data ──────────────────────────────────────────────────────────────────
 
-	#rootProxies // ProxyItem[] — stable root instances, set once in constructor
-
-	// Reactive flatView: re-derives when proxy.expanded OR proxy.children changes.
-	flatView = $derived(buildReactiveFlatView(this.#rootProxies))
-
-	// Reactive lookup: re-derives when proxy.children changes anywhere in the tree.
-	#lookup = $derived(buildReactiveLookup(this.#rootProxies))
+	#proxyTree // ProxyTree — manages root proxies, flatView, and lookup
 
 	// Navigable items: exclude separators, spacers, and disabled items.
 	#navigable = $derived(
@@ -130,12 +52,20 @@ export class LazyWrapper extends AbstractWrapper {
 	 */
 	constructor(items = [], fields = {}, options = {}) {
 		super()
-		const mergedFields = { ...PROXY_ITEM_FIELDS, ...fields }
-		const factory = options.createProxy ?? ((raw, f, key, level) => new ProxyItem(raw, f, key, level))
-		this.#rootProxies = (items ?? []).map((raw, i) => factory(raw, mergedFields, String(i), 1))
+		this.#proxyTree = new ProxyTree(items, fields, options)
 		this.#onselect = options.onselect
 		this.#onchange = options.onchange
 	}
+
+	// ─── Data accessors (delegated to ProxyTree) ─────────────────────────────
+
+	get flatView() { return this.#proxyTree.flatView }
+
+	/** @returns {Map<string, ProxyItem>} */
+	get lookup() { return this.#proxyTree.lookup }
+
+	/** @returns {ProxyTree} */
+	get proxyTree() { return this.#proxyTree }
 
 	// ─── IWrapper: state read by Navigator ─────────────────────────────────────
 
@@ -210,7 +140,7 @@ export class LazyWrapper extends AbstractWrapper {
 		const key = path ?? this.#focusedKey
 		if (!key) return
 		this.#focusedKey = key
-		const proxy = this.#lookup.get(key)
+		const proxy = this.#proxyTree.lookup.get(key)
 		if (!proxy) return
 		if (proxy.hasChildren) {
 			proxy.expanded = !proxy.expanded
@@ -231,7 +161,7 @@ export class LazyWrapper extends AbstractWrapper {
 	toggle(path) {
 		const key = path ?? this.#focusedKey
 		if (!key) return
-		const proxy = this.#lookup.get(key)
+		const proxy = this.#proxyTree.lookup.get(key)
 		if (!proxy) return
 		if (proxy.hasChildren) {
 			proxy.expanded = !proxy.expanded
@@ -249,7 +179,7 @@ export class LazyWrapper extends AbstractWrapper {
 
 	moveToValue(v) {
 		if (v === undefined || v === null) return
-		for (const [key, proxy] of this.#lookup) {
+		for (const [key, proxy] of this.#proxyTree.lookup) {
 			if (proxy.value === v) {
 				this.#focusedKey = key
 				this.#selectedValue = v
@@ -278,9 +208,4 @@ export class LazyWrapper extends AbstractWrapper {
 		}
 		return null
 	}
-
-	// ─── Helpers ──────────────────────────────────────────────────────────────
-
-	/** @returns {Map<string, ProxyItem>} */
-	get lookup() { return this.#lookup }
 }
