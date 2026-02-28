@@ -7,6 +7,39 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-02-27 (continued)
 
+### SimpleTree → Tree Rename + Learn Pages
+
+Renamed SimpleTree → Tree (deleted old NestedController-based Tree.svelte). Created LazyTree as separate component.
+
+**Changes:**
+- Deleted old `Tree.svelte`, renamed `SimpleTree.svelte` → `Tree.svelte`
+- Updated barrel exports (`components/index.ts`, `src/index.ts`) — removed SimpleTree
+- Renamed test file `SimpleTree.spec.svelte.ts` → `Tree.spec.svelte.ts` (28 tests pass)
+- Updated LazyTree doc comment reference
+- Rewrote tree playground page (removed old props: multiselect, expandAll, onloadchildren)
+- Deleted simple-tree playground (merged into tree)
+- Created Tree learn page: 5 story examples (intro, no-lines, mapping, icons, snippets), 3 fragments, +page.svelte, +layout.svelte, updated meta.json
+- Created LazyTree learn page: 2 story examples (intro, nested), 2 fragments, full page
+- Rewrote Tree llms.txt for new API (Wrapper+Navigator based, no multiselect/expandAll/onloadchildren)
+- Created LazyTree llms.txt
+
+**Tests:** Tree 28/28, List 35/35, States 182/182. Build ✓. Lint 0 new errors.
+
+### Tree Rewrite: Wrapper + Navigator Pattern
+
+Fully rewrote `Tree.svelte` to use `Wrapper` + `Navigator` + `ProxyItem` pattern (matching List/Toggle/Tabs).
+
+**Key architecture decisions:**
+- `Wrapper` as `$derived` with `loadVersion` trick for lazy loading re-derivation
+- Navigator with `collapsible: true` handles all keyboard navigation
+- Event listeners registered in explicit order: pre-Navigator (lazy interception) → Navigator → post-Navigator (expansion sync)
+- Expansion sync: `$effect.pre` for prop→proxy direction, explicit `syncExpandedToProps()` for proxy→prop direction
+- Tree lines computed from `wrapper.flatView` using existing `getLineTypes()` helper
+- Custom snippets via `resolveSnippet(snippets, proxy, ITEM_SNIPPET)` (replaces old item snippet API)
+- `getComputedStyle(el).direction || 'ltr'` to handle JSDOM test environments
+
+**Tests:** 48/48 pass. Testbed 244/244. Tabs 59/59. States 131/131. Lint 0 errors.
+
 ### Architecture Decision: Components Built from List Pattern
 
 After reviewing Menu, Toggle, Tree migrations, adopted a cleaner approach:

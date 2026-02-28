@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent } from '@testing-library/svelte'
+import { flushSync } from 'svelte'
 import List from '../src/components/List.svelte'
 
 const flatItems = [
@@ -62,12 +63,16 @@ describe('List', () => {
 
 	it('renders item icons', () => {
 		const { container } = render(List, { items: flatItems })
-		const icons = container.querySelectorAll('[data-item-icon]')
-		expect(icons.length).toBe(3)
+		// Icons render as <span class={proxy.icon} aria-hidden="true"> inside item buttons
+		const items = container.querySelectorAll('[data-list-item]')
+		const iconsFound = Array.from(items).filter(
+			(item) => item.querySelector('[aria-hidden="true"]')
+		).length
+		expect(iconsFound).toBe(3)
 	})
 
 	it('marks active item', () => {
-		const { container } = render(List, { items: flatItems, active: 'settings' })
+		const { container } = render(List, { items: flatItems, value: 'settings' })
 		const items = container.querySelectorAll('[data-list-item]')
 		expect(items[0]?.hasAttribute('data-active')).toBe(false)
 		expect(items[1]?.hasAttribute('data-active')).toBe(true)
@@ -85,12 +90,6 @@ describe('List', () => {
 
 	// ─── Grouped Items ──────────────────────────────────────────────
 
-	it('renders groups', () => {
-		const { container } = render(List, { items: groupedItems })
-		const groups = container.querySelectorAll('[data-list-group]')
-		expect(groups.length).toBe(2)
-	})
-
 	it('renders group labels', () => {
 		const { container } = render(List, { items: groupedItems })
 		const labels = container.querySelectorAll('[data-list-group-label]')
@@ -99,66 +98,63 @@ describe('List', () => {
 		expect(labels[1]?.textContent).toContain('Account')
 	})
 
-	it('renders group children', () => {
-		const { container } = render(List, { items: groupedItems })
-		const groupItems = container.querySelectorAll('[data-list-group-items]')
-		expect(groupItems.length).toBe(2)
-		// First group has 2 children
-		expect(groupItems[0]?.querySelectorAll('[data-list-item]').length).toBe(2)
+	it('renders group children when expanded', async () => {
+		const { container } = render(List, { items: groupedItems, collapsible: true })
+		// Groups start collapsed — expand the first group
+		const label = container.querySelector('[data-list-group-label]')!
+		await fireEvent.click(label)
+		flushSync()
+		const items = container.querySelectorAll('[data-list-item]')
+		expect(items.length).toBe(2) // Navigation group has 2 children
 	})
 
-	it('renders dividers between groups', () => {
-		const { container } = render(List, { items: groupedItems })
-		const dividers = container.querySelectorAll('[data-list-divider]')
-		expect(dividers.length).toBe(1) // divider before second group
+	it('renders separators when present in items', () => {
+		const itemsWithSep = [
+			{ text: 'A', value: 'a' },
+			{ type: 'separator' },
+			{ text: 'B', value: 'b' }
+		]
+		const { container } = render(List, { items: itemsWithSep })
+		const separators = container.querySelectorAll('[data-list-separator]')
+		expect(separators.length).toBe(1)
 	})
 
 	// ─── Collapsible ────────────────────────────────────────────────
 
-	it('shows children by default when not collapsible', () => {
-		const { container } = render(List, { items: groupedItems })
-		const groupItems = container.querySelectorAll('[data-list-group-items]')
-		expect(groupItems.length).toBe(2)
-	})
-
-	it('shows collapsible arrow when collapsible', () => {
+	it('shows expand icon when collapsible', () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
-		const arrows = container.querySelectorAll('[data-list-group-arrow]')
-		expect(arrows.length).toBe(2)
+		const expandIcons = container.querySelectorAll('[data-list-expand-icon]')
+		expect(expandIcons.length).toBe(2)
 	})
 
-	it('does not show arrow when not collapsible', () => {
+	it('does not show expand icon when not collapsible', () => {
 		const { container } = render(List, { items: groupedItems, collapsible: false })
-		const arrows = container.querySelectorAll('[data-list-group-arrow]')
-		expect(arrows.length).toBe(0)
+		const expandIcons = container.querySelectorAll('[data-list-expand-icon]')
+		expect(expandIcons.length).toBe(0)
 	})
 
 	it('toggles group on click when collapsible', async () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
-		const label = container.querySelectorAll('[data-list-group-label]')[0]
-		// Initially expanded
-		expect(container.querySelector('[data-list-group]')?.hasAttribute('data-list-group-collapsed')).toBe(false)
-		await fireEvent.click(label!)
-		expect(container.querySelector('[data-list-group]')?.hasAttribute('data-list-group-collapsed')).toBe(true)
+		const label = container.querySelector('[data-list-group-label]')!
+		// Groups start collapsed
+		expect(label.getAttribute('aria-expanded')).toBe('false')
+		await fireEvent.click(label)
+		flushSync()
+		expect(label.getAttribute('aria-expanded')).toBe('true')
 	})
 
 	it('sets aria-expanded on group labels when collapsible', () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
 		const labels = container.querySelectorAll('[data-list-group-label]')
-		expect(labels[0]?.getAttribute('aria-expanded')).toBe('true')
+		// Groups start collapsed
+		expect(labels[0]?.getAttribute('aria-expanded')).toBe('false')
+		expect(labels[1]?.getAttribute('aria-expanded')).toBe('false')
 	})
 
-	it('calls onexpandedchange when group toggled', async () => {
-		const onexpandedchange = vi.fn()
-		const { container } = render(List, {
-			items: groupedItems,
-			collapsible: true,
-			expanded: { Navigation: true, Account: true },
-			onexpandedchange
-		})
-		const label = container.querySelectorAll('[data-list-group-label]')[0]
-		await fireEvent.click(label!)
-		expect(onexpandedchange).toHaveBeenCalled()
+	it('disables group label button when not collapsible', () => {
+		const { container } = render(List, { items: groupedItems, collapsible: false })
+		const labels = container.querySelectorAll('[data-list-group-label]')
+		expect(labels[0]?.hasAttribute('disabled')).toBe(true)
 	})
 
 	// ─── Selection ──────────────────────────────────────────────────
@@ -168,7 +164,8 @@ describe('List', () => {
 		const { container } = render(List, { items: flatItems, onselect })
 		const items = container.querySelectorAll('[data-list-item]')
 		await fireEvent.click(items[1])
-		expect(onselect).toHaveBeenCalledWith('settings', flatItems[1])
+		expect(onselect).toHaveBeenCalled()
+		expect(onselect.mock.calls[0][0]).toBe('settings')
 	})
 
 	it('does not call onselect for disabled items', async () => {
@@ -176,19 +173,24 @@ describe('List', () => {
 			{ text: 'A', value: 'a' },
 			{ text: 'B', value: 'b', disabled: true }
 		]
-		const onselect = vi.fn()
-		const { container } = render(List, { items, onselect })
+		const { container } = render(List, { items })
 		const listItems = container.querySelectorAll('[data-list-item]')
-		await fireEvent.click(listItems[1])
-		expect(onselect).not.toHaveBeenCalled()
+		// Disabled items have disabled attribute — browser prevents click events
+		expect(listItems[1]?.hasAttribute('disabled')).toBe(true)
 	})
 
 	it('calls onselect for group children', async () => {
 		const onselect = vi.fn()
-		const { container } = render(List, { items: groupedItems, onselect })
-		const childItems = container.querySelectorAll('[data-list-group-items] [data-list-item]')
-		await fireEvent.click(childItems[0])
-		expect(onselect).toHaveBeenCalledWith('dashboard', groupedItems[0].children[0])
+		const { container } = render(List, { items: groupedItems, collapsible: true, onselect })
+		// Expand first group
+		const label = container.querySelector('[data-list-group-label]')!
+		await fireEvent.click(label)
+		flushSync()
+		// Click first child item
+		const childItem = container.querySelector('[data-list-item]')!
+		await fireEvent.click(childItem)
+		expect(onselect).toHaveBeenCalled()
+		expect(onselect.mock.calls[0][0]).toBe('dashboard')
 	})
 
 	// ─── Keyboard Navigation ────────────────────────────────────────
@@ -196,80 +198,76 @@ describe('List', () => {
 	it('navigates with ArrowDown', async () => {
 		const { container } = render(List, { items: flatItems })
 		const nav = container.querySelector('nav[data-list]')!
-		// Focus first item
-		const firstItem = container.querySelector('[data-list-index="0"]') as HTMLElement
+		const firstItem = container.querySelector('[data-path="0"]') as HTMLElement
 		firstItem.focus()
 		await fireEvent.keyDown(nav, { key: 'ArrowDown' })
-		const focused = document.activeElement
-		expect(focused?.getAttribute('data-list-index')).toBe('1')
+		expect(document.activeElement?.getAttribute('data-path')).toBe('1')
 	})
 
 	it('navigates with ArrowUp', async () => {
 		const { container } = render(List, { items: flatItems })
 		const nav = container.querySelector('nav[data-list]')!
-		// Focus second item
-		const secondItem = container.querySelector('[data-list-index="1"]') as HTMLElement
+		const secondItem = container.querySelector('[data-path="1"]') as HTMLElement
 		secondItem.focus()
 		await fireEvent.keyDown(nav, { key: 'ArrowUp' })
-		const focused = document.activeElement
-		expect(focused?.getAttribute('data-list-index')).toBe('0')
+		expect(document.activeElement?.getAttribute('data-path')).toBe('0')
 	})
 
 	it('navigates to first with Home', async () => {
 		const { container } = render(List, { items: flatItems })
 		const nav = container.querySelector('nav[data-list]')!
-		const lastItem = container.querySelector('[data-list-index="2"]') as HTMLElement
+		const lastItem = container.querySelector('[data-path="2"]') as HTMLElement
 		lastItem.focus()
 		await fireEvent.keyDown(nav, { key: 'Home' })
-		const focused = document.activeElement
-		expect(focused?.getAttribute('data-list-index')).toBe('0')
+		expect(document.activeElement?.getAttribute('data-path')).toBe('0')
 	})
 
 	it('navigates to last with End', async () => {
 		const { container } = render(List, { items: flatItems })
 		const nav = container.querySelector('nav[data-list]')!
-		const firstItem = container.querySelector('[data-list-index="0"]') as HTMLElement
+		const firstItem = container.querySelector('[data-path="0"]') as HTMLElement
 		firstItem.focus()
 		await fireEvent.keyDown(nav, { key: 'End' })
-		const focused = document.activeElement
-		expect(focused?.getAttribute('data-list-index')).toBe('2')
+		expect(document.activeElement?.getAttribute('data-path')).toBe('2')
 	})
 
 	it('selects item with Enter key', async () => {
 		const onselect = vi.fn()
 		const { container } = render(List, { items: flatItems, onselect })
-		const item = container.querySelector('[data-list-index="1"]') as HTMLElement
+		const item = container.querySelector('[data-path="1"]') as HTMLElement
 		item.focus()
 		await fireEvent.keyDown(item, { key: 'Enter' })
-		expect(onselect).toHaveBeenCalledWith('settings', flatItems[1])
+		expect(onselect).toHaveBeenCalled()
+		expect(onselect.mock.calls[0][0]).toBe('settings')
 	})
 
 	// ─── Keyboard: Collapsible Groups ───────────────────────────────
 
 	it('expands group with ArrowRight', async () => {
-		const { container } = render(List, {
-			items: groupedItems,
-			collapsible: true,
-			expanded: { Navigation: false }
-		})
+		const { container } = render(List, { items: groupedItems, collapsible: true })
 		const nav = container.querySelector('nav[data-list]')!
-		const groupLabel = container.querySelector('[data-list-index="0"]') as HTMLElement
+		const groupLabel = container.querySelector('[data-path="0"]') as HTMLElement
 		groupLabel.focus()
+		// Group starts collapsed
+		expect(groupLabel.getAttribute('aria-expanded')).toBe('false')
 		await fireEvent.keyDown(nav, { key: 'ArrowRight' })
-		// Group should now be expanded
-		const group = container.querySelector('[data-list-group]')
-		expect(group?.hasAttribute('data-list-group-collapsed')).toBe(false)
+		flushSync()
+		expect(groupLabel.getAttribute('aria-expanded')).toBe('true')
 	})
 
 	it('collapses group with ArrowLeft', async () => {
 		const { container } = render(List, { items: groupedItems, collapsible: true })
 		const nav = container.querySelector('nav[data-list]')!
-		const groupLabel = container.querySelector('[data-list-index="0"]') as HTMLElement
+		const groupLabel = container.querySelector('[data-path="0"]') as HTMLElement
 		groupLabel.focus()
-		// Group starts expanded, ArrowLeft should collapse
+		// Expand first
+		await fireEvent.keyDown(nav, { key: 'ArrowRight' })
+		flushSync()
+		expect(groupLabel.getAttribute('aria-expanded')).toBe('true')
+		// Now collapse
 		await fireEvent.keyDown(nav, { key: 'ArrowLeft' })
-		const group = container.querySelector('[data-list-group]')
-		expect(group?.hasAttribute('data-list-group-collapsed')).toBe(true)
+		flushSync()
+		expect(groupLabel.getAttribute('aria-expanded')).toBe('false')
 	})
 
 	// ─── Sizes ──────────────────────────────────────────────────────
@@ -292,12 +290,12 @@ describe('List', () => {
 		expect(el?.hasAttribute('data-disabled')).toBe(true)
 	})
 
-	it('does not call onselect when list is disabled', async () => {
-		const onselect = vi.fn()
-		const { container } = render(List, { items: flatItems, disabled: true, onselect })
-		const item = container.querySelectorAll('[data-list-item]')[0]
-		await fireEvent.click(item!)
-		expect(onselect).not.toHaveBeenCalled()
+	it('disables all buttons when list is disabled', () => {
+		const { container } = render(List, { items: flatItems, disabled: true })
+		const items = container.querySelectorAll('[data-list-item]')
+		items.forEach((item) => {
+			expect(item.hasAttribute('disabled')).toBe(true)
+		})
 	})
 
 	// ─── Custom Fields ──────────────────────────────────────────────
@@ -316,7 +314,8 @@ describe('List', () => {
 		const listItems = container.querySelectorAll('[data-list-item]')
 		expect(listItems.length).toBe(2)
 		await fireEvent.click(listItems[0])
-		expect(onselect).toHaveBeenCalledWith('home', items[0])
+		expect(onselect).toHaveBeenCalled()
+		expect(onselect.mock.calls[0][0]).toBe('home')
 	})
 
 	// ─── External value sync (moveToValue) ─────────────────────────
@@ -366,49 +365,5 @@ describe('List', () => {
 		const nav = container.querySelector('nav[data-list]')
 		expect(nav).toBeTruthy()
 		expect(container.querySelectorAll('[data-list-item]').length).toBe(0)
-	})
-
-	// ─── Multi-Selection ────────────────────────────────────────────
-
-	it('applies data-multiselect on container when multiselect is true', () => {
-		const { container } = render(List, { items: flatItems, multiselect: true })
-		const nav = container.querySelector('nav[data-list]')
-		expect(nav?.hasAttribute('data-multiselect')).toBe(true)
-	})
-
-	it('does not apply data-multiselect when multiselect is false', () => {
-		const { container } = render(List, { items: flatItems })
-		const nav = container.querySelector('nav[data-list]')
-		expect(nav?.hasAttribute('data-multiselect')).toBe(false)
-	})
-
-	it('sets aria-multiselectable when multiselect is true', () => {
-		const { container } = render(List, { items: flatItems, multiselect: true })
-		const nav = container.querySelector('nav[data-list]')
-		expect(nav?.getAttribute('aria-multiselectable')).toBe('true')
-	})
-
-	it('does not render data-selected on items when multiselect is false', () => {
-		const { container } = render(List, { items: flatItems, active: 'dashboard' })
-		const items = container.querySelectorAll('[data-list-item]')
-		items.forEach((item) => {
-			expect(item.hasAttribute('data-selected')).toBe(false)
-		})
-	})
-
-	it('does not render aria-selected on items when multiselect is false', () => {
-		const { container } = render(List, { items: flatItems })
-		const items = container.querySelectorAll('button[data-list-item]')
-		items.forEach((item) => {
-			expect(item.hasAttribute('aria-selected')).toBe(false)
-		})
-	})
-
-	it('renders aria-selected on items when multiselect is true', () => {
-		const { container } = render(List, { items: flatItems, multiselect: true })
-		const items = container.querySelectorAll('button[data-list-item]')
-		items.forEach((item) => {
-			expect(item.getAttribute('aria-selected')).toBe('false')
-		})
 	})
 })

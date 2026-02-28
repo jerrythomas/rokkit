@@ -49,14 +49,16 @@
 - [ ] `bun run test:ci` + lint — 0 errors, build ✓
 - [ ] Commit, wait for confirmation → proceed to Tree
 
-## Phase 5: Tree — backlog #69
+## Phase 5: Tree — backlog #69 — IN PROGRESS
 
-**New approach:** Copy List. Add tree-line helper. Collapsible Navigator.
+**New approach:** Wrapper + Navigator + ProxyItem. Collapsible Navigator. Tree lines computed from flatView.
 
-- [ ] Write `getTreeLineType(node, index, nodes)` helper
-- [ ] Rewrite `Tree.svelte` using List pattern + tree-line rendering
-- [ ] Update learn site + tree story
-- [ ] Create `llms.txt` for Tree
+- [x] Rewrite `Tree.svelte` using Wrapper + Navigator pattern (48 tests pass, 0 lint errors)
+- [x] Rename SimpleTree → Tree, delete old Tree, update exports + tests (28 tests pass)
+- [x] Create Tree learn page (5 stories, 3 fragments, +page, +layout, meta.json)
+- [x] Create LazyTree learn page (2 stories, 2 fragments, +page, +layout, meta.json)
+- [x] Rewrite Tree `llms.txt` for new API, create LazyTree `llms.txt`
+- [x] Update playground pages (rewrite tree, delete simple-tree, keep lazy-tree)
 - [ ] Commit, wait for confirmation → proceed to MultiSelect
 
 ## Phase 6: MultiSelect + FilteredWrapper — backlog #66

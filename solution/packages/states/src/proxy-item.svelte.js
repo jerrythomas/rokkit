@@ -64,6 +64,10 @@ export class ProxyItem {
 	#expanded = $state(false)
 	#selected = $state(false)
 
+	// Version counter — incremented by set() to trigger #children recomputation.
+	// $derived reads this so it re-derives when set('children', ...) is called.
+	#version = $state(0)
+
 	// Children auto-wrapped as ProxyItem instances with keys + levels assigned.
 	// $derived ensures stable references: same ProxyItem instances returned on
 	// every access, so $derived(buildFlatView) can track their expanded state.
@@ -98,17 +102,31 @@ export class ProxyItem {
 	// ─── Internal: build wrapped children ────────────────────────────────────
 
 	#buildChildren() {
+		void this.#version // reactive dependency — triggers recompute after set()
 		const raw = this.#item[this.#fields.children]
 		if (!Array.isArray(raw) || raw.length === 0) return []
 		return raw.map(
 			(child, i) =>
-				new ProxyItem(
+				this._createChild(
 					child,
 					this.#fields,
 					this.#key ? `${this.#key}-${i}` : String(i),
 					this.#level + 1
 				)
 		)
+	}
+
+	/**
+	 * Factory method for creating child proxies. Override in subclasses
+	 * to produce specialised children (e.g. LazyProxyItem).
+	 * @param {*} raw
+	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} fields
+	 * @param {string} key
+	 * @param {number} level
+	 * @returns {ProxyItem}
+	 */
+	_createChild(raw, fields, key, level) {
+		return new ProxyItem(raw, fields, key, level)
 	}
 
 	// ─── Structural props ─────────────────────────────────────────────────────
@@ -137,6 +155,20 @@ export class ProxyItem {
 	get(fieldName) {
 		const rawKey = this.#fields[fieldName] ?? fieldName
 		return this.#item[rawKey]
+	}
+
+	/**
+	 * Write a value back to the underlying item through the field mapping.
+	 * For object items, this modifies the original raw item (since #item === #raw).
+	 * Increments the version counter so $derived(#buildChildren()) re-computes.
+	 *
+	 * @param {string} fieldName  Semantic name, e.g. 'children', 'text'
+	 * @param {*} value
+	 */
+	set(fieldName, value) {
+		const rawKey = this.#fields[fieldName] ?? fieldName
+		this.#item[rawKey] = value
+		this.#version++
 	}
 
 	// ─── Field-mapped accessors ───────────────────────────────────────────────
@@ -202,6 +234,72 @@ export class ProxyItem {
 		this.#selected = v
 		const sf = this.#fields.selected
 		if (sf in this.#item) this.#item[sf] = v
+	}
+}
+
+// ─── LazyProxyItem ───────────────────────────────────────────────────────────
+
+/**
+ * LazyProxyItem
+ *
+ * Extends ProxyItem with lazy-loading support. When a lazyLoad function
+ * is provided, children are fetched on demand via fetch().
+ *
+ * #lazyLoad  — async function (value, raw) => children[] — null when not lazy
+ * #loaded    — true when: lazyLoad is null, or node already has children array,
+ *              or after successful fetch(). false only for sentinel nodes
+ *              (children === true) that need fetching.
+ * #loading   — true during async fetch(), false otherwise. Used for spinner UI.
+ *
+ * After fetch(), uses set('children', result) to update the underlying item
+ * and trigger #children recomputation via the version counter.
+ *
+ * The lazyLoad function is propagated to all children automatically via
+ * _createChild override.
+ */
+export class LazyProxyItem extends ProxyItem {
+	#lazyLoad
+	#loaded = $state(true)
+	#loading = $state(false)
+
+	/**
+	 * @param {*} raw
+	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} [fields]
+	 * @param {string} [key]
+	 * @param {number} [level]
+	 * @param {((value: unknown, raw: unknown) => Promise<unknown[]>) | null} [lazyLoad]
+	 */
+	constructor(raw, fields = {}, key = '', level = 0, lazyLoad = null) {
+		super(raw, fields, key, level)
+		this.#lazyLoad = lazyLoad
+		// Loaded if: no lazyLoad function, children already exist as an array, or no children field (leaf)
+		// Only sentinel nodes (children: true) are considered unloaded
+		this.#loaded = lazyLoad === null || this.get('children') !== true
+	}
+
+	get loaded() { return this.#loaded }
+	get loading() { return this.#loading }
+
+	/**
+	 * Fetch children via the lazyLoad function.
+	 * No-op if lazyLoad is null, already loaded, or currently loading.
+	 * After fetching, writes children to the underlying item via set().
+	 */
+	async fetch() {
+		if (!this.#lazyLoad || this.#loaded || this.#loading) return
+		this.#loading = true
+		try {
+			const children = await this.#lazyLoad(this.value, this.raw)
+			this.set('children', children)
+			this.#loaded = true
+		} finally {
+			this.#loading = false
+		}
+	}
+
+	/** @override — propagate lazyLoad to children */
+	_createChild(raw, fields, key, level) {
+		return new LazyProxyItem(raw, fields, key, level, this.#lazyLoad)
 	}
 }
 

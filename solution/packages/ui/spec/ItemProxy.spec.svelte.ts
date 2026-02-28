@@ -77,7 +77,8 @@ describe('ItemProxy', () => {
 				children: 'children',
 				snippet: 'snippet',
 				href: 'href',
-				badge: 'badge'
+				badge: 'badge',
+				title: 'title'
 			})
 		})
 	})

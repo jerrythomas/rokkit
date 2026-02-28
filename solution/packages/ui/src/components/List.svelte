@@ -71,7 +71,7 @@
 	// Mount Navigator on the root element; destroy when component unmounts.
 	$effect(() => {
 		if (!listRef) return
-		const dir = getComputedStyle(listRef).direction
+		const dir = getComputedStyle(listRef).direction || 'ltr'
 		const nav = new Navigator(listRef, wrapper, { collapsible, dir })
 		return () => nav.destroy()
 	})

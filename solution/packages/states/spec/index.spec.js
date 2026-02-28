@@ -13,10 +13,12 @@ describe('components', () => {
 			'messages',
 			'AbstractWrapper',
 			'ProxyItem',
+			'LazyProxyItem',
 			'buildProxyList',
 			'buildFlatView',
 			'PROXY_ITEM_FIELDS',
-			'Wrapper'
+			'Wrapper',
+			'LazyWrapper'
 		])
 	})
 })

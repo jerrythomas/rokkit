@@ -12,6 +12,7 @@ export {
 	Toggle,
 	List,
 	Tree,
+	LazyTree,
 	FloatingAction,
 	FloatingNavigation,
 	PaletteManager,

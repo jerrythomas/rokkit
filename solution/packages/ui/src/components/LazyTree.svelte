@@ -1,15 +1,13 @@
 <script lang="ts">
 	// @ts-nocheck
 	/**
-	 * Tree — Hierarchical data navigation with tree lines and keyboard navigation.
+	 * LazyTree — Tree + lazy loading.
 	 *
-	 * Same architecture as List:
-	 *   LazyWrapper  — owns focusedKey $state + flatView $derived (with lineTypes)
-	 *   Navigator    — attaches DOM event handlers, calls wrapper[action](path)
-	 *   flatView     — single flat {#each}, connectors rendered from node.lineTypes
+	 * Same as Tree but uses LazyProxyItem via createProxy factory
+	 * so nodes with children: true fetch on expand.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { LazyWrapper } from '@rokkit/states'
+	import { LazyWrapper, LazyProxyItem } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -23,6 +21,7 @@
 		showLines = true,
 		icons: userIcons = {},
 		onselect,
+		onloadchildren,
 		class: className = '',
 		...snippets
 	}: {
@@ -33,13 +32,20 @@
 		showLines?: boolean
 		icons?: { opened?: string; closed?: string }
 		onselect?: (value: unknown, proxy: ProxyItem) => void
+		onloadchildren?: (value: unknown, item: unknown) => Promise<unknown[]>
 		class?: string
 		[key: string]: unknown
 	} = $props()
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.node, ...userIcons })
 
-	const wrapper = $derived(new LazyWrapper(items, fields, { onselect }))
+	const wrapper = $derived(
+		new LazyWrapper(items, fields, {
+			onselect,
+			createProxy: (raw, f, key, level) =>
+				new LazyProxyItem(raw, f, key, level, onloadchildren ?? null)
+		})
+	)
 
 	let treeRef = $state<HTMLElement | null>(null)
 
@@ -69,6 +75,7 @@
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}
 		{@const isActive = proxy.value === value}
+		{@const isLoading = proxy.loading}
 		{@const content = resolveSnippet(snippets, proxy, ITEM_SNIPPET)}
 
 		<div
@@ -76,10 +83,12 @@
 				data-tree-path={node.key}
 				data-tree-level={node.level - 1}
 				data-tree-has-children={node.isExpandable || undefined}
+				data-tree-loading={isLoading || undefined}
 				data-active={isActive || undefined}
 				role="treeitem"
 				aria-expanded={node.isExpandable ? proxy.expanded : undefined}
 				aria-selected={isActive}
+				aria-busy={isLoading || undefined}
 				aria-level={node.level}
 			>
 				<div data-tree-node-row>
@@ -90,10 +99,14 @@
 									type="button"
 									data-tree-toggle-btn
 									onclick={() => wrapper.toggle(node.key)}
-									aria-label={proxy.expanded ? 'Collapse' : 'Expand'}
+									aria-label={isLoading ? 'Loading' : proxy.expanded ? 'Collapse' : 'Expand'}
 									tabindex={-1}
 								>
-									<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
+									{#if isLoading}
+										<span data-tree-spinner aria-hidden="true"></span>
+									{:else}
+										<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
+									{/if}
 								</button>
 							{:else}
 								<Connector type={lineType} />
@@ -106,10 +119,14 @@
 								type="button"
 								data-tree-toggle-btn
 								onclick={() => wrapper.toggle(node.key)}
-								aria-label={proxy.expanded ? 'Collapse' : 'Expand'}
+								aria-label={isLoading ? 'Loading' : proxy.expanded ? 'Collapse' : 'Expand'}
 								tabindex={-1}
 							>
-								<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
+								{#if isLoading}
+									<span data-tree-spinner aria-hidden="true"></span>
+								{:else}
+									<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
+								{/if}
 							</button>
 						{/if}
 					{/if}

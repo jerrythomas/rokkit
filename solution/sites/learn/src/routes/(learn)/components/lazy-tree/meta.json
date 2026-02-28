@@ -1,0 +1,9 @@
+{
+  "title": "LazyTree",
+  "description": "Tree with on-demand lazy-loaded children",
+  "icon": "i-component:tree",
+  "category": "components",
+  "tags": ["tree", "lazy", "async", "hierarchical", "navigation"],
+  "experimental": false,
+  "llms": true
+}

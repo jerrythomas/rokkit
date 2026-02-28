@@ -28,7 +28,7 @@ describe('stories.js', () => {
 					file: './elements/meta.json'
 				},
 				{
-					content: { title: 'List', order: 2 },
+					content: { title: 'List', category: 'elements', order: 2 },
 
 					group: 'elements',
 					file: './elements/list/meta.json'

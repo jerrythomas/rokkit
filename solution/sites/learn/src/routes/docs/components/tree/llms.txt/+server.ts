@@ -3,9 +3,9 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit Tree Component
 
-> Data-driven tree component for hierarchical data with expand/collapse, keyboard navigation, and lazy loading.
+> Hierarchical data navigation with tree lines and keyboard navigation.
 
-The Tree component renders nested items with tree-line connectors, expand/collapse per node, single or multi-selection, and optional lazy child loading via \`onloadchildren\`.
+The Tree component renders nested items with tree-line connectors, expand/collapse per node, and keyboard navigation. Built on the Wrapper + Navigator pattern (same architecture as List).
 
 ## Quick Start
 
@@ -13,39 +13,36 @@ The Tree component renders nested items with tree-line connectors, expand/collap
 <script>
   import { Tree } from '@rokkit/ui'
 
-  let items = $state([
+  const items = [
     {
-      text: 'Documents',
-      value: 'docs',
+      text: 'src',
+      value: 'src',
+      icon: 'i-lucide:folder',
       children: [
-        { text: 'Report.pdf', value: 'report' },
-        { text: 'Notes.txt',  value: 'notes' }
+        { text: 'index.ts', value: 'index', icon: 'i-lucide:file-code' },
+        { text: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code' }
       ]
     },
-    { text: 'Images', value: 'images', children: [] }
-  ])
+    { text: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+  ]
 
   let value = $state(null)
 </script>
 
-<Tree {items} bind:value />
+<Tree {items} bind:value onselect={(v) => (value = v)} />
 \`\`\`
 
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| \`items\` | \`TreeItem[]\` | \`[]\` | Hierarchical data array |
-| \`fields\` | \`TreeFields\` | defaults | Field mapping |
-| \`value\` | \`unknown\` | — | Selected value — use \`bind:value\` |
-| \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
+| \`items\` | \`unknown[]\` | \`[]\` | Hierarchical data array |
+| \`fields\` | \`Record<string, string>\` | \`{}\` | Field mapping |
+| \`value\` | \`unknown\` | — | Selected value |
+| \`size\` | \`'sm'\\|'md'\\|'lg'\` | \`'md'\` | Size variant |
 | \`showLines\` | \`boolean\` | \`true\` | Show tree line connectors |
-| \`multiselect\` | \`boolean\` | \`false\` | Enable multi-selection |
-| \`expanded\` | \`Record<string,boolean>\` | \`{}\` | Expanded nodes — use \`bind:expanded\` |
-| \`selected\` | \`unknown[]\` | \`[]\` | Selected values (multiselect) — use \`bind:selected\` |
-| \`expandAll\` | \`boolean\` | \`false\` | Expand all nodes by default |
-| \`active\` | \`unknown\` | — | Highlight node by value |
-| \`icons\` | \`TreeStateIcons\` | — | Override expand/collapse icons |
+| \`icons\` | \`{ opened?: string; closed?: string }\` | defaults | Override expand/collapse icons |
+| \`onselect\` | \`(value, proxy) => void\` | — | Selection callback |
 | \`class\` | \`string\` | \`''\` | Additional CSS classes |
 
 ## Field Mapping
@@ -61,39 +58,18 @@ The Tree component renders nested items with tree-line connectors, expand/collap
 | \`disabled\` | \`'disabled'\` | Disabled state |
 | \`href\` | \`'href'\` | URL (renders as \`<a>\`) |
 | \`badge\` | \`'badge'\` | Badge/count indicator |
-| \`level\` | \`'level'\` | Depth override |
 
-## Lazy Loading Children
-
-Set \`children: true\` (not an array) on a node to trigger lazy loading when the user expands it. Provide \`onloadchildren\` to fetch the data:
+## Custom Field Mapping
 
 \`\`\`svelte
-<script>
-  import { Tree } from '@rokkit/ui'
-
-  let items = $state([
-    { text: 'src',  value: 'src',  children: true },   // lazy
-    { text: 'docs', value: 'docs', children: [] }       // empty leaf
-  ])
-
-  async function loadChildren(value, item) {
-    const res = await fetch(\`/api/tree/\${value}\`)
-    return res.json()
-  }
-</script>
-
-<Tree {items} bind:value onloadchildren={loadChildren} />
+<Tree {items} fields={{ text: 'name', value: 'id' }} />
 \`\`\`
 
-## Callbacks
+## Custom Icons
 
-| Callback | Signature | Description |
-|----------|-----------|-------------|
-| \`onselect\` | \`(value, item) => void\` | Node selected |
-| \`onselectedchange\` | \`(selected[]) => void\` | Multi-selection changed |
-| \`onexpandedchange\` | \`(expanded) => void\` | Expanded state changed |
-| \`ontoggle\` | \`(value, item, isExpanded) => void\` | Node toggled |
-| \`onloadchildren\` | \`async (value, item) => TreeItem[]\` | Load children lazily |
+\`\`\`svelte
+<Tree {items} icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
+\`\`\`
 
 ## Snippets
 
@@ -101,43 +77,32 @@ Set \`children: true\` (not an array) on a node to trigger lazy loading when the
 
 \`\`\`svelte
 <Tree {items}>
-  {#snippet item(data, fields, handlers, isActive, isExpanded, level)}
-    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
-      {#if data.icon}<span class={data.icon}></span>{/if}
-      <span>{data.text}</span>
-      {#if data.badge}<span class="badge">{data.badge}</span>{/if}
-    </button>
-  {/snippet}
-</Tree>
-\`\`\`
-
-### Custom Toggle Icon
-
-\`\`\`svelte
-<Tree {items}>
-  {#snippet toggle(isExpanded, hasChildren, icons)}
-    {#if hasChildren}
-      <span class={isExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
-    {:else}
-      <span class="i-lucide:minus w-4"></span>
+  {#snippet itemContent(proxy)}
+    {#if proxy.icon}
+      <span class={proxy.icon} aria-hidden="true"></span>
+    {/if}
+    <span class="flex-1">{proxy.text}</span>
+    {#if proxy.get('badge')}
+      <span class="badge">{proxy.get('badge')}</span>
     {/if}
   {/snippet}
 </Tree>
 \`\`\`
 
-## State Icons
+## ProxyItem API
 
-Override the default expand/collapse icons:
+Snippets receive a \`ProxyItem\` instance:
 
-\`\`\`svelte
-<Tree {items} icons={{ opened: 'i-lucide:folder-open', closed: 'i-lucide:folder' }} />
-\`\`\`
-
-## Expand All Nodes
-
-\`\`\`svelte
-<Tree {items} expandAll bind:value />
-\`\`\`
+| Property | Description |
+|----------|-------------|
+| \`proxy.text\` | Mapped display text |
+| \`proxy.icon\` | Mapped icon class |
+| \`proxy.value\` | The original raw item |
+| \`proxy.href\` | Mapped href (renders as \`<a>\`) |
+| \`proxy.disabled\` | Whether the item is disabled |
+| \`proxy.expanded\` | Expand state for branch nodes |
+| \`proxy.hasChildren\` | Whether the node has children |
+| \`proxy.get('field')\` | Read any field by name |
 
 ## Keyboard Navigation
 
@@ -162,12 +127,16 @@ Override the default expand/collapse icons:
 | Attribute | Description |
 |-----------|-------------|
 | \`data-tree\` | Root element |
-| \`data-tree-item\` | Tree node |
-| \`data-tree-toggle\` | Expand/collapse button |
-| \`data-expanded\` | Expanded node |
-| \`data-selected\` | Selected node |
+| \`data-tree-node\` | Tree node |
+| \`data-tree-node-row\` | Node content row |
+| \`data-tree-toggle-btn\` | Expand/collapse button |
+| \`data-tree-item-content\` | Clickable item content |
+| \`data-tree-path\` | Node path key |
+| \`data-tree-level\` | Node depth level |
+| \`data-tree-has-children\` | Branch node marker |
 | \`data-active\` | Active/current node |
-| \`data-loading\` | Node loading children |
+| \`data-show-lines\` | Root: tree lines enabled |
+| \`data-size\` | Root: size variant |
 
 ## Import
 
@@ -179,53 +148,21 @@ import { Tree } from '@rokkit/ui'
 
 \`\`\`typescript
 interface TreeProps {
-  items?: TreeItem[]
-  fields?: TreeFields
+  items?: unknown[]
+  fields?: Record<string, string>
   value?: unknown
   size?: 'sm' | 'md' | 'lg'
   showLines?: boolean
-  multiselect?: boolean
-  expanded?: Record<string, boolean>
-  selected?: unknown[]
-  expandAll?: boolean
-  active?: unknown
-  icons?: TreeStateIcons
+  icons?: { opened?: string; closed?: string }
+  onselect?: (value: unknown, proxy: ProxyItem) => void
   class?: string
-  onselect?: (value: unknown, item: TreeItem) => void
-  onselectedchange?: (selected: unknown[]) => void
-  onexpandedchange?: (expanded: Record<string, boolean>) => void
-  ontoggle?: (value: unknown, item: TreeItem, isExpanded: boolean) => void
-  onloadchildren?: (value: unknown, item: TreeItem) => Promise<TreeItem[]>
-  item?: Snippet<[TreeItem, TreeFields, TreeItemHandlers, boolean, boolean, number]>
-  toggle?: Snippet<[boolean, boolean, TreeStateIcons]>
-  connector?: Snippet<[TreeLineType]>
 }
-
-interface TreeFields {
-  value?: string       // default: 'value'
-  text?: string        // default: 'text'
-  icon?: string        // default: 'icon'
-  description?: string // default: 'description'
-  children?: string    // default: 'children'
-  expanded?: string    // default: 'expanded'
-  disabled?: string    // default: 'disabled'
-  href?: string        // default: 'href'
-  badge?: string       // default: 'badge'
-  level?: string       // default: 'level'
-}
-
-interface TreeStateIcons {
-  opened?: string  // icon class for expanded state
-  closed?: string  // icon class for collapsed state
-}
-
-type TreeLineType = 'child' | 'last' | 'sibling' | 'empty' | 'icon'
 \`\`\`
 
 ## Related Components
 
 - [List](/docs/components/list/llms.txt) — flat list with collapsible groups
-- [Accordion](/docs/components/accordion/llms.txt) — collapsible content panels
+- [LazyTree](/docs/components/lazy-tree/llms.txt) — tree with lazy-loaded children
 `
 
 export const GET: RequestHandler = async () => {
