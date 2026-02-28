@@ -495,6 +495,111 @@ describe('LazyWrapper', () => {
 		})
 	})
 
+	describe('onlazyload + loadMore', () => {
+		it('should append root items via loadMore()', async () => {
+			const onlazyload = vi.fn().mockResolvedValue([
+				{ text: 'D', value: 'd' },
+				{ text: 'E', value: 'e' }
+			])
+
+			const w = new LazyWrapper(
+				[
+					{ text: 'A', value: 'a' },
+					{ text: 'B', value: 'b' },
+					{ text: 'C', value: 'c' }
+				],
+				{},
+				{ onlazyload }
+			)
+
+			expect(w.flatView).toHaveLength(3)
+
+			await w.loadMore()
+			flushSync()
+
+			expect(onlazyload).toHaveBeenCalledTimes(1)
+			expect(w.flatView).toHaveLength(5)
+			expect(w.flatView[3].key).toBe('3')
+			expect(w.flatView[3].proxy.text).toBe('D')
+			expect(w.flatView[4].key).toBe('4')
+			expect(w.flatView[4].proxy.text).toBe('E')
+		})
+
+		it('should preserve existing proxies after loadMore', async () => {
+			const onlazyload = vi.fn().mockResolvedValue([
+				{ text: 'New', value: 'n' }
+			])
+
+			const w = new LazyWrapper(
+				[{ text: 'Original', value: 'o' }],
+				{},
+				{ onlazyload }
+			)
+
+			const originalProxy = w.flatView[0].proxy
+
+			await w.loadMore()
+			flushSync()
+
+			// Original proxy reference should be stable
+			expect(w.flatView[0].proxy).toBe(originalProxy)
+			expect(w.flatView[0].proxy.text).toBe('Original')
+			expect(w.flatView).toHaveLength(2)
+		})
+
+		it('should do nothing in loadMore when no onlazyload callback', async () => {
+			const w = new LazyWrapper([
+				{ text: 'A', value: 'a' },
+				{ text: 'B', value: 'b' }
+			])
+
+			await w.loadMore()
+			flushSync()
+
+			expect(w.flatView).toHaveLength(2)
+		})
+
+		it('should handle empty result from onlazyload', async () => {
+			const onlazyload = vi.fn().mockResolvedValue([])
+
+			const w = new LazyWrapper(
+				[{ text: 'A', value: 'a' }],
+				{},
+				{ onlazyload }
+			)
+
+			await w.loadMore()
+			flushSync()
+
+			expect(onlazyload).toHaveBeenCalledTimes(1)
+			expect(w.flatView).toHaveLength(1)
+		})
+
+		it('should handle onlazyload returning null/undefined gracefully', async () => {
+			const onlazyloadNull = vi.fn().mockResolvedValue(null)
+			const w1 = new LazyWrapper(
+				[{ text: 'A', value: 'a' }],
+				{},
+				{ onlazyload: onlazyloadNull }
+			)
+
+			await w1.loadMore()
+			flushSync()
+			expect(w1.flatView).toHaveLength(1)
+
+			const onlazyloadUndef = vi.fn().mockResolvedValue(undefined)
+			const w2 = new LazyWrapper(
+				[{ text: 'B', value: 'b' }],
+				{},
+				{ onlazyload: onlazyloadUndef }
+			)
+
+			await w2.loadMore()
+			flushSync()
+			expect(w2.flatView).toHaveLength(1)
+		})
+	})
+
 	describe('expand() triggers lazy fetch', () => {
 		it('should fetch and expand an unloaded lazy node', async () => {
 			const lazyLoad = vi.fn().mockResolvedValue([

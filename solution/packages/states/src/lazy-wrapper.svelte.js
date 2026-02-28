@@ -43,6 +43,7 @@ export class LazyWrapper extends AbstractWrapper {
 
 	#onselect
 	#onchange
+	#onlazyload
 	#selectedValue = $state(undefined)
 
 	/**
@@ -55,6 +56,21 @@ export class LazyWrapper extends AbstractWrapper {
 		this.#proxyTree = new ProxyTree(items, fields, options)
 		this.#onselect = options.onselect
 		this.#onchange = options.onchange
+		this.#onlazyload = options.onlazyload
+	}
+
+	// ─── Root-level pagination ──────────────────────────────────────────────────
+
+	/**
+	 * Load more root-level items via the onlazyload callback.
+	 * Appends results to the proxy tree.
+	 */
+	async loadMore() {
+		if (!this.#onlazyload) return
+		const result = await this.#onlazyload()
+		if (Array.isArray(result) && result.length > 0) {
+			this.#proxyTree.append(result)
+		}
 	}
 
 	// ─── Data accessors (delegated to ProxyTree) ─────────────────────────────
