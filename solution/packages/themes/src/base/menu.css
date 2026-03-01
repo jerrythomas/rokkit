@@ -211,43 +211,8 @@
 }
 
 /* =============================================================================
-   Item Elements (icon, content, shortcut)
+   Item Elements - uses shared [data-item-*] from item.css
    ============================================================================= */
-
-[data-menu-item] > [data-menu-item-icon] {
-  flex-shrink: 0;
-}
-
-[data-menu-item] > [data-menu-item-content] {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-[data-menu-item] > [data-menu-item-content] > [data-menu-item-label] {
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-[data-menu-item] > [data-menu-item-content] > [data-menu-item-description] {
-  font-size: 0.75em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-[data-menu-item] > [data-menu-item-shortcut] {
-  flex-shrink: 0;
-  margin-left: auto;
-  padding: 0.125rem 0.375rem;
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  font-size: 0.75em;
-  font-weight: 500;
-  border-radius: 0.25rem;
-}
 
 /* =============================================================================
    Custom Snippet Wrapper
