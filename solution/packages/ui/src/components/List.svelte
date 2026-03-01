@@ -31,6 +31,7 @@
 	import { Wrapper } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+	import ItemContent from './ItemContent.svelte'
 
 	interface ListIcons {
 		opened?: string
@@ -91,10 +92,7 @@
 	Used when no itemContent snippet or per-item snippet is provided.
 -->
 {#snippet defaultItemContent(proxy: ProxyItem)}
-	{#if proxy.get('icon')}
-		<span data-list-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
-	{/if}
-	<span data-list-item-text>{proxy.label}</span>
+	<ItemContent {proxy} />
 {/snippet}
 
 <!--
@@ -162,7 +160,7 @@
 			-->
 			<a
 				href={proxy.get('href')}
-				title={proxy.get('title')}
+				title={proxy.get('tooltip')}
 				data-list-item
 				data-path={node.key}
 				data-level={node.level}
@@ -182,7 +180,7 @@
 			-->
 			<button
 				type="button"
-				title={proxy.get('title')}
+				title={proxy.get('tooltip')}
 				data-list-item
 				data-path={node.key}
 				data-level={node.level}

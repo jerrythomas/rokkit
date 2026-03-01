@@ -29,6 +29,7 @@
 	import { Wrapper } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+	import ItemContent from './ItemContent.svelte'
 
 	interface MultiSelectIcons {
 		opened?: string
@@ -240,10 +241,7 @@
 </script>
 
 {#snippet defaultOptionContent(proxy: ProxyItem)}
-	{#if proxy.get('icon')}
-		<span data-select-option-icon class={proxy.get('icon')} aria-hidden="true"></span>
-	{/if}
-	<span data-item-text>{proxy.label}</span>
+	<ItemContent {proxy} />
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}

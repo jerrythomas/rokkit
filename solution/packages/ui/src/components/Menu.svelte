@@ -47,6 +47,7 @@
 	import { Wrapper } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+	import ItemContent from './ItemContent.svelte'
 
 	interface MenuIcons {
 		opened?: string
@@ -164,10 +165,7 @@
 </script>
 
 {#snippet defaultItemContent(proxy: ProxyItem)}
-	{#if proxy.get('icon')}
-		<span data-menu-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
-	{/if}
-	<span data-menu-item-text>{proxy.label}</span>
+	<ItemContent {proxy} />
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
@@ -248,7 +246,7 @@
 				{:else}
 					<button
 						type="button"
-						title={proxy.get('title')}
+						title={proxy.get('tooltip')}
 						data-menu-item
 						data-path={node.key}
 						data-level={node.level}

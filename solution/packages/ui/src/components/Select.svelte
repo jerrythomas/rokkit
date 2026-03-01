@@ -42,6 +42,7 @@
 	import { Wrapper } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
+	import ItemContent from './ItemContent.svelte'
 
 	interface SelectIcons {
 		opened?: string
@@ -280,15 +281,7 @@
 </script>
 
 {#snippet defaultOptionContent(proxy: ProxyItem)}
-	{#if proxy.get('icon')}
-		<span data-select-option-icon class={proxy.get('icon')} aria-hidden="true"></span>
-	{/if}
-	<span data-item-text>
-		<span data-item-label>{proxy.label}</span>
-		{#if proxy.get('description')}
-			<span data-item-description>{proxy.get('description')}</span>
-		{/if}
-	</span>
+	<ItemContent {proxy} />
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
@@ -371,7 +364,7 @@
 				{:else}
 					<button
 						type="button"
-						title={proxy.get('title')}
+						title={proxy.get('tooltip')}
 						data-select-option
 						data-path={node.key}
 						data-level={node.level}

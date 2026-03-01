@@ -150,7 +150,7 @@ describe('Menu', () => {
 	it('renders item text', async () => {
 		const { container } = render(Menu, { items: flatItems })
 		await openMenu(container)
-		const texts = container.querySelectorAll('[data-menu-item-text]')
+		const texts = container.querySelectorAll('[data-item-label]')
 		expect(texts[0]?.textContent).toBe('Copy')
 		expect(texts[1]?.textContent).toBe('Paste')
 	})
@@ -158,7 +158,7 @@ describe('Menu', () => {
 	it('renders item icons', async () => {
 		const { container } = render(Menu, { items: flatItems })
 		await openMenu(container)
-		const icons = container.querySelectorAll('[data-menu-item-icon]')
+		const icons = container.querySelectorAll('[data-item-icon]')
 		expect(icons.length).toBe(2) // only Copy and Paste have icons
 		expect(icons[0]?.classList.contains('i-copy')).toBe(true)
 	})
@@ -274,7 +274,7 @@ describe('Menu', () => {
 			onselect
 		})
 		await openMenu(container)
-		const texts = container.querySelectorAll('[data-menu-item-text]')
+		const texts = container.querySelectorAll('[data-item-label]')
 		expect(texts[0]?.textContent).toBe('Save')
 		const menuItems = container.querySelectorAll('[data-menu-item]')
 		await fireEvent.click(menuItems[1])
