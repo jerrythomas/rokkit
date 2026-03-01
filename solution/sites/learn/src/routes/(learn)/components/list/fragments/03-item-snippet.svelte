@@ -9,7 +9,7 @@
 		{#if proxy.icon}
 			<span class={proxy.icon} aria-hidden="true"></span>
 		{/if}
-		<span class="flex-1">{proxy.text}</span>
+		<span class="flex-1">{proxy.label}</span>
 		<span class="badge">{proxy.get('status')}</span>
 	{/snippet}
 </List>

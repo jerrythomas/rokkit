@@ -133,8 +133,8 @@
 	function handleSelect(extractedValue: unknown, proxy: ProxyItem) {
 		if (proxy.disabled) return
 		value = extractedValue
-		selected = proxy.raw
-		onchange?.(extractedValue, proxy.raw)
+		selected = proxy.original
+		onchange?.(extractedValue, proxy.original)
 		isOpen = false
 		filterQuery = ''
 		triggerRef?.focus()
@@ -174,7 +174,7 @@
 
 	// Sync selected raw item
 	$effect(() => {
-		selected = selectedProxy?.raw ?? null
+		selected = selectedProxy?.original ?? null
 	})
 
 	// ─── Trigger action ───────────────────────────────────────────────────────
@@ -284,7 +284,7 @@
 		<span data-select-option-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-item-text>
-		<span data-item-label>{proxy.text}</span>
+		<span data-item-label>{proxy.label}</span>
 		{#if proxy.get('description')}
 			<span data-item-description>{proxy.get('description')}</span>
 		{/if}
@@ -295,7 +295,7 @@
 	{#if proxy.get('icon')}
 		<span data-select-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span>{proxy.text}</span>
+	<span>{proxy.label}</span>
 {/snippet}
 
 <div
@@ -321,7 +321,7 @@
 				{#if selectedProxy.get('icon')}
 					<span data-select-value-icon class={selectedProxy.get('icon')} aria-hidden="true"></span>
 				{/if}
-				<span data-select-value-text>{selectedProxy.text}</span>
+				<span data-select-value-text>{selectedProxy.label}</span>
 			{:else}
 				<span data-select-placeholder>{placeholder}</span>
 			{/if}

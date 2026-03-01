@@ -3,6 +3,40 @@ import { ProxyItem, LazyProxyItem, PROXY_ITEM_FIELDS } from '../src/proxy-item.s
 import { flushSync } from 'svelte'
 
 describe('ProxyItem', () => {
+	describe('id', () => {
+		it('should return item id field when present', () => {
+			const proxy = new ProxyItem({ text: 'A', id: 'my-id' }, {}, '0', 1)
+			expect(proxy.id).toBe('my-id')
+		})
+
+		it('should auto-generate id when item lacks id field', () => {
+			const proxy = new ProxyItem({ text: 'A' }, {}, '0', 1)
+			expect(proxy.id).toMatch(/^proxy-\d+$/)
+		})
+
+		it('should return stable id across multiple accesses', () => {
+			const proxy = new ProxyItem({ text: 'A' }, {}, '0', 1)
+			const first = proxy.id
+			expect(proxy.id).toBe(first)
+		})
+
+		it('should generate unique ids for different proxies', () => {
+			const p1 = new ProxyItem({ text: 'A' }, {}, '0', 1)
+			const p2 = new ProxyItem({ text: 'B' }, {}, '1', 1)
+			expect(p1.id).not.toBe(p2.id)
+		})
+
+		it('should use custom id field mapping', () => {
+			const proxy = new ProxyItem({ text: 'A', code: 'abc' }, { id: 'code' }, '0', 1)
+			expect(proxy.id).toBe('abc')
+		})
+
+		it('should auto-generate for primitives', () => {
+			const proxy = new ProxyItem('hello', {}, '0', 1)
+			expect(proxy.id).toMatch(/^proxy-\d+$/)
+		})
+	})
+
 	describe('set()', () => {
 		it('should write to the underlying object item via field mapping', () => {
 			const raw = { text: 'hello', value: 1 }
@@ -10,7 +44,7 @@ describe('ProxyItem', () => {
 
 			proxy.set('text', 'world')
 			expect(raw.text).toBe('world')
-			expect(proxy.text).toBe('world')
+			expect(proxy.label).toBe('world')
 		})
 
 		it('should modify the original raw item reference', () => {
@@ -19,7 +53,7 @@ describe('ProxyItem', () => {
 
 			proxy.set('text', 'Bob')
 			expect(raw.name).toBe('Bob')
-			expect(proxy.text).toBe('Bob')
+			expect(proxy.label).toBe('Bob')
 		})
 
 		it('should use unmapped field name as raw key when not in fields config', () => {
@@ -44,8 +78,8 @@ describe('ProxyItem', () => {
 			expect(raw.children[0].text).toBe('child1')
 			expect(proxy.hasChildren).toBe(true)
 			expect(proxy.children).toHaveLength(2)
-			expect(proxy.children[0].text).toBe('child1')
-			expect(proxy.children[1].text).toBe('child2')
+			expect(proxy.children[0].label).toBe('child1')
+			expect(proxy.children[1].label).toBe('child2')
 		})
 
 		it('should update children from empty to populated', () => {
@@ -215,8 +249,8 @@ describe('LazyProxyItem', () => {
 			flushSync()
 			expect(proxy.hasChildren).toBe(true)
 			expect(proxy.children).toHaveLength(2)
-			expect(proxy.children[0].text).toBe('child1')
-			expect(proxy.children[1].text).toBe('child2')
+			expect(proxy.children[0].label).toBe('child1')
+			expect(proxy.children[1].label).toBe('child2')
 		})
 
 		it('should not call lazyLoad when already loaded', async () => {
@@ -273,7 +307,7 @@ describe('LazyProxyItem', () => {
 			flushSync()
 
 			expect(child.hasChildren).toBe(true)
-			expect(child.children[0].text).toBe('grandchild')
+			expect(child.children[0].label).toBe('grandchild')
 		})
 
 		it('children with existing arrays should be loaded', async () => {

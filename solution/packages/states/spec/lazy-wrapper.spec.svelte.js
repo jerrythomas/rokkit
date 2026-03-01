@@ -12,9 +12,9 @@ describe('LazyWrapper', () => {
 				{ text: 'C', value: 'c' }
 			])
 			expect(w.flatView).toHaveLength(3)
-			expect(w.flatView[0].proxy.text).toBe('A')
-			expect(w.flatView[1].proxy.text).toBe('B')
-			expect(w.flatView[2].proxy.text).toBe('C')
+			expect(w.flatView[0].proxy.label).toBe('A')
+			expect(w.flatView[1].proxy.label).toBe('B')
+			expect(w.flatView[2].proxy.label).toBe('C')
 		})
 
 		it('should build lookup from items', () => {
@@ -23,8 +23,8 @@ describe('LazyWrapper', () => {
 				{ text: 'B', value: 'b' }
 			])
 			expect(w.lookup.size).toBe(2)
-			expect(w.lookup.get('0').text).toBe('A')
-			expect(w.lookup.get('1').text).toBe('B')
+			expect(w.lookup.get('0').label).toBe('A')
+			expect(w.lookup.get('1').label).toBe('B')
 		})
 
 		it('should handle nested items', () => {
@@ -45,9 +45,9 @@ describe('LazyWrapper', () => {
 
 			// Lookup should include all nodes (parent + children)
 			expect(w.lookup.size).toBe(3)
-			expect(w.lookup.get('0').text).toBe('Parent')
-			expect(w.lookup.get('0-0').text).toBe('Child1')
-			expect(w.lookup.get('0-1').text).toBe('Child2')
+			expect(w.lookup.get('0').label).toBe('Parent')
+			expect(w.lookup.get('0-0').label).toBe('Child1')
+			expect(w.lookup.get('0-1').label).toBe('Child2')
 		})
 
 		it('should expand/collapse groups', () => {
@@ -65,7 +65,7 @@ describe('LazyWrapper', () => {
 			w.flatView[0].proxy.expanded = true
 			flushSync()
 			expect(w.flatView).toHaveLength(2)
-			expect(w.flatView[1].proxy.text).toBe('Child')
+			expect(w.flatView[1].proxy.label).toBe('Child')
 
 			// Collapse
 			w.flatView[0].proxy.expanded = false
@@ -335,8 +335,8 @@ describe('LazyWrapper', () => {
 			proxy.expanded = true
 			flushSync()
 			expect(w.flatView).toHaveLength(3)
-			expect(w.flatView[1].proxy.text).toBe('Loaded1')
-			expect(w.flatView[2].proxy.text).toBe('Loaded2')
+			expect(w.flatView[1].proxy.label).toBe('Loaded1')
+			expect(w.flatView[2].proxy.label).toBe('Loaded2')
 		})
 
 		it('should update lookup when children are set via proxy.set()', () => {
@@ -353,7 +353,7 @@ describe('LazyWrapper', () => {
 			// Lookup should now include the new child
 			expect(w.lookup.size).toBe(2)
 			expect(w.lookup.get('0-0')).toBeDefined()
-			expect(w.lookup.get('0-0').text).toBe('New')
+			expect(w.lookup.get('0-0').label).toBe('New')
 		})
 
 		it('should allow navigation to lazily loaded children', () => {
@@ -421,12 +421,12 @@ describe('LazyWrapper', () => {
 			proxy.expanded = true
 			flushSync()
 			expect(w.flatView).toHaveLength(3)
-			expect(w.flatView[1].proxy.text).toBe('Fetched1')
-			expect(w.flatView[2].proxy.text).toBe('Fetched2')
+			expect(w.flatView[1].proxy.label).toBe('Fetched1')
+			expect(w.flatView[2].proxy.label).toBe('Fetched2')
 
 			// Lookup includes fetched children
 			expect(w.lookup.size).toBe(3)
-			expect(w.lookup.get('0-0').text).toBe('Fetched1')
+			expect(w.lookup.get('0-0').label).toBe('Fetched1')
 		})
 
 		it('should handle multi-level lazy loading', async () => {
@@ -466,7 +466,7 @@ describe('LazyWrapper', () => {
 			flushSync()
 
 			expect(w.flatView).toHaveLength(3)
-			expect(w.flatView[2].proxy.text).toBe('Level3')
+			expect(w.flatView[2].proxy.label).toBe('Level3')
 			expect(w.lookup.size).toBe(3)
 		})
 
@@ -520,9 +520,9 @@ describe('LazyWrapper', () => {
 			expect(onlazyload).toHaveBeenCalledTimes(1)
 			expect(w.flatView).toHaveLength(5)
 			expect(w.flatView[3].key).toBe('3')
-			expect(w.flatView[3].proxy.text).toBe('D')
+			expect(w.flatView[3].proxy.label).toBe('D')
 			expect(w.flatView[4].key).toBe('4')
-			expect(w.flatView[4].proxy.text).toBe('E')
+			expect(w.flatView[4].proxy.label).toBe('E')
 		})
 
 		it('should preserve existing proxies after loadMore', async () => {
@@ -543,7 +543,7 @@ describe('LazyWrapper', () => {
 
 			// Original proxy reference should be stable
 			expect(w.flatView[0].proxy).toBe(originalProxy)
-			expect(w.flatView[0].proxy.text).toBe('Original')
+			expect(w.flatView[0].proxy.label).toBe('Original')
 			expect(w.flatView).toHaveLength(2)
 		})
 
@@ -630,7 +630,7 @@ describe('LazyWrapper', () => {
 			expect(proxy.loaded).toBe(true)
 			expect(proxy.expanded).toBe(true)
 			expect(w.flatView).toHaveLength(2)
-			expect(w.flatView[1].proxy.text).toBe('Child')
+			expect(w.flatView[1].proxy.label).toBe('Child')
 		})
 
 		it('should not re-fetch an already loaded node', async () => {
@@ -702,7 +702,7 @@ describe('LazyWrapper', () => {
 			// Node already has children → loaded=true → normal expand, no fetch
 			expect(lazyLoad).not.toHaveBeenCalled()
 			expect(w.flatView).toHaveLength(2)
-			expect(w.flatView[1].proxy.text).toBe('Child')
+			expect(w.flatView[1].proxy.label).toBe('Child')
 		})
 	})
 })

@@ -66,7 +66,7 @@
 	<h2>Custom Item Rendering</h2>
 	<p>
 		Use the <code>itemContent</code> snippet to fully control what appears inside each list item.
-		The snippet receives a <code>ProxyItem</code> — use <code>proxy.text</code>,
+		The snippet receives a <code>ProxyItem</code> — use <code>proxy.label</code>,
 		<code>proxy.icon</code>, and <code>proxy.get('fieldName')</code> to access any field. Here
 		each item shows a status badge alongside the icon and label.
 	</p>
@@ -134,7 +134,7 @@
 		<h2>ProxyItem API</h2>
 		<p>Snippets receive a <code>ProxyItem</code> instance:</p>
 		<ul>
-			<li><strong>proxy.text</strong>: Mapped display text</li>
+			<li><strong>proxy.label</strong>: Mapped display text</li>
 			<li><strong>proxy.icon</strong>: Mapped icon class</li>
 			<li><strong>proxy.href</strong>: Mapped href (renders an <code>&lt;a&gt;</code>)</li>
 			<li><strong>proxy.value</strong>: The original raw item (object or primitive)</li>

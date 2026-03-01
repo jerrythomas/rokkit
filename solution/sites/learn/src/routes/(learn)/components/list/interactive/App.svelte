@@ -16,7 +16,7 @@
 		{#if proxy.icon}
 			<span class={proxy.icon} aria-hidden="true"></span>
 		{/if}
-		<span class="flex-1">{proxy.text}</span>
+		<span class="flex-1">{proxy.label}</span>
 		<input
 			type="checkbox"
 			checked={proxy.get('checked')}
@@ -24,7 +24,7 @@
 				proxy.value.checked = e.currentTarget.checked
 			}}
 			onclick={(e) => e.stopPropagation()}
-			aria-label="Toggle {proxy.text}"
+			aria-label="Toggle {proxy.label}"
 		/>
 	{/snippet}
 </List>

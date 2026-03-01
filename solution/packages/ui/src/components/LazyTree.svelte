@@ -143,7 +143,7 @@
 							data-tree-item-content
 							data-path={node.key}
 							data-active={isActive || undefined}
-							aria-label={proxy.text}
+							aria-label={proxy.label}
 							aria-current={isActive ? 'page' : undefined}
 						>
 							{#if content}
@@ -158,7 +158,7 @@
 							data-tree-item-content
 							data-path={node.key}
 							data-active={isActive || undefined}
-							aria-label={proxy.text}
+							aria-label={proxy.label}
 						>
 							{#if content}
 								{@render content(proxy)}

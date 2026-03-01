@@ -19,14 +19,14 @@
 		{#if proxy.icon}
 			<span class={proxy.icon} aria-hidden="true"></span>
 		{/if}
-		<span class="flex-1">{proxy.text}</span>
+		<span class="flex-1">{proxy.label}</span>
 		<span class="text-error-z5 text-xs">fruit</span>
 	{/snippet}
 	{#snippet vegetable(proxy)}
 		{#if proxy.icon}
 			<span class={proxy.icon} aria-hidden="true"></span>
 		{/if}
-		<span class="flex-1">{proxy.text}</span>
+		<span class="flex-1">{proxy.label}</span>
 		<span class="text-success-z5 text-xs">veggie</span>
 	{/snippet}
 </List>

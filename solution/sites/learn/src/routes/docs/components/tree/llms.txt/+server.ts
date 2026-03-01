@@ -81,7 +81,7 @@ The Tree component renders nested items with tree-line connectors, expand/collap
     {#if proxy.icon}
       <span class={proxy.icon} aria-hidden="true"></span>
     {/if}
-    <span class="flex-1">{proxy.text}</span>
+    <span class="flex-1">{proxy.label}</span>
     {#if proxy.get('badge')}
       <span class="badge">{proxy.get('badge')}</span>
     {/if}
@@ -95,7 +95,7 @@ Snippets receive a \`ProxyItem\` instance:
 
 | Property | Description |
 |----------|-------------|
-| \`proxy.text\` | Mapped display text |
+| \`proxy.label\` | Mapped display text |
 | \`proxy.icon\` | Mapped icon class |
 | \`proxy.value\` | The original raw item |
 | \`proxy.href\` | Mapped href (renders as \`<a>\`) |

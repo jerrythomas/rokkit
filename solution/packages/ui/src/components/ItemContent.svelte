@@ -13,9 +13,9 @@
 {#if proxy.get('icon')}
 	<span data-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 {/if}
-{#if proxy.text || proxy.get('description')}
+{#if proxy.label || proxy.get('description')}
 	<span data-item-text>
-		<span data-item-label>{proxy.text}</span>
+		<span data-item-label>{proxy.label}</span>
 		{#if proxy.get('description')}
 			<span data-item-description>{proxy.get('description')}</span>
 		{/if}

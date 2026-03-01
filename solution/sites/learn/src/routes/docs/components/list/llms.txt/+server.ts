@@ -130,7 +130,7 @@ Replaces the inner content of each \`<button>\`/\`<a>\`. The component still ren
     {#if proxy.icon}
       <span class={proxy.icon} aria-hidden="true"></span>
     {/if}
-    <span class="flex-1">{proxy.text}</span>
+    <span class="flex-1">{proxy.label}</span>
     <span class="badge">{proxy.get('status')}</span>
   {/snippet}
 </List>
@@ -142,7 +142,7 @@ Replaces the inner content of each \`<button>\`/\`<a>\`. The component still ren
 <List {items} collapsible>
   {#snippet groupContent(proxy)}
     <span class={proxy.icon}></span>
-    <span>{proxy.text}</span>
+    <span>{proxy.label}</span>
     <span class={proxy.expanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'}></span>
   {/snippet}
 </List>
@@ -162,12 +162,12 @@ Set \`item.snippet = 'name'\` to route specific items to a named snippet. Falls 
 <List {items}>
   {#snippet fruit(proxy)}
     <span class={proxy.icon}></span>
-    <span>{proxy.text}</span>
+    <span>{proxy.label}</span>
     <span class="text-error-z5 text-xs">fruit</span>
   {/snippet}
   {#snippet vegetable(proxy)}
     <span class={proxy.icon}></span>
-    <span>{proxy.text}</span>
+    <span>{proxy.label}</span>
     <span class="text-success-z5 text-xs">veggie</span>
   {/snippet}
 </List>
@@ -177,7 +177,7 @@ Set \`item.snippet = 'name'\` to route specific items to a named snippet. Falls 
 
 | Property/Method | Description |
 |----------------|-------------|
-| \`proxy.text\` | Mapped display text (reads from \`item[fields.text]\`) |
+| \`proxy.label\` | Mapped display text (reads from \`item[fields.text]\`) |
 | \`proxy.icon\` | Mapped icon class |
 | \`proxy.href\` | Mapped href |
 | \`proxy.value\` | The original raw item object or primitive |
@@ -192,7 +192,7 @@ Snippets support full Svelte reactivity. Use \`proxy.value\` to mutate the origi
 \`\`\`svelte
 <List {items}>
   {#snippet itemContent(proxy)}
-    <span class="flex-1">{proxy.text}</span>
+    <span class="flex-1">{proxy.label}</span>
     <input
       type="checkbox"
       checked={proxy.get('checked')}

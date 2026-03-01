@@ -13,6 +13,6 @@
 <Select items={statuses} bind:value placeholder="Select a status">
 	{#snippet itemContent(proxy)}
 		<span class="inline-block size-2 rounded-full {proxy.get('color')}"></span>
-		<span>{proxy.text}</span>
+		<span>{proxy.label}</span>
 	{/snippet}
 </Select>

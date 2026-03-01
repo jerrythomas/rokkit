@@ -24,7 +24,7 @@
 		{#if proxy.icon}
 			<span class={proxy.icon} aria-hidden="true"></span>
 		{/if}
-		<span class="flex-1">{proxy.text}</span>
+		<span class="flex-1">{proxy.label}</span>
 		<span class="rounded px-1.5 py-0.5 text-xs {statusStyle[proxy.get('status')] ?? ''}">
 			{proxy.get('status')}
 		</span>

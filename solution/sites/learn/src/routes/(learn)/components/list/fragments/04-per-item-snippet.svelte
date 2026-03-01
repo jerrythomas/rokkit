@@ -10,12 +10,12 @@
 <List {items}>
 	{#snippet fruit(proxy)}
 		<span class={proxy.icon}></span>
-		<span>{proxy.text}</span>
+		<span>{proxy.label}</span>
 		<span class="text-error-z5 text-xs">fruit</span>
 	{/snippet}
 	{#snippet vegetable(proxy)}
 		<span class={proxy.icon}></span>
-		<span>{proxy.text}</span>
+		<span>{proxy.label}</span>
 		<span class="text-success-z5 text-xs">veggie</span>
 	{/snippet}
 </List>

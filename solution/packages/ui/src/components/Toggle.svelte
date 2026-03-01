@@ -44,7 +44,7 @@
 		if (proxy.disabled || disabled) return
 		if (extractedValue !== value) {
 			value = extractedValue
-			onchange?.(extractedValue, proxy.raw)
+			onchange?.(extractedValue, proxy.original)
 		}
 	}
 </script>
@@ -72,8 +72,8 @@
 			data-disabled={proxy.disabled || undefined}
 			role="radio"
 			aria-checked={sel}
-			aria-label={proxy.text}
-			title={proxy.get('description') || proxy.text}
+			aria-label={proxy.label}
+			title={proxy.get('description') || proxy.label}
 			disabled={proxy.disabled || disabled}
 		>
 			{#if content}
@@ -82,8 +82,8 @@
 				{#if proxy.get('icon')}
 					<span data-toggle-icon class={proxy.get('icon')} aria-hidden="true"></span>
 				{/if}
-				{#if showLabels && proxy.text}
-					<span data-toggle-label>{proxy.text}</span>
+				{#if showLabels && proxy.label}
+					<span data-toggle-label>{proxy.label}</span>
 				{/if}
 			{/if}
 		</button>

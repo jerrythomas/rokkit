@@ -196,7 +196,7 @@
 					{#if proxy.icon}
 						<span class="{proxy.icon} text-surface-z5" aria-hidden="true"></span>
 					{/if}
-					<span class="flex-1 text-sm">{proxy.text}</span>
+					<span class="flex-1 text-sm">{proxy.label}</span>
 					{#if proxy.get('badge')}
 						<span class="bg-primary-z6 rounded-full px-1.5 py-0.5 text-xs text-white">
 							{proxy.get('badge')}
@@ -215,7 +215,7 @@
 			<List items={mixed} bind:value={mixedValue} onselect={(v) => (mixedValue = v)}>
 				{#snippet highlighted(proxy)}
 					<span class="i-lucide:star text-warning-z6" aria-hidden="true"></span>
-					<span class="text-warning-z7 font-medium">{proxy.text}</span>
+					<span class="text-warning-z7 font-medium">{proxy.label}</span>
 				{/snippet}
 			</List>
 		</div>

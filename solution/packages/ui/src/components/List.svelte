@@ -94,7 +94,7 @@
 	{#if proxy.get('icon')}
 		<span data-list-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-list-item-text>{proxy.text}</span>
+	<span data-list-item-text>{proxy.label}</span>
 {/snippet}
 
 <!--
@@ -105,7 +105,7 @@
 	{#if proxy.get('icon')}
 		<span data-list-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-list-group-text>{proxy.text}</span>
+	<span data-list-group-text>{proxy.label}</span>
 	{#if collapsible}
 		<span
 			data-list-expand-icon

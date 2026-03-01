@@ -167,14 +167,14 @@
 	{#if proxy.get('icon')}
 		<span data-menu-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-menu-item-text>{proxy.text}</span>
+	<span data-menu-item-text>{proxy.label}</span>
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
 	{#if proxy.get('icon')}
 		<span data-menu-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-menu-group-text>{proxy.text}</span>
+	<span data-menu-group-text>{proxy.label}</span>
 	{#if collapsible}
 		<span
 			data-menu-expand-icon

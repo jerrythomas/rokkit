@@ -1,5 +1,5 @@
 {#snippet itemContent(proxy)}
-  <span class="flex-1">{proxy.text}</span>
+  <span class="flex-1">{proxy.label}</span>
   <input
     type="checkbox"
     checked={proxy.value.enabled}

@@ -25,7 +25,7 @@
 		{#if proxy.icon}
 			<span class={proxy.icon} aria-hidden="true"></span>
 		{/if}
-		<span class="flex-1">{proxy.text}</span>
+		<span class="flex-1">{proxy.label}</span>
 		{#if proxy.get('badge')}
 			<span class="rounded bg-surface-z2 px-1.5 py-0.5 text-xs text-surface-z5">
 				{proxy.get('badge')}

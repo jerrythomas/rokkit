@@ -18,12 +18,12 @@
 			data-custom-item
 			data-item-value={proxy.get('value')}
 		>
-			Custom: {proxy.text}
+			Custom: {proxy.label}
 		</span>
 	{/snippet}
 	{#snippet groupContent(proxy)}
 		<span data-custom-group>
-			Group: {proxy.text}
+			Group: {proxy.label}
 		</span>
 	{/snippet}
 </Menu>

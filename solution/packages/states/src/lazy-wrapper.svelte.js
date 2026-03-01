@@ -219,7 +219,7 @@ export class LazyWrapper extends AbstractWrapper {
 			: 0
 		for (let i = 0; i < nav.length; i++) {
 			const node = nav[(startIdx + i) % nav.length]
-			if (node.proxy.text.toLowerCase().startsWith(q)) return node.key
+			if (node.proxy.label.toLowerCase().startsWith(q)) return node.key
 		}
 		return null
 	}

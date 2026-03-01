@@ -78,7 +78,7 @@
 	{#if proxy.get('icon')}
 		<span data-tabs-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-tabs-label>{proxy.text}</span>
+	<span data-tabs-label>{proxy.label}</span>
 	{#if editable}
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<span
@@ -138,7 +138,7 @@
 					data-disabled={proxy.disabled || undefined}
 					role="tab"
 					aria-selected={sel}
-					aria-label={proxy.get('label') || proxy.text}
+					aria-label={proxy.get('label') || proxy.label}
 					disabled={proxy.disabled || disabled}
 				>
 					{#if content}

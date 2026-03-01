@@ -16,7 +16,7 @@ describe('ProxyTree', () => {
 			expect(tree.roots[0]).toBeInstanceOf(ProxyItem)
 			expect(tree.roots[0].key).toBe('0')
 			expect(tree.roots[0].level).toBe(1)
-			expect(tree.roots[0].text).toBe('A')
+			expect(tree.roots[0].label).toBe('A')
 			expect(tree.roots[1].key).toBe('1')
 			expect(tree.roots[2].key).toBe('2')
 		})
@@ -27,13 +27,13 @@ describe('ProxyTree', () => {
 				{ text: 'name', value: 'id' }
 			)
 
-			expect(tree.roots[0].text).toBe('Alice')
+			expect(tree.roots[0].label).toBe('Alice')
 			expect(tree.roots[0].value).toBe(42)
 		})
 
 		it('should accept custom factory via createProxy option', () => {
 			class CustomProxy extends ProxyItem {
-				get custom() { return `custom-${  this.text}` }
+				get custom() { return `custom-${  this.label}` }
 			}
 
 			const tree = new ProxyTree(
@@ -72,7 +72,7 @@ describe('ProxyTree', () => {
 			)
 
 			// Custom text field mapping applied
-			expect(tree.roots[0].text).toBe('Hello')
+			expect(tree.roots[0].label).toBe('Hello')
 			// Default value field still works
 			expect(tree.roots[0].value).toBe(1)
 		})
@@ -87,7 +87,7 @@ describe('ProxyTree', () => {
 
 			expect(tree.flatView).toHaveLength(2)
 			expect(tree.flatView[0].key).toBe('0')
-			expect(tree.flatView[0].proxy.text).toBe('A')
+			expect(tree.flatView[0].proxy.label).toBe('A')
 			expect(tree.flatView[0].level).toBe(1)
 			expect(tree.flatView[1].key).toBe('1')
 		})
@@ -113,9 +113,9 @@ describe('ProxyTree', () => {
 			flushSync()
 
 			expect(tree.flatView).toHaveLength(3)
-			expect(tree.flatView[1].proxy.text).toBe('Child1')
+			expect(tree.flatView[1].proxy.label).toBe('Child1')
 			expect(tree.flatView[1].level).toBe(2)
-			expect(tree.flatView[2].proxy.text).toBe('Child2')
+			expect(tree.flatView[2].proxy.label).toBe('Child2')
 		})
 
 		it('should compute lineTypes for flat list items', () => {
@@ -204,8 +204,8 @@ describe('ProxyTree', () => {
 			])
 
 			expect(tree.lookup.size).toBe(2)
-			expect(tree.lookup.get('0').text).toBe('A')
-			expect(tree.lookup.get('1').text).toBe('B')
+			expect(tree.lookup.get('0').label).toBe('A')
+			expect(tree.lookup.get('1').label).toBe('B')
 		})
 
 		it('should include nested proxies by key', () => {
@@ -225,10 +225,10 @@ describe('ProxyTree', () => {
 			])
 
 			expect(tree.lookup.size).toBe(4)
-			expect(tree.lookup.get('0').text).toBe('Parent')
-			expect(tree.lookup.get('0-0').text).toBe('Child1')
-			expect(tree.lookup.get('0-1').text).toBe('Child2')
-			expect(tree.lookup.get('0-1-0').text).toBe('Grandchild')
+			expect(tree.lookup.get('0').label).toBe('Parent')
+			expect(tree.lookup.get('0-0').label).toBe('Child1')
+			expect(tree.lookup.get('0-1').label).toBe('Child2')
+			expect(tree.lookup.get('0-1-0').label).toBe('Grandchild')
 		})
 
 		it('should include all nodes even when collapsed', () => {
@@ -243,7 +243,7 @@ describe('ProxyTree', () => {
 			// Parent is collapsed, but lookup should still include children
 			expect(tree.roots[0].expanded).toBe(false)
 			expect(tree.lookup.size).toBe(2)
-			expect(tree.lookup.get('0-0').text).toBe('Child')
+			expect(tree.lookup.get('0-0').label).toBe('Child')
 		})
 	})
 
@@ -263,9 +263,9 @@ describe('ProxyTree', () => {
 
 			expect(tree.roots).toHaveLength(3)
 			expect(tree.roots[1].key).toBe('1')
-			expect(tree.roots[1].text).toBe('B')
+			expect(tree.roots[1].label).toBe('B')
 			expect(tree.roots[2].key).toBe('2')
-			expect(tree.roots[2].text).toBe('C')
+			expect(tree.roots[2].label).toBe('C')
 		})
 
 		it('should preserve existing proxies', () => {
@@ -293,7 +293,7 @@ describe('ProxyTree', () => {
 			flushSync()
 
 			expect(tree.flatView).toHaveLength(2)
-			expect(tree.flatView[1].proxy.text).toBe('B')
+			expect(tree.flatView[1].proxy.label).toBe('B')
 		})
 
 		it('should update lookup after append', () => {
@@ -307,12 +307,12 @@ describe('ProxyTree', () => {
 			flushSync()
 
 			expect(tree.lookup.size).toBe(2)
-			expect(tree.lookup.get('1').text).toBe('B')
+			expect(tree.lookup.get('1').label).toBe('B')
 		})
 
 		it('should use custom factory for appended items', () => {
 			class CustomProxy extends ProxyItem {
-				get custom() { return `custom-${  this.text}` }
+				get custom() { return `custom-${  this.label}` }
 			}
 
 			const tree = new ProxyTree(
@@ -374,10 +374,10 @@ describe('ProxyTree', () => {
 
 			expect(root.hasChildren).toBe(true)
 			expect(root.children).toHaveLength(2)
-			expect(root.children[0].text).toBe('Child1')
+			expect(root.children[0].label).toBe('Child1')
 			expect(root.children[0].key).toBe('0-0')
 			expect(root.children[0].level).toBe(2)
-			expect(root.children[1].text).toBe('Child2')
+			expect(root.children[1].label).toBe('Child2')
 			expect(root.children[1].key).toBe('0-1')
 		})
 
@@ -399,7 +399,7 @@ describe('ProxyTree', () => {
 			flushSync()
 
 			expect(tree.flatView).toHaveLength(2)
-			expect(tree.flatView[1].proxy.text).toBe('Child')
+			expect(tree.flatView[1].proxy.label).toBe('Child')
 		})
 
 		it('should update lookup after adding children', () => {
@@ -414,7 +414,7 @@ describe('ProxyTree', () => {
 
 			expect(tree.lookup.size).toBe(2)
 			expect(tree.lookup.get('0-0')).toBeDefined()
-			expect(tree.lookup.get('0-0').text).toBe('New')
+			expect(tree.lookup.get('0-0').label).toBe('New')
 		})
 
 		it('should update the original raw item', () => {

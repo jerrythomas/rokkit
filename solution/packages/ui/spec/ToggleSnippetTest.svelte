@@ -21,7 +21,7 @@
 			data-item-value={proxy.get('value')}
 			data-selected={selected || undefined}
 		>
-			Custom: {proxy.text}
+			Custom: {proxy.label}
 		</span>
 	{/snippet}
 </Toggle>

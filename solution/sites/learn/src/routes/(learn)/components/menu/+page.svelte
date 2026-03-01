@@ -62,7 +62,7 @@
 		<h2>ProxyItem API</h2>
 		<p>Snippets receive a <code>ProxyItem</code> instance:</p>
 		<ul>
-			<li><strong>proxy.text</strong>: Mapped display text</li>
+			<li><strong>proxy.label</strong>: Mapped display text</li>
 			<li><strong>proxy.icon</strong>: Mapped icon class</li>
 			<li><strong>proxy.href</strong>: Mapped href (renders an <code>&lt;a&gt;</code>)</li>
 			<li><strong>proxy.value</strong>: The original raw item (object or primitive)</li>

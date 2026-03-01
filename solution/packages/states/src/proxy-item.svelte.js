@@ -19,6 +19,9 @@
  *                   Structural props (key, level) and control state
  *                   (expanded, selected) are accessed directly as properties.
  *
+ * Direct getters: label, value, id — primary access.
+ *   All other fields via get(fieldName).
+ *
  * children — auto-wrapped as ProxyItem instances via $derived, with their
  *            keys and levels already set. Stable references so
  *            $derived(buildFlatView) correctly tracks nested expanded state.
@@ -32,9 +35,13 @@
  * signals stable so $derived computations track them correctly.
  */
 
+// Auto-increment counter for generating stable unique IDs.
+let _nextId = 1
+
 // Default field mapping for ProxyItem.
 // Semantic names (left) map to raw item keys (right).
 export const PROXY_ITEM_FIELDS = {
+	id: 'id',
 	text: 'text',
 	value: 'value',
 	icon: 'icon',
@@ -56,6 +63,7 @@ export class ProxyItem {
 	#raw // original input — never touched after construction
 	#item // normalised object used for all field accesses
 	#fields
+	#id // stable unique identifier — from item field or auto-generated
 	#key // path-based key e.g. '0', '0-1', '0-1-2'
 	#level // nesting depth: 1 = root
 
@@ -91,6 +99,9 @@ export class ProxyItem {
 			raw !== null && typeof raw === 'object'
 				? raw
 				: { [this.#fields.text]: raw, [this.#fields.value]: raw }
+
+		// Stable unique id: read from item field, or auto-generate
+		this.#id = this.#item[this.#fields.id] ?? `proxy-${_nextId++}`
 
 		// Sync initial control state from #item fields when present
 		const ef = this.#fields.expanded
@@ -137,8 +148,12 @@ export class ProxyItem {
 	get level() {
 		return this.#level
 	}
-	/** The original raw item passed to the constructor — never mutated. */
-	get raw() {
+	/** Stable unique identifier — from item's id field, or auto-generated. */
+	get id() {
+		return this.#id
+	}
+	/** The original input passed to the constructor — never mutated. */
+	get original() {
 		return this.#raw
 	}
 
@@ -171,15 +186,35 @@ export class ProxyItem {
 		this.#version++
 	}
 
+	/**
+	 * Write directly to the original raw item, bypassing field mapping.
+	 * Advanced operation for when the caller needs to update the source data.
+	 * Accepts either (field, value) or an object for batch updates.
+	 * Increments version so $derived(#buildChildren()) re-computes.
+	 *
+	 * @param {string|object} fieldOrBatch  Raw key name, or { key: value, … }
+	 * @param {*} [value]
+	 */
+	mutate(fieldOrBatch, value) {
+		if (typeof fieldOrBatch === 'object' && fieldOrBatch !== null) {
+			for (const [k, v] of Object.entries(fieldOrBatch)) {
+				this.#raw[k] = v
+			}
+		} else {
+			this.#raw[fieldOrBatch] = value
+		}
+		this.#version++
+	}
+
 	// ─── Field-mapped accessors ───────────────────────────────────────────────
 
-	get text() {
+	get label() {
 		return this.#item[this.#fields.text] ?? ''
 	}
 	get value() {
 		return this.#item[this.#fields.value] ?? this.#raw
 	}
-	// icon, href, snippet — use get('icon'), get('href'), get('snippet')
+	// All other fields via get('icon'), get('href'), get('snippet'), etc.
 
 	// ─── Computed props ───────────────────────────────────────────────────────
 
@@ -281,7 +316,7 @@ export class LazyProxyItem extends ProxyItem {
 		if (!this.#lazyLoad || this.#loaded || this.#loading) return
 		this.#loading = true
 		try {
-			const children = await this.#lazyLoad(this.value, this.raw)
+			const children = await this.#lazyLoad(this.value, this.original)
 			this.set('children', children)
 			this.#loaded = true
 		} finally {

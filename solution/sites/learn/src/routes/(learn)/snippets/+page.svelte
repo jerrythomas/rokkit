@@ -17,7 +17,7 @@
 	<h2>Item Snippets</h2>
 	<p>
 		Every collection component accepts an <code>itemContent</code> snippet that receives a
-		<code>ProxyItem</code>. Use <code>proxy.text</code>, <code>proxy.icon</code>, and
+		<code>ProxyItem</code>. Use <code>proxy.label</code>, <code>proxy.icon</code>, and
 		<code>proxy.get('field')</code> to access mapped values:
 	</p>
 	<Code content={itemSnippet} language="svelte" />
@@ -32,7 +32,7 @@
 			<tr><th>Property / Method</th><th>Returns</th><th>Description</th></tr>
 		</thead>
 		<tbody>
-			<tr><td><code>proxy.text</code></td><td>string</td><td>Mapped display text</td></tr>
+			<tr><td><code>proxy.label</code></td><td>string</td><td>Mapped display text</td></tr>
 			<tr><td><code>proxy.icon</code></td><td>string</td><td>Mapped icon class</td></tr>
 			<tr><td><code>proxy.href</code></td><td>string</td><td>Mapped href (renders as <code>&lt;a&gt;</code>)</td></tr>
 			<tr><td><code>proxy.value</code></td><td>any</td><td>The original raw item</td></tr>

@@ -97,7 +97,7 @@
 
 	function handleSelect(extractedValue: unknown, proxy: ProxyItem) {
 		if (proxy.disabled) return
-		toggleItemSelection(extractedValue, proxy.raw)
+		toggleItemSelection(extractedValue, proxy.original)
 	}
 
 	const wrapper = $derived(new Wrapper(processedItems, fields, { onselect: handleSelect }))
@@ -139,7 +139,7 @@
 			newItems = []
 			for (const [, proxy] of wrapper.lookup) {
 				if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
-					newItems.push(proxy.raw)
+					newItems.push(proxy.original)
 				}
 			}
 		} else {
@@ -148,7 +148,7 @@
 			newItems = []
 			for (const [, proxy] of wrapper.lookup) {
 				if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
-					newItems.push(proxy.raw)
+					newItems.push(proxy.original)
 				}
 			}
 		}
@@ -164,7 +164,7 @@
 		const newItems: unknown[] = []
 		for (const [, proxy] of wrapper.lookup) {
 			if (!proxy.hasChildren && newValues.some((v) => v === proxy.value)) {
-				newItems.push(proxy.raw)
+				newItems.push(proxy.original)
 			}
 		}
 		value = newValues
@@ -243,14 +243,14 @@
 	{#if proxy.get('icon')}
 		<span data-select-option-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-item-text>{proxy.text}</span>
+	<span data-item-text>{proxy.label}</span>
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
 	{#if proxy.get('icon')}
 		<span data-select-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span>{proxy.text}</span>
+	<span>{proxy.label}</span>
 {/snippet}
 
 <div
@@ -278,12 +278,12 @@
 					<span data-select-tags>
 						{#each selectedProxies as proxy (proxy.value)}
 							<span data-select-tag>
-								<span data-select-tag-text>{proxy.text}</span>
+								<span data-select-tag-text>{proxy.label}</span>
 								<span
 									role="button"
 									tabindex="0"
 									data-select-tag-remove
-									aria-label="Remove {proxy.text}"
+									aria-label="Remove {proxy.label}"
 									onclick={(e) => {
 										e.stopPropagation()
 										removeTag(proxy.value)
@@ -348,7 +348,7 @@
 						data-disabled={proxy.disabled || undefined}
 						role="option"
 						aria-selected={sel}
-						aria-label={proxy.text}
+						aria-label={proxy.label}
 						disabled={proxy.disabled || disabled}
 						tabindex="-1"
 					>

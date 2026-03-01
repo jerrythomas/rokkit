@@ -39,7 +39,7 @@ stack (identical to `List`) for consistent keyboard navigation and field mapping
 
 All snippets receive a `ProxyItem` instance:
 
-- `proxy.text` — Mapped display text
+- `proxy.label` — Mapped display text
 - `proxy.icon` — Mapped icon class
 - `proxy.value` — Extracted value field (primitive)
 - `proxy.disabled` — Whether the item is disabled
@@ -121,7 +121,7 @@ All snippets receive a `ProxyItem` instance:
 <Select items={statuses} bind:value placeholder="Select a status">
   {#snippet itemContent(proxy)}
     <span class="dot {proxy.get('color')}"></span>
-    <span>{proxy.text}</span>
+    <span>{proxy.label}</span>
   {/snippet}
 </Select>
 ```
