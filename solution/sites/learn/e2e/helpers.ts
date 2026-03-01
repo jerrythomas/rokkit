@@ -5,7 +5,7 @@ export type Mode = (typeof modes)[number]
 
 /** Navigate to a component's Play page and wait for it to be ready */
 export async function goToPlayPage(page: Page, component: string) {
-	await page.goto(`/elements/${component}/play`)
+	await page.goto(`/components/${component}/play`)
 	await page.waitForLoadState('networkidle')
 }
 

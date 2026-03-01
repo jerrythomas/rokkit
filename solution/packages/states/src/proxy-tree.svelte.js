@@ -55,7 +55,7 @@ function buildReactiveFlatView(proxies, parentLineTypes = []) {
 		// Compute line types: inherit parent's continuations + current position + icon/empty
 		const inherited = parentLineTypes.slice(0, -1).map((t) => NEXT_LINE[t] ?? 'empty')
 		if (parentLineTypes.length > 0) inherited.push(position)
-		const lineTypes = [...inherited, isExpandable ? 'icon' : 'empty']
+		const lineTypes = isExpandable ? [...inherited, 'icon'] : inherited
 
 		result.push({
 			key: proxy.key,

@@ -7,6 +7,25 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-01
 
+### Tree UI Refinements + ItemContent Flags + Housekeeping
+
+**Tree rendering improvements:**
+- Leaf spacer removal: leaf nodes no longer get trailing `'empty'` in lineTypes (proxy-tree.svelte.js)
+- Added `folder-opened`/`folder-closed` to DEFAULT_ICONS (constants.js) — Tree uses `DEFAULT_STATE_ICONS.folder` instead of `.node`
+- ItemContent.svelte: added `showIcon` (default true) and `showSubtext` (default true) boolean flags
+- Tree/LazyTree: use `<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />` — parent nodes show chevron+label only, leaf nodes show icon+label
+- Removed redundant `role="separator"` from List.svelte `<hr>` (a11y fix)
+
+**Housekeeping:**
+- Cleaned backlog files: removed all completed/DONE items from 01-forms, 02-ui-components, 03-effects, 04-infrastructure
+- Updated #70/#71/#72 checklist progress in backlog
+- Deleted `docs/llms/` directory (content lives on learn site llms.txt routes)
+- Updated plan.md — archived stale migration phases, active work is #70 Wrapper unification
+
+**Tests:** 832 UI pass. Lint: a11y warning fixed.
+
+---
+
 ### Legacy DEFAULT_FIELDS Cleanup (Backlog #71 — Phase 1)
 
 Removed dead legacy code and deprecated DEFAULT_FIELDS.

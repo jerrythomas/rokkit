@@ -97,6 +97,8 @@ export const DEFAULT_ICONS = [
 	'action-copysuccess',
 	'node-opened',
 	'node-closed',
+	'folder-opened',
+	'folder-closed',
 	'selector-opened',
 	'selector-closed',
 	'menu-opened',

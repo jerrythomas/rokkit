@@ -200,10 +200,10 @@ describe('LazyWrapper', () => {
 				{ text: 'C', value: 'c' }
 			])
 
-			// Leaf nodes: just 'empty' (no toggle icon)
-			expect(w.flatView[0].lineTypes).toEqual(['empty'])
-			expect(w.flatView[1].lineTypes).toEqual(['empty'])
-			expect(w.flatView[2].lineTypes).toEqual(['empty'])
+			// Leaf nodes: no lineTypes (no toggle icon, no trailing empty)
+			expect(w.flatView[0].lineTypes).toEqual([])
+			expect(w.flatView[1].lineTypes).toEqual([])
+			expect(w.flatView[2].lineTypes).toEqual([])
 		})
 
 		it('should compute lineTypes for expandable root', () => {
@@ -218,8 +218,8 @@ describe('LazyWrapper', () => {
 
 			// Expandable root: 'icon' (toggle slot)
 			expect(w.flatView[0].lineTypes).toEqual(['icon'])
-			// Leaf sibling: 'empty'
-			expect(w.flatView[1].lineTypes).toEqual(['empty'])
+			// Leaf sibling: no trailing empty
+			expect(w.flatView[1].lineTypes).toEqual([])
 		})
 
 		it('should compute lineTypes for expanded children', () => {
@@ -240,12 +240,12 @@ describe('LazyWrapper', () => {
 
 			// Parent: expandable, not last → ['icon']
 			expect(w.flatView[0].lineTypes).toEqual(['icon'])
-			// Child1: leaf, not last child → ['child', 'empty']
-			expect(w.flatView[1].lineTypes).toEqual(['child', 'empty'])
-			// Child2: leaf, last child → ['last', 'empty']
-			expect(w.flatView[2].lineTypes).toEqual(['last', 'empty'])
-			// Sibling: leaf, last root → ['empty']
-			expect(w.flatView[3].lineTypes).toEqual(['empty'])
+			// Child1: leaf, not last child → ['child']
+			expect(w.flatView[1].lineTypes).toEqual(['child'])
+			// Child2: leaf, last child → ['last']
+			expect(w.flatView[2].lineTypes).toEqual(['last'])
+			// Sibling: leaf, last root → []
+			expect(w.flatView[3].lineTypes).toEqual([])
 		})
 
 		it('should compute lineTypes for deeply nested tree', () => {
@@ -276,13 +276,13 @@ describe('LazyWrapper', () => {
 			// A1: expandable, not last child of A → ['child', 'icon']
 			expect(w.flatView[1].lineTypes).toEqual(['child', 'icon'])
 			// A1a: leaf, not last child of A1 → parent A1 was 'child' → continuation 'sibling', position 'child'
-			expect(w.flatView[2].lineTypes).toEqual(['sibling', 'child', 'empty'])
+			expect(w.flatView[2].lineTypes).toEqual(['sibling', 'child'])
 			// A1b: leaf, last child of A1 → continuation 'sibling', position 'last'
-			expect(w.flatView[3].lineTypes).toEqual(['sibling', 'last', 'empty'])
-			// A2: leaf, last child of A → ['last', 'empty']
-			expect(w.flatView[4].lineTypes).toEqual(['last', 'empty'])
-			// B: leaf, last root → ['empty']
-			expect(w.flatView[5].lineTypes).toEqual(['empty'])
+			expect(w.flatView[3].lineTypes).toEqual(['sibling', 'last'])
+			// A2: leaf, last child of A → ['last']
+			expect(w.flatView[4].lineTypes).toEqual(['last'])
+			// B: leaf, last root → []
+			expect(w.flatView[5].lineTypes).toEqual([])
 		})
 
 		it('should update lineTypes when children are lazily loaded', () => {
@@ -291,7 +291,7 @@ describe('LazyWrapper', () => {
 			])
 
 			// Initially a leaf
-			expect(w.flatView[0].lineTypes).toEqual(['empty'])
+			expect(w.flatView[0].lineTypes).toEqual([])
 
 			// Add children
 			const proxy = w.lookup.get('0')
@@ -305,8 +305,8 @@ describe('LazyWrapper', () => {
 			proxy.expanded = true
 			flushSync()
 
-			expect(w.flatView[1].lineTypes).toEqual(['child', 'empty'])
-			expect(w.flatView[2].lineTypes).toEqual(['last', 'empty'])
+			expect(w.flatView[1].lineTypes).toEqual(['child'])
+			expect(w.flatView[2].lineTypes).toEqual(['last'])
 		})
 	})
 

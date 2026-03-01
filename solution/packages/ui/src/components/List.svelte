@@ -129,7 +129,7 @@
 		{@const content = resolveSnippet(snippets as Record<string, unknown>, proxy, node.hasChildren ? GROUP_SNIPPET : ITEM_SNIPPET)}
 
 		{#if node.type === 'separator'}
-			<hr data-list-separator role="separator" />
+			<hr data-list-separator />
 		{:else if node.type === 'spacer'}
 			<div data-list-spacer></div>
 		{:else if node.hasChildren}

@@ -3,9 +3,16 @@ import type { RequestHandler } from './$types'
 
 const content = `# Rokkit Toggle Component
 
-> Multi-option toggle group with keyboard navigation and field mapping.
+> Segmented control for switching between a set of options with keyboard navigation.
 
-The Toggle component renders a set of options as a button group (radio-style). One option is selected at a time. Use it for mode switches, view selectors, or any small option set.
+The Toggle component renders options as a horizontal button group (radio-style). One option is selected at a time. Use it for mode switches, view selectors, or any small option set.
+
+## Architecture
+
+Toggle uses the Wrapper + Navigator pattern:
+- \`Wrapper\` from \`@rokkit/states\` — manages data, focus, and selection
+- \`Navigator\` from \`@rokkit/actions\` — handles keyboard/mouse interaction (horizontal orientation)
+- \`resolveSnippet\` from \`@rokkit/core\` — custom item rendering via snippet overrides
 
 ## Quick Start
 
@@ -14,9 +21,9 @@ The Toggle component renders a set of options as a button group (radio-style). O
   import { Toggle } from '@rokkit/ui'
 
   const options = [
-    { text: 'Day',   value: 'day',   icon: 'i-lucide:sun' },
-    { text: 'Week',  value: 'week',  icon: 'i-lucide:calendar' },
-    { text: 'Month', value: 'month', icon: 'i-lucide:calendar-range' }
+    { label: 'Day',   value: 'day',   icon: 'i-lucide:sun' },
+    { label: 'Week',  value: 'week',  icon: 'i-lucide:calendar' },
+    { label: 'Month', value: 'month', icon: 'i-lucide:calendar-range' }
   ]
 
   let value = $state('day')
@@ -25,28 +32,42 @@ The Toggle component renders a set of options as a button group (radio-style). O
 <Toggle {options} bind:value />
 \`\`\`
 
+String arrays also work — each string becomes both the label and value:
+
+\`\`\`svelte
+<Toggle options={['Daily', 'Weekly', 'Monthly']} bind:value />
+\`\`\`
+
 ## Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| \`options\` | \`ToggleItem[]\` | \`[]\` | Array of toggle options |
-| \`fields\` | \`ToggleFields\` | defaults | Field mapping |
+| \`options\` | \`unknown[]\` | \`[]\` | Array of toggle options (strings or objects) |
+| \`fields\` | \`Record<string, string>\` | \`{}\` | Field mapping overrides |
 | \`value\` | \`unknown\` | — | Selected value — use \`bind:value\` |
-| \`onchange\` | \`(value, item) => void\` | — | Called when selection changes |
+| \`onchange\` | \`(value, rawItem) => void\` | — | Called when selection changes |
 | \`showLabels\` | \`boolean\` | \`true\` | Show text labels alongside icons |
-| \`size\` | \`'sm'|'md'|'lg'\` | \`'md'\` | Size variant |
+| \`size\` | \`'sm'\\|'md'\\|'lg'\` | \`'md'\` | Size variant |
 | \`disabled\` | \`boolean\` | \`false\` | Disable all options |
 | \`class\` | \`string\` | \`''\` | Additional CSS classes |
 
 ## Field Mapping
 
-| Field | Default | Description |
-|-------|---------|-------------|
+Toggle uses BASE_FIELDS from \`@rokkit/core\`. Semantic keys map to common raw data keys:
+
+| Semantic Key | Default Raw Key | Description |
+|-------------|----------------|-------------|
+| \`label\` | \`'text'\` | Display label |
 | \`value\` | \`'value'\` | Option value emitted on selection |
-| \`text\` | \`'text'\` | Display label |
 | \`icon\` | \`'icon'\` | Icon class name |
 | \`disabled\` | \`'disabled'\` | Disabled state |
-| \`description\` | \`'description'\` | Tooltip text |
+| \`subtext\` | \`'description'\` | Tooltip text |
+
+Override with the \`fields\` prop:
+
+\`\`\`svelte
+<Toggle options={items} fields={{ label: 'name', value: 'id' }} bind:value />
+\`\`\`
 
 ## Icon-Only Mode
 
@@ -55,15 +76,17 @@ Set \`showLabels={false}\` to show only icons:
 \`\`\`svelte
 <script>
   const modes = [
-    { value: 'system', icon: 'i-lucide:monitor', description: 'System' },
-    { value: 'light',  icon: 'i-lucide:sun',     description: 'Light' },
-    { value: 'dark',   icon: 'i-lucide:moon',    description: 'Dark' }
+    { value: 'system', icon: 'i-lucide:monitor', label: 'System' },
+    { value: 'light',  icon: 'i-lucide:sun',     label: 'Light' },
+    { value: 'dark',   icon: 'i-lucide:moon',    label: 'Dark' }
   ]
   let value = $state('system')
 </script>
 
 <Toggle options={modes} bind:value showLabels={false} />
 \`\`\`
+
+When \`showLabels={false}\`, each option's \`label\` is used as tooltip text via the \`title\` attribute.
 
 ## Disabled Options
 
@@ -72,9 +95,9 @@ Individual options can be disabled via the \`disabled\` field:
 \`\`\`svelte
 <script>
   const options = [
-    { text: 'Edit',   value: 'edit' },
-    { text: 'View',   value: 'view' },
-    { text: 'Admin',  value: 'admin', disabled: true }
+    { label: 'Edit',  value: 'edit' },
+    { label: 'View',  value: 'view' },
+    { label: 'Admin', value: 'admin', disabled: true }
   ]
   let value = $state('edit')
 </script>
@@ -84,52 +107,52 @@ Individual options can be disabled via the \`disabled\` field:
 
 ## Custom Item Snippet
 
+Override the default rendering with an \`itemContent\` snippet:
+
 \`\`\`svelte
 <Toggle {options} bind:value>
-  {#snippet item(data, fields, handlers, selected)}
-    <button
-      onclick={handlers.onclick}
-      onkeydown={handlers.onkeydown}
-      data-toggle-option
-      data-selected={selected || undefined}
-    >
-      <span class={data.icon}></span>
-      <span>{data.text}</span>
-    </button>
+  {#snippet itemContent(proxy)}
+    <span class={proxy.get('icon')}></span>
+    <strong>{proxy.label}</strong>
   {/snippet}
 </Toggle>
 \`\`\`
 
-## Keyboard Navigation
+The snippet receives a \`ProxyItem\` instance. Use \`proxy.label\`, \`proxy.value\`, \`proxy.get('icon')\`, etc.
 
-The Toggle acts as a radio group:
+## Keyboard Navigation
 
 | Key | Action |
 |-----|--------|
-| \`ArrowLeft/Up\` | Previous option |
-| \`ArrowRight/Down\` | Next option |
-| \`Enter/Space\` | Select focused option |
+| \`ArrowLeft\` | Previous option |
+| \`ArrowRight\` | Next option |
+| \`Home\` | First option |
+| \`End\` | Last option |
+| \`Enter / Space\` | Select focused option |
 | \`Tab\` | Move focus away |
 
 ## Accessibility
 
 - \`role="radiogroup"\` on container
-- \`role="radio"\` on each option
-- \`aria-checked\` on selected option
-- \`aria-label\` from \`description\` field
+- \`role="radio"\` + \`aria-checked\` on each option
+- \`aria-label\` derived from item label
+- \`title\` attribute for tooltip (from subtext or label)
+- Disabled options have \`disabled\` attribute + \`aria-disabled\`
 
 ## Data Attributes
 
-| Attribute | Description |
-|-----------|-------------|
-| \`data-toggle\` | Root container |
-| \`data-toggle-option\` | Individual option |
-| \`data-toggle-size\` | Size variant |
-| \`data-toggle-disabled\` | Disabled state |
-| \`data-toggle-labels\` | Labels visible |
-| \`data-selected\` | Selected option |
-| \`data-toggle-icon\` | Icon element |
-| \`data-toggle-label\` | Label element |
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| \`data-toggle\` | Container | Root element |
+| \`data-toggle-option\` | Button | Individual option |
+| \`data-toggle-size\` | Container | Size variant (sm/md/lg) |
+| \`data-toggle-disabled\` | Container | All options disabled |
+| \`data-toggle-labels\` | Container | Labels visible |
+| \`data-selected\` | Button | Currently selected option |
+| \`data-disabled\` | Button | Individually disabled option |
+| \`data-path\` | Button | Item path key for Navigator |
+| \`data-toggle-icon\` | Span | Icon element |
+| \`data-toggle-label\` | Span | Label element |
 
 ## Import
 
@@ -137,35 +160,10 @@ The Toggle acts as a radio group:
 import { Toggle } from '@rokkit/ui'
 \`\`\`
 
-## TypeScript Types
-
-\`\`\`typescript
-interface ToggleProps {
-  options?: ToggleItem[]
-  fields?: ToggleFields
-  value?: unknown
-  onchange?: (value: unknown, item: ToggleItem) => void
-  showLabels?: boolean
-  size?: 'sm' | 'md' | 'lg'
-  disabled?: boolean
-  class?: string
-  item?: Snippet<[ToggleItem, ToggleFields, ToggleItemHandlers, boolean]>
-}
-
-interface ToggleFields {
-  value?: string       // default: 'value'
-  text?: string        // default: 'text'
-  icon?: string        // default: 'icon'
-  disabled?: string    // default: 'disabled'
-  description?: string // default: 'description'
-}
-\`\`\`
-
 ## Related Components
 
-- [Switch](/docs/components/switch/llms.txt) — single boolean on/off switch
+- [List](/docs/components/list/llms.txt) — vertical list with selection
 - [Tabs](/docs/components/tabs/llms.txt) — tabbed content panels
-- [RadioGroup](/docs/components/radiogroup/llms.txt) — traditional radio button group
 `
 
 export const GET: RequestHandler = async () => {

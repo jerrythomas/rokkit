@@ -33,6 +33,10 @@ describe('Utility functions', () => {
 				middle: 'align-vertical-middle',
 				top: 'align-vertical-top'
 			},
+			folder: {
+				opened: 'folder-opened',
+				closed: 'folder-closed'
+			},
 			node: {
 				opened: 'node-opened',
 				closed: 'node-closed'

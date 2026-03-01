@@ -5,6 +5,9 @@
 	 *
 	 * Same as Tree but uses LazyProxyItem via createProxy factory
 	 * so nodes with children: true fetch on expand.
+	 *
+	 * Default item content: icon + label + badge + shortcut (no avatar/description).
+	 * Parent nodes hide their icon by default.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
 	import { LazyWrapper, LazyProxyItem } from '@rokkit/states'
@@ -39,7 +42,8 @@
 		[key: string]: unknown
 	} = $props()
 
-	const icons = $derived({ ...DEFAULT_STATE_ICONS.node, ...userIcons })
+	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
+
 
 	const wrapper = $derived(
 		new LazyWrapper(items, fields, {
@@ -149,7 +153,7 @@
 							{#if content}
 								{@render content(proxy)}
 							{:else}
-								<ItemContent {proxy} />
+								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
 							{/if}
 						</a>
 					{:else}
@@ -163,7 +167,7 @@
 							{#if content}
 								{@render content(proxy)}
 							{:else}
-								<ItemContent {proxy} />
+								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
 							{/if}
 						</button>
 					{/if}

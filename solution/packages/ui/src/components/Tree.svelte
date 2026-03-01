@@ -3,10 +3,14 @@
 	/**
 	 * Tree — Hierarchical data navigation with tree lines and keyboard navigation.
 	 *
-	 * Same architecture as List:
+	 * Architecture:
 	 *   LazyWrapper  — owns focusedKey $state + flatView $derived (with lineTypes)
 	 *   Navigator    — attaches DOM event handlers, calls wrapper[action](path)
 	 *   flatView     — single flat {#each}, connectors rendered from node.lineTypes
+	 *
+	 * Default item content: icon + label + badge + shortcut (no avatar/description).
+	 * Parent nodes hide their icon by default (showIcon=false) so only the
+	 * expand/collapse chevron + label are shown, aligning with leaf icon + label.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
 	import { LazyWrapper } from '@rokkit/states'
@@ -37,7 +41,7 @@
 		[key: string]: unknown
 	} = $props()
 
-	const icons = $derived({ ...DEFAULT_STATE_ICONS.node, ...userIcons })
+	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
 	const wrapper = $derived(new LazyWrapper(items, fields, { onselect }))
 
@@ -126,7 +130,7 @@
 							{#if content}
 								{@render content(proxy)}
 							{:else}
-								<ItemContent {proxy} />
+								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
 							{/if}
 						</a>
 					{:else}
@@ -140,7 +144,7 @@
 							{#if content}
 								{@render content(proxy)}
 							{:else}
-								<ItemContent {proxy} />
+								<ItemContent {proxy} showIcon={!node.isExpandable} showSubtext={false} />
 							{/if}
 						</button>
 					{/if}

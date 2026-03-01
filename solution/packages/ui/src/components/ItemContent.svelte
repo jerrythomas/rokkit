@@ -1,19 +1,18 @@
 <script>
-	import { ProxyItem } from '@rokkit/states'
-
-	/** @type {{ proxy: ProxyItem }} */
-	const { proxy } = $props()
+	const { proxy, showIcon = true, showSubtext = true } = $props()
 </script>
 
-{#if proxy.get('avatar')}
-	<img data-item-avatar src={proxy.get('avatar')} alt={proxy.get('tooltip') ?? proxy.label} />
-{:else if proxy.get('icon')}
-	<span data-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
+{#if showIcon}
+	{#if proxy.get('avatar')}
+		<img data-item-avatar src={proxy.get('avatar')} alt={proxy.get('tooltip') ?? proxy.label} />
+	{:else if proxy.get('icon')}
+		<span data-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
+	{/if}
 {/if}
-{#if proxy.label || proxy.get('subtext')}
+{#if proxy.label || (showSubtext && proxy.get('subtext'))}
 	<span data-item-text>
 		<span data-item-label>{proxy.label}</span>
-		{#if proxy.get('subtext')}
+		{#if showSubtext && proxy.get('subtext')}
 			<span data-item-description>{proxy.get('subtext')}</span>
 		{/if}
 	</span>

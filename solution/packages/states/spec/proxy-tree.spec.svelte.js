@@ -125,10 +125,10 @@ describe('ProxyTree', () => {
 				{ text: 'C', value: 'c' }
 			])
 
-			// Leaf nodes: just 'empty' (no toggle icon)
-			expect(tree.flatView[0].lineTypes).toEqual(['empty'])
-			expect(tree.flatView[1].lineTypes).toEqual(['empty'])
-			expect(tree.flatView[2].lineTypes).toEqual(['empty'])
+			// Leaf nodes: no lineTypes (no toggle icon, no trailing empty)
+			expect(tree.flatView[0].lineTypes).toEqual([])
+			expect(tree.flatView[1].lineTypes).toEqual([])
+			expect(tree.flatView[2].lineTypes).toEqual([])
 		})
 
 		it('should compute lineTypes for expandable nodes', () => {
@@ -143,8 +143,8 @@ describe('ProxyTree', () => {
 
 			// Expandable root: 'icon'
 			expect(tree.flatView[0].lineTypes).toEqual(['icon'])
-			// Leaf sibling: 'empty'
-			expect(tree.flatView[1].lineTypes).toEqual(['empty'])
+			// Leaf sibling: no trailing empty
+			expect(tree.flatView[1].lineTypes).toEqual([])
 		})
 
 		it('should compute lineTypes for expanded children', () => {
@@ -164,9 +164,9 @@ describe('ProxyTree', () => {
 			flushSync()
 
 			expect(tree.flatView[0].lineTypes).toEqual(['icon'])
-			expect(tree.flatView[1].lineTypes).toEqual(['child', 'empty'])
-			expect(tree.flatView[2].lineTypes).toEqual(['last', 'empty'])
-			expect(tree.flatView[3].lineTypes).toEqual(['empty'])
+			expect(tree.flatView[1].lineTypes).toEqual(['child'])
+			expect(tree.flatView[2].lineTypes).toEqual(['last'])
+			expect(tree.flatView[3].lineTypes).toEqual([])
 		})
 
 		it('should detect lazy markers (children: true) as isExpandable', () => {

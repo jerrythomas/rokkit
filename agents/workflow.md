@@ -58,7 +58,7 @@ Ask. The cost of a question is low. The cost of implementing the wrong thing is 
 
 ### Session End / Plan Completion
 1. When all plan steps are done **and tests + lint pass**:
-   - Archive: move `agents/plan.md` content to `agents/sessions/YYYY-MM-DD-<feature-name>.md`
+   - Archive: mark task as completed in `agents/completed.md`
    - Clear `agents/plan.md` for next plan
    - **Do NOT archive until verification passes** — a plan with failing tests is not complete
 2. Update `agents/journal.md` — final summary
@@ -122,11 +122,11 @@ How to confirm it works (test commands, expected outcomes).
 
 ## Backlog Management
 
-Deferred work lives in `agents/backlog/` as priority-ordered files:
+Deferred work lives in `docs/backlog/` as date-prefixed files (`YYYY-MM-DD-<topic>.md`):
 
-- `01-forms.md`, `02-ui-components.md`, `03-effects.md`, `04-infrastructure.md`, `05-charts.md`
+- Each item references its requirements (`docs/requirements/`) and design (`docs/design/`) docs
 - Items are added when features are explicitly scoped out of current work
-- Each item includes: what exists, what's needed, relevant design docs
+- Each item includes: what exists, what's needed, implementation steps
 - Items are numbered and have actionable checklists
 - Review the backlog periodically during housekeeping sessions
 
@@ -166,7 +166,7 @@ For non-trivial implementation:
 | `agents/plan.md` | Active plan/checklist | During implementation |
 | `agents/open-questions.md` | Q&A tracking for design discussions | During question phases |
 | `agents/design-patterns.md` | Established patterns cookbook | When patterns are proven |
-| `agents/backlog/` | Priority-ordered backlog files | When items are scoped out |
+| `docs/backlog/` | Priority-ordered work items | When items are scoped out |
 | `agents/sessions/` | Archived completed plans | On plan completion |
 | `docs/design/*.md` | Module design documents | When designs are agreed |
 | `docs/requirements/*.md` | Feature requirements | Reference only |

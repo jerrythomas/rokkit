@@ -33,11 +33,11 @@ rokkit/
     open-questions.md           <-- Q&A tracking for design discussions
     design-patterns.md          <-- Established patterns cookbook
     references.md               <-- Coding conventions, styling, project structure
-    backlog/                    <-- Priority-ordered backlog files
     sessions/                   <-- Archived completed plans
   docs/
     requirements/               <-- Feature requirements (numbered: 001-xxx.md)
     design/                     <-- Module design documents (numbered: 001-xxx.md)
+    backlog/                    <-- Priority-ordered work items (YYYY-MM-DD-topic.md)
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
   sites/
     learn/                      <-- Documentation site
@@ -97,6 +97,6 @@ See `agents/workflow.md` for the full process.
 | `agents/memory.md` | Shared project knowledge |
 | `agents/plan.md` | Active plan/checklist |
 | `agents/journal.md` | Chronological progress log |
-| `agents/backlog/` | Priority-ordered backlog files |
+| `docs/backlog/` | Priority-ordered work items |
 | `agents/design-patterns.md` | Established patterns cookbook |
 | `agents/references.md` | Coding conventions, styling, structure |
