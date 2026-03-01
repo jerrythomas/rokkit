@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { ProxyTree } from '../src/proxy-tree.svelte.js'
-import { ProxyItem, PROXY_ITEM_FIELDS } from '../src/proxy-item.svelte.js'
+import { ProxyItem } from '../src/proxy-item.svelte.js'
 import { flushSync } from 'svelte'
 
 describe('ProxyTree', () => {
@@ -65,7 +65,7 @@ describe('ProxyTree', () => {
 			expect(tree.flatView).toHaveLength(0)
 		})
 
-		it('should merge provided fields with PROXY_ITEM_FIELDS defaults', () => {
+		it('should merge provided fields with BASE_FIELDS defaults', () => {
 			const tree = new ProxyTree(
 				[{ label: 'Hello', value: 1 }],
 				{ text: 'label' }

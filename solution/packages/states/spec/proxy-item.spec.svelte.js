@@ -1,6 +1,79 @@
 import { describe, it, expect, vi } from 'vitest'
-import { ProxyItem, LazyProxyItem, PROXY_ITEM_FIELDS } from '../src/proxy-item.svelte.js'
+import { ProxyItem, LazyProxyItem, PROXY_ITEM_FIELDS, BASE_FIELDS } from '../src/proxy-item.svelte.js'
+import { normalizeFields } from '@rokkit/core'
 import { flushSync } from 'svelte'
+
+describe('BASE_FIELDS', () => {
+	it('PROXY_ITEM_FIELDS should be the same reference as BASE_FIELDS', () => {
+		expect(PROXY_ITEM_FIELDS).toBe(BASE_FIELDS)
+	})
+
+	it('should have 17 keys', () => {
+		expect(Object.keys(BASE_FIELDS)).toHaveLength(17)
+	})
+
+	it('should have correct semantic key mappings', () => {
+		expect(BASE_FIELDS.label).toBe('text')
+		expect(BASE_FIELDS.subtext).toBe('description')
+		expect(BASE_FIELDS.tooltip).toBe('title')
+		expect(BASE_FIELDS.avatar).toBe('image')
+		expect(BASE_FIELDS.hrefTarget).toBe('target')
+	})
+
+	it('should have identity fields', () => {
+		expect(BASE_FIELDS.id).toBe('id')
+		expect(BASE_FIELDS.value).toBe('value')
+	})
+
+	it('should have structure fields', () => {
+		expect(BASE_FIELDS.children).toBe('children')
+		expect(BASE_FIELDS.type).toBe('type')
+		expect(BASE_FIELDS.snippet).toBe('snippet')
+		expect(BASE_FIELDS.href).toBe('href')
+	})
+
+	it('should have state fields', () => {
+		expect(BASE_FIELDS.disabled).toBe('disabled')
+		expect(BASE_FIELDS.expanded).toBe('expanded')
+		expect(BASE_FIELDS.selected).toBe('selected')
+	})
+})
+
+describe('normalizeFields', () => {
+	it('should remap legacy text key to label', () => {
+		expect(normalizeFields({ text: 'name' })).toEqual({ label: 'name' })
+	})
+
+	it('should pass through non-legacy keys unchanged', () => {
+		expect(normalizeFields({ icon: 'myicon' })).toEqual({ icon: 'myicon' })
+	})
+
+	it('should return empty object for null', () => {
+		expect(normalizeFields(null)).toEqual({})
+	})
+
+	it('should return empty object for undefined', () => {
+		expect(normalizeFields(undefined)).toEqual({})
+	})
+
+	it('should remap combined legacy and non-legacy keys', () => {
+		expect(normalizeFields({ text: 'name', description: 'desc', icon: 'x' })).toEqual({
+			label: 'name',
+			subtext: 'desc',
+			icon: 'x'
+		})
+	})
+
+	it('should remap all legacy keys', () => {
+		expect(normalizeFields({ text: 'a', description: 'b', title: 'c', image: 'd', target: 'e' })).toEqual({
+			label: 'a',
+			subtext: 'b',
+			tooltip: 'c',
+			avatar: 'd',
+			hrefTarget: 'e'
+		})
+	})
+})
 
 describe('ProxyItem', () => {
 	describe('id', () => {
@@ -49,9 +122,9 @@ describe('ProxyItem', () => {
 
 		it('should modify the original raw item reference', () => {
 			const raw = { name: 'Alice', id: 42 }
-			const proxy = new ProxyItem(raw, { text: 'name', value: 'id' }, '0', 1)
+			const proxy = new ProxyItem(raw, { label: 'name', value: 'id' }, '0', 1)
 
-			proxy.set('text', 'Bob')
+			proxy.set('label', 'Bob')
 			expect(raw.name).toBe('Bob')
 			expect(proxy.label).toBe('Bob')
 		})

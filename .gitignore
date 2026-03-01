@@ -206,3 +206,4 @@ src/lib/paraglide
 project.inlang/caches
 tmp
 .playwright-mcp
+/*.png

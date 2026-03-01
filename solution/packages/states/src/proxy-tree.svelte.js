@@ -14,7 +14,8 @@
  *   expansion or children change anywhere in the tree.
  */
 
-import { ProxyItem, PROXY_ITEM_FIELDS } from './proxy-item.svelte.js'
+import { BASE_FIELDS, normalizeFields } from '@rokkit/core'
+import { ProxyItem } from './proxy-item.svelte.js'
 
 // ─── Tree line type computation ────────────────────────────────────────────────
 
@@ -109,11 +110,11 @@ export class ProxyTree {
 
 	/**
 	 * @param {unknown[]} [items]
-	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} [fields]
+	 * @param {Partial<typeof BASE_FIELDS>} [fields]
 	 * @param {{ createProxy?: (raw: *, fields: object, key: string, level: number) => ProxyItem }} [options]
 	 */
 	constructor(items = [], fields = {}, options = {}) {
-		this.#fields = { ...PROXY_ITEM_FIELDS, ...fields }
+		this.#fields = { ...BASE_FIELDS, ...normalizeFields(fields) }
 		this.#factory = options.createProxy ?? ((raw, f, key, level) => new ProxyItem(raw, f, key, level))
 		this.#rootProxies = (items ?? []).map((raw, i) => this.#factory(raw, this.#fields, String(i), 1))
 	}

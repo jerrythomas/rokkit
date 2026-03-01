@@ -35,27 +35,14 @@
  * signals stable so $derived computations track them correctly.
  */
 
+import { BASE_FIELDS, normalizeFields } from '@rokkit/core'
+export { BASE_FIELDS }
+
 // Auto-increment counter for generating stable unique IDs.
 let _nextId = 1
 
-// Default field mapping for ProxyItem.
-// Semantic names (left) map to raw item keys (right).
-export const PROXY_ITEM_FIELDS = {
-	id: 'id',
-	text: 'text',
-	value: 'value',
-	icon: 'icon',
-	href: 'href',
-	content: 'content',
-	description: 'description',
-	title: 'title',
-	children: 'children',
-	type: 'type',
-	disabled: 'disabled',
-	expanded: 'expanded',
-	selected: 'selected',
-	snippet: 'snippet'
-}
+/** @deprecated Use BASE_FIELDS instead */
+export const PROXY_ITEM_FIELDS = BASE_FIELDS
 
 // ─── ProxyItem ────────────────────────────────────────────────────────────────
 
@@ -83,12 +70,12 @@ export class ProxyItem {
 
 	/**
 	 * @param {*} raw   Raw item — object or primitive (string, number, …)
-	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} [fields]
+	 * @param {Partial<typeof BASE_FIELDS>} [fields]
 	 * @param {string} [key]    Path-based key assigned by buildProxyList
 	 * @param {number} [level]  Nesting depth (1 = root)
 	 */
 	constructor(raw, fields = {}, key = '', level = 0) {
-		this.#fields = { ...PROXY_ITEM_FIELDS, ...fields }
+		this.#fields = { ...BASE_FIELDS, ...normalizeFields(fields) }
 		this.#raw = raw
 		this.#key = key
 		this.#level = level
@@ -98,7 +85,7 @@ export class ProxyItem {
 		this.#item =
 			raw !== null && typeof raw === 'object'
 				? raw
-				: { [this.#fields.text]: raw, [this.#fields.value]: raw }
+				: { [this.#fields.label]: raw, [this.#fields.value]: raw }
 
 		// Stable unique id: read from item field, or auto-generate
 		this.#id = this.#item[this.#fields.id] ?? `proxy-${_nextId++}`
@@ -131,7 +118,7 @@ export class ProxyItem {
 	 * Factory method for creating child proxies. Override in subclasses
 	 * to produce specialised children (e.g. LazyProxyItem).
 	 * @param {*} raw
-	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} fields
+	 * @param {Partial<typeof BASE_FIELDS>} fields
 	 * @param {string} key
 	 * @param {number} level
 	 * @returns {ProxyItem}
@@ -209,7 +196,7 @@ export class ProxyItem {
 	// ─── Field-mapped accessors ───────────────────────────────────────────────
 
 	get label() {
-		return this.#item[this.#fields.text] ?? ''
+		return this.#item[this.#fields.label] ?? ''
 	}
 	get value() {
 		return this.#item[this.#fields.value] ?? this.#raw
@@ -291,7 +278,7 @@ export class LazyProxyItem extends ProxyItem {
 
 	/**
 	 * @param {*} raw
-	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} [fields]
+	 * @param {Partial<typeof BASE_FIELDS>} [fields]
 	 * @param {string} [key]
 	 * @param {number} [level]
 	 * @param {((value: unknown, raw: unknown) => Promise<unknown[]>) | null} [lazyLoad]
@@ -352,7 +339,7 @@ export class LazyProxyItem extends ProxyItem {
  * so reactive subscriptions stay valid across multiple re-computations.
  *
  * @param {*[]} items
- * @param {Partial<typeof PROXY_ITEM_FIELDS>} [fields]
+ * @param {Partial<typeof BASE_FIELDS>} [fields]
  * @returns {{ lookup: Map<string, ProxyItem>, roots: ProxyNode[] }}
  */
 export function buildProxyList(items, fields = {}) {
