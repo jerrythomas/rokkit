@@ -9,7 +9,6 @@ describe('components', () => {
 			'Proxy',
 			'vibe',
 			'ListController',
-			'NestedController',
 			'messages',
 			'AbstractWrapper',
 			'ProxyItem',
@@ -17,6 +16,7 @@ describe('components', () => {
 			'buildProxyList',
 			'buildFlatView',
 			'PROXY_ITEM_FIELDS',
+			'BASE_FIELDS',
 			'ProxyTree',
 			'Wrapper',
 			'LazyWrapper'

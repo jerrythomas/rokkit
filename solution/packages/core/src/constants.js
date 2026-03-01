@@ -6,6 +6,9 @@ export const DATA_IMAGE_REGEX = /^data:image\/(jpeg|png|gif|bmp|webp|svg\+xml)/i
 export const ITEM_SNIPPET = 'itemContent'
 export const GROUP_SNIPPET = 'groupContent'
 /**
+ * @deprecated Use BASE_FIELDS from @rokkit/core instead.
+ * Retained for legacy ListController/FieldMapper/Proxy consumers (Toolbar, Table).
+ * Will be removed when those components migrate to Wrapper+Navigator.
  * @type {import('./types).FieldMapping} Fields
  */
 export const DEFAULT_FIELDS = {
@@ -34,6 +37,52 @@ export const DEFAULT_FIELDS = {
 	deleted: '_deleted',
 	expanded: '_expanded',
 	selected: '_selected'
+}
+
+// ─── BASE_FIELDS ─────────────────────────────────────────────────────────────
+// Canonical field mapping for ProxyItem and all Wrapper+Navigator components.
+// Semantic keys map to common raw data keys for backward compatibility.
+
+export const BASE_FIELDS = {
+	// Identity
+	id: 'id',
+	value: 'value',
+	// Display
+	label: 'text',
+	icon: 'icon',
+	avatar: 'image',
+	subtext: 'description',
+	tooltip: 'title',
+	badge: 'badge',
+	shortcut: 'shortcut',
+	// Structure
+	children: 'children',
+	type: 'type',
+	snippet: 'snippet',
+	href: 'href',
+	hrefTarget: 'target',
+	// State
+	disabled: 'disabled',
+	expanded: 'expanded',
+	selected: 'selected',
+}
+
+const LEGACY_KEY_MAP = { text: 'label', description: 'subtext', title: 'tooltip', image: 'avatar', target: 'hrefTarget' }
+
+/**
+ * Remap legacy field-override keys to their BASE_FIELDS semantic equivalents.
+ * e.g. { text: 'name' } → { label: 'name' }
+ *
+ * @param {Record<string, string> | null | undefined} fields
+ * @returns {Record<string, string>}
+ */
+export function normalizeFields(fields) {
+	if (!fields || typeof fields !== 'object') return {}
+	const result = {}
+	for (const [key, value] of Object.entries(fields)) {
+		result[LEGACY_KEY_MAP[key] ?? key] = value
+	}
+	return result
 }
 
 export const DEFAULT_ICONS = [

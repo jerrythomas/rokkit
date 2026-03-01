@@ -26,31 +26,3 @@ export function flattenNestedList(items, fields = DEFAULT_FIELDS, level = 0) {
 	})
 	return data
 }
-
-/**
- * Matches a path slug to a value in the menu
- *
- * @param {string}                         slug
- * @param {Array}                          data
- * @param {import('./types').FieldMapping} fields
- * @returns {any}
- */
-export function findValueFromPath(slug, data, fields) {
-	fields = { ...DEFAULT_FIELDS, ...fields }
-	const keys = slug.split('/')
-	let items = data
-	let value = null
-
-	keys.forEach((key, index) => {
-		const match = items.find((item) => item[fields.key] === key)
-		if (match) {
-			if (index < keys.length - 1) {
-				match[fields.isOpen] = true
-				items = match[fields.children]
-			} else {
-				value = match
-			}
-		}
-	})
-	return value
-}
