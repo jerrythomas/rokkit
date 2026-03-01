@@ -42,6 +42,7 @@ export const componentGroups: ComponentGroup[] = [
 		children: [
 			{ text: 'List', href: '/components/list', icon: 'i-lucide:list' },
 			{ text: 'Tree', href: '/components/tree', icon: 'i-lucide:folder' },
+			{ text: 'LazyTree', href: '/components/lazy-tree', icon: 'i-lucide:folder-sync' },
 			{ text: 'Tabs', href: '/components/tabs', icon: 'i-lucide:panel-top' },
 			{ text: 'Toolbar', href: '/components/toolbar', icon: 'i-lucide:grid-2x2' },
 			{ text: 'BreadCrumbs', href: '/components/breadcrumbs', icon: 'i-lucide:navigation' }
