@@ -5,6 +5,28 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-03-01
+
+### Legacy DEFAULT_FIELDS Cleanup (Backlog #71 — Phase 1)
+
+Removed dead legacy code and deprecated DEFAULT_FIELDS.
+
+**Commits:**
+- `fb839416` — refactor: remove dead legacy code, deprecate DEFAULT_FIELDS
+- `e97d5007` — refactor: migrate ProxyItem/ProxyTree to BASE_FIELDS + normalizeFields
+
+**What was removed:**
+- mapping.js: 8 dead functions (-786 lines), NestedController (deleted), findValueFromPath
+- Core barrel exports: getValue, hasChildren, isExpanded, findValueFromPath
+
+**What was kept:** DEFAULT_FIELDS (deprecated) + active legacy chain (Toolbar/Table → ListController → FieldMapper → Proxy). Removed when those components migrate.
+
+**ProxyItem/ProxyTree:** PROXY_ITEM_FIELDS re-exports BASE_FIELDS. Constructors use normalizeFields() for legacy key remapping. Tests added.
+
+**Tests:** 2482 pass. Lint 0 new errors.
+
+---
+
 ## 2026-02-28
 
 ### ProxyTree + Lazy Loading Enhancements (Backlog #70)
