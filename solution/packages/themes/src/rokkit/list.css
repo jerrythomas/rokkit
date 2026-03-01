@@ -98,25 +98,11 @@
   @apply text-surface-z7;
 }
 
-/* Group label as button directly */
-[data-style='rokkit'] [data-list] button[data-list-group] {
-  @apply text-surface-z6 hover:text-surface-z7;
-}
-
-[data-style='rokkit'] [data-list] button[data-list-group] [data-icon],
-[data-style='rokkit'] [data-list] button[data-list-group] [data-chevron] {
-  @apply text-surface-z6;
-}
-
-[data-style='rokkit'] [data-list] button[data-list-group] [data-stats] {
-  @apply text-surface-z4;
-}
-
 /* =============================================================================
-   Divider
+   Separator
    ============================================================================= */
 
-[data-style='rokkit'] [data-list] [data-list-divider] {
+[data-style='rokkit'] [data-list] [data-list-separator] {
   @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
 }
 

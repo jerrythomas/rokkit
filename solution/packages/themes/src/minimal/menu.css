@@ -75,7 +75,7 @@
    Groups
    ============================================================================= */
 
-[data-style='minimal'] [data-menu-group-label] {
+[data-style='minimal'] [data-menu-group] {
 	@apply text-surface-z5;
 }
 
@@ -83,6 +83,6 @@
    Divider
    ============================================================================= */
 
-[data-style='minimal'] [data-menu-divider] {
+[data-style='minimal'] [data-menu-separator] {
 	@apply bg-surface-z3;
 }

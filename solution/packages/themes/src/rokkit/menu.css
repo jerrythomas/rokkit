@@ -77,26 +77,10 @@
 }
 
 /* =============================================================================
-   Custom Snippet Wrapper
-   ============================================================================= */
-
-[data-style='rokkit'] [data-menu-item-custom] > button,
-[data-style='rokkit'] [data-menu-item-custom] > a {
-  @apply text-surface-z9;
-}
-
-[data-style='rokkit'] [data-menu-item-custom] > button:hover:not(:disabled),
-[data-style='rokkit'] [data-menu-item-custom] > a:hover,
-[data-style='rokkit'] [data-menu-item-custom] > button:focus:not(:disabled),
-[data-style='rokkit'] [data-menu-item-custom] > a:focus {
-  @apply from-surface-z3 to-surface-z2 text-surface-z10 bg-gradient-to-r;
-}
-
-/* =============================================================================
    Groups
    ============================================================================= */
 
-[data-style='rokkit'] [data-menu-group-label] {
+[data-style='rokkit'] [data-menu-group] {
   @apply text-surface-z5;
 }
 
@@ -104,6 +88,6 @@
    Divider
    ============================================================================= */
 
-[data-style='rokkit'] [data-menu-divider] {
+[data-style='rokkit'] [data-menu-separator] {
   @apply via-surface-z4 bg-gradient-to-r from-transparent to-transparent;
 }

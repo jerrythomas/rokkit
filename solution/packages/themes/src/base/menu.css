@@ -215,73 +215,60 @@
    ============================================================================= */
 
 /* =============================================================================
-   Custom Snippet Wrapper
-   ============================================================================= */
-
-[data-menu-item-custom] {
-  display: contents;
-}
-
-/* Style direct children of custom wrapper */
-[data-menu-item-custom] > button,
-[data-menu-item-custom] > a {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: background-color 150ms ease;
-}
-
-[data-menu-item-custom][data-disabled='true'] > button,
-[data-menu-item-custom][data-disabled='true'] > a {
-  pointer-events: none;
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* =============================================================================
    Groups
    ============================================================================= */
 
 [data-menu-group] {
-  padding-block: 0.25rem;
-}
-
-[data-menu-group-label] {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 150ms ease;
 }
 
-/* Group label sizes */
-[data-menu][data-size='sm'] [data-menu-group-label] {
+/* Group sizes */
+[data-menu][data-size='sm'] [data-menu-group] {
   padding: 0.25rem 0.5rem;
 }
-[data-menu][data-size='md'] [data-menu-group-label],
-[data-menu]:not([data-size]) [data-menu-group-label] {
+[data-menu][data-size='md'] [data-menu-group],
+[data-menu]:not([data-size]) [data-menu-group] {
   padding: 0.375rem 0.75rem;
 }
-[data-menu][data-size='lg'] [data-menu-group-label] {
+[data-menu][data-size='lg'] [data-menu-group] {
   padding: 0.5rem 1rem;
 }
 
-[data-menu-group-label] > [data-menu-group-icon] {
+[data-menu-group]:focus {
+  outline: none;
+}
+
+[data-menu-group] > [data-menu-group-icon] {
   flex-shrink: 0;
   opacity: 0.7;
 }
 
+[data-menu-group] > [data-menu-group-text] {
+  flex: 1;
+  text-align: left;
+}
+
+[data-menu-expand-icon] {
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: transform 150ms ease;
+}
+
 /* =============================================================================
-   Divider
+   Separator
    ============================================================================= */
 
-[data-menu-divider] {
+[data-menu-separator] {
   height: 1px;
   margin-block: 0.25rem;
+  border: none;
 }

@@ -94,10 +94,10 @@
 }
 
 /* =============================================================================
-   Divider
+   Separator
    ============================================================================= */
 
-[data-style='minimal'] [data-list] [data-list-divider] {
+[data-style='minimal'] [data-list] [data-list-separator] {
 	@apply bg-surface-z3;
 }
 

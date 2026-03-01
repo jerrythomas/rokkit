@@ -79,7 +79,7 @@
    Groups
    ============================================================================= */
 
-[data-style='material'] [data-menu-group-label] {
+[data-style='material'] [data-menu-group] {
 	@apply text-surface-z5 font-medium;
 }
 
@@ -87,6 +87,6 @@
    Divider
    ============================================================================= */
 
-[data-style='material'] [data-menu-divider] {
+[data-style='material'] [data-menu-separator] {
 	@apply bg-surface-z3;
 }

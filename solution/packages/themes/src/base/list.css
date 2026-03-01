@@ -98,37 +98,15 @@ button[data-list-item] {
    ============================================================================= */
 
 /* =============================================================================
-   Custom Snippet Wrapper
-   ============================================================================= */
-
-[data-list-item-custom] {
-  display: contents;
-}
-
-[data-list-item-custom] > a,
-[data-list-item-custom] > button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 150ms ease;
-}
-
-/* =============================================================================
    Groups
    ============================================================================= */
-
-[data-list-group] {
-  padding-block: 0.25rem;
-}
 
 [data-list-group] {
   display: flex;
   align-items: center;
   width: 100%;
   gap: 0.5rem;
+  padding-block: 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -168,81 +146,10 @@ button[data-list-item] {
   text-align: left;
 }
 
-[data-list-group] > [data-list-group-arrow] {
+[data-list-expand-icon] {
   flex-shrink: 0;
+  margin-left: auto;
   transition: transform 150ms ease;
-}
-
-[data-list-group][data-list-group-collapsed='true'] [data-list-group-arrow] {
-  transform: rotate(-90deg);
-}
-
-/* Group label with nested button */
-[data-list-group] > button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 150ms ease,
-    color 150ms ease;
-}
-
-[data-list-group] > button [data-icon] {
-  flex-shrink: 0;
-}
-
-[data-list-group] > button [data-chevron] {
-  flex-shrink: 0;
-  font-size: 0.75rem;
-  transition: transform 150ms ease;
-}
-
-[data-list-group] > button[data-state='open'] [data-chevron] {
-  transform: rotate(180deg);
-}
-
-/* Group label as button directly */
-button[data-list-group] {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: color 150ms ease;
-}
-
-button[data-list-group] [data-icon] {
-  flex-shrink: 0;
-}
-
-button[data-list-group] [data-chevron] {
-  flex-shrink: 0;
-  font-size: 0.75rem;
-  transition: transform 150ms ease;
-}
-
-button[data-list-group][data-state='open'] [data-chevron] {
-  transform: rotate(180deg);
-}
-
-button[data-list-group] [data-stats] {
-  font-weight: 400;
-  text-transform: none;
-}
-
-[data-list-group-items] {
-  display: flex;
-  flex-direction: column;
 }
 
 /* =============================================================================
@@ -254,10 +161,15 @@ button[data-list-group] [data-stats] {
 }
 
 /* =============================================================================
-   Divider
+   Separator / Spacer
    ============================================================================= */
 
-[data-list-divider] {
+[data-list-separator] {
   height: 1px;
   margin-block: 0.25rem;
+  border: none;
+}
+
+[data-list-spacer] {
+  height: 0.5rem;
 }
