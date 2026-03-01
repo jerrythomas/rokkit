@@ -280,8 +280,8 @@
 </script>
 
 {#snippet defaultOptionContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-select-option-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-select-option-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-item-text>
 		<span data-item-label>{proxy.text}</span>
@@ -292,8 +292,8 @@
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-select-group-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-select-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span>{proxy.text}</span>
 {/snippet}
@@ -318,8 +318,8 @@
 	>
 		<span data-select-value>
 			{#if selectedProxy}
-				{#if selectedProxy.icon}
-					<span data-select-value-icon class={selectedProxy.icon} aria-hidden="true"></span>
+				{#if selectedProxy.get('icon')}
+					<span data-select-value-icon class={selectedProxy.get('icon')} aria-hidden="true"></span>
 				{/if}
 				<span data-select-value-text>{selectedProxy.text}</span>
 			{:else}

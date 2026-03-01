@@ -10,14 +10,14 @@
 	const badge = $derived(proxy.get<string>('badge'))
 </script>
 
-{#if proxy.icon}
-	<span data-item-icon class={proxy.icon} aria-hidden="true"></span>
+{#if proxy.get('icon')}
+	<span data-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 {/if}
-{#if proxy.text || proxy.description}
+{#if proxy.text || proxy.get('description')}
 	<span data-item-text>
 		<span data-item-label>{proxy.text}</span>
-		{#if proxy.description}
-			<span data-item-description>{proxy.description}</span>
+		{#if proxy.get('description')}
+			<span data-item-description>{proxy.get('description')}</span>
 		{/if}
 	</span>
 {/if}

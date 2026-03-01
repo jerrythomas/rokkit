@@ -179,15 +179,7 @@ export class ProxyItem {
 	get value() {
 		return this.#item[this.#fields.value] ?? this.#raw
 	}
-	get icon() {
-		return this.#item[this.#fields.icon]
-	}
-	get href() {
-		return this.#item[this.#fields.href]
-	}
-	get snippet() {
-		return this.#item[this.#fields.snippet]
-	}
+	// icon, href, snippet — use get('icon'), get('href'), get('snippet')
 
 	// ─── Computed props ───────────────────────────────────────────────────────
 

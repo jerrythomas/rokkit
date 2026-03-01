@@ -91,8 +91,8 @@
 	Used when no itemContent snippet or per-item snippet is provided.
 -->
 {#snippet defaultItemContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-list-item-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-list-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-list-item-text>{proxy.text}</span>
 {/snippet}
@@ -102,8 +102,8 @@
 	Used when no groupContent snippet is provided.
 -->
 {#snippet defaultGroupContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-list-group-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-list-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-list-group-text>{proxy.text}</span>
 	{#if collapsible}
@@ -155,13 +155,13 @@
 					{@render defaultGroupContent(proxy)}
 				{/if}
 			</button>
-		{:else if proxy.href}
+		{:else if proxy.get('href')}
 			<!--
 				Navigation link — native <a> handles click; Navigator updates state.
 				aria-current marks the active route for screen readers.
 			-->
 			<a
-				href={proxy.href}
+				href={proxy.get('href')}
 				title={proxy.get('title')}
 				data-list-item
 				data-path={node.key}

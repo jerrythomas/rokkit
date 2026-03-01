@@ -75,8 +75,8 @@
 </script>
 
 {#snippet defaultTabContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-tabs-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-tabs-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-tabs-label>{proxy.text}</span>
 	{#if editable}

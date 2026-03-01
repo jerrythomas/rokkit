@@ -240,15 +240,15 @@
 </script>
 
 {#snippet defaultOptionContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-select-option-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-select-option-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-item-text>{proxy.text}</span>
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-select-group-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-select-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span>{proxy.text}</span>
 {/snippet}

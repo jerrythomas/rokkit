@@ -164,15 +164,15 @@
 </script>
 
 {#snippet defaultItemContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-menu-item-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-menu-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-menu-item-text>{proxy.text}</span>
 {/snippet}
 
 {#snippet defaultGroupContent(proxy: ProxyItem)}
-	{#if proxy.icon}
-		<span data-menu-group-icon class={proxy.icon} aria-hidden="true"></span>
+	{#if proxy.get('icon')}
+		<span data-menu-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
 	<span data-menu-group-text>{proxy.text}</span>
 	{#if collapsible}

@@ -79,8 +79,8 @@
 			{#if content}
 				{@render content(proxy, sel)}
 			{:else}
-				{#if proxy.icon}
-					<span data-toggle-icon class={proxy.icon} aria-hidden="true"></span>
+				{#if proxy.get('icon')}
+					<span data-toggle-icon class={proxy.get('icon')} aria-hidden="true"></span>
 				{/if}
 				{#if showLabels && proxy.text}
 					<span data-toggle-label>{proxy.text}</span>

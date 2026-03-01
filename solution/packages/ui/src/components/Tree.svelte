@@ -114,9 +114,9 @@
 						{/if}
 					{/if}
 
-					{#if proxy.href}
+					{#if proxy.get('href')}
 						<a
-							href={proxy.href}
+							href={proxy.get('href')}
 							data-tree-item-content
 							data-path={node.key}
 							data-active={isActive || undefined}
