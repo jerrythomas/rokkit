@@ -7,6 +7,22 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-02
 
+### Backlog #64 COMPLETE — Component Labels (Translatable Strings via MessagesStore)
+
+**Task 1:** Extended MessagesStore with 16 nested component label keys + deep-merge in `set()`. Commit: `da92eae4`
+
+**Tasks 2-10:** 15 UI components migrated to read aria-labels from MessagesStore with `label`/`labels` prop overrides:
+1. **Pattern A (single label):** List, Toolbar, Toggle, Rating, Stepper, BreadCrumbs — `label` prop defaulting from `messages.current.<component>.label`
+2. **Pattern A (existing label default):** Menu — changed `label = 'Menu'` to `label = messages.current.menu.label`
+3. **Pattern B (multi-label):** Tree, LazyTree, Carousel, Tabs, Code, Range, SearchFilter, FloatingNavigation — `labels` prop merged over store defaults via `$derived({ ...messages.current.<component>, ...userLabels })`
+Commit: `c169ac0c`
+
+**Task 11:** ThemeSwitcherToggle — `buildThemeSwitcherOptions()` reads from `messages.current.mode`, accepts `labels` prop. Commit: `03908e31`
+
+**Test count:** 2530 pass (178 files).
+
+---
+
 ### Backlog #63 COMPLETE — Semantic Icons
 
 6 new icon names + SVGs added, 7 components migrated to `icons` prop pattern:

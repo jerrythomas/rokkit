@@ -4,6 +4,7 @@ No active plan.
 
 ## Recently Completed
 
+- Backlog #64: Component Labels — MessagesStore extended with 16 nested keys + deep-merge, 15 components + ThemeSwitcherToggle migrated to translatable labels
 - Backlog #63: Semantic Icons (6 new icon SVGs, 7 components migrated to icons prop pattern, no more hardcoded i-lucide:* strings)
 - Backlog #3: ItemProxy + Proxy → ProxyItem unification (8 components migrated, ItemProxy deleted, legacy Proxy deleted, ProxyItem fields getter added)
 - Backlog #75: ProxyTree + Wrapper Unification (Wrapper accepts ProxyTree, LazyWrapper extends Wrapper, all components migrated, showLines→lineStyle, dead code removed)
