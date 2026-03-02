@@ -40,7 +40,7 @@ The Tree component renders nested items with tree-line connectors, expand/collap
 | \`fields\` | \`Record<string, string>\` | \`{}\` | Field mapping |
 | \`value\` | \`unknown\` | — | Selected value |
 | \`size\` | \`'sm'\\|'md'\\|'lg'\` | \`'md'\` | Size variant |
-| \`showLines\` | \`boolean\` | \`true\` | Show tree line connectors |
+| \`lineStyle\` | \`'none'\\|'solid'\\|'dashed'\\|'dotted'\` | \`'solid'\` | Tree line connector style |
 | \`icons\` | \`{ opened?: string; closed?: string }\` | defaults | Override expand/collapse icons |
 | \`onselect\` | \`(value, proxy) => void\` | — | Selection callback |
 | \`class\` | \`string\` | \`''\` | Additional CSS classes |
@@ -135,7 +135,7 @@ Snippets receive a \`ProxyItem\` instance:
 | \`data-tree-level\` | Node depth level |
 | \`data-tree-has-children\` | Branch node marker |
 | \`data-active\` | Active/current node |
-| \`data-show-lines\` | Root: tree lines enabled |
+| \`data-line-style\` | Root: tree line style (solid/dashed/dotted) |
 | \`data-size\` | Root: size variant |
 
 ## Import
@@ -152,7 +152,7 @@ interface TreeProps {
   fields?: Record<string, string>
   value?: unknown
   size?: 'sm' | 'md' | 'lg'
-  showLines?: boolean
+  lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
   icons?: { opened?: string; closed?: string }
   onselect?: (value: unknown, proxy: ProxyItem) => void
   class?: string

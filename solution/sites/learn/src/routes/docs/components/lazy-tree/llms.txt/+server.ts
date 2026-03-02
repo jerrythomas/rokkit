@@ -74,7 +74,7 @@ Set \`hasMore={true}\` to show a "Load More" button at the bottom of the tree. W
 | \`fields\` | \`Record<string, string>\` | \`{}\` | Field mapping |
 | \`value\` | \`unknown\` | — | Selected value |
 | \`size\` | \`'sm'\\|'md'\\|'lg'\` | \`'md'\` | Size variant |
-| \`showLines\` | \`boolean\` | \`true\` | Show tree line connectors |
+| \`lineStyle\` | \`'none'\\|'solid'\\|'dashed'\\|'dotted'\` | \`'solid'\` | Tree line connector style |
 | \`icons\` | \`{ opened?: string; closed?: string }\` | defaults | Override expand/collapse icons |
 | \`onselect\` | \`(value, proxy) => void\` | — | Selection callback |
 | \`onlazyload\` | \`(item?) => Promise<unknown[]>\` | — | Async callback to fetch children (with item) or next root batch (without args) |
@@ -139,7 +139,7 @@ interface LazyTreeProps {
   fields?: Record<string, string>
   value?: unknown
   size?: 'sm' | 'md' | 'lg'
-  showLines?: boolean
+  lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
   icons?: { opened?: string; closed?: string }
   onselect?: (value: unknown, proxy: ProxyItem) => void
   onlazyload?: (item?: unknown) => Promise<unknown[]>

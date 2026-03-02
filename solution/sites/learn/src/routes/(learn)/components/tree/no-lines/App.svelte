@@ -26,7 +26,7 @@
 	let value = $state(null)
 </script>
 
-<Tree {items} showLines={false} bind:value onselect={(v) => (value = v)} />
+<Tree {items} lineStyle="none" bind:value onselect={(v) => (value = v)} />
 
 {#if value}
 	<p class="text-surface-z6 mt-3 text-sm">Selected: <strong>{value}</strong></p>

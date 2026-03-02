@@ -24,7 +24,7 @@
 		fields = {},
 		value,
 		size = 'md',
-		showLines = true,
+		lineStyle = 'solid',
 		icons: userIcons = {},
 		onselect,
 		class: className = '',
@@ -34,7 +34,7 @@
 		fields?: Record<string, string>
 		value?: unknown
 		size?: string
-		showLines?: boolean
+		lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
 		icons?: { opened?: string; closed?: string }
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		class?: string
@@ -65,7 +65,7 @@
 	bind:this={treeRef}
 	data-tree
 	data-size={size}
-	data-show-lines={showLines || undefined}
+	data-line-style={lineStyle !== 'none' ? lineStyle : undefined}
 	class={className || undefined}
 	role="tree"
 	tabindex="0"
@@ -88,7 +88,7 @@
 				aria-level={node.level}
 			>
 				<div data-tree-node-row>
-					{#if showLines}
+					{#if lineStyle !== 'none'}
 						{#each node.lineTypes as lineType, lineIndex (lineIndex)}
 							{#if lineType === 'icon'}
 								<button

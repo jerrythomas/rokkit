@@ -211,24 +211,44 @@ describe('Tree', () => {
 
 	// ─── Connectors ─────────────────────────────────────────────────
 
-	it('shows connectors when showLines is true', () => {
+	it('shows connectors by default (lineStyle=solid)', () => {
 		const items = JSON.parse(JSON.stringify(nestedItems))
 		items[0].expanded = true
-		const { container } = render(Tree, { items, showLines: true })
+		const { container } = render(Tree, { items })
+		const connectors = container.querySelectorAll('[data-connector]')
+		expect(connectors.length).toBeGreaterThan(0)
+		expect(container.querySelector('[data-tree]')?.getAttribute('data-line-style')).toBe('solid')
+	})
+
+	it('shows connectors with explicit lineStyle=solid', () => {
+		const items = JSON.parse(JSON.stringify(nestedItems))
+		items[0].expanded = true
+		const { container } = render(Tree, { items, lineStyle: 'solid' })
 		const connectors = container.querySelectorAll('[data-connector]')
 		expect(connectors.length).toBeGreaterThan(0)
 	})
 
-	it('hides connectors when showLines is false', () => {
-		const items = JSON.parse(JSON.stringify(nestedItems))
-		items[0].expanded = true
-		const { container } = render(Tree, { items, showLines: false })
-		const connectors = container.querySelectorAll('[data-connector]')
-		expect(connectors.length).toBe(0)
+	it('sets data-line-style for dashed variant', () => {
+		const { container } = render(Tree, { items: nestedItems, lineStyle: 'dashed' })
+		expect(container.querySelector('[data-tree]')?.getAttribute('data-line-style')).toBe('dashed')
 	})
 
-	it('uses indent when showLines is false', () => {
-		const { container } = render(Tree, { items: nestedItems, showLines: false })
+	it('sets data-line-style for dotted variant', () => {
+		const { container } = render(Tree, { items: nestedItems, lineStyle: 'dotted' })
+		expect(container.querySelector('[data-tree]')?.getAttribute('data-line-style')).toBe('dotted')
+	})
+
+	it('hides connectors when lineStyle=none', () => {
+		const items = JSON.parse(JSON.stringify(nestedItems))
+		items[0].expanded = true
+		const { container } = render(Tree, { items, lineStyle: 'none' })
+		const connectors = container.querySelectorAll('[data-connector]')
+		expect(connectors.length).toBe(0)
+		expect(container.querySelector('[data-tree]')?.hasAttribute('data-line-style')).toBe(false)
+	})
+
+	it('uses indent when lineStyle=none', () => {
+		const { container } = render(Tree, { items: nestedItems, lineStyle: 'none' })
 		const indents = container.querySelectorAll('[data-tree-indent]')
 		expect(indents.length).toBeGreaterThan(0)
 	})

@@ -84,7 +84,53 @@
 }
 
 /* =============================================================================
-   Tree Indent (when showLines=false)
+   Line Style Variants
+   ============================================================================= */
+
+[data-tree][data-line-style='dashed'] [data-connector-v] {
+  border-right-style: dashed;
+}
+
+[data-tree][data-line-style='dashed'] [data-connector-h] {
+  border-bottom-style: dashed;
+}
+
+[data-tree][data-line-style='dashed'] [data-connector-corner] {
+  border-bottom-style: dashed;
+  border-right-style: dashed;
+}
+
+[data-tree][data-line-style='dashed'] [data-connector-rtl] [data-connector-v] {
+  border-left-style: dashed;
+}
+
+[data-tree][data-line-style='dashed'] [data-connector-rtl] [data-connector-corner] {
+  border-left-style: dashed;
+}
+
+[data-tree][data-line-style='dotted'] [data-connector-v] {
+  border-right-style: dotted;
+}
+
+[data-tree][data-line-style='dotted'] [data-connector-h] {
+  border-bottom-style: dotted;
+}
+
+[data-tree][data-line-style='dotted'] [data-connector-corner] {
+  border-bottom-style: dotted;
+  border-right-style: dotted;
+}
+
+[data-tree][data-line-style='dotted'] [data-connector-rtl] [data-connector-v] {
+  border-left-style: dotted;
+}
+
+[data-tree][data-line-style='dotted'] [data-connector-rtl] [data-connector-corner] {
+  border-left-style: dotted;
+}
+
+/* =============================================================================
+   Tree Indent (when lineStyle='none')
    ============================================================================= */
 
 [data-tree-indent] {

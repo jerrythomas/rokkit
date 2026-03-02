@@ -146,8 +146,8 @@ export interface TreeProps {
 	/** Size variant */
 	size?: 'sm' | 'md' | 'lg'
 
-	/** Whether to show tree lines/connectors */
-	showLines?: boolean
+	/** Tree line connector style — 'none' hides lines, 'solid'|'dashed'|'dotted' set the line style */
+	lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
 
 	/** Enable multiple item selection (Ctrl+click toggle, Shift+click range) */
 	multiselect?: boolean

@@ -5,13 +5,13 @@
 
 	let selected = $state<unknown>(undefined)
 
-	let props = $state({ size: 'md', showLines: true })
+	let props = $state({ size: 'md', lineStyle: 'solid' })
 
 	const schema = {
 		type: 'object',
 		properties: {
 			size: { type: 'string' },
-			showLines: { type: 'boolean' }
+			lineStyle: { type: 'string' }
 		}
 	}
 
@@ -19,7 +19,7 @@
 		type: 'vertical',
 		elements: [
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
-			{ scope: '#/showLines', label: 'Show lines' },
+			{ scope: '#/lineStyle', label: 'Line style', props: { options: ['none', 'solid', 'dashed', 'dotted'] } },
 			{ type: 'separator' }
 		]
 	}
@@ -69,7 +69,7 @@
 		<div class="max-w-[320px]">
 			<Tree
 				items={fileTree}
-				showLines={props.showLines}
+				lineStyle={props.lineStyle as any}
 				size={props.size as any}
 				value={selected}
 				onselect={handleSelect}
@@ -91,7 +91,7 @@
 		<div class="max-w-[320px]">
 			<Tree
 				items={fileTree}
-				showLines={false}
+				lineStyle="none"
 				value={selected}
 				onselect={handleSelect}
 			/>

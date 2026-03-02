@@ -54,7 +54,7 @@
 				<li><strong>items</strong>: Array of nested objects</li>
 				<li><strong>fields</strong>: Remap your data keys to component fields</li>
 				<li><strong>value</strong> (bindable): Currently selected item value</li>
-				<li><strong>showLines</strong>: Show tree-line connectors (default: true)</li>
+				<li><strong>lineStyle</strong>: Tree line style — <code>'none'</code>, <code>'solid'</code> (default), <code>'dashed'</code>, <code>'dotted'</code></li>
 				<li><strong>icons</strong>: Override the expand/collapse icons</li>
 				<li><strong>size</strong>: Size variant (<code>sm</code>, <code>md</code>, <code>lg</code>)</li>
 				<li><strong>onlazyload</strong>: Async callback to fetch children</li>
