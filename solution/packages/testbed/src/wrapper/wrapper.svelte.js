@@ -1,12 +1,12 @@
 /**
- * Wrapper
+ * Wrapper (testbed copy)
  *
- * Concrete IWrapper implementation for persistent list/tree/sidebar components.
- * Extends AbstractWrapper with full navigation, expansion, selection, and typeahead
- * logic using ProxyItem + buildProxyList + buildFlatView.
+ * Navigation controller for persistent list/tree/sidebar components.
+ * Accepts a ProxyTree instance for reactive data (flatView, lookup),
+ * and provides full navigation, expansion, selection, and typeahead logic.
  *
- * ProxyItem owns expanded/selected as $state. buildFlatView reads proxy.expanded
- * so $derived(buildFlatView(roots)) re-computes automatically on any expansion change.
+ * ProxyTree owns the data layer: items -> proxies -> flatView + lookup.
+ * Wrapper owns the navigation layer: focusedKey, movement, selection callbacks.
  *
  * Designed for any persistent (always-visible) component:
  *   - Sidebar navigation (links, collapsible groups)
@@ -17,19 +17,16 @@
  * to close the dropdown and return focus to the trigger.
  */
 
-import { AbstractWrapper } from '../navigator/abstract-wrapper.js'
-import { buildProxyList, buildFlatView } from '../proxy/proxy.svelte.js'
+/** @typedef {import('../proxy/proxy-tree.svelte.js').ProxyTree} ProxyTree */
 
-export class Wrapper extends AbstractWrapper {
+export class Wrapper {
 	// ─── Data ──────────────────────────────────────────────────────────────────
 
-	#lookup // Map<key, ProxyItem>
-	#roots  // ProxyNode[]
+	#proxyTree
 
-	// flatView: re-derives when any proxy.expanded changes (group open/close).
-	// buildFlatView reads proxy.expanded ($state) for each group node,
-	// so $derived correctly tracks all expansion changes.
-	flatView = $derived(buildFlatView(this.#roots))
+	// flatView: re-derives from proxyTree's flatView, which itself re-derives
+	// when any proxy.expanded or proxy.children changes.
+	flatView = $derived(this.#proxyTree.flatView)
 
 	// Navigable items: exclude separators, spacers, and disabled items.
 	// This is the subset that keyboard navigation moves through.
@@ -48,15 +45,11 @@ export class Wrapper extends AbstractWrapper {
 	#onselect
 
 	/**
-	 * @param {unknown[]} [items]
-	 * @param {Partial<import('../constants.js').DEFAULT_FIELDS>} [fields]
+	 * @param {ProxyTree} proxyTree
 	 * @param {{ onselect?: (value: unknown, proxy: import('../proxy/proxy.svelte.js').ProxyItem) => void }} [options]
 	 */
-	constructor(items = [], fields = {}, options = {}) {
-		super()
-		const { lookup, roots } = buildProxyList(items, fields)
-		this.#lookup = lookup
-		this.#roots = roots
+	constructor(proxyTree, options = {}) {
+		this.#proxyTree = proxyTree
 		this.#onselect = options.onselect
 	}
 
@@ -141,7 +134,7 @@ export class Wrapper extends AbstractWrapper {
 		const key = path ?? this.#focusedKey
 		if (!key) return
 		this.#focusedKey = key
-		const proxy = this.#lookup.get(key)
+		const proxy = this.#proxyTree.lookup.get(key)
 		if (!proxy) return
 		if (proxy.hasChildren) {
 			proxy.expanded = !proxy.expanded
@@ -157,7 +150,7 @@ export class Wrapper extends AbstractWrapper {
 	toggle(path) {
 		const key = path ?? this.#focusedKey
 		if (!key) return
-		const proxy = this.#lookup.get(key)
+		const proxy = this.#proxyTree.lookup.get(key)
 		if (proxy?.hasChildren) proxy.expanded = !proxy.expanded
 	}
 
@@ -208,5 +201,8 @@ export class Wrapper extends AbstractWrapper {
 	// ─── Helpers for the component ─────────────────────────────────────────────
 
 	/** @returns {Map<string, import('../proxy/proxy.svelte.js').ProxyItem>} */
-	get lookup() { return this.#lookup }
+	get lookup() { return this.#proxyTree.lookup }
+
+	/** @returns {ProxyTree} */
+	get proxyTree() { return this.#proxyTree }
 }

@@ -7,6 +7,25 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-01
 
+### Backlog #75 Task 1 — Refactor Wrapper to Accept ProxyTree
+
+Refactored Wrapper to accept a ProxyTree instance instead of raw `(items, fields, options)`. Wrapper now delegates `flatView` and `lookup` to ProxyTree. Added backward-compatible constructor that detects whether the first arg is a ProxyTree instance or raw items array (for existing component callers). Removed `extends AbstractWrapper` and `buildProxyList`/`buildFlatView` imports. Added `get proxyTree()` accessor.
+
+Updated testbed: created local ProxyTree at `packages/testbed/src/proxy/proxy-tree.svelte.js`, refactored testbed Wrapper to accept ProxyTree, updated all 66 spec tests to use `new Wrapper(new ProxyTree(...))`.
+
+**Tests:** 2482 pass. Lint: 12 pre-existing errors (no new).
+
+---
+
+### Backlog #74 — ItemContent Migration CSS Cleanup (DONE)
+
+Removed dead CSS selectors from base and all 4 theme variants (rokkit, minimal, material, glass) for both list.css and menu.css. Renamed `data-list-divider`→`data-list-separator` and `data-menu-divider`→`data-menu-separator` to match actual component output. Added structural styles for `data-list-expand-icon`, `data-menu-expand-icon`, `data-menu-group-text`.
+
+**Commit:** `d9dca813`
+**Tests:** 2482 pass. Lint: 12 pre-existing errors (no new).
+
+---
+
 ### Tree UI Refinements + ItemContent Flags + Housekeeping
 
 **Tree rendering improvements:**
