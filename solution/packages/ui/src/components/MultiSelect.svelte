@@ -26,7 +26,7 @@
 	 */
 	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper } from '@rokkit/states'
+	import { Wrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -101,7 +101,8 @@
 		toggleItemSelection(extractedValue, proxy.original)
 	}
 
-	const wrapper = $derived(new Wrapper(processedItems, fields, { onselect: handleSelect }))
+	const proxyTree = $derived(new ProxyTree(processedItems, fields))
+	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect }))
 
 	// Override cancel/blur to close dropdown
 	$effect(() => {

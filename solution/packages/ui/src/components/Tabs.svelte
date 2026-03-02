@@ -20,7 +20,7 @@
 	// @ts-nocheck
 	import type { TabsProps } from '../types/tabs.js'
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper } from '@rokkit/states'
+	import { Wrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet, ITEM_SNIPPET, DEFAULT_STATE_ICONS } from '@rokkit/core'
 
@@ -45,7 +45,8 @@
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
-	const wrapper = $derived(new Wrapper(options, userFields, {	onchange, onselect}))
+	const proxyTree = $derived(new ProxyTree(options, userFields))
+	const wrapper = $derived(new Wrapper(proxyTree, {	onchange, onselect }))
 
 	// ─── Navigator ────────────────────────────────────────────────────────────
 

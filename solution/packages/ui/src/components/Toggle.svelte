@@ -1,7 +1,7 @@
 <script lang="ts">
 	// @ts-nocheck
 	import type { ToggleProps } from '../types/toggle.js'
-	import { Wrapper } from '@rokkit/states'
+	import { Wrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet } from '@rokkit/core'
 
@@ -19,7 +19,8 @@
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
-	const wrapper = $derived(new Wrapper(options, userFields, { onselect: handleSelect }))
+	const proxyTree = $derived(new ProxyTree(options, userFields))
+	const wrapper = $derived(new Wrapper(proxyTree, { onselect: handleSelect }))
 
 	// ─── Navigator (horizontal, always attached) ───────────────────────────────
 

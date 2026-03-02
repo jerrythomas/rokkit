@@ -7,6 +7,23 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-01
 
+### Backlog #75 Task 3 — Migrate Flat Components to ProxyTree + Wrapper
+
+Updated all 6 flat components (List, Menu, Select, MultiSelect, Toggle, Tabs) to create ProxyTree externally and pass it to Wrapper, instead of relying on Wrapper's legacy backward-compatible constructor. Each component now follows the pattern: `const proxyTree = $derived(new ProxyTree(items, fields))` then `const wrapper = $derived(new Wrapper(proxyTree, { onselect }))`. No behavioral changes — purely a construction pattern refactoring.
+
+**Tests:** 2563 pass. Lint: pre-existing warnings only (no new).
+
+---
+
+### Backlog #75 Task 2 — LazyWrapper Extends Wrapper
+
+Refactored LazyWrapper to extend Wrapper instead of AbstractWrapper. Removed all duplicated navigation methods (next, prev, first, last, collapse, moveTo, moveToValue, findByText, cancel, blur, extend, range) and duplicated fields (#navigable, #focusedKey, #selectedValue, #onselect, #onchange, flatView getter, lookup getter). LazyWrapper now only overrides expand(), select(), and toggle() for lazy sentinel detection (proxy.loaded === false), plus adds loadMore() for root-level pagination. Added backward-compatible constructor matching Wrapper's pattern (instanceof ProxyTree detection + legacy 3-arg signature).
+
+**Commit:** `a4acb4f0`
+**Tests:** 2563 pass. Lint: 12 pre-existing errors (no new).
+
+---
+
 ### Backlog #75 Task 1 — Refactor Wrapper to Accept ProxyTree
 
 Refactored Wrapper to accept a ProxyTree instance instead of raw `(items, fields, options)`. Wrapper now delegates `flatView` and `lookup` to ProxyTree. Added backward-compatible constructor that detects whether the first arg is a ProxyTree instance or raw items array (for existing component callers). Removed `extends AbstractWrapper` and `buildProxyList`/`buildFlatView` imports. Added `get proxyTree()` accessor.

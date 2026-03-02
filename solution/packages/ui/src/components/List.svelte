@@ -28,7 +28,7 @@
 	 *   data-disabled          — disabled state
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper } from '@rokkit/states'
+	import { Wrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -67,7 +67,8 @@
 	// Single source of truth.
 	// Navigator calls wrapper[action](path) → focusedKey / proxy.expanded updates →
 	// flatView $derived re-computes → Svelte re-renders the changed nodes.
-	const wrapper = $derived(new Wrapper(items, fields, { onselect }))
+	const proxyTree = $derived(new ProxyTree(items, fields))
+	const wrapper = $derived(new Wrapper(proxyTree, { onselect }))
 
 	let listRef = $state<HTMLElement | null>(null)
 
@@ -87,24 +88,8 @@
 
 </script>
 
-<!--
-	Default content for leaf items (icon + text).
-	Used when no itemContent snippet or per-item snippet is provided.
--->
-{#snippet defaultItemContent(proxy: ProxyItem)}
-	<ItemContent {proxy} />
-{/snippet}
-
-<!--
-	Default content for group headers (icon + text + expand chevron).
-	Used when no groupContent snippet is provided.
--->
-{#snippet defaultGroupContent(proxy: ProxyItem)}
-	{#if proxy.get('icon')}
-		<span data-list-group-icon class={proxy.get('icon')} aria-hidden="true"></span>
-	{/if}
-	<span data-list-group-text>{proxy.label}</span>
-	{#if collapsible}
+{#snippet collapsibleIcon(proxy: ProxyItem)}
+  {#if collapsible}
 		<span
 			data-list-expand-icon
 			class={proxy.expanded ? icons.opened : icons.closed}
@@ -150,8 +135,9 @@
 				{#if content}
 					{@render content(proxy)}
 				{:else}
-					{@render defaultGroupContent(proxy)}
+				<ItemContent {proxy} />
 				{/if}
+        {@render collapsibleIcon(proxy)}
 			</button>
 		{:else if proxy.get('href')}
 			<!--
@@ -170,8 +156,9 @@
 				{#if content}
 					{@render content(proxy)}
 				{:else}
-					{@render defaultItemContent(proxy)}
+				<ItemContent {proxy} />
 				{/if}
+				{@render collapsibleIcon(proxy)}
 			</a>
 		{:else}
 			<!--
@@ -191,7 +178,7 @@
 				{#if content}
 					{@render content(proxy)}
 				{:else}
-					{@render defaultItemContent(proxy)}
+				<ItemContent {proxy} />
 				{/if}
 			</button>
 		{/if}

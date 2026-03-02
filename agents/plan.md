@@ -5,8 +5,8 @@
 **Full plan:** `docs/plans/2026-03-01-wrapper-unification.md`
 
 - [x] Task 1: Refactor Wrapper to accept ProxyTree
-- [ ] Task 2: LazyWrapper extends Wrapper
-- [ ] Task 3: Migrate flat components (List, Menu, Select, MultiSelect, Toggle, Tabs)
+- [x] Task 2: LazyWrapper extends Wrapper
+- [x] Task 3: Migrate flat components (List, Menu, Select, MultiSelect, Toggle, Tabs)
 - [ ] Task 4: Migrate tree components (Tree, LazyTree)
 - [ ] Task 5: showLines → lineStyle
 - [ ] Task 6: Dead code cleanup
