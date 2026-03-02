@@ -1,0 +1,67 @@
+/**
+ * UploadTarget - Base Structural Styles
+ *
+ * Layout: flex centering, dashed border, sizing, transitions.
+ * No colors or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   Drop Zone Container
+   ============================================================================= */
+
+[data-upload-target] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 10rem;
+  padding: 2rem;
+  border: 2px dashed currentColor;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+  user-select: none;
+}
+
+[data-upload-target]:focus {
+  outline: none;
+}
+
+[data-upload-target][data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Upload Icon
+   ============================================================================= */
+
+[data-upload-target] [data-upload-icon] {
+  font-size: 2rem;
+}
+
+/* =============================================================================
+   Browse Button
+   ============================================================================= */
+
+[data-upload-target] [data-upload-button] {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid currentColor;
+  background: transparent;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+[data-upload-target] [data-upload-button]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

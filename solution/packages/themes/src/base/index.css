@@ -34,3 +34,6 @@
 @import './timeline.css';
 @import './reveal.css';
 @import './floating-navigation.css';
+@import './grid.css';
+@import './upload-target.css';
+@import './upload-progress.css';

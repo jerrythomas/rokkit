@@ -1,0 +1,93 @@
+/**
+ * Grid - Base Structural Styles
+ *
+ * Layout: CSS grid with auto-fill, tile padding/sizing.
+ * No colors or visual theming - those belong in theme styles.
+ */
+
+/* =============================================================================
+   Grid Container
+   ============================================================================= */
+
+[data-grid] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-size, 120px), 1fr));
+  gap: var(--grid-gap, 1rem);
+}
+
+[data-grid][data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* =============================================================================
+   Grid Tiles
+   ============================================================================= */
+
+[data-grid-item] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+  background: transparent;
+  text-align: center;
+  word-break: break-word;
+}
+
+[data-grid-item]:focus {
+  outline: none;
+}
+
+[data-grid-item][data-disabled],
+[data-grid-item]:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Size Variants
+   ============================================================================= */
+
+[data-grid][data-size='sm'] [data-grid-item] {
+  padding: 0.5rem;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+[data-grid][data-size='md'] [data-grid-item],
+[data-grid]:not([data-size]) [data-grid-item] {
+  padding: 1rem;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+[data-grid][data-size='lg'] [data-grid-item] {
+  padding: 1.5rem;
+  gap: 0.75rem;
+  font-size: 1rem;
+}
+
+/* =============================================================================
+   Item Elements (reuse shared data-item-* from item.css)
+   ============================================================================= */
+
+[data-grid-item] [data-item-icon] {
+  font-size: 1.5rem;
+}
+
+[data-grid][data-size='sm'] [data-grid-item] [data-item-icon] {
+  font-size: 1.25rem;
+}
+
+[data-grid][data-size='lg'] [data-grid-item] [data-item-icon] {
+  font-size: 2rem;
+}

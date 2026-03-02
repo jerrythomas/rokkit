@@ -1,0 +1,102 @@
+/**
+ * UploadProgress - Rokkit Theme Styles
+ *
+ * Status colors, progress fill, action buttons.
+ */
+
+/* =============================================================================
+   Header
+   ============================================================================= */
+
+[data-style='rokkit'] [data-upload-header] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-upload-clear] {
+  @apply border-surface-z4 text-surface-z6;
+}
+
+[data-style='rokkit'] [data-upload-clear]:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+/* =============================================================================
+   File Rows
+   ============================================================================= */
+
+[data-style='rokkit'] [data-upload-file] {
+  @apply text-surface-z7;
+}
+
+[data-style='rokkit'] [data-upload-file]:hover {
+  @apply bg-surface-z2;
+}
+
+/* =============================================================================
+   File Elements
+   ============================================================================= */
+
+[data-style='rokkit'] [data-upload-file-icon] {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-upload-file-size] {
+  @apply text-surface-z5;
+}
+
+/* =============================================================================
+   Progress Bar
+   ============================================================================= */
+
+[data-style='rokkit'] [data-upload-bar] {
+  @apply bg-surface-z3;
+}
+
+[data-style='rokkit'] [data-upload-fill] {
+  @apply from-primary-z5 to-secondary-z5 bg-gradient-to-r;
+}
+
+/* =============================================================================
+   Status Colors
+   ============================================================================= */
+
+[data-style='rokkit'] [data-upload-file][data-status='uploading'] [data-upload-status] {
+  @apply text-primary-z6;
+}
+
+[data-style='rokkit'] [data-upload-file][data-status='done'] [data-upload-status] {
+  @apply text-green-500;
+}
+
+[data-style='rokkit'] [data-upload-file][data-status='error'] [data-upload-status] {
+  @apply text-red-500;
+}
+
+[data-style='rokkit'] [data-upload-file][data-status='pending'] [data-upload-status] {
+  @apply text-surface-z5;
+}
+
+/* Status-based file icon tinting */
+[data-style='rokkit'] [data-upload-file][data-status='done'] [data-upload-file-icon] {
+  @apply text-green-500;
+}
+
+[data-style='rokkit'] [data-upload-file][data-status='error'] [data-upload-file-icon] {
+  @apply text-red-500;
+}
+
+/* =============================================================================
+   Action Buttons
+   ============================================================================= */
+
+[data-style='rokkit'] [data-upload-actions] button {
+  @apply text-surface-z5;
+}
+
+[data-style='rokkit'] [data-upload-actions] button:hover {
+  @apply bg-surface-z3 text-surface-z9;
+}
+
+[data-style='rokkit'] [data-upload-file][data-status='error'] [data-upload-retry]:hover {
+  @apply text-primary-z7;
+}

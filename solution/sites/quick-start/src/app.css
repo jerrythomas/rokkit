@@ -9,7 +9,7 @@
 @import '@fontsource/open-sans/300.css';
 
 @import '@rokkit/themes/markdown.css';
-@import '@rokkit/themes/palette.css';
+@import '@rokkit/themes/base.css';
 @import '@rokkit/themes/prism.css';
 @import '@rokkit/themes/minimal.css';
 @import '@rokkit/themes/material.css';
