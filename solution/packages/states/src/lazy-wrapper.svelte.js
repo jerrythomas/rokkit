@@ -1,61 +1,49 @@
 /**
  * LazyWrapper
  *
- * Experimental Wrapper variant that derives flatView and lookup reactively
- * from the ProxyItem tree (via proxy.children $derived) instead of a static
- * ProxyNode tree.
+ * Extends Wrapper with lazy-loading support for tree nodes that use
+ * LazyProxyItem. Overrides expand(), select(), and toggle() to detect
+ * unloaded sentinel nodes (proxy.loaded === false) and trigger fetch()
+ * before delegating to the base Wrapper behavior.
  *
- * Key difference from Wrapper:
- *   Wrapper:     buildProxyList -> static ProxyNode tree -> buildFlatView(nodes)
- *   LazyWrapper: root ProxyItems -> flatView from proxy.children ($derived)
+ * Also provides loadMore() for root-level pagination via onlazyload callback.
  *
- * Delegates data management (flatView, lookup) to ProxyTree while keeping
- * all navigation/selection logic here.
- *
- * When LazyProxyItem.fetch() calls set('children', [...]),
- * proxy.children recomputes (via #version), which triggers ProxyTree's flatView
- * and lookup to re-derive automatically -- no Wrapper recreation needed.
+ * All navigation logic (next, prev, first, last, collapse, moveTo,
+ * moveToValue, findByText, cancel, blur, extend, range) is inherited
+ * from Wrapper — no duplication.
  */
 
-import { AbstractWrapper } from './abstract-wrapper.js'
+import { Wrapper } from './wrapper.svelte.js'
 import { ProxyTree } from './proxy-tree.svelte.js'
 
 // ─── LazyWrapper ───────────────────────────────────────────────────────────────
 
-export class LazyWrapper extends AbstractWrapper {
-	// ─── Data ──────────────────────────────────────────────────────────────────
-
-	#proxyTree // ProxyTree — manages root proxies, flatView, and lookup
-
-	// Navigable items: exclude separators, spacers, and disabled items.
-	#navigable = $derived(
-		this.flatView.filter(
-			(n) => n.type !== 'separator' && n.type !== 'spacer' && !n.proxy.disabled
-		)
-	)
-
-	// ─── State ──────────────────────────────────────────────────────────────────
-
-	#focusedKey = $state(null)
-
-	// ─── Callbacks ──────────────────────────────────────────────────────────────
-
-	#onselect
-	#onchange
+export class LazyWrapper extends Wrapper {
 	#onlazyload
-	#selectedValue = $state(undefined)
 
 	/**
-	 * @param {unknown[]} [items]
-	 * @param {Partial<typeof PROXY_ITEM_FIELDS>} [fields]
-	 * @param {{ onselect?: Function, onchange?: Function, createProxy?: (raw: *, fields: object, key: string, level: number) => ProxyItem }} [options]
+	 * @overload
+	 * @param {ProxyTree} proxyTree
+	 * @param {{ onselect?: Function, onchange?: Function, onlazyload?: Function }} [options]
 	 */
-	constructor(items = [], fields = {}, options = {}) {
-		super()
-		this.#proxyTree = new ProxyTree(items, fields, options)
-		this.#onselect = options.onselect
-		this.#onchange = options.onchange
-		this.#onlazyload = options.onlazyload
+	/**
+	 * @overload
+	 * @deprecated Use `new LazyWrapper(proxyTree, options)` instead.
+	 * @param {unknown[]} items
+	 * @param {object} [fields]
+	 * @param {{ onselect?: Function, onchange?: Function, onlazyload?: Function, createProxy?: Function }} [options]
+	 */
+	constructor(proxyTreeOrItems, fieldsOrOptions = {}, legacyOptions) {
+		// Backward compat: detect legacy (items, fields, options) signature
+		if (proxyTreeOrItems instanceof ProxyTree) {
+			super(proxyTreeOrItems, fieldsOrOptions)
+			this.#onlazyload = fieldsOrOptions.onlazyload
+		} else {
+			// Legacy: (items, fields, options)
+			const pt = new ProxyTree(proxyTreeOrItems ?? [], fieldsOrOptions, legacyOptions)
+			super(pt, legacyOptions)
+			this.#onlazyload = legacyOptions?.onlazyload
+		}
 	}
 
 	// ─── Root-level pagination ──────────────────────────────────────────────────
@@ -68,53 +56,21 @@ export class LazyWrapper extends AbstractWrapper {
 		if (!this.#onlazyload) return
 		const result = await this.#onlazyload()
 		if (Array.isArray(result) && result.length > 0) {
-			this.#proxyTree.append(result)
+			this.proxyTree.append(result)
 		}
 	}
 
-	// ─── Data accessors (delegated to ProxyTree) ─────────────────────────────
+	// ─── Overrides: lazy sentinel detection ─────────────────────────────────────
 
-	get flatView() { return this.#proxyTree.flatView }
-
-	/** @returns {Map<string, ProxyItem>} */
-	get lookup() { return this.#proxyTree.lookup }
-
-	/** @returns {ProxyTree} */
-	get proxyTree() { return this.#proxyTree }
-
-	// ─── IWrapper: state read by Navigator ─────────────────────────────────────
-
-	get focusedKey() { return this.#focusedKey }
-
-	// ─── IWrapper: movement ────────────────────────────────────────────────────
-
-	next(_path) {
-		const nav = this.#navigable
-		if (!nav.length) return
-		const idx = nav.findIndex((n) => n.key === this.#focusedKey)
-		if (idx < nav.length - 1) this.#focusedKey = nav[idx + 1].key
-	}
-
-	prev(_path) {
-		const nav = this.#navigable
-		if (!nav.length) return
-		const idx = nav.findIndex((n) => n.key === this.#focusedKey)
-		if (idx > 0) this.#focusedKey = nav[idx - 1].key
-	}
-
-	first(_path) {
-		const nav = this.#navigable
-		if (nav.length) this.#focusedKey = nav[0].key
-	}
-
-	last(_path) {
-		const nav = this.#navigable
-		if (nav.length) this.#focusedKey = nav[nav.length - 1].key
-	}
-
+	/**
+	 * Expand focused group. If the node is an unloaded lazy sentinel
+	 * (proxy.loaded === false), fetch children first then expand.
+	 * Otherwise delegates to Wrapper's expand().
+	 */
 	expand(_path) {
-		if (!this.#focusedKey) return
-		const node = this.flatView.find((n) => n.key === this.#focusedKey)
+		const key = this.focusedKey
+		if (!key) return
+		const node = this.flatView.find((n) => n.key === key)
 		if (!node) return
 
 		// Lazy unloaded node: fetch children, then expand
@@ -125,102 +81,56 @@ export class LazyWrapper extends AbstractWrapper {
 			return
 		}
 
-		if (!node.hasChildren) return // regular leaf — no-op
-
-		if (!node.proxy.expanded) {
-			node.proxy.expanded = true
-		} else {
-			this.next(null)
-		}
+		super.expand(_path)
 	}
 
-	collapse(_path) {
-		if (!this.#focusedKey) return
-		const node = this.flatView.find((n) => n.key === this.#focusedKey)
-		if (!node) return
-		if (node.hasChildren && node.proxy.expanded) {
-			node.proxy.expanded = false
-		} else {
-			const parts = this.#focusedKey.split('-')
-			if (parts.length > 1) {
-				parts.pop()
-				this.#focusedKey = parts.join('-')
-			}
-		}
-	}
-
-	// ─── IWrapper: selection actions ───────────────────────────────────────────
-
+	/**
+	 * Select item at path (or focusedKey). If the target is a group/expandable
+	 * node with proxy.loaded === false, fetch children first then expand.
+	 * Otherwise delegates to Wrapper's select().
+	 */
 	select(path) {
-		const key = path ?? this.#focusedKey
+		const key = path ?? this.focusedKey
 		if (!key) return
-		this.#focusedKey = key
-		const proxy = this.#proxyTree.lookup.get(key)
+		const proxy = this.lookup.get(key)
 		if (!proxy) return
+
+		// Group with children: delegate to super (toggle expansion)
 		if (proxy.hasChildren) {
-			proxy.expanded = !proxy.expanded
+			super.select(path)
 			return
 		}
+
 		// Lazy sentinel: fetch children, then expand
 		if (proxy.loaded === false) {
 			proxy.fetch().then(() => { proxy.expanded = true })
 			return
 		}
-		if (proxy.value !== this.#selectedValue) {
-			this.#selectedValue = proxy.value
-			this.#onchange?.(proxy.value, proxy)
-		}
-		this.#onselect?.(proxy.value, proxy)
+
+		super.select(path)
 	}
 
+	/**
+	 * Toggle expansion of group at path. If the node is an unloaded lazy
+	 * sentinel, fetch children first then expand.
+	 * Otherwise delegates to Wrapper's toggle().
+	 */
 	toggle(path) {
-		const key = path ?? this.#focusedKey
+		const key = path ?? this.focusedKey
 		if (!key) return
-		const proxy = this.#proxyTree.lookup.get(key)
+		const proxy = this.lookup.get(key)
 		if (!proxy) return
+
+		// Group with children: normal toggle
 		if (proxy.hasChildren) {
-			proxy.expanded = !proxy.expanded
+			super.toggle(path)
 			return
 		}
+
 		// Lazy sentinel: fetch children, then expand
 		if (proxy.loaded === false) {
 			proxy.fetch().then(() => { proxy.expanded = true })
+			return
 		}
-	}
-
-	moveTo(path) {
-		if (path !== null) this.#focusedKey = path
-	}
-
-	moveToValue(v) {
-		if (v === undefined || v === null) return
-		for (const [key, proxy] of this.#proxyTree.lookup) {
-			if (proxy.value === v) {
-				this.#focusedKey = key
-				this.#selectedValue = v
-				return
-			}
-		}
-	}
-
-	cancel(_path) {}
-	blur() {}
-	extend(_path) {}
-	range(_path) {}
-
-	// ─── IWrapper: typeahead ───────────────────────────────────────────────────
-
-	findByText(query, startAfterKey = null) {
-		const nav = this.#navigable
-		if (!nav.length) return null
-		const q = query.toLowerCase()
-		const startIdx = startAfterKey
-			? nav.findIndex((n) => n.key === startAfterKey) + 1
-			: 0
-		for (let i = 0; i < nav.length; i++) {
-			const node = nav[(startIdx + i) % nav.length]
-			if (node.proxy.label.toLowerCase().startsWith(q)) return node.key
-		}
-		return null
 	}
 }
