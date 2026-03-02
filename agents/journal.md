@@ -7,6 +7,22 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-01
 
+### Backlog #75 COMPLETE — ProxyTree + Wrapper Unification
+
+All 7 tasks completed via subagent-driven development:
+
+1. **Wrapper accepts ProxyTree** (`0c15556a`) — constructor refactored, 81 new production tests
+2. **LazyWrapper extends Wrapper** (`a4acb4f0`) — removed ~90 lines of duplicated navigation
+3. **Flat components migrated** (`09d150c5`) — List, Menu, Select, MultiSelect, Toggle, Tabs use `ProxyTree + Wrapper`
+4. **Tree components migrated** (`e35f41cb`) — Tree, LazyTree use `ProxyTree + LazyWrapper`
+5. **showLines → lineStyle** (`23dea3fb`) — `'none'|'solid'|'dashed'|'dotted'`, CSS variants, 6 new tests
+6. **Dead code cleanup** (`66641154`) — removed AbstractWrapper, buildProxyList, buildFlatView, PROXY_ITEM_FIELDS, legacy constructors
+7. **Project files updated** — plan archived, backlog marked done
+
+**Final test count:** 2562 pass. Lint: pre-existing errors only.
+
+---
+
 ### Backlog #75 Task 6 — Dead Code Cleanup
 
 Removed dead code from the ProxyTree + Wrapper unification:

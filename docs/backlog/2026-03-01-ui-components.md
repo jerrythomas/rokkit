@@ -289,32 +289,9 @@ All components migrated to shared `ItemContent.svelte`. Dead CSS selectors remov
 
 ---
 
-## 75. ProxyTree + Wrapper Unification
+## 75. ProxyTree + Wrapper Unification — DONE
 
-**Design:** `docs/design/011-states.md`
-
-**Goal:** Components create ProxyTree, pass to Wrapper. LazyWrapper extends Wrapper. Removes code duplication between Wrapper and LazyWrapper.
-
-**Done (previous sessions):**
-- [x] ProxyTree class built and tested
-- [x] Leaf spacer removal
-- [x] Test assertions updated
-
-**Remaining phases:**
-
-1. **Wrapper accepts ProxyTree** — refactor constructor to accept ProxyTree (not items/fields), derive flatView/lookup from ProxyTree
-2. **LazyWrapper extends Wrapper** — make LazyWrapper extend Wrapper (not AbstractWrapper), override only expand/select/toggle/loadMore
-3. **Component updates** — all components create ProxyTree and pass to Wrapper (List, Menu, Select, MultiSelect, Toggle, Tabs, Tree, LazyTree)
-4. **showLines → lineStyle** — replace boolean with `lineStyle` prop (`none|dotted|dashed|solid`), add `data-line-style` attribute
-5. **Dead code cleanup** — remove `buildProxyList()`, `buildFlatView()`, `AbstractWrapper` from `@rokkit/states`
-
-**Files (key):**
-- `packages/states/src/wrapper.svelte.js` — accept ProxyTree
-- `packages/states/src/lazy-wrapper.svelte.js` — extend Wrapper
-- All `packages/ui/src/components/*.svelte` — create ProxyTree externally
-- `packages/states/src/index.js` — remove dead exports
-
-**Priority:** Medium — architectural improvement, enables consistent data layer.
+Wrapper accepts ProxyTree, LazyWrapper extends Wrapper (no duplication), all 8 components migrated, showLines→lineStyle, dead code removed. Plan: `docs/plans/2026-03-01-wrapper-unification.md`.
 
 ---
 
