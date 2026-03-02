@@ -171,6 +171,32 @@ describe('Rating', () => {
 		expect(el?.tabIndex).toBe(0)
 	})
 
+	// ─── Icons ──────────────────────────────────────────────────────
+
+	it('renders default semantic rating-filled icon for filled stars', () => {
+		const { container } = render(Rating, { value: 1 })
+		const icon = container.querySelector('[data-rating-item][data-filled] [data-rating-icon]')
+		expect(icon).toBeTruthy()
+		expect(icon?.classList.contains('rating-filled')).toBe(true)
+	})
+
+	it('renders default semantic rating-empty icon for empty stars', () => {
+		const { container } = render(Rating, { value: 1, max: 2 })
+		const items = container.querySelectorAll('[data-rating-item]')
+		const emptyIcon = items[1]?.querySelector('[data-rating-icon]')
+		expect(emptyIcon).toBeTruthy()
+		expect(emptyIcon?.classList.contains('rating-empty')).toBe(true)
+	})
+
+	it('uses custom icons override', () => {
+		const { container } = render(Rating, { value: 1, max: 2, icons: { filled: 'custom-star-filled', empty: 'custom-star-empty' } })
+		const items = container.querySelectorAll('[data-rating-item]')
+		const filledIcon = items[0]?.querySelector('[data-rating-icon]')
+		const emptyIcon = items[1]?.querySelector('[data-rating-icon]')
+		expect(filledIcon?.classList.contains('custom-star-filled')).toBe(true)
+		expect(emptyIcon?.classList.contains('custom-star-empty')).toBe(true)
+	})
+
 	// ─── Custom Class ───────────────────────────────────────────────
 
 	it('applies custom class', () => {

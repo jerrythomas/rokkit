@@ -23,6 +23,16 @@ export type FloatingNavigationItemSnippet = Snippet<
 >
 
 /**
+ * Icons for the FloatingNavigation pin button
+ */
+export interface FloatingNavigationIcons {
+	/** Icon for pin action */
+	pin?: string
+	/** Icon for unpin action */
+	unpin?: string
+}
+
+/**
  * Props for the FloatingNavigation component
  */
 export interface FloatingNavigationProps {
@@ -31,6 +41,9 @@ export interface FloatingNavigationProps {
 
 	/** Field mapping configuration */
 	fields?: Record<string, string>
+
+	/** Custom icons for pin/unpin */
+	icons?: FloatingNavigationIcons
 
 	/** Active item value (bindable) */
 	value?: unknown

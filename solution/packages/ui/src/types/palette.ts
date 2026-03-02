@@ -24,6 +24,20 @@ export interface PalettePreset {
 }
 
 /**
+ * Icons for the PaletteManager component
+ */
+export interface PaletteManagerIcons {
+	/** Icon for the save button */
+	save?: string
+	/** Icon for the apply/check button */
+	check?: string
+	/** Icon for the presets toggle */
+	presets?: string
+	/** Icon for the hex input toggle */
+	hex?: string
+}
+
+/**
  * Props for the PaletteManager component
  */
 export interface PaletteManagerProps {
@@ -41,6 +55,9 @@ export interface PaletteManagerProps {
 
 	/** Roles to show in the editor */
 	roles?: ColorRole[]
+
+	/** Custom icons */
+	icons?: PaletteManagerIcons
 
 	/** Auto-apply changes in real-time */
 	autoApply?: boolean

@@ -258,6 +258,28 @@ describe('FloatingNavigation', () => {
 		expect(items[2].getAttribute('tabindex')).toBe('-1')
 	})
 
+	// ─── Icons ──────────────────────────────────────────────────────
+
+	it('renders default semantic action-pin icon when unpinned', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems })
+		const icon = container.querySelector('[data-floating-nav-pin-icon]')
+		expect(icon).toBeTruthy()
+		expect(icon?.classList.contains('action-pin')).toBe(true)
+	})
+
+	it('renders default semantic action-unpin icon when pinned', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems, pinned: true })
+		const icon = container.querySelector('[data-floating-nav-pin-icon]')
+		expect(icon).toBeTruthy()
+		expect(icon?.classList.contains('action-unpin')).toBe(true)
+	})
+
+	it('uses custom pin/unpin icons override', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems, icons: { pin: 'custom-pin', unpin: 'custom-unpin' } })
+		const icon = container.querySelector('[data-floating-nav-pin-icon]')
+		expect(icon?.classList.contains('custom-pin')).toBe(true)
+	})
+
 	// ─── Custom Fields ──────────────────────────────────────────────
 
 	it('supports custom field mapping', () => {

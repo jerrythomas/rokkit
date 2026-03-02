@@ -1,10 +1,12 @@
 <script lang="ts">
-	import type { FloatingNavigationProps } from '../types/floating-navigation.js'
+	import type { FloatingNavigationProps, FloatingNavigationIcons } from '../types/floating-navigation.js'
 	import { ProxyItem } from '@rokkit/states'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	let {
 		items = [],
 		fields: userFields,
+		icons: userIcons = {} as FloatingNavigationIcons,
 		value = $bindable(),
 		position = 'right',
 		pinned = $bindable(false),
@@ -17,6 +19,8 @@
 		item: itemSnippet,
 		class: className = ''
 	}: FloatingNavigationProps = $props()
+
+	const icons = $derived({ pin: DEFAULT_STATE_ICONS.action.pin, unpin: DEFAULT_STATE_ICONS.action.unpin, ...userIcons })
 
 	let navRef = $state<HTMLElement | null>(null)
 	let expanded = $state(false)
@@ -167,7 +171,7 @@
 			aria-label={pinned ? 'Unpin navigation' : 'Pin navigation'}
 			onclick={togglePin}
 		>
-			<span class={pinned ? 'i-lucide:pin-off' : 'i-lucide:pin'} aria-hidden="true"></span>
+			<span data-floating-nav-pin-icon class={pinned ? icons.unpin : icons.pin} aria-hidden="true"></span>
 		</button>
 	</div>
 

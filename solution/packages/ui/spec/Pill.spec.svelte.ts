@@ -104,6 +104,21 @@ describe('Pill', () => {
 		expect(container.querySelector('[data-pill-icon]')).toBeTruthy()
 	})
 
+	// ─── Icons ──────────────────────────────────────────────────────
+
+	it('renders default semantic action-remove icon in remove button', () => {
+		const { container } = render(Pill, { value: 'Tag', removable: true })
+		const icon = container.querySelector('[data-pill-remove-icon]')
+		expect(icon).toBeTruthy()
+		expect(icon?.classList.contains('action-remove')).toBe(true)
+	})
+
+	it('uses custom remove icon override', () => {
+		const { container } = render(Pill, { value: 'Tag', removable: true, icons: { remove: 'custom-x' } })
+		const icon = container.querySelector('[data-pill-remove-icon]')
+		expect(icon?.classList.contains('custom-x')).toBe(true)
+	})
+
 	// ─── Accessibility ──────────────────────────────────────────────
 
 	it('remove button has aria-label', () => {

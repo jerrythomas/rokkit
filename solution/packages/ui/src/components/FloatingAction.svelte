@@ -3,16 +3,17 @@
 		FloatingActionProps,
 		FloatingActionItem,
 		FloatingActionItemSnippet,
-		FloatingActionItemHandlers
+		FloatingActionItemHandlers,
+		FloatingActionIcons
 	} from '../types/floating-action.js'
 	import { getSnippet } from '../types/floating-action.js'
 	import { ProxyItem } from '@rokkit/states'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	let {
 		items = [],
 		fields: userFields,
-		icon = 'i-lucide:plus',
-		closeIcon = 'i-lucide:x',
+		icons: userIcons = {} as FloatingActionIcons,
 		label = 'Actions',
 		size = 'md',
 		position = 'bottom-right',
@@ -29,6 +30,8 @@
 		item: itemSnippet,
 		...snippets
 	}: FloatingActionProps & { [key: string]: FloatingActionItemSnippet | unknown } = $props()
+
+	const icons = $derived({ add: DEFAULT_STATE_ICONS.action.add, close: DEFAULT_STATE_ICONS.action.close, ...userIcons })
 
 	/**
 	 * Create a ProxyItem for the given item
@@ -326,6 +329,6 @@
 		onclick={toggle}
 		onkeydown={handleTriggerKeyDown}
 	>
-		<span data-fab-icon class={open ? closeIcon : icon} aria-hidden="true"></span>
+		<span data-fab-icon class={open ? icons.close : icons.add} aria-hidden="true"></span>
 	</button>
 </div>

@@ -54,6 +54,16 @@ export type FloatingActionExpand = 'radial' | 'vertical' | 'horizontal'
 export type FloatingActionItemAlign = 'start' | 'center' | 'end'
 
 /**
+ * Icons for the FloatingAction trigger button
+ */
+export interface FloatingActionIcons {
+	/** Icon for the main trigger (add action) */
+	add?: string
+	/** Icon shown when menu is open (close action) */
+	close?: string
+}
+
+/**
  * Props for the FloatingAction component
  */
 export interface FloatingActionProps {
@@ -63,11 +73,8 @@ export interface FloatingActionProps {
 	/** Field mapping configuration */
 	fields?: FloatingActionFields
 
-	/** Icon for the main trigger button */
-	icon?: string
-
-	/** Icon shown when menu is open (defaults to close icon) */
-	closeIcon?: string
+	/** Custom icons for the trigger button */
+	icons?: FloatingActionIcons
 
 	/** Accessible label for the trigger */
 	label?: string

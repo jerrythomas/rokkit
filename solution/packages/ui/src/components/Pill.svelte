@@ -2,6 +2,11 @@
 	import type { Snippet } from 'svelte'
 	import { ProxyItem } from '@rokkit/states'
 	import { keyboard } from '@rokkit/actions'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+
+	interface PillIcons {
+		remove?: string
+	}
 
 	interface PillProps {
 		/** Item data (string or object) */
@@ -12,6 +17,8 @@
 		removable?: boolean
 		/** Disabled state */
 		disabled?: boolean
+		/** Custom icons */
+		icons?: PillIcons
 		/** Called when remove is triggered (click or Delete/Backspace key) */
 		onremove?: (value: unknown) => void
 		/** Custom content snippet */
@@ -25,10 +32,13 @@
 		fields,
 		removable = false,
 		disabled = false,
+		icons: userIcons = {} as PillIcons,
 		onremove,
 		content,
 		class: className = ''
 	}: PillProps = $props()
+
+	const icons = $derived({ remove: DEFAULT_STATE_ICONS.action.remove, ...userIcons })
 
 	const proxy = $derived(new ProxyItem(value, fields))
 
@@ -67,7 +77,7 @@
 			{disabled}
 			onclick={handleRemove}
 		>
-			<span class="i-lucide:x" aria-hidden="true"></span>
+			<span data-pill-remove-icon class={icons.remove} aria-hidden="true"></span>
 		</button>
 	{/if}
 </span>

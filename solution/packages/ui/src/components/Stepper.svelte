@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	interface StepperStep {
 		/** Step label (shown below circle) */
@@ -15,8 +16,8 @@
 	}
 
 	interface StepperIcons {
-		/** Icon class for completed state (default: i-lucide:check) */
-		completed?: string
+		/** Icon class for check/completed state */
+		check?: string
 	}
 
 	interface StepperProps {
@@ -41,7 +42,7 @@
 	}
 
 	const defaultIcons: StepperIcons = {
-		completed: 'i-lucide:check'
+		check: DEFAULT_STATE_ICONS.action.check
 	}
 
 	let {
@@ -133,7 +134,7 @@
 				onclick={() => handleStepClick(index)}
 			>
 				{#if step.completed}
-					<span class={icons.completed} aria-hidden="true"></span>
+					<span data-stepper-check-icon class={icons.check} aria-hidden="true"></span>
 				{:else}
 					{step.label ?? index + 1}
 				{/if}

@@ -1,4 +1,12 @@
 <script lang="ts">
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+
+	interface RatingIcons {
+		filled?: string
+		empty?: string
+		half?: string
+	}
+
 	interface RatingProps {
 		/** Current rating value (bindable) */
 		value?: number
@@ -6,10 +14,8 @@
 		max?: number
 		/** Disabled state */
 		disabled?: boolean
-		/** CSS class for filled star icon */
-		filledIcon?: string
-		/** CSS class for empty star icon */
-		emptyIcon?: string
+		/** Custom icons for rating states */
+		icons?: RatingIcons
 		/** Called when value changes */
 		onchange?: (value: number) => void
 		/** Additional CSS class */
@@ -20,11 +26,12 @@
 		value = $bindable(0),
 		max = 5,
 		disabled = false,
-		filledIcon = 'i-lucide:star',
-		emptyIcon = 'i-lucide:star',
+		icons: userIcons = {} as RatingIcons,
 		onchange,
 		class: className = ''
 	}: RatingProps = $props()
+
+	const icons = $derived({ ...DEFAULT_STATE_ICONS.rating, ...userIcons })
 
 	let hoverIndex = $state(-1)
 
@@ -86,7 +93,7 @@
 			onmouseenter={() => { if (!disabled) hoverIndex = index }}
 			onmouseleave={() => { hoverIndex = -1 }}
 		>
-			<span class={filled ? filledIcon : emptyIcon} aria-hidden="true"></span>
+			<span data-rating-icon class={filled ? icons.filled : icons.empty} aria-hidden="true"></span>
 		</span>
 	{/each}
 </div>

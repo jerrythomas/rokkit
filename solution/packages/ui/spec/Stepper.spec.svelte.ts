@@ -82,18 +82,20 @@ describe('Stepper', () => {
 		expect(steps[2]?.hasAttribute('data-active')).toBe(false)
 	})
 
-	it('shows checkmark icon on completed steps', () => {
+	it('shows semantic check icon on completed steps', () => {
 		const { container } = render(Stepper, { steps: completedSteps })
 		const completedCircles = container.querySelectorAll('[data-stepper-step][data-completed] [data-stepper-circle]')
 		completedCircles.forEach((circle) => {
-			expect(circle.querySelector('.i-lucide\\:check')).toBeTruthy()
+			const icon = circle.querySelector('[data-stepper-check-icon]')
+			expect(icon).toBeTruthy()
+			expect(icon?.classList.contains('action-check')).toBe(true)
 		})
 	})
 
-	it('uses custom completed icon', () => {
+	it('uses custom check icon override', () => {
 		const { container } = render(Stepper, {
 			steps: completedSteps,
-			icons: { completed: 'custom-check' }
+			icons: { check: 'custom-check' }
 		})
 		const circle = container.querySelector('[data-stepper-step][data-completed] [data-stepper-circle]')
 		expect(circle?.querySelector('.custom-check')).toBeTruthy()

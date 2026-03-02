@@ -112,6 +112,20 @@ describe('BreadCrumbs', () => {
 		expect(icon?.classList.contains('i-lucide:home')).toBe(true)
 	})
 
+	// ─── Icons ──────────────────────────────────────────────────────
+
+	it('renders default semantic navigate-right separator icon', () => {
+		const { container } = render(BreadCrumbs, { items: basicItems })
+		const sep = container.querySelector('[data-breadcrumb-separator] span')
+		expect(sep?.classList.contains('navigate-right')).toBe(true)
+	})
+
+	it('uses custom separator icon override', () => {
+		const { container } = render(BreadCrumbs, { items: basicItems, icons: { separator: 'custom-arrow' } })
+		const sep = container.querySelector('[data-breadcrumb-separator] span')
+		expect(sep?.classList.contains('custom-arrow')).toBe(true)
+	})
+
 	// ─── Custom Class ───────────────────────────────────────────────
 
 	it('applies custom class', () => {

@@ -40,6 +40,26 @@ describe('FloatingAction', () => {
 		expect(icon).toBeTruthy()
 	})
 
+	// ─── Icons ──────────────────────────────────────────────────────
+
+	it('renders default semantic action-add icon when closed', () => {
+		const { container } = render(FloatingAction, { items: basicItems })
+		const icon = container.querySelector('[data-fab-icon]')
+		expect(icon?.classList.contains('action-add')).toBe(true)
+	})
+
+	it('renders default semantic action-close icon when open', () => {
+		const { container } = render(FloatingAction, { items: basicItems, open: true })
+		const icon = container.querySelector('[data-fab-icon]')
+		expect(icon?.classList.contains('action-close')).toBe(true)
+	})
+
+	it('uses custom icons override', () => {
+		const { container } = render(FloatingAction, { items: basicItems, icons: { add: 'custom-plus', close: 'custom-x' } })
+		const icon = container.querySelector('[data-fab-icon]')
+		expect(icon?.classList.contains('custom-plus')).toBe(true)
+	})
+
 	// ─── Open/Close ─────────────────────────────────────────────────
 
 	it('opens on trigger click', async () => {

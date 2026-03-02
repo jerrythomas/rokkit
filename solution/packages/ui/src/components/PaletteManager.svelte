@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { PaletteManagerProps, PaletteConfig } from '../types/palette.js'
+	import type { PaletteManagerProps, PaletteConfig, PaletteManagerIcons } from '../types/palette.js'
 	import { defaultRoles, defaultPresets, defaultPaletteConfig } from '../types/palette.js'
+	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 	import type { ColorRole, Shades } from '../utils/palette.js'
 	import {
 		getShades,
@@ -17,6 +18,7 @@
 		custom = $bindable<PaletteConfig[]>([]),
 		storageKey,
 		roles = defaultRoles,
+		icons: userIcons = {} as PaletteManagerIcons,
 		autoApply = true,
 		showPresets = true,
 		showSave = true,
@@ -27,6 +29,14 @@
 		onapply,
 		roleRow: roleRowSnippet
 	}: PaletteManagerProps = $props()
+
+	const icons = $derived({
+		save: DEFAULT_STATE_ICONS.action.save,
+		check: DEFAULT_STATE_ICONS.action.check,
+		presets: DEFAULT_STATE_ICONS.palette.presets,
+		hex: DEFAULT_STATE_ICONS.palette.hex,
+		...userIcons
+	})
 
 	// Available Tailwind colors for the select dropdown
 	const tailwindColorNames = getTailwindColorNames()
@@ -257,9 +267,9 @@
 				title={showHexInput[role] ? 'Select from presets' : 'Enter custom hex'}
 			>
 				{#if showHexInput[role]}
-					<span class="i-lucide:list" aria-hidden="true"></span>
+					<span data-palette-presets-icon class={icons.presets} aria-hidden="true"></span>
 				{:else}
-					<span class="i-lucide:hash" aria-hidden="true"></span>
+					<span data-palette-hex-icon class={icons.hex} aria-hidden="true"></span>
 				{/if}
 			</button>
 		</div>
@@ -339,14 +349,14 @@
 	<div data-palette-actions>
 		{#if showSave}
 			<button type="button" data-palette-save onclick={handleSave}>
-				<span class="i-lucide:save" aria-hidden="true"></span>
+				<span data-palette-save-icon class={icons.save} aria-hidden="true"></span>
 				Save as Custom
 			</button>
 		{/if}
 
 		{#if !autoApply}
 			<button type="button" data-palette-apply onclick={handleApply}>
-				<span class="i-lucide:check" aria-hidden="true"></span>
+				<span data-palette-check-icon class={icons.check} aria-hidden="true"></span>
 				Apply
 			</button>
 		{/if}
