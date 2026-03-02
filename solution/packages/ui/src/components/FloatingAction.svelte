@@ -31,7 +31,7 @@
 	}: FloatingActionProps & { [key: string]: FloatingActionItemSnippet | unknown } = $props()
 
 	/**
-	 * Create an ProxyItem for the given item
+	 * Create a ProxyItem for the given item
 	 */
 	function createProxy(item: FloatingActionItem): ProxyItem {
 		return new ProxyItem(item, userFields)

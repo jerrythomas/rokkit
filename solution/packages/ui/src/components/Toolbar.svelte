@@ -31,7 +31,7 @@
 	}: ToolbarProps & { [key: string]: ToolbarItemSnippet | unknown } = $props()
 
 	/**
-	 * Create an ProxyItem for the given item
+	 * Create a ProxyItem for the given item
 	 */
 	function createProxy(item: ToolbarItem): ProxyItem {
 		return new ProxyItem(item, userFields)
