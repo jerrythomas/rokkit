@@ -104,9 +104,7 @@ describe('validateFile', () => {
 		expect(validateFile(file, { accept: 'image/*' })).toBe(true)
 	})
 
-	it('returns { reason: "size" } when file size equals maxSize exactly', () => {
-		// maxSize is exclusive upper bound: file.size must be < maxSize? Or <=?
-		// Spec says "maxSize check" — file.size > maxSize → fail
+	it('allows file when size equals maxSize exactly', () => {
 		expect(validateFile({ ...file, size: 10000 }, { maxSize: 10000 })).toBe(true)
 	})
 
