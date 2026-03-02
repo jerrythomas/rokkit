@@ -24,6 +24,7 @@ const defaultMessages = {
 	search_: { clear: 'Clear search' },
 	filter: { remove: 'Remove filter' },
 	grid: { label: 'Grid' },
+	uploadProgress: { label: 'Upload progress', clear: 'Clear all', cancel: 'Cancel', retry: 'Retry', remove: 'Remove' },
 	floatingNav: { label: 'Page navigation', pin: 'Pin navigation', unpin: 'Unpin navigation' },
 	mode: { system: 'System', light: 'Light', dark: 'Dark' }
 }
