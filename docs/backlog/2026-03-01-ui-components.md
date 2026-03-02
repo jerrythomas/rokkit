@@ -93,48 +93,9 @@ const defaultMessages = {
 
 ---
 
-## 63. Semantic Icons — Fix Hardcoded Icon Strings in Components
+## 63. Semantic Icons — Fix Hardcoded Icon Strings in Components — DONE
 
-**Problem:** Several components bypass the `defaultStateIcons` system and hardcode `i-lucide:*` strings directly in templates or as prop defaults. This breaks global icon overriding (the two-layer customisation pattern documented in `agents/design-patterns.md`).
-
-**Rule:** All icon defaults must be sourced from `defaultStateIcons.*`. Inline `i-lucide:*` / `i-solar:*` strings are only acceptable in playground/learn-site demos.
-
-**Missing entries in `defaultIcons` (need SVGs + core entry):**
-- `action-check` — checkmark / confirm (needed by Stepper, PaletteManager)
-- `action-save` — save/persist (PaletteManager)
-- `action-pin` / `action-unpin` — pin toggle (FloatingNavigation)
-
-**Cases to fix — hardcoded in template (no prop at all):**
-
-| Component | Hardcoded string | Semantic replacement |
-|-----------|-----------------|---------------------|
-| `Carousel.svelte` | `i-lucide:chevron-left` | `defaultStateIcons.navigate.left` via `icons` prop |
-| `Carousel.svelte` | `i-lucide:chevron-right` | `defaultStateIcons.navigate.right` via `icons` prop |
-| `Pill.svelte` | `i-lucide:x` (remove) | `defaultStateIcons.action.remove` or `action.close` |
-| `Tabs.svelte` | `i-lucide:x` (remove tab) | `defaultStateIcons.action.close` |
-| `Tabs.svelte` | `i-lucide:plus` (add tab) | `defaultStateIcons.action.add` |
-| `FloatingNavigation.svelte` | `i-lucide:pin` / `i-lucide:pin-off` | new `action-pin` / `action-unpin` |
-| `PaletteManager.svelte` | `i-lucide:save`, `i-lucide:check`, `i-lucide:list`, `i-lucide:hash` | new `action-save`, `action-check` + palette-specific |
-
-**Cases to fix — prop defaults bypassing `defaultStateIcons`:**
-
-| Component | Prop | Current default | Should be |
-|-----------|------|----------------|-----------|
-| `Rating.svelte` | `filledIcon` | `'i-lucide:star'` | `defaultStateIcons.rating.filled` |
-| `Rating.svelte` | `emptyIcon` | `'i-lucide:star'` | `defaultStateIcons.rating.empty` |
-| `BreadCrumbs.svelte` | `separator` | `'i-lucide:chevron-right'` | `defaultStateIcons.navigate.right` |
-| `FloatingAction.svelte` | `icon` | `'i-lucide:plus'` | `defaultStateIcons.action.add` |
-| `FloatingAction.svelte` | `closeIcon` | `'i-lucide:x'` | `defaultStateIcons.action.close` |
-| `Stepper.svelte` | `icons.completed` default | `'i-lucide:check'` | new `defaultStateIcons.action.check` |
-
-**Files:**
-- `packages/icons/src/base/` — add `action-check.svg`, `action-save.svg`, `action-pin.svg`, `action-unpin.svg`
-- `packages/icons` — rebuild
-- `packages/core/src/constants.js` — add new names to `defaultIcons`
-- `packages/core/spec/constants.spec.js` — update snapshot
-- All component files listed above
-
-**Priority:** Low — no functional regression, but violates the icon customisation contract.
+7 components migrated to icons prop pattern with DEFAULT_STATE_ICONS defaults. 6 new SVGs + icon names added. Remaining: Carousel (chevron-left/right) and Tabs (plus) still have i-lucide: strings. Plan: `docs/plans/2026-03-02-semantic-icons.md`.
 
 ---
 

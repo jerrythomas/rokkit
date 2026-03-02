@@ -5,6 +5,21 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-03-02
+
+### Backlog #63 COMPLETE — Semantic Icons
+
+6 new icon names + SVGs added, 7 components migrated to `icons` prop pattern:
+
+1. **New icons** (`01937636`, `509e36ab`) — action-check, action-save, action-pin, action-unpin, palette-presets, palette-hex added to DEFAULT_ICONS + 6 SVGs
+2. **7 components migrated** (`273164e8`) — Rating, Stepper, FloatingAction, Pill, BreadCrumbs, FloatingNavigation, PaletteManager all use DEFAULT_STATE_ICONS with `icons` prop for overrides
+3. **Breaking changes:** Rating (filledIcon/emptyIcon → icons), FloatingAction (icon/closeIcon → icons), BreadCrumbs (separator → icons), Stepper (icons.completed → icons.check)
+4. **Remaining:** Carousel (chevron-left/right) and Tabs (plus) still have i-lucide: strings — out of scope
+
+**Test count:** 2488 pass (177 files). Lint: pre-existing errors only.
+
+---
+
 ## 2026-03-01
 
 ### Backlog #3 COMPLETE — ItemProxy + Proxy → ProxyItem Unification
