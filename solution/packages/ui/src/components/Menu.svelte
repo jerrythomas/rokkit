@@ -44,7 +44,7 @@
 	 */
 	// @ts-nocheck
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator, Trigger } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -61,7 +61,7 @@
 		size = 'md',
 		disabled = false,
 		collapsible = false,
-		label = 'Menu',
+		label = messages.current.menu.label,
 		icon,
 		showArrow = true,
 		align = 'start',

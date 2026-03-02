@@ -318,4 +318,33 @@ describe('Tree', () => {
 		expect(link).toBeTruthy()
 		expect(link?.getAttribute('href')).toBe('/home')
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default labels from MessagesStore', () => {
+		const { container } = render(Tree, { items: flatItems })
+		const tree = container.querySelector('[data-tree]')
+		expect(tree?.getAttribute('aria-label')).toBe('Tree')
+	})
+
+	it('uses default expand/collapse labels on toggle buttons', () => {
+		const { container } = render(Tree, { items: nestedItems })
+		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')
+		expect(toggleBtn?.getAttribute('aria-label')).toBe('Expand')
+	})
+
+	it('allows custom labels prop to override defaults', () => {
+		const { container } = render(Tree, { items: flatItems, labels: { label: 'Arbre' } })
+		const tree = container.querySelector('[data-tree]')
+		expect(tree?.getAttribute('aria-label')).toBe('Arbre')
+	})
+
+	it('allows custom expand/collapse labels', async () => {
+		const { container } = render(Tree, { items: nestedItems, labels: { expand: 'Ouvrir', collapse: 'Fermer' } })
+		const toggleBtn = container.querySelector('[data-tree-toggle-btn]')
+		expect(toggleBtn?.getAttribute('aria-label')).toBe('Ouvrir')
+		// Expand and check collapse label
+		await fireEvent.click(toggleBtn!)
+		expect(toggleBtn?.getAttribute('aria-label')).toBe('Fermer')
+	})
 })

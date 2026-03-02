@@ -28,7 +28,7 @@
 	 *   data-disabled          — disabled state
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET, GROUP_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -45,6 +45,7 @@
 		size = 'md',
 		disabled = false,
 		collapsible = false,
+		label = messages.current.list.label,
 		icons: userIcons = {} as ListIcons,
 		onselect,
 		class: className = '',
@@ -56,6 +57,7 @@
 		size?: string
 		disabled?: boolean
 		collapsible?: boolean
+		label?: string
 		icons?: ListIcons
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		class?: string
@@ -106,7 +108,7 @@
 	data-disabled={disabled || undefined}
 	data-collapsible={collapsible || undefined}
 	class={className || undefined}
-	aria-label="List"
+	aria-label={label}
 >
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}

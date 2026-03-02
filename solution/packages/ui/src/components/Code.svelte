@@ -2,6 +2,7 @@
 	import type { CodeProps, CodeStateIcons } from '../types/index.js'
 	import { defaultCodeStateIcons } from '../types/code.js'
 	import { highlightCode } from '../utils/shiki.js'
+	import { messages } from '@rokkit/states'
 
 	const {
 		code,
@@ -9,9 +10,12 @@
 		theme = 'dark',
 		showLineNumbers = false,
 		showCopyButton = true,
+		labels: userLabels = {},
 		icons: userIcons,
 		class: className = ''
-	}: CodeProps = $props()
+	}: CodeProps & { labels?: Record<string, string> } = $props()
+
+	const labels = $derived({ ...messages.current.code, ...userLabels })
 
 	// Merge icons with defaults
 	const icons = $derived<CodeStateIcons>({ ...defaultCodeStateIcons, ...userIcons })
@@ -55,7 +59,7 @@
 			type="button"
 			class="copy-button"
 			onclick={copyToClipboard}
-			aria-label={copied ? 'Copied!' : 'Copy code'}
+			aria-label={copied ? labels.copied : labels.copy}
 		>
 			{#if copied}
 				<span class="copy-icon {icons.copysuccess}"></span>

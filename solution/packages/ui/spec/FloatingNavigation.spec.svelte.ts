@@ -307,4 +307,39 @@ describe('FloatingNavigation', () => {
 		expect(container.querySelector('[data-floating-nav]')).toBeTruthy()
 		expect(container.querySelectorAll('[data-floating-nav-item]').length).toBe(0)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems })
+		const nav = container.querySelector('[data-floating-nav]')
+		expect(nav?.getAttribute('aria-label')).toBe('Page navigation')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems, label: 'Sections' })
+		const nav = container.querySelector('[data-floating-nav]')
+		expect(nav?.getAttribute('aria-label')).toBe('Sections')
+	})
+
+	it('uses default pin/unpin labels from MessagesStore', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems })
+		const pin = container.querySelector('[data-floating-nav-pin]')
+		expect(pin?.getAttribute('aria-label')).toBe('Pin navigation')
+	})
+
+	it('shows unpin label when pinned', () => {
+		const { container } = render(FloatingNavigation, { items: basicItems, pinned: true })
+		const pin = container.querySelector('[data-floating-nav-pin]')
+		expect(pin?.getAttribute('aria-label')).toBe('Unpin navigation')
+	})
+
+	it('allows custom pin/unpin labels via labels prop', () => {
+		const { container } = render(FloatingNavigation, {
+			items: basicItems,
+			labels: { pin: 'Epingler', unpin: 'Desepingler' }
+		})
+		const pin = container.querySelector('[data-floating-nav-pin]')
+		expect(pin?.getAttribute('aria-label')).toBe('Epingler')
+	})
 })

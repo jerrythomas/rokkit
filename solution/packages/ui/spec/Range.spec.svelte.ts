@@ -233,4 +233,37 @@ describe('Range', () => {
 		const thumb = container.querySelector('[data-range-thumb]') as HTMLElement
 		expect(thumb.style.left).toBe('75%')
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default labels from MessagesStore', () => {
+		const { container } = render(Range, { range: true, lower: 20, upper: 80 })
+		const thumbs = container.querySelectorAll('[data-range-thumb]')
+		expect(thumbs[0].getAttribute('aria-label')).toBe('Lower bound')
+		expect(thumbs[1].getAttribute('aria-label')).toBe('Upper bound')
+	})
+
+	it('uses default "Value" label in single mode', () => {
+		const { container } = render(Range)
+		const thumb = container.querySelector('[data-range-thumb]')
+		expect(thumb?.getAttribute('aria-label')).toBe('Value')
+	})
+
+	it('allows custom labels prop to override defaults', () => {
+		const { container } = render(Range, {
+			range: true,
+			lower: 20,
+			upper: 80,
+			labels: { lower: 'Minimum', upper: 'Maximum', value: 'Valeur' }
+		})
+		const thumbs = container.querySelectorAll('[data-range-thumb]')
+		expect(thumbs[0].getAttribute('aria-label')).toBe('Minimum')
+		expect(thumbs[1].getAttribute('aria-label')).toBe('Maximum')
+	})
+
+	it('allows custom value label in single mode', () => {
+		const { container } = render(Range, { labels: { value: 'Valeur' } })
+		const thumb = container.querySelector('[data-range-thumb]')
+		expect(thumb?.getAttribute('aria-label')).toBe('Valeur')
+	})
 })

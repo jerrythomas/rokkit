@@ -1,17 +1,25 @@
 <script lang="ts">
 	import type { SearchFilterProps, FilterObject } from '../types/search-filter.js'
 	import { parseFilters } from '@rokkit/data'
+	import { messages } from '@rokkit/states'
 
 	let {
 		filters = $bindable([]),
 		debounce: delay = 300,
 		placeholder = 'Search...',
 		columns: _columns,
+		labels: userLabels = {},
 		onfilter,
 		class: className = '',
 		size = 'md',
 		tag: tagSnippet
-	}: SearchFilterProps = $props()
+	}: SearchFilterProps & { labels?: Record<string, string> } = $props()
+
+	const labels = $derived({
+		clear: messages.current.search_.clear,
+		remove: messages.current.filter.remove,
+		...userLabels
+	})
 
 	let inputText = $state('')
 	let timer: ReturnType<typeof setTimeout> | undefined
@@ -52,7 +60,7 @@
 			{placeholder}
 		/>
 		{#if inputText}
-			<button data-search-clear onclick={clear} aria-label="Clear search" type="button">
+			<button data-search-clear onclick={clear} aria-label={labels.clear} type="button">
 				&times;
 			</button>
 		{/if}
@@ -69,7 +77,7 @@
 						<button
 							data-search-tag-remove
 							onclick={() => removeFilter(i)}
-							aria-label="Remove filter"
+							aria-label={labels.remove}
 							type="button"
 						>&times;</button>
 					</span>

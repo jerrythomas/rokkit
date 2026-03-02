@@ -368,4 +368,18 @@ describe('Toolbar', () => {
 		expect(el).toBeTruthy()
 		expect(container.querySelectorAll('[data-toolbar-item]').length).toBe(0)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(Toolbar, { items: basicItems })
+		const el = container.querySelector('[data-toolbar]')
+		expect(el?.getAttribute('aria-label')).toBe('Toolbar')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(Toolbar, { items: basicItems, label: 'Formatting' })
+		const el = container.querySelector('[data-toolbar]')
+		expect(el?.getAttribute('aria-label')).toBe('Formatting')
+	})
 })

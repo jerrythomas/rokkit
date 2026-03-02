@@ -10,7 +10,7 @@
 	 * Parent nodes hide their icon by default.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { LazyWrapper, LazyProxyItem, ProxyTree } from '@rokkit/states'
+	import { LazyWrapper, LazyProxyItem, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -23,6 +23,7 @@
 		value,
 		size = 'md',
 		lineStyle = 'solid',
+		labels: userLabels = {},
 		icons: userIcons = {},
 		onselect,
 		onlazyload,
@@ -35,6 +36,7 @@
 		value?: unknown
 		size?: string
 		lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
+		labels?: Record<string, string>
 		icons?: { opened?: string; closed?: string }
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		onlazyload?: (current?: unknown) => Promise<unknown[]>
@@ -42,6 +44,8 @@
 		class?: string
 		[key: string]: unknown
 	} = $props()
+
+	const labels = $derived({ ...messages.current.tree, ...userLabels })
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
@@ -80,7 +84,7 @@
 	class={className || undefined}
 	role="tree"
 	tabindex="0"
-	aria-label="Tree"
+	aria-label={labels.label}
 >
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}
@@ -108,7 +112,7 @@
 								type="button"
 								data-tree-toggle-btn
 								onclick={() => wrapper.toggle(node.key)}
-								aria-label={isLoading ? 'Loading' : proxy.expanded ? 'Collapse' : 'Expand'}
+								aria-label={isLoading ? labels.loading : proxy.expanded ? labels.collapse : labels.expand}
 								tabindex={-1}
 							>
 								{#if isLoading}
@@ -156,6 +160,6 @@
 			</div>
 	{/each}
 	{#if hasMore}
-		<Button label="Load More" style="ghost" size={size} onclick={() => wrapper.loadMore()} />
+		<Button label={labels.loadMore} style="ghost" size={size} onclick={() => wrapper.loadMore()} />
 	{/if}
 </div>

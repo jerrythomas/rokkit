@@ -2,6 +2,7 @@
 	import type { RangeProps } from '../types/range.js'
 	import { generateTicks } from '@rokkit/core'
 	import { pannable } from '@rokkit/actions'
+	import { messages } from '@rokkit/states'
 
 	let {
 		value = $bindable(50),
@@ -14,9 +15,12 @@
 		ticks = 0,
 		labelSkip = 0,
 		disabled = false,
+		labels: userLabels = {},
 		onchange,
 		class: className = ''
-	}: RangeProps = $props()
+	}: RangeProps & { labels?: Record<string, string> } = $props()
+
+	const labels = $derived({ ...messages.current.range, ...userLabels })
 
 	// ─── Pixel state ────────────────────────────────────────────────
 	let trackWidth = $state(0)
@@ -273,7 +277,7 @@
 				aria-valuemin={min}
 				aria-valuemax={upper}
 				aria-disabled={disabled || undefined}
-				aria-label="Lower bound"
+				aria-label={labels.lower}
 			></div>
 		{/if}
 
@@ -296,7 +300,7 @@
 			aria-valuemin={rangeMode ? lower : min}
 			aria-valuemax={max}
 			aria-disabled={disabled || undefined}
-			aria-label={rangeMode ? 'Upper bound' : 'Value'}
+			aria-label={rangeMode ? labels.upper : labels.value}
 		></div>
 	</div>
 

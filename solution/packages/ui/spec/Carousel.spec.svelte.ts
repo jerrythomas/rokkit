@@ -166,4 +166,30 @@ describe('Carousel', () => {
 		const el = container.querySelector('[data-carousel]')
 		expect(el?.classList.contains('my-carousel')).toBe(true)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default labels from MessagesStore', () => {
+		const { container } = render(Carousel, { count: 3 })
+		const el = container.querySelector('[data-carousel]')
+		expect(el?.getAttribute('aria-label')).toBe('Carousel')
+		const prev = container.querySelector('[data-carousel-prev]')
+		expect(prev?.getAttribute('aria-label')).toBe('Previous slide')
+		const next = container.querySelector('[data-carousel-next]')
+		expect(next?.getAttribute('aria-label')).toBe('Next slide')
+		const dots = container.querySelector('[data-carousel-dots]')
+		expect(dots?.getAttribute('aria-label')).toBe('Slide navigation')
+	})
+
+	it('allows custom labels prop to override defaults', () => {
+		const { container } = render(Carousel, {
+			count: 3,
+			labels: { label: 'Diaporama', prev: 'Precedent', next: 'Suivant', slides: 'Navigation' }
+		})
+		const el = container.querySelector('[data-carousel]')
+		expect(el?.getAttribute('aria-label')).toBe('Diaporama')
+		expect(container.querySelector('[data-carousel-prev]')?.getAttribute('aria-label')).toBe('Precedent')
+		expect(container.querySelector('[data-carousel-next]')?.getAttribute('aria-label')).toBe('Suivant')
+		expect(container.querySelector('[data-carousel-dots]')?.getAttribute('aria-label')).toBe('Navigation')
+	})
 })

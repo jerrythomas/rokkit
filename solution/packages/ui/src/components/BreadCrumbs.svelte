@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
-	import { ProxyItem } from '@rokkit/states'
+	import { ProxyItem, messages } from '@rokkit/states'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	interface BreadCrumbsIcons {
@@ -25,11 +25,12 @@
 	const {
 		items = [],
 		fields,
+		label = messages.current.breadcrumbs.label,
 		icons: userIcons = {} as BreadCrumbsIcons,
 		onclick,
 		crumb,
 		class: className = ''
-	}: BreadCrumbsProps = $props()
+	}: BreadCrumbsProps & { label?: string } = $props()
 
 	const icons = $derived({ separator: DEFAULT_STATE_ICONS.navigate.right, ...userIcons })
 
@@ -49,7 +50,7 @@
 	<span data-breadcrumb-label>{proxy.label}</span>
 {/snippet}
 
-<nav data-breadcrumbs class={className || undefined} aria-label="Breadcrumb">
+<nav data-breadcrumbs class={className || undefined} aria-label={label}>
 	<ol data-breadcrumb-list>
 		{#each items as item, index (index)}
 			{@const proxy = createProxy(item)}

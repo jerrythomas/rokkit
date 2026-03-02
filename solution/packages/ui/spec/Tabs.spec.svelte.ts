@@ -497,4 +497,27 @@ describe('Tabs', () => {
 		const addButton = container.querySelector('[data-tabs-add]')
 		expect(addButton?.getAttribute('aria-label')).toBe('Add tab')
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default labels from MessagesStore for editable buttons', () => {
+		const { container } = render(Tabs, { options: basicOptions, value: 'tab1', editable: true })
+		const removeBtn = container.querySelector('[data-tabs-remove]')
+		expect(removeBtn?.getAttribute('aria-label')).toBe('Remove tab')
+		const addBtn = container.querySelector('[data-tabs-add]')
+		expect(addBtn?.getAttribute('aria-label')).toBe('Add tab')
+	})
+
+	it('allows custom labels prop to override defaults', () => {
+		const { container } = render(Tabs, {
+			options: basicOptions,
+			value: 'tab1',
+			editable: true,
+			labels: { add: 'Ajouter', remove: 'Supprimer' }
+		})
+		const removeBtn = container.querySelector('[data-tabs-remove]')
+		expect(removeBtn?.getAttribute('aria-label')).toBe('Supprimer')
+		const addBtn = container.querySelector('[data-tabs-add]')
+		expect(addBtn?.getAttribute('aria-label')).toBe('Ajouter')
+	})
 })

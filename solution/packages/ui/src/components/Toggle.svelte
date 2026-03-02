@@ -1,7 +1,7 @@
 <script lang="ts">
 	// @ts-nocheck
 	import type { ToggleProps } from '../types/toggle.js'
-	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet } from '@rokkit/core'
 
@@ -13,9 +13,10 @@
 		showLabels = true,
 		size = 'md',
 		disabled = false,
+		label = messages.current.toggle.label,
 		class: className = '',
 		...snippets
-	}: ToggleProps & { [key: string]: unknown } = $props()
+	}: ToggleProps & { label?: string; [key: string]: unknown } = $props()
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
@@ -58,7 +59,7 @@
 	data-toggle-labels={showLabels || undefined}
 	class={className || undefined}
 	role="radiogroup"
-	aria-label="Selection"
+	aria-label={label}
 	aria-disabled={disabled || undefined}
 >
 	{#each wrapper.flatView as node (node.key)}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import { messages } from '@rokkit/states'
 
 	interface RatingIcons {
 		filled?: string
@@ -26,10 +27,11 @@
 		value = $bindable(0),
 		max = 5,
 		disabled = false,
+		label = messages.current.rating.label,
 		icons: userIcons = {} as RatingIcons,
 		onchange,
 		class: className = ''
-	}: RatingProps = $props()
+	}: RatingProps & { label?: string } = $props()
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.rating, ...userIcons })
 
@@ -73,7 +75,7 @@
 	data-rating-disabled={disabled || undefined}
 	class={className || undefined}
 	role="radiogroup"
-	aria-label="Rating"
+	aria-label={label}
 	aria-disabled={disabled || undefined}
 	tabindex={disabled ? undefined : 0}
 	onkeydown={handleKeyDown}

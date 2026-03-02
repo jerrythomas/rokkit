@@ -278,4 +278,18 @@ describe('Stepper', () => {
 		expect(el).toBeTruthy()
 		expect(container.querySelectorAll('[data-stepper-step]').length).toBe(0)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(Stepper, { steps: basicSteps })
+		const el = container.querySelector('[data-stepper]')
+		expect(el?.getAttribute('aria-label')).toBe('Progress')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(Stepper, { steps: basicSteps, label: 'Fortschritt' })
+		const el = container.querySelector('[data-stepper]')
+		expect(el?.getAttribute('aria-label')).toBe('Fortschritt')
+	})
 })

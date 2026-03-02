@@ -6,7 +6,7 @@
 		ToolbarItemHandlers
 	} from '../types/toolbar.js'
 	import { getSnippet } from '../types/menu.js'
-	import { ProxyItem } from '@rokkit/states'
+	import { ProxyItem, messages } from '@rokkit/states'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import { untrack } from 'svelte'
@@ -20,6 +20,7 @@
 		compact = false,
 		showDividers = true,
 		disabled = false,
+		label = messages.current.toolbar.label,
 		onclick,
 		class: className = '',
 		item: itemSnippet,
@@ -28,7 +29,7 @@
 		end,
 		children,
 		...snippets
-	}: ToolbarProps & { [key: string]: ToolbarItemSnippet | unknown } = $props()
+	}: ToolbarProps & { label?: string; [key: string]: ToolbarItemSnippet | unknown } = $props()
 
 	/**
 	 * Create a ProxyItem for the given item
@@ -260,7 +261,7 @@
 	data-toolbar-disabled={disabled || undefined}
 	class={className || undefined}
 	role="toolbar"
-	aria-label="Toolbar"
+	aria-label={label}
 	aria-disabled={disabled || undefined}
 	use:navigator={{ wrapper: controller, orientation }}
 >

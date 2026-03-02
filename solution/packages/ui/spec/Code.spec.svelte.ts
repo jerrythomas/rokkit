@@ -94,4 +94,18 @@ describe('Code', () => {
 		const { container } = render(Code, { code: 'hello', showLineNumbers: true })
 		expect(container.querySelector('.show-line-numbers')).toBeTruthy()
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default copy label from MessagesStore', () => {
+		const { container } = render(Code, { code: 'hello' })
+		const btn = container.querySelector('.copy-button')
+		expect(btn?.getAttribute('aria-label')).toBe('Copy code')
+	})
+
+	it('allows custom labels prop to override defaults', () => {
+		const { container } = render(Code, { code: 'hello', labels: { copy: 'Copier', copied: 'Copie!' } })
+		const btn = container.querySelector('.copy-button')
+		expect(btn?.getAttribute('aria-label')).toBe('Copier')
+	})
 })

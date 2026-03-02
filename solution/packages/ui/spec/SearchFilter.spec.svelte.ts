@@ -131,4 +131,33 @@ describe('SearchFilter', () => {
 		expect(filters.length).toBe(1)
 		expect(filters[0].column).toBe('name')
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default clear label from MessagesStore', async () => {
+		const { container } = render(SearchFilter)
+		const input = container.querySelector('[data-search-input]') as HTMLInputElement
+		await fireEvent.input(input, { target: { value: 'test' } })
+		const clearBtn = container.querySelector('[data-search-clear]')
+		expect(clearBtn?.getAttribute('aria-label')).toBe('Clear search')
+	})
+
+	it('uses default remove label from MessagesStore', async () => {
+		const { container } = render(SearchFilter, { filters: [{ column: 'name', operator: '=', value: 'test' }] })
+		const removeBtn = container.querySelector('[data-search-tag-remove]')
+		expect(removeBtn?.getAttribute('aria-label')).toBe('Remove filter')
+	})
+
+	it('allows custom labels prop to override defaults', async () => {
+		const { container } = render(SearchFilter, {
+			filters: [{ column: 'name', operator: '=', value: 'test' }],
+			labels: { clear: 'Effacer', remove: 'Retirer' }
+		})
+		const input = container.querySelector('[data-search-input]') as HTMLInputElement
+		await fireEvent.input(input, { target: { value: 'test' } })
+		const clearBtn = container.querySelector('[data-search-clear]')
+		expect(clearBtn?.getAttribute('aria-label')).toBe('Effacer')
+		const removeBtn = container.querySelector('[data-search-tag-remove]')
+		expect(removeBtn?.getAttribute('aria-label')).toBe('Retirer')
+	})
 })

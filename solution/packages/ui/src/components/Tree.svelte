@@ -13,7 +13,7 @@
 	 * expand/collapse chevron + label are shown, aligning with leaf icon + label.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { LazyWrapper, ProxyTree } from '@rokkit/states'
+	import { LazyWrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -25,6 +25,7 @@
 		value,
 		size = 'md',
 		lineStyle = 'solid',
+		labels: userLabels = {},
 		icons: userIcons = {},
 		onselect,
 		class: className = '',
@@ -35,11 +36,14 @@
 		value?: unknown
 		size?: string
 		lineStyle?: 'none' | 'solid' | 'dashed' | 'dotted'
+		labels?: Record<string, string>
 		icons?: { opened?: string; closed?: string }
 		onselect?: (value: unknown, proxy: ProxyItem) => void
 		class?: string
 		[key: string]: unknown
 	} = $props()
+
+	const labels = $derived({ ...messages.current.tree, ...userLabels })
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
@@ -69,7 +73,7 @@
 	class={className || undefined}
 	role="tree"
 	tabindex="0"
-	aria-label="Tree"
+	aria-label={labels.label}
 >
 	{#each wrapper.flatView as node (node.key)}
 		{@const proxy = node.proxy}
@@ -94,7 +98,7 @@
 								type="button"
 								data-tree-toggle-btn
 								onclick={() => wrapper.toggle(node.key)}
-								aria-label={proxy.expanded ? 'Collapse' : 'Expand'}
+								aria-label={proxy.expanded ? labels.collapse : labels.expand}
 								tabindex={-1}
 							>
 								<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>

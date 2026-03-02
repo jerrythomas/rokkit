@@ -436,4 +436,18 @@ describe('Menu', () => {
 		expect(dropdown).toBeTruthy()
 		expect(container.querySelectorAll('[data-menu-item]').length).toBe(0)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(Menu, { items: flatItems })
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger?.getAttribute('aria-label')).toBe('Menu')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(Menu, { items: flatItems, label: 'Actions' })
+		const trigger = container.querySelector('[data-menu-trigger]')
+		expect(trigger?.getAttribute('aria-label')).toBe('Actions')
+	})
 })

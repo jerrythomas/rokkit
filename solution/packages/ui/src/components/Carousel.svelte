@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
 	import { swipeable, keyboard } from '@rokkit/actions'
+	import { messages } from '@rokkit/states'
 
 	interface CarouselProps {
 		/** Number of slides (required when using children snippet) */
@@ -36,10 +37,13 @@
 		showDots = true,
 		showArrows = true,
 		transition = 'slide',
+		labels: userLabels = {},
 		class: className = '',
 		slide,
 		children
-	}: CarouselProps = $props()
+	}: CarouselProps & { labels?: Record<string, string> } = $props()
+
+	const labels = $derived({ ...messages.current.carousel, ...userLabels })
 
 	let hovered = $state(false)
 
@@ -92,7 +96,7 @@
 	class={className || undefined}
 	role="application"
 	aria-roledescription="carousel"
-	aria-label="Carousel"
+	aria-label={labels.label}
 	tabindex="0"
 	use:swipeable={{ horizontal: true, vertical: false }}
 	use:keyboard={keyMap}
@@ -134,7 +138,7 @@
 		<button
 			data-carousel-prev
 			type="button"
-			aria-label="Previous slide"
+			aria-label={labels.prev}
 			onclick={prev}
 			disabled={!loop && current === 0}
 		>
@@ -144,7 +148,7 @@
 		<button
 			data-carousel-next
 			type="button"
-			aria-label="Next slide"
+			aria-label={labels.next}
 			onclick={next}
 			disabled={!loop && current === count - 1}
 		>
@@ -153,7 +157,7 @@
 	{/if}
 
 	{#if showDots && count > 1}
-		<div data-carousel-dots role="tablist" aria-label="Slide navigation">
+		<div data-carousel-dots role="tablist" aria-label={labels.slides}>
 			{#each Array(count) as _, index (index)}
 				<button
 					data-carousel-dot

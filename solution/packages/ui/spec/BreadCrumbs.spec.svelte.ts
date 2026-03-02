@@ -151,4 +151,18 @@ describe('BreadCrumbs', () => {
 		expect(container.querySelectorAll('[data-breadcrumb-separator]').length).toBe(0)
 		expect(container.querySelector('[data-breadcrumb-current]')).toBeTruthy()
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(BreadCrumbs, { items: basicItems })
+		const nav = container.querySelector('[data-breadcrumbs]')
+		expect(nav?.getAttribute('aria-label')).toBe('Breadcrumb')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(BreadCrumbs, { items: basicItems, label: 'Fil d\'Ariane' })
+		const nav = container.querySelector('[data-breadcrumbs]')
+		expect(nav?.getAttribute('aria-label')).toBe('Fil d\'Ariane')
+	})
 })

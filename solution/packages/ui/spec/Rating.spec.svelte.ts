@@ -227,4 +227,18 @@ describe('Rating', () => {
 		expect(items[0]?.getAttribute('aria-label')).toBe('Rate 1 of 5')
 		expect(items[4]?.getAttribute('aria-label')).toBe('Rate 5 of 5')
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(Rating)
+		const el = container.querySelector('[data-rating]')
+		expect(el?.getAttribute('aria-label')).toBe('Rating')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(Rating, { label: 'Bewertung' })
+		const el = container.querySelector('[data-rating]')
+		expect(el?.getAttribute('aria-label')).toBe('Bewertung')
+	})
 })

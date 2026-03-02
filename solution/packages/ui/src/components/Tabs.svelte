@@ -20,7 +20,7 @@
 	// @ts-nocheck
 	import type { TabsProps } from '../types/tabs.js'
 	import type { ProxyItem } from '@rokkit/states'
-	import { Wrapper, ProxyTree } from '@rokkit/states'
+	import { Wrapper, ProxyTree, messages } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { resolveSnippet, ITEM_SNIPPET, DEFAULT_STATE_ICONS } from '@rokkit/core'
 
@@ -35,13 +35,16 @@
 		editable = false,
 		placeholder = 'Select a tab to view its content.',
 		disabled = false,
+		labels: userLabels = {},
 		class: className = '',
 		onchange,
 		onselect,
 		onadd,
 		onremove,
 		...snippets
-	}: TabsProps & { [key: string]: unknown } = $props()
+	}: TabsProps & { labels?: Record<string, string>; [key: string]: unknown } = $props()
+
+	const labels = $derived({ ...messages.current.tabs, ...userLabels })
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
@@ -86,7 +89,7 @@
 			data-tabs-remove
 			role="button"
 			tabindex="-1"
-			aria-label="Remove tab"
+			aria-label={labels.remove}
 			onclick={(e) => { e.stopPropagation(); handleRemove(proxy) }}
 			onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); e.preventDefault(); handleRemove(proxy) } }}
 		>
@@ -153,7 +156,7 @@
 				<button
 					type="button"
 					data-tabs-add
-					aria-label="Add tab"
+					aria-label={labels.add}
 					onclick={handleAdd}
 				>
 					<span class="i-lucide:plus" aria-hidden="true"></span>

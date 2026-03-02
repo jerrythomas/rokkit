@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+	import { messages } from '@rokkit/states'
 
 	interface StepperStep {
 		/** Step label (shown below circle) */
@@ -51,11 +52,12 @@
 		currentStage = $bindable(0),
 		linear = false,
 		orientation = 'horizontal',
+		label = messages.current.stepper.label,
 		icons: userIcons,
 		onclick,
 		content,
 		class: className = ''
-	}: StepperProps = $props()
+	}: StepperProps & { label?: string } = $props()
 
 	const icons = $derived<StepperIcons>({ ...defaultIcons, ...userIcons })
 
@@ -106,7 +108,7 @@
 	data-orientation={orientation}
 	class={className || undefined}
 	role="group"
-	aria-label="Progress"
+	aria-label={label}
 >
 	{#each steps as step, index (index)}
 		<!-- Connector line before step (except first) -->

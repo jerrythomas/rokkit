@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FloatingNavigationProps, FloatingNavigationIcons } from '../types/floating-navigation.js'
-	import { ProxyItem } from '@rokkit/states'
+	import { ProxyItem, messages } from '@rokkit/states'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 	let {
@@ -13,12 +13,15 @@
 		observe = true,
 		observerOptions = { rootMargin: '-20% 0px -70% 0px', threshold: 0 },
 		size = 'md',
-		label = 'Page navigation',
+		label = messages.current.floatingNav.label,
+		labels: userLabels = {},
 		onselect,
 		onpinchange,
 		item: itemSnippet,
 		class: className = ''
-	}: FloatingNavigationProps = $props()
+	}: FloatingNavigationProps & { labels?: Record<string, string> } = $props()
+
+	const labels = $derived({ ...messages.current.floatingNav, ...userLabels })
 
 	const icons = $derived({ pin: DEFAULT_STATE_ICONS.action.pin, unpin: DEFAULT_STATE_ICONS.action.unpin, ...userIcons })
 
@@ -168,7 +171,7 @@
 			type="button"
 			data-floating-nav-pin
 			aria-pressed={pinned}
-			aria-label={pinned ? 'Unpin navigation' : 'Pin navigation'}
+			aria-label={pinned ? labels.unpin : labels.pin}
 			onclick={togglePin}
 		>
 			<span data-floating-nav-pin-icon class={pinned ? icons.unpin : icons.pin} aria-hidden="true"></span>

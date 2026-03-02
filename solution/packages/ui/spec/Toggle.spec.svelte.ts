@@ -278,4 +278,18 @@ describe('Toggle', () => {
 		expect(el).toBeTruthy()
 		expect(container.querySelectorAll('[data-toggle-option]').length).toBe(0)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(Toggle, { options: basicOptions })
+		const el = container.querySelector('[data-toggle]')
+		expect(el?.getAttribute('aria-label')).toBe('Selection')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(Toggle, { options: basicOptions, label: 'Theme' })
+		const el = container.querySelector('[data-toggle]')
+		expect(el?.getAttribute('aria-label')).toBe('Theme')
+	})
 })

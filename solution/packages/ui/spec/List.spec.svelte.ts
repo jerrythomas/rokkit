@@ -366,4 +366,18 @@ describe('List', () => {
 		expect(nav).toBeTruthy()
 		expect(container.querySelectorAll('[data-list-item]').length).toBe(0)
 	})
+
+	// ─── Translatable Labels ────────────────────────────────────────
+
+	it('uses default label from MessagesStore', () => {
+		const { container } = render(List, { items: flatItems })
+		const nav = container.querySelector('nav[data-list]')
+		expect(nav?.getAttribute('aria-label')).toBe('List')
+	})
+
+	it('allows custom label prop to override default', () => {
+		const { container } = render(List, { items: flatItems, label: 'Navigation' })
+		const nav = container.querySelector('nav[data-list]')
+		expect(nav?.getAttribute('aria-label')).toBe('Navigation')
+	})
 })
