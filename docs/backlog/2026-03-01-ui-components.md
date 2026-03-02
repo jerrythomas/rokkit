@@ -175,18 +175,9 @@ const defaultMessages = {
 
 ---
 
-## 3. ItemProxy + Proxy → Deprecate in favour of ProxyItem
+## 3. ItemProxy + Proxy → ProxyItem Unification — DONE
 
-**Updated decision:** ProxyItem (`@rokkit/states`) is now the canonical proxy class. ItemProxy (`@rokkit/ui/types`) and Proxy (`@rokkit/states/proxy.svelte.js`) are deprecated.
-
-**Migration plan** (see `docs/design/011-states.md` §ProxyItem Deprecation):
-1. Port fallback resolution chains (text, value, shortcut, description) to ProxyItem
-2. Port `getSnippet(snippets, defaultSnippet)` method to ProxyItem
-3. Migrate 16 UI components from ItemProxy → ProxyItem
-4. Remove Proxy class (also removes Ramda dependency from `@rokkit/states`)
-5. Remove ItemProxy class
-
-**Priority:** Medium — enables consistent proxy model across all packages.
+ProxyItem is now the single proxy abstraction. ItemProxy deleted, legacy Proxy deleted, 8 components migrated, fields getter added. Plan: `docs/plans/2026-03-01-proxy-unification.md`.
 
 ---
 

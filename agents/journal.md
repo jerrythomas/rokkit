@@ -7,6 +7,31 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-01
 
+### Backlog #3 COMPLETE — ItemProxy + Proxy → ProxyItem Unification
+
+All 12 tasks completed via subagent-driven development:
+
+1. **ProxyItem fields getter** (`c43501c7`) — added `get fields()` accessor + test
+2. **Migrate 8 components** (`9c0abe41`) — BreadCrumbs, Timeline, Toolbar, FloatingAction, FloatingNavigation, Button, Pill, Switch all use ProxyItem from `@rokkit/states`
+3. **Delete ItemProxy** (`bab5230a`) — removed class, spec (500+ lines), ItemFields type, updated 16 files
+4. **Delete legacy Proxy** (`f7974c13`) — removed Ramda-dependent class + spec, migrated InputRadio, replaced Proxy in deriveLookupWithProxy with lightweight wrapper
+
+**Key API renames:** `.text`→`.label`, `.itemValue`→`.value`, `.icon`→`.get('icon')`, `.description`→`.get('subtext')`
+
+**Final test count:** 2471 pass (176 files). Lint: pre-existing errors only.
+
+---
+
+### Tasks 10–11: Delete ItemProxy and legacy Proxy
+
+1. **Delete ItemProxy** (`bab5230a`) — Removed `ItemProxy` class, spec (500+ lines), `ItemFields` type, and all references. Updated 16 files: tree.ts migrated to `ProxyItem` from `@rokkit/states`, type files that depended on `ItemFields` now use `Record<string, string>` or inline interfaces, JSDoc comments updated throughout. Learn site LLM text files updated.
+
+2. **Delete legacy Proxy** (`f7974c13`) — Removed Ramda-dependent `Proxy` class from `@rokkit/states` and its 14-test spec. Migrated `InputRadio` from `Proxy` → `ProxyItem`. Replaced `Proxy` usage in `deriveLookupWithProxy` with a lightweight field-mapping wrapper that preserves `ListController`'s API contract (`.value`, `.label`, `.get()`).
+
+**Test count:** 2471 pass (176 files). Lint: pre-existing errors only.
+
+---
+
 ### Backlog #75 COMPLETE — ProxyTree + Wrapper Unification
 
 All 7 tasks completed via subagent-driven development:

@@ -4,6 +4,7 @@ No active plan.
 
 ## Recently Completed
 
+- Backlog #3: ItemProxy + Proxy → ProxyItem unification (8 components migrated, ItemProxy deleted, legacy Proxy deleted, ProxyItem fields getter added)
 - Backlog #75: ProxyTree + Wrapper Unification (Wrapper accepts ProxyTree, LazyWrapper extends Wrapper, all components migrated, showLines→lineStyle, dead code removed)
 - Backlog #74: ItemContent migration CSS cleanup (dead selectors removed from base + all themes)
 - Backlog #70: ProxyTree implementation (leaf spacer, folder icons, ItemContent flags)
