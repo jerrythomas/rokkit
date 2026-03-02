@@ -194,6 +194,17 @@ describe('ProxyItem', () => {
 		})
 	})
 
+	it('exposes fields config via getter', () => {
+		const item = { name: 'Test', id: 1 }
+		const proxy = new ProxyItem(item, { label: 'name', value: 'id' })
+		const fields = proxy.fields
+		expect(fields.label).toBe('name')
+		expect(fields.value).toBe('id')
+		// Default fields preserved
+		expect(fields.icon).toBe('icon')
+		expect(fields.children).toBe('children')
+	})
+
 	describe('_createChild()', () => {
 		it('should create ProxyItem children by default', () => {
 			const raw = { text: 'p', children: [{ text: 'c' }] }

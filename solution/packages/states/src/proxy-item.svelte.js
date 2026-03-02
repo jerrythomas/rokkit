@@ -140,6 +140,10 @@ export class ProxyItem {
 	get original() {
 		return this.#raw
 	}
+	/** The merged field-mapping configuration. */
+	get fields() {
+		return this.#fields
+	}
 
 	// ─── Generic field accessor ───────────────────────────────────────────────
 	//
