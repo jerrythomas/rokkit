@@ -5,7 +5,7 @@
 
 ## Summary
 
-Redesign UploadProgress to compose with existing List/Grid components and follow the established snippet/proxy/state-icons patterns. Extract a new `UploadFileStatus` sub-component for single-file rendering. Remove hardcoded status-value assumptions.
+Redesign UploadProgress to compose with existing List/Grid components and follow the established snippet/proxy/state-icons patterns. Extract a new `UploadFileStatus` sub-component for single-file rendering. Replace hardcoded status-value assumptions with configurable status-to-action mapping. Status values are machine-readable keys; display text comes from the `labels` prop (merged with `messages` store).
 
 ## Components
 
@@ -18,12 +18,13 @@ Renders a single file's status and action buttons. Receives a `ProxyItem` from t
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `proxy` | `ProxyItem` | required | File data via field mapping |
-| `allowCancel` | `boolean` | `false` | Show cancel button |
-| `allowRetry` | `boolean` | `false` | Show retry button |
-| `allowRemove` | `boolean` | `false` | Show remove button |
+| `cancelWhen` | `string[]` | `[]` | Status keys that enable cancel |
+| `retryWhen` | `string[]` | `[]` | Status keys that enable retry |
+| `removeWhen` | `string[]` | `[]` | Status keys that enable remove |
 | `oncancel` | `(proxy) => void` | — | Cancel callback |
 | `onretry` | `(proxy) => void` | — | Retry callback |
 | `onremove` | `(proxy) => void` | — | Remove callback |
+| `labels` | `Record<string, string>` | `{}` | Status key → display text mapping |
 | `icons` | `UploadActionIcons` | `DEFAULT_STATE_ICONS.action.*` | Icon overrides |
 
 **Default rendering:**
@@ -31,9 +32,9 @@ Renders a single file's status and action buttons. Receives a `ProxyItem` from t
 1. File icon — inferred from MIME type via `inferIcon(proxy.get('type'))`, or explicit via `proxy.get('icon')`
 2. File name — `proxy.label`
 3. File size — `formatSize(proxy.get('size'))`
-4. Status text — displayed as-is from `proxy.get('status')`, no assumed meanings
+4. Status text — `labels[statusKey]` if mapped, otherwise raw key as-is
 5. Progress bar — shown when `0 < progress < 100`, driven by `proxy.get('progress')`
-6. Action buttons — rendered when `allow*` flag is `true` AND corresponding `on*` callback is provided. Icons from `DEFAULT_STATE_ICONS.action.cancel`, `.retry`, `.remove`
+6. Action buttons — rendered when the file's status is in the corresponding `*When` array AND `on*` callback is provided. Icons from `DEFAULT_STATE_ICONS.action.cancel`, `.retry`, `.remove`
 
 **Data attributes:**
 
@@ -58,13 +59,14 @@ Thin orchestrator: header + layout delegation to List or Grid.
 | `files` | `unknown[]` | `[]` | File data items |
 | `fields` | `Record<string, string>` | `{}` | Field mapping for ProxyItem |
 | `view` | `'list' \| 'grid'` | `'list'` | Layout mode |
-| `allowCancel` | `boolean` | `false` | Forward to UploadFileStatus |
-| `allowRetry` | `boolean` | `false` | Forward to UploadFileStatus |
-| `allowRemove` | `boolean` | `false` | Forward to UploadFileStatus |
+| `cancelWhen` | `string[]` | `[]` | Status keys that show cancel button |
+| `retryWhen` | `string[]` | `[]` | Status keys that show retry button |
+| `removeWhen` | `string[]` | `[]` | Status keys that show remove button |
 | `oncancel` | `(file) => void` | — | Cancel callback (receives raw item) |
 | `onretry` | `(file) => void` | — | Retry callback (receives raw item) |
 | `onremove` | `(file) => void` | — | Remove callback (receives raw item) |
 | `onclear` | `() => void` | — | Clear all callback; controls clear button visibility |
+| `labels` | `Record<string, string>` | `{}` | Merged with `messages.current.uploadProgress`. Known keys are structural (`label`, `clear`, `cancel`, `retry`, `remove`). Other keys are status display labels. |
 | `class` | `string` | `''` | CSS class on root |
 | `...snippets` | — | — | Snippet overrides (`itemContent`, named) |
 
@@ -95,7 +97,7 @@ Thin orchestrator: header + layout delegation to List or Grid.
 </div>
 ```
 
-**Status summary:** Value-agnostic — groups by whatever status values are present, displays counts. E.g. `"1 uploading, 1 extracting, 1 queued"`.
+**Status summary:** Groups by status key, displays counts using `labels[key]` when available, raw key otherwise. E.g. `"1 uploading, 1 extracting, 1 queued"`.
 
 **Snippet forwarding:** Consumer `itemContent` snippet passed through to the inner List/Grid. When not provided, the default renders `<UploadFileStatus>`.
 
@@ -123,7 +125,8 @@ Add corresponding SVGs to `packages/icons/src/base/`:
 ### Added
 - `UploadFileStatus` sub-component
 - Composition with existing `List` and `Grid` components
-- `allowCancel`, `allowRetry`, `allowRemove` boolean flags
+- `cancelWhen`, `retryWhen`, `removeWhen` status-to-action mapping arrays
+- `labels` prop following established pattern (merged with `messages.current.uploadProgress`)
 - Semantic state icons via `DEFAULT_STATE_ICONS.action.*`
 - Progress bar driven purely by numeric `progress` field (shown when `0 < progress < 100`)
 
@@ -134,19 +137,66 @@ Add corresponding SVGs to `packages/icons/src/base/`:
 - Field mapping via `fields` prop
 - Data-attribute theming hooks (names preserved where possible)
 
+## Labels & i18n
+
+Status values are machine-readable keys (e.g. `'uploading'`, `'failed'`). Display text comes from the `labels` prop merged with `messages.current.uploadProgress`.
+
+```js
+// messages store defaults
+messages.current.uploadProgress = {
+  label: 'Upload progress',    // aria-label
+  clear: 'Clear all',          // clear button text
+  cancel: 'Cancel',            // cancel button aria-label
+  retry: 'Retry',              // retry button aria-label
+  remove: 'Remove',            // remove button aria-label
+}
+```
+
+Consumer adds status display labels via `labels` prop:
+```svelte
+<UploadProgress
+  labels={{
+    uploading: 'Uploading…',
+    done: 'Complete',
+    failed: 'Failed'
+  }}
+/>
+```
+
+Known keys (`label`, `clear`, `cancel`, `retry`, `remove`) are structural. Any other key is a status display label — if `labels[statusKey]` exists, show it; otherwise show the raw key.
+
 ## Strategos Consumption Example
 
 ```svelte
 <UploadProgress
   files={activeUploads}
   fields={{ label: 'filename', status: 'stage', type: 'mimeType', size: 'size' }}
-  allowCancel
-  allowRetry
+  cancelWhen={['uploading', 'queued', 'extracting', 'chunking', 'embedding']}
+  retryWhen={['failed']}
+  labels={{
+    queued: 'Queued',
+    uploading: 'Uploading…',
+    extracting: 'Extracting text…',
+    chunking: 'Chunking…',
+    embedding: 'Embedding…',
+    failed: 'Failed'
+  }}
+  oncancel={(file) => cancelItem(file.id)}
+  onretry={(file) => retryItem(file)}
+/>
+```
+
+Or with a custom snippet for full control:
+```svelte
+<UploadProgress
+  files={activeUploads}
+  fields={{ label: 'filename', status: 'stage', type: 'mimeType', size: 'size' }}
+  cancelWhen={['uploading', 'queued', 'extracting', 'chunking', 'embedding']}
+  retryWhen={['failed']}
   oncancel={(file) => cancelItem(file.id)}
   onretry={(file) => retryItem(file)}
 >
   {#snippet itemContent(proxy)}
-    <!-- Custom rendering with 6-stage pipeline labels, spinners, etc. -->
     {@const stage = proxy.get('status')}
     <span class={inferIcon(proxy.get('type'))}></span>
     <span>{proxy.label}</span>
