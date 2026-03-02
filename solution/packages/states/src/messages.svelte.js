@@ -23,6 +23,7 @@ const defaultMessages = {
 	range: { lower: 'Lower bound', upper: 'Upper bound', value: 'Value' },
 	search_: { clear: 'Clear search' },
 	filter: { remove: 'Remove filter' },
+	grid: { label: 'Grid' },
 	floatingNav: { label: 'Page navigation', pin: 'Pin navigation', unpin: 'Unpin navigation' },
 	mode: { system: 'System', light: 'Light', dark: 'Dark' }
 }
