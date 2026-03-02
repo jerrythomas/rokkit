@@ -15,6 +15,7 @@
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
 	import Connector from './Connector.svelte'
+	import Button from './Button.svelte'
 
 	let {
 		items = [],
@@ -174,12 +175,6 @@
 			</div>
 	{/each}
 	{#if hasMore}
-		<button
-			type="button"
-			data-tree-load-more
-			onclick={() => wrapper.loadMore()}
-		>
-			Load More
-		</button>
+		<Button label="Load More" style="ghost" size={size} onclick={() => wrapper.loadMore()} />
 	{/if}
 </div>

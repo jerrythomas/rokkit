@@ -24,7 +24,7 @@ const defaultMessages = {
   search: 'Search...',
   // new — component label strings
   list:         { label: 'List' },
-  tree:         { label: 'Tree', expand: 'Expand', collapse: 'Collapse', loading: 'Loading' },
+  tree:         { label: 'Tree', expand: 'Expand', collapse: 'Collapse', loading: 'Loading', loadMore: 'Load More' },
   toolbar:      { label: 'Toolbar' },
   menu:         { label: 'Menu' },
   toggle:       { label: 'Selection' },
