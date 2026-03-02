@@ -41,7 +41,8 @@ This file is read at the start of every session.
 | InputCheckbox defaults to 'custom' variant | Uses icon-based checkbox from @rokkit/core defaultStateIcons instead of native | 2026-02 |
 | FormBuilder element.type at top level | FormRenderer checks element.type for separator/info routing | 2026-02 |
 | @rokkit/types package deferred | ui types (TS) and core types (JSDoc) serve different purposes | 2026-02 |
-| ItemProxy stays in @rokkit/ui | Different abstraction layer from @rokkit/states; prevents dependency chain | 2026-02 |
+| ItemProxy deleted, ProxyItem is canonical | All components migrated to ProxyItem from @rokkit/states; ItemProxy class removed | 2026-03 |
+| Legacy Proxy deleted from @rokkit/states | Ramda-dependent Proxy class replaced by lightweight wrapper in deriveLookupWithProxy | 2026-03 |
 
 ## Technical Notes
 
@@ -52,6 +53,6 @@ This file is read at the start of every session.
 
 ## Current Status
 
-- Tests: 1057 passing
-- Lint: 0 errors
-- Phase: Forms Phase 1 & 2 complete. Now fixing issues from docs/issues/001.md (bugs, styles, icons).
+- Tests: 2471 passing (176 files)
+- Lint: 0 errors (pre-existing warnings only)
+- Phase: ProxyItem migration complete. ItemProxy and legacy Proxy deleted. All components use ProxyItem + ProxyTree + Wrapper stack.

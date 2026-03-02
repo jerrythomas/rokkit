@@ -18,22 +18,7 @@ import type { ProxyItem } from '@rokkit/states'
 export type ToggleItem = Record<string, unknown>
 
 // =============================================================================
-// Legacy types — kept for backward compat
-// =============================================================================
-
-/** @deprecated No longer needed — Navigator handles clicks via data-path */
-export interface ToggleItemHandlers {
-	onclick: () => void
-	onkeydown: (event: KeyboardEvent) => void
-}
-
-/** @deprecated Use ToggleItemSnippet (new ProxyItem API) */
-export type LegacyToggleItemSnippet = Snippet<
-	[ToggleItem, Record<string, string>, ToggleItemHandlers, boolean]
->
-
-// =============================================================================
-// Snippet Types — ProxyItem-based API
+// Snippet Types
 // =============================================================================
 
 /**
@@ -71,6 +56,9 @@ export interface ToggleProps {
 
 	/** Whether the entire toggle is disabled */
 	disabled?: boolean
+
+	/** Accessible label for the radiogroup. Default: messages.current.toggle.label */
+	label?: string
 
 	/** Additional CSS classes */
 	class?: string

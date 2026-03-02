@@ -7,6 +7,16 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-02
 
+### Backlog #62 COMPLETE — ThemeSwitcherToggle `includeSystem` prop
+
+Added `includeSystem?: boolean` prop (default `true`) to `ThemeSwitcherToggleProps`. When `false`, filters `'system'` from modes via `effectiveModes` derived before building options.
+
+### Backlog #68 COMPLETE — Toggle types cleanup
+
+Removed deprecated `ToggleItemHandlers` interface and `LegacyToggleItemSnippet` type from `toggle.ts`. Added `label?: string` to `ToggleProps` (was only in inline component type extension). Cleaned up Toggle.svelte inline type.
+
+---
+
 ### Backlog #64 COMPLETE — Component Labels (Translatable Strings via MessagesStore)
 
 **Task 1:** Extended MessagesStore with 16 nested component label keys + deep-merge in `set()`. Commit: `da92eae4`

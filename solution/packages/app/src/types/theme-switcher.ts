@@ -67,6 +67,9 @@ export interface ThemeSwitcherToggleProps {
 	/** Which modes to show. Default: ['system', 'light', 'dark'] */
 	modes?: ColorMode[]
 
+	/** Whether to include system mode. Default: true. Shortcut for filtering 'system' from modes. */
+	includeSystem?: boolean
+
 	/** Override icons per mode */
 	icons?: ThemeSwitcherIcons
 

@@ -16,7 +16,7 @@
 		label = messages.current.toggle.label,
 		class: className = '',
 		...snippets
-	}: ToggleProps & { label?: string; [key: string]: unknown } = $props()
+	}: ToggleProps & { [key: string]: unknown } = $props()
 
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 

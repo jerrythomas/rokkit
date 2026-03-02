@@ -16,40 +16,9 @@ MessagesStore extended with 16 nested component label keys + deep-merge in `set(
 
 ---
 
-## 62. ThemeSwitcherToggle — Mode Icons and `includeSystem` Flag
+## 62. ThemeSwitcherToggle — Mode Icons and `includeSystem` Flag — DONE
 
-**Package:** `@rokkit/app`
-
-**Current state:**
-- `modes` defaults to `['system', 'light', 'dark']` — developer must pass a custom array to exclude system mode
-- `system` icon is hardcoded as `'i-lucide:monitor'` directly in `defaultThemeSwitcherIcons`
-- `light` and `dark` icons come from `defaultStateIcons.mode` (which uses `mode-dark` / `mode-light` from `defaultIcons` in `@rokkit/core`)
-- No consistent pattern for the system icon — it's an inline lucide ref, not an overridable `mode-*` entry
-
-**What's needed:**
-
-1. ~~**Add `mode-system` to `defaultIcons`**~~ DONE
-   - `packages/icons/src/base/mode-system.svg` added, icons package rebuilt
-   - `'mode-system'` added to `defaultIcons` in `packages/core/src/constants.js`
-   - `defaultThemeSwitcherIcons.system` now reads `defaultStateIcons.mode.system` (no more hardcoded `i-lucide:monitor`)
-   - `packages/core/spec/constants.spec.js` updated
-
-2. **Add `includeSystem` prop** to `ThemeSwitcherToggleProps`
-   - `includeSystem?: boolean` — default `true`
-   - When `false`, filters out `system` from the rendered options
-   - Simpler than requiring the developer to pass `modes={['light', 'dark']}`
-   - `modes` prop stays for full control (order, custom subsets); `includeSystem` is the common-case shortcut
-
-3. **Document icon customisation** in the component JSDoc / design doc
-   - Default icons use the `mode-*` icon set (overridable via UnoCSS shortcuts)
-   - Developer can override per mode via `icons={{ system: '...', light: '...', dark: '...' }}`
-
-**Remaining files:**
-- `packages/app/src/types/theme-switcher.ts` — add `includeSystem` prop
-- `packages/app/src/components/ThemeSwitcherToggle.svelte` — consume `includeSystem` prop
-- `packages/app/spec/` — add tests for `includeSystem` behaviour
-
-**Priority:** Low — cosmetic / DX improvement, no functional regression.
+`mode-system` icon added to `defaultIcons`, `includeSystem` boolean prop added to `ThemeSwitcherToggleProps` (default `true`). When `false`, filters `system` from rendered options via `effectiveModes` derived. Icon customisation via `icons` prop documented in JSDoc.
 
 ---
 
@@ -164,14 +133,6 @@ Wrapper accepts ProxyTree, LazyWrapper extends Wrapper (no duplication), all 8 c
 
 ---
 
-## 68. Toggle — Learn Site + E2E (mostly done)
+## 68. Toggle — Learn Site + E2E — DONE
 
-**Done:**
-- [x] Toggle rewritten using List pattern + horizontal Navigator
-- [x] Learn site: layout, play page, llms.txt updated
-- [x] E2e tests: 11 tests passing (keyboard, mouse, text-only, learn/play navigation)
-
-**Remaining:**
-- [ ] Update `packages/ui/src/types/toggle.ts` if needed
-
-**Priority:** Low — nearly complete.
+Toggle rewritten using List pattern + horizontal Navigator. Learn site + e2e tests done. Types cleaned up: removed deprecated `ToggleItemHandlers` and `LegacyToggleItemSnippet`, added `label` prop to `ToggleProps`.
