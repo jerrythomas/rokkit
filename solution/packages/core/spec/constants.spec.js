@@ -12,6 +12,8 @@ describe('Utility functions', () => {
 			},
 			action: {
 				remove: 'action-remove',
+				cancel: 'action-cancel',
+				retry: 'action-retry',
 				add: 'action-add',
 				clear: 'action-clear',
 				close: 'action-close',

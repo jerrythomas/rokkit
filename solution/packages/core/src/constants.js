@@ -89,6 +89,8 @@ export const DEFAULT_ICONS = [
 	'accordion-opened',
 	'accordion-closed',
 	'action-remove',
+	'action-cancel',
+	'action-retry',
 	'action-add',
 	'action-clear',
 	'action-search',
