@@ -18,26 +18,6 @@ import type { ProxyItem } from '@rokkit/states'
 export type TabsItem = Record<string, unknown>
 
 // =============================================================================
-// Legacy types — kept for backward compat until usages are updated
-// =============================================================================
-
-/** @deprecated No longer needed — Navigator handles clicks via data-path */
-export interface TabsItemHandlers {
-	/** Call to trigger tab selection */
-	onclick: () => void
-	/** Forward keyboard events for accessibility */
-	onkeydown: (event: KeyboardEvent) => void
-}
-
-/** @deprecated Use TabsItemSnippet (new ProxyItem API) */
-export type LegacyTabsItemSnippet = Snippet<
-	[TabsItem, Record<string, string>, TabsItemHandlers, boolean]
->
-
-/** @deprecated Use TabsPanelSnippet (new ProxyItem API) */
-export type LegacyTabsPanelSnippet = Snippet<[TabsItem, Record<string, string>]>
-
-// =============================================================================
 // Snippet Types — ProxyItem-based API
 // =============================================================================
 

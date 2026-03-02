@@ -5,7 +5,6 @@
  * Trigger action manages open/close. Dropdown content is identical to List.
  */
 
-import type { Snippet } from 'svelte'
 import type { ProxyItem } from '@rokkit/states'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 

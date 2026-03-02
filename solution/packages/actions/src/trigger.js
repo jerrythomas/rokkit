@@ -68,14 +68,16 @@ export class Trigger {
 		// Ignore clicks from interactive children (e.g. tag remove buttons)
 		const closest = event.target.closest('button, [role="button"], a, input, select, textarea')
 		if (closest && closest !== this.#trigger) return
-		this.isOpen ? this.close() : this.open()
+		if (this.isOpen) this.close()
+		else this.open()
 	}
 
 	#handleKeydown = (event) => {
 		const { key } = event
 		if (key === 'Enter' || key === ' ') {
 			event.preventDefault()
-			this.isOpen ? this.close() : this.open()
+			if (this.isOpen) this.close()
+			else this.open()
 		} else if (key === 'ArrowDown') {
 			event.preventDefault()
 			this.open()

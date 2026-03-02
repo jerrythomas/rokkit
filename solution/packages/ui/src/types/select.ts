@@ -19,32 +19,17 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 export type SelectItem = Record<string, unknown>
 
 // =============================================================================
-// Legacy types — kept for MultiSelect backward compat until it is migrated
+// Legacy types — retained while PaletteManager still uses old snippet API
 // =============================================================================
 
-/** @deprecated Use Record<string, string> directly */
-export type SelectFields = Record<string, string>
-
-/** @deprecated Legacy handlers no longer needed with Navigator stack */
+/** @deprecated Legacy handlers — will be removed when PaletteManager migrates to Navigator stack */
 export interface SelectItemHandlers {
 	onclick: () => void
 	onkeydown: (event: KeyboardEvent) => void
 }
 
-/** @deprecated Use SelectOptionSnippet instead */
-export type SelectItemSnippet = Snippet<[SelectItem, SelectFields, SelectItemHandlers, boolean]>
-
-/** @deprecated Use SelectGroupLabelSnippet (new API) */
-export type LegacyGroupLabelSnippet = Snippet<[SelectItem, SelectFields]>
-
-/** @deprecated Use SelectValueSnippet (new API) */
-export type LegacySelectValueSnippet = Snippet<[SelectItem | null, SelectFields]>
-
-/** @deprecated Use MultiSelectValueSnippet (new API) */
-export type LegacyMultiSelectValueSnippet = Snippet<[SelectItem[], SelectFields]>
-
 // =============================================================================
-// Snippet Types — new ProxyItem-based API
+// Snippet Types — ProxyItem-based API
 // =============================================================================
 
 /**
@@ -150,10 +135,6 @@ export interface MultiSelectProps extends SelectBaseProps {
 
 	/** Called when selection changes */
 	onchange?: (values: unknown[], items: SelectItem[]) => void
-
-	/** Custom snippet for rendering selected values in trigger
-	 * @deprecated Will be updated to MultiSelectValueSnippet when MultiSelect is migrated */
-	selectedValues?: LegacyMultiSelectValueSnippet
 
 	/** Maximum number of tags to show before collapsing to count */
 	maxDisplay?: number

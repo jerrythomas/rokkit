@@ -7,7 +7,6 @@
  */
 
 import type { Snippet } from 'svelte'
-import type { ProxyItem } from '@rokkit/states'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
@@ -247,13 +246,5 @@ export function getLineTypes(
 
 // Keep old name as alias for backward compatibility
 export const getTreeLineTypes = getLineTypes
-
-/**
- * Get the key for a node (for expanded state tracking)
- */
-export function getNodeKey(proxy: ProxyItem): string {
-	const val = proxy.value
-	return typeof val === 'string' || typeof val === 'number' ? String(val) : proxy.label
-}
 
 export { getSnippet } from './menu.js'

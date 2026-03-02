@@ -1,7 +1,6 @@
 <script>
 	import { getContext } from 'svelte'
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
-	// import { page } from '$app/state'
 	import { media } from '$lib/media.js'
 	import { ProgressBar } from '@rokkit/ui'
 	import { ThemeSwitcherToggle } from '@rokkit/app'

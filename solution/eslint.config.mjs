@@ -48,7 +48,8 @@ export default [
       '**/_generated/**',
       '**/paraglide/**',
       'sites/learn/src/routes/(learn)/customization/icons/fragments/**',
-      'sites/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js'
+      'sites/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js',
+      'sites/learn/src/routes/(learn)/**/snippets/**'
     ]
   },
   {

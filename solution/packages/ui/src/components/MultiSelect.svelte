@@ -98,7 +98,7 @@
 
 	function handleSelect(extractedValue: unknown, proxy: ProxyItem) {
 		if (proxy.disabled) return
-		toggleItemSelection(extractedValue, proxy.original)
+		toggleItemSelection(extractedValue)
 	}
 
 	const proxyTree = $derived(new ProxyTree(processedItems, fields))
@@ -128,7 +128,7 @@
 		return (value ?? []).some((v) => v === extractedValue)
 	}
 
-	function toggleItemSelection(extractedValue: unknown, rawItem: unknown) {
+	function toggleItemSelection(extractedValue: unknown) {
 		const currentValues = value ?? []
 		const alreadySelected = currentValues.some((v) => v === extractedValue)
 
