@@ -282,8 +282,8 @@ export class ListController {
 		for (let i = 0; i < this.data.length; i++) {
 			const idx = (startIndex + i) % this.data.length
 			if (this.#isDisabled(idx)) continue
-			const proxy = this.lookup.get(this.data[idx].key)
-			const text = proxy?.get('text') ?? ''
+			const entry = this.lookup.get(this.data[idx].key)
+			const text = entry?.label ?? ''
 			if (String(text).toLowerCase().startsWith(q)) {
 				return this.data[idx].key
 			}

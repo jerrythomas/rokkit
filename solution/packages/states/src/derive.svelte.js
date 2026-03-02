@@ -1,5 +1,4 @@
 import { getKeyFromPath, DEFAULT_FIELDS, getNestedFields } from '@rokkit/core'
-import { Proxy } from './proxy.svelte'
 /**
  *
  * @param {Array<*>} items
@@ -32,13 +31,15 @@ export function flatVisibleNodes(items, fields = DEFAULT_FIELDS, path = [], expa
 }
 
 /**
- * Derives a flat lookup table for the given items, using index paths as keys
- * Each value is a Proxy instance for convenient manipulation
+ * Derives a flat lookup table for the given items, using index paths as keys.
+ * Each value is a lightweight wrapper exposing the original item as both
+ * `.value` and `.original` for backward compatibility, plus a `.get(field)`
+ * method that reads from the item via field mapping.
  *
  * @param {Array<*>} items - Source items array
  * @param {import('@rokkit/core').FieldMapping} fields - Field mappings configuration
  * @param {Array<number>} path - Current path in the tree
- * @returns {Map<string, Proxy>} - Map of path keys to Proxy instances
+ * @returns {Map<string, { value: *, original: *, label: string, get: (f: string) => * }>}
  */
 export function deriveLookupWithProxy(items, fields = DEFAULT_FIELDS, path = []) {
 	const lookup = new Map()
@@ -47,11 +48,17 @@ export function deriveLookupWithProxy(items, fields = DEFAULT_FIELDS, path = [])
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]
 		const key = getKeyFromPath(itemPath)
-		const proxy = new Proxy(item, fields)
+		const norm = typeof item === 'object' && item !== null ? item : { [fields.text]: item }
+		const entry = {
+			value: item,
+			original: item,
+			label: String(norm[fields.text] ?? ''),
+			get: (fieldName) => norm[fields[fieldName] ?? fieldName]
+		}
 
-		lookup.set(key, proxy)
-		const children = proxy.value[proxy.fields.children] ?? []
-		if (children.length > 0) {
+		lookup.set(key, entry)
+		const children = norm[fields.children] ?? []
+		if (Array.isArray(children) && children.length > 0) {
 			const childFields = getNestedFields(fields)
 			const childLookup = deriveLookupWithProxy(children, childFields, itemPath)
 			for (const [childKey, childValue] of childLookup.entries()) {

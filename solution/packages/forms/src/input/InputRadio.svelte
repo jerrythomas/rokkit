@@ -1,6 +1,6 @@
 <script>
 	import { getItemAtIndex, getIndexForItem, noop } from '@rokkit/core'
-	import { Proxy as RokProxy } from '@rokkit/states'
+	import { ProxyItem } from '@rokkit/states'
 	// import { equals } from 'ramda'
 	/**
 	 * @typedef {Object} InputRadioProps
@@ -42,7 +42,7 @@
 
 <radio-group class={className} class:disabled>
 	{#each options as item, index (index)}
-		{@const proxy = new RokProxy(item, fields)}
+		{@const proxy = new ProxyItem(item, fields)}
 		<label class="flex flex-row items-center gap-2 rtl:flex-row-reverse">
 			<input
 				type="radio"
@@ -54,7 +54,7 @@
 				{onfocus}
 				{onblur}
 			/>
-			<p>{proxy.get('text')}</p>
+			<p>{proxy.label}</p>
 		</label>
 	{/each}
 </radio-group>

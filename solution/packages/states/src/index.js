@@ -1,5 +1,4 @@
 export { TableController } from './table-controller.svelte.js'
-export { Proxy } from './proxy.svelte.js'
 export { vibe } from './vibe.svelte.js'
 export { ListController } from './list-controller.svelte.js'
 export { messages } from './messages.svelte.js'
