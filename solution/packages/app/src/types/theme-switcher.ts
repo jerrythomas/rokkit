@@ -6,6 +6,7 @@
 
 import type { ToggleItemSnippet } from '@rokkit/ui'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
+import { messages } from '@rokkit/states'
 import type { ColorMode } from '../utils/color-mode.svelte.js'
 
 // =============================================================================
@@ -35,17 +36,25 @@ export interface ThemeSwitcherOption {
 	[key: string]: unknown
 }
 
+export interface ThemeSwitcherLabels {
+	system?: string
+	light?: string
+	dark?: string
+}
+
 /**
- * Build toggle options from icons and requested modes
+ * Build toggle options from icons, modes, and labels
  */
 export function buildThemeSwitcherOptions(
 	icons: Required<ThemeSwitcherIcons>,
-	modes: ColorMode[]
+	modes: ColorMode[],
+	labels: ThemeSwitcherLabels = {}
 ): ThemeSwitcherOption[] {
+	const mergedLabels = { ...messages.current.mode, ...labels }
 	const all: ThemeSwitcherOption[] = [
-		{ value: 'system', text: 'System', icon: icons.system },
-		{ value: 'light', text: 'Light', icon: icons.light },
-		{ value: 'dark', text: 'Dark', icon: icons.dark }
+		{ value: 'system', text: mergedLabels.system, icon: icons.system },
+		{ value: 'light', text: mergedLabels.light, icon: icons.light },
+		{ value: 'dark', text: mergedLabels.dark, icon: icons.dark }
 	]
 	return all.filter((o) => modes.includes(o.value))
 }
@@ -60,6 +69,9 @@ export interface ThemeSwitcherToggleProps {
 
 	/** Override icons per mode */
 	icons?: ThemeSwitcherIcons
+
+	/** Override labels per mode. Merged over messages.current.mode */
+	labels?: ThemeSwitcherLabels
 
 	/** Show text labels alongside icons. Default: false */
 	showLabels?: boolean

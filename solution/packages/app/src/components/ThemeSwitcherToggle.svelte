@@ -12,6 +12,7 @@
 	let {
 		modes = ['system', 'light', 'dark'],
 		icons: userIcons,
+		labels: userLabels = {},
 		showLabels = false,
 		size = 'sm',
 		disabled = false,
@@ -21,7 +22,7 @@
 	}: ThemeSwitcherToggleProps = $props()
 
 	const icons = $derived({ ...defaultThemeSwitcherIcons, ...userIcons })
-	const options = $derived(buildThemeSwitcherOptions(icons, modes))
+	const options = $derived(buildThemeSwitcherOptions(icons, modes, userLabels))
 
 	const manager = new ColorModeManager(vibe)
 	let value = $derived(manager.mode)
