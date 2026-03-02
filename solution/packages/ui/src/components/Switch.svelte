@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SwitchProps, SwitchItem } from '../types/switch.js'
-	import { ItemProxy } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 
 	const DEFAULT_OPTIONS: [SwitchItem, SwitchItem] = [false, true]
 
@@ -15,15 +15,15 @@
 		class: className = ''
 	}: SwitchProps = $props()
 
-	let offProxy = $derived(new ItemProxy(options[0] as Record<string, unknown>, userFields))
-	let onProxy = $derived(new ItemProxy(options[1] as Record<string, unknown>, userFields))
-	let isChecked = $derived(value === onProxy.itemValue)
+	let offProxy = $derived(new ProxyItem(options[0], userFields))
+	let onProxy = $derived(new ProxyItem(options[1], userFields))
+	let isChecked = $derived(value === onProxy.value)
 	let currentProxy = $derived(isChecked ? onProxy : offProxy)
 
 	function toggle() {
 		if (disabled) return
 		const next = isChecked ? offProxy : onProxy
-		const nextValue = next.itemValue
+		const nextValue = next.value
 		value = nextValue
 		onchange?.(nextValue, next.original as SwitchItem)
 	}
@@ -55,8 +55,8 @@
 	data-switch-size={size}
 	data-switch-disabled={disabled || undefined}
 	aria-checked={isChecked}
-	aria-label={currentProxy.text || undefined}
-	title={currentProxy.description ?? currentProxy.text ?? undefined}
+	aria-label={currentProxy.label || undefined}
+	title={currentProxy.get('subtext') ?? currentProxy.label ?? undefined}
 	{disabled}
 	class={className || undefined}
 	onclick={toggle}
@@ -64,12 +64,12 @@
 >
 	<span data-switch-track>
 		<span data-switch-thumb>
-			{#if currentProxy.icon}
-				<span data-switch-icon class={currentProxy.icon} aria-hidden="true"></span>
+			{#if currentProxy.get('icon')}
+				<span data-switch-icon class={currentProxy.get('icon')} aria-hidden="true"></span>
 			{/if}
 		</span>
 	</span>
-	{#if showLabels && currentProxy.text}
-		<span data-switch-label>{currentProxy.text}</span>
+	{#if showLabels && currentProxy.label}
+		<span data-switch-label>{currentProxy.label}</span>
 	{/if}
 </button>

@@ -6,7 +6,7 @@
 		ToolbarItemHandlers
 	} from '../types/toolbar.js'
 	import { getSnippet } from '../types/menu.js'
-	import { ItemProxy } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 	import { ListController } from '@rokkit/states'
 	import { navigator } from '@rokkit/actions'
 	import { untrack } from 'svelte'
@@ -31,10 +31,10 @@
 	}: ToolbarProps & { [key: string]: ToolbarItemSnippet | unknown } = $props()
 
 	/**
-	 * Create an ItemProxy for the given item
+	 * Create an ProxyItem for the given item
 	 */
-	function createProxy(item: ToolbarItem): ItemProxy {
-		return new ItemProxy(item, userFields)
+	function createProxy(item: ToolbarItem): ProxyItem {
+		return new ProxyItem(item, userFields)
 	}
 
 	// ─── Controller + Navigator ────────────────────────────────────
@@ -42,7 +42,7 @@
 	/** Only interactive items are tracked by the controller */
 	function isInteractive(item: ToolbarItem): boolean {
 		const proxy = createProxy(item)
-		const type = proxy.itemType
+		const type = proxy.type
 		return type !== 'separator' && type !== 'spacer'
 	}
 
@@ -141,12 +141,12 @@
 
 	// ─── Item Handlers ─────────────────────────────────────────────
 
-	function handleItemClick(proxy: ItemProxy) {
+	function handleItemClick(proxy: ProxyItem) {
 		if (proxy.disabled || disabled) return
-		onclick?.(proxy.itemValue, proxy.original as ToolbarItem)
+		onclick?.(proxy.value, proxy.original as ToolbarItem)
 	}
 
-	function handleItemKeyDown(event: KeyboardEvent, proxy: ItemProxy) {
+	function handleItemKeyDown(event: KeyboardEvent, proxy: ProxyItem) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault()
 			handleItemClick(proxy)
@@ -156,7 +156,7 @@
 	/**
 	 * Create handlers object for custom snippets
 	 */
-	function createHandlers(proxy: ItemProxy): ToolbarItemHandlers {
+	function createHandlers(proxy: ProxyItem): ToolbarItemHandlers {
 		return {
 			onclick: () => handleItemClick(proxy),
 			onkeydown: (event: KeyboardEvent) => handleItemKeyDown(event, proxy)
@@ -166,9 +166,9 @@
 	/**
 	 * Resolve which snippet to use for an item
 	 */
-	function resolveItemSnippet(proxy: ItemProxy): ToolbarItemSnippet | null {
+	function resolveItemSnippet(proxy: ProxyItem): ToolbarItemSnippet | null {
 		// Check for per-item snippet name
-		const snippetName = proxy.snippetName
+		const snippetName = proxy.get('snippet')
 		if (snippetName) {
 			const namedSnippet = getSnippet(snippets, snippetName)
 			if (namedSnippet) {
@@ -188,23 +188,23 @@
 	const isHorizontal = $derived(position === 'top' || position === 'bottom')
 </script>
 
-{#snippet defaultItem(proxy: ItemProxy, pathKey: string | undefined)}
+{#snippet defaultItem(proxy: ProxyItem, pathKey: string | undefined)}
 	<button
 		type="button"
 		data-toolbar-item
 		data-path={pathKey}
-		data-active={proxy.active || undefined}
+		data-active={proxy.get('active') || undefined}
 		data-disabled={proxy.disabled || undefined}
 		disabled={proxy.disabled || disabled}
 		aria-label={proxy.label}
-		aria-pressed={proxy.active}
-		title={proxy.shortcut ? `${proxy.text} (${proxy.shortcut})` : proxy.text}
+		aria-pressed={proxy.get('active')}
+		title={proxy.get('shortcut') ? `${proxy.label} (${proxy.get('shortcut')})` : proxy.label}
 	>
-		{#if proxy.icon}
-			<span data-toolbar-icon class={proxy.icon} aria-hidden="true"></span>
+		{#if proxy.get('icon')}
+			<span data-toolbar-icon class={proxy.get('icon')} aria-hidden="true"></span>
 		{/if}
-		{#if proxy.text && !proxy.icon}
-			<span data-toolbar-label>{proxy.text}</span>
+		{#if proxy.label && !proxy.get('icon')}
+			<span data-toolbar-label>{proxy.label}</span>
 		{/if}
 	</button>
 {/snippet}
@@ -225,10 +225,10 @@
 	<div data-toolbar-divider aria-hidden="true"></div>
 {/snippet}
 
-{#snippet renderItem(proxy: ItemProxy, item: ToolbarItem)}
+{#snippet renderItem(proxy: ProxyItem, item: ToolbarItem)}
 	{@const customSnippet = resolveItemSnippet(proxy)}
 	{@const handlers = createHandlers(proxy)}
-	{@const itemType = proxy.itemType}
+	{@const itemType = proxy.type}
 	{@const pathKey = getPathKey(item)}
 
 	{#if itemType === 'separator'}

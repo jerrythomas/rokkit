@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
-	import { ItemProxy, type ItemFields } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 	import { keyboard } from '@rokkit/actions'
 
 	interface PillProps {
 		/** Item data (string or object) */
 		value: unknown
 		/** Custom field mappings */
-		fields?: Partial<ItemFields>
+		fields?: Record<string, string>
 		/** Show remove button */
 		removable?: boolean
 		/** Disabled state */
@@ -15,7 +15,7 @@
 		/** Called when remove is triggered (click or Delete/Backspace key) */
 		onremove?: (value: unknown) => void
 		/** Custom content snippet */
-		content?: Snippet<[ItemProxy]>
+		content?: Snippet<[ProxyItem]>
 		/** Additional CSS class */
 		class?: string
 	}
@@ -30,12 +30,7 @@
 		class: className = ''
 	}: PillProps = $props()
 
-	const proxy = $derived(
-		new ItemProxy(
-			typeof value === 'string' ? { text: value, value } : (value as Record<string, unknown>),
-			fields
-		)
-	)
+	const proxy = $derived(new ProxyItem(value, fields))
 
 	const keyMap = $derived(removable && !disabled ? { remove: ['Delete', 'Backspace'] } : {})
 
@@ -58,17 +53,17 @@
 	{#if content}
 		{@render content(proxy)}
 	{:else}
-		{#if proxy.icon}
-			<span data-pill-icon class={proxy.icon} aria-hidden="true"></span>
+		{#if proxy.get('icon')}
+			<span data-pill-icon class={proxy.get('icon')} aria-hidden="true"></span>
 		{/if}
-		<span data-pill-text>{proxy.text}</span>
+		<span data-pill-text>{proxy.label}</span>
 	{/if}
 
 	{#if removable}
 		<button
 			data-pill-remove
 			type="button"
-			aria-label="Remove {proxy.text}"
+			aria-label="Remove {proxy.label}"
 			{disabled}
 			onclick={handleRemove}
 		>

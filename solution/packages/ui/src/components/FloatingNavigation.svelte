@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FloatingNavigationProps } from '../types/floating-navigation.js'
-	import { ItemProxy } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 
 	let {
 		items = [],
@@ -26,13 +26,13 @@
 
 	const itemProxies = $derived(
 		items.map((item) => ({
-			proxy: new ItemProxy(item, userFields),
+			proxy: new ProxyItem(item, userFields),
 			original: item
 		}))
 	)
 
 	const activeIndex = $derived(
-		itemProxies.findIndex((item) => item.proxy.itemValue === value)
+		itemProxies.findIndex((item) => item.proxy.value === value)
 	)
 
 	function togglePin() {
@@ -49,13 +49,13 @@
 		if (!pinned) expanded = false
 	}
 
-	function handleItemClick(item: { proxy: ItemProxy; original: Record<string, unknown> }) {
-		value = item.proxy.itemValue
-		onselect?.(item.proxy.itemValue, item.original)
+	function handleItemClick(item: { proxy: ProxyItem; original: Record<string, unknown> }) {
+		value = item.proxy.value
+		onselect?.(item.proxy.value, item.original)
 
 		// Smooth scroll to target section
-		const href = item.proxy.has('href') ? String(item.original[userFields?.href ?? 'href'] ?? '') : ''
-		const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.itemValue)
+		const href = item.proxy.get('href') !== undefined ? String(item.original[userFields?.href ?? 'href'] ?? '') : ''
+		const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
 		const el = document.getElementById(targetId)
 		el?.scrollIntoView({ behavior: 'smooth' })
 	}
@@ -116,24 +116,24 @@
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
 					const match = itemProxies.find((item) => {
-						const href = item.proxy.has('href')
+						const href = item.proxy.get('href') !== undefined
 							? String(item.original[userFields?.href ?? 'href'] ?? '')
 							: ''
-						const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.itemValue)
+						const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
 						return targetId === entry.target.id
 					})
 					if (match) {
-						value = match.proxy.itemValue
+						value = match.proxy.value
 					}
 				}
 			}
 		}, observerOptions)
 
 		for (const item of itemProxies) {
-			const href = item.proxy.has('href')
+			const href = item.proxy.get('href') !== undefined
 				? String(item.original[userFields?.href ?? 'href'] ?? '')
 				: ''
-			const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.itemValue)
+			const targetId = href.startsWith('#') ? href.slice(1) : String(item.proxy.value)
 			const el = document.getElementById(targetId)
 			if (el) observer.observe(el)
 		}
@@ -172,13 +172,13 @@
 	</div>
 
 	<div data-floating-nav-items>
-		{#each itemProxies as item, index (item.proxy.itemValue ?? index)}
-			{@const isActive = item.proxy.itemValue === value}
-			{@const isLink = item.proxy.has('href')}
+		{#each itemProxies as item, index (item.proxy.value ?? index)}
+			{@const isActive = item.proxy.value === value}
+			{@const isLink = item.proxy.get('href') !== undefined}
 			{#if itemSnippet}
 				{@render itemSnippet(item.original, {
-					text: item.proxy.text,
-					icon: item.proxy.icon,
+					text: item.proxy.label,
+					icon: item.proxy.get('icon'),
 					active: isActive
 				})}
 			{:else if isLink}
@@ -194,10 +194,10 @@
 						handleItemClick(item)
 					}}
 				>
-					{#if item.proxy.icon}
-						<span data-floating-nav-icon class={item.proxy.icon} aria-hidden="true"></span>
+					{#if item.proxy.get('icon')}
+						<span data-floating-nav-icon class={item.proxy.get('icon')} aria-hidden="true"></span>
 					{/if}
-					<span data-floating-nav-label>{item.proxy.text}</span>
+					<span data-floating-nav-label>{item.proxy.label}</span>
 				</a>
 			{:else}
 				<button
@@ -209,10 +209,10 @@
 					style="--fn-index: {index}; --fn-total: {itemProxies.length}"
 					onclick={() => handleItemClick(item)}
 				>
-					{#if item.proxy.icon}
-						<span data-floating-nav-icon class={item.proxy.icon} aria-hidden="true"></span>
+					{#if item.proxy.get('icon')}
+						<span data-floating-nav-icon class={item.proxy.get('icon')} aria-hidden="true"></span>
 					{/if}
-					<span data-floating-nav-label>{item.proxy.text}</span>
+					<span data-floating-nav-label>{item.proxy.label}</span>
 				</button>
 			{/if}
 		{/each}

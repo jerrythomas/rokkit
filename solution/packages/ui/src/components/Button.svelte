@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ButtonProps } from '../types/button.js'
-	import { ItemProxy } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 	import ItemContent from './ItemContent.svelte'
 
 	let {
@@ -29,7 +29,7 @@
 	 * Constructs a minimal item from button props.
 	 */
 	const proxy = $derived(
-		new ItemProxy({ text: label, icon, iconRight }, { text: 'text', icon: 'icon' })
+		new ProxyItem({ text: label, icon, iconRight })
 	)
 </script>
 

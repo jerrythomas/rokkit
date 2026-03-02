@@ -1,18 +1,18 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
-	import { ItemProxy, type ItemFields } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 
 	interface BreadCrumbsProps {
 		/** Array of breadcrumb items */
 		items?: unknown[]
 		/** Custom field mappings */
-		fields?: Partial<ItemFields>
+		fields?: Record<string, string>
 		/** Separator icon class (default: 'i-lucide:chevron-right') */
 		separator?: string
 		/** Callback when a breadcrumb is clicked */
 		onclick?: (value: unknown, item: unknown) => void
 		/** Custom snippet for rendering each crumb */
-		crumb?: Snippet<[ItemProxy, boolean]>
+		crumb?: Snippet<[ProxyItem, boolean]>
 		/** Additional CSS class */
 		class?: string
 	}
@@ -26,20 +26,20 @@
 		class: className = ''
 	}: BreadCrumbsProps = $props()
 
-	function createProxy(item: unknown): ItemProxy {
-		return new ItemProxy(item as Record<string, unknown>, fields)
+	function createProxy(item: unknown): ProxyItem {
+		return new ProxyItem(item, fields)
 	}
 
-	function handleClick(proxy: ItemProxy) {
-		onclick?.(proxy.itemValue, proxy.original)
+	function handleClick(proxy: ProxyItem) {
+		onclick?.(proxy.value, proxy.original)
 	}
 </script>
 
-{#snippet defaultCrumb(proxy: ItemProxy, _isLast: boolean)}
-	{#if proxy.icon}
-		<span data-breadcrumb-icon class={proxy.icon} aria-hidden="true"></span>
+{#snippet defaultCrumb(proxy: ProxyItem, _isLast: boolean)}
+	{#if proxy.get('icon')}
+		<span data-breadcrumb-icon class={proxy.get('icon')} aria-hidden="true"></span>
 	{/if}
-	<span data-breadcrumb-label>{proxy.text}</span>
+	<span data-breadcrumb-label>{proxy.label}</span>
 {/snippet}
 
 <nav data-breadcrumbs class={className || undefined} aria-label="Breadcrumb">

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TimelineProps } from '../types/timeline.js'
 	import { defaultTimelineFields, defaultTimelineIcons } from '../types/timeline.js'
-	import { ItemProxy } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 
 	let {
 		items = [],
@@ -17,10 +17,10 @@
 
 <div data-timeline class={className || undefined} role="list">
 	{#each items as item, index (index)}
-		{@const proxy = new ItemProxy(item, fields)}
-		{@const text = proxy.text}
-		{@const icon = proxy.icon}
-		{@const description = proxy.description}
+		{@const proxy = new ProxyItem(item, fields)}
+		{@const text = proxy.label}
+		{@const icon = proxy.get('icon')}
+		{@const description = proxy.get('subtext')}
 		{@const completed = Boolean(item.completed)}
 		{@const active = Boolean(item.active)}
 

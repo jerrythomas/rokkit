@@ -6,7 +6,7 @@
 		FloatingActionItemHandlers
 	} from '../types/floating-action.js'
 	import { getSnippet } from '../types/floating-action.js'
-	import { ItemProxy } from '../types/item-proxy.js'
+	import { ProxyItem } from '@rokkit/states'
 
 	let {
 		items = [],
@@ -31,10 +31,10 @@
 	}: FloatingActionProps & { [key: string]: FloatingActionItemSnippet | unknown } = $props()
 
 	/**
-	 * Create an ItemProxy for the given item
+	 * Create an ProxyItem for the given item
 	 */
-	function createProxy(item: FloatingActionItem): ItemProxy {
-		return new ItemProxy(item, userFields)
+	function createProxy(item: FloatingActionItem): ProxyItem {
+		return new ProxyItem(item, userFields)
 	}
 
 	let fabRef = $state<HTMLDivElement | null>(null)
@@ -82,9 +82,9 @@
 	/**
 	 * Handle item selection
 	 */
-	function handleItemClick(item: { proxy: ItemProxy; original: FloatingActionItem }) {
+	function handleItemClick(item: { proxy: ProxyItem; original: FloatingActionItem }) {
 		if (item.proxy.disabled) return
-		onselect?.(item.proxy.itemValue, item.original)
+		onselect?.(item.proxy.value, item.original)
 		close()
 		// Return focus to trigger
 		const trigger = fabRef?.querySelector('[data-fab-trigger]') as HTMLElement | undefined
@@ -162,7 +162,7 @@
 	 */
 	function handleItemKeyDown(
 		event: KeyboardEvent,
-		item: { proxy: ItemProxy; original: FloatingActionItem }
+		item: { proxy: ProxyItem; original: FloatingActionItem }
 	) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault()
@@ -190,7 +190,7 @@
 	 * Create handlers object for custom snippets
 	 */
 	function createHandlers(item: {
-		proxy: ItemProxy
+		proxy: ProxyItem
 		original: FloatingActionItem
 	}): FloatingActionItemHandlers {
 		return {
@@ -202,8 +202,8 @@
 	/**
 	 * Resolve which snippet to use for an item
 	 */
-	function resolveItemSnippet(proxy: ItemProxy): FloatingActionItemSnippet | null {
-		const snippetName = proxy.snippetName
+	function resolveItemSnippet(proxy: ProxyItem): FloatingActionItemSnippet | null {
+		const snippetName = proxy.get('snippet')
 		if (snippetName) {
 			const namedSnippet = getSnippet(snippets, snippetName)
 			if (namedSnippet) {
@@ -240,7 +240,7 @@
 </script>
 
 {#snippet defaultItem(
-	proxy: ItemProxy,
+	proxy: ProxyItem,
 	handlers: FloatingActionItemHandlers,
 	index: number,
 	total: number
@@ -251,22 +251,22 @@
 		data-fab-index={index}
 		data-disabled={proxy.disabled || undefined}
 		disabled={proxy.disabled || disabled}
-		aria-label={proxy.label || proxy.text}
+		aria-label={proxy.label}
 		style="--fab-index: {index}; --fab-total: {total}; --fab-delay: {getItemDelay(index)}"
 		onclick={handlers.onclick}
 		onkeydown={handlers.onkeydown}
 	>
-		{#if proxy.icon}
-			<span data-fab-item-icon class={proxy.icon} aria-hidden="true"></span>
+		{#if proxy.get('icon')}
+			<span data-fab-item-icon class={proxy.get('icon')} aria-hidden="true"></span>
 		{/if}
-		{#if proxy.text}
-			<span data-fab-item-label>{proxy.text}</span>
+		{#if proxy.label}
+			<span data-fab-item-label>{proxy.label}</span>
 		{/if}
 	</button>
 {/snippet}
 
 {#snippet renderItem(
-	item: { proxy: ItemProxy; original: FloatingActionItem },
+	item: { proxy: ProxyItem; original: FloatingActionItem },
 	index: number,
 	total: number
 )}
