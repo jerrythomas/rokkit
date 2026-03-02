@@ -13,7 +13,7 @@
 	 * expand/collapse chevron + label are shown, aligning with leaf icon + label.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { LazyWrapper } from '@rokkit/states'
+	import { LazyWrapper, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -43,7 +43,8 @@
 
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
-	const wrapper = $derived(new LazyWrapper(items, fields, { onselect }))
+	const proxyTree = $derived(new ProxyTree(items, fields))
+	const wrapper = $derived(new LazyWrapper(proxyTree, { onselect }))
 
 	let treeRef = $state<HTMLElement | null>(null)
 

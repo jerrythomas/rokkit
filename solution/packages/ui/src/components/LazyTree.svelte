@@ -10,7 +10,7 @@
 	 * Parent nodes hide their icon by default.
 	 */
 	import type { ProxyItem } from '@rokkit/states'
-	import { LazyWrapper, LazyProxyItem } from '@rokkit/states'
+	import { LazyWrapper, LazyProxyItem, ProxyTree } from '@rokkit/states'
 	import { Navigator } from '@rokkit/actions'
 	import { DEFAULT_STATE_ICONS, resolveSnippet, ITEM_SNIPPET } from '@rokkit/core'
 	import ItemContent from './ItemContent.svelte'
@@ -45,10 +45,8 @@
 	const icons = $derived({ ...DEFAULT_STATE_ICONS.folder, ...userIcons })
 
 
-	const wrapper = $derived(
-		new LazyWrapper(items, fields, {
-			onselect,
-			onlazyload,
+	const proxyTree = $derived(
+		new ProxyTree(items, fields, {
 			createProxy: (raw, f, key, level) =>
 				new LazyProxyItem(raw, f, key, level, onlazyload
 					? async (_value, rawItem) => onlazyload(rawItem)
@@ -56,6 +54,7 @@
 				)
 		})
 	)
+	const wrapper = $derived(new LazyWrapper(proxyTree, { onselect, onlazyload }))
 
 	let treeRef = $state<HTMLElement | null>(null)
 
