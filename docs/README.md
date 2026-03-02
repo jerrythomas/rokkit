@@ -1,72 +1,31 @@
-# Rokkit Internal Documentation
+# Documentation
 
-> Internal documentation for requirements, design decisions, and implementation planning
+## Contents
 
-## Scope
+| Folder | Purpose | Audience |
+|--------|---------|----------|
+| [requirements/](requirements/) | What and why — per module | Human |
+| [design/](design/) | How and why — per module | Human |
+| [backlog/](backlog/) | Prioritized work items by area | Both |
+| [plans/](plans/) | Active plan + archived completed plans | AI agent |
 
-This folder contains **internal** documentation for the Rokkit development team:
-- Requirements specifications
-- Design decisions and architecture
-- Implementation planning and tracking
+## Two Documentation Layers
 
-**Public documentation** (user-facing guides, API reference, llms.txt) is served from the [learn site](../sites/learn/).
+- **Requirements + Design** — human-readable module docs. Requirements describe what/why. Design describes how/why. Numbered 1:1 per module.
+- **Backlog** — prioritized work items grouped by area, referencing requirements and design docs.
 
-## Structure
+## Flow
 
-```
-docs/
-├── requirements/           # What components must do
-│   ├── component-requirements.md
-│   ├── accessibility-requirements.md
-│   ├── theme-requirements.md
-│   ├── forms-requirements.md
-│   └── documentation-requirements.md
-│
-├── design/                 # How components are built
-│   ├── project-status.md
-│   ├── component-status.md
-│   ├── component-inventory.md
-│   ├── architecture.md
-│   ├── theme-system-design.md
-│   └── forms-design.md
-│
-├── plan/                   # Implementation roadmap
-│   ├── implementation-roadmap.md
-│   └── component-priorities.md
-│
-├── decisions/              # Architecture Decision Records
-│   └── [NNN]-[title].md
-│
-└── tracking.md             # Progress tracking
-```
+Requirements → Design → Backlog → Plan → Implement
 
-## Quick Links
+Requirements and design are living docs, updated before and after implementation as needed.
 
-### Design Documentation
-- [Component Status Matrix](./design/component-status.md) - 9-dimension tracking
-- [Component Inventory](./design/component-inventory.md) - Full component listing
-- [Theme System Design](./design/theme-system-design.md) - Theming architecture
-- [Forms System Design](./design/forms-design.md) - Forms architecture
+## Public Documentation
 
-### Progress Tracking
-- [Tracking](./tracking.md) - Current documentation progress
+User-facing guides, API reference, and llms.txt are served from the [learn site](../sites/learn/).
 
-### Public Documentation
-- **Learn Site**: `sites/learn/` - User-facing documentation
-- **llms.txt**: `sites/learn/src/routes/llms.txt/` - LLM reference
-- **Component Docs**: `sites/learn/src/routes/docs/components/`
+## Related
 
-## Status Indicators
-
-| Icon | Meaning |
-|------|---------|
-| ✅ | Complete |
-| 🟡 | Partial / In Progress |
-| ❌ | Missing / Not Started |
-| 🚫 | Not Applicable |
-
-## Related Resources
-
-- [CLAUDE.md](../CLAUDE.md) - Claude Code instructions
-- [.rules/](../.rules/) - Development guidelines
-- [Project Overview](./requirements/000-project-overview.md) - Vision, cross-cutting requirements, success criteria
+- [Requirements README](requirements/README.md) — module index and numbering convention
+- [Design README](design/README.md) — module design docs index
+- [Component Status](design/000-component-status.md) — implementation tracking

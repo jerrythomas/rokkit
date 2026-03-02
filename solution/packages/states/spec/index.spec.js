@@ -14,7 +14,9 @@ describe('components', () => {
 			'BASE_FIELDS',
 			'ProxyTree',
 			'Wrapper',
-			'LazyWrapper'
+			'LazyWrapper',
+			'watchMedia',
+			'defaultBreakpoints'
 		])
 	})
 })

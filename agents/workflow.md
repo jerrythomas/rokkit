@@ -7,152 +7,96 @@ CLAUDE.md loads this file at session start — follow it.
 
 ## Core Principles
 
-1. **Understand "why" before "how"** — even for tactical tasks, confirm the reasoning before coding. If the direction seems wrong, say so and suggest an alternative.
-2. **Ask, don’t assume** — if instructions are vague, ask a clarifying question. One question at a time. Don’t dump a wall of questions.
-3. **Design before implementation** — for non-trivial work, agree on the approach with concrete examples (before/after) before writing code.
-4. **Document as you go** — if it was discussed, write it down. Decisions decay if not captured immediately.
-5. **One piece at a time** — break work into small, reviewable increments. Commit after each coherent unit.
+1. **Understand "why" before "how"** — confirm reasoning before coding. If direction seems wrong, say so.
+2. **Ask, don't assume** — if instructions are vague, ask one question at a time.
+3. **Design before implementation** — for non-trivial work, agree on approach before writing code.
+4. **Document as you go** — decisions decay if not captured immediately.
+5. **One piece at a time** — small reviewable increments. Commit after each coherent unit.
 
 ---
 
 ## Task Classification
 
-Assess every task before starting:
-
-### Design Work (questions + plan required)
+### Design Work (full pipeline)
 - New features, new patterns, architectural changes
 - Anything that could be done multiple ways
-- Anything where the "why" isn’t obvious
-- **Process**: Questions first (use `agents/open-questions.md`) → agree on approach with examples → write plan (`agents/plan.md`) → implement
+- **Process:** Backlog → Plan → Implement (see below)
 
-### Tactical Work (lightweight check)
-- Bug fixes, field additions, clear-scope changes
-- Code quality, documentation, coverage improvements
-- **Process**: Confirm the reasoning makes sense → plan if multi-step → implement
-- Even here: if you see a better alternative, speak up before coding
+### Tactical Work (lightweight)
+- Bug fixes, small changes, clear scope
+- **Process:** Confirm reasoning → implement → update docs if needed
 
 ### When in Doubt
-Ask. The cost of a question is low. The cost of implementing the wrong thing is high.
+Ask. The cost of a question is low.
+
+---
+
+## Pipeline: Backlog → Plan → Implement
+
+### 1. BACKLOG
+
+Identify or create a work item in `docs/backlog/`.
+
+- If the work touches a **new module**: create requirements (`docs/requirements/NNN-<module>.md`) and design (`docs/design/NNN-<module>.md`) first.
+- If the work touches an **existing module**: check that requirements and design docs are still current.
+- Clarifications happen inline in conversation — capture answers in the relevant docs.
+- Add the item to the appropriate backlog file in `docs/backlog/`.
+
+### 2. PLAN
+
+Create an implementation plan in `docs/plans/README.md`.
+
+- Define: goal, tasks, approach, and reference to the backlog item.
+- **Present the plan to the user for agreement.** No code until agreed.
+- One active plan at a time.
+
+### 3. IMPLEMENT
+
+Execute the agreed plan.
+
+- Work through tasks in order.
+- Before marking work done, run the **completion checklist**:
+  1. Code complete, tests pass
+  2. Requirements doc still accurate? Update if not.
+  3. Design doc still accurate? Update if not.
+  4. Archive plan to `docs/plans/<datetime>-<name>.md`
+  5. Update `agents/journal.md`
+  6. Mark item done in `docs/backlog/`
+
+---
+
+## Interrupts
+
+Everything goes to `docs/backlog/`. No inline insertion into current work. Pick it up next.
 
 ---
 
 ## Session Lifecycle
 
 ### Session Start
-1. Read `agents/memory.md` — shared project knowledge
-2. Read `agents/journal.md` (last ~50 lines) — recent progress and open items
-3. Read `agents/plan.md` — check for active plan to resume
-4. If resuming from crash/interruption: pick up from unchecked items in the plan
+1. Read `agents/workflow.md` — this file
+2. Read `agents/memory.md` — project knowledge
+3. Read `agents/journal.md` (last ~50 lines) — recent progress
+4. Check `docs/plans/README.md` — active plan to resume?
+5. Consult `agents/design-patterns.md` and `agents/references.md` as needed during implementation
 
 ### During Session
-1. Track steps in `agents/plan.md` — check off items as completed
-2. Use TodoWrite tool for real-time progress visibility
-3. Capture decisions in `agents/memory.md` immediately (if they’re project-level knowledge)
-4. Update relevant `docs/design/*.md` when a design is agreed upon
+- Track progress in the active plan
+- Capture decisions in `agents/memory.md` immediately
+- Update `docs/design/*.md` when designs change
 
 ### Before Commit
 1. Run tests — all must pass
 2. Run lint — 0 errors
-3. Update `agents/plan.md` — mark completed steps
-4. Update `agents/journal.md` — log what was done with commit hashes
-
-### Session End / Plan Completion
-1. When all plan steps are done **and tests + lint pass**:
-   - Archive: mark task as completed in `agents/completed.md`
-   - Clear `agents/plan.md` for next plan
-   - **Do NOT archive until verification passes** — a plan with failing tests is not complete
-2. Update `agents/journal.md` — final summary
-3. Update `agents/memory.md` — if new persistent knowledge was established
-
----
-
-## Question Protocol
-
-For design discussions and unclear requirements:
-
-### Setup
-1. Formulate your questions — think through what you need to know
-2. Write them to `agents/open-questions.md` as a checklist (for tracking)
-3. Mark status: `[ ]` not asked, `[~]` awaiting answer, `[x]` answered
-
-### Execution
-1. **Ask one question at a time** — present it in conversation, wait for the answer
-2. **Stay adaptive** — the next question may change based on the current answer
-3. **Capture answers immediately** — update `open-questions.md` and relevant docs
-4. An answer may make other questions irrelevant or spawn new ones — adjust the list
-
-### Why This Matters
-- Dumping multiple questions causes context-switching and tangents
-- Answers to early questions often reshape later ones
-- One-at-a-time keeps the conversation focused and productive
-
----
-
-## Plan Format
-
-When creating `agents/plan.md` for a unit of work:
-
-```markdown
-# Plan: <Feature Name>
-
-## Context
-Why we’re doing this. What problem it solves.
-
-## Approach
-The agreed-upon design. Include concrete before/after examples where possible.
-
-## Steps
-- [ ] Step 1: Description (files: x.ts, y.ts)
-- [ ] Step 2: Description
-- [ ] Step 3: Run tests + lint
-- [ ] Step 4: Commit
-
-## Verification
-How to confirm it works (test commands, expected outcomes).
-```
-
-### Plan Rules
-- One active plan at a time
-- Each step should be small enough to verify independently
-- Include "run tests + lint" as an explicit step
-- Include "commit" as the final step
-- When complete **and verified (tests + lint pass)**: archive to `agents/sessions/`, clear `agents/plan.md`
-
----
-
-## Backlog Management
-
-Deferred work lives in `docs/backlog/` as date-prefixed files (`YYYY-MM-DD-<topic>.md`):
-
-- Each item references its requirements (`docs/requirements/`) and design (`docs/design/`) docs
-- Items are added when features are explicitly scoped out of current work
-- Each item includes: what exists, what's needed, implementation steps
-- Items are numbered and have actionable checklists
-- Review the backlog periodically during housekeeping sessions
+3. Update `agents/journal.md`
 
 ---
 
 ## Crash Recovery
 
-If a session ends unexpectedly:
-1. Read `agents/plan.md` — find unchecked steps
-2. Read `agents/journal.md` — last recorded state
-3. Resume from where work stopped — don’t restart from scratch
-4. Note the interruption in the journal
-
----
-
-## Design Agreement Process
-
-For non-trivial implementation:
-
-1. **Discuss** — understand the requirement, ask clarifying questions
-2. **Propose with examples** — show before/after code, not just abstract descriptions
-3. **Get explicit agreement** — don’t proceed on assumed approval
-4. **Document** — write the agreed design in relevant `docs/design/*.md`
-5. **Plan** — create `agents/plan.md` with concrete steps
-6. **Implement** — follow the plan, one step at a time
-7. **Archive** — move completed plan to `agents/sessions/`
+1. Check `docs/plans/README.md` — find active plan
+2. Read `agents/journal.md` — last recorded progress
+3. Resume from where work stopped
 
 ---
 
@@ -160,13 +104,12 @@ For non-trivial implementation:
 
 | File | Purpose | When to update |
 |------|---------|---------------|
-| `agents/workflow.md` | This file — methodology rules | When workflow evolves |
-| `agents/memory.md` | Shared project knowledge, confirmed decisions | When decisions are made |
-| `agents/journal.md` | Chronological progress log | Every session |
-| `agents/plan.md` | Active plan/checklist | During implementation |
-| `agents/open-questions.md` | Q&A tracking for design discussions | During question phases |
+| `agents/workflow.md` | This file — methodology | When workflow evolves |
+| `agents/memory.md` | Project knowledge, principles | When decisions are made |
+| `agents/journal.md` | Progress log | Every session |
 | `agents/design-patterns.md` | Established patterns cookbook | When patterns are proven |
-| `docs/backlog/` | Priority-ordered work items | When items are scoped out |
-| `agents/sessions/` | Archived completed plans | On plan completion |
-| `docs/design/*.md` | Module design documents | When designs are agreed |
-| `docs/requirements/*.md` | Feature requirements | Reference only |
+| `agents/references.md` | Coding conventions, styling | When conventions change |
+| `docs/requirements/` | Module requirements (what/why) | When module scope changes |
+| `docs/design/` | Module design (how/why) | When design changes |
+| `docs/backlog/` | Prioritized work items | When items are added/completed |
+| `docs/plans/README.md` | Active plan | When starting/finishing work |

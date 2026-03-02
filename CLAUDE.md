@@ -5,12 +5,10 @@ This file is the entry point for any AI agent working on this repo.
 ## MANDATORY: Load Workflow First
 
 Before doing any work, read these files in order:
-1. **`agents/workflow.md`** — methodology, session lifecycle, question protocol
-2. **`agents/memory.md`** — shared project knowledge and decisions
+1. **`agents/workflow.md`** — methodology and pipeline
+2. **`agents/memory.md`** — project knowledge, principles, tooling
 3. **`agents/journal.md`** (last ~50 lines) — recent progress
-4. **`agents/plan.md`** — check for active plan to resume
-5. **`agents/design-patterns.md`** — established patterns to follow for implementation
-6. **`agents/references.md`** — coding conventions, styling rules, project structure
+4. **`docs/plans/README.md`** — check for active plan to resume
 
 These files govern how you work. Do not skip them.
 
@@ -25,19 +23,18 @@ These files govern how you work. Do not skip them.
 ```
 rokkit/
   CLAUDE.md                      <-- You are here
-  agents/                        <-- Agent instructions, session tracking, patterns
-    workflow.md                  <-- Methodology and session lifecycle (READ FIRST)
-    memory.md                   <-- Shared project knowledge
+  agents/                        <-- AI operational files
+    workflow.md                  <-- Methodology and pipeline (READ FIRST)
+    memory.md                   <-- Project knowledge, principles, tooling
     journal.md                  <-- Chronological progress log
-    plan.md                     <-- Active plan/checklist
-    open-questions.md           <-- Q&A tracking for design discussions
     design-patterns.md          <-- Established patterns cookbook
     references.md               <-- Coding conventions, styling, project structure
-    sessions/                   <-- Archived completed plans
   docs/
-    requirements/               <-- Feature requirements (numbered: 001-xxx.md)
-    design/                     <-- Module design documents (numbered: 001-xxx.md)
+    requirements/               <-- Per-module: what and why (numbered: NNN-xxx.md)
+    design/                     <-- Per-module: how and why (numbered: NNN-xxx.md)
     backlog/                    <-- Priority-ordered work items (YYYY-MM-DD-topic.md)
+    plans/                      <-- Active plan + archived completed plans
+      README.md                 <-- Current active plan
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
   sites/
     learn/                      <-- Documentation site
@@ -54,12 +51,12 @@ rokkit/
 
 ## Working with this Repo
 
-### Commands (run from project root)
+### Commands (run from `solution/`)
 
 ```bash
 # Tests
-bun run test:ci                   # All tests (~1057)
-bun run test:ui                   # UI package tests (~655)
+bun run test:ci                   # All tests (~2536)
+bun run test:ui                   # UI package tests
 
 # Lint
 bun run lint                      # 0 errors expected
@@ -70,20 +67,24 @@ cd sites/playground && npx playwright test
 
 ## Conventions
 
-### Design before implementation
-For non-trivial work: ask questions, agree on approach with examples, then implement.
+### Pipeline for work items
+For non-trivial work: **Backlog → Plan → Implement**.
 See `agents/workflow.md` for the full process.
 
 ### When a feature design is agreed upon
 1. Update the relevant `docs/design/*.md` module file
 2. Log in `agents/journal.md`
-3. Create plan in `agents/plan.md`
+3. Create plan in `docs/plans/README.md`
 
 ### When completing work
 1. Run tests and lint — both must pass
-2. Update `agents/plan.md` — mark steps complete
-3. Update `agents/journal.md` — log what was done with commit hashes
-4. On plan completion: archive to `agents/sessions/YYYY-MM-DD-<name>.md`
+2. Check requirements and design docs are still accurate
+3. Archive plan to `docs/plans/<datetime>-<name>.md`
+4. Update `agents/journal.md` with summary and commit hashes
+5. Mark item done in `docs/backlog/`
+
+### Handling interrupts
+All interrupts go to `docs/backlog/`. Pick up next.
 
 ### Lint Rules
 - Warnings are pre-existing and acceptable
@@ -93,10 +94,12 @@ See `agents/workflow.md` for the full process.
 
 | File | Purpose |
 |------|---------|
-| `agents/workflow.md` | Methodology and session lifecycle |
-| `agents/memory.md` | Shared project knowledge |
-| `agents/plan.md` | Active plan/checklist |
+| `agents/workflow.md` | Methodology, pipeline, session lifecycle |
+| `agents/memory.md` | Project knowledge, principles, tooling |
 | `agents/journal.md` | Chronological progress log |
-| `docs/backlog/` | Priority-ordered work items |
 | `agents/design-patterns.md` | Established patterns cookbook |
 | `agents/references.md` | Coding conventions, styling, structure |
+| `docs/requirements/` | Module requirements — what and why |
+| `docs/design/` | Module design — how and why |
+| `docs/backlog/` | Priority-ordered work items |
+| `docs/plans/README.md` | Current active plan |

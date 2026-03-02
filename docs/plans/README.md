@@ -15,7 +15,3 @@ No active plan.
 - Backlog #68: Toggle learn site + e2e tests (11 passing)
 - Legacy DEFAULT_FIELDS cleanup (dead code removal)
 - Upload components design (#73) — requirements + design docs written
-
-## Previous Plans
-
-See `agents/sessions/` for archived completed plans.
