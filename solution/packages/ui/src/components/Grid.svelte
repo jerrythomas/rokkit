@@ -99,6 +99,7 @@
 	class={className || undefined}
 	role="grid"
 	aria-label={label}
+	aria-disabled={disabled || undefined}
 	style:--grid-min-size={minSize}
 	style:--grid-gap={gap}
 >
@@ -116,7 +117,6 @@
 			aria-selected={sel}
 			aria-label={proxy.label}
 			disabled={proxy.disabled || disabled}
-			tabindex="-1"
 		>
 			{#if content}
 				{@render content(proxy)}

@@ -125,8 +125,9 @@ describe('Grid', () => {
 		const onselect = vi.fn()
 		const { container } = render(Grid, { items: flatItems, disabled: true, onselect })
 		const tiles = container.querySelectorAll('[data-grid-item]')
-		// Disabled buttons should not fire click events through browser default behavior
 		expect(tiles[0]?.hasAttribute('disabled')).toBe(true)
+		await fireEvent.click(tiles[0])
+		expect(onselect).not.toHaveBeenCalled()
 	})
 
 	// ─── Default Content ────────────────────────────────────────────
