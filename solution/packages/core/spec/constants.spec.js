@@ -17,6 +17,10 @@ describe('Utility functions', () => {
 				close: 'action-close',
 				copy: 'action-copy',
 				copysuccess: 'action-copysuccess',
+				check: 'action-check',
+				pin: 'action-pin',
+				save: 'action-save',
+				unpin: 'action-unpin',
 				search: 'action-search'
 			},
 			alert: {
@@ -73,6 +77,10 @@ describe('Utility functions', () => {
 				left: 'navigate-left',
 				right: 'navigate-right',
 				up: 'navigate-up'
+			},
+			palette: {
+				hex: 'palette-hex',
+				presets: 'palette-presets'
 			},
 			state: {
 				error: 'state-error',
