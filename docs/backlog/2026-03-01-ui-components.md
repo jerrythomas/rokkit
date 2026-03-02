@@ -283,28 +283,9 @@ const defaultMessages = {
 
 ---
 
-## 74. Shared ItemContent Migration — List, Menu, Select, MultiSelect
+## 74. Shared ItemContent Migration — List, Menu, Select, MultiSelect — DONE
 
-**Design:** `docs/design/012-upload.md` (ItemContent pattern), `docs/requirements/002-list.md`
-
-**Goal:** Migrate List, Menu, Select, MultiSelect to use shared `ItemContent.svelte` for default content rendering, replacing per-component inline snippets.
-
-**Done (previous sessions):**
-- [x] ItemContent.svelte expanded with avatar, shortcut, badge, BASE_FIELDS keys
-- [x] `showIcon` / `showSubtext` boolean props added (defaults: true)
-- [x] Tree/LazyTree already use ItemContent
-
-**Remaining:**
-1. Add base CSS for avatar + shortcut in `packages/themes/src/base/item.css`
-2. Migrate List.svelte — replace inline default content with `<ItemContent {proxy} />`
-3. Migrate Menu.svelte — replace inline default content with `<ItemContent {proxy} />`
-4. Migrate Select.svelte — replace inline default content with `<ItemContent {proxy} />`
-5. Migrate MultiSelect.svelte — replace inline default content with `<ItemContent {proxy} />`
-6. Clean up dead CSS selectors in `base/menu.css` (remove `[data-menu-item-icon]` etc.)
-7. Clean up theme CSS duplicates (rokkit/minimal/material/glass menu.css)
-8. Update any tests asserting on old `data-list-item-*` / `data-menu-item-*` selectors
-
-**Priority:** Medium — consistency improvement, reduces code duplication.
+All components migrated to shared `ItemContent.svelte`. Dead CSS selectors removed from base + all 4 themes. Commit `d9dca813`.
 
 ---
 

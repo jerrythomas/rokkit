@@ -95,7 +95,7 @@
 
 [data-style='rokkit'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='rokkit'] [data-list] [data-list-group]:focus:not(:disabled) {
-  @apply text-surface-z7;
+  @apply from-surface-z4 to-surface-z3 text-surface-z8 bg-gradient-to-r;
 }
 
 /* =============================================================================

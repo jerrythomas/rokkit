@@ -10,7 +10,7 @@
  *          This normalisation means get() and all getters work through the
  *          same field-mapping path with no special-casing.
  * #key   — path-based identifier ('0', '0-1', '0-1-2', …) assigned by
- *          buildProxyList and propagated into children automatically.
+ *          ProxyTree and propagated into children automatically.
  * #level — nesting depth: always equals key.split('-').length.
  *          (1 = root, 2 = first-level children, 3 = grandchildren, …)
  *
@@ -24,7 +24,7 @@
  *
  * children — auto-wrapped as ProxyItem instances via $derived, with their
  *            keys and levels already set. Stable references so
- *            $derived(buildFlatView) correctly tracks nested expanded state.
+ *            $derived correctly tracks nested expanded state.
  *
  * Control state (expanded / selected) — two modes:
  *   external: item has the field → proxy reads/writes through to #item
@@ -40,9 +40,6 @@ export { BASE_FIELDS }
 
 // Auto-increment counter for generating stable unique IDs.
 let _nextId = 1
-
-/** @deprecated Use BASE_FIELDS instead */
-export const PROXY_ITEM_FIELDS = BASE_FIELDS
 
 // ─── ProxyItem ────────────────────────────────────────────────────────────────
 
@@ -65,13 +62,13 @@ export class ProxyItem {
 
 	// Children auto-wrapped as ProxyItem instances with keys + levels assigned.
 	// $derived ensures stable references: same ProxyItem instances returned on
-	// every access, so $derived(buildFlatView) can track their expanded state.
+	// every access, so $derived can track their expanded state.
 	#children = $derived(this.#buildChildren())
 
 	/**
 	 * @param {*} raw   Raw item — object or primitive (string, number, …)
 	 * @param {Partial<typeof BASE_FIELDS>} [fields]
-	 * @param {string} [key]    Path-based key assigned by buildProxyList
+	 * @param {string} [key]    Path-based key assigned by ProxyTree
 	 * @param {number} [level]  Nesting depth (1 = root)
 	 */
 	constructor(raw, fields = {}, key = '', level = 0) {
@@ -317,76 +314,3 @@ export class LazyProxyItem extends ProxyItem {
 	}
 }
 
-// ─── ProxyNode type (internal tree node) ──────────────────────────────────────
-// { key: string, proxy: ProxyItem, children: ProxyNode[] }
-
-// ─── buildProxyList ───────────────────────────────────────────────────────────
-
-/**
- * Build a hierarchical proxy structure from raw items.
- *
- * Creates top-level ProxyItems with their keys ('0', '1', …) and level (1).
- * Each ProxyItem's #buildChildren() propagates keys and levels into children
- * automatically, so buildNodes only needs to traverse — no depth tracking.
- *
- * Returns:
- *   lookup  Map<key, ProxyItem>  — flat lookup for O(1) access by key
- *   roots   ProxyNode[]          — tree structure used to derive flatView
- *
- * Proxies are stable — created once here and never recreated.
- * This is the invariant that makes $derived(buildFlatView(roots)) work:
- * the $state signals inside each ProxyItem remain the same objects,
- * so reactive subscriptions stay valid across multiple re-computations.
- *
- * @param {*[]} items
- * @param {Partial<typeof BASE_FIELDS>} [fields]
- * @returns {{ lookup: Map<string, ProxyItem>, roots: ProxyNode[] }}
- */
-export function buildProxyList(items, fields = {}) {
-	const lookup = new Map()
-
-	function buildNodes(proxies) {
-		return proxies.map((proxy) => {
-			lookup.set(proxy.key, proxy)
-			const children = proxy.hasChildren ? buildNodes(proxy.children) : []
-			return { key: proxy.key, proxy, children }
-		})
-	}
-
-	const roots = buildNodes((items ?? []).map((raw, i) => new ProxyItem(raw, fields, String(i), 1)))
-	return { lookup, roots }
-}
-
-// ─── buildFlatView ────────────────────────────────────────────────────────────
-
-/**
- * Build the flat ordered array of visible nodes from the proxy tree.
- *
- * Reads proxy.expanded for each group node — when expanded state changes,
- * any $derived that calls this function will re-compute.
- *
- * Level comes directly from proxy.level (set during buildProxyList).
- *
- * Separators and spacers appear in the flat view for rendering but are
- * never "focused" — the Wrapper's navigation skips them.
- *
- * @param {{ key: string, proxy: ProxyItem, children: *[] }[]} nodes
- * @returns {{ key: string, proxy: ProxyItem, level: number, hasChildren: boolean, type: string }[]}
- */
-export function buildFlatView(nodes) {
-	const result = []
-	for (const node of nodes) {
-		result.push({
-			key: node.key,
-			proxy: node.proxy,
-			level: node.proxy.level,
-			hasChildren: node.children.length > 0,
-			type: node.proxy.type
-		})
-		// Reading proxy.expanded here registers it as a reactive dependency
-		if (node.children.length > 0 && node.proxy.expanded) {
-			result.push(...buildFlatView(node.children))
-		}
-	}
-	return result
-}

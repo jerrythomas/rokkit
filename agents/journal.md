@@ -7,6 +7,30 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-01
 
+### Backlog #75 Task 6 — Dead Code Cleanup
+
+Removed dead code from the ProxyTree + Wrapper unification:
+
+- **Deleted** `packages/states/src/abstract-wrapper.js` — base class no longer needed since Wrapper is the base
+- **Removed** `buildProxyList` and `buildFlatView` functions from `proxy-item.svelte.js` — ProxyTree handles the data pipeline now
+- **Removed** `PROXY_ITEM_FIELDS` deprecated alias from `proxy-item.svelte.js`
+- **Removed** exports from `index.js`: `AbstractWrapper`, `buildProxyList`, `buildFlatView`, `PROXY_ITEM_FIELDS`
+- **Removed** backward-compat constructor from `wrapper.svelte.js` (instanceof ProxyTree detection + 3-arg legacy path)
+- **Removed** backward-compat constructor from `lazy-wrapper.svelte.js` (same pattern)
+- **Removed** unused `ProxyTree` import from `wrapper.svelte.js` (was only used for instanceof check)
+- **Updated** `@rokkit/actions` navigator.js JSDoc: `AbstractWrapper` → `Wrapper`
+- **Updated** UI type files (toggle, tabs, menu, select): `PROXY_ITEM_FIELDS` → `BASE_FIELDS` in JSDoc comments
+- **Updated** learn site llms.txt: `PROXY_ITEM_FIELDS` → `BASE_FIELDS`
+- **Updated** `lazy-wrapper.spec.svelte.js`: all 32 tests migrated from legacy 3-arg constructor to `new LazyWrapper(new ProxyTree(...))`
+- **Removed** legacy constructor tests from `wrapper.spec.svelte.js`
+- **Updated** `index.spec.js` export list
+
+Testbed's local copies of `AbstractWrapper`, `buildProxyList`, `buildFlatView` left intact (testbed-local, not affected).
+
+**Tests:** 2562 pass. Lint: pre-existing errors only (no new).
+
+---
+
 ### Backlog #75 Task 3 — Migrate Flat Components to ProxyTree + Wrapper
 
 Updated all 6 flat components (List, Menu, Select, MultiSelect, Toggle, Tabs) to create ProxyTree externally and pass it to Wrapper, instead of relying on Wrapper's legacy backward-compatible constructor. Each component now follows the pattern: `const proxyTree = $derived(new ProxyTree(items, fields))` then `const wrapper = $derived(new Wrapper(proxyTree, { onselect }))`. No behavioral changes — purely a construction pattern refactoring.

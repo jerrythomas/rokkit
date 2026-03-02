@@ -90,7 +90,7 @@
 
 [data-style='glass'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='glass'] [data-list] [data-list-group]:focus:not(:disabled) {
-	@apply text-surface-z7;
+	@apply bg-surface-z3/25 text-surface-z8;
 }
 
 /* =============================================================================

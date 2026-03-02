@@ -17,8 +17,6 @@
  * to close the dropdown and return focus to the trigger.
  */
 
-import { ProxyTree } from './proxy-tree.svelte.js'
-
 export class Wrapper {
 	// ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -47,29 +45,13 @@ export class Wrapper {
 	#selectedValue = $state(undefined)
 
 	/**
-	 * @overload
-	 * @param {ProxyTree} proxyTree
+	 * @param {import('./proxy-tree.svelte.js').ProxyTree} proxyTree
 	 * @param {{ onselect?: Function, onchange?: Function }} [options]
 	 */
-	/**
-	 * @overload
-	 * @deprecated Use `new Wrapper(proxyTree, options)` instead.
-	 * @param {unknown[]} items
-	 * @param {object} [fields]
-	 * @param {{ onselect?: Function, onchange?: Function }} [options]
-	 */
-	constructor(proxyTreeOrItems, fieldsOrOptions = {}, legacyOptions) {
-		// Backward compat: detect legacy (items, fields, options) signature
-		if (proxyTreeOrItems instanceof ProxyTree) {
-			this.#proxyTree = proxyTreeOrItems
-			this.#onselect = fieldsOrOptions.onselect
-			this.#onchange = fieldsOrOptions.onchange
-		} else {
-			// Legacy: (items, fields, options)
-			this.#proxyTree = new ProxyTree(proxyTreeOrItems ?? [], fieldsOrOptions)
-			this.#onselect = legacyOptions?.onselect
-			this.#onchange = legacyOptions?.onchange
-		}
+	constructor(proxyTree, options = {}) {
+		this.#proxyTree = proxyTree
+		this.#onselect = options.onselect
+		this.#onchange = options.onchange
 	}
 
 	// ─── IWrapper: state read by Navigator ─────────────────────────────────────
@@ -244,6 +226,6 @@ export class Wrapper {
 	/** @returns {Map<string, import('./proxy-item.svelte.js').ProxyItem>} */
 	get lookup() { return this.#proxyTree.lookup }
 
-	/** @returns {ProxyTree} */
+	/** @returns {import('./proxy-tree.svelte.js').ProxyTree} */
 	get proxyTree() { return this.#proxyTree }
 }

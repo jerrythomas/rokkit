@@ -716,27 +716,3 @@ describe('Wrapper — integration', () => {
 	})
 })
 
-// ─── Legacy constructor (backward compat) ─────────────────────────────────────
-
-describe('Wrapper — legacy constructor', () => {
-	it('accepts (items, fields, options) for backward compatibility', () => {
-		const onselect = vi.fn()
-		const w = new Wrapper(flat, {}, { onselect })
-		expect(w.flatView).toHaveLength(3)
-		w.moveTo('0')
-		w.select(null)
-		expect(onselect).toHaveBeenCalledOnce()
-	})
-
-	it('accepts (items) with defaults for fields and options', () => {
-		const w = new Wrapper(flat)
-		expect(w.flatView).toHaveLength(3)
-		expect(w.focusedKey).toBeNull()
-	})
-
-	it('accepts (items, fields) with custom field mapping', () => {
-		const items = [{ name: 'X' }, { name: 'Y' }]
-		const w = new Wrapper(items, { text: 'name' })
-		expect(w.flatView[0].proxy.label).toBe('X')
-	})
-})

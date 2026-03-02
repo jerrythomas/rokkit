@@ -7,9 +7,9 @@
 - [x] Task 1: Refactor Wrapper to accept ProxyTree
 - [x] Task 2: LazyWrapper extends Wrapper
 - [x] Task 3: Migrate flat components (List, Menu, Select, MultiSelect, Toggle, Tabs)
-- [ ] Task 4: Migrate tree components (Tree, LazyTree)
+- [x] Task 4: Migrate tree components (Tree, LazyTree)
 - [x] Task 5: showLines → lineStyle
-- [ ] Task 6: Dead code cleanup
+- [x] Task 6: Dead code cleanup
 - [ ] Task 7: Update project files
 
 ## Recently Completed

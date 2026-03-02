@@ -82,7 +82,7 @@ export interface SelectBaseProps {
 	/** Array of select options or groups */
 	options?: SelectItem[]
 
-	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	/** Field mapping — overrides BASE_FIELDS defaults (text → 'label', value → 'value', …) */
 	fields?: Record<string, string>
 
 	/** Placeholder text when no selection */

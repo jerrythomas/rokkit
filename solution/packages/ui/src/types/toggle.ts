@@ -54,7 +54,7 @@ export interface ToggleProps {
 	/** Array of toggle options (strings, numbers, or objects) */
 	options?: ToggleItem[]
 
-	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	/** Field mapping — overrides BASE_FIELDS defaults (text → 'label', value → 'value', …) */
 	fields?: Record<string, string>
 
 	/** Currently selected value (bindable) */

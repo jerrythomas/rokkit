@@ -70,7 +70,7 @@ export interface TabsProps {
 	/** Array of tab options */
 	options?: TabsItem[]
 
-	/** Field mapping — overrides PROXY_ITEM_FIELDS defaults (text → 'label', value → 'value', …) */
+	/** Field mapping — overrides BASE_FIELDS defaults (text → 'label', value → 'value', …) */
 	fields?: Record<string, string>
 
 	/** Currently selected tab value */

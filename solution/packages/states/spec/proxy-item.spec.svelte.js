@@ -1,13 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
-import { ProxyItem, LazyProxyItem, PROXY_ITEM_FIELDS, BASE_FIELDS } from '../src/proxy-item.svelte.js'
+import { ProxyItem, LazyProxyItem, BASE_FIELDS } from '../src/proxy-item.svelte.js'
 import { normalizeFields } from '@rokkit/core'
 import { flushSync } from 'svelte'
 
 describe('BASE_FIELDS', () => {
-	it('PROXY_ITEM_FIELDS should be the same reference as BASE_FIELDS', () => {
-		expect(PROXY_ITEM_FIELDS).toBe(BASE_FIELDS)
-	})
-
 	it('should have 17 keys', () => {
 		expect(Object.keys(BASE_FIELDS)).toHaveLength(17)
 	})

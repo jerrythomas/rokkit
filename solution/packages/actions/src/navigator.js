@@ -77,7 +77,7 @@ export class Navigator {
 
 	/**
 	 * @param {HTMLElement} root
-	 * @param {import('@rokkit/states').AbstractWrapper} wrapper
+	 * @param {import('@rokkit/states').Wrapper} wrapper
 	 * @param {{ orientation?: string, dir?: string, collapsible?: boolean }} [options]
 	 */
 	constructor(root, wrapper, options = {}) {

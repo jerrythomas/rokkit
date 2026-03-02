@@ -14,7 +14,6 @@
  */
 
 import { Wrapper } from './wrapper.svelte.js'
-import { ProxyTree } from './proxy-tree.svelte.js'
 
 // ─── LazyWrapper ───────────────────────────────────────────────────────────────
 
@@ -22,28 +21,12 @@ export class LazyWrapper extends Wrapper {
 	#onlazyload
 
 	/**
-	 * @overload
-	 * @param {ProxyTree} proxyTree
+	 * @param {import('./proxy-tree.svelte.js').ProxyTree} proxyTree
 	 * @param {{ onselect?: Function, onchange?: Function, onlazyload?: Function }} [options]
 	 */
-	/**
-	 * @overload
-	 * @deprecated Use `new LazyWrapper(proxyTree, options)` instead.
-	 * @param {unknown[]} items
-	 * @param {object} [fields]
-	 * @param {{ onselect?: Function, onchange?: Function, onlazyload?: Function, createProxy?: Function }} [options]
-	 */
-	constructor(proxyTreeOrItems, fieldsOrOptions = {}, legacyOptions) {
-		// Backward compat: detect legacy (items, fields, options) signature
-		if (proxyTreeOrItems instanceof ProxyTree) {
-			super(proxyTreeOrItems, fieldsOrOptions)
-			this.#onlazyload = fieldsOrOptions.onlazyload
-		} else {
-			// Legacy: (items, fields, options)
-			const pt = new ProxyTree(proxyTreeOrItems ?? [], fieldsOrOptions, legacyOptions)
-			super(pt, legacyOptions)
-			this.#onlazyload = legacyOptions?.onlazyload
-		}
+	constructor(proxyTree, options = {}) {
+		super(proxyTree, options)
+		this.#onlazyload = options.onlazyload
 	}
 
 	// ─── Root-level pagination ──────────────────────────────────────────────────

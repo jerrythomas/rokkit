@@ -90,7 +90,7 @@
 
 [data-style='minimal'] [data-list] [data-list-group]:hover:not(:disabled),
 [data-style='minimal'] [data-list] [data-list-group]:focus:not(:disabled) {
-	@apply text-surface-z6;
+	@apply text-surface-z7 border-l-surface-z3 border-l-2;
 }
 
 /* =============================================================================

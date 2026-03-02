@@ -160,7 +160,7 @@ All snippets receive a `ProxyItem` instance:
 
 ## Field Mapping Defaults
 
-Default `PROXY_ITEM_FIELDS` mapping (used when no `fields` prop is passed):
+Default `BASE_FIELDS` mapping (used when no `fields` prop is passed):
 
 ```js
 {
