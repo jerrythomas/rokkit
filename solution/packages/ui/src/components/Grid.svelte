@@ -93,6 +93,7 @@
 <div
 	bind:this={gridRef}
 	data-grid
+	data-grid-min-size={minSize}
 	data-size={size}
 	data-disabled={disabled || undefined}
 	class={className || undefined}
