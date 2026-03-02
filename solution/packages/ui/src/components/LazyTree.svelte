@@ -76,7 +76,7 @@
 	bind:this={treeRef}
 	data-tree
 	data-size={size}
-	data-line-style={lineStyle !== 'none' ? lineStyle : undefined}
+	data-line-style={lineStyle}
 	class={className || undefined}
 	role="tree"
 	tabindex="0"
@@ -102,29 +102,8 @@
 				aria-level={node.level}
 			>
 				<div data-tree-node-row>
-					{#if lineStyle !== 'none'}
-						{#each node.lineTypes as lineType, lineIndex (lineIndex)}
-							{#if lineType === 'icon'}
-								<button
-									type="button"
-									data-tree-toggle-btn
-									onclick={() => wrapper.toggle(node.key)}
-									aria-label={isLoading ? 'Loading' : proxy.expanded ? 'Collapse' : 'Expand'}
-									tabindex={-1}
-								>
-									{#if isLoading}
-										<span data-tree-spinner aria-hidden="true"></span>
-									{:else}
-										<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
-									{/if}
-								</button>
-							{:else}
-								<Connector type={lineType} />
-							{/if}
-						{/each}
-					{:else}
-						<span data-tree-indent style="width: {(node.level - 1) * 1.25}rem"></span>
-						{#if node.isExpandable}
+					{#each node.lineTypes as lineType, lineIndex (lineIndex)}
+						{#if lineType === 'icon'}
 							<button
 								type="button"
 								data-tree-toggle-btn
@@ -138,8 +117,10 @@
 									<span class={proxy.expanded ? icons.opened : icons.closed} aria-hidden="true"></span>
 								{/if}
 							</button>
+						{:else}
+							<Connector type={lineType} />
 						{/if}
-					{/if}
+					{/each}
 
 					{#if proxy.get('href')}
 						<a

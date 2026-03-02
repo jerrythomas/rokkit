@@ -85,58 +85,51 @@
 
 /* =============================================================================
    Line Style Variants
+   Connectors have no borders by default. data-line-style activates them.
+   'none' keeps connectors in DOM for spacing but lines stay invisible.
    ============================================================================= */
 
-[data-tree][data-line-style='dashed'] [data-connector-v] {
-  border-right-style: dashed;
+/* Shared: activate 1px border for all visible line styles (solid/dashed/dotted).
+   Uses longhand width+style so theme border-color is not overridden. */
+[data-tree]:not([data-line-style='none']) [data-connector-v] {
+  border-right-width: 1px;
+}
+[data-tree]:not([data-line-style='none']) [data-connector-h] {
+  border-bottom-width: 1px;
+}
+[data-tree]:not([data-line-style='none']) [data-connector-corner] {
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+[data-tree]:not([data-line-style='none']) [data-connector-rtl] [data-connector-v] {
+  border-right-width: 0;
+  border-left-width: 1px;
+}
+[data-tree]:not([data-line-style='none']) [data-connector-rtl] [data-connector-corner] {
+  border-right-width: 0;
+  border-left-width: 1px;
 }
 
-[data-tree][data-line-style='dashed'] [data-connector-h] {
-  border-bottom-style: dashed;
-}
+/* Solid (default visible style) */
+[data-tree][data-line-style='solid'] [data-connector-v] { border-right-style: solid; }
+[data-tree][data-line-style='solid'] [data-connector-h] { border-bottom-style: solid; }
+[data-tree][data-line-style='solid'] [data-connector-corner] { border-bottom-style: solid; border-right-style: solid; }
+[data-tree][data-line-style='solid'] [data-connector-rtl] [data-connector-v] { border-left-style: solid; }
+[data-tree][data-line-style='solid'] [data-connector-rtl] [data-connector-corner] { border-left-style: solid; }
 
-[data-tree][data-line-style='dashed'] [data-connector-corner] {
-  border-bottom-style: dashed;
-  border-right-style: dashed;
-}
+/* Dashed */
+[data-tree][data-line-style='dashed'] [data-connector-v] { border-right-style: dashed; }
+[data-tree][data-line-style='dashed'] [data-connector-h] { border-bottom-style: dashed; }
+[data-tree][data-line-style='dashed'] [data-connector-corner] { border-bottom-style: dashed; border-right-style: dashed; }
+[data-tree][data-line-style='dashed'] [data-connector-rtl] [data-connector-v] { border-left-style: dashed; }
+[data-tree][data-line-style='dashed'] [data-connector-rtl] [data-connector-corner] { border-left-style: dashed; }
 
-[data-tree][data-line-style='dashed'] [data-connector-rtl] [data-connector-v] {
-  border-left-style: dashed;
-}
-
-[data-tree][data-line-style='dashed'] [data-connector-rtl] [data-connector-corner] {
-  border-left-style: dashed;
-}
-
-[data-tree][data-line-style='dotted'] [data-connector-v] {
-  border-right-style: dotted;
-}
-
-[data-tree][data-line-style='dotted'] [data-connector-h] {
-  border-bottom-style: dotted;
-}
-
-[data-tree][data-line-style='dotted'] [data-connector-corner] {
-  border-bottom-style: dotted;
-  border-right-style: dotted;
-}
-
-[data-tree][data-line-style='dotted'] [data-connector-rtl] [data-connector-v] {
-  border-left-style: dotted;
-}
-
-[data-tree][data-line-style='dotted'] [data-connector-rtl] [data-connector-corner] {
-  border-left-style: dotted;
-}
-
-/* =============================================================================
-   Tree Indent (when lineStyle='none')
-   ============================================================================= */
-
-[data-tree-indent] {
-  flex-shrink: 0;
-  align-self: stretch;
-}
+/* Dotted */
+[data-tree][data-line-style='dotted'] [data-connector-v] { border-right-style: dotted; }
+[data-tree][data-line-style='dotted'] [data-connector-h] { border-bottom-style: dotted; }
+[data-tree][data-line-style='dotted'] [data-connector-corner] { border-bottom-style: dotted; border-right-style: dotted; }
+[data-tree][data-line-style='dotted'] [data-connector-rtl] [data-connector-v] { border-left-style: dotted; }
+[data-tree][data-line-style='dotted'] [data-connector-rtl] [data-connector-corner] { border-left-style: dotted; }
 
 /* =============================================================================
    Tree Item Content

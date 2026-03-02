@@ -238,19 +238,13 @@ describe('Tree', () => {
 		expect(container.querySelector('[data-tree]')?.getAttribute('data-line-style')).toBe('dotted')
 	})
 
-	it('hides connectors when lineStyle=none', () => {
+	it('renders connectors with lineStyle=none (lines hidden via CSS)', () => {
 		const items = JSON.parse(JSON.stringify(nestedItems))
 		items[0].expanded = true
 		const { container } = render(Tree, { items, lineStyle: 'none' })
 		const connectors = container.querySelectorAll('[data-connector]')
-		expect(connectors.length).toBe(0)
-		expect(container.querySelector('[data-tree]')?.hasAttribute('data-line-style')).toBe(false)
-	})
-
-	it('uses indent when lineStyle=none', () => {
-		const { container } = render(Tree, { items: nestedItems, lineStyle: 'none' })
-		const indents = container.querySelectorAll('[data-tree-indent]')
-		expect(indents.length).toBeGreaterThan(0)
+		expect(connectors.length).toBeGreaterThan(0)
+		expect(container.querySelector('[data-tree]')?.getAttribute('data-line-style')).toBe('none')
 	})
 
 	// ─── Keyboard Navigation ────────────────────────────────────────
