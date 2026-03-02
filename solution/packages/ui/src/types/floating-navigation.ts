@@ -1,5 +1,4 @@
 import type { Snippet } from 'svelte'
-import type { ItemFields } from './item-proxy.js'
 
 /**
  * Position on the screen edge
@@ -31,7 +30,7 @@ export interface FloatingNavigationProps {
 	items?: FloatingNavigationItem[]
 
 	/** Field mapping configuration */
-	fields?: Partial<ItemFields>
+	fields?: Record<string, string>
 
 	/** Active item value (bindable) */
 	value?: unknown

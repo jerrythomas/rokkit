@@ -27,7 +27,7 @@
 	// Check if options include an empty string (used as "none" option)
 	const hasEmptyOption = $derived(options.some((opt) => opt === '' || (typeof opt === 'object' && opt?.value === '')))
 
-	// Filter out empty strings — Select + ItemProxy handles string options natively
+	// Filter out empty strings — Select + ProxyItem handles string options natively
 	const filteredOptions = $derived(
 		hasEmptyOption
 			? options.filter((opt) => opt !== '' && !(typeof opt === 'object' && opt?.value === ''))

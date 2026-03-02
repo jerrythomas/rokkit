@@ -2,7 +2,7 @@
  * Toolbar Component Types
  *
  * Provides types for the data-driven Toolbar component.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
 // =============================================================================

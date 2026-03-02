@@ -3,11 +3,11 @@
  *
  * Provides types for the data-driven Tree component.
  * Supports hierarchical data with expand/collapse, tree lines, and custom icons.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
 import type { Snippet } from 'svelte'
-import type { ItemProxy, ItemFields } from './item-proxy.js'
+import type { ProxyItem } from '@rokkit/states'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
@@ -16,9 +16,9 @@ import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 /**
  * Field mapping configuration for tree data.
- * Extends ItemFields with tree-specific fields.
+ * Extends base field mapping with tree-specific fields.
  */
-export interface TreeFields extends ItemFields {
+export interface TreeFields extends Record<string, string> {
 	/** Field for expanded state - default: 'expanded' */
 	expanded?: string
 
@@ -251,9 +251,9 @@ export const getTreeLineTypes = getLineTypes
 /**
  * Get the key for a node (for expanded state tracking)
  */
-export function getNodeKey(proxy: ItemProxy): string {
-	const val = proxy.itemValue
-	return typeof val === 'string' || typeof val === 'number' ? String(val) : proxy.text
+export function getNodeKey(proxy: ProxyItem): string {
+	const val = proxy.value
+	return typeof val === 'string' || typeof val === 'number' ? String(val) : proxy.label
 }
 
 export { getSnippet } from './menu.js'

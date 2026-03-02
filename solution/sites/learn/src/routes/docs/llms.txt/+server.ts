@@ -13,7 +13,7 @@ Rokkit is a component library built around the principle that **data should driv
 |---------|-------------|
 | \`@rokkit/ui\` | Main UI components (30+ components) |
 | \`@rokkit/forms\` | Dynamic form generation from JSON schema |
-| \`@rokkit/states\` | State management (ItemProxy, ListController, NestedController) |
+| \`@rokkit/states\` | State management (ProxyItem, ProxyTree, Wrapper, ListController, NestedController) |
 | \`@rokkit/actions\` | Svelte actions (navigator, hoverLift, magnetic, ripple) |
 | \`@rokkit/core\` | Core utilities and field mapping |
 | \`@rokkit/data\` | Data manipulation utilities |

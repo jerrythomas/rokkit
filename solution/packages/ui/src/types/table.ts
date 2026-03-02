@@ -3,7 +3,7 @@
  *
  * Provides types for the data-driven Table component.
  * Supports flat tables with sortable columns, row selection, and keyboard navigation.
- * Field mapping and data access is handled by ItemProxy per cell.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states per cell.
  */
 
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
@@ -38,7 +38,7 @@ export interface TableColumn {
 	/** Text alignment */
 	align?: 'left' | 'center' | 'right'
 
-	/** Field mapping — maps ItemProxy slots to data keys */
+	/** Field mapping — maps ProxyItem slots to data keys */
 	fields?: {
 		text?: string
 		icon?: string

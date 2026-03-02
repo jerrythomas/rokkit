@@ -7,7 +7,6 @@
 
 import type { Snippet } from 'svelte'
 import type { ProxyItem } from '@rokkit/states'
-import type { ItemFields } from './item-proxy.js'
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'
 
 // =============================================================================
@@ -24,7 +23,7 @@ export type SelectItem = Record<string, unknown>
 // =============================================================================
 
 /** @deprecated Use Record<string, string> directly */
-export type SelectFields = ItemFields
+export type SelectFields = Record<string, string>
 
 /** @deprecated Legacy handlers no longer needed with Navigator stack */
 export interface SelectItemHandlers {

@@ -218,7 +218,7 @@ interface TabsProps {
   empty?: Snippet<[]>
 }
 
-interface TabsFields extends ItemFields {
+interface TabsFields extends Record<string, string> {
   content?: string  // default: 'content'
 }
 \`\`\`

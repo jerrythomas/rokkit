@@ -6,13 +6,15 @@
  */
 
 import type { Snippet } from 'svelte'
-import type { ItemFields } from './item-proxy.js'
-
 // =============================================================================
 // Field Mapping Types
 // =============================================================================
 
-export type TimelineFields = Pick<ItemFields, 'text' | 'icon' | 'description'>
+export interface TimelineFields {
+	text?: string
+	icon?: string
+	description?: string
+}
 
 export const defaultTimelineFields: Required<TimelineFields> = {
 	text: 'text',

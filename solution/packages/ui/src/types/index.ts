@@ -28,9 +28,6 @@ export * from './list.js'
 // Tree Types
 export * from './tree.js'
 
-// Item Proxy
-export * from './item-proxy.js'
-
 // Floating Action Types
 export * from './floating-action.js'
 

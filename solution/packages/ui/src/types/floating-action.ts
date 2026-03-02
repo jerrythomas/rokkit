@@ -1,11 +1,9 @@
 import type { Snippet } from 'svelte'
-import type { ItemFields } from './item-proxy.js'
 
 /**
  * Field mapping for FloatingAction items
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface FloatingActionFields extends ItemFields {}
+export type FloatingActionFields = Record<string, string>
 
 /**
  * Default field mappings

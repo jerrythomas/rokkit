@@ -3,7 +3,7 @@
  *
  * Provides types for the data-driven List component.
  * Supports navigation links, button items, and grouped items with collapsible sections.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
 
 import { DEFAULT_STATE_ICONS } from '@rokkit/core'

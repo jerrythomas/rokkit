@@ -2,10 +2,8 @@
  * Switch Component Types
  *
  * Provides types for the iOS-style Switch component.
- * Field mapping and data access is handled by ItemProxy.
+ * Field mapping and data access is handled by ProxyItem from @rokkit/states.
  */
-
-import type { ItemFields } from './item-proxy.js'
 
 // =============================================================================
 // Field Mapping Types
@@ -15,7 +13,13 @@ import type { ItemFields } from './item-proxy.js'
  * Field mapping configuration for switch option data.
  * Maps custom data field names to the component's expected properties.
  */
-export type SwitchFields = Pick<ItemFields, 'text' | 'value' | 'icon' | 'disabled' | 'description'>
+export interface SwitchFields {
+	text?: string
+	value?: string
+	icon?: string
+	disabled?: string
+	description?: string
+}
 
 // =============================================================================
 // Switch Item Types
@@ -23,7 +27,7 @@ export type SwitchFields = Pick<ItemFields, 'text' | 'value' | 'icon' | 'disable
 
 /**
  * A switch option — can be any object, primitive, or boolean.
- * Processed through ItemProxy for field resolution.
+ * Processed through ProxyItem for field resolution.
  */
 export type SwitchItem = Record<string, unknown> | string | number | boolean
 

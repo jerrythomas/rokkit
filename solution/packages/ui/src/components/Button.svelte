@@ -25,7 +25,7 @@
 	const isDisabled = $derived(disabled || loading)
 
 	/**
-	 * Create an ItemProxy for default content rendering.
+	 * Create a ProxyItem for default content rendering.
 	 * Constructs a minimal item from button props.
 	 */
 	const proxy = $derived(
