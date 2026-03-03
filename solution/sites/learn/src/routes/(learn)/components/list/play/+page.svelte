@@ -8,15 +8,17 @@
 	let buttonSelected = $state(undefined)
 	let groupedSelected = $state(undefined)
 	let descSelected = $state(undefined)
+	let multiSelected = $state([])
 
-	let props = $state({ size: 'md', collapsible: true, disabled: false })
+	let props = $state({ size: 'md', collapsible: true, disabled: false, multiselect: false })
 
 	const schema = {
 		type: 'object',
 		properties: {
 			size: { type: 'string' },
 			collapsible: { type: 'boolean' },
-			disabled: { type: 'boolean' }
+			disabled: { type: 'boolean' },
+			multiselect: { type: 'boolean' }
 		}
 	}
 
@@ -26,79 +28,99 @@
 			{ scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
 			{ scope: '#/collapsible', label: 'Collapsible groups' },
 			{ scope: '#/disabled', label: 'Disabled' },
+			{ scope: '#/multiselect', label: 'Multi-select' },
 			{ type: 'separator' }
 		]
 	}
 
 	const navItems = [
-		{ label: 'Home', href: '#home', value: '#home', icon: 'i-lucide:home' },
-		{ label: 'Settings', href: '#settings', value: '#settings', icon: 'i-lucide:settings' },
-		{ label: 'Profile', href: '#profile', value: '#profile', icon: 'i-lucide:user' },
-		{ label: 'Messages', href: '#messages', value: '#messages', icon: 'i-lucide:mail' }
+		{ text: 'Home', href: '#home', value: '#home', icon: 'i-lucide:home' },
+		{ text: 'Settings', href: '#settings', value: '#settings', icon: 'i-lucide:settings' },
+		{ text: 'Profile', href: '#profile', value: '#profile', icon: 'i-lucide:user' },
+		{ text: 'Messages', href: '#messages', value: '#messages', icon: 'i-lucide:mail', badge: '3' }
 	]
 
 	const buttonItems = [
-		{ label: 'Cut', value: 'cut', icon: 'i-lucide:scissors' },
-		{ label: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
-		{ label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard' },
-		{ label: 'Delete', value: 'delete', icon: 'i-lucide:trash', disabled: true }
+		{ text: 'Cut', value: 'cut', icon: 'i-lucide:scissors' },
+		{ text: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
+		{ text: 'Paste', value: 'paste', icon: 'i-lucide:clipboard' },
+		{ text: 'Delete', value: 'delete', icon: 'i-lucide:trash', disabled: true }
 	]
 
 	const groupedItems = [
 		{
-			label: 'Favorites',
-			expanded: true,
+			text: 'Favorites',
 			children: [
-				{ label: 'Dashboard', value: 'dashboard', icon: 'i-lucide:layout-grid' },
-				{ label: 'Analytics', value: 'analytics', icon: 'i-lucide:bar-chart-2' }
+				{ text: 'Dashboard', value: 'dashboard', icon: 'i-lucide:layout-grid' },
+				{ text: 'Analytics', value: 'analytics', icon: 'i-lucide:star' }
 			]
 		},
 		{
-			label: 'Settings',
-			expanded: true,
+			text: 'Settings',
 			children: [
-				{ label: 'General', value: 'general', icon: 'i-lucide:settings' },
-				{ label: 'Security', value: 'security', icon: 'i-lucide:shield' }
+				{ text: 'General', value: 'general', icon: 'i-lucide:settings' },
+				{ text: 'Security', value: 'security', icon: 'i-lucide:heart' }
 			]
 		}
 	]
 
 	const withDescriptions = [
-		{ label: 'Dashboard', value: 'dashboard', icon: 'i-lucide:layout-grid' },
-		{ label: 'Reports', value: 'reports', icon: 'i-lucide:file-text' },
-		{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings' }
+		{
+			text: 'Dashboard',
+			value: 'dashboard',
+			icon: 'i-lucide:layout-grid',
+			description: 'Overview of all metrics'
+		},
+		{
+			text: 'Reports',
+			value: 'reports',
+			icon: 'i-lucide:file-text',
+			description: 'Download generated reports'
+		},
+		{
+			text: 'Settings',
+			value: 'settings',
+			icon: 'i-lucide:settings',
+			description: 'Configure preferences'
+		}
 	]
+
+	function handleButtonSelect(value) {
+		buttonSelected = value
+	}
+	function handleGroupedSelect(value) {
+		groupedSelected = value
+	}
+	function handleDescSelect(value) {
+		descSelected = value
+	}
 </script>
 
 <PlaySection>
 	{#snippet preview()}
-		<div class="flex flex-wrap gap-6">
+		<div class="flex gap-6 flex-wrap">
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Navigation</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Navigation</h4>
 				<div class="w-[240px]">
-					<List
-						items={navItems}
-						value={navSelected}
-						size={props.size}
-						disabled={props.disabled}
-						onselect={(v) => (navSelected = v)}
-					/>
+					<List items={navItems} active="#home" size={props.size} disabled={props.disabled} />
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Button items</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Button items</h4>
 				<div class="w-[240px]">
 					<List
 						items={buttonItems}
 						value={buttonSelected}
 						size={props.size}
 						disabled={props.disabled}
-						onselect={(v) => (buttonSelected = v)}
+						multiselect={props.multiselect}
+						bind:selected={multiSelected}
+						onselect={handleButtonSelect}
 					/>
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Grouped</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Grouped</h4>
 				<div class="w-[240px]">
 					<List
 						items={groupedItems}
@@ -106,19 +128,19 @@
 						value={groupedSelected}
 						size={props.size}
 						disabled={props.disabled}
-						onselect={(v) => (groupedSelected = v)}
+						onselect={handleGroupedSelect}
 					/>
 				</div>
 			</div>
 			<div>
-				<h4 class="m-0 mb-2 text-xs uppercase tracking-wide text-surface-z5">Simple</h4>
+				<h4 class="m-0 mb-2 text-xs text-surface-z5 uppercase tracking-wide">Descriptions</h4>
 				<div class="w-[240px]">
 					<List
 						items={withDescriptions}
 						value={descSelected}
 						size={props.size}
 						disabled={props.disabled}
-						onselect={(v) => (descSelected = v)}
+						onselect={handleDescSelect}
 					/>
 				</div>
 			</div>
@@ -127,9 +149,11 @@
 
 	{#snippet controls()}
 		<FormRenderer bind:data={props} {schema} {layout} />
-		<InfoField label="Nav" value={navSelected} />
 		<InfoField label="Button" value={buttonSelected} />
 		<InfoField label="Grouped" value={groupedSelected} />
-		<InfoField label="Simple" value={descSelected} />
+		<InfoField label="Descriptions" value={descSelected} />
+		{#if props.multiselect}
+			<InfoField label="Selected" value={multiSelected.join(', ')} />
+		{/if}
 	{/snippet}
 </PlaySection>
