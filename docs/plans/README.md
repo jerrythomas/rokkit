@@ -1,6 +1,6 @@
 # Active Plan
 
-No active plan.
+[`@rokkit/unocss` Preset & CLI Enhancement — Phase 1](2026-03-03-unocss-preset-cli.md)
 
 ## Recently Completed
 
