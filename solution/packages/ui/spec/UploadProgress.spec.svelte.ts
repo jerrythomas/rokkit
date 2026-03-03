@@ -87,6 +87,25 @@ describe('UploadProgress', () => {
 		expect(cancelBtns.length).toBe(1)
 	})
 
+	it('forwards retryWhen to UploadFileStatus', () => {
+		const onretry = vi.fn()
+		const failedFiles = [
+			{ id: '1', text: 'fail.txt', value: '1', size: 100, type: 'text/plain', status: 'failed', progress: 0 },
+		]
+		const { container } = render(UploadProgress, {
+			files: failedFiles, retryWhen: ['failed'], onretry,
+		})
+		expect(container.querySelectorAll('[data-upload-retry]').length).toBe(1)
+	})
+
+	it('forwards removeWhen to UploadFileStatus', () => {
+		const onremove = vi.fn()
+		const { container } = render(UploadProgress, {
+			files, removeWhen: ['done'], onremove,
+		})
+		expect(container.querySelectorAll('[data-upload-remove]').length).toBe(1)
+	})
+
 	it('renders empty state when no files', () => {
 		const { container } = render(UploadProgress, { files: [] })
 		expect(container.querySelectorAll('[data-upload-file-status]').length).toBe(0)
