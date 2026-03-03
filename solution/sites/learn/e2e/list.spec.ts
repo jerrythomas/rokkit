@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage } from './helpers'
+import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
 
 // ─── Play page tests ──────────────────────────────────────────────────────────
 
@@ -244,6 +244,34 @@ test.describe('List — play page', () => {
 			await firstLabel.click()
 			await expect(firstLabel).toHaveAttribute('aria-expanded', 'true')
 		})
+	})
+
+	// ─── Visual snapshots ────────────────────────────────────────────────────
+
+	test.describe('visual snapshots', () => {
+		for (const theme of themes) {
+			for (const mode of modes) {
+				test(`${theme}/${mode} - default state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const list = page.locator('[data-list]').nth(1) // Button items
+					await expect(list).toHaveScreenshot(`list-${theme}-${mode}-default.png`)
+				})
+
+				test(`${theme}/${mode} - focused state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const list = page.locator('[data-list]').nth(1)
+					const items = list.locator('[data-list-item]')
+					await items.first().focus()
+					await page.keyboard.press('ArrowDown')
+
+					await expect(list).toHaveScreenshot(`list-${theme}-${mode}-focused.png`)
+				})
+			}
+		}
 	})
 
 	// ─── Learn/Play toggle navigation ────────────────────────────────────────

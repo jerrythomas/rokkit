@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage } from './helpers'
+import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
 
 // ─── Play page tests ──────────────────────────────────────────────────────────
 
@@ -93,6 +93,34 @@ test.describe('Toggle — play page', () => {
 		await page.keyboard.press('ArrowRight')
 		await page.keyboard.press('Enter')
 		await expect(options.nth(1)).toHaveAttribute('data-selected')
+	})
+
+	// ─── Visual snapshots ───────────────────────────────────────────────
+
+	test.describe('visual snapshots', () => {
+		for (const theme of themes) {
+			for (const mode of modes) {
+				test(`${theme}/${mode} - default state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const toggle = page.locator('[data-toggle]').first()
+					await expect(toggle).toHaveScreenshot(`toggle-${theme}-${mode}-default.png`)
+				})
+
+				test(`${theme}/${mode} - focused state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const toggle = page.locator('[data-toggle]').first()
+					const first = toggle.locator('[data-toggle-option]').first()
+					await first.focus()
+					await page.keyboard.press('ArrowRight')
+
+					await expect(toggle).toHaveScreenshot(`toggle-${theme}-${mode}-focused.png`)
+				})
+			}
+		}
 	})
 })
 

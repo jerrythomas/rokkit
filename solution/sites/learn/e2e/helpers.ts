@@ -1,5 +1,8 @@
 import type { Page } from '@playwright/test'
 
+export const themes = ['rokkit', 'minimal', 'material', 'glass'] as const
+export type Theme = (typeof themes)[number]
+
 export const modes = ['light', 'dark'] as const
 export type Mode = (typeof modes)[number]
 
@@ -7,6 +10,12 @@ export type Mode = (typeof modes)[number]
 export async function goToPlayPage(page: Page, component: string) {
 	await page.goto(`/components/${component}/play`)
 	await page.waitForLoadState('networkidle')
+}
+
+/** Set theme by clicking the theme button in the PlaySection sidebar */
+export async function setTheme(page: Page, theme: Theme) {
+	const btn = page.locator('aside button', { hasText: new RegExp(`^${theme}$`, 'i') })
+	await btn.click()
 }
 
 /** Set color mode directly on the document element */

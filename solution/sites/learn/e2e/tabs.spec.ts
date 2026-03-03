@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage } from './helpers'
+import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
 
 test.describe('Tabs — play page', () => {
 	test.beforeEach(async ({ page }) => {
@@ -130,6 +130,34 @@ test.describe('Tabs — play page', () => {
 			await expect(panels.first()).not.toHaveAttribute('data-panel-active')
 			await expect(panels.nth(1)).not.toHaveAttribute('data-panel-active')
 		})
+	})
+
+	// ─── Visual snapshots ───────────────────────────────────────────
+
+	test.describe('visual snapshots', () => {
+		for (const theme of themes) {
+			for (const mode of modes) {
+				test(`${theme}/${mode} - default state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const tabs = page.locator('[data-tabs]').first()
+					await expect(tabs).toHaveScreenshot(`tabs-${theme}-${mode}-default.png`)
+				})
+
+				test(`${theme}/${mode} - focused state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const tabs = page.locator('[data-tabs]').first()
+					const triggers = tabs.locator('[data-tabs-trigger]')
+					await triggers.first().focus()
+					await page.keyboard.press('ArrowRight')
+
+					await expect(tabs).toHaveScreenshot(`tabs-${theme}-${mode}-focused.png`)
+				})
+			}
+		}
 	})
 
 	// ─── Learn/Play toggle navigation ────────────────────────────────

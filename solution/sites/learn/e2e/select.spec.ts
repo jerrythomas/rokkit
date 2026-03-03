@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage } from './helpers'
+import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
 
 test.describe('Select — play page', () => {
 	test.beforeEach(async ({ page }) => {
@@ -172,6 +172,33 @@ test.describe('Select — play page', () => {
 			await expect(selected).toHaveCount(1)
 			await expect(selected).toContainText('Banana')
 		})
+	})
+
+	// ─── Visual snapshots ───────────────────────────────────────────
+
+	test.describe('visual snapshots', () => {
+		for (const theme of themes) {
+			for (const mode of modes) {
+				test(`${theme}/${mode} - closed state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const select = page.locator('[data-select]').first()
+					await expect(select).toHaveScreenshot(`select-${theme}-${mode}-closed.png`)
+				})
+
+				test(`${theme}/${mode} - open state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const trigger = page.locator('[data-select-trigger]').first()
+					await trigger.click()
+
+					const select = page.locator('[data-select]').first()
+					await expect(select).toHaveScreenshot(`select-${theme}-${mode}-open.png`)
+				})
+			}
+		}
 	})
 
 	// ─── Learn/Play toggle navigation ────────────────────────────────
