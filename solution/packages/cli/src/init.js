@@ -1,4 +1,254 @@
-/** @param {Record<string, unknown>} opts */
-export async function init(opts) {
-	console.info('rokkit init is not yet implemented', opts)
+/* eslint-disable no-console */
+import prompts from 'prompts'
+import { writeFileSync, readFileSync, existsSync } from 'fs'
+import { resolve } from 'path'
+
+const SKIN_PRESETS = {
+	default: { primary: 'orange', secondary: 'pink', accent: 'sky', surface: 'slate' },
+	vibrant: { primary: 'blue', secondary: 'purple', accent: 'sky', surface: 'slate' },
+	seaweed: {
+		primary: 'sky',
+		secondary: 'green',
+		accent: 'blue',
+		surface: 'zinc',
+		danger: 'rose',
+		error: 'rose',
+		success: 'lime',
+		warning: 'amber',
+		info: 'indigo'
+	}
+}
+
+const DEFAULT_COLORS = {
+	primary: 'orange',
+	secondary: 'pink',
+	accent: 'sky',
+	surface: 'slate',
+	success: 'green',
+	warning: 'yellow',
+	danger: 'red',
+	error: 'red',
+	info: 'cyan'
+}
+
+/**
+ * Generate a Rokkit config object from user choices.
+ * @param {{ palette: string, customColors?: Record<string, string>, icons: string, iconPath?: string, themes: string[], switcher: string }} opts
+ * @returns {Record<string, unknown>}
+ */
+export function generateConfig({ palette, customColors, icons, iconPath, themes, switcher }) {
+	const colors =
+		palette === 'custom'
+			? { ...DEFAULT_COLORS, ...customColors }
+			: { ...DEFAULT_COLORS, ...(SKIN_PRESETS[palette] || {}) }
+
+	const config = { colors, themes, switcher, storageKey: 'rokkit-theme' }
+
+	if (icons === 'custom' && iconPath) {
+		config.icons = { custom: iconPath }
+	}
+
+	return config
+}
+
+/**
+ * Generate the content for uno.config.js.
+ * @returns {string}
+ */
+export function generateUnoConfig() {
+	return `import { defineConfig } from 'unocss'
+import { presetRokkit } from '@rokkit/unocss'
+
+export default defineConfig({
+  presets: [presetRokkit()]
+})
+`
+}
+
+/**
+ * Generate an array of CSS @import lines for app.css.
+ * @param {string[]} themes
+ * @returns {string[]}
+ */
+export function generateAppCssImports(themes) {
+	const lines = [
+		"@import '@unocss/reset/tailwind.css';",
+		"@import '@rokkit/themes/dist/base';"
+	]
+	for (const theme of themes) {
+		lines.push(`@import '@rokkit/themes/dist/${theme}';`)
+	}
+	return lines
+}
+
+/**
+ * Generate the flash-prevention script for app.html.
+ * Returns null when no script is needed (system switcher).
+ * @param {string} switcher — 'system' | 'manual' | 'full'
+ * @param {string} [storageKey='rokkit-theme']
+ * @returns {string | null}
+ */
+export function generateInitScript(switcher, storageKey = 'rokkit-theme') {
+	if (switcher === 'system') return null
+
+	const setStyle =
+		switcher === 'full'
+			? `b.dataset.style = t.style || 'rokkit'\n          `
+			: ''
+
+	return `    <script>
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('${storageKey}') || '{}')
+          var b = document.body
+          ${setStyle}b.dataset.mode = t.mode || 'dark'
+        } catch (e) {}
+      })()
+    </script>`
+}
+
+/**
+ * Interactive init command — prompts the user, writes config files.
+ */
+export async function init() {
+	console.info('Rokkit Init — Setting up your SvelteKit project\n')
+
+	const response = await prompts([
+		{
+			type: 'select',
+			name: 'palette',
+			message: 'Color palette',
+			choices: [
+				{ title: 'Default (orange/pink/sky)', value: 'default' },
+				{ title: 'Vibrant (blue/purple/sky)', value: 'vibrant' },
+				{ title: 'Seaweed (sky/green/blue)', value: 'seaweed' },
+				{ title: 'Custom', value: 'custom' }
+			]
+		},
+		{
+			type: (prev) => (prev === 'custom' ? 'text' : null),
+			name: 'primary',
+			message: 'Primary color (Tailwind palette name)',
+			initial: 'orange'
+		},
+		{
+			type: (_, values) => (values.palette === 'custom' ? 'text' : null),
+			name: 'secondary',
+			message: 'Secondary color',
+			initial: 'pink'
+		},
+		{
+			type: (_, values) => (values.palette === 'custom' ? 'text' : null),
+			name: 'accent',
+			message: 'Accent color',
+			initial: 'sky'
+		},
+		{
+			type: (_, values) => (values.palette === 'custom' ? 'text' : null),
+			name: 'surface',
+			message: 'Surface color',
+			initial: 'slate'
+		},
+		{
+			type: 'select',
+			name: 'icons',
+			message: 'Icon collections',
+			choices: [
+				{ title: 'Rokkit icons only', value: 'rokkit' },
+				{ title: 'Rokkit + custom collection', value: 'custom' }
+			]
+		},
+		{
+			type: (prev) => (prev === 'custom' ? 'text' : null),
+			name: 'iconPath',
+			message: 'Path to custom icon collection JSON',
+			initial: './static/icons/custom.json'
+		},
+		{
+			type: 'multiselect',
+			name: 'themes',
+			message: 'Theme styles',
+			choices: [
+				{ title: 'Rokkit', value: 'rokkit', selected: true },
+				{ title: 'Minimal', value: 'minimal' },
+				{ title: 'Material', value: 'material' }
+			],
+			min: 1
+		},
+		{
+			type: 'select',
+			name: 'switcher',
+			message: 'Theme switching',
+			choices: [
+				{ title: 'System only (prefers-color-scheme)', value: 'system' },
+				{ title: 'Manual (light/dark toggle)', value: 'manual' },
+				{ title: 'Full (light/dark + style variants)', value: 'full' }
+			]
+		}
+	])
+
+	if (response.palette === 'custom') {
+		response.customColors = {
+			primary: response.primary,
+			secondary: response.secondary,
+			accent: response.accent,
+			surface: response.surface
+		}
+	}
+
+	const config = generateConfig(response)
+	const cwd = process.cwd()
+
+	// --- rokkit.config.js ---
+	const configPath = resolve(cwd, 'rokkit.config.js')
+	if (existsSync(configPath)) {
+		console.warn('  rokkit.config.js already exists — skipping')
+	} else {
+		writeFileSync(configPath, `export default ${JSON.stringify(config, null, 2)}\n`)
+		console.info('  Created rokkit.config.js')
+	}
+
+	// --- uno.config.js ---
+	const unoPath = resolve(cwd, 'uno.config.js')
+	if (existsSync(unoPath)) {
+		console.warn('  uno.config.js already exists — skipping (see rokkit doctor for migration)')
+	} else {
+		writeFileSync(unoPath, generateUnoConfig())
+		console.info('  Created uno.config.js')
+	}
+
+	// --- src/app.css ---
+	const appCssPath = resolve(cwd, 'src/app.css')
+	const cssImports = generateAppCssImports(config.themes)
+	if (existsSync(appCssPath)) {
+		const existing = readFileSync(appCssPath, 'utf-8')
+		const missing = cssImports.filter((line) => !existing.includes(line))
+		if (missing.length > 0) {
+			writeFileSync(appCssPath, `${missing.join('\n')  }\n${  existing}`)
+			console.info(`  Patched app.css — added ${missing.length} imports`)
+		} else {
+			console.info('  app.css already has theme imports')
+		}
+	} else {
+		writeFileSync(appCssPath, `${cssImports.join('\n')  }\n`)
+		console.info('  Created src/app.css')
+	}
+
+	// --- src/app.html (theme init script) ---
+	const initScript = generateInitScript(config.switcher, config.storageKey)
+	if (initScript) {
+		const appHtmlPath = resolve(cwd, 'src/app.html')
+		if (existsSync(appHtmlPath)) {
+			const html = readFileSync(appHtmlPath, 'utf-8')
+			if (!html.includes('rokkit-theme') && !html.includes(config.storageKey)) {
+				const patched = html.replace(/(<body[^>]*>)/, `$1\n${initScript}`)
+				writeFileSync(appHtmlPath, patched)
+				console.info('  Patched app.html — added theme init script')
+			} else {
+				console.info('  app.html already has init script')
+			}
+		}
+	}
+
+	console.info('\nDone! Run `rokkit doctor` to verify your setup.')
 }
