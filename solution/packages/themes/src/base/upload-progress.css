@@ -42,10 +42,10 @@
 }
 
 /* =============================================================================
-   File Row (List View)
+   File Status
    ============================================================================= */
 
-[data-upload-file] {
+[data-upload-file-status] {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -138,7 +138,7 @@
    Grid View Tiles
    ============================================================================= */
 
-[data-upload-progress][data-upload-view='grid'] [data-upload-file] {
+[data-grid] [data-upload-file-status] {
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -146,10 +146,10 @@
   gap: 0.5rem;
 }
 
-[data-upload-progress][data-upload-view='grid'] [data-upload-file-icon] {
+[data-grid] [data-upload-file-status] [data-upload-file-icon] {
   font-size: 2rem;
 }
 
-[data-upload-progress][data-upload-view='grid'] [data-upload-bar] {
+[data-grid] [data-upload-file-status] [data-upload-bar] {
   width: 100%;
 }

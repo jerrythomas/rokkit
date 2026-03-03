@@ -24,11 +24,11 @@
    File Rows
    ============================================================================= */
 
-[data-style='rokkit'] [data-upload-file] {
+[data-style='rokkit'] [data-upload-file-status] {
   @apply text-surface-z7;
 }
 
-[data-style='rokkit'] [data-upload-file]:hover {
+[data-style='rokkit'] [data-upload-file-status]:hover {
   @apply bg-surface-z2;
 }
 
@@ -60,28 +60,28 @@
    Status Colors
    ============================================================================= */
 
-[data-style='rokkit'] [data-upload-file][data-status='uploading'] [data-upload-status] {
+[data-style='rokkit'] [data-upload-file-status][data-status='uploading'] [data-upload-status] {
   @apply text-primary-z6;
 }
 
-[data-style='rokkit'] [data-upload-file][data-status='done'] [data-upload-status] {
+[data-style='rokkit'] [data-upload-file-status][data-status='done'] [data-upload-status] {
   @apply text-green-500;
 }
 
-[data-style='rokkit'] [data-upload-file][data-status='error'] [data-upload-status] {
+[data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-status] {
   @apply text-red-500;
 }
 
-[data-style='rokkit'] [data-upload-file][data-status='pending'] [data-upload-status] {
+[data-style='rokkit'] [data-upload-file-status][data-status='pending'] [data-upload-status] {
   @apply text-surface-z5;
 }
 
 /* Status-based file icon tinting */
-[data-style='rokkit'] [data-upload-file][data-status='done'] [data-upload-file-icon] {
+[data-style='rokkit'] [data-upload-file-status][data-status='done'] [data-upload-file-icon] {
   @apply text-green-500;
 }
 
-[data-style='rokkit'] [data-upload-file][data-status='error'] [data-upload-file-icon] {
+[data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-file-icon] {
   @apply text-red-500;
 }
 
@@ -97,6 +97,6 @@
   @apply bg-surface-z3 text-surface-z9;
 }
 
-[data-style='rokkit'] [data-upload-file][data-status='error'] [data-upload-retry]:hover {
+[data-style='rokkit'] [data-upload-file-status][data-status='error'] [data-upload-retry]:hover {
   @apply text-primary-z7;
 }
