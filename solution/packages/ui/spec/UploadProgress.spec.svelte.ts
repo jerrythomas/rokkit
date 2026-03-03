@@ -3,124 +3,26 @@ import { render, fireEvent } from '@testing-library/svelte'
 import UploadProgress from '../src/components/UploadProgress.svelte'
 
 const files = [
-	{
-		id: '1',
-		text: 'photo.jpg',
-		value: '1',
-		size: 1024,
-		type: 'image/jpeg',
-		status: 'uploading',
-		progress: 45,
-		path: '',
-	},
-	{
-		id: '2',
-		text: 'doc.pdf',
-		value: '2',
-		size: 2048,
-		type: 'application/pdf',
-		status: 'done',
-		progress: 100,
-		path: '',
-	},
-	{
-		id: '3',
-		text: 'readme.md',
-		value: '3',
-		size: 512,
-		type: 'text/plain',
-		status: 'pending',
-		progress: 0,
-		path: '',
-	},
+	{ id: '1', text: 'photo.jpg', value: '1', size: 1024, type: 'image/jpeg', status: 'uploading', progress: 45 },
+	{ id: '2', text: 'doc.pdf', value: '2', size: 2048, type: 'application/pdf', status: 'done', progress: 100 },
+	{ id: '3', text: 'readme.md', value: '3', size: 512, type: 'text/plain', status: 'pending', progress: 0 },
 ]
 
 describe('UploadProgress', () => {
-	it('renders a container with data-upload-progress', () => {
+	it('renders root with data-upload-progress', () => {
 		const { container } = render(UploadProgress, { files })
 		expect(container.querySelector('[data-upload-progress]')).toBeTruthy()
+	})
+
+	it('renders data-upload-view attribute', () => {
+		const { container } = render(UploadProgress, { files })
+		expect(container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')).toBe('list')
 	})
 
 	it('shows file count in header', () => {
 		const { container } = render(UploadProgress, { files })
 		const header = container.querySelector('[data-upload-header]')
 		expect(header?.textContent).toContain('3')
-	})
-
-	it('renders list view by default', () => {
-		const { container } = render(UploadProgress, { files })
-		expect(
-			container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')
-		).toBe('list')
-	})
-
-	it('renders file items', () => {
-		const { container } = render(UploadProgress, { files })
-		const items = container.querySelectorAll('[data-upload-file]')
-		expect(items.length).toBe(3)
-	})
-
-	it('shows progress bar for uploading files', () => {
-		const { container } = render(UploadProgress, { files })
-		const bars = container.querySelectorAll('[data-upload-bar]')
-		expect(bars.length).toBeGreaterThan(0)
-	})
-
-	it('renders status badges', () => {
-		const { container } = render(UploadProgress, { files })
-		const statuses = container.querySelectorAll('[data-upload-status]')
-		expect(statuses.length).toBe(3)
-	})
-
-	it('shows file name in each row', () => {
-		const { container } = render(UploadProgress, { files })
-		const items = container.querySelectorAll('[data-upload-file]')
-		expect(items[0].textContent).toContain('photo.jpg')
-		expect(items[1].textContent).toContain('doc.pdf')
-	})
-
-	it('shows formatted file size', () => {
-		const { container } = render(UploadProgress, { files })
-		const items = container.querySelectorAll('[data-upload-file]')
-		expect(items[0].textContent).toContain('1.0 KB')
-	})
-
-	it('renders cancel button for uploading files', () => {
-		const oncancel = vi.fn()
-		const { container } = render(UploadProgress, { files, oncancel })
-		const cancelBtns = container.querySelectorAll('[data-upload-cancel]')
-		expect(cancelBtns.length).toBeGreaterThan(0)
-	})
-
-	it('renders remove button for done files', () => {
-		const onremove = vi.fn()
-		const { container } = render(UploadProgress, { files, onremove })
-		const removeBtns = container.querySelectorAll('[data-upload-remove]')
-		expect(removeBtns.length).toBeGreaterThan(0)
-	})
-
-	it('fires oncancel when cancel button clicked', async () => {
-		const oncancel = vi.fn()
-		const { container } = render(UploadProgress, { files, oncancel })
-		const cancelBtn = container.querySelector('[data-upload-cancel]')!
-		await fireEvent.click(cancelBtn)
-		expect(oncancel).toHaveBeenCalled()
-	})
-
-	it('fires onremove when remove button clicked', async () => {
-		const onremove = vi.fn()
-		const { container } = render(UploadProgress, { files, onremove })
-		const removeBtn = container.querySelector('[data-upload-remove]')!
-		await fireEvent.click(removeBtn)
-		expect(onremove).toHaveBeenCalled()
-	})
-
-	it('fires onclear when clear button clicked', async () => {
-		const onclear = vi.fn()
-		const { container } = render(UploadProgress, { files, onclear })
-		const clearBtn = container.querySelector('[data-upload-clear]')!
-		await fireEvent.click(clearBtn)
-		expect(onclear).toHaveBeenCalled()
 	})
 
 	it('shows status summary in header', () => {
@@ -131,39 +33,74 @@ describe('UploadProgress', () => {
 		expect(header.textContent).toContain('pending')
 	})
 
-	it('renders grid view when view=grid', () => {
+	it('uses labels for status summary when provided', () => {
+		const { container } = render(UploadProgress, {
+			files,
+			labels: { uploading: 'En cours', done: 'Termin\u00e9', pending: 'En attente' },
+		})
+		const header = container.querySelector('[data-upload-header]')!
+		expect(header.textContent).toContain('En cours')
+		expect(header.textContent).toContain('Termin\u00e9')
+	})
+
+	it('renders a List component internally (default view)', () => {
+		const { container } = render(UploadProgress, { files })
+		expect(container.querySelector('[data-list]')).toBeTruthy()
+	})
+
+	it('renders a Grid component when view=grid', () => {
 		const { container } = render(UploadProgress, { files, view: 'grid' })
-		expect(
-			container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')
-		).toBe('grid')
+		expect(container.querySelector('[data-upload-progress]')?.getAttribute('data-upload-view')).toBe('grid')
 		expect(container.querySelector('[data-grid]')).toBeTruthy()
 	})
 
-	it('infers icon from MIME type', () => {
+	it('renders UploadFileStatus for each file (default snippet)', () => {
 		const { container } = render(UploadProgress, { files })
-		const items = container.querySelectorAll('[data-upload-file]')
-		// First file is image/jpeg → should have i-lucide:image icon
-		const icon = items[0].querySelector('[data-upload-file-icon]')
-		expect(icon?.classList.contains('i-lucide:image')).toBe(true)
+		const statuses = container.querySelectorAll('[data-upload-file-status]')
+		expect(statuses.length).toBe(3)
+	})
+
+	it('shows clear button when onclear provided', () => {
+		const onclear = vi.fn()
+		const { container } = render(UploadProgress, { files, onclear })
+		expect(container.querySelector('[data-upload-clear]')).toBeTruthy()
+	})
+
+	it('fires onclear when clear button clicked', async () => {
+		const onclear = vi.fn()
+		const { container } = render(UploadProgress, { files, onclear })
+		await fireEvent.click(container.querySelector('[data-upload-clear]')!)
+		expect(onclear).toHaveBeenCalled()
+	})
+
+	it('does not show clear button when onclear not provided', () => {
+		const { container } = render(UploadProgress, { files })
+		expect(container.querySelector('[data-upload-clear]')).toBeFalsy()
+	})
+
+	it('forwards cancelWhen to UploadFileStatus', () => {
+		const oncancel = vi.fn()
+		const { container } = render(UploadProgress, {
+			files, cancelWhen: ['uploading'], oncancel,
+		})
+		const cancelBtns = container.querySelectorAll('[data-upload-cancel]')
+		expect(cancelBtns.length).toBe(1)
 	})
 
 	it('renders empty state when no files', () => {
 		const { container } = render(UploadProgress, { files: [] })
-		expect(container.querySelectorAll('[data-upload-file]').length).toBe(0)
+		expect(container.querySelectorAll('[data-upload-file-status]').length).toBe(0)
 	})
 
-	it('sets data-status on each file row', () => {
-		const { container } = render(UploadProgress, { files })
-		const items = container.querySelectorAll('[data-upload-file]')
-		expect(items[0].getAttribute('data-status')).toBe('uploading')
-		expect(items[1].getAttribute('data-status')).toBe('done')
-		expect(items[2].getAttribute('data-status')).toBe('pending')
-	})
-
-	it('renders progress bar with correct width for uploading file', () => {
-		const { container } = render(UploadProgress, { files })
-		const fill = container.querySelector('[data-upload-fill]') as HTMLElement
-		expect(fill).toBeTruthy()
-		expect(fill.style.width).toBe('45%')
+	it('passes fields mapping through to inner components', () => {
+		const customFiles = [
+			{ id: '1', filename: 'test.txt', val: '1', bytes: 512, mime: 'text/plain', stage: 'active', pct: 50 },
+		]
+		const { container } = render(UploadProgress, {
+			files: customFiles,
+			fields: { label: 'filename', value: 'val', size: 'bytes', type: 'mime', status: 'stage', progress: 'pct' },
+		})
+		expect(container.textContent).toContain('test.txt')
+		expect(container.querySelector('[data-upload-file-status]')?.getAttribute('data-status')).toBe('active')
 	})
 })
