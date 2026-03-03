@@ -86,7 +86,7 @@
 
 	// ─── Snippet resolution ──────────────────────────────────────────────────
 
-	const hasCustomItemSnippet = $derived(ITEM_SNIPPET in snippets && typeof snippets[ITEM_SNIPPET] === 'function')
+	const customSnippet = $derived(snippets[ITEM_SNIPPET] as ((proxy: ProxyItem) => unknown) | undefined)
 
 	// ─── Action callbacks (unwrap proxy → raw item) ──────────────────────────
 
@@ -133,8 +133,8 @@
 	{#if view === 'grid'}
 		<Grid items={files} fields={fieldMap}>
 			{#snippet itemContent(proxy: ProxyItem)}
-				{#if hasCustomItemSnippet}
-					{@render (snippets[ITEM_SNIPPET] as (p: ProxyItem) => unknown)(proxy)}
+				{#if customSnippet}
+					{@render customSnippet(proxy)}
 				{:else}
 					{@render defaultItemContent(proxy)}
 				{/if}
@@ -143,8 +143,8 @@
 	{:else}
 		<List items={files} fields={fieldMap}>
 			{#snippet itemContent(proxy: ProxyItem)}
-				{#if hasCustomItemSnippet}
-					{@render (snippets[ITEM_SNIPPET] as (p: ProxyItem) => unknown)(proxy)}
+				{#if customSnippet}
+					{@render customSnippet(proxy)}
 				{:else}
 					{@render defaultItemContent(proxy)}
 				{/if}

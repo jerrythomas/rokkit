@@ -48,3 +48,8 @@ export * from './timeline.js'
 
 // FloatingNavigation Types
 export * from './floating-navigation.js'
+
+// Upload Types
+export * from './upload-target.js'
+export * from './upload-file-status.js'
+export * from './upload-progress.js'
