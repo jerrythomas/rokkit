@@ -83,34 +83,38 @@ Available themes: \`rokkit\` | \`minimal\` | \`material\`
 ## Component Index
 
 ### Selection & Navigation
-- [List](/docs/components/list/llms.txt) — vertical list with selection, grouping, lazy loading
-- [Tree](/docs/components/tree/llms.txt) — hierarchical tree view with expand/collapse
-- [Select](/docs/components/select/llms.txt) — dropdown single-selection with typeahead filter
-- [MultiSelect](/docs/components/multiselect/llms.txt) — dropdown multi-selection with pills
-- [Toggle](/docs/components/toggle/llms.txt) — radio-style button group
-- [Tabs](/docs/components/tabs/llms.txt) — tabbed content panels (horizontal/vertical)
-- [Table](/docs/components/table/llms.txt) — sortable data table with row selection
+- [List](/llms/components/list) — vertical list with selection, grouping, lazy loading
+- [Tree](/llms/components/tree) — hierarchical tree view with expand/collapse
+- [Select](/llms/components/select) — dropdown single-selection with typeahead filter
+- [MultiSelect](/llms/components/multiselect) — dropdown multi-selection with pills
+- [Toggle](/llms/components/toggle) — radio-style button group
+- [Tabs](/llms/components/tabs) — tabbed content panels (horizontal/vertical)
+- [Table](/llms/components/table) — sortable data table with row selection
 
 ### Menus & Actions
-- [Menu](/docs/components/dropdown/llms.txt) — dropdown menu with grouped options
-- [Toolbar](/docs/components/toolbar/llms.txt) — horizontal action bar with sections
-- [FloatingActions](/docs/components/floating-actions/llms.txt) — floating action button (FAB)
+- [Menu](/llms/components/dropdown) — dropdown menu with grouped options
+- [Toolbar](/llms/components/toolbar) — horizontal action bar with sections
+- [FloatingActions](/llms/components/floating-actions) — floating action button (FAB)
 
 ### Form Inputs
-- [Form](/docs/components/form/llms.txt) — schema-driven dynamic form
-- [CheckBox](/docs/components/checkbox/llms.txt) — checkbox input
-- [Switch](/docs/components/switch/llms.txt) — boolean on/off toggle
-- [RadioGroup](/docs/components/radiogroup/llms.txt) — radio button group
-- [Range](/docs/components/range/llms.txt) — range slider
-- [Rating](/docs/components/rating/llms.txt) — star rating input
-- [SearchFilter](/docs/components/search-filter/llms.txt) — structured filter parser
+- [Form](/llms/components/form) — schema-driven dynamic form
+- [CheckBox](/llms/components/checkbox) — checkbox input
+- [Switch](/llms/components/switch) — boolean on/off toggle
+- [RadioGroup](/llms/components/radiogroup) — radio button group
+- [Range](/llms/components/range) — range slider
+- [Rating](/llms/components/rating) — star rating input
+- [SearchFilter](/llms/components/search-filter) — structured filter parser
+
+### Upload
+- [UploadTarget](/llms/components/upload-target) — drag-and-drop file zone with validation
+- [UploadProgress](/llms/components/upload-progress) — file upload status orchestrator
 
 ### Layout & Display
-- [Card](/docs/components/card/llms.txt) — content card container
-- [Accordion](/docs/components/accordion/llms.txt) — collapsible sections
-- [Stepper](/docs/components/stepper/llms.txt) — step indicator / wizard progress
-- [ProgressBar](/docs/components/progress-bar/llms.txt) — progress indicator
-- [BreadCrumbs](/docs/components/breadcrumbs/llms.txt) — breadcrumb navigation
+- [Card](/llms/components/card) — content card container
+- [Accordion](/llms/components/accordion) — collapsible sections
+- [Stepper](/llms/components/stepper) — step indicator / wizard progress
+- [ProgressBar](/llms/components/progress-bar) — progress indicator
+- [BreadCrumbs](/llms/components/breadcrumbs) — breadcrumb navigation
 
 ## Keyboard Navigation
 
@@ -129,6 +133,7 @@ All interactive components support:
 
 \`\`\`javascript
 import { List, Tree, Select, MultiSelect, Tabs, Toggle, Table, Toolbar, Menu } from '@rokkit/ui'
+import { UploadTarget, UploadProgress } from '@rokkit/ui'
 import { FloatingAction } from '@rokkit/ui'
 import { Form, FormRenderer } from '@rokkit/forms'
 \`\`\`
