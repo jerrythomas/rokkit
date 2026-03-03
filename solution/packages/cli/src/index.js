@@ -53,4 +53,21 @@ prog
 		convertFolders(folders, config, opts)
 	})
 
+prog
+	.command('init')
+	.describe('Initialize Rokkit in an existing SvelteKit project')
+	.action(async (opts) => {
+		const { init } = await import('./init.js')
+		await init(opts)
+	})
+
+prog
+	.command('doctor')
+	.describe('Validate Rokkit project setup')
+	.option('--fix', 'Auto-fix safe issues')
+	.action(async (opts) => {
+		const { doctor } = await import('./doctor.js')
+		await doctor(opts)
+	})
+
 prog.parse(process.argv)
