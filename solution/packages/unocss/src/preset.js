@@ -1,0 +1,93 @@
+import extractorSvelte from '@unocss/extractor-svelte'
+import {
+	presetIcons,
+	presetTypography,
+	presetWind3,
+	transformerDirectives,
+	transformerVariantGroup
+} from 'unocss'
+import {
+	shades,
+	defaultPalette,
+	DEFAULT_ICONS,
+	iconShortcuts,
+	Theme
+} from '@rokkit/core'
+import { iconCollections } from '@rokkit/core/vite'
+import { loadConfig } from './config.js'
+
+const THEME_CONFIG = {
+	dark: {
+		light: '[data-mode="light"]',
+		dark: '[data-mode="dark"]'
+	}
+}
+
+const FONT_FAMILIES = {
+	mono: ['Victor Mono', 'monospace'],
+	heading: ['Open Sans', 'sans-serif'],
+	sans: ['Overpass', 'ui-serif', 'sans-serif'],
+	body: ['Open Sans', '-apple-system', 'system-ui', 'Segoe-UI', 'ui-serif', 'sans-serif']
+}
+
+function buildIconCollections(configIcons) {
+	return iconCollections({
+		rokkit: '@rokkit/icons/ui.json',
+		...configIcons
+	})
+}
+
+function buildSafelist() {
+	return [
+		...DEFAULT_ICONS,
+		...defaultPalette.flatMap((color) =>
+			shades.map((shade) => `bg-${color}-${shade}`)
+		),
+		...defaultPalette.flatMap((color) =>
+			shades.map((shade) => `bg-${color}-${shade}/50`)
+		)
+	]
+}
+
+function buildShortcuts(theme, config) {
+	const shortcuts = []
+
+	for (const [name, mapping] of Object.entries(config.skins)) {
+		shortcuts.push([`skin-${  name}`, theme.getPalette(mapping)])
+	}
+
+	const variants = Object.keys(config.colors)
+	for (const variant of variants) {
+		shortcuts.push(...theme.getShortcuts(variant))
+	}
+
+	shortcuts.push(...Object.entries(iconShortcuts(DEFAULT_ICONS, 'i-rokkit')))
+
+	return shortcuts
+}
+
+export function presetRokkit(options = {}) {
+	const config = loadConfig(options)
+	const theme = new Theme({ mapping: config.colors })
+
+	return {
+		name: 'rokkit',
+		presets: [
+			presetWind3(THEME_CONFIG),
+			presetTypography(),
+			presetIcons({
+				extraProperties: { display: 'inline-block' },
+				collections: buildIconCollections(config.icons)
+			})
+		],
+		extractors: [extractorSvelte()],
+		rules: [['hidden', { display: 'none' }]],
+		safelist: buildSafelist(),
+		shortcuts: buildShortcuts(theme, config),
+		theme: {
+			fontFamily: FONT_FAMILIES,
+			colors: theme.getColorRules()
+		},
+		transformers: [transformerDirectives(), transformerVariantGroup()]
+	}
+}
