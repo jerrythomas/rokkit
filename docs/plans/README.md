@@ -4,6 +4,7 @@ No active plan.
 
 ## Recently Completed
 
+- Playground → Learn Consolidation — merged playground into learn site, 8 new component entries, 14 new play pages, 8 e2e specs migrated, playground deleted
 - Backlog #64: Component Labels — MessagesStore extended with 16 nested keys + deep-merge, 15 components + ThemeSwitcherToggle migrated to translatable labels
 - Backlog #63: Semantic Icons (6 new icon SVGs, 7 components migrated to icons prop pattern, no more hardcoded i-lucide:* strings)
 - Backlog #3: ItemProxy + Proxy → ProxyItem unification (8 components migrated, ItemProxy deleted, legacy Proxy deleted, ProxyItem fields getter added)

@@ -7,6 +7,26 @@ Design details live in `docs/design/` — modular docs per module.
 
 ## 2026-03-02
 
+### Playground → Learn Consolidation COMPLETE
+
+Merged the entire `sites/playground` into `sites/learn`. The playground site has been deleted.
+
+**What was done:**
+- Enhanced `PlaySection` with theme selector sidebar (ThemeManager + ThemeSwitcherToggle)
+- Created 8 new learn entries for playground-only components (breadcrumbs, button, card, carousel, code, floating-action, floating-navigation, pill)
+- Added play pages for all 14 existing learn components that lacked them
+- Replaced list play page with richer playground version (multiselect, badge, descriptions)
+- Migrated all 8 playground e2e specs to learn site (toolbar, tree, menu, multi-select + visual snapshots for toggle, tabs, select, list, upload-target, upload-progress)
+- Deleted `sites/playground/` entirely (179 files, -5413 lines)
+- Updated CLAUDE.md, agents/memory.md, agents/references.md
+- Created backlog item for remaining coverage gaps (docs/backlog/2026-03-02-learn-site-coverage.md)
+
+**Key commits:** `15489412`, `607e4e45`, `6acae5c0`, `3250deef`
+
+**Result:** 2658 tests passing, 0 lint errors, single site for all demos + tutorials + e2e tests.
+
+---
+
 ### Backlog #62 COMPLETE — ThemeSwitcherToggle `includeSystem` prop
 
 Added `includeSystem?: boolean` prop (default `true`) to `ThemeSwitcherToggleProps`. When `false`, filters `'system'` from modes via `effectiveModes` derived before building options.
