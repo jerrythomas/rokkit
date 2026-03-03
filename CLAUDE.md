@@ -37,8 +37,7 @@ rokkit/
       README.md                 <-- Current active plan
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
   sites/
-    learn/                      <-- Documentation site
-    playground/                 <-- Interactive demos + e2e tests
+    learn/                      <-- Documentation site + interactive demos + e2e tests
 ```
 
 ## Key Design Principles
@@ -62,7 +61,7 @@ bun run test:ui                   # UI package tests
 bun run lint                      # 0 errors expected
 
 # E2E tests
-cd sites/playground && npx playwright test
+cd sites/learn && npx playwright test
 ```
 
 ## Conventions

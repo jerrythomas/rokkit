@@ -183,5 +183,4 @@ Standard props: `items`/`options`, `value` (bindable), `fields`, `onchange`/`ons
 | `@rokkit/themes` | `packages/themes/` | CSS themes (base + rokkit/minimal/material/glass) |
 | `@rokkit/tutorial` | `packages/tutorial/` | Tutorial utilities |
 | `@rokkit/ui` | `packages/ui/` | UI components |
-| `sites/learn` | Documentation site |
-| `sites/playground` | Interactive demos + e2e tests |
+| `sites/learn` | Documentation site + interactive demos + e2e tests |
