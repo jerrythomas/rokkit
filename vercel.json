@@ -1,5 +1,7 @@
 {
   "buildCommand": "bun run build",
   "installCommand": "bun install",
-  "framework": "sveltekit"
+  "framework": "sveltekit",
+  "directory": "solution/sites/learn",
+  "outputDirectory": "solution/sites/learn/build"
 }
