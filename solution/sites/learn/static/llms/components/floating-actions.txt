@@ -167,6 +167,6 @@ interface FloatingActionProps {
 
 ## Related Components
 
-- [Menu](/docs/components/dropdown/llms.txt) — inline dropdown menu
-- [Toolbar](/docs/components/toolbar/llms.txt) — horizontal action bar
-- [Button](/docs/components/button/llms.txt) — standard button
+- [Menu](/llms/components/dropdown.txt) — inline dropdown menu
+- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar
+- [Button](/llms/components/button.txt) — standard button

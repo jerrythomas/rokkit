@@ -80,38 +80,42 @@ Available themes: `rokkit` | `minimal` | `material`
 ## Component Index
 
 ### Selection & Navigation
-- [List](/llms/components/list) — vertical list with selection, grouping, lazy loading
-- [Tree](/llms/components/tree) — hierarchical tree view with expand/collapse
-- [Select](/llms/components/select) — dropdown single-selection with typeahead filter
-- [MultiSelect](/llms/components/multiselect) — dropdown multi-selection with pills
-- [Toggle](/llms/components/toggle) — radio-style button group
-- [Tabs](/llms/components/tabs) — tabbed content panels (horizontal/vertical)
-- [Table](/llms/components/table) — sortable data table with row selection
+
+- [List](/llms/components/list.txt) — vertical list with selection, grouping, lazy loading
+- [Tree](/llms/components/tree.txt) — hierarchical tree view with expand/collapse
+- [Select](/llms/components/select.txt) — dropdown single-selection with typeahead filter
+- [MultiSelect](/llms/components/multiselect.txt) — dropdown multi-selection with pills
+- [Toggle](/llms/components/toggle.txt) — radio-style button group
+- [Tabs](/llms/components/tabs.txt) — tabbed content panels (horizontal/vertical)
+- [Table](/llms/components/table.txt) — sortable data table with row selection
 
 ### Menus & Actions
-- [Menu](/llms/components/dropdown) — dropdown menu with grouped options
-- [Toolbar](/llms/components/toolbar) — horizontal action bar with sections
-- [FloatingActions](/llms/components/floating-actions) — floating action button (FAB)
+
+- [Menu](/llms/components/dropdown.txt) — dropdown menu with grouped options
+- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar with sections
+- [FloatingActions](/llms/components/floating-actions.txt) — floating action button (FAB)
 
 ### Form Inputs
-- [Form](/llms/components/form) — schema-driven dynamic form
-- [CheckBox](/llms/components/checkbox) — checkbox input
-- [Switch](/llms/components/switch) — boolean on/off toggle
-- [RadioGroup](/llms/components/radiogroup) — radio button group
-- [Range](/llms/components/range) — range slider
-- [Rating](/llms/components/rating) — star rating input
-- [SearchFilter](/llms/components/search-filter) — structured filter parser
+
+- [Form](/llms/components/form.txt) — schema-driven dynamic form
+- [CheckBox](/llms/components/checkbox.txt) — checkbox input
+- [Switch](/llms/components/switch.txt) — boolean on/off toggle
+- [RadioGroup](/llms/components/radiogroup.txt) — radio button group
+- [Range](/llms/components/range.txt) — range slider
+- [Rating](/llms/components/rating.txt) — star rating input
+- [SearchFilter](/llms/components/search-filter.txt) — structured filter parser
 
 ### Upload
-- [UploadTarget](/llms/components/upload-target) — drag-and-drop file zone with validation
-- [UploadProgress](/llms/components/upload-progress) — file upload status orchestrator
+
+- [UploadTarget](/llms/components/upload-target.txt) — drag-and-drop file zone with validation
+- [UploadProgress](/llms/components/upload-progress.txt) — file upload status orchestrator
 
 ### Layout & Display
-- [Card](/llms/components/card) — content card container
-- [Accordion](/llms/components/accordion) — collapsible sections
-- [Stepper](/llms/components/stepper) — step indicator / wizard progress
-- [ProgressBar](/llms/components/progress-bar) — progress indicator
-- [BreadCrumbs](/llms/components/breadcrumbs) — breadcrumb navigation
+
+- [Card](/llms/components/card.txt) — content card container
+- [Stepper](/llms/components/stepper.txt) — step indicator / wizard progress
+- [ProgressBar](/llms/components/progress-bar.txt) — progress indicator
+- [BreadCrumbs](/llms/components/breadcrumbs.txt) — breadcrumb navigation
 
 ## Keyboard Navigation
 

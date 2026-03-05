@@ -181,6 +181,6 @@ interface MenuStateIcons {
 
 ## Related Components
 
-- [Select](/docs/components/select/llms.txt) — form-style dropdown for value selection
-- [Toolbar](/docs/components/toolbar/llms.txt) — horizontal action bar
-- [FloatingActions](/docs/components/floating-actions/llms.txt) — FAB action menu
+- [Select](/llms/components/select.txt) — form-style dropdown for value selection
+- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar
+- [FloatingActions](/llms/components/floating-actions.txt) — FAB action menu

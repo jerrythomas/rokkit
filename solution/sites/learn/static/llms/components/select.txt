@@ -205,6 +205,6 @@ interface SelectStateIcons {
 
 ## Related Components
 
-- [MultiSelect](/docs/components/multiselect/llms.txt) — multi-item selection
-- [List](/docs/components/list/llms.txt) — inline list selection
-- [Toggle](/docs/components/toggle/llms.txt) — compact option group
+- [MultiSelect](/llms/components/multiselect.txt) — multi-item selection
+- [List](/llms/components/list.txt) — inline list selection
+- [Toggle](/llms/components/toggle.txt) — compact option group

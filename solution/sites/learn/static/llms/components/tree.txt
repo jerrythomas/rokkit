@@ -158,5 +158,5 @@ interface TreeProps {
 
 ## Related Components
 
-- [List](/docs/components/list/llms.txt) — flat list with collapsible groups
-- [LazyTree](/docs/components/lazy-tree/llms.txt) — tree with lazy-loaded children
+- [List](/llms/components/list.txt) — flat list with collapsible groups
+- [LazyTree](/llms/components/lazy-tree.txt) — tree with lazy-loaded children

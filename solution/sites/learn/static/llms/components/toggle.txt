@@ -159,5 +159,5 @@ import { Toggle } from '@rokkit/ui'
 
 ## Related Components
 
-- [List](/docs/components/list/llms.txt) — vertical list with selection
-- [Tabs](/docs/components/tabs/llms.txt) — tabbed content panels
+- [List](/llms/components/list.txt) — vertical list with selection
+- [Tabs](/llms/components/tabs.txt) — tabbed content panels

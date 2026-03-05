@@ -222,6 +222,6 @@ interface TabsFields extends Record<string, string> {
 
 ## Related Components
 
-- [Toggle](/docs/components/toggle/llms.txt) — compact option switcher
-- [List](/docs/components/list/llms.txt) — vertical navigable list
-- [Toolbar](/docs/components/toolbar/llms.txt) — horizontal action bar
+- [Toggle](/llms/components/toggle.txt) — compact option switcher
+- [List](/llms/components/list.txt) — vertical navigable list
+- [Toolbar](/llms/components/toolbar.txt) — horizontal action bar

@@ -60,7 +60,7 @@ MultiSelect extends Select for multi-item selection. Selected values are shown a
 
 ## Field Mapping
 
-Same as [Select](/docs/components/select/llms.txt) — uses `SelectFields`:
+Same as [Select](/llms/components/select.txt) — uses `SelectFields`:
 
 | Field | Default |
 |-------|---------|
@@ -153,6 +153,6 @@ interface MultiSelectProps {
 
 ## Related Components
 
-- [Select](/docs/components/select/llms.txt) — single-item dropdown
-- [List](/docs/components/list/llms.txt) — inline multi-selection
-- [Toggle](/docs/components/toggle/llms.txt) — compact option group
+- [Select](/llms/components/select.txt) — single-item dropdown
+- [List](/llms/components/list.txt) — inline multi-selection
+- [Toggle](/llms/components/toggle.txt) — compact option group

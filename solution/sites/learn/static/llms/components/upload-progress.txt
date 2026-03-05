@@ -168,5 +168,5 @@ import { UploadFileStatus } from '@rokkit/ui'
 
 ## Related Components
 
-- [UploadTarget](/docs/components/upload-target/llms.txt) — drag-and-drop file zone with validation
-- [List](/docs/components/list/llms.txt) — vertical list (used internally for list view)
+- [UploadTarget](/llms/components/upload-target.txt) — drag-and-drop file zone with validation
+- [List](/llms/components/list.txt) — vertical list (used internally for list view)

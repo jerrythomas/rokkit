@@ -236,5 +236,5 @@ interface SortState {
 
 ## Related Components
 
-- [List](/docs/components/list/llms.txt) — vertical list with selection
-- [Tree](/docs/components/tree/llms.txt) — hierarchical tree view
+- [List](/llms/components/list.txt) — vertical list with selection
+- [Tree](/llms/components/tree.txt) — hierarchical tree view

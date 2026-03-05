@@ -91,4 +91,4 @@ import { UploadTarget } from '@rokkit/ui'
 
 ## Related Components
 
-- [UploadProgress](/docs/components/upload-progress/llms.txt) — file upload status orchestrator
+- [UploadProgress](/llms/components/upload-progress.txt) — file upload status orchestrator

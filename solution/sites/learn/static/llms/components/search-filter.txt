@@ -131,6 +131,6 @@ interface SearchFilterProps {
 
 ## Related Components
 
-- [Table](/docs/components/table/llms.txt) — data table (common pairing)
-- [List](/docs/components/list/llms.txt) — list display (common pairing)
-- [Select](/docs/components/select/llms.txt) — dropdown with built-in typeahead (`filterable`)
+- [Table](/llms/components/table.txt) — data table (common pairing)
+- [List](/llms/components/list.txt) — list display (common pairing)
+- [Select](/llms/components/select.txt) — dropdown with built-in typeahead (`filterable`)

@@ -213,6 +213,6 @@ type ToolbarItemType = 'button' | 'toggle' | 'separator' | 'spacer' | 'custom'
 
 ## Related Components
 
-- [Menu](/docs/components/dropdown/llms.txt) — dropdown action menu
-- [Tabs](/docs/components/tabs/llms.txt) — tab navigation
-- [Toggle](/docs/components/toggle/llms.txt) — compact option group
+- [Menu](/llms/components/dropdown.txt) — dropdown action menu
+- [Tabs](/llms/components/tabs.txt) — tab navigation
+- [Toggle](/llms/components/toggle.txt) — compact option group
