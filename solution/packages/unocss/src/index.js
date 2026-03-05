@@ -1,2 +1,2 @@
-export { presetRokkit } from './preset.js'
+export { presetRokkit } from './preset'
 export { loadConfig } from './config.js'

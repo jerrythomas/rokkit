@@ -1,3 +1,4 @@
+// @ts-nocheck
 import extractorSvelte from '@unocss/extractor-svelte'
 import {
 	presetIcons,
@@ -6,6 +7,7 @@ import {
 	transformerDirectives,
 	transformerVariantGroup
 } from 'unocss'
+import type { Preset } from 'unocss'
 import {
 	shades,
 	defaultPalette,
@@ -66,7 +68,7 @@ function buildShortcuts(theme, config) {
 	return shortcuts
 }
 
-export function presetRokkit(options = {}) {
+export function presetRokkit(options = {}): Preset {
 	const config = loadConfig(options)
 	const theme = new Theme({ mapping: config.colors })
 
