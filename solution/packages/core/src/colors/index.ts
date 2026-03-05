@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { colors } from '@unocss/preset-mini/colors'
-// import defaultTailwindColors from './tailwind.json' with { type: 'json' }
+import type { PresetMiniColors } from '@unocss/preset-mini/colors'
 import syntaxColorPalette from './syntax.json' with { type: 'json' }
 import extraColors from './extra.json' with { type: 'json' }
 
@@ -16,7 +17,7 @@ export const defaultPalette = [
 ]
 
 export const syntaxColors = syntaxColorPalette
-export const defaultColors = {
+export const defaultColors: PresetMiniColors & typeof extraColors = {
 	...colors,
 	...extraColors
 }

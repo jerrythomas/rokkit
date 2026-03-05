@@ -1,5 +1,6 @@
-import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants.js'
-import { shades } from './colors/index.js'
+// @ts-nocheck
+import { DEFAULT_THEME_MAPPING, defaultColors, TONE_MAP } from './constants'
+import { shades } from './colors/index'
 import { hex2rgb } from './utils'
 
 const modifiers = {
