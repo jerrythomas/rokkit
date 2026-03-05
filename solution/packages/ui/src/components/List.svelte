@@ -91,7 +91,7 @@
 </script>
 
 {#snippet collapsibleIcon(proxy: ProxyItem)}
-  {#if collapsible}
+  {#if collapsible && proxy.hasChildren}
 		<span
 			data-list-expand-icon
 			class={proxy.expanded ? icons.opened : icons.closed}
@@ -139,6 +139,7 @@
 				{:else}
 				<ItemContent {proxy} />
 				{/if}
+
         {@render collapsibleIcon(proxy)}
 			</button>
 		{:else if proxy.get('href')}
@@ -160,7 +161,6 @@
 				{:else}
 				<ItemContent {proxy} />
 				{/if}
-				{@render collapsibleIcon(proxy)}
 			</a>
 		{:else}
 			<!--

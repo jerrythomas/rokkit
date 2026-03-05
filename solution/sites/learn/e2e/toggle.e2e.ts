@@ -1,0 +1,139 @@
+import { test, expect } from '@playwright/test'
+import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
+
+// ─── Play page tests ──────────────────────────────────────────────────────────
+
+test.describe('Toggle — play page', () => {
+	test.beforeEach(async ({ page }) => {
+		await goToPlayPage(page, 'toggle')
+	})
+
+	// ─── Keyboard navigation ─────────────────────────────────────────────
+
+	test('ArrowRight moves focus through options', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		await options.first().focus()
+
+		await page.keyboard.press('ArrowRight')
+		await expect(options.nth(1)).toBeFocused()
+
+		await page.keyboard.press('ArrowRight')
+		await expect(options.nth(2)).toBeFocused()
+	})
+
+	test('ArrowLeft moves focus back', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		await options.nth(2).focus()
+
+		await page.keyboard.press('ArrowLeft')
+		await expect(options.nth(1)).toBeFocused()
+
+		await page.keyboard.press('ArrowLeft')
+		await expect(options.nth(0)).toBeFocused()
+	})
+
+	test('Home moves to first option', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		await options.nth(2).focus()
+		await page.keyboard.press('Home')
+		await expect(options.first()).toBeFocused()
+	})
+
+	test('End moves to last option', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		await options.first().focus()
+		await page.keyboard.press('End')
+		await expect(options.last()).toBeFocused()
+	})
+
+	test('Enter selects focused option', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		await options.first().focus()
+		await page.keyboard.press('ArrowRight')
+		await page.keyboard.press('Enter')
+		await expect(options.nth(1)).toHaveAttribute('data-selected')
+	})
+
+	// ─── Mouse interaction ───────────────────────────────────────────────
+
+	test('click selects an option', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		await options.nth(1).click()
+		await expect(options.nth(1)).toHaveAttribute('data-selected')
+	})
+
+	test('clicking already selected option keeps it selected', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').first()
+		const options = toggle.locator('[data-toggle-option]')
+		// First option should be selected by default
+		await options.first().click()
+		await expect(options.first()).toHaveAttribute('data-selected')
+	})
+
+	// ─── Text-only toggle ────────────────────────────────────────────────
+
+	test('text-only toggle renders labels', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').nth(1)
+		const options = toggle.locator('[data-toggle-option]')
+		await expect(options).toHaveCount(4)
+		await expect(options.first()).toContainText('Daily')
+		await expect(options.last()).toContainText('Yearly')
+	})
+
+	test('text-only toggle keyboard navigation works', async ({ page }) => {
+		const toggle = page.locator('.preview-area [data-toggle]').nth(1)
+		const options = toggle.locator('[data-toggle-option]')
+		await options.first().focus()
+		await page.keyboard.press('ArrowRight')
+		await page.keyboard.press('Enter')
+		await expect(options.nth(1)).toHaveAttribute('data-selected')
+	})
+
+	// ─── Visual snapshots ───────────────────────────────────────────────
+
+	test.describe('visual snapshots', () => {
+		for (const theme of themes) {
+			for (const mode of modes) {
+				test(`${theme}/${mode} - default state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const toggle = page.locator('[data-toggle]').first()
+					await expect(toggle).toHaveScreenshot(`toggle-${theme}-${mode}-default.png`)
+				})
+
+				test(`${theme}/${mode} - focused state`, async ({ page }) => {
+					await setTheme(page, theme)
+					await setMode(page, mode)
+
+					const toggle = page.locator('[data-toggle]').first()
+					const first = toggle.locator('[data-toggle-option]').first()
+					await first.focus()
+					await page.keyboard.press('ArrowRight')
+
+					await expect(toggle).toHaveScreenshot(`toggle-${theme}-${mode}-focused.png`)
+				})
+			}
+		}
+	})
+})
+
+// ─── Learn page tests ─────────────────────────────────────────────────────────
+
+test.describe('Toggle — learn page', () => {
+	test.beforeEach(async ({ page }) => {
+		await page.goto('/docs/components/toggle')
+		await page.waitForLoadState('networkidle')
+	})
+
+	test('renders story viewers', async ({ page }) => {
+		const stories = page.locator('[data-story-root]')
+		await expect(stories.first()).toBeVisible()
+	})
+})

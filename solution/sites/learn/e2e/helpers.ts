@@ -6,9 +6,9 @@ export type Theme = (typeof themes)[number]
 export const modes = ['light', 'dark'] as const
 export type Mode = (typeof modes)[number]
 
-/** Navigate to a component's Play page and wait for it to be ready */
+/** Navigate to a component's Playground page and wait for it to be ready */
 export async function goToPlayPage(page: Page, component: string) {
-	await page.goto(`/components/${component}/play`)
+	await page.goto(`/playground/components/${component}`)
 	await page.waitForLoadState('networkidle')
 }
 

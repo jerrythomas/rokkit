@@ -1,7 +1,0 @@
-{
-  "category": "components",
-  "title": "Accordion",
-  "icon": "i-component:accordion",
-  "order": 2,
-  "description": "A collection of items that can be expanded and collapsed."
-}

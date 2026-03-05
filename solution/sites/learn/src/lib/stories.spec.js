@@ -58,20 +58,20 @@ describe('stories.js', () => {
 					category: 'welcome',
 					order: 1,
 					depth: 1,
-					slug: '/welcome',
+					slug: '/docs/welcome',
 					children: [
 						{
 							title: 'Introduction',
 							category: 'welcome',
 							order: 1,
 							depth: 2,
-							slug: '/welcome/introduction'
+							slug: '/docs/welcome/introduction'
 						},
 						{
 							title: 'Getting Started',
 							category: 'welcome',
 							depth: 2,
-							slug: '/welcome/get',
+							slug: '/docs/welcome/get',
 							order: 2
 						}
 					]
@@ -81,21 +81,21 @@ describe('stories.js', () => {
 					category: 'elements',
 					order: 2,
 					depth: 1,
-					slug: '/elements',
+					slug: '/docs/elements',
 					children: [
 						{
 							title: 'Components',
 							order: 1,
 							depth: 2,
 							category: 'elements',
-							slug: '/elements/components'
+							slug: '/docs/elements/components'
 						},
 						{
 							title: 'List',
 							order: 2,
 							depth: 2,
 							category: 'elements',
-							slug: '/elements/list'
+							slug: '/docs/elements/list'
 						}
 					]
 				}

@@ -104,7 +104,7 @@ export function getSections(metadata) {
 		const item = {
 			order: 99,
 			...content,
-			slug: getSlug(file),
+			slug: `/docs${getSlug(file)}`,
 			depth: file.split('/').length - 2
 		}
 
