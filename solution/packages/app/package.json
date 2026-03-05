@@ -3,6 +3,9 @@
   "version": "1.0.0-next.128",
   "description": "App-level controls for Rokkit applications - theme management and UI chrome",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "svelte": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
