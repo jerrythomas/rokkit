@@ -1,0 +1,227 @@
+# Rokkit Tabs Component
+
+> Data-driven tabbed interface with horizontal/vertical layout, editable tabs, and keyboard navigation.
+
+The Tabs component renders a list of tab triggers above (or beside) associated content panels. Supports orientation variants, alignment, editable tabs (add/remove), and custom rendering via snippets.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Tabs } from '@rokkit/ui'
+
+  const options = [
+    { value: 'overview', text: 'Overview', content: 'Overview content here...' },
+    { value: 'api',      text: 'API',      content: 'API docs here...' },
+    { value: 'examples', text: 'Examples', content: 'Examples here...' }
+  ]
+
+  let value = $state('overview')
+</script>
+
+<Tabs {options} bind:value />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `TabsItem[]` | `[]` | Tab data array |
+| `fields` | `TabsFields` | defaults | Field mapping |
+| `value` | `unknown` | — | Selected tab value — use `bind:value` |
+| `orientation` | `'horizontal'|'vertical'` | `'horizontal'` | Tab list direction |
+| `position` | `'before'|'after'` | `'before'` | Tab list placement (top/left vs bottom/right) |
+| `align` | `'start'|'center'|'end'` | `'start'` | Alignment of tabs within the list |
+| `name` | `string` | `'tabs'` | Accessible label for the tablist |
+| `editable` | `boolean` | `false` | Show add/remove buttons |
+| `placeholder` | `string` | — | Text shown when no tab is selected |
+| `disabled` | `boolean` | `false` | Disable all tabs |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Field Mapping
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `value` | `'value'` | Tab selection value |
+| `text` | `'text'` | Tab trigger label |
+| `icon` | `'icon'` | Icon class name |
+| `label` | `'label'` | Aria-label override |
+| `content` | `'content'` | Panel content (for default renderer) |
+| `disabled` | `'disabled'` | Disabled state |
+
+## Layout Variants
+
+### Vertical Tabs
+
+```svelte
+<Tabs {options} bind:value orientation="vertical" />
+```
+
+### Bottom Tabs
+
+```svelte
+<Tabs {options} bind:value position="after" />
+```
+
+### Centered Tabs
+
+```svelte
+<Tabs {options} bind:value align="center" />
+```
+
+## Editable Tabs
+
+Add and remove tabs dynamically:
+
+```svelte
+<script>
+  import { Tabs } from '@rokkit/ui'
+
+  let tabs = $state([
+    { value: 't1', text: 'Tab 1', content: 'Content 1' }
+  ])
+  let value = $state('t1')
+  let nextId = 2
+
+  function handleAdd() {
+    const id = `t${nextId++}`
+    tabs = [...tabs, { value: id, text: `Tab ${nextId - 1}`, content: '' }]
+    value = id
+  }
+
+  function handleRemove(v) {
+    tabs = tabs.filter(t => t.value !== v)
+  }
+</script>
+
+<Tabs options={tabs} bind:value editable onadd={handleAdd} onremove={handleRemove} />
+```
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| `onchange` | `(value, item) => void` | Selection changed |
+| `onselect` | `(value, item) => void` | Tab clicked (fires even on same tab) |
+| `onadd` | `() => void` | Add button clicked (editable mode) |
+| `onremove` | `(value) => void` | Remove button clicked (editable mode) |
+
+## Snippets
+
+### Custom Tab Trigger
+
+```svelte
+<Tabs {options} bind:value>
+  {#snippet tabItem(data, fields, handlers, selected)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}
+      role="tab" aria-selected={selected}>
+      {#if data.icon}<span class={data.icon}></span>{/if}
+      <span>{data.text}</span>
+    </button>
+  {/snippet}
+</Tabs>
+```
+
+### Custom Panel Content
+
+```svelte
+<Tabs {options} bind:value>
+  {#snippet tabPanel(data, fields)}
+    <div class="panel">
+      <h2>{data.text}</h2>
+      <div>{@html data.content}</div>
+    </div>
+  {/snippet}
+</Tabs>
+```
+
+### Empty State
+
+```svelte
+<Tabs {options} bind:value>
+  {#snippet empty()}
+    <div class="p-8 text-center">No tabs available</div>
+  {/snippet}
+</Tabs>
+```
+
+## Keyboard Navigation
+
+### Horizontal Tabs
+| Key | Action |
+|-----|--------|
+| `ArrowLeft` | Previous tab |
+| `ArrowRight` | Next tab |
+| `Home/End` | First/last tab |
+| `Enter/Space` | Select focused tab |
+
+### Vertical Tabs
+| Key | Action |
+|-----|--------|
+| `ArrowUp` | Previous tab |
+| `ArrowDown` | Next tab |
+| `Home/End` | First/last tab |
+
+## Accessibility
+
+- `role="tablist"` on tab list
+- `role="tab"` on each tab trigger
+- `role="tabpanel"` on each panel
+- `aria-selected` on selected tab
+- `aria-orientation` reflects orientation
+- `aria-controls` links tab to panel
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-tabs` | Root element |
+| `data-tabs-list` | Tab trigger list |
+| `data-tabs-trigger` | Individual tab button |
+| `data-tabs-panel` | Content panel |
+| `data-tabs-content` | Inner panel content |
+| `data-orientation` | horizontal/vertical |
+| `data-position` | before/after |
+| `data-selected` | Selected tab/panel |
+| `data-panel-active` | Visible panel |
+
+## Import
+
+```javascript
+import { Tabs } from '@rokkit/ui'
+```
+
+## TypeScript Types
+
+```typescript
+interface TabsProps {
+  options?: TabsItem[]
+  fields?: TabsFields
+  value?: unknown
+  orientation?: 'horizontal' | 'vertical'
+  position?: 'before' | 'after'
+  align?: 'start' | 'center' | 'end'
+  name?: string
+  editable?: boolean
+  placeholder?: string
+  disabled?: boolean
+  class?: string
+  onchange?: (value: unknown, item: TabsItem) => void
+  onselect?: (value: unknown, item: TabsItem) => void
+  onadd?: () => void
+  onremove?: (value: unknown) => void
+  tabItem?: Snippet<[TabsItem, TabsFields, TabsItemHandlers, boolean]>
+  tabPanel?: Snippet<[TabsItem, TabsFields]>
+  empty?: Snippet<[]>
+}
+
+interface TabsFields extends Record<string, string> {
+  content?: string  // default: 'content'
+}
+```
+
+## Related Components
+
+- [Toggle](/docs/components/toggle/llms.txt) — compact option switcher
+- [List](/docs/components/list/llms.txt) — vertical navigable list
+- [Toolbar](/docs/components/toolbar/llms.txt) — horizontal action bar

@@ -1,0 +1,94 @@
+# Rokkit UploadTarget Component
+
+> Drag-and-drop file zone with MIME type and file size validation. Accepts drag-and-drop or click-to-browse.
+
+UploadTarget renders a drop zone that validates incoming files against `accept` (MIME types / file extensions) and `maxSize` constraints. Valid files are passed through via `onfiles`; rejected files trigger `onerror` with the reason. The default UI can be fully replaced with a custom `content` snippet.
+
+## Quick Start
+
+```svelte
+<script>
+  import { UploadTarget } from '@rokkit/ui'
+
+  function handleFiles(files) {
+    console.log('Received:', files.map(f => f.name))
+  }
+</script>
+
+<UploadTarget onfiles={handleFiles} multiple />
+```
+
+## Accept Filtering
+
+The `accept` prop takes a comma-separated string of MIME types and file extensions. Wildcards like `image/*` match any image type. Extensions are case-insensitive.
+
+```svelte
+<UploadTarget
+  accept="image/*,.pdf,application/json"
+  onfiles={handleFiles}
+  onerror={(err) => console.log(err.file.name, err.reason)}
+/>
+```
+
+## Max File Size
+
+Set `maxSize` in bytes. Oversized files trigger `onerror` with `reason: 'size'`:
+
+```svelte
+<UploadTarget maxSize={5242880} onfiles={handleFiles} onerror={handleError} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `accept` | `string` | `''` | MIME types / extensions, comma-separated (e.g. `'image/*,.pdf'`) |
+| `maxSize` | `number` | `Infinity` | Maximum file size in bytes |
+| `multiple` | `boolean` | `false` | Allow selecting multiple files |
+| `disabled` | `boolean` | `false` | Disable the drop zone |
+| `labels` | `Record<string, string>` | `{}` | Label overrides merged with i18n defaults |
+| `class` | `string` | `''` | Additional CSS classes |
+| `onfiles` | `(files: File[]) => void` | — | Called with validated files after drop or browse |
+| `onerror` | `(err: { file: File, reason: 'type' \| 'size' }) => void` | — | Called per rejected file |
+
+## Custom Content Snippet
+
+Replace the default drop zone UI with a `content` snippet. It receives a `dragging` boolean:
+
+```svelte
+<UploadTarget onfiles={handleFiles}>
+  {#snippet content(dragging)}
+    <div class="custom-zone" class:active={dragging}>
+      <span class="i-lucide:cloud-upload"></span>
+      <p>{dragging ? 'Release to upload' : 'Drag files here'}</p>
+    </div>
+  {/snippet}
+</UploadTarget>
+```
+
+## Accessibility
+
+- `role="button"` and `tabindex="0"` on root — keyboard focusable
+- `aria-label` from resolved labels
+- `aria-disabled` when disabled
+- Enter and Space keys open the file dialog
+
+## Data Attributes
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| `data-upload-target` | Root | Drop zone container |
+| `data-upload-icon` | Span | Upload icon (default UI) |
+| `data-upload-button` | Button | Browse button (default UI) |
+| `data-dragging` | Root | Present during drag-over |
+| `data-disabled` | Root | Present when disabled |
+
+## Import
+
+```javascript
+import { UploadTarget } from '@rokkit/ui'
+```
+
+## Related Components
+
+- [UploadProgress](/docs/components/upload-progress/llms.txt) — file upload status orchestrator

@@ -10,8 +10,8 @@
 @import '@fontsource/open-sans';
 @import '@fontsource/open-sans/300.css';
 
-@import '@rokkit/themes/dist/base';
-@import '@rokkit/themes/dist/rokkit';
+@import '@rokkit/themes/base.css';
+@import '@rokkit/themes/rokkit.css';
 
 /* Learn-site specific overrides loaded after package */
 @import './theme/base/shiki.css';

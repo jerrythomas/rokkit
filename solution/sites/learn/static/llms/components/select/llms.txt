@@ -1,0 +1,210 @@
+# Rokkit Select Component
+
+> Data-driven dropdown select with keyboard navigation, grouping, and typeahead filtering.
+
+The Select component provides a dropdown selection interface that adapts to any data structure through field mapping. Supports grouped options, a typeahead filter input, and customizable dropdown direction.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Select } from '@rokkit/ui'
+
+  let options = ['Apple', 'Banana', 'Cherry']
+  let value = $state(null)
+</script>
+
+<Select {options} bind:value placeholder="Choose a fruit..." />
+```
+
+## Object Options with Field Mapping
+
+```svelte
+<script>
+  import { Select } from '@rokkit/ui'
+
+  const countries = [
+    { code: 'us', name: 'United States', flag: 'i-flag:us' },
+    { code: 'gb', name: 'United Kingdom', flag: 'i-flag:gb' },
+    { code: 'ca', name: 'Canada',         flag: 'i-flag:ca' }
+  ]
+  const fields = { value: 'code', text: 'name', icon: 'flag' }
+
+  let value = $state(null)
+</script>
+
+<Select options={countries} {fields} bind:value placeholder="Select country..." />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `SelectItem[]` | `[]` | Options array |
+| `fields` | `SelectFields` | defaults | Field mapping |
+| `value` | `unknown` | — | Selected value — use `bind:value` |
+| `selected` | `SelectItem|null` | — | Selected item reference — use `bind:selected` |
+| `placeholder` | `string` | — | Placeholder text when nothing selected |
+| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
+| `align` | `'left'|'right'|'start'|'end'` | `'left'` | Dropdown alignment |
+| `direction` | `'up'|'down'` | `'down'` | Dropdown slide direction |
+| `maxRows` | `number` | `5` | Visible rows in dropdown |
+| `disabled` | `boolean` | `false` | Disable the select |
+| `filterable` | `boolean` | `false` | Show typeahead filter input |
+| `filterPlaceholder` | `string` | — | Placeholder for filter input |
+| `icons` | `SelectStateIcons` | — | Override state icons |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Field Mapping
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `value` | `'value'` | Selection value |
+| `text` | `'text'` | Display text |
+| `icon` | `'icon'` | Icon class name |
+| `description` | `'description'` | Secondary/subtitle text |
+| `label` | `'label'` | Aria-label override |
+| `disabled` | `'disabled'` | Disabled state |
+| `children` | `'children'` | Grouped options array |
+| `badge` | `'badge'` | Badge/count indicator |
+
+## Grouped Options
+
+Use the `children` field to create option groups:
+
+```svelte
+<script>
+  const options = [
+    { text: 'Fruits', children: [
+        { text: 'Apple',  value: 'apple' },
+        { text: 'Banana', value: 'banana' }
+    ]},
+    { text: 'Vegetables', children: [
+        { text: 'Carrot', value: 'carrot' }
+    ]}
+  ]
+  let value = $state(null)
+</script>
+
+<Select {options} bind:value />
+```
+
+## Typeahead Filter
+
+```svelte
+<Select options={countries} bind:value filterable filterPlaceholder="Search countries..." />
+```
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| `onchange` | `(value, item) => void` | Selection changed |
+
+## Snippets
+
+### Custom Selected Value Display
+
+```svelte
+<Select {options} bind:value>
+  {#snippet selectedValue(item, fields)}
+    {#if item}
+      <span class={item.flag}></span>
+      <span>{item.name}</span>
+    {:else}
+      <span>Choose a country</span>
+    {/if}
+  {/snippet}
+</Select>
+```
+
+### Custom Option Item
+
+```svelte
+<Select {options} bind:value>
+  {#snippet item(data, fields, handlers, isActive)}
+    <button onclick={handlers.onclick} onkeydown={handlers.onkeydown}>
+      <span class={data.flag}></span>
+      <strong>{data.name}</strong>
+      <small>{data.code}</small>
+    </button>
+  {/snippet}
+</Select>
+```
+
+## State Icons
+
+```svelte
+<Select {options} bind:value
+  icons={{
+    opened: 'i-lucide:chevron-up',
+    closed: 'i-lucide:chevron-down',
+    checked: 'i-lucide:check'
+  }}
+/>
+```
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `Enter/Space` | Open dropdown |
+| `ArrowDown/Up` | Move through options |
+| `Enter` | Select focused option |
+| `Escape` | Close dropdown |
+| `Home/End` | First/last option |
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-select` | Root element |
+| `data-select-trigger` | Trigger button |
+| `data-select-dropdown` | Dropdown container |
+| `data-select-filter` | Filter input |
+| `data-open` | Open state |
+| `data-disabled` | Disabled state |
+
+## Import
+
+```javascript
+import { Select } from '@rokkit/ui'
+```
+
+## TypeScript Types
+
+```typescript
+interface SelectProps {
+  options?: SelectItem[]
+  fields?: SelectFields
+  value?: unknown
+  selected?: SelectItem | null
+  placeholder?: string
+  size?: 'sm' | 'md' | 'lg'
+  align?: 'left' | 'right' | 'start' | 'end'
+  direction?: 'up' | 'down'
+  maxRows?: number
+  disabled?: boolean
+  filterable?: boolean
+  filterPlaceholder?: string
+  icons?: SelectStateIcons
+  class?: string
+  onchange?: (value: unknown, item: SelectItem) => void
+  selectedValue?: Snippet<[SelectItem | null, SelectFields]>
+  item?: Snippet<[SelectItem, SelectFields, SelectItemHandlers, boolean]>
+  groupLabel?: Snippet<[SelectItem, SelectFields]>
+}
+
+interface SelectStateIcons {
+  opened?: string  // dropdown open arrow
+  closed?: string  // dropdown closed arrow
+  checked?: string // selected item indicator
+  remove?: string  // (MultiSelect) tag remove button
+}
+```
+
+## Related Components
+
+- [MultiSelect](/docs/components/multiselect/llms.txt) — multi-item selection
+- [List](/docs/components/list/llms.txt) — inline list selection
+- [Toggle](/docs/components/toggle/llms.txt) — compact option group

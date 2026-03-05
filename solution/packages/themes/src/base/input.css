@@ -12,16 +12,16 @@
 
 /* Separator between form fields */
 [data-form-separator] {
-  @apply border-t border-surface-z2 my-1;
+  @apply border-surface-z2 my-1 border-t;
 }
 
 /* Form group (fieldset for nested objects) */
 [data-form-group] {
-  @apply flex flex-col gap-3 border-none m-0 p-0 pl-3 border-l border-surface-z2;
+  @apply border-surface-z2 m-0 flex flex-col gap-3 border-l border-none p-0 pl-3;
 }
 
 [data-form-group-label] {
-  @apply text-xs font-semibold pb-1;
+  @apply pb-1 text-xs font-semibold;
 }
 
 /* Validation report */
@@ -34,11 +34,11 @@
 }
 
 [data-validation-group-header] {
-  @apply flex items-center gap-1.5 text-xs font-semibold py-1;
+  @apply flex items-center gap-1.5 py-1 text-xs font-semibold;
 }
 
 [data-validation-count] {
-  @apply inline-flex items-center justify-center rounded-full text-[10px] font-bold min-w-[18px] h-[18px] px-1;
+  @apply inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-bold;
 }
 
 [data-severity='error'] > [data-validation-group-header] {
@@ -74,21 +74,21 @@
 }
 
 [data-validation-item] {
-  @apply text-xs py-0.5 px-2 rounded text-left;
+  @apply rounded px-2 py-0.5 text-left text-xs;
 }
 
 button[data-validation-item] {
-  @apply cursor-pointer bg-transparent border-none hover:bg-surface-z1;
+  @apply hover:bg-surface-z1 cursor-pointer border-none bg-transparent;
 }
 
 /* Form actions (submit/reset buttons) */
 [data-form-actions] {
-  @apply flex flex-row gap-2 justify-end pt-2;
+  @apply flex flex-row justify-end gap-2 pt-2;
 }
 
 button[data-form-submit],
 button[data-form-reset] {
-  @apply px-4 py-1.5 text-sm rounded cursor-pointer border border-surface-z3 bg-surface-z1 hover:bg-surface-z2 transition-colors;
+  @apply border-surface-z3 bg-surface-z1 hover:bg-surface-z2 cursor-pointer rounded border px-4 py-1.5 text-sm transition-colors;
 }
 
 button[data-form-submit] {
@@ -97,12 +97,12 @@ button[data-form-submit] {
 
 button[data-form-submit]:disabled,
 button[data-form-reset]:disabled {
-  @apply opacity-50 cursor-not-allowed;
+  @apply cursor-not-allowed opacity-50;
 }
 
 /* Submitting state: reduce interactivity */
 [data-form-submitting] > :not([data-form-actions]) {
-  @apply opacity-60 pointer-events-none;
+  @apply pointer-events-none opacity-60;
 }
 
 /* Field root container */
@@ -148,7 +148,7 @@ button[data-form-reset]:disabled {
 }
 
 [data-field-info] {
-  @apply text-xs font-mono;
+  @apply font-mono text-xs;
 }
 
 /* Numeric/date input alignment */
@@ -217,6 +217,10 @@ input[type='color'] {
   -moz-appearance: none;
   background: none;
   @apply p-0;
+}
+
+[data-input-root] [data-input-icon] {
+  @apply mx-2 aspect-square min-h-full flex-shrink-0;
 }
 
 /* Responsive adjustments */

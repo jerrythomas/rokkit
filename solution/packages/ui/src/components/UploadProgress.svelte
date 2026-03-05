@@ -13,13 +13,12 @@
 	 *   data-upload-clear    — clear all button
 	 */
 	import type { ProxyItem } from '@rokkit/states'
+	import type { UploadProgressProps, UploadItem } from '../types/upload-progress.js'
 	import { messages } from '@rokkit/states'
 	import { ITEM_SNIPPET } from '@rokkit/core'
 	import List from './List.svelte'
 	import Grid from './Grid.svelte'
 	import UploadFileStatus from './UploadFileStatus.svelte'
-
-	type UploadItem = Record<string, unknown>
 
 	let {
 		files = [] as UploadItem[],
@@ -35,21 +34,7 @@
 		labels: userLabels = {} as Record<string, string>,
 		class: className = '',
 		...snippets
-	}: {
-		files?: UploadItem[]
-		fields?: Record<string, string>
-		view?: 'list' | 'grid'
-		cancelWhen?: string[]
-		retryWhen?: string[]
-		removeWhen?: string[]
-		oncancel?: (file: UploadItem) => void
-		onretry?: (file: UploadItem) => void
-		onremove?: (file: UploadItem) => void
-		onclear?: () => void
-		labels?: Record<string, string>
-		class?: string
-		[key: string]: unknown
-	} = $props()
+	}: UploadProgressProps & { [key: string]: unknown } = $props()
 
 	// ─── Labels ──────────────────────────────────────────────────────────────
 

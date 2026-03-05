@@ -1,0 +1,142 @@
+# Rokkit Switch Component
+
+> iOS-style boolean toggle with track and thumb.
+
+Switch renders a sliding toggle button (`role="switch"`) that alternates between two states — off and on. Default values are `false`/`true`, but any two values can be used. Optionally shows a text label beside the track.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Switch } from '@rokkit/ui'
+
+  let enabled = $state(false)
+</script>
+
+<Switch bind:value={enabled} />
+<p>Enabled: {enabled}</p>
+```
+
+## Custom On/Off Options
+
+```svelte
+<script>
+  import { Switch } from '@rokkit/ui'
+
+  let theme = $state('light')
+
+  const options = [
+    { value: 'light', text: 'Light', icon: 'i-lucide:sun' },
+    { value: 'dark',  text: 'Dark',  icon: 'i-lucide:moon' }
+  ] as [object, object]
+</script>
+
+<Switch {options} bind:value={theme} fields={{ value: 'value' }} showLabels />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `[SwitchItem, SwitchItem]` | `[false, true]` | Exactly two items: [off, on] |
+| `fields` | `SwitchFields` | defaults | Field mapping |
+| `value` | `unknown` | — | Current value — use `bind:value` |
+| `showLabels` | `boolean` | `false` | Show text label beside track |
+| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
+| `disabled` | `boolean` | `false` | Disable the switch |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Field Mapping
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `value` | `'value'` | The value to emit |
+| `text` | `'text'` | Label shown when `showLabels` is true |
+| `icon` | `'icon'` | Icon class on the thumb |
+| `description` | `'description'` | Used as `title` tooltip |
+| `disabled` | `'disabled'` | Per-option disabled state |
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| `onchange` | `(value, item) => void` | Called when toggled |
+
+## With Labels
+
+```svelte
+<Switch
+  options={[
+    { value: false, text: 'Off' },
+    { value: true,  text: 'On' }
+  ]}
+  bind:value={enabled}
+  showLabels
+/>
+```
+
+## With Icons
+
+```svelte
+<Switch
+  options={[
+    { value: 'system', icon: 'i-lucide:monitor', text: 'System' },
+    { value: 'dark',   icon: 'i-lucide:moon',    text: 'Dark' }
+  ]}
+  bind:value={mode}
+/>
+```
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `Space/Enter` | Toggle |
+| `ArrowRight` | Turn on (if off) |
+| `ArrowLeft` | Turn off (if on) |
+
+## Accessibility
+
+- `role="switch"` on the button
+- `aria-checked` reflects current state (`true`/`false`)
+- `aria-label` from current option's `text` field
+- `title` from current option's `description` field
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-switch` | Root button |
+| `data-switch-track` | Sliding track |
+| `data-switch-thumb` | Moving thumb |
+| `data-switch-icon` | Icon on thumb |
+| `data-switch-label` | Text label (when `showLabels`) |
+| `data-switch-size` | Size variant |
+| `data-switch-disabled` | Disabled state |
+
+## Import
+
+```javascript
+import { Switch } from '@rokkit/ui'
+```
+
+## TypeScript Types
+
+```typescript
+interface SwitchProps {
+  options?: [SwitchItem, SwitchItem]  // [off, on] — default: [false, true]
+  fields?: SwitchFields
+  value?: unknown
+  showLabels?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  disabled?: boolean
+  class?: string
+  onchange?: (value: unknown, item: SwitchItem) => void
+}
+```
+
+## Related Components
+
+- [Toggle](/docs/components/toggle/llms.txt) — radio-style group for 2+ options
+- [RadioGroup](/docs/components/radiogroup/llms.txt) — traditional radio buttons
+- [Tabs](/docs/components/tabs/llms.txt) — tabbed content panels

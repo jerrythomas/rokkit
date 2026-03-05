@@ -31,7 +31,11 @@ export {
 	SearchFilter,
 	Range,
 	Timeline,
-	Reveal
+	Reveal,
+	Grid,
+	UploadTarget,
+	UploadFileStatus,
+	UploadProgress
 } from './components/index.js'
 
 // Utilities

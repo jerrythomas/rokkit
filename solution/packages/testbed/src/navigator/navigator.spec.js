@@ -44,8 +44,8 @@ class MockWrapper {
 // Structure:
 //   nav (container, tabindex=-1)
 //     button[data-path="0"][data-accordion-trigger]  "Elements"     (group)
-//     a[href="/list"][data-path="0-0"]               "List"         (link child)
-//     a[href="/menu"][data-path="0-1"]               "Menu"         (link child)
+//     a[href="#list"][data-path="0-0"]               "List"         (link child)
+//     a[href="#menu"][data-path="0-1"]               "Menu"         (link child)
 //     button[data-path="1"]                          "Introduction" (leaf)
 //     button[data-path="2"]                          "Log out"      (leaf)
 
@@ -59,12 +59,12 @@ function buildDOM() {
 	group.textContent = 'Elements'
 
 	const link1 = document.createElement('a')
-	link1.href = '/list'
+	link1.href = '#list'
 	link1.dataset.path = '0-0'
 	link1.textContent = 'List'
 
 	const link2 = document.createElement('a')
-	link2.href = '/menu'
+	link2.href = '#menu'
 	link2.dataset.path = '0-1'
 	link2.textContent = 'Menu'
 

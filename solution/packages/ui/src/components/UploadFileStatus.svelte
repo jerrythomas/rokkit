@@ -14,10 +14,10 @@
 	 *   data-upload-remove      — remove button
 	 *   data-status             — status value on root (for CSS theming)
 	 */
-	import type { ProxyItem } from '@rokkit/states'
+	import type { UploadFileStatusProps } from '../types/upload-file-status.js'
 	import { messages } from '@rokkit/states'
 	import { DEFAULT_STATE_ICONS } from '@rokkit/core'
-	import { inferIcon, formatSize } from './upload-utils.js'
+	import { inferIcon, formatSize } from '../utils/upload.js'
 
 	let {
 		proxy,
@@ -29,17 +29,7 @@
 		onremove,
 		labels: userLabels = {} as Record<string, string>,
 		icons: userIcons = {} as Record<string, string>,
-	}: {
-		proxy: ProxyItem
-		cancelWhen?: string[]
-		retryWhen?: string[]
-		removeWhen?: string[]
-		oncancel?: (proxy: ProxyItem) => void
-		onretry?: (proxy: ProxyItem) => void
-		onremove?: (proxy: ProxyItem) => void
-		labels?: Record<string, string>
-		icons?: Record<string, string>
-	} = $props()
+	}: UploadFileStatusProps = $props()
 
 	const labels = $derived({ ...messages.current.uploadProgress, ...userLabels })
 	const icons = $derived({
@@ -56,9 +46,9 @@
 	const statusLabel = $derived(labels[status] ?? status)
 
 	const showBar = $derived(progress > 0 && progress < 100)
-	const showCancel = $derived(cancelWhen.includes(status) && !!oncancel)
-	const showRetry = $derived(retryWhen.includes(status) && !!onretry)
-	const showRemove = $derived(removeWhen.includes(status) && !!onremove)
+	const showCancel = $derived(cancelWhen.includes(status) && Boolean(oncancel))
+	const showRetry = $derived(retryWhen.includes(status) && Boolean(onretry))
+	const showRemove = $derived(removeWhen.includes(status) && Boolean(onremove))
 </script>
 
 <div data-upload-file-status data-status={status}>

@@ -5,7 +5,7 @@ import {
 	inferIcon,
 	formatSize,
 	groupByPath
-} from '../src/components/upload-utils.js'
+} from '../src/utils/upload.js'
 
 // ─── matchesAccept ──────────────────────────────────────────────────
 

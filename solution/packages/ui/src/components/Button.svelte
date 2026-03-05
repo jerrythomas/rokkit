@@ -18,7 +18,8 @@
 		loading = false,
 		onclick,
 		class: className = '',
-		children
+		children,
+		...rest
 	}: ButtonProps = $props()
 
 	const isIconOnly = $derived(Boolean(icon) && !label && !children)
@@ -57,6 +58,7 @@
 		class={className || undefined}
 		aria-label={label}
 		aria-busy={loading || undefined}
+		{...rest}
 	>
 		{#if children}
 			{@render children()}
@@ -80,6 +82,7 @@
 		aria-label={label}
 		aria-busy={loading || undefined}
 		{onclick}
+		{...rest}
 	>
 		{#if children}
 			{@render children()}

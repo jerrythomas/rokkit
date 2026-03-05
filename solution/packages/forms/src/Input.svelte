@@ -24,7 +24,7 @@
 	{@const Component = resolveRenderer({ type, props: restProps }, allRenderers)}
 	<div data-input-root>
 		{#if icon}
-			<span class={icon} aria-hidden="true"></span>
+			<span data-input-icon class={icon} aria-hidden="true"></span>
 		{/if}
 		<Component bind:value {onchange} {oninput} {onfocus} {onblur} {...extraProps} {...restProps} />
 	</div>

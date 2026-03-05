@@ -356,8 +356,8 @@ describe('navigator', () => {
 		describe('anchor clicks', () => {
 			beforeEach(() => {
 				root.innerHTML = `
-          <a href="/page-1" data-path="0">Link 1</a>
-          <a href="/page-2" data-path="1"><span>Link 2 inner</span></a>
+          <a href="#page-1" data-path="0">Link 1</a>
+          <a href="#page-2" data-path="1"><span>Link 2 inner</span></a>
           <div data-path="2">Button</div>
         `
 			})

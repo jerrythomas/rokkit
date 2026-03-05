@@ -1,0 +1,172 @@
+# Rokkit UploadProgress Component
+
+> File upload status orchestrator. Composes a header with a List or Grid layout, rendering each file as an UploadFileStatus with progress bar, status label, and action buttons.
+
+UploadProgress displays a collection of file upload statuses. It delegates rendering to the List or Grid component (via the `view` prop) and renders each file using the built-in UploadFileStatus component by default. Action button visibility (cancel, retry, remove) is driven by the file's current status. The entire per-file rendering can be overridden with a custom `itemContent` snippet.
+
+## Quick Start
+
+```svelte
+<script>
+  import { UploadProgress } from '@rokkit/ui'
+
+  const files = [
+    { text: 'photo.jpg', value: '1', status: 'uploading', progress: 65, size: 245760, type: 'image/jpeg' },
+    { text: 'document.pdf', value: '2', status: 'done', progress: 100, size: 1048576, type: 'application/pdf' },
+    { text: 'report.xlsx', value: '3', status: 'error', progress: 30, size: 524288, type: 'application/vnd.ms-excel' }
+  ]
+</script>
+
+<UploadProgress {files} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `files` | `Record<string, unknown>[]` | `[]` | Array of file data objects |
+| `fields` | `UploadFields` | `{}` | Field mapping (see below) |
+| `view` | `'list' \| 'grid'` | `'list'` | Layout mode |
+| `cancelWhen` | `string[]` | `[]` | Status values that show the cancel button |
+| `retryWhen` | `string[]` | `[]` | Status values that show the retry button |
+| `removeWhen` | `string[]` | `[]` | Status values that show the remove button |
+| `oncancel` | `(file) => void` | — | Called with raw file object when cancel is clicked |
+| `onretry` | `(file) => void` | — | Called with raw file object when retry is clicked |
+| `onremove` | `(file) => void` | — | Called with raw file object when remove is clicked |
+| `onclear` | `() => void` | — | Called when clear all button is clicked |
+| `labels` | `Record<string, string>` | `{}` | Label overrides merged with i18n defaults |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Field Mapping
+
+Map your data's field names to what the component expects:
+
+| Field | Default key | Description |
+|-------|-------------|-------------|
+| `label` | `'text'` | Display name |
+| `value` | `'value'` | Unique identifier |
+| `icon` | `'icon'` | Icon class (auto-inferred from MIME type if absent) |
+| `status` | `'status'` | Upload status string |
+| `progress` | `'progress'` | Progress percentage (0–100) |
+| `size` | `'size'` | File size in bytes (auto-formatted) |
+| `type` | `'type'` | MIME type |
+| `error` | `'error'` | Error message |
+
+Custom field names:
+
+```svelte
+<UploadProgress {files} fields={{ label: 'fileName', value: 'id', status: 'state', progress: 'pct' }} />
+```
+
+## Action Buttons
+
+Control which actions appear based on file status:
+
+```svelte
+<UploadProgress
+  {files}
+  cancelWhen={['uploading']}
+  retryWhen={['error']}
+  removeWhen={['done', 'error', 'cancelled']}
+  oncancel={(file) => cancel(file)}
+  onretry={(file) => retry(file)}
+  onremove={(file) => remove(file)}
+  onclear={() => clearAll()}
+/>
+```
+
+## Grid View
+
+Switch to a tile layout:
+
+```svelte
+<UploadProgress {files} view="grid" />
+```
+
+## Custom Item Content
+
+Replace the default UploadFileStatus rendering with a custom `itemContent` snippet. Receives a `ProxyItem`:
+
+```svelte
+<UploadProgress {files}>
+  {#snippet itemContent(proxy)}
+    <div class="flex items-center gap-2 p-2">
+      <span class={proxy.icon}></span>
+      <span>{proxy.label}</span>
+      <span class="ml-auto text-xs">{proxy.get('status')}</span>
+    </div>
+  {/snippet}
+</UploadProgress>
+```
+
+## Combined Workflow
+
+Use with UploadTarget to build a complete upload UI:
+
+```svelte
+<script>
+  import { UploadTarget, UploadProgress } from '@rokkit/ui'
+
+  let files = $state([])
+  let nextId = 1
+
+  function handleFiles(newFiles) {
+    for (const file of newFiles) {
+      files = [...files, {
+        text: file.name, value: String(nextId++),
+        size: file.size, type: file.type,
+        status: 'uploading', progress: 0
+      }]
+    }
+  }
+
+  function handleRemove(file) {
+    files = files.filter(f => f.value !== file.value)
+  }
+</script>
+
+<UploadTarget onfiles={handleFiles} multiple />
+
+{#if files.length}
+  <UploadProgress
+    {files}
+    cancelWhen={['uploading']}
+    removeWhen={['done', 'cancelled']}
+    onremove={handleRemove}
+    onclear={() => { files = [] }}
+  />
+{/if}
+```
+
+## Header
+
+The header automatically shows file count and a status summary (e.g. "5 files — 2 uploading, 1 done, 1 error, 1 pending"). When `onclear` is provided, a "Clear all" button appears.
+
+## Data Attributes
+
+| Attribute | Element | Description |
+|-----------|---------|-------------|
+| `data-upload-progress` | Root | Container |
+| `data-upload-view` | Root | Current view mode (`list` or `grid`) |
+| `data-upload-header` | Div | Header bar |
+| `data-upload-clear` | Button | Clear all button |
+| `data-upload-file-status` | Div | Individual file item (UploadFileStatus) |
+| `data-status` | File item | Status value for CSS theming |
+| `data-upload-bar` | Div | Progress bar track |
+| `data-upload-fill` | Div | Progress bar fill |
+| `data-upload-cancel` | Button | Cancel action button |
+| `data-upload-retry` | Button | Retry action button |
+| `data-upload-remove` | Button | Remove action button |
+
+## Import
+
+```javascript
+import { UploadProgress } from '@rokkit/ui'
+// UploadFileStatus is used internally but can also be imported directly:
+import { UploadFileStatus } from '@rokkit/ui'
+```
+
+## Related Components
+
+- [UploadTarget](/docs/components/upload-target/llms.txt) — drag-and-drop file zone with validation
+- [List](/docs/components/list/llms.txt) — vertical list (used internally for list view)

@@ -3,6 +3,10 @@ import { ProxyTree } from '../src/proxy-tree.svelte.js'
 import { ProxyItem } from '../src/proxy-item.svelte.js'
 import { flushSync } from 'svelte'
 
+class CustomProxy extends ProxyItem {
+	get custom() { return `custom-${  this.label}` }
+}
+
 describe('ProxyTree', () => {
 	describe('construction', () => {
 		it('should create root proxies from items', () => {
@@ -32,10 +36,6 @@ describe('ProxyTree', () => {
 		})
 
 		it('should accept custom factory via createProxy option', () => {
-			class CustomProxy extends ProxyItem {
-				get custom() { return `custom-${  this.label}` }
-			}
-
 			const tree = new ProxyTree(
 				[{ text: 'X', value: 'x' }],
 				{},
@@ -311,10 +311,6 @@ describe('ProxyTree', () => {
 		})
 
 		it('should use custom factory for appended items', () => {
-			class CustomProxy extends ProxyItem {
-				get custom() { return `custom-${  this.label}` }
-			}
-
 			const tree = new ProxyTree(
 				[{ text: 'A', value: 'a' }],
 				{},

@@ -12,13 +12,9 @@
 	 *   data-dragging       — present when files dragged over
 	 *   data-disabled       — when disabled
 	 */
+	import type { UploadTargetProps } from '../types/upload-target.js'
 	import { messages } from '@rokkit/states'
-	import { matchesAccept } from './upload-utils.js'
-
-	interface UploadError {
-		file: File
-		reason: 'type' | 'size'
-	}
+	import { matchesAccept } from '../utils/upload.js'
 
 	let {
 		accept = '',
@@ -30,17 +26,7 @@
 		onerror,
 		class: className = '',
 		...snippets
-	}: {
-		accept?: string
-		maxSize?: number
-		multiple?: boolean
-		disabled?: boolean
-		labels?: Record<string, string>
-		onfiles?: (files: File[]) => void
-		onerror?: (err: UploadError) => void
-		class?: string
-		[key: string]: unknown
-	} = $props()
+	}: UploadTargetProps & { [key: string]: unknown } = $props()
 
 	const content = $derived(snippets.content as ((dragging: boolean) => unknown) | undefined)
 

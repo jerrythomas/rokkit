@@ -1,0 +1,364 @@
+# Rokkit Icon Component
+
+> Flexible icon component supporting icon fonts, emoji, and interactive roles.
+
+The Icon component renders icons from icon fonts (like FontAwesome, Material Icons) or short text/emoji. It supports multiple roles including decorative, button, and checkbox behaviors.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+</script>
+
+<!-- Icon font class -->
+<Icon name="fa-solid fa-home" />
+
+<!-- Short text/emoji (2 chars or less) -->
+<Icon name="🏠" />
+<Icon name="OK" />
+```
+
+## Core Concepts
+
+### Icon Names
+
+The component intelligently handles different icon formats:
+
+```svelte
+<!-- Icon font classes (3+ characters) -->
+<Icon name="fa-solid fa-user" />
+<Icon name="mdi mdi-account" />
+<Icon name="lucide-home" />
+
+<!-- Short text or emoji (≤2 characters) rendered as text -->
+<Icon name="👍" />
+<Icon name="A" />
+<Icon name="12" />
+```
+
+### Roles
+
+Icon supports multiple interactive roles:
+
+```svelte
+<!-- Decorative (default) - no interaction -->
+<Icon name="info" role="img" />
+
+<!-- Button - clickable -->
+<Icon name="close" role="button" onclick={handleClose} />
+
+<!-- Checkbox - toggleable -->
+<Icon name="star" role="checkbox" bind:checked={isFavorite} />
+
+<!-- Option - for use in selection lists -->
+<Icon name="check" role="option" checked={isSelected} />
+```
+
+### State Icons
+
+Icons can display different states:
+
+```svelte
+<Icon name="loading" state="loading" />
+<Icon name="check" state="success" />
+<Icon name="alert" state="error" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | `'?'` | Icon name/class or short text |
+| `role` | `string` | `'img'` | Semantic role |
+| `label` | `string` | `null` | Accessible label (aria-label) |
+| `size` | `string` | `'base'` | Icon size |
+| `state` | `string` | `null` | Visual state |
+| `disabled` | `boolean` | `false` | Disables interaction |
+| `checked` | `boolean` | `undefined` | Checked state (checkbox/option) |
+| `tabindex` | `number` | `0` | Tab index |
+| `class` | `string` | `''` | CSS class names |
+| `onclick` | `function` | `undefined` | Click handler |
+| `onchange` | `function` | `undefined` | Change handler (checkbox) |
+| `onmouseenter` | `function` | `undefined` | Mouse enter handler |
+| `onmouseleave` | `function` | `undefined` | Mouse leave handler |
+
+### Role Options
+
+| Role | Behavior |
+|------|----------|
+| `'img'` | Decorative, no interaction (default) |
+| `'button'` | Clickable, keyboard accessible |
+| `'checkbox'` | Toggleable with checked state |
+| `'option'` | For selection lists |
+
+### Size Options
+
+| Size | Description |
+|------|-------------|
+| `'xs'` | Extra small |
+| `'sm'` | Small |
+| `'base'` | Base size (default) |
+| `'lg'` | Large |
+| `'xl'` | Extra large |
+
+## Component Structure
+
+```
+<icon>
+├── <span>    // For short text (≤2 chars)
+└── <i>       // For icon font classes (>2 chars)
+</icon>
+```
+
+## Data Attributes for Styling
+
+| Attribute | Element | Purpose |
+|-----------|---------|---------|
+| `data-tag-icon` | icon | Main element |
+| `data-tag-button` | icon | When role="button" |
+| `data-tag-checkbox` | icon | When role="checkbox/option" |
+| `data-state` | icon | Current state |
+| `data-size` | icon | Size value |
+| `data-disabled` | icon | Disabled state |
+
+### Styling Example
+
+```css
+[data-tag-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-tag-icon][data-size="xs"] { font-size: 0.75rem; }
+[data-tag-icon][data-size="sm"] { font-size: 0.875rem; }
+[data-tag-icon][data-size="base"] { font-size: 1rem; }
+[data-tag-icon][data-size="lg"] { font-size: 1.25rem; }
+[data-tag-icon][data-size="xl"] { font-size: 1.5rem; }
+
+[data-tag-button] {
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+[data-tag-button]:hover {
+  transform: scale(1.1);
+}
+
+[data-tag-button]:active {
+  transform: scale(0.95);
+}
+
+[data-tag-checkbox][aria-checked="true"] {
+  color: var(--primary-500);
+}
+
+[data-tag-icon][data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-tag-icon][data-state="loading"] {
+  animation: spin 1s linear infinite;
+}
+
+[data-tag-icon][data-state="success"] {
+  color: var(--success-500);
+}
+
+[data-tag-icon][data-state="error"] {
+  color: var(--error-500);
+}
+```
+
+## Accessibility
+
+- `role` attribute set based on prop
+- `aria-label` from label or name prop
+- `aria-checked` for checkbox/option roles
+- Keyboard support (Enter to activate)
+- `tabindex` management based on role
+
+## Import
+
+```javascript
+// Named import
+import { Icon } from '@rokkit/ui'
+
+// Default import
+import Icon from '@rokkit/ui/icon'
+```
+
+## TypeScript Types
+
+```typescript
+interface IconProps {
+  name?: string
+  role?: 'img' | 'button' | 'checkbox' | 'option'
+  label?: string
+  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl'
+  state?: string
+  disabled?: boolean
+  checked?: boolean
+  tabindex?: number
+  class?: string
+  onclick?: () => void
+  onchange?: (checked: boolean) => void
+  onmouseenter?: (event: MouseEvent) => void
+  onmouseleave?: (event: MouseEvent) => void
+}
+```
+
+## Examples
+
+### Basic Icons
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+</script>
+
+<Icon name="fa-solid fa-home" />
+<Icon name="fa-solid fa-user" />
+<Icon name="fa-solid fa-cog" />
+```
+
+### Different Sizes
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+</script>
+
+<Icon name="star" size="xs" />
+<Icon name="star" size="sm" />
+<Icon name="star" size="base" />
+<Icon name="star" size="lg" />
+<Icon name="star" size="xl" />
+```
+
+### Button Icons
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+
+  function handleClose() {
+    console.log('Close clicked')
+  }
+</script>
+
+<Icon name="close" role="button" label="Close" onclick={handleClose} />
+<Icon name="edit" role="button" label="Edit" onclick={handleEdit} />
+<Icon name="delete" role="button" label="Delete" onclick={handleDelete} />
+```
+
+### Checkbox Icons
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+
+  let isFavorite = $state(false)
+  let isBookmarked = $state(true)
+</script>
+
+<Icon
+  name={isFavorite ? 'star-filled' : 'star-outline'}
+  role="checkbox"
+  label="Favorite"
+  bind:checked={isFavorite}
+/>
+
+<Icon
+  name={isBookmarked ? 'bookmark-filled' : 'bookmark-outline'}
+  role="checkbox"
+  label="Bookmark"
+  bind:checked={isBookmarked}
+/>
+```
+
+### Emoji Icons
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+</script>
+
+<Icon name="👍" label="Thumbs up" />
+<Icon name="❤️" label="Heart" />
+<Icon name="🔥" label="Fire" />
+```
+
+### State Icons
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+</script>
+
+<Icon name="spinner" state="loading" />
+<Icon name="check-circle" state="success" />
+<Icon name="alert-circle" state="error" />
+<Icon name="info-circle" state="info" />
+```
+
+### With Hover Effects
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+
+  let isHovered = $state(false)
+</script>
+
+<Icon
+  name={isHovered ? 'heart-filled' : 'heart-outline'}
+  role="button"
+  onmouseenter={() => isHovered = true}
+  onmouseleave={() => isHovered = false}
+  onclick={handleLike}
+/>
+```
+
+### Disabled Icons
+
+```svelte
+<script>
+  import { Icon } from '@rokkit/ui'
+</script>
+
+<Icon name="edit" role="button" disabled />
+<Icon name="delete" role="button" disabled />
+```
+
+## Icon Libraries
+
+Rokkit Icon works with any icon font library:
+
+### FontAwesome
+```svelte
+<Icon name="fa-solid fa-home" />
+<Icon name="fa-regular fa-heart" />
+<Icon name="fa-brands fa-github" />
+```
+
+### Material Design Icons
+```svelte
+<Icon name="mdi mdi-home" />
+<Icon name="mdi mdi-account" />
+```
+
+### Lucide
+```svelte
+<Icon name="lucide-home" />
+<Icon name="lucide-user" />
+```
+
+## Related Components
+
+- **Button** - Uses Icon for button icons
+- **Rating** - Uses Icon for star ratings
+- **CheckBox** - Alternative checkbox component
+- **Item** - Uses Icon for list item icons

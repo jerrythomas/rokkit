@@ -1,0 +1,240 @@
+# Rokkit Table Component
+
+> Data-driven table with sortable columns, row selection, and keyboard navigation.
+
+The Table component renders flat data as an accessible table. Columns can be auto-derived from data or explicitly defined. Supports single row selection, multi-column sorting, and custom cell/row rendering via snippets.
+
+## Quick Start
+
+```svelte
+<script>
+  import { Table } from '@rokkit/ui'
+
+  const data = [
+    { id: 1, name: 'Alice',   role: 'Admin',     active: true },
+    { id: 2, name: 'Bob',     role: 'Editor',    active: true },
+    { id: 3, name: 'Charlie', role: 'Viewer',    active: false }
+  ]
+
+  let value = $state(null)
+</script>
+
+<Table {data} bind:value />
+```
+
+## Explicit Columns
+
+```svelte
+<script>
+  import { Table } from '@rokkit/ui'
+
+  const columns = [
+    { name: 'name',   label: 'Full Name', sortable: true },
+    { name: 'role',   label: 'Role',      sortable: true },
+    { name: 'active', label: 'Active',    sortable: false, align: 'center' }
+  ]
+
+  const data = [/* ... */]
+  let value = $state(null)
+</script>
+
+<Table {data} {columns} bind:value caption="User list" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Record<string,unknown>[]` | `[]` | Row data array |
+| `columns` | `TableColumn[]` | auto | Column definitions (auto-derived if omitted) |
+| `value` | `unknown` | — | Selected row value — use `bind:value` |
+| `caption` | `string` | — | Table caption for accessibility |
+| `size` | `'sm'|'md'|'lg'` | `'md'` | Size variant |
+| `striped` | `boolean` | `false` | Alternating row colors |
+| `disabled` | `boolean` | `false` | Disable row selection |
+| `fields` | `TableFields` | `{value:'id'}` | Row-level field mapping |
+| `icons` | `TableSortIcons` | — | Override sort icons |
+| `class` | `string` | `''` | Additional CSS classes |
+
+## Column Definition
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `name` | `string` | required | Data key for this column |
+| `label` | `string` | `name` | Header display text |
+| `type` | `string` | auto | Data type (string, number, boolean, etc.) |
+| `sortable` | `boolean` | `true` | Enable sorting |
+| `sorted` | `'none'|'ascending'|'descending'` | `'none'` | Current sort state |
+| `width` | `string` | — | CSS width (e.g. `'200px'`) |
+| `align` | `'left'|'center'|'right'` | `'left'` | Cell text alignment |
+| `formatter` | `(value, row) => string` | — | Custom cell value formatter |
+| `iconFormatter` | `(value) => string` | — | Map field value to icon class |
+| `snippet` | `string` | — | Named snippet for custom cell |
+
+## Row-Level Field Mapping
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `value` | `'id'` | Row identifier for selection |
+| `disabled` | `'disabled'` | Disabled row state |
+
+## Callbacks
+
+| Callback | Signature | Description |
+|----------|-----------|-------------|
+| `onselect` | `(value, row) => void` | Row selected |
+| `onsort` | `(sortState[]) => void` | Sort state changed |
+
+## Custom Cell Formatter
+
+```svelte
+<script>
+  const columns = [
+    { name: 'status', label: 'Status', formatter: (v) => v ? 'Active' : 'Inactive' },
+    { name: 'score',  label: 'Score',  formatter: (v) => `${v}/100` }
+  ]
+</script>
+<Table {data} {columns} />
+```
+
+## Snippets
+
+### Custom Cell
+
+```svelte
+<script>
+  const columns = [
+    { name: 'actions', label: '', sortable: false, snippet: 'actions' }
+  ]
+</script>
+
+<Table {data} {columns}>
+  {#snippet actions(value, column, row)}
+    <div class="flex gap-2">
+      <button onclick={() => edit(row)}>Edit</button>
+      <button onclick={() => del(row)}>Delete</button>
+    </div>
+  {/snippet}
+</Table>
+```
+
+### Custom Row
+
+```svelte
+<Table {data}>
+  {#snippet row(rowData, columns, index, isSelected)}
+    <tr data-selected={isSelected || undefined}
+        onclick={() => value = rowData.id}>
+      {#each columns as col}
+        <td>{rowData[col.name]}</td>
+      {/each}
+    </tr>
+  {/snippet}
+</Table>
+```
+
+### Empty State
+
+```svelte
+<Table {data}>
+  {#snippet empty()}
+    <div class="p-8 text-center">No records found</div>
+  {/snippet}
+</Table>
+```
+
+## Sort Icons
+
+```svelte
+<Table {data} icons={{
+  none: 'i-lucide:arrow-up-down',
+  ascending: 'i-lucide:arrow-up',
+  descending: 'i-lucide:arrow-down'
+}} />
+```
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `ArrowUp/Down` | Move between rows |
+| `Enter/Space` | Select focused row |
+| `Home/End` | First/last row |
+
+## Accessibility
+
+- `role="grid"` on table
+- `role="row"`, `role="columnheader"`, `role="rowheader"`
+- `aria-sort` on sortable columns
+- `aria-selected` on selected rows
+- `caption` element when `caption` prop is set
+
+## Data Attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-table` | Root element |
+| `data-table-head` | Header row |
+| `data-table-body` | Body container |
+| `data-table-row` | Data row |
+| `data-table-cell` | Data cell |
+| `data-selected` | Selected row |
+| `data-sortable` | Sortable column header |
+| `data-sort` | Current sort direction |
+
+## Import
+
+```javascript
+import { Table } from '@rokkit/ui'
+```
+
+## TypeScript Types
+
+```typescript
+interface TableProps {
+  data?: Record<string, unknown>[]
+  columns?: TableColumn[]
+  value?: unknown
+  caption?: string
+  size?: 'sm' | 'md' | 'lg'
+  striped?: boolean
+  disabled?: boolean
+  fields?: TableFields
+  icons?: TableSortIcons
+  class?: string
+  onselect?: (value: unknown, row: Record<string, unknown>) => void
+  onsort?: (sortState: SortState[]) => void
+  header?: Snippet<[TableColumn[], SortState[]]>
+  row?: Snippet<[Record<string, unknown>, TableColumn[], number, boolean]>
+  cell?: Snippet<[unknown, TableColumn, Record<string, unknown>]>
+  empty?: Snippet
+}
+
+interface TableColumn {
+  name: string
+  label?: string
+  type?: string
+  sortable?: boolean
+  sorted?: 'none' | 'ascending' | 'descending'
+  width?: string
+  align?: 'left' | 'center' | 'right'
+  formatter?: (value: unknown, row: Record<string, unknown>) => string
+  iconFormatter?: (value: unknown) => string
+  snippet?: string
+}
+
+interface TableFields {
+  value?: string    // default: 'id'
+  disabled?: string // default: 'disabled'
+}
+
+interface SortState {
+  column: string
+  direction: 'ascending' | 'descending'
+}
+```
+
+## Related Components
+
+- [List](/docs/components/list/llms.txt) — vertical list with selection
+- [Tree](/docs/components/tree/llms.txt) — hierarchical tree view
