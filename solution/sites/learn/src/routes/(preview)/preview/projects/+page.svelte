@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { Tree, Select } from '@rokkit/ui'
+	import { Tree, Select, Button, Toolbar } from '@rokkit/ui'
 
 	const statusOptions = [
 		{ label: 'All Status', value: '' },
@@ -55,17 +55,16 @@
 <div class="p-6 flex flex-col gap-6">
 	<div class="flex items-center justify-between flex-wrap gap-3">
 		<h1 class="text-2xl font-bold text-surface-z8">Projects</h1>
-		<button class="flex items-center gap-1.5 px-3 py-2 rounded-md bg-primary-z6 text-white text-sm hover:bg-primary-z7 transition-colors">
-			<span class="i-solar:add-circle-bold-duotone text-base" aria-hidden="true"></span>
-			New Task
-		</button>
+		<Toolbar>
+			<Button label="New Task" icon="i-solar:add-circle-bold-duotone" variant="primary" />
+		</Toolbar>
 	</div>
 
 	<!-- Filters -->
-	<div class="flex gap-3 flex-wrap">
+	<Toolbar>
 		<Select items={statusOptions} bind:value={filterStatus} fields={selectFields} />
 		<Select items={assigneeOptions} bind:value={filterAssignee} fields={selectFields} />
-	</div>
+	</Toolbar>
 
 	<!-- Task tree + detail panel -->
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

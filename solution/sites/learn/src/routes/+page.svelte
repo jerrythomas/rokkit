@@ -25,6 +25,11 @@
 			<span class="flex gap-4 text-xl">
 				<Button variant="primary" href="/docs/introduction" label="Get Started" />
 				<Button
+					href="/preview/dashboard"
+					icon="i-solar:atom-bold-duotone"
+					label="Live Preview"
+				/>
+				<Button
 					href="/llms/index.txt"
 					target="_blank"
 					icon="i-solar:chat-square-code-bold-duotone"

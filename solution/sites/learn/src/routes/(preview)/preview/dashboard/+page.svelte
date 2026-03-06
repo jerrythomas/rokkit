@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { List } from '@rokkit/ui'
+	import { List, Button, Toolbar } from '@rokkit/ui'
 
 	const kpis = [
 		{ label: 'Active Projects', value: '12', change: '+2 this week', icon: 'i-solar:folder-open-bold-duotone' },
@@ -26,10 +26,9 @@
 			<h1 class="text-2xl font-bold text-surface-z8">Dashboard</h1>
 			<p class="text-sm text-surface-z5">Good morning — here's what's happening today.</p>
 		</div>
-		<button class="flex items-center gap-1.5 px-3 py-2 rounded-md bg-primary-z6 text-white text-sm hover:bg-primary-z7 transition-colors">
-			<span class="i-solar:add-circle-bold-duotone text-base" aria-hidden="true"></span>
-			New Task
-		</button>
+		<Toolbar>
+			<Button label="New Task" icon="i-solar:add-circle-bold-duotone" variant="primary" />
+		</Toolbar>
 	</div>
 
 	<!-- KPI Cards -->

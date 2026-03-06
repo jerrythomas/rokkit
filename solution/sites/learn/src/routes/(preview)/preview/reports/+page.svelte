@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { Select } from '@rokkit/ui'
+	import { Select, Toolbar } from '@rokkit/ui'
 
 	const periodOptions = [
 		{ label: 'Last 7 days', value: '7d' },
@@ -15,7 +15,9 @@
 <div class="p-6 flex flex-col gap-6">
 	<div class="flex items-center justify-between flex-wrap gap-3">
 		<h1 class="text-2xl font-bold text-surface-z8">Reports</h1>
-		<Select items={periodOptions} bind:value={period} fields={selectFields} />
+		<Toolbar>
+			<Select items={periodOptions} bind:value={period} fields={selectFields} />
+		</Toolbar>
 	</div>
 
 	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
