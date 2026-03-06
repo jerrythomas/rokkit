@@ -5,6 +5,33 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-03-06
+
+### Quick Wins COMPLETE (3 steps)
+
+**Step 1 — Fix 3 failing vibe tests** (`a0e5e24b`)
+- Root cause: Node.js v25 exposes a native `localStorage` global broken without `--localstorage-file`
+- Fix: `packages/states/spec/setup.js` stubs localStorage via `vi.stubGlobal` with in-memory impl
+- Also added `afterEach` restore to the `mocked` describe block in vibe.spec.svelte.js
+- `vitest.config.ts` updated to use this setup file for the states project
+- Result: 2696/2696 tests passing
+
+**Step 2 — text→label field mapping rename** (`72a239f2`)
+- `BASE_FIELDS.label` changed from raw key `'text'` → `'label'`
+- Removed `text: 'label'` from `LEGACY_KEY_MAP` in `normalizeFields()`
+- `field-mapper.js`: removed `hasText`, updated `prop()` and `getFormattedText()`
+- Updated `derive.svelte.js`, `proxy.svelte.js` (testbed), `Select.svelte`
+- 35 test files updated: test data items and field mapping keys
+- Result: 2696/2696 tests passing
+
+**Step 3 — Missing test coverage** (`056fb07c`)
+- `packages/actions/spec/trigger.spec.js`: 20 tests for Trigger class (open/close, keyboard, click-outside, destroy)
+- `packages/actions/spec/keymap.spec.js`: 29 tests for buildKeymap + resolveAction (all orientations, modifiers)
+- table-controller already covered by existing `tabular.spec.svelte.js`
+- Result: 2745/2745 tests passing
+
+---
+
 ## 2026-03-02
 
 ### Playground → Learn Consolidation COMPLETE

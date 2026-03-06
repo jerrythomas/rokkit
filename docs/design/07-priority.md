@@ -2,7 +2,7 @@
 
 A working checklist of all pending work items collected from feature status tables and planned design documents. Organized by priority tier. Check off items as they are completed.
 
-Last updated: 2026-03-06
+Last updated: 2026-03-06 (quick-wins session)
 
 ---
 
@@ -17,7 +17,7 @@ Items that block other work or are essential for the library to be complete.
 
 ### Component Library
 
-- [ ] Rename `text` field to `label` in all component defaults and remove backward compatibility layer (code change)
+- [x] Rename `text` field to `label` in all component defaults and remove backward compatibility layer (code change)
 - [ ] Cards — complete in-progress implementation: interactive states, snippet support, theming (`docs/features/06-ComponentLibrary.md`)
 - [ ] Navigation: Breadcrumb — path display component with navigable links (`docs/features/06-ComponentLibrary.md`)
 - [ ] Layout components — Stack, Grid, Divider with responsive behavior (`docs/features/06-ComponentLibrary.md`)
