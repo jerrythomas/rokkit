@@ -14,7 +14,7 @@ Feature: ProxyItem
   Scenario: Access mapped fields by semantic name
     Given an item and a field mapping configuration
     When a ProxyItem wraps the item
-    Then proxy.label returns the value of the text field
+    Then proxy.label returns the value of the label field
     And proxy.value returns the value of the value field
     And proxy.icon returns the value of the icon field
 

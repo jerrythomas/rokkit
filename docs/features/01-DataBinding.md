@@ -12,10 +12,10 @@ Components have sensible defaults that match the most common data patterns. For 
 Feature: Default Field Conventions
 
   Scenario: Component renders with standard field names
-    Given an array of objects with fields named 'text' and 'value'
+    Given an array of objects with fields named 'label' and 'value'
     When passed to any Rokkit selection component
     Then items render without any configuration
-    And 'text' is used as the display label
+    And 'label' is used as the display label
     And 'value' is used as the selection identifier
 
   Scenario: Icon and children fields work by default
@@ -34,7 +34,7 @@ Feature: Custom Field Mapping
 
   Scenario: Developer maps display and value fields
     Given items with fields 'fullName' and 'userId'
-    When the component is configured with fields = { text: 'fullName', value: 'userId' }
+    When the component is configured with fields = { label: 'fullName', value: 'userId' }
     Then 'fullName' is used as the display label
     And 'userId' is used as the selection identifier
 
@@ -59,7 +59,7 @@ Feature: Nested Field Access
 
   Scenario: Dot path resolves nested value
     Given items with a nested field like { profile: { name: 'Alice' } }
-    When fields = { text: 'profile.name' } is configured
+    When fields = { label: 'profile.name' } is configured
     Then the component displays 'Alice' as the label
 
   Scenario: Multiple levels of nesting
@@ -71,6 +71,45 @@ Feature: Nested Field Access
     Given an item where the nested path does not exist
     When the component renders
     Then the field renders empty without errors
+```
+
+### Computed Field Mapping
+
+Field values can be functions instead of strings. This enables on-the-fly transformations — combining fields, formatting numbers, deriving display text from any logic — without a preprocessing step or a separate view-model layer.
+
+```gherkin
+Feature: Computed Field Mapping
+
+  Scenario: Function combines multiple source fields into one display value
+    Given items with 'firstName' and 'lastName' fields
+    When fields = { text: (item) => `${item.firstName} ${item.lastName}` }
+    Then the component displays the full name as a single label
+    And no data transformation is needed before passing items
+
+  Scenario: Function applies a format from the data package
+    Given items with a 'price' field containing numeric values
+    When fields = { text: (item) => formatCurrency(item.price, 'USD') }
+    Then items display formatted currency strings
+    And the raw numeric value is preserved for selection and events
+
+  Scenario: Function derives a transformed identifier
+    Given items with a 'slug' field
+    When fields = { value: (item) => `doc:${item.slug}` }
+    Then the selection value uses the prefixed form
+    And the original item is still returned in selection events
+
+  Scenario: String and function mappings coexist
+    Given a fields object mixing string paths and functions
+    When { text: (item) => item.title.toUpperCase(), value: 'id' }
+    Then function fields are called per item
+    And string fields resolve by path as usual
+    And both work identically from the snippet's perspective
+
+  Scenario: Proxy normalises all field definitions to the same interface
+    Given any field definition — string path or function
+    When accessed via proxy.label or proxy.get('field')
+    Then the call site does not need to distinguish between types
+    And the result is always the resolved value
 ```
 
 ### Per-Item Field Overrides
@@ -126,6 +165,7 @@ Feature: Consistent Component API
 | Default field conventions (`text`, `value`, `icon`, `children`) | ✅ Implemented |
 | Custom field mapping | ✅ Implemented |
 | Nested field access via dot paths | ✅ Implemented |
+| Computed field mapping (function values) | 🔲 Planned |
 | Per-item field overrides | ✅ Implemented |
 | No data transformation required | ✅ Implemented |
 | Consistent component API | ✅ Implemented |

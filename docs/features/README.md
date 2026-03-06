@@ -32,7 +32,7 @@ Rokkit is a Svelte 5 component library built around a single conviction: **data 
 
 | Module | Feature | Status |
 |--------|---------|--------|
-| Data Binding | Default field conventions (`text`, `value`, `icon`, `children`) | ✅ Implemented |
+| Data Binding | Default field conventions (`label`, `value`, `icon`, `children`) | ✅ Implemented |
 | | Custom field mapping | ✅ Implemented |
 | | Nested field access via dot paths | ✅ Implemented |
 | | Per-item field overrides | ✅ Implemented |

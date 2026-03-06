@@ -8,7 +8,7 @@ Before doing any work, read these files in order:
 1. **`agents/workflow.md`** — methodology and pipeline
 2. **`agents/memory.md`** — project knowledge, principles, tooling
 3. **`agents/journal.md`** (last ~50 lines) — recent progress
-4. **`docs/plans/README.md`** — check for active plan to resume
+4. **`docs/design/07-priority.md`** — check priority checklist
 
 These files govern how you work. Do not skip them.
 
@@ -30,11 +30,8 @@ rokkit/
     design-patterns.md          <-- Established patterns cookbook
     references.md               <-- Coding conventions, styling, project structure
   docs/
-    requirements/               <-- Per-module: what and why (numbered: NNN-xxx.md)
-    design/                     <-- Per-module: how and why (numbered: NNN-xxx.md)
-    backlog/                    <-- Priority-ordered work items (YYYY-MM-DD-topic.md)
-    plans/                      <-- Active plan + archived completed plans
-      README.md                 <-- Current active plan
+    features/                   <-- Feature specs (Gherkin scenarios, vision)
+    design/                     <-- Architecture and design docs (numbered: NN-xxx.md)
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
   sites/
     learn/                      <-- Documentation site + interactive demos + e2e tests
@@ -73,17 +70,14 @@ See `agents/workflow.md` for the full process.
 ### When a feature design is agreed upon
 1. Update the relevant `docs/design/*.md` module file
 2. Log in `agents/journal.md`
-3. Create plan in `docs/plans/README.md`
+3. Create/update plan in `docs/design/07-priority.md`
 
 ### When completing work
 1. Run tests and lint — both must pass
-2. Check requirements and design docs are still accurate
-3. Archive plan to `docs/plans/<datetime>-<name>.md`
+2. Check design docs are still accurate
+3. Update `docs/design/07-priority.md` — mark item complete
 4. Update `agents/journal.md` with summary and commit hashes
-5. Mark item done in `docs/backlog/`
-
-### Handling interrupts
-All interrupts go to `docs/backlog/`. Pick up next.
+5. Update status in `docs/features/` and `docs/design/`
 
 ### Lint Rules
 - Warnings are pre-existing and acceptable
@@ -98,7 +92,6 @@ All interrupts go to `docs/backlog/`. Pick up next.
 | `agents/journal.md` | Chronological progress log |
 | `agents/design-patterns.md` | Established patterns cookbook |
 | `agents/references.md` | Coding conventions, styling, structure |
-| `docs/requirements/` | Module requirements — what and why |
-| `docs/design/` | Module design — how and why |
-| `docs/backlog/` | Priority-ordered work items |
-| `docs/plans/README.md` | Current active plan |
+| `agents/tracking.md` | Active tracking log |
+| `docs/features/` | Feature specs (Gherkin scenarios, vision) |
+| `docs/design/` | Architecture and design docs |

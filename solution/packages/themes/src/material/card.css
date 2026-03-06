@@ -1,0 +1,61 @@
+* Card - Material Theme Styles
+ *
+ * Material Design inspired with elevation and shadows.
+ */
+
+/* =============================================================================
+   Base Card Styles
+   ============================================================================= */
+
+[data-style='material'] [data-card] {
+  @apply bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
+}
+
+/* Interactive cards (buttons) */
+[data-style='material'] [data-card][data-card-interactive] {
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+[data-style='material'] [data-card][data-card-interactive]:hover {
+  @apply shadow-md;
+}
+
+[data-style='material'] [data-card][data-card-interactive]:active {
+  @apply shadow-sm;
+}
+
+/* =============================================================================
+   Card Sections
+   ============================================================================= */
+
+[data-style='material'] [data-card-header] {
+  @apply border-surface-z3 border-b;
+}
+
+[data-style='material'] [data-card-body] {
+  @apply text-surface-z8;
+}
+
+[data-style='material'] [data-card-footer] {
+  @apply border-surface-z3 text-surface-z7 border-t;
+}
+
+/* =============================================================================
+   Focus States
+   ============================================================================= */
+
+[data-style='material'] [data-card][data-card-interactive]:focus-visible {
+  @apply ring-primary-z4 outline-none ring-2 ring-offset-2;
+}
+
+/* =============================================================================
+   Disabled State
+   ============================================================================= */
+
+[data-style='material'] [data-card][data-card-interactive][data-disabled],
+[data-style='material'] [data-card][data-card-interactive]:disabled {
+  @apply cursor-not-allowed opacity-50 shadow-none;
+}

@@ -1,204 +1,207 @@
 # Component Inventory
 
-> Complete listing of all Rokkit UI components organized by package and category
+> Complete listing of all Rokkit components organized by category, with implementation status.
 
 ## Summary
 
-| Package | Components | Status |
-|---------|------------|--------|
-| @rokkit/ui | 57 | Active |
-| @rokkit/composables | 7 | Renaming from bits-ui |
-| @rokkit/forms | 8 | Active |
-| **Total** | **72** | |
+| Package | Exported Components | Status |
+|---------|---------------------|--------|
+| `@rokkit/ui` | 38 | Active |
+| `@rokkit/forms` | 30 | Active |
+| `@rokkit/chart` | 6 (Plot primitives + ChartBrewer) | Active |
+| `@rokkit/app` | 1 | Active |
+
+**Status key:**
+- Implemented — component exists and is exported from the package
+- In Progress — partial implementation or missing tests/stories
+- Planned — designed but not built
+- Proposed — considered but not yet designed
 
 ---
 
-## @rokkit/ui Components (57)
+## 1. Selection & Navigation
 
-### Selection Components (7)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| List | `list/List.svelte` | Vertical list with selection | High |
-| Select | `select/Select.svelte` | Dropdown selection | High |
-| MultiSelect | `multi-select/MultiSelect.svelte` | Multiple item selection | Medium |
-| Switch | `switch/Switch.svelte` | Toggle between options | Medium |
-| Tabs | `tabs/Tabs.svelte` | Tabbed interface | High |
-| RadioGroup | `radio-group/RadioGroup.svelte` | Radio button group | Medium |
-| PickOne | `pick-one/PickOne.svelte` | Visual option picker | Low |
-
-### Hierarchical Components (4)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| Tree | `tree/` | Tree view with expand/collapse | High |
-| NestedList | `nested-list/NestedList.svelte` | Recursive nested list | Medium |
-| Accordion | `accordion/Accordion.svelte` | Collapsible sections | Medium |
-| TreeTable | `tree-table/TreeTable.svelte` | Hierarchical table | Low |
-
-### Form Input Components (7)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| CheckBox | `check-box/CheckBox.svelte` | Checkbox input | Medium |
-| Toggle | `toggle/Toggle.svelte` | Toggle switch | Medium |
-| Range | `range/Range.svelte` | Range slider | Medium |
-| RangeSlider | `range-slider/RangeSlider.svelte` | Advanced range slider | Low |
-| RangeMinMax | `range-min-max/RangeMinMax.svelte` | Min/max range | Low |
-| Rating | `rating/Rating.svelte` | Star rating input | Low |
-| Slider | `slider/Slider.svelte` | Single value slider | Low |
-
-### Layout Components (6)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| Card | `card/Card.svelte` | Content card container | Medium |
-| ResponsiveGrid | `responsive-grid/ResponsiveGrid.svelte` | Responsive grid layout | Medium |
-| SlidingColumns | `sliding-columns/SlidingColumns.svelte` | Animated column layout | Low |
-| Carousel | `carousel/Carousel.svelte` | Image/content carousel | Low |
-| Stage | `stage/Stage.svelte` | Content stage | Low |
-| GraphPaper | `graph-paper/GraphPaper.svelte` | Grid background | Low |
-
-### Navigation Components (6)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| BreadCrumbs | `bread-crumbs/BreadCrumbs.svelte` | Breadcrumb navigation | Medium |
-| DropDown | `drop-down/DropDown.svelte` | Dropdown menu | Medium |
-| DropSearch | `drop-search/DropSearch.svelte` | Searchable dropdown | Medium |
-| PageNavigator | `page-navigator/PageNavigator.svelte` | Pagination | Medium |
-| NestedPaginator | `nested-paginator/NestedPaginator.svelte` | Nested pagination | Low |
-| Stepper | `stepper/Stepper.svelte` | Step indicator | Medium |
-
-### Feedback Components (4)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| ProgressBar | `progress-bar/ProgressBar.svelte` | Progress indicator | Medium |
-| ProgressDots | `progress-dots/ProgressDots.svelte` | Step progress dots | Low |
-| ValidationReport | `validation-report/ValidationReport.svelte` | Validation messages | Medium |
-| Message | `message/Message.svelte` | User messages | Medium |
-
-### Display Components (8)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| Button | `button/Button.svelte` | Button element | High |
-| Icon | `icon/Icon.svelte` | Icon display | High |
-| Item | `item/Item.svelte` | List item display | Medium |
-| Pill | `pill/Pill.svelte` | Tag/badge display | Low |
-| Link | `link/Link.svelte` | Styled link | Low |
-| Connector | `connector/Connector.svelte` | Visual connector | Low |
-| Separator | `separator/Separator.svelte` | Content separator | Low |
-| Summary | `summary/Summary.svelte` | Summary display | Low |
-
-### Table Components (3)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| TableCell | `table/TableCell.svelte` | Table cell | Low |
-| TableHeaderCell | `table/TableHeaderCell.svelte` | Table header cell | Low |
-| ListBody | `list/ListBody.svelte` | List body container | Low |
-
-### Advanced Components (9)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| Calendar | `calendar/Calendar.svelte` | Calendar view | Low |
-| Shine | `shine/Shine.svelte` | Shine effect | Low |
-| Tilt | `tilt/Tilt.svelte` | Tilt effect | Low |
-| Fillable | `fillable/Fillable.svelte` | Fillable container | Low |
-| Scrollable | `scrollable/Scrollable.svelte` | Scrollable container | Low |
-| Overlay | `overlay/Overlay.svelte` | Overlay container | Low |
-| ToggleThemeMode | `toggle-theme-mode/ToggleThemeMode.svelte` | Theme toggle | Medium |
-| Node | `tree/Node.svelte` | Tree node (internal) | Low |
-
-### Internal/Utility Components (3)
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| Input | `input/Input.svelte` | Base input wrapper | High |
-| Scrollable | `scrollable/Scrollable.svelte` | Scroll container | Low |
-| Overlay | `overlay/Overlay.svelte` | Overlay layer | Low |
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| List | `@rokkit/ui` | Implemented | Vertical list with keyboard navigation and selection |
+| Tree | `@rokkit/ui` | Implemented | Hierarchical tree with expand/collapse and keyboard navigation |
+| LazyTree | `@rokkit/ui` | Implemented | Tree with lazy-loaded children for large datasets |
+| Toolbar | `@rokkit/ui` | Implemented | Row of action items with arrow-key navigation |
+| ToolbarGroup | `@rokkit/ui` | Implemented | Grouping container for Toolbar items |
+| Tabs | `@rokkit/ui` | Implemented | Tabbed interface with keyboard navigation |
+| Menu | `@rokkit/ui` | Implemented | Dropdown menu with grouped actions |
+| Select | `@rokkit/ui` | Implemented | Single-value dropdown selection |
+| MultiSelect | `@rokkit/ui` | Implemented | Multi-value selection with pill display |
+| Toggle | `@rokkit/ui` | Implemented | Exclusive option toggle (button group style) |
+| BreadCrumbs | `@rokkit/ui` | Implemented | Breadcrumb path navigation |
+| SearchFilter | `@rokkit/ui` | Implemented | Search input with filter behaviour |
 
 ---
 
-## @rokkit/composables Components (7)
+## 2. Input & Forms
 
-> **Note**: This package is being renamed from `@rokkit/bits-ui` per [ADR-002](../decisions/002-package-rename.md)
+### Form Orchestration
 
-Composable primitives for building custom UIs. These provide maximum flexibility with compound component patterns.
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| FormRenderer | `@rokkit/forms` | Implemented | Schema-driven form rendering with layout support |
+| FormBuilder | `@rokkit/forms` | Implemented | Reactive form state builder (class, not a component) |
+| InputField | `@rokkit/forms` | Implemented | Labeled input wrapper with validation display |
+| InfoField | `@rokkit/forms` | Implemented | Read-only labeled field for display within forms |
+| ValidationReport | `@rokkit/forms` | Implemented | Aggregated validation error list |
+| FieldLayout | `@rokkit/forms` | Implemented | Layout wrapper for form field positioning |
+| Input | `@rokkit/forms` | Implemented | Universal base input component (wraps native inputs) |
+| ArrayEditor | `@rokkit/forms` | Implemented | Editor for array-typed fields |
 
-| Component | File | Description | Action |
-|-----------|------|-------------|--------|
-| List | `List.svelte` | Composable list primitive | Keep |
-| NestedList | `NestedList.svelte` | Composable nested primitive | Keep |
-| Tree | `Tree.svelte` | Composable tree parts | Keep |
-| Switch | `Switch.svelte` | Toggle switch | Move to @rokkit/ui |
-| TabGroup | `TabGroup.svelte` | Tab group | Deprecate (use ui/Tabs) |
-| GroupedList | `GroupedList.svelte` | Grouped list primitive | Keep |
-| FloatingNav | `FloatingNav.svelte` | Floating navigation | Keep |
+### Standalone Input Controls
 
----
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| Switch | `@rokkit/ui` | Implemented | On/off toggle switch |
+| Rating | `@rokkit/ui` | Implemented | Star rating input |
+| Range | `@rokkit/ui` | Implemented | Range slider input |
+| Stepper | `@rokkit/ui` | Implemented | Step-through value input |
+| UploadTarget | `@rokkit/ui` | Implemented | Drag-and-drop file upload target zone |
+| UploadProgress | `@rokkit/ui` | Implemented | File upload progress display |
+| UploadFileStatus | `@rokkit/ui` | Implemented | Per-file upload status indicator |
 
-## @rokkit/forms Components (8)
+### Native Input Wrappers (used by FormRenderer)
 
-Form generation and input handling.
-
-| Component | File | Description | Priority |
-|-----------|------|-------------|----------|
-| FormRenderer | `FormRenderer.svelte` | Schema-driven form rendering | High |
-| FieldLayout | `FieldLayout.svelte` | Field layout wrapper | Medium |
-| InputField | `InputField.svelte` | Labeled input with validation | High |
-| Input | `Input.svelte` | Universal input component | High |
-| ListEditor | `ListEditor.svelte` | List/array editor | Medium |
-| DataEditor | `DataEditor.svelte` | Generic data editor | Medium |
-| NestedEditor | `NestedEditor.svelte` | Nested data editor | Low |
-
----
-
-## Component Dependencies
-
-### Core Dependencies
-
-```
-@rokkit/core
-├── field-mapper.js (all data-driven components)
-├── mapping.js (field mapping utilities)
-└── types.js (shared types)
-
-@rokkit/states
-├── proxy.svelte.js (Proxy class - all components)
-├── list-controller.svelte.js (selection components)
-├── nested-controller.svelte.js (hierarchical components)
-└── vibe.svelte.js (theme state)
-```
-
-### Component Relationships
-
-```
-List
-├── uses: Proxy, list-controller
-├── renders: Item
-└── supports: child snippet
-
-Tree
-├── uses: Proxy, nested-controller
-├── renders: Node, Item
-└── supports: stub, header, footer snippets
-
-Form
-├── uses: FormBuilder, FormRenderer
-├── renders: InputField, Input
-└── supports: schema, layout
-```
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| InputText | `@rokkit/forms` | Implemented | Text input |
+| InputNumber | `@rokkit/forms` | Implemented | Number input |
+| InputEmail | `@rokkit/forms` | Implemented | Email input |
+| InputPassword | `@rokkit/forms` | Implemented | Password input |
+| InputUrl | `@rokkit/forms` | Implemented | URL input |
+| InputTel | `@rokkit/forms` | Implemented | Telephone input |
+| InputTextArea | `@rokkit/forms` | Implemented | Multi-line text input |
+| InputCheckbox | `@rokkit/forms` | Implemented | Checkbox input |
+| InputRadio | `@rokkit/forms` | Implemented | Radio button input |
+| InputSelect | `@rokkit/forms` | Implemented | Native select input |
+| InputSwitch | `@rokkit/forms` | Implemented | Switch input (form-connected) |
+| InputToggle | `@rokkit/forms` | Implemented | Toggle input (form-connected) |
+| InputRange | `@rokkit/forms` | Implemented | Range slider input (form-connected) |
+| InputDate | `@rokkit/forms` | Implemented | Date picker input |
+| InputDateTime | `@rokkit/forms` | Implemented | Date-time picker input |
+| InputTime | `@rokkit/forms` | Implemented | Time picker input |
+| InputMonth | `@rokkit/forms` | Implemented | Month picker input |
+| InputWeek | `@rokkit/forms` | Implemented | Week picker input |
+| InputColor | `@rokkit/forms` | Implemented | Color picker input |
+| InputFile | `@rokkit/forms` | Implemented | File input |
+| FileUpload | `@rokkit/ui` | Proposed | Standalone drag-and-drop file upload component |
 
 ---
 
-## Priority Legend
+## 3. Display & Content
 
-| Priority | Description |
-|----------|-------------|
-| **High** | Core components, frequently used, document first |
-| **Medium** | Important but not blocking |
-| **Low** | Nice to have, can defer |
+### Form Display Components
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| DisplayValue | `@rokkit/forms` | Implemented | Read-only display of a single field value |
+| DisplaySection | `@rokkit/forms` | Implemented | Grouped section display within a form |
+| DisplayTable | `@rokkit/forms` | Implemented | Tabular display of form data |
+| DisplayCardGrid | `@rokkit/forms` | Implemented | Card grid display of form data |
+| DisplayList | `@rokkit/forms` | Implemented | List display of form data |
+
+### UI Display Components
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| Card | `@rokkit/ui` | Implemented | Content card container with selection and snippet support |
+| Code | `@rokkit/ui` | Implemented | Syntax-highlighted code block display |
+| Timeline | `@rokkit/ui` | Implemented | Chronological event display |
+| Table | `@rokkit/ui` | Implemented | Tabular data display |
+| Pill | `@rokkit/ui` | Implemented | Tag/label pill display |
+| ItemContent | `@rokkit/ui` | Implemented | Standardised item content layout (used inside List/Tree) |
+| Connector | `@rokkit/ui` | Implemented | Visual connector line between elements |
+| Reveal | `@rokkit/ui` | Implemented | Content reveal/show-more container |
+| Badge | `@rokkit/ui` | Proposed | Numeric or status badge indicator |
+
+---
+
+## 4. Overlay & Feedback
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| FloatingAction | `@rokkit/ui` | Implemented | Floating action button (FAB) |
+| FloatingNavigation | `@rokkit/ui` | Implemented | Floating navigation panel |
+| ProgressBar | `@rokkit/ui` | Implemented | Linear progress indicator |
+| Modal | `@rokkit/ui` | Proposed | Dialog/modal overlay with focus trapping |
+| Toast | `@rokkit/ui` | Proposed | Transient notification messages |
+| Tooltip | `@rokkit/ui` | Proposed | Contextual hover tooltip |
+
+---
+
+## 5. Layout
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| Carousel | `@rokkit/ui` | Implemented | Horizontally scrolling content carousel |
+| Grid | `@rokkit/ui` | Implemented | Responsive CSS grid layout container |
+| Shine | `@rokkit/ui` | Implemented | Shine/gloss visual effect layer |
+| Tilt | `@rokkit/ui` | Implemented | 3D tilt interaction effect container |
+| Panel | `@rokkit/ui` | Proposed | Collapsible side or content panel |
+| Divider | `@rokkit/ui` | Planned | Horizontal or vertical content separator |
+
+---
+
+## 6. Charts
+
+### Plot Primitives (`@rokkit/chart` — `Plot.*`)
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| Plot.Root | `@rokkit/chart` | Implemented | SVG chart root with coordinate system |
+| Plot.Axis | `@rokkit/chart` | Implemented | Chart axis (x or y) |
+| Plot.Bar | `@rokkit/chart` | Implemented | Bar series primitive |
+| Plot.Grid | `@rokkit/chart` | Implemented | Background grid lines |
+| Plot.Legend | `@rokkit/chart` | Implemented | Chart legend |
+
+### Pattern Fills (`@rokkit/chart`)
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| Texture / DefinePatterns | `@rokkit/chart` | Implemented | SVG pattern fill definitions for accessibility |
+| Brick, Circles, CrossHatch, CurvedWave, Dots, OutlineCircles, Tile, Triangles, Waves | `@rokkit/chart` | Implemented | Individual repeating pattern fills |
+
+### High-Level Chart Components (planned)
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| Sparkline | `@rokkit/chart` | Implemented | Compact inline trend chart (line/bar/area) |
+| BarChart | `@rokkit/chart` | Planned | Full bar chart with axes, legend, and animation |
+| LineChart | `@rokkit/chart` | Planned | Line chart with multi-series support |
+| AreaChart | `@rokkit/chart` | Planned | Area chart with stacked variant |
+| PieChart | `@rokkit/chart` | Planned | Pie chart for part-to-whole data |
+| DonutChart | `@rokkit/chart` | Planned | Donut chart with centre label |
+| ScatterPlot | `@rokkit/chart` | Planned | Scatter chart for correlation data |
+| BubbleChart | `@rokkit/chart` | Planned | Scatter chart with size-encoded third dimension |
+| AnimatedChart | `@rokkit/chart` | Planned | Shared animation wrapper for chart transitions |
+| CrossFilter | `@rokkit/chart` | Proposed | Linked charts with cross-filtering interaction |
+
+---
+
+## 7. Theme & Utilities
+
+| Component | Package | Status | Description |
+|-----------|---------|--------|-------------|
+| PaletteManager | `@rokkit/ui` | Implemented | UI for browsing and switching colour palettes |
+| ThemeSwitcherToggle | `@rokkit/app` | Implemented | Toggle button for switching between themes/modes |
+| ChartBrewer | `@rokkit/chart` | Implemented | Utility class for deriving chart colour palettes from the active theme |
+
+---
+
+## Package Cross-Reference
+
+| Package | Purpose | Key Exports |
+|---------|---------|-------------|
+| `@rokkit/ui` | Main component library | 38 UI components |
+| `@rokkit/forms` | Form generation and inputs | FormRenderer, FormBuilder, 30 form components |
+| `@rokkit/chart` | Data visualisation | Plot primitives, patterns, ChartBrewer |
+| `@rokkit/app` | Application shell utilities | ThemeSwitcherToggle |
+| `@rokkit/states` | Reactive state controllers | ListController, NestedController, Proxy, Vibe |
+| `@rokkit/actions` | Svelte actions | `navigator`, `controller`, drag-and-drop |
+| `@rokkit/core` | Shared utilities | field-mapper, mapping, types |
+| `@rokkit/themes` | CSS theme definitions | rokkit, glass, material, minimal themes |

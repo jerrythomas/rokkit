@@ -43,6 +43,14 @@
 	]
 
 	const fields = { text: 'title', href: 'slug', icon: 'icon', value: 'slug' }
+
+	let componentSlug = $derived(
+		page.url.pathname.includes('/playground/components/')
+			? page.url.pathname.split('/').pop()
+			: null
+	)
+	const docsHref = $derived(componentSlug ? `/docs/components/${componentSlug}` : null)
+	const llmsHref = $derived(componentSlug ? `/llms/components/${componentSlug}.txt` : null)
 </script>
 
 <div class="flex min-h-0 flex-1 flex-col">
@@ -66,7 +74,33 @@
 			</div>
 		</aside>
 
-		<main data-playground-content class="bg-surface-z1 text-surface-z8 flex flex-col overflow-auto flex-1 min-w-0">
+		<main data-playground-content class="bg-surface-z1 text-surface-z8 flex flex-col overflow-auto flex-1 min-w-0 relative">
+			{#if docsHref || llmsHref}
+				<div class="absolute top-4 right-4 flex items-center gap-1 z-10">
+					{#if docsHref}
+						<a
+							href={docsHref}
+							class="flex h-8 w-8 items-center justify-center rounded-md text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 no-underline"
+							title="View Documentation"
+							aria-label="View Documentation"
+						>
+							<span class="i-solar:book-2-bold-duotone inline-block text-lg" aria-hidden="true"></span>
+						</a>
+					{/if}
+					{#if llmsHref}
+						<a
+							href={llmsHref}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="flex h-8 w-8 items-center justify-center rounded-md text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 no-underline"
+							title="View llms.txt"
+							aria-label="View llms.txt"
+						>
+							<span class="i-solar:file-text-bold-duotone inline-block text-lg" aria-hidden="true"></span>
+						</a>
+					{/if}
+				</div>
+			{/if}
 			{@render children()}
 		</main>
 	</div>

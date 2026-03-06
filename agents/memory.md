@@ -65,6 +65,14 @@ Violations must be justified or the plan revised.
 | Legacy Proxy deleted from @rokkit/states | Ramda-dependent Proxy class replaced by lightweight wrapper in deriveLookupWithProxy | 2026-03 |
 | Migrated to simplified workflow | Adopted Story → Plan → Implement pipeline. Plans in docs/plans/, dropped open-questions/sessions. | 2026-03 |
 
+## Key Architectural Decisions
+
+**ADR-001: Component Architecture Strategy (2026-01-31)** — Prioritize `@rokkit/ui` custom components over `@rokkit/bits-ui` wrappers. Standardize on `options` (not `items`) for data props. Remove the deprecated `using` prop in favor of snippets. bits-ui retained only as a base for complex a11y patterns (Dialog, Popover, Combobox, DropdownMenu); all others built custom.
+
+**ADR-002: Rename @rokkit/bits-ui to @rokkit/composables (2026-01-31)** — Renamed package to better describe its composable-primitive nature and hide the bits-ui implementation detail. `@rokkit/ui` stays data-driven (single component, `options` prop); `@rokkit/composables` holds compound component primitives (e.g. `Tree.Root`, `Tree.Node`). Partially superseded by ADR-003.
+
+**ADR-003: MVC Separation — Fold Composables, Adopt Actions/States in UI (2026-02-20, FULLY COMPLETE)** — Removed `@rokkit/composables` entirely (and bits-ui with it). Added `@rokkit/states` and `@rokkit/actions` as dependencies of `@rokkit/ui`. Migrated List, Tree, Menu, Select, MultiSelect, Toggle to use `ListController`/`NestedController` + `navigator` action instead of per-component inline logic, eliminating ~1200 lines of duplication. Proxy/ItemProxy unification deferred (different abstractions).
+
 ## Technical Notes
 
 - **State icons pattern**: Two-layer customization (global `defaultIcons` in core + per-instance `icons` prop). Naming: `{group}-{state}` (e.g., `node-opened`, `checkbox-checked`)

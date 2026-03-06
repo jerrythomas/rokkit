@@ -4,7 +4,7 @@
 	import { beforeNavigate, afterNavigate } from '$app/navigation'
 	import Sidebar from './Sidebar.svelte'
 	import { ThemeSwitcherToggle } from '@rokkit/app'
-	import { Button, ProgressBar } from '@rokkit/ui'
+	import { ProgressBar } from '@rokkit/ui'
 	import TableOfContents from '$lib/components/TableOfContents.svelte'
 	import { media } from '$lib/media.js'
 	import { findSection, findGroupForSection } from '$lib/stories.js'
@@ -14,10 +14,12 @@
 	let canonicalPath = $derived(page.url.pathname.replace(/\/play$/, ''))
 	let currentSection = $derived(findSection(sections, canonicalPath))
 	let { title, description, icon = '?', llms = false } = $derived(currentSection)
+	let componentSlug = $derived(
+		canonicalPath.includes('/docs/components/') ? canonicalPath.split('/').pop() : null
+	)
+	const playHref = $derived(componentSlug ? `/playground/components/${componentSlug}` : null)
 	const llmsHref = $derived(
-		llms
-			? `/docs/components/${canonicalPath.split('/').pop().replace(/-/g, '')}/llms.txt`
-			: null
+		llms && componentSlug ? `/llms/components/${componentSlug}.txt` : null
 	)
 
 	let breadcrumbs = $derived.by(() => {
@@ -146,7 +148,33 @@
 		<!-- ── Main column ──────────────────────────────────────────────────────── -->
 		<div class="flex min-w-0 flex-1 flex-col overflow-hidden">
 			<div class="flex min-h-0 flex-1 overflow-hidden">
-				<main id="main-content" class="min-w-0 flex-1 overflow-y-auto p-8">
+				<main id="main-content" class="min-w-0 flex-1 overflow-y-auto p-8 relative">
+					{#if playHref || llmsHref}
+						<div class="absolute top-4 right-4 flex items-center gap-1 z-10">
+							{#if playHref}
+								<a
+									href={playHref}
+									class="flex h-8 w-8 items-center justify-center rounded-md text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 no-underline"
+									title="Open in Playground"
+									aria-label="Open in Playground"
+								>
+									<span class="i-solar:gamepad-bold-duotone inline-block text-lg" aria-hidden="true"></span>
+								</a>
+							{/if}
+							{#if llmsHref}
+								<a
+									href={llmsHref}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="flex h-8 w-8 items-center justify-center rounded-md text-surface-z5 hover:bg-surface-z3 hover:text-surface-z8 no-underline"
+									title="View llms.txt"
+									aria-label="View llms.txt"
+								>
+									<span class="i-solar:file-text-bold-duotone inline-block text-lg" aria-hidden="true"></span>
+								</a>
+							{/if}
+						</div>
+					{/if}
 					{#if breadcrumbs.length > 0}
 						<nav class="mb-2 flex items-center gap-1 text-sm" aria-label="Breadcrumb">
 							{#each breadcrumbs as crumb, i}
@@ -164,16 +192,6 @@
 							<span class="{icon} text-secondary-z7 text-4xl" aria-hidden="true"></span>
 						{/if}
 						{title}
-						{#if llmsHref}
-							<Button
-								label="llms.txt"
-								icon="i-solar:file-text-bold-duotone"
-								href={llmsHref}
-								target="_blank"
-								style="ghost"
-								size="sm"
-							/>
-						{/if}
 					</h1>
 					{#if description}
 						<p class="mb-6 text-sm text-surface-z5">{description}</p>
@@ -187,4 +205,3 @@
 		</div>
 	</div>
 </div>
-

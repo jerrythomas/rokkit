@@ -1,69 +1,40 @@
 # Design Documentation
 
-> Architecture, component design, and implementation details for Rokkit UI
+Architecture, component design, and implementation details for Rokkit UI.
 
-## Numbering Convention
+## Core Design Documents
 
-Files use `NNN-name.md` numbering grouped by component category:
-
-| Range | Category | Description |
-|-------|----------|-------------|
-| 000 | Foundation | Architecture, inventory, status, patterns |
-| 001–009 | UI Components | Button, List, Tree, Table, Select, Menu, Toggle, Toolbar, Navigation |
-| 010–019 | Forms | FormRenderer, FormBuilder, inputs, validation |
-| 020–029 | Charts | Chart system |
-| 030–039 | Themes | Theme system, styling |
-| 040–049 | Layout | Card, Panel, Overlay, Grid, Carousel |
-| 050–059 | Feedback | ProgressBar, Message, Pill, Separator, Accordion |
-| 060–069 | Effects | Tilt, Shine, Glow, Motion |
-| 070–079 | Data Components | SearchFilter, Calendar |
-| 080–089 | CLI/Tooling | CLI integration |
-
-## Documents
-
-### Foundation (000)
+These documents define how Rokkit works. Read them before designing or building anything.
 
 | Document | Description |
 |----------|-------------|
-| [000-architecture](./000-architecture.md) | Package hierarchy, type system, state management |
-| [000-navigation](./000-navigation.md) | Navigation system, `use:navigator` action |
-| [000-component-inventory](./000-component-inventory.md) | Complete listing of all components |
-| [000-component-status](./000-component-status.md) | 9-dimension status matrix |
-| [000-component-gaps](./000-component-gaps.md) | Gap analysis across components |
-| [000-component-approach](./000-component-approach.md) | Component approach patterns |
+| [01-patterns](./01-patterns.md) | **Core patterns** — data binding, field mapping, API conventions, theming, accessibility. Reference for all component work. |
+| [02-components](./02-components.md) | Component anatomy, categories, data flow, snippet model, overlay design |
+| [03-forms](./03-forms.md) | Schema-driven form system: FormBuilder, field types, validation, lookups |
+| [04-actions](./04-actions.md) | navigator action, interaction actions (ripple, hover-lift, magnetic) |
+| [05-website](./05-website.md) | Learn site architecture, docs pages, playground, llms.txt, navigation |
+| [06-testing](./06-testing.md) | Testing strategy: unit tests (Vitest), E2E tests (Playwright), conventions |
+| [07-priority](./07-priority.md) | Priority checklist — all pending work items by tier |
+| [08-tools](./08-tools.md) | CLI, icon sets, toolchain *(planned)* |
+| [09-data](./09-data.md) | `@rokkit/data` package: dataset pipeline, rollup, dataview, filtering, formatting, schema inference, joins |
+| [10-theming](./10-theming.md) | Theme architecture: skin system, z-index scale, CSS variables, runtime switching |
 
-### UI Components (001–009)
+## Numbering Convention
 
-| # | Document | Description |
-|---|----------|-------------|
-| 001 | button | *Planned* |
-| 002 | [list](./002-list.md) | Current architecture + `use:navigator` + controller refactor |
-| 003 | [tree](./003-tree.md) | Current architecture + `use:navigator` + NestedController refactor |
-| 004 | [table](./004-table.md) | Table with TabularController, SearchFilter, sorting |
-| 005 | select | *Planned* |
-| 006 | menu | *Planned* |
-| 007 | toggle | *Planned* |
-| 008 | toolbar | *Planned* |
+| Range | Category |
+|-------|----------|
+| 01–09 | Core design documents (patterns, components, forms, actions, website, testing, priority, tools, data) |
+| 10–19 | Theme system |
+| 20–29 | Charts subsystem |
+| 30–39 | Layout components |
+| 40–49 | Feedback components |
+| 50–59 | Effects |
+| 60–69 | Data components |
+| 70–79 | CLI/Tooling |
 
-### Forms (010–019)
+## Component Status Dimensions
 
-| # | Document | Description |
-|---|----------|-------------|
-| 010 | [form](./010-form.md) | FormBuilder, type registry, validation, lookups, master-detail, semantic command |
-
-### Charts (020–029)
-
-*Planned*
-
-### Themes (030–039)
-
-| # | Document | Description |
-|---|----------|-------------|
-| 030 | [theme](./030-theme.md) | Theme system implementation |
-
-## Component Status Matrix
-
-Components are evaluated across 9 dimensions:
+All components are evaluated across 9 dimensions:
 
 | # | Dimension | Description |
 |---|-----------|-------------|
@@ -79,4 +50,4 @@ Components are evaluated across 9 dimensions:
 
 ## Related
 
-- [Requirements](../requirements/) — What components must do
+- [Features](../features/) — Feature specs and vision

@@ -1,0 +1,59 @@
+ * Card - Minimal Theme Styles
+ *
+ * Clean, flat styling with subtle borders.
+ */
+
+/* =============================================================================
+   Base Card Styles
+   ============================================================================= */
+
+[data-style='minimal'] [data-card] {
+	@apply bg-surface-z1 border-surface-z4 text-surface-z9 border shadow-sm;
+}
+
+/* Interactive cards (buttons) */
+[data-style='minimal'] [data-card][data-card-interactive] {
+	cursor: pointer;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-style='minimal'] [data-card][data-card-interactive]:hover {
+	@apply border-surface-z6 shadow;
+}
+
+[data-style='minimal'] [data-card][data-card-interactive]:active {
+	@apply bg-surface-z2;
+}
+
+/* =============================================================================
+   Card Sections
+   ============================================================================= */
+
+[data-style='minimal'] [data-card-header] {
+	@apply border-surface-z3 border-b;
+}
+
+[data-style='minimal'] [data-card-body] {
+	@apply text-surface-z8;
+}
+
+[data-style='minimal'] [data-card-footer] {
+	@apply border-surface-z3 border-t text-surface-z7;
+}
+
+/* =============================================================================
+   Focus States
+   ============================================================================= */
+
+[data-style='minimal'] [data-card][data-card-interactive]:focus-visible {
+	@apply outline-none ring-1 ring-surface-z5;
+}
+
+/* =============================================================================
+   Disabled State
+   ============================================================================= */
+
+[data-style='minimal'] [data-card][data-card-interactive][data-disabled],
+[data-style='minimal'] [data-card][data-card-interactive]:disabled {
+	@apply opacity-50 cursor-not-allowed;
+}
