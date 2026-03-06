@@ -207,3 +207,4 @@ project.inlang/caches
 tmp
 .playwright-mcp
 /*.png
+.worktrees/
