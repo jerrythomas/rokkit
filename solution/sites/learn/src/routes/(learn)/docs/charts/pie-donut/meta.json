@@ -1,0 +1,7 @@
+{
+  "title": "Pie / Donut",
+  "description": "Proportional segment chart with optional center label",
+  "icon": "i-solar:pie-chart-2-bold-duotone",
+  "category": "charts",
+  "order": 5
+}

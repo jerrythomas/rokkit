@@ -1,0 +1,7 @@
+{
+  "title": "Grid",
+  "description": "Responsive CSS grid wrapper for card and item layouts",
+  "icon": "i-solar:widget-5-bold-duotone",
+  "category": "components",
+  "order": 29
+}

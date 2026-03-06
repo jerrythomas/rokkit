@@ -1,0 +1,7 @@
+{
+  "title": "Icon Sets",
+  "description": "Curated navigation, status, action, and object icons with tree-shaking",
+  "icon": "i-solar:stars-bold-duotone",
+  "category": "toolchain",
+  "order": 3
+}

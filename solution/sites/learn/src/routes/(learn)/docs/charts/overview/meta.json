@@ -1,0 +1,7 @@
+{
+  "title": "Overview",
+  "description": "Chart architecture, theme color integration, and dark mode support",
+  "icon": "i-solar:chart-bold-duotone",
+  "category": "charts",
+  "order": 1
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Navigator",
+  "description": "Svelte action that binds a controller to the DOM with keyboard and ARIA support",
+  "icon": "i-solar:keyboard-bold-duotone",
+  "category": "utilities",
+  "order": 3
+}

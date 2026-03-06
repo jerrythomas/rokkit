@@ -1,0 +1,7 @@
+{
+  "title": "Scatter",
+  "description": "X/Y correlation plot with optional size and color encoding",
+  "icon": "i-solar:chart-bold-duotone",
+  "category": "charts",
+  "order": 6
+}

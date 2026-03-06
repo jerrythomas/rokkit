@@ -1,0 +1,7 @@
+{
+  "title": "Data Table",
+  "description": "Tabular data display with sorting, selection, and keyboard navigation",
+  "icon": "i-solar:table-bold-duotone",
+  "category": "components",
+  "order": 27
+}

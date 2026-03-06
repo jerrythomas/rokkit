@@ -1,0 +1,7 @@
+{
+  "title": "Animation",
+  "description": "Entry animations, timeline and racing patterns, Svelte transitions, motion preferences",
+  "icon": "i-solar:magic-stick-3-bold-duotone",
+  "category": "charts",
+  "order": 9
+}
