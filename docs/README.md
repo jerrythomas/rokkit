@@ -56,7 +56,7 @@ How Rokkit is built — architecture decisions, patterns, and implementation det
 - [Components](design/02-components.md) — Component anatomy, data flow, API, snippets
 - [Forms](design/03-forms.md) — Schema-driven form system
 - [Actions](design/04-actions.md) — Navigator, keyboard, interaction actions
-- [Website](design/05-website.md) — Learn site, playground, AI content
+- [Website](design/09-website.md) — Learn site, playground, AI content
 - [Testing](design/06-testing.md) — Unit and e2e test design
 - [Priority](design/07-priority.md) — What's next
 - [Tools](design/08-tools.md) — CLI, icon sets, theme authoring
