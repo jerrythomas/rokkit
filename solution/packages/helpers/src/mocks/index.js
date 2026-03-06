@@ -14,3 +14,4 @@ global.IntersectionObserver = IntersectionObserver
 if (typeof document !== 'undefined' && !document.execCommand) {
 	document.execCommand = () => false
 }
+

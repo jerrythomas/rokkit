@@ -182,10 +182,20 @@ describe('vibe', () => {
 				throw new Error('Mocked error')
 			})
 		}
+		let originalLocalStorage
 		beforeEach(() => {
+			originalLocalStorage = window.localStorage
 			Object.defineProperty(window, 'localStorage', {
 				value: localStorageMock,
-				writable: true
+				writable: true,
+				configurable: true
+			})
+		})
+		afterEach(() => {
+			Object.defineProperty(window, 'localStorage', {
+				value: originalLocalStorage,
+				writable: true,
+				configurable: true
 			})
 		})
 		it('should handle exceptions on save', () => {

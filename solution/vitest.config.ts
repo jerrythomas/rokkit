@@ -30,7 +30,7 @@ export default defineConfig({
 			{ extends: true, test: { name: 'data', root: 'packages/data' } },
 			{ extends: true, test: { name: 'forms', root: 'packages/forms' } },
 			{ extends: true, test: { name: 'helpers', root: 'packages/helpers' } },
-			{ extends: true, test: { name: 'states', root: 'packages/states' } },
+			{ extends: true, test: { name: 'states', root: 'packages/states', setupFiles: ['spec/setup.js'] } },
 			{ extends: true, test: { name: 'stories', root: 'packages/stories' } },
 			{ extends: true, test: { name: 'tutorial', root: 'packages/tutorial' } },
 			{ extends: true, test: { name: 'ui', root: 'packages/ui', setupFiles: ['../helpers/src/mocks/index.js'] } },
