@@ -1,0 +1,7 @@
+{
+  "title": "Tooltips",
+  "description": "Hover and focus triggered tooltips linked via aria-describedby",
+  "icon": "i-solar:chat-round-bold-duotone",
+  "category": "accessibility",
+  "order": 3
+}

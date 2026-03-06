@@ -1,0 +1,7 @@
+{
+  "title": "Conditional Fields",
+  "description": "Show, hide, and disable fields based on other field values",
+  "icon": "i-solar:branch-bold-duotone",
+  "category": "forms",
+  "order": 5
+}
