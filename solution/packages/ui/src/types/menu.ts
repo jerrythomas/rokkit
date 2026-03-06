@@ -21,7 +21,7 @@ export interface MenuProps {
 	/** Array of items (same as List: supports groups, separators, nested children) */
 	items?: unknown[]
 
-	/** Field mapping — overrides BASE_FIELDS defaults (text → 'text', value → 'value', …) */
+	/** Field mapping — overrides BASE_FIELDS defaults (label → 'label', value → 'value', …) */
 	fields?: Record<string, string>
 
 	/** Current active value (highlights matching item) */

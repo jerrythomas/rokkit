@@ -4,18 +4,18 @@ import { FieldMapper } from '../src/field-mapper'
 describe('FieldMapper', () => {
 	const data = {
 		id: 1,
-		text: 'Item 1',
+		label: 'Item 1',
 		value: 'Item 1',
 		_open: true,
 		children: [
 			{
 				id: 2,
-				text: 'Item 2',
+				label: 'Item 2',
 				value: 'Item 2',
 				children: [
 					{
 						id: 3,
-						text: 'Item 3',
+						label: 'Item 3',
 						value: 'Item 3'
 					}
 				]
@@ -50,12 +50,12 @@ describe('FieldMapper', () => {
 
 		it('should return the text', () => {
 			const fieldMapping = new FieldMapper()
-			expect(fieldMapping.get('text', 'hello')).toEqual('hello')
-			expect(fieldMapping.get('text', 1)).toEqual(1)
-			expect(fieldMapping.get('text', data)).toEqual('Item 1')
-			expect(fieldMapping.get('text', data.children[0])).toEqual('Item 2')
-			expect(fieldMapping.get('text', data.children[0].children[0])).toEqual('Item 3')
-			expect(fieldMapping.get('text', data.children[0].children[0])).toEqual('Item 3')
+			expect(fieldMapping.get('label', 'hello')).toEqual('hello')
+			expect(fieldMapping.get('label', 1)).toEqual(1)
+			expect(fieldMapping.get('label', data)).toEqual('Item 1')
+			expect(fieldMapping.get('label', data.children[0])).toEqual('Item 2')
+			expect(fieldMapping.get('label', data.children[0].children[0])).toEqual('Item 3')
+			expect(fieldMapping.get('label', data.children[0].children[0])).toEqual('Item 3')
 		})
 
 		it('should return the value', () => {
@@ -71,7 +71,7 @@ describe('FieldMapper', () => {
 		it('should return the label', () => {
 			const fieldMapping = new FieldMapper()
 			expect(fieldMapping.get('label', null)).toEqual(null)
-			expect(fieldMapping.get('label', 'hello')).toEqual(null)
+			expect(fieldMapping.get('label', 'hello')).toEqual('hello')
 			expect(fieldMapping.get('label', { k: 'hello' })).toEqual(null)
 			expect(fieldMapping.get('label', { label: 'hello' })).toEqual('hello')
 		})
@@ -105,7 +105,7 @@ describe('FieldMapper', () => {
 		})
 
 		it('should get formatted currency', () => {
-			const fieldMapping = new FieldMapper({ text: 'value' })
+			const fieldMapping = new FieldMapper({ label: 'value' })
 			const formatter = (value, currency) =>
 				value.toLocaleString('en-US', {
 					style: 'currency',

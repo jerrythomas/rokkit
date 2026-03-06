@@ -3,24 +3,24 @@ import { render, fireEvent } from '@testing-library/svelte'
 import Select from '../src/components/Select.svelte'
 
 const flatItems = [
-	{ text: 'Apple', value: 'apple' },
-	{ text: 'Banana', value: 'banana' },
-	{ text: 'Cherry', value: 'cherry' }
+	{ label: 'Apple', value: 'apple' },
+	{ label: 'Banana', value: 'banana' },
+	{ label: 'Cherry', value: 'cherry' }
 ]
 
 const groupedItems = [
 	{
-		text: 'Fruits',
+		label: 'Fruits',
 		children: [
-			{ text: 'Apple', value: 'apple' },
-			{ text: 'Banana', value: 'banana' }
+			{ label: 'Apple', value: 'apple' },
+			{ label: 'Banana', value: 'banana' }
 		]
 	},
 	{
-		text: 'Vegetables',
+		label: 'Vegetables',
 		children: [
-			{ text: 'Carrot', value: 'carrot' },
-			{ text: 'Pea', value: 'pea' }
+			{ label: 'Carrot', value: 'carrot' },
+			{ label: 'Pea', value: 'pea' }
 		]
 	}
 ]
@@ -142,8 +142,8 @@ describe('Select', () => {
 
 	it('disabled options are marked', async () => {
 		const items = [
-			{ text: 'A', value: 'a' },
-			{ text: 'B', value: 'b', disabled: true }
+			{ label: 'A', value: 'a' },
+			{ label: 'B', value: 'b', disabled: true }
 		]
 		const { container } = render(Select, { items })
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)
@@ -284,7 +284,7 @@ describe('Select', () => {
 		const onchange = vi.fn()
 		const { container } = render(Select, {
 			items,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onchange
 		})
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)

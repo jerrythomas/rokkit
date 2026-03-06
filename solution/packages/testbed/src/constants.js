@@ -81,7 +81,7 @@ export const DEFAULT_LIST_ICONS = {
  * ProxyItem merges user-supplied overrides on top of these defaults.
  */
 export const DEFAULT_FIELDS = {
-	text: 'label',
+	label: 'label',
 	value: 'value',
 	icon: 'icon',
 	href: 'href',

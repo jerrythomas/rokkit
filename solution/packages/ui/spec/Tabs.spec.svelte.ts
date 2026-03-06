@@ -3,9 +3,9 @@ import { render, fireEvent, waitFor } from '@testing-library/svelte'
 import Tabs from '../src/components/Tabs.svelte'
 
 const basicOptions = [
-	{ text: 'Tab 1', value: 'tab1', content: 'Content 1' },
-	{ text: 'Tab 2', value: 'tab2', content: 'Content 2' },
-	{ text: 'Tab 3', value: 'tab3', content: 'Content 3' }
+	{ label: 'Tab 1', value: 'tab1', content: 'Content 1' },
+	{ label: 'Tab 2', value: 'tab2', content: 'Content 2' },
+	{ label: 'Tab 3', value: 'tab3', content: 'Content 3' }
 ]
 
 describe('Tabs', () => {
@@ -57,8 +57,8 @@ describe('Tabs', () => {
 
 	it('renders icons when provided', () => {
 		const opts = [
-			{ text: 'Home', value: 'home', icon: 'i-lucide:home', content: 'Home content' },
-			{ text: 'Settings', value: 'settings', icon: 'i-lucide:settings', content: 'Settings content' }
+			{ label: 'Home', value: 'home', icon: 'i-lucide:home', content: 'Home content' },
+			{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings', content: 'Settings content' }
 		]
 		const { container } = render(Tabs, { options: opts, value: 'home' })
 		const icons = container.querySelectorAll('[data-tabs-icon]')
@@ -142,9 +142,9 @@ describe('Tabs', () => {
 
 	it('marks individual disabled tabs', () => {
 		const opts = [
-			{ text: 'Tab 1', value: 'tab1', content: 'C1' },
-			{ text: 'Tab 2', value: 'tab2', content: 'C2', disabled: true },
-			{ text: 'Tab 3', value: 'tab3', content: 'C3' }
+			{ label: 'Tab 1', value: 'tab1', content: 'C1' },
+			{ label: 'Tab 2', value: 'tab2', content: 'C2', disabled: true },
+			{ label: 'Tab 3', value: 'tab3', content: 'C3' }
 		]
 		const { container } = render(Tabs, { options: opts, value: 'tab1' })
 		const triggers = container.querySelectorAll('[data-tabs-trigger]')
@@ -155,8 +155,8 @@ describe('Tabs', () => {
 
 	it('sets disabled attribute on individual disabled tab buttons', () => {
 		const opts = [
-			{ text: 'Tab 1', value: 'tab1', content: 'C1' },
-			{ text: 'Tab 2', value: 'tab2', content: 'C2', disabled: true }
+			{ label: 'Tab 1', value: 'tab1', content: 'C1' },
+			{ label: 'Tab 2', value: 'tab2', content: 'C2', disabled: true }
 		]
 		const { container } = render(Tabs, { options: opts, value: 'tab1' })
 		const triggers = container.querySelectorAll('[data-tabs-trigger]')
@@ -308,7 +308,7 @@ describe('Tabs', () => {
 		const onchange = vi.fn()
 		const { container } = render(Tabs, {
 			options: opts,
-			fields: { text: 'name', content: 'body', value: 'key' },
+			fields: { label: 'name', content: 'body', value: 'key' },
 			value: '1',
 			onchange
 		})
@@ -331,7 +331,7 @@ describe('Tabs', () => {
 
 	it('renders mapped content field', () => {
 		const opts = [
-			{ text: 'Tab', value: 't1', body: 'Custom body content' }
+			{ label: 'Tab', value: 't1', body: 'Custom body content' }
 		]
 		const { container } = render(Tabs, {
 			options: opts,

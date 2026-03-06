@@ -3,9 +3,9 @@ import { render, fireEvent } from '@testing-library/svelte'
 import Grid from '../src/components/Grid.svelte'
 
 const flatItems = [
-	{ text: 'Alpha', value: 'alpha', icon: 'mdi:star' },
-	{ text: 'Beta', value: 'beta', icon: 'mdi:heart' },
-	{ text: 'Gamma', value: 'gamma', icon: 'mdi:bolt' }
+	{ label: 'Alpha', value: 'alpha', icon: 'mdi:star' },
+	{ label: 'Beta', value: 'beta', icon: 'mdi:heart' },
+	{ label: 'Gamma', value: 'gamma', icon: 'mdi:bolt' }
 ]
 
 describe('Grid', () => {
@@ -179,7 +179,7 @@ describe('Grid', () => {
 		const onselect = vi.fn()
 		const { container } = render(Grid, {
 			items,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onselect
 		})
 		const tiles = container.querySelectorAll('[data-grid-item]')
@@ -193,8 +193,8 @@ describe('Grid', () => {
 
 	it('marks individual disabled items', () => {
 		const items = [
-			{ text: 'A', value: 'a' },
-			{ text: 'B', value: 'b', disabled: true }
+			{ label: 'A', value: 'a' },
+			{ label: 'B', value: 'b', disabled: true }
 		]
 		const { container } = render(Grid, { items })
 		const tiles = container.querySelectorAll('[data-grid-item]')

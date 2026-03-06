@@ -3,9 +3,9 @@ import { render } from '@testing-library/svelte'
 import Timeline from '../src/components/Timeline.svelte'
 
 const sampleItems = [
-	{ text: 'Step One', description: 'First step description', completed: true },
-	{ text: 'Step Two', description: 'Second step description', active: true },
-	{ text: 'Step Three', description: 'Third step description' }
+	{ label: 'Step One', description: 'First step description', completed: true },
+	{ label: 'Step Two', description: 'Second step description', active: true },
+	{ label: 'Step Three', description: 'Third step description' }
 ]
 
 describe('Timeline', () => {
@@ -37,7 +37,7 @@ describe('Timeline', () => {
 	})
 
 	it('renders no connector on single item', () => {
-		const { container } = render(Timeline, { items: [{ text: 'Only' }] })
+		const { container } = render(Timeline, { items: [{ label: 'Only' }] })
 		const connectors = container.querySelectorAll('[data-timeline-connector]')
 		expect(connectors.length).toBe(0)
 	})
@@ -59,7 +59,7 @@ describe('Timeline', () => {
 	})
 
 	it('does not render description when not provided', () => {
-		const { container } = render(Timeline, { items: [{ text: 'No desc' }] })
+		const { container } = render(Timeline, { items: [{ label: 'No desc' }] })
 		const descriptions = container.querySelectorAll('[data-timeline-description]')
 		expect(descriptions.length).toBe(0)
 	})
@@ -99,7 +99,7 @@ describe('Timeline', () => {
 	// ─── Icon support ───────────────────────────────────────────────
 
 	it('shows icon in circle when provided', () => {
-		const items = [{ text: 'With icon', icon: 'i-lucide:star' }]
+		const items = [{ label: 'With icon', icon: 'i-lucide:star' }]
 		const { container } = render(Timeline, { items })
 		const circle = container.querySelector('[data-timeline-circle]')
 		const icon = circle?.querySelector('span')
@@ -110,7 +110,7 @@ describe('Timeline', () => {
 
 	it('supports field mapping', () => {
 		const items = [{ title: 'Mapped', summary: 'Mapped desc' }]
-		const fields = { text: 'title', description: 'summary' }
+		const fields = { label: 'title', description: 'summary' }
 		const { container } = render(Timeline, { items, fields })
 		expect(container.querySelector('[data-timeline-title]')?.textContent).toBe('Mapped')
 		expect(container.querySelector('[data-timeline-description]')?.textContent).toBe('Mapped desc')
@@ -163,7 +163,7 @@ describe('Timeline', () => {
 	// ─── Custom icons ───────────────────────────────────────────────
 
 	it('supports custom completed icon', () => {
-		const items = [{ text: 'Done', completed: true }]
+		const items = [{ label: 'Done', completed: true }]
 		const icons = { completed: 'i-lucide:circle-check' }
 		const { container } = render(Timeline, { items, icons })
 		const circle = container.querySelector('[data-timeline-circle]')

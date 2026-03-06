@@ -4,24 +4,24 @@ import { flushSync } from 'svelte'
 import List from '../src/components/List.svelte'
 
 const flatItems = [
-	{ text: 'Dashboard', value: 'dashboard', icon: 'mdi:home' },
-	{ text: 'Settings', value: 'settings', icon: 'mdi:cog' },
-	{ text: 'Profile', value: 'profile', icon: 'mdi:user' }
+	{ label: 'Dashboard', value: 'dashboard', icon: 'mdi:home' },
+	{ label: 'Settings', value: 'settings', icon: 'mdi:cog' },
+	{ label: 'Profile', value: 'profile', icon: 'mdi:user' }
 ]
 
 const groupedItems = [
 	{
-		text: 'Navigation',
+		label: 'Navigation',
 		children: [
-			{ text: 'Dashboard', value: 'dashboard' },
-			{ text: 'Reports', value: 'reports' }
+			{ label: 'Dashboard', value: 'dashboard' },
+			{ label: 'Reports', value: 'reports' }
 		]
 	},
 	{
-		text: 'Account',
+		label: 'Account',
 		children: [
-			{ text: 'Settings', value: 'settings' },
-			{ text: 'Profile', value: 'profile' }
+			{ label: 'Settings', value: 'settings' },
+			{ label: 'Profile', value: 'profile' }
 		]
 	}
 ]
@@ -52,8 +52,8 @@ describe('List', () => {
 
 	it('renders items as links when href is present', () => {
 		const items = [
-			{ text: 'Home', value: 'home', href: '/home' },
-			{ text: 'About', value: 'about', href: '/about' }
+			{ label: 'Home', value: 'home', href: '/home' },
+			{ label: 'About', value: 'about', href: '/about' }
 		]
 		const { container } = render(List, { items })
 		const links = container.querySelectorAll('a[data-list-item]')
@@ -80,8 +80,8 @@ describe('List', () => {
 
 	it('marks disabled items', () => {
 		const items = [
-			{ text: 'A', value: 'a' },
-			{ text: 'B', value: 'b', disabled: true }
+			{ label: 'A', value: 'a' },
+			{ label: 'B', value: 'b', disabled: true }
 		]
 		const { container } = render(List, { items })
 		const listItems = container.querySelectorAll('[data-list-item]')
@@ -110,9 +110,9 @@ describe('List', () => {
 
 	it('renders separators when present in items', () => {
 		const itemsWithSep = [
-			{ text: 'A', value: 'a' },
+			{ label: 'A', value: 'a' },
 			{ type: 'separator' },
-			{ text: 'B', value: 'b' }
+			{ label: 'B', value: 'b' }
 		]
 		const { container } = render(List, { items: itemsWithSep })
 		const separators = container.querySelectorAll('[data-list-separator]')
@@ -170,8 +170,8 @@ describe('List', () => {
 
 	it('does not call onselect for disabled items', async () => {
 		const items = [
-			{ text: 'A', value: 'a' },
-			{ text: 'B', value: 'b', disabled: true }
+			{ label: 'A', value: 'a' },
+			{ label: 'B', value: 'b', disabled: true }
 		]
 		const { container } = render(List, { items })
 		const listItems = container.querySelectorAll('[data-list-item]')
@@ -308,7 +308,7 @@ describe('List', () => {
 		const onselect = vi.fn()
 		const { container } = render(List, {
 			items,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onselect
 		})
 		const listItems = container.querySelectorAll('[data-list-item]')

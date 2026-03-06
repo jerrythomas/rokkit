@@ -3,7 +3,7 @@ import { ListController } from '../src/list-controller.svelte.js'
 
 describe('ListController', () => {
 	const textArray = ['Alpha', 'Beta', 'Gamma']
-	const objectArray = [{ text: 'Alpha' }, { text: 'Beta' }, { text: 'Gamma' }]
+	const objectArray = [{ label: 'Alpha' }, { label: 'Beta' }, { label: 'Gamma' }]
 
 	const items = $state(objectArray)
 
@@ -280,7 +280,7 @@ describe('ListController', () => {
 		})
 
 		it('should cycle to earlier items via wrap-around', () => {
-			const dupes = $state([{ text: 'Apple' }, { text: 'Avocado' }, { text: 'Banana' }])
+			const dupes = $state([{ label: 'Apple' }, { label: 'Avocado' }, { label: 'Banana' }])
 			const controller = new ListController(dupes)
 			// Start after '0' (Apple) — should find Avocado next
 			expect(controller.findByText('A', '0')).toBe('1')
@@ -290,9 +290,9 @@ describe('ListController', () => {
 
 		it('should skip disabled items', () => {
 			const disabledItems = $state([
-				{ text: 'Alpha', disabled: true },
-				{ text: 'Ace' },
-				{ text: 'Beta' }
+				{ label: 'Alpha', disabled: true },
+				{ label: 'Ace' },
+				{ label: 'Beta' }
 			])
 			const controller = new ListController(disabledItems)
 			expect(controller.findByText('A')).toBe('1')

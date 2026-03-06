@@ -3,26 +3,26 @@ import { render, fireEvent } from '@testing-library/svelte'
 import MultiSelect from '../src/components/MultiSelect.svelte'
 
 const flatItems = [
-	{ text: 'Apple', value: 'apple' },
-	{ text: 'Banana', value: 'banana' },
-	{ text: 'Cherry', value: 'cherry' },
-	{ text: 'Date', value: 'date' },
-	{ text: 'Elderberry', value: 'elderberry' }
+	{ label: 'Apple', value: 'apple' },
+	{ label: 'Banana', value: 'banana' },
+	{ label: 'Cherry', value: 'cherry' },
+	{ label: 'Date', value: 'date' },
+	{ label: 'Elderberry', value: 'elderberry' }
 ]
 
 const groupedItems = [
 	{
-		text: 'Fruits',
+		label: 'Fruits',
 		children: [
-			{ text: 'Apple', value: 'apple' },
-			{ text: 'Banana', value: 'banana' }
+			{ label: 'Apple', value: 'apple' },
+			{ label: 'Banana', value: 'banana' }
 		]
 	},
 	{
-		text: 'Vegetables',
+		label: 'Vegetables',
 		children: [
-			{ text: 'Carrot', value: 'carrot' },
-			{ text: 'Pea', value: 'pea' }
+			{ label: 'Carrot', value: 'carrot' },
+			{ label: 'Pea', value: 'pea' }
 		]
 	}
 ]
@@ -252,7 +252,7 @@ describe('MultiSelect', () => {
 		const onchange = vi.fn()
 		const { container } = render(MultiSelect, {
 			items,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onchange
 		})
 		await fireEvent.click(container.querySelector('[data-select-trigger]')!)

@@ -3,9 +3,9 @@ import { render, fireEvent } from '@testing-library/svelte'
 import FloatingAction from '../src/components/FloatingAction.svelte'
 
 const basicItems = [
-	{ text: 'Add', value: 'add', icon: 'mdi:plus' },
-	{ text: 'Edit', value: 'edit', icon: 'mdi:pencil' },
-	{ text: 'Delete', value: 'delete', icon: 'mdi:trash' }
+	{ label: 'Add', value: 'add', icon: 'mdi:plus' },
+	{ label: 'Edit', value: 'edit', icon: 'mdi:pencil' },
+	{ label: 'Delete', value: 'delete', icon: 'mdi:trash' }
 ]
 
 describe('FloatingAction', () => {
@@ -136,8 +136,8 @@ describe('FloatingAction', () => {
 
 	it('marks disabled items', async () => {
 		const items = [
-			{ text: 'Add', value: 'add', icon: 'mdi:plus' },
-			{ text: 'Disabled', value: 'dis', icon: 'mdi:x', disabled: true }
+			{ label: 'Add', value: 'add', icon: 'mdi:plus' },
+			{ label: 'Disabled', value: 'dis', icon: 'mdi:x', disabled: true }
 		]
 		const { container } = render(FloatingAction, { items })
 		await fireEvent.click(container.querySelector('[data-fab-trigger]')!)

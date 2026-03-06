@@ -3,13 +3,13 @@ import { render, fireEvent } from '@testing-library/svelte'
 import Switch from '../src/components/Switch.svelte'
 
 const textOptions: [object, object] = [
-	{ text: 'Off', value: 'off' },
-	{ text: 'On', value: 'on' }
+	{ label: 'Off', value: 'off' },
+	{ label: 'On', value: 'on' }
 ]
 
 const iconOptions: [object, object] = [
-	{ text: 'Dark', value: 0, icon: 'i-lucide:moon' },
-	{ text: 'Light', value: 1, icon: 'i-lucide:sun' }
+	{ label: 'Dark', value: 0, icon: 'i-lucide:moon' },
+	{ label: 'Light', value: 1, icon: 'i-lucide:sun' }
 ]
 
 describe('Switch', () => {
@@ -234,7 +234,7 @@ describe('Switch', () => {
 		const onchange = vi.fn()
 		const { container } = render(Switch, {
 			options: opts,
-			fields: { text: 'label', value: 'id' },
+			fields: { label: 'label', value: 'id' },
 			value: 0,
 			onchange
 		})

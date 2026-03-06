@@ -3,9 +3,9 @@ import { render, fireEvent } from '@testing-library/svelte'
 import BreadCrumbs from '../src/components/BreadCrumbs.svelte'
 
 const basicItems = [
-	{ text: 'Home', value: 'home' },
-	{ text: 'Products', value: 'products' },
-	{ text: 'Widget', value: 'widget' }
+	{ label: 'Home', value: 'home' },
+	{ label: 'Products', value: 'products' },
+	{ label: 'Widget', value: 'widget' }
 ]
 
 describe('BreadCrumbs', () => {
@@ -94,7 +94,7 @@ describe('BreadCrumbs', () => {
 		]
 		const { container } = render(BreadCrumbs, {
 			items,
-			fields: { text: 'name', value: 'id' }
+			fields: { label: 'name', value: 'id' }
 		})
 		const label = container.querySelector('[data-breadcrumb-label]')
 		expect(label?.textContent).toBe('Home')
@@ -104,8 +104,8 @@ describe('BreadCrumbs', () => {
 
 	it('renders icon when present', () => {
 		const items = [
-			{ text: 'Home', value: 'home', icon: 'i-lucide:home' },
-			{ text: 'Page', value: 'page' }
+			{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
+			{ label: 'Page', value: 'page' }
 		]
 		const { container } = render(BreadCrumbs, { items })
 		const icon = container.querySelector('[data-breadcrumb-icon]')
@@ -146,7 +146,7 @@ describe('BreadCrumbs', () => {
 	// ─── Single Item ────────────────────────────────────────────────
 
 	it('single item is marked current with no separators', () => {
-		const items = [{ text: 'Home', value: 'home' }]
+		const items = [{ label: 'Home', value: 'home' }]
 		const { container } = render(BreadCrumbs, { items })
 		expect(container.querySelectorAll('[data-breadcrumb-separator]').length).toBe(0)
 		expect(container.querySelector('[data-breadcrumb-current]')).toBeTruthy()

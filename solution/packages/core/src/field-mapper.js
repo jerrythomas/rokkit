@@ -16,7 +16,6 @@ export class FieldMapper {
 		})
 		this.hasIcon = has(this.#fields.icon)
 		this.hasImage = has(this.#fields.image)
-		this.hasText = has(this.#fields.text)
 		this.hasValue = has(this.#fields.value)
 		this.hasLabel = has(this.#fields.label)
 		this.hasComponent = has(this.#fields.component)
@@ -47,7 +46,7 @@ export class FieldMapper {
 			return value[this.fields[fieldName]]
 		}
 
-		return fieldName === 'text' ? value : null
+		return fieldName === 'label' ? value : null
 	}
 
 	/**
@@ -83,7 +82,7 @@ export class FieldMapper {
 	}
 
 	getFormattedText(value, formatter) {
-		const text = this.get('text', value)
+		const text = this.get('label', value)
 
 		if (isNil(text)) return ''
 

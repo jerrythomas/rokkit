@@ -9,7 +9,7 @@ describe('BASE_FIELDS', () => {
 	})
 
 	it('should have correct semantic key mappings', () => {
-		expect(BASE_FIELDS.label).toBe('text')
+		expect(BASE_FIELDS.label).toBe('label')
 		expect(BASE_FIELDS.subtext).toBe('description')
 		expect(BASE_FIELDS.tooltip).toBe('title')
 		expect(BASE_FIELDS.avatar).toBe('image')
@@ -36,8 +36,8 @@ describe('BASE_FIELDS', () => {
 })
 
 describe('normalizeFields', () => {
-	it('should remap legacy text key to label', () => {
-		expect(normalizeFields({ text: 'name' })).toEqual({ label: 'name' })
+	it('should pass through text key unchanged (no longer a legacy key)', () => {
+		expect(normalizeFields({ text: 'name' })).toEqual({ text: 'name' })
 	})
 
 	it('should pass through non-legacy keys unchanged', () => {
@@ -54,15 +54,15 @@ describe('normalizeFields', () => {
 
 	it('should remap combined legacy and non-legacy keys', () => {
 		expect(normalizeFields({ text: 'name', description: 'desc', icon: 'x' })).toEqual({
-			label: 'name',
+			text: 'name',
 			subtext: 'desc',
 			icon: 'x'
 		})
 	})
 
-	it('should remap all legacy keys', () => {
+	it('should remap all legacy keys (text is no longer legacy)', () => {
 		expect(normalizeFields({ text: 'a', description: 'b', title: 'c', image: 'd', target: 'e' })).toEqual({
-			label: 'a',
+			text: 'a',
 			subtext: 'b',
 			tooltip: 'c',
 			avatar: 'd',
@@ -108,11 +108,11 @@ describe('ProxyItem', () => {
 
 	describe('set()', () => {
 		it('should write to the underlying object item via field mapping', () => {
-			const raw = { text: 'hello', value: 1 }
+			const raw = { label: 'hello', value: 1 }
 			const proxy = new ProxyItem(raw, {}, '0', 1)
 
-			proxy.set('text', 'world')
-			expect(raw.text).toBe('world')
+			proxy.set('label', 'world')
+			expect(raw.label).toBe('world')
 			expect(proxy.label).toBe('world')
 		})
 
@@ -134,17 +134,17 @@ describe('ProxyItem', () => {
 		})
 
 		it('should trigger children recomputation when setting children', () => {
-			const raw = { text: 'parent', children: [] }
+			const raw = { label: 'parent', children: [] }
 			const proxy = new ProxyItem(raw, {}, '0', 1)
 
 			expect(proxy.hasChildren).toBe(false)
 			expect(proxy.children).toEqual([])
 
-			proxy.set('children', [{ text: 'child1' }, { text: 'child2' }])
+			proxy.set('children', [{ label: 'child1' }, { label: 'child2' }])
 			flushSync()
 
 			expect(raw.children).toHaveLength(2)
-			expect(raw.children[0].text).toBe('child1')
+			expect(raw.children[0].label).toBe('child1')
 			expect(proxy.hasChildren).toBe(true)
 			expect(proxy.children).toHaveLength(2)
 			expect(proxy.children[0].label).toBe('child1')
@@ -310,10 +310,10 @@ describe('LazyProxyItem', () => {
 
 	describe('fetch()', () => {
 		it('should call lazyLoad and update children', async () => {
-			const raw = { text: 'parent', value: 'p1', children: true }
+			const raw = { label: 'parent', value: 'p1', children: true }
 			const mockChildren = [
-				{ text: 'child1', value: 'c1' },
-				{ text: 'child2', value: 'c2' }
+				{ label: 'child1', value: 'c1' },
+				{ label: 'child2', value: 'c2' }
 			]
 			const lazyLoad = vi.fn().mockResolvedValue(mockChildren)
 
@@ -365,11 +365,11 @@ describe('LazyProxyItem', () => {
 		it('should propagate lazyLoad to children via _createChild', async () => {
 			const lazyLoad = vi.fn()
 
-			const proxy = new LazyProxyItem({ text: 'root', value: 'r', children: true }, {}, '0', 1, lazyLoad)
+			const proxy = new LazyProxyItem({ label: 'root', value: 'r', children: true }, {}, '0', 1, lazyLoad)
 
 			// First fetch: load children for root
 			lazyLoad.mockResolvedValueOnce([
-				{ text: 'child', value: 'c1', children: true }
+				{ label: 'child', value: 'c1', children: true }
 			])
 			await proxy.fetch()
 			flushSync()
@@ -381,7 +381,7 @@ describe('LazyProxyItem', () => {
 
 			// Fetch children of the child
 			lazyLoad.mockResolvedValueOnce([
-				{ text: 'grandchild', value: 'gc1' }
+				{ label: 'grandchild', value: 'gc1' }
 			])
 			await child.fetch()
 			flushSync()

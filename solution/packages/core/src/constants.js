@@ -48,7 +48,7 @@ export const BASE_FIELDS = {
 	id: 'id',
 	value: 'value',
 	// Display
-	label: 'text',
+	label: 'label',
 	icon: 'icon',
 	avatar: 'image',
 	subtext: 'description',
@@ -67,7 +67,7 @@ export const BASE_FIELDS = {
 	selected: 'selected',
 }
 
-const LEGACY_KEY_MAP = { text: 'label', description: 'subtext', title: 'tooltip', image: 'avatar', target: 'hrefTarget' }
+const LEGACY_KEY_MAP = { description: 'subtext', title: 'tooltip', image: 'avatar', target: 'hrefTarget' }
 
 /**
  * Remap legacy field-override keys to their BASE_FIELDS semantic equivalents.

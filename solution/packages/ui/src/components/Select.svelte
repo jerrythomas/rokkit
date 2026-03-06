@@ -98,7 +98,7 @@
 	let filterQuery = $state('')
 	let filterInputRef = $state<HTMLInputElement | null>(null)
 
-	const textField = $derived(fields?.text || 'text')
+	const textField = $derived(fields?.label || 'label')
 	const childrenField = $derived(fields?.children || 'children')
 
 	const filteredItems = $derived.by(() => {

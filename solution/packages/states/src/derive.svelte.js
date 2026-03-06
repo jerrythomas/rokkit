@@ -48,11 +48,11 @@ export function deriveLookupWithProxy(items, fields = DEFAULT_FIELDS, path = [])
 	items.forEach((item, index) => {
 		const itemPath = [...path, index]
 		const key = getKeyFromPath(itemPath)
-		const norm = typeof item === 'object' && item !== null ? item : { [fields.text]: item }
+		const norm = typeof item === 'object' && item !== null ? item : { [fields.label]: item }
 		const entry = {
 			value: item,
 			original: item,
-			label: String(norm[fields.text] ?? ''),
+			label: String(norm[fields.label] ?? ''),
 			get: (fieldName) => norm[fields[fieldName] ?? fieldName]
 		}
 

@@ -6,7 +6,7 @@
  * #raw   — always the original input, never mutated.
  * #item  — the object used for all field accesses:
  *            for objects: same reference as #raw
- *            for primitives: { [fields.text]: raw, [fields.value]: raw }
+ *            for primitives: { [fields.label]: raw, [fields.value]: raw }
  *          This normalisation means get() and all getters work through the
  *          same field-mapping path with no special-casing.
  * #key   — path-based identifier ('0', '0-1', '0-1-2', …) assigned by
@@ -15,7 +15,7 @@
  *          (1 = root, 2 = first-level children, 3 = grandchildren, …)
  *
  * get(fieldName)  — maps semantic name → raw key → #item value.
- *                   For field-mapped attributes only (text, value, icon, …).
+ *                   For field-mapped attributes only (label, value, icon, …).
  *                   Structural props (key, level) and control state
  *                   (expanded, selected) are accessed directly as properties.
  *
@@ -67,11 +67,11 @@ export class ProxyItem {
 		this.#level = level
 
 		// Normalise primitives: #item is always an object.
-		// Both text and value fields point to the primitive so all accessors work uniformly.
+		// Both label and value fields point to the primitive so all accessors work uniformly.
 		this.#item =
 			raw !== null && typeof raw === 'object'
 				? raw
-				: { [this.#fields.text]: raw, [this.#fields.value]: raw }
+				: { [this.#fields.label]: raw, [this.#fields.value]: raw }
 
 		// Sync initial control state from #item fields when present
 		const ef = this.#fields.expanded
@@ -104,7 +104,7 @@ export class ProxyItem {
 	// ─── Generic field accessor ───────────────────────────────────────────────
 	//
 	// Maps a semantic field name to the #item value via the fields config.
-	// For field-mapped attributes only: text, value, icon, href, description, …
+	// For field-mapped attributes only: label, value, icon, href, description, …
 	// Falls back to using fieldName directly as a raw key when not in config.
 
 	/**
@@ -118,11 +118,11 @@ export class ProxyItem {
 
 	// ─── Field-mapped accessors ───────────────────────────────────────────────
 	//
-	// text    — never undefined; falls back to ''
+	// label   — never undefined; falls back to ''
 	// value   — falls back to #raw (the original item) when no value field is set
 	// snippet — identifies which snippet to use when rendering this item
 
-	get text()    { return this.#item[this.#fields.text]    ?? '' }
+	get label()   { return this.#item[this.#fields.label]   ?? '' }
 	get value()   { return this.#item[this.#fields.value]   ?? this.#raw }
 	get icon()    { return this.#item[this.#fields.icon] }
 	get href()    { return this.#item[this.#fields.href] }
@@ -156,7 +156,7 @@ export class ProxyItem {
 	// Always read from internal $state so $derived computations track changes.
 	// Setters write back to #item only when the field exists there
 	// (objects with expanded/selected fields — external mode).
-	// Primitive items normalised to { text, value } never have these fields,
+	// Primitive items normalised to { label, value } never have these fields,
 	// so they always use internal mode.
 
 	get expanded() { return this.#expanded }

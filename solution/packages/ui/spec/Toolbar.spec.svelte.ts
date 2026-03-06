@@ -4,9 +4,9 @@ import Toolbar from '../src/components/Toolbar.svelte'
 import ToolbarSnippetTest from './ToolbarSnippetTest.svelte'
 
 const basicItems = [
-	{ text: 'Bold', value: 'bold', icon: 'mdi:format-bold' },
-	{ text: 'Italic', value: 'italic', icon: 'mdi:format-italic' },
-	{ text: 'Underline', value: 'underline', icon: 'mdi:format-underline' }
+	{ label: 'Bold', value: 'bold', icon: 'mdi:format-bold' },
+	{ label: 'Italic', value: 'italic', icon: 'mdi:format-italic' },
+	{ label: 'Underline', value: 'underline', icon: 'mdi:format-underline' }
 ]
 
 describe('Toolbar', () => {
@@ -39,7 +39,7 @@ describe('Toolbar', () => {
 	})
 
 	it('shows text labels when no icon', () => {
-		const items = [{ text: 'Save', value: 'save' }]
+		const items = [{ label: 'Save', value: 'save' }]
 		const { container } = render(Toolbar, { items })
 		expect(container.querySelector('[data-toolbar-label]')?.textContent).toBe('Save')
 	})
@@ -51,7 +51,7 @@ describe('Toolbar', () => {
 	})
 
 	it('sets title with shortcut when present', () => {
-		const items = [{ text: 'Save', value: 'save', icon: 'mdi:save', shortcut: 'Ctrl+S' }]
+		const items = [{ label: 'Save', value: 'save', icon: 'mdi:save', shortcut: 'Ctrl+S' }]
 		const { container } = render(Toolbar, { items })
 		const btn = container.querySelector('[data-toolbar-item]')
 		expect(btn?.getAttribute('title')).toBe('Save (Ctrl+S)')
@@ -61,8 +61,8 @@ describe('Toolbar', () => {
 
 	it('marks active items', () => {
 		const items = [
-			{ text: 'Bold', value: 'bold', icon: 'mdi:bold', active: true },
-			{ text: 'Italic', value: 'italic', icon: 'mdi:italic' }
+			{ label: 'Bold', value: 'bold', icon: 'mdi:bold', active: true },
+			{ label: 'Italic', value: 'italic', icon: 'mdi:italic' }
 		]
 		const { container } = render(Toolbar, { items })
 		const btns = container.querySelectorAll('[data-toolbar-item]')
@@ -75,9 +75,9 @@ describe('Toolbar', () => {
 
 	it('renders separator items', () => {
 		const items = [
-			{ text: 'Bold', value: 'bold', icon: 'mdi:bold' },
+			{ label: 'Bold', value: 'bold', icon: 'mdi:bold' },
 			{ type: 'separator' },
-			{ text: 'Italic', value: 'italic', icon: 'mdi:italic' }
+			{ label: 'Italic', value: 'italic', icon: 'mdi:italic' }
 		]
 		const { container } = render(Toolbar, { items })
 		const sep = container.querySelector('[data-toolbar-separator]')
@@ -87,9 +87,9 @@ describe('Toolbar', () => {
 
 	it('renders spacer items', () => {
 		const items = [
-			{ text: 'Left', value: 'left', icon: 'mdi:left' },
+			{ label: 'Left', value: 'left', icon: 'mdi:left' },
 			{ type: 'spacer' },
-			{ text: 'Right', value: 'right', icon: 'mdi:right' }
+			{ label: 'Right', value: 'right', icon: 'mdi:right' }
 		]
 		const { container } = render(Toolbar, { items })
 		expect(container.querySelector('[data-toolbar-spacer]')).toBeTruthy()
@@ -106,7 +106,7 @@ describe('Toolbar', () => {
 	})
 
 	it('does not call onclick for disabled items', async () => {
-		const items = [{ text: 'Disabled', value: 'x', icon: 'mdi:x', disabled: true }]
+		const items = [{ label: 'Disabled', value: 'x', icon: 'mdi:x', disabled: true }]
 		const onclick = vi.fn()
 		const { container } = render(Toolbar, { items, onclick })
 		const btn = container.querySelector('[data-toolbar-item]')
@@ -201,9 +201,9 @@ describe('Toolbar', () => {
 
 	it('skips separators during navigation', async () => {
 		const items = [
-			{ text: 'Bold', value: 'bold', icon: 'mdi:bold' },
+			{ label: 'Bold', value: 'bold', icon: 'mdi:bold' },
 			{ type: 'separator' },
-			{ text: 'Italic', value: 'italic', icon: 'mdi:italic' }
+			{ label: 'Italic', value: 'italic', icon: 'mdi:italic' }
 		]
 		const { container } = render(Toolbar, { items })
 		const toolbar = container.querySelector('[data-toolbar]')!
@@ -215,9 +215,9 @@ describe('Toolbar', () => {
 
 	it('skips spacers during navigation', async () => {
 		const items = [
-			{ text: 'Left', value: 'left', icon: 'mdi:left' },
+			{ label: 'Left', value: 'left', icon: 'mdi:left' },
 			{ type: 'spacer' },
-			{ text: 'Right', value: 'right', icon: 'mdi:right' }
+			{ label: 'Right', value: 'right', icon: 'mdi:right' }
 		]
 		const { container } = render(Toolbar, { items })
 		const toolbar = container.querySelector('[data-toolbar]')!
@@ -240,9 +240,9 @@ describe('Toolbar', () => {
 
 	it('skips disabled items during navigation', async () => {
 		const items = [
-			{ text: 'A', value: 'a', icon: 'mdi:a' },
-			{ text: 'B', value: 'b', icon: 'mdi:b', disabled: true },
-			{ text: 'C', value: 'c', icon: 'mdi:c' }
+			{ label: 'A', value: 'a', icon: 'mdi:a' },
+			{ label: 'B', value: 'b', icon: 'mdi:b', disabled: true },
+			{ label: 'C', value: 'c', icon: 'mdi:c' }
 		]
 		const { container } = render(Toolbar, { items })
 		const toolbar = container.querySelector('[data-toolbar]')!
@@ -327,7 +327,7 @@ describe('Toolbar', () => {
 		const onclick = vi.fn()
 		const { container } = render(Toolbar, {
 			items,
-			fields: { text: 'name', value: 'id', icon: 'glyph' },
+			fields: { label: 'name', value: 'id', icon: 'glyph' },
 			onclick
 		})
 		const btns = container.querySelectorAll('[data-toolbar-item]')

@@ -3,41 +3,41 @@ import { render, fireEvent } from '@testing-library/svelte'
 import Tree from '../src/components/Tree.svelte'
 
 const flatItems = [
-	{ text: 'File 1', value: 'file1' },
-	{ text: 'File 2', value: 'file2' },
-	{ text: 'File 3', value: 'file3' }
+	{ label: 'File 1', value: 'file1' },
+	{ label: 'File 2', value: 'file2' },
+	{ label: 'File 3', value: 'file3' }
 ]
 
 const nestedItems = [
 	{
-		text: 'src',
+		label: 'src',
 		value: 'src',
 		children: [
-			{ text: 'index.ts', value: 'index' },
-			{ text: 'utils.ts', value: 'utils' }
+			{ label: 'index.ts', value: 'index' },
+			{ label: 'utils.ts', value: 'utils' }
 		]
 	},
 	{
-		text: 'tests',
+		label: 'tests',
 		value: 'tests',
-		children: [{ text: 'index.spec.ts', value: 'spec' }]
+		children: [{ label: 'index.spec.ts', value: 'spec' }]
 	},
-	{ text: 'README.md', value: 'readme' }
+	{ label: 'README.md', value: 'readme' }
 ]
 
 const deeplyNested = [
 	{
-		text: 'root',
+		label: 'root',
 		value: 'root',
 		children: [
 			{
-				text: 'level1',
+				label: 'level1',
 				value: 'l1',
 				children: [
 					{
-						text: 'level2',
+						label: 'level2',
 						value: 'l2',
-						children: [{ text: 'leaf', value: 'leaf' }]
+						children: [{ label: 'leaf', value: 'leaf' }]
 					}
 				]
 			}
@@ -301,7 +301,7 @@ describe('Tree', () => {
 		const onselect = vi.fn()
 		const { container } = render(Tree, {
 			items,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onselect
 		})
 		const itemContent = container.querySelectorAll('[data-tree-item-content]')
@@ -312,7 +312,7 @@ describe('Tree', () => {
 	// ─── Link Items ─────────────────────────────────────────────────
 
 	it('renders items with href as links', () => {
-		const items = [{ text: 'Home', value: 'home', href: '/home' }]
+		const items = [{ label: 'Home', value: 'home', href: '/home' }]
 		const { container } = render(Tree, { items })
 		const link = container.querySelector('a[data-tree-item-content]')
 		expect(link).toBeTruthy()

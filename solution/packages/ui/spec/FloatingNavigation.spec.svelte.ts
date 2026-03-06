@@ -3,16 +3,16 @@ import { render, fireEvent } from '@testing-library/svelte'
 import FloatingNavigation from '../src/components/FloatingNavigation.svelte'
 
 const basicItems = [
-	{ text: 'Introduction', value: 'intro', icon: 'i-lucide:book-open' },
-	{ text: 'Features', value: 'features', icon: 'i-lucide:star' },
-	{ text: 'Pricing', value: 'pricing', icon: 'i-lucide:credit-card' },
-	{ text: 'Contact', value: 'contact', icon: 'i-lucide:mail' }
+	{ label: 'Introduction', value: 'intro', icon: 'i-lucide:book-open' },
+	{ label: 'Features', value: 'features', icon: 'i-lucide:star' },
+	{ label: 'Pricing', value: 'pricing', icon: 'i-lucide:credit-card' },
+	{ label: 'Contact', value: 'contact', icon: 'i-lucide:mail' }
 ]
 
 const linkItems = [
-	{ text: 'Home', value: 'home', icon: 'i-lucide:home', href: '#home' },
-	{ text: 'About', value: 'about', icon: 'i-lucide:info', href: '#about' },
-	{ text: 'Blog', value: 'blog', icon: 'i-lucide:pen', href: '#blog' }
+	{ label: 'Home', value: 'home', icon: 'i-lucide:home', href: '#home' },
+	{ label: 'About', value: 'about', icon: 'i-lucide:info', href: '#about' },
+	{ label: 'Blog', value: 'blog', icon: 'i-lucide:pen', href: '#blog' }
 ]
 
 describe('FloatingNavigation', () => {
@@ -289,7 +289,7 @@ describe('FloatingNavigation', () => {
 		]
 		const { container } = render(FloatingNavigation, {
 			items: customItems,
-			fields: { text: 'name', value: 'id', icon: 'symbol' },
+			fields: { label: 'name', value: 'id', icon: 'symbol' },
 			value: 'a'
 		})
 		const labels = container.querySelectorAll('[data-floating-nav-label]')

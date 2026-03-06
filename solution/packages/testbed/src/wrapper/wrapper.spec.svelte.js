@@ -312,7 +312,7 @@ describe('Wrapper — select()', () => {
 		expect(onselect).toHaveBeenCalledOnce()
 		const [value, proxy] = onselect.mock.calls[0]
 		expect(value).toEqual({ label: 'Beta' })
-		expect(proxy.text).toBe('Beta')
+		expect(proxy.label).toBe('Beta')
 	})
 
 	it('fires onselect with item value when value field is present', () => {
@@ -323,7 +323,7 @@ describe('Wrapper — select()', () => {
 		expect(onselect).toHaveBeenCalledOnce()
 		const [value, proxy] = onselect.mock.calls[0]
 		expect(value).toBe('apple')
-		expect(proxy.text).toBe('Apple')
+		expect(proxy.label).toBe('Apple')
 	})
 
 	it('uses explicit path over focusedKey', () => {
@@ -333,7 +333,7 @@ describe('Wrapper — select()', () => {
 		w.select('2') // explicit path overrides focused
 		expect(onselect).toHaveBeenCalledOnce()
 		const [, proxy] = onselect.mock.calls[0]
-		expect(proxy.text).toBe('Gamma')
+		expect(proxy.label).toBe('Gamma')
 		expect(w.focusedKey).toBe('2')
 	})
 
@@ -344,7 +344,7 @@ describe('Wrapper — select()', () => {
 		w.select(null)
 		expect(onselect).toHaveBeenCalledOnce()
 		const [, proxy] = onselect.mock.calls[0]
-		expect(proxy.text).toBe('Beta')
+		expect(proxy.label).toBe('Beta')
 	})
 
 	it('toggles group expanded when selecting a group', () => {
@@ -518,7 +518,7 @@ describe('Wrapper — primitive items', () => {
 	it('handles string primitive items', () => {
 		const w = new Wrapper(new ProxyTree(['alpha', 'beta', 'gamma']))
 		expect(w.flatView).toHaveLength(3)
-		expect(w.flatView[0].proxy.text).toBe('alpha')
+		expect(w.flatView[0].proxy.label).toBe('alpha')
 		expect(w.flatView[1].proxy.type).toBe('item')
 	})
 
@@ -539,10 +539,10 @@ describe('Wrapper — primitive items', () => {
 // ─── Custom field mapping ─────────────────────────────────────────────────────
 
 describe('Wrapper — custom field mapping', () => {
-	it('uses custom text field', () => {
+	it('uses custom label field', () => {
 		const items = [{ name: 'Alpha' }, { name: 'Beta' }]
-		const w = new Wrapper(new ProxyTree(items, { text: 'name' }))
-		expect(w.flatView[0].proxy.text).toBe('Alpha')
+		const w = new Wrapper(new ProxyTree(items, { label: 'name' }))
+		expect(w.flatView[0].proxy.label).toBe('Alpha')
 	})
 
 	it('uses custom children field', () => {

@@ -5,7 +5,7 @@ import { ProxyItem } from '@rokkit/states'
 
 function makeProxy(data: Record<string, unknown>, fields: Record<string, string> = {}) {
 	const merged = {
-		text: 'label', value: 'value', icon: 'icon', type: 'type',
+		label: 'label', value: 'value', icon: 'icon', type: 'type',
 		size: 'size', status: 'status', progress: 'progress', error: 'error',
 		...fields,
 	}

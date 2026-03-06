@@ -9,14 +9,14 @@ import { ProxyItem, buildProxyList, buildFlatView } from './proxy.svelte.js'
 // primitive items (they have no named fields).
 
 describe('ProxyItem — get()', () => {
-	it('get("text") returns raw label field', () => {
+	it('get("label") returns raw label field', () => {
 		const p = new ProxyItem({ label: 'Hello' })
-		expect(p.get('text')).toBe('Hello')
+		expect(p.get('label')).toBe('Hello')
 	})
 
 	it('get() respects custom field mapping', () => {
-		const p = new ProxyItem({ name: 'Foo', img: 'star.svg' }, { text: 'name', icon: 'img' })
-		expect(p.get('text')).toBe('Foo')
+		const p = new ProxyItem({ name: 'Foo', img: 'star.svg' }, { label: 'name', icon: 'img' })
+		expect(p.get('label')).toBe('Foo')
 		expect(p.get('icon')).toBe('star.svg')
 	})
 
@@ -47,10 +47,10 @@ describe('ProxyItem — get()', () => {
 		expect(new ProxyItem({ label: 'A' }).get('disabled')).toBeUndefined()
 	})
 
-	it('get("text") and get("value") return the primitive after normalisation', () => {
-		expect(new ProxyItem('hello').get('text')).toBe('hello')
+	it('get("label") and get("value") return the primitive after normalisation', () => {
+		expect(new ProxyItem('hello').get('label')).toBe('hello')
 		expect(new ProxyItem('hello').get('value')).toBe('hello')
-		expect(new ProxyItem(42).get('text')).toBe(42)
+		expect(new ProxyItem(42).get('label')).toBe(42)
 		expect(new ProxyItem(42).get('value')).toBe(42)
 	})
 
@@ -63,16 +63,16 @@ describe('ProxyItem — get()', () => {
 // ─── ProxyItem: field-mapped property accessors ────────────────────────────
 //
 // These differ from get() in that they apply computed logic:
-//   text  — never undefined; returns '' for objects, String(raw) for primitives
+//   label — never undefined; returns '' for objects, String(raw) for primitives
 //   value — falls back to the raw item itself when no value field present
 
 describe('ProxyItem — field accessors', () => {
-	it('text reads label field by default', () => {
-		expect(new ProxyItem({ label: 'Hello' }).text).toBe('Hello')
+	it('label reads label field by default', () => {
+		expect(new ProxyItem({ label: 'Hello' }).label).toBe('Hello')
 	})
 
-	it('text falls back to empty string when label field is absent', () => {
-		expect(new ProxyItem({ type: 'separator' }).text).toBe('')
+	it('label falls back to empty string when label field is absent', () => {
+		expect(new ProxyItem({ type: 'separator' }).label).toBe('')
 	})
 
 	it('value returns value field when present', () => {
@@ -108,8 +108,8 @@ describe('ProxyItem — field accessors', () => {
 		const p = new ProxyItem({ label: 'G', children: [{ label: 'C1' }, { label: 'C2' }] })
 		expect(p.children).toHaveLength(2)
 		expect(p.children[0]).toBeInstanceOf(ProxyItem)
-		expect(p.children[0].text).toBe('C1')
-		expect(p.children[1].text).toBe('C2')
+		expect(p.children[0].label).toBe('C1')
+		expect(p.children[1].label).toBe('C2')
 	})
 
 	it('children ProxyItems are stable (same instances on repeated access)', () => {
@@ -180,12 +180,12 @@ describe('ProxyItem — key and level', () => {
 // itself as the text and value; all other fields return safe defaults.
 
 describe('ProxyItem — primitive items', () => {
-	it('text returns the string value for a string item', () => {
-		expect(new ProxyItem('hello').text).toBe('hello')
+	it('label returns the string value for a string item', () => {
+		expect(new ProxyItem('hello').label).toBe('hello')
 	})
 
-	it('text returns the number value for a number item (no coercion)', () => {
-		expect(new ProxyItem(42).text).toBe(42)
+	it('label returns the number value for a number item (no coercion)', () => {
+		expect(new ProxyItem(42).label).toBe(42)
 	})
 
 	it('value returns the primitive itself', () => {
@@ -417,7 +417,7 @@ describe('buildProxyList', () => {
 	it('handles primitive items', () => {
 		const { lookup, roots } = buildProxyList(['alpha', 'beta', 'gamma'])
 		expect(lookup.size).toBe(3)
-		expect(roots[0].proxy.text).toBe('alpha')
+		expect(roots[0].proxy.label).toBe('alpha')
 		expect(roots[1].proxy.value).toBe('beta')
 		expect(roots[2].proxy.type).toBe('item')
 	})
@@ -493,7 +493,7 @@ describe('buildFlatView', () => {
 		const { roots } = buildProxyList(['alpha', 'beta'])
 		const view = buildFlatView(roots)
 		expect(view).toHaveLength(2)
-		expect(view[0].proxy.text).toBe('alpha')
+		expect(view[0].proxy.label).toBe('alpha')
 		expect(view[1].proxy.type).toBe('item')
 	})
 })

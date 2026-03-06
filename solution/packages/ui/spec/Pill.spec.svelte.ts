@@ -17,13 +17,13 @@ describe('Pill', () => {
 	})
 
 	it('renders text from an object value', () => {
-		const { container } = render(Pill, { value: { text: 'Item' } })
+		const { container } = render(Pill, { value: { label: 'Item' } })
 		const text = container.querySelector('[data-pill-text]')
 		expect(text?.textContent).toBe('Item')
 	})
 
 	it('renders icon when present', () => {
-		const { container } = render(Pill, { value: { text: 'Tag', icon: 'i-lucide:tag' } })
+		const { container } = render(Pill, { value: { label: 'Tag', icon: 'i-lucide:tag' } })
 		expect(container.querySelector('[data-pill-icon]')).toBeTruthy()
 	})
 
@@ -97,7 +97,7 @@ describe('Pill', () => {
 	it('supports custom field mappings', () => {
 		const { container } = render(Pill, {
 			value: { label: 'Custom', symbol: 'i-lucide:star' },
-			fields: { text: 'label', icon: 'symbol' }
+			fields: { label: 'label', icon: 'symbol' }
 		})
 		const text = container.querySelector('[data-pill-text]')
 		expect(text?.textContent).toBe('Custom')

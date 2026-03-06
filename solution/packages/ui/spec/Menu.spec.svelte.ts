@@ -4,26 +4,26 @@ import Menu from '../src/components/Menu.svelte'
 import MenuSnippetTest from './MenuSnippetTest.svelte'
 
 const flatItems = [
-	{ text: 'Copy', icon: 'i-copy', value: 'copy' },
-	{ text: 'Paste', icon: 'i-paste', value: 'paste' },
-	{ text: 'Cut', value: 'cut' },
-	{ text: 'Delete', value: 'delete', disabled: true }
+	{ label: 'Copy', icon: 'i-copy', value: 'copy' },
+	{ label: 'Paste', icon: 'i-paste', value: 'paste' },
+	{ label: 'Cut', value: 'cut' },
+	{ label: 'Delete', value: 'delete', disabled: true }
 ]
 
 const groupedItems = [
 	{
-		text: 'File',
+		label: 'File',
 		icon: 'i-file',
 		children: [
-			{ text: 'New', value: 'new' },
-			{ text: 'Open', value: 'open' }
+			{ label: 'New', value: 'new' },
+			{ label: 'Open', value: 'open' }
 		]
 	},
 	{
-		text: 'Edit',
+		label: 'Edit',
 		children: [
-			{ text: 'Undo', value: 'undo' },
-			{ text: 'Redo', value: 'redo' }
+			{ label: 'Undo', value: 'undo' },
+			{ label: 'Redo', value: 'redo' }
 		]
 	}
 ]
@@ -270,7 +270,7 @@ describe('Menu', () => {
 		const onselect = vi.fn()
 		const { container } = render(Menu, {
 			items,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onselect
 		})
 		await openMenu(container)
@@ -285,9 +285,9 @@ describe('Menu', () => {
 
 	it('renders separators', async () => {
 		const items = [
-			{ text: 'Cut', value: 'cut' },
+			{ label: 'Cut', value: 'cut' },
 			{ type: 'separator' },
-			{ text: 'Paste', value: 'paste' }
+			{ label: 'Paste', value: 'paste' }
 		]
 		const { container } = render(Menu, { items })
 		await openMenu(container)

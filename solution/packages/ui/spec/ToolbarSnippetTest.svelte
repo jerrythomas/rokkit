@@ -25,7 +25,7 @@
 				onclick={handlers.onclick}
 				onkeydown={handlers.onkeydown}
 			>
-				Custom: {toolbarItem.text}
+				Custom: {toolbarItem.label}
 			</button>
 		{/snippet}
 	</Toolbar>

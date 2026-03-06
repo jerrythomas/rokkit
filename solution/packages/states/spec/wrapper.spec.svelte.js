@@ -3,35 +3,35 @@ import { Wrapper } from '../src/wrapper.svelte.js'
 import { ProxyTree } from '../src/proxy-tree.svelte.js'
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
-// Raw data uses BASE_FIELDS conventions: label→'text', value→'value', children→'children'
+// Raw data uses BASE_FIELDS conventions: label→'label', value→'value', children→'children'
 
 const flat = [
-	{ text: 'Alpha' },
-	{ text: 'Beta' },
-	{ text: 'Gamma' }
+	{ label: 'Alpha' },
+	{ label: 'Beta' },
+	{ label: 'Gamma' }
 ]
 
 const nested = [
 	{
-		text: 'Fruits',
+		label: 'Fruits',
 		children: [
-			{ text: 'Apple', value: 'apple' },
-			{ text: 'Banana', value: 'banana' }
+			{ label: 'Apple', value: 'apple' },
+			{ label: 'Banana', value: 'banana' }
 		]
 	},
-	{ text: 'Vegetables', value: 'veg' }
+	{ label: 'Vegetables', value: 'veg' }
 ]
 
 const withDisabled = [
-	{ text: 'A' },
-	{ text: 'B (disabled)', disabled: true },
-	{ text: 'C' }
+	{ label: 'A' },
+	{ label: 'B (disabled)', disabled: true },
+	{ label: 'C' }
 ]
 
 const withSeparator = [
-	{ text: 'A' },
+	{ label: 'A' },
 	{ type: 'separator' },
-	{ text: 'B' }
+	{ label: 'B' }
 ]
 
 // ─── Constructor ──────────────────────────────────────────────────────────────
@@ -204,13 +204,13 @@ describe('Wrapper — first() / last()', () => {
 	})
 
 	it('first() skips leading separators', () => {
-		const w = new Wrapper(new ProxyTree([{ type: 'separator' }, { text: 'A' }, { text: 'B' }]))
+		const w = new Wrapper(new ProxyTree([{ type: 'separator' }, { label: 'A' }, { label: 'B' }]))
 		w.first(null)
 		expect(w.focusedKey).toBe('1')
 	})
 
 	it('last() skips trailing separators', () => {
-		const w = new Wrapper(new ProxyTree([{ text: 'A' }, { text: 'B' }, { type: 'separator' }]))
+		const w = new Wrapper(new ProxyTree([{ label: 'A' }, { label: 'B' }, { type: 'separator' }]))
 		w.last(null)
 		expect(w.focusedKey).toBe('1')
 	})
@@ -290,9 +290,9 @@ describe('Wrapper — collapse()', () => {
 	it('collapses deeply nested group', () => {
 		const deep = [
 			{
-				text: 'A',
+				label: 'A',
 				children: [
-					{ text: 'B', children: [{ text: 'C' }] }
+					{ label: 'B', children: [{ label: 'C' }] }
 				]
 			}
 		]
@@ -316,7 +316,7 @@ describe('Wrapper — select()', () => {
 		w.select(null)
 		expect(onselect).toHaveBeenCalledOnce()
 		const [value, proxy] = onselect.mock.calls[0]
-		expect(value).toEqual({ text: 'Beta' })
+		expect(value).toEqual({ label: 'Beta' })
 		expect(proxy.label).toBe('Beta')
 	})
 
@@ -561,7 +561,7 @@ describe('Wrapper — findByText()', () => {
 	})
 
 	it('startAfterKey searches from the item after the given key (for cycling)', () => {
-		const items = [{ text: 'Apple' }, { text: 'Avocado' }, { text: 'Banana' }]
+		const items = [{ label: 'Apple' }, { label: 'Avocado' }, { label: 'Banana' }]
 		const w = new Wrapper(new ProxyTree(items))
 		expect(w.findByText('a', '0')).toBe('1')
 		expect(w.findByText('a', '1')).toBe('0')
@@ -574,18 +574,18 @@ describe('Wrapper — findByText()', () => {
 
 	it('only searches navigable items (skips disabled)', () => {
 		const w = new Wrapper(new ProxyTree([
-			{ text: 'Alpha' },
-			{ text: 'Bravo', disabled: true },
-			{ text: 'Charlie' }
+			{ label: 'Alpha' },
+			{ label: 'Bravo', disabled: true },
+			{ label: 'Charlie' }
 		]))
 		expect(w.findByText('b')).toBeNull()
 	})
 
 	it('only searches navigable items (skips separators)', () => {
 		const w = new Wrapper(new ProxyTree([
-			{ text: 'A' },
+			{ label: 'A' },
 			{ type: 'separator' },
-			{ text: 'B' }
+			{ label: 'B' }
 		]))
 		expect(w.findByText('b')).toBe('2')
 	})
@@ -657,14 +657,14 @@ describe('Wrapper — primitive items', () => {
 // ─── Custom field mapping ─────────────────────────────────────────────────────
 
 describe('Wrapper — custom field mapping', () => {
-	it('uses custom text field', () => {
+	it('uses custom label field', () => {
 		const items = [{ name: 'Alpha' }, { name: 'Beta' }]
-		const w = new Wrapper(new ProxyTree(items, { text: 'name' }))
+		const w = new Wrapper(new ProxyTree(items, { label: 'name' }))
 		expect(w.flatView[0].proxy.label).toBe('Alpha')
 	})
 
 	it('uses custom children field', () => {
-		const items = [{ text: 'Group', items: [{ text: 'Child' }] }]
+		const items = [{ label: 'Group', items: [{ label: 'Child' }] }]
 		const w = new Wrapper(new ProxyTree(items, { children: 'items' }))
 		expect(w.flatView[0].hasChildren).toBe(true)
 	})

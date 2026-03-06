@@ -28,7 +28,7 @@ describe('InputRadio', () => {
 		const props = $state({
 			value: { text: 'bar' },
 			options: [{ text: 'foo' }, { text: 'bar' }, { text: 'baz' }],
-			fields: { text: 'text' },
+			fields: { label: 'text' },
 			onchange: vi.fn()
 		})
 		const { container } = render(InputRadio, { props })
@@ -51,7 +51,7 @@ describe('InputRadio', () => {
 				{ value: 2, text: 'bar' },
 				{ value: 3, text: 'baz' }
 			],
-			fields: { text: 'text', value: 'value' },
+			fields: { label: 'text', value: 'value' },
 			onchange: vi.fn()
 		})
 		const { container } = render(InputRadio, { props })

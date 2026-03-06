@@ -4,9 +4,9 @@ import Toggle from '../src/components/Toggle.svelte'
 import ToggleSnippetTest from './ToggleSnippetTest.svelte'
 
 const basicOptions = [
-	{ text: 'Option A', value: 'a' },
-	{ text: 'Option B', value: 'b' },
-	{ text: 'Option C', value: 'c' }
+	{ label: 'Option A', value: 'a' },
+	{ label: 'Option B', value: 'b' },
+	{ label: 'Option C', value: 'c' }
 ]
 
 describe('Toggle', () => {
@@ -85,8 +85,8 @@ describe('Toggle', () => {
 
 	it('renders icons when provided', () => {
 		const opts = [
-			{ text: 'Bold', value: 'bold', icon: 'mdi:format-bold' },
-			{ text: 'Italic', value: 'italic', icon: 'mdi:format-italic' }
+			{ label: 'Bold', value: 'bold', icon: 'mdi:format-bold' },
+			{ label: 'Italic', value: 'italic', icon: 'mdi:format-italic' }
 		]
 		const { container } = render(Toggle, { options: opts })
 		const icons = container.querySelectorAll('[data-toggle-icon]')
@@ -114,9 +114,9 @@ describe('Toggle', () => {
 
 	it('disables individual options', async () => {
 		const opts = [
-			{ text: 'A', value: 'a' },
-			{ text: 'B', value: 'b', disabled: true },
-			{ text: 'C', value: 'c' }
+			{ label: 'A', value: 'a' },
+			{ label: 'B', value: 'b', disabled: true },
+			{ label: 'C', value: 'c' }
 		]
 		const onchange = vi.fn()
 		const { container } = render(Toggle, { options: opts, onchange })
@@ -232,7 +232,7 @@ describe('Toggle', () => {
 		const onchange = vi.fn()
 		const { container } = render(Toggle, {
 			options: opts,
-			fields: { text: 'name', value: 'id' },
+			fields: { label: 'name', value: 'id' },
 			onchange
 		})
 		const labels = container.querySelectorAll('[data-toggle-label]')

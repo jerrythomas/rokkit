@@ -6,7 +6,7 @@
  * #raw   — always the original input, never mutated.
  * #item  — the object used for all field accesses:
  *            for objects: same reference as #raw
- *            for primitives: { [fields.text]: raw, [fields.value]: raw }
+ *            for primitives: { [fields.label]: raw, [fields.value]: raw }
  *          This normalisation means get() and all getters work through the
  *          same field-mapping path with no special-casing.
  * #key   — path-based identifier ('0', '0-1', '0-1-2', …) assigned by
@@ -15,7 +15,7 @@
  *          (1 = root, 2 = first-level children, 3 = grandchildren, …)
  *
  * get(fieldName)  — maps semantic name → raw key → #item value.
- *                   For field-mapped attributes only (text, value, icon, …).
+ *                   For field-mapped attributes only (label, value, icon, …).
  *                   Structural props (key, level) and control state
  *                   (expanded, selected) are accessed directly as properties.
  *
