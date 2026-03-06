@@ -1,11 +1,11 @@
 <script>
 	import { Code } from '$lib/components/Story'
-	import install from './snippets/00-install.sh?raw'
-	import installAlt from './snippets/01-install-alt.sh?raw'
-	import themeSetup from './snippets/02-theme-setup.css?raw'
-	import unoConfig from './snippets/03-uno-config.js?raw'
-	import firstComponent from './snippets/04-first-component.svelte?raw'
-	import samePattern from './snippets/05-same-pattern.svelte?raw'
+	import install from '../snippets/00-install.sh?raw'
+	import installAlt from '../snippets/01-install-alt.sh?raw'
+	import themeSetup from '../snippets/02-theme-setup.css?raw'
+	import unoConfig from '../snippets/03-uno-config.js?raw'
+	import firstComponent from '../snippets/04-first-component.svelte?raw'
+	import samePattern from '../snippets/05-same-pattern.svelte?raw'
 </script>
 
 <article data-article-root>

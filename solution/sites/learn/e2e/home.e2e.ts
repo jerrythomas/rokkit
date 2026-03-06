@@ -62,7 +62,7 @@ test.describe('Home page', () => {
 	// ─── CTAs ────────────────────────────────────────────────────────
 
 	test('"Get Started" button is visible and links to introduction', async ({ page }) => {
-		const btn = page.locator('a[href="/welcome/introduction"]')
+		const btn = page.locator('a[href="/docs/getting-started/introduction"]')
 		await expect(btn).toBeVisible()
 		await expect(btn).toContainText('Get Started')
 	})
@@ -74,9 +74,9 @@ test.describe('Home page', () => {
 	})
 
 	test('"Get Started" navigates to the introduction page', async ({ page }) => {
-		await page.locator('a[href="/welcome/introduction"]').click()
+		await page.locator('a[href="/docs/getting-started/introduction"]').click()
 		await page.waitForLoadState('networkidle')
-		await expect(page).toHaveURL('/welcome/introduction')
+		await expect(page).toHaveURL('/docs/getting-started/introduction')
 	})
 
 	// ─── Why Rokkit section ──────────────────────────────────────────
