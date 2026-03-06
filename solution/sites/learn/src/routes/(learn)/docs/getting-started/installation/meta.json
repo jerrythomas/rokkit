@@ -1,0 +1,7 @@
+{
+  "title": "Installation",
+  "description": "Install Rokkit and configure your SvelteKit project",
+  "icon": "i-solar:box-bold-duotone",
+  "category": "getting-started",
+  "order": 2
+}
