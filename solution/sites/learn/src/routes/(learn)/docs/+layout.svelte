@@ -112,6 +112,14 @@
 		<div class="flex items-center gap-1">
 			<ThemeSwitcherToggle size="sm" />
 			<a
+				href="/preview"
+				class="flex h-9 items-center gap-1.5 px-3 rounded-md text-sm text-surface-z5 hover:text-surface-z8 hover:bg-surface-z2 no-underline"
+				title="Preview App — Nexus"
+			>
+				<span class="i-solar:atom-bold-duotone inline-block text-base" aria-hidden="true"></span>
+				<span class="hidden sm:inline">Preview</span>
+			</a>
+			<a
 				href="https://github.com/jerrythomas/rokkit"
 				target="_blank"
 				rel="noopener noreferrer"
