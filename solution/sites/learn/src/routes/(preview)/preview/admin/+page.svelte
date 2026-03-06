@@ -16,7 +16,7 @@
 <div class="p-6 flex flex-col gap-6">
 	<h1 class="text-2xl font-bold text-surface-z8">Admin</h1>
 
-	<Tabs items={tabs} bind:value={activeTab} fields={tabFields} />
+	<Tabs options={tabs} bind:value={activeTab} fields={tabFields} />
 
 	<div class="mt-2">
 		{#if activeTab === 'profile'}

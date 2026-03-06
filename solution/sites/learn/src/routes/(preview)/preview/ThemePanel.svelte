@@ -17,8 +17,8 @@
 					{#each skins as skin}
 						<button
 							class="px-2 py-1 text-xs rounded capitalize border transition-colors
-								{vibe.palette === skin ? 'bg-primary-z6 text-white border-transparent' : 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
-							onclick={() => (vibe.palette = skin)}
+								{vibe.style === skin ? 'bg-primary-z6 text-white border-transparent' : 'border-surface-z3 text-surface-z6 hover:bg-surface-z2'}"
+							onclick={() => (vibe.style = skin)}
 						>{skin}</button>
 					{/each}
 				</div>
