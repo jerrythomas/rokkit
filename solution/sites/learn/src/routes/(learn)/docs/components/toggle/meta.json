@@ -2,5 +2,5 @@
   "title": "Toggle",
   "description": "Segmented control for switching between a set of options",
   "icon": "i-component:switch",
-  "category": "components"
+  "category": "navigation-selection"
 }

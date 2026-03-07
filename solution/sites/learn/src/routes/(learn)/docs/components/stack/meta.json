@@ -2,6 +2,6 @@
   "title": "Stack",
   "description": "Vertical or horizontal stack layout with consistent spacing",
   "icon": "i-solar:layers-minimalistic-bold-duotone",
-  "category": "components",
+  "category": "layout",
   "order": 28
 }

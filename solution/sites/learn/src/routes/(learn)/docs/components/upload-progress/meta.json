@@ -2,7 +2,7 @@
   "title": "UploadProgress",
   "description": "File upload status orchestrator with list and grid views",
   "icon": "i-lucide:file-up",
-  "category": "components",
+  "category": "inputs",
   "order": 31,
   "tags": ["upload", "file", "progress", "status"],
   "experimental": false,

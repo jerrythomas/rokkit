@@ -2,6 +2,6 @@
   "title": "Progress",
   "description": "Progress bars, dots, and indicators for user feedback",
   "icon": "i-component:progress",
-  "category": "components",
+  "category": "layout",
   "sequence": 40
 }

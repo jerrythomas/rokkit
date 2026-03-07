@@ -2,7 +2,7 @@
   "title": "Item",
   "description": "Flexible content renderer for text, icons, and images",
   "icon": "i-component:item",
-  "category": "components",
+  "category": "display",
   "tags": [
     "item",
     "content",

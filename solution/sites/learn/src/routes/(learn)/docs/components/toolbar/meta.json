@@ -2,5 +2,5 @@
   "title": "Toolbar",
   "description": "Grouped action bar with buttons, separators, and keyboard navigation",
   "icon": "i-component:settings",
-  "category": "components"
+  "category": "navigation-selection"
 }

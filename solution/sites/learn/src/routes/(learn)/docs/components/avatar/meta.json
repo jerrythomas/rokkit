@@ -2,6 +2,6 @@
   "title": "Avatar",
   "description": "User and entity image with fallback initials and status indicator",
   "icon": "i-solar:user-circle-bold-duotone",
-  "category": "components",
+  "category": "layout",
   "order": 26
 }

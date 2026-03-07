@@ -2,7 +2,7 @@
   "title": "Pill",
   "description": "Removable item wrappers and tags",
   "icon": "i-component:pill",
-  "category": "components",
+  "category": "display",
   "tags": [
     "pill",
     "removable",

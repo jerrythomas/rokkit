@@ -2,7 +2,7 @@
   "title": "List",
   "description": "Data-driven list component with field mapping and customization",
   "icon": "i-component:list",
-  "category": "components",
+  "category": "navigation-selection",
   "order": 1,
   "tags": [
     "list",

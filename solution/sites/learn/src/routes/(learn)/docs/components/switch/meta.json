@@ -2,7 +2,7 @@
   "title": "Switch",
   "description": "Toggle between multiple options",
   "icon": "i-component:switch",
-  "category": "components",
+  "category": "inputs",
   "tags": [
     "switch",
     "toggle",

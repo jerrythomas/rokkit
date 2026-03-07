@@ -2,7 +2,7 @@
   "title": "Tabs",
   "description": "Navigate between different content sections with flexible layouts and interactive controls",
   "icon": "i-component:tabs",
-  "category": "components",
+  "category": "navigation-selection",
   "tags": [
     "tabs",
     "navigation",

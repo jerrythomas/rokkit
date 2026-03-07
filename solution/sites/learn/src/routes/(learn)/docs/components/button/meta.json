@@ -2,6 +2,6 @@
   "title": "Button",
   "description": "Interactive button component with customizable styling and behavior",
   "icon": "i-component:button",
-  "category": "components",
+  "category": "inputs",
   "sequence": 10
 }

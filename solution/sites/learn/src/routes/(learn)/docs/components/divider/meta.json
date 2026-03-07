@@ -2,6 +2,6 @@
   "title": "Divider",
   "description": "Horizontal or vertical separator with optional label",
   "icon": "i-solar:minimize-square-3-bold-duotone",
-  "category": "components",
+  "category": "layout",
   "order": 30
 }
