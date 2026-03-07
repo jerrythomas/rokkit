@@ -54,7 +54,7 @@ const PATTERN_DIAGONAL_RULE = [
 	'bg-pattern-diagonal',
 	{
 		'background-image':
-			'repeating-linear-gradient(45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-size, 8px))'
+			'repeating-linear-gradient(45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
 ] as const
 
@@ -62,7 +62,7 @@ const PATTERN_DIAGONAL_REVERSE_RULE = [
 	'bg-pattern-diagonal-reverse',
 	{
 		'background-image':
-			'repeating-linear-gradient(-45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-size, 8px))'
+			'repeating-linear-gradient(-45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
 ] as const
 
@@ -70,7 +70,7 @@ const PATTERN_VERTICAL_RULE = [
 	'bg-pattern-vertical',
 	{
 		'background-image':
-			'repeating-linear-gradient(90deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-size, 8px))'
+			'repeating-linear-gradient(90deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
 ] as const
 
@@ -78,7 +78,7 @@ const PATTERN_HORIZONTAL_RULE = [
 	'bg-pattern-horizontal',
 	{
 		'background-image':
-			'repeating-linear-gradient(0deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-size, 8px))'
+			'repeating-linear-gradient(0deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
 ] as const
 
@@ -86,7 +86,7 @@ const PATTERN_CROSSHATCH_RULE = [
 	'bg-pattern-crosshatch',
 	{
 		'background-image':
-			'repeating-linear-gradient(45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 1px), var(--pattern-fill, transparent) var(--pattern-line, 1px), var(--pattern-fill, transparent) var(--pattern-size, 8px)), repeating-linear-gradient(-45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 1px), var(--pattern-fill, transparent) var(--pattern-line, 1px), var(--pattern-fill, transparent) var(--pattern-size, 8px))'
+			'repeating-linear-gradient(45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm)), repeating-linear-gradient(-45deg, var(--pattern-color, currentColor) 0, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-size, 3mm))'
 	}
 ] as const
 
@@ -94,8 +94,8 @@ const PATTERN_DOTS_RULE = [
 	'bg-pattern-dots',
 	{
 		'background-image':
-			'radial-gradient(circle, var(--pattern-color, currentColor) var(--pattern-line, 1.5px), var(--pattern-fill, transparent) var(--pattern-line, 1.5px))',
-		'background-size': 'var(--pattern-size, 8px) var(--pattern-size, 8px)'
+			'radial-gradient(circle, var(--pattern-color, currentColor) var(--pattern-line, 0.5px), var(--pattern-fill, transparent) var(--pattern-line, 0.5px))',
+		'background-size': 'var(--pattern-size, 3mm) var(--pattern-size, 3mm)'
 	}
 ] as const
 
@@ -106,9 +106,9 @@ const PATTERN_CHECKER_RULE = [
 			'linear-gradient(45deg, var(--pattern-color, currentColor) 25%, transparent 25%), linear-gradient(-45deg, var(--pattern-color, currentColor) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--pattern-color, currentColor) 75%), linear-gradient(-45deg, transparent 75%, var(--pattern-color, currentColor) 75%)',
 		'background-color': 'var(--pattern-fill, transparent)',
 		'background-size':
-			'calc(2 * var(--pattern-size, 8px)) calc(2 * var(--pattern-size, 8px))',
+			'calc(2 * var(--pattern-size, 3mm)) calc(2 * var(--pattern-size, 3mm))',
 		'background-position':
-			'0 0, 0 var(--pattern-size, 8px), var(--pattern-size, 8px) calc(-1 * var(--pattern-size, 8px)), calc(-1 * var(--pattern-size, 8px)) 0'
+			'0 0, 0 var(--pattern-size, 3mm), var(--pattern-size, 3mm) calc(-1 * var(--pattern-size, 3mm)), calc(-1 * var(--pattern-size, 3mm)) 0'
 	}
 ] as const
 
