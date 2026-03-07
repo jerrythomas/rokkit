@@ -27,7 +27,7 @@
 	</div>
 
 	{#if view === 'preview'}
-		<div data-demo-preview data-graph-paper>
+		<div data-demo-preview>
 			{#if App}<App />{/if}
 		</div>
 	{:else}
@@ -89,8 +89,9 @@
 
 	/* Graph paper preview — minor grid only, muted color */
 	[data-demo-preview] {
+		@apply bg-graph-paper;
 		--unit: 20px;
-		--size: var(--unit); /* same as unit = no visible major grid */
+		--size: var(--unit);
 		--minor-grid: 0.5px;
 		--major-grid: 0px;
 		--graph-paper-color: rgba(128, 128, 128, 0.22);

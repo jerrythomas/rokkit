@@ -1,5 +1,5 @@
 import { defineConfig } from 'unocss'
-import { presetRokkit } from '@rokkit/unocss'
+import { presetRokkit, presetBackgrounds } from '@rokkit/unocss'
 import config from './rokkit.config.js'
 
 const siteIcons = [
@@ -163,7 +163,7 @@ const componentIcons = [
 ].map((icon) => `i-component:${icon}`)
 
 export default defineConfig({
-	presets: [presetRokkit(config)],
+	presets: [presetRokkit(config), presetBackgrounds()],
 	shortcuts: [
 		['text-on-primary', 'text-surface-50'],
 		['text-on-secondary', 'text-surface-50'],

@@ -32,7 +32,6 @@ export {
 	Range,
 	Timeline,
 	Reveal,
-	GraphPaper,
 	Grid,
 	UploadTarget,
 	UploadFileStatus,
