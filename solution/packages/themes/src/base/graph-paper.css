@@ -1,0 +1,25 @@
+/* Graph paper — minor + major grid background utility */
+
+[data-graph-paper] {
+	--unit: 0.5rem;
+	--minor-grid: 0.5px;
+	--major-grid: 0.5px;
+	--size: calc(5 * var(--unit));
+	--graph-paper-color: currentColor;
+
+	background-image:
+		linear-gradient(var(--graph-paper-color) var(--major-grid), transparent var(--major-grid)),
+		linear-gradient(90deg, var(--graph-paper-color) var(--major-grid), transparent var(--major-grid)),
+		linear-gradient(var(--graph-paper-color) var(--minor-grid), transparent var(--minor-grid)),
+		linear-gradient(90deg, var(--graph-paper-color) var(--minor-grid), transparent var(--minor-grid));
+	background-size:
+		var(--size) var(--size),
+		var(--size) var(--size),
+		var(--unit) var(--unit),
+		var(--unit) var(--unit);
+	background-position:
+		calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid)),
+		calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid)),
+		calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid)),
+		calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid));
+}

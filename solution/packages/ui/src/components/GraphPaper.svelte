@@ -21,23 +21,3 @@
 		{@render children?.()}
 	</content>
 </div>
-
-<style>
-	[data-graph-paper] {
-		background-image:
-			linear-gradient(currentColor var(--major-grid), transparent var(--major-grid)),
-			linear-gradient(90deg, currentColor var(--major-grid), transparent var(--major-grid)),
-			linear-gradient(currentColor var(--minor-grid), transparent var(--minor-grid)),
-			linear-gradient(90deg, currentColor var(--minor-grid), transparent var(--minor-grid));
-		background-size:
-			var(--size) var(--size),
-			var(--size) var(--size),
-			var(--unit) var(--unit),
-			var(--unit) var(--unit);
-		background-position:
-			calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid)),
-			calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid)),
-			calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid)),
-			calc(-1 * var(--minor-grid)) calc(-1 * var(--minor-grid));
-	}
-</style>

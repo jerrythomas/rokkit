@@ -27,7 +27,7 @@
 	</div>
 
 	{#if view === 'preview'}
-		<div data-demo-preview>
+		<div data-demo-preview data-graph-paper>
 			{#if App}<App />{/if}
 		</div>
 	{:else}
@@ -42,7 +42,7 @@
 		position: relative;
 		min-height: 14rem;
 		border-radius: 0.5rem;
-		border: 1px solid var(--color-surface-z3);
+		border: 1px solid var(--color-surface);
 		overflow: hidden;
 	}
 
@@ -55,7 +55,7 @@
 		gap: 2px;
 		background: color-mix(in srgb, var(--color-surface) 80%, transparent);
 		backdrop-filter: blur(6px);
-		border: 1px solid var(--color-surface-z2);
+		border: 1px solid var(--color-surface);
 		border-radius: 0.375rem;
 		padding: 2px;
 	}
@@ -69,7 +69,7 @@
 		border-radius: 0.25rem;
 		border: none;
 		background: transparent;
-		color: var(--color-surface-z5);
+		color: var(--color-surface);
 		cursor: pointer;
 		font-size: 0.875rem;
 		transition:
@@ -78,7 +78,7 @@
 	}
 
 	[data-demo-btn][aria-pressed='true'] {
-		background: var(--color-surface-z3);
+		background: var(--color-surface);
 		color: var(--color-on-surface);
 	}
 
@@ -87,33 +87,15 @@
 		color: var(--color-surface-z7);
 	}
 
-	/*
-	 * Graph paper preview area — minor grid only, no major grid.
-	 * Variables:
-	 *   --preview-unit       minor cell size      (default 20px)
-	 *   --preview-line-size  minor line thickness  (default 0.5px)
-	 *   --preview-line       line color            (default neutral gray 20%)
-	 */
+	/* Graph paper preview — minor grid only, muted color */
 	[data-demo-preview] {
-		--preview-unit: 20px;
-		--preview-line-size: 0.5px;
-		--preview-line: rgba(128, 128, 128, 0.22);
+		--unit: 20px;
+		--size: var(--unit); /* same as unit = no visible major grid */
+		--minor-grid: 0.5px;
+		--major-grid: 0px;
+		--graph-paper-color: rgba(128, 128, 128, 0.22);
 
 		background-color: var(--color-surface-z0);
-		background-image:
-			linear-gradient(
-				var(--preview-line) var(--preview-line-size),
-				transparent var(--preview-line-size)
-			),
-			linear-gradient(
-				90deg,
-				var(--preview-line) var(--preview-line-size),
-				transparent var(--preview-line-size)
-			);
-		background-size: var(--preview-unit) var(--preview-unit);
-		background-position:
-			calc(-1 * var(--preview-line-size)) calc(-1 * var(--preview-line-size)),
-			calc(-1 * var(--preview-line-size)) calc(-1 * var(--preview-line-size));
 		box-shadow: inset 0 2px 10px rgb(0 0 0 / 0.07);
 
 		min-height: 14rem;
