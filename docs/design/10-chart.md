@@ -1,4 +1,4 @@
-# Chart Package — Technical Design
+# Chart Package
 
 > Design for `@rokkit/chart` — SVG data visualization, animated time series, cross-filtering,
 > coordinated views, sparklines, brewer, and export.
@@ -7,7 +7,7 @@
 
 ---
 
-## 1. Architecture Overview
+## Architecture Overview
 
 ```mermaid
 graph TD
@@ -43,9 +43,9 @@ The architecture has three independent but composable layers:
 
 ---
 
-## 2. Module Structure
+## Module Structure
 
-### 2.1 Package Exports
+### Package Exports
 
 ```
 @rokkit/chart
@@ -68,7 +68,7 @@ The architecture has three independent but composable layers:
 └── palette                 # palette.json — 21 colors × 11 shades
 ```
 
-### 2.2 File Layout
+### File Layout
 
 ```
 packages/chart/src/
@@ -116,11 +116,11 @@ packages/chart/src/
 
 ---
 
-## 3. Visual Channel Mapping
+## Visual Channel Mapping
 
 Every chart component uses a uniform set of semantic channel props. These are the primary interface for mapping data fields to visual properties.
 
-### 3.1 Standard Channels
+### Standard Channels
 
 | Prop | Type | Description |
 |------|------|-------------|
@@ -135,7 +135,7 @@ Every chart component uses a uniform set of semantic channel props. These are th
 | `time` | `string` | Time axis field. Used by `AnimatedChart` to define keyframes. Also accepts ISO date strings for temporal x-axis. |
 | `z` | `string \| number` | Z-axis / bubble size channel. Alias for `size` in `BubbleChart`. |
 
-### 3.2 Usage Examples
+### Usage Examples
 
 ```svelte
 <!-- Bar chart: color by region, dual-coded with pattern for accessibility -->
@@ -169,7 +169,7 @@ Every chart component uses a uniform set of semantic channel props. These are th
 <BarChart data={totals} x="month" y="sales" fill="#3b82f6" />
 ```
 
-### 3.3 Channel Precedence
+### Channel Precedence
 
 When multiple channels reference the same data field, `ChartBrewer` computes a single combined assignment:
 
@@ -181,13 +181,13 @@ fill as CSS string → ignores palette; all marks use that color
 
 ---
 
-## 4. ChartBrewer — Visual Channel Assignment
+## ChartBrewer — Visual Channel Assignment
 
-### 4.1 Purpose
+### Purpose
 
 `ChartBrewer` takes data and channel props, extracts distinct values for each channel, and produces a complete visual assignment: which color, which pattern, which symbol, and which shade each data value receives. Chart components consume the brewer's output; they never perform palette or pattern logic themselves.
 
-### 4.2 Assignment Algorithm
+### Assignment Algorithm
 
 ```
 Input: data, channels { x, y, color, pattern, symbol }
@@ -222,7 +222,7 @@ Input: data, channels { x, y, color, pattern, symbol }
    </pattern>
 ```
 
-### 4.3 Shade Selection
+### Shade Selection
 
 ```javascript
 const SHADE_MAP = {
@@ -243,7 +243,7 @@ const SHADE_MAP = {
 }
 ```
 
-### 4.4 Pattern Assignment Order
+### Pattern Assignment Order
 
 Patterns are assigned in order of visual distinctness — the first series receives the most recognizable pattern:
 
@@ -257,7 +257,7 @@ Patterns are assigned in order of visual distinctness — the first series recei
 8. OutlineCircles
 9. CurvedWave
 
-### 4.5 Custom Registry
+### Custom Registry
 
 Users extend the built-in pattern and symbol registries:
 
@@ -293,13 +293,13 @@ Custom pattern components follow the same contract as built-ins: render SVG prim
 
 ---
 
-## 5. CrossFilter — Coordinated Views
+## CrossFilter — Coordinated Views
 
-### 5.1 Concept
+### Concept
 
 `CrossFilter` enables dc.js-style interactivity: when a user filters one chart (by clicking a bar, brushing a range, or selecting a segment), every chart registered in the same group reflects that filter. Each chart always shows the full dataset but visually highlights — or dims — the filtered subset.
 
-### 5.2 Interface
+### Interface
 
 ```svelte
 <CrossFilter data={salesData} let:filtered let:filter let:reset>
@@ -333,7 +333,7 @@ Custom pattern components follow the same contract as built-ins: render SVG prim
 </CrossFilter>
 ```
 
-### 5.3 CrossFilter State Machine
+### CrossFilter State Machine
 
 ```mermaid
 stateDiagram-v2
@@ -346,7 +346,7 @@ stateDiagram-v2
     PartialReset --> Unfiltered: no filters remain
 ```
 
-### 5.4 Internal Architecture
+### Internal Architecture
 
 ```
 CrossFilter.svelte
@@ -366,7 +366,7 @@ CrossFilter.svelte
 └── Exposes same API via let: bindings for non-context consumers
 ```
 
-### 5.5 Filter Types
+### Filter Types
 
 ```typescript
 type FilterSpec =
@@ -376,7 +376,7 @@ type FilterSpec =
   | { type: 'custom';  fn: (d: unknown) => boolean } // arbitrary predicate
 ```
 
-### 5.6 Chart Integration with CrossFilter
+### Chart Integration with CrossFilter
 
 Charts read the CrossFilter context to:
 1. Receive `filtered` as their working dataset.
@@ -385,7 +385,7 @@ Charts read the CrossFilter context to:
 
 Charts that do not need CrossFilter work identically — the context is optional. A chart used standalone simply omits the context read.
 
-### 5.7 Linked Selection
+### Linked Selection
 
 For highlighting rather than filtering, charts support `linkedSelection`:
 
@@ -401,7 +401,7 @@ For highlighting rather than filtering, charts support `linkedSelection`:
 
 In `mode="highlight"`, charts dim marks outside the selection rather than filtering the data. The `selection` object is passed as a prop; each chart applies `data-dimmed` to non-matching marks.
 
-### 5.8 Drill-Down
+### Drill-Down
 
 Drill-down is a filter that narrows the visible data domain and resets when the user navigates back:
 
@@ -423,13 +423,13 @@ Drill-down is a filter that narrows the visible data domain and resets when the 
 
 ---
 
-## 6. Brushing
+## Brushing
 
-### 6.1 Concept
+### Concept
 
 A brush is a range selection on a continuous axis. The user clicks and drags to define a start and end value. The brush emits its range via `onbrush`, which a `CrossFilter` parent can use to define a range filter.
 
-### 6.2 Enabling Brush
+### Enabling Brush
 
 Any chart with a continuous x or y axis supports brushing:
 
@@ -451,7 +451,7 @@ Any chart with a continuous x or y axis supports brushing:
 | `onbrush` | `(range) => void` | Fires when user changes brush. |
 | `onbrushend` | `(range) => void` | Fires when user releases brush. |
 
-### 6.3 SVG Brush Implementation
+### SVG Brush Implementation
 
 ```
 brush.svelte.js
@@ -472,9 +472,9 @@ brush.svelte.js
 
 ---
 
-## 7. AnimatedChart — Time-Series Wrapper
+## AnimatedChart — Time-Series Wrapper
 
-### 7.1 Component Interface
+### Component Interface
 
 ```svelte
 <AnimatedChart
@@ -491,7 +491,7 @@ brush.svelte.js
 </AnimatedChart>
 ```
 
-### 7.2 Props
+### Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -506,7 +506,7 @@ brush.svelte.js
 | `showControls` | `boolean` | `true` | Render `TimelineControls` |
 | `currentTime` | `unknown` | `$bindable` | Current time value |
 
-### 7.3 Internal Architecture
+### Internal Architecture
 
 ```
 AnimatedChart.svelte
@@ -541,7 +541,7 @@ AnimatedChart.svelte
        <time label>       (current time value display)
 ```
 
-### 7.4 Tweened Store for Object Arrays
+### Tweened Store for Object Arrays
 
 ```javascript
 // animation/keyframe-store.svelte.js
@@ -569,7 +569,7 @@ export function createKeyframeStore(initial, options = {}) {
 }
 ```
 
-### 7.5 Rank Computation (Bar Chart Race)
+### Rank Computation (Bar Chart Race)
 
 ```javascript
 function computeRanks(data, valueField) {
@@ -580,7 +580,7 @@ function computeRanks(data, valueField) {
 
 The `_rank` field is numeric and interpolated by the tweened store, producing smooth vertical bar repositioning as rankings change.
 
-### 7.6 prefers-reduced-motion
+### prefers-reduced-motion
 
 When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
 - Sets `duration` to `0` (instant transitions, no tweening)
@@ -589,7 +589,7 @@ When `prefers-reduced-motion: reduce` is detected, `AnimatedChart`:
 
 ---
 
-## 8. Timeline Controls
+## Timeline Controls
 
 ```svelte
 <!-- animation/TimelineControls.svelte -->
@@ -642,11 +642,11 @@ The `aria-live="polite"` region announces the current time label to screen reade
 
 ---
 
-## 9. Chart Component Base Pattern
+## Chart Component Base Pattern
 
 All chart types share the same structural contract.
 
-### 9.1 Common Props
+### Common Props
 
 ```typescript
 interface BaseChartProps {
@@ -738,7 +738,7 @@ interface SparklineProps {
 }
 ```
 
-### 9.2 SVG Structure
+### SVG Structure
 
 All charts render inside a single `<svg>` with this layered structure:
 
@@ -794,7 +794,7 @@ All charts render inside a single `<svg>` with this layered structure:
 <div class="chart-export-toolbar">...</div>
 ```
 
-### 9.3 Data-Attribute Contract
+### Data-Attribute Contract
 
 Chart components follow the same data-attribute pattern as all Rokkit components:
 
@@ -814,9 +814,9 @@ Chart components follow the same data-attribute pattern as all Rokkit components
 
 ---
 
-## 10. Accessibility
+## Accessibility
 
-### 10.1 Keyboard Navigation
+### Keyboard Navigation
 
 Charts with data marks support keyboard navigation:
 
@@ -849,7 +849,7 @@ Navigation is implemented by the standard `use:navigator` action applied to the 
 </g>
 ```
 
-### 10.2 Screen Reader Annotations
+### Screen Reader Annotations
 
 Every chart SVG includes:
 
@@ -866,7 +866,7 @@ Every chart SVG includes:
 
 `<title>` and `<desc>` are always present. The `description` prop allows a consumer-provided narrative; if omitted, the chart generates a summary from the data (top value, range, count of marks).
 
-### 10.3 Data Table Alternative
+### Data Table Alternative
 
 When `dataTable={true}`, the chart renders a visually-hidden `<table>` that presents the chart data in tabular form. Screen reader users can navigate the table instead of (or in addition to) the SVG. The table is present in the DOM but hidden with the `.sr-only` utility class:
 
@@ -894,7 +894,7 @@ When `dataTable={true}`, the chart renders a visually-hidden `<table>` that pres
 {/if}
 ```
 
-### 10.4 Animated Chart Announcements
+### Animated Chart Announcements
 
 When `AnimatedChart` advances to a new keyframe:
 
@@ -911,7 +911,7 @@ When `AnimatedChart` advances to a new keyframe:
 
 This live region announces the current frame context without overwhelming the user with every interpolation step — it fires only when the index advances.
 
-### 10.5 Pattern Dual-Coding
+### Pattern Dual-Coding
 
 Every data series receives both a unique color and a unique pattern (Dots, CrossHatch, Waves, etc.). This ensures:
 - Color-blind users distinguish series by texture
@@ -920,9 +920,9 @@ Every data series receives both a unique color and a unique pattern (Dots, Cross
 
 ---
 
-## 11. Theme Integration
+## Theme Integration
 
-### 11.1 CSS Variables
+### CSS Variables
 
 Charts consume the Rokkit theme variable system:
 
@@ -944,11 +944,11 @@ Charts consume the Rokkit theme variable system:
 
 Dark mode is automatic via the theme's z-index inversion system — no conditional logic in chart CSS.
 
-### 11.2 Palette and Theme Shades
+### Palette and Theme Shades
 
 The `ChartBrewer` selects palette shades appropriate to the current theme mode (`light` or `dark`). The `theme` prop accepts `'auto'` (default), which reads the current `data-mode` attribute from the nearest ancestor, matching the Rokkit skin system.
 
-### 11.3 Theme-Per-Chart
+### Theme-Per-Chart
 
 Each chart can override its own theme:
 
@@ -958,7 +958,7 @@ Each chart can override its own theme:
 
 This renders the chart with dark-mode shades regardless of the page-level theme. Useful for charts on dark card surfaces within a light-mode page.
 
-### 11.4 Component CSS
+### Component CSS
 
 ```css
 /* Timeline controls */
@@ -1022,9 +1022,9 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
 
 ---
 
-## 12. Sparkline Design
+## Sparkline Design
 
-### 12.1 Component
+### Component
 
 ```svelte
 <!-- charts/Sparkline.svelte -->
@@ -1086,7 +1086,7 @@ This renders the chart with dark-mode shades regardless of the page-level theme.
 </div>
 ```
 
-### 12.2 Scale Computation
+### Scale Computation
 
 Sparklines compute inline scales without ChartBrewer (no axes, no legend):
 
@@ -1106,9 +1106,9 @@ function sparklineScale(data, width, height, padding = 2) {
 
 ---
 
-## 13. SVG Export
+## SVG Export
 
-### 13.1 Static SVG (`svg-export.js`)
+### Static SVG (`svg-export.js`)
 
 ```javascript
 export function exportSvg(svgElement, filename = 'chart.svg') {
@@ -1122,7 +1122,7 @@ export function exportSvg(svgElement, filename = 'chart.svg') {
 }
 ```
 
-### 13.2 Raster Export (`raster-export.js`)
+### Raster Export (`raster-export.js`)
 
 ```javascript
 export async function exportRaster(svgElement, format = 'png', scale = 2, filename) {
@@ -1148,7 +1148,7 @@ export async function exportRaster(svgElement, format = 'png', scale = 2, filena
 }
 ```
 
-### 13.3 Animated SVG Export (`animated-svg-export.js`)
+### Animated SVG Export (`animated-svg-export.js`)
 
 Generates standalone animated SVG using SMIL `<animate>` elements:
 
@@ -1187,7 +1187,7 @@ SMIL structure per animated bar:
 </rect>
 ```
 
-### 13.4 Export Toolbar
+### Export Toolbar
 
 ```svelte
 <!-- ChartExporter.svelte — rendered as HTML overlay positioned over the SVG -->
@@ -1208,9 +1208,9 @@ SMIL structure per animated bar:
 
 ---
 
-## 14. Data Integration with @rokkit/data
+## Data Integration with @rokkit/data
 
-### 14.1 Rollup for Animation Keyframes
+### Rollup for Animation Keyframes
 
 `AnimatedChart` uses `@rokkit/data` rollup functions to group flat data into aligned keyframes:
 
@@ -1234,7 +1234,7 @@ function buildKeyframes(data, timeField, categoryField, valueField) {
 }
 ```
 
-### 14.2 Rollup Prop
+### Rollup Prop
 
 For consumers who want more control, `AnimatedChart` accepts a `rollup` configuration:
 
@@ -1259,9 +1259,9 @@ For consumers who want more control, `AnimatedChart` accepts a `rollup` configur
 
 ---
 
-## 15. Pattern System (Svelte 5 Migration)
+## Pattern System (Svelte 5 Migration)
 
-### 15.1 Migration Pattern
+### Migration Pattern
 
 All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration:
 
@@ -1280,7 +1280,7 @@ All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration
 </script>
 ```
 
-### 15.2 Pattern Registration in SVG Defs
+### Pattern Registration in SVG Defs
 
 `ChartBrewer` generates `<defs>` entries automatically:
 
@@ -1307,7 +1307,7 @@ All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration
 
 ---
 
-## 16. Implementation Phases
+## Implementation Phases
 
 ### Phase 1 — Foundation
 
@@ -1359,7 +1359,7 @@ All 9 pattern components are Svelte 4 (`export let`, `$:`) and require migration
 
 ---
 
-## 17. Cross-References
+## Cross-References
 
 - Requirements: `docs/requirements/020-chart.md`
 - Existing chart code: `packages/chart/src/`

@@ -1,4 +1,4 @@
-# Learn Site Design
+# Learn Site
 
 The learn site (`sites/learn`) is the primary documentation and interactive demo surface for Rokkit. It serves two audiences: developers learning the library and AI agents consuming component API references.
 
@@ -54,7 +54,7 @@ Separating the groups into distinct layouts avoids conditional rendering complex
 
 ---
 
-## 2. Documentation Pages
+## Documentation Pages
 
 ### Page anatomy
 
@@ -135,7 +135,7 @@ Static code fragments are displayed using the `Code` component (syntax-highlight
 
 ---
 
-## 3. Playground Pages
+## Playground Pages
 
 ### Purpose
 
@@ -184,7 +184,7 @@ Individual playground pages may embed additional controls for variants, sizes, o
 
 ---
 
-## 4. AI Content (llms.txt)
+## AI Content (llms.txt)
 
 ### Purpose
 
@@ -242,19 +242,19 @@ The `index.txt` file covers the library as a whole:
 
 ---
 
-## 5. Floating Action Buttons
+## Floating Action Buttons
 
 Documentation pages and playground pages both show floating icon buttons in the top-right corner of the content area. These provide one-click navigation between related surfaces.
 
 ### Docs page buttons
 
 ```
-┌─────────────────────────────────────────┐
+┌──────────────────────────────────────────┐
 │  [content]                  [🎮] [📄]   │
-│                              │     │    │
+│                              │     │     │
 │                              │     └─ llms.txt (opens new tab)
 │                              └─ Playground page
-└─────────────────────────────────────────┘
+└──────────────────────────────────────────┘
 ```
 
 - The playground button only appears for pages that have a corresponding `/playground/components/[slug]` route (detected by the `canonicalPath` containing `/docs/components/`).
@@ -264,7 +264,7 @@ Documentation pages and playground pages both show floating icon buttons in the 
 
 ```
 ┌─────────────────────────────────────────┐
-│  [sandbox]                  [📖] [📄]   │
+│  [sandbox]                  [📖] [📄]  │
 │                              │     │    │
 │                              │     └─ llms.txt (opens new tab)
 │                              └─ Docs page
@@ -340,7 +340,7 @@ The sidebar uses `page.url.pathname` to determine the active item. The `canonica
 
 ---
 
-## 7. Theme Integration
+## Theme Integration
 
 ### ThemeSwitcherToggle
 
@@ -371,7 +371,7 @@ The `data-mode` attribute on `<html>` flips the z-index color scale (z1 ↔ z10 
 
 ---
 
-## 8. Page Metadata (meta.json)
+## Page Metadata (meta.json)
 
 Each docs page has a `meta.json` file in its directory:
 
@@ -395,7 +395,7 @@ The layout reads these via `data.sections` (loaded server-side) and uses `findSe
 
 ---
 
-## 9. Theme Builder
+## Theme Builder
 
 The Theme Builder is an interactive page in the learn site's playground at `/playground/theme-builder`. It gives developers a visual, real-time environment for creating and exporting custom Rokkit themes without touching a text editor.
 
@@ -456,10 +456,10 @@ Each property picker shows the raw CSS custom property name it will emit alongsi
 The preview panel shows a grid of representative components rendered in the current theme configuration. It covers the full interactive state surface:
 
 ```
-┌─────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────┐
 │  Preview — rokkit skin / material style / dark / default │
-├─────────────────────────────────────────────────────────┤
-│  Button row:  [Default]  [Hovered]  [Focused]  [Active] │
+├──────────────────────────────────────────────────────────┤
+│  Button row:  [Default]  [Hovered]  [Focused]  [Active]  │
 │                                                          │
 │  List:                                                   │
 │    Item A        (default)                               │
@@ -468,17 +468,17 @@ The preview panel shows a grid of representative components rendered in the curr
 │    Item D        (selected + unfocused)                  │
 │    Item E ░░░░   (disabled)                              │
 │                                                          │
-│  Input:  [Value with error state      ]  ← error        │
-│  Input:  [Focused value               ]  ← focus        │
+│  Input:  [Value with error state      ]  ← error         │
+│  Input:  [Focused value               ]  ← focus         │
 │                                                          │
 │  Badge [success]  Badge [warning]  Badge [error]         │
 │  ProgressBar ████████░░  80%                             │
 │                                                          │
-│  Card  ┌─────────────────────────────┐                  │
-│        │  Title             [Badge]  │                  │
-│        │  Body text content…         │                  │
-│        └─────────────────────────────┘                  │
-└─────────────────────────────────────────────────────────┘
+│  Card  ┌─────────────────────────────┐                   │
+│        │  Title             [Badge]  │                   │
+│        │  Body text content…         │                   │
+│        └─────────────────────────────┘                   │
+└──────────────────────────────────────────────────────────┘
 ```
 
 Below the component grid, five links open the sample application pages (Dashboard, Data Browser, Form Page, Article, Settings) in a new tab with the current theme state encoded in the URL. This lets users inspect a fully realistic application under their custom theme before downloading.

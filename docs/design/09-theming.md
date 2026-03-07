@@ -1,11 +1,11 @@
-# Theming System Design
+# Theming System
 
 > How Rokkit's visual layer is structured: the three independent axes of skin, style, and
 > mode, and the CSS architecture that connects them to components.
 
 ---
 
-## 1. Architecture Overview
+## Architecture Overview
 
 Every Rokkit component is unstyled by default. Visual appearance is entirely determined by
 three independent axes, each controlled by a data attribute on the `<html>` element:
@@ -44,7 +44,7 @@ without changing the palette.
 
 ---
 
-## 2. Z-Index Semantic Color Scale
+## Z-Index Semantic Color Scale
 
 Instead of referencing concrete shade numbers (e.g., `slate-200`), theme CSS uses
 semantic z-indexed references: `bg-surface-z1` through `bg-surface-z10`.
@@ -78,7 +78,7 @@ theme CSS — swapping `data-mode` swaps the underlying z-index resolution.
 
 ---
 
-## 3. Semantic Color Roles
+## Semantic Color Roles
 
 The skin layer maps eight semantic roles to color scales. Theme CSS uses these roles via
 CSS custom properties — never direct Tailwind color names.
@@ -99,7 +99,7 @@ and equivalent `text-` and `border-` variants).
 
 ---
 
-## 4. Three Built-In Style Variants
+## Three Built-In Style Variants
 
 The `data-style` attribute selects the component visual personality. Three variants ship
 with Rokkit:
@@ -130,7 +130,7 @@ does not break when switching styles.
 
 ---
 
-## 5. Skin System
+## Skin System
 
 A skin binds a set of semantic color roles to concrete color scales. All skins are defined
 in `@rokkit/core/src/skins.js` and exported as `predefinedSkins`.
@@ -225,7 +225,7 @@ setPalette('skin-my-brand')
 
 ---
 
-## 6. CSS Custom Property Architecture
+## CSS Custom Property Architecture
 
 The skin shortcut expands into CSS custom property assignments. These properties are the
 interface between the skin layer and theme CSS:
@@ -255,7 +255,7 @@ through the custom property. The full resolution chain:
 
 ---
 
-## 7. How Components Consume Theme Tokens
+## How Components Consume Theme Tokens
 
 Components never import or reference CSS. They annotate the DOM with data attributes.
 Theme CSS files target those attributes and apply visual styles.
@@ -321,7 +321,7 @@ preserved.
 
 ---
 
-## 8. The `themable` Action
+## The `themable` Action
 
 The `themable` action (from `@rokkit/actions`) applies `data-style`, `data-mode`, and
 `data-density` to the host element from the reactive `vibe` store in `@rokkit/states`:

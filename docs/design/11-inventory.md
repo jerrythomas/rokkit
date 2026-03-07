@@ -19,7 +19,7 @@
 
 ---
 
-## 1. Selection & Navigation
+## Selection & Navigation
 
 | Component | Package | Status | Description |
 |-----------|---------|--------|-------------|
@@ -38,7 +38,7 @@
 
 ---
 
-## 2. Input & Forms
+## Input & Forms
 
 ### Form Orchestration
 
@@ -93,7 +93,7 @@
 
 ---
 
-## 3. Display & Content
+## Display & Content
 
 ### Form Display Components
 
@@ -121,7 +121,7 @@
 
 ---
 
-## 4. Overlay & Feedback
+## Overlay & Feedback
 
 | Component | Package | Status | Description |
 |-----------|---------|--------|-------------|
@@ -134,7 +134,7 @@
 
 ---
 
-## 5. Layout
+## Layout
 
 | Component | Package | Status | Description |
 |-----------|---------|--------|-------------|
@@ -147,7 +147,7 @@
 
 ---
 
-## 6. Charts
+## Charts
 
 ### Plot Primitives (`@rokkit/chart` — `Plot.*`)
 
@@ -183,7 +183,7 @@
 
 ---
 
-## 7. Theme & Utilities
+## Theme & Utilities
 
 | Component | Package | Status | Description |
 |-----------|---------|--------|-------------|

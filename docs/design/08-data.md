@@ -1,10 +1,10 @@
-# @rokkit/data
+# Data Handling
 
 The data manipulation layer for Rokkit. This package provides collection-level operations — grouping, aggregation, filtering, joining, formatting, and schema inference — used by charts, tables, and forms. It sits between raw application data and the components that render it.
 
 ---
 
-## 1. Architecture Overview
+## Architecture Overview
 
 `@rokkit/data` occupies a specific position in the package hierarchy:
 
@@ -44,7 +44,7 @@ These are complementary, not overlapping:
 
 ---
 
-## 2. Module Map
+## Module Map
 
 ```
 @rokkit/data
@@ -86,7 +86,7 @@ Note: `rollup.js` internals (`groupDataByKeys`, `aggregateData`, etc.) are not r
 
 ---
 
-## 3. The `dataset` Pipeline
+## The `dataset` Pipeline
 
 `dataset()` returns a `DataSet` — a fluent, chainable wrapper around an array of objects. It is the primary API for transforming collections.
 
@@ -151,7 +151,7 @@ const diff = ds1.minus(otherArray)
 
 ---
 
-## 4. The `dataview` Store
+## The `dataview` Store
 
 `dataview(data, options)` wraps a data array in a Svelte writable-compatible store designed for tabular display. It derives two reactive values: `columns` (metadata with formatters) and `hierarchy` (flat list of nodes with depth, expansion, and selection state).
 
@@ -179,7 +179,7 @@ view.select(3)                 // toggle selection at index 3
 
 ---
 
-## 5. Filtering and Search
+## Filtering and Search
 
 ### `filterObjectArray` and `filterData`
 
@@ -218,7 +218,7 @@ The shorthand `:` maps to `~*` (case-insensitive contains). Quoted values preser
 
 ---
 
-## 6. Formatting
+## Formatting
 
 `createFormatter(type, language?, decimalPlaces?)` returns a locale-aware formatter function.
 
@@ -248,7 +248,7 @@ Supported types:
 
 ---
 
-## 7. Schema Inference
+## Schema Inference
 
 `typeOf(value)` extends `typeof` with data-aware distinctions:
 
@@ -276,7 +276,7 @@ deriveSortableColumn({ name: 'date', sorter: myCustomSorter })
 
 ---
 
-## 8. Hierarchy
+## Hierarchy
 
 `deriveHierarchy(data, options)` converts a flat array with path strings into a `TreeTableNode[]` — a flat list that carries `depth`, `parent`, `children`, `isExpanded`, and `isHidden` for use in tree-table rendering.
 
@@ -296,7 +296,7 @@ The flat structure allows virtual scroll over large trees without recursion in r
 
 ---
 
-## 9. Integration with Field Mapping
+## Integration with Field Mapping
 
 `createFormatter` plugs directly into the field mapping system as a computed field function:
 
@@ -316,7 +316,7 @@ Because ProxyItem normalises both string paths and functions to the same resolve
 
 ---
 
-## 10. API Reference
+## API Reference
 
 ### `dataset(data, options?)`
 

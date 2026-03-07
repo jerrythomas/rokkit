@@ -1,10 +1,10 @@
-# Patterns
+# Design Patterns
 
 The core design patterns that run through every part of Rokkit. These patterns are the source of truth for decisions about new components, changes to existing ones, and how the library's pieces fit together. When in doubt, come back here.
 
 ---
 
-## 1. Data-First Binding
+## Data-First Binding
 
 The most fundamental pattern: **data flows in as-is; components adapt to it**.
 
@@ -34,7 +34,7 @@ The corollary: **events return original data, not transformed data**. When an it
 
 ---
 
-## 2. Field Mapping
+## Field Mapping
 
 Field mapping is the mechanism that implements data-first binding. It tells a component how to read its data without changing the data.
 
@@ -109,7 +109,7 @@ An individual item can carry a `snippet` field (or whatever field is mapped to `
 
 ---
 
-## 3. ProxyItem
+## ProxyItem
 
 ProxyItem is the runtime adapter between raw data and component rendering. Every item in a component is accessed through a proxy, not directly.
 
@@ -192,7 +192,7 @@ When a developer provides a custom snippet, they receive a ProxyItem — not the
 
 ---
 
-## 4. Component API Convention
+## Component API Convention
 
 Every selection component in Rokkit exposes the same core set of props. This is a deliberate contract, not a coincidence.
 
@@ -218,7 +218,7 @@ Every selection component in Rokkit exposes the same core set of props. This is 
 
 ---
 
-## 5. Snippet Composition
+## Snippet Composition
 
 Snippets are the extensibility mechanism. They let consumers replace any rendered part of a component without touching component source and without losing built-in behavior.
 
@@ -260,7 +260,7 @@ Snippets target named slots. Providing one snippet does not affect others. A dev
 
 ---
 
-## 6. Data-Attribute Hooks
+## Data-Attribute Hooks
 
 Every DOM element a component renders carries semantic data attributes. These are the styling contract — the stable surface that themes and application CSS targets.
 
@@ -304,7 +304,7 @@ Classes are composable but semantically opaque. Data attributes carry meaning �
 
 ---
 
-## 7. Controller Pattern
+## Controller Pattern
 
 Selection components separate **state management** from **rendering**. The controller holds state; the component renders it.
 
@@ -347,7 +347,7 @@ The navigator action and the component both read from the same controller. There
 
 ---
 
-## 8. Navigator Action Pattern
+## Navigator Action Pattern
 
 The `use:navigator` action connects keyboard interaction to controller state. It is a Svelte action applied to the container element of a navigable component.
 
@@ -404,7 +404,7 @@ RTL reverses the meaning of ArrowLeft/ArrowRight in horizontal mode.
 
 ---
 
-## 9. Theme Architecture Pattern
+## Theme Architecture Pattern
 
 Theming is pure CSS. Components carry no visual opinions — they only annotate the DOM. Themes read those annotations.
 
@@ -460,7 +460,7 @@ This means a theme written once works correctly in both color modes without any 
 
 ---
 
-## 10. Composition Over Configuration
+## Composition Over Configuration
 
 Components do one job. They do not absorb adjacent features.
 
@@ -505,7 +505,7 @@ Each component does its job. They are wired together by the consumer. The consum
 
 ---
 
-## 11. Accessibility Pattern
+## Accessibility Pattern
 
 Accessibility is built into every component via two parallel systems: ARIA attributes and data-attribute styling hooks.
 
@@ -535,7 +535,7 @@ This ensures that visual state (from CSS) and semantic state (for screen readers
 
 ---
 
-## 12. State Reactivity Pattern
+## State Reactivity Pattern
 
 Rokkit is built on Svelte 5 runes. The reactivity patterns follow specific conventions.
 
@@ -567,7 +567,7 @@ Svelte 5 cannot track reactivity through a `$derived` Map into nested `$state` p
 
 ---
 
-## 13. Package Dependency Order
+## Package Dependency Order
 
 Packages have a strict one-directional dependency. No package may import from a package above it in this hierarchy.
 
@@ -602,7 +602,7 @@ This order is enforced. `@rokkit/ui` never imports from `@rokkit/forms`. `@rokki
 
 ---
 
-## 14. New Component Checklist
+## New Component Checklist
 
 When designing or implementing a new component, verify it meets every pattern:
 

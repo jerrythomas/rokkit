@@ -1,11 +1,11 @@
-# Component System Design
+# Component System
 
 > How Rokkit components are structured, composed, and interact — the design contract
 > for component developers building on or for Rokkit.
 
 ---
 
-## 1. Design Philosophy
+## Design Philosophy
 
 ### Single-Component Model
 
@@ -54,7 +54,7 @@ components: open, position, and close.
 
 ---
 
-## 2. Component Anatomy
+## Component Anatomy
 
 Every data-driven component is built from the same five layers. These layers are not
 independent files — they are design responsibilities that live together in a single
@@ -132,7 +132,7 @@ contract is defined in Section 7.
 
 ---
 
-## 3. Component Categories
+## Component Categories
 
 ### Selection Components
 
@@ -225,7 +225,7 @@ hooks beyond their root marker. They are not theme targets for interactive state
 
 ---
 
-## 4. Data Flow Through a Component
+## Data Flow Through a Component
 
 The following diagram traces the full lifecycle from consumer input to DOM output and back.
 
@@ -274,7 +274,7 @@ The key properties of this flow:
 
 ---
 
-## 5. API Conventions
+## API Conventions
 
 Every selection component exposes the same foundational props. Developers familiar with
 one component can adopt any other with minimal learning.
@@ -335,7 +335,7 @@ Some components expose secondary bindable props alongside `value`:
 
 ---
 
-## 6. Snippet Model
+## Snippet Model
 
 Snippets are the primary customization mechanism for rendering. They replace the default
 item template without affecting the component's behavior, selection, or keyboard
@@ -403,7 +403,7 @@ slots — they compose independently.
 
 ---
 
-## 7. Data Attribute Contract
+## Data Attribute Contract
 
 Every Rokkit component annotates its DOM using `data-*` attributes. These attributes are
 the sole interface between component structure and CSS themes. No class names are used for
@@ -496,7 +496,7 @@ preserved.
 
 ---
 
-## 8. Composition Pattern
+## Composition Pattern
 
 ### The Anti-Pattern: Feature Creep
 
@@ -575,7 +575,7 @@ pagination, column visibility, and row grouping belong to the application layer.
 
 ---
 
-## 9. Overlay Design
+## Overlay Design
 
 ### Trigger + Panel Model
 
@@ -795,17 +795,17 @@ Every interactive component provides both data-attribute styling hooks and ARIA 
 Dropdown components — Menu, Select, MultiSelect, Combobox — have two distinct interactive zones that must coordinate state:
 
 ```
-┌──────────────────────────┐
+┌───────────────────────────┐
 │  Trigger (always visible) │  button or input that opens the panel
 │  click → open()           │
 │  Enter/Space → open()     │
 │  Escape → close()         │
-└──────────────────────────┘
+└───────────────────────────┘
          ↕ shared Wrapper
-┌──────────────────────────┐
+┌───────────────────────────┐
 │  Dropdown (when open)     │  list of options
 │  use:navigator attached   │  ← Navigator lives HERE only
-└──────────────────────────┘
+└───────────────────────────┘
 ```
 
 The Wrapper is the coordination point. It owns the `open` state and exposes `cancel()` and `blur()` hooks that Navigator calls when Escape is pressed or focus leaves the dropdown:

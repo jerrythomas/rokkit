@@ -1,10 +1,10 @@
-# Testing Design
+# Testing
 
 Rokkit uses two testing layers with distinct purposes and toolchains: unit tests for component and controller logic, and E2E tests for full user flows on the learn site.
 
 ---
 
-## 1. Unit Tests (Vitest + @testing-library/svelte)
+## Unit Tests (Vitest + @testing-library/svelte)
 
 ### Toolchain
 
@@ -175,7 +175,7 @@ Every UI component must have unit tests covering:
 
 ---
 
-## 2. E2E Tests (Playwright)
+## E2E Tests (Playwright)
 
 ### Toolchain
 
@@ -339,7 +339,7 @@ This scopes assertions to a specific example on the page and prevents interferen
 
 ---
 
-## 3. Testing Conventions
+## Testing Conventions
 
 ### Test naming
 

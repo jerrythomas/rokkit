@@ -1,8 +1,8 @@
-# Design: @rokkit/actions
+# Actions
 
 > Interaction behaviors and keyboard navigation for Svelte 5 components
 
-## 1. Design Philosophy
+## Design Philosophy
 
 The `@rokkit/actions` package provides Svelte actions — functions applied to DOM elements via the `use:` directive — that add interaction behaviors without coupling to any particular component. Several principles govern their design.
 
@@ -16,7 +16,7 @@ The `@rokkit/actions` package provides Svelte actions — functions applied to D
 
 ---
 
-## 2. Action Inventory
+## Action Inventory
 
 The package exports the following actions. All are Svelte 5 `$effect`-based unless noted as a plain class.
 
@@ -43,7 +43,7 @@ The navigation-related entries — `Navigator`, `Trigger`, `navigable`, `dismiss
 
 ---
 
-## 3. Navigation Architecture
+## Navigation Architecture
 
 ### The Two-Layer Model
 
@@ -173,7 +173,7 @@ On `focusout`: if the newly focused element (`relatedTarget`) is outside the con
 
 ---
 
-## 4. Controller Integration
+## Controller Integration
 
 Navigator does not manage selection or focus state itself. It delegates all state mutations to the controller passed as `wrapper`. The controller interface is:
 
@@ -210,7 +210,7 @@ The reactive state (`focusedKey`, `selected`, etc.) is `$state`-based inside the
 
 ---
 
-## 5. Trigger and Dropdown Composition
+## Trigger and Dropdown Composition
 
 Dropdown components — `Select`, `MultiSelect`, `Menu` — require two coordinated pieces: a trigger button that opens and closes the overlay, and a navigator that handles keyboard interaction inside the open overlay. The `Trigger` class manages the first responsibility.
 
@@ -231,7 +231,7 @@ This split keeps each class focused: `Trigger` never reads item state, and `Navi
 
 ---
 
-## 6. Dismissable Action
+## Dismissable Action
 
 `dismissable` is a simpler, standalone overlay-dismissal action for cases where the `Trigger`/`Navigator` pairing is not appropriate (modal dialogs, popovers, tooltips).
 
@@ -246,7 +246,7 @@ Both listeners are document-level and are cleaned up when the action's `$effect`
 
 ---
 
-## 7. Interaction Actions
+## Interaction Actions
 
 ### Ripple
 
@@ -340,7 +340,7 @@ The only interaction to be aware of: both `hoverLift` and `magnetic` write to `e
 
 ---
 
-## 8. Usage in Library Components
+## Usage in Library Components
 
 The following table shows how `@rokkit/ui` components apply `Navigator` and related classes. All use the class form (not the `use:navigator` directive form) for explicit lifecycle control inside `$effect` blocks.
 
@@ -376,7 +376,7 @@ The `Navigator` is constructed only when the dropdown is open and a `dropdownRef
 
 ---
 
-## 9. Utility Exports
+## Utility Exports
 
 ### `keyboard`
 
@@ -401,7 +401,7 @@ These are exported for consumers who need to build custom navigation logic on to
 
 ---
 
-## 10. Known Gaps and Future Enhancements
+## Known Gaps and Future Enhancements
 
 These are documented design gaps — areas where the current implementation is intentionally minimal and future work would improve completeness.
 

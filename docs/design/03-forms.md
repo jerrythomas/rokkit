@@ -1,10 +1,10 @@
-# Forms System Design
+# Forms System
 
 > Design for the schema-driven form system in `@rokkit/forms`.
 
 ---
 
-## 1. Design Philosophy
+## Design Philosophy
 
 Forms are the most repetitive surface in application development. A developer hand-codes labels, bindings, validation rules, and loading states — then repeats that work for every new form. The Rokkit forms system eliminates that repetition by treating the data schema as the single source of truth.
 
@@ -20,7 +20,7 @@ Four principles govern every design decision in `@rokkit/forms`:
 
 ---
 
-## 2. Core Concepts
+## Core Concepts
 
 **FormRenderer** is the public-facing component. It is the only thing a consumer needs to import. It accepts `data`, `schema`, `layout`, `lookups`, and a set of callbacks. Internally it creates and owns a `FormBuilder` instance and drives rendering from the builder's reactive `elements` array.
 
@@ -34,7 +34,7 @@ Four principles govern every design decision in `@rokkit/forms`:
 
 ---
 
-## 3. Form Rendering Pipeline
+## Form Rendering Pipeline
 
 The full pipeline from consumer input to rendered HTML:
 
@@ -83,7 +83,7 @@ flowchart LR
 
 ---
 
-## 4. FormBuilder Responsibilities
+## FormBuilder Responsibilities
 
 `FormBuilder` (`lib/builder.svelte.js`) is the reactive core. It manages all mutable form state using Svelte 5 runes. `FormRenderer` creates one stable instance at mount and wires prop changes to it via `$effect`.
 
@@ -141,7 +141,7 @@ This pattern is critical: recreating `FormBuilder` on every derivation (e.g., `$
 
 ---
 
-## 5. Schema Design
+## Schema Design
 
 The schema follows a JSON-schema-compatible structure. All standard JSON schema field types and constraints are supported. Additional annotations extend the schema for Rokkit-specific behavior.
 
@@ -265,7 +265,7 @@ When no schema is supplied, `deriveSchemaFromValue(data)` walks the data object 
 
 ---
 
-## 6. Layout Design
+## Layout Design
 
 Layout describes *how* a form is presented, independent of what the schema says about the data. Separating schema from layout makes it possible to present the same data model in multiple ways — a wizard step, a compact sidebar panel, a full-page editor — without duplicating the schema.
 
@@ -319,7 +319,7 @@ Key layout behaviors:
 
 ---
 
-## 7. Field Type System
+## Field Type System
 
 The `defaultRenderers` registry maps type strings to Svelte components. `resolveRenderer` performs a three-step lookup: explicit `renderer` name → type key → fallback to `InputText`.
 
@@ -356,7 +356,7 @@ Custom renderers registered via the `renderers` prop extend this table. The cons
 
 ---
 
-## 8. Validation Design
+## Validation Design
 
 ### Rules and sources
 
@@ -408,7 +408,7 @@ flowchart TD
 
 ---
 
-## 9. Dynamic Lookup Design
+## Dynamic Lookup Design
 
 Lookups power select-type fields whose options come from remote or computed sources. The system manages fetch lifecycle, caching, dependency tracking, and disabled state so the consumer does not have to.
 
@@ -498,7 +498,7 @@ sequenceDiagram
 
 ---
 
-## 10. Custom Field Rendering
+## Custom Field Rendering
 
 Any field can be rendered by a custom component. There are two scopes of override.
 
@@ -553,7 +553,7 @@ Calling `onchange(newValue)` routes through `FormRenderer.handleFieldChange`, wh
 
 ---
 
-## 11. Conditional Fields
+## Conditional Fields
 
 Conditional fields are planned and not yet implemented. This section describes the intended design.
 
@@ -585,7 +585,7 @@ The `$derived` nature of `elements` means conditions re-evaluate automatically w
 
 ---
 
-## 12. Nested Structures
+## Nested Structures
 
 Nesting is handled at two levels: objects (rendered as fieldset groups) and arrays (rendered via `ArrayEditor`).
 
