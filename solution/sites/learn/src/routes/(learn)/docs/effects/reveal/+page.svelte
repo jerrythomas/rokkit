@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { Code } from '$lib/components/Story'
+	import { Demo } from '$lib/components/Story'
 	import BasicDemo from './snippets/basic.svelte'
 	import basicCode from './snippets/basic.svelte?raw'
 	import StaggerDemo from './snippets/stagger.svelte'
@@ -19,8 +19,7 @@
 		Wrap any element with <code>Reveal</code> and it will animate into view when it enters the
 		viewport. Click <strong>Replay</strong> to re-trigger the animation.
 	</p>
-	<BasicDemo />
-	<Code content={basicCode} language="svelte" />
+	<Demo App={BasicDemo} code={basicCode} />
 
 	<h2>Staggered Children</h2>
 	<p>
@@ -28,8 +27,7 @@
 		<code>class</code> prop is forwarded to the wrapper so you can control layout — use
 		<code>class="flex gap-4"</code> to lay children out side by side.
 	</p>
-	<StaggerDemo />
-	<Code content={staggerCode} language="svelte" />
+	<Demo App={StaggerDemo} code={staggerCode} />
 
 	<h2>Props</h2>
 	<div class="overflow-x-auto">

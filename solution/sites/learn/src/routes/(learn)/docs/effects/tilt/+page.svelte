@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { Code } from '$lib/components/Story'
+	import { Demo } from '$lib/components/Story'
 	import TiltDemo from './snippets/demo.svelte'
 	import demoCode from './snippets/demo.svelte?raw'
 </script>
@@ -14,8 +14,7 @@
 
 	<h2>Live Demo</h2>
 	<p>Hover over the cards and move your mouse across them to see the 3D tilt effect.</p>
-	<TiltDemo />
-	<Code content={demoCode} language="svelte" />
+	<Demo App={TiltDemo} code={demoCode} />
 
 	<h2>Props</h2>
 	<div class="overflow-x-auto">
