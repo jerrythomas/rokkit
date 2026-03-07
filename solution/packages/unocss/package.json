@@ -13,6 +13,7 @@
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.css",
     "dist/**/*.d.ts",
     "README.md",
     "package.json"
@@ -22,7 +23,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./src/index.js"
-    }
+    },
+    "./patterns.css": "./src/patterns.css"
   },
   "dependencies": {
     "@rokkit/core": "workspace:*",
