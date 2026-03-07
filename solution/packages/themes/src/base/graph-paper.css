@@ -8,6 +8,14 @@
  *   --graph-paper-color line color            (default currentColor)
  */
 
+/* Grid paper — simple H+V grid (no major/minor distinction)
+ *
+ * Override any variable on the element or a parent to customise:
+ *   --unit              cell size             (default 0.5rem)
+ *   --grid-line         line thickness        (default 0.5px)
+ *   --grid-paper-color  line color            (default currentColor)
+ */
+
 /* Ruled paper — horizontal lines only
  *
  * Override any variable on the element or a parent to customise:
@@ -46,6 +54,23 @@
 		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
 		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px)),
 		calc(-1 * var(--minor-grid, 0.5px)) calc(-1 * var(--minor-grid, 0.5px));
+}
+
+[data-grid-paper] {
+	background-image:
+		linear-gradient(
+			var(--grid-paper-color, currentColor) var(--grid-line, 0.5px),
+			transparent var(--grid-line, 0.5px)
+		),
+		linear-gradient(
+			90deg,
+			var(--grid-paper-color, currentColor) var(--grid-line, 0.5px),
+			transparent var(--grid-line, 0.5px)
+		);
+	background-size: var(--unit, 0.5rem) var(--unit, 0.5rem);
+	background-position:
+		calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px)),
+		calc(-1 * var(--grid-line, 0.5px)) calc(-1 * var(--grid-line, 0.5px));
 }
 
 [data-ruled-paper] {
