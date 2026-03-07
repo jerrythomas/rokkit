@@ -52,10 +52,13 @@ const UTILITIES = [
 	'/docs/utilities/controllers',
 	'/docs/utilities/icons',
 	'/docs/utilities/connector',
-	'/docs/utilities/reveal',
-	'/docs/utilities/shine',
-	'/docs/utilities/tilt',
 	'/docs/utilities/custom-primitives'
+]
+
+const EFFECTS = [
+	'/docs/effects/reveal',
+	'/docs/effects/shine',
+	'/docs/effects/tilt'
 ]
 
 const FORMS = [
@@ -115,6 +118,16 @@ const COMPONENTS = [
 	'/docs/components/tree',
 	'/docs/components/upload-progress',
 	'/docs/components/upload-target'
+]
+
+const COMBINED_SECTIONS = [
+	'/docs/getting-started',
+	'/docs/data-binding',
+	'/docs/composability',
+	'/docs/theming',
+	'/docs/accessibility',
+	'/docs/utilities',
+	'/docs/toolchain'
 ]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -195,6 +208,22 @@ test.describe('Toolchain pages', () => {
 
 test.describe('Utilities pages', () => {
 	for (const url of UTILITIES) {
+		test(`${url} has content and navigation`, async ({ page }) => {
+			await checkPage(page, url)
+		})
+	}
+})
+
+test.describe('Effects pages', () => {
+	for (const url of EFFECTS) {
+		test(`${url} has content and navigation`, async ({ page }) => {
+			await checkPage(page, url)
+		})
+	}
+})
+
+test.describe('Combined section pages', () => {
+	for (const url of COMBINED_SECTIONS) {
 		test(`${url} has content and navigation`, async ({ page }) => {
 			await checkPage(page, url)
 		})
