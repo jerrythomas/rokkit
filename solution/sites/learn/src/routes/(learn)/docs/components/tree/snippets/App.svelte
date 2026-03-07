@@ -4,17 +4,17 @@
 
 	const items = [
 		{
-			text: 'src',
+			label:'src',
 			value: 'src',
 			icon: 'i-lucide:folder',
 			badge: '3 files',
 			children: [
-				{ text: 'index.ts', value: 'index', icon: 'i-lucide:file-code', badge: '2.1kb' },
-				{ text: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code', badge: '1.4kb' },
-				{ text: 'types.ts', value: 'types', icon: 'i-lucide:file-code', badge: '0.8kb' }
+				{ label: 'index.ts', value: 'index', icon: 'i-lucide:file-code', badge: '2.1kb' },
+				{ label: 'utils.ts', value: 'utils', icon: 'i-lucide:file-code', badge: '1.4kb' },
+				{ label: 'types.ts', value: 'types', icon: 'i-lucide:file-code', badge: '0.8kb' }
 			]
 		},
-		{ text: 'README.md', value: 'readme', icon: 'i-lucide:file-text', badge: '0.5kb' }
+		{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text', badge: '0.5kb' }
 	]
 
 	let value = $state(null)

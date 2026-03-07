@@ -42,7 +42,7 @@
 	})
 
 	let processedFiles = $derived(files.map((f) => ({ ...f, _icon: getFileIcon(f) })))
-	let fields = { value: 'id', text: 'name', icon: '_icon' }
+	let fields = { value: 'id', label: 'name', icon: '_icon' }
 
 	let activeFile = $derived(files.find((f) => f.id === selectedFile))
 	let copySuccess = $state({})

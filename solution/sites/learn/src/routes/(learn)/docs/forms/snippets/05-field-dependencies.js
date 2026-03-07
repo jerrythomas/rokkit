@@ -3,7 +3,7 @@ const lookups = {
   city: createLookup({
     url: '/api/cities?country={country}',
     dependsOn: ['country'],
-    fields: { text: 'name', value: 'id' }
+    fields: { label: 'name', value: 'id' }
   })
 }
 

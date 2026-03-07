@@ -3,11 +3,11 @@
 	import { MultiSelect } from '@rokkit/ui'
 
 	const items = [
-		{ text: 'Red', value: 'red' },
-		{ text: 'Green', value: 'green' },
-		{ text: 'Blue', value: 'blue' },
-		{ text: 'Yellow', value: 'yellow' },
-		{ text: 'Purple', value: 'purple' }
+		{ label: 'Red', value: 'red' },
+		{ label: 'Green', value: 'green' },
+		{ label: 'Blue', value: 'blue' },
+		{ label: 'Yellow', value: 'yellow' },
+		{ label: 'Purple', value: 'purple' }
 	]
 	let value = $state([])
 </script>

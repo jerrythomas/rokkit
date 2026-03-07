@@ -28,7 +28,7 @@
 				'Customize notifications, security settings, and application behavior to suit your specific needs and workflow.'
 		}
 	]
-	let fields = { text: 'label', icon: 'emoji' }
+	let fields = { label: 'label', icon: 'emoji' }
 	let value = $state(options[0])
 </script>
 

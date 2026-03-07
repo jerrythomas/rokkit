@@ -26,10 +26,10 @@
 	}
 
 	let steps = $state([
-		{ text: 'Account', completed: true },
-		{ text: 'Profile', completed: true },
-		{ text: 'Preferences', stages: 3 },
-		{ text: 'Review' }
+		{ label: 'Account', completed: true },
+		{ label: 'Profile', completed: true },
+		{ label: 'Preferences', stages: 3 },
+		{ label: 'Review' }
 	])
 
 	let current = $state(2)

@@ -57,7 +57,7 @@
 			align={config.align}
 			editable={config.editable}
 			placeholder={config.placeholder}
-			fields={{ text: 'label', content: 'content' }}
+			fields={{ label: 'label', content: 'content' }}
 			onadd={handleAddTab}
 			onremove={handleRemoveTab}
 			class="flex-1"

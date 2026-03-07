@@ -27,7 +27,7 @@
 	]
 </script>
 
-<Tabs {options} bind:value fields={{ text: 'text', content: 'content' }}>
+<Tabs {options} bind:value fields={{ label: 'text', content: 'content' }}>
 	<div class="space-y-4 p-6">
 		{#snippet tabPanel(item)}
 			<div class="flex items-center gap-4">

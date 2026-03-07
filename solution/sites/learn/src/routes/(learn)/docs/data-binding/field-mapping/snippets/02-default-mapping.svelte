@@ -1,7 +1,7 @@
-// These items use default field names — no fields prop needed
+// These items use default field names (label, value) — no fields prop needed
 const items = [
-  { text: 'Dashboard', value: 'dash' },
-  { text: 'Settings', value: 'settings' }
+  { label: 'Dashboard', value: 'dash' },
+  { label: 'Settings', value: 'settings' }
 ]
 
 <List {items} />

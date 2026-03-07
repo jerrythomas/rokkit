@@ -4,18 +4,18 @@
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	const steps = [
-		{ text: 'Requirements', description: 'Gather project requirements and define scope.', completed: true },
-		{ text: 'Design', description: 'Create wireframes and design mockups.', completed: true },
-		{ text: 'Development', description: 'Build the application features.', active: true },
-		{ text: 'Testing', description: 'Run unit tests, integration tests, and QA.' },
-		{ text: 'Deployment', description: 'Deploy to production and monitor.' }
+		{ label: 'Requirements', description: 'Gather project requirements and define scope.', completed: true },
+		{ label: 'Design', description: 'Create wireframes and design mockups.', completed: true },
+		{ label: 'Development', description: 'Build the application features.', active: true },
+		{ label: 'Testing', description: 'Run unit tests, integration tests, and QA.' },
+		{ label: 'Deployment', description: 'Deploy to production and monitor.' }
 	]
 
 	const changelog = [
-		{ text: 'v2.0.0', description: 'Major release with new component library.' },
-		{ text: 'v1.5.0', description: 'Added dark mode support and accessibility improvements.' },
-		{ text: 'v1.2.0', description: 'Performance optimizations and bug fixes.' },
-		{ text: 'v1.0.0', description: 'Initial public release.' }
+		{ label: 'v2.0.0', description: 'Major release with new component library.' },
+		{ label: 'v1.5.0', description: 'Added dark mode support and accessibility improvements.' },
+		{ label: 'v1.2.0', description: 'Performance optimizations and bug fixes.' },
+		{ label: 'v1.0.0', description: 'Initial public release.' }
 	]
 </script>
 

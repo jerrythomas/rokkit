@@ -41,28 +41,28 @@
 	}
 
 	const fruits = [
-		{ text: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
-		{ text: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
-		{ text: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
-		{ text: 'Date', value: 'date', icon: 'i-lucide:circle' },
-		{ text: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
+		{ label: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
+		{ label: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
+		{ label: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
+		{ label: 'Date', value: 'date', icon: 'i-lucide:circle' },
+		{ label: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
 	]
 
 	const grouped = [
 		{
-			text: 'Fruits',
+			label: 'Fruits',
 			children: [
-				{ text: 'Apple', value: 'apple' },
-				{ text: 'Banana', value: 'banana' },
-				{ text: 'Cherry', value: 'cherry' }
+				{ label: 'Apple', value: 'apple' },
+				{ label: 'Banana', value: 'banana' },
+				{ label: 'Cherry', value: 'cherry' }
 			]
 		},
 		{
-			text: 'Vegetables',
+			label: 'Vegetables',
 			children: [
-				{ text: 'Carrot', value: 'carrot' },
-				{ text: 'Broccoli', value: 'broccoli' },
-				{ text: 'Spinach', value: 'spinach' }
+				{ label: 'Carrot', value: 'carrot' },
+				{ label: 'Broccoli', value: 'broccoli' },
+				{ label: 'Spinach', value: 'spinach' }
 			]
 		}
 	]

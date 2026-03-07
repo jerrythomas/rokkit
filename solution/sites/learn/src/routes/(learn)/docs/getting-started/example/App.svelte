@@ -14,7 +14,7 @@
 	let selected = $derived(users.find((u) => u.id === selectedId))
 
 	// Tell Rokkit which fields to use — that's it
-	const fields = { text: 'name', value: 'id' }
+	const fields = { label: 'name', value: 'id' }
 </script>
 
 <div class="space-y-4">

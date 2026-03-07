@@ -23,7 +23,7 @@
 			<p>Buckle up and get ready to create some truly incredible user experiences with Rokkit!</p>
 			<p>{data.app.about}</p>
 			<span class="flex gap-4 text-xl">
-				<Button variant="primary" href="/docs/introduction" label="Get Started" />
+				<Button variant="primary" href="/docs/getting-started/introduction" label="Get Started" />
 				<Button
 					href="/preview/dashboard"
 					icon="i-solar:atom-bold-duotone"

@@ -39,11 +39,11 @@
 	}
 
 	const navItems = [
-		{ text: 'Introduction', value: 'intro', icon: 'i-lucide:book-open', href: '#intro' },
-		{ text: 'Features', value: 'features', icon: 'i-lucide:star', href: '#features' },
-		{ text: 'Components', value: 'components', icon: 'i-lucide:box', href: '#components' },
-		{ text: 'Pricing', value: 'pricing', icon: 'i-lucide:credit-card', href: '#pricing' },
-		{ text: 'Contact', value: 'contact', icon: 'i-lucide:mail', href: '#contact' }
+		{ label: 'Introduction', value: 'intro', icon: 'i-lucide:book-open', href: '#intro' },
+		{ label: 'Features', value: 'features', icon: 'i-lucide:star', href: '#features' },
+		{ label: 'Components', value: 'components', icon: 'i-lucide:box', href: '#components' },
+		{ label: 'Pricing', value: 'pricing', icon: 'i-lucide:credit-card', href: '#pricing' },
+		{ label: 'Contact', value: 'contact', icon: 'i-lucide:mail', href: '#contact' }
 	]
 
 	function handleSelect(value) {

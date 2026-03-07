@@ -1,9 +1,9 @@
 <script>
 	// @ts-nocheck
   let items = [
-    { text: 'Sample Removable 1' },
-    { text: 'Sample Removable 2' },
-    { text: 'Sample Removable 3' }
+    { label: 'Sample Removable 1' },
+    { label: 'Sample Removable 2' },
+    { label: 'Sample Removable 3' }
   ]
 
   function handleRemove(index) {

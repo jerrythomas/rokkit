@@ -30,13 +30,13 @@
 	}
 
 	const textOptions = [
-		{ text: 'Off', value: 'off' },
-		{ text: 'On', value: 'on' }
+		{ label: 'Off', value: 'off' },
+		{ label: 'On', value: 'on' }
 	]
 
 	const iconOptions = [
-		{ text: 'Dark', value: 0, icon: 'i-lucide:moon' },
-		{ text: 'Light', value: 1, icon: 'i-lucide:sun' }
+		{ label: 'Dark', value: 0, icon: 'i-lucide:moon' },
+		{ label: 'Light', value: 1, icon: 'i-lucide:sun' }
 	]
 </script>
 

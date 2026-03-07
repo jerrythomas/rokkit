@@ -38,6 +38,6 @@
 	<meta name="description" content={data.app.about} />
 </svelte:head>
 {#if showRootHeader}
-	<Header version={data.app.version} class={headerStyle}></Header>
+	<Header version={data.app.version} menu={data.menu} class={headerStyle}></Header>
 {/if}
 {@render children?.()}

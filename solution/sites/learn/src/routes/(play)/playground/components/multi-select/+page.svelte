@@ -32,22 +32,22 @@
 	}
 
 	const colors = [
-		{ text: 'Red', value: 'red' },
-		{ text: 'Green', value: 'green' },
-		{ text: 'Blue', value: 'blue' },
-		{ text: 'Yellow', value: 'yellow' },
-		{ text: 'Purple', value: 'purple' },
-		{ text: 'Orange', value: 'orange' },
-		{ text: 'Pink', value: 'pink' },
-		{ text: 'Teal', value: 'teal' }
+		{ label: 'Red', value: 'red' },
+		{ label: 'Green', value: 'green' },
+		{ label: 'Blue', value: 'blue' },
+		{ label: 'Yellow', value: 'yellow' },
+		{ label: 'Purple', value: 'purple' },
+		{ label: 'Orange', value: 'orange' },
+		{ label: 'Pink', value: 'pink' },
+		{ label: 'Teal', value: 'teal' }
 	]
 
 	const withIcons = [
-		{ text: 'Home', value: 'home', icon: 'i-lucide:home' },
-		{ text: 'Settings', value: 'settings', icon: 'i-lucide:settings' },
-		{ text: 'User', value: 'user', icon: 'i-lucide:user' },
-		{ text: 'Mail', value: 'mail', icon: 'i-lucide:mail' },
-		{ text: 'Bell', value: 'bell', icon: 'i-lucide:bell' }
+		{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
+		{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings' },
+		{ label: 'User', value: 'user', icon: 'i-lucide:user' },
+		{ label: 'Mail', value: 'mail', icon: 'i-lucide:mail' },
+		{ label: 'Bell', value: 'bell', icon: 'i-lucide:bell' }
 	]
 </script>
 

@@ -3,18 +3,18 @@
 	import { Select } from '@rokkit/ui'
 
 	const countries = [
-		{ text: 'Australia', value: 'AU' },
-		{ text: 'Brazil', value: 'BR' },
-		{ text: 'Canada', value: 'CA' },
-		{ text: 'Denmark', value: 'DK' },
-		{ text: 'Egypt', value: 'EG' },
-		{ text: 'Finland', value: 'FI' },
-		{ text: 'Germany', value: 'DE' },
-		{ text: 'Hungary', value: 'HU' },
-		{ text: 'India', value: 'IN' },
-		{ text: 'Japan', value: 'JP' },
-		{ text: 'Kenya', value: 'KE' },
-		{ text: 'Luxembourg', value: 'LU' }
+		{ label: 'Australia', value: 'AU' },
+		{ label: 'Brazil', value: 'BR' },
+		{ label: 'Canada', value: 'CA' },
+		{ label: 'Denmark', value: 'DK' },
+		{ label: 'Egypt', value: 'EG' },
+		{ label: 'Finland', value: 'FI' },
+		{ label: 'Germany', value: 'DE' },
+		{ label: 'Hungary', value: 'HU' },
+		{ label: 'India', value: 'IN' },
+		{ label: 'Japan', value: 'JP' },
+		{ label: 'Kenya', value: 'KE' },
+		{ label: 'Luxembourg', value: 'LU' }
 	]
 
 	let value = $state(null)

@@ -4,15 +4,15 @@
 	import PlaySection from '$lib/components/PlaySection.svelte'
 
 	const items = [
-		{ text: 'Home', value: 'home', icon: 'i-lucide:home' },
-		{ text: 'Products', value: 'products' },
-		{ text: 'Electronics', value: 'electronics' },
-		{ text: 'Laptops', value: 'laptops' }
+		{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
+		{ label: 'Products', value: 'products' },
+		{ label: 'Electronics', value: 'electronics' },
+		{ label: 'Laptops', value: 'laptops' }
 	]
 
 	const shortItems = [
-		{ text: 'Home', value: 'home', icon: 'i-lucide:home' },
-		{ text: 'Settings', value: 'settings' }
+		{ label: 'Home', value: 'home', icon: 'i-lucide:home' },
+		{ label: 'Settings', value: 'settings' }
 	]
 
 	function handleClick(value) {

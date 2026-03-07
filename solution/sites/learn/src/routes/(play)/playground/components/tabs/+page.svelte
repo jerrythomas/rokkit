@@ -35,15 +35,15 @@
 	}
 
 	const tabs = [
-		{ text: 'Overview', value: 'overview', icon: 'i-lucide:home', content: 'Welcome to the overview panel. This is the main dashboard view.' },
-		{ text: 'Settings', value: 'settings', icon: 'i-lucide:settings', content: 'Configure your preferences and application settings here.' },
-		{ text: 'Activity', value: 'activity', icon: 'i-lucide:activity', content: 'View recent activity and event logs.' }
+		{ label: 'Overview', value: 'overview', icon: 'i-lucide:home', content: 'Welcome to the overview panel. This is the main dashboard view.' },
+		{ label: 'Settings', value: 'settings', icon: 'i-lucide:settings', content: 'Configure your preferences and application settings here.' },
+		{ label: 'Activity', value: 'activity', icon: 'i-lucide:activity', content: 'View recent activity and event logs.' }
 	]
 
 	const simpleTabs = [
-		{ text: 'Tab 1', value: 'tab1', content: 'Content for the first tab.' },
-		{ text: 'Tab 2', value: 'tab2', content: 'Content for the second tab.' },
-		{ text: 'Tab 3', value: 'tab3', content: 'Content for the third tab.' }
+		{ label: 'Tab 1', value: 'tab1', content: 'Content for the first tab.' },
+		{ label: 'Tab 2', value: 'tab2', content: 'Content for the second tab.' },
+		{ label: 'Tab 3', value: 'tab3', content: 'Content for the third tab.' }
 	]
 </script>
 

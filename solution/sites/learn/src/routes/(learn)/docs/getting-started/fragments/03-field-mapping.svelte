@@ -6,7 +6,7 @@
 	// → [{ id: 1, name: 'Alice', role: 'Admin' }, ...]
 
 	// Map your fields once — every component speaks the same language
-	const fields = { text: 'name', value: 'id' }
+	const fields = { label: 'name', value: 'id' }
 </script>
 
 <List items={users} {fields} bind:value />

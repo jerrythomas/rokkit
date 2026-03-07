@@ -4,19 +4,19 @@
 
 	const items = [
 		{
-			text: 'Documents',
+			label: 'Documents',
 			value: 'docs',
 			children: [
-				{ text: 'Report.pdf', value: 'report', icon: 'i-lucide:file-text' },
-				{ text: 'Notes.md', value: 'notes', icon: 'i-lucide:file-text' }
+				{ label: 'Report.pdf', value: 'report', icon: 'i-lucide:file-text' },
+				{ label: 'Notes.md', value: 'notes', icon: 'i-lucide:file-text' }
 			]
 		},
 		{
-			text: 'Images',
+			label: 'Images',
 			value: 'images',
 			children: [
-				{ text: 'photo.jpg', value: 'photo', icon: 'i-lucide:image' },
-				{ text: 'logo.svg', value: 'logo', icon: 'i-lucide:image' }
+				{ label: 'photo.jpg', value: 'photo', icon: 'i-lucide:image' },
+				{ label: 'logo.svg', value: 'logo', icon: 'i-lucide:image' }
 			]
 		}
 	]

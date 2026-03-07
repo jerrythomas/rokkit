@@ -3,11 +3,11 @@
 	import { Select } from '@rokkit/ui'
 
 	const fruits = [
-		{ text: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
-		{ text: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
-		{ text: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
-		{ text: 'Date', value: 'date', icon: 'i-lucide:circle', disabled: true },
-		{ text: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
+		{ label: 'Apple', value: 'apple', icon: 'i-lucide:circle' },
+		{ label: 'Banana', value: 'banana', icon: 'i-lucide:circle' },
+		{ label: 'Cherry', value: 'cherry', icon: 'i-lucide:circle' },
+		{ label: 'Date', value: 'date', icon: 'i-lucide:circle', disabled: true },
+		{ label: 'Elderberry', value: 'elderberry', icon: 'i-lucide:circle' }
 	]
 	let value = $state(null)
 </script>

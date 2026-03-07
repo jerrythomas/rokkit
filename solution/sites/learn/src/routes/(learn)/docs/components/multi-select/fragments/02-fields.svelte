@@ -6,7 +6,7 @@
 		{ name: 'Fruits', category: 'food' },
 		{ name: 'Vegetables', category: 'food' }
 	]
-	const fields = { text: 'name' }
+	const fields = { label: 'name' }
 	let value = $state([])
 </script>
 

@@ -17,9 +17,9 @@
   import { FloatingNavigation } from '@rokkit/ui'
 
   const items = [
-    { text: 'Introduction', value: 'intro', icon: 'i-lucide:book-open', href: '#intro' },
-    { text: 'Features', value: 'features', icon: 'i-lucide:star', href: '#features' },
-    { text: 'Contact', value: 'contact', icon: 'i-lucide:mail', href: '#contact' }
+    { label: 'Introduction', value: 'intro', icon: 'i-lucide:book-open', href: '#intro' },
+    { label: 'Features', value: 'features', icon: 'i-lucide:star', href: '#features' },
+    { label: 'Contact', value: 'contact', icon: 'i-lucide:mail', href: '#contact' }
   ]
 </script>
 

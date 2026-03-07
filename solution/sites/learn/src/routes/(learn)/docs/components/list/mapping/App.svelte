@@ -11,7 +11,7 @@
 		{ name: 'Profile', path: '/profile', icon: 'i-lucide:user' }
 	]
 
-	const fields = { text: 'name', value: 'path' }
+	const fields = { label: 'name', value: 'path' }
 	let selected = $state(null)
 </script>
 

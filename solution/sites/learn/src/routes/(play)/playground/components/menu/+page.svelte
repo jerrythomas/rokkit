@@ -41,26 +41,26 @@
 	}
 
 	const items = [
-		{ text: 'Cut', value: 'cut', icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
-		{ text: 'Copy', value: 'copy', icon: 'i-lucide:copy', shortcut: 'Ctrl+C' },
-		{ text: 'Paste', value: 'paste', icon: 'i-lucide:clipboard', shortcut: 'Ctrl+V' },
-		{ text: 'Delete', value: 'delete', icon: 'i-lucide:trash' }
+		{ label: 'Cut', value: 'cut', icon: 'i-lucide:scissors', shortcut: 'Ctrl+X' },
+		{ label: 'Copy', value: 'copy', icon: 'i-lucide:copy', shortcut: 'Ctrl+C' },
+		{ label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard', shortcut: 'Ctrl+V' },
+		{ label: 'Delete', value: 'delete', icon: 'i-lucide:trash' }
 	]
 
 	const groupedItems = [
 		{
-			text: 'File',
+			label: 'File',
 			children: [
-				{ text: 'New', value: 'new', icon: 'i-lucide:file', shortcut: 'Ctrl+N' },
-				{ text: 'Open', value: 'open', icon: 'i-lucide:folder-open', shortcut: 'Ctrl+O' },
-				{ text: 'Save', value: 'save', icon: 'i-lucide:save', shortcut: 'Ctrl+S' }
+				{ label: 'New', value: 'new', icon: 'i-lucide:file', shortcut: 'Ctrl+N' },
+				{ label: 'Open', value: 'open', icon: 'i-lucide:folder-open', shortcut: 'Ctrl+O' },
+				{ label: 'Save', value: 'save', icon: 'i-lucide:save', shortcut: 'Ctrl+S' }
 			]
 		},
 		{
-			text: 'Edit',
+			label: 'Edit',
 			children: [
-				{ text: 'Undo', value: 'undo', shortcut: 'Ctrl+Z' },
-				{ text: 'Redo', value: 'redo', shortcut: 'Ctrl+Y' }
+				{ label: 'Undo', value: 'undo', shortcut: 'Ctrl+Z' },
+				{ label: 'Redo', value: 'redo', shortcut: 'Ctrl+Y' }
 			]
 		}
 	]

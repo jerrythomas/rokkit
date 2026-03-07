@@ -10,14 +10,14 @@
 	]
 
 	const recentActivity = [
-		{ label: 'Alice merged PR #42 — Auth module', icon: 'i-solar:git-merge-bold-duotone', subtext: '10m ago' },
-		{ label: 'Bob created task: API rate limiting', icon: 'i-solar:add-circle-bold-duotone', subtext: '1h ago' },
-		{ label: 'Sprint 14 planning completed', icon: 'i-solar:calendar-bold-duotone', subtext: '2h ago' },
-		{ label: 'Carol closed 3 bugs in payments', icon: 'i-solar:bug-bold-duotone', subtext: '3h ago' },
-		{ label: 'New milestone: v2.0 scope locked', icon: 'i-solar:flag-bold-duotone', subtext: 'Yesterday' }
+		{ label: 'Alice merged PR #42 — Auth module', icon: 'i-solar:git-merge-bold-duotone', sublabel: '10m ago' },
+		{ label: 'Bob created task: API rate limiting', icon: 'i-solar:add-circle-bold-duotone', sublabel: '1h ago' },
+		{ label: 'Sprint 14 planning completed', icon: 'i-solar:calendar-bold-duotone', sublabel: '2h ago' },
+		{ label: 'Carol closed 3 bugs in payments', icon: 'i-solar:bug-bold-duotone', sublabel: '3h ago' },
+		{ label: 'New milestone: v2.0 scope locked', icon: 'i-solar:flag-bold-duotone', sublabel: 'Yesterday' }
 	]
 
-	const activityFields = { label: 'label', icon: 'icon', subtext: 'subtext', value: 'label' }
+	const activityFields = { label: 'label', icon: 'icon', sublabel: 'subtext', value: 'label' }
 </script>
 
 <div class="p-6 flex flex-col gap-6">

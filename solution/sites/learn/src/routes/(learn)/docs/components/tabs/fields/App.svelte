@@ -3,7 +3,7 @@
 	import { Tabs } from '@rokkit/ui'
 	import { options } from './data.js'
 
-	let fields = { text: 'name', image: 'photo' }
+	let fields = { label: 'name', image: 'photo' }
 	let value = $state()
 </script>
 

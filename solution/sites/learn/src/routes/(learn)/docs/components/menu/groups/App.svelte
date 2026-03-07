@@ -4,19 +4,19 @@
 
 	let items = [
 		{
-			text: 'File',
+			label: 'File',
 			children: [
-				{ text: 'New', icon: 'i-lucide:plus' },
-				{ text: 'Open', icon: 'i-lucide:folder-open' },
-				{ text: 'Save', icon: 'i-lucide:save' }
+				{ label: 'New', icon: 'i-lucide:plus' },
+				{ label: 'Open', icon: 'i-lucide:folder-open' },
+				{ label: 'Save', icon: 'i-lucide:save' }
 			]
 		},
 		{
-			text: 'Edit',
+			label: 'Edit',
 			children: [
-				{ text: 'Undo', icon: 'i-lucide:rotate-ccw' },
-				{ text: 'Copy', icon: 'i-lucide:copy' },
-				{ text: 'Paste', icon: 'i-lucide:clipboard' }
+				{ label: 'Undo', icon: 'i-lucide:rotate-ccw' },
+				{ label: 'Copy', icon: 'i-lucide:copy' },
+				{ label: 'Paste', icon: 'i-lucide:clipboard' }
 			]
 		}
 	]

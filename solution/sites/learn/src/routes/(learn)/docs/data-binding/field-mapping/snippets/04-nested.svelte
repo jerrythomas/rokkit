@@ -1,4 +1,4 @@
-const fields = { text: 'label', value: 'id', children: 'items' }
+const fields = { label: 'label', value: 'id', children: 'items' }
 
 const data = [
   { label: 'Fruits', id: 'fruits', items: [

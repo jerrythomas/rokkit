@@ -2,9 +2,9 @@
   import { Stepper } from '@rokkit/ui'
 
   let steps = [
-    { text: 'Account', completed: true },
-    { text: 'Profile' },
-    { text: 'Review' }
+    { label: 'Account', completed: true },
+    { label: 'Profile' },
+    { label: 'Review' }
   ]
   let current = $state(1)
 </script>

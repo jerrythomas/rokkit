@@ -5,10 +5,10 @@
 	let selected = $state(null)
 
 	let items = [
-		{ text: 'Copy', icon: 'i-lucide:copy' },
-		{ text: 'Cut', icon: 'i-lucide:scissors' },
-		{ text: 'Paste', icon: 'i-lucide:clipboard' },
-		{ text: 'Delete', icon: 'i-lucide:trash' }
+		{ label: 'Copy', icon: 'i-lucide:copy' },
+		{ label: 'Cut', icon: 'i-lucide:scissors' },
+		{ label: 'Paste', icon: 'i-lucide:clipboard' },
+		{ label: 'Delete', icon: 'i-lucide:trash' }
 	]
 </script>
 

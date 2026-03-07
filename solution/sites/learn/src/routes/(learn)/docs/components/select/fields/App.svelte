@@ -10,7 +10,7 @@
 		{ name: 'Japan', code: 'JP', flag: 'i-circle-flags:jp' }
 	]
 
-	const fields = { text: 'name', value: 'code', icon: 'flag' }
+	const fields = { label: 'name', value: 'code', icon: 'flag' }
 	let value = $state(null)
 </script>
 

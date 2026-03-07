@@ -3,23 +3,23 @@
 	import { LazyTree } from '@rokkit/ui'
 
 	const items = [
-		{ text: 'Documents', value: 'docs', icon: 'i-lucide:folder', children: true },
-		{ text: 'Pictures', value: 'pics', icon: 'i-lucide:folder', children: true },
-		{ text: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
+		{ label: 'Documents', value: 'docs', icon: 'i-lucide:folder', children: true },
+		{ label: 'Pictures', value: 'pics', icon: 'i-lucide:folder', children: true },
+		{ label: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
 	]
 
 	async function handleLazyLoad(item) {
 		await new Promise((r) => setTimeout(r, 800))
 		if (item.value === 'docs') {
 			return [
-				{ text: 'Resume.pdf', value: 'resume', icon: 'i-lucide:file-text' },
-				{ text: 'Cover Letter.docx', value: 'cover', icon: 'i-lucide:file-text' }
+				{ label: 'Resume.pdf', value: 'resume', icon: 'i-lucide:file-text' },
+				{ label: 'Cover Letter.docx', value: 'cover', icon: 'i-lucide:file-text' }
 			]
 		}
 		if (item.value === 'pics') {
 			return [
-				{ text: 'vacation.jpg', value: 'vacation', icon: 'i-lucide:image' },
-				{ text: 'profile.png', value: 'profile', icon: 'i-lucide:image' }
+				{ label: 'vacation.jpg', value: 'vacation', icon: 'i-lucide:image' },
+				{ label: 'profile.png', value: 'profile', icon: 'i-lucide:image' }
 			]
 		}
 		return []

@@ -12,6 +12,6 @@ export async function load() {
 
 	return {
 		sections,
-		fields: { text: 'title', href: 'slug', icon: 'icon', description: 'none', value: 'slug' }
+		fields: { label: 'title', href: 'slug', icon: 'icon', description: 'none', value: 'slug' }
 	}
 }

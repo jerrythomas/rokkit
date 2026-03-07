@@ -8,18 +8,18 @@
 	let selected = $state(undefined)
 
 	const lazyTree = [
-		{ text: 'Documents', value: 'docs', icon: 'i-lucide:folder', children: true },
-		{ text: 'Pictures', value: 'pics', icon: 'i-lucide:folder', children: true },
-		{ text: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
+		{ label: 'Documents', value: 'docs', icon: 'i-lucide:folder', children: true },
+		{ label: 'Pictures', value: 'pics', icon: 'i-lucide:folder', children: true },
+		{ label: 'notes.txt', value: 'notes', icon: 'i-lucide:file-text' }
 	]
 
 	async function handleLazyLoad(item) {
 		await new Promise((r) => setTimeout(r, 800))
 		if (item.value === 'docs') {
 			return [
-				{ text: 'Resume.pdf', value: 'resume', icon: 'i-lucide:file-text' },
+				{ label: 'Resume.pdf', value: 'resume', icon: 'i-lucide:file-text' },
 				{
-					text: 'Projects',
+					label: 'Projects',
 					value: 'projects',
 					icon: 'i-lucide:folder',
 					children: true
@@ -28,14 +28,14 @@
 		}
 		if (item.value === 'pics') {
 			return [
-				{ text: 'vacation.jpg', value: 'vacation', icon: 'i-lucide:image' },
-				{ text: 'profile.png', value: 'profile', icon: 'i-lucide:image' }
+				{ label: 'vacation.jpg', value: 'vacation', icon: 'i-lucide:image' },
+				{ label: 'profile.png', value: 'profile', icon: 'i-lucide:image' }
 			]
 		}
 		if (item.value === 'projects') {
 			return [
-				{ text: 'rokkit/', value: 'rokkit', icon: 'i-lucide:folder-open' },
-				{ text: 'notes.md', value: 'proj-notes', icon: 'i-lucide:file-text' }
+				{ label: 'rokkit/', value: 'rokkit', icon: 'i-lucide:folder-open' },
+				{ label: 'notes.md', value: 'proj-notes', icon: 'i-lucide:file-text' }
 			]
 		}
 		return []
@@ -47,22 +47,22 @@
 	let batch = $state(0)
 
 	const initialItems = [
-		{ text: 'Alpha', value: 'alpha', icon: 'i-lucide:file' },
-		{ text: 'Bravo', value: 'bravo', icon: 'i-lucide:file' },
-		{ text: 'Charlie', value: 'charlie', icon: 'i-lucide:file' }
+		{ label: 'Alpha', value: 'alpha', icon: 'i-lucide:file' },
+		{ label: 'Bravo', value: 'bravo', icon: 'i-lucide:file' },
+		{ label: 'Charlie', value: 'charlie', icon: 'i-lucide:file' }
 	]
 
 	let paginatedItems = $state([...initialItems])
 
 	const batches = [
 		[
-			{ text: 'Delta', value: 'delta', icon: 'i-lucide:file' },
-			{ text: 'Echo', value: 'echo', icon: 'i-lucide:file' },
-			{ text: 'Foxtrot', value: 'foxtrot', icon: 'i-lucide:file' }
+			{ label: 'Delta', value: 'delta', icon: 'i-lucide:file' },
+			{ label: 'Echo', value: 'echo', icon: 'i-lucide:file' },
+			{ label: 'Foxtrot', value: 'foxtrot', icon: 'i-lucide:file' }
 		],
 		[
-			{ text: 'Golf', value: 'golf', icon: 'i-lucide:file' },
-			{ text: 'Hotel', value: 'hotel', icon: 'i-lucide:file' }
+			{ label: 'Golf', value: 'golf', icon: 'i-lucide:file' },
+			{ label: 'Hotel', value: 'hotel', icon: 'i-lucide:file' }
 		]
 	]
 

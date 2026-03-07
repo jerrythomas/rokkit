@@ -7,7 +7,7 @@
 		{ name: 'Germany', code: 'DE' },
 		{ name: 'Japan', code: 'JP' }
 	]
-	const fields = { text: 'name', value: 'code' }
+	const fields = { label: 'name', value: 'code' }
 	let value = $state(null)
 </script>
 

@@ -3,10 +3,10 @@
 	import { Stepper } from '@rokkit/ui'
 
 	let steps = $state([
-		{ text: 'Account', completed: true },
-		{ text: 'Profile', completed: true },
-		{ text: 'Preferences' },
-		{ text: 'Review' }
+		{ label: 'Account', completed: true },
+		{ label: 'Profile', completed: true },
+		{ label: 'Preferences' },
+		{ label: 'Review' }
 	])
 
 	let current = $state(2)

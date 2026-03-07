@@ -17,11 +17,11 @@
   import { Timeline } from '@rokkit/ui'
 
   const steps = [
-    { text: 'Requirements', description: 'Gather project requirements.', completed: true },
-    { text: 'Design', description: 'Create wireframes.', completed: true },
-    { text: 'Development', description: 'Build the features.', active: true },
-    { text: 'Testing', description: 'Run QA tests.' },
-    { text: 'Deployment', description: 'Deploy to production.' }
+    { label: 'Requirements', description: 'Gather project requirements.', completed: true },
+    { label: 'Design', description: 'Create wireframes.', completed: true },
+    { label: 'Development', description: 'Build the features.', active: true },
+    { label: 'Testing', description: 'Run QA tests.' },
+    { label: 'Deployment', description: 'Deploy to production.' }
   ]
 </script>
 

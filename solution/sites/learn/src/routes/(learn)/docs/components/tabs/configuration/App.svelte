@@ -4,9 +4,9 @@
 	import { FormRenderer } from '@rokkit/forms'
 
 	let options = [
-		{ text: 'Design', description: 'Create beautiful interfaces with our component library' },
-		{ text: 'Develop', description: 'Build robust applications with modern web technologies' },
-		{ text: 'Deploy', description: 'Ship your applications to production with confidence' }
+		{ label: 'Design', description: 'Create beautiful interfaces with our component library' },
+		{ label: 'Develop', description: 'Build robust applications with modern web technologies' },
+		{ label: 'Deploy', description: 'Ship your applications to production with confidence' }
 	]
 
 	let value = $state(options[0])
@@ -75,7 +75,7 @@
 		>
 			{#snippet tabPanel(item)}
 				<div>
-					<h4>Selected: {item.value.text}</h4>
+					<h4>Selected: {item.value.label}</h4>
 					<p>{item.value.description}</p>
 				</div>
 			{/snippet}

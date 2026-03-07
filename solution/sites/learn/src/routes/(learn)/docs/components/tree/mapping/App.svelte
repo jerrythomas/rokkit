@@ -21,7 +21,7 @@
 		}
 	]
 
-	const fields = { text: 'name', value: 'id' }
+	const fields = { label: 'name', value: 'id' }
 	let value = $state(null)
 </script>
 

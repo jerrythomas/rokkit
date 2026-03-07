@@ -3,9 +3,9 @@
 	import { Select } from '@rokkit/ui'
 
 	const fruits = [
-		{ text: 'Apple', value: 'apple' },
-		{ text: 'Banana', value: 'banana' },
-		{ text: 'Cherry', value: 'cherry' }
+		{ label: 'Apple', value: 'apple' },
+		{ label: 'Banana', value: 'banana' },
+		{ label: 'Cherry', value: 'cherry' }
 	]
 	let value = $state(null)
 </script>

@@ -27,34 +27,34 @@
 
 	const fileTree = [
 		{
-			text: 'src',
+			label: 'src',
 			value: 'src',
 			icon: 'i-lucide:folder',
 			children: [
 				{
-					text: 'components',
+					label: 'components',
 					value: 'components',
 					icon: 'i-lucide:folder',
 					children: [
-						{ text: 'Menu.svelte', value: 'menu', icon: 'i-lucide:file-code' },
-						{ text: 'List.svelte', value: 'list', icon: 'i-lucide:file-code' },
-						{ text: 'Tree.svelte', value: 'tree', icon: 'i-lucide:file-code' }
+						{ label: 'Menu.svelte', value: 'menu', icon: 'i-lucide:file-code' },
+						{ label: 'List.svelte', value: 'list', icon: 'i-lucide:file-code' },
+						{ label: 'Tree.svelte', value: 'tree', icon: 'i-lucide:file-code' }
 					]
 				},
 				{
-					text: 'types',
+					label: 'types',
 					value: 'types',
 					icon: 'i-lucide:folder',
 					children: [
-						{ text: 'menu.ts', value: 'menu-types', icon: 'i-lucide:file-code' },
-						{ text: 'list.ts', value: 'list-types', icon: 'i-lucide:file-code' }
+						{ label: 'menu.ts', value: 'menu-types', icon: 'i-lucide:file-code' },
+						{ label: 'list.ts', value: 'list-types', icon: 'i-lucide:file-code' }
 					]
 				},
-				{ text: 'index.ts', value: 'index', icon: 'i-lucide:file-code' }
+				{ label: 'index.ts', value: 'index', icon: 'i-lucide:file-code' }
 			]
 		},
-		{ text: 'package.json', value: 'pkg', icon: 'i-lucide:file-text' },
-		{ text: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
+		{ label: 'package.json', value: 'pkg', icon: 'i-lucide:file-text' },
+		{ label: 'README.md', value: 'readme', icon: 'i-lucide:file-text' }
 	]
 
 	function handleSelect(value) {

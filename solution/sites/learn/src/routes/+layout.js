@@ -9,6 +9,10 @@ export function load() {
 	}
 	return {
 		sections: [],
+		menu: [
+			{ title: 'Docs', slug: 'docs/getting-started/introduction' },
+			{ title: 'Playground', slug: 'playground' }
+		],
 		app: {
 			name: 'Rokkit',
 			version: __APP_VERSION__,

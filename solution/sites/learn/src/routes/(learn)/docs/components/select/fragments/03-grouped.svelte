@@ -4,17 +4,17 @@
 
 	const items = [
 		{
-			text: 'Fruits',
+			label: 'Fruits',
 			children: [
-				{ text: 'Apple', value: 'apple' },
-				{ text: 'Banana', value: 'banana' }
+				{ label: 'Apple', value: 'apple' },
+				{ label: 'Banana', value: 'banana' }
 			]
 		},
 		{
-			text: 'Vegetables',
+			label: 'Vegetables',
 			children: [
-				{ text: 'Carrot', value: 'carrot' },
-				{ text: 'Broccoli', value: 'broccoli' }
+				{ label: 'Carrot', value: 'carrot' },
+				{ label: 'Broccoli', value: 'broccoli' }
 			]
 		}
 	]

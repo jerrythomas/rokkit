@@ -4,7 +4,7 @@
 	import { options } from './data.js'
 	import Custom from './Custom.svelte'
 
-	let fields = { text: 'name', image: 'photo', url: 'artist' }
+	let fields = { label: 'name', image: 'photo', url: 'artist' }
 	let value = $state()
 </script>
 
@@ -19,8 +19,8 @@
 	<Tabs items={options} {fields} bind:value>
 		{#snippet child(item)}
 			<div class="flex items-center gap-2">
-				<img src={item.get('image')} alt={item.get('text')} class="h-6 w-6 rounded-sm" />
-				<span>{item.get('text')}</span>
+				<img src={item.get('image')} alt={item.get('label')} class="h-6 w-6 rounded-sm" />
+				<span>{item.get('label')}</span>
 			</div>
 		{/snippet}
 

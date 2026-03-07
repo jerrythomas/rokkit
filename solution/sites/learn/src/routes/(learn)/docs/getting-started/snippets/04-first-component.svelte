@@ -8,7 +8,7 @@
   ]
 
   // Tell Rokkit which fields to use
-  const fields = { text: 'name', value: 'id' }
+  const fields = { label: 'name', value: 'id' }
   let selected = $state(null)
 </script>
 

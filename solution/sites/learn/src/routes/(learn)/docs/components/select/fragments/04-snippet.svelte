@@ -3,9 +3,9 @@
 	import { Select } from '@rokkit/ui'
 
 	const statuses = [
-		{ text: 'Active', value: 'active', color: 'bg-success-z5' },
-		{ text: 'Pending', value: 'pending', color: 'bg-warning-z5' },
-		{ text: 'Inactive', value: 'inactive', color: 'bg-surface-z4' }
+		{ label: 'Active', value: 'active', color: 'bg-success-z5' },
+		{ label: 'Pending', value: 'pending', color: 'bg-warning-z5' },
+		{ label: 'Inactive', value: 'inactive', color: 'bg-surface-z4' }
 	]
 	let value = $state(null)
 </script>

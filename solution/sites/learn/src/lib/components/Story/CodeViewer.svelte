@@ -4,7 +4,7 @@
 	import { Tabs } from '@rokkit/ui'
 	let { files = [] } = $props()
 	let current = $state(files[0])
-	let fields = { text: 'name', icon: 'language' }
+	let fields = { label: 'name', icon: 'language' }
 </script>
 
 <Tabs options={files} {fields} bind:value={current} class="no-padding">

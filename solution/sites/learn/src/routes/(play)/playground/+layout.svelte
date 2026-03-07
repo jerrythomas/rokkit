@@ -42,7 +42,7 @@
 		}
 	]
 
-	const fields = { text: 'title', href: 'slug', icon: 'icon', value: 'slug' }
+	const fields = { label: 'title', href: 'slug', icon: 'icon', value: 'slug' }
 
 	let componentSlug = $derived(
 		page.url.pathname.includes('/playground/components/')

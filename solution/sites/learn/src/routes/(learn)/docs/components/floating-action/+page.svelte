@@ -16,9 +16,9 @@
   import { FloatingAction } from '@rokkit/ui'
 
   const actions = [
-    { text: 'Edit', value: 'edit', icon: 'i-lucide:edit' },
-    { text: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
-    { text: 'Share', value: 'share', icon: 'i-lucide:share' }
+    { label: 'Edit', value: 'edit', icon: 'i-lucide:edit' },
+    { label: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
+    { label: 'Share', value: 'share', icon: 'i-lucide:share' }
   ]
 </script>
 

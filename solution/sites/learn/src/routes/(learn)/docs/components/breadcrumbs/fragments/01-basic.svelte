@@ -2,9 +2,9 @@
   import { BreadCrumbs } from '@rokkit/ui'
 
   let items = [
-    { text: 'Home', icon: 'i-lucide:home' },
-    { text: 'Products' },
-    { text: 'Current Page' }
+    { label: 'Home', icon: 'i-lucide:home' },
+    { label: 'Products' },
+    { label: 'Current Page' }
   ]
 </script>
 

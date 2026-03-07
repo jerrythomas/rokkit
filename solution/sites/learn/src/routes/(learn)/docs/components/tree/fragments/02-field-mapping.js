@@ -1,3 +1,3 @@
 // @ts-nocheck
-// Map 'name' → text,  'id' → value
-const fields = { text: 'name', value: 'id' }
+// Map 'name' → label,  'id' → value
+const fields = { label: 'name', value: 'id' }

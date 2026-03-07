@@ -34,51 +34,51 @@
 	}
 
 	const navItems = [
-		{ text: 'Home', href: '#home', value: '#home', icon: 'i-lucide:home' },
-		{ text: 'Settings', href: '#settings', value: '#settings', icon: 'i-lucide:settings' },
-		{ text: 'Profile', href: '#profile', value: '#profile', icon: 'i-lucide:user' },
-		{ text: 'Messages', href: '#messages', value: '#messages', icon: 'i-lucide:mail', badge: '3' }
+		{ label: 'Home', href: '#home', value: '#home', icon: 'i-lucide:home' },
+		{ label: 'Settings', href: '#settings', value: '#settings', icon: 'i-lucide:settings' },
+		{ label: 'Profile', href: '#profile', value: '#profile', icon: 'i-lucide:user' },
+		{ label: 'Messages', href: '#messages', value: '#messages', icon: 'i-lucide:mail', badge: '3' }
 	]
 
 	const buttonItems = [
-		{ text: 'Cut', value: 'cut', icon: 'i-lucide:scissors' },
-		{ text: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
-		{ text: 'Paste', value: 'paste', icon: 'i-lucide:clipboard' },
-		{ text: 'Delete', value: 'delete', icon: 'i-lucide:trash', disabled: true }
+		{ label: 'Cut', value: 'cut', icon: 'i-lucide:scissors' },
+		{ label: 'Copy', value: 'copy', icon: 'i-lucide:copy' },
+		{ label: 'Paste', value: 'paste', icon: 'i-lucide:clipboard' },
+		{ label: 'Delete', value: 'delete', icon: 'i-lucide:trash', disabled: true }
 	]
 
 	const groupedItems = [
 		{
-			text: 'Favorites',
+			label: 'Favorites',
 			children: [
-				{ text: 'Dashboard', value: 'dashboard', icon: 'i-lucide:layout-grid' },
-				{ text: 'Analytics', value: 'analytics', icon: 'i-lucide:star' }
+				{ label: 'Dashboard', value: 'dashboard', icon: 'i-lucide:layout-grid' },
+				{ label: 'Analytics', value: 'analytics', icon: 'i-lucide:star' }
 			]
 		},
 		{
-			text: 'Settings',
+			label: 'Settings',
 			children: [
-				{ text: 'General', value: 'general', icon: 'i-lucide:settings' },
-				{ text: 'Security', value: 'security', icon: 'i-lucide:heart' }
+				{ label: 'General', value: 'general', icon: 'i-lucide:settings' },
+				{ label: 'Security', value: 'security', icon: 'i-lucide:heart' }
 			]
 		}
 	]
 
 	const withDescriptions = [
 		{
-			text: 'Dashboard',
+			label: 'Dashboard',
 			value: 'dashboard',
 			icon: 'i-lucide:layout-grid',
 			description: 'Overview of all metrics'
 		},
 		{
-			text: 'Reports',
+			label: 'Reports',
 			value: 'reports',
 			icon: 'i-lucide:file-text',
 			description: 'Download generated reports'
 		},
 		{
-			text: 'Settings',
+			label: 'Settings',
 			value: 'settings',
 			icon: 'i-lucide:settings',
 			description: 'Configure preferences'
