@@ -72,10 +72,10 @@
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 				{#each group.components as component (component.slug)}
-					<Card onclick={() => goto(`/playground/components/${component.slug}`)}>
+					<Card class="cursor-pointer hover:border-primary-z5 transition-colors" onclick={() => goto(`/playground/components/${component.slug}`)}>
 						<h4 class="text-sm font-semibold text-surface-z8 mb-1">{component.name}</h4>
 						<p class="text-xs text-surface-z5 mb-3 leading-relaxed">{component.description}</p>
-						<Button size="sm" onclick={() => goto(`/playground/components/${component.slug}`)}>
+						<Button variant="ghost" size="sm" onclick={() => goto(`/playground/components/${component.slug}`)}>
 							Open
 						</Button>
 					</Card>
