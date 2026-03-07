@@ -36,23 +36,11 @@
 		class: className = '',
 		children
 	}: RevealProps = $props()
-
-	let el: HTMLDivElement | null = $state(null)
-
-	function handleReveal(e: CustomEvent<{ visible: boolean }>) {
-		if (!e.detail.visible || stagger <= 0 || !el) return
-		const children = el.children
-		for (let i = 0; i < children.length; i++) {
-			;(children[i] as HTMLElement).style.transitionDelay = `${delay + i * stagger}ms`
-		}
-	}
 </script>
 
 <div
-	bind:this={el}
 	class={className || undefined}
-	use:reveal={{ direction, distance, duration, delay: stagger > 0 ? 0 : delay, once, threshold, easing }}
-	onreveal={handleReveal}
+	use:reveal={{ direction, distance, duration, delay, stagger, once, threshold, easing }}
 >
 	{@render children?.()}
 </div>

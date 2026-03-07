@@ -265,6 +265,84 @@ describe('reveal', () => {
 		cleanup()
 	})
 
+	// ─── Stagger ───────────────────────────────────────────────────
+
+	it('when stagger > 0, applies data-reveal to children not wrapper', () => {
+		const node = document.createElement('div')
+		const child1 = document.createElement('div')
+		const child2 = document.createElement('div')
+		node.appendChild(child1)
+		node.appendChild(child2)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100 }))
+		flushSync()
+
+		expect(node.hasAttribute('data-reveal')).toBe(false)
+		expect(child1.getAttribute('data-reveal')).toBe('up')
+		expect(child2.getAttribute('data-reveal')).toBe('up')
+		cleanup()
+	})
+
+	it('when stagger > 0, children get CSS custom properties', () => {
+		const node = document.createElement('div')
+		const child = document.createElement('div')
+		node.appendChild(child)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100, duration: 800 }))
+		flushSync()
+
+		expect(child.style.getPropertyValue('--reveal-duration')).toBe('800ms')
+		cleanup()
+	})
+
+	it('when stagger > 0, adds data-reveal-visible to children with delays on intersection', () => {
+		vi.useFakeTimers()
+
+		const node = document.createElement('div')
+		const child1 = document.createElement('div')
+		const child2 = document.createElement('div')
+		node.appendChild(child1)
+		node.appendChild(child2)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100, delay: 50 }))
+		flushSync()
+
+		intersectCallback([{ isIntersecting: true, target: node }])
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(false)
+
+		vi.advanceTimersByTime(50)
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(true)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(false)
+
+		vi.advanceTimersByTime(100)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(true)
+
+		cleanup()
+		vi.useRealTimers()
+	})
+
+	it('when stagger > 0, cleans up children data-reveal attributes', () => {
+		const node = document.createElement('div')
+		const child = document.createElement('div')
+		node.appendChild(child)
+
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100 }))
+		flushSync()
+
+		expect(child.hasAttribute('data-reveal')).toBe(true)
+		cleanup()
+		expect(child.hasAttribute('data-reveal')).toBe(false)
+	})
+
+	it('when stagger > 0, wrapper does not get transitionDelay', () => {
+		const node = document.createElement('div')
+		const cleanup = $effect.root(() => reveal(node, { stagger: 100, delay: 200 }))
+		flushSync()
+
+		expect(node.style.transitionDelay).toBe('')
+		cleanup()
+	})
+
 	// ─── Cleanup ───────────────────────────────────────────────────
 
 	it('removes data-reveal on cleanup', () => {

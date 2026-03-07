@@ -121,36 +121,40 @@ describe('Reveal', () => {
 
 	// ─── Stagger ───────────────────────────────────────────────────
 
-	it('applies staggered transition-delay to children on reveal', () => {
-		const { container } = render(Reveal, { stagger: 100, delay: 50 })
-		const el = container.querySelector('[data-reveal]') as HTMLElement
+	it('when stagger > 0, wrapper does not get data-reveal', () => {
+		const { container } = render(Reveal, { stagger: 100 })
+		const wrapper = container.firstElementChild as HTMLElement
+		expect(wrapper.hasAttribute('data-reveal')).toBe(false)
+	})
 
-		// Add child elements to test stagger
+	it('when stagger > 0, adds data-reveal-visible to children with delays', () => {
+		vi.useFakeTimers()
+
+		const { container } = render(Reveal, { stagger: 100, delay: 50 })
+		const wrapper = container.firstElementChild as HTMLElement
+
 		const child1 = document.createElement('div')
 		const child2 = document.createElement('div')
 		const child3 = document.createElement('div')
-		el.appendChild(child1)
-		el.appendChild(child2)
-		el.appendChild(child3)
+		wrapper.appendChild(child1)
+		wrapper.appendChild(child2)
+		wrapper.appendChild(child3)
 
-		// Simulate reveal event
-		el.dispatchEvent(new CustomEvent('reveal', { detail: { visible: true } }))
+		intersectCallback?.([{ isIntersecting: true, target: wrapper }])
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(false)
 
-		expect(child1.style.transitionDelay).toBe('50ms')
-		expect(child2.style.transitionDelay).toBe('150ms')
-		expect(child3.style.transitionDelay).toBe('250ms')
-	})
+		vi.advanceTimersByTime(50)
+		expect(child1.hasAttribute('data-reveal-visible')).toBe(true)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(false)
 
-	it('does not apply stagger when stagger is 0', () => {
-		const { container } = render(Reveal)
-		const el = container.querySelector('[data-reveal]') as HTMLElement
+		vi.advanceTimersByTime(100)
+		expect(child2.hasAttribute('data-reveal-visible')).toBe(true)
+		expect(child3.hasAttribute('data-reveal-visible')).toBe(false)
 
-		const child = document.createElement('div')
-		el.appendChild(child)
+		vi.advanceTimersByTime(100)
+		expect(child3.hasAttribute('data-reveal-visible')).toBe(true)
 
-		el.dispatchEvent(new CustomEvent('reveal', { detail: { visible: true } }))
-
-		expect(child.style.transitionDelay).toBe('')
+		vi.useRealTimers()
 	})
 
 	it('passes delay to action when stagger is 0', () => {
@@ -159,10 +163,9 @@ describe('Reveal', () => {
 		expect(el.style.transitionDelay).toBe('200ms')
 	})
 
-	it('passes delay 0 to action when stagger > 0', () => {
+	it('when stagger > 0, wrapper has no transitionDelay', () => {
 		const { container } = render(Reveal, { delay: 200, stagger: 100 })
-		const el = container.querySelector('[data-reveal]') as HTMLElement
-		// When stagger is active, the container delay is 0 (children handle delays)
-		expect(el.style.transitionDelay).toBe('')
+		const wrapper = container.firstElementChild as HTMLElement
+		expect(wrapper.style.transitionDelay).toBe('')
 	})
 })
