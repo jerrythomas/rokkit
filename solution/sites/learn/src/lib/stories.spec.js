@@ -16,20 +16,104 @@ describe('stories.js', () => {
 	})
 
 	describe('getSections', () => {
-		it('should combine metadata from categories and components', () => {
+		it('should return a separator followed by pre-initialised GROUPS when given empty metadata', () => {
 			const result = getSections([])
-			expect(result).toEqual([])
+			expect(result[0]).toEqual({ type: 'separator' })
+			// The 5 GROUPS are always present regardless of metadata
+			expect(result.length).toBe(6) // separator + 5 GROUPS
 		})
+
+		it('should inject a separator between guide items and groups', () => {
+			const metadata = [
+				{
+					content: { title: 'Introduction', category: 'guide', order: 1 },
+					file: './introduction/meta.json'
+				},
+				{
+					content: { title: 'Welcome', category: 'welcome', order: 1 },
+					file: './welcome/meta.json'
+				},
+				{
+					content: { title: 'Getting Started', category: 'welcome', order: 2 },
+					file: './welcome/get/meta.json'
+				}
+			]
+			const result = getSections(metadata)
+			const separatorIndex = result.findIndex((item) => item.type === 'separator')
+			expect(separatorIndex).toBeGreaterThan(0)
+			// guides come before separator
+			expect(result[separatorIndex - 1].title).toBe('Introduction')
+			// groups come after separator
+			expect(result[separatorIndex + 1].title).toBe('Welcome')
+		})
+
+		it('should pre-initialise GROUPS with correct titles and orders', () => {
+			const result = getSections([])
+			// With no metadata, only the separator is present (GROUPS are filtered because they have
+			// no children from metadata, but they have titles from GROUPS config)
+			// Actually GROUPS are always present since they have titles — check they are returned
+			// with empty children when no matching metadata
+			const groupTitles = result.filter((item) => !item.type).map((item) => item.title)
+			expect(groupTitles).toContain('Navigation & Selection')
+			expect(groupTitles).toContain('Inputs')
+			expect(groupTitles).toContain('Display')
+			expect(groupTitles).toContain('Layout')
+			expect(groupTitles).toContain('Effects')
+		})
+
+		it('should sort GROUPS by their configured order', () => {
+			const result = getSections([])
+			const groups = result.filter((item) => !item.type)
+			const orders = groups.map((g) => g.order)
+			expect(orders).toEqual([...orders].sort((a, b) => a - b))
+		})
+
+		it('should add children to pre-initialised GROUPS when metadata matches', () => {
+			const metadata = [
+				{
+					content: { title: 'List', category: 'navigation-selection', order: 1 },
+					file: './navigation-selection/list/meta.json'
+				}
+			]
+			const result = getSections(metadata)
+			const navGroup = result.find((item) => item.title === 'Navigation & Selection')
+			expect(navGroup).toBeDefined()
+			expect(navGroup.children).toHaveLength(1)
+			expect(navGroup.children[0].title).toBe('List')
+		})
+
+		it('should handle depth-based categories (forms, charts) as before', () => {
+			const metadata = [
+				{
+					content: { title: 'Forms', category: 'forms', order: 5 },
+					file: './forms/meta.json'
+				},
+				{
+					content: { title: 'Checkbox', category: 'forms', order: 1 },
+					file: './forms/checkbox/meta.json'
+				},
+				{
+					content: { title: 'Charts', category: 'charts', order: 6 },
+					file: './charts/meta.json'
+				}
+			]
+			const result = getSections(metadata)
+			const formsGroup = result.find((item) => item.title === 'Forms')
+			expect(formsGroup).toBeDefined()
+			expect(formsGroup.children).toHaveLength(1)
+			expect(formsGroup.children[0].title).toBe('Checkbox')
+			const chartsGroup = result.find((item) => item.title === 'Charts')
+			expect(chartsGroup).toBeDefined()
+		})
+
 		it('should group by categories', () => {
 			const metadata = [
-				,
 				{
 					content: { title: 'Elements', category: 'elements', order: 2 },
 					file: './elements/meta.json'
 				},
 				{
 					content: { title: 'List', category: 'elements', order: 2 },
-
 					group: 'elements',
 					file: './elements/list/meta.json'
 				},
@@ -52,54 +136,56 @@ describe('stories.js', () => {
 				}
 			]
 			const result = getSections(metadata)
-			expect(result).toEqual([
-				{
-					title: 'Welcome',
-					category: 'welcome',
-					order: 1,
-					depth: 1,
-					slug: '/docs/welcome',
-					children: [
-						{
-							title: 'Introduction',
-							category: 'welcome',
-							order: 1,
-							depth: 2,
-							slug: '/docs/welcome/introduction'
-						},
-						{
-							title: 'Getting Started',
-							category: 'welcome',
-							depth: 2,
-							slug: '/docs/welcome/get',
-							order: 2
-						}
-					]
-				},
-				{
-					title: 'Elements',
-					category: 'elements',
-					order: 2,
-					depth: 1,
-					slug: '/docs/elements',
-					children: [
-						{
-							title: 'Components',
-							order: 1,
-							depth: 2,
-							category: 'elements',
-							slug: '/docs/elements/components'
-						},
-						{
-							title: 'List',
-							order: 2,
-							depth: 2,
-							category: 'elements',
-							slug: '/docs/elements/list'
-						}
-					]
-				}
-			])
+			// Result now includes a separator — find the groups after it
+			const separatorIndex = result.findIndex((item) => item.type === 'separator')
+			expect(separatorIndex).toBe(0) // no guides in this dataset
+			const groups = result.slice(separatorIndex + 1)
+			expect(groups.find((g) => g.title === 'Welcome')).toMatchObject({
+				title: 'Welcome',
+				category: 'welcome',
+				order: 1,
+				depth: 1,
+				slug: '/docs/welcome',
+				children: [
+					{
+						title: 'Introduction',
+						category: 'welcome',
+						order: 1,
+						depth: 2,
+						slug: '/docs/welcome/introduction'
+					},
+					{
+						title: 'Getting Started',
+						category: 'welcome',
+						depth: 2,
+						slug: '/docs/welcome/get',
+						order: 2
+					}
+				]
+			})
+			expect(groups.find((g) => g.title === 'Elements')).toMatchObject({
+				title: 'Elements',
+				category: 'elements',
+				order: 2,
+				depth: 1,
+				slug: '/docs/elements',
+				children: [
+					{
+						title: 'Components',
+						order: 1,
+						depth: 2,
+						category: 'elements',
+						slug: '/docs/elements/components'
+					},
+					{
+						title: 'List',
+						order: 2,
+						depth: 2,
+						category: 'elements',
+						slug: '/docs/elements/list'
+					}
+				]
+			})
 		})
 	})
 

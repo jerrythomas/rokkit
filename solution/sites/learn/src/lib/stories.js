@@ -86,6 +86,18 @@ export function getSlug(file) {
 	return `/${parts.join('/')}`
 }
 
+const GROUPS = {
+	'navigation-selection': {
+		title: 'Navigation & Selection',
+		icon: 'i-solar:list-check-bold-duotone',
+		order: 10
+	},
+	inputs: { title: 'Inputs', icon: 'i-solar:keyboard-bold-duotone', order: 11 },
+	display: { title: 'Display', icon: 'i-solar:gallery-wide-bold-duotone', order: 12 },
+	layout: { title: 'Layout', icon: 'i-solar:layers-minimalistic-bold-duotone', order: 13 },
+	effects: { title: 'Effects', icon: 'i-solar:magic-stick-bold-duotone', order: 14 }
+}
+
 /**
  * Converts the input content into a group by category.
  * Guide pages (category: "guide") become flat top-level items.
@@ -99,6 +111,11 @@ export function getSections(metadata) {
 	const guideItems = []
 	/** @type Object<string, Metadata> */
 	const groups = {}
+
+	// Pre-initialise GROUPS so they exist even with no depth-1 header file
+	Object.entries(GROUPS).forEach(([key, def]) => {
+		groups[key] = { ...def, children: [] }
+	})
 
 	metadata.forEach(({ content, file }) => {
 		const item = {
@@ -119,10 +136,7 @@ export function getSections(metadata) {
 			groups[category] = { children: [] }
 		}
 		if (item.depth === 1) {
-			groups[category] = {
-				...groups[category],
-				...item
-			}
+			groups[category] = { ...groups[category], ...item }
 		} else {
 			groups[category].children.push(item)
 		}
@@ -134,7 +148,8 @@ export function getSections(metadata) {
 		.filter((g) => g.title)
 		.sort((a, b) => a.order - b.order)
 
-	return [...sortedGuides, ...sortedGroups]
+	// Inject separator between flat guides and groups
+	return [...sortedGuides, { type: 'separator' }, ...sortedGroups]
 }
 
 /**
