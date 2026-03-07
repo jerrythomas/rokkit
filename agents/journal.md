@@ -30,6 +30,27 @@ Design details live in `docs/design/` — modular docs per module.
 - table-controller already covered by existing `tabular.spec.svelte.js`
 - Result: 2745/2745 tests passing
 
+### Website Redesign COMPLETE
+
+Feature branch `feature/website-redesign` merged into `develop` (`df08ce58`).
+
+**What was done:**
+
+- Deleted `sites/quick-start/` and `sites/sample/` entirely
+- Restructured learn site nav from flat component list to **feature-first pillars**: Getting Started, Data Binding, Composability, Theming & Design, Accessibility & i18n, Forms, Components, Charts, Utilities, Toolchain
+- Moved existing doc pages into pillar subfolders (field-mapping, snippets, color-system, styling, keyboard-navigation, state-management, icons, effects/*)
+- Added **placeholder pages** for all planned-but-unbuilt features (data-sources, density, whitelabeling, tooltips, i18n, conditional-fields, multi-step, badge, avatar, data-table, stack, grid, divider, pie-donut, scatter, interactivity, accessibility, animation, custom-primitives, cli, icon-sets)
+- Added `(preview)` route group with **Nexus demo app** at `/preview/*`: dashboard (KPI cards, activity list), projects (Tree, Select filters, detail panel), reports (chart placeholders, DataTable placeholder), admin (Tabs, appearance settings)
+- Floating `ThemePanel` overlay on all `/preview/*` routes — switches `vibe.style` and `vibe.mode` live
+- Preview link added to learn site header and home page
+- Updated `docs/design/05-website.md` with preview app section (section 10)
+- Updated e2e tests for restructured URLs; added `preview.e2e.ts` (8 new passing tests)
+- Design docs: kept your `01–12` numbering scheme; `05-website.md` retains the website doc
+
+**Key commits:** `5e6b57f6` (cleanup), `c9076723` (pillars), `25593645` (charts/utilities/toolchain), `fa8393fd` (preview app), `627e2449` + `818438cf` (bug fixes), `0919c850` (e2e)
+
+**Tests:** 2745/2745 unit tests passing; 0 new lint errors; 156/265 e2e passing (109 pre-existing failures, 0 regressions)
+
 ---
 
 ## 2026-03-02
