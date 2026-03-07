@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { goToPlayPage, setTheme, setMode, themes, modes } from './helpers'
+import { goToPlayPage } from './helpers'
 
 // ─── Play page tests ──────────────────────────────────────────────────────────
 

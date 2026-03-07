@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { colors } from '@unocss/preset-mini/colors'
 import type { PresetMiniColors } from '@unocss/preset-mini/colors'
