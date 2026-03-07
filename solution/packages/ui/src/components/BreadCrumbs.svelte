@@ -71,6 +71,18 @@
 							{@render defaultCrumb(proxy, isLast)}
 						{/if}
 					</span>
+				{:else if proxy.get('href')}
+					<a
+						href={proxy.get('href')}
+						data-breadcrumb-link
+						onclick={() => handleClick(proxy)}
+					>
+						{#if crumb}
+							{@render crumb(proxy, isLast)}
+						{:else}
+							{@render defaultCrumb(proxy, isLast)}
+						{/if}
+					</a>
 				{:else}
 					<button
 						type="button"

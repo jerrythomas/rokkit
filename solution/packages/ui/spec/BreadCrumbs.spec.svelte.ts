@@ -126,6 +126,51 @@ describe('BreadCrumbs', () => {
 		expect(sep?.classList.contains('custom-arrow')).toBe(true)
 	})
 
+	// ─── Href Navigation ────────────────────────────────────────────
+
+	it('renders anchor when item has href', () => {
+		const items = [
+			{ label: 'Home', value: 'home', href: '/' },
+			{ label: 'Products', value: 'products', href: '/products' },
+			{ label: 'Widget', value: 'widget' }
+		]
+		const { container } = render(BreadCrumbs, { items })
+		const links = container.querySelectorAll('[data-breadcrumb-link]')
+		expect(links[0]?.tagName).toBe('A')
+		expect(links[0]?.getAttribute('href')).toBe('/')
+		expect(links[1]?.tagName).toBe('A')
+		expect(links[1]?.getAttribute('href')).toBe('/products')
+	})
+
+	it('renders button when item has no href', () => {
+		const { container } = render(BreadCrumbs, { items: basicItems })
+		const links = container.querySelectorAll('[data-breadcrumb-link]')
+		expect(links[0]?.tagName).toBe('BUTTON')
+	})
+
+	it('calls onclick when href link is clicked', async () => {
+		const onclick = vi.fn()
+		const items = [
+			{ label: 'Home', value: 'home', href: '/' },
+			{ label: 'Page', value: 'page' }
+		]
+		const { container } = render(BreadCrumbs, { items, onclick })
+		const link = container.querySelector('[data-breadcrumb-link]')
+		await fireEvent.click(link!)
+		expect(onclick).toHaveBeenCalledWith('home', items[0])
+	})
+
+	it('supports custom href field mapping', () => {
+		const items = [
+			{ label: 'Home', value: 'home', url: '/home' },
+			{ label: 'Page', value: 'page' }
+		]
+		const { container } = render(BreadCrumbs, { items, fields: { href: 'url' } })
+		const link = container.querySelector('[data-breadcrumb-link]')
+		expect(link?.tagName).toBe('A')
+		expect(link?.getAttribute('href')).toBe('/home')
+	})
+
 	// ─── Custom Class ───────────────────────────────────────────────
 
 	it('applies custom class', () => {
