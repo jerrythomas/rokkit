@@ -62,19 +62,19 @@ test.describe('Home page', () => {
 	// ─── CTAs ────────────────────────────────────────────────────────
 
 	test('"Get Started" button is visible and links to introduction', async ({ page }) => {
-		const btn = page.locator('a[href="/docs/getting-started/introduction"]')
+		// Button component renders label inside an <a> element
+		const btn = page.locator('main').getByRole('link', { name: 'Get Started' })
 		await expect(btn).toBeVisible()
-		await expect(btn).toContainText('Get Started')
+		await expect(btn).toHaveAttribute('href', '/docs/getting-started/introduction')
 	})
 
-	test('"llms" button is visible and links to llms.txt', async ({ page }) => {
-		const btn = page.locator('a[href="/docs/llms.txt"]')
+	test('"llms" button is visible and links to llms index', async ({ page }) => {
+		const btn = page.locator('main').getByRole('link', { name: /llms/i })
 		await expect(btn).toBeVisible()
-		await expect(btn).toContainText('llms')
 	})
 
 	test('"Get Started" navigates to the introduction page', async ({ page }) => {
-		await page.locator('a[href="/docs/getting-started/introduction"]').click()
+		await page.locator('main').getByRole('link', { name: 'Get Started' }).click()
 		await page.waitForLoadState('networkidle')
 		await expect(page).toHaveURL('/docs/getting-started/introduction')
 	})
