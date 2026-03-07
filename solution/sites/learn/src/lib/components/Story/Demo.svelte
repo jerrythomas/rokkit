@@ -32,7 +32,7 @@
 		</div>
 	{:else}
 		<div data-demo-code>
-			<Code {code} {language} />
+			<Code content={code} {language} />
 		</div>
 	{/if}
 </div>
@@ -87,16 +87,16 @@
 	}
 
 	/*
-	 * Graph paper preview area — minor grid only.
+	 * Graph paper preview area — minor grid only, no major grid.
 	 * Variables:
-	 *   --preview-unit       minor cell size     (default 20px)
-	 *   --preview-line-size  minor line thickness (default 0.5px)
-	 *   --preview-line       line color           (default 10% currentColor)
+	 *   --preview-unit       minor cell size      (default 20px)
+	 *   --preview-line-size  minor line thickness  (default 0.5px)
+	 *   --preview-line       line color            (default neutral gray 20%)
 	 */
 	[data-demo-preview] {
 		--preview-unit: 20px;
 		--preview-line-size: 0.5px;
-		--preview-line: color-mix(in srgb, currentColor 10%, transparent);
+		--preview-line: rgb(var(--color-surface-200, 128 128 128) / 0.22);
 
 		background-color: var(--color-surface-z0);
 		background-image:
