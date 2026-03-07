@@ -87,14 +87,9 @@ describe('presetRokkit', () => {
 		expect(hiddenRule[1]).toEqual({ display: 'none' })
 	})
 
-	it('should include the bg-graph-paper rule with var() fallbacks', () => {
+	it('should NOT include bg-graph-paper (opt-in via presetBackgrounds)', () => {
 		const preset = presetRokkit()
 		const rule = preset.rules.find((r) => r[0] === 'bg-graph-paper')
-		expect(rule).toBeDefined()
-		expect(rule[1]['background-image']).toContain('var(--graph-paper-color, currentColor)')
-		expect(rule[1]['background-image']).toContain('var(--minor-grid, 0.5px)')
-		expect(rule[1]['background-image']).toContain('var(--major-grid, 0.5px)')
-		expect(rule[1]['background-size']).toContain('var(--unit, 0.5rem)')
-		expect(rule[1]['background-position']).toContain('var(--minor-grid, 0.5px)')
+		expect(rule).toBeUndefined()
 	})
 })
