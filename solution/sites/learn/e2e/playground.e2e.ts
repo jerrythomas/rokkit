@@ -36,8 +36,10 @@ const PLAYGROUND_COMPONENTS = [
 	'upload-target'
 ]
 
-async function checkPlaygroundPage(page: any, slug: string) {
-	await page.goto(`/playground/components/${slug}`)
+const PLAYGROUND_EFFECTS = ['reveal', 'shine', 'tilt']
+
+async function checkPlaygroundPage(page: any, url: string) {
+	await page.goto(url)
 	await page.waitForLoadState('networkidle')
 
 	// Playground content area must be present
@@ -58,13 +60,22 @@ test.describe('Playground home', () => {
 		await expect(page.locator('text=Inputs')).toBeVisible()
 		await expect(page.locator('text=Display')).toBeVisible()
 		await expect(page.locator('text=Layout')).toBeVisible()
+		await expect(page.locator('text=Effects')).toBeVisible()
 	})
 })
 
 test.describe('Playground component pages', () => {
 	for (const slug of PLAYGROUND_COMPONENTS) {
 		test(`/playground/components/${slug} loads`, async ({ page }) => {
-			await checkPlaygroundPage(page, slug)
+			await checkPlaygroundPage(page, `/playground/components/${slug}`)
+		})
+	}
+})
+
+test.describe('Playground effect pages', () => {
+	for (const slug of PLAYGROUND_EFFECTS) {
+		test(`/playground/effects/${slug} loads`, async ({ page }) => {
+			await checkPlaygroundPage(page, `/playground/effects/${slug}`)
 		})
 	}
 })

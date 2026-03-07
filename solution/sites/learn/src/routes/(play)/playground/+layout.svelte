@@ -56,26 +56,35 @@
 				{ title: 'Palette Manager', slug: '/playground/components/palette-manager', icon: 'i-component:palette-manager' },
 				{ title: 'Progress', slug: '/playground/components/progress', icon: 'i-component:progress' }
 			]
+		},
+		{
+			title: 'Effects',
+			icon: 'i-solar:magic-stick-bold-duotone',
+			children: [
+				{ title: 'Reveal', slug: '/playground/effects/reveal', icon: 'i-solar:eye-bold-duotone' },
+				{ title: 'Shine', slug: '/playground/effects/shine', icon: 'i-solar:chart-square-bold-duotone' },
+				{ title: 'Tilt', slug: '/playground/effects/tilt', icon: 'i-solar:cursor-bold-duotone' }
+			]
 		}
 	]
 
 	const fields = { label: 'title', href: 'slug', icon: 'icon', value: 'slug' }
 
-	let componentSlug = $derived(
-		page.url.pathname.includes('/playground/components/')
-			? page.url.pathname.split('/').pop()
-			: null
+	let slug = $derived(page.url.pathname.split('/').pop())
+	let isComponent = $derived(page.url.pathname.includes('/playground/components/'))
+	let isEffect = $derived(page.url.pathname.includes('/playground/effects/'))
+	const docsHref = $derived(
+		isComponent ? `/docs/components/${slug}` : isEffect ? `/docs/effects/${slug}` : null
 	)
-	const docsHref = $derived(componentSlug ? `/docs/components/${componentSlug}` : null)
-	const llmsHref = $derived(componentSlug ? `/llms/components/${componentSlug}.txt` : null)
+	const llmsHref = $derived(isComponent ? `/llms/components/${slug}.txt` : null)
 </script>
 
 <div class="flex min-h-0 flex-1 flex-col">
 	<header class="bg-surface-z2 border-surface-z2 text-surface-z7 border-b px-6 py-4">
 		<div class="flex items-center justify-between">
 			<div>
-				<h1 class="text-xl font-semibold">Component Playground</h1>
-				<p class="text-sm text-surface-z5">Interactive testing environment for Rokkit components</p>
+				<h1 class="text-xl font-semibold">Playground</h1>
+				<p class="text-sm text-surface-z5">Interactive testing environment for Rokkit components and effects</p>
 			</div>
 			<a href="/playground" class="text-sm text-surface-z5 hover:text-surface-z7">← Back to Overview</a>
 		</div>

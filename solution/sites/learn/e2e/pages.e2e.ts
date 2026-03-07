@@ -7,8 +7,8 @@
 import { test, expect } from '@playwright/test'
 
 // ─── Page inventory ───────────────────────────────────────────────────────────
-// All routes with a +page.svelte under (learn)/docs, excluding /play sub-routes
-// (those are playground embeds, covered by component e2e tests)
+// All routes with a +page.svelte under (learn)/docs
+// Interactive playground pages are covered by playground.e2e.ts
 
 const GETTING_STARTED = [
 	'/docs/getting-started/introduction',

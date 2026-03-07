@@ -7,6 +7,7 @@
 		{
 			title: 'Navigation & Selection',
 			icon: 'i-solar:list-check-bold-duotone',
+			basePath: '/playground/components/',
 			components: [
 				{ name: 'Breadcrumbs', description: 'Navigation path with links', slug: 'breadcrumbs' },
 				{ name: 'Lazy Tree', description: 'Async-loaded tree component', slug: 'lazy-tree' },
@@ -22,6 +23,7 @@
 		{
 			title: 'Inputs',
 			icon: 'i-solar:keyboard-bold-duotone',
+			basePath: '/playground/components/',
 			components: [
 				{ name: 'Button', description: 'Action button with variants', slug: 'button' },
 				{ name: 'Range', description: 'Numeric range slider', slug: 'range' },
@@ -35,6 +37,7 @@
 		{
 			title: 'Display',
 			icon: 'i-solar:gallery-wide-bold-duotone',
+			basePath: '/playground/components/',
 			components: [
 				{ name: 'Card', description: 'Content container with optional header/footer', slug: 'card' },
 				{ name: 'Code', description: 'Syntax-highlighted code block', slug: 'code' },
@@ -47,6 +50,7 @@
 		{
 			title: 'Layout',
 			icon: 'i-solar:layers-minimalistic-bold-duotone',
+			basePath: '/playground/components/',
 			components: [
 				{ name: 'Carousel', description: 'Horizontally scrolling item carousel', slug: 'carousel' },
 				{ name: 'Floating Action', description: 'Floating action button overlay', slug: 'floating-action' },
@@ -54,14 +58,24 @@
 				{ name: 'Palette Manager', description: 'Color palette selection UI', slug: 'palette-manager' },
 				{ name: 'Progress', description: 'Progress bar indicator', slug: 'progress' }
 			]
+		},
+		{
+			title: 'Effects',
+			icon: 'i-solar:magic-stick-bold-duotone',
+			basePath: '/playground/effects/',
+			components: [
+				{ name: 'Reveal', description: 'Scroll-triggered reveal animation', slug: 'reveal' },
+				{ name: 'Shine', description: 'SVG specular lighting effect', slug: 'shine' },
+				{ name: 'Tilt', description: '3D tilt effect on hover', slug: 'tilt' }
+			]
 		}
 	]
 </script>
 
 <div class="p-8">
 	<div class="mb-8">
-		<h2 class="text-2xl font-semibold text-surface-z8 mb-1">Component Playground</h2>
-		<p class="text-surface-z5">Select a component to open its interactive playground.</p>
+		<h2 class="text-2xl font-semibold text-surface-z8 mb-1">Playground</h2>
+		<p class="text-surface-z5">Select a component or effect to open its interactive playground.</p>
 	</div>
 
 	{#each GROUPS as group}
@@ -72,10 +86,10 @@
 			</div>
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 				{#each group.components as component (component.slug)}
-					<Card class="cursor-pointer hover:border-primary-z5 transition-colors" onclick={() => goto(`/playground/components/${component.slug}`)}>
+					<Card class="cursor-pointer hover:border-primary-z5 transition-colors" onclick={() => goto(`${group.basePath}${component.slug}`)}>
 						<h4 class="text-sm font-semibold text-surface-z8 mb-1">{component.name}</h4>
 						<p class="text-xs text-surface-z5 mb-3 leading-relaxed">{component.description}</p>
-						<Button variant="ghost" size="sm" onclick={() => goto(`/playground/components/${component.slug}`)}>
+						<Button variant="ghost" size="sm" onclick={() => goto(`${group.basePath}${component.slug}`)}>
 							Open
 						</Button>
 					</Card>
