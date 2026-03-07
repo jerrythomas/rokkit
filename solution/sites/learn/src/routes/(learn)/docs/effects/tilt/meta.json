@@ -1,0 +1,7 @@
+{
+  "title": "Tilt",
+  "description": "Parallax 3D tilt effect that responds to mouse movement",
+  "icon": "i-lucide:rotate-3d",
+  "category": "effects",
+  "order": 3
+}
