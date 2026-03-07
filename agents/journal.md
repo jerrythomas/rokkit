@@ -5,6 +5,33 @@ Design details live in `docs/design/` — modular docs per module.
 
 ---
 
+## 2026-03-07
+
+### Nav Restructure & Playground Alignment COMPLETE
+
+**What was done:**
+
+- Deleted orphaned `components/meta.json` (was creating empty collapsible group in sidebar)
+- Moved forms group order 6 → 20, charts group order 8 → 21 (both now appear after Effects)
+- Removed dead `+page.svelte`, `meta.json`, `+layout.svelte`, and `play/` from `utilities/reveal|shine|tilt` (keep `+page.js` redirects)
+- Deleted untracked `sites/quick-start/` and `sites/sample/` from filesystem
+- Restructured playground home page into four grouped sections (Navigation & Selection, Inputs, Display, Layout)
+- Restructured playground sidebar to match same four collapsible groups
+- Updated `pages.e2e.ts`: removed redirected utilities URLs, added EFFECTS constant + COMBINED_SECTIONS constant with test suites
+- Added `playground.e2e.ts`: home group headings test + all 27 component pages coverage
+- Fixed `components/forms/+page.svelte`: wrong `Code` import (`@rokkit/ui` → `$lib/components/Story`), rewrote with real content
+- Wrote Grid component documentation (components/grid/+page.svelte)
+- Wrote toolchain/overview page (other overviews already had content)
+
+**Final docs nav group order:**
+Navigation & Selection (10) → Inputs (11) → Display (12) → Layout (13) → Effects (14) → Forms (20) → Charts (21)
+
+**Key commits:** `593410b4` (meta cleanup), `bf5cf8a8` (utilities cleanup), `5434d37a` (playground restructure), `c287c41f` (e2e tests), `96764ab3` (forms fix), `ebd6784c` (grid docs), `de173ba8` (toolchain overview)
+
+**Tests:** 2750/2750 unit tests passing; 0 new lint errors
+
+---
+
 ## 2026-03-06
 
 ### Quick Wins COMPLETE (3 steps)
