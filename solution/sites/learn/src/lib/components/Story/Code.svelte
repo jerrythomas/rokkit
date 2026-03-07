@@ -6,7 +6,9 @@
 
 	let { content, language } = $props()
 	let theme = $derived(vibe.mode === 'dark' ? 'github-dark' : 'github-light')
-	let highlightedCode = $derived(highlightCode(content, { lang: language, theme }))
+	let highlightedCode = $derived(
+		content ? highlightCode(content, { lang: language, theme }) : Promise.resolve('')
+	)
 </script>
 
 <div data-code-root>

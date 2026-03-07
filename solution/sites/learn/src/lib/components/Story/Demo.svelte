@@ -86,18 +86,40 @@
 		color: var(--color-surface-z7);
 	}
 
+	/*
+	 * Graph paper preview area — minor grid only.
+	 * Variables:
+	 *   --preview-unit       minor cell size     (default 20px)
+	 *   --preview-line-size  minor line thickness (default 0.5px)
+	 *   --preview-line       line color           (default 10% currentColor)
+	 */
 	[data-demo-preview] {
-		min-height: 12rem;
-		padding: 2.5rem 1.5rem;
+		--preview-unit: 20px;
+		--preview-line-size: 0.5px;
+		--preview-line: color-mix(in srgb, currentColor 10%, transparent);
+
+		background-color: var(--color-surface-z0);
+		background-image:
+			linear-gradient(
+				var(--preview-line) var(--preview-line-size),
+				transparent var(--preview-line-size)
+			),
+			linear-gradient(
+				90deg,
+				var(--preview-line) var(--preview-line-size),
+				transparent var(--preview-line-size)
+			);
+		background-size: var(--preview-unit) var(--preview-unit);
+		background-position:
+			calc(-1 * var(--preview-line-size)) calc(-1 * var(--preview-line-size)),
+			calc(-1 * var(--preview-line-size)) calc(-1 * var(--preview-line-size));
+		box-shadow: inset 0 2px 10px rgb(0 0 0 / 0.07);
+
+		min-height: 14rem;
+		padding: 2rem 1.5rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--color-surface-z1);
-		background-image:
-			linear-gradient(rgb(var(--color-surface-200, 128 128 128) / 0.18) 1px, transparent 1px),
-			linear-gradient(90deg, rgb(var(--color-surface-200, 128 128 128) / 0.18) 1px, transparent 1px);
-		background-size: 24px 24px;
-		box-shadow: inset 0 2px 10px rgb(0 0 0 / 0.07);
 	}
 
 	[data-demo-code] :global([data-code-root]) {
