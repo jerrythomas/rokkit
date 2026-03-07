@@ -25,9 +25,19 @@ const GRAPH_PAPER_RULE = [
 	}
 ] as const
 
+const RULED_PAPER_RULE = [
+	'bg-ruled-paper',
+	{
+		'background-image':
+			'linear-gradient(var(--ruled-paper-color, currentColor) var(--rule-size, 0.5px), transparent var(--rule-size, 0.5px))',
+		'background-size': '100% var(--unit, 1.5rem)',
+		'background-position': '0 calc(-1 * var(--rule-size, 0.5px))'
+	}
+] as const
+
 export function presetBackgrounds(): Preset {
 	return {
 		name: 'rokkit-backgrounds',
-		rules: [GRAPH_PAPER_RULE]
+		rules: [GRAPH_PAPER_RULE, RULED_PAPER_RULE]
 	}
 }

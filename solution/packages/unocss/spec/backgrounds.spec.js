@@ -18,4 +18,14 @@ describe('presetBackgrounds', () => {
 		expect(rule[1]['background-size']).toContain('var(--unit, 0.5rem)')
 		expect(rule[1]['background-position']).toContain('var(--minor-grid, 0.5px)')
 	})
+
+	it('should include bg-ruled-paper rule with var() fallbacks', () => {
+		const preset = presetBackgrounds()
+		const rule = preset.rules.find((r) => r[0] === 'bg-ruled-paper')
+		expect(rule).toBeDefined()
+		expect(rule[1]['background-image']).toContain('var(--ruled-paper-color, currentColor)')
+		expect(rule[1]['background-image']).toContain('var(--rule-size, 0.5px)')
+		expect(rule[1]['background-size']).toContain('var(--unit, 1.5rem)')
+		expect(rule[1]['background-position']).toContain('var(--rule-size, 0.5px)')
+	})
 })
