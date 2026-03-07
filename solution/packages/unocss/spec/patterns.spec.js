@@ -25,8 +25,8 @@ describe('pattern rules in presetBackgrounds', () => {
 		const patternRules = preset.rules.filter((r) => PATTERN_NAMES.includes(r[0]))
 		for (const [, css] of patternRules) {
 			const values = Object.values(css).join(' ')
-			expect(values).toContain('var(--fg-pattern, currentColor)')
-			expect(values).toContain('var(--bg-pattern, transparent)')
+			expect(values).toContain('var(--pattern-color, currentColor)')
+			expect(values).toContain('var(--pattern-fill, transparent)')
 		}
 	})
 

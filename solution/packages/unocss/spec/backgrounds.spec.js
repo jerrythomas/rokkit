@@ -66,8 +66,8 @@ describe('presetBackgrounds', () => {
 		expect(patternRules.length).toBe(7)
 		for (const [, css] of patternRules) {
 			const values = Object.values(css).join(' ')
-			expect(values).toContain('var(--fg-pattern, currentColor)')
-			expect(values).toContain('var(--bg-pattern, transparent)')
+			expect(values).toContain('var(--pattern-color, currentColor)')
+			expect(values).toContain('var(--pattern-fill, transparent)')
 		}
 	})
 
