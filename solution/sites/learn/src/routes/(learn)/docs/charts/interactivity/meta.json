@@ -1,0 +1,7 @@
+{
+  "title": "Interactivity",
+  "description": "Tooltips on hover, click selection on data points, zoom and pan",
+  "icon": "i-solar:cursor-bold-duotone",
+  "category": "charts",
+  "order": 7
+}

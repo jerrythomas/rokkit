@@ -1,0 +1,7 @@
+{
+  "title": "Density Modes",
+  "description": "Compact, default, and comfortable density modes with context inheritance",
+  "icon": "i-solar:align-vertical-spacing-bold-duotone",
+  "category": "theming",
+  "order": 4
+}

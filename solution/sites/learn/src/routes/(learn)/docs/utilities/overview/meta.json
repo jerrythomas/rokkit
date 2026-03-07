@@ -1,0 +1,7 @@
+{
+  "title": "Overview",
+  "description": "The controller + navigator pattern for building accessible interactive components",
+  "icon": "i-solar:settings-bold-duotone",
+  "category": "utilities",
+  "order": 1
+}

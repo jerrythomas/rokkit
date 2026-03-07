@@ -1,8 +1,0 @@
-{
-  "title": "Styling",
-  "description": "Theme architecture, data-attribute hooks, and CSS customization",
-  "icon": "i-solar:palette-bold-duotone",
-  "category": "guide",
-  "order": 6,
-  "tags": ["styling", "themes", "css", "customization", "data-attributes"]
-}

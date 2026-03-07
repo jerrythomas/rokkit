@@ -2,7 +2,6 @@
   "title": "Getting Started",
   "description": "Install Rokkit and build your first data-driven component",
   "icon": "i-solar:rocket-bold-duotone",
-  "category": "guide",
-  "order": 2,
-  "tags": ["setup", "installation", "quick-start", "project"]
+  "category": "getting-started",
+  "order": 1
 }

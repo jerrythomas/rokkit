@@ -1,0 +1,8 @@
+{
+  "title": "Icons",
+  "description": "Semantic icon names, per-component overrides, and global defaults",
+  "icon": "i-solar:stars-bold-duotone",
+  "category": "utilities",
+  "order": 6,
+  "tags": ["icons", "iconography", "semantic", "mapping"]
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Badge",
+  "description": "Status and count indicator attached to other elements",
+  "icon": "i-solar:tag-bold-duotone",
+  "category": "components",
+  "order": 25
+}

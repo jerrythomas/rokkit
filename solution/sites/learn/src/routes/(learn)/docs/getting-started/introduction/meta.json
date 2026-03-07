@@ -1,0 +1,8 @@
+{
+  "title": "Introduction",
+  "description": "What Rokkit is and why data-first component design matters",
+  "icon": "i-solar:book-bold-duotone",
+  "category": "getting-started",
+  "order": 1,
+  "tags": ["introduction", "overview", "data-first", "svelte"]
+}

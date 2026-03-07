@@ -1,0 +1,7 @@
+{
+  "title": "Sparkline",
+  "description": "Compact inline chart for trend data within text or cards",
+  "icon": "i-solar:chart-square-bold-duotone",
+  "category": "charts",
+  "order": 4
+}

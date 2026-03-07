@@ -1,8 +1,0 @@
-{
-  "title": "State Management",
-  "description": "Value binding, controlled components, and reactive state patterns",
-  "icon": "i-solar:graph-new-bold-duotone",
-  "category": "guide",
-  "order": 9,
-  "tags": ["state", "binding", "reactive", "controlled", "value"]
-}

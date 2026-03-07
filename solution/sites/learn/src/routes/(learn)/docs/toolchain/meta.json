@@ -1,0 +1,7 @@
+{
+  "title": "Toolchain",
+  "description": "CLI, icon sets, and project scaffolding tools",
+  "icon": "i-solar:settings-bold-duotone",
+  "category": "toolchain",
+  "order": 10
+}

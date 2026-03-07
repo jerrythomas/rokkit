@@ -527,3 +527,62 @@ The builder maintains a `$state` object mirroring all token overrides and compon
 
 **PaletteManager and ThemeSwitcherToggle in context:**
 The builder uses `PaletteManager` for the skin swatch picker and `ThemeSwitcherToggle` for theme style and mode — the same components a consumer would embed in their own settings page. Their presence here is intentional: this page is a live demonstration of those components used in a real scenario, not a documentation example.
+
+---
+
+## 10. Preview App ("Nexus")
+
+### Purpose
+
+Nexus is a fictional workspace application hosted at `/preview/*` inside the `(preview)` route group. Its role is to demonstrate what a real Rokkit application looks and feels like — not a documentation example, but a plausible product UI built entirely from Rokkit components. It provides a realistic, multi-screen context for evaluating how theme/skin combinations behave across different component types and data densities.
+
+### Route structure
+
+```
+sites/learn/src/routes/
+  (preview)/
+    preview/
+      +layout.svelte          ← app shell: Nexus top bar, List sidebar nav, ThemePanel overlay
+      +page.server.js         ← redirects / → /preview/dashboard
+      dashboard/
+        +page.svelte          ← KPI cards, activity List, chart placeholder
+      projects/
+        +page.svelte          ← Select filters, Tree task hierarchy, detail panel
+      reports/
+        +page.svelte          ← Toolbar/Select filters, chart placeholders, DataTable placeholder
+      admin/
+        +page.svelte          ← Tabs (profile / team / appearance), appearance settings
+```
+
+The layout renders the full Nexus chrome (top bar, sidebar) around every child page. The server redirect on `+page.server.js` ensures that landing on `/preview` always drops the user on the dashboard rather than a blank shell.
+
+### Floating theme panel
+
+A `ThemePanel` component floats in the bottom-right corner of the viewport, visible only while inside `/preview/*`. It exposes two controls:
+
+| Control | Store field | Options |
+|---------|-------------|---------|
+| Skin | `vibe.style` | `rokkit`, `glass`, `minimal`, `material` |
+| Mode | `vibe.mode` | `light`, `dark` |
+
+Changes write directly to the vibe store, which applies `data-style` and `data-mode` to `document.documentElement`. Theme updates are instant — no page reload required. The panel is positioned with `position: fixed; bottom: 1rem; right: 1rem` and sits above the page content at a high `z-index`.
+
+### Component coverage
+
+Nexus is designed to exercise a broad cross-section of the Rokkit component library across its four screens:
+
+| Screen | Components used |
+|--------|----------------|
+| Dashboard | `List` (activity feed), `Button`, card layout |
+| Projects | `Select` (filters), `Tree` (task hierarchy), detail panel |
+| Reports | `Toolbar`, `Select` (filters), chart placeholders, DataTable placeholder |
+| Admin | `Tabs` (profile / team / appearance), `Button`, appearance settings |
+
+Sections that require components not yet available (DataTable, density control) are marked "Coming soon" with a placeholder card so the layout remains coherent without empty screens.
+
+### Access
+
+Nexus is linked from two entry points in the learn site:
+
+- **Header** — a "Live Preview" link in the global site header navigates to `/preview/dashboard`.
+- **Home page** — the landing page "Live Preview" call-to-action button navigates to `/preview/dashboard`.

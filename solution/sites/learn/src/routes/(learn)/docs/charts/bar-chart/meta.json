@@ -1,0 +1,7 @@
+{
+  "title": "Bar Chart",
+  "description": "Animated bar chart with data transitions and bar chart race support",
+  "icon": "i-solar:chart-2-bold-duotone",
+  "category": "charts",
+  "order": 2
+}

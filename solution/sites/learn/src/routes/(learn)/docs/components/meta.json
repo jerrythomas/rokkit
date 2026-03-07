@@ -1,6 +1,6 @@
 {
   "title": "Components",
-  "description": "UI components for selection, navigation, data display and interaction",
+  "description": "UI components for actions, navigation, data display, and layout",
   "category": "components",
-  "order": 20
+  "order": 7
 }
