@@ -3,6 +3,6 @@
   "description": "Schema-driven forms with validation, lookups, and field dependencies",
   "icon": "i-solar:document-text-bold-duotone",
   "category": "forms",
-  "order": 6,
+  "order": 20,
   "tags": ["forms", "validation", "schema", "lookups"]
 }
