@@ -40,6 +40,7 @@
 <style>
 	[data-demo-root] {
 		position: relative;
+		min-height: 14rem;
 		border-radius: 0.5rem;
 		border: 1px solid var(--color-surface-z3);
 		overflow: hidden;
@@ -96,7 +97,7 @@
 	[data-demo-preview] {
 		--preview-unit: 20px;
 		--preview-line-size: 0.5px;
-		--preview-line: rgb(var(--color-surface-200, 128 128 128) / 0.22);
+		--preview-line: rgba(128, 128, 128, 0.22);
 
 		background-color: var(--color-surface-z0);
 		background-image:
@@ -120,6 +121,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	[data-demo-code] {
+		min-height: 14rem;
 	}
 
 	[data-demo-code] :global([data-code-root]) {
