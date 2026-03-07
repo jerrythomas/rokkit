@@ -2070,3 +2070,21 @@ Reorganized `docs/llms/` from 13 flat files into a structured hierarchy with an 
 - `ProxyItem` + `buildProxyList/buildFlatView` → `packages/states/src/`
 - `ListWrapper` → `packages/states/src/`
 - `List.svelte` → `packages/ui/src/components/List.svelte` (replacing old impl)
+
+### Post-merge learn site fixes (2026-03-06)
+
+**Commit `5bf3d2f3` — text→label field mapping fixes across learn site (90 files)**
+
+After merging feature/website-redesign, the quick-wins `text→label` rename broke all
+learn site demos that used `text:` as item property or field mapping key. Fixed:
+- 90 files across components, data-binding, forms, composability, playground, preview
+- `+layout.js`: sidebar fields `{ label: 'title', ... }`  
+- `playground/+layout.svelte`: `{ label: 'title', ... }`  
+- `CodeViewer.svelte`: `{ label: 'name', icon: 'language' }`
+- `FileTabs.svelte`: `{ label: 'name', ... }`
+- All tabs/tree/select/multi-select/toolbar/stepper/list demo files
+- Admin preview `Tabs` not switching → added `onchange={(v) => (activeTab = v)}`
+- Home page "Get Started" stale href fixed
+- Root header now shows Docs + Playground nav links
+
+**All tests: 2745/2745 passing**
