@@ -2,6 +2,6 @@
   "title": "Composability",
   "description": "Extend and customize any component via Svelte snippets without forking",
   "icon": "i-solar:layers-bold-duotone",
-  "category": "composability",
+  "category": "guide",
   "order": 3
 }

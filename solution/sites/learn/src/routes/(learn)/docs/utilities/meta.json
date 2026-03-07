@@ -1,6 +1,6 @@
 {
   "title": "Utilities",
   "description": "Controllers, navigator pattern, visual effects, and custom component primitives",
-  "category": "utilities",
+  "category": "guide",
   "order": 9
 }

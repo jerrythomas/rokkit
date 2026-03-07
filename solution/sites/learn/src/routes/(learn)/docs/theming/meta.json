@@ -2,6 +2,6 @@
   "title": "Theming & Design",
   "description": "Skins, color tokens, CSS architecture, and visual customization",
   "icon": "i-solar:palette-bold-duotone",
-  "category": "theming",
+  "category": "guide",
   "order": 4
 }

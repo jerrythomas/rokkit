@@ -2,6 +2,6 @@
   "title": "Data Binding",
   "description": "How Rokkit maps any data shape to components without transformation",
   "icon": "i-solar:database-bold-duotone",
-  "category": "data-binding",
+  "category": "guide",
   "order": 2
 }

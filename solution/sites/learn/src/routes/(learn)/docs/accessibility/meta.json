@@ -2,6 +2,6 @@
   "title": "Accessibility & i18n",
   "description": "Keyboard navigation, ARIA, screen reader support, and internationalization",
   "icon": "i-solar:accessibility-bold-duotone",
-  "category": "accessibility",
+  "category": "guide",
   "order": 5
 }
