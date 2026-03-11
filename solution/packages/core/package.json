@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/core",
-  "version": "1.0.0-next.130",
+  "version": "1.0.0-next.131",
   "description": "Contains core utility functions and classes that can be used in various components.",
   "author": "Jerry Thomas <me@jerrythomas.name>",
   "license": "MIT",
@@ -15,6 +15,7 @@
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.ts",
     "src/**/*.json",
     "dist/**/*.d.ts",
     "README.md",
