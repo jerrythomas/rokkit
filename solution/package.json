@@ -1,6 +1,6 @@
 {
   "name": "rokkit",
-  "version": "1.0.0-next.129",
+  "version": "1.0.0-next.130",
   "module": "src/index.js",
   "type": "module",
   "npm": {
@@ -18,7 +18,7 @@
     "bump": "bumpp --no-push",
     "bump:next": "bumpp --preid=next --no-push",
     "upgrade:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun update --latest' \\;",
-    "publish:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun publish' \\;",
+    "publish:all": "for dir in ./packages/*/; do grep -q '\"private\": true' \"${dir}package.json\" 2>/dev/null || (cd \"$dir\" && bun publish); done",
     "build:all": "find ./packages -type d -depth 1 -exec sh -c 'cd \"{}\" && bun run build' \\;",
     "release": "bun run clean && bun install && bun run publish:all"
   },

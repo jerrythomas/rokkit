@@ -1,7 +1,7 @@
 {
   "name": "@rokkit/learn",
   "private": true,
-  "version": "1.0.0-next.129",
+  "version": "1.0.0-next.130",
   "type": "module",
   "npm": {
     "publish": false
@@ -48,8 +48,7 @@
     "@rokkit/icons": "workspace:latest",
     "@rokkit/states": "workspace:latest",
     "@rokkit/themes": "workspace:latest",
-    "@rokkit/testbed": "workspace:*",
-    "@rokkit/unocss": "workspace:latest",
+"@rokkit/unocss": "workspace:latest",
     "@rokkit/ui": "workspace:latest",
     "@sveltejs/adapter-vercel": "^5.10.2",
     "phosphor-svelte": "^3.0.1",
