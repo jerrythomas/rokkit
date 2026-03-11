@@ -1,6 +1,6 @@
 {
   "name": "@rokkit/themes",
-  "version": "1.0.0-next.131",
+  "version": "1.0.0-next.132",
   "description": "Theme styles for @rokkit/ui components",
   "type": "module",
   "main": "./src/index.js",
@@ -34,6 +34,7 @@
     "build.mjs"
   ],
   "scripts": {
+    "prepublishOnly": "bun run build.mjs",
     "build": "bun run build.mjs"
   },
   "dependencies": {
