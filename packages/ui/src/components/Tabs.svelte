@@ -49,7 +49,15 @@
 	// ─── Wrapper ──────────────────────────────────────────────────────────────
 
 	const proxyTree = $derived(new ProxyTree(options, userFields))
-	const wrapper = $derived(new Wrapper(proxyTree, {	onchange, onselect }))
+	const wrapper = $derived(
+		new Wrapper(proxyTree, {
+			onchange: (v, proxy) => {
+				value = v
+				onchange?.(v, proxy)
+			},
+			onselect
+		})
+	)
 
 	// ─── Navigator ────────────────────────────────────────────────────────────
 

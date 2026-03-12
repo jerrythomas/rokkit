@@ -30,7 +30,7 @@
 	 * Constructs a minimal item from button props.
 	 */
 	const proxy = $derived(
-		new ProxyItem({ text: label, icon, iconRight })
+		new ProxyItem({ label, icon, iconRight })
 	)
 </script>
 
