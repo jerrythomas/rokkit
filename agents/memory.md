@@ -26,7 +26,7 @@ This file is read at the start of every session.
 | `@rokkit/icons` | SVG icon sets |
 | `@rokkit/data` | Data structures (Dataset, hierarchy, parsing) |
 | `@rokkit/chart` | Chart components |
-| `sites/learn` | Documentation site + interactive demos + e2e tests |
+| `site` | Documentation site + interactive demos + e2e tests |
 
 ## Project Principles
 

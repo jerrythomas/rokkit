@@ -250,7 +250,7 @@ let { class: className = '', ...rest } = $props()
 |------|---------|
 | `packages/core/src/constants.js` | `DEFAULT_ICONS` array + `stateIconsFromNames()` → `DEFAULT_STATE_ICONS` |
 | `packages/icons/src/base/` | SVGs matching the naming convention (`node-opened.svg`, etc.) |
-| `sites/learn/uno.config.js` | `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` global mapping |
+| `site/uno.config.js` | `iconShortcuts(DEFAULT_ICONS, 'i-rokkit')` global mapping |
 | `packages/core/src/utils.js` | `iconShortcuts()` function |
 
 **Naming Convention:**

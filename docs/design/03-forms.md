@@ -731,7 +731,7 @@ FormElement (array of objects)
 ## Appendix: Component File Map
 
 ```
-solution/packages/forms/src/
+packages/forms/src/
 ├── FormRenderer.svelte          — public component; owns FormBuilder lifecycle
 ├── InputField.svelte            — label + input + message wrapper
 ├── Input.svelte                 — type dispatcher; delegates to InputXxx via resolveRenderer

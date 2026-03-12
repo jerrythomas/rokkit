@@ -20,7 +20,7 @@ Rokkit uses two testing layers with distinct purposes and toolchains: unit tests
 Each package has a `spec/` directory at its root:
 
 ```
-solution/packages/
+packages/
   ui/spec/
     List.spec.svelte.ts
     Select.spec.svelte.ts
@@ -188,12 +188,12 @@ Every UI component must have unit tests covering:
 ### Configuration
 
 ```
-sites/learn/playwright.config.ts
+site/playwright.config.ts
 ```
 
 Key settings:
 
-- `testDir: 'e2e'` — test files live in `sites/learn/e2e/`
+- `testDir: 'e2e'` — test files live in `site/e2e/`
 - `testMatch: /.*\.e2e\.ts/` — only files named `*.e2e.ts` are collected
 - `fullyParallel: true` — all tests run concurrently
 - `retries: 2` on CI — flakiness mitigation
@@ -203,7 +203,7 @@ Key settings:
 ### Test location
 
 ```
-sites/learn/e2e/
+site/e2e/
   helpers.ts              ← shared utilities: goToPlayPage, setTheme, setMode
   list.e2e.ts
   select.e2e.ts
@@ -392,16 +392,16 @@ Each unit test renders a fresh component instance. Shared fixtures (item arrays,
 
 ```bash
 # All unit tests
-cd solution && bun run test:ci
+bun run test:ci
 
 # UI package tests only
-cd solution && bun run test:ui
+bun run test:ui
 
 # E2E tests (requires build)
-cd solution/sites/learn && npx playwright test
+cd site && npx playwright test
 
 # Update visual snapshots
-cd solution/sites/learn && npx playwright test --update-snapshots
+cd site && npx playwright test --update-snapshots
 ```
 
 ### Coverage targets

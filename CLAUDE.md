@@ -33,8 +33,7 @@ rokkit/
     features/                   <-- Feature specs (Gherkin scenarios, vision)
     design/                     <-- Architecture and design docs (numbered: NN-xxx.md)
   packages/                     <-- Library packages (@rokkit/ui, states, actions, etc.)
-  sites/
-    learn/                      <-- Documentation site + interactive demos + e2e tests
+  site/                         <-- Documentation site + interactive demos + e2e tests
 ```
 
 ## Key Design Principles
@@ -47,7 +46,7 @@ rokkit/
 
 ## Working with this Repo
 
-### Commands (run from `solution/`)
+### Commands (run from repo root)
 
 ```bash
 # Tests
@@ -58,7 +57,7 @@ bun run test:ui                   # UI package tests
 bun run lint                      # 0 errors expected
 
 # E2E tests
-cd sites/learn && npx playwright test
+cd site && npx playwright test
 ```
 
 ## Conventions
