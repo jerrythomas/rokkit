@@ -68,6 +68,14 @@
 				{ name: 'Shine', description: 'SVG specular lighting effect', slug: 'shine' },
 				{ name: 'Tilt', description: '3D tilt effect on hover', slug: 'tilt' }
 			]
+		},
+		{
+			title: 'Design Resources',
+			icon: 'i-solar:stars-bold-duotone',
+			basePath: '/playground/',
+			components: [
+				{ name: 'Icons', description: 'Browse all icon collections and auth icon variants', slug: 'icons' }
+			]
 		}
 	]
 </script>

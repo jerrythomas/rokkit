@@ -58,6 +58,13 @@
 			]
 		},
 		{
+			title: 'Design Resources',
+			icon: 'i-solar:stars-bold-duotone',
+			children: [
+				{ title: 'Icons', slug: '/playground/icons', icon: 'i-solar:stars-bold-duotone' }
+			]
+		},
+		{
 			title: 'Effects',
 			icon: 'i-solar:magic-stick-bold-duotone',
 			children: [
