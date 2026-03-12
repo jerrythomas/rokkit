@@ -1,251 +1,195 @@
 # @rokkit/forms
 
-Schema-driven form rendering for Svelte 5. Generate dynamic forms from data, schema, and layout definitions.
+Schema-driven form builder and renderer for Svelte 5 applications.
 
 ## Installation
 
 ```bash
+npm install @rokkit/forms
+# or
 bun add @rokkit/forms
 ```
 
-## Core Concepts
+## Overview
 
-### FormBuilder
+`@rokkit/forms` generates dynamic forms from a data object, a JSON Schema definition, and a layout configuration. Both schema and layout can be auto-derived from data, so you can get a working form with zero configuration. The `FormBuilder` class produces a reactive `elements[]` array; the `FormRenderer` component renders it.
 
-Takes `(data, schema, layout)` and produces a reactive `elements[]` array. Each element describes a form field with its type, current value, and merged properties.
+## Usage
 
-```js
-import { FormBuilder } from '@rokkit/forms'
-
-const builder = new FormBuilder(
-  { name: 'Alice', age: 30 },     // data
-  schema,                           // optional — auto-derived from data
-  layout                            // optional — auto-derived from data
-)
-
-// builder.elements → [{ scope, type, value, props }, ...]
-```
-
-If `schema` is `null`, it is auto-derived from the data using `deriveSchemaFromValue()`. If `layout` is `null`, it is auto-derived using `deriveLayoutFromValue()`.
-
-### Schema
-
-JSON-Schema-like type definitions. Supports: `string`, `number`, `integer`, `boolean`, `array`, `object`, `date`.
-
-```js
-const schema = {
-  type: 'object',
-  properties: {
-    name: { type: 'string' },
-    size: { type: 'string', enum: ['sm', 'md', 'lg'] },
-    count: { type: 'integer', min: 0, max: 100 },
-    active: { type: 'boolean' }
-  }
-}
-```
-
-### Layout
-
-Controls rendering order, grouping, labels, and component-specific props. Uses JSON Pointer scopes (`#/fieldName`).
-
-```js
-const layout = {
-  type: 'vertical',
-  elements: [
-    { scope: '#/name', label: 'Full Name', props: { placeholder: 'Enter name' } },
-    { scope: '#/size', label: 'Size', props: { options: ['sm', 'md', 'lg'] } },
-    { scope: '#/count', label: 'Count' },
-    { type: 'separator' },
-    { scope: '#/active', label: 'Active' },
-    { scope: '#/total', label: 'Total', readonly: true }
-  ]
-}
-```
-
-### Type Resolution
-
-The FormBuilder determines input type from the schema:
-
-| Schema type | Condition | Input type |
-|---|---|---|
-| `string` | has `enum` or `options` | `select` |
-| `string` | default | `text` |
-| `boolean` | — | `checkbox` |
-| `number`/`integer` | has `min` and `max` | `range` |
-| `number`/`integer` | default | `number` |
-| any | `readonly: true` | `info` |
-| — | no `scope` | `separator` |
-
-### Layout Props
-
-The `props` field in layout elements passes component-specific configuration:
-
-```js
-// Select with string options
-{ scope: '#/size', props: { options: ['sm', 'md', 'lg'] } }
-
-// Select with object options and field mapping
-{ scope: '#/color', props: {
-  options: [{ name: 'Red', hex: '#f00' }, { name: 'Blue', hex: '#00f' }],
-  fields: { text: 'name', value: 'hex' }
-}}
-
-// Readonly info display
-{ scope: '#/total', readonly: true }
-
-// Separator (no scope)
-{ type: 'separator' }
-```
-
-## Components
-
-### FormRenderer
-
-Renders a complete form from data + schema + layout:
+### Minimal — auto-derive everything
 
 ```svelte
 <script>
   import { FormRenderer } from '@rokkit/forms'
 
-  let data = $state({ name: '', size: 'md', active: true })
+  let data = $state({ name: '', age: 0, active: true })
 </script>
 
-<FormRenderer bind:data {schema} {layout} />
+<FormRenderer bind:data />
 ```
 
-**Props:**
-- `data` (bindable) — form data object
-- `schema` — JSON schema (optional, auto-derived)
-- `layout` — layout definition (optional, auto-derived)
-- `onupdate` — callback when data changes
-- `onvalidate` — callback for field validation
-- `child` — snippet for custom field rendering (receives `element`)
+Schema and layout are inferred from the data shape automatically.
 
-**Custom field rendering:**
+### With explicit schema and layout
 
 ```svelte
+<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  let data = $state({ name: '', role: 'viewer', count: 5, active: false })
+
+  const schema = {
+    type: 'object',
+    properties: {
+      name:   { type: 'string' },
+      role:   { type: 'string', enum: ['viewer', 'editor', 'admin'] },
+      count:  { type: 'integer', min: 0, max: 100 },
+      active: { type: 'boolean' }
+    }
+  }
+
+  const layout = {
+    type: 'vertical',
+    elements: [
+      { scope: '#/name',   label: 'Full Name', props: { placeholder: 'Enter name' } },
+      { scope: '#/role',   label: 'Role' },
+      { scope: '#/count',  label: 'Count' },
+      { type: 'separator' },
+      { scope: '#/active', label: 'Active' }
+    ]
+  }
+</script>
+
+<FormRenderer bind:data {schema} {layout} onupdate={(val) => console.log(val)} />
+```
+
+### FormBuilder (imperative)
+
+Use `FormBuilder` directly when you need to drive forms outside of `FormRenderer`:
+
+```js
+import { FormBuilder } from '@rokkit/forms'
+
+const form = new FormBuilder(data, schema, layout)
+
+// form.elements → [{ scope, type, value, props }, ...]
+form.updateField('#/name', 'Alice')
+form.validateField('#/name')
+form.validateAll()
+form.isDirty('#/name')   // true if value differs from initial
+```
+
+### Validation
+
+```js
+import { validateField, validateAll, patterns } from '@rokkit/forms'
+
+const result = validateField(value, { required: true, pattern: patterns.email })
+// result → { state: 'error', text: 'Invalid email address' } | null
+```
+
+### Dependent lookups with createLookup
+
+`createLookup` creates a reactive dropdown data source that can depend on other field values:
+
+```js
+import { createLookup } from '@rokkit/forms'
+
+// Fetch from a URL template — {region} is replaced by the current field value
+const countriesLookup = createLookup({ url: '/api/countries?region={region}' })
+
+// Async fetch function — receives current dependency values
+const citiesLookup = createLookup({
+  fetch: async (deps) => {
+    if (!deps.country) return { disabled: true, options: [] }
+    return { options: await getCities(deps.country) }
+  }
+})
+
+// Client-side filter — no network request
+const filteredLookup = createLookup({
+  source: allOptions,
+  filter: (item, deps) => item.region === deps.region
+})
+```
+
+### Custom field rendering
+
+Override individual fields with your own components using the `child` snippet and `override: true` in the layout:
+
+```svelte
+<script>
+  import { FormRenderer } from '@rokkit/forms'
+
+  const layout = {
+    type: 'vertical',
+    elements: [
+      { scope: '#/tags', label: 'Tags', override: true },
+      { scope: '#/name', label: 'Name' }
+    ]
+  }
+</script>
+
 <FormRenderer bind:data {schema} {layout}>
   {#snippet child(element)}
-    <MyCustomInput value={element.value} {...element.props} />
+    <!-- rendered for elements with override: true -->
+    <TagInput value={element.value} onchange={(v) => form.updateField(element.scope, v)} />
   {/snippet}
 </FormRenderer>
 ```
 
-Set `override: true` on layout elements to route them to the `child` snippet.
+## Type resolution
 
-### InputField
+`FormBuilder` maps schema types to input types automatically:
 
-Wraps an input with label, description, and validation message:
+| Schema type | Condition | Input type |
+|---|---|---|
+| `string` | has `enum` or `options` in layout | `select` |
+| `string` | default | `text` |
+| `boolean` | — | `checkbox` |
+| `number` / `integer` | has both `min` and `max` | `range` |
+| `number` / `integer` | default | `number` |
+| any | `readonly: true` in layout | `info` |
+| — | no `scope` | `separator` |
 
-```svelte
-<InputField name="email" type="email" value={email} label="Email" onchange={handleChange} />
-```
+## Components
 
-### Input
+| Component | Description |
+|---|---|
+| `FormRenderer` | Renders a complete form from data + schema + layout |
+| `Input` | Type-dispatching input — renders the right control for a given `type` |
+| `InputField` | Input wrapped with label, description, and validation message |
+| `InfoField` | Read-only label + value display |
+| `ValidationReport` | Displays a list of validation messages |
 
-Type dispatcher — renders the appropriate input component based on `type`:
-
-- `text`, `email`, `password`, `url`, `tel` — text inputs
-- `number` — numeric input
-- `range` — slider
-- `checkbox` — checkbox
-- `select` — dropdown (uses `@rokkit/ui` Select)
-- `date`, `time`, `datetime-local`, `month`, `week` — date/time inputs
-- `color` — color picker
-- `file` — file upload
-- `textarea` — multiline text
-- `radio` — radio group
-
-### InfoField
-
-Read-only display of a label and value:
-
-```svelte
-<InfoField label="Total" value={42} />
-```
-
-## Lib Utilities
+## Utilities
 
 ```js
-import { getSchemaWithLayout, findAttributeByPath } from '@rokkit/forms'
-import { deriveSchemaFromValue } from '@rokkit/forms/lib'
-import { deriveLayoutFromValue } from '@rokkit/forms/lib'
+import {
+  deriveSchemaFromValue,   // infer JSON schema from a data object
+  deriveLayoutFromValue,   // generate a default vertical layout from data
+  getSchemaWithLayout,     // merge schema attributes with layout elements
+  findAttributeByPath,     // look up a schema attribute by JSON Pointer path
+  validateField,           // validate a single value against schema constraints
+  validateAll,             // validate all fields in a FormBuilder
+  patterns                 // regex patterns: email, url, phone, etc.
+} from '@rokkit/forms'
 ```
-
-- `deriveSchemaFromValue(data)` — infer schema from a data object
-- `deriveLayoutFromValue(data)` — generate default vertical layout from data
-- `getSchemaWithLayout(schema, layout)` — merge schema attributes with layout elements
-- `findAttributeByPath(scope, schema)` — find schema attribute by JSON Pointer path
 
 ## Theming
 
-Form field styles are provided by `@rokkit/themes`. The components use data-attribute selectors:
+Components use `data-*` attribute selectors. Apply styles via `@rokkit/themes` or target these hooks directly:
 
 | Selector | Purpose |
 |---|---|
 | `[data-form-root]` | Form container |
 | `[data-form-field]` | Field wrapper |
-| `[data-form-separator]` | Separator between fields |
+| `[data-form-separator]` | Separator element |
 | `[data-field-root]` | Input field root |
-| `[data-field]` | Field inner wrapper |
-| `[data-field-type="..."]` | Type-specific layout (checkbox, info, select) |
-| `[data-field-info]` | Info/readonly value display |
-| `[data-input-root]` | Input element wrapper |
+| `[data-field-type="..."]` | Type-specific layout |
 | `[data-description]` | Help text |
 | `[data-message]` | Validation message |
 
-## Future Enhancements
+---
 
-### Toggle/Switch as Checkbox Alternative
-
-Use `@rokkit/ui` Toggle or Switch components as alternatives to the native checkbox for boolean fields. The layout could specify the preferred component:
-
-```js
-{ scope: '#/active', label: 'Active', props: { component: 'switch' } }
-```
-
-### Toggle as Select Alternative
-
-For fields with a small number of options, a Toggle (radio-style button group) can replace Select for better UX:
-
-```js
-{ scope: '#/size', label: 'Size', props: { component: 'toggle', options: ['sm', 'md', 'lg'] } }
-```
-
-**Constraints:**
-- **Text options**: max 3 options (beyond 3, text labels overflow in compact layouts)
-- **Icon-only options**: max 5 options (icons are more compact)
-- When the option count exceeds these limits, fall back to Select automatically
-
-### MultiSelect for Array Values
-
-When the value is an array and `options` is present in the layout, render a MultiSelect component instead of a single-value Select:
-
-```js
-// Schema: tags is an array
-{ tags: { type: 'array', items: { type: 'string' } } }
-
-// Layout: options provided → MultiSelect
-{ scope: '#/tags', label: 'Tags', props: { options: ['bug', 'feature', 'docs'] } }
-```
-
-### Connected/Dependent Props
-
-Support cascading dependencies between fields — changing one field's value updates another field's options. For example, selecting a country updates the available cities:
-
-```js
-const lookups = {
-  city: {
-    dependsOn: 'country',
-    fetch: async (country) => getCitiesForCountry(country)
-  }
-}
-
-const builder = new FormBuilder(data, schema, layout, lookups)
-await builder.initializeLookups()
-```
-
-The `FormBuilder` already has `lookupManager` infrastructure for this pattern. The remaining work is:
-- Auto-wiring lookup state (options, loading) into element props
-- UI indicators for loading state on dependent fields
-- Debouncing rapid changes to parent fields
+Part of [Rokkit](https://github.com/jerrythomas/rokkit) — a Svelte 5 component library and design system.

@@ -25,6 +25,7 @@
   "files": [
     "src/**/*.js",
     "dist/**/*.d.ts",
+    "README.md",
     "LICENSE"
   ],
   "scripts": {

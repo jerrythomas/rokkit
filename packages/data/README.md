@@ -1,50 +1,138 @@
 # @rokkit/data
 
-This package provides a set of tools for managing and manipulating data in user interfaces. It is framework agnostic and can be used with any ui framework.
+Data manipulation utilities for the Rokkit design system — filtering, joining, schema inference, and dataset views.
 
-## Features
+## Install
 
-- **Datasets:** Manage and manipulate datasets with ease
-  - filtering, sorting, and aggregation.
-  - **Joins:** Combine datasets effortlessly with support for inner, outer, left, and right joins.
-  - **Rollup:** Summarize data across multiple dimensions, calculating aggregate statistics like sum, average, min, and max.
-- **Modeling:** Create and manage data models, including merging, renaming, and resolving conflicts.
-- **Renaming:** Simplify key renaming in JavaScript objects, with options for prefixes, suffixes, and custom separators.
-- **Dataviews:** Create interactive views for exploring and analyzing datasets, including sortable and filterable columns.
-
-## Dataset
-
-- The `dataset` function initializes a dataset from an array of objects.
-- This dataset comprises data rows that are sortable, filterable, and groupable.
-- Leverage dataset for SQL-like operations such as selecting, updating, and deleting rows.
-- Employ aggregate functions like sum, average, and count for summarizing multiple attributes of the data.
-- Utilize the dataset for various data operations like joining and merging data from disparate sources.
-- Establish connected data views with joins to visualize data relationships, particularly for tracking parent-child connections.
-
-This makes it easier to build a tweenable data structure for animations. Here is an example of how to use the `dataset` to generate a tweenable data:
-
-```js
-function tweenable(data, by, group, template) {
-  return dataset(data)
-    .groupBy(by)
-    .using(template)
-    .alignBy(...group)
-    .rollup()
-    .sortBy(by)
-    .select()
-}
+```sh
+npm install @rokkit/data
+# or
+bun add @rokkit/data
 ```
 
-Refer to [dataset](docs/dataset.md) documentation for more details.
+## Overview
 
-## DataView
+`@rokkit/data` provides general-purpose data utilities for working with arrays of objects. It is used internally by `@rokkit/ui` table and grid components and can also be used standalone.
 
-- Utilize the `dataview` function to create a data view, enabling dynamic data manipulation and observation.
-- This view facilitates sorting, filtering, and grouping data while providing insight into selected or hidden rows.
-- The original dataset remains untouched while the view offers flexible data presentation options.
-- Associate actions such as select, edit, and delete with data rows using action columns within the view.
-- Manage data effectively, including parent-child links, even within a flat array structure.
+- **Type inference** — detect column types from data samples
+- **Filtering** — apply single or multiple filters with standard operators
+- **Joins** — relational join operations across two datasets
+- **Dataset / Dataview** — composable dataset abstraction with filter, sort, and pagination
+- **Metadata** — derive column definitions and types from raw data
+- **Renaming** — remap object keys with a rename spec
 
-Refer to [dataview](docs/dataview.md) documentation for more details.
+## Usage
 
-The `dataview` function initializes a manageable data state with methods that allow for manipulation and observation of data changes, integrating smoothly with UI updates.
+### Type inference
+
+```js
+import { typeOf } from '@rokkit/data'
+
+typeOf('hello')     // 'string'
+typeOf(42)          // 'number'
+typeOf(new Date())  // 'date'
+typeOf([1, 2])      // 'array'
+typeOf({ a: 1 })    // 'object'
+typeOf(true)        // 'boolean'
+```
+
+### Filtering
+
+```js
+import { filterObjectArray, filterData } from '@rokkit/data'
+
+// Single filter
+const adults = filterObjectArray(users, {
+  column: 'age',
+  value: 18,
+  operator: 'gte'
+})
+
+// Multiple filters combined
+const results = filterData(users, [
+  { column: 'status', value: 'active', operator: 'eq' },
+  { column: 'age', value: 18, operator: 'gte' }
+])
+```
+
+Supported operators: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `contains`, `startsWith`, `endsWith`, `in`, `notIn`.
+
+### Joins
+
+```js
+import { leftJoin, innerJoin } from '@rokkit/data'
+
+const result = leftJoin(orders, customers, 'customerId', 'id')
+// Each order row merged with its matching customer row (nulls if unmatched)
+```
+
+Available joins: `innerJoin`, `leftJoin`, `rightJoin`, `fullJoin`, `crossJoin`, `antiJoin`, `semiJoin`.
+
+### Schema inference
+
+```js
+import { deriveMetadata, deriveColumns } from '@rokkit/data'
+
+const metadata = deriveMetadata(data)
+// [{ column: 'name', type: 'string' }, { column: 'age', type: 'number' }, ...]
+
+const columns = deriveColumns(data)
+// Column definitions ready for use in a table component
+```
+
+### Dataset and dataview
+
+```js
+import { dataset, dataview } from '@rokkit/data'
+
+const ds = dataset(rawData)
+const view = dataview(ds, {
+  filters: [{ column: 'active', value: true, operator: 'eq' }],
+  sort: [{ column: 'name', direction: 'asc' }],
+  page: { size: 20, index: 0 }
+})
+```
+
+### Key renaming
+
+```js
+import { renamer } from '@rokkit/data'
+
+const rename = renamer({ firstName: 'first_name', lastName: 'last_name' })
+const remapped = data.map(rename)
+```
+
+### Filter string parsing
+
+```js
+import { parseFilters } from '@rokkit/data'
+
+const filters = parseFilters('age >= 18 AND status = "active"')
+```
+
+## API
+
+| Export | Description |
+|--------|-------------|
+| `typeOf(value)` | Infer type string from a value |
+| `filterObjectArray(data, filter)` | Apply a single filter object to an array |
+| `filterData(data, filters)` | Apply an array of filters to a dataset |
+| `parseFilters(string)` | Parse a filter expression string into filter objects |
+| `innerJoin(a, b, keyA, keyB)` | Inner join two arrays on matching keys |
+| `leftJoin(a, b, keyA, keyB)` | Left join — all rows from `a`, matched rows from `b` |
+| `rightJoin(a, b, keyA, keyB)` | Right join — all rows from `b`, matched rows from `a` |
+| `fullJoin(a, b, keyA, keyB)` | Full outer join |
+| `crossJoin(a, b)` | Cartesian product of two arrays |
+| `antiJoin(a, b, keyA, keyB)` | Rows in `a` with no match in `b` |
+| `semiJoin(a, b, keyA, keyB)` | Rows in `a` that have a match in `b` |
+| `deriveMetadata(data)` | Infer column names and types from a data sample |
+| `deriveColumns(data)` | Derive column definitions from data |
+| `deriveSortableColumn(col)` | Mark a column as sortable |
+| `dataset(data, options?)` | Create a dataset abstraction |
+| `dataview(dataset, options?)` | Create a filtered/sorted/paged view over a dataset |
+| `renamer(mapping)` | Create a function that renames object keys |
+| `model(data)` | Create a reactive data model |
+
+---
+
+Part of [Rokkit](https://github.com/jerrythomas/rokkit) — a Svelte 5 component library and design system.

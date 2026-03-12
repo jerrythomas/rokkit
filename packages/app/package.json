@@ -21,6 +21,7 @@
   },
   "files": [
     "src",
+    "README.md",
     "LICENSE"
   ],
   "scripts": {

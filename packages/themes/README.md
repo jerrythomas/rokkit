@@ -1,122 +1,110 @@
 # @rokkit/themes
 
-Theme styles for `@rokkit/ui` headless components.
+Pre-built CSS themes for `@rokkit/ui` components.
 
-## Architecture
+## Install
 
-This package follows a **headless component + themed styles** pattern:
-
-- **Components** (`@rokkit/ui`) - Provide structure, behavior, and accessibility via data attributes
-- **Themes** (`@rokkit/themes`) - Provide visual styling that targets those data attributes
-
-### Directory Structure
-
+```sh
+npm install @rokkit/themes
+# or
+bun add @rokkit/themes
 ```
-src/
-├── base/           # Structural styles (layout, positioning)
-│   ├── index.css   # All base styles
-│   └── menu.css    # Menu structural styles
-├── rokkit/         # Default theme (gradients + borders)
-│   ├── index.css   # All rokkit theme styles
-│   └── menu.css    # Menu themed styles
-├── minimal/        # Clean + subtle theme
-├── material/       # Elevation + shadows theme
-├── glass/          # Blur + transparency theme
-└── index.css       # Main entry (imports base + all themes)
-```
+
+## Overview
+
+`@rokkit/themes` provides visual styles for `@rokkit/ui` components. Components in `@rokkit/ui` are unstyled by default — themes layer on top without requiring changes to component markup. Styles target semantic `data-*` attributes that components emit (e.g. `[data-button]`, `[data-list-item]`).
+
+Available themes:
+
+| Theme | Description |
+|-------|-------------|
+| `rokkit` | Default — gradients and glowing borders |
+| `minimal` | Clean and subtle |
+| `material` | Elevation and shadows |
+| `glass` | Blur and transparency |
+| `base` | Structural styles only (layout and positioning, no visual treatment) |
 
 ## Usage
 
-### Full Theme (base + all themes)
+### Full bundle (base + all themes)
 
-```ts
+```css
+@import '@rokkit/themes';
+```
+
+Or in JavaScript/TypeScript:
+
+```js
 import '@rokkit/themes'
 ```
 
-### Base Only (for custom theming)
-
-```ts
-import '@rokkit/themes/base'
-```
-
-### Rokkit Theme Only
-
-```ts
-import '@rokkit/themes/rokkit'
-```
-
-### Individual Component Styles
-
-```ts
-import '@rokkit/themes/base/menu.css'
-import '@rokkit/themes/rokkit/menu.css'
-```
-
-## Data Attributes
-
-Components use semantic data attributes for styling hooks:
-
-### Common Attributes
-
-| Attribute       | Values           | Description    |
-| --------------- | ---------------- | -------------- |
-| `data-size`     | `sm`, `md`, `lg` | Size variant   |
-| `data-disabled` | `true`           | Disabled state |
-| `data-align`    | `left`, `right`  | Alignment      |
-
-### Menu-Specific Attributes
-
-| Attribute               | Description             |
-| ----------------------- | ----------------------- |
-| `data-menu`             | Menu container          |
-| `data-menu-trigger`     | Trigger button          |
-| `data-menu-dropdown`    | Dropdown panel          |
-| `data-menu-item`        | Menu item               |
-| `data-menu-item-custom` | Custom snippet wrapper  |
-| `data-menu-group`       | Group container         |
-| `data-menu-group-label` | Group header            |
-| `data-menu-divider`     | Divider line            |
-| `data-menu-open`        | Open state on container |
-
-## Theme Scoping
-
-Rokkit is the default theme — its styles apply without any wrapper.
-
-Other themes are scoped with `data-style` to allow switching:
-
-```html
-<div data-style="minimal">
-  <!-- Components here use minimal theme -->
-</div>
-```
-
-For global application, set on the root element:
-
-```html
-<html data-style="material"></html>
-```
-
-## Creating Custom Themes
-
-1. Copy `src/rokkit/` to `src/my-theme/`
-2. Modify styles using same data attribute selectors
-3. Wrap selectors with `[data-style='my-theme']` scope
-4. Import your theme alongside or instead of rokkit
-
-## CSS Custom Properties
-
-Themes use semantic CSS custom properties for consistency:
+### Single theme
 
 ```css
-/* Surface colors (backgrounds) */
---surface-z0 through --surface-z10
-
-/* Text colors */
---text-primary, --text-secondary, --text-muted
-
-/* Interactive colors */
---primary, --primary-hover, --primary-active
-
-/* State colors */
---success, --warning, --error, --info
+@import '@rokkit/themes/rokkit.css';
+/* or */
+@import '@rokkit/themes/minimal.css';
+/* or */
+@import '@rokkit/themes/material.css';
+/* or */
+@import '@rokkit/themes/glass.css';
 ```
+
+### Base structural styles only
+
+```css
+@import '@rokkit/themes/base';
+```
+
+Useful when writing a fully custom theme — imports layout and positioning rules without any visual styling.
+
+### Individual component styles
+
+```css
+@import '@rokkit/themes/base/button.css';
+@import '@rokkit/themes/rokkit/button.css';
+```
+
+## Theme scoping
+
+The `rokkit` theme is the default and applies without any wrapper element.
+
+Other themes are scoped using the `data-style` attribute:
+
+```html
+<!-- Apply minimal theme to a section -->
+<div data-style="minimal">
+  <!-- @rokkit/ui components here use the minimal theme -->
+</div>
+
+<!-- Apply a theme globally -->
+<html data-style="material">
+```
+
+Switching themes at runtime is a matter of updating the `data-style` attribute.
+
+## Custom themes
+
+To build your own theme:
+
+1. Import `@rokkit/themes/base` for structural styles.
+2. Write CSS targeting the same `data-*` attribute selectors used by the built-in themes.
+3. Scope your selectors with `[data-style='my-theme']` to enable runtime switching.
+
+Component attribute hooks follow the pattern `[data-style='my-theme'] [data-button]`, `[data-style='my-theme'] [data-list-item]`, etc.
+
+## Architecture
+
+```
+src/
+  base/       -- Structural styles (layout, spacing, positioning)
+  rokkit/     -- Default theme (gradients + borders)
+  minimal/    -- Clean + subtle theme
+  material/   -- Elevation + shadows theme
+  glass/      -- Blur + transparency theme
+  index.css   -- Full bundle entry point
+```
+
+---
+
+Part of [Rokkit](https://github.com/jerrythomas/rokkit) — a Svelte 5 component library and design system.

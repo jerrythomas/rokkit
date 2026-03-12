@@ -1,102 +1,137 @@
 # @rokkit/cli
 
-A command-line utility for bundling and converting SVG icons into JSON formats compatible with Iconify.
+CLI for Rokkit — SVG icon bundling, Iconify JSON package generation, project initialization, and setup validation.
 
-## Installation
+## Install
 
 ```bash
 # Install globally
 bun add -g @rokkit/cli
 
-# Or use directly with bunx
-bunx @rokkit/cli [command]
+# Or run without installing
+bunx @rokkit/cli <command>
+npx @rokkit/cli <command>
 ```
 
-## Usage
+The binary is available as `rokkit`.
+
+## Commands
+
+### `rokkit bundle`
+
+Scan SVG subfolders and output one Iconify-compatible JSON file per folder.
 
 ```bash
-rokkit-cli [command] [options]
+rokkit bundle -i ./src/icons -o ./lib
 ```
 
-### Commands
+Each subfolder under `--input` becomes a separate JSON bundle in `--output`. Useful for splitting icon sets by category (ui, solid, auth, etc.).
 
-#### `bundle`
+### `rokkit build`
 
-Bundle icons in source folders into JSON files.
+Build a full Iconify JSON package for each icon subfolder.
 
 ```bash
-rokkit-cli bundle -i ./icons -o ./dist
+rokkit build -i ./src/icons -o ./lib
 ```
 
-This command:
+Similar to `bundle` but produces the complete Iconify package structure (with `prefix`, `icons`, `width`, `height`). Use this when publishing icons as a standalone package.
 
-1. Scans the input directory for subdirectories
-2. Each subdirectory is treated as an icon set
-3. Creates a JSON bundle for each icon set in the output directory
+### `rokkit init`
 
-#### `build`
-
-Build complete Iconify JSON packages for icon sets.
+Initialize Rokkit in an existing SvelteKit project.
 
 ```bash
-rokkit-cli build -i ./icons -o ./dist
+rokkit init
 ```
 
-Similar to `bundle`, but creates a full Iconify package structure for each icon set.
+Interactively sets up `uno.config.ts` with `presetRokkit()`, installs required packages, and configures the project for Rokkit.
 
-### Options
+### `rokkit doctor`
 
-| Option     | Alias | Description                        | Default             |
-| ---------- | ----- | ---------------------------------- | ------------------- |
-| `--input`  | `-i`  | Source folder containing icon sets | `./src`             |
-| `--output` | `-o`  | Target folder for output files     | `./build`           |
-| `--config` | `-c`  | Path to custom config file         | `./src/config.json` |
+Validate that a Rokkit project is correctly configured.
+
+```bash
+# Check setup
+rokkit doctor
+
+# Check and auto-fix safe issues
+rokkit doctor --fix
+```
+
+Checks for correct UnoCSS config, theme imports, and required package presence. `--fix` applies automatic repairs where safe to do so.
+
+## Global Options
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--input` | `-i` | Source folder containing SVG subfolders | `./src` |
+| `--output` | `-o` | Output folder for generated files | `./lib` |
+| `--config` | `-c` | Path to config file (relative to input) | `config.json` |
 
 ## Configuration File
 
-The configuration file should be a JSON file with the following structure:
+Place a `config.json` inside the input folder to control icon processing:
 
 ```json
 {
   "package": {
-    "namespace": "@your-namespace",
+    "namespace": "@my-org",
     "version": "1.0.0",
-    "homepage": "https://github.com/your-username/your-repo"
+    "homepage": "https://github.com/my-org/my-icons"
   },
-  "icon-set-1": {
-    "color": true
-  },
-  "icon-set-2": {
+  "ui": {
     "color": false
+  },
+  "brand": {
+    "color": true
   }
 }
 ```
 
-- `package`: Global package information
-  - `namespace`: Namespace for the icon package
-  - `version`: Version number
-  - `homepage`: Repository URL
-- Each icon set can have specific configuration:
-  - `color`: Whether to preserve colors (true) or convert to `currentColor` (false)
+| Field | Description |
+|-------|-------------|
+| `package.namespace` | Iconify collection prefix namespace |
+| `package.version` | Published version string |
+| `package.homepage` | Repository or homepage URL |
+| `<set>.color` | `true` preserves original colors; `false` converts fills to `currentColor` |
 
 ## Examples
 
-### Basic usage
-
 ```bash
-# Bundle icons
-rokkit-cli bundle -i ./src/icons -o ./dist
+# Bundle icons from src/ into lib/
+rokkit bundle -i src -o lib
 
-# Build Iconify packages
-rokkit-cli build -i ./src/icons -o ./dist
+# Build full Iconify packages with a custom config
+rokkit build -i src -o lib -c my-config.json
+
+# Use with bunx (no global install needed)
+bunx @rokkit/cli bundle -i ./icons -o ./dist
 ```
 
-### Using a custom config file
+## Icon Folder Layout
 
-```bash
-rokkit-cli build -c ./my-config.json -i ./src/icons -o ./dist
+```
+src/
+  ui/
+    menu.svg
+    close.svg
+  solid/
+    check.svg
+    x.svg
+  auth/
+    login.svg
 ```
 
-## License
+Running `rokkit build -i src -o lib` produces:
 
-MIT
+```
+lib/
+  ui.json
+  solid.json
+  auth.json
+```
+
+---
+
+Part of [Rokkit](https://github.com/jerrythomas/rokkit) — a Svelte 5 component library and design system.

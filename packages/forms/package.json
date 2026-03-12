@@ -18,6 +18,7 @@
     "src/**/*.js",
     "src/**/*.svelte",
     "dist/**/*.d.ts",
+    "README.md",
     "LICENSE"
   ],
   "exports": {
