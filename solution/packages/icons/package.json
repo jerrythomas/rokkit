@@ -25,7 +25,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "@rokkit/cli": "workspace:latest"
+    "@rokkit/cli": "workspace:latest",
+    "simple-icons": "^16.11.0"
   },
   "scripts": {
     "format": "prettier --write .",
