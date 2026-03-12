@@ -51,11 +51,11 @@
 	const proxyTree = $derived(new ProxyTree(options, userFields))
 	const wrapper = $derived(
 		new Wrapper(proxyTree, {
-			onchange: (v, proxy) => {
+			onchange,
+			onselect: (v, proxy) => {
 				value = v
-				onchange?.(v, proxy)
-			},
-			onselect
+				onselect?.(v, proxy)
+			}
 		})
 	)
 
