@@ -47,9 +47,9 @@ export default [
       '**/app.d.ts',
       '**/_generated/**',
       '**/paraglide/**',
-      'sites/learn/src/routes/(learn)/customization/icons/fragments/**',
-      'sites/learn/src/routes/(learn)/elements/list/fragments/01-data-object.js',
-      'sites/learn/src/routes/(learn)/**/snippets/**'
+      'site/src/routes/(learn)/customization/icons/fragments/**',
+      'site/src/routes/(learn)/elements/list/fragments/01-data-object.js',
+      'site/src/routes/(learn)/**/snippets/**'
     ]
   },
   {
@@ -144,8 +144,8 @@ export default [
   },
   {
     files: [
-      '**/sites/*/src/routes/components/**',
-      '**/sites/*/src/routes/playground/**',
+      '**/site/src/routes/components/**',
+      '**/site/src/routes/playground/**',
       '**/examples/**',
       '**/stories/**',
       '**/fragments/**'
@@ -157,7 +157,7 @@ export default [
     }
   },
   {
-    files: ['**/sites/learn/src/**'],
+    files: ['**/site/src/**'],
     rules: {
       'svelte/no-at-html-tags': 'off',
       'no-console': 'warn',
