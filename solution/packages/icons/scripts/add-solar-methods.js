@@ -32,7 +32,7 @@ for (const method of METHODS) {
 			console.warn(`MISSING: solar:${solarKey}`)
 			continue
 		}
-		const filename = `${method.name + variant.ourSuffix  }.svg`
+		const filename = `${method.name + variant.ourSuffix}.svg`
 		writeFileSync(`${OUT}/${filename}`, iconToSVG(icon.body))
 		console.log(`Written: ${filename}`)
 	}
