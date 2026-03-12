@@ -14,12 +14,12 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		include: ['spec/**/*.{spec,spec.svelte}.[jt]s', 'src/**/*.{spec,spec.svelte}.[jt]s'],
-		exclude: ['**/node_modules/**', '**/dist/**'],
+		exclude: ['**/node_modules/**', '**/dist/**','.worktrees/**'],
 		coverage: {
 			all: true,
 			reporter: ['text', 'html', 'lcov', 'json'],
 			include: ['**/src/**'],
-			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/site/**', '**/fixtures/**', '**/types.ts']
+			exclude: ['**/spec/**', '**/node_modules/**', '**/dist/**', '**/site/**', '**/fixtures/**', '**/types.ts','.worktrees/**']
 		},
 		projects: [
 			{ extends: true, test: { name: 'actions', root: 'packages/actions' } },
